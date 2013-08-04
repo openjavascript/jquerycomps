@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>UXC Project - JQuery Components Library - suches</title>
+<style>
+    body{
+        margin: 20px 40px;
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+</style>
+<link href='../../comps/Panel/res/default/style.css' rel='stylesheet' />
+<script src="../../lib.js"></script>
+<script>
+    UXC.debug = true;
+
+    $(document).ready(function(){
+        window.js_output = $('span.js_output');
+        window.ls = [];
+        window.EFF_INTERVAL = easyEffect( effectcallback, 100);
+    });
+
+    function effectcallback( _stepval, _done ){
+        js_output.html( _stepval );
+        ls.push( _stepval );
+
+        !_done && js_output.html( _stepval );
+        _done && js_output.html( _stepval + '<br />' + ls.join() );
+    }
+
+    $(document).delegate( 'button.js_userTest', 'click', function(){
+        window.EFF_INTERVAL && clearInterval( EFF_INTERVAL );
+
+        ls = [];
+
+        var _maxVal = parseFloat( $('input.js_maxvalue').val(), 10 ) || 200;
+        var _startVal = parseFloat( $('input.js_startvalue').val(), 10 ) || 0;
+        var _duration = parseFloat( $('input.js_duration').val(), 10 ) || 200;
+        var _stepMs = parseFloat( $('input.js_stepms').val(), 10 ) || 2;
+
+        UXC.log( _maxVal, _startVal, _duration, _stepMs );
+
+        window.EFF_INTERVAL = easyEffect( effectcallback, _maxVal, _startVal, _duration, _stepMs );
+    });
+</script>
+</head>    
+<body>
+    <dl>
+        <dt>window.easyEffect demo</dt>
+        <dd>
+            <p>
+            maxvalue: <input type="text" value="1000" size="4" class="js_maxvalue" />
+            startvalue: <input type="text" value="100" size="4" class="js_startvalue" />
+            duration: <input type="text" value="1000" size="4" class="js_duration" />
+            step ms: <input type="text" value="2" size="4" class="js_stepms" />
+            <button type="button" class="js_userTest">test</button>
+            </p>
+            <p><label>output:</label><span class="js_output"></span></p>
+        </dd>
+    </dl>
+</body>
+</html>
+

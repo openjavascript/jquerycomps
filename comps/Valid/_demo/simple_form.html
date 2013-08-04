@@ -1,0 +1,581 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 UXC-FE</title>
+        <style type='text/css'>
+            *{ margin: 0; padding: 0; }
+            body{ margin: 20px 20px; }
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #fce1e1;
+                border: 1px solid #da9797;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+            dl.fm-items{ margin: 20px 0 20px; }
+            dl.fm-items dd { zoom: 1; padding: 5px 0 5px; clear:both; display:block; }
+            dl.fm-items dd:after {content:".";display:block;visibility:hidden;height:0;clear:both;}
+            dl.fm-items > dt{ text-align: center; font-weight: bold; margin: 20px 0;}
+
+            div.f-l{ float: left; }
+            div.label{ width: 320px; text-align: right; padding-right: 20px }
+
+            dd.odd {
+                background: #ececec;
+            }
+
+        </style>
+        <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../lib.js"></script>
+        <script> UXC.debug = true; UXC.use( 'Valid, Calendar' ); </script>
+        <script>
+            $(document).ready( function($evt){
+                $(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
+                    window.console && console.clear && console.clear();
+                    UXC.Valid.clearError( 'form.js-valid' );
+                });
+
+                $('form.js-valid').on('submit', function( $evt ){
+                    window.console && console.clear && console.clear();
+                        $evt.preventDefault();
+
+                    if( !UXC.Valid.check( 'form.js-valid' ) ){
+                        $evt.preventDefault();
+                        return false;
+                    }
+                });
+
+                $( 'dl.fm-items > dd:odd').addClass( 'odd' );
+            });
+        </script>
+    </head>    
+    <body>
+
+        <form action='' method='get' class="js-valid" >
+            <div>
+                <button type="submit">Save</button>
+                <button type="button" class="js-clear-error">清空错误信息</button>
+            </div>
+            <dl class="fm-items">
+                <dt>UXC.Valid 示例</dt>
+                <dd>
+                <div class="f-l label">
+                    <label>(reqmsg)公司名称:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_name" minlength="2" maxlength="120" reqmsg="公司名称" errmsg="请检查格式,长度2-120" /> <em>公司名称描述</em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(bytetext 8-40字符)公司名称:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_name" minlength="8" maxlength="40" reqmsg="公司名称" errmsg="长度8-40个字符, 英文=1字符, 汉字=2字符" datatype="bytetext" /> <em>公司名称描述</em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype domain)域名:</label>
+                    <br />允许带 http(s)
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_domain" datatype="domain" reqmsg="域名" errmsg="请填写正确的域名">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype stricdomain)域名:</label>
+                    <br />不允许带 http(s), 且结束不能带反斜扛(/)
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_domain" datatype="stricdomain" reqmsg="域名" errmsg="请填写正确的域名">
+                </div>
+                </dd>
+
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype url)网址:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_url" datatype="url" errmsg="请填写正确的网址">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype email)邮箱:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_email" datatype="email" reqmsg="邮箱" errmsg="请填写正确的邮箱">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype zipcode)邮编:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_zipcode" datatype="zipcode" errmsg="请填写正确的邮编">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype reg)地址:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_addr" datatype="reg" reg-pattern="/^[\s\S]{2,120}$/i" errmsg="请填写正确的地址">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype reg-)地址2:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_addr" datatype="reg-/^[\s\S]{2,120}$/i" errmsg="请填写正确的地址">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype n, 默认 0 - pow(10, 10 ))整数:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_n" errmsg="请填写正确的正整数" datatype="n" >
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype n, -1000000 ~ 1000000 整数:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_n" errmsg="请填写正确的数字, -1000000 ~ 1000000" datatype="n" minvalue="-1000000" maxvalue="1000000" >
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype nrange-7.2, -1000000 ~ 1000000 整数:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_n" errmsg="请填写正确的数字, -1000000.00 ~ 1000000.00" datatype="nrange-7.2" minvalue="-1000000" maxvalue="1000000" >
+                    <input type="text" name="company_n" errmsg="请填写正确的数字, -1000000.00 ~ 1000000.00" datatype="nrange-7.2" minvalue="-1000000" maxvalue="1000000" >
+                    <em class="error" style="display:block"></em>
+                </div>
+                </dd>
+
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype n, 1 - 100)整数:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_n1" errmsg="请填写正确的数字, 范围1-100" datatype="n" minvalue="1", maxvalue="100" >
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype n, 7位.2位)正数:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_n2" errmsg="请填写正确的数字" datatype="n-7.2" >
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype nrange)正数:<br/><b style="color:red">注意: 这个是大小颠倒位置的nrange</b></label>
+                </div>
+                <div class="f-l">
+                    大<input type="text" name="company_n10" id="company_n10" fromNEl="company_n11"
+                        errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1011" >
+                    - 小<input type="text" name="company_n11" id="company_n11" toNEl="company_n10"
+                        errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1011" >
+                    <em id="nrange_n1011"></em>
+                </div>
+                </dd>
+
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype nrange)正数:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_n12" errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1213" >
+                    <input type="text" name="company_n13" errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1213" >
+                    <em id="nrange_n1213"></em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype nrange-7.2)正数:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_n14" errmsg="请填写正确的数值范围" datatype="nrange-7.2" emEl="nrange_n1415" >
+                    <input type="text" name="company_n15" errmsg="请填写正确的数值范围" datatype="nrange-7.2" emEl="nrange_n1415" >
+                    <em id="nrange_n1415"></em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype d, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD, YYYYMMDD )日期:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_d" errmsg="请填写正确的日期范围2013-05-01 - 2013-05-31" 
+                        datatype="date" minvalue="2013-05-01" maxvalue="2013-05-31" value="2013-05-15" >
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype daterange, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD, YYYYMMDD )日期范围:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
+                            datatype="daterange" emEl="date-err-em">
+                            - <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
+                            datatype="daterange" emEl="date-err-em" >
+                    <br /><em id="date-err-em"></em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype daterange, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD, YYYYMMDD )日期范围:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
+                            id="start_date" datatype="daterange" toDateEl="end_date" emEl="date-err-em" value="2013-06-16" >
+                            - <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
+                            id="end_date" datatype="daterange" fromDateEl="start_date" emEl="date-err-em" value="2013-06-08" >
+                    <br /><em id="date-err-em"></em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype daterange, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD, YYYYMMDD )日期范围 - 自动初始化:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
+                             datatype="daterange" emEl="date-err-em1" value="2013-06-16" >
+                            - <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
+                             datatype="daterange" emEl="date-err-em1" value="2013-06-08" >
+                    <br /><em id="date-err-em1"></em>
+                </div>
+                </dd>
+
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype text, subdatatype reconfirm)用户密码:</label>
+                </div>
+                <div class="f-l">
+                    <input type="password" name="company_pwd" 
+                    datatype="text" subdatatype="reconfirm" datatarget="input[name=company_repwd]" reconfirmmsg="用户密码和确认密码不一致"
+                    minlength="6" maxlength="15" reqmsg="用户密码" errmsg="请填写正确的用户密码">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype text, subdatatype reconfirm)确认密码:</label>
+                </div>
+                <div class="f-l">
+                    <input type="password" name="company_repwd" 
+                    datatype="text" subdatatype="reconfirm" datatarget="input[name=company_pwd]" reconfirmmsg="确认密码和用户密码不一致"
+                    minlength="6" maxlength="15" reqmsg="确认密码" errmsg="请填写正确的确认密码">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>
+                        (datatype phonezone, phonecode, phoneext)电话号码:
+                        <br >subdatatype: alternative
+                    </label>
+                </div>
+                <div class="f-l">
+                    <input type='text' name='company_phonezone' style="width:40px;" value='' size="4" 
+                        datatype="phonezone" emEl="#phone-err-em" errmsg="请填写正确的电话区号" />
+                    - <input type='text' name='company_phonecode' style="width:80px;" value='' size="8" 
+                        datatype="phonecode" subdatatype="alternative" datatarget="input[name=company_mobile]" alternativemsg="电话号码和手机号码至少填写一个"
+                        errmsg="请检查电话号码格式" emEl="#phone-err-em" />
+                    - <input type='text' name='company_phoneext' style="width:40px;" value='' size="4" 
+                        datatype="phoneext" emEl="#phone-err-em" errmsg="请填写正确的分机号" />
+                    <em id="phone-err-em"></em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>
+                        (datatype mobilecode)手机号码:
+                        <br >subdatatype: alternative
+                    </label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_mobile" 
+                        datatype="mobilecode" subdatatype="alternative" datatarget="input[name=company_phonecode]" alternativemsg=" "
+                        errmsg="请填写正确的手机号码">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype phone, 允许带区号)电话号码:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_mobilezone" 
+                        datatype="phone" 
+                        errmsg="请填写正确的电话号码">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype phoneall, 允许带国家代码/区号/分机号)电话号码:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_mobilezone" 
+                        datatype="phoneall" 
+                        errmsg="请填写正确的电话号码">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype mobilezonecode, 允许带国家代码+xxx)手机号码:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_mobilezone" 
+                        datatype="mobilezonecode" 
+                        errmsg="请填写正确的手机号码">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype mobilephone, phone + mobilecode)手机号码或电话号码:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_mobilephone" 
+                        datatype="mobilephone"
+                        errmsg="请填写正确的手机/电话号码">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype mobilephoneall, phoneall + mobilezonecode)手机号码或电话号码:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_mobilephoneall" 
+                        datatype="mobilephoneall"
+                        errmsg="请填写正确的手机/电话号码">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype vcode, 默认4个字符[0-9a-zA-Z])验证码:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_vcode" style="width: 40px;"
+                        datatype="vcode" reqmsg="验证码" errmsg="请填写正确的验证码">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype vcode-数量, 本次vcode-5)验证码:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_vcode" style="width: 40px;"
+                        datatype="vcode-5" errmsg="请填写正确的验证码">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype cnname)中文姓名:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_cnname" 
+                        datatype="cnname" reqmsg="姓名" errmsg="请填写正确的姓名">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype username, [\w-]{2,30})用户名:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_username" 
+                        datatype="username" reqmsg="用户名" errmsg="请填写正确的用户名">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype idnumber)身份证号码:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_idnumber" 
+                        datatype="idnumber" errmsg="请填写正确的身份证号码">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype bankcard)银行卡号:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_bankcard" 
+                        datatype="bankcard" errmsg="请填写正确的银行卡号">
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(reqmsg)公司行业:</label>
+                </div>
+                <div class="f-l">
+                    <select name="company_type" reqmsg="公司行业" >
+                        <option value="">请选择</option>
+                        <option value="1">互联网</option>
+                        <option value="2">教育</option>
+                    </select>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(reqmsg)公司行业:</label>
+                </div>
+                <div class="f-l">
+                    <select name="company_type1" reqmsg="公司行业" multiple rows="3" >
+                        <option value="">请选择</option>
+                        <option value="1">互联网</option>
+                        <option value="2">教育</option>
+                    </select>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(reqmsg)上传文件:</label>
+                </div>
+                <div class="f-l">
+                    <input type='file' name='company_file' value='' reqmsg="文件" />
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype text)简介:</label>
+                </div>
+                <div class="f-l">
+                    <textarea name="company_desc" datatype="text" reqmsg="简介" errmsg="最大长度500" maxlength="500" ></textarea>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>auto trim test:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_name" value=" d" maxlength="120" reqmsg="请输入内容" errmsg="最大长度120" /> <em>公司名称描述</em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>auto trim test:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_name" value="d " maxlength="120" reqmsg="请输入内容" errmsg="最大长度120" /> <em>公司名称描述</em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>auto trim test:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_name" value=" d " minlength="2" maxlength="120" reqmsg="请输入内容" errmsg="请检查格式,长度2-120" /> <em>公司名称描述</em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <div>N 个 control 至少有一个值是非空值 </div>
+                    <div>datatype: n</div>
+                    <label>subdatatype: alternative</label>
+                    <div>如果需要显式指定比较的control, 请用 datatarget=selector</div>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="alternative_test[]" value="" 
+                        datatype="n" subdatatype="alternative" 
+                        errmsg="请填写正确的正整数"
+                        alternativemsg="数值1和数值2至少需要填写一个"
+                        /> <em>数值1</em>
+                    <input type="text" name="alternative_test[]" value="" 
+                        datatype="n" subdatatype="alternative" 
+                        errmsg="请填写正确的正整数"
+                        alternativemsg="数值1和数值2至少需要填写一个"
+                        /> <em>数值2</em>
+                    <em class="error"></em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <div>N 个 control 的值必须保持一致</div>
+                    <div>datatype: n</div>
+                    <label>subdatatype: reconfirm</label>
+                    <div>如果需要显式指定比较的control, 请用 datatarget=selector</div>
+                </div>
+                <div class="f-l">
+                    <input type="password" name="company_pwd_auto" 
+                        datatype="text" subdatatype="reconfirm" 
+                        reqmsg="用户密码" errmsg="长度6-15" reconfirmmsg="用户密码和确认密码不一致" 
+                        minlength="6" maxlength="15"
+                        />
+                    <input type="password" name="company_pwd_auto" 
+                        datatype="text" subdatatype="reconfirm" 
+                        reqmsg="用户密码" errmsg="长度6-15" reconfirmmsg="用户密码和确认密码不一致" 
+                        minlength="6" maxlength="15"
+                        />
+                    <em class="error"></em>
+                </div>
+                </dd>
+
+            </dl>
+
+            <div>
+                <button type="submit">Save</button>
+                <button type="button" class="js-clear-error">清空错误信息</button>
+            </div>
+        </form>
+
+
+    </body>
+</html>
+

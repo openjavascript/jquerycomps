@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 UXC-FE</title>
+        <style type='text/css'>
+            *{ margin: 0; padding: 0; }
+            body{ width: 980px; margin: 20px auto; }
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #fce1e1;
+                border: 1px solid #da9797;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+            dl.fm-items{ margin: 20px 0 20px; }
+            dl.fm-items dd { zoom: 1; padding: 5px 0 5px; clear:both; display:block; }
+            dl.fm-items dd:after {content:".";display:block;visibility:hidden;height:0;clear:both;}
+            dl.fm-items > dt{ text-align: center; font-weight: bold; margin: 20px 0;}
+
+            div.f-l{ float: left; }
+            div.label{ width: 320px; text-align: right; padding-right: 20px }
+
+        </style>
+        <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
+        <script src="../../../lib.js"></script>
+        <script>
+            UXC.debug = true; UXC.use( 'Valid, Calendar, Panel' ); 
+
+            $(document).ready( function($evt){
+                $(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
+                    window.console && console.clear && console.clear();
+                    UXC.Valid.clearError( 'form.js-valid' );
+                });
+
+                $('form.js-valid').on('submit', function( $evt ){
+                    window.console && console.clear && console.clear();
+                        $evt.preventDefault();
+                    var _p = $(this);
+
+                    if( !UXC.Valid.formHasValue( _p ) ){
+                        $evt.preventDefault();
+                        UXC.alert( '表单内容为空, 不能提交!', _p.find('button[type=submit]'), 1 );
+                        return false;
+                    }
+
+                    if( !UXC.Valid.check( _p ) ){
+                        $evt.preventDefault();
+                        return false;
+                    }
+                });
+            });
+        </script>
+    </head>    
+    <body>
+
+        <form action='' method='get' class="js-valid" >
+            <div>
+                <button type="submit">Save</button>
+                <button type="button" class="js-clear-error">清空错误信息</button>
+            </div>
+            <dl class="fm-items">
+                <dt>UXC.Valid 示例</dt>
+                <dd>
+                <div class="f-l label">
+                    <label>(reqmsg)公司名称:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_name" minlength="2" maxlength="120" reqmsg="公司名称" errmsg="请检查格式,长度2-120" /> <em>公司名称描述</em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(reqmsg)公司行业:</label>
+                </div>
+                <div class="f-l">
+                    <select name="company_type" reqmsg="公司行业" >
+                        <option value="">请选择</option>
+                        <option value="1">互联网</option>
+                        <option value="2">教育</option>
+                    </select>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(reqmsg)公司行业:</label>
+                </div>
+                <div class="f-l">
+                    <select name="company_type1" reqmsg="公司行业" multiple rows="3" >
+                        <option value="">请选择</option>
+                        <option value="1">互联网</option>
+                        <option value="2">教育</option>
+                    </select>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(reqmsg)上传文件:</label>
+                </div>
+                <div class="f-l">
+                    <input type='file' name='company_file' value='' reqmsg="文件" />
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype text)简介:</label>
+                </div>
+                <div class="f-l">
+                    <textarea name="company_desc" datatype="text" reqmsg="简介" errmsg="简介长度2-500" minlength="2" maxlength="500" ></textarea>
+                </div>
+                </dd>
+
+
+            </dl>
+        </form>
+
+
+    </body>
+</html>
+
