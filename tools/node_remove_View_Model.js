@@ -1,8 +1,8 @@
 var fs = require('fs');
-var dir = '../uxc_docs/classes';
+var dir = '../docs_api/classes';
 
-removeIgnoreItem( '../uxc_docs/index.html' );
-removeIgnoreItem( '../uxc_docs/api.js' );
+removeIgnoreItem( '../docs_api/index.html' );
+removeIgnoreItem( '../docs_api/api.js' );
 
 var dirs = fs.readdirSync( dir );
 
