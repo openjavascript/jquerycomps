@@ -1,14 +1,14 @@
 ;(function($){
-    !window.UXC && (window.UXC = { log:function(){} });
+    !window.JC && (window.JC = { log:function(){} });
     window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
-    window.Panel = UXC.Panel = Panel;
+    window.Panel = JC.Panel = Panel;
     /**
-     * 弹出层基础类 UXC.Panel
+     * 弹出层基础类 JC.Panel
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/uxc_docs/classes/UXC.Panel.html' target='_blank'>API docs</a>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
-     * @namespace UXC
+     * @namespace JC
      * @class Panel
      * @constructor
      * @param   {selector|string}   _selector   自定义弹框模板, 如果 _selector不能解析为 HTML, 将视为@param _headers 
@@ -16,11 +16,11 @@
      * @param   {string}            _bodys      定义模板的 body 文字, 如果 _selector 不能解析为HTML, 视视为@param _footers
      * @param   {string}            _footers    定义模板的 footer 文字
      * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 360 UXC-FE Team
+     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
      * @date    2013-06-04
      * @example
             <script src="../../../lib.js"></script>
-            <script>UXC.use( 'Panel' ); </script>
+            <script>JC.use( 'Panel' ); </script>
             <script>
                 var btnstr = [
                     '<div style="text-align:center" class="UButton">'
@@ -29,9 +29,9 @@
                     , '</div>'
                 ].join('');
                 $(document).ready( function(_evt){
-                    tmpPanel = new UXC.Panel( '默认panel', '<h2>test content</h2>' + btnstr, 'test footer');
+                    tmpPanel = new JC.Panel( '默认panel', '<h2>test content</h2>' + btnstr, 'test footer');
                     tmpPanel.on('close', function(_evt, _panel){
-                        UXC.log('user close evnet');
+                        JC.log('user close evnet');
                     });
                     tmpPanel.show( 0 );
                 });
@@ -44,13 +44,13 @@
 
         if( Panel.getInstance( _selector ) ) return Panel.getInstance( _selector );
         /**
-         * 存放数据的model层, see <a href='UXC.Panel.Model.html'>Panel.Model</a>
+         * 存放数据的model层, see <a href='JC.Panel.Model.html'>Panel.Model</a>
          * @property _model 
          * @private
          */
         this._model = new Model( _selector, _headers, _bodys, _footers );
         /**
-         * 控制视图的view层, see <a href='UXC.Panel.View.html'>Panel.View</a>
+         * 控制视图的view层, see <a href='JC.Panel.View.html'>Panel.View</a>
          * @property    _view 
          * @private
          */
@@ -83,7 +83,7 @@
         var _panel = $(this), _src = $(_evt.target || _evt.srcElement), _evtName;
         if( _src && _src.length && _src.is("[eventtype]") ){
             _evtName = _src.attr('eventtype');
-            UXC.log( _evtName, _panel.data('PanelInstace') );
+            JC.log( _evtName, _panel.data('PanelInstace') );
             _evtName && _panel.data('PanelInstace') && _panel.data('PanelInstace').trigger( _evtName, _src, _evt );
         }
     });
@@ -228,7 +228,7 @@
          */
         , close:
             function(){
-                UXC.log('Panel.close');
+                JC.log('Panel.close');
                 this.trigger('beforeclose', this._view.getPanel() );
                 this.trigger('close', this._view.getPanel() );
                 return this;
@@ -240,7 +240,7 @@
          */
         , dispose:
             function(){
-                UXC.log('Panel.dispose');
+                JC.log('Panel.dispose');
                 this._view.close();
                 return this;
             }
@@ -288,7 +288,7 @@
          */
         , trigger:
             function( _evtName, _srcElement ){
-                UXC.log( 'Panel.trigger', _evtName );
+                JC.log( 'Panel.trigger', _evtName );
 
                 var _p = this, _evts = this._model.getEvent( _evtName ), _processDefEvt = true;
                 if( _evts && _evts.length ){
@@ -459,7 +459,7 @@
      * 存储 Panel 的基础数据类
      * <br /><b>这个类为 Panel 的私有类</b>
      * @class   Model
-     * @namespace   UXC.Panel
+     * @namespace   JC.Panel
      * @constructor
      * @param   {selector|string}   _selector   自定义弹框模板, 如果 _selector不能解析为 HTML, 将视为@param _headers 
      * @param   {string}            _headers    定义模板的 header 文字, 如果 _selector 不能解析为HTML, 视视为@param _bodys
@@ -523,7 +523,7 @@
                 var _selector = typeof this.selector != 'undefined' ? $(this.selector) : undefined;
                 if( _selector && _selector.length ){
                     this.selector = _selector;
-                    UXC.log( 'user tpl', this.selector.parent().length );
+                    JC.log( 'user tpl', this.selector.parent().length );
                     if( !this.selector.parent().length ){
                         this.selector.appendTo( $(document.body ) );
                     }
@@ -567,13 +567,13 @@
      * 存储 Panel 的基础视图类
      * <br /><b>这个类为 Panel 的私有类</b>
      * @class   View
-     * @namespace   UXC.Panel
+     * @namespace   JC.Panel
      * @constructor
-     * @param   {Panel.Model}   _model  Panel的基础数据类, see <a href='UXC.Panel.Model.html'>Panel.Model</a>
+     * @param   {Panel.Model}   _model  Panel的基础数据类, see <a href='JC.Panel.Model.html'>Panel.Model</a>
      */
     function View( _model ){
         /**
-         * Panel的基础数据类, see <a href='UXC.Panel.Model.html'>Panel.Model</a>
+         * Panel的基础数据类, see <a href='JC.Panel.Model.html'>Panel.Model</a>
          * @property _model
          * @type Panel.Model
          * @private
@@ -662,7 +662,7 @@
          */
         , close:
             function(){
-                UXC.log( 'Panel._view.close()');
+                JC.log( 'Panel._view.close()');
                 this.getPanel().remove();
             }
         /**
@@ -678,7 +678,7 @@
                 return this._model.panel;
             }
         /**
-         * 获取或设置Panel的 header 内容, see <a href='UXC.Panel.html#method_header'>Panel.header</a>
+         * 获取或设置Panel的 header 内容, see <a href='JC.Panel.html#method_header'>Panel.header</a>
          * @method  getHeader
          * @param   {string}    _udata  
          * @return  string
@@ -698,7 +698,7 @@
                 return _selector;
             }
         /**
-         * 获取或设置Panel的 body 内容, see <a href='UXC.Panel.html#method_body'>Panel.body</a>
+         * 获取或设置Panel的 body 内容, see <a href='JC.Panel.html#method_body'>Panel.body</a>
          * @method  getBody
          * @param   {string}    _udata  
          * @return  string
@@ -714,7 +714,7 @@
                 return _selector;
             }
         /**
-         * 获取或设置Panel的 footer 内容, see <a href='UXC.Panel.html#method_footer'>Panel.footer</a>
+         * 获取或设置Panel的 footer 内容, see <a href='JC.Panel.html#method_footer'>Panel.footer</a>
          * @method  getFooter
          * @param   {string}    _udata  
          * @return  string
@@ -750,10 +750,10 @@
                 if( (_winh - _lh  - 100) > 300 ){
                     _y -= 100;
                 }
-                UXC.log( (_winh - _lh / 2 - 100) )
+                JC.log( (_winh - _lh / 2 - 100) )
 
                 if( ( _y + _lh - _scrtop ) > _winh ){
-                    UXC.log('y overflow');
+                    JC.log('y overflow');
                     _y = _scrtop + _winh - _lh;
 
                 }
@@ -762,7 +762,7 @@
 
                 _layout.css( {left: _x+'px', top: _y+'px'} );
 
-                UXC.log( _lw, _lh, _winw, _winh );
+                JC.log( _lw, _lh, _winw, _winh );
             }
     };
     /**
@@ -783,17 +783,17 @@
       * 隐藏或者清除所有 Panel
       * <h2>使用这个方法应当谨慎, 容易为DOM造成垃圾Panel</h2>
       * <br /><b>注意</b>: 这是个方法, 写成class是为了方便生成文档
-      * @namespace  UXC
+      * @namespace  JC
       * @class      hideAllPanel
       * @constructor
       * @static
-      * @param      {bool}      _isClose    从DOM清除/隐藏所有Panel(包刮 UXC.alert, UXC.confirm, UXC.Panel, UXC.Dialog)
+      * @param      {bool}      _isClose    从DOM清除/隐藏所有Panel(包刮 JC.alert, JC.confirm, JC.Panel, JC.Dialog)
       *                                     <br />, true = 从DOM 清除, false = 隐藏, 默认 = false( 隐藏 )
       * @example
-      *     UXC.hideAllPanel();         //隐藏所有Panel
-      *     UXC.hideAllPanel( true );   //从DOM 清除所有Panel
+      *     JC.hideAllPanel();         //隐藏所有Panel
+      *     JC.hideAllPanel( true );   //从DOM 清除所有Panel
       */
-     UXC.hideAllPanel = 
+     JC.hideAllPanel = 
          function( _isClose ){
             if( _isClose ){
                 $('div.UPanel').remove();
@@ -809,11 +809,11 @@
      * alert 提示 popup
      * <br /> 这个是不带 蒙板的 popup 弹框
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='UXC.Panel.html'>Panel</a></p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/uxc_docs/classes/UXC.alert.html' target='_blank'>API docs</a>
+     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.alert.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
-     * @namespace UXC
+     * @namespace JC
      * @class   alert
      * @static
      * @constructor
@@ -821,9 +821,9 @@
      * @param   {selector}  _popupSrc   触发弹框的事件源 selector, 不为空显示 缓动效果, 为空居中显示
      * @param   {int}       _status     显示弹框的状态, 0: 成功, 1: 错误, 2: 警告
      * @param   {function}  _cb         点击弹框确定按钮的回调
-     * @return  <a href='UXC.Panel.html'>UXC.Panel</a>
+     * @return  <a href='JC.Panel.html'>JC.Panel</a>
      */
-    UXC.alert = 
+    JC.alert = 
         function( _msg, _popupSrc, _status, _cb ){
             return _logic.popup( _logic.tpls.alert, _msg, _popupSrc, _status, _cb );
         };
@@ -831,12 +831,12 @@
      * confirm 提示 popup
      * <br /> 这个是不带 蒙板的 popup 弹框
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
-     * <p>private property see: <a href='UXC.alert.html'>UXC.alert</a>
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='UXC.Panel.html'>Panel</a></p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/uxc_docs/classes/UXC.confirm.html' target='_blank'>API docs</a>
+     * <p>private property see: <a href='JC.alert.html'>JC.alert</a>
+     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.confirm.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
-     * @namespace UXC
+     * @namespace JC
      * @class   confirm
      * @static
      * @constructor
@@ -844,25 +844,25 @@
      * @param   {selector}  _popupSrc   触发弹框的事件源 selector, 不为空显示 缓动效果, 为空居中显示
      * @param   {int}       _status     显示弹框的状态, 0: 成功, 1: 错误, 2: 警告
      * @param   {function}  _cb         点击弹框确定按钮的回调
-     * @return  <a href='UXC.Panel.html'>UXC.Panel</a>
+     * @return  <a href='JC.Panel.html'>JC.Panel</a>
      */
-    UXC.confirm = 
+    JC.confirm = 
         function( _msg, _popupSrc, _status, _cb ){
             return _logic.popup( _logic.tpls.confirm, _msg, _popupSrc, _status, _cb );
         };
     /**
-     * 隐藏 或 从DOM清除所有 UXC.alert/UXC.confirm
+     * 隐藏 或 从DOM清除所有 JC.alert/JC.confirm
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
-     * @namespace UXC
+     * @namespace JC
      * @class hideAllPopup
      * @static
      * @constructor
-     * @param   {bool}  _isClose    为真从DOM清除UXC.alert/UXC.confirm, 为假隐藏, 默认为false
+     * @param   {bool}  _isClose    为真从DOM清除JC.alert/JC.confirm, 为假隐藏, 默认为false
      * @example
-     *      UXC.hideAllPopup();         //隐藏所有UXC.alert, UXC.confirm
-     *      UXC.hideAllPopup( true );   //从 DOM 清除所有 UXC.alert, UXC.confirm
+     *      JC.hideAllPopup();         //隐藏所有JC.alert, JC.confirm
+     *      JC.hideAllPopup( true );   //从 DOM 清除所有 JC.alert, JC.confirm
      */
-    UXC.hideAllPopup =
+    JC.hideAllPopup =
         function( _isClose ){
             if( _isClose ){
                 $('body > div.UPanelPopup_identifer').remove();
@@ -871,7 +871,7 @@
             }
         };
     /**
-     * 从 HTML 属性 自动执行 UXC.alert / UXC.confirm
+     * 从 HTML 属性 自动执行 JC.alert / JC.confirm
      * @attr    {string}    paneltype           弹框类型, alert | confirm
      * @attr    {string}    panelmsg            弹框提示
      * @attr    {string}    panelstatus         弹框状态, 0|1|2
@@ -893,9 +893,9 @@
         _callback && ( _callback = window[ _callback ] );
         _cancelcallback && ( _cancelcallback = window[ _cancelcallback ] );
 
-        if( !(_paneltype in UXC) ) return;
+        if( !(_paneltype in JC) ) return;
 
-        var _panel = UXC[ _paneltype ]( _panelmsg, _p, _panelstatus );
+        var _panel = JC[ _paneltype ]( _panelmsg, _p, _panelstatus );
         if( _callback ) _panel.on( 'confirm', _callback );
         if( _cancelcallback ) _panel.on( 'cancel', _cancelcallback );
     });
@@ -911,14 +911,14 @@
     /**
      * 弹框逻辑处理方法集
      * @property    _logic
-     * @for UXC.alert
+     * @for JC.alert
      * @private
      */
     var _logic = {
         /**
          * 弹框最小宽度
          * @property    _logic.minWidth
-         * @for UXC.alert
+         * @for JC.alert
          * @type        int
          * @default     180
          * @private
@@ -927,7 +927,7 @@
         /**
          * 弹框最大宽度
          * @property    _logic.maxWidth
-         * @for UXC.alert
+         * @for JC.alert
          * @type        int
          * @default     500
          * @private
@@ -938,7 +938,7 @@
          * @property    _logic.xoffset
          * @type    number
          * @default 9
-         * @for UXC.alert
+         * @for JC.alert
          * @private
          */
         , xoffset: 9
@@ -947,16 +947,16 @@
          * @property    _logic.yoffset
          * @type    number
          * @default 3
-         * @for UXC.alert
+         * @for JC.alert
          * @private
          */
         , yoffset: 3
         /**
          * 设置弹框的唯一性
          * @method  _logic.popupIdentifier
-         * @for UXC.alert
+         * @for JC.alert
          * @private
-         * @param   {UXC.Panel} _panel  
+         * @param   {JC.Panel} _panel  
          */
         , popupIdentifier:
             function( _panel ){
@@ -971,14 +971,14 @@
         /**
          * 弹框通用处理方法
          * @method  _logic.popup
-         * @for UXC.alert
+         * @for JC.alert
          * @private
          * @param   {string}    _tpl        弹框模板
          * @param   {string}    _msg        弹框提示
          * @param   {selector}  _popupSrc   弹框事件源对象  
          * @param   {int}       _status     弹框状态
          * @param   {function}  _cb         confirm 回调
-         * @return  UXC.Panel
+         * @return  JC.Panel
          */
         , popup:
         function( _tpl, _msg, _popupSrc, _status, _cb ){
@@ -990,7 +990,7 @@
             var _tpl = _tpl
                         .replace(/\{msg\}/g, _msg)
                         .replace(/\{status\}/g, _logic.getStatusClass(_status||'') );
-            var _ins = new UXC.Panel(_tpl);
+            var _ins = new JC.Panel(_tpl);
             _logic.popupIdentifier( _ins );
             _ins.selector().data('popupSrc', _popupSrc);
             _logic.fixWidth( _msg, _ins );
@@ -999,7 +999,7 @@
             if( !_popupSrc ) _ins.center();
 
             _ins.on('show_default', function(){
-                UXC.log('user show_default');
+                JC.log('user show_default');
                 if( _popupSrc && _popupSrc.length ){
                     _logic.showEffect( _ins, _popupSrc, function(){
                     });
@@ -1008,7 +1008,7 @@
             });
 
             _ins.on('close_default', function(){
-                UXC.log('user close_default');
+                JC.log('user close_default');
                 if( _popupSrc && _popupSrc.length ){
                     _logic.hideEffect( _ins, _popupSrc, function(){
                         _ins.selector().remove();
@@ -1019,7 +1019,7 @@
             });
 
             _ins.on('hide_default', function(){
-                UXC.log('user hide_default');
+                JC.log('user hide_default');
                 if( _popupSrc && _popupSrc.length ){
                     _logic.hideEffect( _ins, _popupSrc, function(){
                         _ins.selector().hide();
@@ -1038,9 +1038,9 @@
         /**
          * 隐藏弹框缓动效果
          * @method  _logic.hideEffect
-         * @for UXC.alert
+         * @for JC.alert
          * @private
-         * @param   {UXC.Panel}     _panel
+         * @param   {JC.Panel}     _panel
          * @param   {selector}      _popupSrc
          * @param   {function}      _doneCb 缓动完成后的回调
          */
@@ -1081,9 +1081,9 @@
         /**
          * 隐藏弹框缓动效果
          * @method  _logic.showEffect
-         * @for UXC.alert
+         * @for JC.alert
          * @private
-         * @param   {UXC.Panel}     _panel
+         * @param   {JC.Panel}     _panel
          * @param   {selector}      _popupSrc
          */
         , showEffect:
@@ -1108,7 +1108,7 @@
                 _selector.height(0);
                 _selector.css( { 'left': _left  + 'px' } );
 
-                UXC.log( _top, _poffset.top );
+                JC.log( _top, _poffset.top );
 
                 if( _top > _poffset.top ){
                     _dom.interval = 
@@ -1134,7 +1134,7 @@
          * 设置 Panel 的默认X,Y轴
          * @method  _logic.onresize
          * @private
-         * @for UXC.alert
+         * @for JC.alert
          * @param   {selector}  _panel
          */
         , onresize:
@@ -1169,7 +1169,7 @@
         /**
          * 取得弹框最要显示的 y 轴
          * @method  _logic.getTop
-         * @for UXC.alert
+         * @for JC.alert
          * @private
          * @param   {number}    _scrTop         滚动条Y位置
          * @param   {number}    _srcHeight      事件源 高度
@@ -1190,7 +1190,7 @@
         /**
          * 取得弹框最要显示的 x 轴
          * @method  _logic.getLeft
-         * @for UXC.alert
+         * @for JC.alert
          * @private
          * @param   {number}    _scrTop         滚动条Y位置
          * @param   {number}    _srcHeight      事件源 高度
@@ -1213,10 +1213,10 @@
         /**
          * 修正弹框的默认显示宽度
          * @method  _logic.fixWidth
-         * @for     UXC.alert
+         * @for     JC.alert
          * @private
          * @param   {string}    _msg    查显示的文本
-         * @param   {UXC.Panel} _panel
+         * @param   {JC.Panel} _panel
          */
         , fixWidth:
             function( _msg, _panel ){
@@ -1230,7 +1230,7 @@
         /**
          * 获取弹框的显示状态, 默认为0(成功)
          * @method  _logic.fixWidth
-         * @for     UXC.alert
+         * @for     JC.alert
          * @private
          * @param   {int}   _status     弹框状态: 0:成功, 1:失败, 2:警告
          * @return  {int}
@@ -1249,7 +1249,7 @@
          * 保存弹框的所有默认模板
          * @property    _logic.tpls
          * @type        Object
-         * @for         UXC.alert
+         * @for         JC.alert
          * @private
          */
         , tpls: {
@@ -1312,11 +1312,11 @@
     /**
      * 带蒙板的会话弹框
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='UXC.Panel.html'>Panel</a></p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/uxc_docs/classes/UXC.Dialog.html' target='_blank'>API docs</a>
+     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Dialog.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
-     * @namespace UXC
+     * @namespace JC
      * @class   Dialog
      * @static
      * @constructor
@@ -1324,20 +1324,20 @@
      * @param   {string}            _headers    定义模板的 header 文字, 如果 _selector 不能解析为HTML, 视视为@param _bodys
      * @param   {string}            _bodys      定义模板的 body 文字, 如果 _selector 不能解析为HTML, 视视为@param _footers
      * @param   {string}            _footers    定义模板的 footer 文字
-     * @return  <a href='UXC.Panel.html'>UXC.Panel</a>
+     * @return  <a href='JC.Panel.html'>JC.Panel</a>
      */
-    var Dialog = window.Dialog = UXC.Dialog = 
+    var Dialog = window.Dialog = JC.Dialog = 
         function( _selector, _headers, _bodys, _footers ){
             if( _logic.timeout ) clearTimeout( _logic.timeout );
 
-            if( UXC.Panel.getInstance( _selector ) ){
-                UXC.Panel.getInstance( _selector ).center().show();
-                return UXC.Panel.getInstance( _selector );
+            if( JC.Panel.getInstance( _selector ) ){
+                JC.Panel.getInstance( _selector ).center().show();
+                return JC.Panel.getInstance( _selector );
             }
 
             _logic.dialogIdentifier();
 
-            var _ins = new UXC.Panel( _selector, _headers, _bodys, _footers );
+            var _ins = new JC.Panel( _selector, _headers, _bodys, _footers );
             _logic.dialogIdentifier( _ins );
 
             _logic.showMask();
@@ -1364,27 +1364,27 @@
     /**
      * 会话框 alert 提示
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
-     * <p>private property see: <a href='UXC.Dialog.html'>UXC.Dialog</a>
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='UXC.Panel.html'>Panel</a>, <a href='UXC.Dialog.html'>Dialog</a></p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/uxc_docs/classes/UXC.Dialog.alert.html' target='_blank'>API docs</a>
+     * <p>private property see: <a href='JC.Dialog.html'>JC.Dialog</a>
+     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Dialog.alert.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
-     * @namespace UXC.Dialog
+     * @namespace JC.Dialog
      * @class   alert
      * @static
      * @constructor
      * @param   {string}    _msg        提示内容
      * @param   {int}       _status     显示弹框的状态, 0: 成功, 1: 错误, 2: 警告
      * @param   {function}  _cb         点击弹框确定按钮的回调
-     * @return  <a href='UXC.Panel.html'>UXC.Panel</a>
+     * @return  <a href='JC.Panel.html'>JC.Panel</a>
      */
-    UXC.Dialog.alert = 
+    JC.Dialog.alert = 
         function(_msg, _status, _cb){
             if( !_msg ) return;
             var _tpl = _logic.tpls.alert
                         .replace(/\{msg\}/g, _msg)
                         .replace(/\{status\}/g, _logic.getStatusClass(_status||'') );
-            var _ins = UXC.Dialog(_tpl);
+            var _ins = JC.Dialog(_tpl);
             _logic.fixWidth( _msg, _ins );
             _cb && _ins.on('confirm', _cb);
 
@@ -1393,27 +1393,27 @@
     /**
      * 会话框 confirm 提示
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
-     * <p>private property see: <a href='UXC.Dialog.html'>UXC.Dialog</a>
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='UXC.Panel.html'>Panel</a>, <a href='UXC.Dialog.html'>Dialog</a></p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/uxc_docs/classes/UXC.Dialog.confirm.html' target='_blank'>API docs</a>
+     * <p>private property see: <a href='JC.Dialog.html'>JC.Dialog</a>
+     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Dialog.confirm.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
-     * @namespace UXC.Dialog
+     * @namespace JC.Dialog
      * @class   confirm
      * @static
      * @constructor
      * @param   {string}    _msg        提示内容
      * @param   {int}       _status     显示弹框的状态, 0: 成功, 1: 错误, 2: 警告
      * @param   {function}  _cb         点击弹框确定按钮的回调
-     * @return  <a href='UXC.Panel.html'>UXC.Panel</a>
+     * @return  <a href='JC.Panel.html'>JC.Panel</a>
      */
-    UXC.Dialog.confirm = 
+    JC.Dialog.confirm = 
         function(_msg, _status, _cb){
             if( !_msg ) return;
             var _tpl = _logic.tpls.confirm
                         .replace(/\{msg\}/g, _msg)
                         .replace(/\{status\}/g, _logic.getStatusClass(_status||'') );
-            var _ins = UXC.Dialog(_tpl);
+            var _ins = JC.Dialog(_tpl);
             _logic.fixWidth( _msg, _ins );
             _cb && _ins.on('confirm', _cb);
 
@@ -1422,19 +1422,19 @@
     /**
      * 显示或隐藏 蒙板
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
-     * @namespace   UXC.Dialog
+     * @namespace   JC.Dialog
      * @class   mask
      * @static
      * @constructor
      * @param   {bool}  _isHide     空/假 显示蒙板, 为真 隐藏蒙板
      */
-    UXC.Dialog.mask =
+    JC.Dialog.mask =
         function( _isHide ){
             !_isHide && _logic.showMask();
             _isHide && _logic.hideMask();
         };
     /**
-     * 从 HTML 属性 自动执行 UXC.Dialog.alert / UXC.Dialog.confirm
+     * 从 HTML 属性 自动执行 JC.Dialog.alert / JC.Dialog.confirm
      * @attr    {string}    paneltype           弹框类型, Dialog.alert | Dialog.confirm
      * @attr    {string}    panelmsg            弹框提示
      * @attr    {string}    panelstatus         弹框状态, 0|1|2
@@ -1458,9 +1458,9 @@
         _callback && ( _callback = window[ _callback ] );
         _cancelcallback && ( _cancelcallback = window[ _cancelcallback ] );
 
-        if( !(_paneltype in UXC.Dialog) ) return;
+        if( !(_paneltype in JC.Dialog) ) return;
 
-        var _panel = UXC.Dialog[ _paneltype ]( _panelmsg, _panelstatus );
+        var _panel = JC.Dialog[ _paneltype ]( _panelmsg, _panelstatus );
         if( _callback ) _panel.on( 'confirm', _callback );
         if( _cancelcallback ) _panel.on( 'cancel', _cancelcallback );
 
@@ -1481,7 +1481,7 @@
     /**
      * 会话弹框逻辑处理方法集
      * @property    _logic
-     * @for UXC.Dialog
+     * @for JC.Dialog
      * @private
      */
     var _logic = {
@@ -1490,7 +1490,7 @@
          * @property    _logic.timeout
          * @type    setTimeout
          * @private
-         * @for UXC.Dialog
+         * @for JC.Dialog
          */
         timeout: null
         /**
@@ -1499,13 +1499,13 @@
          * @property    _logic.showMs
          * @type    int     millisecond
          * @private
-         * @for UXC.Dialog
+         * @for JC.Dialog
          */
         , showMs: 10
         /**
          * 弹框最小宽度
          * @property    _logic.minWidth
-         * @for UXC.Dialog
+         * @for JC.Dialog
          * @type        int
          * @default     180
          * @private
@@ -1514,7 +1514,7 @@
         /**
          * 弹框最大宽度
          * @property    _logic.maxWidth
-         * @for UXC.Dialog
+         * @for JC.Dialog
          * @type        int
          * @default     500
          * @private
@@ -1523,9 +1523,9 @@
         /**
          * 设置会话弹框的唯一性
          * @method  _logic.dialogIdentifier
-         * @for UXC.Dialog
+         * @for JC.Dialog
          * @private
-         * @param   {UXC.Panel} _panel  
+         * @param   {JC.Panel} _panel  
          */
         , dialogIdentifier:
             function( _panel ){
@@ -1542,7 +1542,7 @@
          * 显示蒙板
          * @method  _logic.showMask
          * @private
-         * @for UXC.Dialog
+         * @for JC.Dialog
          */
         , showMask:
             function(){
@@ -1562,7 +1562,7 @@
          * 隐藏蒙板
          * @method  _logic.hideMask
          * @private
-         * @for UXC.Dialog
+         * @for JC.Dialog
          */
         , hideMask:
             function(){
@@ -1575,7 +1575,7 @@
          * <br />这个方法主要为了兼容 IE6
          * @method  _logic.setMaskSizeForIe6
          * @private
-         * @for UXC.Dialog
+         * @for JC.Dialog
          */
         , setMaskSizeForIe6:
             function(){
@@ -1596,7 +1596,7 @@
         /**
          * 获取弹框的显示状态, 默认为0(成功)
          * @method  _logic.fixWidth
-         * @for     UXC.Dialog
+         * @for     JC.Dialog
          * @private
          * @param   {int}   _status     弹框状态: 0:成功, 1:失败, 2:警告
          * @return  {int}
@@ -1614,10 +1614,10 @@
         /**
          * 修正弹框的默认显示宽度
          * @method  _logic.fixWidth
-         * @for     UXC.Dialog
+         * @for     JC.Dialog
          * @private
          * @param   {string}    _msg    查显示的文本
-         * @param   {UXC.Panel} _panel
+         * @param   {JC.Panel} _panel
          */
         , fixWidth:
             function( _msg, _panel ){
@@ -1631,7 +1631,7 @@
          * 保存会话弹框的所有默认模板
          * @property    _logic.tpls
          * @type        Object
-         * @for         UXC.Dialog
+         * @for         JC.Dialog
          * @private
          */
         , tpls: {

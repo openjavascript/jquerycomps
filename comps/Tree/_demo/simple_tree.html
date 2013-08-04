@@ -2,15 +2,15 @@
 <html>
 <head>
 <meta charset=utf-8 />
-<title>360 UXC-FE</title>
+<title>360 75 team</title>
 <style>
     body{ width: 680px; margin: 20px auto; }
 </style>
 <link href='../../../comps/Tree/res/default/style.css' rel='stylesheet' />
 <script src="../../../lib.js"></script>
 <script>
-    UXC.debug = 1;
-    UXC.use( 'Tree' );
+    JC.debug = 1;
+    JC.use( 'Tree' );
 
     $(document).ready( function(){
         var _queryNode = get_url_param( 'node' );
@@ -19,12 +19,12 @@
             data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["24","\u9500\u552e\u4e8c\u7ec4"],["28","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
 		    root: ["23",'客户发展部']
 		};
-        var _tree = new UXC.Tree( $('#tree_box'), treeData );
+        var _tree = new JC.Tree( $('#tree_box'), treeData );
             _tree.init();
             _queryNode && _tree.open( _queryNode );
             _tree.on('change', function( _evt ){
                 var _p = $(this);
-                UXC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
+                JC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
             });
 
 
@@ -32,7 +32,7 @@
             data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["28","\u9500\u552e\u4e8c\u7ec4"],["24","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
 		    root: ["23",'客户发展部']
 		};
-        var _tree = new UXC.Tree( $('#tree_box1'), treeData );
+        var _tree = new JC.Tree( $('#tree_box1'), treeData );
             _tree.on('RenderLabel', function( _data ){
                 var _node = $(this);
                 _node.html( printf( '<a href="?node={0}" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
@@ -45,14 +45,14 @@
             data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["28","\u9500\u552e\u4e8c\u7ec4"],["24","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
 		    root: ["23",'客户发展部']
 		};
-        var _tree = new UXC.Tree( $('#tree_box2'), treeData );
+        var _tree = new JC.Tree( $('#tree_box2'), treeData );
             _tree.on('RenderLabel', function( _data ){
                 var _node = $(this);
                 _node.html( printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
             });
             _tree.on('change', function( _evt ){
                 var _p = $(this);
-                UXC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
+                JC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
             });
             _tree.init();
             _queryNode && _tree.open( _queryNode );
@@ -61,13 +61,13 @@
 
     $(document).delegate('button.js_open_all', 'click', function(){
         $('div.tree_container').each( function(){
-            UXC.Tree.getInstance( this ) && UXC.Tree.getInstance(this).open();
+            JC.Tree.getInstance( this ) && JC.Tree.getInstance(this).open();
         });
     });
 
     $(document).delegate('button.js_close_all', 'click', function(){
         $('div.tree_container').each( function(){
-            UXC.Tree.getInstance( this ) && UXC.Tree.getInstance(this).close();
+            JC.Tree.getInstance( this ) && JC.Tree.getInstance(this).close();
         });
     });
 
@@ -78,7 +78,7 @@
         _tgr = $.trim( $( _tgr ).val() );
 
         $('div.tree_container').each( function(){
-            UXC.Tree.getInstance( this ) && UXC.Tree.getInstance(this).open( _tgr );
+            JC.Tree.getInstance( this ) && JC.Tree.getInstance(this).open( _tgr );
         });
     });
 
@@ -89,7 +89,7 @@
         _tgr = $.trim( $( _tgr ).val() );
 
         $('div.tree_container').each( function(){
-            UXC.Tree.getInstance( this ) && UXC.Tree.getInstance(this).close( _tgr );
+            JC.Tree.getInstance( this ) && JC.Tree.getInstance(this).close( _tgr );
         });
     });
 

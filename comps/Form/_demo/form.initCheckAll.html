@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset=utf-8 />
-        <title>360 UXC-FE</title>
+        <title>360 75 team</title>
         <style type='text/css'>
             body{
                 width: 600px;
@@ -14,26 +14,26 @@
             }
         </style>
         <script src="../../../lib.js"></script>
-        <script>UXC.debug = true; UXC.use('Form');</script>
+        <script>JC.debug = true; JC.use('Form');</script>
         <script>
         $(document).delegate( 'button.js_ajaxTest', 'click', function(){
             var _p = $(this);
             _p.prop('disabled', true);
-            UXC.Form.disableButton( _p );
+            JC.Form.disableButton( _p );
 
             $.get( './data/initCheckAll.php?rnd='+new Date().getTime(), function( _r ){
                 var _selector = $(_r);
                 $( $( 'body' ).children().first() ).before( _selector );
-                UXC.Form.initCheckAll( _selector );
+                JC.Form.initCheckAll( _selector );
             });
         });
 
         /*
         自动初始化成本太高, 这里就不自动实现了
-        动态添加的内容请使用 UXC.Form.initCheckAll 方法
+        动态添加的内容请使用 JC.Form.initCheckAll 方法
         $(document).delegate( 'button.js_autoinit', 'click', function(){
             var _p = $(this);
-            UXC.Form.disableButton( _p );
+            JC.Form.disableButton( _p );
             setTimeout( function(){ _p.prop('disabled', false); }, 1000 );
 
             $.get( './data/autoInitCheckAll.php?rnd='+new Date().getTime(), function( _r ){

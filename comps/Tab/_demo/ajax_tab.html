@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset=utf-8 />
-<title>360 UXC-FE</title>
+<title>360 75 team</title>
 <style type='text/css'>
     body{ width: 680px; margin: 20px auto; }
     .cclear{zoom:1;}
@@ -26,30 +26,30 @@
 <link href='../../../comps/Tab/res/default/style.css' rel='stylesheet' />
 <script src="../../../lib.js"></script>
 <script>
-    UXC.debug = 1;
-    UXC.use( 'Tab' );
+    JC.debug = 1;
+    JC.use( 'Tab' );
 
     httpRequire();
 
     function tabactive( _evt, _container, _tabIns ){
         var _label = $(this);
-        UXC.log( 'tab ', _evt.type, _label.html(), new Date().getTime() );
-        if( UXC.Tab.isAjax( _label ) && ! UXC.Tab.isAjaxInited( _label ) ){
+        JC.log( 'tab ', _evt.type, _label.html(), new Date().getTime() );
+        if( JC.Tab.isAjax( _label ) && ! JC.Tab.isAjaxInited( _label ) ){
             _container.html( '<h2>内容加载中...</h2>' );
         }
     }
 
     function tabchange( _container, _tabIns ){
         var _label = $(this);
-        UXC.log( 'tab change: ', _label.html(), new Date().getTime() );
+        JC.log( 'tab change: ', _label.html(), new Date().getTime() );
     }
 
     $(document).ready( function(){
-        UXC.Tab.ajaxCallback =
+        JC.Tab.ajaxCallback =
             function( _data, _label, _container ){
                 _data && ( _data = $.parseJSON( _data ) );
                 if( _data && _data.errorno === 0 ){
-                    _container.html( printf( '<h2>UXC.Tab.ajaxCallback</h2>{0}', _data.data ) );
+                    _container.html( printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
                 }else{
                     Tab.isAjaxInited( _label, 0 );
                     _container.html( '<h2>内容加载失败!</h2>' );
@@ -71,7 +71,7 @@
 <body>
 
     <dl class="def">
-        <dt>UXC.Tab 示例 - 动态内容 - AJAX</dt>
+        <dt>JC.Tab 示例 - 动态内容 - AJAX</dt>
         <dd>
         <div class="le-tabview js_autoTab" tablabels="ul.js_tabLabel2 > li > a" tabcontainers="div.js_tabContent2 > div" 
                                             tabactiveclass="active" tablabelparent="li" 
@@ -95,7 +95,7 @@
     </dl>
 
     <dl class="def">
-        <dt>UXC.Tab 示例 - 动态内容 - AJAX - mouseover</dt>
+        <dt>JC.Tab 示例 - 动态内容 - AJAX - mouseover</dt>
         <dd>
         <div class="le-tabview js_autoTab" tablabels="ul.js_tabLabel3 > li > a" tabcontainers="div.js_tabContent3 > div" 
                                             tabactiveclass="active" tablabelparent="li" 

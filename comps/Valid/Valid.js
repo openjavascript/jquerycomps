@@ -1,12 +1,12 @@
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
 ;(function($){
-    !window.UXC && (window.UXC = { log:function(){} });
+    !window.JC && (window.JC = { log:function(){} });
     /**
      * 表单验证
-     * <br />全局访问请使用 UXC.Valid 或 Valid
+     * <br />全局访问请使用 JC.Valid 或 Valid
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/uxc_docs/classes/UXC.Valid.html' target='_blank'>API docs</a>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>
      * <h2>Form 的可用 html attribute</h2>
      * <dl>
@@ -123,24 +123,24 @@
      *          </dl>
      *      </dd>
      * </dl>
-     * @namespace UXC
+     * @namespace JC
      * @class Valid
      * @static
      * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 360 UXC-FE Team
+     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
      * @date    2013-05-22
      */
-    var Valid = UXC.Valid = window.Valid = {
+    var Valid = JC.Valid = window.Valid = {
         /**
          * 验证一个表单项, 如 文本框, 下拉框, 复选框, 单选框, 文本域, 隐藏域
          * @method check
          * @static
          * @param      {selector}    _item -   需要验证规则正确与否的表单/表单项
          * @example 
-         *          UXC.Valid.check( $('input.needValid') );
-         *          UXC.Valid.check( document.getElementById('inputNeedValid') );
+         *          JC.Valid.check( $('input.needValid') );
+         *          JC.Valid.check( document.getElementById('inputNeedValid') );
          *
-         *          if( !UXC.Valid.check( $('form') ) ){
+         *          if( !JC.Valid.check( $('form') ) ){
          *              _evt.preventDefault();
          *              return false;
          *          }
@@ -169,14 +169,14 @@
          * @static
          * @param   {form|input|textarea|select|file|password}  _selector -     需要清除错误的选择器
          * @example
-         *          UXC.Valid.clearError( 'form' );
-         *          UXC.Valid.clearError( 'input.some' );
+         *          JC.Valid.clearError( 'form' );
+         *          JC.Valid.clearError( 'input.some' );
          */
         , clearError:
             function( _selector ){
                 $( _selector ).each( function(){
                     var _item = $(this);
-                    UXC.log( 'clearError: ' + _item.prop('nodeName') );
+                    JC.log( 'clearError: ' + _item.prop('nodeName') );
                     switch( _item.prop('nodeName').toLowerCase() ){
                         case 'form': 
                             {
@@ -200,7 +200,7 @@
          * @static
          * @example
                 $(document).ready( function($evt){
-                    UXC.Valid.errorAbort = true;
+                    JC.Valid.errorAbort = true;
                 });
          */
         , errorAbort: false
@@ -212,7 +212,7 @@
          * @static
          * @example
                 $(document).ready( function($evt){
-                    UXC.Valid.autoTrim = false;
+                    JC.Valid.autoTrim = false;
                 });
          */
         , autoTrim: true
@@ -227,13 +227,13 @@
                  $('form.js-valid').on('submit', function( $evt ){
                     var _p = $(this);
 
-                    if( !UXC.Valid.formHasValue( _p ) ){
+                    if( !JC.Valid.formHasValue( _p ) ){
                         $evt.preventDefault();
-                        UXC.alert( '表单内容为空, 不能提交!', _p.find('button[type=submit]'), 1 );
+                        JC.alert( '表单内容为空, 不能提交!', _p.find('button[type=submit]'), 1 );
                         return false;
                     }
 
-                    if( !UXC.Valid.check( _p ) ){
+                    if( !JC.Valid.check( _p ) ){
                         $evt.preventDefault();
                         return false;
                     }
@@ -299,7 +299,7 @@
         , setError: function(_item, _msgAttr, _fullMsg){ _logic.error.apply( this, [].slice.apply( arguments) );}
     };
     /**
-     * 这个方法是 <a href='UXC.Valid.html#method_check'>Valid.check</a> 的别名
+     * 这个方法是 <a href='JC.Valid.html#method_check'>Valid.check</a> 的别名
      * @method checkAll
      * @static
      * @param      {selector}    _item -   需要验证规则正确与否的表单/表单项
@@ -312,14 +312,14 @@
      * @private
      */
     $(document).delegate( 'input[type=text], input[type=password], textarea', 'blur', function($evt){
-        UXC.Valid.check( this )
+        JC.Valid.check( this )
     });
     /**
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
      * @private
      */
     $(document).delegate( 'select, input[type=file]', 'change', function($evt){
-        UXC.Valid.check( this )
+        JC.Valid.check( this )
     });
     /**
      * 私有逻辑处理对象, 验证所需的所有规则和方法都存放于此对象
@@ -351,7 +351,7 @@
                         if( !_sitem.is(':visible') ) return;
                         if( _sitem.is('[disabled]') ) return;
 
-                        UXC.log( _dt, _subdt );
+                        JC.log( _dt, _subdt );
 
                         switch( _nm ){
                             case 'input':
@@ -462,7 +462,7 @@
                         if( !_errEm.length ){
                             ( _errEm = $('<em class="error"></em>') ).insertAfter( _item );
                         }
-                        UXC.log( 'error: ' + _msg );
+                        JC.log( 'error: ' + _msg );
                         _errEm.html( _msg ).show() 
                     }, 150);
 
@@ -537,7 +537,7 @@
                         }
                     }
 
-                    UXC.log( '_msg: ' + _msg, _item.prop('type').toLowerCase() );
+                    JC.log( '_msg: ' + _msg, _item.prop('type').toLowerCase() );
 
                     return $.trim(_msg);
                 }
@@ -625,7 +625,7 @@
                                 typeof _f == 'undefined' && /\./.test( _valStr ) && ( _r = false );
                             } else _r = false;
 
-                            UXC.log( 'nValid', _val, typeof _n, typeof _f, typeof _min, typeof _max, _min, _max );
+                            JC.log( 'nValid', _val, typeof _n, typeof _f, typeof _min, typeof _max, _min, _max );
                         }else _r = false;
 
                         !_r && _logic.error( _item );
@@ -661,7 +661,7 @@
                     function( _item ){
                         var _r = _logic.datatype.n( _item ), _min, _max;
 
-                        UXC.log( 'zzzz', _r );
+                        JC.log( 'zzzz', _r );
 
                         if( _r ){
                             var _fromNEl, _toNEl;
@@ -674,19 +674,19 @@
                                         var _sp = $(this);
                                         /nrange/i.test( _sp.attr('datatype') ) && _items.push( this );
                                     });
-                                    UXC.log( 'ccc', _items.length );
+                                    JC.log( 'ccc', _items.length );
                                     if( _items.length === 2 ){
                                         _fromNEl = $(_items[0]);
                                         _toNEl = $(_items[1]);
                                     }
                             }
-                            UXC.log( 'aaaa', _r );
+                            JC.log( 'aaaa', _r );
                             if( _fromNEl && _fromNEl.length || _toNEl && _toNEl.length ){
 
                                 _fromNEl && _fromNEl.length && !( _toNEl && _toNEl.length ) && ( _toNEl = _item );
                                 !(_fromNEl && _fromNEl.length) && _toNEl && _toNEl.length && ( _fromNEl = _item );
 
-                                UXC.log( 'nrange', _fromNEl.length, _toNEl.length );
+                                JC.log( 'nrange', _fromNEl.length, _toNEl.length );
 
                                 _toNEl.val( $.trim( _toNEl.val() ) );
                                 _fromNEl.val( $.trim( _fromNEl.val() ) );
@@ -698,7 +698,7 @@
 
                                     _r && ( +_fromNEl.val() ) > ( +_toNEl.val() ) && ( _r = false );
                                     
-                                    UXC.log( +_fromNEl.val(), +_toNEl.val(), _r );
+                                    JC.log( +_fromNEl.val(), +_toNEl.val(), _r );
 
                                     _r && _logic.valid( _fromNEl );
                                     _r && _logic.valid( _toNEl );
@@ -795,7 +795,7 @@
                                 _fromDateEl && _fromDateEl.length && !( _toDateEl && _toDateEl.length ) && ( _toDateEl = _item );
                                 !(_fromDateEl && _fromDateEl.length) && _toDateEl && _toDateEl.length && ( _fromDateEl = _item );
 
-                                UXC.log( 'daterange', _fromDateEl.length, _toDateEl.length );
+                                JC.log( 'daterange', _fromDateEl.length, _toDateEl.length );
 
                                 _toDateEl.val( $.trim( _toDateEl.val() ) );
                                 _fromDateEl.val( $.trim( _fromDateEl.val() ) );
@@ -1151,12 +1151,12 @@
                         if( !_val ) return _r;
 
                         if( _item.is( '[minlength]' ) ){
-                            UXC.log( 'minlength' );
+                            JC.log( 'minlength' );
                             _min = parseInt( _item.attr( 'minlength' ), 10 ) || 0;
                         }
                         
                         if( _item.is( '[maxlength]' ) ){
-                            UXC.log( 'maxlength' );
+                            JC.log( 'maxlength' );
                             _max = parseInt( _item.attr( 'maxlength' ), 10 ) || 0;
                         }
                         /**
@@ -1179,7 +1179,7 @@
                         _min && ( _len < _min ) && ( _r = false );
                         _max && ( _len > _max ) && ( _r = false );
 
-                        UXC.log( 'lengthValid: ', _min, _max, _r );
+                        JC.log( 'lengthValid: ', _min, _max, _r );
 
                         !_r && _logic.error( _item );
 
@@ -1208,7 +1208,7 @@
                         }
 
                         !_r && _logic.error( _item, 'reqmsg' );
-                        UXC.log( 'regmsgValid: ' + _r );
+                        JC.log( 'regmsgValid: ' + _r );
                         return _r;
                     }
                 /**
@@ -1229,7 +1229,7 @@
                         if( !_pattern ) _pattern = $.trim(_item.attr('datatype')).replace(/^reg(?:\-|)/i, '');
 
                         _pattern.replace( /^\/([\s\S]*)\/([\w]{0,3})$/, function( $0, $1, $2 ){
-                            UXC.log( $1, $2 );
+                            JC.log( $1, $2 );
                             _r = new RegExp( $1, $2 || '' ).test( _item.val() );
                         });
 
@@ -1258,7 +1258,7 @@
                 , vcode:
                     function( _item ){
                         var _r, _len = parseInt( $.trim(_item.attr('datatype')).replace( /^vcode(?:\-|)/i, '' ), 10 ) || 4; 
-                        UXC.log( 'vcodeValid: ' + _len );
+                        JC.log( 'vcodeValid: ' + _len );
                         _r = new RegExp( '^[0-9a-zA-Z]{'+_len+'}$' ).test( _item.val() );
                         !_r && _logic.error( _item );
                         return _r;
@@ -1422,7 +1422,7 @@
                 alternative:
                     function( _item ){
                         var _r = true, _target;
-                        UXC.log( 'alternative' );
+                        JC.log( 'alternative' );
 
                         _item.is( '[datatarget]' ) && (_target = $(_item.attr('datatarget')) );
                         !( _target && _target.length ) && ( _target = _item.parent().find('[subdatatype=alternative]') );
@@ -1475,7 +1475,7 @@
                     function( _item ){
                         var _r = true, _target;
 
-                        UXC.log( 'reconfirm' );
+                        JC.log( 'reconfirm' );
 
                         _item.is( '[datatarget]' ) && (_target = $(_item.attr('datatarget')) );
                         !( _target && _target.length ) && ( _target = _item.parent().find('[subdatatype=reconfirm]') );

@@ -27,7 +27,7 @@
 <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
 <script src="../../../lib.js"></script>
 <script>
-    UXC.debug = true; UXC.use( 'Panel' ); 
+    JC.debug = true; JC.use( 'Panel' ); 
 
     var count = 1;
     var btnstr = [
@@ -39,21 +39,21 @@
 
     $(document).ready( function(_evt){
 
-        tmpPanel = UXC.Dialog( '默认Dialog', '<h2>test content</h2>' + btnstr, 'test footer');
+        tmpPanel = JC.Dialog( '默认Dialog', '<h2>test content</h2>' + btnstr, 'test footer');
         tmpPanel.on('close', function(_evt, _panel){
-            UXC.log('user close evnet');
+            JC.log('user close evnet');
         });
 
         $(document).delegate( 'button.js_panel', 'click', function(_evt){
-            tmpPanel = UXC.Dialog( '默认Dialog' + count, 'body ' + count + btnstr, 'footer ' + count);
+            tmpPanel = JC.Dialog( '默认Dialog' + count, 'body ' + count + btnstr, 'footer ' + count);
             count++;
         });
 
         $(document).delegate( 'button.js_panel_alert', 'click', function(_evt){
 
-            tmpPanel = UXC.Dialog.alert( 'user manual UXC.alert ' + count, this );
+            tmpPanel = JC.Dialog.alert( 'user manual JC.alert ' + count, this );
             tmpPanel.on('confirm', function( _evt, _panel ){ 
-                UXC.log('another uaer callback'); 
+                JC.log('another uaer callback'); 
             });
 
             count++;
@@ -61,10 +61,10 @@
 
         $(document).delegate( 'button.js_panel_confirm', 'click', function(_evt){
 
-            tmpPanel = UXC.Dialog.confirm( 'user manual UXC.confirm ' + count, this );
+            tmpPanel = JC.Dialog.confirm( 'user manual JC.confirm ' + count, this );
 
             tmpPanel.on('confirm', function( _evt, _panel ){ 
-                UXC.log('another uaer callback'); 
+                JC.log('another uaer callback'); 
             });
 
             count++;
@@ -72,15 +72,15 @@
     });
 
     function userCallback( _evt, _panel ){
-        UXC.log( 'userCallback ' + (count++) );
+        JC.log( 'userCallback ' + (count++) );
     }
 
     function userCallback1( _evt, _panel ){
-        UXC.log( 'userCallback1 ' + (count++) );
+        JC.log( 'userCallback1 ' + (count++) );
     }
 
     function userCallback2( _evt, _panel ){
-        UXC.log( 'userCallback2 ' + (count++) );
+        JC.log( 'userCallback2 ' + (count++) );
     }
 
 </script>
@@ -90,18 +90,18 @@
 
     <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
     <dl class="def">
-        <dt>UXC.Panel 示例</dt>
+        <dt>JC.Panel 示例</dt>
         <dd>
-            <button type="button" class="js_panel">默认UXC.Panel</button>
+            <button type="button" class="js_panel">默认JC.Panel</button>
         </dd>
         <dd>
-        <button type="button" class="js_panel_alert" >manul UXC.alert(msg)</button>
+        <button type="button" class="js_panel_alert" >manul JC.alert(msg)</button>
         <button type="button" paneltype="Dialog.alert" panelcallback="userCallback" panelstatus="0" panelmsg="msg1">attr alert success</button>
         <button type="button" paneltype="Dialog.alert" panelcallback="userCallback1" panelstatus="1" panelmsg="msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2">attr alert1 alert</button>
         <button type="button" paneltype="Dialog.alert" panelcallback="userCallback2" panelstatus="2" panelmsg="msgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsg">attr alert2 failure</button>
         </dd>
         <dd>
-        <button type="button" class="js_panel_confirm" >manul UXC.confirm(msg)</button>
+        <button type="button" class="js_panel_confirm" >manul JC.confirm(msg)</button>
         <button type="button" paneltype="Dialog.confirm" panelcallback="userCallback" paneltype="0" panelmsg="msg1">attr confirm success</button>
         <button type="button" paneltype="Dialog.confirm" panelcallback="userCallback1" panelstatus="1" panelmsg="msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2">attr confirm1 alert</button>
         <button type="button" paneltype="Dialog.confirm" panelcallback="userCallback2" panelstatus="2" panelmsg="msgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsg">attr confirm2 failure</button>

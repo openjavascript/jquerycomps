@@ -1,7 +1,7 @@
 $(document).ready( function(){
     window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
 
-    UXC.Tree.dataFilter =
+    JC.Tree.dataFilter =
         function( _data ){
             var _r = {};
 
@@ -41,7 +41,7 @@ $(document).ready( function(){
         if( !_treeIns ){
             var _data = window[ _p.attr( 'treedata' ) ];
 
-            var _tree = new UXC.Tree( _treeNode, _data );
+            var _tree = new JC.Tree( _treeNode, _data );
                 _tree.on( 'click', function(){
                     var _sp = $(this)
                         , _dataid = _sp.attr('dataid')

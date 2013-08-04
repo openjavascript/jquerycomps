@@ -1,8 +1,8 @@
 ;(function($){
-    !window.UXC && (window.UXC = { log:function(){} });
+    !window.JC && (window.JC = { log:function(){} });
     window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
 
-    window.Tips = UXC.Tips = Tips;
+    window.Tips = JC.Tips = Tips;
     /**
      * Tips 提示信息类
      * <br />显示标签的 title/tipsData 属性 为 Tips 样式
@@ -11,25 +11,25 @@
      * <p><b>注意:</b> Tips 默认构造函数只处理单一标签
      * <br />, 如果需要处理多个标签, 请使用静态方法 Tips.init( _selector )</p>
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/uxc_docs/classes/UXC.Tips.html' target='_blank'>API docs</a>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tips.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Tips/_demo' target='_blank'>demo link</a></p>
-     * @namespace UXC
+     * @namespace JC
      * @class Tips
      * @constructor
      * @param   {selector|string}   _selector   要显示 Tips 效果的标签, 这是单一标签, 需要显示多个请显示 Tips.init 方法
      * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 360 UXC-FE Team
+     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
      * @date    2013-06-23
      * @example
             <script src="../../../lib.js"></script>
             <script>
-                UXC.use( 'Tips' );
+                JC.use( 'Tips' );
                 $(document).ready( function(_evt){
-                    //默认是自动初始化, 也就是只要导入 UXC.Tips 就会自己初始化 带 title/tipsData 属性的标签
+                    //默认是自动初始化, 也就是只要导入 JC.Tips 就会自己初始化 带 title/tipsData 属性的标签
                     //下面示例是手动初始化
-                    UXC.Tips.autoInit = false;
-                    UXC.Tips.init( $( 'a[title]' ) ); 
+                    JC.Tips.autoInit = false;
+                    JC.Tips.init( $( 'a[title]' ) ); 
                 });
             </script>
      */
@@ -44,14 +44,14 @@
         /**
          * 数据模型类实例引用 
          * @property    _model
-         * @type        UXC.Tips.Model 
+         * @type        JC.Tips.Model 
          * @private
          */
         this._model = new Model( _selector );
         /**
          * 视图类实例引用 
          * @property    _view
-         * @type        UXC.Tips.View
+         * @type        JC.Tips.View
          * @private
          */
         this._view = new View( this._model );
@@ -158,10 +158,10 @@
      * @example
             <script src="../../../lib.js"></script>
             <script>
-                UXC.use( 'Tips' );
+                JC.use( 'Tips' );
                 $(document).ready( function(_evt){
-                    UXC.Tips.autoInit = false;
-                    UXC.Tips.init( $( 'a' ) ); 
+                    JC.Tips.autoInit = false;
+                    JC.Tips.init( $( 'a' ) ); 
                 });
             </script>
      */
@@ -251,7 +251,7 @@
     Tips.titleToTipsdata =
         function( _selector ){
             _selector = $(_selector);
-            if( !UXC.Tips.autoInit || ( typeof window.event == 'object' && document.attachEvent ) ){
+            if( !JC.Tips.autoInit || ( typeof window.event == 'object' && document.attachEvent ) ){
                 _selector.each( function(){
                     $(this).attr( 'tipsData', $(this).attr('title') ).removeAttr( 'title' );
                 });
@@ -273,7 +273,7 @@
 
     /**
      * Tips 数据模型类
-     * @namespace UXC.Tips
+     * @namespace JC.Tips
      * @class   Model
      * @constructor
      * @param   {selector}  _selector
@@ -393,10 +393,10 @@
                         this._layout = $( this.tipstemplatesbox() );
                         this._layout.appendTo(document.body);
                     }else{
-                        this._layout = $('#UXCTipsLayout');
+                        this._layout = $('#JCTipsLayout');
                         if( !(this._layout && this._layout.length) ){
-                            this._layout = $( this.tipstemplatesbox() || UXC.Tips.tpl || this.tpl);
-                            this._layout.attr('id', 'UXCTipsLayout').css('position', 'absolute');
+                            this._layout = $( this.tipstemplatesbox() || JC.Tips.tpl || this.tpl);
+                            this._layout.attr('id', 'JCTipsLayout').css('position', 'absolute');
                             this._layout.appendTo(document.body);
                         }
                     }
@@ -406,16 +406,16 @@
     };
     /**
      * Tips 视图类
-     * @namespace   UXC.Tips
+     * @namespace   JC.Tips
      * @class       View
      * @constructor
-     * @param       {UXC.Tips.Model}    _model
+     * @param       {JC.Tips.Model}    _model
      */
     function View( _model ){
         /**
          * 保存 Tips 数据模型类的实例引用
          * @property    _model
-         * @type    UXC.Tips.Model
+         * @type    JC.Tips.Model
          * @private
          */
         this._model = _model;
@@ -449,11 +449,11 @@
          */
         , show:
             function( _evt ){
-                //UXC.log( 'tips view show' );
+                //JC.log( 'tips view show' );
                 var _x = _evt.pageX, _y = _evt.pageY;
 
-                _x += UXC.Tips.offset.bottom.x;
-                _y += UXC.Tips.offset.bottom.y;
+                _x += JC.Tips.offset.bottom.x;
+                _y += JC.Tips.offset.bottom.y;
 
                 var _stop = $(document).scrollTop(), _sleft = $(document).scrollLeft();
                 var _wwidth = $(window).width(), _wheight = $(window).height();
@@ -462,12 +462,12 @@
                 var _maxY = _stop + _wheight - _lheight, _minY = _stop;
                 var _outright = false, _outbottom = false;
 
-                _x > _maxX && ( _x = _x - _lwidth + UXC.Tips.offset.left.x
-                                    , _y += UXC.Tips.offset.left.y
+                _x > _maxX && ( _x = _x - _lwidth + JC.Tips.offset.left.x
+                                    , _y += JC.Tips.offset.left.y
                                     , _outright = true );
                 _x < _minX && ( _x = _minX );
-                _y > _maxY && ( _y = _y - _lheight + UXC.Tips.offset.top.y
-                                , _x += UXC.Tips.offset.top.x
+                _y > _maxY && ( _y = _y - _lheight + JC.Tips.offset.top.y
+                                , _x += JC.Tips.offset.top.x
                                 , _outbottom = true);
                 _y < _minY && ( _y = _minY );
 
@@ -503,15 +503,15 @@
                                                             , 'display': 'block' });  
                     var _w = this._layout.width(), _h = this._layout.height();
 
-                    _w < UXC.Tips.minWidth && this._layout.css('width', UXC.Tips.minWidth + 'px');
-                    _w > UXC.Tips.maxWidth && this._layout.css('width', UXC.Tips.maxWidth + 'px');
+                    _w < JC.Tips.minWidth && this._layout.css('width', JC.Tips.minWidth + 'px');
+                    _w > JC.Tips.maxWidth && this._layout.css('width', JC.Tips.maxWidth + 'px');
                 }
                 return this._layout; 
             }
     };
     /**
      * 鼠标移动到 Tips 触发源的触发事件
-     * @namespace   UXC.Tips
+     * @namespace   JC.Tips
      * @method  tipMouseenter
      * @param   {event}     _evt
      * @private
@@ -543,7 +543,7 @@
     }
     /**
      * Tips 的默认模板
-     * @namespace   UXC.Tips
+     * @namespace   JC.Tips
      * @property    _defTpl
      * @type        string  
      * @private
@@ -554,7 +554,7 @@
      */
     $(document).ready( function( _devt ){
         setTimeout( function(){
-            if( !UXC.Tips.autoInit ) return;
+            if( !JC.Tips.autoInit ) return;
 
             Tips.titleToTipsdata( $('[title]') );
 
@@ -562,7 +562,7 @@
                 var _p = $(this);
                 if( Tips.getInstance( _p ) ) return;
                 if( !( _p.attr('title') || _p.attr('tipsData') ) ) return;
-                UXC.Tips.init( _p );
+                JC.Tips.init( _p );
                 tipMouseenter.call( this, _evt );
             });
         }, 10);

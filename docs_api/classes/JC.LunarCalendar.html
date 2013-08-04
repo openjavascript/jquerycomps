@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JC.LunarCalendar - jquery components</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../uxc.png" title="jquery components"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.1</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+                <li><a href="../classes/.window.html">.window</a></li>
+                <li><a href="../classes/JC.alert.html">JC.alert</a></li>
+                <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
+                <li><a href="../classes/JC.confirm.html">JC.confirm</a></li>
+                <li><a href="../classes/JC.Dialog.html">JC.Dialog</a></li>
+                <li><a href="../classes/JC.Dialog.alert.html">JC.Dialog.alert</a></li>
+                <li><a href="../classes/JC.Dialog.confirm.html">JC.Dialog.confirm</a></li>
+                <li><a href="../classes/JC.Dialog.mask.html">JC.Dialog.mask</a></li>
+                <li><a href="../classes/JC.Form.html">JC.Form</a></li>
+                <li><a href="../classes/JC.hideAllPanel.html">JC.hideAllPanel</a></li>
+                <li><a href="../classes/JC.hideAllPopup.html">JC.hideAllPopup</a></li>
+                <li><a href="../classes/JC.LunarCalendar.html">JC.LunarCalendar</a></li>
+                <li><a href="../classes/JC.Panel.html">JC.Panel</a></li>
+                <li><a href="../classes/JC.Slider.html">JC.Slider</a></li>
+                <li><a href="../classes/JC.Tab.html">JC.Tab</a></li>
+                <li><a href="../classes/JC.Test.html">JC.Test</a></li>
+                <li><a href="../classes/JC.Tips.html">JC.Tips</a></li>
+                <li><a href="../classes/JC.Tree.html">JC.Tree</a></li>
+                <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
+                <li><a href="../classes/window.JC.html">window.JC</a></li>
+                <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
+                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
+            </ul>
+            <ul id="api-modules" class="apis modules">
+            </ul>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+    </div>
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1>JC.LunarCalendar Class</h1>
+<div class="box meta">
+        <div class="foundat">
+            Defined in: <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l7"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:7</code></a>
+        </div>
+</div>
+<div class="box intro">
+    <p>农历日历组件
+<br />全局访问请使用 JC.LunarCalendar 或 LunarCalendar
+<br />DOM 加载完毕后
+, LunarCalendar会自动初始化页面所有具备识别符的日历, 目前可识别: div.js<em>LunarCalendar, td.js</em>LunarCalendar, li.js_LunarCalendar
+<br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动初始化 var ins = new JC.LunarCalendar( _selector );</p>
+<p>
+     初始化时, 如果日历是添加到某个selector里, 那么selector可以指定一些设置属性
+     <br /><b>hidecontrol</b>: 如果设置该属性, 那么日历将隐藏操作控件
+     <br /><b>minvalue</b>: 设置日历的有效最小选择范围, 格式YYYY-mm-dd
+     <br /><b>maxvalue</b>: 设置日历的有效最大选择范围, 格式YYYY-mm-dd
+     <br /><b>nopreviousfestivals</b>: 不显示上个月的节日
+     <br /><b>nonextfestivals</b>: 不显示下个月的节日
+</p>
+<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a>
+<br /><b>require</b>: <a href='.window.html#method_cloneDate'>window.cloneDate</a>
+<br /><b>require</b>: <a href='.window.html#method_parseISODate'>window.parseISODate</a>
+<br /><b>require</b>: <a href='.window.html#method_maxDayOfMonth'>window.maxDayOfMonth</a>
+<br /><b>require</b>: <a href='.window.html#method_isSameDay'>window.isSameDay</a>
+<br /><b>require</b>: <a href='.window.html#method_isSameMonth'>window.isSameMonth</a>
+</p>
+<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+| <a href='http://jc.openjavascript.org/docs_api/classes/JC.LunarCalendar.html' target='_blank'>API docs</a>
+| <a href='../../comps/LunarCalendar/_demo/' target='_blank'>demo link</a></p>
+</div>
+    <div class="constructor">
+        <h2>Constructor</h2>
+        <div id="method_JC.LunarCalendar" class="method item">
+    <h3 class="name"><code>JC.LunarCalendar</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_container</code>
+                </li>
+                <li class="arg">
+                        <code>_date</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l7"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:7</code></a>
+        </p>
+    </div>
+    <div class="description">
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_container</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                        <p>指定要显示日历的选择器, 如果不显示指定该值, 默认为 document.body</p>
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_date</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date" class="crosslink external" target="_blank">Date</a></span>
+                    <div class="param-description">
+                        <p>日历的当前日期, 如果不显示指定该值, 默认为当天</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+    </div>
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+    </ul>
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+                    <ul class="index-list methods">
+                            <li class="index-item method private">
+                                <a href="#method__init">_init</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_comment">comment</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_commentTitle">commentTitle</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getAllDate">getAllDate</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getComment">getComment</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getContainer">getContainer</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getDate">getDate</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getFestivals">getFestivals</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getItemByTimestamp">getItemByTimestamp</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getLayout">getLayout</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getSelectedDate">getSelectedDate</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getSelectedDateGlobal">getSelectedDateGlobal</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getSelectedItemGlobal">getSelectedItemGlobal</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_gregorianToLunar">gregorianToLunar</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_holiday">holiday</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isComment">isComment</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isHideControl">isHideControl</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isHoliday">isHoliday</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isWorkday">isWorkday</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_JC.LunarCalendar.getFestival.intPad">JC.LunarCalendar.getFestival.intPad</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_nextMonth">nextMonth</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_nextYear">nextYear</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_preMonth">preMonth</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_preYear">preYear</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_update">update</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_updateStatus">updateStatus</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_workday">workday</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                    </ul>
+                </div>
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+                    <ul class="index-list properties">
+                            <li class="index-item property private">
+                                <a href="#property__model">_model</a>
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property__view">_view</a>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_autoinit">autoinit</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_commentSeparator">commentSeparator</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_defaultYearSpan">defaultYearSpan</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_tpl">tpl</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                    </ul>
+                </div>
+        </div>
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+                    <div id="method__init" class="method item private">
+    <h3 class="name"><code>_init</code></h3>
+        <span class="paren">()</span>
+        <span class="flag private">private</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l383"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:383</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>LunarCalendar 内部初始化</p>
+    </div>
+</div>
+                    <div id="method_comment" class="method item">
+    <h3 class="name"><code>comment</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_td</code>
+                </li>
+                <li class="arg">
+                        <code>_customSet</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l208"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:208</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>添加或者清除注释</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_td</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                        <p>要设置注释的 td</p>
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_customSet</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | Bool</span>
+                    <div class="param-description">
+                        <p>如果 _customSet 为 undefined, 将清除注释. 
+                                     如果 _customSet 为 string, 将添加注释</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_commentTitle" class="method item">
+    <h3 class="name"><code>commentTitle</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_td</code>
+                </li>
+                <li class="arg">
+                        <code>_title</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l270"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:270</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>把注释添加到 a title 里</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_td</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                        <p>要设置注释的 a 父容器 td</p>
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_title</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | Undefined</span>
+                    <div class="param-description">
+                        <p>如果 _title 为真, 将把注释添加到a title里. 
+                                     如果 _title 为假, 将从 a title 里删除注释</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_getAllDate" class="method item">
+    <h3 class="name"><code>getAllDate</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l450"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:450</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取所有的默认时间对象</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                    { date: 默认时间, minvalue: 有效最小时间
+                       , maxvalue: 有效最大时间, beginDate: 日历的起始时间, endDate: 日历的结束时间 }
+            </div>
+        </div>
+</div>
+                    <div id="method_getComment" class="method item">
+    <h3 class="name"><code>getComment</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_td</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l247"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:247</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>返回 td 的注释</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_td</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_getContainer" class="method item">
+    <h3 class="name"><code>getContainer</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l480"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:480</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取初始化日历的选择器对象</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    selector
+            </div>
+        </div>
+</div>
+                    <div id="method_getDate" class="method item">
+    <h3 class="name"><code>getDate</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date" class="crosslink external" target="_blank">Date</a></span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l444"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:444</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取默认时间对象</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date" class="crosslink external" target="_blank">Date</a></span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_getFestivals" class="method item">
+    <h3 class="name"><code>getFestivals</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_lunarDate</code>
+                </li>
+                <li class="arg">
+                        <code>_greDate</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.getFestival.js.html#l3"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.getFestival.js:3</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>返回农历和国历的所在日期的所有节日
+<br /> 假日条目数据样例: { 'name': '春节', 'fullname': '春节', 'priority': 8 }
+<br /> 返回数据格式: { 'dayName': 农历日期/节日名, 'festivals': 节日数组, 'isHoliday': 是否为假日 }</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_lunarDate</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    <div class="param-description">
+                        <p>农历日期对象, 由JC.LunarCalendar.gregorianToLunar 获取</p>
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_greDate</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date" class="crosslink external" target="_blank">Date</a></span>
+                    <div class="param-description">
+                        <p>日期对象</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    Object
+            </div>
+        </div>
+</div>
+                    <div id="method_getItemByTimestamp" class="method item">
+    <h3 class="name"><code>getItemByTimestamp</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_tm</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">Selector | Undefined</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l129"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:129</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>从时间截获取选择器对象</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_tm</code>
+                        <span class="type">Int</span>
+                    <div class="param-description">
+                        <p>时间截, 如果时间截少于13位, 将自动补0到13位, ps: php时间截为10位</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Selector | Undefined</span>:
+                    td selector, 如果 td class unable 不可选, 将忽略
+            </div>
+        </div>
+</div>
+                    <div id="method_getLayout" class="method item">
+    <h3 class="name"><code>getLayout</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l486"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:486</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取日历的主选择器对象</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    selector
+            </div>
+        </div>
+</div>
+                    <div id="method_getSelectedDate" class="method item">
+    <h3 class="name"><code>getSelectedDate</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date" class="crosslink external" target="_blank">Date</a></span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l457"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:457</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取当前选中的日期, 如果用户没有显式选择, 将查找当前日期, 如果两者都没有的话返回undefined</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date" class="crosslink external" target="_blank">Date</a></span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_getSelectedDateGlobal" class="method item">
+    <h3 class="name"><code>getSelectedDateGlobal</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date" class="crosslink external" target="_blank">Date</a> | Undefined</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l116"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:116</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>从所有的LunarCalendar取得当前选中日期的日期对象
+<br /> 如果用户没有显式选中某个日期, 将尝试获取当前日期, 如果两者都没有返回undefined</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date" class="crosslink external" target="_blank">Date</a> | Undefined</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_getSelectedItemGlobal" class="method item">
+    <h3 class="name"><code>getSelectedItemGlobal</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a> | Undefined</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l92"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:92</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>从所有的LunarCalendar取得当前选中的日期
+<br /> 如果用户没有显式选中某个日期, 将尝试获取当前日期, 如果两者都没有返回undefined</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a> | Undefined</span>:
+                    如果能获取到选中的日期将返回 { date: 当天日期, item: 选中的a, td: 选中的td }
+            </div>
+        </div>
+</div>
+                    <div id="method_gregorianToLunar" class="method item">
+    <h3 class="name"><code>gregorianToLunar</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_date</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.gregorianToLunar.js.html#l2"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.gregorianToLunar.js:2</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>从公历日期获得农历日期
+<br /> 返回的数据格式</p>
+<pre>
+       {
+           shengxiao: ''   //生肖
+           , ganzhi: ''    //干支
+           , yue: ''       //月份
+           , ri: ''        //日
+           , shi: ''       //时
+           , year: ''      //农历数字年
+           , month: ''     //农历数字月
+           , day: ''       //农历数字天
+           , hour: ''      //农历数字时
+       };
+</pre>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_date</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date" class="crosslink external" target="_blank">Date</a></span>
+                    <div class="param-description">
+                        <p>要获取农历日期的时间对象</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    Object
+            </div>
+        </div>
+</div>
+                    <div id="method_holiday" class="method item">
+    <h3 class="name"><code>holiday</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_td</code>
+                </li>
+                <li class="arg">
+                        <code>_customSet</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l180"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:180</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>添加或者清除假日样式</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_td</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                        <p>要设置为假日状态的 td</p>
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_customSet</code>
+                        <span class="type">Any</span>
+                    <div class="param-description">
+                        <p>如果 _customSet 为 undefined, 将设为假日. 
+                                     如果 _customSet 非 undefined, 那么根据真假值判断清除假日/添加假日</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_isComment" class="method item">
+    <h3 class="name"><code>isComment</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_td</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">Bool</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l235"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:235</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>判断 td 是否为注释状态</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_td</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Bool</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_isHideControl" class="method item">
+    <h3 class="name"><code>isHideControl</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l492"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:492</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>判断日历是否隐藏操作控件</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    bool
+            </div>
+        </div>
+</div>
+                    <div id="method_isHoliday" class="method item">
+    <h3 class="name"><code>isHoliday</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_td</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">Bool</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l196"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:196</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>判断 td 是否为假日状态</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_td</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Bool</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_isWorkday" class="method item">
+    <h3 class="name"><code>isWorkday</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_td</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">Bool</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l168"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:168</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>判断 td 是否为工作日状态</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_td</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Bool</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_JC.LunarCalendar.getFestival.intPad" class="method item private">
+    <h3 class="name"><code>JC.LunarCalendar.getFestival.intPad</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_n</code>
+                </li>
+                <li class="arg">
+                        <code>_len</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.getFestival.js.html#l195"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.getFestival.js:195</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>为数字添加前置0</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_n</code>
+                        <span class="type">Int</span>
+                    <div class="param-description">
+                        <p>需要添加前置0的数字</p>
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_len</code>
+                        <span class="type">Int</span>
+                    <div class="param-description">
+                        <p>需要添加_len个0, 默认为2</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_nextMonth" class="method item">
+    <h3 class="name"><code>nextMonth</code></h3>
+        <span class="paren">()</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l404"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:404</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>显示下一个月的日期</p>
+    </div>
+</div>
+                    <div id="method_nextYear" class="method item">
+    <h3 class="name"><code>nextYear</code></h3>
+        <span class="paren">()</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l424"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:424</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>显示下一年的日期</p>
+    </div>
+</div>
+                    <div id="method_preMonth" class="method item">
+    <h3 class="name"><code>preMonth</code></h3>
+        <span class="paren">()</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l414"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:414</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>显示上一个月的日期</p>
+    </div>
+</div>
+                    <div id="method_preYear" class="method item">
+    <h3 class="name"><code>preYear</code></h3>
+        <span class="paren">()</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l434"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:434</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>显示上一年的日期</p>
+    </div>
+</div>
+                    <div id="method_update" class="method item">
+    <h3 class="name"><code>update</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_date</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l394"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:394</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>更新日历视图为自定义的日期</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_date</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date" class="crosslink external" target="_blank">Date</a></span>
+                    <div class="param-description">
+                        <p>更新日历视图为 _date 所在日期的月份</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_updateStatus" class="method item">
+    <h3 class="name"><code>updateStatus</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_data</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l296"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:296</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>从JSON数据更新日历状态( 工作日, 休息日, 注释 )
+<br /> 注意, 该方法更新页面上所有的 LunarCalendar</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_data</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    <div class="param-description">
+                        <p>{ phpTimestamp:{ dayaction: 0|1|2, comment: string}, ... }</p>
+<pre>      
+         dayaction: 
+         0: delete workday/holiday
+         1: workday
+         2: holiday
+</pre>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code> LunarCalendar.updateStatus(  {
+                                       "1369843200": {
+                                           "dayaction": 2,
+                                           "comment": "dfdfgdsfgsdfgsdg&lt;b&gt;&lt;/b&gt;'\"'asdf\"\"'sdf"
+                                       },
+                                       "1370966400": {
+                                           "dayaction": 0,
+                                           "comment": "asdfasdfsa"
+                                       },
+                                       "1371139200": {
+                                           "dayaction": 1
+                                       },
+                                       "1371225600": {
+                                           "dayaction": 0,
+                                           "comment": "dddd"
+                                       }
+                                   });
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_workday" class="method item">
+    <h3 class="name"><code>workday</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_td</code>
+                </li>
+                <li class="arg">
+                        <code>_customSet</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l152"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:152</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>添加或者清除工作日样式</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_td</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                        <p>要设置为工作日状态的 td</p>
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_customSet</code>
+                        <span class="type">Any</span>
+                    <div class="param-description">
+                        <p>如果 _customSet 为 undefined, 将设为工作日. 
+                                     如果 _customSet 非 undefined, 那么根据真假值判断清除工作日/添加工作日</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+            </div>
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+                    <div id="property__model" class="property item private">
+    <h3 class="name"><code>_model</code></h3>
+        <span class="flag private">private</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l47"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:47</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>LunarCalendar 的数据模型对象</p>
+    </div>
+</div>
+                    <div id="property__view" class="property item private">
+    <h3 class="name"><code>_view</code></h3>
+        <span class="flag private">private</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l54"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:54</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>LunarCalendar 的视图对像</p>
+    </div>
+</div>
+                    <div id="property_autoinit" class="property item">
+    <h3 class="name"><code>autoinit</code></h3>
+    <span class="type">Bool</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l74"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:74</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>设置是否在 dom 加载完毕后, 自动初始化所有日期控件</p>
+    </div>
+        <p><strong>Default:</strong> true</p>
+</div>
+                    <div id="property_commentSeparator" class="property item">
+    <h3 class="name"><code>commentSeparator</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l262"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:262</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>用于分隔默认title和注释的分隔符</p>
+    </div>
+        <p><strong>Default:</strong> ==========comment==========</p>
+</div>
+                    <div id="property_defaultYearSpan" class="property item">
+    <h3 class="name"><code>defaultYearSpan</code></h3>
+    <span class="type">Int</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l83"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:83</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>设置默认显示的年份数, 该数为前后各多少年 默认为前后各10年</p>
+    </div>
+        <p><strong>Default:</strong> 20</p>
+</div>
+                    <div id="property_tpl" class="property item">
+    <h3 class="name"><code>tpl</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_LunarCalendar_JC.LunarCalendar.js.html#l64"><code>..&#x2F;comps&#x2F;LunarCalendar&#x2F;JC.LunarCalendar.js:64</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>自定义日历组件模板</p>
+<p>如果用户显示定义JC.LunarCalendar.tpl的话, 将采用用户的模板</p>
+    </div>
+        <p><strong>Default:</strong> empty</p>
+</div>
+            </div>
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

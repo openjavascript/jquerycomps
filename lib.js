@@ -373,25 +373,25 @@ function parseBool( _input ){
 }
 
 ;(function( $ ){
-    if( window.UXC && window.UXC.PATH ) return;
+    if( window.JC && window.JC.PATH ) return;
     /**
-     * UXC jquery 组件库 资源调用控制类
-     * <br />这是一个单例模式, 全局访问使用 UXC 或 window.UXC
+     * JC jquery 组件库 资源调用控制类
+     * <br />这是一个单例模式, 全局访问使用 JC 或 window.JC
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/uxc_docs/classes/window.UXC.html' target='_blank'>API docs</a>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/window.JC.html' target='_blank'>API docs</a>
      * | <a href='../../_demo' target='_blank'>demo link</a></p>
-     * @class UXC
+     * @class JC
      * @namespace   window
      * @static
      * @example 
-     *      UXC.use( 组件名[,组件名] );
-     * @author  qiushaowei   <suches@btbtd.org> | 360 UXC-FE Team
-     * @date    2013-05-22
+     *      JC.use( 组件名[,组件名] );
+     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
+     * @date    2013-08-04
      */
-    window.UXC = {
+    window.JC = {
         /**
-         * UXC组件库所在路径
+         * JC组件库所在路径
          * @property    PATH
          * @static
          * @type {string}
@@ -406,7 +406,7 @@ function parseBool( _input ){
          */
         , debug: false
        /**
-        * 导入UXC组件
+        * 导入JC组件
         * @method   use
         * @static
         * @param    {string}    _names -            模块名
@@ -417,17 +417,17 @@ function parseBool( _input ){
         * @param    {bool}      _enableNginxStyle -       指定是否需要使用 nginx 路径输出脚本资源
         *
         * @example
-                UXC.use( 'SomeClass' );                              //导入类 SomeClass
-                UXC.use( 'SomeClass, AnotherClass' );                //导入类 SomeClass, AnotherClass
+                JC.use( 'SomeClass' );                              //导入类 SomeClass
+                JC.use( 'SomeClass, AnotherClass' );                //导入类 SomeClass, AnotherClass
                 //
                 ///  导入类 SomeClass, SomeClass目录下的file1.js, 
                 ///  AnotherClass, AnotherClass 下的file2.js
                 //
-                UXC.use( 'SomeClass, comps/SomeClass/file1.js, comps/AnotherClass/file2.js' );   
-                UXC.use( 'SomeClass, plugins/swfobject.js., plugins/json2.js' );   
-                UXC.use( '/js/Test/Test1.js' );     //导入文件  /js/Test/Test1.js, 如果起始处为 "/", 将视为文件的绝对路径
+                JC.use( 'SomeClass, comps/SomeClass/file1.js, comps/AnotherClass/file2.js' );   
+                JC.use( 'SomeClass, plugins/swfobject.js., plugins/json2.js' );   
+                JC.use( '/js/Test/Test1.js' );     //导入文件  /js/Test/Test1.js, 如果起始处为 "/", 将视为文件的绝对路径
                 //
-                /// 导入 URL 资源 // UXC.use( 'http://test.com/file1.js', 'https://another.com/file2.js' ); 
+                /// 导入 URL 资源 // JC.use( 'http://test.com/file1.js', 'https://another.com/file2.js' ); 
         */ 
         , use: function( _items ){
                 if( ! _items ) return;
@@ -436,16 +436,16 @@ function parseBool( _input ){
 
                 $.each( _parts, function( _ix, _part ){
                     var _isComps = !_pathRe.test( _part ), _path, _isFullpath = /^\//.test( _part );
-                    if( _isComps && window.UXC[ _part ] ) return;
+                    if( _isComps && window.JC[ _part ] ) return;
 
-                    if( UXC.FILE_MAP && UXC.FILE_MAP[ _part ] ){
-                        _paths.push( UXC.FILE_MAP[ _part ] );
+                    if( JC.FILE_MAP && JC.FILE_MAP[ _part ] ){
+                        _paths.push( JC.FILE_MAP[ _part ] );
                         return;
                     }
 
                     _path = _part;
-                    _isComps && ( _path = printf( '{0}{1}{2}/{2}.js', UXC.PATH, UXC.compsDir, _part ) );
-                    !_isComps && !_isFullpath && ( _path = printf( '{0}/{1}', UXC.PATH, _part ) );
+                    _isComps && ( _path = printf( '{0}{1}{2}/{2}.js', JC.PATH, JC.compsDir, _part ) );
+                    !_isComps && !_isFullpath && ( _path = printf( '{0}/{1}', JC.PATH, _part ) );
 
                     if( /\:\/\//.test( _path ) ){
                         _path = _path.split('://');
@@ -457,13 +457,13 @@ function parseBool( _input ){
                     _paths.push( _path );
                 });
 
-                UXC.log( _paths );
+                JC.log( _paths );
 
-                !UXC.enableNginxStyle && UXC._writeNormalScript( _paths );
-                UXC.enableNginxStyle && UXC._writeNginxScript( _paths );
+                !JC.enableNginxStyle && JC._writeNormalScript( _paths );
+                JC.enableNginxStyle && JC._writeNginxScript( _paths );
             }
        /**
-        * 输出调试信息, 可通过 UXC.debug 指定是否显示调试信息
+        * 输出调试信息, 可通过 JC.debug 指定是否显示调试信息
         * @param    {[string[,string]]}  任意参数任意长度的字符串内容
         * @method log
         * @static
@@ -507,24 +507,24 @@ function parseBool( _input ){
         */
        , _writeNginxScript:
             function( _paths ){
-                if( !UXC.enableNginxStyle ) return;
+                if( !JC.enableNginxStyle ) return;
                 for( var i = 0, j = _paths.length, _ngpath = [], _npath = []; i < j; i++ ){
-                    UXC.log( _paths[i].slice( 0, UXC.nginxBasePath.length ).toLowerCase(), UXC.nginxBasePath.toLowerCase() );
+                    JC.log( _paths[i].slice( 0, JC.nginxBasePath.length ).toLowerCase(), JC.nginxBasePath.toLowerCase() );
                     if(  
-                         _paths[i].slice( 0, UXC.nginxBasePath.length ).toLowerCase() 
-                        == UXC.nginxBasePath.toLowerCase() )
+                         _paths[i].slice( 0, JC.nginxBasePath.length ).toLowerCase() 
+                        == JC.nginxBasePath.toLowerCase() )
                     {
-                        _ngpath.push( _paths[i].slice( UXC.nginxBasePath.length ) );
+                        _ngpath.push( _paths[i].slice( JC.nginxBasePath.length ) );
                     }else{
                         _npath.push( _paths[i] );
                     }
                 }
 
-                var _postfix = UXC.pathPostfix ? '?v=' + UXC.pathPostfix : '';
+                var _postfix = JC.pathPostfix ? '?v=' + JC.pathPostfix : '';
 
                 _ngpath.length && document.write( printf( '<script src="{0}??{1}{2}"><\/script>'
-                                                    , UXC.nginxBasePath, _ngpath.join(','), _postfix ) );
-                _npath.length && UXC._writeNormalScript( _npath );
+                                                    , JC.nginxBasePath, _ngpath.join(','), _postfix ) );
+                _npath.length && JC._writeNormalScript( _npath );
             }
        /**
         * 输出的脚本路径格式
@@ -535,53 +535,64 @@ function parseBool( _input ){
         */
        , _writeNormalScript:
             function( _paths ){
-                var _postfix = UXC.pathPostfix ? '?v=' + UXC.pathPostfix : '';
+                var _postfix = JC.pathPostfix ? '?v=' + JC.pathPostfix : '';
                 for( var i = 0, j = _paths.length, _path; i < j; i++ ){
                     _path = _paths[i];
-                    UXC.pathPostfix && ( _path = add_url_params( _path, { 'v': UXC.pathPostfix } ) );
+                    JC.pathPostfix && ( _path = add_url_params( _path, { 'v': JC.pathPostfix } ) );
                     _paths[i] = printf( '<script src="{0}"><\/script>', _path );
                 }
                 _paths.length && document.write( _paths.join('') );
             }
        /**
         * 资源路径映射对象
-        * <br />设置 UXC.use 逗号(',') 分隔项的 对应URL路径
+        * <br />设置 JC.use 逗号(',') 分隔项的 对应URL路径
         * @property FILE_MAP
         * @type object
         * @default null
         * @static
         * @example
-                以下例子假定 libpath = http://git.me.btbtd.org/ignore/360UXC_dev/
+                以下例子假定 libpath = http://git.me.btbtd.org/ignore/JQueryComps_dev/
                 <script>
-                    UXC.FILE_MAP = {
-                        'Calendar': 'http://uxc.btbtd.org/comps/Calendar/Calendar.js'
-                        , 'Form': 'http://uxc.btbtd.org/comps/Form/Form.js'
-                        , 'LunarCalendar': 'http://uxc.btbtd.org/comps/LunarCalendar/LunarCalendar.js'
-                        , 'Panel': 'http://uxc.btbtd.org/comps/Panel/Panel.js' 
-                        , 'Tab': 'http://uxc.btbtd.org/comps/Tab/Tab.js'
-                        , 'Tips': 'http://uxc.btbtd.org/comps/Tips/Tips.js' 
-                        , 'Tree': 'http://uxc.btbtd.org/comps/Tree/Tree.js'
-                        , 'Valid': 'http://uxc.btbtd.org/comps/Valid/Valid.js'
-                        , 'plugins/jquery.form.js': 'http://uxc.btbtd.org/plugins/jquery.form.js'
-                        , 'plugins/json2.js': 'http://uxc.btbtd.org/plugins/json2.js'
+                    JC.FILE_MAP = {
+                        'Calendar': 'http://jc.openjavascript.org/comps/Calendar/Calendar.js'
+                        , 'Form': 'http://jc.openjavascript.org/comps/Form/Form.js'
+                        , 'LunarCalendar': 'http://jc.openjavascript.org/comps/LunarCalendar/LunarCalendar.js'
+                        , 'Panel': 'http://jc.openjavascript.org/comps/Panel/Panel.js' 
+                        , 'Tab': 'http://jc.openjavascript.org/comps/Tab/Tab.js'
+                        , 'Tips': 'http://jc.openjavascript.org/comps/Tips/Tips.js' 
+                        , 'Tree': 'http://jc.openjavascript.org/comps/Tree/Tree.js'
+                        , 'Valid': 'http://jc.openjavascript.org/comps/Valid/Valid.js'
+                        , 'plugins/jquery.form.js': 'http://jc.openjavascript.org/plugins/jquery.form.js'
+                        , 'plugins/json2.js': 'http://jc.openjavascript.org/plugins/json2.js'
                     };
 
-                    UXC.use( 'Panel, Tips, Valid, plugins/jquery.form.js' );
+                    JC.use( 'Panel, Tips, Valid, plugins/jquery.form.js' );
 
                     $(document).ready(function(){
-                        //UXC.Dialog( 'UXC.use example', 'test issue' );
+                        //JC.Dialog( 'JC.use example', 'test issue' );
                     });
                 </script>
 
                 output should be:
-                    http://git.me.btbtd.org/ignore/360UXC_dev/lib.js
-                    http://uxc.btbtd.org/comps/Panel/Panel.js
-                    http://uxc.btbtd.org/comps/Tips/Tips.js
-                    http://uxc.btbtd.org/comps/Valid/Valid.js
-                    http://uxc.btbtd.org/plugins/jquery.form.js
+                    http://git.me.btbtd.org/ignore/JQueryComps_dev/lib.js
+                    http://jc.openjavascript.org/comps/Panel/Panel.js
+                    http://jc.openjavascript.org/comps/Tips/Tips.js
+                    http://jc.openjavascript.org/comps/Valid/Valid.js
+                    http://jc.openjavascript.org/plugins/jquery.form.js
         */
        , FILE_MAP: null
     };
+    /**
+     * UXC 是 JC 的别名
+     * <br />存在这个变量是为了向后兼容
+     * <br />20130804 之前的命名空间是 UXC, 这个命名空间在一段时间后将会清除, 请使用 JC 命名空间
+     * <p><b>see</b>: <a href='window.JC.html'>JC</a></p>
+     * @class UXC
+     * @namespace   window
+     * @static
+     * @date    2013-05-22
+     */
+    window.UXC = window.JC;
     /**
      * 如果 console 不可用, 则生成一个模拟的 console 对象
      */
@@ -591,6 +602,6 @@ function parseBool( _input ){
     /**
      * 自动识别组件库所在路径
      */
-    UXC.PATH = script_path_f();
+    JC.PATH = script_path_f();
 }(jQuery));
 

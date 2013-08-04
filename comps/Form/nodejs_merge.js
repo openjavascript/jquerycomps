@@ -2,11 +2,11 @@ var fs = require('fs');
 
 var dir = __dirname + '/';
 
-var path1 = dir + 'UXC.Form.js';
-var path2 = dir + 'UXC.Form.initCheckAll.js';
-var path4 = dir + 'UXC.Form.initAutoFill.js';
-var path3 = dir + 'UXC.Form.initAutoSelect.js';
-var path5 = dir + 'UXC.Form.initNumericStepper.js';
+var path1 = dir + 'JC.Form.js';
+var path2 = dir + 'JC.Form.initCheckAll.js';
+var path4 = dir + 'JC.Form.initAutoFill.js';
+var path3 = dir + 'JC.Form.initAutoSelect.js';
+var path5 = dir + 'JC.Form.initNumericStepper.js';
 
 var outPath = dir + 'Form.js';
 

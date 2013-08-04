@@ -1,14 +1,14 @@
 ;( function( $ ){
-    !window.UXC && (window.UXC = { log:function(){} });
-    window.Tree = UXC.Tree = Tree;
+    !window.JC && (window.JC = { log:function(){} });
+    window.Tree = JC.Tree = Tree;
     /**
-     * 树菜单类 UXC.Tree
+     * 树菜单类 JC.Tree
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, 
      * <a href='.window.html#method_printf'>window.printf</a></p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/uxc_docs/classes/UXC.Tree.html' target='_blank'>API docs</a>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tree.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Tree/_demo' target='_blank'>demo link</a></p>
-     * @namespace UXC
+     * @namespace JC
      * @class Tree
      * @constructor
      * @param   {selector}          _selector   树要显示的选择器
@@ -20,20 +20,20 @@
             <link href='../../../comps/Tree/res/default/style.css' rel='stylesheet' />
             <script src="../../../lib.js"></script>
             <script>
-                UXC.use( 'Tree' );
+                JC.use( 'Tree' );
                 $(document).ready( function(){
                     var treeData = {
                         data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["28","\u9500\u552e\u4e8c\u7ec4"],["24","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
                         root: ["23",'客户发展部']
                     };
-                    var _tree = new UXC.Tree( $('#tree_box2'), treeData );
+                    var _tree = new JC.Tree( $('#tree_box2'), treeData );
                         _tree.on('RenderLabel', function( _data ){
                             var _node = $(this);
                             _node.html( printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
                         });
                         _tree.on('click', function( _evt ){
                             var _p = $(this);
-                            UXC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
+                            JC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
                         });
                         _tree.init();
                         //_queryNode && _tree.open( _queryNode );
@@ -51,14 +51,14 @@
         /**
          * 树的数据模型引用
          * @property    _model
-         * @type    UXC.Tree.Model
+         * @type    JC.Tree.Model
          * @private
          */
         this._model = new Model( _container, _data );
         /**
          * 树的视图模型引用
          * @property    _view
-         * @type    UXC.Tree.View
+         * @type    JC.Tree.View
          * @private
          */
         this._view = new View( this._model );
@@ -68,7 +68,7 @@
      * @method  getInstance
      * @param   {selector}      _selector
      * @static
-     * @return  {UXC.Tree Instance|undefined}
+     * @return  {JC.Tree Instance|undefined}
      */
     Tree.getInstance = 
         function( _selector ){
@@ -83,7 +83,7 @@
      * @default     undefined
      * @static
      * @example
-            UXC.Tree.dataFilter =
+            JC.Tree.dataFilter =
             function( _data ){
                 var _r = {};
 
@@ -113,7 +113,7 @@
          * <br /> 实例化树后, 需要显式调用该方法初始化树的可视状态
          * @method  init
          * @example
-                var _tree = new UXC.Tree( $('#tree_box'), treeData );
+                var _tree = new JC.Tree( $('#tree_box'), treeData );
                 _tree.init();
          */
         init:
@@ -209,7 +209,7 @@
      * @example
             _tree.on('click', function( _evt ){
                 var _p = $(this);
-                UXC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
+                JC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
             });
      */
 
@@ -238,7 +238,7 @@
 
     /**
      * 树的数据模型类
-     * @namespace   UXC.Tree
+     * @namespace   JC.Tree
      * @class   Model
      * @constructor
      */
@@ -381,7 +381,7 @@
         /**
          * 树的数据模型引用
          * @property    _model
-         * @type    UXC.Tree.Model
+         * @type    JC.Tree.Model
          * @private
          */
         this._model = _model;

@@ -27,7 +27,7 @@
 <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
 <script src="../../../lib.js"></script>
 <script>
-    UXC.debug = true; UXC.use( 'Panel' ); 
+    JC.debug = true; JC.use( 'Panel' ); 
 
     $(document).ready( function(_evt){
         $('button.dom_panel').on( 'click', function( _evt ){
@@ -42,13 +42,13 @@
              */
             var panel = Panel.getInstance( $('div.dom_panel') ); 
             if( !panel ){
-                panel = new UXC.Panel( $('div.dom_panel') ); 
+                panel = new JC.Panel( $('div.dom_panel') ); 
                 panel.on( 'confirm', function( _evt, _panel ){
-                    UXC.log( 'dom confirm' );
+                    JC.log( 'dom confirm' );
                 });
 
                 panel.on( 'cancel', function( _evt, _panel ){
-                    UXC.log( 'dom cancel' );
+                    JC.log( 'dom cancel' );
                 });
 
                 panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
@@ -59,46 +59,46 @@
         $('button.string_panel').on( 'click', function( _evt ){
             hideAllPanel();
 
-            var panel = new UXC.Panel( str_panel_content ); 
+            var panel = new JC.Panel( str_panel_content ); 
                 panel.center();
                 panel.show();
 
                 panel.on( 'confirm', function( _evt, _panel ){
-                    UXC.log( 'string confirm' );
+                    JC.log( 'string confirm' );
                 });
 
                 panel.on( 'cancel', function( _evt, _panel ){
-                    UXC.log( 'string cancel' );
+                    JC.log( 'string cancel' );
                 });
 
                 panel.on( 'close', function( _evt, _panel ){
-                    UXC.log( 'string close' );
+                    JC.log( 'string close' );
                 });
         });
 
         $('button.string_panel_with_src').on( 'click', function( _evt ){
             hideAllPanel();
 
-            var panel = new UXC.Panel( str_panel_content, 'string_panel_with_src panel' ); 
+            var panel = new JC.Panel( str_panel_content, 'string_panel_with_src panel' ); 
                 panel.show( this );
 
                 panel.on( 'confirm', function( _evt, _panel ){
-                    UXC.log( 'string_panel_with_src confirm' );
+                    JC.log( 'string_panel_with_src confirm' );
                 });
 
                 panel.on( 'cancel', function( _evt, _panel ){
-                    UXC.log( 'string_panel_with_src cancel' );
+                    JC.log( 'string_panel_with_src cancel' );
                 });
 
                 panel.on( 'close', function( _evt, _panel ){
-                    UXC.log( 'string_panel_with_src close' );
+                    JC.log( 'string_panel_with_src close' );
                 });
         });
 
     });
 
     function hideAllPanel(){
-        UXC.hideAllPanel();
+        JC.hideAllPanel();
         $('div.UPanelString').remove();
     }
 
@@ -128,7 +128,7 @@
     <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
     <br /><br /><br /><br />
     <dl class="def">
-        <dt>UXC.Panel 示例</dt>
+        <dt>JC.Panel 示例</dt>
         <dd>
             <button type="button" class="dom_panel">dom panel</button>
             <button type="button" class="string_panel">string panel</button>

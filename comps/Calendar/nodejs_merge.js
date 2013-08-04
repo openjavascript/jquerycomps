@@ -2,10 +2,10 @@ var fs = require('fs');
 
 var dir = __dirname + '/';
 
-var path1 = dir + 'UXC.Calendar.js';
-var path2 = dir + 'UXC.Calendar.pickWeek.js';
-var path3 = dir + 'UXC.Calendar.pickMonth.js';
-var path4 = dir + 'UXC.Calendar.pickSeason.js';
+var path1 = dir + 'JC.Calendar.js';
+var path2 = dir + 'JC.Calendar.pickWeek.js';
+var path3 = dir + 'JC.Calendar.pickMonth.js';
+var path4 = dir + 'JC.Calendar.pickSeason.js';
 
 var outPath = dir + 'Calendar.js';
 

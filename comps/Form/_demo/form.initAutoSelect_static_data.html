@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset=utf-8 />
-        <title>360 UXC-FE</title>
+        <title>360 75 team</title>
         <style type='text/css'>
             body{
                 width: 600px;
@@ -17,14 +17,14 @@
         <script src="./data/SHENGSHI.js"></script>
         <script src="./data/data1.js"></script>
         <script>
-            UXC.debug = true; 
-            UXC.use('Form');
+            JC.debug = true; 
+            JC.use('Form');
 
             $(document).ready(function(){
 
-                //UXC.Form.initAutoSelect.hideEmpty = true;
+                //JC.Form.initAutoSelect.hideEmpty = true;
 
-                UXC.Form.initAutoSelect.dataFilter = 
+                JC.Form.initAutoSelect.dataFilter = 
                     function( _data, _select ){
                         var _r = _data;
                         if( _data && !_data.length && _data.data ){
@@ -33,9 +33,9 @@
                         return _r;
                     };
 
-               UXC.Form.initAutoSelect.inited =
+               JC.Form.initAutoSelect.inited =
                     function(){
-                        UXC.log( 'user inited' );
+                        JC.log( 'user inited' );
                     };
             });
 
@@ -47,7 +47,7 @@
                 $.get( './data/shengshi_html.php?rnd='+new Date().getTime(), function( _r ){
                     var _selector = $(_r);
                     $( 'dl.def > dt' ).after( _selector );
-                    UXC.Form.initAutoSelect( _selector );
+                    JC.Form.initAutoSelect( _selector );
                 });
             });
 
@@ -57,7 +57,7 @@
                for( var i = 0, j = SHENGSHI.length; i < j; i++ ){
                    SHENGSHI[i][2] == _id && _d.push( SHENGSHI[i] );
                }
-               //UXC.log( _d + ', ' + _id );
+               //JC.log( _d + ', ' + _id );
                return _d;
            }
 

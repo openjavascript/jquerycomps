@@ -27,7 +27,7 @@
 <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
 <script src="../../../lib.js"></script>
 <script>
-    UXC.debug = true; UXC.use( 'Panel' ); 
+    JC.debug = true; JC.use( 'Panel' ); 
 
     $(document).ready( function(_evt){
         $('button.dom_dialog').on( 'click', function( _evt ){
@@ -40,50 +40,50 @@
              *      //如果要强制从DOM清除, 可以调用 dialog.dispose();
              */
             //这里使用 Panel.getInstance 是因为 Dialog 的 base 类是Panel
-            if( !UXC.Panel.getInstance( $('div.dom_dialog') ) ){
-                var dialog = UXC.Dialog( $('div.dom_dialog') ); 
+            if( !JC.Panel.getInstance( $('div.dom_dialog') ) ){
+                var dialog = JC.Dialog( $('div.dom_dialog') ); 
                 dialog.on( 'confirm', function( _evt, _dialog ){
-                    UXC.log( 'dom confirm' );
+                    JC.log( 'dom confirm' );
                 });
 
                 dialog.on( 'cancel', function( _evt, _dialog ){
-                    UXC.log( 'dom cancel' );
+                    JC.log( 'dom cancel' );
                 });
 
                 dialog.on( 'close', function( _evt, _dialog ){ _dialog.hide(); return false; });
             }else{
-                UXC.Dialog( $('div.dom_dialog') ); 
+                JC.Dialog( $('div.dom_dialog') ); 
             }
         });
 
         $('button.string_dialog').on( 'click', function( _evt ){
-            var dialog = UXC.Dialog( str_dialog_content ); 
+            var dialog = JC.Dialog( str_dialog_content ); 
 
                 dialog.on( 'confirm', function( _evt, _dialog ){
-                    UXC.log( 'string confirm' );
+                    JC.log( 'string confirm' );
                 });
 
                 dialog.on( 'cancel', function( _evt, _dialog ){
-                    UXC.log( 'string cancel' );
+                    JC.log( 'string cancel' );
                 });
 
                 dialog.on( 'close', function( _evt, _dialog ){
-                    UXC.log( 'string close' );
+                    JC.log( 'string close' );
                 });
         });
 
         $('button.string_dialog_with_src').on( 'click', function( _evt ){
-            var dialog = UXC.Dialog( str_dialog_content, 'string_dialog_with_src dialog' ); 
+            var dialog = JC.Dialog( str_dialog_content, 'string_dialog_with_src dialog' ); 
 
                 dialog.on( 'confirm', function( _evt, _dialog ){
-                    UXC.log( 'string_dialog_with_src confirm' );
+                    JC.log( 'string_dialog_with_src confirm' );
                 });
 
                 dialog.on( 'cancel', function( _evt, _dialog ){
-                    UXC.log( 'string_dialog_with_src cancel' );
+                    JC.log( 'string_dialog_with_src cancel' );
                 });
 
-                dialog.on( 'close', function( _evt, _dialog ){ UXC.log( 'string_dialog_with_src close' ); }); 
+                dialog.on( 'close', function( _evt, _dialog ){ JC.log( 'string_dialog_with_src close' ); }); 
         }); 
 
     });
@@ -115,7 +115,7 @@
     <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
     <br /><br /><br /><br />
     <dl class="def">
-        <dt>UXC.Panel 示例</dt>
+        <dt>JC.Panel 示例</dt>
         <dd>
             <button type="button" class="dom_dialog">dom panel</button>
             <button type="button" class="string_dialog">string panel</button>

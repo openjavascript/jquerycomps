@@ -2,10 +2,10 @@ var fs = require('fs');
 
 var dir = __dirname + '/';
 
-var path1 = dir + 'UXC.LunarCalendar.js';
-var path3 = dir + 'UXC.LunarCalendar.gregorianToLunar.js';
-var path4 = dir + 'UXC.LunarCalendar.nationalHolidays.js';
-var path2 = dir + 'UXC.LunarCalendar.getFestival.js';
+var path1 = dir + 'JC.LunarCalendar.js';
+var path3 = dir + 'JC.LunarCalendar.gregorianToLunar.js';
+var path4 = dir + 'JC.LunarCalendar.nationalHolidays.js';
+var path2 = dir + 'JC.LunarCalendar.getFestival.js';
 
 var outPath = dir + 'LunarCalendar.js';
 

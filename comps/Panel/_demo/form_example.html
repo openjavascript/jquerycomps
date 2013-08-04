@@ -30,7 +30,7 @@
 </style>
 <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
 <script src="../../../lib.js"></script>
-<script>UXC.debug = true; UXC.use( 'Panel, Valid, plugins/jquery.form.js' );</script>
+<script>JC.debug = true; JC.use( 'Panel, Valid, plugins/jquery.form.js' );</script>
 <script>
 
     $(document).ready( function(_evt){
@@ -44,35 +44,35 @@
              *      panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
              *      //如果要强制从DOM清除, 可以调用 panel.dispose();
              */
-            var panel = UXC.Panel.getInstance( $('div.dom_panel') ); 
+            var panel = JC.Panel.getInstance( $('div.dom_panel') ); 
             if( !panel ){
-                panel = new UXC.Panel( $('div.dom_panel') ); 
+                panel = new JC.Panel( $('div.dom_panel') ); 
 
                 panel.find('form').ajaxForm( {
                     beforeSubmit:
                         function(formData, jqForm, options){
-                            if( !UXC.Valid.check( jqForm ) ) return false;
+                            if( !JC.Valid.check( jqForm ) ) return false;
                         }
                     , success:
                         function( responseText, statusText ){
-                            UXC.log( responseText, '\n\n', statusText );
+                            JC.log( responseText, '\n\n', statusText );
                             panel.close();
                         }
                 });
 
                 panel.on( 'confirm', function( _evt, _panel ){
-                    UXC.log( 'dom confirm' );
+                    JC.log( 'dom confirm' );
                     return false;
                 });
 
                 panel.on( 'cancel', function( _evt, _panel ){
-                    UXC.log( 'dom cancel' );
+                    JC.log( 'dom cancel' );
                 });
 
                 panel.on( 'beforeshow', function( _evt, _panel ){
-                    UXC.log( 'beforeshow' );
+                    JC.log( 'beforeshow' );
                     _panel.find('form').resetForm();
-                    UXC.Valid.clearError( _panel.find('form') );
+                    JC.Valid.clearError( _panel.find('form') );
                 });
 
                 panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
@@ -84,26 +84,26 @@
          */
         $('button.string_panel').on( 'click', function( _evt ){
             hideAllPanel();
-            var panel = new UXC.Panel( str_panel_content, 'string panel' ); 
+            var panel = new JC.Panel( str_panel_content, 'string panel' ); 
                 panel.find('form').ajaxForm( {
                     beforeSubmit:
                         function(formData, jqForm, options){
-                            if( !UXC.Valid.check( jqForm ) ) return false;
+                            if( !JC.Valid.check( jqForm ) ) return false;
                         }
                     , success:
                         function( responseText, statusText ){
-                            UXC.log( responseText, '\n\n', statusText );
+                            JC.log( responseText, '\n\n', statusText );
                             panel.close();
                         }
                 });
 
                 panel.on( 'confirm', function( _evt, _panel ){
-                    UXC.log( 'dom confirm' );
+                    JC.log( 'dom confirm' );
                     return false;
                 });
 
                 panel.on( 'cancel', function( _evt, _panel ){
-                    UXC.log( 'dom cancel' );
+                    JC.log( 'dom cancel' );
                 });
 
                 panel.show( this );
@@ -121,38 +121,38 @@
              *      //如果要强制从DOM清除, 可以调用 panel.dispose();
              */
             if( !Panel.getInstance( $('div.dialog_dom_panel') ) ){
-                var panel = UXC.Dialog( $('div.dialog_dom_panel'), 'dialog dom panel' ); 
+                var panel = JC.Dialog( $('div.dialog_dom_panel'), 'dialog dom panel' ); 
 
                 panel.find('form').ajaxForm( {
                     beforeSubmit:
                         function(formData, jqForm, options){
-                            if( !UXC.Valid.check( jqForm ) ) return false;
+                            if( !JC.Valid.check( jqForm ) ) return false;
                         }
                     , success:
                         function( responseText, statusText ){
-                            UXC.log( responseText, '\n\n', statusText );
+                            JC.log( responseText, '\n\n', statusText );
                             panel.close();
                         }
                 });
 
                 panel.on( 'confirm', function( _evt, _panel ){
-                    UXC.log( 'dom confirm' );
+                    JC.log( 'dom confirm' );
                     return false;
                 });
 
                 panel.on( 'cancel', function( _evt, _panel ){
-                    UXC.log( 'dom cancel' );
+                    JC.log( 'dom cancel' );
                 });
 
                 panel.on( 'beforeshow', function( _evt, _panel ){
-                    UXC.log( 'beforeshow' );
+                    JC.log( 'beforeshow' );
                     _panel.find('form').resetForm();
-                    UXC.Valid.clearError( _panel.find('form') );
+                    JC.Valid.clearError( _panel.find('form') );
                 });
 
                 panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
             }else{
-                UXC.Dialog( $('div.dialog_dom_panel') )
+                JC.Dialog( $('div.dialog_dom_panel') )
             }
         });
         /**
@@ -161,33 +161,33 @@
         $('button.dialog_string_panel').on( 'click', function( _evt ){
             hideAllPanel();
 
-            var panel = UXC.Dialog( str_panel_content, 'dialog string panel' ); 
+            var panel = JC.Dialog( str_panel_content, 'dialog string panel' ); 
                 panel.find('form').ajaxForm( {
                     beforeSubmit:
                         function(formData, jqForm, options){
-                            if( !UXC.Valid.check( jqForm ) ) return false;
+                            if( !JC.Valid.check( jqForm ) ) return false;
                         }
                     , success:
                         function( responseText, statusText ){
-                            UXC.log( responseText, '\n\n', statusText );
+                            JC.log( responseText, '\n\n', statusText );
                             panel.close();
                         }
                 });
 
                 panel.on( 'confirm', function( _evt, _panel ){
-                    UXC.log( 'dom confirm' );
+                    JC.log( 'dom confirm' );
                     return false;
                 });
 
                 panel.on( 'cancel', function( _evt, _panel ){
-                    UXC.log( 'dom cancel' );
+                    JC.log( 'dom cancel' );
                 });
         });
 
     });//end ready
 
     function hideAllPanel(){
-        UXC.hideAllPanel();
+        JC.hideAllPanel();
         $('div.UPanelString').remove();
     }
 
@@ -234,7 +234,7 @@
 
     <br /><br /><br /><br /><br /><br />
     <dl class="def">
-        <dt>UXC.Panel Form 示例</dt>
+        <dt>JC.Panel Form 示例</dt>
         <dd>
             <button type="button" class="dom_panel">dom form</button>
             <button type="button" class="string_panel">string form</button>
@@ -242,7 +242,7 @@
     </dl>
 
     <dl class="def">
-        <dt>UXC.Dialog Form 示例</dt>
+        <dt>JC.Dialog Form 示例</dt>
         <dd>
             <button type="button" class="dialog_dom_panel">dialog dom form</button>
             <button type="button" class="dialog_string_panel">dialog string form</button>

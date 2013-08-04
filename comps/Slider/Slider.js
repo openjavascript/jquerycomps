@@ -1,14 +1,14 @@
 ;(function($){
-    !window.UXC && (window.UXC = { log:function(){} });
+    !window.JC && (window.JC = { log:function(){} });
     window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
 
-    window.Slider = UXC.Slider = Slider;
+    window.Slider = JC.Slider = Slider;
     /**
      * Slider 划动菜单类
      * <br />页面加载完毕后, Slider 会查找那些有 class = js_autoSlider 的标签进行自动初始化
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/uxc_docs/classes/UXC.Slider.html' target='_blank'>API docs</a>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Slider.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Slider/_demo' target='_blank'>demo link</a></p>
      * <p>
      *      Slider 可以指定的一些常用 html 属性, 这个类的属性很多, 想了解得更详细看源码吧~
@@ -29,7 +29,7 @@
      *      <br /><b>sliderautomove</b>: 是否自动滚动
      *      <br /><b>sliderautomovems</b>: 自动滚动的间隔
      * </p>
-     * @namespace UXC
+     * @namespace JC
      * @class Slider
      * @constructor
      * @param   {selector|string}   _selector   
@@ -53,22 +53,22 @@
             <link href='../../Slider/res/hslider/style.css' rel='stylesheet' />
             <script src="../../../lib.js"></script>
             <script>
-                UXC.debug = true;
-                UXC.use( 'Slider' );
+                JC.debug = true;
+                JC.use( 'Slider' );
 
                 function sliderinitedcb(){
                     var _sliderIns = this;
 
-                    UXC.log( 'sliderinitedcb', new Date().getTime() );
+                    JC.log( 'sliderinitedcb', new Date().getTime() );
 
                     _sliderIns.on('outmin', function(){
-                        UXC.log( 'slider outmin' );
+                        JC.log( 'slider outmin' );
                     }).on('outmax', function(){
-                        UXC.log( 'slider outmax' );
+                        JC.log( 'slider outmax' );
                     }).on('movedone', function( _evt, _oldpointer, _newpointer){
-                        UXC.log( 'slider movedone', _evt, _oldpointer, _newpointer );
+                        JC.log( 'slider movedone', _evt, _oldpointer, _newpointer );
                     }).on('beforemove', function( _evt, _oldpointer, _newpointer ){
-                        UXC.log( 'slider beforemove', _evt, _oldpointer, _newpointer );
+                        JC.log( 'slider beforemove', _evt, _oldpointer, _newpointer );
                     });
                 }
             </script>
@@ -104,7 +104,7 @@
         if( Slider.getInstance( _layout ) ) return Slider.getInstance( _layout );
         Slider.getInstance( _layout, this );
 
-        UXC.log( 'Slider constructor', new Date().getTime() );
+        JC.log( 'Slider constructor', new Date().getTime() );
 
         /**
          * 初始化数据模型
@@ -400,7 +400,7 @@
 
     /**
      * Slider 的通用模型类
-     * @namespace UXC.Slider
+     * @namespace JC.Slider
      * @class   Model
      * @constructor
      * @param   {selector}  _layout
@@ -452,7 +452,7 @@
                 this.subitems();
                 this.totalpage();
 
-                UXC.log( printf('w:{0}, h:{1}, iw:{2}, ih:{3}, dr:{4}, si:{6}, hi:{5}, totalpage:{7}'
+                JC.log( printf('w:{0}, h:{1}, iw:{2}, ih:{3}, dr:{4}, si:{6}, hi:{5}, totalpage:{7}'
                             , this.width(), this.height()
                             , this.itemwidth(), this.itemheight()
                             , this.direction(), this.howmanyitem()
@@ -498,7 +498,7 @@
         , moveDirection:
             function( _setter ){
                 typeof _setter != 'undefined' && ( this._moveDirection = _setter );
-                UXC.log( 'moveDirection', this._moveDirection );
+                JC.log( 'moveDirection', this._moveDirection );
                 return this._moveDirection;
             }
         /**
@@ -794,10 +794,10 @@
             function( _backwrad ){
                 var _p = this;
                 _backwrad = !!_backwrad;
-                UXC.log( 'HorizontalView move, is backwrad', _backwrad, this._model.pointer() );
+                JC.log( 'HorizontalView move, is backwrad', _backwrad, this._model.pointer() );
 
                 var _newpointer = this._model.newpointer( _backwrad );
-                UXC.log( printf( 'is backwrad: {0}, pointer:{1}, new pointer:{2}'
+                JC.log( printf( 'is backwrad: {0}, pointer:{1}, new pointer:{2}'
                             , _backwrad, this._model.pointer(), _newpointer
                             ));
 
@@ -865,9 +865,9 @@
                     _item.data('TMP_LEFT', _item.prop('offsetLeft') );
                 });
 
-                UXC.log( 'zzzzzzzzzz', _begin, this._itemspace, this._model.moveDirection() );
+                JC.log( 'zzzzzzzzzz', _begin, this._itemspace, this._model.moveDirection() );
                 _p._model.interval( easyEffect( function( _step, _done ){
-                    //UXC.log( _step );
+                    //JC.log( _step );
                     $( _concat ).each(function( _ix, _item ){
                         _item.css( {'left': _item.data('TMP_LEFT') +  (_isPlus? _step : -_step ) + 'px' } );
                     });
@@ -885,7 +885,7 @@
 
         , setPagePosition:
             function( _ix ){
-                UXC.log( 'view setPagePosition', new Date().getTime() );
+                JC.log( 'view setPagePosition', new Date().getTime() );
                 typeof _ix == 'undefined' && ( _ix = this._model.pointer() );
                 this._model.subitems().hide();
                 var _page = this._model.page( _ix );
@@ -895,7 +895,7 @@
                         .show()
                         ;
                 }
-                UXC.log( _page.length );
+                JC.log( _page.length );
             }
     };
 
@@ -934,7 +934,7 @@
         , setPagePosition:
             function( _ix ){
                 var _p = this;
-                UXC.log( 'view setPagePosition', new Date().getTime() );
+                JC.log( 'view setPagePosition', new Date().getTime() );
                 return this;
             }
 

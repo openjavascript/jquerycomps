@@ -1,19 +1,19 @@
 ;(function($){
-    !window.UXC && (window.UXC = { log:function(){} });
+    !window.JC && (window.JC = { log:function(){} });
     /**
-     * 表单常用功能类 UXC.Form
+     * 表单常用功能类 JC.Form
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/uxc_docs/classes/UXC.Form.html' target='_blank'>API docs</a>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Form/_demo' target='_blank'>demo link</a></p>
-     * @namespace UXC
+     * @namespace JC
      * @class Form
      * @static
      * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 360 UXC-FE Team
+     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
      * @date    2013-06-11
      */
-    window.UXCForm = UXC.Form = {
+    window.JCForm = JC.Form = {
         /**
          * 禁用按钮一定时间, 默认为1秒
          * @method  disableButton
@@ -38,16 +38,16 @@
     /**
      * 初始化 checkbox 全选反选功能
      * <br />只要引用本脚本, 页面加载完毕时就会自动初始化全选反选功能
-     * <br /><br />动态添加的 DOM 需要显式调用 UXC.Form.initCheckAll( domSelector ) 进行初始化
+     * <br /><br />动态添加的 DOM 需要显式调用 JC.Form.initCheckAll( domSelector ) 进行初始化
      * <br /><br />要使页面上的全选反选功能能够自动初始化, 需要在全选反选按钮上加入一些HTML 属性
      * <br /><b>checktype</b>: all | inverse, all=全选/全不选, inverse=反选
      * <br /><b>checkfor</b>: selector, 要全选/反选的 checkbox 选择器语法
      * <br /><b>checkall</b>: selector, 全选按钮的选择器, 这个只有反选按钮需要, 反选时变更全选按钮的状态
      * @method  initCheckAll
      * @static
-     * @for UXC.Form
+     * @for JC.Form
      * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 360 UXC-FE Team
+     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
      * @date    2013-06-11
      * @param   {selector}  _selector   要初始化的全选反选的父级节点
      * @example
@@ -81,12 +81,12 @@
                 $.get( './data/initCheckAll.php?rnd='+new Date().getTime(), function( _r ){
                     var _selector = $(_r);
                     $( $( 'body' ).children().first() ).before( _selector );
-                    UXC.Form.initCheckAll( _selector );
+                    JC.Form.initCheckAll( _selector );
                 });
             });
             </script>
      */
-    UXC.Form.initCheckAll = 
+    JC.Form.initCheckAll = 
         function( _selector ){
             _selector = $( _selector );
             var _ls = _selector.find( 'input[type=checkbox][checktype][checkfor]' );
@@ -109,7 +109,7 @@
         };
 
     $(document).ready( function( _evt ){
-        UXC.Form.initCheckAll( $(document) );
+        JC.Form.initCheckAll( $(document) );
     });
     /**
      * 监听 全选/反选 按钮的点击事件
@@ -118,7 +118,7 @@
         var _p = $(this)
             , _type = _p.attr('checktype').toLowerCase()
             , _for = _p.attr('checkfor');
-            UXC.log( _type, _for );
+            JC.log( _type, _for );
 
         switch( _type ){
             case 'all':
@@ -167,7 +167,7 @@
             if( _sp.is( '[checktype]' ) || _sp.is( '[checkfor]') ) return;
             if( !_sp.prop('checked') ) return _isAll = false;
         });
-        UXC.log( '_isAll: ', _isAll );
+        JC.log( '_isAll: ', _isAll );
         _all && _all.length && _all.prop( 'checked', _isAll );
     }
 }(jQuery));
@@ -186,11 +186,11 @@
      * <p>
      *      数据格式: [ [id, name], [id, name] ... ]
      *      <br /> 如果获取到的数据格式不是默认格式,
-     *      可以通过 <a href='UXC.Form.html#property_initAutoSelect.dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤
+     *      可以通过 <a href='JC.Form.html#property_initAutoSelect.dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤
      * </p>
      * @method  initAutoSelect
      * @static
-     * @for UXC.Form
+     * @for JC.Form
      * @version dev 0.2
      * @author  qiushaowei   <suches@btbtd.org> | 360 75 Team
      * @date    2013-07-28(.2), 2013-06-11(.1)
@@ -214,10 +214,10 @@
             $.get( './data/shengshi_html.php?rnd='+new Date().getTime(), function( _r ){
                 var _selector = $(_r);
                 $( 'dl.def > dt' ).after( _selector );
-                UXC.Form.initAutoSelect( _selector );
+                JC.Form.initAutoSelect( _selector );
             });
 
-            UXC.Form.initAutoSelect.dataFilter = 
+            JC.Form.initAutoSelect.dataFilter = 
                 function( _data, _select ){
                     var _r = _data;
                     if( _data && !_data.length && _data.data ){
@@ -227,7 +227,7 @@
                 };
         </script>
      */
-    UXC.Form.initAutoSelect = AutoSelect;
+    JC.Form.initAutoSelect = AutoSelect;
 
     function AutoSelect( _selector ){
         var _ins = [];
@@ -437,7 +437,7 @@
                     , _p = AutoSelect.getInstance( _sp )
                     , _next = _p._model.next( _sp );
                     ;
-                UXC.log( '_responeChange:', _sp.attr('name'), _sp.val() );
+                JC.log( '_responeChange:', _sp.attr('name'), _sp.val() );
 
                 if( !( _next&& _next.length ) ){
                     _p.trigger( 'SelectChange' );
@@ -459,7 +459,7 @@
                 }
 
                 if( _next && _next.length ){
-                    UXC.log( '_changeCb:', _selector.val(), _next.attr('name'), _selector.attr('name') );
+                    JC.log( '_changeCb:', _selector.val(), _next.attr('name'), _selector.attr('name') );
                     _p._update( _next, _p._firstInitCb, _selector.val() );
                 }
                 return this;
@@ -472,7 +472,7 @@
                 ;
 
                 _p._model.triggerInitChange() 
-                    && ( UXC.log('triggerInitChange', _selector.attr('name')), _selector.trigger('change') );
+                    && ( JC.log('triggerInitChange', _selector.attr('name')), _selector.trigger('change') );
 
                 _p.trigger( 'SelectChange', [ _selector ] );
 
@@ -482,7 +482,7 @@
                 }
 
                 if( _next && _next.length ){
-                    UXC.log( '_firstInitCb:', _selector.val(), _next.attr('name'), _selector.attr('name') );
+                    JC.log( '_firstInitCb:', _selector.val(), _next.attr('name'), _selector.attr('name') );
                     _p._update( _next, _p._firstInitCb, _selector.val() );
                 }
 
@@ -505,7 +505,7 @@
         , _updateStatic:
             function( _selector, _cb, _pid ){
                 var _p = this, _data;
-                UXC.log( 'static select' );
+                JC.log( 'static select' );
                 if( _p._model.isFirst( _selector ) ){
                     typeof _pid == 'undefined' && ( _pid = _p._model.selectparentid( _selector ) || '' );
                     if( typeof _pid != 'undefined' ){
@@ -522,7 +522,7 @@
         , _updateAjax:
             function( _selector, _cb, _pid ){
                 var _p = this, _data, _next = _p._model.next( _selector ), _url;
-                UXC.log( 'ajax select' );
+                JC.log( 'ajax select' );
 
                 if( _p._model.isFirst( _selector ) ){
                     typeof _pid == 'undefined' && ( _pid = _p._model.selectparentid( _selector ) || '' );
@@ -537,7 +537,7 @@
                 }else{
                    _url = _p._model.selecturl( _selector, _pid );
                     $.get( _url, function( _data ){
-                        UXC.log( '_url:', _url, _pid );
+                        JC.log( '_url:', _url, _pid );
                         _data = $.parseJSON( _data );
                         _p._view.update( _selector, _data );
                         _cb && _cb.call( _p, _selector, _data );
@@ -549,7 +549,7 @@
         , _updateNormal:
             function( _selector, _cb, _pid ){
                var _p = this, _data;
-                UXC.log( 'normal select' );
+                JC.log( 'normal select' );
                 if( _p._model.isFirst( _selector ) ){
                     var _next = _p._model.next( _selector );
                     if( _next && _next.length ){
@@ -577,7 +577,7 @@
         _init:
             function(){
                 this._findAllItems( this._selector );
-                UXC.log( 'select items.length:', this._items.length );
+                JC.log( 'select items.length:', this._items.length );
                 this._initRelationship();
                 return this;
             }
@@ -839,25 +839,25 @@
      * 表单自动填充 URL GET 参数
      * <br />只要引用本脚本, DOM 加载完毕后, 页面上所有带 class js_autoFillUrlForm 的 form 都会自动初始化默认值
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/docs/uxc_docs/classes/UXC.Form.html' target='_blank'>API docs</a>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>
      * @method  initAutoFill
      * @static
-     * @for UXC.Form
+     * @for JC.Form
      * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 360 UXC-FE Team
+     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
      * @date    2013-06-13
      * @param   {selector|url string}   _selector   显示指定要初始化的区域, 默认为 document
      * @param   {string}                _url        显示指定, 取初始化值的 URL, 默认为 location.href
      * @example
-     *      UXC.Form.initAutoFill( myCustomSelector, myUrl );
+     *      JC.Form.initAutoFill( myCustomSelector, myUrl );
      */
-     UXC.Form.initAutoFill =
+     JC.Form.initAutoFill =
         function( _selector, _url ){
             if( !(_selector && _selector.length ) ) _selector = $(document);
             _url = _url || location.href;
 
-            UXC.log( 'UXC.Form.initAutoFill' );
+            JC.log( 'JC.Form.initAutoFill' );
 
             _selector.find('form.js_autoFillUrlForm').each( function(){
                 var _p = $(this);
@@ -883,21 +883,21 @@
             });
         };
 
-    $(document).ready( function( _evt ){ UXC.Form.initAutoFill(); });
+    $(document).ready( function( _evt ){ JC.Form.initAutoFill(); });
 
     /**
      * 自定义 URI decode 函数
      * @property    initAutoFill.decodeFunc
      * @static
-     * @for UXC.Form
+     * @for JC.Form
      * @type    function
      * @default null
      */
-    UXC.Form.initAutoFill.decodeFunc;
+    JC.Form.initAutoFill.decodeFunc;
 
     function decode( _val ){
         try{
-            _val = (UXC.Form.initAutoFill.decodeFunc || decodeURIComponent)( _val );
+            _val = (JC.Form.initAutoFill.decodeFunc || decodeURIComponent)( _val );
         }catch(ex){}
         return _val;
     }
@@ -933,14 +933,14 @@
      * <br />nschangecallback=值变改后的回调
      * @method  initNumericStepper
      * @static
-     * @for UXC.Form
+     * @for JC.Form
      * @version dev 0.1
      * @author  qiushaowei   <suches@btbtd.org> | 360 75 Team
      * @date    2013-07-05
      * @param   {selector}  _selector   要初始化的全选反选的父级节点
      * @example
              <dl class="def example1">
-                <dt>UXC.Form.initNumericStepper 默认值 0 - 100, step 1, fixed 0</dt>
+                <dt>JC.Form.initNumericStepper 默认值 0 - 100, step 1, fixed 0</dt>
                 <dd>
                     <button class="NS_icon NS_minus js_NStepperMinus" nstarget="input.js_ipt1" ></button>
                     <input type="text" value="0" class="js_ipt1" />
@@ -949,7 +949,7 @@
             </dl>
 
             <dl class="def example1">
-                <dt>UXC.Form.initNumericStepper -10 ~ 10, step 2, fixed 2</dt>
+                <dt>JC.Form.initNumericStepper -10 ~ 10, step 2, fixed 2</dt>
                 <dd>
                     <button class="NS_icon NS_minus js_NStepperMinus" nstarget="input.js_ipt2" ></button>
                     <input type="text" value="4" class="js_ipt2" nsminvalue="-10" nsmaxvalue="10" nsstep="2" nsfixed="2" />
@@ -957,7 +957,7 @@
                 </dd>
             </dl>
      */
-    UXC.Form.initNumericStepper = 
+    JC.Form.initNumericStepper = 
         function( _selector ){
             _selector && ( _selector = $( _selector ) );
 
@@ -976,7 +976,7 @@
                 _val < _min && ( _val = _min );
                 _val > _max && ( _val = _max );
 
-                UXC.log( _min, _max, _val, _fixed, _step );
+                JC.log( _min, _max, _val, _fixed, _step );
 
                 _target.val( _val.toFixed( _fixed ) );
 
@@ -989,9 +989,9 @@
      * @property    initNumericStepper.onchange
      * @type    function
      * @static
-     * @for UXC.Form
+     * @for JC.Form
      */
-    UXC.Form.initNumericStepper.onchange;
+    JC.Form.initNumericStepper.onchange;
 
     var _logic = {
         target:
@@ -1015,13 +1015,13 @@
         , maxvalue: function( _target ){ return parseFloat( _target.attr( 'nsmaxvalue' ) || _target.attr( 'maxvalue' ) ) || 100; }
         , callback: 
             function( _target ){ 
-                var _r = UXC.Form.initNumericStepper.onchange, _tmp;
+                var _r = JC.Form.initNumericStepper.onchange, _tmp;
                 _target.attr('nschangecallback') && ( _tmp = window[ _target.attr('nschangecallback') ] ) && ( _r = _tmp );
                 return _r;
             }
     };
 
     $(document).ready( function( _evt ){
-        UXC.Form.initNumericStepper( $(document) );
+        JC.Form.initNumericStepper( $(document) );
     });
 }(jQuery));

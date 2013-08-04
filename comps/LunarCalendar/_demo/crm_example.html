@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset=utf-8 />
-<title>360 UXC-FE</title>
+<title>360 75 team</title>
 <style type='text/css'>
     *{ margin: 0; padding: 0; }
     body{ width: 820px; margin: 20px auto 20px; background:#ececec; }
@@ -32,8 +32,8 @@
     <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
     <link href='../../../comps/Tips/res/default/style.css' rel='stylesheet' />
     <script>
-        UXC.debug = true; 
-        UXC.use( 'LunarCalendar, Panel, Form, Valid, Tips' );
+        JC.debug = true; 
+        JC.use( 'LunarCalendar, Panel, Form, Valid, Tips' );
     /*
      tm: item timestamp, timestamp is id
        
@@ -81,22 +81,22 @@
 
     $(document).delegate('button.js_setWorkday', 'click', function(){
         if( !httpRequire() ) return;
-        UXC.hideAllPopup( 1 );
-        var item = UXC.LunarCalendar.getSelectedItemGlobal(), _action;
+        JC.hideAllPopup( 1 );
+        var item = JC.LunarCalendar.getSelectedItemGlobal(), _action;
         if( !item ){
-            UXC.alert( '请选择日期, 再进行操作', this, 1 );
+            JC.alert( '请选择日期, 再进行操作', this, 1 );
             return;
         }
         var _ptm = toPostTimestamp( item.date );
 
-        UXC.LunarCalendar.isWorkday( item.td ) && ( _action = 0 ); 
-        !UXC.LunarCalendar.isWorkday( item.td ) && ( _action = 1 ); 
+        JC.LunarCalendar.isWorkday( item.td ) && ( _action = 0 ); 
+        !JC.LunarCalendar.isWorkday( item.td ) && ( _action = 1 ); 
 
         $.post( './data/dataspan.php', { 'tm': _ptm, 'dayaction': _action }, function( _r ){
-            UXC.log( 'post result: ', _r );
+            JC.log( 'post result: ', _r );
             _r = $.parseJSON( _r );
             if( _r.errorno === 0 ){
-                UXC.LunarCalendar.workday( item.td, _action );
+                JC.LunarCalendar.workday( item.td, _action );
             }
             setWorkdayButtonStatus(); 
             setHolidayButtonStatus();
@@ -105,33 +105,33 @@
     });
 
     function setWorkdayButtonStatus(){
-        var item = UXC.LunarCalendar.getSelectedItemGlobal(), _action;
+        var item = JC.LunarCalendar.getSelectedItemGlobal(), _action;
         if( !item ) return;
 
         var _btn = $('button.js_setWorkday');
 
-        UXC.LunarCalendar.isWorkday( item.td ) && _btn.html('取消工作日');
-        !UXC.LunarCalendar.isWorkday( item.td ) && _btn.html('设为工作日');
+        JC.LunarCalendar.isWorkday( item.td ) && _btn.html('取消工作日');
+        !JC.LunarCalendar.isWorkday( item.td ) && _btn.html('设为工作日');
     }
 
     $(document).delegate('button.js_setHoliday', 'click', function(){
         if( !httpRequire() ) return;
-        UXC.hideAllPopup( 1 );
-        var item = UXC.LunarCalendar.getSelectedItemGlobal(), _action;
+        JC.hideAllPopup( 1 );
+        var item = JC.LunarCalendar.getSelectedItemGlobal(), _action;
         if( !item ){
-            UXC.alert( '请选择日期, 再进行操作', this, 1 );
+            JC.alert( '请选择日期, 再进行操作', this, 1 );
             return;
         }
         var _ptm = toPostTimestamp( item.date );
 
-        UXC.LunarCalendar.isHoliday( item.td ) && ( _action = 0 ); 
-        !UXC.LunarCalendar.isHoliday( item.td ) && ( _action = 2 ); 
+        JC.LunarCalendar.isHoliday( item.td ) && ( _action = 0 ); 
+        !JC.LunarCalendar.isHoliday( item.td ) && ( _action = 2 ); 
 
         $.post( './data/dataspan.php', { 'tm': _ptm, 'dayaction': _action }, function( _r ){
-            UXC.log( 'post result: ', _r );
+            JC.log( 'post result: ', _r );
             _r = $.parseJSON( _r );
             if( _r.errorno === 0 ){
-                UXC.LunarCalendar.holiday( item.td, _action );
+                JC.LunarCalendar.holiday( item.td, _action );
             }
             setWorkdayButtonStatus(); 
             setHolidayButtonStatus();
@@ -140,39 +140,39 @@
     });
 
     function setHolidayButtonStatus(){
-        var item = UXC.LunarCalendar.getSelectedItemGlobal(), _action;
+        var item = JC.LunarCalendar.getSelectedItemGlobal(), _action;
         if( !item ) return;
 
         var _btn = $('button.js_setHoliday');
 
-        UXC.LunarCalendar.isHoliday( item.td ) && _btn.html('取消休息日');
-        !UXC.LunarCalendar.isHoliday( item.td ) && _btn.html('设为休息日');
+        JC.LunarCalendar.isHoliday( item.td ) && _btn.html('取消休息日');
+        !JC.LunarCalendar.isHoliday( item.td ) && _btn.html('设为休息日');
     }
 
     $(document).delegate('button.js_setComment', 'click', function(){
-        UXC.hideAllPopup( 1 );
-        var item = UXC.LunarCalendar.getSelectedItemGlobal(), _action;
+        JC.hideAllPopup( 1 );
+        var item = JC.LunarCalendar.getSelectedItemGlobal(), _action;
         if( !item ){
-            UXC.alert( '请选择一个日期, 再进行操作', this, 1 );
+            JC.alert( '请选择一个日期, 再进行操作', this, 1 );
             return;
         }
         var _ptm = toPostTimestamp( item.date );
 
-        UXC.LunarCalendar.isComment( item.td ) && ( _action = 0 ); 
-        !UXC.LunarCalendar.isComment( item.td ) && ( _action = 1 ); 
+        JC.LunarCalendar.isComment( item.td ) && ( _action = 0 ); 
+        !JC.LunarCalendar.isComment( item.td ) && ( _action = 1 ); 
 
         if( _action ){
-            UXC.log( 'add comment' );
+            JC.log( 'add comment' );
             commentDialog( '添加注释 '+formatISODate(item.date), './data/dataspan.php', _ptm, '', commentAddTpl );
         }else{
-            UXC.log( 'delete comment' );
-            commentDialog( '编辑注释 '+formatISODate(item.date), './data/dataspan.php', _ptm, UXC.LunarCalendar.getComment( item.td ), commentEditTpl );
+            JC.log( 'delete comment' );
+            commentDialog( '编辑注释 '+formatISODate(item.date), './data/dataspan.php', _ptm, JC.LunarCalendar.getComment( item.td ), commentEditTpl );
             /*
             $.post( './data/dataspan.php', { 'tm': _ptm, 'dayaction': _action }, function( _r ){
-                UXC.log( 'post result: ', _r );
+                JC.log( 'post result: ', _r );
                 _r = $.parseJSON( _r );
                 if( _r.errorno === 0 ){
-                    UXC.LunarCalendar.setHoliday( item.td, _action );
+                    JC.LunarCalendar.setHoliday( item.td, _action );
                 }
                 setWorkdayButtonStatus(); 
                 setHolidayButtonStatus();
@@ -191,7 +191,7 @@
     });
 
     function commentDialog( _header, _url, _tm, _comment, _tpl ){
-        var _ins = UXC.Dialog( _header, _tpl ), _selector = _ins.selector();
+        var _ins = JC.Dialog( _header, _tpl ), _selector = _ins.selector();
 
         _selector.find('input[name=tm]').val( _tm );
         _selector.find('textarea').val( _comment );
@@ -203,7 +203,7 @@
             var _btn = $(this);
 
             if( _btn.hasClass('js_add') ){
-               if( ! UXC.Valid.check( _p ) ){
+               if( ! JC.Valid.check( _p ) ){
                     return false;
                 }
 
@@ -212,7 +212,7 @@
                 _comment = _p.find('textarea').val();
 
                 $.post( _url, _p.serialize(), function( _r ){
-                    UXC.log( _r );
+                    JC.log( _r );
                     _r = $.parseJSON( _r );
 
                     if( _r && _r.errorno === 0 ){
@@ -224,22 +224,22 @@
                         setCommentButtonStatus();
                     }else{
                         _p.find('button[type=button],input[type=button]').attr('disabled', false);
-                        UXC.alert( '操作失败, 请重新提交.', _btn, 2 );
+                        JC.alert( '操作失败, 请重新提交.', _btn, 2 );
                     }
                 });
 
                 return false;
             }else if( _btn.hasClass('js_del') ){
                 _p.find('button[type=button],input[type=button]').attr('disabled', true);
-                var _pins = UXC.confirm( '确定要删除注释吗?', _btn, 2 );
+                var _pins = JC.confirm( '确定要删除注释吗?', _btn, 2 );
 
-                _pins.on( 'cancel', function(){ UXC.hideAllPopup(); 
+                _pins.on( 'cancel', function(){ JC.hideAllPopup(); 
                     _p.find('button[type=button],input[type=button]').attr('disabled', false);
                 });
 
-                _pins.on( 'confirm', function(){ UXC.hideAllPopup(); 
+                _pins.on( 'confirm', function(){ JC.hideAllPopup(); 
                     $.post( _url, { 'tm': _tm, 'commentaction': 0 }, function( _r ){
-                        UXC.log( _r );
+                        JC.log( _r );
                         _r = $.parseJSON( _r );
 
                         if( _r && _r.errorno === 0 ){
@@ -250,7 +250,7 @@
                             _ins.close();
                         }else{
                             _p.find('button[type=button],input[type=button]').attr('disabled', false);
-                            UXC.alert( '操作失败, 请重新提交.', _btn, 2 );
+                            JC.alert( '操作失败, 请重新提交.', _btn, 2 );
                         }
                     });
                 });
@@ -259,19 +259,19 @@
          });
 
         _ins.on('close', function( _evt, _panel ){
-            UXC.hideAllPopup(1);
+            JC.hideAllPopup(1);
         });
     }
 
 
     function setCommentButtonStatus(){
-        var item = UXC.LunarCalendar.getSelectedItemGlobal(), _action;
+        var item = JC.LunarCalendar.getSelectedItemGlobal(), _action;
         if( !item ) return;
 
         var _btn = $('button.js_setComment');
 
-        UXC.LunarCalendar.isComment( item.td ) && _btn.html('编辑注释');
-        !UXC.LunarCalendar.isComment( item.td ) && _btn.html('添加注释');
+        JC.LunarCalendar.isComment( item.td ) && _btn.html('编辑注释');
+        !JC.LunarCalendar.isComment( item.td ) && _btn.html('添加注释');
     }
 
     function updateLunarCalendarStatus(){
@@ -284,15 +284,15 @@
 
         var tmstart = toPostTimestamp( beginDate ), tmover = toPostTimestamp( endDate );
 
-        UXC.log( beginDate, tmstart, '\n', endDate, tmover );
+        JC.log( beginDate, tmstart, '\n', endDate, tmover );
 
         $.get( ['./data/dataspan.php?tmstart=', tmstart, '&tmover=', tmover, '&rnd=', new Date().getTime()].join('')
             , function( _r ){
-                //UXC.log( _r );
+                //JC.log( _r );
                 _r = $.parseJSON( _r );
                 if( !(_r && _r.data) ) return;
 
-                UXC.LunarCalendar.updateStatus( _r.data );
+                JC.LunarCalendar.updateStatus( _r.data );
                 setWorkdayButtonStatus(); 
                 setHolidayButtonStatus();
                 setCommentButtonStatus();
@@ -317,7 +317,7 @@
     
     function actionDelay( _btn ){
         _btn = $('button.js_userpremonth, button.js_usernextmonth, button.js_setWorkday, button.js_setHoliday, button.js_setComment');
-        UXC.Form.disableButton( _btn, 1000 );
+        JC.Form.disableButton( _btn, 1000 );
     }
 
     var commentAddTpl =
@@ -363,7 +363,7 @@
     <br /><br /><br /><br /><br /><br />
     <form action='' method='get'>
         <dl>
-            <dt>UXC.LunarCalendar 示例</dt>
+            <dt>JC.LunarCalendar 示例</dt>
             <dd>
             <table cellspacing='0' width="100%">
                 <tr>

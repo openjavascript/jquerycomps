@@ -2,9 +2,9 @@ var fs = require('fs');
 
 var dir = __dirname + '/';
 
-var path1 = dir + 'UXC.Panel.js';
-var path2 = dir + 'UXC.Popup.js';
-var path3 = dir + 'UXC.Dialog.js';
+var path1 = dir + 'JC.Panel.js';
+var path2 = dir + 'JC.Popup.js';
+var path3 = dir + 'JC.Dialog.js';
 
 var outPath = dir + 'Panel.js';
 

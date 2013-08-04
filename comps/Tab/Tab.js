@@ -1,12 +1,12 @@
 ;(function($){
-    !window.UXC && (window.UXC = { log:function(){} });
+    !window.JC && (window.JC = { log:function(){} });
 
-    window.Tab = UXC.Tab = Tab;
+    window.Tab = JC.Tab = Tab;
     /**
      * Tab 菜单类
      * <br />DOM 加载完毕后
      * , 只要鼠标移动到具有识别符的Tab上面, Tab就会自动初始化, 目前可识别: <b>.js_autoTab</b>( CSS class )
-     * <br />需要手动初始化, 请使用: var ins = new UXC.Tab( _tabSelector );
+     * <br />需要手动初始化, 请使用: var ins = new JC.Tab( _tabSelector );
      * <p>
      *      <b> Tab 容器的HTML属性 </b>
      *      <br /><b>tablabels</b>: 声明 tab 标签的选择器语法
@@ -24,10 +24,10 @@
      *      <br /><b>tabajaxcallback</b>: ajax 请求的回调
      * </p>
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/uxc_docs/classes/UXC.Tab.html' target='_blank'>API docs</a>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tab.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Tab/_demo/' target='_blank'>demo link</a></p>
-     * @namespace UXC
+     * @namespace JC
      * @class Tab
      * @constructor
      * @param   {selector|string}   _selector       要初始化的 Tab 选择器
@@ -39,30 +39,30 @@
             <link href='../../../comps/Tab/res/default/style.css' rel='stylesheet' />
             <script src="../../../lib.js"></script>
             <script>
-                UXC.debug = 1;
-                UXC.use( 'Tab' );
+                JC.debug = 1;
+                JC.use( 'Tab' );
 
                 httpRequire();
 
                 function tabactive( _evt, _container, _tabIns ){
                     var _label = $(this);
-                    UXC.log( 'tab ', _evt.type, _label.html(), new Date().getTime() );
-                    if( UXC.Tab.isAjax( _label ) && ! UXC.Tab.isAjaxInited( _label ) ){
+                    JC.log( 'tab ', _evt.type, _label.html(), new Date().getTime() );
+                    if( JC.Tab.isAjax( _label ) && ! JC.Tab.isAjaxInited( _label ) ){
                         _container.html( '<h2>内容加载中...</h2>' );
                     }
                 }
 
                 function tabchange( _container, _tabIns ){
                     var _label = $(this);
-                    UXC.log( 'tab change: ', _label.html(), new Date().getTime() );
+                    JC.log( 'tab change: ', _label.html(), new Date().getTime() );
                 }
 
                 $(document).ready( function(){
-                    UXC.Tab.ajaxCallback =
+                    JC.Tab.ajaxCallback =
                         function( _data, _label, _container ){
                             _data && ( _data = $.parseJSON( _data ) );
                             if( _data && _data.errorno === 0 ){
-                                _container.html( printf( '<h2>UXC.Tab.ajaxCallback</h2>{0}', _data.data ) );
+                                _container.html( printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
                             }else{
                                 Tab.isAjaxInited( _label, 0 );
                                 _container.html( '<h2>内容加载失败!</h2>' );
@@ -82,7 +82,7 @@
             </script>
 
             <dl class="def">
-                <dt>UXC.Tab 示例 - 静态内容</dt>
+                <dt>JC.Tab 示例 - 静态内容</dt>
                 <dd>
                 <div class="le-tabview js_autoTab" tablabels="ul.js_tabLabel > li > a" tabcontainers="div.js_tabContent > div" 
                                                     tabactiveclass="active" tablabelparent="li" 
@@ -105,7 +105,7 @@
             </dl>
 
             <dl class="def">
-                <dt>UXC.Tab 示例 - 动态内容 - AJAX</dt>
+                <dt>JC.Tab 示例 - 动态内容 - AJAX</dt>
                 <dd>
                 <div class="le-tabview js_autoTab" tablabels="ul.js_tabLabel2 > li > a" tabcontainers="div.js_tabContent2 > div" 
                                                     tabactiveclass="active" tablabelparent="li" 
@@ -135,7 +135,7 @@
         /**
          * Tab 模型类的实例
          * @property    _model
-         * @type    UXC.Tab.Model
+         * @type    JC.Tab.Model
          * @private
          */
         this._model = new Model( _selector, _triggerTarget );
@@ -144,7 +144,7 @@
          */
         this._view = new View( this._model );
 
-        UXC.log( 'initing tab' );
+        JC.log( 'initing tab' );
         this._init();
     }
     /**
@@ -176,7 +176,7 @@
      * 获取或设置 Tab 容器的 Tab 实例属性
      * @method  getInstance
      * @param   {selector}  _selector
-     * @param   {UXC.Tab}   _setter     _setter 不为空是设置
+     * @param   {JC.Tab}   _setter     _setter 不为空是设置
      * @static
      */
     Tab.getInstance = 
@@ -196,11 +196,11 @@
      * @static
      * @example
             $(document).ready( function(){
-                UXC.Tab.ajaxCallback =
+                JC.Tab.ajaxCallback =
                     function( _data, _label, _container, _textStatus, _jqXHR ){
                         _data && ( _data = $.parseJSON( _data ) );
                         if( _data && _data.errorno === 0 ){
-                            _container.html( printf( '<h2>UXC.Tab.ajaxCallback</h2>{0}', _data.data ) );
+                            _container.html( printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
                         }else{
                             Tab.isAjaxInited( _label, 0 );
                             _container.html( '<h2>内容加载失败!</h2>' );
@@ -238,8 +238,8 @@
      * @example
         function tabactive( _evt, _container, _tabIns ){
             var _label = $(this);
-            UXC.log( 'tab ', _evt.type, _label.html(), new Date().getTime() );
-            if( UXC.Tab.isAjax( _label ) && ! UXC.Tab.isAjaxInited( _label ) ){
+            JC.log( 'tab ', _evt.type, _label.html(), new Date().getTime() );
+            if( JC.Tab.isAjax( _label ) && ! JC.Tab.isAjaxInited( _label ) ){
                 _container.html( '<h2>内容加载中...</h2>' );
             }
         }
@@ -287,7 +287,7 @@
     }
     /**
      * Tab 数据模型类
-     * @namespace UXC.Tab
+     * @namespace JC.Tab
      * @class Model
      * @constructor
      * @param   {selector|string}   _selector       要初始化的 Tab 选择器
@@ -538,16 +538,16 @@
     };
     /**
      * Tab 视图模型类
-     * @namespace UXC.Tab
+     * @namespace JC.Tab
      * @class View
      * @constructor
-     * @param   {UXC.Tab.Model}   _model   
+     * @param   {JC.Tab.Model}   _model   
      */
     function View( _model ){
         /**
          * Tab 数据模型类实例引用 
          * @property    _model
-         * @type {UXC.Tab.Model} 
+         * @type {JC.Tab.Model} 
          * @private
          */
         this._model = _model;
@@ -560,7 +560,7 @@
          */
         init:
             function() {
-                UXC.log( 'Tab.View:', new Date().getTime() );
+                JC.log( 'Tab.View:', new Date().getTime() );
                 var _p = this;
                 this._model.tablabels().on( this._model.activeEvent(), function( _evt ){
                     var _sp = $(this), _r;
@@ -613,7 +613,7 @@
                 var _url = _p._model.tabajaxurl( _label );
                 if( !_url ) return;
 
-                UXC.log( _p._model.tabajaxmethod( _label )
+                JC.log( _p._model.tabajaxmethod( _label )
                         , _p._model.tabajaxdata( _label )
                         , _p._model.tabajaxcallback( _label )
                         );
@@ -637,7 +637,7 @@
         var _p = $(this), _tab, _src = _evt.target || _evt.srcElement;
         if( Tab.getInstance( _p ) ) return;
         _src && ( _src = $(_src) );
-        UXC.log( new Date().getTime(), _src.prop('nodeName') );
+        JC.log( new Date().getTime(), _src.prop('nodeName') );
         _tab = new Tab( _p, _src );
     });
 

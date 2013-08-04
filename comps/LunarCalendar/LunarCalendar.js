@@ -2,14 +2,14 @@
     ///
     /// TODO: 添加事件响应机制
     ///
-    !window.UXC && (window.UXC = { log:function(){} });
-    UXC.LunarCalendar = window.LunarCalendar = LunarCalendar;
+    !window.JC && (window.JC = { log:function(){} });
+    JC.LunarCalendar = window.LunarCalendar = LunarCalendar;
     /**
      * 农历日历组件
-     * <br />全局访问请使用 UXC.LunarCalendar 或 LunarCalendar
+     * <br />全局访问请使用 JC.LunarCalendar 或 LunarCalendar
      * <br />DOM 加载完毕后
      * , LunarCalendar会自动初始化页面所有具备识别符的日历, 目前可识别: div.js_LunarCalendar, td.js_LunarCalendar, li.js_LunarCalendar
-     * <br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动初始化 var ins = new UXC.LunarCalendar( _selector );
+     * <br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动初始化 var ins = new JC.LunarCalendar( _selector );
      * <p>
      *      初始化时, 如果日历是添加到某个selector里, 那么selector可以指定一些设置属性
      *      <br /><b>hidecontrol</b>: 如果设置该属性, 那么日历将隐藏操作控件
@@ -25,16 +25,16 @@
      * <br /><b>require</b>: <a href='.window.html#method_isSameDay'>window.isSameDay</a>
      * <br /><b>require</b>: <a href='.window.html#method_isSameMonth'>window.isSameMonth</a>
      * </p>
-     * <p><a href='https://github.com/suchesqiu/360UXC.git' target='_blank'>UXC Project Site</a>
-     * | <a href='http://uxc.btbtd.org/uxc_docs/classes/UXC.LunarCalendar.html' target='_blank'>API docs</a>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.LunarCalendar.html' target='_blank'>API docs</a>
      * | <a href='../../comps/LunarCalendar/_demo/' target='_blank'>demo link</a></p>
-     * @namespace UXC
+     * @namespace JC
      * @class LunarCalendar
      * @constructor
      * @param   {selector}  _container  指定要显示日历的选择器, 如果不显示指定该值, 默认为 document.body
      * @param   {date}      _date       日历的当前日期, 如果不显示指定该值, 默认为当天
      * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 360 UXC-FE Team
+     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
      * @date    2013-06-13
      */
     function LunarCalendar( _container, _date ){
@@ -43,18 +43,18 @@
         !_date && ( _date = new Date() );
         _container.data('LunarCalendar', this);
 
-        UXC.log( 'LunarCalendar.constructor' );
+        JC.log( 'LunarCalendar.constructor' );
         /**
          * LunarCalendar 的数据模型对象
          * @property    _model
-         * @type    UXC.LunarCalendar.Model
+         * @type    JC.LunarCalendar.Model
          * @private
          */
         this._model = new Model( _container, _date );
         /**
          * LunarCalendar 的视图对像
          * @property    _view
-         * @type    UXC.LunarCalendar.View
+         * @type    JC.LunarCalendar.View
          * @private
          */
         this._view = new View( this._model );
@@ -63,8 +63,8 @@
     }
     /**
      * 自定义日历组件模板
-     * <p>默认模板为UXC.LunarCalendar.Model#tpl</p>
-     * <p>如果用户显示定义UXC.LunarCalendar.tpl的话, 将采用用户的模板</p>
+     * <p>默认模板为JC.LunarCalendar.Model#tpl</p>
+     * <p>如果用户显示定义JC.LunarCalendar.tpl的话, 将采用用户的模板</p>
      * @property    tpl
      * @type    {string}
      * @default empty
@@ -77,7 +77,7 @@
      * @default true
      * @type    {bool}
      * @static
-            <script>UXC.LunarCalendar.autoInit = true;</script>
+            <script>JC.LunarCalendar.autoInit = true;</script>
      */
      LunarCalendar.autoInit = true
     /**
@@ -86,7 +86,7 @@
      * @type        {int}
      * @default     20
      * @static
-            <script>UXC.LunarCalendar.defaultYearSpan = 20;</script>
+            <script>JC.LunarCalendar.defaultYearSpan = 20;</script>
      */
     LunarCalendar.defaultYearSpan = 20
     /**
@@ -336,7 +336,7 @@
                 if( _ins.getContainer().is('[nonextfestivals]') ){
                     _max = new Date( _ins.getDate().getFullYear(), _ins.getDate().getMonth() + 1, 1 ).getTime();
                 }
-                //UXC.log( _ins, _min, _max );
+                //JC.log( _ins, _min, _max );
 
                 var _k, _item, _finalk, _itema, _itemtd;
                 for( var _k in _data ){
@@ -498,16 +498,16 @@
     }
     /**
      * LunarCalendar 视图类
-     * @namespace   UXC.LunarCalendar
+     * @namespace   JC.LunarCalendar
      * @class   View
      * @constructor
-     * @param   {UXC.LunarCalendar.Model}   _model
+     * @param   {JC.LunarCalendar.Model}   _model
      */
     function View( _model ){
         /**
          * LunarCalendar model 对象
          * @property    _model
-         * @type    UXC.LunarCalendar.Model
+         * @type    JC.LunarCalendar.Model
          * @private
          */
         this._model = _model;
@@ -617,7 +617,7 @@
                     if( festivals && festivals.festivals.length ){
                         var _festivalsAr = [];
                         $.each( festivals.festivals, function( _ix, _item ){
-                            //UXC.log( _item );
+                            //JC.log( _item );
                             if( _item.fullname ){
                                 _festivalsAr = _festivalsAr.concat( _item.fullname.split(/[\s]+/) );
                             }
@@ -666,7 +666,7 @@
 
                 this.hideControl();
 
-                UXC.log( _prebegin, _premaxday, _maxday, _weekday, _sumday, _row );
+                JC.log( _prebegin, _premaxday, _maxday, _weekday, _sumday, _row );
             }
         /**
          * 把具体的公历和农历日期写进a标签的title里
@@ -692,7 +692,7 @@
     };
     /**
      * LunarCalendar 数据模型类
-     * @namespace UXC.LunarCalendar
+     * @namespace JC.LunarCalendar
      * @class   Model
      * @constructor
      * @param   {selector}      _container
@@ -717,7 +717,7 @@
          * 日历默认模板
          * @property    tpl
          * @type    string
-         * @default UXC.LunarCalendar._deftpl
+         * @default JC.LunarCalendar._deftpl
          */
         this.tpl;
         /**
@@ -742,7 +742,7 @@
     Model.prototype = {
         _init:
             function(){
-                this.tpl = UXC.LunarCalendar.tpl || _deftpl;
+                this.tpl = JC.LunarCalendar.tpl || _deftpl;
                 this.container.is( '[hidecontrol]' ) && ( this.hideControl = true );
                 return this;
             }
@@ -1016,15 +1016,15 @@
 
 
 (function($){
-    UXC.LunarCalendar.getFestivals = getFestivals;
+    JC.LunarCalendar.getFestivals = getFestivals;
     /**
      * 返回农历和国历的所在日期的所有节日
      * <br /> 假日条目数据样例: { 'name': '春节', 'fullname': '春节', 'priority': 8 }
      * <br /> 返回数据格式: { 'dayName': 农历日期/节日名, 'festivals': 节日数组, 'isHoliday': 是否为假日 }
      * @method getFestivals
      * @static
-     * @for UXC.LunarCalendar
-     * @param   {Object}    _lunarDate      农历日期对象, 由UXC.LunarCalendar.gregorianToLunar 获取
+     * @for JC.LunarCalendar
+     * @param   {Object}    _lunarDate      农历日期对象, 由JC.LunarCalendar.gregorianToLunar 获取
      * @param   {Date}      _greDate        日期对象
      * @return  Object    
      */
@@ -1045,7 +1045,7 @@
  
         if( _lunarDate.month == 12 && _lunarDate.day >= 29 ){
             var _tmp = new Date(); _tmp.setTime( _greDate.getTime() ); _tmp.setDate( _tmp.getDate() + 1 );
-            var _tmpLunar = UXC.LunarCalendar.gregorianToLunar( _tmp );
+            var _tmpLunar = JC.LunarCalendar.gregorianToLunar( _tmp );
             if( _tmpLunar.month === 1 && _tmpLunar.day === 1 ){
                 var fes = lunarFes['0100'];
                 _r.festivals.unshift( fes );
@@ -1053,9 +1053,9 @@
             }
         }
 
-        if( UXC.LunarCalendar.nationalHolidays ){
-            if( _greToday in UXC.LunarCalendar.nationalHolidays ){
-                _r.festivals.push( UXC.LunarCalendar.nationalHolidays[ _greToday ] );
+        if( JC.LunarCalendar.nationalHolidays ){
+            if( _greToday in JC.LunarCalendar.nationalHolidays ){
+                _r.festivals.push( JC.LunarCalendar.nationalHolidays[ _greToday ] );
             }
         }
        
@@ -1078,7 +1078,7 @@
             }
        }
 
-        /*UXC.log( _lunarDay, _greDay, _r.festivals.length );*/
+        /*JC.log( _lunarDay, _greDay, _r.festivals.length );*/
 
         return _r;
     }
@@ -1211,7 +1211,7 @@
 
     /**
      * 为数字添加前置0
-     * @method  UXC.LunarCalendar.getFestival.intPad
+     * @method  JC.LunarCalendar.getFestival.intPad
      * @param   {int}   _n      需要添加前置0的数字
      * @param   {int}   _len    需要添加_len个0, 默认为2
      * @return  {string}
@@ -1245,11 +1245,11 @@
      * </pre>
      * @method  gregorianToLunar
      * @static
-     * @for     UXC.LunarCalendar
+     * @for     JC.LunarCalendar
      * @param   {date}  _date      要获取农历日期的时间对象
      * @return  Object
      */
-    UXC.LunarCalendar.gregorianToLunar = gregorianToLunar;
+    JC.LunarCalendar.gregorianToLunar = gregorianToLunar;
 
     function gregorianToLunar( _date ){
         var _r = {
@@ -1269,7 +1269,7 @@
         _r.month = _lunar.m + 1;
         _r.day = _lunar.d;
 
-        //UXC.log( _r.year, _r.month, _r.day, ' ', _date.getFullYear(), _date.getMonth()+1, _date.getDate() );
+        //JC.log( _r.year, _r.month, _r.day, ' ', _date.getFullYear(), _date.getMonth()+1, _date.getDate() );
 
         _r.shengxiao = shengxiao.charAt((_r.year - 4) % 12);
         _r.ganzhi = tiangan.charAt((_r.year - 4) % 10) + dizhi.charAt((_r.year - 4) % 12);
@@ -1288,7 +1288,7 @@
         }
         _r.ri == "廿" && ( _r.ri = "二十" );
         _r.ri == "卅" && ( _r.ri = "三十" );
-        /*UXC.log( 'month:', _r.month, 2 );*/
+        /*JC.log( 'month:', _r.month, 2 );*/
 
         _r.shi = dizhi.charAt((_r.hour - 1) % 12);
         return _r;
@@ -1320,7 +1320,7 @@
 }(jQuery));
 
 (function($){
-    var o = UXC.LunarCalendar.nationalHolidays = UXC.LunarCalendar.nationalHolidays || {};
+    var o = JC.LunarCalendar.nationalHolidays = JC.LunarCalendar.nationalHolidays || {};
     //2013 元旦
     o['20130101'] = { 'isHoliday': true };
     o['20130102'] = { 'isHoliday': true };
