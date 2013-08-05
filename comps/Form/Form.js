@@ -10,7 +10,7 @@
      * @class Form
      * @static
      * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
+     * @author  qiushaowei   <suches@btbtd.org> | 75 team
      * @date    2013-06-11
      */
     window.JCForm = JC.Form = {
@@ -47,7 +47,7 @@
      * @static
      * @for JC.Form
      * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
+     * @author  qiushaowei   <suches@btbtd.org> | 75 team
      * @date    2013-06-11
      * @param   {selector}  _selector   要初始化的全选反选的父级节点
      * @example
@@ -845,7 +845,7 @@
      * @static
      * @for JC.Form
      * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
+     * @author  qiushaowei   <suches@btbtd.org> | 75 team
      * @date    2013-06-13
      * @param   {selector|url string}   _selector   显示指定要初始化的区域, 默认为 document
      * @param   {string}                _url        显示指定, 取初始化值的 URL, 默认为 location.href

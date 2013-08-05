@@ -34,7 +34,7 @@
      * @param   {selector}  _container  指定要显示日历的选择器, 如果不显示指定该值, 默认为 document.body
      * @param   {date}      _date       日历的当前日期, 如果不显示指定该值, 默认为当天
      * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
+     * @author  qiushaowei   <suches@btbtd.org> | 75 team
      * @date    2013-06-13
      */
     function LunarCalendar( _container, _date ){

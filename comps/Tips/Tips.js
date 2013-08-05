@@ -19,7 +19,7 @@
      * @constructor
      * @param   {selector|string}   _selector   要显示 Tips 效果的标签, 这是单一标签, 需要显示多个请显示 Tips.init 方法
      * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
+     * @author  qiushaowei   <suches@btbtd.org> | 75 team
      * @date    2013-06-23
      * @example
             <script src="../../../lib.js"></script>

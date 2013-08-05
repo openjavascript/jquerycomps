@@ -16,7 +16,7 @@
      * @param   {string}            _bodys      定义模板的 body 文字, 如果 _selector 不能解析为HTML, 视视为@param _footers
      * @param   {string}            _footers    定义模板的 footer 文字
      * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
+     * @author  qiushaowei   <suches@btbtd.org> | 75 team
      * @date    2013-06-04
      * @example
             <script src="../../../lib.js"></script>

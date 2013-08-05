@@ -127,7 +127,7 @@
      * @class Valid
      * @static
      * @version dev 0.1
-     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
+     * @author  qiushaowei   <suches@btbtd.org> | 75 team
      * @date    2013-05-22
      */
     var Valid = JC.Valid = window.Valid = {

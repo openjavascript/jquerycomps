@@ -12,7 +12,7 @@
      * @static
      * @example 
      *      JC.use( 组件名[,组件名] );
-     * @author  qiushaowei   <suches@btbtd.org> | 360 75 team Team
+     * @author  qiushaowei   <suches@btbtd.org> | 75 team
      * @date    2013-08-04
      */
     window.JC = {
