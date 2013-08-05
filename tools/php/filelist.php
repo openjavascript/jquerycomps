@@ -16,6 +16,10 @@ if( $fileDir == '/home/qiushaowei/htdocs/uxcjs/tools/php' ){
     $fileDir = '/~qiushaowei/uxcjs/tools/php';
 }
 
+if( $fileDir == '/home/qiushaowei/htdocs/jcjs/tools/php' ){
+    $fileDir = '/~qiushaowei/jcjs/tools/php';
+}
+
 $base_path =  './';
 $key = 'imququin360';
 
