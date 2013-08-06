@@ -14,6 +14,20 @@
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tips.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Tips/_demo' target='_blank'>demo link</a></p>
+     * <h2>可用的 html attribute</h2>
+     * <dl>
+     *      <dt>tipsinitedcallback: function</dt>
+     *      <dd>初始完毕时的回调</dd>
+     *
+     *      <dt>tipsshowcallback: function</dt>
+     *      <dd>显示后的回调</dd>
+     *
+     *      <dt>tipshidecallback: function</dt>
+     *      <dd>隐藏后的回调</dd>
+     *
+     *      <dt>tipstemplatebox: selector</dt>
+     *      <dd>显示指定tips的显示模板</dd>
+     * </dl>
      * @namespace JC
      * @class Tips
      * @constructor
@@ -144,6 +158,11 @@
      * tips 显示后的回调
      * <br />在HTML属性定义回调 tipsshowcallback="function name"
      * @event   TipsShow
+     */
+    /**
+     * tips 显示前的回调
+     * <br />在HTML属性定义回调 tipsbeforeshowcallback="function name"
+     * @event   TipsBeforeShow
      */
     /**
      * tips 隐藏后的回调
@@ -358,6 +377,13 @@
          * @return  selector
          */
         , selector: function(){ return this._selector; }
+        , tipsinitedcallback:
+            function(){
+                var _r;
+                this._selector.attr('tipsinitedcallback') 
+                    && ( _r = window[ this._selector.attr('tipsinitedcallback') ] );
+                return _r;
+            }
         , tipsshowcallback: 
             function(){
                 var _r;
@@ -371,14 +397,7 @@
                     && ( _r = window[ this._selector.attr('tipshidecallback') ] );
                 return _r;
             }
-        , tipsinitedcallback:
-            function(){
-                var _r;
-                this._selector.attr('tipsinitedcallback') 
-                    && ( _r = window[ this._selector.attr('tipsinitedcallback') ] );
-                return _r;
-            }
-        , tipstemplatesbox:
+        , tipstemplatebox:
             function(){
                 var _r;
                 this._selector.is('[tipstemplatesbox]') 
@@ -386,6 +405,7 @@
                     ;
                 return _r;
             }
+        , tipstemplatesbox: function(){ return this.tipstemplatebox(); }
         , layout:
             function(){
                 if( !this._layout ){

@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="../uxc.png" title="jquery components"></h1>
+                <h1><img src="../jc_logo.png" title="jquery components"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -164,6 +164,20 @@
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Tips.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Tips/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     * &lt;h2&gt;可用的 html attribute&lt;/h2&gt;
+     * &lt;dl&gt;
+     *      &lt;dt&gt;tipsinitedcallback: function&lt;/dt&gt;
+     *      &lt;dd&gt;初始完毕时的回调&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;tipsshowcallback: function&lt;/dt&gt;
+     *      &lt;dd&gt;显示后的回调&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;tipshidecallback: function&lt;/dt&gt;
+     *      &lt;dd&gt;隐藏后的回调&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;tipstemplatebox: selector&lt;/dt&gt;
+     *      &lt;dd&gt;显示指定tips的显示模板&lt;/dd&gt;
+     * &lt;/dl&gt;
      * @namespace JC
      * @class Tips
      * @constructor
@@ -294,6 +308,11 @@
      * tips 显示后的回调
      * &lt;br /&gt;在HTML属性定义回调 tipsshowcallback=&quot;function name&quot;
      * @event   TipsShow
+     */
+    /**
+     * tips 显示前的回调
+     * &lt;br /&gt;在HTML属性定义回调 tipsbeforeshowcallback=&quot;function name&quot;
+     * @event   TipsBeforeShow
      */
     /**
      * tips 隐藏后的回调
@@ -508,6 +527,13 @@
          * @return  selector
          */
         , selector: function(){ return this._selector; }
+        , tipsinitedcallback:
+            function(){
+                var _r;
+                this._selector.attr(&#x27;tipsinitedcallback&#x27;) 
+                    &amp;&amp; ( _r = window[ this._selector.attr(&#x27;tipsinitedcallback&#x27;) ] );
+                return _r;
+            }
         , tipsshowcallback: 
             function(){
                 var _r;
@@ -521,14 +547,7 @@
                     &amp;&amp; ( _r = window[ this._selector.attr(&#x27;tipshidecallback&#x27;) ] );
                 return _r;
             }
-        , tipsinitedcallback:
-            function(){
-                var _r;
-                this._selector.attr(&#x27;tipsinitedcallback&#x27;) 
-                    &amp;&amp; ( _r = window[ this._selector.attr(&#x27;tipsinitedcallback&#x27;) ] );
-                return _r;
-            }
-        , tipstemplatesbox:
+        , tipstemplatebox:
             function(){
                 var _r;
                 this._selector.is(&#x27;[tipstemplatesbox]&#x27;) 
@@ -536,6 +555,7 @@
                     ;
                 return _r;
             }
+        , tipstemplatesbox: function(){ return this.tipstemplatebox(); }
         , layout:
             function(){
                 if( !this._layout ){
