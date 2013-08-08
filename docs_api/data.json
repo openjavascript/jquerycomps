@@ -143,6 +143,7 @@
             "modules": {},
             "classes": {
                 "JC.Dialog": 1,
+                "JC.Dialog.msgbox": 1,
                 "JC.Dialog.alert": 1,
                 "JC.Dialog.confirm": 1,
                 "JC.Dialog.mask": 1
@@ -175,6 +176,7 @@
             "name": "../comps/Panel/JC.Popup.js",
             "modules": {},
             "classes": {
+                "JC.msgbox": 1,
                 "JC.alert": 1,
                 "JC.confirm": 1,
                 "JC.hideAllPopup": 1
@@ -468,6 +470,46 @@
                 "description": "<a href='JC.Panel.html'>JC.Panel</a>"
             }
         },
+        "JC.Dialog.msgbox": {
+            "name": "JC.Dialog.msgbox",
+            "shortname": "JC.Dialog.msgbox",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC.Dialog",
+            "file": "../comps/Panel/JC.Dialog.js",
+            "line": 57,
+            "description": "会话框 msgbox 提示 (不带按钮)\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p>private property see: <a href='JC.Dialog.html'>JC.Dialog</a>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Dialog.msgbox.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>",
+            "static": 1,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_msg",
+                    "description": "提示内容",
+                    "type": "String"
+                },
+                {
+                    "name": "_status",
+                    "description": "显示弹框的状态, 0: 成功, 1: 错误, 2: 警告",
+                    "type": "Int"
+                },
+                {
+                    "name": "_cb",
+                    "description": "弹框自动关闭后的的回调, <b>如果 _cb 为 int 值, 将视为 _closeMs</b>",
+                    "type": "Function"
+                },
+                {
+                    "name": "_closeMs",
+                    "description": "自动关闭的间隔, 单位毫秒, 默认 2000",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "<a href='JC.Panel.html'>JC.Panel</a>"
+            }
+        },
         "JC.Dialog.alert": {
             "name": "JC.Dialog.alert",
             "shortname": "JC.Dialog.alert",
@@ -478,7 +520,7 @@
             "extension_for": [],
             "namespace": "JC.Dialog",
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 57,
+            "line": 107,
             "description": "会话框 alert 提示\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p>private property see: <a href='JC.Dialog.html'>JC.Dialog</a>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Dialog.alert.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>",
             "static": 1,
             "is_constructor": 1,
@@ -513,7 +555,7 @@
             "extension_for": [],
             "namespace": "JC.Dialog",
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 86,
+            "line": 144,
             "description": "会话框 confirm 提示\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p>private property see: <a href='JC.Dialog.html'>JC.Dialog</a>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Dialog.confirm.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>",
             "static": 1,
             "is_constructor": 1,
@@ -548,7 +590,7 @@
             "extension_for": [],
             "namespace": "JC.Dialog",
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 115,
+            "line": 181,
             "description": "显示或隐藏 蒙板\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>",
             "static": 1,
             "is_constructor": 1,
@@ -673,6 +715,51 @@
                 "\n    JC.hideAllPanel();         //隐藏所有Panel\n    JC.hideAllPanel( true );   //从DOM 清除所有Panel"
             ]
         },
+        "JC.msgbox": {
+            "name": "JC.msgbox",
+            "shortname": "JC.msgbox",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../comps/Panel/JC.Popup.js",
+            "line": 2,
+            "description": "msgbox 提示 popup\n<br /> 这个是不带蒙板 不带按钮的 popup 弹框\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.msgbox.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>",
+            "static": 1,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_msg",
+                    "description": "提示内容",
+                    "type": "String"
+                },
+                {
+                    "name": "_popupSrc",
+                    "description": "触发弹框的事件源 selector, 不为空显示 缓动效果, 为空居中显示",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_status",
+                    "description": "显示弹框的状态, 0: 成功, 1: 错误, 2: 警告",
+                    "type": "Int"
+                },
+                {
+                    "name": "_cb",
+                    "description": "弹框自动关闭后的的回调, <b>如果 _cb 为 int 值, 将视为 _closeMs</b>",
+                    "type": "Function"
+                },
+                {
+                    "name": "_closeMs",
+                    "description": "自动关闭的间隔, 单位毫秒, 默认 2000",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "<a href='JC.Panel.html'>JC.Panel</a>"
+            }
+        },
         "JC.alert": {
             "name": "JC.alert",
             "shortname": "JC.alert",
@@ -683,7 +770,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 2,
+            "line": 54,
             "description": "alert 提示 popup\n<br /> 这个是不带 蒙板的 popup 弹框\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.alert.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>",
             "static": 1,
             "is_constructor": 1,
@@ -723,7 +810,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 24,
+            "line": 88,
             "description": "confirm 提示 popup\n<br /> 这个是不带 蒙板的 popup 弹框\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p>private property see: <a href='JC.alert.html'>JC.alert</a>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.confirm.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>",
             "static": 1,
             "is_constructor": 1,
@@ -763,7 +850,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 47,
+            "line": 123,
             "description": "隐藏 或 从DOM清除所有 JC.alert/JC.confirm\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>",
             "static": 1,
             "is_constructor": 1,
@@ -1058,7 +1145,7 @@
             "namespace": "JC",
             "file": "../comps/Valid/Valid.js",
             "line": 4,
-            "description": "表单验证\n<br />全局访问请使用 JC.Valid 或 Valid\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>\n| <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>\n<h2>Form 的可用 html attribute</h2>\n<dl>\n <dt>errorabort = bool</dt>\n <dd>查检Form Control时, 如果发生错误是否继续检查下一个</dd>\n <dd>default = true</dd>\n</dl>\n<h2>Form Control的可用 html attribute</h2>\n<dl>\n     <dt>reqmsg = 错误提示</dt>\n     <dd>值不能为空</dd>\n\n     <dt>errmsg = 错误提示</dt>\n     <dd>格式错误, 但不验证为空的值</dd>\n\n     <dt>emel = selector</dt>\n     <dd>显示错误的selector</dd>\n\n     <dt>minlength = int(最小长度)</dt>\n     <dd>验证内容的最小长度, 但不验证为空的值</dd>\n\n     <dt>maxlength = int(最大长度)</dt>\n     <dd>验证内容的最大长度, 但不验证为空的值</dd>\n\n     <dt>minvalue = [number|ISO date](最小值)</dt>\n     <dd>验证内容的最小值, 但不验证为空的值</dd>\n\n     <dt>maxvalue = [number|ISO date](最大值)</dt>\n     <dd>验证内容的最大值, 但不验证为空的值</dd>\n\n     <dt>ignoreprocess = bool</dt>\n     <dd>验证表单时, 是否忽略</dd>\n     <dd>default = false</dd>\n\n     <dt>datatype: 常用数据类型</dt>\n     <dd><b>n:</b> 检查是否为正确的数字</dd>\n     <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>\n     <dd>\n         <b>nrange:</b> 检查两个control的数值范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>d:</b> 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD</dd>\n     <dd>\n         <b>daterange:</b> 检查两个control的日期范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>\n     <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>\n     <dd>\n         <b>bankcard:</b> 是否为正确的银行卡\n         <br />  格式为 d{19} | d{16} | 1111 1111 1111 1111 111 | 1111 1111 1111 1111111\n     </dd>\n     <dd>\n         <b>cnname:</b> 中文姓名\n         <br>格式: 汉字和大小写字母\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>username:</b> 注册用户名\n         <br>格式: a-zA-Z0-9_-\n         <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30\n     </dd>\n     <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>\n     <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\\d]{9}</dd>\n     <dd><b>mobile:</b> mobilecode 的别名</dd>\n     <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>\n     <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>\n     <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>\n     <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>\n     <dd><b>phonezone:</b> 电话区号, 3~4位数字</dd>\n     <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>\n     <dd><b>mobilephone:</b> mobilecode | phone</dd>\n     <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>\n     <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>\n     <dd>\n         <b>vcode:</b> 验证码, 0-9a-zA-Z, 长度 默认为4\n         <br />可通过 vcode-[\\d], 指定验证码长度\n     </dd>\n     <dd>\n         <b>text:</b> 显示声明检查的内容为文本类型\n         <br />默认就是 text, 没有特殊原因其实不用显示声明\n     </dd>\n     <dd>\n         <b>bytetext:</b> 声明按字节检查文本长度\n         <br /> ASCII 算一个字符, 非 ASCII 算两个字符\n     </dd>\n     <dd><b>url:</b> URL 格式, ftp, http, https</dd>\n     <dd><b>domain:</b> 匹配域名, 宽松模式, 允许匹配 http(s), 且结尾允许匹配反斜扛(/)</dd>\n     <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>\n     <dd><b>email:</b> 电子邮件</dd>\n     <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>\n\n     <dt>subdatatype: 特殊数据类型</dt>\n     <dd>\n         <dl>\n             <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>\n             <dd><b>alternativemsg:</b> N 选一的错误提示</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reconfirm: N 个 Control 的值必须保持一致</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>\n             <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>\n         </dl>\n     </dd>\n</dl>",
+            "description": "表单验证\n<br />全局访问请使用 JC.Valid 或 Valid\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>\n| <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>\n<h2>Form 的可用 html attribute</h2>\n<dl>\n <dt>errorabort = bool</dt>\n <dd>查检Form Control时, 如果发生错误是否继续检查下一个</dd>\n <dd>default = true</dd>\n</dl>\n<h2>Form Control的可用 html attribute</h2>\n<dl>\n     <dt>reqmsg = 错误提示</dt>\n     <dd>值不能为空</dd>\n\n     <dt>errmsg = 错误提示</dt>\n     <dd>格式错误, 但不验证为空的值</dd>\n\n     <dt>emel = selector</dt>\n     <dd>显示错误的selector</dd>\n\n     <dt>ignoreprocess = bool</dt>\n     <dd>验证表单时, 是否忽略</dd>\n     <dd>default = false</dd>\n\n     <dt>minlength = int(最小长度)</dt>\n     <dd>验证内容的最小长度, 但不验证为空的值</dd>\n\n     <dt>maxlength = int(最大长度)</dt>\n     <dd>验证内容的最大长度, 但不验证为空的值</dd>\n\n     <dt>minvalue = [number|ISO date](最小值)</dt>\n     <dd>验证内容的最小值, 但不验证为空的值</dd>\n\n     <dt>maxvalue = [number|ISO date](最大值)</dt>\n     <dd>验证内容的最大值, 但不验证为空的值</dd>\n\n     <dt>datatype: 常用数据类型</dt>\n     <dd><b>n:</b> 检查是否为正确的数字</dd>\n     <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>\n     <dd>\n         <b>nrange:</b> 检查两个control的数值范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>d:</b> 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD</dd>\n     <dd>\n         <b>daterange:</b> 检查两个control的日期范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>\n     <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>\n     <dd>\n         <b>bankcard:</b> 是否为正确的银行卡\n         <br />  格式为 d{19} | d{16} | 1111 1111 1111 1111 111 | 1111 1111 1111 1111111\n     </dd>\n     <dd>\n         <b>cnname:</b> 中文姓名\n         <br>格式: 汉字和大小写字母\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>username:</b> 注册用户名\n         <br>格式: a-zA-Z0-9_-\n         <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30\n     </dd>\n     <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>\n     <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\\d]{9}</dd>\n     <dd><b>mobile:</b> mobilecode 的别名</dd>\n     <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>\n     <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>\n     <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>\n     <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>\n     <dd><b>phonezone:</b> 电话区号, 3~4位数字</dd>\n     <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>\n     <dd><b>mobilephone:</b> mobilecode | phone</dd>\n     <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>\n     <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>\n     <dd>\n         <b>vcode:</b> 验证码, 0-9a-zA-Z, 长度 默认为4\n         <br />可通过 vcode-[\\d], 指定验证码长度\n     </dd>\n     <dd>\n         <b>text:</b> 显示声明检查的内容为文本类型\n         <br />默认就是 text, 没有特殊原因其实不用显示声明\n     </dd>\n     <dd>\n         <b>bytetext:</b> 声明按字节检查文本长度\n         <br /> ASCII 算一个字符, 非 ASCII 算两个字符\n     </dd>\n     <dd><b>url:</b> URL 格式, ftp, http, https</dd>\n     <dd><b>domain:</b> 匹配域名, 宽松模式, 允许匹配 http(s), 且结尾允许匹配反斜扛(/)</dd>\n     <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>\n     <dd><b>email:</b> 电子邮件</dd>\n     <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>\n\n     <dt>subdatatype: 特殊数据类型</dt>\n     <dd>\n         <dl>\n             <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>\n             <dd><b>alternativemsg:</b> N 选一的错误提示</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reconfirm: N 个 Control 的值必须保持一致</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>\n             <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>\n         </dl>\n     </dd>\n</dl>",
             "static": 1,
             "version": "dev 0.1",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team",
@@ -3206,22 +3293,55 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 129,
-            "description": "从 HTML 属性 自动执行 JC.Dialog.alert / JC.Dialog.confirm",
-            "attr": "{function}  panelcancelcallback cancel  回调",
-            "class": "JC.Dialog.mask",
+            "line": 91,
+            "description": "自定义 JC.Dialog.alert 的显示模板",
+            "itemtype": "property",
+            "name": "tpl",
+            "type": "string",
+            "default": "undefined",
+            "static": 1,
+            "class": "JC.Dialog.msgbox",
             "namespace": "JC.Dialog"
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 161,
-            "description": "响应窗口改变大小和滚动",
-            "class": "JC.Dialog.mask",
+            "line": 99,
+            "description": "定义 JC.Dialog.msgbox 自动关闭的间隔, 单位毫秒",
+            "itemtype": "property",
+            "name": "closeMs",
+            "type": "int",
+            "default": "2000",
+            "static": 1,
+            "class": "JC.Dialog.msgbox",
             "namespace": "JC.Dialog"
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 174,
+            "line": 136,
+            "description": "自定义 JC.Dialog.alert 的显示模板",
+            "itemtype": "property",
+            "name": "tpl",
+            "type": "string",
+            "default": "undefined",
+            "static": 1,
+            "class": "JC.Dialog.alert",
+            "namespace": "JC.Dialog"
+        },
+        {
+            "file": "../comps/Panel/JC.Dialog.js",
+            "line": 173,
+            "description": "自定义 JC.Dialog.confirm 的显示模板",
+            "itemtype": "property",
+            "name": "tpl",
+            "type": "string",
+            "default": "undefined",
+            "static": 1,
+            "class": "JC.Dialog.confirm",
+            "namespace": "JC.Dialog"
+        },
+        {
+            "file": "../comps/Panel/JC.Dialog.js",
+            "line": 195,
             "description": "会话弹框逻辑处理方法集",
             "itemtype": "property",
             "name": "_logic",
@@ -3232,7 +3352,7 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 181,
+            "line": 202,
             "description": "延时处理的指针属性",
             "itemtype": "property",
             "name": "_logic.timeout",
@@ -3244,7 +3364,7 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 189,
+            "line": 210,
             "description": "延时显示弹框\n<br />延时是为了使用户绑定的 show 事件能够被执行",
             "itemtype": "property",
             "name": "_logic.showMs",
@@ -3256,7 +3376,7 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 198,
+            "line": 219,
             "description": "弹框最小宽度",
             "itemtype": "property",
             "name": "_logic.minWidth",
@@ -3269,7 +3389,7 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 207,
+            "line": 228,
             "description": "弹框最大宽度",
             "itemtype": "property",
             "name": "_logic.maxWidth",
@@ -3282,7 +3402,7 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 216,
+            "line": 237,
             "description": "设置会话弹框的唯一性",
             "itemtype": "method",
             "name": "_logic.dialogIdentifier",
@@ -3300,7 +3420,7 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 234,
+            "line": 255,
             "description": "显示蒙板",
             "itemtype": "method",
             "name": "_logic.showMask",
@@ -3311,7 +3431,7 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 254,
+            "line": 275,
             "description": "隐藏蒙板",
             "itemtype": "method",
             "name": "_logic.hideMask",
@@ -3322,7 +3442,7 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 266,
+            "line": 287,
             "description": "窗口改变大小时, 改变蒙板的大小,\n<br />这个方法主要为了兼容 IE6",
             "itemtype": "method",
             "name": "_logic.setMaskSizeForIe6",
@@ -3333,7 +3453,7 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 289,
+            "line": 310,
             "description": "获取弹框的显示状态, 默认为0(成功)",
             "itemtype": "method",
             "name": "_logic.fixWidth",
@@ -3355,7 +3475,7 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 307,
+            "line": 328,
             "description": "修正弹框的默认显示宽度",
             "itemtype": "method",
             "name": "_logic.fixWidth",
@@ -3378,7 +3498,7 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 323,
+            "line": 344,
             "description": "保存会话弹框的所有默认模板",
             "itemtype": "property",
             "name": "_logic.tpls",
@@ -3390,7 +3510,19 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 331,
+            "line": 352,
+            "description": "msgbox 会话弹框的默认模板",
+            "itemtype": "property",
+            "name": "_logic.tpls.msgbox",
+            "type": "string",
+            "access": "private",
+            "tagname": "",
+            "class": "JC.Dialog",
+            "namespace": "JC.Dialog"
+        },
+        {
+            "file": "../comps/Panel/JC.Dialog.js",
+            "line": 372,
             "description": "alert 会话弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.alert",
@@ -3402,7 +3534,7 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 354,
+            "line": 395,
             "description": "confirm 会话弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.confirm",
@@ -3414,13 +3546,28 @@
         },
         {
             "file": "../comps/Panel/JC.Dialog.js",
-            "line": 378,
+            "line": 419,
             "description": "会话弹框的蒙板模板",
             "itemtype": "property",
             "name": "_logic.tpls.mask",
             "type": "string",
             "access": "private",
             "tagname": "",
+            "class": "JC.Dialog",
+            "namespace": "JC.Dialog"
+        },
+        {
+            "file": "../comps/Panel/JC.Dialog.js",
+            "line": 433,
+            "description": "从 HTML 属性 自动执行 JC.Dialog.alert / JC.Dialog.confirm",
+            "attr": "{function}  panelcancelcallback cancel  回调",
+            "class": "JC.Dialog",
+            "namespace": "JC.Dialog"
+        },
+        {
+            "file": "../comps/Panel/JC.Dialog.js",
+            "line": 471,
+            "description": "响应窗口改变大小和滚动",
             "class": "JC.Dialog",
             "namespace": "JC.Dialog"
         },
@@ -4145,22 +4292,55 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 67,
-            "description": "从 HTML 属性 自动执行 JC.alert / JC.confirm",
-            "attr": "{function}  panelcancelcallback cancel  回调",
-            "class": "JC.hideAllPopup",
+            "line": 38,
+            "description": "自定义 JC.msgbox 的显示模板",
+            "itemtype": "property",
+            "name": "tpl",
+            "type": "string",
+            "default": "undefined",
+            "static": 1,
+            "class": "JC.msgbox",
             "namespace": "JC"
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 96,
-            "description": "响应窗口改变大小",
-            "class": "JC.hideAllPopup",
+            "line": 46,
+            "description": "定义 JC.msgbox 自动关闭的间隔, 单位毫秒",
+            "itemtype": "property",
+            "name": "closeMs",
+            "type": "int",
+            "default": "2000",
+            "static": 1,
+            "class": "JC.msgbox",
             "namespace": "JC"
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 105,
+            "line": 80,
+            "description": "自定义 JC.alert 的显示模板",
+            "itemtype": "property",
+            "name": "tpl",
+            "type": "string",
+            "default": "undefined",
+            "static": 1,
+            "class": "JC.alert",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Panel/JC.Popup.js",
+            "line": 115,
+            "description": "自定义 JC.confirm 的显示模板",
+            "itemtype": "property",
+            "name": "tpl",
+            "type": "string",
+            "default": "undefined",
+            "static": 1,
+            "class": "JC.confirm",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Panel/JC.Popup.js",
+            "line": 143,
             "description": "弹框逻辑处理方法集",
             "itemtype": "property",
             "name": "_logic",
@@ -4171,7 +4351,7 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 112,
+            "line": 150,
             "description": "弹框最小宽度",
             "itemtype": "property",
             "name": "_logic.minWidth",
@@ -4184,7 +4364,7 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 121,
+            "line": 159,
             "description": "弹框最大宽度",
             "itemtype": "property",
             "name": "_logic.maxWidth",
@@ -4197,7 +4377,7 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 130,
+            "line": 168,
             "description": "显示时 X轴的偏移值",
             "itemtype": "property",
             "name": "_logic.xoffset",
@@ -4210,7 +4390,7 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 139,
+            "line": 177,
             "description": "显示时 Y轴的偏移值",
             "itemtype": "property",
             "name": "_logic.yoffset",
@@ -4223,7 +4403,7 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 148,
+            "line": 186,
             "description": "设置弹框的唯一性",
             "itemtype": "method",
             "name": "_logic.popupIdentifier",
@@ -4241,7 +4421,7 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 165,
+            "line": 203,
             "description": "弹框通用处理方法",
             "itemtype": "method",
             "name": "_logic.popup",
@@ -4282,7 +4462,7 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 232,
+            "line": 274,
             "description": "隐藏弹框缓动效果",
             "itemtype": "method",
             "name": "_logic.hideEffect",
@@ -4310,7 +4490,7 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 275,
+            "line": 317,
             "description": "隐藏弹框缓动效果",
             "itemtype": "method",
             "name": "_logic.showEffect",
@@ -4333,7 +4513,7 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 327,
+            "line": 369,
             "description": "设置 Panel 的默认X,Y轴",
             "itemtype": "method",
             "name": "_logic.onresize",
@@ -4351,7 +4531,7 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 363,
+            "line": 405,
             "description": "取得弹框最要显示的 y 轴",
             "itemtype": "method",
             "name": "_logic.getTop",
@@ -4388,7 +4568,7 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 384,
+            "line": 426,
             "description": "取得弹框最要显示的 x 轴",
             "itemtype": "method",
             "name": "_logic.getLeft",
@@ -4425,7 +4605,7 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 407,
+            "line": 449,
             "description": "修正弹框的默认显示宽度",
             "itemtype": "method",
             "name": "_logic.fixWidth",
@@ -4448,7 +4628,7 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 424,
+            "line": 466,
             "description": "获取弹框的显示状态, 默认为0(成功)",
             "itemtype": "method",
             "name": "_logic.fixWidth",
@@ -4470,7 +4650,7 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 442,
+            "line": 484,
             "description": "保存弹框的所有默认模板",
             "itemtype": "property",
             "name": "_logic.tpls",
@@ -4482,7 +4662,19 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 450,
+            "line": 492,
+            "description": "msgbox 弹框的默认模板",
+            "itemtype": "property",
+            "name": "_logic.tpls.msgbox",
+            "type": "string",
+            "access": "private",
+            "tagname": "",
+            "class": "JC.alert",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Panel/JC.Popup.js",
+            "line": 512,
             "description": "alert 弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.alert",
@@ -4494,13 +4686,28 @@
         },
         {
             "file": "../comps/Panel/JC.Popup.js",
-            "line": 473,
+            "line": 535,
             "description": "confirm 弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.confirm",
             "type": "string",
             "access": "private",
             "tagname": "",
+            "class": "JC.alert",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Panel/JC.Popup.js",
+            "line": 561,
+            "description": "从 HTML 属性 自动执行 JC.alert / JC.confirm",
+            "attr": "{function}  panelcancelcallback cancel  回调",
+            "class": "JC.alert",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Panel/JC.Popup.js",
+            "line": 597,
+            "description": "响应窗口改变大小",
             "class": "JC.alert",
             "namespace": "JC"
         },
@@ -10272,23 +10479,23 @@
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/JC.Dialog.js:129"
+            "line": " ../comps/Panel/JC.Dialog.js:433"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/JC.Dialog.js:129"
+            "line": " ../comps/Panel/JC.Dialog.js:433"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/JC.Dialog.js:129"
+            "line": " ../comps/Panel/JC.Dialog.js:433"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/JC.Dialog.js:129"
+            "line": " ../comps/Panel/JC.Dialog.js:433"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/JC.Dialog.js:129"
+            "line": " ../comps/Panel/JC.Dialog.js:433"
         },
         {
             "message": "unknown tag: version",
@@ -10304,23 +10511,23 @@
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/JC.Popup.js:67"
+            "line": " ../comps/Panel/JC.Popup.js:561"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/JC.Popup.js:67"
+            "line": " ../comps/Panel/JC.Popup.js:561"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/JC.Popup.js:67"
+            "line": " ../comps/Panel/JC.Popup.js:561"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/JC.Popup.js:67"
+            "line": " ../comps/Panel/JC.Popup.js:561"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/JC.Popup.js:67"
+            "line": " ../comps/Panel/JC.Popup.js:561"
         },
         {
             "message": "unknown tag: version",
@@ -10644,11 +10851,11 @@
         },
         {
             "message": "Missing item type\n从 HTML 属性 自动执行 JC.Dialog.alert / JC.Dialog.confirm",
-            "line": " ../comps/Panel/JC.Dialog.js:129"
+            "line": " ../comps/Panel/JC.Dialog.js:433"
         },
         {
             "message": "Missing item type\n响应窗口改变大小和滚动",
-            "line": " ../comps/Panel/JC.Dialog.js:161"
+            "line": " ../comps/Panel/JC.Dialog.js:471"
         },
         {
             "message": "Missing item type\n初始化Panel 默认事件",
@@ -10664,11 +10871,11 @@
         },
         {
             "message": "Missing item type\n从 HTML 属性 自动执行 JC.alert / JC.confirm",
-            "line": " ../comps/Panel/JC.Popup.js:67"
+            "line": " ../comps/Panel/JC.Popup.js:561"
         },
         {
             "message": "Missing item type\n响应窗口改变大小",
-            "line": " ../comps/Panel/JC.Popup.js:96"
+            "line": " ../comps/Panel/JC.Popup.js:597"
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",

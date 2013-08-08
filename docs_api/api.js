@@ -7,6 +7,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Dialog.alert",
         "JC.Dialog.confirm",
         "JC.Dialog.mask",
+        "JC.Dialog.msgbox",
         "JC.Form",
         "JC.LunarCalendar",
         "JC.Panel",
@@ -20,6 +21,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.confirm",
         "JC.hideAllPanel",
         "JC.hideAllPopup",
+        "JC.msgbox",
         "window.JC",
         "window.UXC",
         "window.jQuery"

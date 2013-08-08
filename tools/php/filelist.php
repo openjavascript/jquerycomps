@@ -123,7 +123,14 @@ function in_blacklist_file($item) {
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>File List</title>
+    <meta http-equiv=content-language content="zh-cn" />
+    <meta name=robots content="index,follow" />
+    <meta name="keywords" content="JC,JC Project,Open JQuery Components Library,javascript,js,as,actionscript,openjavascript,openjavascript.org,btbtd,btbtd.org,shawl.qiu,suches">
+    <meta name="description" content="JC Project - Open JQuery Components Library - openjavascript.org">
+    <meta name=rating content="general" />
+    <meta name=author content="suches, suches@btbtd.org" />
+    <meta name=copyright content="openjavascript.org All rights reserved" />
+    <title>JC Project - Open JQuery Components Library</title>
     <style>
 		body{font:13px/1.4 arial,helvetica,sans-serif;}
 		th,em,strong,b,address,cite{font-style:normal;font-weight:400;}
@@ -141,6 +148,7 @@ function in_blacklist_file($item) {
     </head>
 	<body>
 		<div id="wrap">
+        <h2>JC Project - Open JQuery Components Library</h2>
 		<h3>
 			<a href="?">ROOT</a>
 			<?php if(!empty($path)): ?>

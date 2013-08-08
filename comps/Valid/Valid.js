@@ -25,6 +25,10 @@
      *      <dt>emel = selector</dt>
      *      <dd>显示错误的selector</dd>
      *
+     *      <dt>ignoreprocess = bool</dt>
+     *      <dd>验证表单时, 是否忽略</dd>
+     *      <dd>default = false</dd>
+     *
      *      <dt>minlength = int(最小长度)</dt>
      *      <dd>验证内容的最小长度, 但不验证为空的值</dd>
      *
@@ -36,10 +40,6 @@
      *
      *      <dt>maxvalue = [number|ISO date](最大值)</dt>
      *      <dd>验证内容的最大值, 但不验证为空的值</dd>
-     *
-     *      <dt>ignoreprocess = bool</dt>
-     *      <dd>验证表单时, 是否忽略</dd>
-     *      <dd>default = false</dd>
      *
      *      <dt>datatype: 常用数据类型</dt>
      *      <dd><b>n:</b> 检查是否为正确的数字</dd>
