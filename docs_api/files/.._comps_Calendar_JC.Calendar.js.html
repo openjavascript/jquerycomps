@@ -169,7 +169,7 @@
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Calendar.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Calendar/_demo/&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
-     * &lt;h2&gt;[input|button]:datatype=[date|week|month|season] | multidate 可用的html attribute&lt;/h2&gt; 
+     * &lt;h2&gt;(input|button):(datatype|multidate)=(date|week|month|season) 可用的html attribute&lt;/h2&gt; 
      * &lt;dl&gt;
      *      &lt;dt&gt;datatype&lt;/dt&gt;
      *      &lt;dd&gt;
@@ -195,10 +195,25 @@
      *      &lt;dd&gt;用户点击日历控件操作按钮后, 外观产生变化时触发的回调&lt;/dd&gt;
      *
      *      &lt;dt&gt;calendarupdate&lt;/dt&gt;
-     *      &lt;dd&gt;赋值后触发的回调&lt;/dd&gt;
+     *      &lt;dd&gt;赋值后触发的回调, params: _CalendarType, _startDate, _endDate&lt;/dd&gt;
      *
      *      &lt;dt&gt;calendarclear&lt;/dt&gt;
      *      &lt;dd&gt;清空日期触发的回调&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;minvalue&lt;/dt&gt;
+     *      &lt;dd&gt;日期的最小时间, YYYY-MM-DD&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;maxvalue&lt;/dt&gt;
+     *      &lt;dd&gt;日期的最大时间, YYYY-MM-DD&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;currentcanselect&lt;/dt&gt;
+     *      &lt;dd&gt;当前日期是否能选择, bool, default=true&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;multiselect (目前只对月份日历有效)&lt;/dt&gt;
+     *      &lt;dd&gt;是否为多选日历, bool, default=false&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;calendarupdatemultiselect&lt;/dt&gt;
+     *      &lt;dd&gt;多选日历赋值后触发的回调, params: _CalendarType, _dateArray( [ {start, end}, ... ] )&lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
      * @class Calendar
@@ -352,6 +367,18 @@
 
                 return _r;
             }
+        /** 
+         * 判断日历源控件是否为多选模式
+         * @method  isMultiSelect
+         * @static
+         * return   bool
+         */
+        , isMultiSelect:
+            function(){
+                var _r = false;
+                Calendar.lastIpt &amp;&amp; ( _r = parseBool( Calendar.lastIpt.attr(&#x27;multiselect&#x27;) ) );
+                return _r;
+            }
         /**
          * 请使用 isCalendar, 这个方法是为了向后兼容
          */
@@ -466,7 +493,6 @@
         , _triggerShow:
             function(){
                 var _ipt = Calendar.lastIpt, _tmp;
-                _ipt &amp;&amp; $( _ipt ).trigger( &#x27;CalendarShow&#x27; );
                 _ipt &amp;&amp; _ipt.attr(&#x27;calendarshow&#x27;) 
                     &amp;&amp; ( _tmp = window[ _ipt.attr(&#x27;calendarshow&#x27;) ] )
                     &amp;&amp; _tmp.call( _ipt );
@@ -474,7 +500,6 @@
         , _triggerHide:
             function(){
                 var _ipt = Calendar.lastIpt, _tmp;
-                _ipt &amp;&amp; $( _ipt ).trigger( &#x27;CalendarHide&#x27; );
                 _ipt &amp;&amp; _ipt.attr(&#x27;calendarhide&#x27;) 
                     &amp;&amp; ( _tmp = window[ _ipt.attr(&#x27;calendarhide&#x27;) ] )
                     &amp;&amp; _tmp.call( _ipt );
@@ -482,7 +507,6 @@
         , _triggerLayoutChange:
             function(){
                 var _ipt = Calendar.lastIpt, _tmp;
-                _ipt &amp;&amp; $( _ipt ).trigger( &#x27;CalendarLayoutChange&#x27; );
                 _ipt &amp;&amp; _ipt.attr(&#x27;calendarlayoutchange&#x27;) 
                     &amp;&amp; ( _tmp = window[ _ipt.attr(&#x27;calendarlayoutchange&#x27;) ] )
                     &amp;&amp; _tmp.call( _ipt );
@@ -490,7 +514,6 @@
         , _triggerClear:
             function(){
                 var _ipt = Calendar.lastIpt, _tmp;
-                _ipt &amp;&amp; $( _ipt ).trigger( &#x27;CalendarClear&#x27; );
                 _ipt &amp;&amp; _ipt.attr(&#x27;calendarclear&#x27;) 
                     &amp;&amp; ( _tmp = window[ _ipt.attr(&#x27;calendarclear&#x27;) ] )
                     &amp;&amp; _tmp.call( _ipt );
@@ -498,10 +521,16 @@
         , _triggerUpdate:
             function( _data ){
                 var _ipt = Calendar.lastIpt, _tmp;
-                _ipt &amp;&amp; $( _ipt ).trigger( &#x27;CalendarUpdate&#x27; );
                 _ipt &amp;&amp; _ipt.attr(&#x27;calendarupdate&#x27;) 
                     &amp;&amp; ( _tmp = window[ _ipt.attr(&#x27;calendarupdate&#x27;) ] )
-                    &amp;&amp; _tmp.call( _ipt, _data );
+                    &amp;&amp; _tmp.apply( _ipt, _data );
+            }
+        , _triggerUpdateMultiSelect:
+            function( _data ){
+                var _ipt = Calendar.lastIpt, _tmp;
+                _ipt &amp;&amp; _ipt.attr(&#x27;calendarupdatemultiselect&#x27;) 
+                    &amp;&amp; ( _tmp = window[ _ipt.attr(&#x27;calendarupdatemultiselect&#x27;) ] )
+                    &amp;&amp; _tmp.apply( _ipt, _data );
             }
         /**
          * 自定义日历组件模板
@@ -1035,7 +1064,7 @@
          */
         $(document).delegate( &#x27;#UXCCalendar table a&#x27;, &#x27;click&#x27;, function( $evt ){
             $evt.preventDefault();
-            var _p = $(this), _tm = _p.attr(&#x27;date&#x27;)||&#x27;&#x27;, _d = new Date();
+            var _p = $(this), _tm = _p.attr(&#x27;date&#x27;)||&#x27;&#x27;, _d = new Date(), _isMultiselect = Calendar.isMultiSelect();
             if( !_tm ) return;
             if( _p.parent(&#x27;td&#x27;).hasClass(&#x27;unable&#x27;) ) return;
 
@@ -1058,29 +1087,6 @@
             Calendar.setPosition( Calendar.lastIpt, _layout );
         });
     });
-    /**
-     * 显示日历控件触发的事件
-     * @event   CalendarShow
-     */
-    /**
-     * 隐藏日历控件触发的事件
-     * @event   CalendarHide
-     */
-    /**
-     * 用户点击日历控件操作按钮后, 外观产生变化时触发的事件
-     * @event   CalendarLayoutChange
-     */
-    /**
-     * 清空日期触发的事件
-     * @event   CalendarClear
-     */
-    /**
-     * 赋值后触发的事件
-     * @event   CalendarUpdate
-     * @param   {string}    _dateType
-     * @param   {date}      _startDate
-     * @param   {date}      _endDate
-     */
 }(jQuery));
 
 

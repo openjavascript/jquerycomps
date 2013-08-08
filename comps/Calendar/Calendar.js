@@ -19,7 +19,7 @@
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Calendar.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Calendar/_demo/' target='_blank'>demo link</a></p>
-     * <h2>[input|button]:datatype=[date|week|month|season] | multidate 可用的html attribute</h2> 
+     * <h2>(input|button):(datatype|multidate)=(date|week|month|season) 可用的html attribute</h2> 
      * <dl>
      *      <dt>datatype</dt>
      *      <dd>
@@ -45,10 +45,25 @@
      *      <dd>用户点击日历控件操作按钮后, 外观产生变化时触发的回调</dd>
      *
      *      <dt>calendarupdate</dt>
-     *      <dd>赋值后触发的回调</dd>
+     *      <dd>赋值后触发的回调, params: _CalendarType, _startDate, _endDate</dd>
      *
      *      <dt>calendarclear</dt>
      *      <dd>清空日期触发的回调</dd>
+     *
+     *      <dt>minvalue</dt>
+     *      <dd>日期的最小时间, YYYY-MM-DD</dd>
+     *
+     *      <dt>maxvalue</dt>
+     *      <dd>日期的最大时间, YYYY-MM-DD</dd>
+     *
+     *      <dt>currentcanselect</dt>
+     *      <dd>当前日期是否能选择, bool, default=true</dd>
+     *
+     *      <dt>multiselect (目前只对月份日历有效)</dt>
+     *      <dd>是否为多选日历, bool, default=false</dd>
+     *
+     *      <dt>calendarupdatemultiselect</dt>
+     *      <dd>多选日历赋值后触发的回调, params: _CalendarType, _dateArray( [ {start, end}, ... ] )</dd>
      * </dl>
      * @namespace JC
      * @class Calendar
@@ -202,6 +217,18 @@
 
                 return _r;
             }
+        /** 
+         * 判断日历源控件是否为多选模式
+         * @method  isMultiSelect
+         * @static
+         * return   bool
+         */
+        , isMultiSelect:
+            function(){
+                var _r = false;
+                Calendar.lastIpt && ( _r = parseBool( Calendar.lastIpt.attr('multiselect') ) );
+                return _r;
+            }
         /**
          * 请使用 isCalendar, 这个方法是为了向后兼容
          */
@@ -316,7 +343,6 @@
         , _triggerShow:
             function(){
                 var _ipt = Calendar.lastIpt, _tmp;
-                _ipt && $( _ipt ).trigger( 'CalendarShow' );
                 _ipt && _ipt.attr('calendarshow') 
                     && ( _tmp = window[ _ipt.attr('calendarshow') ] )
                     && _tmp.call( _ipt );
@@ -324,7 +350,6 @@
         , _triggerHide:
             function(){
                 var _ipt = Calendar.lastIpt, _tmp;
-                _ipt && $( _ipt ).trigger( 'CalendarHide' );
                 _ipt && _ipt.attr('calendarhide') 
                     && ( _tmp = window[ _ipt.attr('calendarhide') ] )
                     && _tmp.call( _ipt );
@@ -332,7 +357,6 @@
         , _triggerLayoutChange:
             function(){
                 var _ipt = Calendar.lastIpt, _tmp;
-                _ipt && $( _ipt ).trigger( 'CalendarLayoutChange' );
                 _ipt && _ipt.attr('calendarlayoutchange') 
                     && ( _tmp = window[ _ipt.attr('calendarlayoutchange') ] )
                     && _tmp.call( _ipt );
@@ -340,7 +364,6 @@
         , _triggerClear:
             function(){
                 var _ipt = Calendar.lastIpt, _tmp;
-                _ipt && $( _ipt ).trigger( 'CalendarClear' );
                 _ipt && _ipt.attr('calendarclear') 
                     && ( _tmp = window[ _ipt.attr('calendarclear') ] )
                     && _tmp.call( _ipt );
@@ -348,10 +371,16 @@
         , _triggerUpdate:
             function( _data ){
                 var _ipt = Calendar.lastIpt, _tmp;
-                _ipt && $( _ipt ).trigger( 'CalendarUpdate' );
                 _ipt && _ipt.attr('calendarupdate') 
                     && ( _tmp = window[ _ipt.attr('calendarupdate') ] )
-                    && _tmp.call( _ipt, _data );
+                    && _tmp.apply( _ipt, _data );
+            }
+        , _triggerUpdateMultiSelect:
+            function( _data ){
+                var _ipt = Calendar.lastIpt, _tmp;
+                _ipt && _ipt.attr('calendarupdatemultiselect') 
+                    && ( _tmp = window[ _ipt.attr('calendarupdatemultiselect') ] )
+                    && _tmp.apply( _ipt, _data );
             }
         /**
          * 自定义日历组件模板
@@ -885,7 +914,7 @@
          */
         $(document).delegate( '#UXCCalendar table a', 'click', function( $evt ){
             $evt.preventDefault();
-            var _p = $(this), _tm = _p.attr('date')||'', _d = new Date();
+            var _p = $(this), _tm = _p.attr('date')||'', _d = new Date(), _isMultiselect = Calendar.isMultiSelect();
             if( !_tm ) return;
             if( _p.parent('td').hasClass('unable') ) return;
 
@@ -908,29 +937,6 @@
             Calendar.setPosition( Calendar.lastIpt, _layout );
         });
     });
-    /**
-     * 显示日历控件触发的事件
-     * @event   CalendarShow
-     */
-    /**
-     * 隐藏日历控件触发的事件
-     * @event   CalendarHide
-     */
-    /**
-     * 用户点击日历控件操作按钮后, 外观产生变化时触发的事件
-     * @event   CalendarLayoutChange
-     */
-    /**
-     * 清空日期触发的事件
-     * @event   CalendarClear
-     */
-    /**
-     * 赋值后触发的事件
-     * @event   CalendarUpdate
-     * @param   {string}    _dateType
-     * @param   {date}      _startDate
-     * @param   {date}      _endDate
-     */
 }(jQuery));
 
 
@@ -1218,11 +1224,36 @@
         , onConfirm:
             function(){
                 JC.log( 'Calendar.pickMonth, onConfirm' );
+                if( JC.Calendar.isMultiSelect() ){
+                    JC.log( 'pickMonth multiselect' );
+                    _logic.updateMultiSelect();
+                    return;
+                }
                 var _cur = _logic.getLayout().find('td.cur');
                 if( !_cur.length ) _logic.getLayout().find('td.today');
                 if( _cur.length && _cur.hasClass('unable') ) return 0;
                 if( _cur.length ) _cur.find('a').trigger('click');
             }
+
+        , updateMultiSelect:
+            function(){
+                var _r = [], _text = [], _ls = _logic.getLayout().find('td.cur'), _dstart, _dend, _td, _p;
+                _ls.each( function(){
+                    _td = $(this), _p = _td.find('> a');
+                    if( _p.is( '.unable' ) ) return;
+                    _dstart = new Date();
+                    _dend = new Date();
+                    _dstart.setTime( _p.attr('dstart') );
+                    _dend.setTime( _p.attr('dend') );
+
+                    _r.push( {'begin': _dstart, 'end': _dend } );
+                    _text.push( printf( '{0} 至 {1}', formatISODate( _dstart ), formatISODate( _dend ) ) );
+                });
+                JC.Calendar.lastIpt.val( _text.join(', ') );
+                JC.Calendar._triggerUpdateMultiSelect( [ 'month', _r ] );
+                return _r;
+            }
+
         , updateYear:
             function( _val ){
                 if( !_logic.lastDateObj ) return;
@@ -1355,11 +1386,21 @@
     };
 
     $(document).delegate('#UXCCalendar_month table a', 'click', function( _evt ){
-        var _p = $(this), dstart = new Date(), dend = new Date();
+        var _p = $(this), dstart = new Date(), dend = new Date()
+            , _isMultiselect = JC.Calendar.isMultiSelect()
+            , _td = _p.parent('td')
+        ;
         if( !JC.Calendar.lastIpt ) return;
-        if( _p.parent('td').hasClass( 'unable' ) ) return;
+        if( _td.hasClass( 'unable' ) ) return;
         dstart.setTime( _p.attr('dstart') );
         dend.setTime( _p.attr('dend') );
+
+        if( _isMultiselect ){
+            UXC.log( '_isMultiselect', new Date().getTime() );
+            _td.toggleClass( 'cur' );
+            return; 
+        }
+
         JC.Calendar.lastIpt.val( printf( '{0} 至 {1}', formatISODate( dstart ), formatISODate( dend ) ) );
         JC.Calendar.hide();
         JC.Calendar._triggerUpdate( [ 'month', dstart, dend] );
