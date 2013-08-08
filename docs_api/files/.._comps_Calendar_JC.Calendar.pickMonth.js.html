@@ -192,6 +192,7 @@
                 JC.log( &#x27;Calendar.pickMonth, onConfirm&#x27; );
                 var _cur = _logic.getLayout().find(&#x27;td.cur&#x27;);
                 if( !_cur.length ) _logic.getLayout().find(&#x27;td.today&#x27;);
+                if( _cur.length &amp;&amp; _cur.hasClass(&#x27;unable&#x27;) ) return 0;
                 if( _cur.length ) _cur.find(&#x27;a&#x27;).trigger(&#x27;click&#x27;);
             }
         , updateYear:
@@ -326,13 +327,14 @@
     };
 
     $(document).delegate(&#x27;#UXCCalendar_month table a&#x27;, &#x27;click&#x27;, function( _evt ){
-        var p = $(this), dstart = new Date(), dend = new Date();
+        var _p = $(this), dstart = new Date(), dend = new Date();
         if( !JC.Calendar.lastIpt ) return;
-        if( p.parent(&#x27;td&#x27;).hasClass( &#x27;unable&#x27; ) ) return;
-        dstart.setTime( p.attr(&#x27;dstart&#x27;) );
-        dend.setTime( p.attr(&#x27;dend&#x27;) );
+        if( _p.parent(&#x27;td&#x27;).hasClass( &#x27;unable&#x27; ) ) return;
+        dstart.setTime( _p.attr(&#x27;dstart&#x27;) );
+        dend.setTime( _p.attr(&#x27;dend&#x27;) );
         JC.Calendar.lastIpt.val( printf( &#x27;{0} 至 {1}&#x27;, formatISODate( dstart ), formatISODate( dend ) ) );
         JC.Calendar.hide();
+        JC.Calendar._triggerUpdate( [ &#x27;month&#x27;, dstart, dend] );
     });
 
 }(jQuery));

@@ -19,6 +19,37 @@
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Calendar.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Calendar/_demo/' target='_blank'>demo link</a></p>
+     * <h2>[input|button]:datatype=[date|week|month|season] | multidate 可用的html attribute</h2> 
+     * <dl>
+     *      <dt>datatype</dt>
+     *      <dd>
+     *          声明日历控件的类型:
+     *          <p><b>date:</b> 日期日历</p>
+     *          <p><b>week:</b> 周日历</p>
+     *          <p><b>month:</b> 月日历</p>
+     *          <p><b>season:</b> 级日历</p>
+     *      </dd>
+     *
+     *      <dt>multidate</dt>
+     *      <dd>
+     *          与 datatype 一样, 这个是扩展属性, 避免表单验证带来的逻辑冲突
+     *      </dd>
+     *
+     *      <dt>calendarshow</dt>
+     *      <dd>显示日历时的回调</dd>
+     *
+     *      <dt>calendarhide</dt>
+     *      <dd>隐藏日历时的回调</dd>
+     *
+     *      <dt>calendarlayoutchange</dt>
+     *      <dd>用户点击日历控件操作按钮后, 外观产生变化时触发的回调</dd>
+     *
+     *      <dt>calendarupdate</dt>
+     *      <dd>赋值后触发的回调</dd>
+     *
+     *      <dt>calendarclear</dt>
+     *      <dd>清空日期触发的回调</dd>
+     * </dl>
      * @namespace JC
      * @class Calendar
      * @static
@@ -60,7 +91,7 @@
                 $('body > div.UXCCalendar').hide();
                 Calendar.lastIpt = _selector;
                 _selector = $(_selector);
-                var _type = $.trim(_selector.attr('multidate') || '').toLowerCase();
+                var _type = $.trim(_selector.attr('multidate') || '').toLowerCase() || $.trim(_selector.attr('datatype') || '').toLowerCase();
                 switch( _type ){
                     case 'week': Calendar.pickWeek && Calendar.pickWeek( _selector ); break;
                     case 'month': Calendar.pickMonth && Calendar.pickMonth( _selector ); break;
@@ -69,6 +100,7 @@
                 }
 
                 Calendar.layoutInitedCallback && Calendar.layoutInitedCallback( $('body > div.UXCCalendar:visible'), _selector );
+                Calendar._triggerShow();
             } 
         /**
          * 初始化 _selector 中的所有日历组件
@@ -105,14 +137,14 @@
         , defaultDateSpan: 20
         /**
          * 最后一个显示日历组件的文本框
-         * @property  Calendar.lastIpt
+         * @property  lastIpt
          * @type    selector
          * @static
          */
         , lastIpt: null
         /**
          * 设置日历组件的显示位置
-         * @method  Calendar.setPosition
+         * @method  setPosition
          * @static
          * @param   {selector}  _ipt    需要显示日历组件的文本框
          */
@@ -142,12 +174,12 @@
             }
         /** 
          * 判断选择器是否为日历组件的对象
-         * @method  Calendar.isCalendarElement
+         * @method  isCalendar
          * @static
          * @param   {selector}  _selector
          * return   bool
          */
-        , isCalendarElement:
+        , isCalendar:
             function( _selector ){
                 _selector = $(_selector);
                 var _r = 0;
@@ -156,8 +188,13 @@
                     if( _selector.hasClass('UXCCalendar_btn') ) _r = 1;
                     if( _selector.prop('nodeName') 
                             && _selector.attr('datatype')
-                            && _selector.prop('nodeName').toLowerCase()=='input' 
-                            && _selector.attr('datatype').toLowerCase()=='date') _r = 1;
+                            && ( _selector.prop('nodeName').toLowerCase()=='input' || _selector.prop('nodeName').toLowerCase()=='button' )
+                            && ( _selector.attr('datatype').toLowerCase()=='date' 
+                                    || _selector.attr('datatype').toLowerCase()=='week' 
+                                    || _selector.attr('datatype').toLowerCase()=='month' 
+                                    || _selector.attr('datatype').toLowerCase()=='season' 
+                                    || _selector.attr('datatype').toLowerCase()=='year' 
+                                )) _r = 1;
                     if( _selector.prop('nodeName') 
                             && _selector.attr('multidate')
                             && _selector.prop('nodeName').toLowerCase()=='input') _r = 1;
@@ -165,6 +202,10 @@
 
                 return _r;
             }
+        /**
+         * 请使用 isCalendar, 这个方法是为了向后兼容
+         */
+        , isCalendarElement: function( _selector ){ return Calendar.isCalendar( _selector ); }
         /**
          * 初始化外观后的回调函数
          * @property layoutInitedCallback
@@ -202,10 +243,11 @@
             function(){
                 $('body > div.UXCCalendar').hide();
                 Calendar.layoutHideCallback && Calendar.layoutHideCallback( Calendar.lastIpt );
+                Calendar._triggerHide();
             }
         /**
          * 获取初始日期对象
-         * @method  Calendar.getDate
+         * @method  getDate
          * @static
          * @param   {selector}  _selector   显示日历组件的input
          * return   Object  { date: 0, minvalue: 0, maxvalue: 0, initMinvalue: 0, initMaxvalue: 0 }
@@ -270,6 +312,46 @@
                 _num > 10 && ( _r = (_num % 10 !== 0 ? Calendar.cnUnit.charAt(0) : '') + _r );
                 _num > 19 && ( _r = Calendar.cnUnit.charAt( Math.floor( _num / 10 ) ) + _r );
                 return _r;
+            }
+        , _triggerShow:
+            function(){
+                var _ipt = Calendar.lastIpt, _tmp;
+                _ipt && $( _ipt ).trigger( 'CalendarShow' );
+                _ipt && _ipt.attr('calendarshow') 
+                    && ( _tmp = window[ _ipt.attr('calendarshow') ] )
+                    && _tmp.call( _ipt );
+            }
+        , _triggerHide:
+            function(){
+                var _ipt = Calendar.lastIpt, _tmp;
+                _ipt && $( _ipt ).trigger( 'CalendarHide' );
+                _ipt && _ipt.attr('calendarhide') 
+                    && ( _tmp = window[ _ipt.attr('calendarhide') ] )
+                    && _tmp.call( _ipt );
+            }
+        , _triggerLayoutChange:
+            function(){
+                var _ipt = Calendar.lastIpt, _tmp;
+                _ipt && $( _ipt ).trigger( 'CalendarLayoutChange' );
+                _ipt && _ipt.attr('calendarlayoutchange') 
+                    && ( _tmp = window[ _ipt.attr('calendarlayoutchange') ] )
+                    && _tmp.call( _ipt );
+            }
+        , _triggerClear:
+            function(){
+                var _ipt = Calendar.lastIpt, _tmp;
+                _ipt && $( _ipt ).trigger( 'CalendarClear' );
+                _ipt && _ipt.attr('calendarclear') 
+                    && ( _tmp = window[ _ipt.attr('calendarclear') ] )
+                    && _tmp.call( _ipt );
+            }
+        , _triggerUpdate:
+            function( _data ){
+                var _ipt = Calendar.lastIpt, _tmp;
+                _ipt && $( _ipt ).trigger( 'CalendarUpdate' );
+                _ipt && _ipt.attr('calendarupdate') 
+                    && ( _tmp = window[ _ipt.attr('calendarupdate') ] )
+                    && _tmp.call( _ipt, _data );
             }
         /**
          * 自定义日历组件模板
@@ -554,10 +636,11 @@
          */
         , onConfirm:
             function(){
-                var _cur;
-                _cur = _logic.getLayout().find('table td.cur a');
-                if( _cur.parent('td').hasClass('unable') ) return 0;
-                _cur && _cur.length && _cur.attr('date') && _logic.setDate( _cur.attr('date') );
+                var _cur = _logic.getLayout().find('td.cur');
+                if( !_cur.length ) _logic.getLayout().find('td.today');
+                if( _cur.length && _cur.hasClass('unable') ) return 0;
+                if( _cur.length ) _cur.find('a').trigger('click');
+
                 return 1;
             }
         /**
@@ -634,6 +717,7 @@
         $(document).delegate( 'body > div.UXCCalendar select.UYear', 'change', function( $evt ){
             var box = $(this).parents( 'div.UXCCalendar' );
             box.length && box.data('updateYearMethod') && box.data('updateYearMethod')( $(this).val()  );
+            Calendar._triggerLayoutChange();
         });
         /**
          * 捕获用户更改年份 
@@ -644,6 +728,7 @@
         $(document).delegate( 'body > div.UXCCalendar button.UNextYear', 'click', function( $evt ){
             var box = $(this).parents( 'div.UXCCalendar' );
             box.length && box.data('nextYearMethod') && box.data('nextYearMethod')();
+            Calendar._triggerLayoutChange();
         });
         /**
          * 捕获用户更改年份 
@@ -654,6 +739,7 @@
         $(document).delegate( 'body > div.UXCCalendar button.UPreYear', 'click', function( $evt ){
             var box = $(this).parents( 'div.UXCCalendar' );
             box.length && box.data('preYearMethod') && box.data('preYearMethod')();
+            Calendar._triggerLayoutChange();
         });
         /**
          * 捕获用户更改月份
@@ -663,6 +749,7 @@
          */
         $(document).delegate( '#UXCCalendar select.UMonth', 'change', function( $evt ){
             _logic.setNewMonth( $(this).val() );
+            Calendar._triggerLayoutChange();
         });
         /**
          * 选择当前日期
@@ -695,6 +782,7 @@
             }
             _logic.initDateLayout( _do );
             JC.log( _p.attr("action") );
+            Calendar._triggerLayoutChange();
         });
         /**
          * 增加或者减少一个月
@@ -717,6 +805,7 @@
             }
             _logic.initDateLayout( _do );
             JC.log( _p.attr("action") );
+            Calendar._triggerLayoutChange();
         });
         /**
          * 清除文本框内容
@@ -725,7 +814,10 @@
          * @private
          */
         $(document).delegate( 'body > div.UXCCalendar button.UClear', 'click', function( $evt ){
-            Calendar.lastIpt && Calendar.lastIpt.length && Calendar.lastIpt.val('');
+            Calendar.lastIpt 
+                && Calendar.lastIpt.length 
+                && ( Calendar.lastIpt.val(''), Calendar._triggerClear() )
+                ;
         });
         /**
          * 取消日历组件, 相当于隐藏
@@ -748,7 +840,7 @@
 
             if( Calendar.isCalendarElement($evt.target||$evt.targetElement) ) return;
 
-            if( _src && _src.nodeName.toLowerCase() != 'input' ){
+            if( _src && ( _src.nodeName.toLowerCase() != 'input' && _src.nodeName.toLowerCase() != 'button' ) ){
                 Calendar.hide(); return;
             }
 
@@ -770,8 +862,13 @@
          * @event input focus
          * @private
          */
-        $(document).delegate( 'input[datatype=date], input[datatype=daterange], input[multidate]', 'focus', function($evt){
-            Calendar.pickDate( this );
+        $(document).delegate( [ 'input[datatype=season]', 'input[datatype=month]', 'input[datatype=week]'
+                , 'input[datatype=date]', 'input[datatype=daterange]', 'input[multidate]' ].join(), 'focus' , function($evt){
+                Calendar.pickDate( this );
+        });
+        $(document).delegate( [ 'button[datatype=season]', 'button[datatype=month]', 'button[datatype=week]'
+                , 'button[datatype=date]', 'button[datatype=daterange]', 'button[multidate]' ].join(), 'click' , function($evt){
+                Calendar.pickDate( this );
         });
         /**
          * 日历组件点击事件, 阻止冒泡, 防止被 document click事件隐藏
@@ -788,7 +885,7 @@
          */
         $(document).delegate( '#UXCCalendar table a', 'click', function( $evt ){
             $evt.preventDefault();
-            var _p = $(this), _tm = _p.attr('date')||'';
+            var _p = $(this), _tm = _p.attr('date')||'', _d = new Date();
             if( !_tm ) return;
             if( _p.parent('td').hasClass('unable') ) return;
 
@@ -796,6 +893,9 @@
 
             _logic.setDate( _tm );
             Calendar.hide();
+
+            _d.setTime( _tm );
+            Calendar._triggerUpdate( [ 'date', _d, _d ] );
         });
         /**
          * 监听窗口滚动和改变大小, 实时变更日历组件显示位置
@@ -808,6 +908,29 @@
             Calendar.setPosition( Calendar.lastIpt, _layout );
         });
     });
+    /**
+     * 显示日历控件触发的事件
+     * @event   CalendarShow
+     */
+    /**
+     * 隐藏日历控件触发的事件
+     * @event   CalendarHide
+     */
+    /**
+     * 用户点击日历控件操作按钮后, 外观产生变化时触发的事件
+     * @event   CalendarLayoutChange
+     */
+    /**
+     * 清空日期触发的事件
+     * @event   CalendarClear
+     */
+    /**
+     * 赋值后触发的事件
+     * @event   CalendarUpdate
+     * @param   {string}    _dateType
+     * @param   {date}      _startDate
+     * @param   {date}      _endDate
+     */
 }(jQuery));
 
 
@@ -865,6 +988,7 @@
                 JC.log( 'Calendar.pickWeek, onConfirm' );
                 var _cur = _logic.getLayout().find('td.cur');
                 if( !_cur.length ) _logic.getLayout().find('td.today');
+                if( _cur.length && _cur.hasClass('unable') ) return 0;
                 if( _cur.length ) _cur.find('a').trigger('click');
             }
         , updateYear:
@@ -1039,14 +1163,16 @@
     }
 
     $(document).delegate('#UXCCalendar_week table a', 'click', function( _evt ){
-        var p = $(this), dstart = new Date(), dend = new Date();
+        var _p = $(this), dstart = new Date(), dend = new Date();
         if( !JC.Calendar.lastIpt ) return;
-        if( p.parent('td').hasClass( 'unable' ) ) return;
-        dstart.setTime( p.attr('dstart') );
-        dend.setTime( p.attr('dend') );
+        if( _p.parent('td').hasClass( 'unable' ) ) return;
+        dstart.setTime( _p.attr('dstart') );
+        dend.setTime( _p.attr('dend') );
         JC.Calendar.lastIpt.val( printf( '{0} 至 {1}', formatISODate( dstart ), formatISODate( dend ) ) );
         JC.Calendar.hide();
+        JC.Calendar._triggerUpdate( [ 'season', dstart, dend] );
     });
+
 
 }(jQuery));
 
@@ -1094,6 +1220,7 @@
                 JC.log( 'Calendar.pickMonth, onConfirm' );
                 var _cur = _logic.getLayout().find('td.cur');
                 if( !_cur.length ) _logic.getLayout().find('td.today');
+                if( _cur.length && _cur.hasClass('unable') ) return 0;
                 if( _cur.length ) _cur.find('a').trigger('click');
             }
         , updateYear:
@@ -1228,13 +1355,14 @@
     };
 
     $(document).delegate('#UXCCalendar_month table a', 'click', function( _evt ){
-        var p = $(this), dstart = new Date(), dend = new Date();
+        var _p = $(this), dstart = new Date(), dend = new Date();
         if( !JC.Calendar.lastIpt ) return;
-        if( p.parent('td').hasClass( 'unable' ) ) return;
-        dstart.setTime( p.attr('dstart') );
-        dend.setTime( p.attr('dend') );
+        if( _p.parent('td').hasClass( 'unable' ) ) return;
+        dstart.setTime( _p.attr('dstart') );
+        dend.setTime( _p.attr('dend') );
         JC.Calendar.lastIpt.val( printf( '{0} 至 {1}', formatISODate( dstart ), formatISODate( dend ) ) );
         JC.Calendar.hide();
+        JC.Calendar._triggerUpdate( [ 'month', dstart, dend] );
     });
 
 }(jQuery));
@@ -1283,6 +1411,7 @@
                 JC.log( 'Calendar.pickSeason, onConfirm' );
                 var _cur = _logic.getLayout().find('td.cur');
                 if( !_cur.length ) _logic.getLayout().find('td.today');
+                if( _cur.length && _cur.hasClass('unable') ) return 0;
                 if( _cur.length ) _cur.find('a').trigger('click');
             }
         , updateYear:
@@ -1425,13 +1554,14 @@
     };
 
     $(document).delegate('#UXCCalendar_season table a', 'click', function( _evt ){
-        var p = $(this), dstart = new Date(), dend = new Date();
+        var _p = $(this), dstart = new Date(), dend = new Date();
         if( !JC.Calendar.lastIpt ) return;
-        if( p.parent('td').hasClass( 'unable' ) ) return;
-        dstart.setTime( p.attr('dstart') );
-        dend.setTime( p.attr('dend') );
+        if( _p.parent('td').hasClass( 'unable' ) ) return;
+        dstart.setTime( _p.attr('dstart') );
+        dend.setTime( _p.attr('dend') );
         JC.Calendar.lastIpt.val( printf( '{0} 至 {1}', formatISODate( dstart ), formatISODate( dend ) ) );
         JC.Calendar.hide();
+        JC.Calendar._triggerUpdate( [ 'season', dstart, dend] );
     });
 
 }(jQuery));

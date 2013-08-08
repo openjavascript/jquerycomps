@@ -32,6 +32,31 @@
         $( 'input.testitem' ).val( formatISODate( today ) ).attr('maxvalue', formatISODate( maxDate ) );
 
     });
+
+    function calendarshow(){
+        var _p = $(this);
+        UXC.log( 'calendarshow', _p.val() );
+    }
+
+    function calendarhide(){
+        var _p = $(this);
+        UXC.log( 'calendarhide', _p.val() );
+    }
+    
+    function calendarlayoutchange(){
+        var _p = $(this);
+        UXC.log( 'calendarlayoutchange', _p.val() );
+    }
+
+    function calendarclear(){
+        var _p = $(this);
+        UXC.log( 'calendarclear', _p.val() );
+    }
+
+    function calendarupdate( _start, _end ){
+        var _p = $(this);
+        UXC.log( 'calendarupdate', _p.val(), _start, _end );
+    }
 </script>
 </head>    
 <body>
@@ -66,6 +91,27 @@
                 date range:
                 <input type="text" name="date2" multidate="daterange" value="2013-06-03" maxvalue="2013-06-30" />
                 <input type="text" name="date2" multidate="daterange" value="2013-06-03" maxvalue="2013-06-30" />
+            </dd>
+            <dd>
+                <button type="button" value="" 
+                    datatype="date" 
+
+                    calendarshow="calendarshow"
+                    calendarhide="calendarhide"
+                    calendarlayoutchange="calendarlayoutchange"
+                    calendarclear="calendarclear"
+                    calendarupdate="calendarupdate"
+
+                    >pick date button</button>
+                <button type="button" value="2013-01-11" 
+                    datatype="week"
+                    >pick week button</button>
+                <button type="button" value="2013-02-02" 
+                    datatype="month"
+                    >pick month button</button>
+                <button type="button" value="2013-03-03" 
+                    datatype="season"
+                    >pick season button</button>
             </dd>
         </dl>
     </form>
