@@ -208,6 +208,17 @@
                 "JC.Slider": 1
             }
         },
+        "../comps/Suggest/Suggest.js": {
+            "name": "../comps/Suggest/Suggest.js",
+            "modules": {},
+            "classes": {
+                "JC.Suggest": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../comps/Tab/Tab.js": {
             "name": "../comps/Tab/Tab.js",
             "modules": {},
@@ -911,6 +922,33 @@
                     "description": "",
                     "type": "Selector"
                 }
+            ]
+        },
+        "JC.Suggest": {
+            "name": "JC.Suggest",
+            "shortname": "JC.Suggest",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 7,
+            "description": "Suggest 关键词补全提示类\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Suggest.html' target='_blank'>API docs</a>\n| <a href='../../comps/Suggest/_demo' target='_blank'>demo link</a></p>\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>sugwidth: int</dt>\n     <dd>显示列表的宽度</dd>\n\n     <dt>suglayout: selector</dt>\n     <dd>显示列表的容器</dd>\n\n     <dt>sugdatacallback: string</dt>\n     <dd>\n         请求 JSONP 数据的回调名\n         <br /><b>注意:</b> 是字符串, 不是函数, 并且确保 window 下没有同名函数\n     </dd>\n\n     <dt>sugurl: string</dt>\n     <dd>\n         数据请求 URL API\n         <br />例: http://sug.so.360.cn/suggest/word?callback={1}&encodein=utf-8&encodeout=utf-8&word={0} \n         <br />{0}=关键词, {1}=回调名称\n     </dd>\n\n     <dt>sugneedscripttag: bool, default=true</dt>\n     <dd>\n         是否需要 自动添加 script 标签\n         <br />Sugggest 设计为支持三种数据格式: JSONP, AJAX, static data\n         <br />目前只支持 JSONP 数据\n     </dd>\n\n     <dt>sugselectedcallback: function</dt>\n     <dd>用户鼠标点击选择关键词后的回调</dd>\n\n     <dt>sugdatafilter: function</dt>\n     <dd>数据过滤回调</dd>\n</dl>",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
+            "date": "2013-08-11",
+            "example": [
+                ""
             ]
         },
         "JC.Tab": {
@@ -5539,6 +5577,233 @@
             "description": "页面加载后, 自动初始化符合 Slider 规则的 Slider",
             "class": "JC.Slider.Model",
             "namespace": "JC.Slider"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 83,
+            "description": "suggest_so({ \"p\" : true,\n              \"q\" : \"shinee\",\n              \"s\" : [ \"shinee 综艺\",\n                  \"shinee美好的一天\",\n                  \"shinee hello baby\",\n                  \"shinee吧\",\n                  \"shinee泰民\",\n                  \"shinee fx\",\n                  \"shinee快乐大本营\",\n                  \"shinee钟铉车祸\",\n                  \"shinee年下男的约会\",\n                  \"shinee dream girl\"\n                ]\n            });",
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 115,
+            "description": "显示 Suggest",
+            "itemtype": "method",
+            "name": "show",
+            "return": {
+                "description": "SuggestInstance"
+            },
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 121,
+            "description": "隐藏 Suggest",
+            "itemtype": "method",
+            "name": "hide",
+            "return": {
+                "description": "SuggestInstance"
+            },
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 127,
+            "description": "获取 显示 Suggest 的触发源选择器, 比如 a 标签",
+            "itemtype": "method",
+            "name": "selector",
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 133,
+            "description": "获取 Suggest 外观的 选择器",
+            "itemtype": "method",
+            "name": "layout",
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 139,
+            "description": "使用 jquery on 绑定事件",
+            "itemtype": "method",
+            "name": "on",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_cb",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "SuggestInstance"
+            },
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 147,
+            "description": "使用 jquery trigger 绑定事件",
+            "itemtype": "method",
+            "name": "trigger",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "SuggestInstance"
+            },
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 294,
+            "description": "获取或设置 Suggest 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_setter",
+                    "description": "",
+                    "type": "SuggestInstace|null"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Suggest instance"
+            },
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 311,
+            "description": "判断 selector 是否可以初始化 Suggest",
+            "itemtype": "method",
+            "name": "isSuggest",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "bool"
+            },
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 326,
+            "description": "设置 Suggest 是否需要自动初始化",
+            "itemtype": "property",
+            "name": "autoInit",
+            "type": "bool",
+            "default": "true",
+            "static": 1,
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 334,
+            "description": "自定义列表显示模板",
+            "itemtype": "property",
+            "name": "layoutTpl",
+            "type": "string",
+            "default": "empty",
+            "static": 1,
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 342,
+            "description": "数据过滤回调",
+            "itemtype": "property",
+            "name": "dataFilter",
+            "type": "function",
+            "default": "undefined",
+            "static": 1,
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 590,
+            "description": "初始化完后的事件",
+            "itemtype": "event",
+            "name": "SuggestInited",
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 594,
+            "description": "获得新数据的事件",
+            "itemtype": "event",
+            "name": "SuggestUpdate",
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 598,
+            "description": "数据更新完毕后的事件",
+            "itemtype": "event",
+            "name": "SuggestUpdated",
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 602,
+            "description": "显示前的事件",
+            "itemtype": "event",
+            "name": "SuggestBeforeShow",
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 606,
+            "description": "显示后的事件",
+            "itemtype": "event",
+            "name": "SuggestShow",
+            "class": "JC.Suggest",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
@@ -10563,6 +10828,14 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../comps/Suggest/Suggest.js:7"
+        },
+        {
+            "message": "unknown tag: date",
+            "line": " ../comps/Suggest/Suggest.js:7"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../comps/Tab/Tab.js:5"
         },
         {
@@ -10916,6 +11189,10 @@
         {
             "message": "Missing item type\n页面加载后, 自动初始化符合 Slider 规则的 Slider",
             "line": " ../comps/Slider/Slider.js:967"
+        },
+        {
+            "message": "Missing item type\nsuggest_so({ \"p\" : true,\n              \"q\" : \"shinee\",\n              \"s\" : [ \"shinee 综艺\",\n                  \"shinee美好的一天\",\n                  \"shinee hello baby\",\n                  \"shinee吧\",\n                  \"shinee泰民\",\n                  \"shinee fx\",\n                  \"shinee快乐大本营\",\n                  \"shinee钟铉车祸\",\n                  \"shinee年下男的约会\",\n                  \"shinee dream girl\"\n                ]\n            });",
+            "line": " ../comps/Suggest/Suggest.js:83"
         },
         {
             "message": "Missing item type\nTab 视图类的实例",

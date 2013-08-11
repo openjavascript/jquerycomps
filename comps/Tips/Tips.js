@@ -147,7 +147,7 @@
          * @param   {string}    _evtName
          * @return  TipsInstance
          */
-        , trigger: function( _evtName ){ $(this).trigger( _evtName ); return this;}
+        , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
     };
     /**
      * tips 初始化实例后的触发的事件
