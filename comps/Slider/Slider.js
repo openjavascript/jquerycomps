@@ -10,25 +10,50 @@
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Slider.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Slider/_demo' target='_blank'>demo link</a></p>
-     * <p>
-     *      Slider 可以指定的一些常用 html 属性, 这个类的属性很多, 想了解得更详细看源码吧~
-     *      <br /><b>slidersubitems</b>: 指定具体子元素是那些, selector ( 子元素默认是 layout的子标签 )
-     *      <br /><b>sliderleft</b>: 左移的触发selector
-     *      <br /><b>sliderright</b>: 右移的触发selector
-     *      <br /><b>sliderwidth</b>: 主容器宽度
-     *      <br /><b>slideritemwidth</b>: 子元素的宽度
-     *      <br /><b>sliderhowmanyitem</b>: 每次滚动多少个子元素, 默认1
-     *      <br /><b>sliderdefaultpage</b>: 默认显示第几页
-     *      <br /><b>sliderstepms</b>: 滚动效果运动的间隔时间(毫秒), 默认 5
-     *      <br /><b>sliderdurationms</b>: 滚动效果的总时间
+     * <h2> 可用的 html attribute </h2>
+     * <dl>
+     *      <dt>slidersubitems</dt>
+     *      <dd>指定具体子元素是那些, selector ( 子元素默认是 layout的子标签 )</dd>
      *
-     *      <br /><b>sliderdirection</b>: 滚动的方向, 默认 horizontal, { horizontal, vertical }
-     *      <br /><b>sliderloop</b>: 是否循环滚动
-     *      <br /><b>sliderinitedcb</b>: 初始完毕后的回调函数, 便于进行更详细的声明
+     *      <dt>sliderleft</dt>
+     *      <dd>左移的触发selector</dd>
      *
-     *      <br /><b>sliderautomove</b>: 是否自动滚动
-     *      <br /><b>sliderautomovems</b>: 自动滚动的间隔
-     * </p>
+     *      <dt>sliderright</dt>
+     *      <dd>右移的触发selector</dd>
+     *
+     *      <dt>sliderwidth</dt>
+     *      <dd>主容器宽度</dd>
+     *
+     *      <dt>slideritemwidth</dt>
+     *      <dd>子元素的宽度</dd>
+     *
+     *      <dt>sliderhowmanyitem</dt>
+     *      <dd>每次滚动多少个子元素, 默认1</dd>
+     *
+     *      <dt>sliderdefaultpage</dt>
+     *      <dd>默认显示第几页</dd>
+     *
+     *      <dt>sliderstepms</dt>
+     *      <dd>滚动效果运动的间隔时间(毫秒), 默认 5</dd>
+     *
+     *      <dt>sliderdurationms</dt>
+     *      <dd>滚动效果的总时间</dd>
+     *
+     *      <dt>sliderdirection</dt>
+     *      <dd>滚动的方向, 默认 horizontal, { horizontal, vertical }</dd>
+     *
+     *      <dt>sliderloop</dt>
+     *      <dd>是否循环滚动</dd>
+     *
+     *      <dt>sliderinitedcb</dt>
+     *      <dd>初始完毕后的回调函数, 便于进行更详细的声明</dd>
+     *
+     *      <dt>sliderautomove</dt>
+     *      <dd>是否自动滚动</dd>
+     *
+     *      <dt>sliderautomovems</dt>
+     *      <dd>自动滚动的间隔</dd>
+     * </dl>
      * @namespace JC
      * @class Slider
      * @constructor

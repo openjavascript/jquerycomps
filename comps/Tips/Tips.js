@@ -26,7 +26,7 @@
      *      <dd>隐藏后的回调</dd>
      *
      *      <dt>tipstemplatebox: selector</dt>
-     *      <dd>显示指定tips的显示模板</dd>
+     *      <dd>指定tips的显示模板</dd>
      * </dl>
      * @namespace JC
      * @class Tips

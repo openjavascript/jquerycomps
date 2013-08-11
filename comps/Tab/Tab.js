@@ -7,22 +7,40 @@
      * <br />DOM 加载完毕后
      * , 只要鼠标移动到具有识别符的Tab上面, Tab就会自动初始化, 目前可识别: <b>.js_autoTab</b>( CSS class )
      * <br />需要手动初始化, 请使用: var ins = new JC.Tab( _tabSelector );
-     * <p>
-     *      <b> Tab 容器的HTML属性 </b>
-     *      <br /><b>tablabels</b>: 声明 tab 标签的选择器语法
-     *      <br /><b>tabcontainers</b>: 声明 tab 容器的选择器语法
-     *      <br /><b>tabactiveclass</b>: 声明 tab当前标签的显示样式名, 默认为 cur
-     *      <br /><b>tablabelparent</b>: 声明 tab的当前显示样式是在父节点, 默认为 tab label 节点
-     *      <br /><b>tabactivecallback</b>: 当 tab label 被触发时的回调
-     *      <br /><b>tabchangecallback</b>: 当 tab label 变更时的回调
-     * </p>
-     * <p>
-     *      <b> Label(标签) 容器的HTML属性(AJAX) </b>
-     *      <br /><b>tabajaxurl</b>: ajax 请求的 URL 地址
-     *      <br /><b>tabajaxmethod</b>: ajax 请求的方法( get|post ), 默认 get
-     *      <br /><b>tabajaxdata</b>: ajax 请求的 数据, json
-     *      <br /><b>tabajaxcallback</b>: ajax 请求的回调
-     * </p>
+     * <h2>Tab 容器的HTML属性</h2>
+     * <dl>
+     *      <dt>tablabels</dt>
+     *      <dd>声明 tab 标签的选择器语法</dd>
+     *
+     *      <dt>tabcontainers</dt>
+     *      <dd>声明 tab 容器的选择器语法</dd>
+     *
+     *      <dt>tabactiveclass</dt>
+     *      <dd>声明 tab当前标签的显示样式名, 默认为 cur</dd>
+     *
+     *      <dt>tablabelparent</dt>
+     *      <dd>声明 tab的当前显示样式是在父节点, 默认为 tab label 节点</dd>
+     *
+     *      <dt>tabactivecallback</dt>
+     *      <dd>当 tab label 被触发时的回调</dd>
+     *
+     *      <dt>tabchangecallback</dt>
+     *      <dd>当 tab label 变更时的回调</dd>
+     * </dl>
+     * <h2>Label(标签) 容器的HTML属性(AJAX)</h2>
+     * <dl>
+     *      <dt>tabajaxurl</dt>
+     *      <dd>ajax 请求的 URL 地址</dd>
+     *
+     *      <dt>tabajaxmethod</dt>
+     *      <dd>ajax 请求的方法( get|post ), 默认 get</dd>
+     *
+     *      <dt>tabajaxdata</dt>
+     *      <dd>ajax 请求的 数据, json</dd>
+     *
+     *      <dt>tabajaxcallback</dt>
+     *      <dd>ajax 请求的回调</dd>
+     * </dl>
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tab.html' target='_blank'>API docs</a>
