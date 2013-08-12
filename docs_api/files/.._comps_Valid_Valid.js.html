@@ -179,6 +179,13 @@
      *      &lt;dt&gt;errmsg = 错误提示&lt;/dt&gt;
      *      &lt;dd&gt;格式错误, 但不验证为空的值&lt;/dd&gt;
      *
+     *      &lt;dt&gt;focusmsg = 控件获得焦点的提示信息&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          这个只作提示用
+     *          &lt;br /&gt;如果 control 的内容是正确的 class=focusmsg isvalid
+     *          &lt;br /&gt;如果 control 的内容是错误的 class=focusmsg iserror
+     *      &lt;/dd&gt;
+     *
      *      &lt;dt&gt;emel = selector&lt;/dt&gt;
      *      &lt;dd&gt;显示错误的selector&lt;/dd&gt;
      *
@@ -319,6 +326,16 @@
                     } else _r = _logic.parse( _item );
                 }
                 return _r;
+            }
+        /**
+         * 显示 focusmsg 属性的提示信息( 如果有的话 )
+         * @method  focus
+         * @param   {selector}  _item
+         * @param   {bool}      _isHide
+         */
+        , &#x27;focusmsg&#x27;:
+            function( _item, _isHide ){
+                _logic.focusmsg.apply( this, [].slice.apply( arguments ) );
             }
          /**
          * 清除Valid生成的错误样式
@@ -463,21 +480,6 @@
      * @see Valid.check
      */
     Valid.checkAll = Valid.check;
-
-    /**
-     * 响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果
-     * @private
-     */
-    $(document).delegate( &#x27;input[type=text], input[type=password], textarea&#x27;, &#x27;blur&#x27;, function($evt){
-        JC.Valid.check( this )
-    });
-    /**
-     * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
-     * @private
-     */
-    $(document).delegate( &#x27;select, input[type=file]&#x27;, &#x27;change&#x27;, function($evt){
-        JC.Valid.check( this )
-    });
     /**
      * 私有逻辑处理对象, 验证所需的所有规则和方法都存放于此对象
      * @property _logic
@@ -551,6 +553,40 @@
 
                     return _r;
                 }
+            , focusmsg:
+                function( _item, _isHide ){
+                    if( _item &amp;&amp; ( _item = $( _item ) ).length &amp;&amp; _item.is(&#x27;[focusmsg]&#x27;) ){
+                        var _focusmsgem = _logic._findFocusmsgEle( _item )
+                            , _errorEm = _logic._findErrorEle( _item );
+                        if( _isHide ){
+                            _focusmsgem.hide();
+                            JC.log( &#x27;hide focusmsg&#x27;, _focusmsgem.length );
+                            return;
+                        }
+                        if( _errorEm.length &amp;&amp; _errorEm.is(&#x27;:visible&#x27;) ) return;
+                            JC.log( &#x27;show focusmsg&#x27; );
+                        !_focusmsgem.length 
+                            &amp;&amp; ( _focusmsgem = $(&#x27;&lt;em class=&quot;focusmsg&quot;&gt;&lt;/em&gt;&#x27;)
+                                 , _item.after( _focusmsgem )
+                               );
+                        _focusmsgem.removeClass( &#x27;isvalid&#x27; ).removeClass( &#x27;iserror&#x27; );
+                        _item.attr(&#x27;validnoerror&#x27;, true);
+                        var _r = _logic.parse( _item );
+                        _item.removeAttr(&#x27;validnoerror&#x27;);
+                        _r ? _focusmsgem.addClass(&#x27;isvalid&#x27;) : _focusmsgem.addClass( &#x27;iserror&#x27; );
+                        _focusmsgem.html( _item.attr(&#x27;focusmsg&#x27;) ).show();
+                    }
+                }
+            , _findFocusmsgEle:
+                function( _item ){
+                    return _item.find( &#x27;~ em.focusmsg&#x27; );
+                }
+            , _findErrorEle:
+                function( _item ){
+                    var _r = _item.find( &#x27;~ em.error&#x27; );
+                    if( _item.attr(&#x27;emel&#x27;) ) _r = $( (&#x27;#&#x27; + _item.attr(&#x27;emel&#x27;)).replace(/[\#]+/g, &#x27;#&#x27; ) );
+                    return _r;
+                }
             /**
              * 检查 _item 是否为 Valid 的检查对象
              * @method  _logic.isValidItem
@@ -586,7 +622,7 @@
                     if( !_logic.isValidItem( _item ) ) return false;
                     setTimeout(function(){
                         _item.removeClass(&#x27;error&#x27;);
-                        _item.find(&#x27;~ em&#x27;).show();
+                        _item.find(&#x27;~ em:not(&quot;em.focusmsg, em.error&quot;)&#x27;).show();
                         _item.find(&#x27;~ em.error&#x27;).hide();
                         _item.attr(&#x27;emel&#x27;) &amp;&amp; _logic.getElement( _item.attr(&#x27;emel&#x27;), _item ).hide();
                     }, _tm || 150);
@@ -603,6 +639,7 @@
             , error: 
                 function( _item, _msgAttr, _fullMsg ){
                     if( !_logic.isValidItem( _item ) ) return false;
+                    if( _item.is( &#x27;[validnoerror]&#x27; ) ) return;
 
                     var arg = arguments;
 
@@ -1649,6 +1686,29 @@
                     }
             }//subdatatype
         };//_logic
+    /**
+     * 响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果
+     * @private
+     */
+    $(document).delegate( &#x27;input[type=text], input[type=password], textarea&#x27;, &#x27;blur&#x27;, function($evt){
+        Valid.focusmsg( $(this), true );
+        Valid.check( $(this) );
+    });
+    /**
+     * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
+     * @private
+     */
+    $(document).delegate( &#x27;select, input[type=file]&#x27;, &#x27;change&#x27;, function($evt){
+        Valid.focusmsg( $(this), true );
+        Valid.check( $(this) );
+    });
+    /**
+     * 响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
+     * @private
+     */
+    $(document).delegate( &#x27;input[type=text], input[type=password], textarea, select, input[type=file]&#x27;, &#x27;focus&#x27;, function($evt){
+        Valid.focusmsg( $(this) );
+    });
 
 }(jQuery));
 
