@@ -1539,11 +1539,17 @@
         Valid.check( $(this) );
     });
     /**
+     * 响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
+     * @private
+     */
+    $(document).delegate( 'select, input[type=file]', 'blur', function($evt){
+        Valid.focusmsg( $(this), true );
+    });
+    /**
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
      * @private
      */
     $(document).delegate( 'select, input[type=file]', 'change', function($evt){
-        Valid.focusmsg( $(this), true );
         Valid.check( $(this) );
     });
     /**
