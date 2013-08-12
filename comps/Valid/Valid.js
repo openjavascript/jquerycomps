@@ -1,4 +1,5 @@
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
+//TODO: 添加 focusmsg 属性, 鼠标 foucs到控件时, 显示提示信息
 ;(function($){
     !window.JC && (window.JC = { log:function(){} });
     /**

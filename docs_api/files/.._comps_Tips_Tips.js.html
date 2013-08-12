@@ -183,6 +183,10 @@
      *
      *      &lt;dt&gt;tipstemplatebox: selector&lt;/dt&gt;
      *      &lt;dd&gt;指定tips的显示模板&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;tipsupdateonce: bool&lt;/dt&gt;
+     *      &lt;dd&gt;tips 内容只更新一次, 这个属性应当与 tipstemplatebox同时使用&lt;/dd&gt;
+     *
      * &lt;/dl&gt;
      * @namespace JC
      * @class Tips
@@ -556,12 +560,27 @@
         , tipstemplatebox:
             function(){
                 var _r;
+                this._selector.is(&#x27;[tipstemplatebox]&#x27;) 
+                    &amp;&amp; ( _r = $(this._selector.attr(&#x27;tipstemplatebox&#x27;)).html().trim().replace(/[\r\n]+/g, &#x27;&#x27;) )
+                    ;
                 this._selector.is(&#x27;[tipstemplatesbox]&#x27;) 
                     &amp;&amp; ( _r = $(this._selector.attr(&#x27;tipstemplatesbox&#x27;)).html().trim().replace(/[\r\n]+/g, &#x27;&#x27;) )
                     ;
                 return _r;
             }
         , tipstemplatesbox: function(){ return this.tipstemplatebox(); }
+        , tipsupdateonce:
+            function(){
+                var _r;
+                this._selector.attr(&#x27;tipsupdateonce&#x27;) 
+                    &amp;&amp; ( _r = parseBool( this._selector.attr(&#x27;tipsupdateonce&#x27;) ) );
+                return _r;
+            }
+        , tipsIsUpdated: 
+            function( _setter ){ 
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; this._selector.data(&#x27;TipsUpdated&#x27;, _setter);
+                return this._selector.data( &#x27;TipsUpdated&#x27;);
+            }
         , layout:
             function(){
                 if( !this._layout ){
@@ -671,18 +690,25 @@
         , layout: 
             function( _update ){ 
                 this._layout = this._model.layout();
-                if( _update ){
-                    var _data = this._model.data( _update );
-                    this._layout.html( _data ).css( {&#x27;width&#x27;: &#x27;auto&#x27;
-                                                            , &#x27;left&#x27;: &#x27;-9999px&#x27;
-                                                            , &#x27;top&#x27;: &#x27;-9999px&#x27;
-                                                            , &#x27;display&#x27;: &#x27;block&#x27; });  
-                    var _w = this._layout.width(), _h = this._layout.height();
-
-                    _w &lt; JC.Tips.minWidth &amp;&amp; this._layout.css(&#x27;width&#x27;, JC.Tips.minWidth + &#x27;px&#x27;);
-                    _w &gt; JC.Tips.maxWidth &amp;&amp; this._layout.css(&#x27;width&#x27;, JC.Tips.maxWidth + &#x27;px&#x27;);
-                }
+                _update &amp;&amp; this.update();
                 return this._layout; 
+            }
+        , update:
+            function(){
+                if( this._model.tipsupdateonce() &amp;&amp; this._model.tipsIsUpdated() ){
+                    return;
+                }
+                var _data = this._model.data( 1 );
+                this._layout.html( _data ).css( {&#x27;width&#x27;: &#x27;auto&#x27;
+                                                        , &#x27;left&#x27;: &#x27;-9999px&#x27;
+                                                        , &#x27;top&#x27;: &#x27;-9999px&#x27;
+                                                        , &#x27;display&#x27;: &#x27;block&#x27; });  
+                var _w = this._layout.width(), _h = this._layout.height();
+
+                _w &lt; JC.Tips.minWidth &amp;&amp; this._layout.css(&#x27;width&#x27;, JC.Tips.minWidth + &#x27;px&#x27;);
+                _w &gt; JC.Tips.maxWidth &amp;&amp; this._layout.css(&#x27;width&#x27;, JC.Tips.maxWidth + &#x27;px&#x27;);
+
+                this._model.tipsIsUpdated( true );
             }
     };
     /**

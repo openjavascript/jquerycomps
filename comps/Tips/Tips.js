@@ -27,6 +27,10 @@
      *
      *      <dt>tipstemplatebox: selector</dt>
      *      <dd>指定tips的显示模板</dd>
+     *
+     *      <dt>tipsupdateonce: bool</dt>
+     *      <dd>tips 内容只更新一次, 这个属性应当与 tipstemplatebox同时使用</dd>
+     *
      * </dl>
      * @namespace JC
      * @class Tips
@@ -400,12 +404,27 @@
         , tipstemplatebox:
             function(){
                 var _r;
+                this._selector.is('[tipstemplatebox]') 
+                    && ( _r = $(this._selector.attr('tipstemplatebox')).html().trim().replace(/[\r\n]+/g, '') )
+                    ;
                 this._selector.is('[tipstemplatesbox]') 
                     && ( _r = $(this._selector.attr('tipstemplatesbox')).html().trim().replace(/[\r\n]+/g, '') )
                     ;
                 return _r;
             }
         , tipstemplatesbox: function(){ return this.tipstemplatebox(); }
+        , tipsupdateonce:
+            function(){
+                var _r;
+                this._selector.attr('tipsupdateonce') 
+                    && ( _r = parseBool( this._selector.attr('tipsupdateonce') ) );
+                return _r;
+            }
+        , tipsIsUpdated: 
+            function( _setter ){ 
+                typeof _setter != 'undefined' && this._selector.data('TipsUpdated', _setter);
+                return this._selector.data( 'TipsUpdated');
+            }
         , layout:
             function(){
                 if( !this._layout ){
@@ -515,18 +534,25 @@
         , layout: 
             function( _update ){ 
                 this._layout = this._model.layout();
-                if( _update ){
-                    var _data = this._model.data( _update );
-                    this._layout.html( _data ).css( {'width': 'auto'
-                                                            , 'left': '-9999px'
-                                                            , 'top': '-9999px'
-                                                            , 'display': 'block' });  
-                    var _w = this._layout.width(), _h = this._layout.height();
-
-                    _w < JC.Tips.minWidth && this._layout.css('width', JC.Tips.minWidth + 'px');
-                    _w > JC.Tips.maxWidth && this._layout.css('width', JC.Tips.maxWidth + 'px');
-                }
+                _update && this.update();
                 return this._layout; 
+            }
+        , update:
+            function(){
+                if( this._model.tipsupdateonce() && this._model.tipsIsUpdated() ){
+                    return;
+                }
+                var _data = this._model.data( 1 );
+                this._layout.html( _data ).css( {'width': 'auto'
+                                                        , 'left': '-9999px'
+                                                        , 'top': '-9999px'
+                                                        , 'display': 'block' });  
+                var _w = this._layout.width(), _h = this._layout.height();
+
+                _w < JC.Tips.minWidth && this._layout.css('width', JC.Tips.minWidth + 'px');
+                _w > JC.Tips.maxWidth && this._layout.css('width', JC.Tips.maxWidth + 'px');
+
+                this._model.tipsIsUpdated( true );
             }
     };
     /**
