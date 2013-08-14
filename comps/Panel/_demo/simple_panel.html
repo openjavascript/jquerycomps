@@ -48,15 +48,17 @@
     });
 
     $(document).delegate( 'button.js_panel', 'click', function(_evt){
-        hideAllPanel();
+        _evt.stopPropagation();
         tmpPanel = new JC.Panel( '默认panel ' + count, 'body ' + count + btnstr, 'footer ' + count);
+        tmpPanel.addAutoClose();
         tmpPanel.show( this );
         count++;
     });
 
     $(document).delegate( 'button.js_panel_alert', 'click', function(_evt){
-        hideAllPanel();
+        _evt.stopPropagation();
         tmpPanel = JC.alert( 'user manual JC.alert ' + count, this );
+        tmpPanel.addAutoClose();
         tmpPanel.on('confirm', function( _evt, _panel ){ 
             JC.log('another uaer callback'); 
         });
@@ -65,10 +67,9 @@
     });
 
     $(document).delegate( 'button.js_panel_confirm', 'click', function(_evt){
-        hideAllPanel();
-
+        _evt.stopPropagation();
         tmpPanel = JC.confirm( 'user manual JC.confirm ' + count, this );
-
+        tmpPanel.addAutoClose();
         tmpPanel.on('confirm', function( _evt, _panel ){ 
             JC.log('another uaer callback'); 
         });
@@ -77,8 +78,9 @@
     });
 
     $(document).delegate( 'button.js_panel_msgbox', 'click', function(_evt){
-        hideAllPanel();
+        _evt.stopPropagation();
         tmpPanel = JC.msgbox( 'user manual JC.msgbox ' + count, this );
+        tmpPanel.addAutoClose();
         tmpPanel.on('confirm', function( _evt, _panel ){ 
             JC.log('another uaer callback'); 
         });
@@ -117,21 +119,39 @@
         </dd>
         <dd>
         <button type="button" class="js_panel_alert" >manual JC.alert(msg)</button>
-        <button type="button" paneltype="alert" panelcallback="userCallback" panelstatus="0" panelmsg="msg1">attr alert success</button>
+        <button type="button" 
+            paneltype="alert" 
+            panelcallback="userCallback" 
+            panelstatus="0" 
+            panelmsg="msg1"
+            panelautoclose="true"
+            >attr alert success</button>
         <button type="button" paneltype="alert" panelcallback="userCallback1" panelstatus="1" panelmsg="msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2">attr alert1 alert</button>
         <button type="button" paneltype="alert" panelcallback="userCallback2" panelstatus="2" panelmsg="msgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsg">attr alert2 failure</button>
         </dd>
 
         <dd>
         <button type="button" class="js_panel_confirm" >manual JC.confirm(msg)</button>
-        <button type="button" paneltype="confirm" panelcallback="userCallback" paneltype="0" panelmsg="msg1">attr confirm success</button>
+        <button type="button" 
+            paneltype="confirm" 
+            panelcallback="userCallback" 
+            paneltype="0" 
+            panelmsg="msg1"
+            panelautoclose="true"
+            >attr confirm success</button>
         <button type="button" paneltype="confirm" panelcallback="userCallback1" panelstatus="1" panelmsg="msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2">attr confirm1 alert</button>
         <button type="button" paneltype="confirm" panelcallback="userCallback2" panelstatus="2" panelmsg="msgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsg">attr confirm2 failure</button>
         </dd>
 
         <dd>
         <button type="button" class="js_panel_msgbox" >manual JC.msgbox(msg)</button>
-        <button type="button" paneltype="msgbox" panelcallback="userCallback" panelstatus="0" panelmsg="msg1">attr msgbox success</button>
+        <button type="button" 
+            paneltype="msgbox" 
+            panelcallback="userCallback" 
+            panelstatus="0" 
+            panelmsg="msg1"
+            panelautoclose="true"
+            >attr msgbox success</button>
         <button type="button" paneltype="msgbox" panelcallback="userCallback1" panelstatus="1" panelmsg="msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2">attr msgbox1 msgbox</button>
         <button type="button" paneltype="msgbox" panelcallback="userCallback2" panelstatus="2" panelmsg="msgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsg">attr msgbox2 failure</button>
         </dd>

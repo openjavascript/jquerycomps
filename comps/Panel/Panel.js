@@ -83,19 +83,13 @@
      */
     Panel.focusButton = true;
     /**
-     * 监听Panel的所有点击事件
-     * <br />如果事件源有 eventtype 属性, 则会触发eventtype的事件类型
-     * @event   Panel click
-     * @private
+     * 页面点击时, 是否自动关闭 Panel
+     * @property    autoClose
+     * @type        bool
+     * @default     false
+     * @static
      */
-    $(document).delegate( 'div.UPanel', 'click', function( _evt ){
-        var _panel = $(this), _src = $(_evt.target || _evt.srcElement), _evtName;
-        if( _src && _src.length && _src.is("[eventtype]") ){
-            _evtName = _src.attr('eventtype');
-            JC.log( _evtName, _panel.data('PanelInstace') );
-            _evtName && _panel.data('PanelInstace') && _panel.data('PanelInstace').trigger( _evtName, _src, _evt );
-        }
-    });
+    Panel.autoClose = false;
     
     Panel.prototype = {
         /**
@@ -126,7 +120,7 @@
 
                 this._model.addEvent( 'cancel_default'
                                     , function( _evt, _panel ){ _panel.trigger('close'); } );
-               
+
                return this;
             }    
         /**
@@ -240,6 +234,26 @@
                 JC.log('Panel.close');
                 this.trigger('beforeclose', this._view.getPanel() );
                 this.trigger('close', this._view.getPanel() );
+                return this;
+            }
+        /**
+         * 判断点击页面时, 是否自动关闭 Panel
+         * @method  isAutoClose
+         * @return bool
+         */
+        , isAutoClose:
+            function(){
+                return this._model.panelautoclose();
+            }
+        /**
+         * 点击页面时, 添加自动隐藏功能
+         * @method  addAutoClose
+         * @param   {bool}          _removeAutoClose
+         */
+        , addAutoClose:
+            function( _removeAutoClose ){
+                _removeAutoClose && this.layout() && this.layout().removeAttr('panelautoclose');
+                !_removeAutoClose && this.layout() && this.layout().attr('panelautoclose', true);
                 return this;
             }
         /**
@@ -585,7 +599,14 @@
                 }
                 return _r;
             }
-
+        , panelautoclose:
+            function(){
+                var _r = Panel.autoClose;
+                if( this.panel.is( '[panelautoclose]' ) ){
+                    _r = parseBool( this.panel.attr('panelautoclose') );
+                }
+                return _r;
+            }
     };
      /**
      * 存储 Panel 的基础视图类
@@ -814,7 +835,6 @@
         ,'    </div><!--end UPContent-->'
         ,'</div>'
         ].join('')
-
      /**
       * 隐藏或者清除所有 Panel
       * <h2>使用这个方法应当谨慎, 容易为DOM造成垃圾Panel</h2>
@@ -837,6 +857,54 @@
                 $('div.UPanel').hide();
             }
          };
+    /**
+     * 监听Panel的所有点击事件
+     * <br />如果事件源有 eventtype 属性, 则会触发eventtype的事件类型
+     * @event   Panel click
+     * @private
+     */
+    $(document).delegate( 'div.UPanel', 'click', function( _evt ){
+        var _panel = $(this), _src = $(_evt.target || _evt.srcElement), _evtName;
+        if( _src && _src.length && _src.is("[eventtype]") ){
+            _evtName = _src.attr('eventtype');
+            JC.log( _evtName, _panel.data('PanelInstace') );
+            _evtName && _panel.data('PanelInstace') && _panel.data('PanelInstace').trigger( _evtName, _src, _evt );
+        }
+    });
+
+    $(document).delegate('div.UPanel', 'click', function( _evt ){
+        var _p = $(this), _ins = Panel.getInstance( _p );
+        if( _ins && _ins.isAutoClose() ){
+            _evt.stopPropagation();
+        }
+    });
+
+    $(window).on('click', function( _evt ){
+        $('div.UPanel').each( function(){
+            var _p = $(this), _ins = Panel.getInstance( _p );
+            if( _ins && _ins.isAutoClose() ){
+                _ins.hide();
+                _ins.close();
+            }
+        });
+    });
+
+    $(window).on('keyup', function( _evt ){
+        var _kc = _evt.keyCode;
+        switch( _kc ){
+            case 27:
+                {
+                    $('div.UPanel').each( function(){
+                        var _p = $(this), _ins = Panel.getInstance( _p );
+                        if( !_ins ) return;
+                        _ins.hide();
+                        _ins.close();
+                    });
+                    break;
+                }
+        }
+    });
+
 
 }(jQuery));
 
@@ -1136,6 +1204,7 @@
             function( _panel, _popupSrc, _doneCb ){
                 _popupSrc && ( _popupSrc = $(_popupSrc) );
                 if( !(_popupSrc && _popupSrc.length ) ) return;
+                if( !( _panel && _panel.selector ) ) return;
 
                 var _poffset = _popupSrc.offset(), _selector = _panel.selector();
                 var _dom = _selector[0];
@@ -1179,6 +1248,7 @@
             function( _panel, _popupSrc, _doneCb ){
                 _popupSrc && ( _popupSrc = $(_popupSrc) );
                 if( !(_popupSrc && _popupSrc.length ) ) return;
+                if( !( _panel && _panel.selector ) ) return;
 
                 var _poffset = _popupSrc.offset(), _selector = _panel.selector();
                 var _dom = _selector[0];
@@ -1441,6 +1511,8 @@
 
         if( !(_paneltype in JC) ) return;
         _panel = JC[ _paneltype ]( _panelmsg, _p, _panelstatus );
+        _p.is('[panelautoclose]') && _panel.addAutoClose( !parseBool( _p.attr('panelautoclose') ) );
+        parseBool( _p.attr('panelautoclose') ) &&  _evt.stopPropagation();
 
         if( _paneltype == 'msgbox' ){
             _callback && _panel.on( 'close', _callback );
@@ -1461,8 +1533,6 @@
 }(jQuery));
 
 (function($){
-
-    window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
     var isIE6 = !!window.ActiveXObject && !window.XMLHttpRequest;
     /**
      * 带蒙板的会话弹框
@@ -1541,6 +1611,9 @@
                         .replace(/\{msg\}/g, _msg)
                         .replace(/\{status\}/g, _logic.getStatusClass(_status||'') );
             var _ins = JC.Dialog(_tpl);
+                _ins.on('close', function(){
+                    JC.Dialog.msgbox.timeout && clearTimeout( JC.Dialog.msgbox.timeout );
+                });
             _logic.fixWidth( _msg, _ins );
             _cb && _ins.on('close', _cb);
 
@@ -1930,6 +2003,9 @@
         if( !(_paneltype in JC.Dialog) ) return;
 
         _panel = JC.Dialog[ _paneltype ]( _panelmsg, _panelstatus );
+        _p.is('[panelautoclose]') && _panel.addAutoClose( !parseBool( _p.attr('panelautoclose') ) );
+        parseBool( _p.attr('panelautoclose') ) && _evt.stopPropagation();
+            
         if( _paneltype == 'msgbox' ){
             _callback && _panel.on( 'close', _callback );
         }else{

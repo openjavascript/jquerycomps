@@ -155,8 +155,6 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 (function($){
-
-    window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
     var isIE6 = !!window.ActiveXObject &amp;&amp; !window.XMLHttpRequest;
     /**
      * 带蒙板的会话弹框
@@ -235,6 +233,9 @@
                         .replace(/\{msg\}/g, _msg)
                         .replace(/\{status\}/g, _logic.getStatusClass(_status||&#x27;&#x27;) );
             var _ins = JC.Dialog(_tpl);
+                _ins.on(&#x27;close&#x27;, function(){
+                    JC.Dialog.msgbox.timeout &amp;&amp; clearTimeout( JC.Dialog.msgbox.timeout );
+                });
             _logic.fixWidth( _msg, _ins );
             _cb &amp;&amp; _ins.on(&#x27;close&#x27;, _cb);
 
@@ -624,6 +625,9 @@
         if( !(_paneltype in JC.Dialog) ) return;
 
         _panel = JC.Dialog[ _paneltype ]( _panelmsg, _panelstatus );
+        _p.is(&#x27;[panelautoclose]&#x27;) &amp;&amp; _panel.addAutoClose( !parseBool( _p.attr(&#x27;panelautoclose&#x27;) ) );
+        parseBool( _p.attr(&#x27;panelautoclose&#x27;) ) &amp;&amp; _evt.stopPropagation();
+            
         if( _paneltype == &#x27;msgbox&#x27; ){
             _callback &amp;&amp; _panel.on( &#x27;close&#x27;, _callback );
         }else{

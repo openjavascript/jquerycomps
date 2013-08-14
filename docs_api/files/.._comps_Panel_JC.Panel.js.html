@@ -239,19 +239,13 @@
      */
     Panel.focusButton = true;
     /**
-     * 监听Panel的所有点击事件
-     * &lt;br /&gt;如果事件源有 eventtype 属性, 则会触发eventtype的事件类型
-     * @event   Panel click
-     * @private
+     * 页面点击时, 是否自动关闭 Panel
+     * @property    autoClose
+     * @type        bool
+     * @default     false
+     * @static
      */
-    $(document).delegate( &#x27;div.UPanel&#x27;, &#x27;click&#x27;, function( _evt ){
-        var _panel = $(this), _src = $(_evt.target || _evt.srcElement), _evtName;
-        if( _src &amp;&amp; _src.length &amp;&amp; _src.is(&quot;[eventtype]&quot;) ){
-            _evtName = _src.attr(&#x27;eventtype&#x27;);
-            JC.log( _evtName, _panel.data(&#x27;PanelInstace&#x27;) );
-            _evtName &amp;&amp; _panel.data(&#x27;PanelInstace&#x27;) &amp;&amp; _panel.data(&#x27;PanelInstace&#x27;).trigger( _evtName, _src, _evt );
-        }
-    });
+    Panel.autoClose = false;
     
     Panel.prototype = {
         /**
@@ -282,7 +276,7 @@
 
                 this._model.addEvent( &#x27;cancel_default&#x27;
                                     , function( _evt, _panel ){ _panel.trigger(&#x27;close&#x27;); } );
-               
+
                return this;
             }    
         /**
@@ -396,6 +390,26 @@
                 JC.log(&#x27;Panel.close&#x27;);
                 this.trigger(&#x27;beforeclose&#x27;, this._view.getPanel() );
                 this.trigger(&#x27;close&#x27;, this._view.getPanel() );
+                return this;
+            }
+        /**
+         * 判断点击页面时, 是否自动关闭 Panel
+         * @method  isAutoClose
+         * @return bool
+         */
+        , isAutoClose:
+            function(){
+                return this._model.panelautoclose();
+            }
+        /**
+         * 点击页面时, 添加自动隐藏功能
+         * @method  addAutoClose
+         * @param   {bool}          _removeAutoClose
+         */
+        , addAutoClose:
+            function( _removeAutoClose ){
+                _removeAutoClose &amp;&amp; this.layout() &amp;&amp; this.layout().removeAttr(&#x27;panelautoclose&#x27;);
+                !_removeAutoClose &amp;&amp; this.layout() &amp;&amp; this.layout().attr(&#x27;panelautoclose&#x27;, true);
                 return this;
             }
         /**
@@ -741,7 +755,14 @@
                 }
                 return _r;
             }
-
+        , panelautoclose:
+            function(){
+                var _r = Panel.autoClose;
+                if( this.panel.is( &#x27;[panelautoclose]&#x27; ) ){
+                    _r = parseBool( this.panel.attr(&#x27;panelautoclose&#x27;) );
+                }
+                return _r;
+            }
     };
      /**
      * 存储 Panel 的基础视图类
@@ -970,7 +991,6 @@
         ,&#x27;    &lt;/div&gt;&lt;!--end UPContent--&gt;&#x27;
         ,&#x27;&lt;/div&gt;&#x27;
         ].join(&#x27;&#x27;)
-
      /**
       * 隐藏或者清除所有 Panel
       * &lt;h2&gt;使用这个方法应当谨慎, 容易为DOM造成垃圾Panel&lt;/h2&gt;
@@ -993,6 +1013,54 @@
                 $(&#x27;div.UPanel&#x27;).hide();
             }
          };
+    /**
+     * 监听Panel的所有点击事件
+     * &lt;br /&gt;如果事件源有 eventtype 属性, 则会触发eventtype的事件类型
+     * @event   Panel click
+     * @private
+     */
+    $(document).delegate( &#x27;div.UPanel&#x27;, &#x27;click&#x27;, function( _evt ){
+        var _panel = $(this), _src = $(_evt.target || _evt.srcElement), _evtName;
+        if( _src &amp;&amp; _src.length &amp;&amp; _src.is(&quot;[eventtype]&quot;) ){
+            _evtName = _src.attr(&#x27;eventtype&#x27;);
+            JC.log( _evtName, _panel.data(&#x27;PanelInstace&#x27;) );
+            _evtName &amp;&amp; _panel.data(&#x27;PanelInstace&#x27;) &amp;&amp; _panel.data(&#x27;PanelInstace&#x27;).trigger( _evtName, _src, _evt );
+        }
+    });
+
+    $(document).delegate(&#x27;div.UPanel&#x27;, &#x27;click&#x27;, function( _evt ){
+        var _p = $(this), _ins = Panel.getInstance( _p );
+        if( _ins &amp;&amp; _ins.isAutoClose() ){
+            _evt.stopPropagation();
+        }
+    });
+
+    $(window).on(&#x27;click&#x27;, function( _evt ){
+        $(&#x27;div.UPanel&#x27;).each( function(){
+            var _p = $(this), _ins = Panel.getInstance( _p );
+            if( _ins &amp;&amp; _ins.isAutoClose() ){
+                _ins.hide();
+                _ins.close();
+            }
+        });
+    });
+
+    $(window).on(&#x27;keyup&#x27;, function( _evt ){
+        var _kc = _evt.keyCode;
+        switch( _kc ){
+            case 27:
+                {
+                    $(&#x27;div.UPanel&#x27;).each( function(){
+                        var _p = $(this), _ins = Panel.getInstance( _p );
+                        if( !_ins ) return;
+                        _ins.hide();
+                        _ins.close();
+                    });
+                    break;
+                }
+        }
+    });
+
 
 }(jQuery));
 

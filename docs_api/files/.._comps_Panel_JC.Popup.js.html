@@ -450,6 +450,7 @@
             function( _panel, _popupSrc, _doneCb ){
                 _popupSrc &amp;&amp; ( _popupSrc = $(_popupSrc) );
                 if( !(_popupSrc &amp;&amp; _popupSrc.length ) ) return;
+                if( !( _panel &amp;&amp; _panel.selector ) ) return;
 
                 var _poffset = _popupSrc.offset(), _selector = _panel.selector();
                 var _dom = _selector[0];
@@ -493,6 +494,7 @@
             function( _panel, _popupSrc, _doneCb ){
                 _popupSrc &amp;&amp; ( _popupSrc = $(_popupSrc) );
                 if( !(_popupSrc &amp;&amp; _popupSrc.length ) ) return;
+                if( !( _panel &amp;&amp; _panel.selector ) ) return;
 
                 var _poffset = _popupSrc.offset(), _selector = _panel.selector();
                 var _dom = _selector[0];
@@ -755,6 +757,8 @@
 
         if( !(_paneltype in JC) ) return;
         _panel = JC[ _paneltype ]( _panelmsg, _p, _panelstatus );
+        _p.is(&#x27;[panelautoclose]&#x27;) &amp;&amp; _panel.addAutoClose( !parseBool( _p.attr(&#x27;panelautoclose&#x27;) ) );
+        parseBool( _p.attr(&#x27;panelautoclose&#x27;) ) &amp;&amp;  _evt.stopPropagation();
 
         if( _paneltype == &#x27;msgbox&#x27; ){
             _callback &amp;&amp; _panel.on( &#x27;close&#x27;, _callback );
