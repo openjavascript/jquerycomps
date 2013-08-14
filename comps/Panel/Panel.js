@@ -74,6 +74,15 @@
             return $(_selector).data('PanelInstace');
         };
     /**
+     * 显示Panel时, 是否 focus 到 按钮上
+     * focusButton
+     * @property    focusButton
+     * @type        bool
+     * @default     true
+     * @static
+     */
+    Panel.focusButton = true;
+    /**
      * 监听Panel的所有点击事件
      * <br />如果事件源有 eventtype 属性, 则会触发eventtype的事件类型
      * @event   Panel click
@@ -233,6 +242,13 @@
                 this.trigger('close', this._view.getPanel() );
                 return this;
             }
+        /**
+         * focus 到 button
+         * <br />优先查找 input[eventtype=confirm], input[type=submit], button[eventtype=confirm], button[type=submit]
+         * <br />input[eventtype=cancel], input[type=buton], button[eventtype=cancel], button[type=button]
+         * @method  focusButton
+         */
+        , focusButton: function(){ this._view.focusButton(); return this; }
         /**
          * 从DOM清除Panel
          * <br /> <b>close 方法清除 Panel可以被用户阻止, 该方法不会被用户阻止</b>
@@ -561,6 +577,14 @@
             function( _evtName ){
                 return this._events[ _evtName ];
             }
+        , panelfocusbutton:
+            function(){
+                var _r = Panel.focusButton;
+                if( this.panel.is( '[panelfocusbutton]' ) ){
+                    _r = parseBool( this.panel.attr('panelfocusbutton') );
+                }
+                return _r;
+            }
 
     };
      /**
@@ -647,6 +671,18 @@
         , show:
             function(){
                 this.getPanel().css( { 'z-index': ZINDEX_COUNT++ } ).show();
+                this.focusButton();
+            }
+        /**
+         * focus button
+         * @method  focus button
+         */
+        , focusButton:
+            function(){
+                if( !this._model.panelfocusbutton() ) return;
+                var _control = this.getPanel().find( 'input[eventtype=confirm], input[type=submit], button[eventtype=confirm], button[type=submit]' );
+                !_control.length && ( _control = this.getPanel().find( 'input[eventtype=cancel], input[type=buton], button[eventtype=cancel], button[type=button]' ) )
+                _control.length && $( _control[0] ).focus();
             }
         /**
          * 隐藏 Panel
@@ -1049,6 +1085,7 @@
                 JC.log('user show_default');
                 if( _popupSrc && _popupSrc.length ){
                     _logic.showEffect( _ins, _popupSrc, function(){
+                        _ins.focusButton();
                     });
                     return false;
                 }
@@ -1119,13 +1156,14 @@
                 _selector.css( { 'left': _left  + 'px' } );
 
                 _dom.interval = 
-                    easyEffect( function( _curVal ){
+                    easyEffect( function( _curVal, _done ){
                         _selector.css( {
                             'top': _top + _curVal + 'px'
                             , 'height': _sh - _curVal + 'px'
                         });
 
                         if( _sh === _curVal ) _selector.hide();
+                        _done && _doneCb && _doneCb( _panel );
                     }, _sh );
 
             }
@@ -1138,7 +1176,7 @@
          * @param   {selector}      _popupSrc
          */
         , showEffect:
-            function( _panel, _popupSrc ){
+            function( _panel, _popupSrc, _doneCb ){
                 _popupSrc && ( _popupSrc = $(_popupSrc) );
                 if( !(_popupSrc && _popupSrc.length ) ) return;
 
@@ -1163,20 +1201,22 @@
 
                 if( _top > _poffset.top ){
                     _dom.interval = 
-                        easyEffect( function( _curVal ){
+                        easyEffect( function( _curVal, _done ){
                             _selector.css( {
                                 'top': _top - _sh - _logic.yoffset + 'px'
                                 , 'height': _curVal + 'px'
                             });
+                            _done && _doneCb && _doneCb( _panel );
                         }, _sh );
 
                 }else{
                     _dom.interval = 
-                        easyEffect( function( _curVal ){
+                        easyEffect( function( _curVal, _done ){
                             _selector.css( {
                                 'top': _top - _curVal - _logic.yoffset + 'px'
                                 , 'height': _curVal + 'px'
                             });
+                            _done && _doneCb && _doneCb( _panel );
                         }, _sh );
                 }
 

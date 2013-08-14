@@ -399,6 +399,7 @@
                 JC.log(&#x27;user show_default&#x27;);
                 if( _popupSrc &amp;&amp; _popupSrc.length ){
                     _logic.showEffect( _ins, _popupSrc, function(){
+                        _ins.focusButton();
                     });
                     return false;
                 }
@@ -469,13 +470,14 @@
                 _selector.css( { &#x27;left&#x27;: _left  + &#x27;px&#x27; } );
 
                 _dom.interval = 
-                    easyEffect( function( _curVal ){
+                    easyEffect( function( _curVal, _done ){
                         _selector.css( {
                             &#x27;top&#x27;: _top + _curVal + &#x27;px&#x27;
                             , &#x27;height&#x27;: _sh - _curVal + &#x27;px&#x27;
                         });
 
                         if( _sh === _curVal ) _selector.hide();
+                        _done &amp;&amp; _doneCb &amp;&amp; _doneCb( _panel );
                     }, _sh );
 
             }
@@ -488,7 +490,7 @@
          * @param   {selector}      _popupSrc
          */
         , showEffect:
-            function( _panel, _popupSrc ){
+            function( _panel, _popupSrc, _doneCb ){
                 _popupSrc &amp;&amp; ( _popupSrc = $(_popupSrc) );
                 if( !(_popupSrc &amp;&amp; _popupSrc.length ) ) return;
 
@@ -513,20 +515,22 @@
 
                 if( _top &gt; _poffset.top ){
                     _dom.interval = 
-                        easyEffect( function( _curVal ){
+                        easyEffect( function( _curVal, _done ){
                             _selector.css( {
                                 &#x27;top&#x27;: _top - _sh - _logic.yoffset + &#x27;px&#x27;
                                 , &#x27;height&#x27;: _curVal + &#x27;px&#x27;
                             });
+                            _done &amp;&amp; _doneCb &amp;&amp; _doneCb( _panel );
                         }, _sh );
 
                 }else{
                     _dom.interval = 
-                        easyEffect( function( _curVal ){
+                        easyEffect( function( _curVal, _done ){
                             _selector.css( {
                                 &#x27;top&#x27;: _top - _curVal - _logic.yoffset + &#x27;px&#x27;
                                 , &#x27;height&#x27;: _curVal + &#x27;px&#x27;
                             });
+                            _done &amp;&amp; _doneCb &amp;&amp; _doneCb( _panel );
                         }, _sh );
                 }
 

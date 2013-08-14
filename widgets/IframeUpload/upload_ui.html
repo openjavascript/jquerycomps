@@ -44,7 +44,11 @@ var infoBtnval = (get_url_param( 'infoBtn' ) || get_url_param( 'info' ) )
 , btntext = get_url_param( 'btntext' )
 , styles = get_url_param( 'style' )
 , callback = get_url_param( 'cb' ) || 'IFRAME_UPLOAD'
+, filetype = get_url_param('filetype')
 ;
+
+filetype = filetype.replace(/[\s]+/g, '').toLowerCase();
+filetype = filetype.length ? filetype.split(',') : [];
 
 callback != 'IFRAME_UPLOAD' && ( window[ callback ] = IFRAME_UPLOAD );
 
@@ -67,18 +71,36 @@ if( btntext ) btn.innerHTML = btntext;
 
 flBtn.onchange = function(){
     if( this.value  ){
+        if( filetype.length ){
+            var _isAllow, _ext = this.value.split('.');
+                _ext = _ext[ _ext.length - 1 ].toLowerCase();
+            
+            for( var i = 0, j = filetype.length; i < j; i++ ){
+                if( filetype[ i ] == _ext ){
+                    _isAllow = true;
+                    break;
+                }
+            }
+
+            if( ! _isAllow ){
+                this.value = '';
+                IFRAME_UPLOAD( null, '请上传正确的文件类型: ' + filetype.join(', ') );
+                return;
+            }
+        }
+
         this.form.submit();
         document.getElementById('btn').disabled = true;
         document.getElementById('flBtn').disabled = true;
     }
 };
 
-function IFRAME_UPLOAD( $json ){
+function IFRAME_UPLOAD(){
     document.getElementById('btn').disabled = false;
     document.getElementById('flBtn').disabled = false;
 
     if( window.parent && window.parent[ callback ] ){
-        window.parent[ callback ]( $json );
+        window.parent[ callback ].apply( null, [].slice.apply( arguments ) );
     }
 }
 /**

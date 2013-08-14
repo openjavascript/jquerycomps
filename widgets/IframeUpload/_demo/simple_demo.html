@@ -14,7 +14,8 @@
             <iframe src="../upload_ui.html?url=_demo%2Fdata%2Fhandler.php&name=file1&info=myid1&cb=cb1" frameborder="0" style="width:88px; height:24px; cursor: pointer; vertical-align: middle;"></iframe>
         </dd>
         <dd>
-            <iframe src="../upload_ui.html?url=_demo%2Fdata%2Fhandler.php&name=file2&info=myid2&style=2&btntext=导入&cb=cb2" frameborder="0" style="width:73px; height:30px; cursor: pointer; vertical-align: middle;"></iframe>
+            <iframe src="../upload_ui.html?url=_demo%2Fdata%2Fhandler.php&name=file2&info=myid2&style=2&btntext=导入&cb=cb2&filetype=jpg,jpeg,gif,png" frameborder="0" style="width:73px; height:30px; cursor: pointer; vertical-align: middle;"></iframe>
+            filetype: jpg,jpeg,gif,png
         </dd>
     </dl>
     <script>
@@ -24,7 +25,11 @@
             alert( 'cb1' );
         }
 
-        function cb2( _data ){
+        function cb2( _data, _errmsg ){
+            if( _errmsg ){
+                alert( _errmsg );
+                return;
+            }
             alert( 'cb2' );
         }
 

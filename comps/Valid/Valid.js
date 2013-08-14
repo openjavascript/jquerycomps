@@ -175,11 +175,11 @@
          * 显示 focusmsg 属性的提示信息( 如果有的话 )
          * @method  focusmsg
          * @param   {selector}  _item
-         * @param   {bool}      _isHide
+         * @param   {bool}      _setHide
          * @static
          */
-        , 'focusmsg':
-            function( _item, _isHide ){
+        , focusmsg:
+            function( _item, _setHide ){
                 _logic.focusmsg.apply( this, [].slice.apply( arguments ) );
             }
          /**
@@ -399,11 +399,11 @@
                     return _r;
                 }
             , focusmsg:
-                function( _item, _isHide ){
+                function( _item, _setHide ){
                     if( _item && ( _item = $( _item ) ).length && _item.is('[focusmsg]') ){
                         var _focusmsgem = _logic._findFocusmsgEle( _item )
                             , _errorEm = _logic._findErrorEle( _item );
-                        if( _isHide ){
+                        if( _setHide ){
                             _focusmsgem.hide();
                             JC.log( 'hide focusmsg', _focusmsgem.length );
                             return;
