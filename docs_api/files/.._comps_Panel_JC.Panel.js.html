@@ -155,8 +155,6 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 ;(function($){
-    !window.JC &amp;&amp; (window.JC = { log:function(){} });
-    window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
     window.Panel = JC.Panel = Panel;
     /**
      * 弹出层基础类 JC.Panel
@@ -164,6 +162,20 @@
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Panel.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     * &lt;h2&gt;可用的 html attribute&lt;/h2&gt;
+     * &lt;dl&gt;
+     *      &lt;dt&gt;panelfocusbutton = bool, default = true&lt;/dt&gt;
+     *      &lt;dd&gt;显示 Panel 时, 是否自动 foucs 到按钮上&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;panelclickclose = bool&lt;/dt&gt;
+     *      &lt;dd&gt;点击 Panel 外时, 是否关闭 panel&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;panelautoclose = bool&lt;/dt&gt;
+     *      &lt;dd&gt;Panel 是否自动关闭, 默认关闭时间间隔 = 2000 ms&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;panelautoclosems = int, default = 2000 ms&lt;/dt&gt;
+     *      &lt;dd&gt;自动关闭 Panel 的时间间隔&lt;/dd&gt;
+     * &lt;/dl&gt;
      * @namespace JC
      * @class Panel
      * @constructor
@@ -240,12 +252,21 @@
     Panel.focusButton = true;
     /**
      * 页面点击时, 是否自动关闭 Panel
-     * @property    autoClose
+     * @property    clickClose
      * @type        bool
      * @default     false
      * @static
      */
-    Panel.autoClose = false;
+    Panel.clickClose = false;
+    /**
+     * 自动关闭的时间间隔, 单位毫秒
+     * &lt;br /&gt;调用 ins.autoClose() 时生效
+     * @property    autoCloseMs
+     * @type        int
+     * @default     2000
+     * @static
+     */
+    Panel.autoCloseMs = 2000;
     
     Panel.prototype = {
         /**
@@ -276,6 +297,8 @@
 
                 this._model.addEvent( &#x27;cancel_default&#x27;
                                     , function( _evt, _panel ){ _panel.trigger(&#x27;close&#x27;); } );
+
+                this._model.panelautoclose() &amp;&amp; this.autoClose();
 
                return this;
             }    
@@ -394,25 +417,47 @@
             }
         /**
          * 判断点击页面时, 是否自动关闭 Panel
-         * @method  isAutoClose
+         * @method  isClickClose
          * @return bool
          */
-        , isAutoClose:
+        , isClickClose:
             function(){
-                return this._model.panelautoclose();
+                return this._model.panelclickclose();
             }
         /**
          * 点击页面时, 添加自动隐藏功能
-         * @method  addAutoClose
+         * @method  clickClose
          * @param   {bool}          _removeAutoClose
          */
-        , addAutoClose:
+        , clickClose:
             function( _removeAutoClose ){
-                _removeAutoClose &amp;&amp; this.layout() &amp;&amp; this.layout().removeAttr(&#x27;panelautoclose&#x27;);
-                !_removeAutoClose &amp;&amp; this.layout() &amp;&amp; this.layout().attr(&#x27;panelautoclose&#x27;, true);
+                _removeAutoClose &amp;&amp; this.layout() &amp;&amp; this.layout().removeAttr(&#x27;panelclickclose&#x27;);
+                !_removeAutoClose &amp;&amp; this.layout() &amp;&amp; this.layout().attr(&#x27;panelclickclose&#x27;, true);
                 return this;
             }
         /**
+         * 添加自动关闭功能
+         * @method  autoClose
+         * @param   {bool}          _removeAutoClose
+         */
+        , autoClose:
+            function( _callback, _ms ){
+                var _p = this, _tm;
+                _ms = _p._model.panelautoclosems( _ms );
+
+                Panel._autoCloseTimeout &amp;&amp; clearTimeout( Panel._autoCloseTimeout );
+                _p.on(&#x27;close&#x27;, function(){
+                    Panel._autoCloseTimeout &amp;&amp; clearTimeout( Panel._autoCloseTimeout );
+                });
+                Panel._autoCloseTimeout = 
+                    setTimeout( function(){
+                        _callback &amp;&amp; _p.on( &#x27;close&#x27;, _callback );
+                        _p.close();
+                    }, _ms );
+
+                return this;
+            }
+         /**
          * focus 到 button
          * &lt;br /&gt;优先查找 input[eventtype=confirm], input[type=submit], button[eventtype=confirm], button[type=submit]
          * &lt;br /&gt;input[eventtype=cancel], input[type=buton], button[eventtype=cancel], button[type=button]
@@ -755,12 +800,29 @@
                 }
                 return _r;
             }
+        , panelclickclose:
+            function(){
+                var _r = Panel.clickClose;
+                if( this.panel.is( &#x27;[panelclickclose]&#x27; ) ){
+                    _r = parseBool( this.panel.attr(&#x27;panelclickclose&#x27;) );
+                }
+                return _r;
+            }
         , panelautoclose:
             function(){
-                var _r = Panel.autoClose;
+                var _r;
                 if( this.panel.is( &#x27;[panelautoclose]&#x27; ) ){
                     _r = parseBool( this.panel.attr(&#x27;panelautoclose&#x27;) );
                 }
+                return _r;
+            }
+        , panelautoclosems:
+            function( _ms ){
+                var _r = Panel.autoCloseMs;
+                if( this.panel.is( &#x27;[panelautoclosems]&#x27; ) ){
+                    _r = parseInt( this.panel.attr(&#x27;panelautoclosems&#x27;), 10 );
+                }
+                typeof _ms == &#x27;number&#x27; &amp;&amp; ( _r = _ms );
                 return _r;
             }
     };
@@ -1007,12 +1069,34 @@
       */
      JC.hideAllPanel = 
          function( _isClose ){
-            if( _isClose ){
-                $(&#x27;div.UPanel&#x27;).remove();
-            }else{
-                $(&#x27;div.UPanel&#x27;).hide();
-            }
+            $(&#x27;div.UPanel&#x27;).each( function(){
+                var _p = $(this), _ins = Panel.getInstance( _p );
+                if( !_ins ) return;
+                _ins.hide();
+                _isClose &amp;&amp; _ins.close();
+            });
          };
+    /**
+     * 隐藏 或 从DOM清除所有 JC.alert/JC.confirm
+     * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
+     * @namespace JC
+     * @class hideAllPopup
+     * @static
+     * @constructor
+     * @param   {bool}  _isClose    为真从DOM清除JC.alert/JC.confirm, 为假隐藏, 默认为false
+     * @example
+     *      JC.hideAllPopup();         //隐藏所有JC.alert, JC.confirm
+     *      JC.hideAllPopup( true );   //从 DOM 清除所有 JC.alert, JC.confirm
+     */
+    JC.hideAllPopup =
+        function( _isClose ){
+            if( _isClose ){
+                $(&#x27;body &gt; div.UPanelPopup_identifer&#x27;).remove();
+            }else{
+                $(&#x27;body &gt; div.UPanelPopup_identifer&#x27;).hide();
+            }
+        };
+
     /**
      * 监听Panel的所有点击事件
      * &lt;br /&gt;如果事件源有 eventtype 属性, 则会触发eventtype的事件类型
@@ -1030,7 +1114,7 @@
 
     $(document).delegate(&#x27;div.UPanel&#x27;, &#x27;click&#x27;, function( _evt ){
         var _p = $(this), _ins = Panel.getInstance( _p );
-        if( _ins &amp;&amp; _ins.isAutoClose() ){
+        if( _ins &amp;&amp; _ins.isClickClose() ){
             _evt.stopPropagation();
         }
     });
@@ -1038,7 +1122,7 @@
     $(window).on(&#x27;click&#x27;, function( _evt ){
         $(&#x27;div.UPanel&#x27;).each( function(){
             var _p = $(this), _ins = Panel.getInstance( _p );
-            if( _ins &amp;&amp; _ins.isAutoClose() ){
+            if( _ins &amp;&amp; _ins.isClickClose() &amp;&amp; _ins.layout() &amp;&amp; _ins.layout().is(&#x27;:visible&#x27;) ){
                 _ins.hide();
                 _ins.close();
             }
@@ -1050,12 +1134,7 @@
         switch( _kc ){
             case 27:
                 {
-                    $(&#x27;div.UPanel&#x27;).each( function(){
-                        var _p = $(this), _ins = Panel.getInstance( _p );
-                        if( !_ins ) return;
-                        _ins.hide();
-                        _ins.close();
-                    });
+                    JC.hideAllPanel( 1 );
                     break;
                 }
         }

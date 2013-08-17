@@ -155,7 +155,7 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 ;(function( $ ){
-    if( window.JC &amp;&amp; window.JC.PATH ) return;
+    if( window.JC &amp;&amp; window.JC.PATH != &#x27;undefined&#x27; ) return;
     /**
      * JC jquery 组件库 资源调用控制类
      * &lt;br /&gt;这是一个单例模式, 全局访问使用 JC 或 window.JC
@@ -236,6 +236,9 @@
                     }else{
                         _path = $.trim( _path.replace( _pathRplRe, &#x27;$1$2&#x27; ) );
                     }
+
+                    if( JC._USE_CACHE[ _path ] ) return;
+                        JC._USE_CACHE[ _path ] = 1;
                     _paths.push( _path );
                 });
 
@@ -280,6 +283,44 @@
         * @static
         */
        , nginxBasePath: &#x27;&#x27;
+       /**
+        * 资源路径映射对象
+        * &lt;br /&gt;设置 JC.use 逗号(&#x27;,&#x27;) 分隔项的 对应URL路径
+        * @property FILE_MAP
+        * @type object
+        * @default null
+        * @static
+        * @example
+                以下例子假定 libpath = http://git.me.btbtd.org/ignore/JQueryComps_dev/
+                &lt;script&gt;
+                    JC.FILE_MAP = {
+                        &#x27;Calendar&#x27;: &#x27;http://jc.openjavascript.org/comps/Calendar/Calendar.js&#x27;
+                        , &#x27;Form&#x27;: &#x27;http://jc.openjavascript.org/comps/Form/Form.js&#x27;
+                        , &#x27;LunarCalendar&#x27;: &#x27;http://jc.openjavascript.org/comps/LunarCalendar/LunarCalendar.js&#x27;
+                        , &#x27;Panel&#x27;: &#x27;http://jc.openjavascript.org/comps/Panel/Panel.js&#x27; 
+                        , &#x27;Tab&#x27;: &#x27;http://jc.openjavascript.org/comps/Tab/Tab.js&#x27;
+                        , &#x27;Tips&#x27;: &#x27;http://jc.openjavascript.org/comps/Tips/Tips.js&#x27; 
+                        , &#x27;Tree&#x27;: &#x27;http://jc.openjavascript.org/comps/Tree/Tree.js&#x27;
+                        , &#x27;Valid&#x27;: &#x27;http://jc.openjavascript.org/comps/Valid/Valid.js&#x27;
+                        , &#x27;plugins/jquery.form.js&#x27;: &#x27;http://jc.openjavascript.org/plugins/jquery.form.js&#x27;
+                        , &#x27;plugins/json2.js&#x27;: &#x27;http://jc.openjavascript.org/plugins/json2.js&#x27;
+                    };
+
+                    JC.use( &#x27;Panel, Tips, Valid, plugins/jquery.form.js&#x27; );
+
+                    $(document).ready(function(){
+                        //JC.Dialog( &#x27;JC.use example&#x27;, &#x27;test issue&#x27; );
+                    });
+                &lt;/script&gt;
+
+                output should be:
+                    http://git.me.btbtd.org/ignore/JQueryComps_dev/lib.js
+                    http://jc.openjavascript.org/comps/Panel/Panel.js
+                    http://jc.openjavascript.org/comps/Tips/Tips.js
+                    http://jc.openjavascript.org/comps/Valid/Valid.js
+                    http://jc.openjavascript.org/plugins/jquery.form.js
+        */
+       , FILE_MAP: null
        /**
         * 输出 nginx concat 模块的脚本路径格式
         * @method   _writeNginxScript
@@ -326,43 +367,14 @@
                 _paths.length &amp;&amp; document.write( _paths.join(&#x27;&#x27;) );
             }
        /**
-        * 资源路径映射对象
-        * &lt;br /&gt;设置 JC.use 逗号(&#x27;,&#x27;) 分隔项的 对应URL路径
-        * @property FILE_MAP
-        * @type object
-        * @default null
+        * 保存 use 过的资源路径, 以便进行唯一性判断, 避免重复加载
+        * @property     _USE_CACHE
+        * @type     object
+        * @default  {}
+        * @private
         * @static
-        * @example
-                以下例子假定 libpath = http://git.me.btbtd.org/ignore/JQueryComps_dev/
-                &lt;script&gt;
-                    JC.FILE_MAP = {
-                        &#x27;Calendar&#x27;: &#x27;http://jc.openjavascript.org/comps/Calendar/Calendar.js&#x27;
-                        , &#x27;Form&#x27;: &#x27;http://jc.openjavascript.org/comps/Form/Form.js&#x27;
-                        , &#x27;LunarCalendar&#x27;: &#x27;http://jc.openjavascript.org/comps/LunarCalendar/LunarCalendar.js&#x27;
-                        , &#x27;Panel&#x27;: &#x27;http://jc.openjavascript.org/comps/Panel/Panel.js&#x27; 
-                        , &#x27;Tab&#x27;: &#x27;http://jc.openjavascript.org/comps/Tab/Tab.js&#x27;
-                        , &#x27;Tips&#x27;: &#x27;http://jc.openjavascript.org/comps/Tips/Tips.js&#x27; 
-                        , &#x27;Tree&#x27;: &#x27;http://jc.openjavascript.org/comps/Tree/Tree.js&#x27;
-                        , &#x27;Valid&#x27;: &#x27;http://jc.openjavascript.org/comps/Valid/Valid.js&#x27;
-                        , &#x27;plugins/jquery.form.js&#x27;: &#x27;http://jc.openjavascript.org/plugins/jquery.form.js&#x27;
-                        , &#x27;plugins/json2.js&#x27;: &#x27;http://jc.openjavascript.org/plugins/json2.js&#x27;
-                    };
-
-                    JC.use( &#x27;Panel, Tips, Valid, plugins/jquery.form.js&#x27; );
-
-                    $(document).ready(function(){
-                        //JC.Dialog( &#x27;JC.use example&#x27;, &#x27;test issue&#x27; );
-                    });
-                &lt;/script&gt;
-
-                output should be:
-                    http://git.me.btbtd.org/ignore/JQueryComps_dev/lib.js
-                    http://jc.openjavascript.org/comps/Panel/Panel.js
-                    http://jc.openjavascript.org/comps/Tips/Tips.js
-                    http://jc.openjavascript.org/comps/Valid/Valid.js
-                    http://jc.openjavascript.org/plugins/jquery.form.js
         */
-       , FILE_MAP: null
+       , _USE_CACHE: {}
     };
     /**
      * UXC 是 JC 的别名

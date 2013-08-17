@@ -155,8 +155,6 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 (function($){
-    !window.JC &amp;&amp; (window.JC = { log:function(){} });
-    window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
     /**
      * 日期选择组件
      * &lt;br /&gt;全局访问请使用 JC.Calendar 或 Calendar
@@ -568,7 +566,7 @@
             function( _selector ){
                _selector.each( function(){
                     var _p = $(this), _nodeName = (_p.prop(&#x27;nodeName&#x27;)||&#x27;&#x27;).toLowerCase();
-                    JC.log( &#x27;\nCalendar.init: &#x27;, _nodeName );
+                    //JC.log( &#x27;\nCalendar.init: &#x27;, _nodeName );
 
                     if( _nodeName != &#x27;input&#x27; ){ 
                         _logic.initTrigger( _selector.find( $(&#x27;input[type=text]&#x27;) ) ); 
@@ -578,7 +576,7 @@
                             || $.trim( _p.attr(&#x27;multidate&#x27;) || &#x27;&#x27;)
                             || $.trim( _p.attr(&#x27;datatype&#x27;) || &#x27;&#x27;).toLowerCase() == &#x27;daterange&#x27;) ) return;
 
-                    JC.log( &#x27;find Calendar item:&#x27;, _p.attr(&#x27;name&#x27;), _p.attr(&#x27;id&#x27;), _p.attr(&#x27;datatype&#x27;) );
+                    //JC.log( &#x27;find Calendar item:&#x27;, _p.attr(&#x27;name&#x27;), _p.attr(&#x27;id&#x27;), _p.attr(&#x27;datatype&#x27;) );
                     var _btn = _p.find( &#x27;+ input.UXCCalendar_btn&#x27; );
                     if( !_btn.length ){
                         _p.after( _btn = $(&#x27;&lt;input type=&quot;button&quot; class=&quot;UXCCalendar_btn&quot;  /&gt;&#x27;) );

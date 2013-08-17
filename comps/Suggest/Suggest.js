@@ -1,8 +1,5 @@
 ;(function($){
     //TODO: 自动生成 layout, layout 自动定位 
-    !window.JC && (window.JC = { log:function(){} });
-    window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
-
     window.Suggest = JC.Suggest = Suggest;
     /**
      * Suggest 关键词补全提示类

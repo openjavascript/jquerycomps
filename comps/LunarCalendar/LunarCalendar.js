@@ -2,7 +2,6 @@
     ///
     /// TODO: 添加事件响应机制
     ///
-    !window.JC && (window.JC = { log:function(){} });
     JC.LunarCalendar = window.LunarCalendar = LunarCalendar;
     /**
      * 农历日历组件

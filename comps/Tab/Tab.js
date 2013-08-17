@@ -1,6 +1,4 @@
 ;(function($){
-    !window.JC && (window.JC = { log:function(){} });
-
     window.Tab = JC.Tab = Tab;
     /**
      * Tab 菜单类

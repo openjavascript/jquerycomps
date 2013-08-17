@@ -51,7 +51,7 @@
         _evt.stopPropagation();
 
         tmpPanel = JC.Dialog( '默认Dialog' + count, 'body ' + count + btnstr, 'footer ' + count);
-        tmpPanel.addAutoClose();
+        tmpPanel.clickClose();
         count++;
     });
 
@@ -59,7 +59,7 @@
         _evt.stopPropagation();
 
         tmpPanel = JC.Dialog.alert( 'user manual JC.Dialog.alert ' + count, this );
-        tmpPanel.addAutoClose();
+        tmpPanel.clickClose();
         tmpPanel.on('confirm', function( _evt, _panel ){ 
             JC.log('another uaer callback'); 
         });
@@ -71,7 +71,7 @@
         _evt.stopPropagation();
 
         tmpPanel = JC.Dialog.confirm( 'user manual JC.Dialog.confirm ' + count, this );
-        tmpPanel.addAutoClose();
+        tmpPanel.clickClose();
         tmpPanel.on('confirm', function( _evt, _panel ){ 
             JC.log('another uaer callback'); 
         });
@@ -83,7 +83,7 @@
         _evt.stopPropagation();
 
         tmpPanel = JC.Dialog.msgbox( 'user manual JC.Dialog.msgbox ' + count, this );
-        tmpPanel.addAutoClose();
+        tmpPanel.clickClose();
         tmpPanel.on('confirm', function( _evt, _panel ){ 
             JC.log('another uaer callback'); 
         });
@@ -121,7 +121,7 @@
             panelcallback="userCallback" 
             panelstatus="0" 
             panelmsg="msg1"
-            panelautoclose="true"
+            panelclickclose="true"
             >attr alert success</button>
         <button type="button" paneltype="Dialog.alert" panelcallback="userCallback1" panelstatus="1" panelmsg="msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2">attr alert1 alert</button>
         <button type="button" paneltype="Dialog.alert" panelcallback="userCallback2" panelstatus="2" panelmsg="msgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsg">attr alert2 failure</button>
@@ -133,7 +133,7 @@
             panelcallback="userCallback" 
             paneltype="0" 
             panelmsg="msg1"
-            panelautoclose="true"
+            panelclickclose="true"
             >attr confirm success</button>
         <button type="button" paneltype="Dialog.confirm" panelcallback="userCallback1" panelstatus="1" panelmsg="msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2">attr confirm1 alert</button>
         <button type="button" paneltype="Dialog.confirm" panelcallback="userCallback2" panelstatus="2" panelmsg="msgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsg">attr confirm2 failure</button>
@@ -146,7 +146,7 @@
             panelcallback="userCallback" 
             panelstatus="0" 
             panelmsg="msg1"
-            panelautoclose="true"
+            panelclickclose="true"
             >attr msgbox success</button>
         <button type="button" paneltype="Dialog.msgbox" panelcallback="userCallback1" panelstatus="1" panelmsg="msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2msg2">attr msgbox1 msgbox</button>
         <button type="button" paneltype="Dialog.msgbox" panelcallback="userCallback2" panelstatus="2" panelmsg="msgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsgmsg">attr msgbox2 failure</button>

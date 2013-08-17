@@ -1,5 +1,4 @@
 ;( function( $ ){
-    !window.JC && (window.JC = { log:function(){} });
     window.Tree = JC.Tree = Tree;
     /**
      * 树菜单类 JC.Tree

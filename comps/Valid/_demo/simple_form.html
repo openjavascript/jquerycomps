@@ -29,13 +29,25 @@
                 background: #ececec;
             }
 
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
         </style>
         <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
 
         <script src="../../../lib.js"></script>
-        <script> JC.debug = true; JC.use( 'Valid, Calendar' ); </script>
         <script>
+            JC.debug = true; JC.use( 'Valid, Calendar' );
+
             $(document).ready( function($evt){
+                JC.Valid.showValidStatus = true;
+
                 $(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
                     window.console && console.clear && console.clear();
                     JC.Valid.clearError( 'form.js-valid' );
@@ -52,7 +64,15 @@
                 });
 
                 $( 'dl.fm-items > dd:odd').addClass( 'odd' );
+
+                /*
+                JC.Valid.itemCallback =
+                    function( _item, _isValid ){
+                        JC.log( 'JC.Valid.itemCallback _isValid:', _isValid );
+                    };
+                */
             });
+
         </script>
     </head>    
     <body>
@@ -69,16 +89,42 @@
                     <label>(reqmsg)公司名称:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_name" minlength="2" maxlength="120" reqmsg="公司名称" errmsg="请检查格式,长度2-120" /> <em>公司名称描述</em>
+                    <input type="text" name="company_name" minlength="2" maxlength="120" reqmsg="公司名称" errmsg="请检查格式,长度2-120" /> 
                 </div>
                 </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(reqmsg, validmsg, focusmsg)公司名称:</label>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="company_name" 
+                    minlength="2" maxlength="120" 
+                    reqmsg="公司名称" 
+                    errmsg="请检查格式,长度2-120"
+                    focusmsg="请填写公司名称, 长度2-120"
+                    validmsg="false"
+                    />
+                    <em class="validmsg"></em>
+                    <em class="focusmsg"></em>
+                    <em class="errormsg"></em>
+                </div>
+                </dd>
+
 
                 <dd>
                 <div class="f-l label">
                     <label>(bytetext 8-40字符)公司名称:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_name" minlength="8" maxlength="40" reqmsg="公司名称" errmsg="长度8-40个字符, 英文=1字符, 汉字=2字符" datatype="bytetext" /> <em>公司名称描述</em>
+                    <input type="text" name="company_name" 
+                    minlength="8" maxlength="40" 
+                    reqmsg="公司名称" 
+                    errmsg="长度8-40个字符, 英文=1字符, 汉字=2字符" 
+                    datatype="bytetext"
+                    focusmsg="请填写公司名称" 
+                    validmsg="true"
+                    /> 
                 </div>
                 </dd>
 
@@ -92,7 +138,7 @@
                         datatype="domain" 
                         reqmsg="域名" 
                         errmsg="请填写正确的域名"
-                        focusmsg="请填写您的域名 focusmsg"
+                        focusmsg="请填写您的域名"
                         />
                 </div>
                 </dd>
@@ -199,7 +245,8 @@
                 <div class="f-l">
                     <input type="text" name="company_n" errmsg="请填写正确的数字, -1000000.00 ~ 1000000.00" datatype="nrange-7.2" minvalue="-1000000" maxvalue="1000000" >
                     <input type="text" name="company_n" errmsg="请填写正确的数字, -1000000.00 ~ 1000000.00" datatype="nrange-7.2" minvalue="-1000000" maxvalue="1000000" >
-                    <em class="error" style="display:block"></em>
+                    <em class="error"></em>
+                    <em class="validmsg"></em>
                 </div>
                 </dd>
 
@@ -232,6 +279,7 @@
                     - 小<input type="text" name="company_n11" id="company_n11" toNEl="company_n10"
                         errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1011" >
                     <em id="nrange_n1011"></em>
+                    <em class="validmsg"></em>
                 </div>
                 </dd>
 
@@ -244,6 +292,7 @@
                     <input type="text" name="company_n12" errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1213" >
                     <input type="text" name="company_n13" errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1213" >
                     <em id="nrange_n1213"></em>
+                    <em class="validmsg"></em>
                 </div>
                 </dd>
 
@@ -255,6 +304,14 @@
                     <input type="text" name="company_n14" errmsg="请填写正确的数值范围" datatype="nrange-7.2" emEl="nrange_n1415" >
                     <input type="text" name="company_n15" errmsg="请填写正确的数值范围" datatype="nrange-7.2" emEl="nrange_n1415" >
                     <em id="nrange_n1415"></em>
+                    <em class="validmsg"></em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype nrange-7.2)正数:</label>
+                </div>
                 </div>
                 </dd>
 
@@ -265,6 +322,7 @@
                 <div class="f-l">
                     <input type="text" name="company_d" errmsg="请填写正确的日期范围2013-05-01 - 2013-05-31" 
                         datatype="date" minvalue="2013-05-01" maxvalue="2013-05-31" value="2013-05-15" >
+                    <em class="validmsg"></em>
                 </div>
                 </dd>
 
@@ -274,10 +332,18 @@
                 </div>
                 <div class="f-l">
                     <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
-                            datatype="daterange" emEl="date-err-em">
-                            - <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
-                            datatype="daterange" emEl="date-err-em" >
+                        datatype="daterange" emEl="date-err-em" validmsg="false">
+                    - <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
+                        datatype="daterange" emEl="date-err-em" validmsg="false" >
                     <br /><em id="date-err-em"></em>
+                    <em class="validmsg"></em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype nrange-7.2)正数:</label>
+                </div>
                 </div>
                 </dd>
 
@@ -286,11 +352,20 @@
                     <label>(datatype daterange, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD, YYYYMMDD )日期范围:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
-                            id="start_date" datatype="daterange" toDateEl="end_date" emEl="date-err-em" value="2013-06-16" >
-                            - <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
-                            id="end_date" datatype="daterange" fromDateEl="start_date" emEl="date-err-em" value="2013-06-08" >
-                    <br /><em id="date-err-em"></em>
+                    <input type="text" name="company_daterange1_1" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
+                        id="start_date" datatype="daterange" toDateEl="end_date" value="2013-06-16" validmsg="false" >
+                    - <input type="text" name="company_daterange1_2" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
+                        id="end_date" datatype="daterange" fromDateEl="start_date" value="2013-06-08" validmsg="false" >
+                    <br />
+                    <em class="error"></em>
+                    <em class="validmsg"></em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype nrange-7.2)正数:</label>
+                </div>
                 </div>
                 </dd>
 
@@ -299,11 +374,19 @@
                     <label>(datatype daterange, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD, YYYYMMDD )日期范围 - 自动初始化:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
-                             datatype="daterange" emEl="date-err-em1" value="2013-06-16" >
-                            - <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
-                             datatype="daterange" emEl="date-err-em1" value="2013-06-08" >
-                    <br /><em id="date-err-em1"></em>
+                    <input type="text" name="company_daterange2_1" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
+                         datatype="daterange" emEl="date-err-em2" value="2013-06-16" >
+                    - <input type="text" name="company_daterange2_2" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
+                         datatype="daterange" emEl="date-err-em2" value="2013-06-08" >
+                    <br /><em id="date-err-em2"></em>
+                    <em class="validmsg"></em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype nrange-7.2)正数:</label>
+                </div>
                 </div>
                 </dd>
 
@@ -568,6 +651,14 @@
                         alternativemsg="数值1和数值2至少需要填写一个"
                         /> <em>数值2</em>
                     <em class="error"></em>
+                    <em class="validmsg"></em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype nrange-7.2)正数:</label>
+                </div>
                 </div>
                 </dd>
 
@@ -590,6 +681,14 @@
                         minlength="6" maxlength="15"
                         />
                     <em class="error"></em>
+                    <em class="validmsg"></em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype nrange-7.2)正数:</label>
+                </div>
                 </div>
                 </dd>
 

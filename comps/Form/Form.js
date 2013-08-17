@@ -1,5 +1,4 @@
 ;(function($){
-    !window.JC && (window.JC = { log:function(){} });
     /**
      * 表单常用功能类 JC.Form
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>

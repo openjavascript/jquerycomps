@@ -20,6 +20,28 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
 
 !String.prototype.trim && ( String.prototype.trim = function(){ return $.trim( this ); } );
 /**
+ * 全局 css z-index 控制属性
+ * @property    ZINDEX_COUNT
+ * @type        int
+ * @default     50001
+ * @static
+ */
+window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
+/**
+ * 把函数的参数转为数组
+ * @method  sliceArgs
+ * @param   {arguments}     args
+ * @return Array
+ * @static
+ */
+function sliceArgs( _arg ){
+    var _r = [], _i, _len;
+    for( _i = 0, _len = _arg.length; _i < _len; _i++){
+        _r.push( _arg[_i] );
+    }
+    return _r;
+}
+/**
  * @namespace 
  * @class   window
  * @static
@@ -358,6 +380,7 @@ function easyEffect( _cb, _maxVal, _startVal, _duration, _stepMs ){
  * @method parseBool
  * @param   {*} _input
  * @return bool
+ * @static
  */
 function parseBool( _input ){
     if( typeof _input == 'string' ){
@@ -371,9 +394,35 @@ function parseBool( _input ){
     }
     return !!_input;
 }
+/**
+ * 获取 selector 的指定父级标签
+ * @method  getJqParent
+ * @param   {selector}  _selector
+ * @param   {selector}  _filter
+ * @return selector
+ * @require jquery
+ * @static
+ */
+function getJqParent( _selector, _filter ){
+    _selector = $(_selector);
+    var _r;
+
+    if( _filter ){
+        while( (_selector = _selector.parent()).length ){
+            if( _selector.is( _filter ) ){
+                _r = _selector;
+                break;
+            }
+        }
+    }else{
+        _r = _selector.parent();
+    }
+
+    return _r;
+}
 
 ;(function( $ ){
-    if( window.JC && window.JC.PATH ) return;
+    if( window.JC && window.JC.PATH != 'undefined' ) return;
     /**
      * JC jquery 组件库 资源调用控制类
      * <br />这是一个单例模式, 全局访问使用 JC 或 window.JC
@@ -454,6 +503,9 @@ function parseBool( _input ){
                     }else{
                         _path = $.trim( _path.replace( _pathRplRe, '$1$2' ) );
                     }
+
+                    if( JC._USE_CACHE[ _path ] ) return;
+                        JC._USE_CACHE[ _path ] = 1;
                     _paths.push( _path );
                 });
 
@@ -498,6 +550,44 @@ function parseBool( _input ){
         * @static
         */
        , nginxBasePath: ''
+       /**
+        * 资源路径映射对象
+        * <br />设置 JC.use 逗号(',') 分隔项的 对应URL路径
+        * @property FILE_MAP
+        * @type object
+        * @default null
+        * @static
+        * @example
+                以下例子假定 libpath = http://git.me.btbtd.org/ignore/JQueryComps_dev/
+                <script>
+                    JC.FILE_MAP = {
+                        'Calendar': 'http://jc.openjavascript.org/comps/Calendar/Calendar.js'
+                        , 'Form': 'http://jc.openjavascript.org/comps/Form/Form.js'
+                        , 'LunarCalendar': 'http://jc.openjavascript.org/comps/LunarCalendar/LunarCalendar.js'
+                        , 'Panel': 'http://jc.openjavascript.org/comps/Panel/Panel.js' 
+                        , 'Tab': 'http://jc.openjavascript.org/comps/Tab/Tab.js'
+                        , 'Tips': 'http://jc.openjavascript.org/comps/Tips/Tips.js' 
+                        , 'Tree': 'http://jc.openjavascript.org/comps/Tree/Tree.js'
+                        , 'Valid': 'http://jc.openjavascript.org/comps/Valid/Valid.js'
+                        , 'plugins/jquery.form.js': 'http://jc.openjavascript.org/plugins/jquery.form.js'
+                        , 'plugins/json2.js': 'http://jc.openjavascript.org/plugins/json2.js'
+                    };
+
+                    JC.use( 'Panel, Tips, Valid, plugins/jquery.form.js' );
+
+                    $(document).ready(function(){
+                        //JC.Dialog( 'JC.use example', 'test issue' );
+                    });
+                </script>
+
+                output should be:
+                    http://git.me.btbtd.org/ignore/JQueryComps_dev/lib.js
+                    http://jc.openjavascript.org/comps/Panel/Panel.js
+                    http://jc.openjavascript.org/comps/Tips/Tips.js
+                    http://jc.openjavascript.org/comps/Valid/Valid.js
+                    http://jc.openjavascript.org/plugins/jquery.form.js
+        */
+       , FILE_MAP: null
        /**
         * 输出 nginx concat 模块的脚本路径格式
         * @method   _writeNginxScript
@@ -544,43 +634,14 @@ function parseBool( _input ){
                 _paths.length && document.write( _paths.join('') );
             }
        /**
-        * 资源路径映射对象
-        * <br />设置 JC.use 逗号(',') 分隔项的 对应URL路径
-        * @property FILE_MAP
-        * @type object
-        * @default null
+        * 保存 use 过的资源路径, 以便进行唯一性判断, 避免重复加载
+        * @property     _USE_CACHE
+        * @type     object
+        * @default  {}
+        * @private
         * @static
-        * @example
-                以下例子假定 libpath = http://git.me.btbtd.org/ignore/JQueryComps_dev/
-                <script>
-                    JC.FILE_MAP = {
-                        'Calendar': 'http://jc.openjavascript.org/comps/Calendar/Calendar.js'
-                        , 'Form': 'http://jc.openjavascript.org/comps/Form/Form.js'
-                        , 'LunarCalendar': 'http://jc.openjavascript.org/comps/LunarCalendar/LunarCalendar.js'
-                        , 'Panel': 'http://jc.openjavascript.org/comps/Panel/Panel.js' 
-                        , 'Tab': 'http://jc.openjavascript.org/comps/Tab/Tab.js'
-                        , 'Tips': 'http://jc.openjavascript.org/comps/Tips/Tips.js' 
-                        , 'Tree': 'http://jc.openjavascript.org/comps/Tree/Tree.js'
-                        , 'Valid': 'http://jc.openjavascript.org/comps/Valid/Valid.js'
-                        , 'plugins/jquery.form.js': 'http://jc.openjavascript.org/plugins/jquery.form.js'
-                        , 'plugins/json2.js': 'http://jc.openjavascript.org/plugins/json2.js'
-                    };
-
-                    JC.use( 'Panel, Tips, Valid, plugins/jquery.form.js' );
-
-                    $(document).ready(function(){
-                        //JC.Dialog( 'JC.use example', 'test issue' );
-                    });
-                </script>
-
-                output should be:
-                    http://git.me.btbtd.org/ignore/JQueryComps_dev/lib.js
-                    http://jc.openjavascript.org/comps/Panel/Panel.js
-                    http://jc.openjavascript.org/comps/Tips/Tips.js
-                    http://jc.openjavascript.org/comps/Valid/Valid.js
-                    http://jc.openjavascript.org/plugins/jquery.form.js
         */
-       , FILE_MAP: null
+       , _USE_CACHE: {}
     };
     /**
      * UXC 是 JC 的别名

@@ -97,7 +97,7 @@
         </div>
 </div>
 <div class="box intro">
-    <p>表单验证
+    <p><b>表单验证</b> (单例模式)
 <br />全局访问请使用 JC.Valid 或 Valid</p>
 <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
 <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -112,14 +112,18 @@
 <h2>Form Control的可用 html attribute</h2>
 <dl>
      <dt>reqmsg = 错误提示</dt>
-     <dd>值不能为空</dd>
+     <dd>值不能为空, class=error errormsg</dd>
      <dt>errmsg = 错误提示</dt>
-     <dd>格式错误, 但不验证为空的值</dd>
+     <dd>格式错误, 但不验证为空的值, class=error errormsg</dd>
      <dt>focusmsg = 控件获得焦点的提示信息</dt>
      <dd>
-         这个只作提示用
-         <br />如果 control 的内容是正确的 class=focusmsg isvalid
-         <br />如果 control 的内容是错误的 class=focusmsg iserror
+         这个只作提示用, class=focusmsg
+     </dd>
+     <dt>validmsg = bool | string</dt>
+     <dd>
+         内容填写正确时显示的 提示信息, class=validmsg
+         <br />如果 = 0, false, 将不显示提示信息
+         <br />如果 = 1, true, 将不显示提示文本
      </dd>
      <dt>emel = selector</dt>
      <dd>显示错误的selector</dd>
@@ -134,6 +138,8 @@
      <dd>验证内容的最小值, 但不验证为空的值</dd>
      <dt>maxvalue = [number|ISO date](最大值)</dt>
      <dd>验证内容的最大值, 但不验证为空的值</dd>
+     <dt>validitemcallback = function name</dt>
+     <dd>对一个 control 作检查后的回调, 无论正确与否都会触发</dt>
      <dt>datatype: 常用数据类型</dt>
      <dd><b>n:</b> 检查是否为正确的数字</dd>
      <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>
@@ -221,6 +227,7 @@
         <li class="api-class-tab index"><a href="#index">Index</a></li>
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
             <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+            <li class="api-class-tab events"><a href="#events">Events</a></li>
     </ul>
     <div>
         <div id="index" class="api-class-tabpanel index">
@@ -229,179 +236,19 @@
                     <h3>Methods</h3>
                     <ul class="index-list methods">
                             <li class="index-item method private">
-                                <a href="#method__logic.bytelen">_logic.bytelen</a>
+                                <a href="#method_alternative">alternative</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method private">
-                                <a href="#method__logic.datatype.bankcard">_logic.datatype.bankcard</a>
+                                <a href="#method_bankcard">bankcard</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method private">
-                                <a href="#method__logic.datatype.bytetext">_logic.datatype.bytetext</a>
+                                <a href="#method_bytelen">bytelen</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method private">
-                                <a href="#method__logic.datatype.cnname">_logic.datatype.cnname</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.d">_logic.datatype.d</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.daterange">_logic.datatype.daterange</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.domain">_logic.datatype.domain</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.email">_logic.datatype.email</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.idnumber">_logic.datatype.idnumber</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.length">_logic.datatype.length</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.minute">_logic.datatype.minute</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.mobile">_logic.datatype.mobile</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.mobilecode">_logic.datatype.mobilecode</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.mobilephone">_logic.datatype.mobilephone</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.mobilephoneall">_logic.datatype.mobilephoneall</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.mobilezonecode">_logic.datatype.mobilezonecode</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.n">_logic.datatype.n</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.nrange">_logic.datatype.nrange</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.phone">_logic.datatype.phone</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.phoneall">_logic.datatype.phoneall</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.phonecode">_logic.datatype.phonecode</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.phoneext">_logic.datatype.phoneext</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.phonezone">_logic.datatype.phonezone</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.reg">_logic.datatype.reg</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.reqmsg">_logic.datatype.reqmsg</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.richtext">_logic.datatype.richtext</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.stricdomain">_logic.datatype.stricdomain</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.text">_logic.datatype.text</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.time">_logic.datatype.time</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.url">_logic.datatype.url</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.username">_logic.datatype.username</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.vcode">_logic.datatype.vcode</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.datatype.zipcode">_logic.datatype.zipcode</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.error">_logic.error</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.getDatatype">_logic.getDatatype</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.getElement">_logic.getElement</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.getMsg">_logic.getMsg</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.getSubdatatype">_logic.getSubdatatype</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.getTimestamp">_logic.getTimestamp</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.isValidItem">_logic.isValidItem</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.parse">_logic.parse</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.subdatatype.alternative">_logic.subdatatype.alternative</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.subdatatype.reconfirm">_logic.subdatatype.reconfirm</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method__logic.valid">_logic.valid</a>
+                                <a href="#method_bytetext">bytetext</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
@@ -416,12 +263,142 @@
                                 <a href="#method_clearError">clearError</a>
                                     <span class="flag static">static</span>
                             </li>
+                            <li class="index-item method private">
+                                <a href="#method_cnname">cnname</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_d">d</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_daterange">daterange</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_domain">domain</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_email">email</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_error">error</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_errorMsg">errorMsg</a>
+                                    <span class="flag static">static</span>
+                            </li>
                             <li class="index-item method">
                                 <a href="#method_focusmsg">focusmsg</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_formHasValue">formHasValue</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_getElement">getElement</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getInstance">getInstance</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_idnumber">idnumber</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isValid">isValid</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_lengthValid">lengthValid</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_minute">minute</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_mobile">mobile</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_mobilecode">mobilecode</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_mobilephone">mobilephone</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_mobilephoneall">mobilephoneall</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_mobilezonecode">mobilezonecode</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_n">n</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_nrange">nrange</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_on">on</a>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_parse">parse</a>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_parseDatatype">parseDatatype</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_parseSubdatatype">parseSubdatatype</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_phone">phone</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_phoneall">phoneall</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_phonecode">phonecode</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_phoneext">phoneext</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_phonezone">phonezone</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_reconfirm">reconfirm</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_reg">reg</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_reqmsg">reqmsg</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_richtext">richtext</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
@@ -432,23 +409,46 @@
                                 <a href="#method_setValid">setValid</a>
                                     <span class="flag static">static</span>
                             </li>
+                            <li class="index-item method private">
+                                <a href="#method_stricdomain">stricdomain</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_text">text</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_time">time</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_trigger">trigger</a>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_url">url</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_username">username</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_valid">valid</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_vcode">vcode</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_zipcode">zipcode</a>
+                                    <span class="flag static">static</span>
+                            </li>
                     </ul>
                 </div>
                 <div class="index-section properties">
                     <h3>Properties</h3>
                     <ul class="index-list properties">
-                            <li class="index-item property private">
-                                <a href="#property__logic">_logic</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property private">
-                                <a href="#property__logic.datatype">_logic.datatype</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property private">
-                                <a href="#property__logic.subdatatype">_logic.subdatatype</a>
-                                    <span class="flag static">static</span>
-                            </li>
                             <li class="index-item property">
                                 <a href="#property_autoTrim">autoTrim</a>
                                     <span class="flag static">static</span>
@@ -457,45 +457,36 @@
                                 <a href="#property_errorAbort">errorAbort</a>
                                     <span class="flag static">static</span>
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_focusmsgEverytime">focusmsgEverytime</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_itemCallback">itemCallback</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_showValidStatus">showValidStatus</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                    </ul>
+                </div>
+                <div class="index-section events">
+                    <h3>Events</h3>
+                    <ul class="index-list events">
+                            <li class="index-item event">
+                                <a href="#event_ValidCorrect">ValidCorrect</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_ValidError">ValidError</a>
+                            </li>
                     </ul>
                 </div>
         </div>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
-                    <div id="method__logic.bytelen" class="method item private">
-    <h3 class="name"><code>_logic.bytelen</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_s</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l583"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:583</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>计算字符串的字节长度, 非 ASCII 0-255的字符视为两个字节</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_s</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method__logic.datatype.bankcard" class="method item private">
-    <h3 class="name"><code>_logic.datatype.bankcard</code></h3>
+                    <div id="method_alternative" class="method item private">
+    <h3 class="name"><code>alternative</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
@@ -508,7 +499,71 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l895"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:895</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1453"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1453</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>此类型检查 2|N个对象必须至少有一个是有输入内容的, 
+<br> 常用于 手机/电话 二填一</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;dd&gt;
+           &lt;div class="f-l label"&gt;
+               &lt;label&gt;(datatype phonezone, phonecode, phoneext)电话号码:&lt;/label&gt;
+           &lt;/div&gt;
+           &lt;div class="f-l"&gt;
+               &lt;input type='TEXT' name='company_phonezone' style="width:40px;" value='' size="4" 
+                   datatype="phonezone" emEl="#phone-err-em" errmsg="请填写正确的电话区号" /&gt;
+               - &lt;input type='TEXT' name='company_phonecode' style="width:80px;" value='' size="8" 
+                   datatype="phonecode" subdatatype="alternative" datatarget="input[name=company_mobile]" alternativemsg="电话号码和手机号码至少填写一个"
+                   errmsg="请检查电话号码格式" emEl="#phone-err-em" /&gt;
+               - &lt;input type='TEXT' name='company_phoneext' style="width:40px;" value='' size="4" 
+                   datatype="phoneext" emEl="#phone-err-em" errmsg="请填写正确的分机号" /&gt;
+               &lt;em id="phone-err-em"&gt;&lt;/em&gt;
+           &lt;/div&gt;
+           &lt;/dd&gt;
+           &lt;dd&gt;
+           &lt;div class="f-l label"&gt;
+               &lt;label&gt;(datatype mobilecode)手机号码:&lt;/label&gt;
+           &lt;/div&gt;
+           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_mobile" 
+                   datatype="mobilecode" subdatatype="alternative" datatarget="input[name=company_phonecode]" alternativemsg=" "
+                   errmsg="请填写正确的手机号码"&gt;
+           &lt;/div&gt;
+           &lt;/dd&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_bankcard" class="method item private">
+    <h3 class="name"><code>bankcard</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l996"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:996</code></a>
         </p>
     </div>
     <div class="description">
@@ -529,31 +584,193 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_idnumber" 
-                           datatype="idnumber" errmsg="请填写正确的身份证号码"&gt;
-                   &lt;/div&gt;
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_idnumber" 
+                   datatype="idnumber" errmsg="请填写正确的身份证号码"&gt;
+           &lt;/div&gt;
 </code></pre>
             </div>
         </div>
 </div>
-                    <div id="method__logic.datatype.bytetext" class="method item private">
-    <h3 class="name"><code>_logic.datatype.bytetext</code></h3>
+                    <div id="method_bytelen" class="method item private">
+    <h3 class="name"><code>bytelen</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_s</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1355"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1355</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>计算字符串的字节长度, 非 ASCII 0-255的字符视为两个字节</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_s</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_bytetext" class="method item private">
+    <h3 class="name"><code>bytetext</code></h3>
         <span class="paren">()</span>
         <span class="flag private">private</span>
         <span class="flag static">static</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1314"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1314</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1336"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1336</code></a>
         </p>
     </div>
     <div class="description">
         <p>检查文本的字节长度</p>
     </div>
 </div>
-                    <div id="method__logic.datatype.cnname" class="method item private">
-    <h3 class="name"><code>_logic.datatype.cnname</code></h3>
+                    <div id="method_check" class="method item">
+    <h3 class="name"><code>check</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l339"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:339</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>验证一个表单项, 如 文本框, 下拉框, 复选框, 单选框, 文本域, 隐藏域</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                        <p>需要验证规则正确与否的表单/表单项( <b>可同时传递多个_item</b> )</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+            </div>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>     JC.Valid.check( $( selector ) );
+     JC.Valid.check( $( selector ), $( anotherSelector );
+     JC.Valid.check( document.getElementById( item ) );
+     if( !JC.Valid.check( $('form') ) ){
+         _evt.preventDefault();
+         return false;
+     }
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_checkAll" class="method item">
+    <h3 class="name"><code>checkAll</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l357"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:357</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>这个方法是 <a href='JC.Valid.html#method_check'>Valid.check</a> 的别名</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                        <ul>
+<li>需要验证规则正确与否的表单/表单项</li>
+</ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_clearError" class="method item">
+    <h3 class="name"><code>clearError</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_selector</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l423"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:423</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>清除Valid生成的错误样式</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_selector</code>
+                        <span class="type">Form | Input | Textarea | Select | File | Password</span>
+                    <div class="param-description">
+                        <ul>
+<li>需要清除错误的选择器</li>
+</ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>     JC.Valid.clearError( 'form' );
+     JC.Valid.clearError( 'input.some' );
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_cnname" class="method item private">
+    <h3 class="name"><code>cnname</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
@@ -566,7 +783,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l914"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:914</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1016"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1016</code></a>
         </p>
     </div>
     <div class="description">
@@ -588,16 +805,16 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_cnname" 
-                           datatype="cnname" reqmsg="姓名" errmsg="请填写正确的姓名"&gt;
-                   &lt;/div&gt;
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_cnname" 
+                   datatype="cnname" reqmsg="姓名" errmsg="请填写正确的姓名"&gt;
+           &lt;/div&gt;
 </code></pre>
             </div>
         </div>
 </div>
-                    <div id="method__logic.datatype.d" class="method item private">
-    <h3 class="name"><code>_logic.datatype.d</code></h3>
+                    <div id="method_d" class="method item private">
+    <h3 class="name"><code>d</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
@@ -610,7 +827,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l755"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:755</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l856"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:856</code></a>
         </p>
     </div>
     <div class="description">
@@ -631,15 +848,15 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_d" errmsg="请填写正确的日期范围2013-05-01 - 2013-05-31" datatype="daterange" minvalue="2013-05-01" maxvalue="2013-05-31" &gt;
-                   &lt;/div&gt;
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_d" errmsg="请填写正确的日期范围2013-05-01 - 2013-05-31" datatype="daterange" minvalue="2013-05-01" maxvalue="2013-05-31" &gt;
+           &lt;/div&gt;
 </code></pre>
             </div>
         </div>
 </div>
-                    <div id="method__logic.datatype.daterange" class="method item private">
-    <h3 class="name"><code>_logic.datatype.daterange</code></h3>
+                    <div id="method_daterange" class="method item private">
+    <h3 class="name"><code>daterange</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
@@ -652,14 +869,14 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l793"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:793</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l891"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:891</code></a>
         </p>
     </div>
     <div class="description">
         <p>检查两个输入框的日期
 <br />日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD
 <br /> <b>注意:</b> 如果不显示指定 fromDateEl, toDateEl, 
-             将会从父级查找 datatype=datarange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略</p>
+             将会从父级查找 datatype=daterange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略</p>
     </div>
         <div class="params">
             <h4>Parameters:</h4>
@@ -675,19 +892,19 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期" id="start_date" 
-                           datatype="daterange" toDateEl="end_date" emEl="date-err-em" &gt;
-                       - &lt;input type="TEXT" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期" id="end_date" 
-                           datatype="daterange" fromDateEl="start_date" emEl="date-err-em" &gt;
-                       &lt;br /&gt;&lt;em id="date-err-em"&gt;&lt;/em&gt;
-                   &lt;/div&gt;
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期" id="start_date" 
+                   datatype="daterange" toDateEl="end_date" emEl="date-err-em" &gt;
+               - &lt;input type="TEXT" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期" id="end_date" 
+                   datatype="daterange" fromDateEl="start_date" emEl="date-err-em" &gt;
+               &lt;br /&gt;&lt;em id="date-err-em"&gt;&lt;/em&gt;
+           &lt;/div&gt;
 </code></pre>
             </div>
         </div>
 </div>
-                    <div id="method__logic.datatype.domain" class="method item private">
-    <h3 class="name"><code>_logic.datatype.domain</code></h3>
+                    <div id="method_domain" class="method item private">
+    <h3 class="name"><code>domain</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
@@ -700,7 +917,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1350"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1350</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1384"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1384</code></a>
         </p>
     </div>
     <div class="description">
@@ -714,15 +931,15 @@
                         <span class="type">Selector</span>
                     <div class="param-description">
                         <div class="f-l">
-                           <input type="TEXT" name="company_domain" datatype="domain" reqmsg="域名" errmsg="请填写正确的域名">
-                       </div>
+                   <input type="TEXT" name="company_domain" datatype="domain" reqmsg="域名" errmsg="请填写正确的域名">
+               </div>
                     </div>
                 </li>
             </ul>
         </div>
 </div>
-                    <div id="method__logic.datatype.email" class="method item private">
-    <h3 class="name"><code>_logic.datatype.email</code></h3>
+                    <div id="method_email" class="method item private">
+    <h3 class="name"><code>email</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
@@ -735,7 +952,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1383"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1383</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1419"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1419</code></a>
         </p>
     </div>
     <div class="description">
@@ -755,1074 +972,15 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_email" datatype="email" reqmsg="邮箱" errmsg="请填写正确的邮箱"&gt;
-                   &lt;/div&gt;
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_email" datatype="email" reqmsg="邮箱" errmsg="请填写正确的邮箱"&gt;
+           &lt;/div&gt;
 </code></pre>
             </div>
         </div>
 </div>
-                    <div id="method__logic.datatype.idnumber" class="method item private">
-    <h3 class="name"><code>_logic.datatype.idnumber</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l954"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:954</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查身份证号码<br />
-目前只使用最简单的位数判断~ 有待完善</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>               &lt;div class="f-l"&gt;
-                   &lt;input type="TEXT" name="company_idnumber" 
-                       datatype="idnumber" errmsg="请填写正确的身份证号码"&gt;
-               &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.length" class="method item private">
-    <h3 class="name"><code>_logic.datatype.length</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1172"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1172</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查内容的长度</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_name" minlength="2" maxlength="120" reqmsg="公司名称" errmsg="请检查格式,长度2-120" /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.minute" class="method item private">
-    <h3 class="name"><code>_logic.datatype.minute</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l878"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:878</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查时间格式, 格式为 hh:mm</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_time" errmsg="正确的时间, 格式为 hh:mm" datatype="minute" &gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.mobile" class="method item private">
-    <h3 class="name"><code>_logic.datatype.mobile</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-                <li class="arg">
-                        <code>_noError</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l993"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:993</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查手机号码
-<br />这个方法是 _logic.datatype.mobilecode 的别名</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-                <li class="param">
-                        <code class="param-name">_noError</code>
-                        <span class="type">Bool</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method__logic.datatype.mobilecode" class="method item private">
-    <h3 class="name"><code>_logic.datatype.mobilecode</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-                <li class="arg">
-                        <code>_noError</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l973"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:973</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查手机号码<br /></p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-                <li class="param">
-                        <code class="param-name">_noError</code>
-                        <span class="type">Bool</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>               &lt;div class="f-l"&gt;
-                   &lt;input type="TEXT" name="company_mobile" 
-                       datatype="mobilecode" subdatatype="alternative" datatarget="input[name=company_phonecode]" alternativemsg=" "
-                       errmsg="请填写正确的手机号码"&gt;
-               &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.mobilephone" class="method item private">
-    <h3 class="name"><code>_logic.datatype.mobilephone</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1124"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1124</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查手机号码/电话号码
-<br />这个方法是原有方法的混合验证 _logic.datatype.mobilecode + _logic.datatype.phone</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l label"&gt;
-                       &lt;label&gt;(datatype mobilephone, phone + mobilecode)手机号码或电话号码:&lt;/label&gt;
-                   &lt;/div&gt;
-                   &lt;div class="f-l"&gt;
-                       &lt;input type="text" name="company_mobilephone" 
-                           datatype="mobilephone"
-                           errmsg="请填写正确的手机/电话号码"&gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.mobilephoneall" class="method item private">
-    <h3 class="name"><code>_logic.datatype.mobilephoneall</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1148"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1148</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查手机号码/电话号码, 泛匹配
-<br />这个方法是原有方法的混合验证 _logic.datatype.mobilezonecode + _logic.datatype.phoneall</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l label"&gt;
-                       &lt;label&gt;(datatype mobilephoneall, phoneall + mobilezonecode)手机号码或电话号码:&lt;/label&gt;
-                   &lt;/div&gt;
-                   &lt;div class="f-l"&gt;
-                       &lt;input type="text" name="company_mobilephoneall" 
-                           datatype="mobilephoneall"
-                           errmsg="请填写正确的手机/电话号码"&gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.mobilezonecode" class="method item private">
-    <h3 class="name"><code>_logic.datatype.mobilezonecode</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-                <li class="arg">
-                        <code>_noError</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1006"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1006</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查手机号码加强方法
-<br>格式: [+国家代码] [零]11位数字</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-                <li class="param">
-                        <code class="param-name">_noError</code>
-                        <span class="type">Bool</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_mobilezone" 
-                           datatype="mobilezonecode" 
-                           errmsg="请填写正确的手机号码"&gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.n" class="method item private">
-    <h3 class="name"><code>_logic.datatype.n</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l614"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:614</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查是否为正确的数字<br />
-<br>默认范围 0 - Math.pow(10, 10)</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_n" errmsg="请填写正确的正整数" datatype="n" &gt;
-                   &lt;/div&gt;
-                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_n1" errmsg="请填写正确的数字, 范围1-100" datatype="n" minvalue="1", maxvalue="100" &gt;
-                   &lt;/div&gt;
-                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_n2" errmsg="请填写正确的数字" datatype="n-7.2" &gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.nrange" class="method item private">
-    <h3 class="name"><code>_logic.datatype.nrange</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l674"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:674</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查两个输入框的数值
-<br /> 数字格式为 0-pow(10,10)
-<br /> 带小数点使用 nrange-int.float, 例: nrange-1.2  nrange-2.2
-<br /> <b>注意:</b> 如果不显示指定 fromNEl, toNEl, 
-             将会从父级查找 datatype=nrange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>               &lt;div class="f-l label"&gt;
-                   &lt;label&gt;(datatype nrange)正数:&lt;br/&gt;&lt;b style="color:red"&gt;注意: 这个是大小颠倒位置的nrange&lt;/b&gt;&lt;/label&gt;
-                   大&lt;input type="text" name="company_n10" id="company_n10" fromNEl="company_n11"
-                       errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1011" &gt;
-                   - 小&lt;input type="text" name="company_n11" id="company_n11" toNEl="company_n10"
-                       errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1011" &gt;
-                   &lt;em id="nrange_n1011"&gt;&lt;/em&gt;
-               &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.phone" class="method item private">
-    <h3 class="name"><code>_logic.datatype.phone</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-                <li class="arg">
-                        <code>_noError</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1046"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1046</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查电话号码
-<br>格式: [区号]7/8位电话号码</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-                <li class="param">
-                        <code class="param-name">_noError</code>
-                        <span class="type">Bool</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_phone" 
-                           datatype="phone" 
-                           errmsg="请填写正确的电话号码"&gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.phoneall" class="method item private">
-    <h3 class="name"><code>_logic.datatype.phoneall</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-                <li class="arg">
-                        <code>_noError</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1067"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1067</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查电话号码
-<br>格式: [+国家代码][ ][电话区号][ ]7/8位电话号码[#分机号]</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-                <li class="param">
-                        <code class="param-name">_noError</code>
-                        <span class="type">Bool</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_mobilezone" 
-                           datatype="phoneall" 
-                           errmsg="请填写正确的电话号码"&gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.phonecode" class="method item private">
-    <h3 class="name"><code>_logic.datatype.phonecode</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1027"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1027</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查电话号码
-<br>格式: 7/8位数字</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div&gt;
-                       &lt;input type='TEXT' name='company_phonecode' style="width:80px;" value='' size="8" 
-                           datatype="phonecode" errmsg="请检查电话号码格式" emEl="#phone-err-em" /&gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.phoneext" class="method item private">
-    <h3 class="name"><code>_logic.datatype.phoneext</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1106"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1106</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查电话分机号码</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div&gt;
-                       &lt;input type='TEXT' name='company_phoneext' style="width:40px;" value='' size="4" 
-                           datatype="phoneext" emEl="#phone-err-em" errmsg="请填写正确的分机号" /&gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.phonezone" class="method item private">
-    <h3 class="name"><code>_logic.datatype.phonezone</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1088"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1088</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查电话区号</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div&gt;
-                       &lt;input type='TEXT' name='company_phonezone' style="width:40px;" value='' size="4" 
-                           datatype="phonezone" emEl="#phone-err-em" errmsg="请填写正确的电话区号" /&gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.reg" class="method item private">
-    <h3 class="name"><code>_logic.datatype.reg</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1253"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1253</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>自定义正则校验</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                       &lt;div&gt;&lt;input type="TEXT" name="company_addr" datatype="reg" reg-pattern="/^[\s\S]{2,120}$/i" errmsg="请填写正确的地址"&gt;&lt;/div&gt;
-                       &lt;div&gt;&lt;input type="TEXT" name="company_addr" datatype="reg-/^[\s\S]{2,120}$/i" errmsg="请填写正确的地址"&gt;&lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.reqmsg" class="method item private">
-    <h3 class="name"><code>_logic.datatype.reqmsg</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1227"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1227</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查内容是否为空,
-<br>如果声明了该属性, 那么 value 须不为空</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_name" reqmsg="公司名称" /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.richtext" class="method item private">
-    <h3 class="name"><code>_logic.datatype.richtext</code></h3>
-        <span class="paren">()</span>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1323"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1323</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查富文本的字节
-<br />TODO: 完成富文本长度检查</p>
-    </div>
-</div>
-                    <div id="method__logic.datatype.stricdomain" class="method item private">
-    <h3 class="name"><code>_logic.datatype.stricdomain</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item!~YUIDOC_LINE~!</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1367"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1367</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查域名</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item!~YUIDOC_LINE~!</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                        <div class="f-l">
-                           <input type="TEXT" name="company_domain" datatype="stricdomain" reqmsg="域名" errmsg="请填写正确的域名">
-                       </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method__logic.datatype.text" class="method item private">
-    <h3 class="name"><code>_logic.datatype.text</code></h3>
-        <span class="paren">()</span>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1305"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1305</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查文本长度</p>
-    </div>
-</div>
-                    <div id="method__logic.datatype.time" class="method item private">
-    <h3 class="name"><code>_logic.datatype.time</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l861"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:861</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查时间格式, 格式为 hh:mm:ss</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_time" errmsg="正确的时间, 格式为 hh:mm:ss" datatype="time" &gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.url" class="method item private">
-    <h3 class="name"><code>_logic.datatype.url</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1333"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1333</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查URL</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_url" datatype="url" errmsg="请填写正确的网址"&gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.username" class="method item private">
-    <h3 class="name"><code>_logic.datatype.username</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l934"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:934</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查注册用户名
-<br>格式: a-zA-Z0-9_-
-<br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_username" 
-                           datatype="username" reqmsg="用户名" errmsg="请填写正确的用户名"&gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.vcode" class="method item private">
-    <h3 class="name"><code>_logic.datatype.vcode</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1279"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1279</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查验证码<br />
-格式: 为 0-9a-zA-Z, 长度 默认为4</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_vcode" style="width: 40px;"
-                           datatype="vcode" reqmsg="验证码" errmsg="请填写正确的验证码"&gt;
-                   &lt;/div&gt;
-                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_vcode" style="width: 40px;"
-                           datatype="vcode-5" errmsg="请填写正确的验证码"&gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.datatype.zipcode" class="method item private">
-    <h3 class="name"><code>_logic.datatype.zipcode</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1400"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1400</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查邮政编码</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_zipcode" datatype="zipcode" errmsg="请填写正确的邮编"&gt;
-                   &lt;/div&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.error" class="method item private">
-    <h3 class="name"><code>_logic.error</code></h3>
+                    <div id="method_error" class="method item private">
+    <h3 class="name"><code>error</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
@@ -1841,7 +999,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l475"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:475</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1766"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1766</code></a>
         </p>
     </div>
     <div class="description">
@@ -1877,73 +1035,8 @@
             </ul>
         </div>
 </div>
-                    <div id="method__logic.getDatatype" class="method item private">
-    <h3 class="name"><code>_logic.getDatatype</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l527"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:527</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>获取 _item 的检查类型, 所有可用的检查类型位于 _logic.datatype 对象</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method__logic.getElement" class="method item private">
-    <h3 class="name"><code>_logic.getElement</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_selector</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l510"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:510</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>获取 _selector 对象
-<br />这个方法的存在是为了向后兼容qwrap, qwrap DOM参数都为ID</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_selector</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method__logic.getMsg" class="method item private">
-    <h3 class="name"><code>_logic.getMsg</code></h3>
+                    <div id="method_errorMsg" class="method item private">
+    <h3 class="name"><code>errorMsg</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
@@ -1962,7 +1055,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l549"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:549</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1612"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1612</code></a>
         </p>
     </div>
     <div class="description">
@@ -1999,429 +1092,6 @@
             </ul>
         </div>
 </div>
-                    <div id="method__logic.getSubdatatype" class="method item private">
-    <h3 class="name"><code>_logic.getSubdatatype</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l538"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:538</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>获取 _item 的检查子类型, 所有可用的检查子类型位于 _logic.subdatatype 对象</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method__logic.getTimestamp" class="method item private">
-    <h3 class="name"><code>_logic.getTimestamp</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_date_str</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l594"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:594</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>获取日期字符串的 timestamp, 字符串格式为 YYYY[^\d]<em>?MM[^\d]</em>?DD</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_date_str</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method__logic.isValidItem" class="method item private">
-    <h3 class="name"><code>_logic.isValidItem</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l435"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:435</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>检查 _item 是否为 Valid 的检查对象</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method__logic.parse" class="method item private">
-    <h3 class="name"><code>_logic.parse</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l337"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:337</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>分析_item是否附合规则要求</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method__logic.subdatatype.alternative" class="method item private">
-    <h3 class="name"><code>_logic.subdatatype.alternative</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1426"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1426</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>此类型检查 2|N个对象必须至少有一个是有输入内容的, 
-<br> 常用于 手机/电话 二填一</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;dd&gt;
-                   &lt;div class="f-l label"&gt;
-                       &lt;label&gt;(datatype phonezone, phonecode, phoneext)电话号码:&lt;/label&gt;
-                   &lt;/div&gt;
-                   &lt;div class="f-l"&gt;
-                       &lt;input type='TEXT' name='company_phonezone' style="width:40px;" value='' size="4" 
-                           datatype="phonezone" emEl="#phone-err-em" errmsg="请填写正确的电话区号" /&gt;
-                       - &lt;input type='TEXT' name='company_phonecode' style="width:80px;" value='' size="8" 
-                           datatype="phonecode" subdatatype="alternative" datatarget="input[name=company_mobile]" alternativemsg="电话号码和手机号码至少填写一个"
-                           errmsg="请检查电话号码格式" emEl="#phone-err-em" /&gt;
-                       - &lt;input type='TEXT' name='company_phoneext' style="width:40px;" value='' size="4" 
-                           datatype="phoneext" emEl="#phone-err-em" errmsg="请填写正确的分机号" /&gt;
-                       &lt;em id="phone-err-em"&gt;&lt;/em&gt;
-                   &lt;/div&gt;
-                   &lt;/dd&gt;
-                   &lt;dd&gt;
-                   &lt;div class="f-l label"&gt;
-                       &lt;label&gt;(datatype mobilecode)手机号码:&lt;/label&gt;
-                   &lt;/div&gt;
-                   &lt;div class="f-l"&gt;
-                       &lt;input type="TEXT" name="company_mobile" 
-                           datatype="mobilecode" subdatatype="alternative" datatarget="input[name=company_phonecode]" alternativemsg=" "
-                           errmsg="请填写正确的手机号码"&gt;
-                   &lt;/div&gt;
-                   &lt;/dd&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.subdatatype.reconfirm" class="method item private">
-    <h3 class="name"><code>_logic.subdatatype.reconfirm</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1483"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1483</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>此类型检查 2|N 个对象填写的值必须一致
-常用于注意时密码验证/重置密码</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>                   &lt;dd&gt;
-                   &lt;div class="f-l label"&gt;
-                       &lt;label&gt;(datatype text, subdatatype reconfirm)用户密码:&lt;/label&gt;
-                   &lt;/div&gt;
-                   &lt;div class="f-l"&gt;
-                       &lt;input type="PASSWORD" name="company_pwd" 
-                       datatype="text" subdatatype="reconfirm" datatarget="input[name=company_repwd]" reconfirmmsg="用户密码和确认密码不一致"
-                       minlength="6" maxlength="15" reqmsg="用户密码" errmsg="请填写正确的用户密码"&gt;
-                   &lt;/div&gt;
-                   &lt;/dd&gt;
-                   &lt;dd&gt;
-                   &lt;div class="f-l label"&gt;
-                       &lt;label&gt;(datatype text, subdatatype reconfirm)确认密码:&lt;/label&gt;
-                   &lt;/div&gt;
-                   &lt;div class="f-l"&gt;
-                       &lt;input type="PASSWORD" name="company_repwd" 
-                       datatype="text" subdatatype="reconfirm" datatarget="input[name=company_pwd]" reconfirmmsg="确认密码和用户密码不一致"
-                       minlength="6" maxlength="15" reqmsg="确认密码" errmsg="请填写正确的确认密码"&gt;
-                   &lt;/div&gt;
-                   &lt;/dd&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method__logic.valid" class="method item private">
-    <h3 class="name"><code>_logic.valid</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-                <li class="arg">
-                        <code>_tm</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l457"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:457</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>显示正确的视觉效果</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-                <li class="param">
-                        <code class="param-name">_tm</code>
-                        <span class="type">Int</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method_check" class="method item">
-    <h3 class="name"><code>check</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-        </span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l142"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:142</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>验证一个表单项, 如 文本框, 下拉框, 复选框, 单选框, 文本域, 隐藏域</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                        <ul>
-<li>需要验证规则正确与否的表单/表单项</li>
-</ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
-            </div>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>     JC.Valid.check( $('input.needValid') );
-     JC.Valid.check( document.getElementById('inputNeedValid') );
-     if( !JC.Valid.check( $('form') ) ){
-         _evt.preventDefault();
-         return false;
-     }
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method_checkAll" class="method item">
-    <h3 class="name"><code>checkAll</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_item</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l320"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:320</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>这个方法是 <a href='JC.Valid.html#method_check'>Valid.check</a> 的别名</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_item</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                        <ul>
-<li>需要验证规则正确与否的表单/表单项</li>
-</ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method_clearError" class="method item">
-    <h3 class="name"><code>clearError</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_selector</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l185"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:185</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>清除Valid生成的错误样式</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_selector</code>
-                        <span class="type">Form | Input | Textarea | Select | File | Password</span>
-                    <div class="param-description">
-                        <ul>
-<li>需要清除错误的选择器</li>
-</ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>     JC.Valid.clearError( 'form' );
-     JC.Valid.clearError( 'input.some' );
-</code></pre>
-            </div>
-        </div>
-</div>
                     <div id="method_focusmsg" class="method item">
     <h3 class="name"><code>focusmsg</code></h3>
         <div class="args">
@@ -2438,7 +1108,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l174"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:174</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l398"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:398</code></a>
         </p>
     </div>
     <div class="description">
@@ -2481,7 +1151,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l238"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:238</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l475"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:475</code></a>
         </p>
     </div>
     <div class="description">
@@ -2513,21 +1183,1132 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>            $('form.js-valid').on('submit', function( $evt ){
-               var _p = $(this);
-               if( !JC.Valid.formHasValue( _p ) ){
-                   $evt.preventDefault();
-                   JC.alert( '表单内容为空, 不能提交!', _p.find('button[type=submit]'), 1 );
-                   return false;
-               }
-               if( !JC.Valid.check( _p ) ){
-                   $evt.preventDefault();
-                   return false;
-               }
-           });
+                <pre class="code prettyprint"><code>        $('form.js-valid').on('submit', function( $evt ){
+           var _p = $(this);
+           if( !JC.Valid.formHasValue( _p ) ){
+               $evt.preventDefault();
+               JC.alert( '表单内容为空, 不能提交!', _p.find('button[type=submit]'), 1 );
+               return false;
+           }
+           if( !JC.Valid.check( _p ) ){
+               $evt.preventDefault();
+               return false;
+           }
+       });
 </code></pre>
             </div>
         </div>
+</div>
+                    <div id="method_getElement" class="method item private">
+    <h3 class="name"><code>getElement</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_selector</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1593"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1593</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取 _selector 对象
+<br />这个方法的存在是为了向后兼容qwrap, qwrap DOM参数都为ID</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_selector</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_getInstance" class="method item">
+    <h3 class="name"><code>getInstance</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_selector</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">Valid instance</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l364"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:364</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取 Valid 的实例 ( <b>Valid 是单例模式</b> )</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_selector</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Valid instance</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_idnumber" class="method item private">
+    <h3 class="name"><code>idnumber</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1057"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1057</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查身份证号码<br />
+目前只使用最简单的位数判断~ 有待完善</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>       &lt;div class="f-l"&gt;
+           &lt;input type="TEXT" name="company_idnumber" 
+               datatype="idnumber" errmsg="请填写正确的身份证号码"&gt;
+       &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_isValid" class="method item">
+    <h3 class="name"><code>isValid</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_selector</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l372"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:372</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>判断 selector 是否 Valid 的处理对象</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_selector</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    bool
+            </div>
+        </div>
+</div>
+                    <div id="method_lengthValid" class="method item private">
+    <h3 class="name"><code>lengthValid</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l663"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:663</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查内容的长度</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_name" minlength="2" maxlength="120" reqmsg="公司名称" errmsg="请检查格式,长度2-120" /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_minute" class="method item private">
+    <h3 class="name"><code>minute</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l979"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:979</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查时间格式, 格式为 hh:mm</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_time" errmsg="正确的时间, 格式为 hh:mm" datatype="minute" &gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_mobile" class="method item private">
+    <h3 class="name"><code>mobile</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+                <li class="arg">
+                        <code>_noError</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1096"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1096</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查手机号码
+<br />这个方法是 mobilecode 的别名</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_noError</code>
+                        <span class="type">Bool</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_mobilecode" class="method item private">
+    <h3 class="name"><code>mobilecode</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+                <li class="arg">
+                        <code>_noError</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1076"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1076</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查手机号码<br /></p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_noError</code>
+                        <span class="type">Bool</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>       &lt;div class="f-l"&gt;
+           &lt;input type="TEXT" name="company_mobile" 
+               datatype="mobilecode" subdatatype="alternative" datatarget="input[name=company_phonecode]" alternativemsg=" "
+               errmsg="请填写正确的手机号码"&gt;
+       &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_mobilephone" class="method item private">
+    <h3 class="name"><code>mobilephone</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1228"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1228</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查手机号码/电话号码
+<br />这个方法是原有方法的混合验证 mobilecode + phone</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class="f-l label"&gt;
+               &lt;label&gt;(datatype mobilephone, phone + mobilecode)手机号码或电话号码:&lt;/label&gt;
+           &lt;/div&gt;
+           &lt;div class="f-l"&gt;
+               &lt;input type="text" name="company_mobilephone" 
+                   datatype="mobilephone"
+                   errmsg="请填写正确的手机/电话号码"&gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_mobilephoneall" class="method item private">
+    <h3 class="name"><code>mobilephoneall</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1252"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1252</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查手机号码/电话号码, 泛匹配
+<br />这个方法是原有方法的混合验证 mobilezonecode + phoneall</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class="f-l label"&gt;
+               &lt;label&gt;(datatype mobilephoneall, phoneall + mobilezonecode)手机号码或电话号码:&lt;/label&gt;
+           &lt;/div&gt;
+           &lt;div class="f-l"&gt;
+               &lt;input type="text" name="company_mobilephoneall" 
+                   datatype="mobilephoneall"
+                   errmsg="请填写正确的手机/电话号码"&gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_mobilezonecode" class="method item private">
+    <h3 class="name"><code>mobilezonecode</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+                <li class="arg">
+                        <code>_noError</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1109"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1109</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查手机号码加强方法
+<br>格式: [+国家代码] [零]11位数字</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_noError</code>
+                        <span class="type">Bool</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_mobilezone" 
+                   datatype="mobilezonecode" 
+                   errmsg="请填写正确的手机号码"&gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_n" class="method item private">
+    <h3 class="name"><code>n</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l716"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:716</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查是否为正确的数字<br />
+<br>默认范围 0 - Math.pow(10, 10)</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_n" errmsg="请填写正确的正整数" datatype="n" &gt;
+           &lt;/div&gt;
+           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_n1" errmsg="请填写正确的数字, 范围1-100" datatype="n" minvalue="1", maxvalue="100" &gt;
+           &lt;/div&gt;
+           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_n2" errmsg="请填写正确的数字" datatype="n-7.2" &gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_nrange" class="method item private">
+    <h3 class="name"><code>nrange</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l782"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:782</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查两个输入框的数值
+<br /> 数字格式为 0-pow(10,10)
+<br /> 带小数点使用 nrange-int.float, 例: nrange-1.2  nrange-2.2
+<br /> <b>注意:</b> 如果不显示指定 fromNEl, toNEl, 
+             将会从父级查找 datatype=nrange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>       &lt;div class="f-l label"&gt;
+           &lt;label&gt;(datatype nrange)正数:&lt;br/&gt;&lt;b style="color:red"&gt;注意: 这个是大小颠倒位置的nrange&lt;/b&gt;&lt;/label&gt;
+           大&lt;input type="text" name="company_n10" id="company_n10" fromNEl="company_n11"
+               errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1011" &gt;
+           - 小&lt;input type="text" name="company_n11" id="company_n11" toNEl="company_n10"
+               errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1011" &gt;
+           &lt;em id="nrange_n1011"&gt;&lt;/em&gt;
+       &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_on" class="method item private">
+    <h3 class="name"><code>on</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_evtName</code>
+                </li>
+                <li class="arg">
+                        <code>_cb</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+        <span class="flag private">private</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l194"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:194</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>使用 jquery on 绑定事件</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_evtName</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_cb</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    ValidInstance
+            </div>
+        </div>
+</div>
+                    <div id="method_parse" class="method item private">
+    <h3 class="name"><code>parse</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l211"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:211</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>分析_item是否附合规则要求</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_parseDatatype" class="method item private">
+    <h3 class="name"><code>parseDatatype</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l521"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:521</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取 _item 的检查类型</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_parseSubdatatype" class="method item private">
+    <h3 class="name"><code>parseSubdatatype</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l532"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:532</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取 _item 的检查子类型, 所有可用的检查子类型位于 _logic.subdatatype 对象</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_phone" class="method item private">
+    <h3 class="name"><code>phone</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+                <li class="arg">
+                        <code>_noError</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1149"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1149</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查电话号码
+<br>格式: [区号]7/8位电话号码</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_noError</code>
+                        <span class="type">Bool</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_phone" 
+                   datatype="phone" 
+                   errmsg="请填写正确的电话号码"&gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_phoneall" class="method item private">
+    <h3 class="name"><code>phoneall</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+                <li class="arg">
+                        <code>_noError</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1170"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1170</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查电话号码
+<br>格式: [+国家代码][ ][电话区号][ ]7/8位电话号码[#分机号]</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_noError</code>
+                        <span class="type">Bool</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_mobilezone" 
+                   datatype="phoneall" 
+                   errmsg="请填写正确的电话号码"&gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_phonecode" class="method item private">
+    <h3 class="name"><code>phonecode</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1130"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1130</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查电话号码
+<br>格式: 7/8位数字</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div&gt;
+               &lt;input type='TEXT' name='company_phonecode' style="width:80px;" value='' size="8" 
+                   datatype="phonecode" errmsg="请检查电话号码格式" emEl="#phone-err-em" /&gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_phoneext" class="method item private">
+    <h3 class="name"><code>phoneext</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1210"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1210</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查电话分机号码</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div&gt;
+               &lt;input type='TEXT' name='company_phoneext' style="width:40px;" value='' size="4" 
+                   datatype="phoneext" emEl="#phone-err-em" errmsg="请填写正确的分机号" /&gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_phonezone" class="method item private">
+    <h3 class="name"><code>phonezone</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1192"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1192</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查电话区号</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div&gt;
+               &lt;input type='TEXT' name='company_phonezone' style="width:40px;" value='' size="4" 
+                   datatype="phonezone" emEl="#phone-err-em" errmsg="请填写正确的电话区号" /&gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_reconfirm" class="method item private">
+    <h3 class="name"><code>reconfirm</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1516"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1516</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>此类型检查 2|N 个对象填写的值必须一致
+常用于注意时密码验证/重置密码</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;dd&gt;
+           &lt;div class="f-l label"&gt;
+               &lt;label&gt;(datatype text, subdatatype reconfirm)用户密码:&lt;/label&gt;
+           &lt;/div&gt;
+           &lt;div class="f-l"&gt;
+               &lt;input type="PASSWORD" name="company_pwd" 
+               datatype="text" subdatatype="reconfirm" datatarget="input[name=company_repwd]" reconfirmmsg="用户密码和确认密码不一致"
+               minlength="6" maxlength="15" reqmsg="用户密码" errmsg="请填写正确的用户密码"&gt;
+           &lt;/div&gt;
+           &lt;/dd&gt;
+           &lt;dd&gt;
+           &lt;div class="f-l label"&gt;
+               &lt;label&gt;(datatype text, subdatatype reconfirm)确认密码:&lt;/label&gt;
+           &lt;/div&gt;
+           &lt;div class="f-l"&gt;
+               &lt;input type="PASSWORD" name="company_repwd" 
+               datatype="text" subdatatype="reconfirm" datatarget="input[name=company_pwd]" reconfirmmsg="确认密码和用户密码不一致"
+               minlength="6" maxlength="15" reqmsg="确认密码" errmsg="请填写正确的确认密码"&gt;
+           &lt;/div&gt;
+           &lt;/dd&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_reg" class="method item private">
+    <h3 class="name"><code>reg</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1275"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1275</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>自定义正则校验</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>               &lt;div&gt;&lt;input type="TEXT" name="company_addr" datatype="reg" reg-pattern="/^[\s\S]{2,120}$/i" errmsg="请填写正确的地址"&gt;&lt;/div&gt;
+               &lt;div&gt;&lt;input type="TEXT" name="company_addr" datatype="reg-/^[\s\S]{2,120}$/i" errmsg="请填写正确的地址"&gt;&lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_reqmsg" class="method item private">
+    <h3 class="name"><code>reqmsg</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1643"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1643</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查内容是否为空,
+<br>如果声明了该属性, 那么 value 须不为空</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_name" reqmsg="公司名称" /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_richtext" class="method item private">
+    <h3 class="name"><code>richtext</code></h3>
+        <span class="paren">()</span>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1345"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1345</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查富文本的字节
+<br />TODO: 完成富文本长度检查</p>
+    </div>
 </div>
                     <div id="method_setError" class="method item">
     <h3 class="name"><code>setError</code></h3>
@@ -2548,7 +2329,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l310"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:310</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l388"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:388</code></a>
         </p>
     </div>
     <div class="description">
@@ -2600,7 +2381,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l302"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:302</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l380"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:380</code></a>
         </p>
     </div>
     <div class="description">
@@ -2625,54 +2406,363 @@
             </ul>
         </div>
 </div>
+                    <div id="method_stricdomain" class="method item private">
+    <h3 class="name"><code>stricdomain</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item!~YUIDOC_LINE~!</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1402"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1402</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查域名</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item!~YUIDOC_LINE~!</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                        <div class="f-l">
+                   <input type="TEXT" name="company_domain" datatype="stricdomain" reqmsg="域名" errmsg="请填写正确的域名">
+               </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_text" class="method item private">
+    <h3 class="name"><code>text</code></h3>
+        <span class="paren">()</span>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1327"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1327</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查文本长度</p>
+    </div>
+</div>
+                    <div id="method_time" class="method item private">
+    <h3 class="name"><code>time</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l962"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:962</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查时间格式, 格式为 hh:mm:ss</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_time" errmsg="正确的时间, 格式为 hh:mm:ss" datatype="time" &gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_trigger" class="method item private">
+    <h3 class="name"><code>trigger</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_evtName</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+        <span class="flag private">private</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l203"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:203</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>使用 jquery trigger 绑定事件</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_evtName</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    ValidInstance
+            </div>
+        </div>
+</div>
+                    <div id="method_url" class="method item private">
+    <h3 class="name"><code>url</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1366"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1366</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查URL</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_url" datatype="url" errmsg="请填写正确的网址"&gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_username" class="method item private">
+    <h3 class="name"><code>username</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1037"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1037</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查注册用户名
+<br>格式: a-zA-Z0-9_-
+<br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_username" 
+                   datatype="username" reqmsg="用户名" errmsg="请填写正确的用户名"&gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_valid" class="method item private">
+    <h3 class="name"><code>valid</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+                <li class="arg">
+                        <code>_tm</code>
+                </li>
+                <li class="arg">
+                        <code>_noStyle</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1712"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1712</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>显示正确的视觉效果</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_tm</code>
+                        <span class="type">Int</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_noStyle</code>
+                        <span class="type">Bool</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_vcode" class="method item private">
+    <h3 class="name"><code>vcode</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1301"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1301</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查验证码<br />
+格式: 为 0-9a-zA-Z, 长度 默认为4</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_vcode" style="width: 40px;"
+                   datatype="vcode" reqmsg="验证码" errmsg="请填写正确的验证码"&gt;
+           &lt;/div&gt;
+           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_vcode" style="width: 40px;"
+                   datatype="vcode-5" errmsg="请填写正确的验证码"&gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="method_zipcode" class="method item private">
+    <h3 class="name"><code>zipcode</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1436"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1436</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查邮政编码</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_zipcode" datatype="zipcode" errmsg="请填写正确的邮编"&gt;
+           &lt;/div&gt;
+</code></pre>
+            </div>
+        </div>
+</div>
             </div>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
-                    <div id="property__logic" class="property item private">
-    <h3 class="name"><code>_logic</code></h3>
-    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l328"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:328</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>私有逻辑处理对象, 验证所需的所有规则和方法都存放于此对象</p>
-    </div>
-</div>
-                    <div id="property__logic.datatype" class="property item private">
-    <h3 class="name"><code>_logic.datatype</code></h3>
-    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l606"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:606</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>此对象存储可供检查的类型</p>
-    </div>
-</div>
-                    <div id="property__logic.subdatatype" class="property item private">
-    <h3 class="name"><code>_logic.subdatatype</code></h3>
-    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1418"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1418</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>此对象存储可供检查的子类型</p>
-    </div>
-</div>
                     <div id="property_autoTrim" class="property item">
     <h3 class="name"><code>autoTrim</code></h3>
     <span class="type">Bool</span>
@@ -2680,7 +2770,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l226"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:226</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l447"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:447</code></a>
         </p>
     </div>
     <div class="description">
@@ -2690,9 +2780,9 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           $(document).ready( function($evt){
-               JC.Valid.autoTrim = false;
-           });
+                <pre class="code prettyprint"><code>       $(document).ready( function($evt){
+           JC.Valid.autoTrim = false;
+       });
 </code></pre>
             </div>
         </div>
@@ -2704,7 +2794,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l213"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:213</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l434"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:434</code></a>
         </p>
     </div>
     <div class="description">
@@ -2715,12 +2805,98 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           $(document).ready( function($evt){
-               JC.Valid.errorAbort = true;
-           });
+                <pre class="code prettyprint"><code>       $(document).ready( function($evt){
+           JC.Valid.errorAbort = true;
+       });
 </code></pre>
             </div>
         </div>
+</div>
+                    <div id="property_focusmsgEverytime" class="property item">
+    <h3 class="name"><code>focusmsgEverytime</code></h3>
+    <span class="type">Bool</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l407"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:407</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>focus 时,是否总是显示 focusmsg 提示信息</p>
+    </div>
+        <p><strong>Default:</strong> true</p>
+</div>
+                    <div id="property_itemCallback" class="property item">
+    <h3 class="name"><code>itemCallback</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l459"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:459</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>对一个 control 作检查后的回调, 无论正确与否都会触发</p>
+    </div>
+        <p><strong>Default:</strong> undefined</p>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>       $(document).ready( function($evt){
+           JC.Valid.itemCallback =
+               function( _item, _isValid ){
+                   JC.log( 'JC.Valid.itemCallback _isValid:', _isValid );
+               };
+       });
+</code></pre>
+            </div>
+        </div>
+</div>
+                    <div id="property_showValidStatus" class="property item">
+    <h3 class="name"><code>showValidStatus</code></h3>
+    <span class="type">Bool</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l415"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:415</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>验证正确时, 是否显示正确的样式</p>
+    </div>
+        <p><strong>Default:</strong> false</p>
+</div>
+            </div>
+            <div id="events" class="api-class-tabpanel">
+                <h2 class="off-left">Events</h2>
+                    <div id="event_ValidCorrect" class="events item">
+    <h3 class="name"><code>ValidCorrect</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1850"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1850</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>解析正确时触发的时件</p>
+    </div>
+</div>
+                    <div id="event_ValidError" class="events item">
+    <h3 class="name"><code>ValidError</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1846"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1846</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>解析错误时触发的时件</p>
+    </div>
 </div>
             </div>
     </div>

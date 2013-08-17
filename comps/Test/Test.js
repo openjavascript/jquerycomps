@@ -1,7 +1,4 @@
 ;(function($){
-    !window.JC && (window.JC = { log:function(){} });
-    window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
-
     window.Test = JC.Test = Test;
     /**
      * Test 模板类

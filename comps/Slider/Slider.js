@@ -1,7 +1,4 @@
 ;(function($){
-    !window.JC && (window.JC = { log:function(){} });
-    window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
-
     window.Slider = JC.Slider = Slider;
     /**
      * Slider 划动菜单类

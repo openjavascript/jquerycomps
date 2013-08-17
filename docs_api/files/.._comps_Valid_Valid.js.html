@@ -155,11 +155,11 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
-//TODO: 添加 focusmsg 属性, 鼠标 foucs到控件时, 显示提示信息
+//TODO: 错误时, 添加 class iserror 
+//TODO: 添加 validmsg, 正确时的提示, class = isvalid 
 ;(function($){
-    !window.JC &amp;&amp; (window.JC = { log:function(){} });
     /**
-     * 表单验证
+     * &lt;b&gt;表单验证&lt;/b&gt; (单例模式)
      * &lt;br /&gt;全局访问请使用 JC.Valid 或 Valid
      * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
@@ -174,16 +174,21 @@
      * &lt;h2&gt;Form Control的可用 html attribute&lt;/h2&gt;
      * &lt;dl&gt;
      *      &lt;dt&gt;reqmsg = 错误提示&lt;/dt&gt;
-     *      &lt;dd&gt;值不能为空&lt;/dd&gt;
+     *      &lt;dd&gt;值不能为空, class=error errormsg&lt;/dd&gt;
      *
      *      &lt;dt&gt;errmsg = 错误提示&lt;/dt&gt;
-     *      &lt;dd&gt;格式错误, 但不验证为空的值&lt;/dd&gt;
+     *      &lt;dd&gt;格式错误, 但不验证为空的值, class=error errormsg&lt;/dd&gt;
      *
      *      &lt;dt&gt;focusmsg = 控件获得焦点的提示信息&lt;/dt&gt;
      *      &lt;dd&gt;
-     *          这个只作提示用
-     *          &lt;br /&gt;如果 control 的内容是正确的 class=focusmsg isvalid
-     *          &lt;br /&gt;如果 control 的内容是错误的 class=focusmsg iserror
+     *          这个只作提示用, class=focusmsg
+     *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;validmsg = bool | string&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          内容填写正确时显示的 提示信息, class=validmsg
+     *          &lt;br /&gt;如果 = 0, false, 将不显示提示信息
+     *          &lt;br /&gt;如果 = 1, true, 将不显示提示文本
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;emel = selector&lt;/dt&gt;
@@ -204,6 +209,9 @@
      *
      *      &lt;dt&gt;maxvalue = [number|ISO date](最大值)&lt;/dt&gt;
      *      &lt;dd&gt;验证内容的最大值, 但不验证为空的值&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;validitemcallback = function name&lt;/dt&gt;
+     *      &lt;dd&gt;对一个 control 作检查后的回调, 无论正确与否都会触发&lt;/dt&gt;
      *
      *      &lt;dt&gt;datatype: 常用数据类型&lt;/dt&gt;
      *      &lt;dd&gt;&lt;b&gt;n:&lt;/b&gt; 检查是否为正确的数字&lt;/dd&gt;
@@ -290,144 +298,171 @@
      * @namespace JC
      * @class Valid
      * @static
-     * @version dev 0.1
+     * @version     0.2,  2013-08-15(函数模式改单例模式)
+     * @version     0.1,  2013-05-22
      * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 team
-     * @date    2013-05-22
      */
-    var Valid = JC.Valid = window.Valid = {
+    JC.Valid = window.Valid = Valid;
+    
+    function Valid(){
+
+        if( Valid._instance ) return Valid._instance;
+        Valid._instance = this;
+
+        this._model = new Model();
+        this._view = new View( this._model );
+
+        this._init();
+    }
+    
+    Valid.prototype = {
+        _init:
+            function(){
+                var _p = this;
+                $( [ this._view, this._model ] ).on(Model.BIND, function( _evt, _evtName, _cb ){
+                    _p.on( _evtName, _cb );
+                });
+
+                $([ this._view, this._model ] ).on(Model.TRIGGER, function( _evt, _evtName ){
+                    var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
+                    _p.trigger( _evtName, _data );
+                });
+
+                _p.on( Model.CORRECT, function( _evt ){
+                    var _data = sliceArgs( arguments ); _data.shift();
+                    _p._view.valid.apply( _p._view, _data );
+                });
+
+                _p.on( Model.ERROR, function( _evt ){
+                    var _data = sliceArgs( arguments ); _data.shift();
+                    _p._view.error.apply( _p._view, _data );
+                });
+
+                _p.on( &#x27;FocusMsg&#x27;, function( _evt ){
+                    var _data = sliceArgs( arguments ); _data.shift();
+                    _p._view.focusmsg.apply( _p._view, _data );
+                });
+
+                this._view.init();
+
+                return this;
+            }    
         /**
-         * 验证一个表单项, 如 文本框, 下拉框, 复选框, 单选框, 文本域, 隐藏域
-         * @method check
-         * @static
-         * @param      {selector}    _item -   需要验证规则正确与否的表单/表单项
-         * @example 
-         *          JC.Valid.check( $(&#x27;input.needValid&#x27;) );
-         *          JC.Valid.check( document.getElementById(&#x27;inputNeedValid&#x27;) );
-         *
-         *          if( !JC.Valid.check( $(&#x27;form&#x27;) ) ){
-         *              _evt.preventDefault();
-         *              return false;
-         *          }
-         * @return    {boolean}
+         * 使用 jquery on 绑定事件
+         * @method  {string}    on
+         * @param   {string}    _evtName
+         * @param   {function}  _cb
+         * @return  ValidInstance
+         * @private
          */
-        check:  
-            function( _item ){ 
-                _item &amp;&amp; ( _item = $( _item ) );
-                var _r = true, _item = $(_item), _type = _item.length ? _item.prop(&#x27;nodeName&#x27;).toLowerCase() : &#x27;&#x27;;
-                if( _item.length ){
-                    if( _type == &#x27;form&#x27; ){
-                        var _errorabort = Valid.errorAbort, tmp;
-                        _item.is(&#x27;[errorabort]&#x27;) &amp;&amp; ( _errorabort = ( _tmp = _item.attr(&#x27;errorabort&#x27;).toLowerCase() ) == &#x27;false&#x27; || _tmp == &quot;0&quot; || (!_tmp) ? false : true );
-                        for( var i = 0, j = _item[0].length; i &lt; j; i++ ){
-                            if( $(_item[0][i]).is(&#x27;[ignoreprocess]&#x27;) ) continue;
-                            !_logic.parse( $(_item[0][i]) ) &amp;&amp; ( _r = false );
-                            if( _errorabort &amp;&amp; !_r ) break;
+        , on: function( _evtName, _cb ){ $(this).on(_evtName, _cb ); return this;}
+        /**
+         * 使用 jquery trigger 绑定事件
+         * @method  {string}    trigger
+         * @param   {string}    _evtName
+         * @return  ValidInstance
+         * @private
+         */
+        , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
+        /**
+         * 分析_item是否附合规则要求
+         * @method  parse
+         * @param   {selector}  _item 
+         * @private
+         */
+        , parse: 
+            function(){
+                var _p = this, _r = true, _items = sliceArgs( arguments );
+
+                $.each( _items, function( _ix, _item ){
+                    _item = $( _item );
+                    _item.each( function(){
+                        var _sitem = $(this);
+                        if( !_p._model.isAvalible( _sitem ) ) return;
+                        if( !_p._model.isValid( _sitem ) ) return;
+                        if( _p._model.isIgnoreProcess( _sitem ) ) return;
+
+                        var _dt = _p._model.parseDatatype( _sitem )
+                            , _subdt = _p._model.parseSubdatatype( _sitem )
+                            , _nm = _sitem.prop(&#x27;nodeName&#x27;).toLowerCase();
+
+                        JC.log( &#x27;datatype:&#x27;, _dt, _subdt );
+
+                        switch( _nm ){
+                            case &#x27;input&#x27;:
+                            case &#x27;textarea&#x27;:
+                                {
+                                    _p._model.isAutoTrim( _sitem ) &amp;&amp; _sitem.val( $.trim( _sitem.val() ) );
+                                    break;
+                                }
                         }
-                    } else _r = _logic.parse( _item );
-                }
+
+                        if( !_p._model.reqmsg( _sitem ) ){ _r = false; return; }
+                        if( !_p._model.lengthValid( _sitem ) ){ _r = false; return; }
+
+                        if( _dt &amp;&amp; _p._model[ _dt ] &amp;&amp; _sitem.val() ){
+                            if( !_p._model[ _dt ]( _sitem ) ){ _r = false; return; }
+                        }
+                        
+                        if( _subdt &amp;&amp; _p._model[ _subdt ] &amp;&amp; ( _sitem.val() || _subdt == &#x27;alternative&#x27; ) ){
+                            if( !_p._model[ _subdt ]( _sitem ) ){ _r = false; return; }
+                        }
+
+                        _p.trigger( Model.CORRECT, _sitem ); 
+                    });
+                });
                 return _r;
             }
-        /**
-         * 显示 focusmsg 属性的提示信息( 如果有的话 )
-         * @method  focusmsg
-         * @param   {selector}  _item
-         * @param   {bool}      _setHide
-         * @static
-         */
-        , focusmsg:
-            function( _item, _setHide ){
-                _logic.focusmsg.apply( this, [].slice.apply( arguments ) );
+
+        , check:
+            function(){
+                var _p = this, _r = true, _items = sliceArgs( arguments ), i, j;
+                $.each( _items, function( _ix, _item ){
+                    _item = $(_item);
+                    if( _p._model.isForm( _item ) ){
+                        var _errorabort = _p._model.isErrorAbort( _item ), tmp;
+                        for( i = 0, j = _item[0].length; i &lt; j; i++ ){
+                            !_p.parse( $(_item[0][i]) ) &amp;&amp; ( _r = false );
+                            if( _errorabort &amp;&amp; !_r ) break;
+                        }
+                    } else _r = _p.parse( _item );
+                });
+                return _r;
             }
-         /**
-         * 清除Valid生成的错误样式
-         * @method clearError
-         * @static
-         * @param   {form|input|textarea|select|file|password}  _selector -     需要清除错误的选择器
-         * @example
-         *          JC.Valid.clearError( &#x27;form&#x27; );
-         *          JC.Valid.clearError( &#x27;input.some&#x27; );
-         */
         , clearError:
-            function( _selector ){
-                $( _selector ).each( function(){
-                    var _item = $(this);
-                    JC.log( &#x27;clearError: &#x27; + _item.prop(&#x27;nodeName&#x27;) );
-                    switch( _item.prop(&#x27;nodeName&#x27;).toLowerCase() ){
-                        case &#x27;form&#x27;: 
-                            {
-                                for( var i = 0, j = _item[0].length; i &lt; j; i++ ){
-                                    var tmp = $(_item[0][i]);
-                                    if( tmp.is(&#x27;[disabled]&#x27;) ) return;
-                                    _logic.valid( tmp, 1 );
+            function(){
+                var _items = sliceArgs( arguments ), _p = this;
+                $.each( _items, function( _ix, _item ){
+                    $( _item ).each( function(){
+                        var _item = $(this);
+                        switch( _item.prop(&#x27;nodeName&#x27;).toLowerCase() ){
+                            case &#x27;form&#x27;: 
+                                {
+                                    for( var i = 0, j = _item[0].length; i &lt; j; i++ ){
+                                        Valid.setValid( $(_item[0][i]), 1, true );
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                        default: _logic.valid( $(this), 1 ); break;
-                    }
+                            default: Valid.setValid( _item, 1, true ); break;
+                        }
+                    });
+
                 });
+                return this;
             }
-        /**
-         * 验证发生错误时, 是否终止继续验证
-         * &lt;br /&gt; 为真终止继续验证, 为假将验证表单的所有项, 默认为 false
-         * @property    errorAbort
-         * @type        bool
-         * @default     false
-         * @static
-         * @example
-                $(document).ready( function($evt){
-                    JC.Valid.errorAbort = true;
-                });
-         */
-        , errorAbort: false
-        /**
-         * 是否自动清除两边的空格
-         * @property    autoTrim
-         * @type        bool
-         * @default     true
-         * @static
-         * @example
-                $(document).ready( function($evt){
-                    JC.Valid.autoTrim = false;
-                });
-         */
-        , autoTrim: true
-        /**
-         * 检查一个表单是否有内容
-         * @method  formHasValue
-         * @param   {selector}      _fm
-         * @param   {selector}      _ignoreSelector
-         * @return  bool
-         * @static
-         * @example
-                 $(&#x27;form.js-valid&#x27;).on(&#x27;submit&#x27;, function( $evt ){
-                    var _p = $(this);
-
-                    if( !JC.Valid.formHasValue( _p ) ){
-                        $evt.preventDefault();
-                        JC.alert( &#x27;表单内容为空, 不能提交!&#x27;, _p.find(&#x27;button[type=submit]&#x27;), 1 );
-                        return false;
-                    }
-
-                    if( !JC.Valid.check( _p ) ){
-                        $evt.preventDefault();
-                        return false;
-                    }
-                });
-         */
+        , isValid: function( _selector ){ return this._model.isValid( _selector ); }
         , formHasValue:
             function( _fm, _ignoreSelector ){
-                var _r = false, _item, _nt;
+               var _r = false, _item, _nt;
                 _fm &amp;&amp; ( _fm = $( _fm ) );
 
                 if( _fm &amp;&amp; _fm.length ){
                     for( var i = 0, j = _fm[0].length; i &lt; j; i++ ){
                         _item = $(_fm[0][i]);
-                        if( _item.is(&#x27;[disabled]&#x27;) ) return;
+                        if( _item.is(&#x27;[disabled]&#x27;) ) continue;
                         _nt = _item.prop(&#x27;nodeName&#x27;).toLowerCase();
 
-                        if( _ignoreSelector ){
-                            if( _item.is( _ignoreSelector ) ) continue;
-                        }
+                        if( _ignoreSelector &amp;&amp; _item.is( _ignoreSelector ) ) continue;
                                         
                         switch( _item.prop(&#x27;type&#x27;).toLowerCase() ){
 
@@ -455,24 +490,26 @@
                 }
                 return _r;
             }
-        /**
-         * 把一个表单项的状态设为正确状态
-         * @method  setValid
-         * @param   {selector}  _item
-         * @param   {int}       _tm     延时 _tm 毫秒显示处理结果, 默认=150
-         * @static
-         */
-        , setValid: function(_item, _tm){ _logic.valid.apply( this, [].slice.apply( arguments) ); }
-        /**
-         * 把一个表单项的状态设为错误状态
-         * @method  setError
-         * @param   {selector}  _item
-         * @param   {string}    _msgAttr    - 显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名
-         * @param   {bool}      _fullMsg    - 显示指定错误信息为属性的值, 而不是自动添加的 请上传/选择/填写
-         * @static
-         */
-        , setError: function(_item, _msgAttr, _fullMsg){ _logic.error.apply( this, [].slice.apply( arguments) );}
-    };
+    }
+
+    /**
+     * 验证一个表单项, 如 文本框, 下拉框, 复选框, 单选框, 文本域, 隐藏域
+     * @method check
+     * @static
+     * @param      {selector}    _item 需要验证规则正确与否的表单/表单项( &lt;b&gt;可同时传递多个_item&lt;/b&gt; )
+     * @example 
+     *          JC.Valid.check( $( selector ) );
+     *          JC.Valid.check( $( selector ), $( anotherSelector );
+     *          JC.Valid.check( document.getElementById( item ) );
+     *
+     *          if( !JC.Valid.check( $(&#x27;form&#x27;) ) ){
+     *              _evt.preventDefault();
+     *              return false;
+     *          }
+     * @return    {boolean}
+     */
+    Valid.checkAll = Valid.check = 
+        function(){ return Valid.getInstance().check.apply( Valid.getInstance(), sliceArgs( arguments ) ); }
     /**
      * 这个方法是 &lt;a href=&#x27;JC.Valid.html#method_check&#x27;&gt;Valid.check&lt;/a&gt; 的别名
      * @method checkAll
@@ -480,1227 +517,1503 @@
      * @param      {selector}    _item -   需要验证规则正确与否的表单/表单项
      * @see Valid.check
      */
-    Valid.checkAll = Valid.check;
     /**
-     * 私有逻辑处理对象, 验证所需的所有规则和方法都存放于此对象
-     * @property _logic
-     * @type {Object}
+     * 获取 Valid 的实例 ( &lt;b&gt;Valid 是单例模式&lt;/b&gt; )
+     * @method getInstance
+     * @param   {selector}      _selector
      * @static
-     * @private
+     * @return  {Valid instance}
      */
-    var _logic =
-        {
-            /**
-             * 分析_item是否附合规则要求
-             * @method  _logic.parse
-             * @private
-             * @static
-             * @param   {selector}  _item 
-             */
-            parse: 
-                function( _item ){
+    Valid.getInstance = function(){ !Valid._instance &amp;&amp; new Valid(); return Valid._instance; };
+    /**
+     * 判断 selector 是否 Valid 的处理对象
+     * @method  isValid
+     * @param   {selector}      _selector
+     * @return  bool
+     * @static
+     */
+    Valid.isValid = function( _selector ){ return Valid.getInstance().isValid( _selector ); };
+    /**
+     * 把一个表单项的状态设为正确状态
+     * @method  setValid
+     * @param   {selector}  _item
+     * @param   {int}       _tm     延时 _tm 毫秒显示处理结果, 默认=150
+     * @static
+     */
+    Valid.setValid = function(_item, _tm){ return Valid.getInstance().trigger( Model.CORRECT, sliceArgs( arguments) ); };
+    /**
+     * 把一个表单项的状态设为错误状态
+     * @method  setError
+     * @param   {selector}  _item
+     * @param   {string}    _msgAttr    - 显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名
+     * @param   {bool}      _fullMsg    - 显示指定错误信息为属性的值, 而不是自动添加的 请上传/选择/填写
+     * @static
+     */
+    Valid.setError = 
+        function(_item, _msgAttr, _fullMsg){ return Valid.getInstance().trigger( Model.ERROR, sliceArgs( arguments) ); };
+    /**
+     * 显示 focusmsg 属性的提示信息( 如果有的话 )
+     * @method  focusmsg
+     * @param   {selector}  _item
+     * @param   {bool}      _setHide
+     * @static
+     */
+    Valid.focusmsg =
+        function( _item, _setHide ){ return Valid.getInstance().trigger( &#x27;FocusMsg&#x27;, sliceArgs( arguments ) ); };
+    /**
+     * focus 时,是否总是显示 focusmsg 提示信息
+     * @property    focusmsgEverytime
+     * @type        bool
+     * @default     true
+     * @static
+     */
+    Valid.focusmsgEverytime = true;
+    /**
+     * 验证正确时, 是否显示正确的样式
+     * @property    showValidStatus
+     * @type        bool
+     * @default     false
+     * @static
+     */
+    Valid.showValidStatus = false;
+     /**
+     * 清除Valid生成的错误样式
+     * @method clearError
+     * @static
+     * @param   {form|input|textarea|select|file|password}  _selector -     需要清除错误的选择器
+     * @example
+     *          JC.Valid.clearError( &#x27;form&#x27; );
+     *          JC.Valid.clearError( &#x27;input.some&#x27; );
+     */
+    Valid.clearError = 
+        function(){ return Valid.getInstance().clearError.apply( Valid.getInstance(), sliceArgs( arguments ) ); };
+    /**
+     * 验证发生错误时, 是否终止继续验证
+     * &lt;br /&gt; 为真终止继续验证, 为假将验证表单的所有项, 默认为 false
+     * @property    errorAbort
+     * @type        bool
+     * @default     false
+     * @static
+     * @example
+            $(document).ready( function($evt){
+                JC.Valid.errorAbort = true;
+            });
+     */
+    Valid.errorAbort = false;
+    /**
+     * 是否自动清除两边的空格
+     * @property    autoTrim
+     * @type        bool
+     * @default     true
+     * @static
+     * @example
+            $(document).ready( function($evt){
+                JC.Valid.autoTrim = false;
+            });
+     */
+    Valid.autoTrim = true;
+    /**
+     * 对一个 control 作检查后的回调, 无论正确与否都会触发
+     * @property    itemCallback
+     * @type        function
+     * @default     undefined
+     * @static
+     * @example
+            $(document).ready( function($evt){
+                JC.Valid.itemCallback =
+                    function( _item, _isValid ){
+                        JC.log( &#x27;JC.Valid.itemCallback _isValid:&#x27;, _isValid );
+                    };
+            });
+     */
+    Valid.itemCallback;
 
-                    var _r = true, _item = $(_item);
+    /**
+     * 检查一个表单是否有内容
+     * @method  formHasValue
+     * @param   {selector}      _fm
+     * @param   {selector}      _ignoreSelector
+     * @return  bool
+     * @static
+     * @example
+             $(&#x27;form.js-valid&#x27;).on(&#x27;submit&#x27;, function( $evt ){
+                var _p = $(this);
 
-                    _item.each( function(){
-
-                        if( !_logic.isValidItem(this) ) return;
-                        var _sitem = $(this), _dt = _logic.getDatatype( _sitem ), _subdt = _logic.getSubdatatype( _sitem )
-                            , _nm = _sitem.prop(&#x27;nodeName&#x27;).toLowerCase();
-
-                        if( !_sitem.is(&#x27;:visible&#x27;) ) return;
-                        if( _sitem.is(&#x27;[disabled]&#x27;) ) return;
-
-                        JC.log( _dt, _subdt );
-
-                        switch( _nm ){
-                            case &#x27;input&#x27;:
-                            case &#x27;textarea&#x27;:
-                                {
-                                    Valid.autoTrim &amp;&amp; ( _sitem.val( $.trim( _sitem.val() ) ) );
-                                    _sitem.val( $.trim( _sitem.val()||&#x27;&#x27; ) );
-                                    break;
-                                }
-                        }
-
-                        if( _sitem.is(&#x27;[reqmsg]&#x27;) ){
-                            if( ! _logic.datatype[&#x27;reqmsg&#x27;]( _sitem ) ) {
-                                _r = false;
-                                return;
-                             }
-                        }
-
-                        if( !_logic.datatype[&#x27;length&#x27;]( _sitem ) ){
-                            _r = false;
-                            return;
-                        }
-
-                        if( _dt in _logic.datatype &amp;&amp; _sitem.val() ){
-                            if( !_logic.datatype[ _dt ]( _sitem ) ){
-                                _r = false;
-                                return;
-                            }
-                        }
-                        
-                        if( _subdt &amp;&amp; _subdt in _logic.subdatatype &amp;&amp; ( _sitem.val() || _subdt == &#x27;alternative&#x27; ) ){
-                            if( !_logic.subdatatype[ _subdt ]( _sitem ) ){
-                                _r = false;
-                                return;
-                            }
-                        }
-
-                        _logic.valid( _sitem );
-                    });
-
-                    return _r;
-                }
-            , focusmsg:
-                function( _item, _setHide ){
-                    if( _item &amp;&amp; ( _item = $( _item ) ).length &amp;&amp; _item.is(&#x27;[focusmsg]&#x27;) ){
-                        var _focusmsgem = _logic._findFocusmsgEle( _item )
-                            , _errorEm = _logic._findErrorEle( _item );
-                        if( _setHide ){
-                            _focusmsgem.hide();
-                            JC.log( &#x27;hide focusmsg&#x27;, _focusmsgem.length );
-                            return;
-                        }
-                        if( _errorEm.length &amp;&amp; _errorEm.is(&#x27;:visible&#x27;) ) return;
-                            JC.log( &#x27;show focusmsg&#x27; );
-                        !_focusmsgem.length 
-                            &amp;&amp; ( _focusmsgem = $(&#x27;&lt;em class=&quot;focusmsg&quot;&gt;&lt;/em&gt;&#x27;)
-                                 , _item.after( _focusmsgem )
-                               );
-                        _focusmsgem.removeClass( &#x27;isvalid&#x27; ).removeClass( &#x27;iserror&#x27; );
-                        _item.attr(&#x27;validnoerror&#x27;, true);
-                        var _r = _logic.parse( _item );
-                        _item.removeAttr(&#x27;validnoerror&#x27;);
-                        _r ? _focusmsgem.addClass(&#x27;isvalid&#x27;) : _focusmsgem.addClass( &#x27;iserror&#x27; );
-                        _focusmsgem.html( _item.attr(&#x27;focusmsg&#x27;) ).show();
-                    }
-                }
-            , _findFocusmsgEle:
-                function( _item ){
-                    return _item.find( &#x27;~ em.focusmsg&#x27; );
-                }
-            , _findErrorEle:
-                function( _item ){
-                    var _r = _item.find( &#x27;~ em.error&#x27; );
-                    if( _item.attr(&#x27;emel&#x27;) ) _r = $( (&#x27;#&#x27; + _item.attr(&#x27;emel&#x27;)).replace(/[\#]+/g, &#x27;#&#x27; ) );
-                    return _r;
-                }
-            /**
-             * 检查 _item 是否为 Valid 的检查对象
-             * @method  _logic.isValidItem
-             * @private
-             * @static
-             * @param   {selector}  _item
-             */
-            , isValidItem: 
-                function( _item ){
-                    _item = $(_item);
-                    var _r, _tmp;
-
-                    _item.each( function(){
-                        _tmp = $(this);
-                        if( _tmp.is( &#x27;[datatype]&#x27; ) || _tmp.is( &#x27;[subdatatype]&#x27; ) 
-                            || _tmp.is( &#x27;[minlength]&#x27; ) || _tmp.is( &#x27;[maxlength]&#x27; )  
-                            || _tmp.is( &#x27;[reqmsg]&#x27; ) ) 
-                            _r = true;
-                    });
-
-                    return _r;
-                }
-            /**
-             * 显示正确的视觉效果
-             * @method  _logic.valid
-             * @private
-             * @static
-             * @param   {selector}  _item
-             * @param   {int}       _tm
-             */
-            , valid:
-                function( _item, _tm ){
-                    if( !_logic.isValidItem( _item ) ) return false;
-                    setTimeout(function(){
-                        _item.removeClass(&#x27;error&#x27;);
-                        _item.find(&#x27;~ em:not(&quot;em.focusmsg, em.error&quot;)&#x27;).show();
-                        _item.find(&#x27;~ em.error&#x27;).hide();
-                        _item.attr(&#x27;emel&#x27;) &amp;&amp; _logic.getElement( _item.attr(&#x27;emel&#x27;), _item ).hide();
-                    }, _tm || 150);
-                }
-            /**
-             * 显示错误的视觉效果
-             * @method  _logic.error
-             * @private
-             * @static
-             * @param   {selector}  _item
-             * @param   {string}    _msgAttr    - 显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名
-             * @param   {bool}      _fullMsg    - 显示指定错误信息为属性的值, 而不是自动添加的 请上传/选择/填写
-             */
-            , error: 
-                function( _item, _msgAttr, _fullMsg ){
-                    if( !_logic.isValidItem( _item ) ) return false;
-                    if( _item.is( &#x27;[validnoerror]&#x27; ) ) return;
-
-                    var arg = arguments;
-
-                    setTimeout(function(){
-                        var _msg = _logic.getMsg.apply( null, [].slice.call( arg ) ), _errEm;
-
-                        _item.addClass( &#x27;error&#x27; );
-                        _item.find(&#x27;~ em:not(.error)&#x27;).hide();
-
-                        if( _item.is( &#x27;[emEl]&#x27; ) ){
-                            ( _errEm = _logic.getElement( _item.attr( &#x27;emEl&#x27; ) , _item) ) &amp;&amp; _errEm.length &amp;&amp; _errEm.addClass(&#x27;error&#x27;);
-                        }
-                        !( _errEm &amp;&amp; _errEm.length ) &amp;&amp; ( _errEm = _item.find(&#x27;~ em.error&#x27;) );
-                        if( !_errEm.length ){
-                            ( _errEm = $(&#x27;&lt;em class=&quot;error&quot;&gt;&lt;/em&gt;&#x27;) ).insertAfter( _item );
-                        }
-                        JC.log( &#x27;error: &#x27; + _msg );
-                        _errEm.html( _msg ).show() 
-                    }, 150);
-
+                if( !JC.Valid.formHasValue( _p ) ){
+                    $evt.preventDefault();
+                    JC.alert( &#x27;表单内容为空, 不能提交!&#x27;, _p.find(&#x27;button[type=submit]&#x27;), 1 );
                     return false;
                 }
-            /**
-             * 获取 _selector 对象
-             * &lt;br /&gt;这个方法的存在是为了向后兼容qwrap, qwrap DOM参数都为ID
-             * @method  _logic.getElement
-             * @private
-             * @static
-             * @param   {selector}  _selector
-             */
-            , getElement: 
-                function( _selector, _item ){
-                    if( /^\^$/.test( _selector ) ){
-                        _selector = $( _item.parent().find(&#x27;~ em.error&#x27;) );
-                    }else if( /^[\w-]+$/.test( _selector ) ) {
-                        _selector = &#x27;#&#x27; + _selector;
+
+                if( !JC.Valid.check( _p ) ){
+                    $evt.preventDefault();
+                    return false;
+                }
+            });
+     */
+    Valid.formHasValue =
+        function(){ return Valid.getInstance().formHasValue.apply( Valid.getInstance(), sliceArgs( arguments ) ); };
+    
+    function Model(){
+        this._init();
+    }
+
+    Model.TRIGGER = &#x27;TriggerEvent&#x27;;
+    Model.BIND = &#x27;BindEvent&#x27;;
+    Model.ERROR = &#x27;ValidError&#x27;;
+    Model.CORRECT = &#x27;ValidCorrect&#x27;;
+
+    Model.SELECTOR_ERROR = &#x27;~ em.error, ~ em.errormsg&#x27;;
+
+    Model.CSS_ERROR = &#x27;error errormsg&#x27;;
+
+    Model.FILTER_ERROR = &#x27;em.error em.errormsg&#x27;;
+    
+    Model.prototype = {
+        _init:
+            function(){
+                return this;
+            }
+        /**
+         * 获取 _item 的检查类型
+         * @method  parseDatatype
+         * @private
+         * @static
+         * @param   {selector}  _item
+         */
+        , parseDatatype: 
+            function( _item ){
+                return ( _item.attr(&#x27;datatype&#x27;) || &#x27;text&#x27;).toLowerCase().replace(/\-.*/, &#x27;&#x27;);
+            }
+       /**
+         * 获取 _item 的检查子类型, 所有可用的检查子类型位于 _logic.subdatatype 对象
+         * @method  parseSubdatatype
+         * @private
+         * @static
+         * @param   {selector}  _item
+         */
+        , parseSubdatatype: 
+            function( _item ){
+                return ( _item.attr(&#x27;subdatatype&#x27;) || &#x27;&#x27;).toLowerCase().replace(/\-.*/, &#x27;&#x27;);
+            }
+        , isAvalible: 
+            function( _item ){
+                return _item.is(&#x27;:visible&#x27;) &amp;&amp; !_item.is(&#x27;[disabled]&#x27;);
+            }
+        , isForm:
+            function( _item ){
+                var _r;
+                _item.prop(&#x27;nodeName&#x27;) 
+                    &amp;&amp; _item.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;form&#x27;
+                    &amp;&amp; ( _r = true )
+                    ;
+                return _r;
+            }
+        , isErrorAbort:
+            function( _item ){
+                var _r = Valid.errorAbort;
+                _item.is(&#x27;[errorabort]&#x27;) &amp;&amp; ( _r = parseBool( _item.attr(&#x27;errorabort&#x27;) ) );
+                return _r;
+            }
+        , isIgnoreProcess:
+            function( _item ){
+                return _item.is(&#x27;[ignoreprocess]&#x27;);
+            }
+        , isValid:
+            function( _item ){
+                _item = $(_item);
+                var _r, _tmp;
+                _item.each( function(){
+                    _tmp = $(this);
+                    if( _tmp.is( &#x27;[datatype]&#x27; ) || _tmp.is( &#x27;[subdatatype]&#x27; ) 
+                        || _tmp.is( &#x27;[minlength]&#x27; ) || _tmp.is( &#x27;[maxlength]&#x27; )  
+                        || _tmp.is( &#x27;[reqmsg]&#x27; ) 
+                        || _tmp.is( &#x27;form&#x27; ) 
+                    ) 
+                        _r = true;
+                });
+                return _r;
+            }
+        , isAutoTrim:
+            function( _item ){
+                _item = $( _item );
+                var _r = Valid.autoTrim, _form = getJqParent( _item, &#x27;form&#x27; );
+                _form.length &amp;&amp; _form.is( &#x27;[validautotrim]&#x27; ) &amp;&amp; ( _r = parseBool( _form.attr(&#x27;validautotrim&#x27;) ) );
+                _item.is( &#x27;[validautotrim]&#x27; ) &amp;&amp; ( _r = parseBool( _item.attr(&#x27;validautotrim&#x27;) ) );
+                return _r;
+            }
+        , isReqmsg: function( _item ){ return _item.is(&#x27;[reqmsg]&#x27;); }
+        , isValidMsg: 
+            function( _item ){ 
+                _item = $( _item );
+                var _r = Valid.showValidStatus, _form = getJqParent( _item, &#x27;form&#x27; );
+                _form.length &amp;&amp; _form.is( &#x27;[validmsg]&#x27; ) &amp;&amp; ( _r = parseBool( _form.attr(&#x27;validmsg&#x27;) ) );
+                _item.is( &#x27;[validmsg]&#x27; ) &amp;&amp; ( _r = parseBool( _item.attr(&#x27;validmsg&#x27;) ) );
+                return _r;
+            }
+        , validitemcallback: 
+            function( _item ){ 
+                _item = $( _item );
+                var _r = Valid.itemCallback, _form = getJqParent( _item, &#x27;form&#x27; ), _tmp;
+                _form.length 
+                    &amp;&amp; _form.is( &#x27;[validitemcallback]&#x27; ) 
+                    &amp;&amp; ( _tmp = _form.attr(&#x27;validitemcallback&#x27;) )
+                    &amp;&amp; ( _tmp = window[ _tmp ] )
+                    &amp;&amp; ( _r = _tmp )
+                    ;
+                _item.is( &#x27;[validitemcallback]&#x27; ) 
+                    &amp;&amp; ( _tmp = _item.attr(&#x27;validitemcallback&#x27;) )
+                    &amp;&amp; ( _tmp = window[ _tmp ] )
+                    &amp;&amp; ( _r = _tmp )
+                    ;
+                return _r;
+            }
+        , isMinlength: function( _item ){ return _item.is(&#x27;[minlength]&#x27;); }
+        , isMaxlength: function( _item ){ return _item.is(&#x27;[maxlength]&#x27;); }
+        , minlength: function( _item ){ return parseInt( _item.attr(&#x27;minlength&#x27;), 10 ) || 0; }
+        , maxlength: function( _item ){ return parseInt( _item.attr(&#x27;maxlength&#x27;), 10 ) || 0; }
+
+        , isMinvalue: function( _item ){ return _item.is(&#x27;[minvalue]&#x27;); }
+        , isMaxvalue: function( _item ){ return _item.is(&#x27;[maxvalue]&#x27;); }
+
+        , isDatatarget: function( _item ){ return _item.is( &#x27;[datatarget]&#x27;); }
+        , datatarget: function( _item ){ return $( _item.attr( &#x27;datatarget&#x27;) ); }
+
+        , minvalue: 
+            function( _item, _isFloat ){ 
+                if( typeof _isFloat == &#x27;string&#x27; ){
+                    var _datatype = _isFloat.toLowerCase().trim();
+                    switch( _datatype ){
+                        default:
+                            {
+                                return parseISODate( _item.attr(&#x27;minvalue&#x27;) );
+                            }
                     }
-                    return $(_selector );
+                }else{
+                    if( _isFloat ){
+                        return parseFloat( _item.attr(&#x27;minvalue&#x27;) ) || 0; 
+                    }else{
+                        return parseInt( _item.attr(&#x27;minvalue&#x27;), 10 ) || 0; 
+                    }
                 }
-            /**
-             * 获取 _item 的检查类型, 所有可用的检查类型位于 _logic.datatype 对象
-             * @method  _logic.getDatatype
-             * @private
-             * @static
-             * @param   {selector}  _item
-             */
-            , getDatatype: 
-                function( _item ){
-                    return ( _item.attr(&#x27;datatype&#x27;) || &#x27;text&#x27;).toLowerCase().replace(/\-.*/, &#x27;&#x27;);
+            }
+        , maxvalue: 
+            function( _item, _isFloat ){ 
+                if( typeof _isFloat == &#x27;string&#x27; ){
+                    var _datatype = _isFloat.toLowerCase().trim();
+                    switch( _datatype ){
+                        default:
+                            {
+                                return parseISODate( _item.attr(&#x27;maxvalue&#x27;) );
+                            }
+                    }
+                }else{
+                    if( _isFloat ){
+                        return parseFloat( _item.attr(&#x27;maxvalue&#x27;) ) || 0; 
+                    }else{
+                        return parseInt( _item.attr(&#x27;maxvalue&#x27;), 10 ) || 0; 
+                    }
+
                 }
-           /**
-             * 获取 _item 的检查子类型, 所有可用的检查子类型位于 _logic.subdatatype 对象
-             * @method  _logic.getSubdatatype
-             * @private
-             * @static
-             * @param   {selector}  _item
-             */
-            , getSubdatatype: 
-                function( _item ){
-                    return ( _item.attr(&#x27;subdatatype&#x27;) || &#x27;text&#x27;).toLowerCase().replace(/\-.*/, &#x27;&#x27;);
+            }
+        /**
+         * 检查内容的长度
+         * @method  lengthValid
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @attr    {string}    datatype        数字类型 text|bytetext|richtext
+         *
+         * @attr    {integer}   minlength       内容最小长度
+         * @attr    {integer}   maxlength       内容最大长度
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_name&quot; minlength=&quot;2&quot; maxlength=&quot;120&quot; reqmsg=&quot;公司名称&quot; errmsg=&quot;请检查格式,长度2-120&quot; /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
+                &lt;/div&gt;
+         */
+        , lengthValid: 
+            function( _item ){
+                var _p = this, _r = true
+                    , _item = $( _item )
+                    , _dt = _p.parseDatatype( _item )
+                    , _min, _max
+                    , _val = $.trim( _item.val() ), _len
+                    ;
+                if( !_val ) return _r;
+
+                _p.isMinlength( _item ) &amp;&amp; ( _min = _p.minlength( _item ) );
+                _p.isMaxlength( _item ) &amp;&amp; ( _max = _p.maxlength( _item ) );
+                /**
+                 * 根据特殊的 datatype 实现不同的计算方法
+                 */
+                switch( _dt ){
+                    case &#x27;bytetext&#x27;:
+                        {
+                            _len = _p.bytelen( _val );
+                            break;
+                        }
+                    case &#x27;richtext&#x27;:
+                    default:
+                        {
+                            _len = _val.length;
+                            break;
+                        }
                 }
-            /**
-             * 获取对应的错误信息, 默认的错误信息有 reqmsg, errmsg, &lt;br /&gt;
-             * 注意: 错误信息第一个字符如果为空格的话, 将完全使用用户定义的错误信息, 将不会动态添加 请上传/选择/填写
-             * @method  _logic.getMsg
-             * @private
-             * @static
-             * @param   {selector}  _item
-             * @param   {string}    _msgAttr    - 显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名
-             * @param   {bool}      _fullMsg    - 显示指定错误信息为属性的值, 而不是自动添加的 请上传/选择/填写
-             */
-            , getMsg: 
-                function( _item, _msgAttr, _fullMsg ){
-                    var _msg = _item.is(&#x27;[errmsg]&#x27;) ? &#x27; &#x27; + _item.attr(&#x27;errmsg&#x27;) : _item.is(&#x27;[reqmsg]&#x27;) ? _item.attr(&#x27;reqmsg&#x27;) : &#x27;&#x27;;
-                    _msgAttr &amp;&amp; (_msg = _item.attr( _msgAttr ) || _msg );
-                    _fullMsg &amp;&amp; _msg &amp;&amp; ( _msg = &#x27; &#x27; + _msg );
 
-                    if( _msg &amp;&amp; !/^[\s]/.test( _msg ) ){
-                        switch( _item.prop(&#x27;type&#x27;).toLowerCase() ){
-                            case &#x27;file&#x27;: _msg = &#x27;请上传&#x27; + _msg; break;
+                _min &amp;&amp; ( _len &lt; _min ) &amp;&amp; ( _r = false );
+                _max &amp;&amp; ( _len &gt; _max ) &amp;&amp; ( _r = false );
 
-                            case &#x27;select-multiple&#x27;:
-                            case &#x27;select-one&#x27;:
-                            case &#x27;select&#x27;: _msg = &#x27;请选择&#x27; + _msg; break;
+                JC.log( &#x27;lengthValid: &#x27;, _min, _max, _r, _val.length );
 
-                            case &#x27;textarea&#x27;:
-                            case &#x27;password&#x27;:
-                            case &#x27;text&#x27;: _msg = &#x27;请填写&#x27; + _msg; break;
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+
+                return _r;
+            }
+        /**
+         * 检查是否为正确的数字&lt;br /&gt;
+         * &lt;br&gt;默认范围 0 - Math.pow(10, 10)
+         * @method  n
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @attr    {require}               datatype    - n | n-整数位数.小数位数
+         * @attr    {integer|optional}      minvalue    - 数值的下限
+         * @attr    {integer|optional}      maxvalue    - 数值的上限
+         *
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_n&quot; errmsg=&quot;请填写正确的正整数&quot; datatype=&quot;n&quot; &gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_n1&quot; errmsg=&quot;请填写正确的数字, 范围1-100&quot; datatype=&quot;n&quot; minvalue=&quot;1&quot;, maxvalue=&quot;100&quot; &gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_n2&quot; errmsg=&quot;请填写正确的数字&quot; datatype=&quot;n-7.2&quot; &gt;
+                &lt;/div&gt;
+         *
+         */
+        , n: 
+            function( _item, _noError ){
+                var _p = this, _r = true
+                    , _valStr = _item.val()
+                    , _val = +_valStr
+                    ,_min = 0
+                    , _max = Math.pow( 10, 10 )
+                    , _n, _f, _tmp;
+
+                _p.isMinvalue( _item ) &amp;&amp; ( _min = _p.minvalue( _item, /\./.test( _item.attr(&#x27;minvalue&#x27;) ) ) || _min );
+
+                if( !isNaN( _val ) &amp;&amp; _val &gt;= _min ){
+                    _item.attr(&#x27;datatype&#x27;).replace( /^n[^\-]*\-(.*)$/, function( $0, $1 ){
+                        _tmp = $1.split(&#x27;.&#x27;);
+                        _n = _tmp[0];
+                        _f = _tmp[1];
+                    });
+
+                    _p.isMaxvalue( _item ) &amp;&amp; ( _max = _p.maxvalue( _item, /\./.test( _item.attr(&#x27;maxvalue&#x27;) ) ) || _max );
+
+                    if( _val &gt;= _min &amp;&amp; _val &lt;= _max ){
+                        typeof _n != &#x27;undefined&#x27; 
+                            &amp;&amp; typeof _f != &#x27;undefined&#x27; 
+                            &amp;&amp; ( _r = new RegExp( &#x27;^(?:\-|)(?:[\\d]{0,&#x27;+_n+&#x27;}|)(?:\\.[\\d]{1,&#x27;+_f+&#x27;}|)$&#x27; ).test( _valStr ) );
+
+                        typeof _n != &#x27;undefined&#x27; 
+                            &amp;&amp; typeof _f == &#x27;undefined&#x27; 
+                            &amp;&amp; ( _r = new RegExp( &#x27;^(?:\-|)[\\d]{1,&#x27;+_n+&#x27;}$&#x27; ).test( _valStr ) );
+
+                        typeof _n == &#x27;undefined&#x27; 
+                            &amp;&amp; typeof _f != &#x27;undefined&#x27; 
+                            &amp;&amp; ( _r = new RegExp( &#x27;^(?:\-|)\\.[\\d]{1,&#x27;+_f+&#x27;}$&#x27; ).test( _valStr ) );
+
+                        typeof _f == &#x27;undefined&#x27; &amp;&amp; /\./.test( _valStr ) &amp;&amp; ( _r = false );
+                    } else _r = false;
+
+                    //JC.log( &#x27;n&#x27;, _val, typeof _n, typeof _f, typeof _min, typeof _max, _min, _max );
+                }else _r = false;
+
+                !_r &amp;&amp; !_noError &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+
+                return _r;
+            }
+        /**
+         * 检查两个输入框的数值
+         * &lt;br /&gt; 数字格式为 0-pow(10,10)
+         * &lt;br /&gt; 带小数点使用 nrange-int.float, 例: nrange-1.2  nrange-2.2
+         * &lt;br /&gt; &lt;b&gt;注意:&lt;/b&gt; 如果不显示指定 fromNEl, toNEl, 
+         *              将会从父级查找 datatype=nrange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略
+         * @method  nrange
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @attr    {require}               datatype    - nrange
+         * @attr    {selector|optional}     fromNEl     - 起始数值选择器
+         * @attr    {selector|optional}     toNEl       - 结束数值选择器
+         * @attr    {date string|optional}  minvalue    - 数值的下限
+         * @attr    {date string|optional}  maxvalue    - 数值的上限
+         * @example
+            &lt;div class=&quot;f-l label&quot;&gt;
+                &lt;label&gt;(datatype nrange)正数:&lt;br/&gt;&lt;b style=&quot;color:red&quot;&gt;注意: 这个是大小颠倒位置的nrange&lt;/b&gt;&lt;/label&gt;
+                大&lt;input type=&quot;text&quot; name=&quot;company_n10&quot; id=&quot;company_n10&quot; fromNEl=&quot;company_n11&quot;
+                    errmsg=&quot;请填写正确的数值范围&quot; datatype=&quot;nrange&quot; emEl=&quot;nrange_n1011&quot; &gt;
+                - 小&lt;input type=&quot;text&quot; name=&quot;company_n11&quot; id=&quot;company_n11&quot; toNEl=&quot;company_n10&quot;
+                    errmsg=&quot;请填写正确的数值范围&quot; datatype=&quot;nrange&quot; emEl=&quot;nrange_n1011&quot; &gt;
+                &lt;em id=&quot;nrange_n1011&quot;&gt;&lt;/em&gt;
+            &lt;/div&gt;
+         */
+        , nrange:
+            function( _item ){
+                var _p = this, _r = _p.n( _item ), _min, _max, _fromNEl, _toNEl, _items;
+
+                if( _r ){
+                    if( _item.is( &#x27;[fromNEl]&#x27; ) ) {
+                        _fromNEl = _p.getElement( _item.attr(&#x27;fromNEl&#x27;) );
+                        _toNEl = _item;
+                    }
+                    if( _item.is( &#x27;[toNEl]&#x27; ) ){
+                        _fromNEl = _item;
+                        _toNEl = _p.getElement( _item.attr(&#x27;toNEl&#x27;) );
+                    }
+
+                    if( !(_fromNEl &amp;&amp; _fromNEl.length || _toNEl &amp;&amp; _toNEl.length) ){
+                        _items = _p.sametypeitems( _item );
+                        if( _items.length &gt;= 2 ){
+                            _fromNEl = $(_items[0]);
+                            _toNEl = $(_items[1]);
                         }
                     }
+                    if( _fromNEl &amp;&amp; _fromNEl.length || _toNEl &amp;&amp; _toNEl.length ){
 
-                    JC.log( &#x27;_msg: &#x27; + _msg, _item.prop(&#x27;type&#x27;).toLowerCase() );
+                        JC.log( &#x27;nrange&#x27;, _fromNEl.length, _toNEl.length );
 
-                    return $.trim(_msg);
-                }
-            /**
-             * 计算字符串的字节长度, 非 ASCII 0-255的字符视为两个字节
-             * @method  _logic.bytelen
-             * @private
-             * @static
-             * @param   {string}    _s
-             */
-            , bytelen: 
-                function( _s ){
-                    return _s.replace(/[^\x00-\xff]/g,&quot;11&quot;).length;
-                }
-            /**
-             * 获取日期字符串的 timestamp, 字符串格式为 YYYY[^\d]*?MM[^\d]*?DD
-             * @method  _logic.getTimestamp
-             * @private
-             * @static
-             * @param   {string}    _date_str
-             */
-            , getTimestamp:
-                function( _date_str ){
-                    _date_str = _date_str.replace( /[^\d]/g, &#x27;&#x27; );
-                    return new Date( _date_str.slice(0,4), parseInt( _date_str.slice( 4, 6 ), 10 ) - 1, _date_str.slice( 6, 8) ).getTime();
-                }
-            /**
-             * 此对象存储可供检查的类型
-             * @property    _logic.datatype
-             * @type        Object
-             * @private
-             * @static
-             */
-            , datatype:{
-                /**
-                 * 检查是否为正确的数字&lt;br /&gt;
-                 * &lt;br&gt;默认范围 0 - Math.pow(10, 10)
-                 * @method  _logic.datatype.n
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @attr    {require}               datatype    - n | n-整数位数.小数位数
-                 * @attr    {integer|optional}      minvalue    - 数值的下限
-                 * @attr    {integer|optional}      maxvalue    - 数值的上限
-                 *
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_n&quot; errmsg=&quot;请填写正确的正整数&quot; datatype=&quot;n&quot; &gt;
-                        &lt;/div&gt;
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_n1&quot; errmsg=&quot;请填写正确的数字, 范围1-100&quot; datatype=&quot;n&quot; minvalue=&quot;1&quot;, maxvalue=&quot;100&quot; &gt;
-                        &lt;/div&gt;
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_n2&quot; errmsg=&quot;请填写正确的数字&quot; datatype=&quot;n-7.2&quot; &gt;
-                        &lt;/div&gt;
-                 *
-                 */
-                n: 
-                    function( _item ){
-                        var _r = true, _valStr = _item.val(), _val = +_valStr,_min = 0, _max = Math.pow( 10, 10 ), _n, _f, _tmp;
-
-                        if( _item.is(&#x27;[minvalue]&#x27;) ){
-                            if( /\./.test( _item.attr(&#x27;minvalue&#x27;) ) ){
-                                _tmp = parseFloat( _item.attr(&#x27;minvalue&#x27;) );
-                            }else{
-                                _tmp = parseInt( _item.attr(&#x27;minvalue&#x27;) );
-                            }
-                            if( !isNaN( _tmp ) ){
-                                _min += _tmp;
-                            }
-                        }
-
-                        if( !isNaN( _val ) &amp;&amp; _val &gt;= _min ){
-                            _item.attr(&#x27;datatype&#x27;).replace( /^n[^\-]*\-(.*)$/, function( $0, $1 ){
-                                _tmp = $1.split(&#x27;.&#x27;);
-                                _n = _tmp[0];
-                                _f = _tmp[1];
-                            });
-                            if( _item.is(&#x27;[maxvalue]&#x27;) ) _max = +_item.attr(&#x27;maxvalue&#x27;) || _max;
-
-                            if( _val &gt;= _min &amp;&amp; _val &lt;= _max ){
-                                typeof _n != &#x27;undefined&#x27; &amp;&amp; typeof _f != &#x27;undefined&#x27; &amp;&amp; ( _r = new RegExp( &#x27;^(?:\-|)(?:[\\d]{0,&#x27;+_n+&#x27;}|)(?:\\.[\\d]{1,&#x27;+_f+&#x27;}|)$&#x27; ).test( _valStr ) );
-                                typeof _n != &#x27;undefined&#x27; &amp;&amp; typeof _f == &#x27;undefined&#x27; &amp;&amp; ( _r = new RegExp( &#x27;^(?:\-|)[\\d]{1,&#x27;+_n+&#x27;}$&#x27; ).test( _valStr ) );
-                                typeof _n == &#x27;undefined&#x27; &amp;&amp; typeof _f != &#x27;undefined&#x27; &amp;&amp; ( _r = new RegExp( &#x27;^(?:\-|)\\.[\\d]{1,&#x27;+_f+&#x27;}$&#x27; ).test( _valStr ) );
-                                typeof _f == &#x27;undefined&#x27; &amp;&amp; /\./.test( _valStr ) &amp;&amp; ( _r = false );
-                            } else _r = false;
-
-                            JC.log( &#x27;nValid&#x27;, _val, typeof _n, typeof _f, typeof _min, typeof _max, _min, _max );
-                        }else _r = false;
-
-                        !_r &amp;&amp; _logic.error( _item );
-
-                        return _r;
-                    }
-                /**
-                 * 检查两个输入框的数值
-                 * &lt;br /&gt; 数字格式为 0-pow(10,10)
-                 * &lt;br /&gt; 带小数点使用 nrange-int.float, 例: nrange-1.2  nrange-2.2
-                 * &lt;br /&gt; &lt;b&gt;注意:&lt;/b&gt; 如果不显示指定 fromNEl, toNEl, 
-                 *              将会从父级查找 datatype=nrange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略
-                 * @method  _logic.datatype.nrange
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @attr    {require}               datatype    - nrange
-                 * @attr    {selector|optional}     fromNEl     - 起始数值选择器
-                 * @attr    {selector|optional}     toNEl       - 结束数值选择器
-                 * @attr    {date string|optional}  minvalue    - 数值的下限
-                 * @attr    {date string|optional}  maxvalue    - 数值的上限
-                 * @example
-                    &lt;div class=&quot;f-l label&quot;&gt;
-                        &lt;label&gt;(datatype nrange)正数:&lt;br/&gt;&lt;b style=&quot;color:red&quot;&gt;注意: 这个是大小颠倒位置的nrange&lt;/b&gt;&lt;/label&gt;
-                        大&lt;input type=&quot;text&quot; name=&quot;company_n10&quot; id=&quot;company_n10&quot; fromNEl=&quot;company_n11&quot;
-                            errmsg=&quot;请填写正确的数值范围&quot; datatype=&quot;nrange&quot; emEl=&quot;nrange_n1011&quot; &gt;
-                        - 小&lt;input type=&quot;text&quot; name=&quot;company_n11&quot; id=&quot;company_n11&quot; toNEl=&quot;company_n10&quot;
-                            errmsg=&quot;请填写正确的数值范围&quot; datatype=&quot;nrange&quot; emEl=&quot;nrange_n1011&quot; &gt;
-                        &lt;em id=&quot;nrange_n1011&quot;&gt;&lt;/em&gt;
-                    &lt;/div&gt;
-                 */
-                , nrange:
-                    function( _item ){
-                        var _r = _logic.datatype.n( _item ), _min, _max;
-
-                        JC.log( &#x27;zzzz&#x27;, _r );
-
-                        if( _r ){
-                            var _fromNEl, _toNEl;
-                            if( _item.is( &#x27;[fromNEl]&#x27; ) ) _fromNEl = _logic.getElement( _item.attr(&#x27;fromNEl&#x27;) );
-                            if( _item.is( &#x27;[toNEl]&#x27; ) ) _toNEl = _logic.getElement( _item.attr(&#x27;toNEl&#x27;) );
-
-                            if( !(_fromNEl &amp;&amp; _fromNEl.length || _toNEl &amp;&amp; _toNEl.length) ){
-                                var _pnt = _item.parent(), _items = [];
-                                    _pnt.find(&#x27;input[datatype]&#x27;).each( function(){
-                                        var _sp = $(this);
-                                        /nrange/i.test( _sp.attr(&#x27;datatype&#x27;) ) &amp;&amp; _items.push( this );
-                                    });
-                                    JC.log( &#x27;ccc&#x27;, _items.length );
-                                    if( _items.length === 2 ){
-                                        _fromNEl = $(_items[0]);
-                                        _toNEl = $(_items[1]);
-                                    }
-                            }
-                            JC.log( &#x27;aaaa&#x27;, _r );
-                            if( _fromNEl &amp;&amp; _fromNEl.length || _toNEl &amp;&amp; _toNEl.length ){
-
-                                _fromNEl &amp;&amp; _fromNEl.length &amp;&amp; !( _toNEl &amp;&amp; _toNEl.length ) &amp;&amp; ( _toNEl = _item );
-                                !(_fromNEl &amp;&amp; _fromNEl.length) &amp;&amp; _toNEl &amp;&amp; _toNEl.length &amp;&amp; ( _fromNEl = _item );
-
-                                JC.log( &#x27;nrange&#x27;, _fromNEl.length, _toNEl.length );
-
-                                _toNEl.val( $.trim( _toNEl.val() ) );
-                                _fromNEl.val( $.trim( _fromNEl.val() ) );
-                                
-                                if( _toNEl[0] != _fromNEl[0] &amp;&amp; _toNEl.val().length &amp;&amp; _fromNEl.val().length ){
-
-                                    _r &amp;&amp; ( _r = _logic.datatype.n( _toNEl ) );
-                                    _r &amp;&amp; ( _r = _logic.datatype.n( _fromNEl ) );
-
-                                    _r &amp;&amp; ( +_fromNEl.val() ) &gt; ( +_toNEl.val() ) &amp;&amp; ( _r = false );
-                                    
-                                    JC.log( +_fromNEl.val(), +_toNEl.val(), _r );
-
-                                    _r &amp;&amp; _logic.valid( _fromNEl );
-                                    _r &amp;&amp; _logic.valid( _toNEl );
-
-                                    if( _r ){ _fromNEl.removeClass(&#x27;error&#x27;); _toNEl.removeClass(&#x27;error&#x27;); }
-                                    else{ _fromNEl.addClass(&#x27;error&#x27;); _toNEl.addClass(&#x27;error&#x27;); }
-                                }
-                            }
-                        }
-
-                        !_r &amp;&amp; _logic.error( _item );
-
-                        return _r;
-                    }
-                /**
-                 * 检查是否为合法的日期,
-                 * &lt;br /&gt;日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD
-                 * @method  _logic.datatype.d
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @attr    {require}               datatype    - d
-                 * @attr    {date string|optional}  minvalue    - 日期的下限
-                 * @attr    {date string|optional}  maxvalue    - 日期的上限
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_d&quot; errmsg=&quot;请填写正确的日期范围2013-05-01 - 2013-05-31&quot; datatype=&quot;daterange&quot; minvalue=&quot;2013-05-01&quot; maxvalue=&quot;2013-05-31&quot; &gt;
-                        &lt;/div&gt;
-                 */
-                , d: 
-                    function( _item ){
-                        var _val = $.trim( _item.val() ), _r, _re = /^[\d]{4}([\/.-]|)[01][\d]\1[0-3][\d]$/;
-                        if( !_val ) return true;
-                            
-                        if( _r = _re.test( _val ) ){
-                            var _utime = _logic.getTimestamp( _item.val() ), _minTime, _maxTime;
-
-                            if( _item.is(&#x27;[minvalue]&#x27;) &amp;&amp; ( _r = _re.test( _item.attr(&#x27;minvalue&#x27;) ) ) ){
-                                _minTime = _logic.getTimestamp( _item.attr(&#x27;minvalue&#x27;) );
-                                _utime &lt; _minTime &amp;&amp; ( _r = false );
-                            }
-
-                            if( _r &amp;&amp; _item.is(&#x27;[maxvalue]&#x27;) &amp;&amp; ( _r = _re.test( _item.attr(&#x27;maxvalue&#x27;) ) ) ){
-                                _maxTime = _logic.getTimestamp( _item.attr(&#x27;maxvalue&#x27;) );
-                                _utime &gt; _maxTime &amp;&amp; ( _r = false );
-                            }
-                        }
-
-                        !_r &amp;&amp; _logic.error( _item );
-
-                        return _r;
-                    }
-                /**
-                 * 检查两个输入框的日期
-                 * &lt;br /&gt;日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD
-                 * &lt;br /&gt; &lt;b&gt;注意:&lt;/b&gt; 如果不显示指定 fromDateEl, toDateEl, 
-                 *              将会从父级查找 datatype=datarange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略
-                 * @method  _logic.datatype.daterange
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @attr    {require}               datatype    - datarange
-                 * @attr    {selector|optional}     fromDateEl  - 起始日期选择器
-                 * @attr    {selector|optional}     toDateEl    - 结束日期选择器
-                 * @attr    {date string|optional}  minvalue    - 日期的下限
-                 * @attr    {date string|optional}  maxvalue    - 日期的上限
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_daterange&quot; errmsg=&quot;请填写正确的日期范围,并且起始日期不能大于结束日期&quot; id=&quot;start_date&quot; 
-                                datatype=&quot;daterange&quot; toDateEl=&quot;end_date&quot; emEl=&quot;date-err-em&quot; &gt;
-                            - &lt;input type=&quot;TEXT&quot; name=&quot;company_daterange&quot; errmsg=&quot;请填写正确的日期范围,并且起始日期不能大于结束日期&quot; id=&quot;end_date&quot; 
-                                datatype=&quot;daterange&quot; fromDateEl=&quot;start_date&quot; emEl=&quot;date-err-em&quot; &gt;
-                            &lt;br /&gt;&lt;em id=&quot;date-err-em&quot;&gt;&lt;/em&gt;
-                        &lt;/div&gt;
-                 */
-                , daterange:
-                    function( _item ){
-                        var _r = _logic.datatype.d( _item ), _min, _max;
-
-                        if( _r ){
-                            var _fromDateEl, _toDateEl;
-                            if( _item.is( &#x27;[fromDateEl]&#x27; ) ) _fromDateEl = _logic.getElement( _item.attr(&#x27;fromDateEl&#x27;) );
-                            if( _item.is( &#x27;[toDateEl]&#x27; ) ) _toDateEl = _logic.getElement( _item.attr(&#x27;toDateEl&#x27;) );
-
-                            if( !(_fromDateEl &amp;&amp; _fromDateEl.length || _toDateEl &amp;&amp; _toDateEl.length) ){
-                                var _pnt = _item.parent(), _items = _pnt.find(&#x27;input[datatype=daterange]&#x27;);
-                                    if( _items.length === 2 ){
-                                        _fromDateEl = $(_items[0]);
-                                        _toDateEl = $(_items[1]);
-                                    }
-                            }
-                            if( _fromDateEl &amp;&amp; _fromDateEl.length || _toDateEl &amp;&amp; _toDateEl.length ){
-
-                                _fromDateEl &amp;&amp; _fromDateEl.length &amp;&amp; !( _toDateEl &amp;&amp; _toDateEl.length ) &amp;&amp; ( _toDateEl = _item );
-                                !(_fromDateEl &amp;&amp; _fromDateEl.length) &amp;&amp; _toDateEl &amp;&amp; _toDateEl.length &amp;&amp; ( _fromDateEl = _item );
-
-                                JC.log( &#x27;daterange&#x27;, _fromDateEl.length, _toDateEl.length );
-
-                                _toDateEl.val( $.trim( _toDateEl.val() ) );
-                                _fromDateEl.val( $.trim( _fromDateEl.val() ) );
-                                if( _toDateEl[0] != _fromDateEl[0] &amp;&amp; _toDateEl.val().length &amp;&amp; _fromDateEl.val().length ){
-
-                                    _r &amp;&amp; ( _r = _logic.datatype.d( _toDateEl ) );
-                                    _r &amp;&amp; ( _r = _logic.datatype.d( _fromDateEl ) );
-
-                                    _r &amp;&amp; _logic.getTimestamp( _fromDateEl.val() ) &gt; _logic.getTimestamp( _toDateEl.val() ) &amp;&amp; ( _r = false );
-
-                                    _r &amp;&amp; _logic.valid( _fromDateEl );
-                                    _r &amp;&amp; _logic.valid( _toDateEl );
-
-                                    if( _r ){ _fromDateEl.removeClass(&#x27;error&#x27;); _toDateEl.removeClass(&#x27;error&#x27;); }
-                                    else{ _fromDateEl.addClass(&#x27;error&#x27;); _toDateEl.addClass(&#x27;error&#x27;); }
-                                }
-                            }
-                        }
-
-                        !_r &amp;&amp; _logic.error( _item );
-
-                        return _r;
-                    }
-                /**
-                 * 检查时间格式, 格式为 hh:mm:ss
-                 * @method  _logic.datatype.time
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_time&quot; errmsg=&quot;正确的时间, 格式为 hh:mm:ss&quot; datatype=&quot;time&quot; &gt;
-                        &lt;/div&gt;
-                 */
-                , time: 
-                    function( _item ){
-                        var _r = /^(([0-1]\d)|(2[0-3])):[0-5]\d:[0-5]\d$/.test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-                /**
-                 * 检查时间格式, 格式为 hh:mm
-                 * @method  _logic.datatype.minute
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_time&quot; errmsg=&quot;正确的时间, 格式为 hh:mm&quot; datatype=&quot;minute&quot; &gt;
-                        &lt;/div&gt;
-                 */
-                , minute: 
-                    function( _item ){
-                        var _r = /^(([0-1]\d)|(2[0-3])):[0-5]\d$/.test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-                /**
-                 * 检查银行卡号码
-                 * &lt;br /&gt;格式为 d{19} | d{16} | 1111 1111 1111 1111 111 | 1111 1111 1111 1111111
-                 * @method  _logic.datatype.bankcard
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_idnumber&quot; 
-                                datatype=&quot;idnumber&quot; errmsg=&quot;请填写正确的身份证号码&quot;&gt;
-                        &lt;/div&gt;
-                 */
-                , bankcard:
-                    function( _item ){
-                        var _r = /^[1-9][\d]{3}(?: |)(?:[\d]{4}(?: |))(?:[\d]{4}(?: |))(?:[\d]{4})(?:(?: |)[\d]{3}|)$/.test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-                /**
-                 * 检查中文姓名
-                 * &lt;br&gt;格式: 汉字和大小写字母
-                 * &lt;br&gt;规则: 长度 2-32个字节, 非 ASCII 算2个字节
-                 * @method  _logic.datatype.cnname
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_cnname&quot; 
-                                datatype=&quot;cnname&quot; reqmsg=&quot;姓名&quot; errmsg=&quot;请填写正确的姓名&quot;&gt;
-                        &lt;/div&gt;
-                 */
-                , cnname:
-                    function( _item ){
-                        var _r = _logic.bytelen( _item.val() ) &lt; 32 &amp;&amp; /^[\u4e00-\u9fa5a-zA-Z.\u3002\u2022]{2,32}$/.test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-                /**
-                 * 检查注册用户名
-                 * &lt;br&gt;格式: a-zA-Z0-9_-
-                 * &lt;br&gt;规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30
-                 * @method  _logic.datatype.username
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_username&quot; 
-                                datatype=&quot;username&quot; reqmsg=&quot;用户名&quot; errmsg=&quot;请填写正确的用户名&quot;&gt;
-                        &lt;/div&gt;
-                 */
-                , username:
-                    function( _item ){
-                        var _r = /^[a-zA-Z0-9][\w-]{2,30}$/.test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-                /**
-                 * 检查身份证号码&lt;br /&gt;
-                 * 目前只使用最简单的位数判断~ 有待完善
-                 * @method  _logic.datatype.idnumber
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                    &lt;div class=&quot;f-l&quot;&gt;
-                        &lt;input type=&quot;TEXT&quot; name=&quot;company_idnumber&quot; 
-                            datatype=&quot;idnumber&quot; errmsg=&quot;请填写正确的身份证号码&quot;&gt;
-                    &lt;/div&gt;
-                 */
-                , idnumber:
-                    function( _item ){
-                        var _r = /^[0-9]{15}(?:[0-9]{2}(?:[0-9xX])|)$/.test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-                /**
-                 * 检查手机号码&lt;br /&gt;
-                 * @method  _logic.datatype.mobilecode
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @param   {bool}      _noError
-                 * @example
-                    &lt;div class=&quot;f-l&quot;&gt;
-                        &lt;input type=&quot;TEXT&quot; name=&quot;company_mobile&quot; 
-                            datatype=&quot;mobilecode&quot; subdatatype=&quot;alternative&quot; datatarget=&quot;input[name=company_phonecode]&quot; alternativemsg=&quot; &quot;
-                            errmsg=&quot;请填写正确的手机号码&quot;&gt;
-                    &lt;/div&gt;
-                 */
-                , mobilecode: 
-                    function( _item, _noError ){
-                        var _r =  /^(?:13|14|15|16|18|19)[\d]{9}$/.test( _item.val() );
-                        !_noError &amp;&amp; !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-                /**
-                 * 检查手机号码
-                 * &lt;br /&gt;这个方法是 _logic.datatype.mobilecode 的别名
-                 * @method  _logic.datatype.mobile
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @param   {bool}      _noError
-                 */
-                , mobile:
-                    function( _item, _noError ){
-                        return _logic.datatype.mobilecode( _item, _noError );
-                    }
-                /**
-                 * 检查手机号码加强方法
-                 * &lt;br&gt;格式: [+国家代码] [零]11位数字
-                 * @method  _logic.datatype.mobilezonecode
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @param   {bool}      _noError
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_mobilezone&quot; 
-                                datatype=&quot;mobilezonecode&quot; 
-                                errmsg=&quot;请填写正确的手机号码&quot;&gt;
-                        &lt;/div&gt;
-                 */
-                , mobilezonecode: 
-                    function( _item, _noError ){
-                        var _r = /^(?:\+[0-9]{1,6} |)(?:0|)(?:13|14|15|16|18|19)\d{9}$/.test( _item.val() );
-                        !_noError &amp;&amp; !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-                /**
-                 * 检查电话号码
-                 * &lt;br&gt;格式: 7/8位数字
-                 * @method  _logic.datatype.phonecode
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;div&gt;
-                            &lt;input type=&#x27;TEXT&#x27; name=&#x27;company_phonecode&#x27; style=&quot;width:80px;&quot; value=&#x27;&#x27; size=&quot;8&quot; 
-                                datatype=&quot;phonecode&quot; errmsg=&quot;请检查电话号码格式&quot; emEl=&quot;#phone-err-em&quot; /&gt;
-                        &lt;/div&gt;
-                 */
-                , phonecode: 
-                    function( _item ){
-                        var _r =  /^[1-9][0-9]{6,7}$/.test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-                /**
-                 * 检查电话号码
-                 * &lt;br&gt;格式: [区号]7/8位电话号码
-                 * @method  _logic.datatype.phone
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @param   {bool}      _noError
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_phone&quot; 
-                                datatype=&quot;phone&quot; 
-                                errmsg=&quot;请填写正确的电话号码&quot;&gt;
-                        &lt;/div&gt;
-                 */
-                , phone:
-                    function( _item, _noError ){
-                        var _r = /^(?:0(?:10|2\d|[3-9]\d\d)(?: |\-|)|)[1-9][\d]{6,7}$/.test( _item.val() );
-                        !_noError &amp;&amp; !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-                /**
-                 * 检查电话号码
-                 * &lt;br&gt;格式: [+国家代码][ ][电话区号][ ]7/8位电话号码[#分机号]
-                 * @method  _logic.datatype.phoneall
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @param   {bool}      _noError
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_mobilezone&quot; 
-                                datatype=&quot;phoneall&quot; 
-                                errmsg=&quot;请填写正确的电话号码&quot;&gt;
-                        &lt;/div&gt;
-                 */
-                , phoneall:
-                    function( _item, _noError ){
-                        var _r = /^(?:\+[\d]{1,6}(?: |\-)|)(?:0[\d]{2,3}(?:\-| |)|)[1-9][\d]{6,7}(?:(?: |)\#[\d]{1,6}|)$/.test( _item.val() );
-                        !_noError &amp;&amp; !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-                /**
-                 * 检查电话区号
-                 * @method  _logic.datatype.phonezone
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;div&gt;
-                            &lt;input type=&#x27;TEXT&#x27; name=&#x27;company_phonezone&#x27; style=&quot;width:40px;&quot; value=&#x27;&#x27; size=&quot;4&quot; 
-                                datatype=&quot;phonezone&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的电话区号&quot; /&gt;
-                        &lt;/div&gt;
-                 */
-                , phonezone: 
-                    function( _item ){
-                        var _r = /^[0-9]{3,4}$/.test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-                /**
-                 * 检查电话分机号码
-                 * @method  _logic.datatype.phoneext
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;div&gt;
-                            &lt;input type=&#x27;TEXT&#x27; name=&#x27;company_phoneext&#x27; style=&quot;width:40px;&quot; value=&#x27;&#x27; size=&quot;4&quot; 
-                                datatype=&quot;phoneext&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的分机号&quot; /&gt;
-                        &lt;/div&gt;
-                 */
-                , phoneext: 
-                    function( _item ){
-                        var _r =  /^[0-9]{1,6}$/.test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-                /**
-                 * 检查手机号码/电话号码
-                 * &lt;br /&gt;这个方法是原有方法的混合验证 _logic.datatype.mobilecode + _logic.datatype.phone
-                 * @method  _logic.datatype.mobilephone
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;div class=&quot;f-l label&quot;&gt;
-                            &lt;label&gt;(datatype mobilephone, phone + mobilecode)手机号码或电话号码:&lt;/label&gt;
-                        &lt;/div&gt;
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;text&quot; name=&quot;company_mobilephone&quot; 
-                                datatype=&quot;mobilephone&quot;
-                                errmsg=&quot;请填写正确的手机/电话号码&quot;&gt;
-                        &lt;/div&gt;
-                 */
-                , mobilephone:
-                    function( _item ){
-                        var _r = _logic.datatype.mobilecode( _item, true ) || _logic.datatype.phone( _item, true );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-
-                /**
-                 * 检查手机号码/电话号码, 泛匹配
-                 * &lt;br /&gt;这个方法是原有方法的混合验证 _logic.datatype.mobilezonecode + _logic.datatype.phoneall
-                 * @method  _logic.datatype.mobilephoneall
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;div class=&quot;f-l label&quot;&gt;
-                            &lt;label&gt;(datatype mobilephoneall, phoneall + mobilezonecode)手机号码或电话号码:&lt;/label&gt;
-                        &lt;/div&gt;
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;text&quot; name=&quot;company_mobilephoneall&quot; 
-                                datatype=&quot;mobilephoneall&quot;
-                                errmsg=&quot;请填写正确的手机/电话号码&quot;&gt;
-                        &lt;/div&gt;
-                 */
-                , mobilephoneall:
-                    function( _item ){
-                        var _r = _logic.datatype.mobilezonecode( _item, true ) || _logic.datatype.phoneall( _item, true );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-
-                /**
-                 * 检查内容的长度
-                 * @method  _logic.datatype.length
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @attr    {string}    datatype        数字类型 text|bytetext|richtext
-                 *
-                 * @attr    {integer}   minlength       内容最小长度
-                 * @attr    {integer}   maxlength       内容最大长度
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_name&quot; minlength=&quot;2&quot; maxlength=&quot;120&quot; reqmsg=&quot;公司名称&quot; errmsg=&quot;请检查格式,长度2-120&quot; /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
-                        &lt;/div&gt;
-                 */
-                , &#x27;length&#x27;: 
-                    function( _item ){
-                        var _r = true, _dt = _logic.getDatatype( _item ), _min, _max, _val = $.trim( _item.val() ), _len;
-                        if( !_val ) return _r;
-
-                        if( _item.is( &#x27;[minlength]&#x27; ) ){
-                            JC.log( &#x27;minlength&#x27; );
-                            _min = parseInt( _item.attr( &#x27;minlength&#x27; ), 10 ) || 0;
-                        }
+                        _toNEl.val( $.trim( _toNEl.val() ) );
+                        _fromNEl.val( $.trim( _fromNEl.val() ) );
                         
-                        if( _item.is( &#x27;[maxlength]&#x27; ) ){
-                            JC.log( &#x27;maxlength&#x27; );
-                            _max = parseInt( _item.attr( &#x27;maxlength&#x27; ), 10 ) || 0;
+                        if( _toNEl[0] != _fromNEl[0] &amp;&amp; _toNEl.val().length &amp;&amp; _fromNEl.val().length ){
+
+                            _r &amp;&amp; ( _r = _p.n( _toNEl, true ) );
+                            _r &amp;&amp; ( _r = _p.n( _fromNEl, true ) );
+
+                            _r &amp;&amp; ( +_fromNEl.val() ) &gt; ( +_toNEl.val() ) &amp;&amp; ( _r = false );
+                            
+                            JC.log( &#x27;nrange:&#x27;, +_fromNEl.val(), +_toNEl.val(), _r );
+
+                            _r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _fromNEl ] );
+                            _r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _toNEl ] );
+
+                            !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _fromNEl ] );
+                            !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _toNEl ] );
+                            return _r;
                         }
-                        /**
-                         * 根据特殊的 datatype 实现不同的计算方法
-                         */
-                        switch( _dt ){
-                            case &#x27;bytetext&#x27;:
-                                {
-                                    _len = _logic.bytelen( _val );
-                                    break;
-                                }
-                            case &#x27;richtext&#x27;:
-                            default:
-                                {
-                                    _len = _val.length;
-                                    break;
-                                }
+                    }
+                }
+
+                return _r;
+            }
+        /**
+         * 检查是否为合法的日期,
+         * &lt;br /&gt;日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD
+         * @method  d
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @attr    {require}               datatype    - d
+         * @attr    {date string|optional}  minvalue    - 日期的下限
+         * @attr    {date string|optional}  maxvalue    - 日期的上限
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_d&quot; errmsg=&quot;请填写正确的日期范围2013-05-01 - 2013-05-31&quot; datatype=&quot;daterange&quot; minvalue=&quot;2013-05-01&quot; maxvalue=&quot;2013-05-31&quot; &gt;
+                &lt;/div&gt;
+         */
+        , d: 
+            function( _item, _noError ){
+                var _p = this, _val = $.trim( _item.val() ), _r = true, _date = parseISODate( _val ), _tmpDate;
+                    
+                if( _val &amp;&amp; _date ){
+
+                    if( _p.isMinvalue( _item ) &amp;&amp; ( _tmpDate = _p.minvalue( _item, &#x27;d&#x27; ) ) ){
+                        _date.getTime() &lt; _tmpDate.getTime() &amp;&amp; ( _r = false );
+                    }
+
+                    if( _r &amp;&amp; _p.isMaxvalue( _item ) &amp;&amp; ( _tmpDate = _p.maxvalue( _item, &#x27;d&#x27; ) ) ){
+                        _date.getTime() &gt; _tmpDate.getTime() &amp;&amp; ( _r = false );
+                    }
+                }
+
+                !_r &amp;&amp; !_noError &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+
+                return _r;
+            }
+        , &#x27;date&#x27;: function(){ return this.d.apply( this, sliceArgs( arguments ) ); }
+        /**
+         * 检查两个输入框的日期
+         * &lt;br /&gt;日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD
+         * &lt;br /&gt; &lt;b&gt;注意:&lt;/b&gt; 如果不显示指定 fromDateEl, toDateEl, 
+         *              将会从父级查找 datatype=daterange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略
+         * @method  daterange
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @attr    {require}               datatype    - daterange
+         * @attr    {selector|optional}     fromDateEl  - 起始日期选择器
+         * @attr    {selector|optional}     toDateEl    - 结束日期选择器
+         * @attr    {date string|optional}  minvalue    - 日期的下限
+         * @attr    {date string|optional}  maxvalue    - 日期的上限
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_daterange&quot; errmsg=&quot;请填写正确的日期范围,并且起始日期不能大于结束日期&quot; id=&quot;start_date&quot; 
+                        datatype=&quot;daterange&quot; toDateEl=&quot;end_date&quot; emEl=&quot;date-err-em&quot; &gt;
+                    - &lt;input type=&quot;TEXT&quot; name=&quot;company_daterange&quot; errmsg=&quot;请填写正确的日期范围,并且起始日期不能大于结束日期&quot; id=&quot;end_date&quot; 
+                        datatype=&quot;daterange&quot; fromDateEl=&quot;start_date&quot; emEl=&quot;date-err-em&quot; &gt;
+                    &lt;br /&gt;&lt;em id=&quot;date-err-em&quot;&gt;&lt;/em&gt;
+                &lt;/div&gt;
+         */
+        , daterange:
+            function( _item ){
+                var _p = this, _r = _p.d( _item ), _min, _max, _fromDateEl, _toDateEl, _items;
+
+                if( _r ){
+                    if( _item.is( &#x27;[fromDateEl]&#x27; ) ) {
+                        _fromDateEl = _p.getElement( _item.attr(&#x27;fromDateEl&#x27;) );
+                        _toDateEl = _item;
+                    }
+                    if( _item.is( &#x27;[toDateEl]&#x27; ) ){
+                        _fromDateEl = _item;
+                        _toDateEl = _p.getElement( _item.attr(&#x27;toDateEl&#x27;) );
+                    }
+
+                    if( !(_fromDateEl &amp;&amp; _fromDateEl.length &amp;&amp; _toDateEl &amp;&amp; _toDateEl.length) ){
+                        _items = _p.sametypeitems( _item );
+                        if( _items.length &gt;= 2 ){
+                            _fromDateEl = $(_items[0]);
+                            _toDateEl = $(_items[1]);
                         }
-
-                        _min &amp;&amp; ( _len &lt; _min ) &amp;&amp; ( _r = false );
-                        _max &amp;&amp; ( _len &gt; _max ) &amp;&amp; ( _r = false );
-
-                        JC.log( &#x27;lengthValid: &#x27;, _min, _max, _r );
-
-                        !_r &amp;&amp; _logic.error( _item );
-
-                        return _r;
                     }
-                /**
-                 * 检查内容是否为空,
-                 * &lt;br&gt;如果声明了该属性, 那么 value 须不为空
-                 * @method  _logic.datatype.reqmsg
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_name&quot; reqmsg=&quot;公司名称&quot; /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
-                        &lt;/div&gt;
-                 */
-                , reqmsg: 
-                    function( _item ){
+                    if( _fromDateEl &amp;&amp; _fromDateEl.length || _toDateEl &amp;&amp; _toDateEl.length ){
 
-                        var _r;
-                        if( _item.val() &amp;&amp; _item.val().constructor == Array ){
-                            _r = !!( $.trim( _item.val().join(&#x27;&#x27;) + &#x27;&#x27; ) );
-                        }else{
-                            _r = !!$.trim( _item.val() ||&#x27;&#x27;) ;
+                        JC.log( &#x27;daterange&#x27;, _fromDateEl.length, _toDateEl.length );
+
+                        _toDateEl.val( $.trim( _toDateEl.val() ) );
+                        _fromDateEl.val( $.trim( _fromDateEl.val() ) );
+
+                        if( _toDateEl[0] != _fromDateEl[0] &amp;&amp; _toDateEl.val().length &amp;&amp; _fromDateEl.val().length ){
+
+                            _r &amp;&amp; ( _r = _p.d( _toDateEl, true ) ) &amp;&amp; ( _min = parseISODate( _fromDateEl.val() ) );
+                            _r &amp;&amp; ( _r = _p.d( _fromDateEl, true ) ) &amp;&amp; ( _max = parseISODate( _toDateEl.val() ) );
+
+                            _r &amp;&amp; _min &amp;&amp; _max 
+                               &amp;&amp; _min.getTime() &gt; _max.getTime() 
+                               &amp;&amp; ( _r = false );
+
+                            _r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _fromDateEl ] );
+                            _r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _toDateEl ] );
+
+                            !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _fromDateEl ] );
+                            !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _toDateEl ] );
                         }
-
-                        !_r &amp;&amp; _logic.error( _item, &#x27;reqmsg&#x27; );
-                        JC.log( &#x27;regmsgValid: &#x27; + _r );
-                        return _r;
                     }
-                /**
-                 * 自定义正则校验
-                 * @method  _logic.datatype.reg
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @attr    {string}    reg-pattern     正则规则 /规则/选项
-                 * @example
-                            &lt;div&gt;&lt;input type=&quot;TEXT&quot; name=&quot;company_addr&quot; datatype=&quot;reg&quot; reg-pattern=&quot;/^[\s\S]{2,120}$/i&quot; errmsg=&quot;请填写正确的地址&quot;&gt;&lt;/div&gt;
-                            &lt;div&gt;&lt;input type=&quot;TEXT&quot; name=&quot;company_addr&quot; datatype=&quot;reg-/^[\s\S]{2,120}$/i&quot; errmsg=&quot;请填写正确的地址&quot;&gt;&lt;/div&gt;
-                 */
-                , reg: 
-                    function( _item ){
-                        var _r = true, _pattern;
-                        if( _item.is( &#x27;[reg-pattern]&#x27; ) ) _pattern = _item.attr( &#x27;reg-pattern&#x27; );
-                        if( !_pattern ) _pattern = $.trim(_item.attr(&#x27;datatype&#x27;)).replace(/^reg(?:\-|)/i, &#x27;&#x27;);
+                }
 
-                        _pattern.replace( /^\/([\s\S]*)\/([\w]{0,3})$/, function( $0, $1, $2 ){
-                            JC.log( $1, $2 );
-                            _r = new RegExp( $1, $2 || &#x27;&#x27; ).test( _item.val() );
-                        });
+                return _r;
+            }
+        /**
+         * 检查时间格式, 格式为 hh:mm:ss
+         * @method  time
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_time&quot; errmsg=&quot;正确的时间, 格式为 hh:mm:ss&quot; datatype=&quot;time&quot; &gt;
+                &lt;/div&gt;
+         */
+        , time: 
+            function( _item ){
+                var _p = this, _r = /^(([0-1]\d)|(2[0-3])):[0-5]\d:[0-5]\d$/.test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查时间格式, 格式为 hh:mm
+         * @method  minute
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_time&quot; errmsg=&quot;正确的时间, 格式为 hh:mm&quot; datatype=&quot;minute&quot; &gt;
+                &lt;/div&gt;
+         */
+        , minute: 
+            function( _item ){
+                var _p = this, _r = /^(([0-1]\d)|(2[0-3])):[0-5]\d$/.test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查银行卡号码
+         * &lt;br /&gt;格式为 d{19} | d{16} | 1111 1111 1111 1111 111 | 1111 1111 1111 1111111
+         * @method  bankcard
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_idnumber&quot; 
+                        datatype=&quot;idnumber&quot; errmsg=&quot;请填写正确的身份证号码&quot;&gt;
+                &lt;/div&gt;
+         */
+        , bankcard:
+            function( _item ){
+                var _p = this
+                    , _r = /^[1-9][\d]{3}(?: |)(?:[\d]{4}(?: |))(?:[\d]{4}(?: |))(?:[\d]{4})(?:(?: |)[\d]{3}|)$/.test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查中文姓名
+         * &lt;br&gt;格式: 汉字和大小写字母
+         * &lt;br&gt;规则: 长度 2-32个字节, 非 ASCII 算2个字节
+         * @method  cnname
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_cnname&quot; 
+                        datatype=&quot;cnname&quot; reqmsg=&quot;姓名&quot; errmsg=&quot;请填写正确的姓名&quot;&gt;
+                &lt;/div&gt;
+         */
+        , cnname:
+            function( _item ){
+                var _p = this
+                    , _r = _p.bytelen( _item.val() ) &lt; 32 &amp;&amp; /^[\u4e00-\u9fa5a-zA-Z.\u3002\u2022]{2,32}$/.test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查注册用户名
+         * &lt;br&gt;格式: a-zA-Z0-9_-
+         * &lt;br&gt;规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30
+         * @method  username
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_username&quot; 
+                        datatype=&quot;username&quot; reqmsg=&quot;用户名&quot; errmsg=&quot;请填写正确的用户名&quot;&gt;
+                &lt;/div&gt;
+         */
+        , username:
+            function( _item ){
+                var _p = this, _r = /^[a-zA-Z0-9][\w-]{2,30}$/.test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查身份证号码&lt;br /&gt;
+         * 目前只使用最简单的位数判断~ 有待完善
+         * @method  idnumber
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+            &lt;div class=&quot;f-l&quot;&gt;
+                &lt;input type=&quot;TEXT&quot; name=&quot;company_idnumber&quot; 
+                    datatype=&quot;idnumber&quot; errmsg=&quot;请填写正确的身份证号码&quot;&gt;
+            &lt;/div&gt;
+         */
+        , idnumber:
+            function( _item ){
+                var _p = this, _r = /^[0-9]{15}(?:[0-9]{2}(?:[0-9xX])|)$/.test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查手机号码&lt;br /&gt;
+         * @method  mobilecode
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @param   {bool}      _noError
+         * @example
+            &lt;div class=&quot;f-l&quot;&gt;
+                &lt;input type=&quot;TEXT&quot; name=&quot;company_mobile&quot; 
+                    datatype=&quot;mobilecode&quot; subdatatype=&quot;alternative&quot; datatarget=&quot;input[name=company_phonecode]&quot; alternativemsg=&quot; &quot;
+                    errmsg=&quot;请填写正确的手机号码&quot;&gt;
+            &lt;/div&gt;
+         */
+        , mobilecode: 
+            function( _item, _noError ){
+                var _p = this, _r =  /^(?:13|14|15|16|18|19)[\d]{9}$/.test( _item.val() );
+                !_noError &amp;&amp; !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查手机号码
+         * &lt;br /&gt;这个方法是 mobilecode 的别名
+         * @method  mobile
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @param   {bool}      _noError
+         */
+        , mobile:
+            function( _item, _noError ){
+                return this.mobilecode( _item, _noError );
+            }
+        /**
+         * 检查手机号码加强方法
+         * &lt;br&gt;格式: [+国家代码] [零]11位数字
+         * @method  mobilezonecode
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @param   {bool}      _noError
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_mobilezone&quot; 
+                        datatype=&quot;mobilezonecode&quot; 
+                        errmsg=&quot;请填写正确的手机号码&quot;&gt;
+                &lt;/div&gt;
+         */
+        , mobilezonecode: 
+            function( _item, _noError ){
+                var _p = this, _r = /^(?:\+[0-9]{1,6} |)(?:0|)(?:13|14|15|16|18|19)\d{9}$/.test( _item.val() );
+                !_noError &amp;&amp; !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查电话号码
+         * &lt;br&gt;格式: 7/8位数字
+         * @method  phonecode
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;div&gt;
+                    &lt;input type=&#x27;TEXT&#x27; name=&#x27;company_phonecode&#x27; style=&quot;width:80px;&quot; value=&#x27;&#x27; size=&quot;8&quot; 
+                        datatype=&quot;phonecode&quot; errmsg=&quot;请检查电话号码格式&quot; emEl=&quot;#phone-err-em&quot; /&gt;
+                &lt;/div&gt;
+         */
+        , phonecode: 
+            function( _item ){
+                var _p = this, _r =  /^[1-9][0-9]{6,7}$/.test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查电话号码
+         * &lt;br&gt;格式: [区号]7/8位电话号码
+         * @method  phone
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @param   {bool}      _noError
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_phone&quot; 
+                        datatype=&quot;phone&quot; 
+                        errmsg=&quot;请填写正确的电话号码&quot;&gt;
+                &lt;/div&gt;
+         */
+        , phone:
+            function( _item, _noError ){
+                var _p = this, _r = /^(?:0(?:10|2\d|[3-9]\d\d)(?: |\-|)|)[1-9][\d]{6,7}$/.test( _item.val() );
+                !_noError &amp;&amp; !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查电话号码
+         * &lt;br&gt;格式: [+国家代码][ ][电话区号][ ]7/8位电话号码[#分机号]
+         * @method  phoneall
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @param   {bool}      _noError
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_mobilezone&quot; 
+                        datatype=&quot;phoneall&quot; 
+                        errmsg=&quot;请填写正确的电话号码&quot;&gt;
+                &lt;/div&gt;
+         */
+        , phoneall:
+            function( _item, _noError ){
+                var _p = this
+                    , _r = /^(?:\+[\d]{1,6}(?: |\-)|)(?:0[\d]{2,3}(?:\-| |)|)[1-9][\d]{6,7}(?:(?: |)\#[\d]{1,6}|)$/.test( _item.val() );
+                !_noError &amp;&amp; !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查电话区号
+         * @method  phonezone
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;div&gt;
+                    &lt;input type=&#x27;TEXT&#x27; name=&#x27;company_phonezone&#x27; style=&quot;width:40px;&quot; value=&#x27;&#x27; size=&quot;4&quot; 
+                        datatype=&quot;phonezone&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的电话区号&quot; /&gt;
+                &lt;/div&gt;
+         */
+        , phonezone: 
+            function( _item ){
+                var _p = this, _r = /^[0-9]{3,4}$/.test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查电话分机号码
+         * @method  phoneext
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;div&gt;
+                    &lt;input type=&#x27;TEXT&#x27; name=&#x27;company_phoneext&#x27; style=&quot;width:40px;&quot; value=&#x27;&#x27; size=&quot;4&quot; 
+                        datatype=&quot;phoneext&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的分机号&quot; /&gt;
+                &lt;/div&gt;
+         */
+        , phoneext: 
+            function( _item ){
+                var _p = this, _r =  /^[0-9]{1,6}$/.test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查手机号码/电话号码
+         * &lt;br /&gt;这个方法是原有方法的混合验证 mobilecode + phone
+         * @method  mobilephone
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;div class=&quot;f-l label&quot;&gt;
+                    &lt;label&gt;(datatype mobilephone, phone + mobilecode)手机号码或电话号码:&lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;text&quot; name=&quot;company_mobilephone&quot; 
+                        datatype=&quot;mobilephone&quot;
+                        errmsg=&quot;请填写正确的手机/电话号码&quot;&gt;
+                &lt;/div&gt;
+         */
+        , mobilephone:
+            function( _item ){
+                var _p = this, _r = this.mobilecode( _item, true ) || this.phone( _item, true );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
 
-                        !_r &amp;&amp; _logic.error( _item );
+        /**
+         * 检查手机号码/电话号码, 泛匹配
+         * &lt;br /&gt;这个方法是原有方法的混合验证 mobilezonecode + phoneall
+         * @method  mobilephoneall
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;div class=&quot;f-l label&quot;&gt;
+                    &lt;label&gt;(datatype mobilephoneall, phoneall + mobilezonecode)手机号码或电话号码:&lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;text&quot; name=&quot;company_mobilephoneall&quot; 
+                        datatype=&quot;mobilephoneall&quot;
+                        errmsg=&quot;请填写正确的手机/电话号码&quot;&gt;
+                &lt;/div&gt;
+         */
+        , mobilephoneall:
+            function( _item ){
+                var _p = this, _r = this.mobilezonecode( _item, true ) || phoneall( _item, true );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 自定义正则校验
+         * @method  reg
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @attr    {string}    reg-pattern     正则规则 /规则/选项
+         * @example
+                    &lt;div&gt;&lt;input type=&quot;TEXT&quot; name=&quot;company_addr&quot; datatype=&quot;reg&quot; reg-pattern=&quot;/^[\s\S]{2,120}$/i&quot; errmsg=&quot;请填写正确的地址&quot;&gt;&lt;/div&gt;
+                    &lt;div&gt;&lt;input type=&quot;TEXT&quot; name=&quot;company_addr&quot; datatype=&quot;reg-/^[\s\S]{2,120}$/i&quot; errmsg=&quot;请填写正确的地址&quot;&gt;&lt;/div&gt;
+         */
+        , reg: 
+            function( _item ){
+                var _p = this, _r = true, _pattern;
+                if( _item.is( &#x27;[reg-pattern]&#x27; ) ) _pattern = _item.attr( &#x27;reg-pattern&#x27; );
+                if( !_pattern ) _pattern = $.trim(_item.attr(&#x27;datatype&#x27;)).replace(/^reg(?:\-|)/i, &#x27;&#x27;);
 
-                        return _r;
+                _pattern.replace( /^\/([\s\S]*)\/([\w]{0,3})$/, function( $0, $1, $2 ){
+                    JC.log( $1, $2 );
+                    _r = new RegExp( $1, $2 || &#x27;&#x27; ).test( _item.val() );
+                });
+
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+
+                return _r;
+            }
+        /**
+         * 检查验证码&lt;br /&gt;
+         * 格式: 为 0-9a-zA-Z, 长度 默认为4
+         * @method  vcode
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @attr    {string}    datatype    vcode|vcode-[\d]+
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_vcode&quot; style=&quot;width: 40px;&quot;
+                        datatype=&quot;vcode&quot; reqmsg=&quot;验证码&quot; errmsg=&quot;请填写正确的验证码&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_vcode&quot; style=&quot;width: 40px;&quot;
+                        datatype=&quot;vcode-5&quot; errmsg=&quot;请填写正确的验证码&quot;&gt;
+                &lt;/div&gt;
+         */
+        , vcode:
+            function( _item ){
+                var _p = this, _r, _len = parseInt( $.trim(_item.attr(&#x27;datatype&#x27;)).replace( /^vcode(?:\-|)/i, &#x27;&#x27; ), 10 ) || 4; 
+                JC.log( &#x27;vcodeValid: &#x27; + _len );
+                _r = new RegExp( &#x27;^[0-9a-zA-Z]{&#x27;+_len+&#x27;}$&#x27; ).test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查文本长度
+         * @method  text
+         * @private
+         * @static
+         * @see length
+         * @attr    {string}    datatype    text
+         */
+        , text: function(_item){ return true; }
+        /**
+         * 检查文本的字节长度
+         * @method  bytetext
+         * @private
+         * @static
+         * @see length
+         * @attr    {string}    datatype    bytetext
+         */
+        , bytetext: function(_item){ return true; }
+        /**
+         * 检查富文本的字节
+         * &lt;br /&gt;TODO: 完成富文本长度检查
+         * @method  richtext
+         * @private
+         * @static
+         * @see length
+         * @attr    {string}    datatype    richtext
+         */
+        , richtext: function(_item){ return true; }
+        /**
+         * 计算字符串的字节长度, 非 ASCII 0-255的字符视为两个字节
+         * @method  bytelen
+         * @private
+         * @static
+         * @param   {string}    _s
+         */
+        , bytelen: 
+            function( _s ){
+                return _s.replace(/[^\x00-\xff]/g,&quot;11&quot;).length;
+            }
+        /**
+         * 检查URL
+         * @method  url
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_url&quot; datatype=&quot;url&quot; errmsg=&quot;请填写正确的网址&quot;&gt;
+                &lt;/div&gt;
+         */
+        , url: 
+            function( _item ){
+                var _p = this
+                    , _r = /^((http|ftp|https):\/\/|)[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;amp;:\/~+#-]*[\w@?^=%&amp;amp;\/~+#-])$/.test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查域名
+         * @method  domain
+         * @private
+         * @static
+         * @param   {selector}  _item
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_domain&quot; datatype=&quot;domain&quot; reqmsg=&quot;域名&quot; errmsg=&quot;请填写正确的域名&quot;&gt;
+                &lt;/div&gt;
+         */
+        , domain:
+            function( _item ){
+                //var _r = /^(?:(?:f|ht)tp\:\/\/|)((?:(?:(?:\w[\.\-\+]?)*)\w)*)((?:(?:(?:\w[\.\-\+]?){0,62})\w)+)\.(\w{2,6})(?:\/|)$/.test( _item.val() );
+                var _p = this
+                    , _r = /^(?:htt(?:p|ps)\:\/\/|)((?:(?:(?:\w[\.\-\+]*))\w)*)((?:(?:(?:\w[\.\-\+]*){0,62})\w)+)\.(\w{2,6})(?:\/|)$/.test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查域名
+         * @method  stricdomain
+         * @private
+         * @static
+         * @param   {selector}  _item
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_domain&quot; datatype=&quot;stricdomain&quot; reqmsg=&quot;域名&quot; errmsg=&quot;请填写正确的域名&quot;&gt;
+                &lt;/div&gt;
+         */
+        , stricdomain:
+            function( _item ){
+                var _p = this
+                    , _r = /^((?:(?:(?:\w[\.\-\+]*))\w)*)((?:(?:(?:\w[\.\-\+]*){0,62})\w)+)\.(\w{2,6})$/.test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查电子邮件
+         * @method  email
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_email&quot; datatype=&quot;email&quot; reqmsg=&quot;邮箱&quot; errmsg=&quot;请填写正确的邮箱&quot;&gt;
+                &lt;/div&gt;
+         */
+        , email: 
+            function( _item ){
+                var _p = this, _r = /^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查邮政编码
+         * @method  zipcode
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_zipcode&quot; datatype=&quot;zipcode&quot; errmsg=&quot;请填写正确的邮编&quot;&gt;
+                &lt;/div&gt;
+         */
+        , zipcode: 
+            function( _item ){
+                var _p = this, _r = /^[0-9]{6}$/.test( _item.val() );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 此类型检查 2|N个对象必须至少有一个是有输入内容的, 
+         * &lt;br&gt; 常用于 手机/电话 二填一
+         * @method  alternative
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;dd&gt;
+                &lt;div class=&quot;f-l label&quot;&gt;
+                    &lt;label&gt;(datatype phonezone, phonecode, phoneext)电话号码:&lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&#x27;TEXT&#x27; name=&#x27;company_phonezone&#x27; style=&quot;width:40px;&quot; value=&#x27;&#x27; size=&quot;4&quot; 
+                        datatype=&quot;phonezone&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的电话区号&quot; /&gt;
+                    - &lt;input type=&#x27;TEXT&#x27; name=&#x27;company_phonecode&#x27; style=&quot;width:80px;&quot; value=&#x27;&#x27; size=&quot;8&quot; 
+                        datatype=&quot;phonecode&quot; subdatatype=&quot;alternative&quot; datatarget=&quot;input[name=company_mobile]&quot; alternativemsg=&quot;电话号码和手机号码至少填写一个&quot;
+                        errmsg=&quot;请检查电话号码格式&quot; emEl=&quot;#phone-err-em&quot; /&gt;
+                    - &lt;input type=&#x27;TEXT&#x27; name=&#x27;company_phoneext&#x27; style=&quot;width:40px;&quot; value=&#x27;&#x27; size=&quot;4&quot; 
+                        datatype=&quot;phoneext&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的分机号&quot; /&gt;
+                    &lt;em id=&quot;phone-err-em&quot;&gt;&lt;/em&gt;
+                &lt;/div&gt;
+                &lt;/dd&gt;
+
+                &lt;dd&gt;
+                &lt;div class=&quot;f-l label&quot;&gt;
+                    &lt;label&gt;(datatype mobilecode)手机号码:&lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_mobile&quot; 
+                        datatype=&quot;mobilecode&quot; subdatatype=&quot;alternative&quot; datatarget=&quot;input[name=company_phonecode]&quot; alternativemsg=&quot; &quot;
+                        errmsg=&quot;请填写正确的手机号码&quot;&gt;
+                &lt;/div&gt;
+                &lt;/dd&gt;
+         */
+        , alternative:
+            function( _item ){
+                var _p = this, _r = true, _target;
+                JC.log( &#x27;alternative&#x27; );
+
+                _p.isDatatarget( _item ) &amp;&amp; (_target = _p.datatarget( _item ) );
+                !( _target &amp;&amp; _target.length ) &amp;&amp; ( _target = _p.samesubtypeitems( _item ) );
+
+                if( _target.length &amp;&amp; !$.trim( _item.val() ) ){
+                    var _hasVal = false;
+                    _target.each( function(){ if( $(this).val() ){ _hasVal = true; return false; } } );
+                    _r = _hasVal;
+                }
+
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, &#x27;alternativemsg&#x27;, true ] );
+                !_r &amp;&amp; _target &amp;&amp; _target.length 
+                    &amp;&amp; _target.each( function(){ 
+                        $(_p).trigger( Model.TRIGGER, [ Model.ERROR, $(this), &#x27;alternativemsg&#x27;, true ] );
+                    });
+
+                if( _r &amp;&amp; _target &amp;&amp; _target.length ){
+                    _target.each( function(){
+                        $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
+                    });
+                }
+
+                return _r;
+            }
+        /**
+         * 此类型检查 2|N 个对象填写的值必须一致
+         * 常用于注意时密码验证/重置密码
+         * @method  reconfirm
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;dd&gt;
+                &lt;div class=&quot;f-l label&quot;&gt;
+                    &lt;label&gt;(datatype text, subdatatype reconfirm)用户密码:&lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;PASSWORD&quot; name=&quot;company_pwd&quot; 
+                    datatype=&quot;text&quot; subdatatype=&quot;reconfirm&quot; datatarget=&quot;input[name=company_repwd]&quot; reconfirmmsg=&quot;用户密码和确认密码不一致&quot;
+                    minlength=&quot;6&quot; maxlength=&quot;15&quot; reqmsg=&quot;用户密码&quot; errmsg=&quot;请填写正确的用户密码&quot;&gt;
+                &lt;/div&gt;
+                &lt;/dd&gt;
+
+                &lt;dd&gt;
+                &lt;div class=&quot;f-l label&quot;&gt;
+                    &lt;label&gt;(datatype text, subdatatype reconfirm)确认密码:&lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;PASSWORD&quot; name=&quot;company_repwd&quot; 
+                    datatype=&quot;text&quot; subdatatype=&quot;reconfirm&quot; datatarget=&quot;input[name=company_pwd]&quot; reconfirmmsg=&quot;确认密码和用户密码不一致&quot;
+                    minlength=&quot;6&quot; maxlength=&quot;15&quot; reqmsg=&quot;确认密码&quot; errmsg=&quot;请填写正确的确认密码&quot;&gt;
+                &lt;/div&gt;
+                &lt;/dd&gt;
+         */
+        , reconfirm:
+            function( _item ){
+                var _p = this, _r = true, _target;
+
+                JC.log( &#x27;reconfirm&#x27; );
+
+                _p.isDatatarget( _item ) &amp;&amp; (_target = _p.datatarget( _item ) );
+                !( _target &amp;&amp; _target.length ) &amp;&amp; ( _target = _p.samesubtypeitems( _item ) );
+
+                if( _target &amp;&amp; _target.length ){
+                    _target.each( function(){ if( _item.val() != $(this).val() )  _r = false; } );
+                }
+
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, &#x27;reconfirmmsg&#x27;, true ] );
+                !_r &amp;&amp; _target.length &amp;&amp; _target.each( function(){ 
+                    $(_p).trigger( Model.TRIGGER, [ Model.ERROR, $(this), &#x27;reconfirmmsg&#x27;, true ] );
+                } );
+
+                if( _r &amp;&amp; _target &amp;&amp; _target.length ){
+                    _target.each( function(){
+                        $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
+                    });
+                }
+                return _r;
+            }
+        , findValidEle:
+            function( _item ){
+                var _selector = &#x27;~ em.validmsg&#x27;, _r = _item.find( _selector ), _tmp;
+                if( _item.attr(&#x27;validel&#x27;) 
+                        &amp;&amp; ( _tmp = _p.getElement( _item.attr(&#x27;validel&#x27;), _item, _selector ) ).length ) _r = _tmp;
+                return _r;
+            }
+        , findFocusEle:
+            function( _item ){
+                var _selector = &#x27;~ em.focusmsg&#x27;, _r = _item.find( _selector ), _tmp;
+                if( _item.attr(&#x27;focusel&#x27;) 
+                        &amp;&amp; ( _tmp = _p.getElement( _item.attr(&#x27;focusel&#x27;), _item, _selector ) ).length ) _r = _tmp;
+                return _r;
+            }
+        , findErrorEle:
+            function( _item ){
+                var _p = this;
+                var _selector = Model.SELECTOR_ERROR, _r = _item.find( _selector );
+                if( _item.attr(&#x27;emel&#x27;) 
+                        &amp;&amp; ( _tmp = _p.getElement( _item.attr(&#x27;emel&#x27;), _item, _selector ) ).length ) _r = _tmp;
+                return _r;
+            }
+        /**
+         * 获取 _selector 对象
+         * &lt;br /&gt;这个方法的存在是为了向后兼容qwrap, qwrap DOM参数都为ID
+         * @method  getElement
+         * @private
+         * @static
+         * @param   {selector}  _selector
+         */
+        , getElement: 
+            function( _selector, _item, _subselector ){
+                if( /^\^$/.test( _selector ) ){
+                    _subselector = _subselector || Model.SELECTOR_ERROR;
+                    _selector = $( _item.parent().find( _subselector ) );
+                }else if( /^[\w-]+$/.test( _selector ) ) {
+                    _selector = &#x27;#&#x27; + _selector;
+                }
+                _selector = _selector.replace( /[\#]+/g, &#x27;#&#x27; );
+                return $(_selector );
+            }
+        /**
+         * 获取对应的错误信息, 默认的错误信息有 reqmsg, errmsg, &lt;br /&gt;
+         * 注意: 错误信息第一个字符如果为空格的话, 将完全使用用户定义的错误信息, 将不会动态添加 请上传/选择/填写
+         * @method  errorMsg
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @param   {string}    _msgAttr    - 显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名
+         * @param   {bool}      _fullMsg    - 显示指定错误信息为属性的值, 而不是自动添加的 请上传/选择/填写
+         */
+        , errorMsg: 
+            function( _item, _msgAttr, _fullMsg ){
+                var _msg = _item.is(&#x27;[errmsg]&#x27;) ? &#x27; &#x27; + _item.attr(&#x27;errmsg&#x27;) : _item.is(&#x27;[reqmsg]&#x27;) ? _item.attr(&#x27;reqmsg&#x27;) : &#x27;&#x27;;
+                _msgAttr &amp;&amp; (_msg = _item.attr( _msgAttr ) || _msg );
+                _fullMsg &amp;&amp; _msg &amp;&amp; ( _msg = &#x27; &#x27; + _msg );
+
+                if( _msg &amp;&amp; !/^[\s]/.test( _msg ) ){
+                    switch( _item.prop(&#x27;type&#x27;).toLowerCase() ){
+                        case &#x27;file&#x27;: _msg = &#x27;请上传&#x27; + _msg; break;
+
+                        case &#x27;select-multiple&#x27;:
+                        case &#x27;select-one&#x27;:
+                        case &#x27;select&#x27;: _msg = &#x27;请选择&#x27; + _msg; break;
+
+                        case &#x27;textarea&#x27;:
+                        case &#x27;password&#x27;:
+                        case &#x27;text&#x27;: _msg = &#x27;请填写&#x27; + _msg; break;
                     }
-                /**
-                 * 检查验证码&lt;br /&gt;
-                 * 格式: 为 0-9a-zA-Z, 长度 默认为4
-                 * @method  _logic.datatype.vcode
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @attr    {string}    datatype    vcode|vcode-[\d]+
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_vcode&quot; style=&quot;width: 40px;&quot;
-                                datatype=&quot;vcode&quot; reqmsg=&quot;验证码&quot; errmsg=&quot;请填写正确的验证码&quot;&gt;
-                        &lt;/div&gt;
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_vcode&quot; style=&quot;width: 40px;&quot;
-                                datatype=&quot;vcode-5&quot; errmsg=&quot;请填写正确的验证码&quot;&gt;
-                        &lt;/div&gt;
-                 */
-                , vcode:
-                    function( _item ){
-                        var _r, _len = parseInt( $.trim(_item.attr(&#x27;datatype&#x27;)).replace( /^vcode(?:\-|)/i, &#x27;&#x27; ), 10 ) || 4; 
-                        JC.log( &#x27;vcodeValid: &#x27; + _len );
-                        _r = new RegExp( &#x27;^[0-9a-zA-Z]{&#x27;+_len+&#x27;}$&#x27; ).test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
+                }
+                return $.trim(_msg);
+            }
+        /**
+         * 检查内容是否为空,
+         * &lt;br&gt;如果声明了该属性, 那么 value 须不为空
+         * @method  reqmsg
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                &lt;div class=&quot;f-l&quot;&gt;
+                    &lt;input type=&quot;TEXT&quot; name=&quot;company_name&quot; reqmsg=&quot;公司名称&quot; /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
+                &lt;/div&gt;
+         */
+        , reqmsg: 
+            function( _item ){
+                var _r = true, _p = this;
+                if( !_p.isReqmsg( _item ) ) return _r;
+
+                if( _item.val() &amp;&amp; _item.val().constructor == Array ){
+                    _r = !!( $.trim( _item.val().join(&#x27;&#x27;) + &#x27;&#x27; ) );
+                }else{
+                    _r = !!$.trim( _item.val() ||&#x27;&#x27;) ;
+                }
+
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, &#x27;reqmsg&#x27; ] );
+                JC.log( &#x27;regmsgValid: &#x27; + _r );
+                return _r;
+            }
+
+        , sametypeitems:
+            function( _item ){
+                var _p = this, _r = []
+                    , _pnt = _item.parent()
+                    , _type = _item.attr(&#x27;datatype&#x27;)
+                    , _re = new RegExp( _type, &#x27;i&#x27; )
+                    ;
+                _pnt.find(&#x27;input[datatype]&#x27;).each( function(){
+                    _re.test( $(this).attr(&#x27;datatype&#x27;) ) &amp;&amp; _r.push( $(this) );
+                });
+                return _r.length ? $( _r ) : _r;
+            }
+        , samesubtypeitems:
+            function( _item ){
+                var _p = this, _r = []
+                    , _pnt = _item.parent()
+                    , _type = _item.attr(&#x27;subdatatype&#x27;)
+                    , _re = new RegExp( _type, &#x27;i&#x27; )
+                    ;
+                _pnt.find(&#x27;input[subdatatype]&#x27;).each( function(){
+                    _re.test( $(this).attr(&#x27;subdatatype&#x27;) ) &amp;&amp; _r.push( $(this) );
+                });
+                return _r.length ? $( _r ) : _r;
+            }
+        , focusmsgeverytime:
+            function( _item ){
+                var _r = Valid.focusmsgEverytime;
+                _item.is( &#x27;[focusmsgeverytime]&#x27; ) &amp;&amp; ( _r = parseBool( _item.attr(&#x27;focusmsgeverytime&#x27;) ) );
+                return _r;
+            }
+    };
+    
+    function View( _model ){
+        this._model = _model;
+    }
+    
+    View.prototype = {
+        init:
+            function() {
+                return this;
+            }
+        /**
+         * 显示正确的视觉效果
+         * @method  valid
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @param   {int}       _tm
+         * @param   {bool}      _noStyle
+         */
+        , valid:
+            function( _item, _tm, _noStyle ){
+                _item &amp;&amp; ( _item = $(_item) );
+                var _p = this, _tmp;
+                if( !_p._model.isValid( _item ) ) return false;
+                setTimeout(function(){
+                    _item.removeClass( Model.CSS_ERROR );
+                    _item.find( printf( &#x27;~ em:not(&quot;em.focusmsg, em.validmsg, {0}&quot;)&#x27;, Model.FILTER_ERROR ) ).show();
+                    _item.find( Model.SELECTOR_ERROR ).hide();
+                    _item.attr(&#x27;emel&#x27;) 
+                        &amp;&amp; ( _tmp = _p._model.getElement( _item.attr(&#x27;emel&#x27;), _item ) )
+                        &amp;&amp; _tmp.hide();
+
+                    typeof _noStyle == &#x27;undefined&#x27; &amp;&amp; !_item.val().trim() &amp;&amp; ( _noStyle = 1 );
+                    _p.validMsg( _item, _noStyle );
+                    ( _tmp = _p._model.validitemcallback( _item ) ) &amp;&amp; _tmp( _item, true );
+                }, _tm || 150);
+            }
+        , validMsg:
+            function( _item, _noStyle ){
+                var _p = this, _msg = ( _item.attr(&#x27;validmsg&#x27;) || &#x27;&#x27; ).trim().toLowerCase();
+
+                if( _p._model.isValidMsg( _item ) ){
+                    if( _msg == &#x27;true&#x27; || _msg == &#x27;1&#x27; ) _msg = &#x27;&#x27;;
+                    !_msg &amp;&amp; ( _msg = &#x27;&amp;nbsp;&#x27; ); //chrome bug, 内容为空会换行
+                    var _focusmsgem = _p._model.findFocusEle( _item )
+                        , _validmsgem = _p._model.findValidEle( _item )
+                        , _errorEm = _p._model.findErrorEle( _item )
+                        ;
+
+                    !_validmsgem.length 
+                        &amp;&amp; ( _validmsgem = $( &#x27;&lt;em class=&quot;validmsg&quot;&gt;&lt;/em&gt;&#x27; )
+                             , _item.after( _validmsgem )
+                           );
+
+                    _validmsgem.html( _msg );
+                    _noStyle 
+                        ? _validmsgem.hide() 
+                        : ( _validmsgem.show()
+                                , _focusmsgem &amp;&amp; _focusmsgem.hide()
+                                , _errorEm &amp;&amp; _errorEm.hide()
+                          )
+                        ;
+                }
+            }
+        /**
+         * 显示错误的视觉效果
+         * @method  error
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @param   {string}    _msgAttr    - 显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名
+         * @param   {bool}      _fullMsg    - 显示指定错误信息为属性的值, 而不是自动添加的 请上传/选择/填写
+         */
+        , error: 
+            function( _item, _msgAttr, _fullMsg ){
+                _item &amp;&amp; ( _item = $(_item) );
+                var _p = this, arg = arguments;
+                if( !_p._model.isValid( _item ) ) return true;
+                if( _item.is( &#x27;[validnoerror]&#x27; ) ) return true;
+
+                setTimeout(function(){
+                    var _msg = _p._model.errorMsg.apply( _p._model, sliceArgs( arg ) ), _errEm;
+
+                    _item.addClass( Model.CSS_ERROR );
+                    _item.find( printf( &#x27;~ em:not({0})&#x27;, Model.FILTER_ERROR ) ).hide();
+
+                    if( _item.is( &#x27;[emEl]&#x27; ) ){
+                        ( _errEm = _p._model.getElement( _item.attr( &#x27;emEl&#x27; ) , _item) ) 
+                            &amp;&amp; _errEm.addClass( Model.CSS_ERROR );
                     }
-                /**
-                 * 检查文本长度
-                 * @method  _logic.datatype.text
-                 * @private
-                 * @static
-                 * @see _logic.datatype.length
-                 * @attr    {string}    datatype    text
-                 */
-                , text: function(_item){ return true; }
-                /**
-                 * 检查文本的字节长度
-                 * @method  _logic.datatype.bytetext
-                 * @private
-                 * @static
-                 * @see _logic.datatype.length
-                 * @attr    {string}    datatype    bytetext
-                 */
-                , bytetext: function(_item){ return true; }
-                /**
-                 * 检查富文本的字节
-                 * &lt;br /&gt;TODO: 完成富文本长度检查
-                 * @method  _logic.datatype.richtext
-                 * @private
-                 * @static
-                 * @see _logic.datatype.length
-                 * @attr    {string}    datatype    richtext
-                 */
-                , richtext: function(_item){ return true; }
-                /**
-                 * 检查URL
-                 * @method  _logic.datatype.url
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_url&quot; datatype=&quot;url&quot; errmsg=&quot;请填写正确的网址&quot;&gt;
-                        &lt;/div&gt;
-                 */
-                , url: 
-                    function( _item ){
-                        var _r = /^((http|ftp|https):\/\/|)[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;amp;:\/~+#-]*[\w@?^=%&amp;amp;\/~+#-])$/.test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
+                    !( _errEm &amp;&amp; _errEm.length ) &amp;&amp; ( _errEm = _item.find( Model.SELECTOR_ERROR ) );
+                    if( !_errEm.length ){
+                        ( _errEm = $( printf( &#x27;&lt;em class=&quot;{0}&quot;&gt;&lt;/em&gt;&#x27;, Model.CSS_ERROR ) ) ).insertAfter( _item );
                     }
-                /**
-                 * 检查域名
-                 * @method  _logic.datatype.domain
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_domain&quot; datatype=&quot;domain&quot; reqmsg=&quot;域名&quot; errmsg=&quot;请填写正确的域名&quot;&gt;
-                        &lt;/div&gt;
-                 */
-                , domain:
-                    function( _item ){
-                        //var _r = /^(?:(?:f|ht)tp\:\/\/|)((?:(?:(?:\w[\.\-\+]?)*)\w)*)((?:(?:(?:\w[\.\-\+]?){0,62})\w)+)\.(\w{2,6})(?:\/|)$/.test( _item.val() );
-                        var _r = /^(?:htt(?:p|ps)\:\/\/|)((?:(?:(?:\w[\.\-\+]*))\w)*)((?:(?:(?:\w[\.\-\+]*){0,62})\w)+)\.(\w{2,6})(?:\/|)$/.test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
+                    _errEm.html( _msg ).show() 
+
+                    JC.log( &#x27;error:&#x27;, _msg );
+
+                }, 150);
+                ( _tmp = _p._model.validitemcallback( _item ) ) &amp;&amp; _tmp( _item, false);
+
+                return false;
+            }
+        , focusmsg:
+            function( _item, _setHide ){
+                if( _item &amp;&amp; ( _item = $( _item ) ).length &amp;&amp; _item.is(&#x27;[focusmsg]&#x27;) ){
+                    JC.log( &#x27;focusmsg&#x27;, new Date().getTime() );
+
+                    var _r, _p = this
+                        , _focusmsgem = _p._model.findFocusEle( _item )
+                        , _validmsgem = _p._model.findValidEle( _item )
+                        , _errorEm = _p._model.findErrorEle( _item )
+                        ;
+
+                    if( _setHide &amp;&amp; _focusmsgem &amp;&amp; _focusmsgem.length ){
+                        _focusmsgem.hide();
+                        return;
                     }
-                /**
-                 * 检查域名
-                 * @method  _logic.datatype.stricdomain
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_domain&quot; datatype=&quot;stricdomain&quot; reqmsg=&quot;域名&quot; errmsg=&quot;请填写正确的域名&quot;&gt;
-                        &lt;/div&gt;
-                 */
-                , stricdomain:
-                    function( _item ){
-                        var _r = /^((?:(?:(?:\w[\.\-\+]*))\w)*)((?:(?:(?:\w[\.\-\+]*){0,62})\w)+)\.(\w{2,6})$/.test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
+
+                    _errorEm.length &amp;&amp; _errorEm.is(&#x27;:visible&#x27;) &amp;&amp; _errorEm.hide();
+                    if( _validmsgem.length &amp;&amp; _validmsgem.is(&#x27;:visible&#x27;) ) return;
+
+                    !_focusmsgem.length 
+                        &amp;&amp; ( _focusmsgem = $(&#x27;&lt;em class=&quot;focusmsg&quot;&gt;&lt;/em&gt;&#x27;)
+                             , _item.after( _focusmsgem )
+                           );
+
+                    if( _item.is( &#x27;[validnoerror]&#x27; ) ){
+                        _r = Valid.getInstance().parse( _item );
+                    }else{
+                        _item.attr(&#x27;validnoerror&#x27;, true);
+                        _r = Valid.getInstance().parse( _item );
+                        _item.removeAttr(&#x27;validnoerror&#x27;);
                     }
-                /**
-                 * 检查电子邮件
-                 * @method  _logic.datatype.email
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_email&quot; datatype=&quot;email&quot; reqmsg=&quot;邮箱&quot; errmsg=&quot;请填写正确的邮箱&quot;&gt;
-                        &lt;/div&gt;
-                 */
-                , email: 
-                    function( _item ){
-                        var _r = /^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
+
+                    if( _p._model.focusmsgeverytime( _item ) ){
+                        _focusmsgem.html( _item.attr(&#x27;focusmsg&#x27;) ).show();
+                    }else{
+                        _r &amp;&amp; _focusmsgem.html( _item.attr(&#x27;focusmsg&#x27;) ).show();
                     }
-                /**
-                 * 检查邮政编码
-                 * @method  _logic.datatype.zipcode
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_zipcode&quot; datatype=&quot;zipcode&quot; errmsg=&quot;请填写正确的邮编&quot;&gt;
-                        &lt;/div&gt;
-                 */
-                , zipcode: 
-                    function( _item ){
-                        var _r = /^[0-9]{6}$/.test( _item.val() );
-                        !_r &amp;&amp; _logic.error( _item );
-                        return _r;
-                    }
-            }//datatype
-            /**
-             * 此对象存储可供检查的子类型
-             * @property    _logic.subdatatype
-             * @type        Object
-             * @private
-             * @static
-             */
-            , subdatatype: {
-                /**
-                 * 此类型检查 2|N个对象必须至少有一个是有输入内容的, 
-                 * &lt;br&gt; 常用于 手机/电话 二填一
-                 * @method  _logic.subdatatype.alternative
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;dd&gt;
-                        &lt;div class=&quot;f-l label&quot;&gt;
-                            &lt;label&gt;(datatype phonezone, phonecode, phoneext)电话号码:&lt;/label&gt;
-                        &lt;/div&gt;
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&#x27;TEXT&#x27; name=&#x27;company_phonezone&#x27; style=&quot;width:40px;&quot; value=&#x27;&#x27; size=&quot;4&quot; 
-                                datatype=&quot;phonezone&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的电话区号&quot; /&gt;
-                            - &lt;input type=&#x27;TEXT&#x27; name=&#x27;company_phonecode&#x27; style=&quot;width:80px;&quot; value=&#x27;&#x27; size=&quot;8&quot; 
-                                datatype=&quot;phonecode&quot; subdatatype=&quot;alternative&quot; datatarget=&quot;input[name=company_mobile]&quot; alternativemsg=&quot;电话号码和手机号码至少填写一个&quot;
-                                errmsg=&quot;请检查电话号码格式&quot; emEl=&quot;#phone-err-em&quot; /&gt;
-                            - &lt;input type=&#x27;TEXT&#x27; name=&#x27;company_phoneext&#x27; style=&quot;width:40px;&quot; value=&#x27;&#x27; size=&quot;4&quot; 
-                                datatype=&quot;phoneext&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的分机号&quot; /&gt;
-                            &lt;em id=&quot;phone-err-em&quot;&gt;&lt;/em&gt;
-                        &lt;/div&gt;
-                        &lt;/dd&gt;
 
-                        &lt;dd&gt;
-                        &lt;div class=&quot;f-l label&quot;&gt;
-                            &lt;label&gt;(datatype mobilecode)手机号码:&lt;/label&gt;
-                        &lt;/div&gt;
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;TEXT&quot; name=&quot;company_mobile&quot; 
-                                datatype=&quot;mobilecode&quot; subdatatype=&quot;alternative&quot; datatarget=&quot;input[name=company_phonecode]&quot; alternativemsg=&quot; &quot;
-                                errmsg=&quot;请填写正确的手机号码&quot;&gt;
-                        &lt;/div&gt;
-                        &lt;/dd&gt;
-                 */
-                alternative:
-                    function( _item ){
-                        var _r = true, _target;
-                        JC.log( &#x27;alternative&#x27; );
-
-                        _item.is( &#x27;[datatarget]&#x27; ) &amp;&amp; (_target = $(_item.attr(&#x27;datatarget&#x27;)) );
-                        !( _target &amp;&amp; _target.length ) &amp;&amp; ( _target = _item.parent().find(&#x27;[subdatatype=alternative]&#x27;) );
-
-                        if( _target.length &amp;&amp; !$.trim( _item.val() ) ){
-                            var _hasVal = false;
-                            _target.each( function(){ if( $(this).val() ){ _hasVal = true; return false; } } );
-                            _r = _hasVal;
-                        }
-
-                        !_r &amp;&amp; _logic.error( _item, &#x27;alternativemsg&#x27;, true );
-                        !_r &amp;&amp; _target &amp;&amp; _target.length 
-                            &amp;&amp; _target.each( function(){ _logic.error( $(this), &#x27;alternativemsg&#x27;, true ); } );
-                        _r &amp;&amp; _target &amp;&amp; _target.length 
-                            &amp;&amp; _target.each( function(){ _logic.valid( $(this) ); } );
-
-                        return _r;
-                    }
-                /**
-                 * 此类型检查 2|N 个对象填写的值必须一致
-                 * 常用于注意时密码验证/重置密码
-                 * @method  _logic.subdatatype.reconfirm
-                 * @private
-                 * @static
-                 * @param   {selector}  _item
-                 * @example
-                        &lt;dd&gt;
-                        &lt;div class=&quot;f-l label&quot;&gt;
-                            &lt;label&gt;(datatype text, subdatatype reconfirm)用户密码:&lt;/label&gt;
-                        &lt;/div&gt;
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;PASSWORD&quot; name=&quot;company_pwd&quot; 
-                            datatype=&quot;text&quot; subdatatype=&quot;reconfirm&quot; datatarget=&quot;input[name=company_repwd]&quot; reconfirmmsg=&quot;用户密码和确认密码不一致&quot;
-                            minlength=&quot;6&quot; maxlength=&quot;15&quot; reqmsg=&quot;用户密码&quot; errmsg=&quot;请填写正确的用户密码&quot;&gt;
-                        &lt;/div&gt;
-                        &lt;/dd&gt;
-
-                        &lt;dd&gt;
-                        &lt;div class=&quot;f-l label&quot;&gt;
-                            &lt;label&gt;(datatype text, subdatatype reconfirm)确认密码:&lt;/label&gt;
-                        &lt;/div&gt;
-                        &lt;div class=&quot;f-l&quot;&gt;
-                            &lt;input type=&quot;PASSWORD&quot; name=&quot;company_repwd&quot; 
-                            datatype=&quot;text&quot; subdatatype=&quot;reconfirm&quot; datatarget=&quot;input[name=company_pwd]&quot; reconfirmmsg=&quot;确认密码和用户密码不一致&quot;
-                            minlength=&quot;6&quot; maxlength=&quot;15&quot; reqmsg=&quot;确认密码&quot; errmsg=&quot;请填写正确的确认密码&quot;&gt;
-                        &lt;/div&gt;
-                        &lt;/dd&gt;
-                 */
-                , reconfirm:
-                    function( _item ){
-                        var _r = true, _target;
-
-                        JC.log( &#x27;reconfirm&#x27; );
-
-                        _item.is( &#x27;[datatarget]&#x27; ) &amp;&amp; (_target = $(_item.attr(&#x27;datatarget&#x27;)) );
-                        !( _target &amp;&amp; _target.length ) &amp;&amp; ( _target = _item.parent().find(&#x27;[subdatatype=reconfirm]&#x27;) );
-
-                        if( _target &amp;&amp; _target.length ){
-                            _target.each( function(){ if( _item.val() != $(this).val() ) return _r = false; } );
-                        }
-
-                        !_r &amp;&amp; _logic.error( _item, &#x27;reconfirmmsg&#x27;, true );
-                        !_r &amp;&amp; _target.length &amp;&amp; _target.each( function(){ _logic.error( $(this), &#x27;reconfirmmsg&#x27;, true ); } );
-                        _r &amp;&amp; _target.length &amp;&amp; _target.each( function(){ _logic.valid( $(this) ); } );
-
-                        return _r;
-                    }
-            }//subdatatype
-        };//_logic
+                }
+            }
+    };
+    /**
+     * 解析错误时触发的时件
+     * @event ValidError
+     */
+    /**
+     * 解析正确时触发的时件
+     * @event ValidCorrect
+     */
     /**
      * 响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果
      * @private
      */
     $(document).delegate( &#x27;input[type=text], input[type=password], textarea&#x27;, &#x27;blur&#x27;, function($evt){
-        Valid.focusmsg( $(this), true );
+        Valid.getInstance().trigger( &#x27;FocusMsg&#x27;,  [ $(this), true ] );
         Valid.check( $(this) );
-    });
-    /**
-     * 响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
-     * @private
-     */
-    $(document).delegate( &#x27;select, input[type=file]&#x27;, &#x27;blur&#x27;, function($evt){
-        Valid.focusmsg( $(this), true );
     });
     /**
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
@@ -1714,10 +2027,17 @@
      * @private
      */
     $(document).delegate( &#x27;input[type=text], input[type=password], textarea, select, input[type=file]&#x27;, &#x27;focus&#x27;, function($evt){
-        Valid.focusmsg( $(this) );
+        Valid.getInstance().trigger( &#x27;FocusMsg&#x27;,  [ $(this) ] );
+    });
+    /**
+     * 响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
+     * @private
+     */
+    $(document).delegate( &#x27;select, input[type=file]&#x27;, &#x27;blur&#x27;, function($evt){
+        Valid.getInstance().trigger( &#x27;FocusMsg&#x27;,  [ $(this), true ] );
     });
 
-}(jQuery));
+}(jQuery))
 
     </pre>
 </div>

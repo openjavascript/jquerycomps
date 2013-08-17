@@ -233,25 +233,13 @@
                         .replace(/\{msg\}/g, _msg)
                         .replace(/\{status\}/g, _logic.getStatusClass(_status||&#x27;&#x27;) );
             var _ins = JC.Dialog(_tpl);
-                _ins.on(&#x27;close&#x27;, function(){
-                    JC.Dialog.msgbox.timeout &amp;&amp; clearTimeout( JC.Dialog.msgbox.timeout );
-                });
+
             _logic.fixWidth( _msg, _ins );
             _cb &amp;&amp; _ins.on(&#x27;close&#x27;, _cb);
-
-            JC.Dialog.msgbox.timeout &amp;&amp; clearTimeout( JC.Dialog.msgbox.timeout );
-            JC.Dialog.msgbox.timeout = setTimeout( function(){ _ins.close(); }, _closeMs || JC.Dialog.msgbox.closeMs );
+            _ins.autoClose();
 
             return _ins;
         };
-    /**
-     * 定义 JC.Dialog.msgbox 自动关闭的间隔, 单位毫秒
-     * @property    closeMs
-     * @type    int
-     * @default 2000
-     * @static
-     */
-    JC.Dialog.msgbox.closeMs = 2000;
     /**
      * 自定义 JC.Dialog.alert 的显示模板
      * @property    tpl
@@ -260,14 +248,6 @@
      * @static
      */
     JC.Dialog.msgbox.tpl;
-    /**
-     * 获取延时关闭 JC.Dialog.msgbox 的 timeout 对象
-     * @property    timeout
-     * @type    timeout
-     * @default undefined
-     * @static
-     */
-    JC.Dialog.msgbox.timeout;
     /**
      * 会话框 alert 提示
      * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
@@ -625,8 +605,8 @@
         if( !(_paneltype in JC.Dialog) ) return;
 
         _panel = JC.Dialog[ _paneltype ]( _panelmsg, _panelstatus );
-        _p.is(&#x27;[panelautoclose]&#x27;) &amp;&amp; _panel.addAutoClose( !parseBool( _p.attr(&#x27;panelautoclose&#x27;) ) );
-        parseBool( _p.attr(&#x27;panelautoclose&#x27;) ) &amp;&amp; _evt.stopPropagation();
+        _p.is(&#x27;[panelclickclose]&#x27;) &amp;&amp; _panel.clickClose( !parseBool( _p.attr(&#x27;panelclickclose&#x27;) ) );
+        parseBool( _p.attr(&#x27;panelclickclose&#x27;) ) &amp;&amp; _evt.stopPropagation();
             
         if( _paneltype == &#x27;msgbox&#x27; ){
             _callback &amp;&amp; _panel.on( &#x27;close&#x27;, _callback );
