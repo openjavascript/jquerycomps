@@ -338,19 +338,27 @@ function script_path_f(){
  */
 function easyEffect( _cb, _maxVal, _startVal, _duration, _stepMs ){
     var _beginDate = new Date(), _timepass
-        , _maxVal = _maxVal || 200, _startVal = _startVal || 0, _tmp = 0, _done
-        , _duration = _duration || 200, _stepMs = _stepMs || 2;
+        , _maxVal = _maxVal || 200
+        , _startVal = _startVal || 0
+        , _maxVal = _maxVal - _startVal 
+        , _tmp = 0
+        , _done
+        , _duration = _duration || 200
+        , _stepMs = _stepMs || 2
+        ;
+    //JC.log( '_maxVal:', _maxVal, '_startVal:', _startVal, '_duration:', _duration, '_stepMs:', _stepMs );
+
     var _interval = setInterval(
         function(){
             _timepass = new Date() - _beginDate;
             _tmp = _timepass / _duration * _maxVal;
-            _tmp += _startVal;
-            if( _tmp > _maxVal ){
+            _tmp;
+            if( _tmp >= _maxVal ){
                 _tmp = _maxVal;
                 _done = true;
                 clearInterval( _interval );
             }
-            _cb && _cb( _tmp, _done );
+            _cb && _cb( _tmp + _startVal, _done );
         }, _stepMs );
 
     return _interval;
@@ -399,4 +407,54 @@ function getJqParent( _selector, _filter ){
     }
 
     return _r;
+}
+/**
+ * 判断是否支持 CSS position: fixed
+ * @property    $.support.isFixed
+ * @type        bool
+ * @static
+ */
+$.support.isFixed = (function (){
+    try{
+        var r, contain = $( document.documentElement ),
+            el = $( "<div style='position:fixed;top:100px;visibility:hidden;'>x</div>" ).appendTo( contain ),
+            originalHeight = contain[ 0 ].style.height,
+            w = window;
+        
+        contain.height( screen.height * 2 + "px" );
+     
+        w.scrollTo( 0, 100 );
+     
+        r = el[ 0 ].getBoundingClientRect().top === 100;
+     
+        contain.height( originalHeight );
+     
+        el.remove();
+     
+        w.scrollTo( 0, 0 );
+     
+        return r;
+    }catch(ex){}
+})();
+/**
+ * 绑定或清除 mousewheel 事件
+ * @method  mousewheelEvent
+ * @param   {function}  _cb
+ * @param   {bool}      _detach
+ * @static
+ */
+function mousewheelEvent( _cb, _detach ){
+    var _evt =  (/Firefox/i.test(navigator.userAgent))
+        ? "DOMMouseScroll" 
+        : "mousewheel"
+        ;
+    document.attachEvent && ( _evt = 'on' + _evt );
+
+    if( _detach ){
+        document.detachEvent && document.detachEvent( _evt, _cb )
+        document.removeEventListener && document.removeEventListener( _evt, _cb );
+    }else{
+        document.attachEvent && document.attachEvent( _evt, _cb )
+        document.addEventListener && document.addEventListener( _evt, _cb );
+    }
 }

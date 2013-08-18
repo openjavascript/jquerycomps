@@ -59,6 +59,10 @@
             
                 <li><a href="../classes/JC.Dialog.msgbox.html">JC.Dialog.msgbox</a></li>
             
+                <li><a href="../classes/JC.ExampleClass.html">JC.ExampleClass</a></li>
+            
+                <li><a href="../classes/JC.Fixed.html">JC.Fixed</a></li>
+            
                 <li><a href="../classes/JC.Form.html">JC.Form</a></li>
             
                 <li><a href="../classes/JC.hideAllPanel.html">JC.hideAllPanel</a></li>
@@ -90,8 +94,6 @@
                 <li><a href="../classes/JC.Tab.Model.html">JC.Tab.Model</a></li>
             
                 <li><a href="../classes/JC.Tab.View.html">JC.Tab.View</a></li>
-            
-                <li><a href="../classes/JC.Test.html">JC.Test</a></li>
             
                 <li><a href="../classes/JC.Tips.html">JC.Tips</a></li>
             
@@ -494,19 +496,27 @@ function script_path_f(){
  */
 function easyEffect( _cb, _maxVal, _startVal, _duration, _stepMs ){
     var _beginDate = new Date(), _timepass
-        , _maxVal = _maxVal || 200, _startVal = _startVal || 0, _tmp = 0, _done
-        , _duration = _duration || 200, _stepMs = _stepMs || 2;
+        , _maxVal = _maxVal || 200
+        , _startVal = _startVal || 0
+        , _maxVal = _maxVal - _startVal 
+        , _tmp = 0
+        , _done
+        , _duration = _duration || 200
+        , _stepMs = _stepMs || 2
+        ;
+    //JC.log( &#x27;_maxVal:&#x27;, _maxVal, &#x27;_startVal:&#x27;, _startVal, &#x27;_duration:&#x27;, _duration, &#x27;_stepMs:&#x27;, _stepMs );
+
     var _interval = setInterval(
         function(){
             _timepass = new Date() - _beginDate;
             _tmp = _timepass / _duration * _maxVal;
-            _tmp += _startVal;
-            if( _tmp &gt; _maxVal ){
+            _tmp;
+            if( _tmp &gt;= _maxVal ){
                 _tmp = _maxVal;
                 _done = true;
                 clearInterval( _interval );
             }
-            _cb &amp;&amp; _cb( _tmp, _done );
+            _cb &amp;&amp; _cb( _tmp + _startVal, _done );
         }, _stepMs );
 
     return _interval;
@@ -555,6 +565,56 @@ function getJqParent( _selector, _filter ){
     }
 
     return _r;
+}
+/**
+ * 判断是否支持 CSS position: fixed
+ * @property    $.support.isFixed
+ * @type        bool
+ * @static
+ */
+$.support.isFixed = (function (){
+    try{
+        var r, contain = $( document.documentElement ),
+            el = $( &quot;&lt;div style=&#x27;position:fixed;top:100px;visibility:hidden;&#x27;&gt;x&lt;/div&gt;&quot; ).appendTo( contain ),
+            originalHeight = contain[ 0 ].style.height,
+            w = window;
+        
+        contain.height( screen.height * 2 + &quot;px&quot; );
+     
+        w.scrollTo( 0, 100 );
+     
+        r = el[ 0 ].getBoundingClientRect().top === 100;
+     
+        contain.height( originalHeight );
+     
+        el.remove();
+     
+        w.scrollTo( 0, 0 );
+     
+        return r;
+    }catch(ex){}
+})();
+/**
+ * 绑定或清除 mousewheel 事件
+ * @method  mousewheelEvent
+ * @param   {function}  _cb
+ * @param   {bool}      _detach
+ * @static
+ */
+function mousewheelEvent( _cb, _detach ){
+    var _evt =  (/Firefox/i.test(navigator.userAgent))
+        ? &quot;DOMMouseScroll&quot; 
+        : &quot;mousewheel&quot;
+        ;
+    document.attachEvent &amp;&amp; ( _evt = &#x27;on&#x27; + _evt );
+
+    if( _detach ){
+        document.detachEvent &amp;&amp; document.detachEvent( _evt, _cb )
+        document.removeEventListener &amp;&amp; document.removeEventListener( _evt, _cb );
+    }else{
+        document.attachEvent &amp;&amp; document.attachEvent( _evt, _cb )
+        document.addEventListener &amp;&amp; document.addEventListener( _evt, _cb );
+    }
 }
 
     </pre>

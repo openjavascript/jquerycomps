@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>JC Project - JQuery Components Library - suches</title>
+<style>
+    body{
+        margin: 20px 40px;
+    }
+
+    dt {
+        font-weight: bold;
+    }
+
+    div.layout {
+        width: 200px;
+        height: 200px;
+        display: none;
+    }
+
+
+    div.layout1 {
+        border: 1px solid #000;
+    }
+
+    div.layout2 {
+        border: 1px solid #CCC;
+    }
+
+</style>
+<link href='../../../comps/Fixed/res/default/style.css' rel='stylesheet' />
+<script src="../../../lib.js"></script>
+<script>
+    JC.debug = true;
+    JC.use( 'Fixed' );
+
+</script>
+</head>    
+<body>
+    <dl>
+        <dt>Fixed 功能演示</dt>
+        <dd>durationms = 300, stepms = 3</dd>
+        <dd>
+            <div class="layout layout2 js_autoFixed" fixedtop="90" fixedleft="60" fixeddurationms="2000" >
+                <p>durationms = 2000</p>
+                <br />
+                <button type="button" fixedmoveto="top">moveto top</button>
+                <button type="button" fixedmoveto="bottom">moveto bottom</button>
+            </div>
+        </dd>
+        <dd>
+            <div class="layout layout1 js_autoFixed" fixedtop="40" fixedright="60" >
+                <br />
+                <br />
+                <button type="button" fixedmoveto="top">moveto top</button>
+                <button type="button" fixedmoveto="#point1">moveto #point1</button>
+                <button type="button" fixedmoveto="bottom">moveto bottom</button>
+            </div>
+        </dd>
+        <dd>
+            <button type="button" class="JCTop js_autoFixed" 
+                fixedleft="60"
+                fixedbottom="120"
+                fixedmoveto="document"
+            ></button>
+        </dd>
+        <dd>
+            <button type="button" class="JCTop js_autoFixed"
+                fixedright="60"
+                fixedbottom="40"
+                fixedmoveto="0"
+            ></button>
+        </dd>
+    </dl>
+
+    <a href="javascript:" id="point1" style="position: absolute; top: 1500px">point1</a>
+    <div style="height: 3000px;"></div>
+</body>
+</html>
+
