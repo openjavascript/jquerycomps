@@ -280,6 +280,15 @@
                 return this;
             }
         /**
+         * clickClose 的别名
+         * <br />这个方法的存在是为了向后兼容, 请使用 clickClose
+         */
+        , addAutoClose:
+            function(){
+                this.clickClose.apply( this, sliceArgs( arguments ) );
+                return this;
+            }
+        /**
          * 添加自动关闭功能
          * @method  autoClose
          * @param   {bool}          _removeAutoClose

@@ -412,9 +412,10 @@ function getJqParent( _selector, _filter ){
  * 判断是否支持 CSS position: fixed
  * @property    $.support.isFixed
  * @type        bool
+ * @require jquery
  * @static
  */
-$.support.isFixed = (function (){
+window.jQuery && jQuery.support && (jQuery.support.isFixed = (function ($){
     try{
         var r, contain = $( document.documentElement ),
             el = $( "<div style='position:fixed;top:100px;visibility:hidden;'>x</div>" ).appendTo( contain ),
@@ -435,7 +436,7 @@ $.support.isFixed = (function (){
      
         return r;
     }catch(ex){}
-})();
+})(jQuery));
 /**
  * 绑定或清除 mousewheel 事件
  * @method  mousewheelEvent
