@@ -11,11 +11,19 @@
 
             .error{ color: red; }
             input.error, select.error, textarea.error{ 
-                background-color: #fce1e1;
-                border: 1px solid #da9797;
+                background-color: #F0DC82;!important;
                 box-shadow: 0 none;
             }
             input[type=text], input[type=password]{ width: 200px; }
+
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
 
             dl.fm-items{ margin: 20px 0 20px; }
             dl.fm-items dd { zoom: 1; padding: 5px 0 5px; clear:both; display:block; }
@@ -45,7 +53,7 @@
 
                     if( !JC.Valid.formHasValue( _p ) ){
                         $evt.preventDefault();
-                        JC.alert( '表单内容为空, 不能提交!', _p.find('button[type=submit]'), 1 );
+                        JC.alert( '表单内容为空, 不能提交!', _p.find('button[type=submit]'), 1 ).clickClose();
                         return false;
                     }
 

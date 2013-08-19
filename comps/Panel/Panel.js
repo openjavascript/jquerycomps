@@ -972,7 +972,7 @@
         }
     });
 
-    $(window).on('click', function( _evt ){
+    $(document).on('click', function( _evt ){
         $('div.UPanel').each( function(){
             var _p = $(this), _ins = Panel.getInstance( _p );
             if( _ins && _ins.isClickClose() && _ins.layout() && _ins.layout().is(':visible') ){
@@ -982,7 +982,7 @@
         });
     });
 
-    $(window).on('keyup', function( _evt ){
+    $(document).on('keyup', function( _evt ){
         var _kc = _evt.keyCode;
         switch( _kc ){
             case 27:

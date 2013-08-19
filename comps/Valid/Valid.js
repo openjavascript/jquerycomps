@@ -11,9 +11,15 @@
      * | <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>
      * <h2>Form 的可用 html attribute</h2>
      * <dl>
-     *  <dt>errorabort = bool</dt>
-     *  <dd>查检Form Control时, 如果发生错误是否继续检查下一个</dd>
-     *  <dd>default = true</dd>
+     *      <dt>errorabort = bool, default = true</dt>
+     *      <dd>查检Form Control时, 如果发生错误是否继续检查下一个</dd>
+     *
+     *      <dt>validmsg = bool | string</dt>
+     *      <dd>
+     *          内容填写正确时显示的 提示信息, class=validmsg
+     *          <br />如果 = 0, false, 将不显示提示信息
+     *          <br />如果 = 1, true, 将不显示提示文本
+     *      </dd>
      * </dl>
      * <h2>Form Control的可用 html attribute</h2>
      * <dl>
