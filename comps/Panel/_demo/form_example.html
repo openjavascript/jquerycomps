@@ -35,7 +35,6 @@
 
     $(document).ready( function(_evt){
         $('button.dom_panel').on( 'click', function( _evt ){
-            userHideAllPanel();
             /**
              * 注意, 如果是从DOM读取模板的话, 
              * 需要做个判断, 是否之前初始化过, 否则会导致重复初始化
@@ -44,12 +43,10 @@
              *      panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
              *      //如果要强制从DOM清除, 可以调用 panel.dispose();
              */
-            _evt.stopPropagation();
 
             var panel = JC.Panel.getInstance( $('div.dom_panel') ); 
             if( !panel ){
                 panel = new JC.Panel( $('div.dom_panel') ); 
-                panel.clickClose();
 
                 panel.find('form').ajaxForm( {
                     beforeSubmit:
@@ -86,15 +83,16 @@
          * 从字符串创建弹框问题会少很多, 每次都是创建新的, 每次关闭都会从DOM 清除
          */
         $('button.string_panel').on( 'click', function( _evt ){
-            userHideAllPanel();
-            _evt.stopPropagation();
 
-            var panel = new JC.Panel( str_panel_content, 'string panel' ); 
-                panel.clickClose();
-                panel.find('form').ajaxForm( {
+            var panel = new JC.Panel( str_panel_content, 'string panel' ), _fm;
+                _fm = panel.find('form');
+                _fm.ajaxForm( {
                     beforeSubmit:
                         function(formData, jqForm, options){
-                            if( !JC.Valid.check( jqForm ) ) return false;
+                            if( !JC.Valid.check( jqForm ) ) {
+                                JC.msgbox( '请检查内容', _fm.find( 'button[type=submit]' ), 1 );
+                                return false;
+                            }
                         }
                     , success:
                         function( responseText, statusText ){
@@ -117,7 +115,6 @@
 
 
         $('button.dialog_dom_panel').on( 'click', function( _evt ){
-            userHideAllPanel();
             /**
              * 注意, 如果是从DOM读取模板的话, 
              * 需要做个判断, 是否之前初始化过, 否则会导致重复初始化
@@ -126,11 +123,9 @@
              *      panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
              *      //如果要强制从DOM清除, 可以调用 panel.dispose();
              */
-             _evt.stopPropagation();
 
             if( !Panel.getInstance( $('div.dialog_dom_panel') ) ){
                 var panel = JC.Dialog( $('div.dialog_dom_panel'), 'dialog dom panel' ); 
-                panel.clickClose();
 
                 panel.find('form').ajaxForm( {
                     beforeSubmit:
@@ -168,11 +163,8 @@
          * 从字符串创建弹框问题会少很多, 每次都是创建新的, 每次关闭都会从DOM 清除
          */
         $('button.dialog_string_panel').on( 'click', function( _evt ){
-            userHideAllPanel();
-            _evt.stopPropagation();
 
             var panel = JC.Dialog( str_panel_content, 'dialog string panel' ); 
-                panel.clickClose();
                 panel.find('form').ajaxForm( {
                     beforeSubmit:
                         function(formData, jqForm, options){

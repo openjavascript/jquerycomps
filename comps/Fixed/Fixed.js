@@ -1,5 +1,4 @@
 //TODO: 添加回调处理
-//TODO: 添加 IE6 支持
 //TODO: 添加值运动 
 //TODO: 完善注释
 ;(function($){
@@ -154,10 +153,22 @@
         , isFixedBottom: function(){ return this._layout.is('[fixedbottom]'); }
         , isFixedLeft: function(){ return this._layout.is('[fixedleft]'); }
 
+        , isFixedCenter: function(){ return this._layout.is('[fixedcenter]'); }
+
         , fixedtop: function(){ return parseInt( this._layout.attr('fixedtop'), 10 ); }
         , fixedright: function(){ return parseInt( this._layout.attr('fixedright'), 10 ); }
         , fixedbottom: function(){ return parseInt( this._layout.attr('fixedbottom'), 10 ); }
         , fixedleft: function(){ return parseInt( this._layout.attr('fixedleft'), 10 ); }
+
+        , fixedcenter: 
+            function(){ 
+                var _r = (this._layout.attr('fixedcenter') || '').replace(/[^\d.,\-]/g, '').split(',');
+                _r.length < 2 && _r.push('0');
+                _r[0] = parseInt( _r[0], 10 ) || 0;
+                _r[1] = parseInt( _r[1], 10 ) || 0;
+                return _r;
+            }
+
         , fixeddurationms: 
             function( _fixedSelector ){ 
                 var _r;
@@ -210,15 +221,11 @@
 
         , layout: function(){ return this._layout; }
 
-        , fixedmoveeffect:
-            function(){
-                var _r = true, _moveItem = this.moveToItem();
-
-                _moveItem && _moveItem.length 
-                    && _moveItem.is( '[fixedmoveeffect]' )
-                    && ( _r = parseBool( _moveItem.attr('fixedmoveeffect') ) )
-                    ;
-
+        , fixedeffect: 
+            function( _item ){ 
+                var _r = true, _p = this;
+                _p.layout().is('[fixedeffect]') && ( _r = parseBool( _p.layout().attr( 'fixedeffect' ) ) );
+                _item && _item.is('[fixedeffect]') && ( _r = parseBool( _item.attr( 'fixedeffect' ) ) );
                 return _r;
             }
     };
@@ -230,8 +237,10 @@
     View.prototype = {
         init:
             function() {
-
-                $.support.isFixed ? this._initFixedSupport() : this._initFixedUnsupport();
+                var _p = this;
+                $.support.isFixed 
+                    ? ( this._initFixedSupport(), $(window).on('resize', function(){ _p._updateFixedSupport() }) )
+                    : this._initFixedUnsupport();
 
                 this._initMoveTo();
                 this._model.layout().show();
@@ -304,6 +313,11 @@
                 _endVal = _begin > _end ? _begin : _end;
                 _beginVal = _begin > _end ? _end : _begin;
 
+                if( ! _p._model.fixedeffect( _moveItem ) ){
+                    $(document).scrollTop( _end );
+                    return;
+                }
+
                 /*
                 JC.log( '_processMoveto:', _begin, _end, _isUp, _beginVal, _endVal, _max, _docHeight );
                 JC.log( 
@@ -315,7 +329,7 @@
                 Fixed.interval(
                     easyEffect( 
                         function( _cur, _done ){
-                            _isUp && ( _cur = _endVal - _cur );
+                            _isUp && ( _cur = _endVal - _cur + _beginVal );
                             //console.log( 'Fixed scrollTo:', _cur, _tmpCount++ );
                             $(document).scrollTop( _cur );
                         }
@@ -329,18 +343,87 @@
 
         , _initFixedSupport:
             function(){
-                var _p = this;
+                var _p = this
+                    , _width = _p._model.layout().width()
+                    , _height = _p._model.layout().height()
+                    , _wwidth = $(window).width()
+                    , _wheight = $(window).height()
+                    , _offset
+                    ;
 
-                _p._model.isFixedTop() && _p._model.layout().css( 'top', _p._model.fixedtop() + 'px' );
-                _p._model.isFixedRight() && _p._model.layout().css( 'right', _p._model.fixedright() + 'px' );
-                _p._model.isFixedBottom() && _p._model.layout().css( 'bottom', _p._model.fixedbottom() + 'px' );
-                _p._model.isFixedLeft() && _p._model.layout().css( 'left', _p._model.fixedleft() + 'px' );
+                if( _p._model.isFixedCenter() ){
+                    _p._updateFixedSupport();
+                }else{
+                    _p._model.isFixedTop() && _p._model.layout().css( 'top', _p._model.fixedtop() + 'px' );
+                    _p._model.isFixedRight() && _p._model.layout().css( 'right', _p._model.fixedright() + 'px' );
+                    _p._model.isFixedBottom() && _p._model.layout().css( 'bottom', _p._model.fixedbottom() + 'px' );
+                    _p._model.isFixedLeft() && _p._model.layout().css( 'left', _p._model.fixedleft() + 'px' );
+                }
 
                 _p._model.layout().css( 'position', 'fixed' );
+            }
+        , _updateFixedSupport:
+            function(){
+                var _p = this
+                    , _left, _top
+                    , _scrLeft = $(document).scrollLeft()
+                    , _width = _p._model.layout().width()
+                    , _height = _p._model.layout().height()
+                    , _wwidth = $(window).width()
+                    , _wheight = $(window).height()
+                    , _offset
+                    ;
+                if( _p._model.isFixedCenter() ){
+                    _offset = _p._model.fixedcenter();
+
+                    _left = _wwidth / 2 - _width / 2 + _offset[0];
+                    _top = _wheight / 2 - _height / 2 + _offset[1];
+
+                    _p._model.layout().css( 'left', _left + 'px' );
+                    _p._model.layout().css( 'top', _top + 'px' );
+                }
             }
 
         , _initFixedUnsupport:
             function(){
+                var _p = this;
+                _p._model.layout().css( 'position', 'absolute' );
+                _p._updateFixedUnsupport();
+
+                $(window).on('scroll resize', function(){
+                    _p._updateFixedUnsupport();
+                });
+            }
+        , _updateFixedUnsupport:
+            function(){
+                var _p = this, _top, _right, _bottom, _left
+                    , _scrTop = $(document).scrollTop()
+                    , _scrLeft = $(document).scrollLeft()
+                    , _width = _p._model.layout().width()
+                    , _height = _p._model.layout().height()
+                    , _wwidth = $(window).width()
+                    , _wheight = $(window).height()
+                    ;
+
+                if( _p._model.isFixedTop() ){
+                    _top = _p._model.fixedtop() + _scrTop;
+                    _p._model.layout().css( 'top', _top + 'px' );
+                }
+
+                if( _p._model.isFixedRight() ){
+                    _right = _wwidth - _p._model.fixedright() - _width + _scrLeft;
+                    _p._model.layout().css( 'left', _right + 'px' );
+                }
+
+                if( _p._model.isFixedBottom() ){
+                    _bottom = _scrTop + _wheight - _p._model.fixedbottom() - _height;
+                    _p._model.layout().css( 'top', _bottom + 'px' );
+                }
+
+                if( _p._model.isFixedLeft() ){
+                    _left = _scrLeft + _p._model.fixedleft();
+                    _p._model.layout().css( 'left', _left + 'px' );
+                }
             }
 
         , hide:

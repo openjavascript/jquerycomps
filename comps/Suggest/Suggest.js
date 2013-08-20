@@ -151,22 +151,12 @@
         , _initHanlderEvent:
             function(){
                 var _p = this;
-
-                $(_p._view).on('BindEvent', function( _evt, _evtName, _cb ){
+                $( [ _p._view, _p._model ] ).on('BindEvent', function( _evt, _evtName, _cb ){
                     _p.on( _evtName, _cb );
                 });
 
-                $(_p._view).on('TriggerEvent', function( _evt, _evtName, _data ){
+                $( [ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName, _data ){
                     _p.trigger( _evtName, [ _data ] );
-                });
-
-                $(_p._model).on('BindEvent', function( _evt, _evtName, _cb ){
-                    _p.on( _evtName, _cb );
-                });
-
-                $(_p._model).on('TriggerEvent', function( _evt, _evtName, _data ){
-                    //JC.log( JSON.stringify( _data ) );
-                    _p.trigger( _evtName, _data );
                 });
             }
         , _initActionEvent:

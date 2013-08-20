@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../comps/Form/Form.js - jquery components</title>
+    <title>../comps/Form/JC.Form.initNumericStepper.js - jquery components</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -152,29 +152,112 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../comps/Form/Form.js</h1>
+                        <h1 class="file-heading">File: ../comps/Form/JC.Form.initNumericStepper.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;void function(){
+ ;(function($){
     /**
-     * 取当前脚本标签的 src路径 
-     * @author  scuehs@btbtd.org 2013-05-23
-     * @return  {string} 脚本所在目录的完整路径
+     * 文本框 值增减 应用
+     * &lt;br /&gt;只要引用本脚本, 页面加载完毕时就会自动初始化 NumericStepper
+     * &lt;br /&gt;所有带 class js_NStepperPlus, js_NStepperMinus 视为值加减按钮
+     * &lt;br /&gt;&lt;br /&gt;目标文本框可以添加一些HTML属性自己的规则, 
+     * &lt;br /&gt;nsminvalue=最小值(默认=0), nsmaxvalue=最大值(默认=100), nsstep=步长(默认=1), nsfixed=小数点位数(默认=0)
+     * &lt;br /&gt;nschangecallback=值变改后的回调
+     * @method  initNumericStepper
+     * @static
+     * @for JC.Form
+     * @version dev 0.1
+     * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 360 75 Team
+     * @date    2013-07-05
+     * @param   {selector}  _selector   要初始化的全选反选的父级节点
+     * @example
+             &lt;dl class=&quot;def example1&quot;&gt;
+                &lt;dt&gt;JC.Form.initNumericStepper 默认值 0 - 100, step 1, fixed 0&lt;/dt&gt;
+                &lt;dd&gt;
+                    &lt;button class=&quot;NS_icon NS_minus js_NStepperMinus&quot; nstarget=&quot;input.js_ipt1&quot; &gt;&lt;/button&gt;
+                    &lt;input type=&quot;text&quot; value=&quot;0&quot; class=&quot;js_ipt1&quot; /&gt;
+                    &lt;button class=&quot;NS_icon NS_plus js_NStepperPlus&quot; nstarget=&quot;input.js_ipt1&quot; &gt;&lt;/button&gt;
+                &lt;/dd&gt;
+            &lt;/dl&gt;
+
+            &lt;dl class=&quot;def example1&quot;&gt;
+                &lt;dt&gt;JC.Form.initNumericStepper -10 ~ 10, step 2, fixed 2&lt;/dt&gt;
+                &lt;dd&gt;
+                    &lt;button class=&quot;NS_icon NS_minus js_NStepperMinus&quot; nstarget=&quot;input.js_ipt2&quot; &gt;&lt;/button&gt;
+                    &lt;input type=&quot;text&quot; value=&quot;4&quot; class=&quot;js_ipt2&quot; nsminvalue=&quot;-10&quot; nsmaxvalue=&quot;10&quot; nsstep=&quot;2&quot; nsfixed=&quot;2&quot; /&gt;
+                    &lt;button class=&quot;NS_icon NS_plus js_NStepperPlus&quot; nstarget=&quot;input.js_ipt2&quot; &gt;&lt;/button&gt;
+                &lt;/dd&gt;
+            &lt;/dl&gt;
      */
-    function script_path_f(){
-        var _sc = document.getElementsByTagName(&#x27;script&#x27;), _sc = _sc[ _sc.length - 1 ], _path = _sc.getAttribute(&#x27;src&#x27;);
-        if( /\//.test( _path ) ){ _path = _path.split(&#x27;/&#x27;); _path.pop(); _path = _path.join(&#x27;/&#x27;) + &#x27;/&#x27;; }
-        else if( /\\/.test( _path ) ){ _path = _path.split(&#x27;\\&#x27;); _path.pop(); _path = _path.join(&#x27;\\&#x27;) + &#x27;/&#x27;; }
-        return _path;
-    }
-    var _path = script_path_f();
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.js&quot; &gt;&lt;\/script&gt;&#x27; );
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.initCheckAll.js&quot; &gt;&lt;\/script&gt;&#x27; );
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.initAutoFill.js&quot; &gt;&lt;\/script&gt;&#x27; );
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.initAutoSelect.js&quot; &gt;&lt;\/script&gt;&#x27; ); 
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.initNumericStepper.js&quot; &gt;&lt;\/script&gt;&#x27; ); 
-}();
+    JC.Form.initNumericStepper = 
+        function( _selector ){
+            _selector &amp;&amp; ( _selector = $( _selector ) );
+
+            _selector.delegate( &#x27;.js_NStepperPlus, .js_NStepperMinus&#x27;, &#x27;click&#x27;, function( _evt ){
+                var _p = $(this), _target = _logic.target( _p );
+                if( !( _target &amp;&amp; _target.length ) ) return;
+
+                var _fixed = parseInt( _logic.fixed( _target ), 10 ) || 0;
+                var _val = $.trim( _target.val() ), _step = _logic.step( _target );
+                    _val = ( _fixed ? parseFloat( _val ) : parseInt( _val, 10 ) ) || 0;
+                var _min = _logic.minvalue( _target ), _max = _logic.maxvalue( _target );
+
+                _p.hasClass( &#x27;js_NStepperPlus&#x27;) &amp;&amp; ( _val += _step );
+                _p.hasClass( &#x27;js_NStepperMinus&#x27;) &amp;&amp; ( _val -= _step );
+
+                _val &lt; _min &amp;&amp; ( _val = _min );
+                _val &gt; _max &amp;&amp; ( _val = _max );
+
+                JC.log( _min, _max, _val, _fixed, _step );
+
+                _target.val( _val.toFixed( _fixed ) );
+
+                _logic.callback( _target ) &amp;&amp; _logic.callback( _target ).call( _target, _p );
+            });
+        };
+    /**
+     * 文本框 值增减 值变改后的回调
+     * &lt;br /&gt;这个是定义全局的回调函数, 要定义局部回调请在目标文本框上添加 nschangecallback=回调 HTML属性
+     * @property    initNumericStepper.onchange
+     * @type    function
+     * @static
+     * @for JC.Form
+     */
+    JC.Form.initNumericStepper.onchange;
+
+    var _logic = {
+        target:
+            function( _src ){
+                var _r; 
+                if( _src.attr( &#x27;nstarget&#x27;) ){
+                    if( /^\~/.test( _src.attr(&#x27;nstarget&#x27;) ) ){
+                        _r = _src.parent().find( _src.attr(&#x27;nstarget&#x27;).replace( /^\~[\s]*/g, &#x27;&#x27;) );
+                        !( _r &amp;&amp; _r.length ) &amp;&amp; ( _r = $( _src.attr(&#x27;nstarget&#x27;) ) );
+                    }else{
+                        _r = $( _src.attr(&#x27;nstarget&#x27;) );
+                    }
+                }
+
+                return _r;
+            }
+
+        , fixed: function( _target ){ return _target.attr(&#x27;nsfixed&#x27;); }
+        , step: function( _target ){ return parseFloat( _target.attr( &#x27;nsstep&#x27; ) ) || 1; }
+        , minvalue: function( _target ){ return parseFloat( _target.attr( &#x27;nsminvalue&#x27; ) || _target.attr( &#x27;minvalue&#x27; ) ) || 0; }
+        , maxvalue: function( _target ){ return parseFloat( _target.attr( &#x27;nsmaxvalue&#x27; ) || _target.attr( &#x27;maxvalue&#x27; ) ) || 100; }
+        , callback: 
+            function( _target ){ 
+                var _r = JC.Form.initNumericStepper.onchange, _tmp;
+                _target.attr(&#x27;nschangecallback&#x27;) &amp;&amp; ( _tmp = window[ _target.attr(&#x27;nschangecallback&#x27;) ] ) &amp;&amp; ( _r = _tmp );
+                return _r;
+            }
+    };
+
+    $(document).ready( function( _evt ){
+        JC.Form.initNumericStepper( $(document) );
+    });
+}(jQuery));
 
     </pre>
 </div>

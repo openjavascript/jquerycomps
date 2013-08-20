@@ -1,6 +1,4 @@
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
-//TODO: 错误时, 添加 class iserror 
-//TODO: 添加 validmsg, 正确时的提示, class = isvalid 
 ;(function($){
     /**
      * <b>表单验证</b> (单例模式)

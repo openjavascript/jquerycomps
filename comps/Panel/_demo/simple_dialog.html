@@ -48,18 +48,12 @@
     });
 
     $(document).delegate( 'button.js_panel', 'click', function(_evt){
-        _evt.stopPropagation();
-
         tmpPanel = JC.Dialog( '默认Dialog' + count, 'body ' + count + btnstr, 'footer ' + count);
-        tmpPanel.clickClose();
         count++;
     });
 
     $(document).delegate( 'button.js_panel_alert', 'click', function(_evt){
-        _evt.stopPropagation();
-
         tmpPanel = JC.Dialog.alert( 'user manual JC.Dialog.alert ' + count, this );
-        tmpPanel.clickClose();
         tmpPanel.on('confirm', function( _evt, _panel ){ 
             JC.log('another uaer callback'); 
         });
@@ -68,10 +62,7 @@
     });
 
     $(document).delegate( 'button.js_panel_confirm', 'click', function(_evt){
-        _evt.stopPropagation();
-
         tmpPanel = JC.Dialog.confirm( 'user manual JC.Dialog.confirm ' + count, this );
-        tmpPanel.clickClose();
         tmpPanel.on('confirm', function( _evt, _panel ){ 
             JC.log('another uaer callback'); 
         });
@@ -80,10 +71,7 @@
     });
 
     $(document).delegate( 'button.js_panel_msgbox', 'click', function(_evt){
-        _evt.stopPropagation();
-
         tmpPanel = JC.Dialog.msgbox( 'user manual JC.Dialog.msgbox ' + count, this );
-        tmpPanel.clickClose();
         tmpPanel.on('confirm', function( _evt, _panel ){ 
             JC.log('another uaer callback'); 
         });

@@ -45,8 +45,6 @@
             JC.debug = true; JC.use( 'Valid, Calendar' );
 
             $(document).ready( function($evt){
-                JC.Valid.showValidStatus = true;
-
                 $(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
                     window.console && console.clear && console.clear();
                     JC.Valid.clearError( 'form.js-valid' );
@@ -76,7 +74,7 @@
     </head>    
     <body>
 
-        <form action='' method='get' class="js-valid" >
+        <form action='' method='get' class="js-valid" validmsg="true" >
             <div style="position:fixed; top: 10px; right:10px;">
                 <button type="submit">Save</button>
                 <button type="button" class="js-clear-error">清空错误信息</button>

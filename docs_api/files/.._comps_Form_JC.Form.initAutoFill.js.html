@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../comps/Form/Form.js - jquery components</title>
+    <title>../comps/Form/JC.Form.initAutoFill.js - jquery components</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -152,29 +152,98 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../comps/Form/Form.js</h1>
+                        <h1 class="file-heading">File: ../comps/Form/JC.Form.initAutoFill.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;void function(){
+ ;(function($){
     /**
-     * 取当前脚本标签的 src路径 
-     * @author  scuehs@btbtd.org 2013-05-23
-     * @return  {string} 脚本所在目录的完整路径
+     * 表单自动填充 URL GET 参数
+     * &lt;br /&gt;只要引用本脚本, DOM 加载完毕后, 页面上所有带 class js_autoFillUrlForm 的 form 都会自动初始化默认值
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs/docs_api/classes/JC.Form.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * @method  initAutoFill
+     * @static
+     * @for JC.Form
+     * @version dev 0.1
+     * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 team
+     * @date    2013-06-13
+     * @param   {selector|url string}   _selector   显示指定要初始化的区域, 默认为 document
+     * @param   {string}                _url        显示指定, 取初始化值的 URL, 默认为 location.href
+     * @example
+     *      JC.Form.initAutoFill( myCustomSelector, myUrl );
      */
-    function script_path_f(){
-        var _sc = document.getElementsByTagName(&#x27;script&#x27;), _sc = _sc[ _sc.length - 1 ], _path = _sc.getAttribute(&#x27;src&#x27;);
-        if( /\//.test( _path ) ){ _path = _path.split(&#x27;/&#x27;); _path.pop(); _path = _path.join(&#x27;/&#x27;) + &#x27;/&#x27;; }
-        else if( /\\/.test( _path ) ){ _path = _path.split(&#x27;\\&#x27;); _path.pop(); _path = _path.join(&#x27;\\&#x27;) + &#x27;/&#x27;; }
-        return _path;
+     JC.Form.initAutoFill =
+        function( _selector, _url ){
+            if( !(_selector &amp;&amp; _selector.length ) ) _selector = $(document);
+            _url = _url || location.href;
+
+            JC.log( &#x27;JC.Form.initAutoFill&#x27; );
+
+            _selector.find(&#x27;form.js_autoFillUrlForm&#x27;).each( function(){
+                var _p = $(this);
+                
+                _p.find( &#x27;input[type=text][name],input[type=password][name],textarea[name]&#x27; ).each( function(){
+                    var _sp = $(this);
+                    if( has_url_param( _url, _sp.attr(&#x27;name&#x27;) ) ){
+                        _sp.val( decode( get_url_param( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) );
+                    }
+                });
+
+                _p.find( &#x27;select[name]&#x27; ).each( function(){
+                    var _sp = $(this), _uval = decode( get_url_param( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) ;
+                    if( has_url_param( _url, _sp.attr(&#x27;name&#x27;) ) ){
+                        if( selectHasVal( _sp, _uval ) ){
+                            _sp.val( get_url_param( _url, _sp.attr(&#x27;name&#x27;) ) );
+                        }else{
+                            _sp.attr( &#x27;selectvalue&#x27;, _uval );
+                        }
+                    }
+                });
+
+            });
+        };
+
+    $(document).ready( function( _evt ){ JC.Form.initAutoFill(); });
+
+    /**
+     * 自定义 URI decode 函数
+     * @property    initAutoFill.decodeFunc
+     * @static
+     * @for JC.Form
+     * @type    function
+     * @default null
+     */
+    JC.Form.initAutoFill.decodeFunc;
+
+    function decode( _val ){
+        try{
+            _val = (JC.Form.initAutoFill.decodeFunc || decodeURIComponent)( _val );
+        }catch(ex){}
+        return _val;
     }
-    var _path = script_path_f();
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.js&quot; &gt;&lt;\/script&gt;&#x27; );
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.initCheckAll.js&quot; &gt;&lt;\/script&gt;&#x27; );
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.initAutoFill.js&quot; &gt;&lt;\/script&gt;&#x27; );
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.initAutoSelect.js&quot; &gt;&lt;\/script&gt;&#x27; ); 
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.initNumericStepper.js&quot; &gt;&lt;\/script&gt;&#x27; ); 
-}();
+    /**
+     * 判断下拉框的option里是否有给定的值
+     * @method  initAutoFill.selectHasVal
+     * @private
+     * @static
+     * @param   {selector}  _select
+     * @param   {string}    _val    要查找的值
+     */
+    function selectHasVal( _select, _val ){
+        var _r = false, _val = _val.toString();
+        _select.find(&#x27;option&#x27;).each( function(){
+            var _tmp = $(this);
+            if( _tmp.val() == _val ){
+                _r = true;
+                return false;
+            }
+        });
+        return _r;
+    }
+}(jQuery));
+
 
     </pre>
 </div>

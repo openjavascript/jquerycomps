@@ -40,10 +40,8 @@
              *      //如果要强制从DOM清除, 可以调用 dialog.dispose();
              */
             //这里使用 Panel.getInstance 是因为 Dialog 的 base 类是Panel
-            _evt.stopPropagation();
             if( !JC.Panel.getInstance( $('div.dom_dialog') ) ){
                 var dialog = JC.Dialog( $('div.dom_dialog') ); 
-                dialog.clickClose();
                 dialog.on( 'confirm', function( _evt, _dialog ){
                     JC.log( 'dom confirm' );
                 });
@@ -59,10 +57,8 @@
         });
 
         $('button.string_dialog').on( 'click', function( _evt ){
-            _evt.stopPropagation();
 
             var dialog = JC.Dialog( str_dialog_content ); 
-                dialog.clickClose();
 
                 dialog.on( 'confirm', function( _evt, _dialog ){
                     JC.log( 'string confirm' );
@@ -78,10 +74,8 @@
         });
 
         $('button.string_dialog_with_src').on( 'click', function( _evt ){
-            _evt.stopPropagation();
 
             var dialog = JC.Dialog( str_dialog_content, 'string_dialog_with_src dialog' ); 
-                dialog.clickClose();
 
                 dialog.on( 'confirm', function( _evt, _dialog ){
                     JC.log( 'string_dialog_with_src confirm' );

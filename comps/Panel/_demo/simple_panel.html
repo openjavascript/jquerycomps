@@ -48,17 +48,13 @@
     });
 
     $(document).delegate( 'button.js_panel', 'click', function(_evt){
-        _evt.stopPropagation();
         tmpPanel = new JC.Panel( '默认panel ' + count, 'body ' + count + btnstr, 'footer ' + count);
-        tmpPanel.clickClose();
         tmpPanel.show( this );
         count++;
     });
 
     $(document).delegate( 'button.js_panel_alert', 'click', function(_evt){
-        _evt.stopPropagation();
         tmpPanel = JC.alert( 'user manual JC.alert ' + count, this );
-        tmpPanel.clickClose();
         tmpPanel.on('confirm', function( _evt, _panel ){ 
             JC.log('another uaer callback'); 
         });
@@ -67,9 +63,7 @@
     });
 
     $(document).delegate( 'button.js_panel_confirm', 'click', function(_evt){
-        _evt.stopPropagation();
         tmpPanel = JC.confirm( 'user manual JC.confirm ' + count, this );
-        tmpPanel.clickClose();
         tmpPanel.on('confirm', function( _evt, _panel ){ 
             JC.log('another uaer callback'); 
         });
@@ -78,9 +72,7 @@
     });
 
     $(document).delegate( 'button.js_panel_msgbox', 'click', function(_evt){
-        _evt.stopPropagation();
         tmpPanel = JC.msgbox( 'user manual JC.msgbox ' + count, this );
-        tmpPanel.clickClose();
         tmpPanel.on('confirm', function( _evt, _panel ){ 
             JC.log('another uaer callback'); 
         });

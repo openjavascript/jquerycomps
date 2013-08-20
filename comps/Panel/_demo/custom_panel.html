@@ -31,7 +31,6 @@
 
     $(document).ready( function(_evt){
         $('button.dom_panel').on( 'click', function( _evt ){
-            userHideAllPanel();
             /**
              * 注意, 如果是从DOM读取模板的话, 
              * 需要做个判断, 是否之前初始化过, 否则会导致重复初始化
@@ -40,7 +39,6 @@
              *      panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
              *      //如果要强制从DOM清除, 可以调用 panel.dispose();
              */
-            _evt.stopPropagation();
 
             var panel = Panel.getInstance( $('div.dom_panel') ); 
             if( !panel ){
@@ -60,8 +58,6 @@
         });
 
         $('button.string_panel').on( 'click', function( _evt ){
-            userHideAllPanel();
-            _evt.stopPropagation();
 
             var panel = new JC.Panel( str_panel_content ); 
                 panel.clickClose();
@@ -82,8 +78,6 @@
         });
 
         $('button.string_panel_with_src').on( 'click', function( _evt ){
-            userHideAllPanel();
-            _evt.stopPropagation();
 
             var panel = new JC.Panel( str_panel_content, 'string_panel_with_src panel' ); 
                 panel.clickClose();
@@ -103,11 +97,6 @@
         });
 
     });
-
-    function userHideAllPanel(){
-        JC.hideAllPanel();
-        $('div.UPanelString').remove();
-    }
 
     var str_panel_content =
     [
