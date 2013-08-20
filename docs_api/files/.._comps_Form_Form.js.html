@@ -156,25 +156,1032 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;void function(){
+;(function($){
     /**
-     * 取当前脚本标签的 src路径 
-     * @author  scuehs@btbtd.org 2013-05-23
-     * @return  {string} 脚本所在目录的完整路径
+     * 表单常用功能类 JC.Form
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Form.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;../../comps/Form/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     * @namespace JC
+     * @class Form
+     * @static
+     * @version dev 0.1
+     * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 team
+     * @date    2013-06-11
      */
-    function script_path_f(){
-        var _sc = document.getElementsByTagName(&#x27;script&#x27;), _sc = _sc[ _sc.length - 1 ], _path = _sc.getAttribute(&#x27;src&#x27;);
-        if( /\//.test( _path ) ){ _path = _path.split(&#x27;/&#x27;); _path.pop(); _path = _path.join(&#x27;/&#x27;) + &#x27;/&#x27;; }
-        else if( /\\/.test( _path ) ){ _path = _path.split(&#x27;\\&#x27;); _path.pop(); _path = _path.join(&#x27;\\&#x27;) + &#x27;/&#x27;; }
-        return _path;
+    window.JCForm = JC.Form = {
+        /**
+         * 禁用按钮一定时间, 默认为1秒
+         * @method  disableButton
+         * @static
+         * @param   {selector}  _selector   要禁用button的选择器
+         * @param   {int}       _durationMs 禁用多少时间, 单位毫秒, 默认1秒
+         */
+        &#x27;disableButton&#x27;:
+            function( _selector, _durationMs ){
+                if( !_selector ) return;
+                _selector = $(_selector);
+                _durationMs = _durationMs || 1000;
+                _selector.attr(&#x27;disabled&#x27;, true);
+                setTimeout( function(){
+                    _selector.attr(&#x27;disabled&#x27;, false);
+                }, _durationMs);
+            }
+    };
+}(jQuery));
+
+ ;(function($){
+    /**
+     * 初始化 checkbox 全选反选功能
+     * &lt;br /&gt;只要引用本脚本, 页面加载完毕时就会自动初始化全选反选功能
+     * &lt;br /&gt;&lt;br /&gt;动态添加的 DOM 需要显式调用 JC.Form.initCheckAll( domSelector ) 进行初始化
+     * &lt;br /&gt;&lt;br /&gt;要使页面上的全选反选功能能够自动初始化, 需要在全选反选按钮上加入一些HTML 属性
+     * &lt;br /&gt;&lt;b&gt;checktype&lt;/b&gt;: all | inverse, all=全选/全不选, inverse=反选
+     * &lt;br /&gt;&lt;b&gt;checkfor&lt;/b&gt;: selector, 要全选/反选的 checkbox 选择器语法
+     * &lt;br /&gt;&lt;b&gt;checkall&lt;/b&gt;: selector, 全选按钮的选择器, 这个只有反选按钮需要, 反选时变更全选按钮的状态
+     * @method  initCheckAll
+     * @static
+     * @for JC.Form
+     * @version dev 0.1
+     * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 team
+     * @date    2013-06-11
+     * @param   {selector}  _selector   要初始化的全选反选的父级节点
+     * @example
+            &lt;h2&gt;AJAX data:&lt;/h2&gt;
+            &lt;dl class=&quot;def example24&quot;&gt;
+                &lt;dt&gt;checkall example 24&lt;/dt&gt;
+                &lt;dd&gt;
+                &lt;input type=&quot;checkbox&quot; id=&quot;checkall24&quot; checktype=&quot;all&quot; checkfor=&quot;dl.example24 input[type=checkbox]&quot;&gt;&lt;label for=&quot;checkall24&quot;&gt;全选&lt;/label&gt;
+                &lt;input type=&quot;checkbox&quot; id=&quot;checkall24_inverse&quot; checktype=&quot;inverse&quot; checkfor=&quot;dl.example24 input[type=checkbox]&quot; checkall=&quot;dl.example24 input[checktype=all]&quot;&gt;&lt;label for=&quot;checkall24_inverse&quot;&gt;反选&lt;/label&gt;
+                &lt;/dd&gt;
+                &lt;dd&gt;
+                &lt;input type=&quot;checkbox&quot; id=&quot;checkall24_1&quot; value=&quot;&quot; name=&quot;&quot; checked /&gt;
+                &lt;label for=&quot;checkall24_1&quot;&gt;checkall24_1&lt;/label&gt;
+                &lt;input type=&quot;checkbox&quot; id=&quot;checkall24_2&quot; value=&quot;&quot; name=&quot;&quot; checked /&gt;
+                &lt;label for=&quot;checkall24_2&quot;&gt;checkall24_2&lt;/label&gt;
+                &lt;input type=&quot;checkbox&quot; id=&quot;checkall24_3&quot; value=&quot;&quot; name=&quot;&quot; checked /&gt;
+                &lt;label for=&quot;checkall24_3&quot;&gt;checkall24_3&lt;/label&gt;
+                &lt;input type=&quot;checkbox&quot; id=&quot;checkall24_4&quot; value=&quot;&quot; name=&quot;&quot; checked /&gt;
+                &lt;label for=&quot;checkall24_4&quot;&gt;checkall24_4&lt;/label&gt;
+                &lt;input type=&quot;checkbox&quot; id=&quot;checkall24_5&quot; value=&quot;&quot; name=&quot;&quot; checked /&gt;
+                &lt;label for=&quot;checkall24_5&quot;&gt;checkall24_5&lt;/label&gt;
+                &lt;/dd&gt;
+            &lt;/dl&gt;
+
+            &lt;script&gt;
+            $(document).delegate( &#x27;button.js_ajaxTest&#x27;, &#x27;click&#x27;, function(){
+                var _p = $(this);
+                _p.prop(&#x27;disabled&#x27;, true);
+                setTimeout( function(){ _p.prop(&#x27;disabled&#x27;, false); }, 1000 );
+
+                $.get( &#x27;./data/initCheckAll.php?rnd=&#x27;+new Date().getTime(), function( _r ){
+                    var _selector = $(_r);
+                    $( $( &#x27;body&#x27; ).children().first() ).before( _selector );
+                    JC.Form.initCheckAll( _selector );
+                });
+            });
+            &lt;/script&gt;
+     */
+    JC.Form.initCheckAll = 
+        function( _selector ){
+            _selector = $( _selector );
+            var _ls = _selector.find( &#x27;input[type=checkbox][checktype][checkfor]&#x27; );
+            _ls.each( function(){
+                var _p = $(this)
+                    , _type = _p.attr(&#x27;checktype&#x27;).toLowerCase()
+                    , _for = _p.attr(&#x27;checkfor&#x27;);
+                if( _type != &#x27;all&#x27; || !_for ) return;
+                fixCheckAllStatus( _p, _for );
+
+                if( !_p.data(&#x27;initedCheckall&#x27;) ){
+                    _p.data(&#x27;initedCheckall&#x27;, true);
+                    $(document).delegate( _for, &#x27;click&#x27;, function( _evt ){
+                        var _sp = $(this);
+                        if( isControler( _sp ) ) return;
+                        fixCheckAllStatus( _p, _for );
+                    });
+                }
+            });
+        };
+
+    $(document).ready( function( _evt ){
+        JC.Form.initCheckAll( $(document) );
+    });
+    /**
+     * 监听 全选/反选 按钮的点击事件
+     */
+    $(document).delegate( &#x27;input[type=checkbox][checktype][checkfor]&#x27;, &#x27;click&#x27;, function( _evt ){
+        var _p = $(this)
+            , _type = _p.attr(&#x27;checktype&#x27;).toLowerCase()
+            , _for = _p.attr(&#x27;checkfor&#x27;);
+            JC.log( _type, _for );
+
+        switch( _type ){
+            case &#x27;all&#x27;:
+                {
+                    $(_for).each( function(){
+                        var _sp = $(this);
+                        if( isControler( _sp ) ) return;
+                        if( _sp.is( &#x27;[disabled]&#x27; ) ) return;
+                        _p.prop(&#x27;checked&#x27;) &amp;&amp; _sp.prop(&#x27;checked&#x27;, true);
+                        !_p.prop(&#x27;checked&#x27;) &amp;&amp; _sp.prop(&#x27;checked&#x27;, false);
+                        
+                    });
+                    break;
+                }
+
+            case &#x27;inverse&#x27;:
+                {
+                    $(_for).each( function(){
+                        var _sp = $(this);
+                        if( isControler( _sp ) ) return;
+                        if( _sp.is( &#x27;[disabled]&#x27; ) ) return;
+                        if( _sp.prop(&#x27;checked&#x27;) ) _sp.prop(&#x27;checked&#x27;, false);
+                        else _sp.prop(&#x27;checked&#x27;, true);
+                    });
+
+                    if( _p.is(&#x27;[checkall]&#x27;) ) fixCheckAllStatus( _p.attr(&#x27;checkall&#x27;), _for );
+                    break;
+                }
+        }
+    });
+    /**
+     * 判断 input 是否为 全选反选 按钮
+     */
+    function isControler( _selector ){
+        _selector = $( _selector );
+        return _selector.is( &#x27;[checktype]&#x27; ) &amp;&amp; _selector.is( &#x27;[checkfor]&#x27;);
     }
-    var _path = script_path_f();
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.js&quot; &gt;&lt;\/script&gt;&#x27; );
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.initCheckAll.js&quot; &gt;&lt;\/script&gt;&#x27; );
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.initAutoFill.js&quot; &gt;&lt;\/script&gt;&#x27; );
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.initAutoSelect.js&quot; &gt;&lt;\/script&gt;&#x27; ); 
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;JC.Form.initNumericStepper.js&quot; &gt;&lt;\/script&gt;&#x27; ); 
-}();
+    /**
+     * input 改变状态时, 全选按钮也改为正确的状态
+     */
+    function fixCheckAllStatus( _all, _for ){
+        var _isAll = true, _all = $(_all), _for = $(_for);
+        _for.each( function(){
+            var _sp = $(this);
+            if( isControler( _sp ) ) return;
+            if( _sp.is( &#x27;[checktype]&#x27; ) || _sp.is( &#x27;[checkfor]&#x27;) ) return;
+            if( !_sp.prop(&#x27;checked&#x27;) ) return _isAll = false;
+        });
+        JC.log( &#x27;_isAll: &#x27;, _isAll );
+        _all &amp;&amp; _all.length &amp;&amp; _all.prop( &#x27;checked&#x27;, _isAll );
+    }
+}(jQuery));
+
+ ;(function($){
+    /**
+     * 初始化 级联下拉框
+     * &lt;br /&gt;只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能
+     * &lt;br /&gt;&lt;br /&gt;动态添加的 DOM 需要显式调用 AutoSelect( domSelector ) 进行初始化
+     * &lt;br /&gt;&lt;br /&gt;要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性
+     * &lt;br /&gt;&lt;b&gt;defaultselect&lt;/b&gt;: none, 该属性声明这是级联下拉框的第一个下拉框, &lt;b&gt;这是必填项,初始化时以这个为入口&lt;/b&gt;
+     * &lt;br /&gt;&lt;b&gt;selectvalue&lt;/b&gt;: string, 下拉框的默认选中值
+     * &lt;br /&gt;&lt;b&gt;selecturl&lt;/b&gt;: string, 下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符
+     * &lt;br /&gt;&lt;b&gt;selecttarget&lt;/b&gt;: selector, 下一级下拉框的选择器语法
+     * &lt;br /&gt;&lt;b&gt;defaultoption&lt;/b&gt;: none, 声明默认 option 选项, 更新option时, 有该属性的项不会被清除
+     * &lt;p&gt;
+     *      数据格式: [ [id, name], [id, name] ... ]
+     *      &lt;br /&gt; 如果获取到的数据格式不是默认格式,
+     *      可以通过 &lt;a href=&#x27;JC.Form.html#property_initAutoSelect.dataFilter&#x27;&gt;AutoSelect.dataFilter&lt;/a&gt; 属性自定义函数, 进行数据过滤
+     * &lt;/p&gt;
+     * @method  initAutoSelect
+     * @static
+     * @for JC.Form
+     * @version dev 0.2
+     * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 360 75 Team
+     * @date    2013-07-28(.2), 2013-06-11(.1)
+     * @param   {selector}  _selector   要初始化的级联下拉框父级节点
+     * @example
+        &lt;h2&gt;AJAX 返回内容&lt;/h2&gt;
+        &lt;code&gt;
+            &lt;dd&gt;    
+                &lt;select name=&#x27;select102_1&#x27; defaultselect selecturl=&quot;data/shengshi_with_error_code.php?id=0&quot; selecttarget=&quot;select[name=select102_2]&quot;&gt;
+                    &lt;option value=&quot;-1&quot; defaultoption&gt;请选择&lt;/option&gt;
+                &lt;/select&gt;
+                &lt;select name=&#x27;select102_2&#x27; selecturl=&quot;data/shengshi_with_error_code.php?id={0}&quot; selecttarget=&quot;select[name=select102_3]&quot;&gt;
+                    &lt;option value=&quot;-1&quot; defaultoption&gt;请选择&lt;/option&gt;
+                &lt;/select&gt;
+                &lt;select name=&#x27;select102_3&#x27; selecturl=&quot;data/shengshi_with_error_code.php?id={0}&quot;&gt;
+                    &lt;option value=&quot;-1&quot; defaultoption&gt;请选择&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/dd&gt;
+        &lt;/code&gt;
+        &lt;script&gt;
+            $.get( &#x27;./data/shengshi_html.php?rnd=&#x27;+new Date().getTime(), function( _r ){
+                var _selector = $(_r);
+                $( &#x27;dl.def &gt; dt&#x27; ).after( _selector );
+                JC.Form.initAutoSelect( _selector );
+            });
+
+            JC.Form.initAutoSelect.dataFilter = 
+                function( _data, _select ){
+                    var _r = _data;
+                    if( _data &amp;&amp; !_data.length &amp;&amp; _data.data ){
+                        _r = _data.data;
+                    }
+                    return _r;
+                };
+        &lt;/script&gt;
+     */
+    JC.Form.initAutoSelect = AutoSelect;
+
+    function AutoSelect( _selector ){
+        var _ins = [];
+        _selector &amp;&amp; ( _selector = $(_selector) );
+
+        if( AutoSelect.isSelect( _selector ) ){
+            _ins.push( new Control( _selector ) );
+        }else if( _selector &amp;&amp; _selector.length ){
+            _selector.find( &#x27;select[defaultselect]&#x27; ).each( function(){
+                _ins.push( new Control( $(this ) ));
+            });
+        }
+        return _ins;
+    }
+    var AutoSelectProp = {
+        /**
+         * 判断 selector 是否为符合自动初始化联动框的要求
+         * @method  initAutoSelect.isSelect
+         * @param   {selector}  _selector
+         * @return  bool
+         * @static
+         */
+        isSelect: 
+            function( _selector ){
+                var _r;
+                _selector 
+                    &amp;&amp; ( _selector = $(_selector) ) 
+                    &amp;&amp; _selector.is( &#x27;select&#x27; ) 
+                    &amp;&amp; _selector.is( &#x27;[defaultselect]&#x27; )
+                    &amp;&amp; ( _r = true );
+                return _r;
+            }
+        /**
+         * 是否自动隐藏空值的级联下拉框, 起始下拉框不会被隐藏
+         * &lt;br /&gt;这个是全局设置, 如果需要对具体某个select进行处理, 对应的 HTML 属性 selecthideempty
+         * @property    initAutoSelect.hideEmpty
+         * @type    bool
+         * @default false
+         * @static
+         * @example
+                AutoSelect.hideEmpty = true;
+         */
+        , hideEmpty: false
+        /**
+         * 级联下拉框的数据过滤函数
+         * &lt;br /&gt;默认数据格式: [ [id, name], [id, name] ... ]
+         * &lt;br /&gt;如果获取到的数据格式非默认格式, 可通过本函数进行数据过滤
+         * &lt;p&gt;
+         *  &lt;b&gt;注意, 这个是全局过滤, 如果要使用该函数进行数据过滤, 判断逻辑需要比较具体&lt;/b&gt;
+         *  &lt;br /&gt;如果要对具体 select 进行数据过滤, 可以使用HTML属性 selectdatafilter 指定过滤函数
+         * &lt;/p&gt;
+         * @property    initAutoSelect.dataFilter
+         * @type    function
+         * @default null
+         * @static
+         * @example
+                 AutoSelect.dataFilter = 
+                    function( _data, _select ){
+                        var _r = _data;
+                        if( _data &amp;&amp; !_data.length &amp;&amp; _data.data ){
+                            _r = _data.data;
+                        }
+                        return _r;
+                    };
+         */
+        , dataFilter: null
+        /**
+         * 下拉框初始化功能都是未初始化 数据之前的回调
+         * &lt;br /&gt;这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectbeforeInited
+         * @property    initAutoSelect.beforeInited
+         * @type    function
+         * @default null
+         * @static
+         */
+        , beforeInited: null
+        /**
+         * 下拉框第一次初始完所有数据的回调
+         * &lt;br /&gt;这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectinited
+         * @property    initAutoSelect.inited
+         * @type    function
+         * @default null
+         * @static
+         */
+        , inited: null
+        /**
+         * 下拉框每个项数据变更后的回调
+         * &lt;br /&gt;这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectchange
+         * @property    initAutoSelect.change
+         * @type    function
+         * @default null
+         * @static
+         */
+        , change: null
+        /**
+         * 下拉框所有项数据变更后的回调
+         * &lt;br /&gt;这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectallchanged
+         * @property    initAutoSelect.allChanged
+         * @type    function
+         * @default null
+         * @static
+         */
+        , allChanged: null
+        /**
+         * 第一次初始化所有联动框时, 是否触发 change 事件
+         * &lt;br /&gt;这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selecttriggerinitchange
+         * @property    initAutoSelect.triggerInitChange
+         * @type    bool
+         * @default false
+         * @static
+         */
+        , triggerInitChange: true
+        /**
+         * ajax 请求数据时, 是否添加随机参数防止缓存
+         * &lt;br /&gt;这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectrandomurl
+         * @property    initAutoSelect.randomurl
+         * @type    bool
+         * @default true
+         * @static
+         */
+        , randomurl: false
+        /**
+         * 处理 ajax url 的回调处理函数
+         * &lt;br /&gt;这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectprocessurl
+         * @property    initAutoSelect.processUrl
+         * @type    function
+         * @default null
+         * @static
+         */
+        , processUrl: null
+        /**
+         * 获取或设置 selector 的实例引用
+         * @method  initAutoSelect.getInstance
+         * @param   {selector}  _selector
+         * @param   {AutoSelectControlerInstance}   _ins
+         * @return AutoSelectControlerInstance
+         * @static
+         */
+        , getInstance:
+            function( _selector, _ins ){
+                var _r;
+                _selector 
+                    &amp;&amp; ( _selector = $( _selector ) ) 
+                    &amp;&amp; ( typeof _ins != &#x27;undefined&#x27; &amp;&amp; _selector.data(&#x27;SelectIns&#x27;, _ins )
+                            , _r = _selector.data(&#x27;SelectIns&#x27;) );
+                return _r;
+            }
+    };
+    for( var k in AutoSelectProp ) AutoSelect[k] = AutoSelectProp[k];
+
+    function Control( _selector ){
+        this._model = new Model( _selector );
+        this._view = new View( this._model, this );
+
+        this._init();
+    }
+
+    Control.prototype = {
+        _init:
+            function(){
+                var _p = this;
+
+                $.each( _p._model.items(), function( _ix, _item ){
+                    AutoSelect.getInstance( $(_item), _p );
+                });
+
+                _p._model.beforeInited() &amp;&amp; _p.on( &#x27;SelectBeforeInited&#x27;, _p._model.beforeInited() );
+                _p.on(&#x27;SelectInited&#x27;, function(){
+                    var _tmp = _p._model.first();
+                    while( _p._model.next( _tmp ) ){
+                        _tmp.on( &#x27;change&#x27;, _p._responeChange );
+                        _tmp = _p._model.next( _tmp );
+                    }
+                    _p._model.isInited( true );
+
+                    //alert( _p._model.inited() );
+
+                    _p._model.inited() &amp;&amp; _p._model.inited().call( _p );
+                });
+                _p.on(&#x27;SelectChange&#x27;, function( _evt, _selector ){
+                    _p._model.change( _selector ) &amp;&amp; _p._model.change( _selector ).call( _selector, _evt, _p );
+                });
+                _p._model.allChanged() &amp;&amp; _p.on( &#x27;SelectAllChanged&#x27;, _p._model.allChanged() );
+
+                _p.trigger(&#x27;SelectBeforeInited&#x27;);
+                
+                _p._update( _p._model.first(), _p._firstInitCb );
+                
+                return _p;
+            }    
+
+        , on: function( _evt, _cb ){ $(this).on( _evt, _cb ); return this; }
+        , trigger: function( _evt, _args ){ $(this).trigger( _evt, _args ); return this; }
+
+        , first: function(){ return this._model.first(); }
+        , last: function(){ return this._model.last(); }
+        , items: function(){ return this._model.items(); }
+
+        , isFirst: function( _selector ){ return this._model.isFirst( _selector ); }
+        , isLast: function( _selector ){ return this._model.isLast( _selector ); }
+        , isInited: function(){ return this._model.isInited(); }
+
+        , data: function( _selector ){ return this._model.data( _selector ); }
+
+        , _responeChange:
+            function( _evt ){
+                var _sp = $(this)
+                    , _p = AutoSelect.getInstance( _sp )
+                    , _next = _p._model.next( _sp );
+                    ;
+                JC.log( &#x27;_responeChange:&#x27;, _sp.attr(&#x27;name&#x27;), _sp.val() );
+
+                if( !( _next&amp;&amp; _next.length ) ){
+                    _p.trigger( &#x27;SelectChange&#x27; );
+                }else{
+                    _p._update( _next, _p._changeCb, _sp.val() );
+                }
+            }
+
+        , _changeCb:
+            function( _selector, _data ){
+                var _p = this
+                    , _next = _p._model.next( _selector );
+                ;
+
+                _p.trigger( &#x27;SelectChange&#x27;, [ _selector ] );
+
+                if( _p._model.isLast( _selector ) ){
+                    _p.trigger( &#x27;SelectAllChanged&#x27; );
+                }
+
+                if( _next &amp;&amp; _next.length ){
+                    JC.log( &#x27;_changeCb:&#x27;, _selector.val(), _next.attr(&#x27;name&#x27;), _selector.attr(&#x27;name&#x27;) );
+                    _p._update( _next, _p._firstInitCb, _selector.val() );
+                }
+                return this;
+            }
+
+        , _firstInitCb:
+            function( _selector, _data ){
+                var _p = this
+                    , _next = _p._model.next( _selector );
+                ;
+
+                _p._model.triggerInitChange() 
+                    &amp;&amp; ( JC.log(&#x27;triggerInitChange&#x27;, _selector.attr(&#x27;name&#x27;)), _selector.trigger(&#x27;change&#x27;) );
+
+                _p.trigger( &#x27;SelectChange&#x27;, [ _selector ] );
+
+                if( _p._model.isLast( _selector ) ){
+                    _p.trigger( &#x27;SelectAllChanged&#x27; );
+                    _p.trigger( &#x27;SelectInited&#x27; );
+                }
+
+                if( _next &amp;&amp; _next.length ){
+                    JC.log( &#x27;_firstInitCb:&#x27;, _selector.val(), _next.attr(&#x27;name&#x27;), _selector.attr(&#x27;name&#x27;) );
+                    _p._update( _next, _p._firstInitCb, _selector.val() );
+                }
+
+                return this;
+            }
+
+
+        , _update:
+            function( _selector, _cb, _pid ){
+                if( this._model.isStatic( _selector ) ){
+                    this._updateStatic( _selector, _cb, _pid );
+                }else if( this._model.isAjax( _selector ) ){
+                    this._updateAjax( _selector, _cb, _pid );
+                }else{
+                    this._updateNormal( _selector, _cb, _pid );
+                }
+                return this;
+            }
+
+        , _updateStatic:
+            function( _selector, _cb, _pid ){
+                var _p = this, _data;
+                JC.log( &#x27;static select&#x27; );
+                if( _p._model.isFirst( _selector ) ){
+                    typeof _pid == &#x27;undefined&#x27; &amp;&amp; ( _pid = _p._model.selectparentid( _selector ) || &#x27;&#x27; );
+                    if( typeof _pid != &#x27;undefined&#x27; ){
+                        _data = _p._model.datacb( _selector )( _pid );
+                    }
+                }else{
+                    _data = _p._model.datacb( _selector )( _pid );
+                }
+                _p._view.update( _selector, _data );
+                _cb &amp;&amp; _cb.call( _p, _selector, _data );
+                return this;
+            }
+
+        , _updateAjax:
+            function( _selector, _cb, _pid ){
+                var _p = this, _data, _next = _p._model.next( _selector ), _url;
+                JC.log( &#x27;ajax select&#x27; );
+
+                if( _p._model.isFirst( _selector ) ){
+                    typeof _pid == &#x27;undefined&#x27; &amp;&amp; ( _pid = _p._model.selectparentid( _selector ) || &#x27;&#x27; );
+                    if( typeof _pid != &#x27;undefined&#x27; ){
+                        _url = _p._model.selecturl( _selector, _pid );
+                        $.get( _url, function( _data ){
+                            _data = $.parseJSON( _data );
+                            _p._view.update( _selector, _data );
+                            _cb &amp;&amp; _cb.call( _p, _selector, _data );
+                        });
+                    }
+                }else{
+                   _url = _p._model.selecturl( _selector, _pid );
+                    $.get( _url, function( _data ){
+                        JC.log( &#x27;_url:&#x27;, _url, _pid );
+                        _data = $.parseJSON( _data );
+                        _p._view.update( _selector, _data );
+                        _cb &amp;&amp; _cb.call( _p, _selector, _data );
+                    });
+                }
+                return this;
+            }
+
+        , _updateNormal:
+            function( _selector, _cb, _pid ){
+               var _p = this, _data;
+                JC.log( &#x27;normal select&#x27; );
+                if( _p._model.isFirst( _selector ) ){
+                    var _next = _p._model.next( _selector );
+                    if( _next &amp;&amp; _next.length ){
+                        _p._update( _next, _cb, _selector.val() );
+                        return this;
+                    }
+                }else{
+                    _data = _p._model.datacb( _selector )( _pid );
+                }
+                _p._view.update( _selector, _data );
+                _cb &amp;&amp; _cb.call( _p, _selector, _data );
+                return this;
+            }
+    }
+    
+    function Model( _selector ){
+        this._selector = _selector;
+        this._items = [];
+        this._isInited = false;
+
+        this._init();
+    }
+    
+    Model.prototype = {
+        _init:
+            function(){
+                this._findAllItems( this._selector );
+                JC.log( &#x27;select items.length:&#x27;, this._items.length );
+                this._initRelationship();
+                return this;
+            }
+
+        , _findAllItems:
+            function( _selector ){
+                this._items.push( _selector );
+                if( _selector.is( &#x27;[selecttarget]&#x27; ) ) 
+                    this._findAllItems( $( _selector.attr(&#x27;selecttarget&#x27;) ) );
+            }
+
+        , _initRelationship:
+            function(){
+                this._selector.data( &#x27;FirstSelect&#x27;, true );
+                if( this._items.length &gt; 1 ){
+                    this._items[ this._items.length - 1 ].data(&#x27;LastSelect&#x27;, true);
+                    for( var i = 0; i &lt; this._items.length; i ++ ){
+                        var item = this._items[i]
+                            , preItem = this._items[i-1];
+                            ;
+                        if( preItem ){
+                            item.data(&#x27;PrevSelect&#x27;, preItem);
+                            preItem.data(&#x27;NextSelect&#x27;, item );
+
+                            item.data(&#x27;parentSelect&#x27;, preItem); //向后兼容0.1
+                        }
+                    }
+                }
+            }
+
+        , items: function(){ return this._items; }
+        , first: function(){ return this._items[0]; }
+        , last: function(){ return this._items[ this._items -1 ]; }
+        , next: function( _selector ){ return _selector.data(&#x27;NextSelect&#x27;); }
+        , prev: function( _selector ){ return _selector.data(&#x27;PrevSelect&#x27;); }
+        , isFirst: function( _selector ){ return !!_selector.data(&#x27;FirstSelect&#x27;); }
+        , isLast: function( _selector ){ return !!_selector.data(&#x27;LastSelect&#x27;); }
+        , isStatic: function( _selector ){ return _selector.is(&#x27;[selectdatacb]&#x27;); }
+        , isAjax: function( _selector ){ return _selector.is(&#x27;[selecturl]&#x27;); }
+
+        , isInited: 
+            function( _setter ){ 
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._isInited = _setter )
+                return this._isInited;
+            }
+
+        , datacb:
+            function( _selector ){
+                var _r;
+                _selector.attr(&#x27;selectdatacb&#x27;) 
+                    &amp;&amp; ( _r = window[ _selector.attr(&#x27;selectdatacb&#x27;) ] )
+                    ;
+                return _r;
+            }
+
+        , selectparentid:
+            function( _selector ){
+                var _r;
+                _selector.attr(&#x27;selectparentid&#x27;) 
+                    &amp;&amp; ( _r = _selector.attr(&#x27;selectparentid&#x27;) )
+                    ;
+                _selector.removeAttr( &#x27;selectparentid&#x27; );
+                return _r || &#x27;&#x27;;
+            }
+
+        , selectvalue:
+            function( _selector ){
+                var _r = _selector.attr(&#x27;selectvalue&#x27;);
+                _selector.removeAttr( &#x27;selectvalue&#x27; );
+                return _r || &#x27;&#x27;;
+            }
+
+        , randomurl:
+            function( _selector ){
+                var _r = AutoSelect.randomurl;
+                _selector.is(&#x27;[selectrandomurl]&#x27;)
+                    &amp;&amp; ( _r = parseBool( _selector.attr(&#x27;selectrandomurl&#x27;) ) )
+                    ;
+                return _r;
+            }
+        
+        , triggerInitChange:
+            function(){
+                var _r = AutoSelect.triggerInitChange, _selector = this.first();
+                _selector.attr(&#x27;selecttriggerinitchange&#x27;)
+                    &amp;&amp; ( _r = parseBool( _selector.attr(&#x27;selecttriggerinitchange&#x27;) ) )
+                    ;
+                return _r;
+            }
+
+        , hideempty:
+            function( _selector ){
+                var _r = AutoSelect.hideEmpty;
+                _selector 
+                    &amp;&amp; _selector.length
+                    &amp;&amp; _selector.is(&#x27;[selecthideempty]&#x27;)
+                    &amp;&amp; ( _r = parseBool( _selector.attr(&#x27;selecthideempty&#x27;) ) )
+                    ;
+                return _r;
+            }
+
+        , selecturl:
+            function( _selector, _pid ){
+                var _cb = AutoSelect.processUrl, _r = _selector.attr(&#x27;selecturl&#x27;) || &#x27;&#x27;;
+                    _selector.attr(&#x27;selectprocessurl&#x27;) 
+                        &amp;&amp; window[ _selector.attr(&#x27;selectprocessurl&#x27; ) ]
+                        &amp;&amp; ( _cb = window[ _selector.attr(&#x27;selectprocessurl&#x27; ) ] )
+                        ;
+                    _r = printf( _r, _pid );
+                    this.randomurl( _selector ) &amp;&amp; ( _r = add_url_params( _r, {&#x27;rnd&#x27;: new Date().getTime() } ) );
+                    _cb &amp;&amp; ( _r = _cb.call( _selector, _r, _pid ) );
+                return _r;
+            }
+
+        , _userdatafilter:
+            function( _selector ){
+                var _r;
+                _selector.attr(&#x27;selectdatafilter&#x27;) 
+                    &amp;&amp; ( _r = window[ _selector.attr(&#x27;selectdatafilter&#x27;) ] )
+                    ;
+                return _r;
+            }
+
+        , dataFilter:
+            function( _selector, _data ){
+                var _cb = this._userdatafilter( _selector ) || AutoSelect.dataFilter;
+                _cb &amp;&amp; ( _data = _cb( _data, _selector ) );
+                return _data;
+            }
+
+        , beforeInited:
+            function(){
+                var _cb = AutoSelect.beforeInited, _selector = this.first();
+                    _selector.attr(&#x27;selectbeforeInited&#x27;) 
+                        &amp;&amp; window[ _selector.attr(&#x27;selectbeforeInited&#x27; ) ]
+                        &amp;&amp; ( _cb = window[ _selector.attr(&#x27;selectbeforeinited&#x27; ) ] )
+                        ;
+                return _cb;
+            }
+
+        , inited:
+            function(){
+               var _cb = AutoSelect.inited, _selector = this.first();
+                    _selector.attr(&#x27;selectinited&#x27;) 
+                        &amp;&amp; window[ _selector.attr(&#x27;selectinited&#x27; ) ]
+                        &amp;&amp; ( _cb = window[ _selector.attr(&#x27;selectinited&#x27; ) ] )
+                        ;
+                return _cb;
+            }
+
+        , change:
+            function( _selector ){
+               var _cb = AutoSelect.change;
+                    _selector.attr(&#x27;selectchange&#x27;) 
+                        &amp;&amp; window[ _selector.attr(&#x27;selectchange&#x27; ) ]
+                        &amp;&amp; ( _cb = window[ _selector.attr(&#x27;selectchange&#x27; ) ] )
+                        ;
+                return _cb;
+            }
+
+        , allChanged:
+            function(){
+               var _cb = AutoSelect.allChanged, _selector = this.first();
+                    _selector.attr(&#x27;selectallchanged&#x27;) 
+                        &amp;&amp; window[ _selector.attr(&#x27;selectallchanged&#x27; ) ]
+                        &amp;&amp; ( _cb = window[ _selector.attr(&#x27;selectallchanged&#x27; ) ] )
+                        ;
+                return _cb;
+            }
+
+        , data:
+            function( _selector, _setter ){
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( _selector.data(&#x27;SelectData&#x27;, _setter ) );
+                return _selector.data( &#x27;SelectData&#x27; );
+            }
+
+        /**
+         * 判断下拉框的option里是否有给定的值
+         * @param   {selector}  _select
+         * @param   {string}    _val    要查找的值
+         */
+        , hasVal: 
+            function ( _selector, _val ){
+                var _r = false, _val = _val.toString();
+                _selector.find(&#x27;option&#x27;).each( function(){
+                    var _tmp = $(this);
+                    if( _tmp.val() == _val ){
+                        _r = true;
+                        return false;
+                    }
+                });
+                return _r;
+            }
+    };
+    
+    function View( _model, _control ){
+        this._model = _model;
+        this._control = _control;
+
+        this._init();
+    }
+    
+    View.prototype = {
+        _init:
+            function() {
+                return this;
+            }
+
+        , update:
+            function( _selector, _data ){
+                var _default = this._model.selectvalue( _selector );
+                _data = this._model.dataFilter( _selector, _data );
+                this._model.data( _selector, _data );
+                
+                this._control.trigger( &#x27;SelectItemBeforeUpdate&#x27;, [ _selector, _data ] );
+                this._removeExists( _selector );
+
+                if( !_data.length ){
+                    if( this._model.hideempty( _selector ) ){
+                        _selector.hide();
+                        this._control.trigger( &#x27;SelectItemUpdated&#x27;, [ _selector, _data ] );
+                        return;
+                    }
+                }else{
+                    !_selector.is(&#x27;:visible&#x27;) &amp;&amp; _selector.show();
+                }
+
+                var _html = [], _tmp, _selected;
+                for( var i = 0, j = _data.length; i &lt; j; i++ ){
+                    _tmp = _data[i];
+                    _html.push( printf( &#x27;&lt;option value=&quot;{0}&quot; {2}&gt;{1}&lt;/option&gt;&#x27;, _tmp[0], _tmp[1], _selected ) );
+                }
+                $( _html.join(&#x27;&#x27;) ).appendTo( _selector );
+
+                if( this._model.hasVal( _selector, _default ) ){
+                    _selector.val( _default );
+                }
+                this._control.trigger( &#x27;SelectItemUpdated&#x27;, [ _selector, _data ] );
+            }
+
+        , _removeExists:
+            function( _selector ){
+                _selector.find(&#x27;&gt; option:not([defaultoption])&#x27;).remove();
+            }
+        
+    };
+    /**
+     * 页面加载完毕时, 延时进行自动化, 延时可以避免来自其他逻辑的干扰
+     */
+    $(document).ready( function( _evt ){
+        setTimeout( function(){ AutoSelect( document.body ); }, 100 );
+    });
+
+}(jQuery));
+
+
+ ;(function($){
+    /**
+     * 表单自动填充 URL GET 参数
+     * &lt;br /&gt;只要引用本脚本, DOM 加载完毕后, 页面上所有带 class js_autoFillUrlForm 的 form 都会自动初始化默认值
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs/docs_api/classes/JC.Form.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * @method  initAutoFill
+     * @static
+     * @for JC.Form
+     * @version dev 0.1
+     * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 team
+     * @date    2013-06-13
+     * @param   {selector|url string}   _selector   显示指定要初始化的区域, 默认为 document
+     * @param   {string}                _url        显示指定, 取初始化值的 URL, 默认为 location.href
+     * @example
+     *      JC.Form.initAutoFill( myCustomSelector, myUrl );
+     */
+     JC.Form.initAutoFill =
+        function( _selector, _url ){
+            if( !(_selector &amp;&amp; _selector.length ) ) _selector = $(document);
+            _url = _url || location.href;
+
+            JC.log( &#x27;JC.Form.initAutoFill&#x27; );
+
+            _selector.find(&#x27;form.js_autoFillUrlForm&#x27;).each( function(){
+                var _p = $(this);
+                
+                _p.find( &#x27;input[type=text][name],input[type=password][name],textarea[name]&#x27; ).each( function(){
+                    var _sp = $(this);
+                    if( has_url_param( _url, _sp.attr(&#x27;name&#x27;) ) ){
+                        _sp.val( decode( get_url_param( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) );
+                    }
+                });
+
+                _p.find( &#x27;select[name]&#x27; ).each( function(){
+                    var _sp = $(this), _uval = decode( get_url_param( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) ;
+                    if( has_url_param( _url, _sp.attr(&#x27;name&#x27;) ) ){
+                        if( selectHasVal( _sp, _uval ) ){
+                            _sp.val( get_url_param( _url, _sp.attr(&#x27;name&#x27;) ) );
+                        }else{
+                            _sp.attr( &#x27;selectvalue&#x27;, _uval );
+                        }
+                    }
+                });
+
+            });
+        };
+
+    $(document).ready( function( _evt ){ JC.Form.initAutoFill(); });
+
+    /**
+     * 自定义 URI decode 函数
+     * @property    initAutoFill.decodeFunc
+     * @static
+     * @for JC.Form
+     * @type    function
+     * @default null
+     */
+    JC.Form.initAutoFill.decodeFunc;
+
+    function decode( _val ){
+        try{
+            _val = (JC.Form.initAutoFill.decodeFunc || decodeURIComponent)( _val );
+        }catch(ex){}
+        return _val;
+    }
+    /**
+     * 判断下拉框的option里是否有给定的值
+     * @method  initAutoFill.selectHasVal
+     * @private
+     * @static
+     * @param   {selector}  _select
+     * @param   {string}    _val    要查找的值
+     */
+    function selectHasVal( _select, _val ){
+        var _r = false, _val = _val.toString();
+        _select.find(&#x27;option&#x27;).each( function(){
+            var _tmp = $(this);
+            if( _tmp.val() == _val ){
+                _r = true;
+                return false;
+            }
+        });
+        return _r;
+    }
+}(jQuery));
+
+
+ ;(function($){
+    /**
+     * 文本框 值增减 应用
+     * &lt;br /&gt;只要引用本脚本, 页面加载完毕时就会自动初始化 NumericStepper
+     * &lt;br /&gt;所有带 class js_NStepperPlus, js_NStepperMinus 视为值加减按钮
+     * &lt;br /&gt;&lt;br /&gt;目标文本框可以添加一些HTML属性自己的规则, 
+     * &lt;br /&gt;nsminvalue=最小值(默认=0), nsmaxvalue=最大值(默认=100), nsstep=步长(默认=1), nsfixed=小数点位数(默认=0)
+     * &lt;br /&gt;nschangecallback=值变改后的回调
+     * @method  initNumericStepper
+     * @static
+     * @for JC.Form
+     * @version dev 0.1
+     * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 360 75 Team
+     * @date    2013-07-05
+     * @param   {selector}  _selector   要初始化的全选反选的父级节点
+     * @example
+             &lt;dl class=&quot;def example1&quot;&gt;
+                &lt;dt&gt;JC.Form.initNumericStepper 默认值 0 - 100, step 1, fixed 0&lt;/dt&gt;
+                &lt;dd&gt;
+                    &lt;button class=&quot;NS_icon NS_minus js_NStepperMinus&quot; nstarget=&quot;input.js_ipt1&quot; &gt;&lt;/button&gt;
+                    &lt;input type=&quot;text&quot; value=&quot;0&quot; class=&quot;js_ipt1&quot; /&gt;
+                    &lt;button class=&quot;NS_icon NS_plus js_NStepperPlus&quot; nstarget=&quot;input.js_ipt1&quot; &gt;&lt;/button&gt;
+                &lt;/dd&gt;
+            &lt;/dl&gt;
+
+            &lt;dl class=&quot;def example1&quot;&gt;
+                &lt;dt&gt;JC.Form.initNumericStepper -10 ~ 10, step 2, fixed 2&lt;/dt&gt;
+                &lt;dd&gt;
+                    &lt;button class=&quot;NS_icon NS_minus js_NStepperMinus&quot; nstarget=&quot;input.js_ipt2&quot; &gt;&lt;/button&gt;
+                    &lt;input type=&quot;text&quot; value=&quot;4&quot; class=&quot;js_ipt2&quot; nsminvalue=&quot;-10&quot; nsmaxvalue=&quot;10&quot; nsstep=&quot;2&quot; nsfixed=&quot;2&quot; /&gt;
+                    &lt;button class=&quot;NS_icon NS_plus js_NStepperPlus&quot; nstarget=&quot;input.js_ipt2&quot; &gt;&lt;/button&gt;
+                &lt;/dd&gt;
+            &lt;/dl&gt;
+     */
+    JC.Form.initNumericStepper = 
+        function( _selector ){
+            _selector &amp;&amp; ( _selector = $( _selector ) );
+
+            _selector.delegate( &#x27;.js_NStepperPlus, .js_NStepperMinus&#x27;, &#x27;click&#x27;, function( _evt ){
+                var _p = $(this), _target = _logic.target( _p );
+                if( !( _target &amp;&amp; _target.length ) ) return;
+
+                var _fixed = parseInt( _logic.fixed( _target ), 10 ) || 0;
+                var _val = $.trim( _target.val() ), _step = _logic.step( _target );
+                    _val = ( _fixed ? parseFloat( _val ) : parseInt( _val, 10 ) ) || 0;
+                var _min = _logic.minvalue( _target ), _max = _logic.maxvalue( _target );
+
+                _p.hasClass( &#x27;js_NStepperPlus&#x27;) &amp;&amp; ( _val += _step );
+                _p.hasClass( &#x27;js_NStepperMinus&#x27;) &amp;&amp; ( _val -= _step );
+
+                _val &lt; _min &amp;&amp; ( _val = _min );
+                _val &gt; _max &amp;&amp; ( _val = _max );
+
+                JC.log( _min, _max, _val, _fixed, _step );
+
+                _target.val( _val.toFixed( _fixed ) );
+
+                _logic.callback( _target ) &amp;&amp; _logic.callback( _target ).call( _target, _p );
+            });
+        };
+    /**
+     * 文本框 值增减 值变改后的回调
+     * &lt;br /&gt;这个是定义全局的回调函数, 要定义局部回调请在目标文本框上添加 nschangecallback=回调 HTML属性
+     * @property    initNumericStepper.onchange
+     * @type    function
+     * @static
+     * @for JC.Form
+     */
+    JC.Form.initNumericStepper.onchange;
+
+    var _logic = {
+        target:
+            function( _src ){
+                var _r; 
+                if( _src.attr( &#x27;nstarget&#x27;) ){
+                    if( /^\~/.test( _src.attr(&#x27;nstarget&#x27;) ) ){
+                        _r = _src.parent().find( _src.attr(&#x27;nstarget&#x27;).replace( /^\~[\s]*/g, &#x27;&#x27;) );
+                        !( _r &amp;&amp; _r.length ) &amp;&amp; ( _r = $( _src.attr(&#x27;nstarget&#x27;) ) );
+                    }else{
+                        _r = $( _src.attr(&#x27;nstarget&#x27;) );
+                    }
+                }
+
+                return _r;
+            }
+
+        , fixed: function( _target ){ return _target.attr(&#x27;nsfixed&#x27;); }
+        , step: function( _target ){ return parseFloat( _target.attr( &#x27;nsstep&#x27; ) ) || 1; }
+        , minvalue: function( _target ){ return parseFloat( _target.attr( &#x27;nsminvalue&#x27; ) || _target.attr( &#x27;minvalue&#x27; ) ) || 0; }
+        , maxvalue: function( _target ){ return parseFloat( _target.attr( &#x27;nsmaxvalue&#x27; ) || _target.attr( &#x27;maxvalue&#x27; ) ) || 100; }
+        , callback: 
+            function( _target ){ 
+                var _r = JC.Form.initNumericStepper.onchange, _tmp;
+                _target.attr(&#x27;nschangecallback&#x27;) &amp;&amp; ( _tmp = window[ _target.attr(&#x27;nschangecallback&#x27;) ] ) &amp;&amp; ( _r = _tmp );
+                return _r;
+            }
+    };
+
+    $(document).ready( function( _evt ){
+        JC.Form.initNumericStepper( $(document) );
+    });
+}(jQuery));
 
     </pre>
 </div>
