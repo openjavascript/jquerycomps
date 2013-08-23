@@ -945,11 +945,12 @@
      */
     JC.hideAllPopup =
         function( _isClose ){
-            if( _isClose ){
-                $('body > div.UPanelPopup_identifer').remove();
-            }else{
-                $('body > div.UPanelPopup_identifer').hide();
-            }
+            $('body > div.UPanelPopup_identifer').each( function(){
+                var _p = $(this), _ins = Panel.getInstance( _p );
+                if( !_ins ) return;
+                _ins.hide();
+                _isClose && _ins.close();
+            });
         };
 
     /**
@@ -1164,8 +1165,15 @@
          */
         , popupIdentifier:
             function( _panel ){
+                var _int;
                 if( !_panel ){
-                    $('body > div.UPanelPopup_identifer').remove();
+                    $('body > div.UPanelPopup_identifer').each( function(){
+                        var _p = $(this), _ins = Panel.getInstance( _p );
+                        if( !_ins ) return;
+                        _ins.hide();
+                        _ins.close();
+                    });
+                    //$('body > div.UPanelPopup_identifer').remove();
                     $('body > div.UPanel_TMP').remove();
                 }else{
                     _panel.selector().addClass('UPanelPopup_identifer');
@@ -1828,7 +1836,12 @@
             function( _panel ){
                 if( !_panel ){
                     _logic.hideMask();
-                    $('body > div.UPanelDialog_identifer').hide();
+                    $('body > div.UPanelDialog_identifer').each( function(){
+                        var _p = $(this), _ins = Panel.getInstance( _p );
+                        if( !_ins ) return;
+                        _ins.hide();
+                        _ins.close();
+                    });
                     $('body > div.UPanel_TMP').remove();
                 }else{
                     _panel.selector().addClass('UPanelDialog_identifer');

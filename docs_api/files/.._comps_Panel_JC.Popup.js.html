@@ -321,8 +321,15 @@
          */
         , popupIdentifier:
             function( _panel ){
+                var _int;
                 if( !_panel ){
-                    $(&#x27;body &gt; div.UPanelPopup_identifer&#x27;).remove();
+                    $(&#x27;body &gt; div.UPanelPopup_identifer&#x27;).each( function(){
+                        var _p = $(this), _ins = Panel.getInstance( _p );
+                        if( !_ins ) return;
+                        _ins.hide();
+                        _ins.close();
+                    });
+                    //$(&#x27;body &gt; div.UPanelPopup_identifer&#x27;).remove();
                     $(&#x27;body &gt; div.UPanel_TMP&#x27;).remove();
                 }else{
                     _panel.selector().addClass(&#x27;UPanelPopup_identifer&#x27;);

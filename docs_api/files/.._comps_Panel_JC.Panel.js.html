@@ -1103,11 +1103,12 @@
      */
     JC.hideAllPopup =
         function( _isClose ){
-            if( _isClose ){
-                $(&#x27;body &gt; div.UPanelPopup_identifer&#x27;).remove();
-            }else{
-                $(&#x27;body &gt; div.UPanelPopup_identifer&#x27;).hide();
-            }
+            $(&#x27;body &gt; div.UPanelPopup_identifer&#x27;).each( function(){
+                var _p = $(this), _ins = Panel.getInstance( _p );
+                if( !_ins ) return;
+                _ins.hide();
+                _isClose &amp;&amp; _ins.close();
+            });
         };
 
     /**

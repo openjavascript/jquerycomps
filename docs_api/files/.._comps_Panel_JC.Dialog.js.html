@@ -391,7 +391,12 @@
             function( _panel ){
                 if( !_panel ){
                     _logic.hideMask();
-                    $(&#x27;body &gt; div.UPanelDialog_identifer&#x27;).hide();
+                    $(&#x27;body &gt; div.UPanelDialog_identifer&#x27;).each( function(){
+                        var _p = $(this), _ins = Panel.getInstance( _p );
+                        if( !_ins ) return;
+                        _ins.hide();
+                        _ins.close();
+                    });
                     $(&#x27;body &gt; div.UPanel_TMP&#x27;).remove();
                 }else{
                     _panel.selector().addClass(&#x27;UPanelDialog_identifer&#x27;);
