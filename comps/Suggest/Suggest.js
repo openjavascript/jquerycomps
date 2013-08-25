@@ -1,5 +1,4 @@
 ;(function($){
-    //TODO: 自动生成 layout, layout 自动定位 
     window.Suggest = JC.Suggest = Suggest;
     /**
      * Suggest 关键词补全提示类
@@ -21,11 +20,21 @@
      *          <br /><b>注意:</b> 是字符串, 不是函数, 并且确保 window 下没有同名函数
      *      </dd>
      *
+     *      <dt>suginitedcallback: string</dt>
+     *      <dd>
+     *          初始化完毕后的回调名称
+     *      </dd>
+     *
      *      <dt>sugurl: string</dt>
      *      <dd>
      *          数据请求 URL API
      *          <br />例: http://sug.so.360.cn/suggest/word?callback={1}&encodein=utf-8&encodeout=utf-8&word={0} 
      *          <br />{0}=关键词, {1}=回调名称
+     *      </dd>
+     *
+     *      <dt>sugqueryinterval: int, default = 200</dt>
+     *      <dd>
+     *          设置用户输入内容时, 响应的间隔, 避免不必要的请求
      *      </dd>
      *
      *      <dt>sugneedscripttag: bool, default=true</dt>
@@ -40,6 +49,27 @@
      *
      *      <dt>sugdatafilter: function</dt>
      *      <dd>数据过滤回调</dd>
+     *
+     *      <dt>sugsubtagname: string, default = dd</dt>
+     *      <dd>显式定义 suggest 列表的子标签名</dd>
+     *
+     *      <dt>suglayouttpl: string</dt>
+     *      <dd>显式定义 suggest 列表显示模板</dd>
+     *
+     *      <dt>sugautoposition: bool, default = false</dt>
+     *      <dd>式声明是否要自动识别显示位置</dd>
+     *
+     *      <dt>sugoffsetleft: int, default = 0</dt>
+     *      <dd>声明显示时, x轴的偏移像素</dd>
+     *
+     *      <dt>sugoffsettop: int, default = 0</dt>
+     *      <dd>声明显示时, y轴的偏移像素</dd>
+     *
+     *      <dt>sugoffsetwidth: int, default = 0</dt>
+     *      <dd>首次初始化时, layout的偏移宽度</dd>
+     *
+     *      <dt>sugplaceholder: selector</dt>
+     *      <dd>声明自动定位时, 显示位置的占位符标签</dd>
      * </dl>
      * @namespace JC
      * @class Suggest
@@ -52,8 +82,9 @@
      */
     function Suggest( _selector ){
         _selector && ( _selector = $(_selector) );
-        if( !_selector || Suggest.getInstance( _selector ) ) return;
+        if( Suggest.getInstance( _selector ) ) return Suggest.getInstance( _selector ) ;
         Suggest.getInstance( _selector, this );
+        Suggest._allIns.push( this );
 
         this._model = new Model( _selector );
         this._view = new View( this._model );
@@ -66,12 +97,18 @@
             function(){
                 var _p = this;
 
-                this._initHanlderEvent();
+                $( [ _p._view, _p._model ] ).on('BindEvent', function( _evt, _evtName, _cb ){
+                    _p.on( _evtName, _cb );
+                });
+
+                $( [ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName, _data ){
+                    _p.trigger( _evtName, [ _data ] );
+                });
 
                 _p._view.init();
                 _p._model.init();
 
-                this._initActionEvent();
+                _p._initActionEvent();
 
                 _p.trigger( 'SuggestInited' );
                  
@@ -148,17 +185,6 @@
          * @return  SuggestInstance
          */
         , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
-        , _initHanlderEvent:
-            function(){
-                var _p = this;
-                $( [ _p._view, _p._model ] ).on('BindEvent', function( _evt, _evtName, _cb ){
-                    _p.on( _evtName, _cb );
-                });
-
-                $( [ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName, _data ){
-                    _p.trigger( _evtName, [ _data ] );
-                });
-            }
         , _initActionEvent:
             function(){
                 var _p = this;
@@ -219,14 +245,14 @@
 
                     JC.log( _val );
 
-                    if( _p._model.queryinterval() ){
+                    if( _p._model.sugqueryinterval() ){
                         if( _p._model.timeout ){
                             clearTimeout( _p._model.timeout );
                         }
                         _p._model.timeout =
                             setTimeout( function(){
                                 _p._model.getData( _val );
-                            }, _p._model.queryinterval() );
+                            }, _p._model.sugqueryinterval() );
                     }else{
                         _p._model.getData( _val );
                     }
@@ -236,6 +262,7 @@
                    var _keycode = _evt.keyCode, _keyindex, _isBackward
                         , _items = _p._model.items(), _item;
                     _keycode == 38 && ( _isBackward = true );
+                    JC.log( 'keyup', new Date().getTime(), _keycode );
 
                     switch( _keycode ){
                         case 38://up
@@ -252,6 +279,11 @@
                                 }
                                 break;
                             }
+                        case 9://tab
+                            {
+                                _p.hide();
+                                return;
+                            }
                     }
                 });
 
@@ -266,6 +298,7 @@
                 _p.selector().on( 'click', function(_evt){
                     _evt.stopPropagation();
                     _p.selector().trigger( 'keyup' );
+                    Suggest._hideOther( _p );
                 });
 
                 $( _p._model.layout() ).delegate( '.js_sugItem', 'click', function(_evt){
@@ -276,6 +309,14 @@
                     _p.trigger('SuggestSelected', [_sp]);
                     _p._model.sugselectedcallback() && _p._model.sugselectedcallback().call( _p, _keyword );
                 });
+
+                if( _p._model.sugautoposition() ){
+                    $(window).on('resize', function(){
+                        if( _p._model.layout().is(':visible') ){
+                            _p._view.show();
+                        }
+                    });
+                }
             }
     }
     /**
@@ -307,7 +348,7 @@
             var _r;
             _selector 
                 && ( _selector = $(_selector) ).length 
-                && ( _r = _selector.is( '[suglayout]' ) );
+                && ( _r = _selector.is( '[sugurl]' ) || _selector.is( 'sugstaticdatacb' ) );
             return _r;
         };
     /**
@@ -334,6 +375,30 @@
      * @static
      */
     Suggest.dataFilter;
+    /**
+     * 保存所有初始化过的实例
+     * @property    _allIns
+     * @type        array
+     * @default     []
+     * @private
+     * @static
+     */
+    Suggest._allIns = [];
+    /**
+     * 隐藏其他 Suggest 显示列表
+     * @method      _hideOther
+     * @param       {SuggestInstance}       _ins
+     * @private
+     * @static
+     */
+    Suggest._hideOther =
+        function( _ins ){
+            for( var i = 0, j = Suggest._allIns.length; i < j; i++ ){
+                if( Suggest._allIns[i]._model._id != _ins._model._id ){
+                    Suggest._allIns[i].hide();
+                }
+            }
+        };
     
     function Model( _selector ){
         this._selector = _selector;
@@ -347,26 +412,50 @@
             }
 
         , selector: function(){ return this._selector; }
+        , suglayouttpl:
+            function(){
+                var _p = this, _r = Suggest.layoutTpl || _p.layoutTpl, _tmp;
+                ( _tmp = _p.selector().attr('suglayouttpl') ) && ( _r = _tmp );
+                return _r;
+            }
         , layoutTpl: '<dl class="sug_layout js_sugLayout" style="display:none;"></dl>'
         , layout: 
             function(){
+                var _p = this;
+                !_p._layout && _p.selector().is('[suglayout]') 
+                    && ( _p._layout = parentSelector( _p.selector(), _p.selector().attr('suglayout') ) );
 
-                !this._layout && this.selector().is('[suglayout]') 
-                    && ( this._layout = $( this.selector().attr('suglayout') ) );
+                !_p._layout && ( _p._layout = $( _p.suglayouttpl() )
+                                    , _p._layout.hide()
+                                    , _p._layout.appendTo( document.body )
+                                    , ( _p._sugautoposition = true )
+                                    );
+                !_p._layout.hasClass('js_sugLayout') && _p._layout.addClass( 'js_sugLayout' );
 
-                !this._layout && ( this._layout = $( Suggest.layoutTpl() || this.layoutTpl ) );
-                !this._layout.hasClass('js_sugLayout') && this._layout.addClass( 'js_sugLayout' );
-
-                if( this.sugwidth() ){
-                    this._layout.css( { 'width': this.sugwidth() + 'px' } );
+                if( _p.sugwidth() ){
+                    _p._layout.css( { 'width': _p.sugwidth() + 'px' } );
                 }
 
-                return this._layout;
+                _p._layout.css( { 'width': _p._layout.width() + _p.sugoffsetwidth() + 'px' } );
+
+
+                return _p._layout;
             }
+        , sugautoposition: 
+            function(){ 
+                this.layout().is('sugautoposition') 
+                    && ( this._sugautoposition = parseBool( this.layout().attr('sugautoposition') ) );
+                return this._sugautoposition; 
+            }
+
         , sugwidth:
             function(){
                 this.selector().is('[sugwidth]') 
                     && ( this._sugwidth = parseInt( this.selector().attr('sugwidth') ) );
+
+                !this._sugwidth && ( this._sugwidth = this.sugplaceholder().width() );
+
+
                 return this._sugwidth;
             }
         , sugoffsetleft:
@@ -383,12 +472,12 @@
                 !this._sugoffsettop && ( this._sugoffsettop = 0 );
                 return this._sugoffsettop;
             }
-        , sugsidepadding:
+        , sugoffsetwidth:
             function(){
-                this.selector().is('[sugsidepadding]') 
-                    && ( this._sugsidepadding = parseInt( this.selector().attr('sugsidepadding') ) );
-                !this._sugsidepadding && ( this._sugsidepadding = 0 );
-                return this._sugsidepadding;
+                this.selector().is('[sugoffsetwidth]') 
+                    && ( this._sugoffsetwidth = parseInt( this.selector().attr('sugoffsetwidth') ) );
+                !this._sugoffsetwidth && ( this._sugoffsetwidth = 0 );
+                return this._sugoffsetwidth;
             }
         , _dataCallback:
             function( _data ){
@@ -399,7 +488,7 @@
                 var _p = this;
                 this.selector().is('[sugdatacallback]') 
                     && ( this._sugdatacallback = this.selector().attr('sugdatacallback') );
-                !this._sugdatacallback && ( this._sugdatacallback = 'SuggestDataCallback' );
+                !this._sugdatacallback && ( this._sugdatacallback = _p._id + '_cb' );
                 !window[ this._sugdatacallback ] 
                     && ( window[ this._sugdatacallback ] = function( _data ){ _p._dataCallback( _data ); } );
 
@@ -463,12 +552,12 @@
                 this._sugdatafilter = this._sugdatafilter || Suggest.dataFilter;
                 return this._sugdatafilter ? window[ this._dataCallback ] : null;
             }
-        , queryinterval: 
+        , sugqueryinterval: 
             function(){
-                this.selector().is('[queryinterval]') 
-                    && ( this._queryinterval = parseInt( this.selector().attr('queryinterval') ) );
-                this._queryinterval = this._queryinterval || 200;
-                return this._queryinterval;
+                this.selector().is('[sugqueryinterval]') 
+                    && ( this._sugqueryinterval = parseInt( this.selector().attr('sugqueryinterval') ) );
+                this._sugqueryinterval = this._sugqueryinterval || 200;
+                return this._sugqueryinterval;
             }
         , timeout: null
         , preValue: null
@@ -512,6 +601,21 @@
                 typeof _setter != 'undefined' && ( this._currentData = _setter );
                 return this._currentData;
             }
+
+        , sugsubtagname:
+            function(){
+                var _r = 'dd', _tmp;
+                ( _tmp = this.selector().attr('sugsubtagname') ) && ( _r = _tmp );
+                return _r;
+            }
+
+        , sugplaceholder: 
+            function(){
+                var _r = this.selector();
+                this.selector().is('[sugplaceholder]') 
+                    && ( _r = parentSelector( this.selector(), this.selector().attr('sugplaceholder') ) );
+                return _r;
+            }
     };
     
     function View( _model ){
@@ -526,9 +630,29 @@
 
         , show: 
             function(){ 
+                var _p = this;
                 $(this).trigger( 'TriggerEvent', ['SuggestBeforeShow'] );
+                this._model.layout().css( 'z-index', window.ZINDEX_COUNT++ );
+                this.autoposition();
                 this._model.layout().show(); 
+
+                //fix bug for ie
+                setTimeout( function(){ _p._model.layout().show(); }, 10);
+
                 $(this).trigger( 'TriggerEvent', ['SuggestShow'] );
+            }
+        , autoposition:
+            function(){
+                if( !this._model.sugautoposition() ) return;
+                var _p = this
+                    , _offset = _p._model.sugplaceholder().offset()
+                    , _sheight = _p._model.sugplaceholder().height()
+                    ;
+
+                _p._model.layout().css({
+                    'left': _offset.left + _p._model.sugoffsetleft() + 'px'
+                    , 'top': _offset.top + _p._model.sugoffsettop() + _sheight + 'px'
+                });
             }
         , hide: 
             function(){ 
@@ -538,7 +662,7 @@
             }
         , update:
             function( _data ){
-                var _p = this, _ls = [], _query, _tmp, _text;
+                var _p = this, _ls = [], _query, _tmp, _text, _subtagname = _p._model.sugsubtagname();
 
                 if( !( _data && _data.s && _data.s.length ) ){
                     _p.hide();
@@ -552,8 +676,9 @@
                         _text = '<b>' + _text + '</b>';
                     }
                     else _query = '';
-                    _ls.push( printf('<dd keyword="{2}" keyindex="{3}" class="js_sugItem">{0}{1}</dd>'
+                    _ls.push( printf('<{4} keyword="{2}" keyindex="{3}" class="js_sugItem">{0}{1}</{4}>'
                                 , _query, _text, encodeURIComponent( _tmp ), i
+                                , _subtagname
                             ));
                 }
 

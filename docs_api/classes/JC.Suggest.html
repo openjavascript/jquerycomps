@@ -95,7 +95,7 @@
                         <h1>JC.Suggest Class</h1>
 <div class="box meta">
         <div class="foundat">
-            Defined in: <a href="../files/.._comps_Suggest_Suggest.js.html#l4"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:4</code></a>
+            Defined in: <a href="../files/.._comps_Suggest_Suggest.js.html#l3"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:3</code></a>
         </div>
 </div>
 <div class="box intro">
@@ -115,11 +115,19 @@
          请求 JSONP 数据的回调名
          <br /><b>注意:</b> 是字符串, 不是函数, 并且确保 window 下没有同名函数
      </dd>
+     <dt>suginitedcallback: string</dt>
+     <dd>
+         初始化完毕后的回调名称
+     </dd>
      <dt>sugurl: string</dt>
      <dd>
          数据请求 URL API
          <br />例: http://sug.so.360.cn/suggest/word?callback={1}&encodein=utf-8&encodeout=utf-8&word={0} 
          <br />{0}=关键词, {1}=回调名称
+     </dd>
+     <dt>sugqueryinterval: int, default = 200</dt>
+     <dd>
+         设置用户输入内容时, 响应的间隔, 避免不必要的请求
      </dd>
      <dt>sugneedscripttag: bool, default=true</dt>
      <dd>
@@ -131,6 +139,20 @@
      <dd>用户鼠标点击选择关键词后的回调</dd>
      <dt>sugdatafilter: function</dt>
      <dd>数据过滤回调</dd>
+     <dt>sugsubtagname: string, default = dd</dt>
+     <dd>显式定义 suggest 列表的子标签名</dd>
+     <dt>suglayouttpl: string</dt>
+     <dd>显式定义 suggest 列表显示模板</dd>
+     <dt>sugautoposition: bool, default = false</dt>
+     <dd>式声明是否要自动识别显示位置</dd>
+     <dt>sugoffsetleft: int, default = 0</dt>
+     <dd>声明显示时, x轴的偏移像素</dd>
+     <dt>sugoffsettop: int, default = 0</dt>
+     <dd>声明显示时, y轴的偏移像素</dd>
+     <dt>sugoffsetwidth: int, default = 0</dt>
+     <dd>首次初始化时, layout的偏移宽度</dd>
+     <dt>sugplaceholder: selector</dt>
+     <dd>声明自动定位时, 显示位置的占位符标签</dd>
 </dl>
 </div>
     <div class="constructor">
@@ -147,7 +169,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l4"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:4</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l3"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:3</code></a>
         </p>
     </div>
     <div class="description">
@@ -183,6 +205,10 @@
                 <div class="index-section methods">
                     <h3>Methods</h3>
                     <ul class="index-list methods">
+                            <li class="index-item method private">
+                                <a href="#method__hideOther">_hideOther</a>
+                                    <span class="flag static">static</span>
+                            </li>
                             <li class="index-item method">
                                 <a href="#method_getInstance">getInstance</a>
                                     <span class="flag static">static</span>
@@ -214,6 +240,10 @@
                 <div class="index-section properties">
                     <h3>Properties</h3>
                     <ul class="index-list properties">
+                            <li class="index-item property private">
+                                <a href="#property__allIns">_allIns</a>
+                                    <span class="flag static">static</span>
+                            </li>
                             <li class="index-item property">
                                 <a href="#property_autoInit">autoInit</a>
                                     <span class="flag static">static</span>
@@ -251,6 +281,38 @@
         </div>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
+                    <div id="method__hideOther" class="method item private">
+    <h3 class="name"><code>_hideOther</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_ins</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l387"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:387</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>隐藏其他 Suggest 显示列表</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_ins</code>
+                        <span class="type">SuggestInstance</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
                     <div id="method_getInstance" class="method item">
     <h3 class="name"><code>getInstance</code></h3>
         <div class="args">
@@ -270,7 +332,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l281"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:281</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l322"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:322</code></a>
         </p>
     </div>
     <div class="description">
@@ -309,7 +371,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l118"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:118</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l155"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:155</code></a>
         </p>
     </div>
     <div class="description">
@@ -338,7 +400,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l298"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:298</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l339"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:339</code></a>
         </p>
     </div>
     <div class="description">
@@ -371,7 +433,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l130"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:130</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l167"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:167</code></a>
         </p>
     </div>
     <div class="description">
@@ -402,7 +464,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l136"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:136</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l173"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:173</code></a>
         </p>
     </div>
     <div class="description">
@@ -441,7 +503,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l124"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:124</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l161"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:161</code></a>
         </p>
     </div>
     <div class="description">
@@ -463,7 +525,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l112"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:112</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l149"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:149</code></a>
         </p>
     </div>
     <div class="description">
@@ -491,7 +553,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l144"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:144</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l181"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:181</code></a>
         </p>
     </div>
     <div class="description">
@@ -518,6 +580,22 @@
             </div>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
+                    <div id="property__allIns" class="property item private">
+    <h3 class="name"><code>_allIns</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l378"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:378</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>保存所有初始化过的实例</p>
+    </div>
+        <p><strong>Default:</strong> []</p>
+</div>
                     <div id="property_autoInit" class="property item">
     <h3 class="name"><code>autoInit</code></h3>
     <span class="type">Bool</span>
@@ -525,7 +603,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l313"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:313</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l354"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:354</code></a>
         </p>
     </div>
     <div class="description">
@@ -540,7 +618,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l329"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:329</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l370"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:370</code></a>
         </p>
     </div>
     <div class="description">
@@ -555,7 +633,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l321"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:321</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l362"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:362</code></a>
         </p>
     </div>
     <div class="description">
@@ -572,7 +650,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l589"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:589</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l714"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:714</code></a>
         </p>
     </div>
     <div class="description">
@@ -585,7 +663,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l577"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:577</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l702"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:702</code></a>
         </p>
     </div>
     <div class="description">
@@ -598,7 +676,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l593"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:593</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l718"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:718</code></a>
         </p>
     </div>
     <div class="description">
@@ -611,7 +689,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l581"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:581</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l706"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:706</code></a>
         </p>
     </div>
     <div class="description">
@@ -624,7 +702,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Suggest_Suggest.js.html#l585"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:585</code></a>
+        <a href="../files/.._comps_Suggest_Suggest.js.html#l710"><code>..&#x2F;comps&#x2F;Suggest&#x2F;Suggest.js:710</code></a>
         </p>
     </div>
     <div class="description">

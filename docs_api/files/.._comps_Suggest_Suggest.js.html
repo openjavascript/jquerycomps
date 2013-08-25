@@ -159,7 +159,6 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 ;(function($){
-    //TODO: 自动生成 layout, layout 自动定位 
     window.Suggest = JC.Suggest = Suggest;
     /**
      * Suggest 关键词补全提示类
@@ -181,11 +180,21 @@
      *          &lt;br /&gt;&lt;b&gt;注意:&lt;/b&gt; 是字符串, 不是函数, 并且确保 window 下没有同名函数
      *      &lt;/dd&gt;
      *
+     *      &lt;dt&gt;suginitedcallback: string&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          初始化完毕后的回调名称
+     *      &lt;/dd&gt;
+     *
      *      &lt;dt&gt;sugurl: string&lt;/dt&gt;
      *      &lt;dd&gt;
      *          数据请求 URL API
      *          &lt;br /&gt;例: http://sug.so.360.cn/suggest/word?callback={1}&amp;encodein=utf-8&amp;encodeout=utf-8&amp;word={0} 
      *          &lt;br /&gt;{0}=关键词, {1}=回调名称
+     *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;sugqueryinterval: int, default = 200&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          设置用户输入内容时, 响应的间隔, 避免不必要的请求
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;sugneedscripttag: bool, default=true&lt;/dt&gt;
@@ -200,6 +209,27 @@
      *
      *      &lt;dt&gt;sugdatafilter: function&lt;/dt&gt;
      *      &lt;dd&gt;数据过滤回调&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;sugsubtagname: string, default = dd&lt;/dt&gt;
+     *      &lt;dd&gt;显式定义 suggest 列表的子标签名&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;suglayouttpl: string&lt;/dt&gt;
+     *      &lt;dd&gt;显式定义 suggest 列表显示模板&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;sugautoposition: bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;式声明是否要自动识别显示位置&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;sugoffsetleft: int, default = 0&lt;/dt&gt;
+     *      &lt;dd&gt;声明显示时, x轴的偏移像素&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;sugoffsettop: int, default = 0&lt;/dt&gt;
+     *      &lt;dd&gt;声明显示时, y轴的偏移像素&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;sugoffsetwidth: int, default = 0&lt;/dt&gt;
+     *      &lt;dd&gt;首次初始化时, layout的偏移宽度&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;sugplaceholder: selector&lt;/dt&gt;
+     *      &lt;dd&gt;声明自动定位时, 显示位置的占位符标签&lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
      * @class Suggest
@@ -212,8 +242,9 @@
      */
     function Suggest( _selector ){
         _selector &amp;&amp; ( _selector = $(_selector) );
-        if( !_selector || Suggest.getInstance( _selector ) ) return;
+        if( Suggest.getInstance( _selector ) ) return Suggest.getInstance( _selector ) ;
         Suggest.getInstance( _selector, this );
+        Suggest._allIns.push( this );
 
         this._model = new Model( _selector );
         this._view = new View( this._model );
@@ -226,12 +257,18 @@
             function(){
                 var _p = this;
 
-                this._initHanlderEvent();
+                $( [ _p._view, _p._model ] ).on(&#x27;BindEvent&#x27;, function( _evt, _evtName, _cb ){
+                    _p.on( _evtName, _cb );
+                });
+
+                $( [ _p._view, _p._model ] ).on(&#x27;TriggerEvent&#x27;, function( _evt, _evtName, _data ){
+                    _p.trigger( _evtName, [ _data ] );
+                });
 
                 _p._view.init();
                 _p._model.init();
 
-                this._initActionEvent();
+                _p._initActionEvent();
 
                 _p.trigger( &#x27;SuggestInited&#x27; );
                  
@@ -308,17 +345,6 @@
          * @return  SuggestInstance
          */
         , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
-        , _initHanlderEvent:
-            function(){
-                var _p = this;
-                $( [ _p._view, _p._model ] ).on(&#x27;BindEvent&#x27;, function( _evt, _evtName, _cb ){
-                    _p.on( _evtName, _cb );
-                });
-
-                $( [ _p._view, _p._model ] ).on(&#x27;TriggerEvent&#x27;, function( _evt, _evtName, _data ){
-                    _p.trigger( _evtName, [ _data ] );
-                });
-            }
         , _initActionEvent:
             function(){
                 var _p = this;
@@ -379,14 +405,14 @@
 
                     JC.log( _val );
 
-                    if( _p._model.queryinterval() ){
+                    if( _p._model.sugqueryinterval() ){
                         if( _p._model.timeout ){
                             clearTimeout( _p._model.timeout );
                         }
                         _p._model.timeout =
                             setTimeout( function(){
                                 _p._model.getData( _val );
-                            }, _p._model.queryinterval() );
+                            }, _p._model.sugqueryinterval() );
                     }else{
                         _p._model.getData( _val );
                     }
@@ -396,6 +422,7 @@
                    var _keycode = _evt.keyCode, _keyindex, _isBackward
                         , _items = _p._model.items(), _item;
                     _keycode == 38 &amp;&amp; ( _isBackward = true );
+                    JC.log( &#x27;keyup&#x27;, new Date().getTime(), _keycode );
 
                     switch( _keycode ){
                         case 38://up
@@ -412,6 +439,11 @@
                                 }
                                 break;
                             }
+                        case 9://tab
+                            {
+                                _p.hide();
+                                return;
+                            }
                     }
                 });
 
@@ -426,6 +458,7 @@
                 _p.selector().on( &#x27;click&#x27;, function(_evt){
                     _evt.stopPropagation();
                     _p.selector().trigger( &#x27;keyup&#x27; );
+                    Suggest._hideOther( _p );
                 });
 
                 $( _p._model.layout() ).delegate( &#x27;.js_sugItem&#x27;, &#x27;click&#x27;, function(_evt){
@@ -436,6 +469,14 @@
                     _p.trigger(&#x27;SuggestSelected&#x27;, [_sp]);
                     _p._model.sugselectedcallback() &amp;&amp; _p._model.sugselectedcallback().call( _p, _keyword );
                 });
+
+                if( _p._model.sugautoposition() ){
+                    $(window).on(&#x27;resize&#x27;, function(){
+                        if( _p._model.layout().is(&#x27;:visible&#x27;) ){
+                            _p._view.show();
+                        }
+                    });
+                }
             }
     }
     /**
@@ -467,7 +508,7 @@
             var _r;
             _selector 
                 &amp;&amp; ( _selector = $(_selector) ).length 
-                &amp;&amp; ( _r = _selector.is( &#x27;[suglayout]&#x27; ) );
+                &amp;&amp; ( _r = _selector.is( &#x27;[sugurl]&#x27; ) || _selector.is( &#x27;sugstaticdatacb&#x27; ) );
             return _r;
         };
     /**
@@ -494,6 +535,30 @@
      * @static
      */
     Suggest.dataFilter;
+    /**
+     * 保存所有初始化过的实例
+     * @property    _allIns
+     * @type        array
+     * @default     []
+     * @private
+     * @static
+     */
+    Suggest._allIns = [];
+    /**
+     * 隐藏其他 Suggest 显示列表
+     * @method      _hideOther
+     * @param       {SuggestInstance}       _ins
+     * @private
+     * @static
+     */
+    Suggest._hideOther =
+        function( _ins ){
+            for( var i = 0, j = Suggest._allIns.length; i &lt; j; i++ ){
+                if( Suggest._allIns[i]._model._id != _ins._model._id ){
+                    Suggest._allIns[i].hide();
+                }
+            }
+        };
     
     function Model( _selector ){
         this._selector = _selector;
@@ -507,26 +572,50 @@
             }
 
         , selector: function(){ return this._selector; }
+        , suglayouttpl:
+            function(){
+                var _p = this, _r = Suggest.layoutTpl || _p.layoutTpl, _tmp;
+                ( _tmp = _p.selector().attr(&#x27;suglayouttpl&#x27;) ) &amp;&amp; ( _r = _tmp );
+                return _r;
+            }
         , layoutTpl: &#x27;&lt;dl class=&quot;sug_layout js_sugLayout&quot; style=&quot;display:none;&quot;&gt;&lt;/dl&gt;&#x27;
         , layout: 
             function(){
+                var _p = this;
+                !_p._layout &amp;&amp; _p.selector().is(&#x27;[suglayout]&#x27;) 
+                    &amp;&amp; ( _p._layout = parentSelector( _p.selector(), _p.selector().attr(&#x27;suglayout&#x27;) ) );
 
-                !this._layout &amp;&amp; this.selector().is(&#x27;[suglayout]&#x27;) 
-                    &amp;&amp; ( this._layout = $( this.selector().attr(&#x27;suglayout&#x27;) ) );
+                !_p._layout &amp;&amp; ( _p._layout = $( _p.suglayouttpl() )
+                                    , _p._layout.hide()
+                                    , _p._layout.appendTo( document.body )
+                                    , ( _p._sugautoposition = true )
+                                    );
+                !_p._layout.hasClass(&#x27;js_sugLayout&#x27;) &amp;&amp; _p._layout.addClass( &#x27;js_sugLayout&#x27; );
 
-                !this._layout &amp;&amp; ( this._layout = $( Suggest.layoutTpl() || this.layoutTpl ) );
-                !this._layout.hasClass(&#x27;js_sugLayout&#x27;) &amp;&amp; this._layout.addClass( &#x27;js_sugLayout&#x27; );
-
-                if( this.sugwidth() ){
-                    this._layout.css( { &#x27;width&#x27;: this.sugwidth() + &#x27;px&#x27; } );
+                if( _p.sugwidth() ){
+                    _p._layout.css( { &#x27;width&#x27;: _p.sugwidth() + &#x27;px&#x27; } );
                 }
 
-                return this._layout;
+                _p._layout.css( { &#x27;width&#x27;: _p._layout.width() + _p.sugoffsetwidth() + &#x27;px&#x27; } );
+
+
+                return _p._layout;
             }
+        , sugautoposition: 
+            function(){ 
+                this.layout().is(&#x27;sugautoposition&#x27;) 
+                    &amp;&amp; ( this._sugautoposition = parseBool( this.layout().attr(&#x27;sugautoposition&#x27;) ) );
+                return this._sugautoposition; 
+            }
+
         , sugwidth:
             function(){
                 this.selector().is(&#x27;[sugwidth]&#x27;) 
                     &amp;&amp; ( this._sugwidth = parseInt( this.selector().attr(&#x27;sugwidth&#x27;) ) );
+
+                !this._sugwidth &amp;&amp; ( this._sugwidth = this.sugplaceholder().width() );
+
+
                 return this._sugwidth;
             }
         , sugoffsetleft:
@@ -543,12 +632,12 @@
                 !this._sugoffsettop &amp;&amp; ( this._sugoffsettop = 0 );
                 return this._sugoffsettop;
             }
-        , sugsidepadding:
+        , sugoffsetwidth:
             function(){
-                this.selector().is(&#x27;[sugsidepadding]&#x27;) 
-                    &amp;&amp; ( this._sugsidepadding = parseInt( this.selector().attr(&#x27;sugsidepadding&#x27;) ) );
-                !this._sugsidepadding &amp;&amp; ( this._sugsidepadding = 0 );
-                return this._sugsidepadding;
+                this.selector().is(&#x27;[sugoffsetwidth]&#x27;) 
+                    &amp;&amp; ( this._sugoffsetwidth = parseInt( this.selector().attr(&#x27;sugoffsetwidth&#x27;) ) );
+                !this._sugoffsetwidth &amp;&amp; ( this._sugoffsetwidth = 0 );
+                return this._sugoffsetwidth;
             }
         , _dataCallback:
             function( _data ){
@@ -559,7 +648,7 @@
                 var _p = this;
                 this.selector().is(&#x27;[sugdatacallback]&#x27;) 
                     &amp;&amp; ( this._sugdatacallback = this.selector().attr(&#x27;sugdatacallback&#x27;) );
-                !this._sugdatacallback &amp;&amp; ( this._sugdatacallback = &#x27;SuggestDataCallback&#x27; );
+                !this._sugdatacallback &amp;&amp; ( this._sugdatacallback = _p._id + &#x27;_cb&#x27; );
                 !window[ this._sugdatacallback ] 
                     &amp;&amp; ( window[ this._sugdatacallback ] = function( _data ){ _p._dataCallback( _data ); } );
 
@@ -623,12 +712,12 @@
                 this._sugdatafilter = this._sugdatafilter || Suggest.dataFilter;
                 return this._sugdatafilter ? window[ this._dataCallback ] : null;
             }
-        , queryinterval: 
+        , sugqueryinterval: 
             function(){
-                this.selector().is(&#x27;[queryinterval]&#x27;) 
-                    &amp;&amp; ( this._queryinterval = parseInt( this.selector().attr(&#x27;queryinterval&#x27;) ) );
-                this._queryinterval = this._queryinterval || 200;
-                return this._queryinterval;
+                this.selector().is(&#x27;[sugqueryinterval]&#x27;) 
+                    &amp;&amp; ( this._sugqueryinterval = parseInt( this.selector().attr(&#x27;sugqueryinterval&#x27;) ) );
+                this._sugqueryinterval = this._sugqueryinterval || 200;
+                return this._sugqueryinterval;
             }
         , timeout: null
         , preValue: null
@@ -672,6 +761,21 @@
                 typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._currentData = _setter );
                 return this._currentData;
             }
+
+        , sugsubtagname:
+            function(){
+                var _r = &#x27;dd&#x27;, _tmp;
+                ( _tmp = this.selector().attr(&#x27;sugsubtagname&#x27;) ) &amp;&amp; ( _r = _tmp );
+                return _r;
+            }
+
+        , sugplaceholder: 
+            function(){
+                var _r = this.selector();
+                this.selector().is(&#x27;[sugplaceholder]&#x27;) 
+                    &amp;&amp; ( _r = parentSelector( this.selector(), this.selector().attr(&#x27;sugplaceholder&#x27;) ) );
+                return _r;
+            }
     };
     
     function View( _model ){
@@ -686,9 +790,29 @@
 
         , show: 
             function(){ 
+                var _p = this;
                 $(this).trigger( &#x27;TriggerEvent&#x27;, [&#x27;SuggestBeforeShow&#x27;] );
+                this._model.layout().css( &#x27;z-index&#x27;, window.ZINDEX_COUNT++ );
+                this.autoposition();
                 this._model.layout().show(); 
+
+                //fix bug for ie
+                setTimeout( function(){ _p._model.layout().show(); }, 10);
+
                 $(this).trigger( &#x27;TriggerEvent&#x27;, [&#x27;SuggestShow&#x27;] );
+            }
+        , autoposition:
+            function(){
+                if( !this._model.sugautoposition() ) return;
+                var _p = this
+                    , _offset = _p._model.sugplaceholder().offset()
+                    , _sheight = _p._model.sugplaceholder().height()
+                    ;
+
+                _p._model.layout().css({
+                    &#x27;left&#x27;: _offset.left + _p._model.sugoffsetleft() + &#x27;px&#x27;
+                    , &#x27;top&#x27;: _offset.top + _p._model.sugoffsettop() + _sheight + &#x27;px&#x27;
+                });
             }
         , hide: 
             function(){ 
@@ -698,7 +822,7 @@
             }
         , update:
             function( _data ){
-                var _p = this, _ls = [], _query, _tmp, _text;
+                var _p = this, _ls = [], _query, _tmp, _text, _subtagname = _p._model.sugsubtagname();
 
                 if( !( _data &amp;&amp; _data.s &amp;&amp; _data.s.length ) ){
                     _p.hide();
@@ -712,8 +836,9 @@
                         _text = &#x27;&lt;b&gt;&#x27; + _text + &#x27;&lt;/b&gt;&#x27;;
                     }
                     else _query = &#x27;&#x27;;
-                    _ls.push( printf(&#x27;&lt;dd keyword=&quot;{2}&quot; keyindex=&quot;{3}&quot; class=&quot;js_sugItem&quot;&gt;{0}{1}&lt;/dd&gt;&#x27;
+                    _ls.push( printf(&#x27;&lt;{4} keyword=&quot;{2}&quot; keyindex=&quot;{3}&quot; class=&quot;js_sugItem&quot;&gt;{0}{1}&lt;/{4}&gt;&#x27;
                                 , _query, _text, encodeURIComponent( _tmp ), i
+                                , _subtagname
                             ));
                 }
 
