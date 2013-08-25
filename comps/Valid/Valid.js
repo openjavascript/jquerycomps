@@ -104,8 +104,9 @@
      *      <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>
      *      <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>
      *      <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>
-     *      <dd><b>phonezone:</b> 电话区号, 3~4位数字</dd>
+     *      <dd><b>phonezone:</b> 电话区号, 3~4位数字. phonezone-n,m 可指定位数长度</dd>
      *      <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>
+     *      <dd><b>countrycode:</b> 地区代码, [+]1~6位数字</dd>
      *      <dd><b>mobilephone:</b> mobilecode | phone</dd>
      *      <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>
      *      <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>
@@ -625,7 +626,10 @@
         , isMaxvalue: function( _item ){ return _item.is('[maxvalue]'); }
 
         , isDatatarget: function( _item ){ return _item.is( '[datatarget]'); }
-        , datatarget: function( _item ){ return $( _item.attr( 'datatarget') ); }
+        , datatarget: 
+            function( _item ){ 
+                return parentSelector( _item, _item.attr('datatarget') );
+            }
 
         , minvalue: 
             function( _item, _isFloat ){ 
@@ -1207,7 +1211,12 @@
          */
         , phonezone: 
             function( _item ){
-                var _p = this, _r = /^[0-9]{3,4}$/.test( _item.val() );
+                var _p = this, _v = _item.val().trim(), _r, _re = /^[0-9]{3,4}$/, _pattern;
+
+                _pattern = _item.attr('datatype').split('-');
+                _pattern.length > 1 && ( _re = new RegExp( '^[0-9]{' + _pattern[1] + '}$' ) );
+
+                _r = _re.test( _v );
                 !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
             }
@@ -1438,6 +1447,23 @@
                 return _r;
             }
         /**
+         * 检查地区代码
+         * @method  countrycode
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                <div class="f-l">
+                    <input type="TEXT" name="company_countrycode" datatype="countrycode" errmsg="请填写正确的地区代码">
+                </div>
+         */
+        , countrycode: 
+            function( _item ){
+                var _p = this, _v = _item.val().trim(), _r = /^(?:\+|)[\d]{1,6}$/.test( _v );
+                !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
          * 检查邮政编码
          * @method  zipcode
          * @private
@@ -1506,11 +1532,13 @@
                 !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'alternativemsg', true ] );
                 !_r && _target && _target.length 
                     && _target.each( function(){ 
+                        if( _item[0] == this ) return;
                         $(_p).trigger( Model.TRIGGER, [ Model.ERROR, $(this), 'alternativemsg', true ] );
                     });
 
                 if( _r && _target && _target.length ){
                     _target.each( function(){
+                        if( _item[0] == this ) return;
                         $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
                     });
                 }
@@ -1562,11 +1590,13 @@
 
                 !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'reconfirmmsg', true ] );
                 !_r && _target.length && _target.each( function(){ 
+                    if( _item[0] == this ) return;
                     $(_p).trigger( Model.TRIGGER, [ Model.ERROR, $(this), 'reconfirmmsg', true ] );
                 } );
 
                 if( _r && _target && _target.length ){
                     _target.each( function(){
+                        if( _item[0] == this ) return;
                         $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
                     });
                 }
@@ -1607,6 +1637,8 @@
                 if( /^\^$/.test( _selector ) ){
                     _subselector = _subselector || Model.SELECTOR_ERROR;
                     _selector = $( _item.parent().find( _subselector ) );
+                }else if( /^\//.test( _selector ) ) {
+                    return parentSelector( _item, _selector );
                 }else if( /^[\w-]+$/.test( _selector ) ) {
                     _selector = '#' + _selector;
                 }

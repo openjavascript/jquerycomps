@@ -2,6 +2,7 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
         ".window",
+        "JC.AutoSelect",
         "JC.Calendar",
         "JC.Dialog",
         "JC.Dialog.alert",

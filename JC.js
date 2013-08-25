@@ -60,6 +60,8 @@
                 var _p = this, _paths = [], _parts = $.trim( _items ).split(/[\s]*?,[\s]*/)
                    , _pathRe = /[\/\\]/, _urlRe = /\:\/\//, _pathRplRe = /(\\)\1|(\/)\2/g;
 
+                _parts = JC._usePatch( _parts, 'Form', 'AutoSelect' );
+
                 $.each( _parts, function( _ix, _part ){
                     var _isComps = !_pathRe.test( _part ), _path, _isFullpath = /^\//.test( _part );
                     if( _isComps && window.JC[ _part ] ) return;
@@ -90,6 +92,28 @@
 
                 !JC.enableNginxStyle && JC._writeNormalScript( _paths );
                 JC.enableNginxStyle && JC._writeNginxScript( _paths );
+            }
+        /**
+         * 调用依赖的类
+         * <br />这个方法的存在是因为有一些类调整了结构, 但是原有的引用因为向后兼容的需要, 暂时不能去掉
+         * @method  _usePatch
+         * @param   {array}     _items
+         * @param   {string}    _fromClass
+         * @param   {string}    _patchClass
+         * @private
+         * @static
+         */
+        , _usePatch:
+            function( _items, _fromClass, _patchClass ){
+                var i, j, k, l, _find;
+                for( i = 0, j = _items.length; i < j; i++ ){
+                    if( ( $.trim( _items[i].toString() ) == _fromClass ) ){
+                        _find = true;
+                        break;
+                    }
+                }
+                _find && !JC[ _patchClass ] && _items.unshift( _patchClass );
+                return _items;
             }
        /**
         * 输出调试信息, 可通过 JC.debug 指定是否显示调试信息

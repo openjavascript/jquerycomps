@@ -7,6 +7,17 @@
         "logo": "jc_logo.png"
     },
     "files": {
+        "../comps/AutoSelect/AutoSelect.js": {
+            "name": "../comps/AutoSelect/AutoSelect.js",
+            "modules": {},
+            "classes": {
+                "JC.AutoSelect": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../comps/Calendar/JC.Calendar.js": {
             "name": "../comps/Calendar/JC.Calendar.js",
             "modules": {},
@@ -76,15 +87,6 @@
         },
         "../comps/Form/JC.Form.initAutoFill.js": {
             "name": "../comps/Form/JC.Form.initAutoFill.js",
-            "modules": {},
-            "classes": {},
-            "fors": {
-                "JC.Form": 1
-            },
-            "namespaces": {}
-        },
-        "../comps/Form/JC.Form.initAutoSelect.js": {
-            "name": "../comps/Form/JC.Form.initAutoSelect.js",
             "modules": {},
             "classes": {},
             "fors": {
@@ -342,6 +344,33 @@
     },
     "modules": {},
     "classes": {
+        "JC.AutoSelect": {
+            "name": "JC.AutoSelect",
+            "shortname": "JC.AutoSelect",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 2,
+            "description": "<h2>select 级联下拉框无限联动</h2>\n<br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能\n<br /><br />动态添加的 DOM 需要显式调用 JC.AutoSelect( domSelector ) 进行初始化\n<br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoSelect.html' target='_blank'>API docs</a>\n| <a href='../../comps/AutoSelect/_demo' target='_blank'>demo link</a></p>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<h2>select 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultselect, 这个属性不需要赋值</dt>\n     <dd>该属性声明这是级联下拉框的第一个下拉框, <b>这是必填项,初始化时以这个为入口</b></dd>\n\n     <dt>selectvalue = string</dt>\n     <dd>下拉框的默认选中值</dd>\n\n     <dt>selecturl = AJAX 数据请求的URL</dt>\n     <dd>下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符</dd>\n\n     <dt>selecttarget = selector</dt>\n     <dd>下一级下拉框的选择器语法</dd>\n\n     <dt>selectdatacb = 静态数据请求回调</dt>\n     <dd>如果数据不需要 AJAX 请求, 可使用这个属性, 自行定义数据处理方式</dd>\n\n     <dt>selectrandomurl = bool, default = false</dt>\n     <dd>AJAX 请求时, 添加随机参数, 防止数据缓存</dd>\n\n     <dt>selecttriggerinitchange = bool, default = true</dt>\n     <dd>首次初始化时, 是否触发 change 事件</dd>\n\n     <dt>selecthideempty = bool, default = false</dt>\n     <dd>是否隐藏没有数据的 selecct</dd>\n\n     <dt>selectdatafilter = 请求数据后的处理回调</dt>\n     <dd>如果接口的数据不符合 select 的要求, 可通过这个属性定义数据过滤函数</dd>\n\n     <dt>selectbeforeinited = 初始化之前的回调</dt>\n\n     <dt>selectinited = 初始化后的回调</dt>\n\n     <dt>selectallchanged = 所有select请求完数据之后的回调</dt>\n</dl>\n<h2>option 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultoption, 这个属性不需要赋值</dt>\n     <dd>声明默认 option 选项, 更新option时, 有该属性的项不会被清除</dd>\n</dl>\n<h2>数据格式</h2>\n<p>\n     [ [id, name], [id, name] ... ]\n     <br /> 如果获取到的数据格式不是默认格式,\n     可以通过 <a href='JC.AutoSelect.html#property_dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤\n</p>",
+            "static": 1,
+            "version": "dev 0.2",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
+            "date": "2013-07-28(.2), 2013-06-11(.1)",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "要初始化的级联下拉框父级节点",
+                    "type": "Selector"
+                }
+            ],
+            "example": [
+                "\n       <h2>AJAX 返回内容</h2>\n       <code>\n           <dd>    \n               <select name='select102_1' defaultselect selecturl=\"data/shengshi_with_error_code.php?id=0\" selecttarget=\"select[name=select102_2]\">\n                   <option value=\"-1\" defaultoption>请选择</option>\n               </select>\n               <select name='select102_2' selecturl=\"data/shengshi_with_error_code.php?id={0}\" selecttarget=\"select[name=select102_3]\">\n                   <option value=\"-1\" defaultoption>请选择</option>\n               </select>\n               <select name='select102_3' selecturl=\"data/shengshi_with_error_code.php?id={0}\">\n                   <option value=\"-1\" defaultoption>请选择</option>\n               </select>\n           </dd>\n       </code>\n       <script>\n           $.get( './data/shengshi_html.php?rnd='+new Date().getTime(), function( _r ){\n               var _selector = $(_r);\n               $( 'dl.def > dt' ).after( _selector );\n               JC.AutoSelect( _selector );\n           });\n\n           JC.AutoSelect.dataFilter = \n               function( _data, _select ){\n                   var _r = _data;\n                   if( _data && !_data.length && _data.data ){\n                       _r = _data.data;\n                   }\n                   return _r;\n               };\n       </script>"
+            ]
+        },
         "JC.Calendar": {
             "name": "JC.Calendar",
             "shortname": "JC.Calendar",
@@ -1221,7 +1250,7 @@
             "namespace": "JC",
             "file": "../comps/Valid/Valid.js",
             "line": 3,
-            "description": "<b>表单验证</b> (单例模式)\n<br />全局访问请使用 JC.Valid 或 Valid\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>\n| <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>\n<h2>Form 的可用 html attribute</h2>\n<dl>\n     <dt>errorabort = bool, default = true</dt>\n     <dd>查检Form Control时, 如果发生错误是否继续检查下一个</dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n</dl>\n<h2>Form Control的可用 html attribute</h2>\n<dl>\n     <dt>reqmsg = 错误提示</dt>\n     <dd>值不能为空, class=error errormsg</dd>\n\n     <dt>errmsg = 错误提示</dt>\n     <dd>格式错误, 但不验证为空的值, class=error errormsg</dd>\n\n     <dt>focusmsg = 控件获得焦点的提示信息</dt>\n     <dd>\n         这个只作提示用, class=focusmsg\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>emel = selector</dt>\n     <dd>显示错误的selector</dd>\n\n     <dt>ignoreprocess = bool</dt>\n     <dd>验证表单时, 是否忽略</dd>\n     <dd>default = false</dd>\n\n     <dt>minlength = int(最小长度)</dt>\n     <dd>验证内容的最小长度, 但不验证为空的值</dd>\n\n     <dt>maxlength = int(最大长度)</dt>\n     <dd>验证内容的最大长度, 但不验证为空的值</dd>\n\n     <dt>minvalue = [number|ISO date](最小值)</dt>\n     <dd>验证内容的最小值, 但不验证为空的值</dd>\n\n     <dt>maxvalue = [number|ISO date](最大值)</dt>\n     <dd>验证内容的最大值, 但不验证为空的值</dd>\n\n     <dt>validitemcallback = function name</dt>\n     <dd>对一个 control 作检查后的回调, 无论正确与否都会触发</dt>\n\n     <dt>datatype: 常用数据类型</dt>\n     <dd><b>n:</b> 检查是否为正确的数字</dd>\n     <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>\n     <dd>\n         <b>nrange:</b> 检查两个control的数值范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>d:</b> 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD</dd>\n     <dd>\n         <b>daterange:</b> 检查两个control的日期范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>\n     <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>\n     <dd>\n         <b>bankcard:</b> 是否为正确的银行卡\n         <br />  格式为 d{19} | d{16} | 1111 1111 1111 1111 111 | 1111 1111 1111 1111111\n     </dd>\n     <dd>\n         <b>cnname:</b> 中文姓名\n         <br>格式: 汉字和大小写字母\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>username:</b> 注册用户名\n         <br>格式: a-zA-Z0-9_-\n         <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30\n     </dd>\n     <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>\n     <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\\d]{9}</dd>\n     <dd><b>mobile:</b> mobilecode 的别名</dd>\n     <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>\n     <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>\n     <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>\n     <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>\n     <dd><b>phonezone:</b> 电话区号, 3~4位数字</dd>\n     <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>\n     <dd><b>mobilephone:</b> mobilecode | phone</dd>\n     <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>\n     <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>\n     <dd>\n         <b>vcode:</b> 验证码, 0-9a-zA-Z, 长度 默认为4\n         <br />可通过 vcode-[\\d], 指定验证码长度\n     </dd>\n     <dd>\n         <b>text:</b> 显示声明检查的内容为文本类型\n         <br />默认就是 text, 没有特殊原因其实不用显示声明\n     </dd>\n     <dd>\n         <b>bytetext:</b> 声明按字节检查文本长度\n         <br /> ASCII 算一个字符, 非 ASCII 算两个字符\n     </dd>\n     <dd><b>url:</b> URL 格式, ftp, http, https</dd>\n     <dd><b>domain:</b> 匹配域名, 宽松模式, 允许匹配 http(s), 且结尾允许匹配反斜扛(/)</dd>\n     <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>\n     <dd><b>email:</b> 电子邮件</dd>\n     <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>\n\n     <dt>subdatatype: 特殊数据类型</dt>\n     <dd>\n         <dl>\n             <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>\n             <dd><b>alternativemsg:</b> N 选一的错误提示</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reconfirm: N 个 Control 的值必须保持一致</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>\n             <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>\n         </dl>\n     </dd>\n</dl>",
+            "description": "<b>表单验证</b> (单例模式)\n<br />全局访问请使用 JC.Valid 或 Valid\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>\n| <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>\n<h2>Form 的可用 html attribute</h2>\n<dl>\n     <dt>errorabort = bool, default = true</dt>\n     <dd>查检Form Control时, 如果发生错误是否继续检查下一个</dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n</dl>\n<h2>Form Control的可用 html attribute</h2>\n<dl>\n     <dt>reqmsg = 错误提示</dt>\n     <dd>值不能为空, class=error errormsg</dd>\n\n     <dt>errmsg = 错误提示</dt>\n     <dd>格式错误, 但不验证为空的值, class=error errormsg</dd>\n\n     <dt>focusmsg = 控件获得焦点的提示信息</dt>\n     <dd>\n         这个只作提示用, class=focusmsg\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>emel = selector</dt>\n     <dd>显示错误的selector</dd>\n\n     <dt>ignoreprocess = bool</dt>\n     <dd>验证表单时, 是否忽略</dd>\n     <dd>default = false</dd>\n\n     <dt>minlength = int(最小长度)</dt>\n     <dd>验证内容的最小长度, 但不验证为空的值</dd>\n\n     <dt>maxlength = int(最大长度)</dt>\n     <dd>验证内容的最大长度, 但不验证为空的值</dd>\n\n     <dt>minvalue = [number|ISO date](最小值)</dt>\n     <dd>验证内容的最小值, 但不验证为空的值</dd>\n\n     <dt>maxvalue = [number|ISO date](最大值)</dt>\n     <dd>验证内容的最大值, 但不验证为空的值</dd>\n\n     <dt>validitemcallback = function name</dt>\n     <dd>对一个 control 作检查后的回调, 无论正确与否都会触发</dt>\n\n     <dt>datatype: 常用数据类型</dt>\n     <dd><b>n:</b> 检查是否为正确的数字</dd>\n     <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>\n     <dd>\n         <b>nrange:</b> 检查两个control的数值范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>d:</b> 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD</dd>\n     <dd>\n         <b>daterange:</b> 检查两个control的日期范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>\n     <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>\n     <dd>\n         <b>bankcard:</b> 是否为正确的银行卡\n         <br />  格式为 d{19} | d{16} | 1111 1111 1111 1111 111 | 1111 1111 1111 1111111\n     </dd>\n     <dd>\n         <b>cnname:</b> 中文姓名\n         <br>格式: 汉字和大小写字母\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>username:</b> 注册用户名\n         <br>格式: a-zA-Z0-9_-\n         <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30\n     </dd>\n     <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>\n     <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\\d]{9}</dd>\n     <dd><b>mobile:</b> mobilecode 的别名</dd>\n     <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>\n     <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>\n     <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>\n     <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>\n     <dd><b>phonezone:</b> 电话区号, 3~4位数字. phonezone-n,m 可指定位数长度</dd>\n     <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>\n     <dd><b>countrycode:</b> 地区代码, [+]1~6位数字</dd>\n     <dd><b>mobilephone:</b> mobilecode | phone</dd>\n     <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>\n     <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>\n     <dd>\n         <b>vcode:</b> 验证码, 0-9a-zA-Z, 长度 默认为4\n         <br />可通过 vcode-[\\d], 指定验证码长度\n     </dd>\n     <dd>\n         <b>text:</b> 显示声明检查的内容为文本类型\n         <br />默认就是 text, 没有特殊原因其实不用显示声明\n     </dd>\n     <dd>\n         <b>bytetext:</b> 声明按字节检查文本长度\n         <br /> ASCII 算一个字符, 非 ASCII 算两个字符\n     </dd>\n     <dd><b>url:</b> URL 格式, ftp, http, https</dd>\n     <dd><b>domain:</b> 匹配域名, 宽松模式, 允许匹配 http(s), 且结尾允许匹配反斜扛(/)</dd>\n     <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>\n     <dd><b>email:</b> 电子邮件</dd>\n     <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>\n\n     <dt>subdatatype: 特殊数据类型</dt>\n     <dd>\n         <dl>\n             <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>\n             <dd><b>alternativemsg:</b> N 选一的错误提示</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reconfirm: N 个 Control 的值必须保持一致</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>\n             <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>\n         </dl>\n     </dd>\n</dl>",
             "static": 1,
             "version": "0.1,  2013-05-22",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
@@ -1255,7 +1284,7 @@
             "extension_for": [],
             "namespace": "window",
             "file": "../JC.js",
-            "line": 223,
+            "line": 247,
             "description": "UXC 是 JC 的别名\n<br />存在这个变量是为了向后兼容\n<br />20130804 之前的命名空间是 UXC, 这个命名空间在一段时间后将会清除, 请使用 JC 命名空间\n<p><b>see</b>: <a href='window.JC.html'>JC</a></p>",
             "static": 1,
             "date": "2013-05-22"
@@ -1289,6 +1318,402 @@
         }
     },
     "classitems": [
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 113,
+            "description": "判断 selector 是否为符合自动初始化联动框的要求",
+            "itemtype": "method",
+            "name": "isSelect",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "bool"
+            },
+            "static": 1,
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 130,
+            "description": "是否自动隐藏空值的级联下拉框, 起始下拉框不会被隐藏\n<br />这个是全局设置, 如果需要对具体某个select进行处理, 对应的 HTML 属性 selecthideempty",
+            "itemtype": "property",
+            "name": "hideEmpty",
+            "type": "bool",
+            "default": "false",
+            "static": 1,
+            "example": [
+                "\n               AutoSelect.hideEmpty = true;"
+            ],
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 141,
+            "description": "级联下拉框的数据过滤函数\n<br />默认数据格式: [ [id, name], [id, name] ... ]\n<br />如果获取到的数据格式非默认格式, 可通过本函数进行数据过滤\n<p>\n <b>注意, 这个是全局过滤, 如果要使用该函数进行数据过滤, 判断逻辑需要比较具体</b>\n <br />如果要对具体 select 进行数据过滤, 可以使用HTML属性 selectdatafilter 指定过滤函数\n</p>",
+            "itemtype": "property",
+            "name": "dataFilter",
+            "type": "function",
+            "default": "null",
+            "static": 1,
+            "example": [
+                "\n                AutoSelect.dataFilter = \n                   function( _data, _select ){\n                       var _r = _data;\n                       if( _data && !_data.length && _data.data ){\n                           _r = _data.data;\n                       }\n                       return _r;\n                   };"
+            ],
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 164,
+            "description": "下拉框初始化功能都是未初始化 数据之前的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectbeforeInited",
+            "itemtype": "property",
+            "name": "beforeInited",
+            "type": "function",
+            "default": "null",
+            "static": 1,
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 173,
+            "description": "下拉框第一次初始完所有数据的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectinited",
+            "itemtype": "property",
+            "name": "inited",
+            "type": "function",
+            "default": "null",
+            "static": 1,
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 182,
+            "description": "下拉框每个项数据变更后的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectchange",
+            "itemtype": "property",
+            "name": "change",
+            "type": "function",
+            "default": "null",
+            "static": 1,
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 191,
+            "description": "下拉框所有项数据变更后的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectallchanged",
+            "itemtype": "property",
+            "name": "allChanged",
+            "type": "function",
+            "default": "null",
+            "static": 1,
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 200,
+            "description": "第一次初始化所有联动框时, 是否触发 change 事件\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selecttriggerinitchange",
+            "itemtype": "property",
+            "name": "triggerInitChange",
+            "type": "bool",
+            "default": "false",
+            "static": 1,
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 209,
+            "description": "ajax 请求数据时, 是否添加随机参数防止缓存\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectrandomurl",
+            "itemtype": "property",
+            "name": "randomurl",
+            "type": "bool",
+            "default": "true",
+            "static": 1,
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 218,
+            "description": "处理 ajax url 的回调处理函数\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectprocessurl",
+            "itemtype": "property",
+            "name": "processUrl",
+            "type": "function",
+            "default": "null",
+            "static": 1,
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 227,
+            "description": "获取或设置 selector 的实例引用",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_ins",
+                    "description": "",
+                    "type": "AutoSelectControlerInstance"
+                }
+            ],
+            "return": {
+                "description": "AutoSelectControlerInstance"
+            },
+            "static": 1,
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 287,
+            "description": "使用 jquery on 绑定事件",
+            "itemtype": "method",
+            "name": "on",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_cb",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "AutoSelectInstance"
+            },
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 295,
+            "description": "使用 jquery trigger 绑定事件",
+            "itemtype": "method",
+            "name": "trigger",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "AutoSelectInstance"
+            },
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 302,
+            "description": "获取第一个 select",
+            "itemtype": "method",
+            "name": "first",
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 308,
+            "description": "获取最后一个 select",
+            "itemtype": "method",
+            "name": "last",
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 314,
+            "description": "获取所有 select",
+            "itemtype": "method",
+            "name": "items",
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 320,
+            "description": "是否为第一个 select",
+            "itemtype": "method",
+            "name": "isFirst",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 327,
+            "description": "是否为最后一个 select",
+            "itemtype": "method",
+            "name": "isLast",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 334,
+            "description": "是否已经初始化过",
+            "itemtype": "method",
+            "name": "isInited",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 341,
+            "description": "获取 select 的数据",
+            "itemtype": "method",
+            "name": "data",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "JSON"
+            },
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 672,
+            "description": "判断下拉框的option里是否有给定的值",
+            "params": [
+                {
+                    "name": "_select",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_val",
+                    "description": "要查找的值",
+                    "type": "String"
+                }
+            ],
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 742,
+            "description": "初始化之事的事件",
+            "itemtype": "event",
+            "name": "SelectBeforeInited",
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 746,
+            "description": "初始化后的事件",
+            "itemtype": "event",
+            "name": "SelectInited",
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 750,
+            "description": "响应每个 select 的 change 事件",
+            "itemtype": "event",
+            "name": "SelectChange",
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 754,
+            "description": "最后一个 select change 后的事件",
+            "itemtype": "event",
+            "name": "SelectAllChanged",
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 758,
+            "description": "select 更新数据之前触发的事件",
+            "itemtype": "event",
+            "name": "SelectItemBeforeUpdate",
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 762,
+            "description": "select 更新数据之后触发的事件",
+            "itemtype": "event",
+            "name": "SelectItemUpdated",
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoSelect/AutoSelect.js",
+            "line": 766,
+            "description": "页面加载完毕时, 延时进行自动化, 延时可以避免来自其他逻辑的干扰",
+            "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
         {
             "file": "../comps/Calendar/JC.Calendar.js",
             "line": 73,
@@ -2489,214 +2914,6 @@
             "namespace": "JC"
         },
         {
-            "file": "../comps/Form/JC.Form.initAutoSelect.js",
-            "line": 2,
-            "description": "初始化 级联下拉框\n<br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能\n<br /><br />动态添加的 DOM 需要显式调用 AutoSelect( domSelector ) 进行初始化\n<br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性\n<br /><b>defaultselect</b>: none, 该属性声明这是级联下拉框的第一个下拉框, <b>这是必填项,初始化时以这个为入口</b>\n<br /><b>selectvalue</b>: string, 下拉框的默认选中值\n<br /><b>selecturl</b>: string, 下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符\n<br /><b>selecttarget</b>: selector, 下一级下拉框的选择器语法\n<br /><b>defaultoption</b>: none, 声明默认 option 选项, 更新option时, 有该属性的项不会被清除\n<p>\n     数据格式: [ [id, name], [id, name] ... ]\n     <br /> 如果获取到的数据格式不是默认格式,\n     可以通过 <a href='JC.Form.html#property_initAutoSelect.dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤\n</p>",
-            "itemtype": "method",
-            "name": "initAutoSelect",
-            "static": 1,
-            "version": "dev 0.2",
-            "author": "qiushaowei   <suches@btbtd.org> | 360 75 Team",
-            "date": "2013-07-28(.2), 2013-06-11(.1)",
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "要初始化的级联下拉框父级节点",
-                    "type": "Selector"
-                }
-            ],
-            "example": [
-                "\n       <h2>AJAX 返回内容</h2>\n       <code>\n           <dd>    \n               <select name='select102_1' defaultselect selecturl=\"data/shengshi_with_error_code.php?id=0\" selecttarget=\"select[name=select102_2]\">\n                   <option value=\"-1\" defaultoption>请选择</option>\n               </select>\n               <select name='select102_2' selecturl=\"data/shengshi_with_error_code.php?id={0}\" selecttarget=\"select[name=select102_3]\">\n                   <option value=\"-1\" defaultoption>请选择</option>\n               </select>\n               <select name='select102_3' selecturl=\"data/shengshi_with_error_code.php?id={0}\">\n                   <option value=\"-1\" defaultoption>请选择</option>\n               </select>\n           </dd>\n       </code>\n       <script>\n           $.get( './data/shengshi_html.php?rnd='+new Date().getTime(), function( _r ){\n               var _selector = $(_r);\n               $( 'dl.def > dt' ).after( _selector );\n               JC.Form.initAutoSelect( _selector );\n           });\n\n           JC.Form.initAutoSelect.dataFilter = \n               function( _data, _select ){\n                   var _r = _data;\n                   if( _data && !_data.length && _data.data ){\n                       _r = _data.data;\n                   }\n                   return _r;\n               };\n       </script>"
-            ],
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/JC.Form.initAutoSelect.js",
-            "line": 72,
-            "description": "判断 selector 是否为符合自动初始化联动框的要求",
-            "itemtype": "method",
-            "name": "initAutoSelect.isSelect",
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "",
-                    "type": "Selector"
-                }
-            ],
-            "return": {
-                "description": "bool"
-            },
-            "static": 1,
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/JC.Form.initAutoSelect.js",
-            "line": 89,
-            "description": "是否自动隐藏空值的级联下拉框, 起始下拉框不会被隐藏\n<br />这个是全局设置, 如果需要对具体某个select进行处理, 对应的 HTML 属性 selecthideempty",
-            "itemtype": "property",
-            "name": "initAutoSelect.hideEmpty",
-            "type": "bool",
-            "default": "false",
-            "static": 1,
-            "example": [
-                "\n               AutoSelect.hideEmpty = true;"
-            ],
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/JC.Form.initAutoSelect.js",
-            "line": 100,
-            "description": "级联下拉框的数据过滤函数\n<br />默认数据格式: [ [id, name], [id, name] ... ]\n<br />如果获取到的数据格式非默认格式, 可通过本函数进行数据过滤\n<p>\n <b>注意, 这个是全局过滤, 如果要使用该函数进行数据过滤, 判断逻辑需要比较具体</b>\n <br />如果要对具体 select 进行数据过滤, 可以使用HTML属性 selectdatafilter 指定过滤函数\n</p>",
-            "itemtype": "property",
-            "name": "initAutoSelect.dataFilter",
-            "type": "function",
-            "default": "null",
-            "static": 1,
-            "example": [
-                "\n                AutoSelect.dataFilter = \n                   function( _data, _select ){\n                       var _r = _data;\n                       if( _data && !_data.length && _data.data ){\n                           _r = _data.data;\n                       }\n                       return _r;\n                   };"
-            ],
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/JC.Form.initAutoSelect.js",
-            "line": 123,
-            "description": "下拉框初始化功能都是未初始化 数据之前的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectbeforeInited",
-            "itemtype": "property",
-            "name": "initAutoSelect.beforeInited",
-            "type": "function",
-            "default": "null",
-            "static": 1,
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/JC.Form.initAutoSelect.js",
-            "line": 132,
-            "description": "下拉框第一次初始完所有数据的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectinited",
-            "itemtype": "property",
-            "name": "initAutoSelect.inited",
-            "type": "function",
-            "default": "null",
-            "static": 1,
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/JC.Form.initAutoSelect.js",
-            "line": 141,
-            "description": "下拉框每个项数据变更后的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectchange",
-            "itemtype": "property",
-            "name": "initAutoSelect.change",
-            "type": "function",
-            "default": "null",
-            "static": 1,
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/JC.Form.initAutoSelect.js",
-            "line": 150,
-            "description": "下拉框所有项数据变更后的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectallchanged",
-            "itemtype": "property",
-            "name": "initAutoSelect.allChanged",
-            "type": "function",
-            "default": "null",
-            "static": 1,
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/JC.Form.initAutoSelect.js",
-            "line": 159,
-            "description": "第一次初始化所有联动框时, 是否触发 change 事件\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selecttriggerinitchange",
-            "itemtype": "property",
-            "name": "initAutoSelect.triggerInitChange",
-            "type": "bool",
-            "default": "false",
-            "static": 1,
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/JC.Form.initAutoSelect.js",
-            "line": 168,
-            "description": "ajax 请求数据时, 是否添加随机参数防止缓存\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectrandomurl",
-            "itemtype": "property",
-            "name": "initAutoSelect.randomurl",
-            "type": "bool",
-            "default": "true",
-            "static": 1,
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/JC.Form.initAutoSelect.js",
-            "line": 177,
-            "description": "处理 ajax url 的回调处理函数\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectprocessurl",
-            "itemtype": "property",
-            "name": "initAutoSelect.processUrl",
-            "type": "function",
-            "default": "null",
-            "static": 1,
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/JC.Form.initAutoSelect.js",
-            "line": 186,
-            "description": "获取或设置 selector 的实例引用",
-            "itemtype": "method",
-            "name": "initAutoSelect.getInstance",
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "",
-                    "type": "Selector"
-                },
-                {
-                    "name": "_ins",
-                    "description": "",
-                    "type": "AutoSelectControlerInstance"
-                }
-            ],
-            "return": {
-                "description": "AutoSelectControlerInstance"
-            },
-            "static": 1,
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/JC.Form.initAutoSelect.js",
-            "line": 583,
-            "description": "判断下拉框的option里是否有给定的值",
-            "params": [
-                {
-                    "name": "_select",
-                    "description": "",
-                    "type": "Selector"
-                },
-                {
-                    "name": "_val",
-                    "description": "要查找的值",
-                    "type": "String"
-                }
-            ],
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/JC.Form.initAutoSelect.js",
-            "line": 653,
-            "description": "页面加载完毕时, 延时进行自动化, 延时可以避免来自其他逻辑的干扰",
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
             "file": "../comps/Form/JC.Form.initCheckAll.js",
             "line": 2,
             "description": "初始化 checkbox 全选反选功能\n<br />只要引用本脚本, 页面加载完毕时就会自动初始化全选反选功能\n<br /><br />动态添加的 DOM 需要显式调用 JC.Form.initCheckAll( domSelector ) 进行初始化\n<br /><br />要使页面上的全选反选功能能够自动初始化, 需要在全选反选按钮上加入一些HTML 属性\n<br /><b>checktype</b>: all | inverse, all=全选/全不选, inverse=反选\n<br /><b>checkfor</b>: selector, 要全选/反选的 checkbox 选择器语法\n<br /><b>checkall</b>: selector, 全选按钮的选择器, 这个只有反选按钮需要, 反选时变更全选按钮的状态",
@@ -2793,6 +3010,16 @@
                     "type": "Int"
                 }
             ],
+            "class": "JC.Form",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Form/JC.Form.js",
+            "line": 35,
+            "description": "select 级联下拉框无限联动\n<br />这个方法已经摘取出来, 单独成为一个类.\n<br />详情请见: <a href=\"../../docs_api/classes/JC.AutoSelect.html\">JC.AutoSelect.html</a>\n<br />目前摘出去的类与之前的逻辑保持向后兼容, 但在不久的将来将会清除这个方法",
+            "itemtype": "method",
+            "name": "JC.Form.initAutoSelect",
+            "static": 1,
             "class": "JC.Form",
             "namespace": "JC"
         },
@@ -8066,7 +8293,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 198,
+            "line": 199,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -8093,7 +8320,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 207,
+            "line": 208,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -8115,7 +8342,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 215,
+            "line": 216,
             "description": "分析_item是否附合规则要求",
             "itemtype": "method",
             "name": "parse",
@@ -8133,7 +8360,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 343,
+            "line": 344,
             "description": "验证一个表单项, 如 文本框, 下拉框, 复选框, 单选框, 文本域, 隐藏域",
             "itemtype": "method",
             "name": "check",
@@ -8157,7 +8384,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 361,
+            "line": 362,
             "description": "这个方法是 <a href='JC.Valid.html#method_check'>Valid.check</a> 的别名",
             "itemtype": "method",
             "name": "checkAll",
@@ -8177,7 +8404,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 368,
+            "line": 369,
             "description": "获取 Valid 的实例 ( <b>Valid 是单例模式</b> )",
             "itemtype": "method",
             "name": "getInstance",
@@ -8198,7 +8425,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 376,
+            "line": 377,
             "description": "判断 selector 是否 Valid 的处理对象",
             "itemtype": "method",
             "name": "isValid",
@@ -8218,7 +8445,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 384,
+            "line": 385,
             "description": "把一个表单项的状态设为正确状态",
             "itemtype": "method",
             "name": "setValid",
@@ -8240,7 +8467,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 392,
+            "line": 393,
             "description": "把一个表单项的状态设为错误状态",
             "itemtype": "method",
             "name": "setError",
@@ -8267,7 +8494,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 402,
+            "line": 403,
             "description": "显示 focusmsg 属性的提示信息( 如果有的话 )",
             "itemtype": "method",
             "name": "focusmsg",
@@ -8289,7 +8516,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 411,
+            "line": 412,
             "description": "focus 时,是否总是显示 focusmsg 提示信息",
             "itemtype": "property",
             "name": "focusmsgEverytime",
@@ -8301,7 +8528,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 419,
+            "line": 420,
             "description": "验证正确时, 是否显示正确的样式",
             "itemtype": "property",
             "name": "showValidStatus",
@@ -8313,7 +8540,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 427,
+            "line": 428,
             "description": "清除Valid生成的错误样式",
             "itemtype": "method",
             "name": "clearError",
@@ -8333,7 +8560,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 438,
+            "line": 439,
             "description": "验证发生错误时, 是否终止继续验证\n<br /> 为真终止继续验证, 为假将验证表单的所有项, 默认为 false",
             "itemtype": "property",
             "name": "errorAbort",
@@ -8348,7 +8575,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 451,
+            "line": 452,
             "description": "是否自动清除两边的空格",
             "itemtype": "property",
             "name": "autoTrim",
@@ -8363,7 +8590,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 463,
+            "line": 464,
             "description": "对一个 control 作检查后的回调, 无论正确与否都会触发",
             "itemtype": "property",
             "name": "itemCallback",
@@ -8378,7 +8605,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 479,
+            "line": 480,
             "description": "检查一个表单是否有内容",
             "itemtype": "method",
             "name": "formHasValue",
@@ -8406,7 +8633,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 525,
+            "line": 526,
             "description": "获取 _item 的检查类型",
             "itemtype": "method",
             "name": "parseDatatype",
@@ -8425,7 +8652,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 536,
+            "line": 537,
             "description": "获取 _item 的检查子类型, 所有可用的检查子类型位于 _logic.subdatatype 对象",
             "itemtype": "method",
             "name": "parseSubdatatype",
@@ -8444,7 +8671,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 667,
+            "line": 671,
             "description": "检查内容的长度",
             "itemtype": "method",
             "name": "lengthValid",
@@ -8467,14 +8694,14 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 694,
+            "line": 698,
             "description": "根据特殊的 datatype 实现不同的计算方法",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 720,
+            "line": 724,
             "description": "检查是否为正确的数字<br />\n<br>默认范围 0 - Math.pow(10, 10)",
             "itemtype": "method",
             "name": "n",
@@ -8497,7 +8724,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 786,
+            "line": 790,
             "description": "检查两个输入框的数值\n<br /> 数字格式为 0-pow(10,10)\n<br /> 带小数点使用 nrange-int.float, 例: nrange-1.2  nrange-2.2\n<br /> <b>注意:</b> 如果不显示指定 fromNEl, toNEl, \n             将会从父级查找 datatype=nrange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略",
             "itemtype": "method",
             "name": "nrange",
@@ -8520,7 +8747,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 860,
+            "line": 864,
             "description": "检查是否为合法的日期,\n<br />日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD",
             "itemtype": "method",
             "name": "d",
@@ -8543,7 +8770,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 895,
+            "line": 899,
             "description": "检查两个输入框的日期\n<br />日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD\n<br /> <b>注意:</b> 如果不显示指定 fromDateEl, toDateEl, \n             将会从父级查找 datatype=daterange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略",
             "itemtype": "method",
             "name": "daterange",
@@ -8566,7 +8793,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 966,
+            "line": 970,
             "description": "检查时间格式, 格式为 hh:mm:ss",
             "itemtype": "method",
             "name": "time",
@@ -8588,7 +8815,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 983,
+            "line": 987,
             "description": "检查时间格式, 格式为 hh:mm",
             "itemtype": "method",
             "name": "minute",
@@ -8610,7 +8837,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1000,
+            "line": 1004,
             "description": "检查银行卡号码\n<br />格式为 d{19} | d{16} | 1111 1111 1111 1111 111 | 1111 1111 1111 1111111",
             "itemtype": "method",
             "name": "bankcard",
@@ -8632,7 +8859,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1020,
+            "line": 1024,
             "description": "检查中文姓名\n<br>格式: 汉字和大小写字母\n<br>规则: 长度 2-32个字节, 非 ASCII 算2个字节",
             "itemtype": "method",
             "name": "cnname",
@@ -8654,7 +8881,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1041,
+            "line": 1045,
             "description": "检查注册用户名\n<br>格式: a-zA-Z0-9_-\n<br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30",
             "itemtype": "method",
             "name": "username",
@@ -8676,7 +8903,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1061,
+            "line": 1065,
             "description": "检查身份证号码<br />\n目前只使用最简单的位数判断~ 有待完善",
             "itemtype": "method",
             "name": "idnumber",
@@ -8698,7 +8925,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1080,
+            "line": 1084,
             "description": "检查手机号码<br />",
             "itemtype": "method",
             "name": "mobilecode",
@@ -8725,7 +8952,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1100,
+            "line": 1104,
             "description": "检查手机号码\n<br />这个方法是 mobilecode 的别名",
             "itemtype": "method",
             "name": "mobile",
@@ -8749,7 +8976,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1113,
+            "line": 1117,
             "description": "检查手机号码加强方法\n<br>格式: [+国家代码] [零]11位数字",
             "itemtype": "method",
             "name": "mobilezonecode",
@@ -8776,7 +9003,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1134,
+            "line": 1138,
             "description": "检查电话号码\n<br>格式: 7/8位数字",
             "itemtype": "method",
             "name": "phonecode",
@@ -8798,7 +9025,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1153,
+            "line": 1157,
             "description": "检查电话号码\n<br>格式: [区号]7/8位电话号码",
             "itemtype": "method",
             "name": "phone",
@@ -8825,7 +9052,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1174,
+            "line": 1178,
             "description": "检查电话号码\n<br>格式: [+国家代码][ ][电话区号][ ]7/8位电话号码[#分机号]",
             "itemtype": "method",
             "name": "phoneall",
@@ -8852,7 +9079,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1196,
+            "line": 1200,
             "description": "检查电话区号",
             "itemtype": "method",
             "name": "phonezone",
@@ -8874,7 +9101,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1214,
+            "line": 1223,
             "description": "检查电话分机号码",
             "itemtype": "method",
             "name": "phoneext",
@@ -8896,7 +9123,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1232,
+            "line": 1241,
             "description": "检查手机号码/电话号码\n<br />这个方法是原有方法的混合验证 mobilecode + phone",
             "itemtype": "method",
             "name": "mobilephone",
@@ -8918,7 +9145,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1256,
+            "line": 1265,
             "description": "检查手机号码/电话号码, 泛匹配\n<br />这个方法是原有方法的混合验证 mobilezonecode + phoneall",
             "itemtype": "method",
             "name": "mobilephoneall",
@@ -8940,7 +9167,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1279,
+            "line": 1288,
             "description": "自定义正则校验",
             "itemtype": "method",
             "name": "reg",
@@ -8963,7 +9190,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1305,
+            "line": 1314,
             "description": "检查验证码<br />\n格式: 为 0-9a-zA-Z, 长度 默认为4",
             "itemtype": "method",
             "name": "vcode",
@@ -8986,7 +9213,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1331,
+            "line": 1340,
             "description": "检查文本长度",
             "itemtype": "method",
             "name": "text",
@@ -9002,7 +9229,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1340,
+            "line": 1349,
             "description": "检查文本的字节长度",
             "itemtype": "method",
             "name": "bytetext",
@@ -9018,7 +9245,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1349,
+            "line": 1358,
             "description": "检查富文本的字节\n<br />TODO: 完成富文本长度检查",
             "itemtype": "method",
             "name": "richtext",
@@ -9034,7 +9261,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1359,
+            "line": 1368,
             "description": "计算字符串的字节长度, 非 ASCII 0-255的字符视为两个字节",
             "itemtype": "method",
             "name": "bytelen",
@@ -9053,7 +9280,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1370,
+            "line": 1379,
             "description": "检查URL",
             "itemtype": "method",
             "name": "url",
@@ -9075,7 +9302,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1388,
+            "line": 1397,
             "description": "检查域名",
             "itemtype": "method",
             "name": "domain",
@@ -9094,7 +9321,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1406,
+            "line": 1415,
             "description": "检查域名",
             "itemtype": "method",
             "name": "stricdomain",
@@ -9113,7 +9340,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1423,
+            "line": 1432,
             "description": "检查电子邮件",
             "itemtype": "method",
             "name": "email",
@@ -9135,7 +9362,29 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1440,
+            "line": 1449,
+            "description": "检查地区代码",
+            "itemtype": "method",
+            "name": "countrycode",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_item",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "example": [
+                "\n               <div class=\"f-l\">\n                   <input type=\"TEXT\" name=\"company_countrycode\" datatype=\"countrycode\" errmsg=\"请填写正确的地区代码\">\n               </div>"
+            ],
+            "class": "JC.Valid",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Valid/Valid.js",
+            "line": 1466,
             "description": "检查邮政编码",
             "itemtype": "method",
             "name": "zipcode",
@@ -9157,7 +9406,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1457,
+            "line": 1483,
             "description": "此类型检查 2|N个对象必须至少有一个是有输入内容的, \n<br> 常用于 手机/电话 二填一",
             "itemtype": "method",
             "name": "alternative",
@@ -9179,7 +9428,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1520,
+            "line": 1548,
             "description": "此类型检查 2|N 个对象填写的值必须一致\n常用于注意时密码验证/重置密码",
             "itemtype": "method",
             "name": "reconfirm",
@@ -9201,7 +9450,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1597,
+            "line": 1627,
             "description": "获取 _selector 对象\n<br />这个方法的存在是为了向后兼容qwrap, qwrap DOM参数都为ID",
             "itemtype": "method",
             "name": "getElement",
@@ -9220,7 +9469,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1616,
+            "line": 1648,
             "description": "获取对应的错误信息, 默认的错误信息有 reqmsg, errmsg, <br />\n注意: 错误信息第一个字符如果为空格的话, 将完全使用用户定义的错误信息, 将不会动态添加 请上传/选择/填写",
             "itemtype": "method",
             "name": "errorMsg",
@@ -9249,7 +9498,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1647,
+            "line": 1679,
             "description": "检查内容是否为空,\n<br>如果声明了该属性, 那么 value 须不为空",
             "itemtype": "method",
             "name": "reqmsg",
@@ -9271,7 +9520,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1716,
+            "line": 1748,
             "description": "显示正确的视觉效果",
             "itemtype": "method",
             "name": "valid",
@@ -9300,7 +9549,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1770,
+            "line": 1802,
             "description": "显示错误的视觉效果",
             "itemtype": "method",
             "name": "error",
@@ -9329,7 +9578,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1850,
+            "line": 1882,
             "description": "解析错误时触发的时件",
             "itemtype": "event",
             "name": "ValidError",
@@ -9338,7 +9587,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1854,
+            "line": 1886,
             "description": "解析正确时触发的时件",
             "itemtype": "event",
             "name": "ValidCorrect",
@@ -9347,7 +9596,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1858,
+            "line": 1890,
             "description": "响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果",
             "access": "private",
             "tagname": "",
@@ -9356,7 +9605,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1866,
+            "line": 1898,
             "description": "响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果",
             "access": "private",
             "tagname": "",
@@ -9365,7 +9614,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1873,
+            "line": 1905,
             "description": "响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
             "access": "private",
             "tagname": "",
@@ -9374,7 +9623,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1880,
+            "line": 1912,
             "description": "响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
             "access": "private",
             "tagname": "",
@@ -10631,7 +10880,36 @@
         },
         {
             "file": "../JC.js",
-            "line": 94,
+            "line": 96,
+            "description": "调用依赖的类\n<br />这个方法的存在是因为有一些类调整了结构, 但是原有的引用因为向后兼容的需要, 暂时不能去掉",
+            "itemtype": "method",
+            "name": "_usePatch",
+            "params": [
+                {
+                    "name": "_items",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "_fromClass",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_patchClass",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "class": "window.JC",
+            "namespace": "window"
+        },
+        {
+            "file": "../JC.js",
+            "line": 118,
             "description": "输出调试信息, 可通过 JC.debug 指定是否显示调试信息",
             "params": [
                 {
@@ -10648,7 +10926,7 @@
         },
         {
             "file": "../JC.js",
-            "line": 105,
+            "line": 129,
             "description": "定义输出路径的 v 参数, 以便控制缓存",
             "itemtype": "property",
             "name": "pathPostfix",
@@ -10660,7 +10938,7 @@
         },
         {
             "file": "../JC.js",
-            "line": 113,
+            "line": 137,
             "description": "是否启用nginx concat 模块的路径格式",
             "itemtype": "property",
             "name": "enableNginxStyle",
@@ -10672,7 +10950,7 @@
         },
         {
             "file": "../JC.js",
-            "line": 121,
+            "line": 145,
             "description": "定义 nginx style 的基础路径\n<br /><b>注意:</b> 如果这个属性为空, 即使 enableNginxStyle = true, 也是直接输出默认路径",
             "itemtype": "property",
             "name": "nginxBasePath",
@@ -10684,7 +10962,7 @@
         },
         {
             "file": "../JC.js",
-            "line": 130,
+            "line": 154,
             "description": "资源路径映射对象\n<br />设置 JC.use 逗号(',') 分隔项的 对应URL路径",
             "itemtype": "property",
             "name": "FILE_MAP",
@@ -10699,7 +10977,7 @@
         },
         {
             "file": "../JC.js",
-            "line": 168,
+            "line": 192,
             "description": "输出 nginx concat 模块的脚本路径格式",
             "itemtype": "method",
             "name": "_writeNginxScript",
@@ -10718,7 +10996,7 @@
         },
         {
             "file": "../JC.js",
-            "line": 196,
+            "line": 220,
             "description": "输出的脚本路径格式",
             "itemtype": "method",
             "name": "_writeNormalScript",
@@ -10737,7 +11015,7 @@
         },
         {
             "file": "../JC.js",
-            "line": 213,
+            "line": 237,
             "description": "保存 use 过的资源路径, 以便进行唯一性判断, 避免重复加载",
             "itemtype": "property",
             "name": "_USE_CACHE",
@@ -10751,14 +11029,14 @@
         },
         {
             "file": "../JC.js",
-            "line": 234,
+            "line": 258,
             "description": "如果 console 不可用, 则生成一个模拟的 console 对象",
             "class": "window.UXC",
             "namespace": "window"
         },
         {
             "file": "../JC.js",
-            "line": 240,
+            "line": 264,
             "description": "自动识别组件库所在路径",
             "class": "window.UXC",
             "namespace": "window"
@@ -11297,6 +11575,35 @@
             "class": ".window"
         },
         {
+            "file": "../common.js",
+            "line": 462,
+            "description": "扩展 '/' 符号为 jquery 父节点选择器",
+            "itemtype": "method",
+            "name": "parentSelector",
+            "params": [
+                {
+                    "name": "_item",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_finder",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "selector"
+            },
+            "static": 1,
+            "class": ".window"
+        },
+        {
             "file": "../lib.js",
             "line": 2,
             "description": "取当前脚本标签的 src路径",
@@ -11312,6 +11619,14 @@
     "warnings": [
         {
             "message": "unknown tag: version",
+            "line": " ../comps/AutoSelect/AutoSelect.js:2"
+        },
+        {
+            "message": "unknown tag: date",
+            "line": " ../comps/AutoSelect/AutoSelect.js:2"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../comps/Calendar/JC.Calendar.js:2"
         },
         {
@@ -11341,14 +11656,6 @@
         {
             "message": "unknown tag: date",
             "line": " ../comps/Form/JC.Form.initAutoFill.js:2"
-        },
-        {
-            "message": "unknown tag: version",
-            "line": " ../comps/Form/JC.Form.initAutoSelect.js:2"
-        },
-        {
-            "message": "unknown tag: date",
-            "line": " ../comps/Form/JC.Form.initAutoSelect.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -11484,91 +11791,87 @@
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:667"
+            "line": " ../comps/Valid/Valid.js:671"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:667"
+            "line": " ../comps/Valid/Valid.js:671"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:667"
+            "line": " ../comps/Valid/Valid.js:671"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:720"
+            "line": " ../comps/Valid/Valid.js:724"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:720"
+            "line": " ../comps/Valid/Valid.js:724"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:720"
+            "line": " ../comps/Valid/Valid.js:724"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:786"
+            "line": " ../comps/Valid/Valid.js:790"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:786"
+            "line": " ../comps/Valid/Valid.js:790"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:786"
+            "line": " ../comps/Valid/Valid.js:790"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:786"
+            "line": " ../comps/Valid/Valid.js:790"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:786"
+            "line": " ../comps/Valid/Valid.js:790"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:860"
+            "line": " ../comps/Valid/Valid.js:864"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:860"
+            "line": " ../comps/Valid/Valid.js:864"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:860"
+            "line": " ../comps/Valid/Valid.js:864"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:895"
+            "line": " ../comps/Valid/Valid.js:899"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:895"
+            "line": " ../comps/Valid/Valid.js:899"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:895"
+            "line": " ../comps/Valid/Valid.js:899"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:895"
+            "line": " ../comps/Valid/Valid.js:899"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:895"
+            "line": " ../comps/Valid/Valid.js:899"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1279"
+            "line": " ../comps/Valid/Valid.js:1288"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1305"
-        },
-        {
-            "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1331"
+            "line": " ../comps/Valid/Valid.js:1314"
         },
         {
             "message": "unknown tag: attr",
@@ -11577,6 +11880,10 @@
         {
             "message": "unknown tag: attr",
             "line": " ../comps/Valid/Valid.js:1349"
+        },
+        {
+            "message": "unknown tag: attr",
+            "line": " ../comps/Valid/Valid.js:1358"
         },
         {
             "message": "unknown tag: ignore",
@@ -11668,7 +11975,7 @@
         },
         {
             "message": "unknown tag: date",
-            "line": " ../JC.js:223"
+            "line": " ../JC.js:247"
         },
         {
             "message": "unknown tag: require",
@@ -11677,6 +11984,14 @@
         {
             "message": "unknown tag: require",
             "line": " ../common.js:411"
+        },
+        {
+            "message": "Missing item type\n判断下拉框的option里是否有给定的值",
+            "line": " ../comps/AutoSelect/AutoSelect.js:672"
+        },
+        {
+            "message": "Missing item type\n页面加载完毕时, 延时进行自动化, 延时可以避免来自其他逻辑的干扰",
+            "line": " ../comps/AutoSelect/AutoSelect.js:766"
         },
         {
             "message": "Missing item type\n//TODO 添加事件响应机制",
@@ -11697,14 +12012,6 @@
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
             "line": " ../comps/Form/Form.js:2"
-        },
-        {
-            "message": "Missing item type\n判断下拉框的option里是否有给定的值",
-            "line": " ../comps/Form/JC.Form.initAutoSelect.js:583"
-        },
-        {
-            "message": "Missing item type\n页面加载完毕时, 延时进行自动化, 延时可以避免来自其他逻辑的干扰",
-            "line": " ../comps/Form/JC.Form.initAutoSelect.js:653"
         },
         {
             "message": "Missing item type\n监听 全选/反选 按钮的点击事件",
@@ -11844,23 +12151,23 @@
         },
         {
             "message": "Missing item type\n根据特殊的 datatype 实现不同的计算方法",
-            "line": " ../comps/Valid/Valid.js:694"
+            "line": " ../comps/Valid/Valid.js:698"
         },
         {
             "message": "Missing item type\n响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果",
-            "line": " ../comps/Valid/Valid.js:1858"
+            "line": " ../comps/Valid/Valid.js:1890"
         },
         {
             "message": "Missing item type\n响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果",
-            "line": " ../comps/Valid/Valid.js:1866"
+            "line": " ../comps/Valid/Valid.js:1898"
         },
         {
             "message": "Missing item type\n响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
-            "line": " ../comps/Valid/Valid.js:1873"
+            "line": " ../comps/Valid/Valid.js:1905"
         },
         {
             "message": "Missing item type\n响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
-            "line": " ../comps/Valid/Valid.js:1880"
+            "line": " ../comps/Valid/Valid.js:1912"
         },
         {
             "message": "Missing item type\nTop level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
@@ -12256,11 +12563,11 @@
         },
         {
             "message": "Missing item type\n如果 console 不可用, 则生成一个模拟的 console 对象",
-            "line": " ../JC.js:234"
+            "line": " ../JC.js:258"
         },
         {
             "message": "Missing item type\n自动识别组件库所在路径",
-            "line": " ../JC.js:240"
+            "line": " ../JC.js:264"
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",

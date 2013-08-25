@@ -414,18 +414,45 @@
                 <div class="f-l label">
                     <label>
                         (datatype phonezone, phonecode, phoneext)电话号码:
+                    </label>
+                </div>
+                <div class="f-l">
+                    <input type='text' name='company_countrycode1' style="width:60px;" value='' size="7" 
+                        datatype="countrycode" errmsg="请填写正确的地区代码" validmsg="false" />
+                    - 
+                    <input type='text' name='company_countrycode2' style="width:40px;" value='' size="4" 
+                        datatype="phonezone-2,4" errmsg="请填写正确的电话区号" validmsg="false" />
+                    - 
+                    <input type='text' name='countrycode3' style="width:80px;" value='' size="8" 
+                    datatype="phonecode"
+                    errmsg="请检查电话号码格式" />
+                    - 
+                    <input type='text' name='countrycode4' style="width:40px;" value='' size="4" 
+                    datatype="phoneext" errmsg="请填写正确的分机号" validmsg="false" />
+                    <em>地区代码 - 区号 - 电话号 - 分机号</em>
+                    <em class="error"></em>
+                    <em class="validmsg"></em>
+                </div>
+                </dd>
+
+
+                <dd>
+                <div class="f-l label">
+                    <label>
+                        (datatype phonezone, phonecode, phoneext)电话号码:
                         <br >subdatatype: alternative
                     </label>
                 </div>
                 <div class="f-l">
                     <input type='text' name='company_phonezone' style="width:40px;" value='' size="4" 
-                        datatype="phonezone" emEl="#phone-err-em" errmsg="请填写正确的电话区号" />
+                        datatype="phonezone" emEl="#phone-err-em" errmsg="请填写正确的电话区号" validmsg="false" />
                     - <input type='text' name='company_phonecode' style="width:80px;" value='' size="8" 
                         datatype="phonecode" subdatatype="alternative" datatarget="input[name=company_mobile]" alternativemsg="电话号码和手机号码至少填写一个"
                         errmsg="请检查电话号码格式" emEl="#phone-err-em" />
                     - <input type='text' name='company_phoneext' style="width:40px;" value='' size="4" 
-                        datatype="phoneext" emEl="#phone-err-em" errmsg="请填写正确的分机号" />
+                        datatype="phoneext" emEl="#phone-err-em" errmsg="请填写正确的分机号" validmsg="false" />
                     <em id="phone-err-em"></em>
+                    <em class="validmsg"></em>
                 </div>
                 </dd>
 
@@ -637,12 +664,12 @@
                     <div>如果需要显式指定比较的control, 请用 datatarget=selector</div>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="alternative_test[]" value="" 
+                    <input type="text" name="alternative_test[]" class="test" value="" 
                         datatype="n" subdatatype="alternative" 
                         errmsg="请填写正确的正整数"
                         alternativemsg="数值1和数值2至少需要填写一个"
                         /> <em>数值1</em>
-                    <input type="text" name="alternative_test[]" value="" 
+                    <input type="text" name="alternative_test[]" class="test" value="" 
                         datatype="n" subdatatype="alternative" 
                         errmsg="请填写正确的正整数"
                         alternativemsg="数值1和数值2至少需要填写一个"
@@ -651,6 +678,32 @@
                     <em class="validmsg"></em>
                 </div>
                 </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <div>N 个 control 至少有一个值是非空值 </div>
+                    <div>datatype: n</div>
+                    <label>subdatatype: alternative</label>
+                    <div>如果需要显式指定比较的control, 请用 datatarget=selector</div>
+                </div>
+                <div class="f-l">
+                    <input type="text" name="alternative_test[]" class="test" value="" 
+                        datatype="n" subdatatype="alternative" 
+                        errmsg="请填写正确的正整数"
+                        alternativemsg="数值1和数值2至少需要填写一个"
+                        datatarget="/input.test"
+                        /> <em>数值1</em>
+                    <input type="text" name="alternative_test[]" class="test" value="" 
+                        datatype="n" subdatatype="alternative" 
+                        errmsg="请填写正确的正整数"
+                        alternativemsg="数值1和数值2至少需要填写一个"
+                        datatarget="/input.test"
+                        /> <em>数值2</em>
+                    <em class="error"></em>
+                    <em class="validmsg"></em>
+                </div>
+                </dd>
+
 
                 <dd>
                 <div class="f-l label">

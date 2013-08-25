@@ -1,0 +1,363 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            body{
+                width: 600px;
+                margin: 20px auto 20px;
+            }
+
+            dl.def > dd{
+                margin: 10px 0;
+            }
+        </style>
+        <script src="../../../lib.js"></script>
+        <script>
+            if( /file\:|\\/.test( location.href ) ){
+                alert('本示例需要HTTP环境');
+            }
+
+            JC.debug = true; JC.use('AutoSelect');
+
+            $(document).ready(function(){
+
+                //JC.AutoSelect.hideEmpty = true;
+                $(document).delegate( 'button.js_ajaxTest', 'click', function(){
+                    var _p = $(this);
+                    _p.prop('disabled', true);
+                    setTimeout( function(){ _p.prop('disabled', false); }, 1000 );
+
+                    $.get( './data/shengshi_html.php?rnd='+new Date().getTime(), function( _r ){
+                        var _selector = $(_r);
+                        $( 'dl.def > dt' ).after( _selector );
+                        JC.AutoSelect( _selector );
+                    });
+                });
+
+                JC.AutoSelect.dataFilter = 
+                    function( _data, _select ){
+                        var _r = _data;
+                        if( _data && !_data.length && _data.data ){
+                            _r = _data.data;
+                        }
+                        return _r;
+                    };
+
+               JC.AutoSelect.inited =
+                    function(){
+                        JC.log( 'user inited' );
+                    };
+
+               JC.AutoSelect.allChanged =
+                    function(){
+                        JC.log( 'user allChanged' );
+                    };
+            });
+
+        </script>
+    </head>    
+    <body>
+
+        <div style="position:fixed; top: 20px; right: 20px">
+            <button type="button" class="js_ajaxTest">ajax test</button>
+        </div>
+
+        <dl class='def'>
+            <dt>auto select example</dt>
+            <dd>
+                <select name='select10_1' defaultselect selecturl="data/shengshi.php?id=0" selecttarget="select[name=select10_2]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select10_2' selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+            </dd>
+
+            <dd>
+                <select name='select20_1' defaultselect selectvalue="14" selecturl="data/shengshi.php?id=0" selecttarget="select[name=select20_2]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select20_2' selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+            </dd>
+
+            <dd>
+                <select name='select1_1' defaultselect selectvalue="14" selecturl="data/shengshi.php?id=0" selecttarget="select[name=select1_2]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select1_2' selectvalue="2341" selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+            </dd>
+            <dd>
+                <select name='select2_1' defaultselect selecturl="data/shengshi.php?id=0" selecttarget="select[name=select2_2]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select2_2' selecturl="data/shengshi.php?id={0}" selecttarget="select[name=select2_3]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select2_3' selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+            </dd>
+            <dd>
+                <select name='select11_1' defaultselect selectvalue="14" selecturl="data/shengshi.php?id=0" selecttarget="select[name=select11_2]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select11_2' selecturl="data/shengshi.php?id={0}" selecttarget="select[name=select11_3]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select11_3' selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+            </dd>
+
+            <dd>
+                <select name='select12_1' defaultselect selectvalue="14" selecturl="data/shengshi.php?id=0" selecttarget="select[name=select12_2]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select12_2' selectvalue="2341" selecturl="data/shengshi.php?id={0}" selecttarget="select[name=select12_3]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select12_3' selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+            </dd>
+
+            <dd>
+                <select name='select13_1' defaultselect selectvalue="14" selecturl="data/shengshi.php?id=0" selecttarget="select[name=select13_2]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select13_2' selectvalue="2341" selecturl="data/shengshi.php?id={0}" selecttarget="select[name=select13_3]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select13_3' selectvalue="2343" selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+            </dd>
+
+            <dd>
+                <select name='select3_1' defaultselect selecttarget="select[name=select3_2]">
+                    <option value="-1" defaultoption>请选择</option>
+                    <option value="28">北京 </option>
+                    <option value="29">天津 </option>
+                    <option value="34">河北省 </option>
+                    <option value="1">山西省 </option>
+                    <option value="23">内蒙古自治区 </option>
+                    <option value="2">辽宁省 </option>
+                    <option value="3">吉林省 </option>
+                    <option value="4">黑龙江省 </option>
+                    <option value="8">福建省 </option>
+                    <option value="7">安徽省 </option>
+                    <option value="30">上海 </option>
+                    <option value="5">江苏省 </option>
+                    <option value="6">浙江省 </option>
+                    <option value="9">江西省 </option>
+                    <option value="10">山东省 </option>
+                    <option value="11">河南省 </option>
+                    <option value="14">广东省 </option>
+                    <option value="12">湖北省 </option>
+                    <option value="13">湖南省 </option>
+                    <option value="17">贵州省 </option>
+                    <option value="24">广西壮族自治区 </option>
+                    <option value="15">海南省 </option>
+                    <option value="31">重庆 </option>
+                    <option value="16">四川省 </option>
+                    <option value="25">西藏自治区 </option>
+                    <option value="20">甘肃省 </option>
+                    <option value="19">陕西省 </option>
+                    <option value="18">云南省 </option>
+                    <option value="21">青海省 </option>
+                    <option value="26">宁夏回族自治区 </option>
+                    <option value="27">新疆维吾尔自治区 </option>
+                    <option value="22">台湾省 </option>
+                    <option value="32">香港特别行政区 </option>
+                    <option value="33">澳门特别行政区 </option>
+                </select>
+                <select name='select3_2' selecturl="data/shengshi.php?id={0}" selecttarget="select[name=select3_3]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select3_3' selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+            </dd>
+
+            <dd>
+                <select name='select4_1' defaultselect selectvalue="14" selecttarget="select[name=select4_2]">
+                    <option value="-1" defaultoption>请选择</option>
+                    <option value="28">北京 </option>
+                    <option value="29">天津 </option>
+                    <option value="34">河北省 </option>
+                    <option value="1">山西省 </option>
+                    <option value="23">内蒙古自治区 </option>
+                    <option value="2">辽宁省 </option>
+                    <option value="3">吉林省 </option>
+                    <option value="4">黑龙江省 </option>
+                    <option value="8">福建省 </option>
+                    <option value="7">安徽省 </option>
+                    <option value="30">上海 </option>
+                    <option value="5">江苏省 </option>
+                    <option value="6">浙江省 </option>
+                    <option value="9">江西省 </option>
+                    <option value="10">山东省 </option>
+                    <option value="11">河南省 </option>
+                    <option value="14">广东省 </option>
+                    <option value="12">湖北省 </option>
+                    <option value="13">湖南省 </option>
+                    <option value="17">贵州省 </option>
+                    <option value="24">广西壮族自治区 </option>
+                    <option value="15">海南省 </option>
+                    <option value="31">重庆 </option>
+                    <option value="16">四川省 </option>
+                    <option value="25">西藏自治区 </option>
+                    <option value="20">甘肃省 </option>
+                    <option value="19">陕西省 </option>
+                    <option value="18">云南省 </option>
+                    <option value="21">青海省 </option>
+                    <option value="26">宁夏回族自治区 </option>
+                    <option value="27">新疆维吾尔自治区 </option>
+                    <option value="22">台湾省 </option>
+                    <option value="32">香港特别行政区 </option>
+                    <option value="33">澳门特别行政区 </option>
+                </select>
+                <select name='select4_2' selecturl="data/shengshi.php?id={0}" selecttarget="select[name=select4_3]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select4_3' selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+            </dd>
+
+            <dd>
+                <select name='select5_1' defaultselect selectvalue="14" selecttarget="select[name=select5_2]">
+                    <option value="-1" defaultoption>请选择</option>
+                    <option value="28">北京 </option>
+                    <option value="29">天津 </option>
+                    <option value="34">河北省 </option>
+                    <option value="1">山西省 </option>
+                    <option value="23">内蒙古自治区 </option>
+                    <option value="2">辽宁省 </option>
+                    <option value="3">吉林省 </option>
+                    <option value="4">黑龙江省 </option>
+                    <option value="8">福建省 </option>
+                    <option value="7">安徽省 </option>
+                    <option value="30">上海 </option>
+                    <option value="5">江苏省 </option>
+                    <option value="6">浙江省 </option>
+                    <option value="9">江西省 </option>
+                    <option value="10">山东省 </option>
+                    <option value="11">河南省 </option>
+                    <option value="14">广东省 </option>
+                    <option value="12">湖北省 </option>
+                    <option value="13">湖南省 </option>
+                    <option value="17">贵州省 </option>
+                    <option value="24">广西壮族自治区 </option>
+                    <option value="15">海南省 </option>
+                    <option value="31">重庆 </option>
+                    <option value="16">四川省 </option>
+                    <option value="25">西藏自治区 </option>
+                    <option value="20">甘肃省 </option>
+                    <option value="19">陕西省 </option>
+                    <option value="18">云南省 </option>
+                    <option value="21">青海省 </option>
+                    <option value="26">宁夏回族自治区 </option>
+                    <option value="27">新疆维吾尔自治区 </option>
+                    <option value="22">台湾省 </option>
+                    <option value="32">香港特别行政区 </option>
+                    <option value="33">澳门特别行政区 </option>
+                </select>
+                <select name='select5_2' selectvalue="2341" selecturl="data/shengshi.php?id={0}" selecttarget="select[name=select5_3]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select5_3' selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+            </dd>
+
+            <dd>
+                <select name='select6_1' defaultselect selectvalue="14" selecttarget="select[name=select6_2]">
+                    <option value="-1" defaultoption>请选择</option>
+                    <option value="28">北京 </option>
+                    <option value="29">天津 </option>
+                    <option value="34">河北省 </option>
+                    <option value="1">山西省 </option>
+                    <option value="23">内蒙古自治区 </option>
+                    <option value="2">辽宁省 </option>
+                    <option value="3">吉林省 </option>
+                    <option value="4">黑龙江省 </option>
+                    <option value="8">福建省 </option>
+                    <option value="7">安徽省 </option>
+                    <option value="30">上海 </option>
+                    <option value="5">江苏省 </option>
+                    <option value="6">浙江省 </option>
+                    <option value="9">江西省 </option>
+                    <option value="10">山东省 </option>
+                    <option value="11">河南省 </option>
+                    <option value="14">广东省 </option>
+                    <option value="12">湖北省 </option>
+                    <option value="13">湖南省 </option>
+                    <option value="17">贵州省 </option>
+                    <option value="24">广西壮族自治区 </option>
+                    <option value="15">海南省 </option>
+                    <option value="31">重庆 </option>
+                    <option value="16">四川省 </option>
+                    <option value="25">西藏自治区 </option>
+                    <option value="20">甘肃省 </option>
+                    <option value="19">陕西省 </option>
+                    <option value="18">云南省 </option>
+                    <option value="21">青海省 </option>
+                    <option value="26">宁夏回族自治区 </option>
+                    <option value="27">新疆维吾尔自治区 </option>
+                    <option value="22">台湾省 </option>
+                    <option value="32">香港特别行政区 </option>
+                    <option value="33">澳门特别行政区 </option>
+                </select>
+                <select name='select6_2' selectvalue="2341" selecturl="data/shengshi.php?id={0}" selecttarget="select[name=select6_3]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select6_3' selectvalue="2343" selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+            </dd>
+
+            <dd>
+                <select name='select7_1' defaultselect selecttarget="select[name=select7_2]">
+                    <option value="-1" defaultoption>请选择</option>
+                    <option value="28">北京 </option>
+                    <option value="29">天津 </option>
+                    <option value="34">河北省 </option>
+                    <option value="1">山西省 </option>
+                    <option value="23">内蒙古自治区 </option>
+                    <option value="2">辽宁省 </option>
+                    <option value="3">吉林省 </option>
+                    <option value="4">黑龙江省 </option>
+                    <option value="8">福建省 </option>
+                    <option value="7">安徽省 </option>
+                    <option value="30">上海 </option>
+                    <option value="5">江苏省 </option>
+                    <option value="6">浙江省 </option>
+                    <option value="9">江西省 </option>
+                    <option value="10">山东省 </option>
+                    <option value="11">河南省 </option>
+                    <option value="14" selected>广东省 </option>
+                    <option value="12">湖北省 </option>
+                    <option value="13">湖南省 </option>
+                    <option value="17">贵州省 </option>
+                    <option value="24">广西壮族自治区 </option>
+                    <option value="15">海南省 </option>
+                    <option value="31">重庆 </option>
+                    <option value="16">四川省 </option>
+                    <option value="25">西藏自治区 </option>
+                    <option value="20">甘肃省 </option>
+                    <option value="19">陕西省 </option>
+                    <option value="18">云南省 </option>
+                    <option value="21">青海省 </option>
+                    <option value="26">宁夏回族自治区 </option>
+                    <option value="27">新疆维吾尔自治区 </option>
+                    <option value="22">台湾省 </option>
+                    <option value="32">香港特别行政区 </option>
+                    <option value="33">澳门特别行政区 </option>
+                </select>
+                <select name='select7_2' selecturl="data/shengshi.php?id={0}" selectvalue="2341" selecttarget="select[name=select7_3]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select7_3' selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+            </dd>
+
+            <dd>
+                <select name='select8_1' defaultselect selecttarget="select[name=select8_2]">
+                    <option value="-1" defaultoption>请选择</option>
+                    <option value="28">北京 </option>
+                    <option value="29">天津 </option>
+                    <option value="34">河北省 </option>
+                    <option value="1">山西省 </option>
+                    <option value="23">内蒙古自治区 </option>
+                    <option value="2">辽宁省 </option>
+                    <option value="3">吉林省 </option>
+                    <option value="4">黑龙江省 </option>
+                    <option value="8">福建省 </option>
+                    <option value="7">安徽省 </option>
+                    <option value="30">上海 </option>
+                    <option value="5">江苏省 </option>
+                    <option value="6">浙江省 </option>
+                    <option value="9">江西省 </option>
+                    <option value="10">山东省 </option>
+                    <option value="11">河南省 </option>
+                    <option value="14" selected>广东省 </option>
+                    <option value="12">湖北省 </option>
+                    <option value="13">湖南省 </option>
+                    <option value="17">贵州省 </option>
+                    <option value="24">广西壮族自治区 </option>
+                    <option value="15">海南省 </option>
+                    <option value="31">重庆 </option>
+                    <option value="16">四川省 </option>
+                    <option value="25">西藏自治区 </option>
+                    <option value="20">甘肃省 </option>
+                    <option value="19">陕西省 </option>
+                    <option value="18">云南省 </option>
+                    <option value="21">青海省 </option>
+                    <option value="26">宁夏回族自治区 </option>
+                    <option value="27">新疆维吾尔自治区 </option>
+                    <option value="22">台湾省 </option>
+                    <option value="32">香港特别行政区 </option>
+                    <option value="33">澳门特别行政区 </option>
+                </select>
+                <select name='select8_2' selectvalue="2341" selecturl="data/shengshi.php?id={0}" selecttarget="select[name=select8_3]"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select8_3' selectvalue="2343" selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+            </dd>
+
+
+        </dl>
+
+    </body>
+</html>
+

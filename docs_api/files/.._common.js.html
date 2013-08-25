@@ -45,6 +45,8 @@
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
             
+                <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
+            
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
                 <li><a href="../classes/JC.confirm.html">JC.confirm</a></li>
@@ -615,6 +617,30 @@ function mousewheelEvent( _cb, _detach ){
     }else{
         document.attachEvent &amp;&amp; document.attachEvent( _evt, _cb )
         document.addEventListener &amp;&amp; document.addEventListener( _evt, _cb );
+    }
+}
+/**
+ * 扩展 &#x27;/&#x27; 符号为 jquery 父节点选择器
+ * @method  parentSelector
+ * @param   {selector}  _item
+ * @param   {String}    _selector
+ * @param   {selector}  _finder
+ * @return  selector
+ * @static
+ */
+function parentSelector( _item, _selector, _finder ){
+    _item &amp;&amp; ( _item = $( _item ) ), _re = /^([\/]+)/;
+    if( _re.test( _selector ) ){
+        _selector = _selector.replace( /^([\/]+)/, function( $0, $1 ){
+            for( var i = 0, j = $1.length; i &lt; j; i++ ){
+                _item = _item.parent();
+            }
+            _finder = _item;
+            return &#x27;&#x27;;
+        });
+        return _finder.find( $.trim( _selector ) );
+    }else{
+        return _finder ? _finder.find( _selector ) : jQuery( _selector );
     }
 }
 

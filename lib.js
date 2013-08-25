@@ -479,6 +479,30 @@ function mousewheelEvent( _cb, _detach ){
         document.addEventListener && document.addEventListener( _evt, _cb );
     }
 }
+/**
+ * 扩展 '/' 符号为 jquery 父节点选择器
+ * @method  parentSelector
+ * @param   {selector}  _item
+ * @param   {String}    _selector
+ * @param   {selector}  _finder
+ * @return  selector
+ * @static
+ */
+function parentSelector( _item, _selector, _finder ){
+    _item && ( _item = $( _item ) ), _re = /^([\/]+)/;
+    if( _re.test( _selector ) ){
+        _selector = _selector.replace( /^([\/]+)/, function( $0, $1 ){
+            for( var i = 0, j = $1.length; i < j; i++ ){
+                _item = _item.parent();
+            }
+            _finder = _item;
+            return '';
+        });
+        return _finder.find( $.trim( _selector ) );
+    }else{
+        return _finder ? _finder.find( _selector ) : jQuery( _selector );
+    }
+}
 
 ;(function( $ ){
     if( window.JC && window.JC.PATH != 'undefined' ) return;
@@ -542,6 +566,8 @@ function mousewheelEvent( _cb, _detach ){
                 var _p = this, _paths = [], _parts = $.trim( _items ).split(/[\s]*?,[\s]*/)
                    , _pathRe = /[\/\\]/, _urlRe = /\:\/\//, _pathRplRe = /(\\)\1|(\/)\2/g;
 
+                _parts = JC._usePatch( _parts, 'Form', 'AutoSelect' );
+
                 $.each( _parts, function( _ix, _part ){
                     var _isComps = !_pathRe.test( _part ), _path, _isFullpath = /^\//.test( _part );
                     if( _isComps && window.JC[ _part ] ) return;
@@ -572,6 +598,28 @@ function mousewheelEvent( _cb, _detach ){
 
                 !JC.enableNginxStyle && JC._writeNormalScript( _paths );
                 JC.enableNginxStyle && JC._writeNginxScript( _paths );
+            }
+        /**
+         * 调用依赖的类
+         * <br />这个方法的存在是因为有一些类调整了结构, 但是原有的引用因为向后兼容的需要, 暂时不能去掉
+         * @method  _usePatch
+         * @param   {array}     _items
+         * @param   {string}    _fromClass
+         * @param   {string}    _patchClass
+         * @private
+         * @static
+         */
+        , _usePatch:
+            function( _items, _fromClass, _patchClass ){
+                var i, j, k, l, _find;
+                for( i = 0, j = _items.length; i < j; i++ ){
+                    if( ( $.trim( _items[i].toString() ) == _fromClass ) ){
+                        _find = true;
+                        break;
+                    }
+                }
+                _find && !JC[ _patchClass ] && _items.unshift( _patchClass );
+                return _items;
             }
        /**
         * 输出调试信息, 可通过 JC.debug 指定是否显示调试信息

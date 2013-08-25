@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../comps/Form/JC.Form.initAutoSelect.js - jquery components</title>
+    <title>../comps/AutoSelect/AutoSelect.js - jquery components</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -44,6 +44,8 @@
                 <li><a href="../classes/.window.html">.window</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
+            
+                <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -152,31 +154,71 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../comps/Form/JC.Form.initAutoSelect.js</h1>
+                        <h1 class="file-heading">File: ../comps/AutoSelect/AutoSelect.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
  ;(function($){
     /**
-     * 初始化 级联下拉框
+     * &lt;h2&gt;select 级联下拉框无限联动&lt;/h2&gt;
      * &lt;br /&gt;只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能
-     * &lt;br /&gt;&lt;br /&gt;动态添加的 DOM 需要显式调用 AutoSelect( domSelector ) 进行初始化
+     * &lt;br /&gt;&lt;br /&gt;动态添加的 DOM 需要显式调用 JC.AutoSelect( domSelector ) 进行初始化
      * &lt;br /&gt;&lt;br /&gt;要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性
-     * &lt;br /&gt;&lt;b&gt;defaultselect&lt;/b&gt;: none, 该属性声明这是级联下拉框的第一个下拉框, &lt;b&gt;这是必填项,初始化时以这个为入口&lt;/b&gt;
-     * &lt;br /&gt;&lt;b&gt;selectvalue&lt;/b&gt;: string, 下拉框的默认选中值
-     * &lt;br /&gt;&lt;b&gt;selecturl&lt;/b&gt;: string, 下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符
-     * &lt;br /&gt;&lt;b&gt;selecttarget&lt;/b&gt;: selector, 下一级下拉框的选择器语法
-     * &lt;br /&gt;&lt;b&gt;defaultoption&lt;/b&gt;: none, 声明默认 option 选项, 更新option时, 有该属性的项不会被清除
+     * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.AutoSelect.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;../../comps/AutoSelect/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
+     * &lt;h2&gt;select 标签可用的 HTML 属性&lt;/h2&gt;
+     * &lt;dl&gt;
+     *      &lt;dt&gt;defaultselect, 这个属性不需要赋值&lt;/dt&gt;
+     *      &lt;dd&gt;该属性声明这是级联下拉框的第一个下拉框, &lt;b&gt;这是必填项,初始化时以这个为入口&lt;/b&gt;&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;selectvalue = string&lt;/dt&gt;
+     *      &lt;dd&gt;下拉框的默认选中值&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;selecturl = AJAX 数据请求的URL&lt;/dt&gt;
+     *      &lt;dd&gt;下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;selecttarget = selector&lt;/dt&gt;
+     *      &lt;dd&gt;下一级下拉框的选择器语法&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;selectdatacb = 静态数据请求回调&lt;/dt&gt;
+     *      &lt;dd&gt;如果数据不需要 AJAX 请求, 可使用这个属性, 自行定义数据处理方式&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;selectrandomurl = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;AJAX 请求时, 添加随机参数, 防止数据缓存&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;selecttriggerinitchange = bool, default = true&lt;/dt&gt;
+     *      &lt;dd&gt;首次初始化时, 是否触发 change 事件&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;selecthideempty = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;是否隐藏没有数据的 selecct&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;selectdatafilter = 请求数据后的处理回调&lt;/dt&gt;
+     *      &lt;dd&gt;如果接口的数据不符合 select 的要求, 可通过这个属性定义数据过滤函数&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;selectbeforeinited = 初始化之前的回调&lt;/dt&gt;
+     *
+     *      &lt;dt&gt;selectinited = 初始化后的回调&lt;/dt&gt;
+     *
+     *      &lt;dt&gt;selectallchanged = 所有select请求完数据之后的回调&lt;/dt&gt;
+     * &lt;/dl&gt;
+     * &lt;h2&gt;option 标签可用的 HTML 属性&lt;/h2&gt;
+     * &lt;dl&gt;
+     *      &lt;dt&gt;defaultoption, 这个属性不需要赋值&lt;/dt&gt;
+     *      &lt;dd&gt;声明默认 option 选项, 更新option时, 有该属性的项不会被清除&lt;/dd&gt;
+     * &lt;/dl&gt;
+     * &lt;h2&gt;数据格式&lt;/h2&gt;
      * &lt;p&gt;
-     *      数据格式: [ [id, name], [id, name] ... ]
+     *      [ [id, name], [id, name] ... ]
      *      &lt;br /&gt; 如果获取到的数据格式不是默认格式,
-     *      可以通过 &lt;a href=&#x27;JC.Form.html#property_initAutoSelect.dataFilter&#x27;&gt;AutoSelect.dataFilter&lt;/a&gt; 属性自定义函数, 进行数据过滤
+     *      可以通过 &lt;a href=&#x27;JC.AutoSelect.html#property_dataFilter&#x27;&gt;AutoSelect.dataFilter&lt;/a&gt; 属性自定义函数, 进行数据过滤
      * &lt;/p&gt;
-     * @method  initAutoSelect
+     * @class       AutoSelect
+     * @namespace   JC
      * @static
-     * @for JC.Form
      * @version dev 0.2
-     * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 360 75 Team
+     * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 Team
      * @date    2013-07-28(.2), 2013-06-11(.1)
      * @param   {selector}  _selector   要初始化的级联下拉框父级节点
      * @example
@@ -198,10 +240,10 @@
             $.get( &#x27;./data/shengshi_html.php?rnd=&#x27;+new Date().getTime(), function( _r ){
                 var _selector = $(_r);
                 $( &#x27;dl.def &gt; dt&#x27; ).after( _selector );
-                JC.Form.initAutoSelect( _selector );
+                JC.AutoSelect( _selector );
             });
 
-            JC.Form.initAutoSelect.dataFilter = 
+            JC.AutoSelect.dataFilter = 
                 function( _data, _select ){
                     var _r = _data;
                     if( _data &amp;&amp; !_data.length &amp;&amp; _data.data ){
@@ -211,7 +253,8 @@
                 };
         &lt;/script&gt;
      */
-    JC.Form.initAutoSelect = AutoSelect;
+    JC.AutoSelect = AutoSelect;
+    JC.Form &amp;&amp; ( JC.Form.initAutoSelect = AutoSelect );
 
     function AutoSelect( _selector ){
         var _ins = [];
@@ -229,7 +272,7 @@
     var AutoSelectProp = {
         /**
          * 判断 selector 是否为符合自动初始化联动框的要求
-         * @method  initAutoSelect.isSelect
+         * @method  isSelect
          * @param   {selector}  _selector
          * @return  bool
          * @static
@@ -247,7 +290,7 @@
         /**
          * 是否自动隐藏空值的级联下拉框, 起始下拉框不会被隐藏
          * &lt;br /&gt;这个是全局设置, 如果需要对具体某个select进行处理, 对应的 HTML 属性 selecthideempty
-         * @property    initAutoSelect.hideEmpty
+         * @property    hideEmpty
          * @type    bool
          * @default false
          * @static
@@ -263,7 +306,7 @@
          *  &lt;b&gt;注意, 这个是全局过滤, 如果要使用该函数进行数据过滤, 判断逻辑需要比较具体&lt;/b&gt;
          *  &lt;br /&gt;如果要对具体 select 进行数据过滤, 可以使用HTML属性 selectdatafilter 指定过滤函数
          * &lt;/p&gt;
-         * @property    initAutoSelect.dataFilter
+         * @property    dataFilter
          * @type    function
          * @default null
          * @static
@@ -281,7 +324,7 @@
         /**
          * 下拉框初始化功能都是未初始化 数据之前的回调
          * &lt;br /&gt;这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectbeforeInited
-         * @property    initAutoSelect.beforeInited
+         * @property    beforeInited
          * @type    function
          * @default null
          * @static
@@ -290,7 +333,7 @@
         /**
          * 下拉框第一次初始完所有数据的回调
          * &lt;br /&gt;这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectinited
-         * @property    initAutoSelect.inited
+         * @property    inited
          * @type    function
          * @default null
          * @static
@@ -299,7 +342,7 @@
         /**
          * 下拉框每个项数据变更后的回调
          * &lt;br /&gt;这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectchange
-         * @property    initAutoSelect.change
+         * @property    change
          * @type    function
          * @default null
          * @static
@@ -308,7 +351,7 @@
         /**
          * 下拉框所有项数据变更后的回调
          * &lt;br /&gt;这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectallchanged
-         * @property    initAutoSelect.allChanged
+         * @property    allChanged
          * @type    function
          * @default null
          * @static
@@ -317,7 +360,7 @@
         /**
          * 第一次初始化所有联动框时, 是否触发 change 事件
          * &lt;br /&gt;这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selecttriggerinitchange
-         * @property    initAutoSelect.triggerInitChange
+         * @property    triggerInitChange
          * @type    bool
          * @default false
          * @static
@@ -326,7 +369,7 @@
         /**
          * ajax 请求数据时, 是否添加随机参数防止缓存
          * &lt;br /&gt;这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectrandomurl
-         * @property    initAutoSelect.randomurl
+         * @property    randomurl
          * @type    bool
          * @default true
          * @static
@@ -335,7 +378,7 @@
         /**
          * 处理 ajax url 的回调处理函数
          * &lt;br /&gt;这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectprocessurl
-         * @property    initAutoSelect.processUrl
+         * @property    processUrl
          * @type    function
          * @default null
          * @static
@@ -343,7 +386,7 @@
         , processUrl: null
         /**
          * 获取或设置 selector 的实例引用
-         * @method  initAutoSelect.getInstance
+         * @method  getInstance
          * @param   {selector}  _selector
          * @param   {AutoSelectControlerInstance}   _ins
          * @return AutoSelectControlerInstance
@@ -401,18 +444,66 @@
                 
                 return _p;
             }    
-
+        /**
+         * 使用 jquery on 绑定事件
+         * @method  {string}    on
+         * @param   {string}    _evtName
+         * @param   {function}  _cb
+         * @return  AutoSelectInstance
+         */
         , on: function( _evt, _cb ){ $(this).on( _evt, _cb ); return this; }
+        /**
+         * 使用 jquery trigger 绑定事件
+         * @method  {string}    trigger
+         * @param   {string}    _evtName
+         * @return  AutoSelectInstance
+         */
         , trigger: function( _evt, _args ){ $(this).trigger( _evt, _args ); return this; }
-
+        /**
+         * 获取第一个 select
+         * @method  first
+         * @return  selector
+         */
         , first: function(){ return this._model.first(); }
+        /**
+         * 获取最后一个 select
+         * @method  last
+         * @return selector
+         */
         , last: function(){ return this._model.last(); }
+        /**
+         * 获取所有 select
+         * @method  items
+         * @return  selector
+         */
         , items: function(){ return this._model.items(); }
-
+        /**
+         * 是否为第一个 select
+         * @method  isFirst
+         * @param   {selector}  _selector
+         * @return  selector
+         */
         , isFirst: function( _selector ){ return this._model.isFirst( _selector ); }
+        /**
+         * 是否为最后一个 select
+         * @method  isLast
+         * @param   {selector}  _selector
+         * @return  selector
+         */
         , isLast: function( _selector ){ return this._model.isLast( _selector ); }
+        /**
+         * 是否已经初始化过
+         * @method  isInited
+         * @param   {selector}  _selector
+         * @return  selector
+         */
         , isInited: function(){ return this._model.isInited(); }
-
+        /**
+         * 获取 select 的数据
+         * @method  data
+         * @param   {selector}  _selector
+         * @return  JSON
+         */
         , data: function( _selector ){ return this._model.data( _selector ); }
 
         , _responeChange:
@@ -808,6 +899,30 @@
             }
         
     };
+    /**
+     * 初始化之事的事件
+     * @event   SelectBeforeInited 
+     */
+    /**
+     * 初始化后的事件
+     * @event   SelectInited 
+     */
+    /**
+     * 响应每个 select 的 change 事件
+     * @event   SelectChange 
+     */
+    /**
+     * 最后一个 select change 后的事件
+     * @event   SelectAllChanged
+     */
+    /**
+     * select 更新数据之前触发的事件
+     * @event   SelectItemBeforeUpdate
+     */
+    /**
+     * select 更新数据之后触发的事件
+     * @event   SelectItemUpdated
+     */
     /**
      * 页面加载完毕时, 延时进行自动化, 延时可以避免来自其他逻辑的干扰
      */

@@ -36,6 +36,7 @@
             <ul id="api-classes" class="apis classes">
                 <li><a href="../classes/.window.html">.window</a></li>
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
+                <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
                 <li><a href="../classes/JC.confirm.html">JC.confirm</a></li>
                 <li><a href="../classes/JC.Dialog.html">JC.Dialog</a></li>
@@ -129,23 +130,15 @@
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_initAutoSelect">initAutoSelect</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_initAutoSelect.getInstance">initAutoSelect.getInstance</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_initAutoSelect.isSelect">initAutoSelect.isSelect</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_initCheckAll">initCheckAll</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_initNumericStepper">initNumericStepper</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_JC.Form.initAutoSelect">JC.Form.initAutoSelect</a>
                                     <span class="flag static">static</span>
                             </li>
                     </ul>
@@ -155,42 +148,6 @@
                     <ul class="index-list properties">
                             <li class="index-item property">
                                 <a href="#property_initAutoFill.decodeFunc">initAutoFill.decodeFunc</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_initAutoSelect.allChanged">initAutoSelect.allChanged</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_initAutoSelect.beforeInited">initAutoSelect.beforeInited</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_initAutoSelect.change">initAutoSelect.change</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_initAutoSelect.dataFilter">initAutoSelect.dataFilter</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_initAutoSelect.hideEmpty">initAutoSelect.hideEmpty</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_initAutoSelect.inited">initAutoSelect.inited</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_initAutoSelect.processUrl">initAutoSelect.processUrl</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_initAutoSelect.randomurl">initAutoSelect.randomurl</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_initAutoSelect.triggerInitChange">initAutoSelect.triggerInitChange</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item property">
@@ -339,175 +296,6 @@
             </ul>
         </div>
 </div>
-                    <div id="method_initAutoSelect" class="method item">
-    <h3 class="name"><code>initAutoSelect</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_selector</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Form_JC.Form.initAutoSelect.js.html#l2"><code>..&#x2F;comps&#x2F;Form&#x2F;JC.Form.initAutoSelect.js:2</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>初始化 级联下拉框
-<br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能
-<br /><br />动态添加的 DOM 需要显式调用 AutoSelect( domSelector ) 进行初始化
-<br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性
-<br /><b>defaultselect</b>: none, 该属性声明这是级联下拉框的第一个下拉框, <b>这是必填项,初始化时以这个为入口</b>
-<br /><b>selectvalue</b>: string, 下拉框的默认选中值
-<br /><b>selecturl</b>: string, 下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符
-<br /><b>selecttarget</b>: selector, 下一级下拉框的选择器语法
-<br /><b>defaultoption</b>: none, 声明默认 option 选项, 更新option时, 有该属性的项不会被清除</p>
-<p>
-     数据格式: [ [id, name], [id, name] ... ]
-     <br /> 如果获取到的数据格式不是默认格式,
-     可以通过 <a href='JC.Form.html#property_initAutoSelect.dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤
-</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_selector</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                        <p>要初始化的级联下拉框父级节点</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>   &lt;h2&gt;AJAX 返回内容&lt;/h2&gt;
-   &lt;code&gt;
-       &lt;dd&gt;    
-           &lt;select name='select102_1' defaultselect selecturl="data/shengshi_with_error_code.php?id=0" selecttarget="select[name=select102_2]"&gt;
-               &lt;option value="-1" defaultoption&gt;请选择&lt;/option&gt;
-           &lt;/select&gt;
-           &lt;select name='select102_2' selecturl="data/shengshi_with_error_code.php?id={0}" selecttarget="select[name=select102_3]"&gt;
-               &lt;option value="-1" defaultoption&gt;请选择&lt;/option&gt;
-           &lt;/select&gt;
-           &lt;select name='select102_3' selecturl="data/shengshi_with_error_code.php?id={0}"&gt;
-               &lt;option value="-1" defaultoption&gt;请选择&lt;/option&gt;
-           &lt;/select&gt;
-       &lt;/dd&gt;
-   &lt;/code&gt;
-   &lt;script&gt;
-       $.get( './data/shengshi_html.php?rnd='+new Date().getTime(), function( _r ){
-           var _selector = $(_r);
-           $( 'dl.def &gt; dt' ).after( _selector );
-           JC.Form.initAutoSelect( _selector );
-       });
-       JC.Form.initAutoSelect.dataFilter = 
-           function( _data, _select ){
-               var _r = _data;
-               if( _data &amp;&amp; !_data.length &amp;&amp; _data.data ){
-                   _r = _data.data;
-               }
-               return _r;
-           };
-   &lt;/script&gt;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method_initAutoSelect.getInstance" class="method item">
-    <h3 class="name"><code>initAutoSelect.getInstance</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_selector</code>
-                </li>
-                <li class="arg">
-                        <code>_ins</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Form_JC.Form.initAutoSelect.js.html#l186"><code>..&#x2F;comps&#x2F;Form&#x2F;JC.Form.initAutoSelect.js:186</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>获取或设置 selector 的实例引用</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_selector</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-                <li class="param">
-                        <code class="param-name">_ins</code>
-                        <span class="type">AutoSelectControlerInstance</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                    AutoSelectControlerInstance
-            </div>
-        </div>
-</div>
-                    <div id="method_initAutoSelect.isSelect" class="method item">
-    <h3 class="name"><code>initAutoSelect.isSelect</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_selector</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Form_JC.Form.initAutoSelect.js.html#l72"><code>..&#x2F;comps&#x2F;Form&#x2F;JC.Form.initAutoSelect.js:72</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>判断 selector 是否为符合自动初始化联动框的要求</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_selector</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                    bool
-            </div>
-        </div>
-</div>
                     <div id="method_initCheckAll" class="method item">
     <h3 class="name"><code>initCheckAll</code></h3>
         <div class="args">
@@ -643,6 +431,23 @@
             </div>
         </div>
 </div>
+                    <div id="method_JC.Form.initAutoSelect" class="method item">
+    <h3 class="name"><code>JC.Form.initAutoSelect</code></h3>
+        <span class="paren">()</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Form_JC.Form.js.html#l35"><code>..&#x2F;comps&#x2F;Form&#x2F;JC.Form.js:35</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>select 级联下拉框无限联动
+<br />这个方法已经摘取出来, 单独成为一个类.
+<br />详情请见: <a href="../../docs_api/classes/JC.AutoSelect.html">JC.AutoSelect.html</a>
+<br />目前摘出去的类与之前的逻辑保持向后兼容, 但在不久的将来将会清除这个方法</p>
+    </div>
+</div>
             </div>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
@@ -660,176 +465,6 @@
         <p>自定义 URI decode 函数</p>
     </div>
         <p><strong>Default:</strong> null</p>
-</div>
-                    <div id="property_initAutoSelect.allChanged" class="property item">
-    <h3 class="name"><code>initAutoSelect.allChanged</code></h3>
-    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Form_JC.Form.initAutoSelect.js.html#l150"><code>..&#x2F;comps&#x2F;Form&#x2F;JC.Form.initAutoSelect.js:150</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>下拉框所有项数据变更后的回调
-<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectallchanged</p>
-    </div>
-        <p><strong>Default:</strong> null</p>
-</div>
-                    <div id="property_initAutoSelect.beforeInited" class="property item">
-    <h3 class="name"><code>initAutoSelect.beforeInited</code></h3>
-    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Form_JC.Form.initAutoSelect.js.html#l123"><code>..&#x2F;comps&#x2F;Form&#x2F;JC.Form.initAutoSelect.js:123</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>下拉框初始化功能都是未初始化 数据之前的回调
-<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectbeforeInited</p>
-    </div>
-        <p><strong>Default:</strong> null</p>
-</div>
-                    <div id="property_initAutoSelect.change" class="property item">
-    <h3 class="name"><code>initAutoSelect.change</code></h3>
-    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Form_JC.Form.initAutoSelect.js.html#l141"><code>..&#x2F;comps&#x2F;Form&#x2F;JC.Form.initAutoSelect.js:141</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>下拉框每个项数据变更后的回调
-<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectchange</p>
-    </div>
-        <p><strong>Default:</strong> null</p>
-</div>
-                    <div id="property_initAutoSelect.dataFilter" class="property item">
-    <h3 class="name"><code>initAutoSelect.dataFilter</code></h3>
-    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Form_JC.Form.initAutoSelect.js.html#l100"><code>..&#x2F;comps&#x2F;Form&#x2F;JC.Form.initAutoSelect.js:100</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>级联下拉框的数据过滤函数
-<br />默认数据格式: [ [id, name], [id, name] ... ]
-<br />如果获取到的数据格式非默认格式, 可通过本函数进行数据过滤</p>
-<p>
- <b>注意, 这个是全局过滤, 如果要使用该函数进行数据过滤, 判断逻辑需要比较具体</b>
- <br />如果要对具体 select 进行数据过滤, 可以使用HTML属性 selectdatafilter 指定过滤函数
-</p>
-    </div>
-        <p><strong>Default:</strong> null</p>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>            AutoSelect.dataFilter = 
-               function( _data, _select ){
-                   var _r = _data;
-                   if( _data &amp;&amp; !_data.length &amp;&amp; _data.data ){
-                       _r = _data.data;
-                   }
-                   return _r;
-               };
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="property_initAutoSelect.hideEmpty" class="property item">
-    <h3 class="name"><code>initAutoSelect.hideEmpty</code></h3>
-    <span class="type">Bool</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Form_JC.Form.initAutoSelect.js.html#l89"><code>..&#x2F;comps&#x2F;Form&#x2F;JC.Form.initAutoSelect.js:89</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>是否自动隐藏空值的级联下拉框, 起始下拉框不会被隐藏
-<br />这个是全局设置, 如果需要对具体某个select进行处理, 对应的 HTML 属性 selecthideempty</p>
-    </div>
-        <p><strong>Default:</strong> false</p>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>           AutoSelect.hideEmpty = true;
-</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="property_initAutoSelect.inited" class="property item">
-    <h3 class="name"><code>initAutoSelect.inited</code></h3>
-    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Form_JC.Form.initAutoSelect.js.html#l132"><code>..&#x2F;comps&#x2F;Form&#x2F;JC.Form.initAutoSelect.js:132</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>下拉框第一次初始完所有数据的回调
-<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectinited</p>
-    </div>
-        <p><strong>Default:</strong> null</p>
-</div>
-                    <div id="property_initAutoSelect.processUrl" class="property item">
-    <h3 class="name"><code>initAutoSelect.processUrl</code></h3>
-    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Form_JC.Form.initAutoSelect.js.html#l177"><code>..&#x2F;comps&#x2F;Form&#x2F;JC.Form.initAutoSelect.js:177</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>处理 ajax url 的回调处理函数
-<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectprocessurl</p>
-    </div>
-        <p><strong>Default:</strong> null</p>
-</div>
-                    <div id="property_initAutoSelect.randomurl" class="property item">
-    <h3 class="name"><code>initAutoSelect.randomurl</code></h3>
-    <span class="type">Bool</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Form_JC.Form.initAutoSelect.js.html#l168"><code>..&#x2F;comps&#x2F;Form&#x2F;JC.Form.initAutoSelect.js:168</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>ajax 请求数据时, 是否添加随机参数防止缓存
-<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectrandomurl</p>
-    </div>
-        <p><strong>Default:</strong> true</p>
-</div>
-                    <div id="property_initAutoSelect.triggerInitChange" class="property item">
-    <h3 class="name"><code>initAutoSelect.triggerInitChange</code></h3>
-    <span class="type">Bool</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Form_JC.Form.initAutoSelect.js.html#l159"><code>..&#x2F;comps&#x2F;Form&#x2F;JC.Form.initAutoSelect.js:159</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>第一次初始化所有联动框时, 是否触发 change 事件
-<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selecttriggerinitchange</p>
-    </div>
-        <p><strong>Default:</strong> false</p>
 </div>
                     <div id="property_initNumericStepper.onchange" class="property item">
     <h3 class="name"><code>initNumericStepper.onchange</code></h3>

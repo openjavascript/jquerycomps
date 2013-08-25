@@ -459,3 +459,27 @@ function mousewheelEvent( _cb, _detach ){
         document.addEventListener && document.addEventListener( _evt, _cb );
     }
 }
+/**
+ * 扩展 '/' 符号为 jquery 父节点选择器
+ * @method  parentSelector
+ * @param   {selector}  _item
+ * @param   {String}    _selector
+ * @param   {selector}  _finder
+ * @return  selector
+ * @static
+ */
+function parentSelector( _item, _selector, _finder ){
+    _item && ( _item = $( _item ) ), _re = /^([\/]+)/;
+    if( _re.test( _selector ) ){
+        _selector = _selector.replace( /^([\/]+)/, function( $0, $1 ){
+            for( var i = 0, j = $1.length; i < j; i++ ){
+                _item = _item.parent();
+            }
+            _finder = _item;
+            return '';
+        });
+        return _finder.find( $.trim( _selector ) );
+    }else{
+        return _finder ? _finder.find( _selector ) : jQuery( _selector );
+    }
+}
