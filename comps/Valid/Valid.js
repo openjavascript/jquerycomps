@@ -587,7 +587,7 @@
             function( _item ){
                 _item = $( _item );
                 var _r = Valid.autoTrim, _form = getJqParent( _item, 'form' );
-                _form.length && _form.is( '[validautotrim]' ) && ( _r = parseBool( _form.attr('validautotrim') ) );
+                _form && _form.length && _form.is( '[validautotrim]' ) && ( _r = parseBool( _form.attr('validautotrim') ) );
                 _item.is( '[validautotrim]' ) && ( _r = parseBool( _item.attr('validautotrim') ) );
                 return _r;
             }
@@ -596,7 +596,7 @@
             function( _item ){ 
                 _item = $( _item );
                 var _r = Valid.showValidStatus, _form = getJqParent( _item, 'form' );
-                _form.length && _form.is( '[validmsg]' ) && ( _r = parseBool( _form.attr('validmsg') ) );
+                _form && _form.length && _form.is( '[validmsg]' ) && ( _r = parseBool( _form.attr('validmsg') ) );
                 _item.is( '[validmsg]' ) && ( _r = parseBool( _item.attr('validmsg') ) );
                 return _r;
             }
@@ -604,7 +604,7 @@
             function( _item ){ 
                 _item = $( _item );
                 var _r = Valid.itemCallback, _form = getJqParent( _item, 'form' ), _tmp;
-                _form.length 
+                _form &&_form.length 
                     && _form.is( '[validitemcallback]' ) 
                     && ( _tmp = _form.attr('validitemcallback') )
                     && ( _tmp = window[ _tmp ] )
