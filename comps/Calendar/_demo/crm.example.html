@@ -11,100 +11,40 @@
 <link href='../../../comps/Tips/res/default/style.css' rel='stylesheet' />
 <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
 <script src="../../../lib.js"></script>
+<script src="./data/Bizs.MultiDate.js"></script>
 <script>
-    JC.debug = true; JC.use( 'Tips, Calendar' );
+    JC.debug = true; JC.use( 'Tips, Calendar, Form' );
 
     $(document).ready( function(){
-        var defISODate = formatISODate( new Date() );
-        $('input.multidate').val( defISODate );
-        $('input.multidate').attr( 'maxvalue',  defISODate );
-        updateHiddenDate();
-        $('select.dataspan').val( datetypeToNum( $('input.multidate').attr('multidate') ) );
-
-        JC.Calendar.domClickFilter =
-            function( _src ){
-                if( !( _src && _src.length ) ) return;
-                if( _src.hasClass( 'dataspan' ) ) return false;
-            };
-
-        JC.Calendar.layoutInitedCallback = 
-            function( _layout ){
-                JC.Tips.init( _layout.find('[title]') );
-            };
-
-        JC.Calendar.layoutHideCallback = 
-            function( _lastIpt ){
-                JC.Tips.hide();
-                updateHiddenDate();
-            };
-
-
-        $(document).delegate( 'select.dataspan', 'change', function( _evt ){
-            var p = $(this), v = p.val(), t = $('input.multidate');
-            t.attr( 'multidate', numToDatetype( v ) );
-            JC.Calendar.pickDate( t );
-            t.val( '' );
-            updateHiddenDate();
-        });
-
-        function updateHiddenDate(){
-            var _date = $.trim( $('input.multidate').val() );
-            if( !_date ){
-                $('input.startdate').val('');
-                $('input.enddate').val('');
-                return;
-            }
-            _date = _date.replace( /[^\d]+/g, '' );
-            if( _date.length == 8 ){
-                $('input.startdate').val( _date );
-                $('input.enddate').val( _date );
-            }
-            if( _date.length == 16 ){
-                $('input.startdate').val( _date.slice(0, 8) );
-                $('input.enddate').val( _date.slice(8) );
-            }
-        }
-
-        function numToDatetype( v ){
-            var r;
-            switch( v ){
-                case "2": r = 'week'; break;
-                case "3": r = 'month'; break;
-                case "4": r = 'season'; break;
-                default:  r = 'date'; break;
-            }
-            return r
-        }
-
-        function datetypeToNum( v ){
-            var r;
-            switch( v ){
-                case "week": r = '2'; break;
-                case "month": r = '3'; break;
-                case "season": r = '4'; break;
-                default:  r = '1'; break;
-            }
-            return r
-        }
-
+        var _maxMultidate = new Date();
+            _maxMultidate.setDate( _maxMultidate.getDate() - 1 );
+            window.Bizs && Bizs.MultiDate && ( Bizs.MultiDate.maxDate = _maxMultidate );
     });
 </script>
 </head>    
 <body>
     <br /><br /><br /><br /><br /><br />
-    <form action='' method='get'>
+    <form action='' method='get' class="js_autoFillUrlForm">
         <dl>
             <dt>JC.Calendar  CRM 示例</dt>
             <dd>
-                <select name="dataspan" class="dataspan">
-                    <option value="1">日数据</option>
-                    <option value="2">周数据</option>
-                    <option value="3">月数据</option>
-                    <option value="4">季数据</option>
+                <select name="dataspan" class="dataspan js_autoMultidate"
+                    mddate="/input.js_multidate"
+                    mdstartdate="/input.js_startdate"
+                    mdenddate="/input.js_enddate"
+                    >
+                    <option value="date">日数据</option>
+                    <option value="week">周数据</option>
+                    <option value="month">月数据</option>
+                    <option value="season">季数据</option>
                 </select>
-                <input type="text" class="multidate" multidate="date" currentcanselect="true" readonly />
-                <input type="hidden" name="startdate" class="startdate" value="" />
-                <input type="hidden" name="enddate" class="enddate" value="" />
+                <input type="text" class="js_multidate" 
+                    multidate="date" currentcanselect="true" size="40" readonly />
+                <input type="hidden" name="startdate" class="js_startdate" value="" />
+                <input type="hidden" name="enddate" class="js_enddate" value="" />
+
+                <button type="submit">submit</button>
+                <button type="reset" onclick="location.href='?'">reset</button>
             </dd>
         </dl>
     </form>
