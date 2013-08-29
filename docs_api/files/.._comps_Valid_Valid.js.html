@@ -178,6 +178,11 @@
      *          &lt;br /&gt;如果 = 0, false, 将不显示提示信息
      *          &lt;br /&gt;如果 = 1, true, 将不显示提示文本
      *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;validemdisplaytype = string, default = inline&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          设置 表单所有控件的 em  CSS display 显示类型
+     *      &lt;/dd&gt;
      * &lt;/dl&gt;
      * &lt;h2&gt;Form Control的可用 html attribute&lt;/h2&gt;
      * &lt;dl&gt;
@@ -201,6 +206,11 @@
      *
      *      &lt;dt&gt;emel = selector&lt;/dt&gt;
      *      &lt;dd&gt;显示错误的selector&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;validemdisplaytype = string, default = inline&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          设置 em 的 CSS display 显示类型
+     *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;ignoreprocess = bool&lt;/dt&gt;
      *      &lt;dd&gt;验证表单时, 是否忽略&lt;/dd&gt;
@@ -236,9 +246,9 @@
      *      &lt;dd&gt;
      *          &lt;b&gt;daterange:&lt;/b&gt; 检查两个control的日期范围
      *          &lt;dl&gt;
-     *              &lt;dd&gt;html attr &lt;b&gt;fromNEl:&lt;/b&gt; 指定开始的 control&lt;/dd&gt;
-     *              &lt;dd&gt;html attr &lt;b&gt;toNEl:&lt;/b&gt; 指定结束的 control&lt;/dd&gt;
-     *              &lt;dd&gt;如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl&lt;/dd&gt;
+     *              &lt;dd&gt;html attr &lt;b&gt;fromDateEl:&lt;/b&gt; 指定开始的 control&lt;/dd&gt;
+     *              &lt;dd&gt;html attr &lt;b&gt;toDateEl:&lt;/b&gt; 指定结束的 control&lt;/dd&gt;
+     *              &lt;dd&gt;如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromDateEl, toDateEl&lt;/dd&gt;
      *          &lt;/dl&gt;
      *      &lt;/dd&gt;
      *      &lt;dd&gt;&lt;b&gt;time:&lt;/b&gt; 是否为正确的时间, hh:mm:ss&lt;/dd&gt;
@@ -314,6 +324,13 @@
     JC.Valid = window.Valid = Valid;
     
     function Valid(){
+        /**
+         * 兼容函数式使用
+         */
+        var _args = sliceArgs( arguments );
+        if( _args.length ){
+            return Valid.check.apply( null, _args );
+        }
 
         if( Valid._instance ) return Valid._instance;
         Valid._instance = this;
@@ -577,6 +594,15 @@
      * @static
      */
     Valid.focusmsgEverytime = true;
+    /**
+     * 设置 em 的 css display 属性
+     * @property    emDisplayType
+     * @type        string
+     * @default     inline
+     * @static
+     */
+    Valid.emDisplayType = &#x27;inline&#x27;;
+
     /**
      * 验证正确时, 是否显示正确的样式
      * @property    showValidStatus
@@ -978,12 +1004,12 @@
 
                 if( _r ){
                     if( _item.is( &#x27;[fromNEl]&#x27; ) ) {
-                        _fromNEl = _p.getElement( _item.attr(&#x27;fromNEl&#x27;) );
+                        _fromNEl = _p.getElement( _item.attr(&#x27;fromNEl&#x27;), _item );
                         _toNEl = _item;
                     }
                     if( _item.is( &#x27;[toNEl]&#x27; ) ){
                         _fromNEl = _item;
-                        _toNEl = _p.getElement( _item.attr(&#x27;toNEl&#x27;) );
+                        _toNEl = _p.getElement( _item.attr(&#x27;toNEl&#x27;), _item );
                     }
 
                     if( !(_fromNEl &amp;&amp; _fromNEl.length || _toNEl &amp;&amp; _toNEl.length) ){
@@ -1085,12 +1111,12 @@
 
                 if( _r ){
                     if( _item.is( &#x27;[fromDateEl]&#x27; ) ) {
-                        _fromDateEl = _p.getElement( _item.attr(&#x27;fromDateEl&#x27;) );
+                        _fromDateEl = _p.getElement( _item.attr(&#x27;fromDateEl&#x27;), _item );
                         _toDateEl = _item;
                     }
                     if( _item.is( &#x27;[toDateEl]&#x27; ) ){
                         _fromDateEl = _item;
-                        _toDateEl = _p.getElement( _item.attr(&#x27;toDateEl&#x27;) );
+                        _toDateEl = _p.getElement( _item.attr(&#x27;toDateEl&#x27;), _item );
                     }
 
                     if( !(_fromDateEl &amp;&amp; _fromDateEl.length &amp;&amp; _toDateEl &amp;&amp; _toDateEl.length) ){
@@ -1894,6 +1920,22 @@
                 _item.is( &#x27;[focusmsgeverytime]&#x27; ) &amp;&amp; ( _r = parseBool( _item.attr(&#x27;focusmsgeverytime&#x27;) ) );
                 return _r;
             }
+        , validemdisplaytype:
+            function( _item ){
+                _item &amp;&amp; ( _item = $( _item ) );
+                var _r = Valid.emDisplayType, _form = getJqParent( _item, &#x27;form&#x27; ), _tmp;
+                _form &amp;&amp;_form.length 
+                    &amp;&amp; _form.is( &#x27;[validemdisplaytype]&#x27; ) 
+                    &amp;&amp; ( _tmp = _form.attr(&#x27;validemdisplaytype&#x27;) )
+                    &amp;&amp; ( _r = _tmp )
+                    ;
+                _item.is( &#x27;[validemdisplaytype]&#x27; ) 
+                    &amp;&amp; ( _tmp = _item.attr(&#x27;validemdisplaytype&#x27;) )
+                    &amp;&amp; ( _r = _tmp )
+                    ;
+                JC.log( &#x27;validemdisplaytype:&#x27;, _r, Valid.emDisplayType );
+                return _r;
+            }
     };
     
     function View( _model ){
@@ -1921,7 +1963,7 @@
                 if( !_p._model.isValid( _item ) ) return false;
                 setTimeout(function(){
                     _item.removeClass( Model.CSS_ERROR );
-                    _item.find( printf( &#x27;~ em:not(&quot;em.focusmsg, em.validmsg, {0}&quot;)&#x27;, Model.FILTER_ERROR ) ).show();
+                    _item.find( printf( &#x27;~ em:not(&quot;em.focusmsg, em.validmsg, {0}&quot;)&#x27;, Model.FILTER_ERROR ) ).css(&#x27;display&#x27;, _p._model.validemdisplaytype( _item ) );
                     _item.find( Model.SELECTOR_ERROR ).hide();
                     _item.attr(&#x27;emel&#x27;) 
                         &amp;&amp; ( _tmp = _p._model.getElement( _item.attr(&#x27;emel&#x27;), _item ) )
@@ -1938,7 +1980,7 @@
 
                 if( _p._model.isValidMsg( _item ) ){
                     if( _msg == &#x27;true&#x27; || _msg == &#x27;1&#x27; ) _msg = &#x27;&#x27;;
-                    !_msg &amp;&amp; ( _msg = &#x27;&amp;nbsp;&#x27; ); //chrome bug, 内容为空会换行
+                    !_msg.trim() &amp;&amp; ( _msg = &#x27;&amp;nbsp;&#x27; ); //chrome bug, 内容为空会换行
                     var _focusmsgem = _p._model.findFocusEle( _item )
                         , _validmsgem = _p._model.findValidEle( _item )
                         , _errorEm = _p._model.findErrorEle( _item )
@@ -1952,7 +1994,7 @@
                     _validmsgem.html( _msg );
                     _noStyle 
                         ? _validmsgem.hide() 
-                        : ( _validmsgem.show()
+                        : ( _validmsgem.css(&#x27;display&#x27;, _p._model.validemdisplaytype( _item ) )
                                 , _focusmsgem &amp;&amp; _focusmsgem.hide()
                                 , _errorEm &amp;&amp; _errorEm.hide()
                           )
@@ -1989,7 +2031,8 @@
                     if( !_errEm.length ){
                         ( _errEm = $( printf( &#x27;&lt;em class=&quot;{0}&quot;&gt;&lt;/em&gt;&#x27;, Model.CSS_ERROR ) ) ).insertAfter( _item );
                     }
-                    _errEm.html( _msg ).show() 
+                    !_msg.trim() &amp;&amp; ( _msg = &quot;&amp;nbsp;&quot; );
+                    _errEm.html( _msg ).css(&#x27;display&#x27;, _p._model.validemdisplaytype( _item ) );
 
                     JC.log( &#x27;error:&#x27;, _msg );
 
@@ -2007,6 +2050,7 @@
                         , _focusmsgem = _p._model.findFocusEle( _item )
                         , _validmsgem = _p._model.findValidEle( _item )
                         , _errorEm = _p._model.findErrorEle( _item )
+                        , _msg = _item.attr(&#x27;focusmsg&#x27;)
                         ;
 
                     if( _setHide &amp;&amp; _focusmsgem &amp;&amp; _focusmsgem.length ){
@@ -2029,11 +2073,12 @@
                         _r = Valid.getInstance().parse( _item );
                         _item.removeAttr(&#x27;validnoerror&#x27;);
                     }
+                    !_msg.trim() &amp;&amp; ( _msg = &quot;&amp;nbsp;&quot; );
 
                     if( _p._model.focusmsgeverytime( _item ) ){
-                        _focusmsgem.html( _item.attr(&#x27;focusmsg&#x27;) ).show();
+                        _focusmsgem.html( _msg ).css(&#x27;display&#x27;, _p._model.validemdisplaytype( _item ) );
                     }else{
-                        _r &amp;&amp; _focusmsgem.html( _item.attr(&#x27;focusmsg&#x27;) ).show();
+                        _r &amp;&amp; _focusmsgem.html( _msg ).css(&#x27;display&#x27;, _p._model.validemdisplaytype( _item ) );
                     }
 
                 }
