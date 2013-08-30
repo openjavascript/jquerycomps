@@ -882,7 +882,7 @@
          * @private
          */
         $(document).delegate( 'input.UXCCalendar_btn', 'click', function($evt){
-            if( this.forCalendar ) Calendar.pickDate( this.forCalendar );
+            if( this.forCalendar && !$(this.forCalendar).prop('disabled')  ) Calendar.pickDate( this.forCalendar );
         });
         /**
          * 日历组件文本框获得焦点
