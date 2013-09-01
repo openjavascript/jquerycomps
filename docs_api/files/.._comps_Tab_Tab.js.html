@@ -43,6 +43,8 @@
             
                 <li><a href="../classes/.window.html">.window</a></li>
             
+                <li><a href="../classes/Bizs.MultiDate.html">Bizs.MultiDate</a></li>
+            
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
             
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
@@ -522,13 +524,13 @@
                 if( _p.isFromChild( _p.layout().attr(&#x27;tablabels&#x27;) ) ){
                     this._tablabels = _p.layout().find( _p.layout().attr(&#x27;tablabels&#x27;).replace( _re, &#x27;&#x27; ) );
                 }else{
-                    this._tablabels = $( _p.layout().attr(&#x27;tablabels&#x27;) );
+                    this._tablabels = parentSelector( _p.layout(), _p.layout().attr(&#x27;tablabels&#x27;) );
                 }
 
                 if( _p.isFromChild( _p.layout().attr(&#x27;tabcontainers&#x27;) ) ){
                     this._tabcontainers = _p.layout().find( _p.layout().attr(&#x27;tabcontainers&#x27;).replace( _re, &#x27;&#x27; ) );
                 }else{
-                    this._tabcontainers = $( _p.layout().attr(&#x27;tabcontainers&#x27;) );
+                    this._tabcontainers = parentSelector( _p.layout(), _p.layout().attr(&#x27;tabcontainers&#x27;) );
                 }
 
                 this._tablabels.each( function(){ _p.tablabel( this, 1 ); } );

@@ -383,32 +383,6 @@ function parseBool( _input ){
     return !!_input;
 }
 /**
- * 获取 selector 的指定父级标签
- * @method  getJqParent
- * @param   {selector}  _selector
- * @param   {selector}  _filter
- * @return selector
- * @require jquery
- * @static
- */
-function getJqParent( _selector, _filter ){
-    _selector = $(_selector);
-    var _r;
-
-    if( _filter ){
-        while( (_selector = _selector.parent()).length ){
-            if( _selector.is( _filter ) ){
-                _r = _selector;
-                break;
-            }
-        }
-    }else{
-        _r = _selector.parent();
-    }
-
-    return _r;
-}
-/**
  * 判断是否支持 CSS position: fixed
  * @property    $.support.isFixed
  * @type        bool
@@ -460,18 +434,49 @@ function mousewheelEvent( _cb, _detach ){
     }
 }
 /**
- * 扩展 '/' 符号为 jquery 父节点选择器
+ * 获取 selector 的指定父级标签
+ * @method  getJqParent
+ * @param   {selector}  _selector
+ * @param   {selector}  _filter
+ * @return selector
+ * @require jquery
+ * @static
+ */
+function getJqParent( _selector, _filter ){
+    _selector = $(_selector);
+    var _r;
+
+    if( _filter ){
+        while( (_selector = _selector.parent()).length ){
+            if( _selector.is( _filter ) ){
+                _r = _selector;
+                break;
+            }
+        }
+    }else{
+        _r = _selector.parent();
+    }
+
+    return _r;
+}
+/**
+ * 扩展 jquery 选择器
+ * <br />扩展起始字符的 '/' 符号为 jquery 父节点选择器
+ * <br />扩展起始字符的 '|' 符号为 jquery 子节点选择器
+ * <br />扩展起始字符的 '<' 符号为 jquery 父节点查找识别符( getJqParent )
  * @method  parentSelector
  * @param   {selector}  _item
  * @param   {String}    _selector
  * @param   {selector}  _finder
  * @return  selector
+ * @require jquery
  * @static
  */
 function parentSelector( _item, _selector, _finder ){
-    _item && ( _item = $( _item ) ), _re = /^([\/]+)/;
-    if( _re.test( _selector ) ){
-        _selector = _selector.replace( /^([\/]+)/, function( $0, $1 ){
+    _item && ( _item = $( _item ) );
+    var _pntChildRe = /^([\/]+)/, _childRe = /^([\|]+)/, _pntRe = /^([<]+)/;
+    if( _pntChildRe.test( _selector ) ){
+        _selector = _selector.replace( _pntChildRe, function( $0, $1 ){
             for( var i = 0, j = $1.length; i < j; i++ ){
                 _item = _item.parent();
             }
@@ -479,7 +484,24 @@ function parentSelector( _item, _selector, _finder ){
             return '';
         });
         return _finder.find( $.trim( _selector ) );
+    }else if( _childRe.test( _selector ) ){
+        _selector = _selector.replace( _childRe, function( $0, $1 ){
+            for( var i = 1, j = $1.length; i < j; i++ ){
+                _item = _item.parent();
+            }
+            _finder = _item;
+            return '';
+        });
+        return _finder.find( $.trim( _selector ) );
+    }else if( _pntRe.test( _selector ) ){
+        _selector = _selector.replace( _pntRe, '' ).trim();
+        if( _selector ){
+            return getJqParent( _item, _selector );
+        }else{
+            return _item.parent();
+        }
     }else{
         return _finder ? _finder.find( _selector ) : jQuery( _selector );
     }
 }
+

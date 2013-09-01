@@ -43,6 +43,8 @@
             
                 <li><a href="../classes/.window.html">.window</a></li>
             
+                <li><a href="../classes/Bizs.MultiDate.html">Bizs.MultiDate</a></li>
+            
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
             
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
@@ -248,7 +250,7 @@
      *          &lt;dl&gt;
      *              &lt;dd&gt;html attr &lt;b&gt;fromDateEl:&lt;/b&gt; 指定开始的 control&lt;/dd&gt;
      *              &lt;dd&gt;html attr &lt;b&gt;toDateEl:&lt;/b&gt; 指定结束的 control&lt;/dd&gt;
-     *              &lt;dd&gt;如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromDateEl, toDateEl&lt;/dd&gt;
+     *              &lt;dd&gt;如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 daterange, 按顺序定为 fromDateEl, toDateEl&lt;/dd&gt;
      *          &lt;/dl&gt;
      *      &lt;/dd&gt;
      *      &lt;dd&gt;&lt;b&gt;time:&lt;/b&gt; 是否为正确的时间, hh:mm:ss&lt;/dd&gt;
@@ -418,7 +420,9 @@
                             case &#x27;input&#x27;:
                             case &#x27;textarea&#x27;:
                                 {
-                                    _p._model.isAutoTrim( _sitem ) &amp;&amp; _sitem.val( $.trim( _sitem.val() ) );
+                                    ( _sitem.attr(&#x27;type&#x27;) || &#x27;&#x27; ).toLowerCase() != &#x27;file&#x27; 
+                                        &amp;&amp; _p._model.isAutoTrim( _sitem ) 
+                                        &amp;&amp; _sitem.val( $.trim( _sitem.val() ) );
                                     break;
                                 }
                         }
@@ -1933,7 +1937,7 @@
                     &amp;&amp; ( _tmp = _item.attr(&#x27;validemdisplaytype&#x27;) )
                     &amp;&amp; ( _r = _tmp )
                     ;
-                JC.log( &#x27;validemdisplaytype:&#x27;, _r, Valid.emDisplayType );
+                //JC.log( &#x27;validemdisplaytype:&#x27;, _r, Valid.emDisplayType );
                 return _r;
             }
     };

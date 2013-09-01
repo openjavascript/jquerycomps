@@ -31,7 +31,7 @@ function removeIgnoreItem( _path ){
 
     for( var i = 0, j = ar.length; i < j; i++ ){
         if( /^[\s]*$/.test( ar[i] ) ) continue;
-        if( /\.Model|\.View/.test( ar[i] ) ) continue;
+        if( /\.Model|\.View|Bizs\./.test( ar[i] ) ) continue;
         r.push( ar[i] );
     }
 

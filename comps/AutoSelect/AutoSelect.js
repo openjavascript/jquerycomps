@@ -500,8 +500,8 @@
         , _findAllItems:
             function( _selector ){
                 this._items.push( _selector );
-                if( _selector.is( '[selecttarget]' ) ) 
-                    this._findAllItems( $( _selector.attr('selecttarget') ) );
+                _selector.is( '[selecttarget]' )
+                    && this._findAllItems( parentSelector( _selector, _selector.attr('selecttarget') ) );
             }
 
         , _initRelationship:

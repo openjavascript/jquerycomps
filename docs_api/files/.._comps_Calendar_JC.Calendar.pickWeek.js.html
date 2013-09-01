@@ -43,6 +43,8 @@
             
                 <li><a href="../classes/.window.html">.window</a></li>
             
+                <li><a href="../classes/Bizs.MultiDate.html">Bizs.MultiDate</a></li>
+            
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
             
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
@@ -160,198 +162,213 @@
     <pre class="code prettyprint linenums">
 (function($){
     /**
-     * 弹出一年中所有周的选择框
-     * @method  pickWeek
-     * @for     JC.Calendar
-     * @static
-     * @param   {selector}  _selector
-     */
-    JC.Calendar.pickWeek =
-        function( _selector ){
-            _logic.lastDateObj = JC.Calendar.getDate( _selector );
-            JC.Calendar.lastIpt = _selector;
-            JC.Calendar.setPosition( _selector, _logic.update( _logic.lastDateObj ) );
-        };
-    /**
      * 自定义周弹框的模板HTML
      * @for         JC.Calendar
-     * @property    pickWeek.tpl
+     * @property    weekTpl
      * @type        string
      * @default     empty
      * @static
      */
-    JC.Calendar.pickWeek.tpl = &#x27;&#x27;;
+    JC.Calendar.weekTpl = &#x27;&#x27;;
     /**
      * 自定义周日历每周的起始日期 
      * &lt;br /&gt; 0 - 6, 0=周日, 1=周一
      * @for         JC.Calendar
-     * @property    pickWeek.dayOffset
+     * @property    weekDayOffset
      * @static
      * @type    int
      * @default 1
      */
-    JC.Calendar.pickWeek.dayOffset = 1;
+    JC.Calendar.weekDayOffset = 1;
 
-    var _logic = {
-        getLayout:
-            function(){
-                var _box
-                if( !( _box = $(&#x27;#UXCCalendar_week&#x27;) ).length ){
-                    _box = $( JC.Calendar.pickWeek.tpl || _logic.tpl ); 
-                    _box.appendTo( document.body );
-                    _box.data(&#x27;confirmMethod&#x27;, _logic.onConfirm );
-                    _box.data(&#x27;updateYearMethod&#x27;, _logic.updateYear );
-                    _box.data(&#x27;nextYearMethod&#x27;, _logic.nextYear );
-                    _box.data(&#x27;preYearMethod&#x27;, _logic.preYear );
+    function WeekModel( _selector ){
+        this._selector = _selector;
+    }
+    JC.Calendar.WeekModel = WeekModel;
+    
+    function WeekView( _model ){
+        this._model = _model;
+    }
+    JC.Calendar.WeekView = WeekView;
+
+    JC.Calendar.clone( WeekModel, WeekView );
+
+    WeekModel.prototype.layout = 
+        function(){
+            var _r = $(&#x27;#UXCCalendar_week&#x27;);
+
+            if( !_r.length ){
+                _r = $( JC.Calendar.weekTpl || this.tpl ).hide();
+                _r.attr(&#x27;id&#x27;, &#x27;UXCCalendar_week&#x27;).hide().appendTo( document.body );
+              }
+            return _r;
+        };
+
+    WeekModel.prototype.tpl =
+        [
+        &#x27;&lt;div id=&quot;UXCCalendar_week&quot; class=&quot;UXCCalendar UXCCalendar_week&quot; &gt;&#x27;
+        ,&#x27;    &lt;div class=&quot;UHeader&quot;&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UNextYear&quot;&gt;&amp;nbsp;&amp;gt;&amp;gt;&amp;nbsp;&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UPreYear&quot;&gt;&amp;nbsp;&amp;lt;&amp;lt;&amp;nbsp;&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;select class=&quot;UYear&quot; style=&quot;&quot;&gt;&lt;/select&gt;&#x27;
+        ,&#x27;    &lt;/div&gt;&#x27;
+        ,&#x27;    &lt;table class=&quot;UTable UTableBorder&quot;&gt;&#x27;
+        ,&#x27;        &lt;tbody&gt;&lt;/tbody&gt;&#x27;
+        ,&#x27;    &lt;/table&gt;&#x27;
+        ,&#x27;    &lt;div class=&quot;UFooter&quot;&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UConfirm&quot;&gt;确定&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UClear&quot;&gt;清空&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UCancel&quot;&gt;取消&lt;/button&gt;&#x27;
+        ,&#x27;    &lt;/div&gt;&#x27;
+        ,&#x27;&lt;/div&gt;&#x27;
+        ].join(&#x27;&#x27;);
+
+    WeekModel.prototype.month = 
+        function(){
+            var _r = 0, _tmp, _date = new Date();
+            ( _tmp = this.layout().find(&#x27;td.cur a[dstart]&#x27;) ).length
+                &amp;&amp; ( _date = new Date() )
+                &amp;&amp; (
+                        _date.setTime( _tmp.attr(&#x27;dstart&#x27;) )
+                   )
+                ;
+            _r = _date.getMonth();
+            return _r;
+        };
+
+    WeekModel.prototype.selectedDate =
+        function(){
+            var _r, _tmp, _item;
+            _tmp = this.layout().find(&#x27;td.cur&#x27;);
+            _tmp.length 
+                &amp;&amp; !_tmp.hasClass( &#x27;unable&#x27; )
+                &amp;&amp; ( _item = _tmp.find(&#x27;a[dstart]&#x27;) )
+                &amp;&amp; ( 
+                        _r = { &#x27;start&#x27;: new Date(), &#x27;end&#x27;: new Date() }
+                        , _r.start.setTime( _item.attr(&#x27;dstart&#x27;) ) 
+                        , _r.end.setTime( _item.attr(&#x27;dend&#x27;) ) 
+                    )
+                ;
+            return _r;
+        };
+
+    WeekModel.prototype.singleLayoutDate = 
+        function(){
+            var _p = this
+                , _dateo = _p.defaultDate()
+                , _day = this.day()
+                , _max
+                , _curWeek = _p.layout().find(&#x27;td.cur &gt; a[week]&#x27;)
+                ;
+            _dateo.date.setDate( 1 );
+            _dateo.date.setFullYear( this.year() );
+            _dateo.date.setMonth( this.month() );
+            _max = maxDayOfMonth( _dateo.date );
+            _day &gt; _max &amp;&amp; ( _day = _max );
+            _dateo.date.setDate( _day );
+
+            _curWeek.length &amp;&amp; ( _dateo.curweek = parseInt( _curWeek.attr(&#x27;week&#x27;), 10 ) );
+            JC.log( &#x27;WeekModel.singleLayoutDate:&#x27;, _curWeek.length, _dateo.curweek );
+
+            return _dateo;
+        };
+
+    WeekView.prototype._buildBody =
+        function( _dateo ){
+            var _p = this
+                , _date = _dateo.date
+                , _layout = _p._model.layout()
+                , today = new Date( new Date().getFullYear(), new Date().getMonth(), new Date().getDate() ).getTime()
+                , weeks = weekOfYear( _date.getFullYear(), JC.Calendar.weekDayOffset )
+                , nextYearWeeks = weekOfYear( _date.getFullYear() + 1, JC.Calendar.weekDayOffset )
+                , nextCount = 0
+                , _ls = [], _class, _data, _title, _sdate, _edate, _year = _date.getFullYear()
+                , _rows = Math.ceil( weeks.length / 8 )
+                , ipt = JC.Calendar.lastIpt
+                , currentcanselect = parseBool( ipt.attr(&#x27;currentcanselect&#x27;) )
+                ;
+
+            if( _dateo.maxvalue &amp;&amp; currentcanselect ){
+                var _wd = _dateo.maxvalue.getDay();
+                if( _wd &gt; 0 ) {
+                    _dateo.maxvalue.setDate( _dateo.maxvalue.getDate() + ( 7 - _wd ) );
                 }
-                return _box;
             }
 
-        , onConfirm:
-            function(){
-                JC.log( &#x27;Calendar.pickWeek, onConfirm&#x27; );
-                var _cur = _logic.getLayout().find(&#x27;td.cur&#x27;);
-                if( !_cur.length ) _logic.getLayout().find(&#x27;td.today&#x27;);
-                if( _cur.length &amp;&amp; _cur.hasClass(&#x27;unable&#x27;) ) return 0;
-                if( _cur.length ) _cur.find(&#x27;a&#x27;).trigger(&#x27;click&#x27;);
-            }
-        , updateYear:
-            function( _val ){
-                if( !_logic.lastDateObj ) return;
-                _logic.lastDateObj.date.setFullYear( _val );
-                JC.Calendar.updateInitYearList( _logic.lastDateObj );
-                _logic.update( _logic.lastDateObj );
-            }
-        , nextYear:
-            function(){
-                JC.log( &#x27;nextYearMethod&#x27; );
-                if( !_logic.lastDateObj ) return;
-                _logic.updateYear( _logic.lastDateObj.date.getFullYear() + 1)
-            }
-        , preYear:
-            function(){
-                JC.log( &#x27;preYearMethod&#x27; );
-                if( !_logic.lastDateObj ) return;
-                _logic.updateYear( _logic.lastDateObj.date.getFullYear() - 1)
-            }
-        , update:
-            function( _dateObj ){
-                _logic.getLayout();
-                _logic.updateHead( _dateObj );
-                _logic.updateBody( _dateObj );
-                return _logic.getLayout();
-            }
-        , updateHead:
-            function( _dateObj ){
-                var _layout = _logic.getLayout(), _ls = [], _tmp, _selected
-                    , _sYear = _dateObj.initMinvalue.getFullYear()
-                    , _eYear = _dateObj.initMaxvalue.getFullYear();
+            _ls.push(&#x27;&lt;tr&gt;&#x27;);
+            for( i = 1, j = _rows * 8; i &lt;= j; i++ ){
+                _data = weeks[ i - 1];
+                if( !_data ) {
+                    _data = nextYearWeeks[ nextCount++ ];
+                    _year = _date.getFullYear() + 1;
+                }
+                _sdate = new Date(); _edate = new Date();
+                _sdate.setTime( _data.start ); _edate.setTime( _data.end );
 
+                _title = printf( &quot;{0}年 第{1}周\n开始日期: {2} (周{4})\n结束日期: {3} (周{5})&quot;
+                            , _year
+                            , JC.Calendar.getCnNum( _data.week )
+                            , formatISODate( _sdate )
+                            , formatISODate( _edate )
+                            , JC.Calendar.cnWeek.charAt( _sdate.getDay() % 7 )
+                            , JC.Calendar.cnWeek.charAt( _edate.getDay() % 7 )
+                            );
 
-                if( !_selected ) _selected = _dateObj.date.getFullYear();
+                _class = [];
 
-                for( var i = _sYear; i &lt;= _eYear; i++ ){
-                    _tmp = &#x27;&#x27;;
-                    if( _selected === i ) _tmp = &quot; selected &quot;
-                    _ls.push( &#x27;&lt;option value=&quot;&#x27;+i+&#x27;&quot;&#x27;+_tmp+&#x27;&gt;&#x27;+i+&#x27;&lt;/option&gt;&#x27; );
+                if( _dateo.minvalue &amp;&amp; _sdate.getTime() &lt; _dateo.minvalue.getTime() ) 
+                    _class.push( &#x27;unable&#x27; );
+                if( _dateo.maxvalue &amp;&amp; _edate.getTime() &gt; _dateo.maxvalue.getTime() ){
+                    _class.push( &#x27;unable&#x27; );
                 }
 
-                $( _ls.join(&#x27;&#x27;) ).appendTo( _layout.find(&#x27;select.UYear&#x27;).html(&#x27;&#x27;) );
-
-            }
-        , updateBody:
-            function( _dateObj ){
-                var _date = _dateObj.date;
-                var _layout = _logic.getLayout();
-                    _layout.find(&#x27;button.UYearButton&#x27;).html( _date.getFullYear() );
-
-                var today = new Date( new Date().getFullYear(), new Date().getMonth(), new Date().getDate() ).getTime();
-                var weeks = weekOfYear( _date.getFullYear(), JC.Calendar.pickWeek.dayOffset );
-                var nextYearWeeks = weekOfYear( _date.getFullYear() + 1, JC.Calendar.pickWeek.dayOffset );
-                var nextCount = 0;
-                var _ls = [], _class, _data, _title, _sdate, _edate, _year = _date.getFullYear()
-                    , _rows = Math.ceil( weeks.length / 8 );
-
-                var ipt = JC.Calendar.lastIpt, currentcanselect = parseBool( ipt.attr(&#x27;currentcanselect&#x27;) );
-
-                if( _dateObj.maxvalue &amp;&amp; currentcanselect ){
-                    var _wd = _dateObj.maxvalue.getDay();
-                    if( _wd &gt; 0 ) {
-                        _dateObj.maxvalue.setDate( _dateObj.maxvalue.getDate() + ( 7 - _wd ) );
-                    }
-                }
-
-                _ls.push(&#x27;&lt;tr&gt;&#x27;);
-                for( i = 1, j = _rows * 8; i &lt;= j; i++ ){
-                    _data = weeks[ i - 1];
-                    if( !_data ) {
-                        _data = nextYearWeeks[ nextCount++ ];
-                        _year = _date.getFullYear() + 1;
-                    }
-                    _sdate = new Date(); _edate = new Date();
-                    _sdate.setTime( _data.start ); _edate.setTime( _data.end );
-
-                    _title = printf( &quot;{0}年 第{1}周&lt;br/&gt;开始日期: {2} (周{4})&lt;br /&gt;结束日期: {3} (周{5})&quot;
-                                , _year
-                                , JC.Calendar.getCnNum( _data.week )
-                                , formatISODate( _sdate )
-                                , formatISODate( _edate )
-                                , JC.Calendar.cnWeek.charAt( _sdate.getDay() % 7 )
-                                , JC.Calendar.cnWeek.charAt( _edate.getDay() % 7 )
-                                );
-
-                    _class = [];
-
-                    if( _dateObj.minvalue &amp;&amp; _sdate.getTime() &lt; _dateObj.minvalue.getTime() ) 
-                        _class.push( &#x27;unable&#x27; );
-                    if( _dateObj.maxvalue &amp;&amp; _edate.getTime() &gt; _dateObj.maxvalue.getTime() ){
-                        _class.push( &#x27;unable&#x27; );
-                    }
-
+                if( _dateo.curweek ){
+                    if( _data.week == _dateo.curweek 
+                        &amp;&amp; _date.getFullYear() == _sdate.getFullYear() 
+                        ) _class.push( &#x27;cur&#x27; );
+                }else{
                     if( _date.getTime() &gt;= _sdate.getTime() &amp;&amp; _date.getTime() &lt;= _edate.getTime() ) _class.push( &#x27;cur&#x27; );
-                    if( today &gt;= _sdate.getTime() &amp;&amp; today &lt;= _edate.getTime() ) _class.push( &#x27;today&#x27; );
-
-                    _ls.push( printf( &#x27;&lt;td class=&quot;{0}&quot;&gt;&lt;a href=&quot;javascript:&quot; title=&quot;{2}&quot;&#x27;+
-                                    &#x27; dstart=&quot;{3}&quot; dend=&quot;{4}&quot; week=&quot;{1}&quot; &gt;{1}&lt;/a&gt;&lt;/td&gt;&#x27;
-                                , _class.join(&#x27; &#x27;)
-                                , _data.week 
-                                , _title
-                                , _sdate.getTime()
-                                , _edate.getTime()
-                            ));
-                    if( i % 8 === 0 &amp;&amp; i != j ) _ls.push( &#x27;&lt;/tr&gt;&lt;tr&gt;&#x27; );
                 }
-                _ls.push(&#x27;&lt;/tr&gt;&#x27;); 
- 
-                _layout.find(&#x27;table.UTableBorder tbody&#x27; ).html( $( _ls.join(&#x27;&#x27;) ) );
 
+                if( today &gt;= _sdate.getTime() &amp;&amp; today &lt;= _edate.getTime() ) _class.push( &#x27;today&#x27; );
+
+                _ls.push( printf( &#x27;&lt;td class=&quot;{0}&quot;&gt;&lt;a href=&quot;javascript:&quot; title=&quot;{2}&quot;&#x27;+
+                                &#x27; dstart=&quot;{3}&quot; dend=&quot;{4}&quot; week=&quot;{1}&quot; date=&quot;{5}&quot; &gt;{1}&lt;/a&gt;&lt;/td&gt;&#x27;
+                            , _class.join(&#x27; &#x27;)
+                            , _data.week 
+                            , _title
+                            , _sdate.getTime()
+                            , _edate.getTime()
+                            , _dateo.date.getTime()
+                        ));
+                if( i % 8 === 0 &amp;&amp; i != j ) _ls.push( &#x27;&lt;/tr&gt;&lt;tr&gt;&#x27; );
             }
-        /**
-         * 最后一个显示日历组件的日期对象
-         * @property    _logic.lastDateObj
-         * @type        Object
-         * @private
-         */
-        , lastDateObj: null
-        , tpl:
-            [
-            &#x27;&lt;div id=&quot;UXCCalendar_week&quot; class=&quot;UXCCalendar UXCCalendar_week&quot; &gt;&#x27;
-            ,&#x27;    &lt;div class=&quot;UHeader&quot;&gt;&#x27;
-            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UNextYear&quot;&gt;&amp;nbsp;&amp;gt;&amp;gt;&amp;nbsp;&lt;/button&gt;&#x27;
-            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UPreYear&quot;&gt;&amp;nbsp;&amp;lt;&amp;lt;&amp;nbsp;&lt;/button&gt;&#x27;
-            ,&#x27;        &lt;select class=&quot;UYear&quot; style=&quot;&quot;&gt;&lt;/select&gt;&#x27;
-            ,&#x27;    &lt;/div&gt;&#x27;
-            ,&#x27;    &lt;table class=&quot;UTable UTableBorder&quot;&gt;&#x27;
-            ,&#x27;        &lt;tbody&gt;&lt;/tbody&gt;&#x27;
-            ,&#x27;    &lt;/table&gt;&#x27;
-            ,&#x27;    &lt;div class=&quot;UFooter&quot;&gt;&#x27;
-            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UConfirm&quot;&gt;确定&lt;/button&gt;&#x27;
-            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UClear&quot;&gt;清空&lt;/button&gt;&#x27;
-            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UCancel&quot;&gt;取消&lt;/button&gt;&#x27;
-            ,&#x27;    &lt;/div&gt;&#x27;
-            ,&#x27;&lt;/div&gt;&#x27;
-            ].join(&#x27;&#x27;)
-    };
+            _ls.push(&#x27;&lt;/tr&gt;&#x27;); 
+
+            _layout.find(&#x27;table.UTableBorder tbody&#x27; ).html( $( _ls.join(&#x27;&#x27;) ) );
+        };
+
+    WeekView.prototype.updateSelected = 
+        function( _userSelectedItem ){
+            var _p = this, _dstart, _dend, _tmp;
+            if( !_userSelectedItem ){
+                _tmp = this._model.selectedDate();
+                _tmp &amp;&amp; ( _dstart = _tmp.start, _dend = _tmp.end );
+            }else{
+                _userSelectedItem = $( _userSelectedItem );
+                _tmp = getJqParent( _userSelectedItem, &#x27;td&#x27; );
+                if( _tmp &amp;&amp; _tmp.hasClass(&#x27;unable&#x27;) ) return;
+                _dstart = new Date(); _dend = new Date();
+                _dstart.setTime( _userSelectedItem.attr(&#x27;dstart&#x27;) );
+                _dend.setTime( _userSelectedItem.attr(&#x27;dend&#x27;) );
+            }
+            if( !( _dstart &amp;&amp; _dend ) ) return;
+
+            _p._model.selector().val( printf( &#x27;{0} 至 {1}&#x27;, formatISODate( _dstart ), formatISODate( _dend ) ) );
+            $(_p).trigger( &#x27;TriggerEvent&#x27;, [ JC.Calendar.Model.UPDATE, &#x27;week&#x27;, _dstart, _dend ] );
+
+            JC.Calendar.hide();
+        };
     /**
      * 取一年中所有的星期, 及其开始结束日期
      * @method  weekOfYear
@@ -385,19 +402,6 @@
         }
         return _r;
     }
-
-    $(document).delegate(&#x27;#UXCCalendar_week table a&#x27;, &#x27;click&#x27;, function( _evt ){
-        var _p = $(this), dstart = new Date(), dend = new Date();
-        if( !JC.Calendar.lastIpt ) return;
-        if( _p.parent(&#x27;td&#x27;).hasClass( &#x27;unable&#x27; ) ) return;
-        dstart.setTime( _p.attr(&#x27;dstart&#x27;) );
-        dend.setTime( _p.attr(&#x27;dend&#x27;) );
-        JC.Calendar.lastIpt.val( printf( &#x27;{0} 至 {1}&#x27;, formatISODate( dstart ), formatISODate( dend ) ) );
-        JC.Calendar.hide();
-        JC.Calendar._triggerUpdate( [ &#x27;season&#x27;, dstart, dend] );
-    });
-
-
 }(jQuery));
 
     </pre>

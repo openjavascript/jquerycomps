@@ -43,6 +43,8 @@
             
                 <li><a href="../classes/.window.html">.window</a></li>
             
+                <li><a href="../classes/Bizs.MultiDate.html">Bizs.MultiDate</a></li>
+            
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
             
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
@@ -159,12 +161,16 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 ;(function($){
-    /**
-     * 销售二期, 复合日历组件
-     */
     window.Bizs = window.Bizs || {};
     window.Bizs.MultiDate = MultiDate;
 
+    /**
+     * 复合日历业务逻辑
+     * @class   MultiDate
+     * @namespace   Bizs
+     * @constructor
+     * @private
+     */
     function MultiDate( _selector ){
         if( MultiDate.getInstance( _selector ) ) return MultiDate.getInstance( _selector );
         MultiDate.getInstance( _selector, this );
@@ -272,8 +278,21 @@
 
             return _selector.data(&#x27;MultiDateIns&#x27;);
         };
-
-    MultiDate.maxDate;
+    /**
+     * 判断 selector 是否可以初始化 MultiDate
+     * @method  isMultiDate
+     * @param   {selector}      _selector
+     * @static
+     * @return  bool
+     */
+    MultiDate.isMultiDate =
+        function( _selector ){
+            var _r;
+            _selector 
+                &amp;&amp; ( _selector = $(_selector) ).length 
+                &amp;&amp; ( _r = _selector.is( &#x27;[MultiDatelayout]&#x27; ) );
+            return _r;
+        };
     
     function Model( _selector ){
         this._selector = _selector;
@@ -286,8 +305,9 @@
             function(){
                 var _p = this
                     , _updatecb = &#x27;Bizs.MultiDate_&#x27; + ( Model._inscount)
-                    , _showcb= &#x27;Bizs.MultiDate_show_&#x27; + ( Model._inscount)
-                    , _hidecb= &#x27;Bizs.MultiDate_hide_&#x27; + ( Model._inscount)
+                    , _showcb = &#x27;Bizs.MultiDate_show_&#x27; + ( Model._inscount)
+                    , _hidecb = &#x27;Bizs.MultiDate_hide_&#x27; + ( Model._inscount)
+                    , _layoutchangecb = &#x27;Bizs.MultiDate_layoutchange_&#x27; + ( Model._inscount)
                     ;
                 Model._inscount++;
 
@@ -312,7 +332,13 @@
                     };
                 _p.mddate().attr(&#x27;calendarhide&#x27;, _hidecb );
 
-                !_p.mddate().is(&#x27;[maxvalue]&#x27;) &amp;&amp; MultiDate.maxDate &amp;&amp; _p.mddate().attr(&#x27;maxvalue&#x27;, formatISODate( MultiDate.maxDate ) );
+                window[ _layoutchangecb ] = 
+                    function(){
+                        JC.Tips &amp;&amp; JC.Tips.hide();
+                        var _layout = $(&#x27;body &gt; div.UXCCalendar:visible&#x27;);
+                        _layout.length &amp;&amp; JC.Tips &amp;&amp; JC.Tips.init( _layout.find(&#x27;[title]&#x27;) );
+                    };
+                _p.mddate().attr(&#x27;calendarlayoutchange&#x27;, _layoutchangecb );
 
                 return _p;
             }
@@ -425,14 +451,9 @@
     };
 
     $(document).ready( function(){
-
-        JC.Tips &amp;&amp; ( JC.Tips.autoInit = false );
-
-        setTimeout( function(){
-            $(&#x27;select.js_autoMultidate&#x27;).each( function(){
-                new MultiDate( $(this) );
-            });
-        }, 200);
+        $(&#x27;select.js_autoMultidate&#x27;).each( function(){
+            new MultiDate( $(this) );
+        });
     });
 
 }(jQuery));

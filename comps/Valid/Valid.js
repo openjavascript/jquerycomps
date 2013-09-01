@@ -88,7 +88,7 @@
      *          <dl>
      *              <dd>html attr <b>fromDateEl:</b> 指定开始的 control</dd>
      *              <dd>html attr <b>toDateEl:</b> 指定结束的 control</dd>
-     *              <dd>如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromDateEl, toDateEl</dd>
+     *              <dd>如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 daterange, 按顺序定为 fromDateEl, toDateEl</dd>
      *          </dl>
      *      </dd>
      *      <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>
@@ -258,7 +258,9 @@
                             case 'input':
                             case 'textarea':
                                 {
-                                    _p._model.isAutoTrim( _sitem ) && _sitem.val( $.trim( _sitem.val() ) );
+                                    ( _sitem.attr('type') || '' ).toLowerCase() != 'file' 
+                                        && _p._model.isAutoTrim( _sitem ) 
+                                        && _sitem.val( $.trim( _sitem.val() ) );
                                     break;
                                 }
                         }
@@ -1773,7 +1775,7 @@
                     && ( _tmp = _item.attr('validemdisplaytype') )
                     && ( _r = _tmp )
                     ;
-                JC.log( 'validemdisplaytype:', _r, Valid.emDisplayType );
+                //JC.log( 'validemdisplaytype:', _r, Valid.emDisplayType );
                 return _r;
             }
     };

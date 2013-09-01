@@ -43,6 +43,8 @@
             
                 <li><a href="../classes/.window.html">.window</a></li>
             
+                <li><a href="../classes/Bizs.MultiDate.html">Bizs.MultiDate</a></li>
+            
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
             
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
@@ -660,8 +662,8 @@
         , _findAllItems:
             function( _selector ){
                 this._items.push( _selector );
-                if( _selector.is( &#x27;[selecttarget]&#x27; ) ) 
-                    this._findAllItems( $( _selector.attr(&#x27;selecttarget&#x27;) ) );
+                _selector.is( &#x27;[selecttarget]&#x27; )
+                    &amp;&amp; this._findAllItems( parentSelector( _selector, _selector.attr(&#x27;selecttarget&#x27;) ) );
             }
 
         , _initRelationship:

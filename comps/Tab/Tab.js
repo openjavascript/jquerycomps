@@ -362,13 +362,13 @@
                 if( _p.isFromChild( _p.layout().attr('tablabels') ) ){
                     this._tablabels = _p.layout().find( _p.layout().attr('tablabels').replace( _re, '' ) );
                 }else{
-                    this._tablabels = $( _p.layout().attr('tablabels') );
+                    this._tablabels = parentSelector( _p.layout(), _p.layout().attr('tablabels') );
                 }
 
                 if( _p.isFromChild( _p.layout().attr('tabcontainers') ) ){
                     this._tabcontainers = _p.layout().find( _p.layout().attr('tabcontainers').replace( _re, '' ) );
                 }else{
-                    this._tabcontainers = $( _p.layout().attr('tabcontainers') );
+                    this._tabcontainers = parentSelector( _p.layout(), _p.layout().attr('tabcontainers') );
                 }
 
                 this._tablabels.each( function(){ _p.tablabel( this, 1 ); } );

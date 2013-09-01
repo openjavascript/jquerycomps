@@ -1,10 +1,14 @@
 ;(function($){
-    /**
-     * 销售二期, 复合日历组件
-     */
     window.Bizs = window.Bizs || {};
     window.Bizs.MultiDate = MultiDate;
 
+    /**
+     * 复合日历业务逻辑
+     * @class   MultiDate
+     * @namespace   Bizs
+     * @constructor
+     * @private
+     */
     function MultiDate( _selector ){
         if( MultiDate.getInstance( _selector ) ) return MultiDate.getInstance( _selector );
         MultiDate.getInstance( _selector, this );
@@ -112,8 +116,21 @@
 
             return _selector.data('MultiDateIns');
         };
-
-    MultiDate.maxDate;
+    /**
+     * 判断 selector 是否可以初始化 MultiDate
+     * @method  isMultiDate
+     * @param   {selector}      _selector
+     * @static
+     * @return  bool
+     */
+    MultiDate.isMultiDate =
+        function( _selector ){
+            var _r;
+            _selector 
+                && ( _selector = $(_selector) ).length 
+                && ( _r = _selector.is( '[MultiDatelayout]' ) );
+            return _r;
+        };
     
     function Model( _selector ){
         this._selector = _selector;
@@ -126,8 +143,9 @@
             function(){
                 var _p = this
                     , _updatecb = 'Bizs.MultiDate_' + ( Model._inscount)
-                    , _showcb= 'Bizs.MultiDate_show_' + ( Model._inscount)
-                    , _hidecb= 'Bizs.MultiDate_hide_' + ( Model._inscount)
+                    , _showcb = 'Bizs.MultiDate_show_' + ( Model._inscount)
+                    , _hidecb = 'Bizs.MultiDate_hide_' + ( Model._inscount)
+                    , _layoutchangecb = 'Bizs.MultiDate_layoutchange_' + ( Model._inscount)
                     ;
                 Model._inscount++;
 
@@ -152,7 +170,13 @@
                     };
                 _p.mddate().attr('calendarhide', _hidecb );
 
-                !_p.mddate().is('[maxvalue]') && MultiDate.maxDate && _p.mddate().attr('maxvalue', formatISODate( MultiDate.maxDate ) );
+                window[ _layoutchangecb ] = 
+                    function(){
+                        JC.Tips && JC.Tips.hide();
+                        var _layout = $('body > div.UXCCalendar:visible');
+                        _layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
+                    };
+                _p.mddate().attr('calendarlayoutchange', _layoutchangecb );
 
                 return _p;
             }
@@ -265,14 +289,9 @@
     };
 
     $(document).ready( function(){
-
-        JC.Tips && ( JC.Tips.autoInit = false );
-
-        setTimeout( function(){
-            $('select.js_autoMultidate').each( function(){
-                new MultiDate( $(this) );
-            });
-        }, 200);
+        $('select.js_autoMultidate').each( function(){
+            new MultiDate( $(this) );
+        });
     });
 
 }(jQuery));
