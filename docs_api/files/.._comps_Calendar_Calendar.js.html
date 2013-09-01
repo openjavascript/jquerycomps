@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../comps/Calendar/JC.Calendar.js - jquery components</title>
+    <title>../comps/Calendar/Calendar.js - jquery components</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -156,7 +156,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../comps/Calendar/JC.Calendar.js</h1>
+                        <h1 class="file-heading">File: ../comps/Calendar/Calendar.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -1463,6 +1463,745 @@
     });
 }(jQuery));
 
+
+(function($){
+    /**
+     * 自定义周弹框的模板HTML
+     * @for         JC.Calendar
+     * @property    weekTpl
+     * @type        string
+     * @default     empty
+     * @static
+     */
+    JC.Calendar.weekTpl = &#x27;&#x27;;
+    /**
+     * 自定义周日历每周的起始日期 
+     * &lt;br /&gt; 0 - 6, 0=周日, 1=周一
+     * @for         JC.Calendar
+     * @property    weekDayOffset
+     * @static
+     * @type    int
+     * @default 1
+     */
+    JC.Calendar.weekDayOffset = 1;
+
+    function WeekModel( _selector ){
+        this._selector = _selector;
+    }
+    JC.Calendar.WeekModel = WeekModel;
+    
+    function WeekView( _model ){
+        this._model = _model;
+    }
+    JC.Calendar.WeekView = WeekView;
+
+    JC.Calendar.clone( WeekModel, WeekView );
+
+    WeekModel.prototype.layout = 
+        function(){
+            var _r = $(&#x27;#UXCCalendar_week&#x27;);
+
+            if( !_r.length ){
+                _r = $( JC.Calendar.weekTpl || this.tpl ).hide();
+                _r.attr(&#x27;id&#x27;, &#x27;UXCCalendar_week&#x27;).hide().appendTo( document.body );
+              }
+            return _r;
+        };
+
+    WeekModel.prototype.tpl =
+        [
+        &#x27;&lt;div id=&quot;UXCCalendar_week&quot; class=&quot;UXCCalendar UXCCalendar_week&quot; &gt;&#x27;
+        ,&#x27;    &lt;div class=&quot;UHeader&quot;&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UNextYear&quot;&gt;&amp;nbsp;&amp;gt;&amp;gt;&amp;nbsp;&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UPreYear&quot;&gt;&amp;nbsp;&amp;lt;&amp;lt;&amp;nbsp;&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;select class=&quot;UYear&quot; style=&quot;&quot;&gt;&lt;/select&gt;&#x27;
+        ,&#x27;    &lt;/div&gt;&#x27;
+        ,&#x27;    &lt;table class=&quot;UTable UTableBorder&quot;&gt;&#x27;
+        ,&#x27;        &lt;tbody&gt;&lt;/tbody&gt;&#x27;
+        ,&#x27;    &lt;/table&gt;&#x27;
+        ,&#x27;    &lt;div class=&quot;UFooter&quot;&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UConfirm&quot;&gt;确定&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UClear&quot;&gt;清空&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UCancel&quot;&gt;取消&lt;/button&gt;&#x27;
+        ,&#x27;    &lt;/div&gt;&#x27;
+        ,&#x27;&lt;/div&gt;&#x27;
+        ].join(&#x27;&#x27;);
+
+    WeekModel.prototype.month = 
+        function(){
+            var _r = 0, _tmp, _date = new Date();
+            ( _tmp = this.layout().find(&#x27;td.cur a[dstart]&#x27;) ).length
+                &amp;&amp; ( _date = new Date() )
+                &amp;&amp; (
+                        _date.setTime( _tmp.attr(&#x27;dstart&#x27;) )
+                   )
+                ;
+            _r = _date.getMonth();
+            return _r;
+        };
+
+    WeekModel.prototype.selectedDate =
+        function(){
+            var _r, _tmp, _item;
+            _tmp = this.layout().find(&#x27;td.cur&#x27;);
+            _tmp.length 
+                &amp;&amp; !_tmp.hasClass( &#x27;unable&#x27; )
+                &amp;&amp; ( _item = _tmp.find(&#x27;a[dstart]&#x27;) )
+                &amp;&amp; ( 
+                        _r = { &#x27;start&#x27;: new Date(), &#x27;end&#x27;: new Date() }
+                        , _r.start.setTime( _item.attr(&#x27;dstart&#x27;) ) 
+                        , _r.end.setTime( _item.attr(&#x27;dend&#x27;) ) 
+                    )
+                ;
+            return _r;
+        };
+
+    WeekModel.prototype.singleLayoutDate = 
+        function(){
+            var _p = this
+                , _dateo = _p.defaultDate()
+                , _day = this.day()
+                , _max
+                , _curWeek = _p.layout().find(&#x27;td.cur &gt; a[week]&#x27;)
+                ;
+            _dateo.date.setDate( 1 );
+            _dateo.date.setFullYear( this.year() );
+            _dateo.date.setMonth( this.month() );
+            _max = maxDayOfMonth( _dateo.date );
+            _day &gt; _max &amp;&amp; ( _day = _max );
+            _dateo.date.setDate( _day );
+
+            _curWeek.length &amp;&amp; ( _dateo.curweek = parseInt( _curWeek.attr(&#x27;week&#x27;), 10 ) );
+            JC.log( &#x27;WeekModel.singleLayoutDate:&#x27;, _curWeek.length, _dateo.curweek );
+
+            return _dateo;
+        };
+
+    WeekView.prototype._buildBody =
+        function( _dateo ){
+            var _p = this
+                , _date = _dateo.date
+                , _layout = _p._model.layout()
+                , today = new Date( new Date().getFullYear(), new Date().getMonth(), new Date().getDate() ).getTime()
+                , weeks = weekOfYear( _date.getFullYear(), JC.Calendar.weekDayOffset )
+                , nextYearWeeks = weekOfYear( _date.getFullYear() + 1, JC.Calendar.weekDayOffset )
+                , nextCount = 0
+                , _ls = [], _class, _data, _title, _sdate, _edate, _year = _date.getFullYear()
+                , _rows = Math.ceil( weeks.length / 8 )
+                , ipt = JC.Calendar.lastIpt
+                , currentcanselect = parseBool( ipt.attr(&#x27;currentcanselect&#x27;) )
+                ;
+
+            if( _dateo.maxvalue &amp;&amp; currentcanselect ){
+                var _wd = _dateo.maxvalue.getDay();
+                if( _wd &gt; 0 ) {
+                    _dateo.maxvalue.setDate( _dateo.maxvalue.getDate() + ( 7 - _wd ) );
+                }
+            }
+
+            _ls.push(&#x27;&lt;tr&gt;&#x27;);
+            for( i = 1, j = _rows * 8; i &lt;= j; i++ ){
+                _data = weeks[ i - 1];
+                if( !_data ) {
+                    _data = nextYearWeeks[ nextCount++ ];
+                    _year = _date.getFullYear() + 1;
+                }
+                _sdate = new Date(); _edate = new Date();
+                _sdate.setTime( _data.start ); _edate.setTime( _data.end );
+
+                _title = printf( &quot;{0}年 第{1}周\n开始日期: {2} (周{4})\n结束日期: {3} (周{5})&quot;
+                            , _year
+                            , JC.Calendar.getCnNum( _data.week )
+                            , formatISODate( _sdate )
+                            , formatISODate( _edate )
+                            , JC.Calendar.cnWeek.charAt( _sdate.getDay() % 7 )
+                            , JC.Calendar.cnWeek.charAt( _edate.getDay() % 7 )
+                            );
+
+                _class = [];
+
+                if( _dateo.minvalue &amp;&amp; _sdate.getTime() &lt; _dateo.minvalue.getTime() ) 
+                    _class.push( &#x27;unable&#x27; );
+                if( _dateo.maxvalue &amp;&amp; _edate.getTime() &gt; _dateo.maxvalue.getTime() ){
+                    _class.push( &#x27;unable&#x27; );
+                }
+
+                if( _dateo.curweek ){
+                    if( _data.week == _dateo.curweek 
+                        &amp;&amp; _date.getFullYear() == _sdate.getFullYear() 
+                        ) _class.push( &#x27;cur&#x27; );
+                }else{
+                    if( _date.getTime() &gt;= _sdate.getTime() &amp;&amp; _date.getTime() &lt;= _edate.getTime() ) _class.push( &#x27;cur&#x27; );
+                }
+
+                if( today &gt;= _sdate.getTime() &amp;&amp; today &lt;= _edate.getTime() ) _class.push( &#x27;today&#x27; );
+
+                _ls.push( printf( &#x27;&lt;td class=&quot;{0}&quot;&gt;&lt;a href=&quot;javascript:&quot; title=&quot;{2}&quot;&#x27;+
+                                &#x27; dstart=&quot;{3}&quot; dend=&quot;{4}&quot; week=&quot;{1}&quot; date=&quot;{5}&quot; &gt;{1}&lt;/a&gt;&lt;/td&gt;&#x27;
+                            , _class.join(&#x27; &#x27;)
+                            , _data.week 
+                            , _title
+                            , _sdate.getTime()
+                            , _edate.getTime()
+                            , _dateo.date.getTime()
+                        ));
+                if( i % 8 === 0 &amp;&amp; i != j ) _ls.push( &#x27;&lt;/tr&gt;&lt;tr&gt;&#x27; );
+            }
+            _ls.push(&#x27;&lt;/tr&gt;&#x27;); 
+
+            _layout.find(&#x27;table.UTableBorder tbody&#x27; ).html( $( _ls.join(&#x27;&#x27;) ) );
+        };
+
+    WeekView.prototype.updateSelected = 
+        function( _userSelectedItem ){
+            var _p = this, _dstart, _dend, _tmp;
+            if( !_userSelectedItem ){
+                _tmp = this._model.selectedDate();
+                _tmp &amp;&amp; ( _dstart = _tmp.start, _dend = _tmp.end );
+            }else{
+                _userSelectedItem = $( _userSelectedItem );
+                _tmp = getJqParent( _userSelectedItem, &#x27;td&#x27; );
+                if( _tmp &amp;&amp; _tmp.hasClass(&#x27;unable&#x27;) ) return;
+                _dstart = new Date(); _dend = new Date();
+                _dstart.setTime( _userSelectedItem.attr(&#x27;dstart&#x27;) );
+                _dend.setTime( _userSelectedItem.attr(&#x27;dend&#x27;) );
+            }
+            if( !( _dstart &amp;&amp; _dend ) ) return;
+
+            _p._model.selector().val( printf( &#x27;{0} 至 {1}&#x27;, formatISODate( _dstart ), formatISODate( _dend ) ) );
+            $(_p).trigger( &#x27;TriggerEvent&#x27;, [ JC.Calendar.Model.UPDATE, &#x27;week&#x27;, _dstart, _dend ] );
+
+            JC.Calendar.hide();
+        };
+    /**
+     * 取一年中所有的星期, 及其开始结束日期
+     * @method  weekOfYear
+     * @static
+     * @param   {int}   _year
+     * @param   {int}   _dayOffset  每周的默认开始为周几, 默认0(周日)
+     * @return  Array
+     */
+    function weekOfYear( _year, _dayOffset ){
+        var _r = [], _tmp, _count = 1, _dayOffset = _dayOffset || 0
+            , _year = parseInt( _year, 10 )
+            , _d = new Date( _year, 0, 1 );
+        /**
+         * 元旦开始的第一个星期一开始的一周为政治经济上的第一周
+         */
+         _d.getDay() &gt; 1 &amp;&amp; _d.setDate( _d.getDate() - _d.getDay() + 7 );
+
+         _dayOffset &gt; 0 &amp;&amp; ( _dayOffset = (new Date( 2000, 1, 2 ) - new Date( 2000, 1, 1 )) * _dayOffset );
+
+        while( _d.getFullYear() &lt;= _year ){
+            _tmp = { &#x27;week&#x27;: _count++, &#x27;start&#x27;: null, &#x27;end&#x27;: null };
+            _tmp.start = _d.getTime() + _dayOffset;
+            _d.setDate( _d.getDate() + 6 );
+            _tmp.end = _d.getTime() + _dayOffset;
+            _d.setDate( _d.getDate() + 1 );
+            if( _d.getFullYear() &gt; _year ) {
+                _d = new Date( _d.getFullYear(), 0, 1 );
+                if( _d.getDay() &lt; 2 ) break;
+             }
+            _r.push( _tmp );
+        }
+        return _r;
+    }
+}(jQuery));
+
+(function($){
+    /**
+     * 自定义月份弹框的模板HTML
+     * @for         JC.Calendar
+     * @property    monthTpl
+     * @type        string
+     * @default     empty
+     * @static
+     */
+    JC.Calendar.monthTpl = &#x27;&#x27;;
+
+    function MonthModel( _selector ){
+        this._selector = _selector;
+    }
+    JC.Calendar.MonthModel = MonthModel;
+    
+    function MonthView( _model ){
+        this._model = _model;
+    }
+    JC.Calendar.MonthView = MonthView;
+
+    JC.Calendar.clone( MonthModel, MonthView );
+
+    MonthModel.prototype.layout = 
+        function(){
+            var _r = $(&#x27;#UXCCalendar_month&#x27;);
+
+            if( !_r.length ){
+                _r = $( JC.Calendar.monthTpl || this.tpl ).hide();
+                _r.attr(&#x27;id&#x27;, &#x27;UXCCalendar_month&#x27;).hide().appendTo( document.body );
+             }
+            return _r;
+        };
+
+    MonthModel.prototype.tpl =
+        [
+        &#x27;&lt;div id=&quot;UXCCalendar_month&quot; class=&quot;UXCCalendar UXCCalendar_week UXCCalendar_month&quot; &gt;&#x27;
+        ,&#x27;    &lt;div class=&quot;UHeader&quot;&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UNextYear&quot;&gt;&amp;nbsp;&amp;gt;&amp;gt;&amp;nbsp;&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UPreYear&quot;&gt;&amp;nbsp;&amp;lt;&amp;lt;&amp;nbsp;&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;select class=&quot;UYear&quot; style=&quot;&quot;&gt;&lt;/select&gt;&#x27;
+        ,&#x27;    &lt;/div&gt;&#x27;
+        ,&#x27;    &lt;table class=&quot;UTable UTableBorder&quot;&gt;&#x27;
+        ,&#x27;        &lt;tbody&gt;&lt;/tbody&gt;&#x27;
+        ,&#x27;    &lt;/table&gt;&#x27;
+        ,&#x27;    &lt;div class=&quot;UFooter&quot;&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UConfirm&quot;&gt;确定&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UClear&quot;&gt;清空&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UCancel&quot;&gt;取消&lt;/button&gt;&#x27;
+        ,&#x27;    &lt;/div&gt;&#x27;
+        ,&#x27;&lt;/div&gt;&#x27;
+        ].join(&#x27;&#x27;);
+
+    MonthModel.prototype.month = 
+        function(){
+            var _r = 0, _tmp, _date;
+            ( _tmp = this.layout().find(&#x27;td.cur a[dstart]&#x27;) ).length
+                &amp;&amp; ( _date = new Date() )
+                &amp;&amp; (
+                        _date.setTime( _tmp.attr(&#x27;dstart&#x27;) )
+                        , _r = _date.getMonth()
+                   )
+                ;
+            return _r;
+        };
+
+    MonthModel.prototype.selectedDate =
+        function(){
+            var _r, _tmp, _item;
+            _tmp = this.layout().find(&#x27;td.cur&#x27;);
+            _tmp.length 
+                &amp;&amp; !_tmp.hasClass( &#x27;unable&#x27; )
+                &amp;&amp; ( _item = _tmp.find(&#x27;a[dstart]&#x27;) )
+                &amp;&amp; ( 
+                        _r = { &#x27;start&#x27;: new Date(), &#x27;end&#x27;: new Date() }
+                        , _r.start.setTime( _item.attr(&#x27;dstart&#x27;) ) 
+                        , _r.end.setTime( _item.attr(&#x27;dend&#x27;) ) 
+                    )
+                ;
+            return _r;
+        };
+
+    MonthModel.prototype.defaultMultiselectDate =
+        function( _r ){
+            var _p = this
+                , _selector = _p.selector()
+                , _tmp
+                , _multidatear
+                , _dstart, _dend
+                ;
+
+            if( _tmp = parseISODate( _selector.val() ) ) _r.date = _tmp;
+            else{
+                if( _selector.val() &amp;&amp; (_tmp = _selector.val().replace( /[^\d,]/g, &#x27;&#x27; ) ).length ){
+                    _tmp = _tmp.split(&#x27;,&#x27;);
+                    _multidatear = [];
+
+                    $.each( _tmp, function( _ix, _item ){
+                        if( _item.length != 16 ) return;
+                        _dstart = parseISODate( _item.slice( 0, 8 ) );
+                        _dend = parseISODate( _item.slice( 8 ) );
+
+                        if( !_ix ){
+                            _r.date = cloneDate( _dstart );
+                            _r.enddate = cloneDate( _dend );
+                        }
+                        _multidatear.push( { &#x27;start&#x27;: _dstart, &#x27;end&#x27;: _dend } );
+                    });
+
+                    _r.multidate = _multidatear;
+
+                }else{
+                    _tmp = new Date();
+                    _r.date = new Date( _tmp.getFullYear(), _tmp.getMonth(), _tmp.getDate() );
+                    _r.enddate = cloneDate( _r.date );
+                    _r.enddate.setDate( maxDayOfMonth( _r.enddate ) );
+                    _r.multidate = [];
+                    _r.multidate.push( {&#x27;start&#x27;: cloneDate( _r.date ), &#x27;end&#x27;: cloneDate( _r.enddate ) } );
+                }
+            }
+            return _r;
+        };
+
+    MonthModel.prototype.multiLayoutDate = 
+        function(){
+            var _p = this
+                , _dateo = _p.defaultDate()
+                , _year = _p.year()
+                ;
+
+            JC.log( &#x27;MonthModel.multiLayoutDate:&#x27;, new Date().getTime() );
+            _dateo.multidate = [];
+
+            _p.layout().find(&#x27;td.cur&#x27;).each(function(){
+                var _sp = $(this);
+                var _item = _sp.find(&#x27;&gt; a[dstart]&#x27;), _dstart = new Date(), _dend = new Date();
+                _dstart.setTime( _item.attr(&#x27;dstart&#x27;) );
+                _dend.setTime( _item.attr(&#x27;dend&#x27;) );
+                _dateo.multidate.push( { &#x27;start&#x27;: _dstart, &#x27;end&#x27;: _dend } );
+            });
+
+            _dateo.date.setFullYear( _year );
+            _dateo.enddate.setFullYear( _year );
+
+            $.each( _dateo.multidate, function( _ix, _item ){
+                _item.start.setFullYear( _year );
+                _item.end.setFullYear( _year );
+            });
+
+            return _dateo;
+        };
+
+    MonthView.prototype.updateMultiYear =
+        function( _offset ){
+            var _dateo = this._model.layoutDate(), _day, _max;
+
+            //JC.log( &#x27;xdfsadfasefasf&#x27;, _dateo.multidate == null );
+            JC.log( &#x27;MonthView.updateMultiYear:&#x27;, new Date().getTime() );
+
+            tmpUpdateMultiYear( _dateo.date, _offset );
+            tmpUpdateMultiYear( _dateo.enddate, _offset );
+
+            if( _dateo.multidate ){
+                //JC.log( _dateo.multidate.length );
+                $.each( _dateo.multidate, function( _ix, _item ){
+                    tmpUpdateMultiYear( _item.start, _offset );
+                    tmpUpdateMultiYear( _item.end, _offset );
+                    JC.log(&#x27;xxxxxxxxxxxxxxxxxxxxxxx&#x27;, _item.start, _item.end, _offset );
+                });
+            }
+
+            this._buildLayout( _dateo );
+            this._buildDone();
+        };
+    function tmpUpdateMultiYear( _date, _offset ){
+        var _day, _max;
+        _day = _date.getDate();
+        _date.setDate( 1 );
+        _date.setFullYear( _date.getFullYear() + _offset );
+        _max = maxDayOfMonth( _date );
+        _day &gt; _max &amp;&amp; ( _day = _max );
+        _date.setDate( _day );
+    }
+
+    MonthView.prototype._buildBody =
+        function( _dateo ){
+            var _p = this
+                , _date = _dateo.date
+                , _layout = _p._model.layout()
+                , today = new Date( new Date().getFullYear(), new Date().getMonth(), new Date().getDate() ).getTime()
+                , nextCount = 0
+                , _ls = [], _class, _data, _title, _dstart, _dend, _year = _date.getFullYear()
+                , _rows = 4
+                , ipt = JC.Calendar.lastIpt
+                , currentcanselect = parseBool( ipt.attr(&#x27;currentcanselect&#x27;) )
+                , _tmpMultidate = _dateo.multidate ? _dateo.multidate.slice() : null
+                ;
+
+                if( _dateo.maxvalue &amp;&amp; currentcanselect ){
+                    _dateo.maxvalue.setDate( maxDayOfMonth( _dateo.maxvalue ) );
+                }
+
+                _ls.push(&#x27;&lt;tr&gt;&#x27;);
+                for( i = 1, j = 12; i &lt;= j; i++ ){
+                    _dstart = new Date( _year, i - 1, 1 ); 
+                    _dend = new Date( _year, i - 1, maxDayOfMonth( _dstart ) );
+
+                    _title = printf( &quot;{0}年 {1}月&lt;br/&gt;开始日期: {2} (周{4})&lt;br /&gt;结束日期: {3} (周{5})&quot;
+                                , _year
+                                , JC.Calendar.getCnNum( i )
+                                , formatISODate( _dstart )
+                                , formatISODate( _dend )
+                                , JC.Calendar.cnWeek.charAt( _dstart.getDay() % 7 )
+                                , JC.Calendar.cnWeek.charAt( _dend.getDay() % 7 )
+                                );
+
+                    _class = [];
+
+                    if( _dateo.minvalue &amp;&amp; _dstart.getTime() &lt; _dateo.minvalue.getTime() ) 
+                        _class.push( &#x27;unable&#x27; );
+                    if( _dateo.maxvalue &amp;&amp; _dend.getTime() &gt; _dateo.maxvalue.getTime() ){
+                        _class.push( &#x27;unable&#x27; );
+                    }
+
+                    if( _tmpMultidate ){
+                        //JC.log( &#x27;_tmpMultidate.length:&#x27;, _tmpMultidate.length );
+                        $.each( _tmpMultidate, function( _ix, _item ){
+                            //JC.log( _dstart.getTime(), _item.start.getTime(), _item.end.getTime() );
+                            if( _dstart.getTime() &gt;= _item.start.getTime() 
+                              &amp;&amp; _dstart.getTime() &lt;= _item.end.getTime() ){
+                                _class.push( &#x27;cur&#x27; );
+                                _tmpMultidate.splice( _ix, 1 );
+                                //JC.log( _tmpMultidate.length );
+                                return false;
+                            }
+                        });
+                    }else{
+                        if( _date.getTime() &gt;= _dstart.getTime() 
+                                &amp;&amp; _date.getTime() &lt;= _dend.getTime() ) _class.push( &#x27;cur&#x27; );
+                    }
+                    if( today &gt;= _dstart.getTime() &amp;&amp; today &lt;= _dend.getTime() ) _class.push( &#x27;today&#x27; );
+
+                    _cnUnit = JC.Calendar.cnUnit.charAt( i % 10 );
+                    i &gt; 10 &amp;&amp; ( _cnUnit = &quot;十&quot; + _cnUnit );
+
+                    _ls.push( printf( &#x27;&lt;td class=&quot;{0}&quot;&gt;&lt;a href=&quot;javascript:&quot; title=&quot;{1}&quot;&#x27;+
+                                    &#x27; dstart=&quot;{3}&quot; dend=&quot;{4}&quot; month=&quot;{5}&quot; &gt;{2}月&lt;/a&gt;&lt;/td&gt;&#x27;
+                                , _class.join(&#x27; &#x27;)
+                                , _title
+                                , _cnUnit
+                                , _dstart.getTime()
+                                , _dend.getTime()
+                                , i
+                            ));
+                    if( i % 3 === 0 &amp;&amp; i != j ) _ls.push( &#x27;&lt;/tr&gt;&lt;tr&gt;&#x27; );
+                }
+                _ls.push(&#x27;&lt;/tr&gt;&#x27;); 
+ 
+                _layout.find(&#x27;table.UTableBorder tbody&#x27; ).html( $( _ls.join(&#x27;&#x27;) ) );
+        };
+
+    MonthModel.prototype.multiselectDate =
+        function(){
+            var _p = this, _r = [], _sp, _item, _dstart, _dend;
+            _p.layout().find(&#x27;td.cur&#x27;).each( function(){
+                _sp = $(this); _item = _sp.find( &#x27;&gt; a[dstart]&#x27; );
+                if( _sp.hasClass( &#x27;unable&#x27; ) ) return;
+                _dstart = new Date(); _dend = new Date();
+                _dstart.setTime( _item.attr(&#x27;dstart&#x27;) );
+                _dend.setTime( _item.attr(&#x27;dend&#x27;) );
+                _r.push( { &#x27;start&#x27;: _dstart, &#x27;end&#x27;: _dend } );
+            });
+            return _r;
+        };
+
+    MonthView.prototype.updateSelected = 
+        function( _userSelectedItem ){
+            var _p = this, _dstart, _dend, _tmp, _text, _ar;
+            if( !_userSelectedItem ){
+                if( _p._model.multiselect() ){
+                    _tmp = this._model.multiselectDate();
+                    if( !_tmp.length ) return;
+                    _ar = [];
+                    $.each( _tmp, function( _ix, _item ){
+                        _ar.push( printf( &#x27;{0} 至 {1}&#x27;, formatISODate( _item.start ), formatISODate( _item.end ) ) );
+                    });
+                    _text = _ar.join(&#x27;,&#x27;);
+                }else{
+                    _tmp = this._model.selectedDate();
+                    _tmp &amp;&amp; ( _dstart = _tmp.start, _dend = _tmp.end );
+
+                    _dstart &amp;&amp; _dend 
+                        &amp;&amp; ( _text = printf( &#x27;{0} 至 {1}&#x27;, formatISODate( _dstart ), formatISODate( _dend ) ) );
+                }
+            }else{
+                _userSelectedItem = $( _userSelectedItem );
+                _tmp = getJqParent( _userSelectedItem, &#x27;td&#x27; );
+                if( _tmp &amp;&amp; _tmp.hasClass(&#x27;unable&#x27;) ) return;
+
+                if( _p._model.multiselect() ){
+                    _tmp.toggleClass(&#x27;cur&#x27;);
+                    return;
+                }
+                _dstart = new Date(); _dend = new Date();
+                _dstart.setTime( _userSelectedItem.attr(&#x27;dstart&#x27;) );
+                _dend.setTime( _userSelectedItem.attr(&#x27;dend&#x27;) );
+
+                _text = printf( &#x27;{0} 至 {1}&#x27;, formatISODate( _dstart ), formatISODate( _dend ) );
+            }
+
+            if( !_text ) return;
+
+            _p._model.selector().val( _text );
+            $(_p).trigger( &#x27;TriggerEvent&#x27;, [ JC.Calendar.Model.UPDATE, &#x27;month&#x27;, _dstart, _dend ] );
+
+            JC.Calendar.hide();
+        };
+
+}(jQuery));
+
+(function($){
+    /**
+     * 自定义周弹框的模板HTML
+     * @for         JC.Calendar
+     * @property    seasonTpl
+     * @type        string
+     * @default     empty
+     * @static
+     */
+    JC.Calendar.seasonTpl = &#x27;&#x27;;
+
+    function SeasonModel( _selector ){
+        this._selector = _selector;
+    }
+    JC.Calendar.SeasonModel = SeasonModel;
+    
+    function SeasonView( _model ){
+        this._model = _model;
+    }
+    JC.Calendar.SeasonView = SeasonView;
+
+    JC.Calendar.clone( SeasonModel, SeasonView );
+
+    SeasonModel.prototype.layout = 
+        function(){
+            var _r = $(&#x27;#UXCCalendar_season&#x27;);
+
+            if( !_r.length ){
+                _r = $( JC.Calendar.seasonTpl || this.tpl ).hide();
+                _r.attr(&#x27;id&#x27;, &#x27;UXCCalendar_season&#x27;).hide().appendTo( document.body );
+             }
+            return _r;
+        };
+
+    SeasonModel.prototype.tpl =
+        [
+        &#x27;&lt;div id=&quot;UXCCalendar_season&quot; class=&quot;UXCCalendar UXCCalendar_week UXCCalendar_season&quot; &gt;&#x27;
+        ,&#x27;    &lt;div class=&quot;UHeader&quot;&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UNextYear&quot;&gt;&amp;nbsp;&amp;gt;&amp;gt;&amp;nbsp;&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UPreYear&quot;&gt;&amp;nbsp;&amp;lt;&amp;lt;&amp;nbsp;&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;select class=&quot;UYear&quot; style=&quot;&quot;&gt;&lt;/select&gt;&#x27;
+        ,&#x27;    &lt;/div&gt;&#x27;
+        ,&#x27;    &lt;table class=&quot;UTable UTableBorder&quot;&gt;&#x27;
+        ,&#x27;        &lt;tbody&gt;&lt;/tbody&gt;&#x27;
+        ,&#x27;    &lt;/table&gt;&#x27;
+        ,&#x27;    &lt;div class=&quot;UFooter&quot;&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UConfirm&quot;&gt;确定&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UClear&quot;&gt;清空&lt;/button&gt;&#x27;
+        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UCancel&quot;&gt;取消&lt;/button&gt;&#x27;
+        ,&#x27;    &lt;/div&gt;&#x27;
+        ,&#x27;&lt;/div&gt;&#x27;
+        ].join(&#x27;&#x27;);
+
+    SeasonModel.prototype.month = 
+        function(){
+            var _r = 0, _tmp, _date;
+            ( _tmp = this.layout().find(&#x27;td.cur a[dstart]&#x27;) ).length
+                &amp;&amp; ( _date = new Date() )
+                &amp;&amp; (
+                        _date.setTime( _tmp.attr(&#x27;dstart&#x27;) )
+                        , _r = _date.getMonth()
+                   )
+                ;
+            return _r;
+        };
+
+    SeasonModel.prototype.selectedDate =
+        function(){
+            var _r, _tmp, _item;
+            _tmp = this.layout().find(&#x27;td.cur&#x27;);
+            _tmp.length 
+                &amp;&amp; !_tmp.hasClass( &#x27;unable&#x27; )
+                &amp;&amp; ( _item = _tmp.find(&#x27;a[dstart]&#x27;) )
+                &amp;&amp; ( 
+                        _r = { &#x27;start&#x27;: new Date(), &#x27;end&#x27;: new Date() }
+                        , _r.start.setTime( _item.attr(&#x27;dstart&#x27;) ) 
+                        , _r.end.setTime( _item.attr(&#x27;dend&#x27;) ) 
+                    )
+                ;
+            return _r;
+        };
+
+    SeasonView.prototype._buildBody =
+        function( _dateo ){
+            var _p = this
+                , _date = _dateo.date
+                , _layout = _p._model.layout()
+                , today = new Date( new Date().getFullYear(), new Date().getMonth(), new Date().getDate() ).getTime()
+                , nextCount = 0
+                , _ls = [], _class, _data, _title, _sdate, _edate, _year = _date.getFullYear()
+                , _rows = 4
+                , ipt = JC.Calendar.lastIpt
+                , currentcanselect = parseBool( ipt.attr(&#x27;currentcanselect&#x27;) )
+                ;
+
+                if( _dateo.maxvalue &amp;&amp; currentcanselect ){
+                    var _m = _dateo.maxvalue.getMonth() + 1, _md;
+
+                    if( _m % 3 !== 0 ){
+                        _dateo.maxvalue.setDate( 1 );
+                        _dateo.maxvalue.setMonth( _m + ( 3 - ( _m % 3 ) - 1 ) );
+                    }
+                    _dateo.maxvalue.setDate( maxDayOfMonth( _dateo.maxvalue ) );
+                }
+
+                _ls.push(&#x27;&lt;tr&gt;&#x27;);
+                for( i = 1, j = 4; i &lt;= j; i++ ){
+                    _sdate = new Date( _year, i * 3 - 3, 1 ); 
+                    _edate = new Date( _year, i * 3 - 1, 1 );
+                    _edate.setDate( maxDayOfMonth( _edate ) );
+
+                    _cnUnit = JC.Calendar.cnUnit.charAt( i % 10 );
+                    i &gt; 10 &amp;&amp; ( _cnUnit = &quot;十&quot; + _cnUnit );
+
+                    _title = printf( &quot;{0}年 第{1}季度&lt;br/&gt;开始日期: {2} (周{4})&lt;br /&gt;结束日期: {3} (周{5})&quot;
+                                , _year
+                                , JC.Calendar.getCnNum( i )
+                                , formatISODate( _sdate )
+                                , formatISODate( _edate )
+                                , JC.Calendar.cnWeek.charAt( _sdate.getDay() % 7 )
+                                , JC.Calendar.cnWeek.charAt( _edate.getDay() % 7 )
+                                );
+
+                    _class = [];
+
+                    if( _dateo.minvalue &amp;&amp; _sdate.getTime() &lt; _dateo.minvalue.getTime() ) 
+                        _class.push( &#x27;unable&#x27; );
+                    if( _dateo.maxvalue &amp;&amp; _edate.getTime() &gt; _dateo.maxvalue.getTime() ){
+                        _class.push( &#x27;unable&#x27; );
+                    }
+
+                    if( _date.getTime() &gt;= _sdate.getTime() &amp;&amp; _date.getTime() &lt;= _edate.getTime() ) _class.push( &#x27;cur&#x27; );
+                    if( today &gt;= _sdate.getTime() &amp;&amp; today &lt;= _edate.getTime() ) _class.push( &#x27;today&#x27; );
+
+
+                    _ls.push( printf( &#x27;&lt;td class=&quot;{0}&quot;&gt;&lt;a href=&quot;javascript:&quot; title=&quot;{1}&quot;&#x27;+
+                                    &#x27; dstart=&quot;{3}&quot; dend=&quot;{4}&quot; month=&quot;{5}&quot; &gt;{2}季度&lt;/a&gt;&lt;/td&gt;&#x27;
+                                , _class.join(&#x27; &#x27;)
+                                , _title
+                                , _cnUnit
+                                , _sdate.getTime()
+                                , _edate.getTime()
+                                , i
+                            ));
+                    if( i % 2 === 0 &amp;&amp; i != j ) _ls.push( &#x27;&lt;/tr&gt;&lt;tr&gt;&#x27; );
+                }
+                _ls.push(&#x27;&lt;/tr&gt;&#x27;); 
+ 
+                _layout.find(&#x27;table.UTableBorder tbody&#x27; ).html( $( _ls.join(&#x27;&#x27;) ) );
+        };
+
+    SeasonView.prototype.updateSelected = 
+        function( _userSelectedItem ){
+            var _p = this, _dstart, _dend, _tmp;
+            if( !_userSelectedItem ){
+                _tmp = this._model.selectedDate();
+                _tmp &amp;&amp; ( _dstart = _tmp.start, _dend = _tmp.end );
+            }else{
+                _userSelectedItem = $( _userSelectedItem );
+                _tmp = getJqParent( _userSelectedItem, &#x27;td&#x27; );
+                if( _tmp &amp;&amp; _tmp.hasClass(&#x27;unable&#x27;) ) return;
+                _dstart = new Date(); _dend = new Date();
+                _dstart.setTime( _userSelectedItem.attr(&#x27;dstart&#x27;) );
+                _dend.setTime( _userSelectedItem.attr(&#x27;dend&#x27;) );
+            }
+            if( !( _dstart &amp;&amp; _dend ) ) return;
+
+            _p._model.selector().val( printf( &#x27;{0} 至 {1}&#x27;, formatISODate( _dstart ), formatISODate( _dend ) ) );
+            $(_p).trigger( &#x27;TriggerEvent&#x27;, [ JC.Calendar.Model.UPDATE, &#x27;season&#x27;, _dstart, _dend ] );
+
+            JC.Calendar.hide();
+        };
+
+}(jQuery));
 
     </pre>
 </div>
