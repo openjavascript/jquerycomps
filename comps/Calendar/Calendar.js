@@ -454,7 +454,14 @@
         function( _selector ){ 
             _selector = $( _selector );
             if( !(_selector && _selector.length) ) return;
-            var _ins = Calendar.getInstance( _selector );
+
+            var _ins, _isIgnore = _selector.is('[ignoreprocess]');
+
+            _selector.attr('ignoreprocess', true);
+            _selector.blur();
+            !_isIgnore && _selector.removeAttr('ignoreprocess');
+
+            _ins = Calendar.getInstance( _selector );
             !_ins && ( _ins = new Calendar( _selector ) );
             _ins.show();
             return;
