@@ -202,7 +202,8 @@
          */
         , hide: function(){ 
             this._view.hide(); 
-                this.trigger( Calendar.Model.HIDE );
+            this.trigger( Calendar.Model.HIDE );
+            this.selector() && this.selector().blur();
             return this; 
         }
         /**

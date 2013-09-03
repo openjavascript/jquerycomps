@@ -7,6 +7,17 @@
         "logo": "jc_logo.png"
     },
     "files": {
+        "../bizs/MultiDate/MultiDate.js": {
+            "name": "../bizs/MultiDate/MultiDate.js",
+            "modules": {},
+            "classes": {
+                "Bizs.MultiDate": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "Bizs": 1
+            }
+        },
         "../comps/AutoSelect/AutoSelect.js": {
             "name": "../comps/AutoSelect/AutoSelect.js",
             "modules": {},
@@ -16,17 +27,6 @@
             "fors": {},
             "namespaces": {
                 "JC": 1
-            }
-        },
-        "../comps/Calendar/_demo/data/Bizs.MultiDate.js": {
-            "name": "../comps/Calendar/_demo/data/Bizs.MultiDate.js",
-            "modules": {},
-            "classes": {
-                "Bizs.MultiDate": 1
-            },
-            "fors": {},
-            "namespaces": {
-                "Bizs": 1
             }
         },
         "../comps/Calendar/Calendar.js": {
@@ -220,7 +220,8 @@
                 "window.jQuery": 1,
                 ".window": 1,
                 "window.JC": 1,
-                "window.UXC": 1
+                "window.UXC": 1,
+                "window.Bizs": 1
             },
             "fors": {},
             "namespaces": {
@@ -230,6 +231,27 @@
     },
     "modules": {},
     "classes": {
+        "Bizs.MultiDate": {
+            "name": "Bizs.MultiDate",
+            "shortname": "Bizs.MultiDate",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "Bizs",
+            "file": "../bizs/MultiDate/MultiDate.js",
+            "line": 3,
+            "description": "MultiDate 复合日历业务逻辑\n<p>\n     <b>require</b>: <a href='JC.Calendar.html'>JC.Calendar</a>\n     <br /><b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/Bizs.MultiDate.html' target='_blank'>API docs</a>\n| <a href='../../bizs/MultiDate/_demo' target='_blank'>demo link</a></p>",
+            "is_constructor": 1,
+            "access": "private",
+            "tagname": "",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
+            "date": "2013-09-03",
+            "example": [
+                ""
+            ]
+        },
         "JC.AutoSelect": {
             "name": "JC.AutoSelect",
             "shortname": "JC.AutoSelect",
@@ -256,22 +278,6 @@
             "example": [
                 "\n       <h2>AJAX 返回内容</h2>\n       <code>\n           <dd>    \n               <select name='select102_1' defaultselect selecturl=\"data/shengshi_with_error_code.php?id=0\" selecttarget=\"select[name=select102_2]\">\n                   <option value=\"-1\" defaultoption>请选择</option>\n               </select>\n               <select name='select102_2' selecturl=\"data/shengshi_with_error_code.php?id={0}\" selecttarget=\"select[name=select102_3]\">\n                   <option value=\"-1\" defaultoption>请选择</option>\n               </select>\n               <select name='select102_3' selecturl=\"data/shengshi_with_error_code.php?id={0}\">\n                   <option value=\"-1\" defaultoption>请选择</option>\n               </select>\n           </dd>\n       </code>\n       <script>\n           $.get( './data/shengshi_html.php?rnd='+new Date().getTime(), function( _r ){\n               var _selector = $(_r);\n               $( 'dl.def > dt' ).after( _selector );\n               JC.AutoSelect( _selector );\n           });\n\n           JC.AutoSelect.dataFilter = \n               function( _data, _select ){\n                   var _r = _data;\n                   if( _data && !_data.length && _data.data ){\n                       _r = _data.data;\n                   }\n                   return _r;\n               };\n       </script>"
             ]
-        },
-        "Bizs.MultiDate": {
-            "name": "Bizs.MultiDate",
-            "shortname": "Bizs.MultiDate",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "namespace": "Bizs",
-            "file": "../comps/Calendar/_demo/data/Bizs.MultiDate.js",
-            "line": 5,
-            "description": "复合日历业务逻辑",
-            "is_constructor": 1,
-            "access": "private",
-            "tagname": ""
         },
         "JC.Calendar": {
             "name": "JC.Calendar",
@@ -1179,7 +1185,8 @@
             "extension_for": [],
             "namespace": "",
             "file": "../lib.js",
-            "line": 44,
+            "line": 21,
+            "description": "全局函数",
             "static": 1
         },
         "window.JC": {
@@ -1192,7 +1199,7 @@
             "extension_for": [],
             "namespace": "window",
             "file": "../lib.js",
-            "line": 531,
+            "line": 547,
             "description": "JC jquery 组件库 资源调用控制类\n<br />这是一个单例模式, 全局访问使用 JC 或 window.JC\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.JC.html' target='_blank'>API docs</a>\n| <a href='../../_demo' target='_blank'>demo link</a></p>",
             "static": 1,
             "example": [
@@ -1211,13 +1218,125 @@
             "extension_for": [],
             "namespace": "window",
             "file": "../lib.js",
-            "line": 775,
+            "line": 837,
             "description": "UXC 是 JC 的别名\n<br />存在这个变量是为了向后兼容\n<br />20130804 之前的命名空间是 UXC, 这个命名空间在一段时间后将会清除, 请使用 JC 命名空间\n<p><b>see</b>: <a href='window.JC.html'>JC</a></p>",
             "static": 1,
             "date": "2013-05-22"
+        },
+        "window.Bizs": {
+            "name": "window.Bizs",
+            "shortname": "window.Bizs",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window",
+            "file": "../lib.js",
+            "line": 858,
+            "description": "<h2>业务逻辑命名空间</h2>\n<br />这个命名空间的组件主要为满足业务需求, 不是通用组件~\n<br />但在某个项目中应该是常用组件~\n<dl>\n     <dt>业务组件的存放位置:</dt>\n     <dd>libpath/bizs/</dd>\n\n     <dt>使用业务组件</dt>\n     <dd> JC.use( 'Bizs.BizComps' ); //  libpath/bizs/BizComps/BizComps.js </dd>\n\n     <dt>使用业务文件</dt>\n     <dd> JC.use( 'bizs.BizFile' ); //   libpath/bizs/BizFile.js </dd>\n</dl>",
+            "static": 1
         }
     },
     "classitems": [
+        {
+            "file": "../bizs/MultiDate/MultiDate.js",
+            "line": 89,
+            "description": "获取 显示 MultiDate 的触发源选择器, 比如 a 标签",
+            "itemtype": "method",
+            "name": "selector",
+            "return": {
+                "description": "selector"
+            },
+            "class": "Bizs.MultiDate",
+            "namespace": "Bizs"
+        },
+        {
+            "file": "../bizs/MultiDate/MultiDate.js",
+            "line": 95,
+            "description": "使用 jquery on 绑定事件",
+            "itemtype": "method",
+            "name": "on",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_cb",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "MultiDateInstance"
+            },
+            "class": "Bizs.MultiDate",
+            "namespace": "Bizs"
+        },
+        {
+            "file": "../bizs/MultiDate/MultiDate.js",
+            "line": 103,
+            "description": "使用 jquery trigger 绑定事件",
+            "itemtype": "method",
+            "name": "trigger",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "MultiDateInstance"
+            },
+            "class": "Bizs.MultiDate",
+            "namespace": "Bizs"
+        },
+        {
+            "file": "../bizs/MultiDate/MultiDate.js",
+            "line": 111,
+            "description": "获取或设置 MultiDate 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "MultiDate instance"
+            },
+            "class": "Bizs.MultiDate",
+            "namespace": "Bizs"
+        },
+        {
+            "file": "../bizs/MultiDate/MultiDate.js",
+            "line": 127,
+            "description": "判断 selector 是否可以初始化 MultiDate",
+            "itemtype": "method",
+            "name": "isMultiDate",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "bool"
+            },
+            "class": "Bizs.MultiDate",
+            "namespace": "Bizs"
+        },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
             "line": 113,
@@ -1615,104 +1734,6 @@
             "namespace": "JC"
         },
         {
-            "file": "../comps/Calendar/_demo/data/Bizs.MultiDate.js",
-            "line": 81,
-            "description": "获取 显示 MultiDate 的触发源选择器, 比如 a 标签",
-            "itemtype": "method",
-            "name": "selector",
-            "return": {
-                "description": "selector"
-            },
-            "class": "Bizs.MultiDate",
-            "namespace": "Bizs"
-        },
-        {
-            "file": "../comps/Calendar/_demo/data/Bizs.MultiDate.js",
-            "line": 87,
-            "description": "使用 jquery on 绑定事件",
-            "itemtype": "method",
-            "name": "on",
-            "type": "String",
-            "params": [
-                {
-                    "name": "_evtName",
-                    "description": "",
-                    "type": "String"
-                },
-                {
-                    "name": "_cb",
-                    "description": "",
-                    "type": "Function"
-                }
-            ],
-            "return": {
-                "description": "MultiDateInstance"
-            },
-            "class": "Bizs.MultiDate",
-            "namespace": "Bizs"
-        },
-        {
-            "file": "../comps/Calendar/_demo/data/Bizs.MultiDate.js",
-            "line": 95,
-            "description": "使用 jquery trigger 绑定事件",
-            "itemtype": "method",
-            "name": "trigger",
-            "type": "String",
-            "params": [
-                {
-                    "name": "_evtName",
-                    "description": "",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "MultiDateInstance"
-            },
-            "class": "Bizs.MultiDate",
-            "namespace": "Bizs"
-        },
-        {
-            "file": "../comps/Calendar/_demo/data/Bizs.MultiDate.js",
-            "line": 103,
-            "description": "获取或设置 MultiDate 的实例",
-            "itemtype": "method",
-            "name": "getInstance",
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "",
-                    "type": "Selector"
-                }
-            ],
-            "static": 1,
-            "return": {
-                "description": "",
-                "type": "MultiDate instance"
-            },
-            "class": "Bizs.MultiDate",
-            "namespace": "Bizs"
-        },
-        {
-            "file": "../comps/Calendar/_demo/data/Bizs.MultiDate.js",
-            "line": 119,
-            "description": "判断 selector 是否可以初始化 MultiDate",
-            "itemtype": "method",
-            "name": "isMultiDate",
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "",
-                    "type": "Selector"
-                }
-            ],
-            "static": 1,
-            "return": {
-                "description": "bool"
-            },
-            "class": "Bizs.MultiDate",
-            "namespace": "Bizs"
-        },
-        {
             "file": "../comps/Calendar/Calendar.js",
             "line": 112,
             "description": "内部初始化函数",
@@ -1760,7 +1781,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 208,
+            "line": 209,
             "description": "获取 显示 Calendar 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -1772,7 +1793,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 214,
+            "line": 215,
             "description": "获取 Calendar 外观的 选择器",
             "itemtype": "method",
             "name": "layout",
@@ -1784,7 +1805,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 220,
+            "line": 221,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -1809,7 +1830,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 228,
+            "line": 229,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -1829,7 +1850,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 235,
+            "line": 236,
             "description": "用户操作日期控件时响应改变",
             "itemtype": "method",
             "name": "updateLayout",
@@ -1838,7 +1859,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 244,
+            "line": 245,
             "description": "切换到不同日期控件源时, 更新对应的控件源",
             "itemtype": "method",
             "name": "updateSelector",
@@ -1854,7 +1875,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 255,
+            "line": 256,
             "description": "用户改变年份时, 更新到对应的年份",
             "itemtype": "method",
             "name": "updateYear",
@@ -1870,7 +1891,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 266,
+            "line": 267,
             "description": "用户改变月份时, 更新到对应的月份",
             "itemtype": "method",
             "name": "updateMonth",
@@ -1886,7 +1907,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 277,
+            "line": 278,
             "description": "把选中的值赋给控件源\n<br />用户点击日期/确定按钮",
             "itemtype": "method",
             "name": "updateSelected",
@@ -1902,7 +1923,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 289,
+            "line": 290,
             "description": "显示日历外观到对应的控件源",
             "itemtype": "method",
             "name": "updatePosition",
@@ -1911,7 +1932,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 298,
+            "line": 299,
             "description": "清除控件源内容",
             "itemtype": "method",
             "name": "clear",
@@ -1920,7 +1941,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 308,
+            "line": 309,
             "description": "用户点击取消按钮时隐藏日历外观",
             "itemtype": "method",
             "name": "cancel",
@@ -1929,7 +1950,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 318,
+            "line": 319,
             "description": "返回日历外观是否可见",
             "itemtype": "method",
             "name": "visible",
@@ -1941,7 +1962,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 332,
+            "line": 333,
             "description": "获取控件源的初始日期对象",
             "itemtype": "method",
             "name": "defaultDate",
@@ -1957,7 +1978,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 342,
+            "line": 343,
             "description": "获取或设置 Calendar 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -1978,7 +1999,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 358,
+            "line": 359,
             "description": "保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",
             "prototype": "_ins",
             "type": "object",
@@ -1991,7 +2012,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 369,
+            "line": 370,
             "description": "获取控件源的实例类型\n<br />目前有 date, week, month, season 四种类型的实例",
             "itemtype": "method",
             "name": "type",
@@ -2011,7 +2032,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 394,
+            "line": 395,
             "description": "判断选择器是否为日历组件的对象",
             "itemtype": "method",
             "name": "isCalendar",
@@ -2028,14 +2049,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 427,
+            "line": 428,
             "description": "请使用 isCalendar, 这个方法是为了向后兼容",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 431,
+            "line": 432,
             "description": "弹出日期选择框",
             "itemtype": "method",
             "name": "pickDate",
@@ -2055,7 +2076,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 462,
+            "line": 470,
             "description": "设置是否在 DOM 加载完毕后, 自动初始化所有日期控件",
             "itemtype": "property",
             "name": "autoInit",
@@ -2067,7 +2088,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 471,
+            "line": 479,
             "description": "设置默认显示的年份数, 该数为前后各多少年 默认为前后各10年",
             "itemtype": "property",
             "name": "defaultDateSpan",
@@ -2079,7 +2100,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 480,
+            "line": 488,
             "description": "最后一个显示日历组件的文本框",
             "itemtype": "property",
             "name": "lastIpt",
@@ -2090,7 +2111,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 487,
+            "line": 495,
             "description": "自定义日历组件模板\n<p>默认模板为_logic.tpl</p>\n<p>如果用户显示定义JC.Calendar.tpl的话, 将采用用户的模板</p>",
             "itemtype": "property",
             "name": "tpl",
@@ -2102,7 +2123,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 497,
+            "line": 505,
             "description": "初始化外观后的回调函数",
             "itemtype": "property",
             "name": "layoutInitedCallback",
@@ -2114,7 +2135,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 505,
+            "line": 513,
             "description": "显示为可见时的回调",
             "itemtype": "property",
             "name": "layoutShowCallback",
@@ -2126,7 +2147,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 513,
+            "line": 521,
             "description": "日历隐藏后的回调函数",
             "itemtype": "property",
             "name": "layoutHideCallback",
@@ -2138,7 +2159,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 521,
+            "line": 529,
             "description": "DOM 点击的过滤函数\n<br />默认 dom 点击时, 判断事件源不为 input[datatype=date|daterange] 会隐藏 Calendar\n<br /> 通过该回调可自定义过滤, 返回 false 不执行隐藏操作",
             "itemtype": "property",
             "name": "domClickFilter",
@@ -2150,7 +2171,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 531,
+            "line": 539,
             "description": "隐藏日历组件",
             "itemtype": "method",
             "name": "hide",
@@ -2163,7 +2184,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 548,
+            "line": 556,
             "description": "获取初始日期对象\n<p style=\"bold\">这个方法将要废除, 请使用 instance.defaultDate()</p>",
             "itemtype": "method",
             "name": "getDate",
@@ -2180,7 +2201,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 560,
+            "line": 568,
             "description": "每周的中文对应数字",
             "itemtype": "property",
             "name": "cnWeek",
@@ -2192,7 +2213,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 568,
+            "line": 576,
             "description": "100以内的中文对应数字",
             "itemtype": "property",
             "name": "cnUnit",
@@ -2204,7 +2225,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 576,
+            "line": 584,
             "description": "转换 100 以内的数字为中文数字",
             "itemtype": "method",
             "name": "getCnNum",
@@ -2224,7 +2245,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 590,
+            "line": 598,
             "description": "设置日历组件的显示位置",
             "itemtype": "method",
             "name": "position",
@@ -2241,14 +2262,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 601,
+            "line": 609,
             "description": "这个方法后续版本不再使用, 请使用 Calendar.position",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 605,
+            "line": 613,
             "description": "初始化日历组件的触发按钮",
             "itemtype": "method",
             "name": "_logic.initTrigger",
@@ -2266,7 +2287,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 632,
+            "line": 640,
             "description": "克隆 Calendar 默认 Model, View 的原型属性",
             "itemtype": "method",
             "name": "clone",
@@ -2287,7 +2308,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1122,
+            "line": 1130,
             "description": "捕获用户更改年份 \n<p>监听 年份下拉框</p>",
             "itemtype": "event",
             "name": "year change",
@@ -2298,7 +2319,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1132,
+            "line": 1140,
             "description": "捕获用户更改年份 \n<p>监听 下一年按钮</p>",
             "itemtype": "event",
             "name": "next year",
@@ -2309,7 +2330,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1142,
+            "line": 1150,
             "description": "捕获用户更改年份 \n<p>监听 上一年按钮</p>",
             "itemtype": "event",
             "name": "previous year",
@@ -2320,7 +2341,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1152,
+            "line": 1160,
             "description": "增加或者减少一年\n<p>监听 年份map</p>",
             "itemtype": "event",
             "name": "year map click",
@@ -2331,7 +2352,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1166,
+            "line": 1174,
             "description": "增加或者减少一个月\n<p>监听 月份map</p>",
             "itemtype": "event",
             "name": "month map click",
@@ -2342,7 +2363,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1180,
+            "line": 1188,
             "description": "日期点击事件",
             "itemtype": "event",
             "name": "date click",
@@ -2353,7 +2374,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1193,
+            "line": 1201,
             "description": "选择当前日期\n<p>监听确定按钮</p>",
             "itemtype": "event",
             "name": "confirm click",
@@ -2364,7 +2385,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1203,
+            "line": 1211,
             "description": "清除文本框内容\n<p>监听 清空按钮</p>",
             "itemtype": "event",
             "name": "clear click",
@@ -2375,7 +2396,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1213,
+            "line": 1221,
             "description": "取消日历组件, 相当于隐藏\n<p>监听 取消按钮</p>",
             "itemtype": "event",
             "name": "cancel click",
@@ -2386,7 +2407,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1223,
+            "line": 1231,
             "description": "日历组件按钮点击事件",
             "itemtype": "event",
             "name": "calendar button click",
@@ -2397,7 +2418,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1231,
+            "line": 1239,
             "description": "日历组件点击事件, 阻止冒泡, 防止被 document click事件隐藏",
             "itemtype": "event",
             "name": "UXCCalendar click",
@@ -2408,7 +2429,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1240,
+            "line": 1248,
             "description": "DOM 加载完毕后, 初始化日历组件相关事件",
             "itemtype": "event",
             "name": "dom ready",
@@ -2419,14 +2440,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1246,
+            "line": 1254,
             "description": "延迟200毫秒初始化页面的所有日历控件\n之所以要延迟是可以让用户自己设置是否需要自动初始化",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1254,
+            "line": 1262,
             "description": "监听窗口滚动和改变大小, 实时变更日历组件显示位置",
             "itemtype": "event",
             "name": "window scroll, window resize",
@@ -2437,7 +2458,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1263,
+            "line": 1271,
             "description": "dom 点击时, 检查事件源是否为日历组件对象, 如果不是则会隐藏日历组件",
             "itemtype": "event",
             "name": "dom click",
@@ -2448,7 +2469,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1289,
+            "line": 1297,
             "description": "日历组件文本框获得焦点",
             "itemtype": "event",
             "name": "input focus",
@@ -2459,7 +2480,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1306,
+            "line": 1314,
             "description": "自定义周弹框的模板HTML",
             "itemtype": "property",
             "name": "weekTpl",
@@ -2471,7 +2492,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1315,
+            "line": 1323,
             "description": "自定义周日历每周的起始日期 \n<br /> 0 - 6, 0=周日, 1=周一",
             "itemtype": "property",
             "name": "weekDayOffset",
@@ -2483,7 +2504,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1514,
+            "line": 1522,
             "description": "取一年中所有的星期, 及其开始结束日期",
             "itemtype": "method",
             "name": "weekOfYear",
@@ -2508,14 +2529,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1526,
+            "line": 1534,
             "description": "元旦开始的第一个星期一开始的一周为政治经济上的第一周",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1550,
+            "line": 1558,
             "description": "自定义月份弹框的模板HTML",
             "itemtype": "property",
             "name": "monthTpl",
@@ -2527,7 +2548,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1870,
+            "line": 1878,
             "description": "自定义周弹框的模板HTML",
             "itemtype": "property",
             "name": "seasonTpl",
@@ -10833,19 +10854,18 @@
         },
         {
             "file": "../lib.js",
-            "line": 22,
+            "line": 28,
             "description": "全局 css z-index 控制属性",
             "itemtype": "property",
             "name": "ZINDEX_COUNT",
             "type": "int",
             "default": "50001",
             "static": 1,
-            "class": "window.jQuery",
-            "namespace": "window"
+            "class": ".window"
         },
         {
             "file": "../lib.js",
-            "line": 30,
+            "line": 36,
             "description": "把函数的参数转为数组",
             "itemtype": "method",
             "name": "sliceArgs",
@@ -10860,12 +10880,11 @@
                 "description": "Array"
             },
             "static": 1,
-            "class": "window.jQuery",
-            "namespace": "window"
+            "class": ".window"
         },
         {
             "file": "../lib.js",
-            "line": 49,
+            "line": 50,
             "description": "按格式输出字符串",
             "itemtype": "method",
             "name": "printf",
@@ -10884,7 +10903,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 64,
+            "line": 65,
             "description": "判断URL中是否有某个get参数",
             "itemtype": "method",
             "name": "has_url_param",
@@ -10908,7 +10927,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 85,
+            "line": 86,
             "description": "添加URL参数\n<br /><b>require:</b> del\\_url\\_param",
             "itemtype": "method",
             "name": "add_url_params",
@@ -10932,7 +10951,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 110,
+            "line": 111,
             "description": "取URL参数的值\n<br /><b>require:</b> del\\_url\\_param",
             "itemtype": "method",
             "name": "get_url_param",
@@ -10956,7 +10975,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 138,
+            "line": 139,
             "description": "删除URL参数",
             "itemtype": "method",
             "name": "del_url_param",
@@ -10980,7 +10999,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 165,
+            "line": 166,
             "description": "提示需要 HTTP 环境",
             "itemtype": "method",
             "name": "httpRequire",
@@ -10999,7 +11018,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 180,
+            "line": 181,
             "description": "删除 URL 的锚点\n<br /><b>require:</b> add\\_url\\_params",
             "itemtype": "method",
             "name": "removeUrlSharp",
@@ -11023,7 +11042,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 194,
+            "line": 195,
             "description": "重载页面\n<br /><b>require:</b> removeUrlSharp\n<br /><b>require:</b> add\\_url\\_params",
             "itemtype": "method",
             "name": "reload_page",
@@ -11049,7 +11068,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 212,
+            "line": 213,
             "description": "取小数点的N位，\n<br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题",
             "itemtype": "method",
             "name": "parse_finance_num",
@@ -11073,7 +11092,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 228,
+            "line": 229,
             "description": "js 附加字串函数 pad_char_f",
             "itemtype": "method",
             "name": "pad_char_f",
@@ -11102,7 +11121,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 244,
+            "line": 245,
             "description": "格式化日期为 YYYY-mm-dd 格式\n<br /><b>require</b>: pad\\_char\\_f",
             "itemtype": "method",
             "name": "formatISODate",
@@ -11126,7 +11145,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 258,
+            "line": 259,
             "description": "从 ISODate 字符串解析日期对象",
             "itemtype": "method",
             "name": "parseISODate",
@@ -11145,7 +11164,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 276,
+            "line": 277,
             "description": "克隆日期对象",
             "itemtype": "method",
             "name": "cloneDate",
@@ -11165,7 +11184,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 284,
+            "line": 285,
             "description": "判断两个日期是否为同一天",
             "itemtype": "method",
             "name": "isSameDay",
@@ -11190,7 +11209,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 296,
+            "line": 297,
             "description": "判断两个日期是否为同一月份",
             "itemtype": "method",
             "name": "isSameMonth",
@@ -11215,7 +11234,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 308,
+            "line": 309,
             "description": "取得一个月份中最大的一天",
             "itemtype": "method",
             "name": "maxDayOfMonth",
@@ -11235,7 +11254,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 321,
+            "line": 322,
             "description": "取当前脚本标签的 src路径",
             "itemtype": "method",
             "name": "script_path_f",
@@ -11248,7 +11267,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 333,
+            "line": 334,
             "description": "缓动函数, 动画效果为按时间缓动 \n<br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval",
             "itemtype": "method",
             "name": "easyEffect",
@@ -11290,7 +11309,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 386,
+            "line": 387,
             "description": "把输入值转换为布尔值",
             "itemtype": "method",
             "name": "parseBool",
@@ -11309,7 +11328,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 405,
+            "line": 406,
             "description": "判断是否支持 CSS position: fixed",
             "itemtype": "property",
             "name": "$.support.isFixed",
@@ -11320,7 +11339,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 434,
+            "line": 435,
             "description": "绑定或清除 mousewheel 事件",
             "itemtype": "method",
             "name": "mousewheelEvent",
@@ -11341,7 +11360,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 456,
+            "line": 457,
             "description": "获取 selector 的指定父级标签",
             "itemtype": "method",
             "name": "getJqParent",
@@ -11366,7 +11385,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 482,
+            "line": 483,
             "description": "扩展 jquery 选择器\n<br />扩展起始字符的 '/' 符号为 jquery 父节点选择器\n<br />扩展起始字符的 '|' 符号为 jquery 子节点选择器\n<br />扩展起始字符的 '<' 符号为 jquery 父节点查找识别符( getJqParent )",
             "itemtype": "method",
             "name": "parentSelector",
@@ -11396,7 +11415,26 @@
         },
         {
             "file": "../lib.js",
-            "line": 547,
+            "line": 528,
+            "description": "获取脚本模板的内容",
+            "itemtype": "method",
+            "name": "scriptContent",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "string"
+            },
+            "class": ".window"
+        },
+        {
+            "file": "../lib.js",
+            "line": 563,
             "description": "JC组件库所在路径",
             "itemtype": "property",
             "name": "PATH",
@@ -11407,7 +11445,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 555,
+            "line": 573,
             "description": "是否显示调试信息",
             "itemtype": "property",
             "name": "debug",
@@ -11418,7 +11456,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 562,
+            "line": 580,
             "description": "导入JC组件",
             "itemtype": "method",
             "name": "use",
@@ -11441,14 +11479,14 @@
                 }
             ],
             "example": [
-                "\n               JC.use( 'SomeClass' );                              //导入类 SomeClass\n               JC.use( 'SomeClass, AnotherClass' );                //导入类 SomeClass, AnotherClass\n               //\n               ///  导入类 SomeClass, SomeClass目录下的file1.js, \n               ///  AnotherClass, AnotherClass 下的file2.js\n               //\n               JC.use( 'SomeClass, comps/SomeClass/file1.js, comps/AnotherClass/file2.js' );   \n               JC.use( 'SomeClass, plugins/swfobject.js., plugins/json2.js' );   \n               JC.use( '/js/Test/Test1.js' );     //导入文件  /js/Test/Test1.js, 如果起始处为 \"/\", 将视为文件的绝对路径\n               //\n               /// 导入 URL 资源 // JC.use( 'http://test.com/file1.js', 'https://another.com/file2.js' ); "
+                "\n               JC.use( 'SomeClass' );                              //导入类 SomeClass\n               JC.use( 'SomeClass, AnotherClass' );                //导入类 SomeClass, AnotherClass\n               //\n               ///  导入类 SomeClass, SomeClass目录下的file1.js, \n               ///  AnotherClass, AnotherClass 下的file2.js\n               //\n               JC.use( 'SomeClass, comps/SomeClass/file1.js, comps/AnotherClass/file2.js' );   \n               JC.use( 'SomeClass, plugins/swfobject.js., plugins/json2.js' );   \n               JC.use( '/js/Test/Test1.js' );     //导入文件  /js/Test/Test1.js, 如果起始处为 \"/\", 将视为文件的绝对路径\n               //\n               /// 导入 URL 资源 // JC.use( 'http://test.com/file1.js', 'https://another.com/file2.js' ); \n               //\n               /// in libpath/_demo/\n               //\n               JC.use(\n                   [\n                       'Panel'                     //  ../comps/Panel/Panel.js\n                       , 'Tips'                    //  ../comps/Tips/Tips.js\n                       , 'Valid'                   //  ../comps/Valid/Valid.js\n                       , 'Bizs.KillISPCache'       //  ../bizs/KillISPCache/KillISPCache.js\n                       , 'bizs.TestBizFile'        //  ../bizs/TestBizFile.js\n                       , 'comps.TestCompFile'      //  ../comps/TestCompFile.js \n                       , 'Plugins.rate'            //  ../plugins/rate/rate.js\n                       , 'plugins.json2'           //  ../plugins/json2.js\n                       , '/js/fullpathtest.js'     //  /js/fullpathtest.js\n                   ].join()\n               );"
             ],
             "class": "window.JC",
             "namespace": "window"
         },
         {
             "file": "../lib.js",
-            "line": 624,
+            "line": 686,
             "description": "调用依赖的类\n<br />这个方法的存在是因为有一些类调整了结构, 但是原有的引用因为向后兼容的需要, 暂时不能去掉",
             "itemtype": "method",
             "name": "_usePatch",
@@ -11477,7 +11515,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 646,
+            "line": 708,
             "description": "输出调试信息, 可通过 JC.debug 指定是否显示调试信息",
             "params": [
                 {
@@ -11494,7 +11532,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 657,
+            "line": 719,
             "description": "定义输出路径的 v 参数, 以便控制缓存",
             "itemtype": "property",
             "name": "pathPostfix",
@@ -11506,7 +11544,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 665,
+            "line": 727,
             "description": "是否启用nginx concat 模块的路径格式",
             "itemtype": "property",
             "name": "enableNginxStyle",
@@ -11518,7 +11556,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 673,
+            "line": 735,
             "description": "定义 nginx style 的基础路径\n<br /><b>注意:</b> 如果这个属性为空, 即使 enableNginxStyle = true, 也是直接输出默认路径",
             "itemtype": "property",
             "name": "nginxBasePath",
@@ -11530,7 +11568,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 682,
+            "line": 744,
             "description": "资源路径映射对象\n<br />设置 JC.use 逗号(',') 分隔项的 对应URL路径",
             "itemtype": "property",
             "name": "FILE_MAP",
@@ -11545,7 +11583,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 720,
+            "line": 782,
             "description": "输出 nginx concat 模块的脚本路径格式",
             "itemtype": "method",
             "name": "_writeNginxScript",
@@ -11564,7 +11602,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 748,
+            "line": 810,
             "description": "输出的脚本路径格式",
             "itemtype": "method",
             "name": "_writeNormalScript",
@@ -11583,7 +11621,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 765,
+            "line": 827,
             "description": "保存 use 过的资源路径, 以便进行唯一性判断, 避免重复加载",
             "itemtype": "property",
             "name": "_USE_CACHE",
@@ -11597,20 +11635,24 @@
         },
         {
             "file": "../lib.js",
-            "line": 786,
+            "line": 848,
             "description": "如果 console 不可用, 则生成一个模拟的 console 对象",
             "class": "window.UXC",
             "namespace": "window"
         },
         {
             "file": "../lib.js",
-            "line": 792,
+            "line": 854,
             "description": "自动识别组件库所在路径",
             "class": "window.UXC",
             "namespace": "window"
         }
     ],
     "warnings": [
+        {
+            "message": "unknown tag: date",
+            "line": " ../bizs/MultiDate/MultiDate.js:3"
+        },
         {
             "message": "unknown tag: version",
             "line": " ../comps/AutoSelect/AutoSelect.js:2"
@@ -11629,7 +11671,7 @@
         },
         {
             "message": "unknown tag: prototype",
-            "line": " ../comps/Calendar/Calendar.js:358"
+            "line": " ../comps/Calendar/Calendar.js:359"
         },
         {
             "message": "unknown tag: version",
@@ -11969,23 +12011,23 @@
         },
         {
             "message": "unknown tag: require",
-            "line": " ../lib.js:405"
+            "line": " ../lib.js:406"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../lib.js:456"
+            "line": " ../lib.js:457"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../lib.js:482"
+            "line": " ../lib.js:483"
         },
         {
             "message": "unknown tag: date",
-            "line": " ../lib.js:531"
+            "line": " ../lib.js:547"
         },
         {
             "message": "unknown tag: date",
-            "line": " ../lib.js:775"
+            "line": " ../lib.js:837"
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",
@@ -11997,23 +12039,23 @@
         },
         {
             "message": "Missing item type\n保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",
-            "line": " ../comps/Calendar/Calendar.js:358"
+            "line": " ../comps/Calendar/Calendar.js:359"
         },
         {
             "message": "Missing item type\n请使用 isCalendar, 这个方法是为了向后兼容",
-            "line": " ../comps/Calendar/Calendar.js:427"
+            "line": " ../comps/Calendar/Calendar.js:428"
         },
         {
             "message": "Missing item type\n这个方法后续版本不再使用, 请使用 Calendar.position",
-            "line": " ../comps/Calendar/Calendar.js:601"
+            "line": " ../comps/Calendar/Calendar.js:609"
         },
         {
             "message": "Missing item type\n延迟200毫秒初始化页面的所有日历控件\n之所以要延迟是可以让用户自己设置是否需要自动初始化",
-            "line": " ../comps/Calendar/Calendar.js:1246"
+            "line": " ../comps/Calendar/Calendar.js:1254"
         },
         {
             "message": "Missing item type\n元旦开始的第一个星期一开始的一周为政治经济上的第一周",
-            "line": " ../comps/Calendar/Calendar.js:1526"
+            "line": " ../comps/Calendar/Calendar.js:1534"
         },
         {
             "message": "Missing item type\n监听 全选/反选 按钮的点击事件",
@@ -12561,11 +12603,11 @@
         },
         {
             "message": "Missing item type\n如果 console 不可用, 则生成一个模拟的 console 对象",
-            "line": " ../lib.js:786"
+            "line": " ../lib.js:848"
         },
         {
             "message": "Missing item type\n自动识别组件库所在路径",
-            "line": " ../lib.js:792"
+            "line": " ../lib.js:854"
         }
     ]
 }

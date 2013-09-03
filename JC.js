@@ -24,6 +24,8 @@
          */
         PATH: '/js'
         , compsDir: '/comps/'
+        , bizsDir: '/bizs/'
+        , pluginsDir: '/plugins/'
         /**
          * 是否显示调试信息
          * @property    debug
@@ -54,16 +56,46 @@
                 JC.use( '/js/Test/Test1.js' );     //导入文件  /js/Test/Test1.js, 如果起始处为 "/", 将视为文件的绝对路径
                 //
                 /// 导入 URL 资源 // JC.use( 'http://test.com/file1.js', 'https://another.com/file2.js' ); 
+                //
+                /// in libpath/_demo/
+                //
+                JC.use(
+                    [
+                        'Panel'                     //  ../comps/Panel/Panel.js
+                        , 'Tips'                    //  ../comps/Tips/Tips.js
+                        , 'Valid'                   //  ../comps/Valid/Valid.js
+                        , 'Bizs.KillISPCache'       //  ../bizs/KillISPCache/KillISPCache.js
+                        , 'bizs.TestBizFile'        //  ../bizs/TestBizFile.js
+                        , 'comps.TestCompFile'      //  ../comps/TestCompFile.js 
+                        , 'Plugins.rate'            //  ../plugins/rate/rate.js
+                        , 'plugins.json2'           //  ../plugins/json2.js
+                        , '/js/fullpathtest.js'     //  /js/fullpathtest.js
+                    ].join()
+                );
         */ 
         , use: function( _items ){
                 if( ! _items ) return;
-                var _p = this, _paths = [], _parts = $.trim( _items ).split(/[\s]*?,[\s]*/)
-                   , _pathRe = /[\/\\]/, _urlRe = /\:\/\//, _pathRplRe = /(\\)\1|(\/)\2/g;
+                var _p = this
+                    , _paths = []
+                    , _parts = $.trim( _items ).split(/[\s]*?,[\s]*/)
+                    , _urlRe = /\:\/\//
+                    , _pathRplRe = /(\\)\1|(\/)\2/g
+                    , _compRe = /[\/\\]/
+                    , _compFileRe = /^comps\./
+                    , _bizCompRe = /^Bizs\./
+                    , _bizFileRe = /^bizs\./
+                    , _pluginCompRe = /^Plugins\./
+                    , _pluginFileRe = /^plugins\./
+                    ;
 
                 _parts = JC._usePatch( _parts, 'Form', 'AutoSelect' );
 
                 $.each( _parts, function( _ix, _part ){
-                    var _isComps = !_pathRe.test( _part ), _path, _isFullpath = /^\//.test( _part );
+                    var _isComps = !_compRe.test( _part )
+                        , _path
+                        , _isFullpath = /^\//.test( _part )
+                        ;
+
                     if( _isComps && window.JC[ _part ] ) return;
 
                     if( JC.FILE_MAP && JC.FILE_MAP[ _part ] ){
@@ -72,7 +104,21 @@
                     }
 
                     _path = _part;
-                    _isComps && ( _path = printf( '{0}{1}{2}/{2}.js', JC.PATH, JC.compsDir, _part ) );
+                    if( _isComps ){
+                        if( _bizCompRe.test( _path ) ){//业务组件
+                            _path = printf( '{0}{1}{2}/{2}.js', JC.PATH, JC.bizsDir, _part.replace( _bizCompRe, '' ) );
+                        }else if( _bizFileRe.test( _path ) ){//业务文件
+                            _path = printf( '{0}{1}{2}.js', JC.PATH, JC.bizsDir, _part.replace( _bizFileRe, '' ) );
+                        }else if( _pluginCompRe.test( _path ) ){//插件组件
+                            _path = printf( '{0}{1}{2}/{2}.js', JC.PATH, JC.pluginsDir, _part.replace( _pluginCompRe, '' ) );
+                        }else if( _pluginFileRe.test( _path ) ){//插件文件
+                            _path = printf( '{0}{1}{2}.js', JC.PATH, JC.pluginsDir, _part.replace( _pluginFileRe, '' ) );
+                        }else if( _compFileRe.test( _path ) ){//组件文件
+                            _path = printf( '{0}{1}{2}.js', JC.PATH, JC.compsDir, _part.replace( _compFileRe, '' ) );
+                        }else{//组件
+                            _path = printf( '{0}{1}{2}/{2}.js', JC.PATH, JC.compsDir, _part );
+                        }
+                    }
                     !_isComps && !_isFullpath && ( _path = printf( '{0}/{1}', JC.PATH, _part ) );
 
                     if( /\:\/\//.test( _path ) ){
@@ -265,5 +311,24 @@
      * 自动识别组件库所在路径
      */
     JC.PATH = script_path_f();
+    /**
+     * <h2>业务逻辑命名空间</h2>
+     * <br />这个命名空间的组件主要为满足业务需求, 不是通用组件~
+     * <br />但在某个项目中应该是常用组件~
+     * <dl>
+     *      <dt>业务组件的存放位置:</dt>
+     *      <dd>libpath/bizs/</dd>
+     *
+     *      <dt>使用业务组件</dt>
+     *      <dd> JC.use( 'Bizs.BizComps' ); //  libpath/bizs/BizComps/BizComps.js </dd>
+     *
+     *      <dt>使用业务文件</dt>
+     *      <dd> JC.use( 'bizs.BizFile' ); //   libpath/bizs/BizFile.js </dd>
+     * </dl>
+     * @namespace   window
+     * @class       Bizs
+     * @static
+     */
+    window.Bizs = window.Bizs || {};
 }(jQuery));
 

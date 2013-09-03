@@ -1,13 +1,21 @@
 ;(function($){
-    window.Bizs = window.Bizs || {};
     window.Bizs.MultiDate = MultiDate;
-
     /**
-     * 复合日历业务逻辑
+     * MultiDate 复合日历业务逻辑
+     * <p>
+     *      <b>require</b>: <a href='JC.Calendar.html'>JC.Calendar</a>
+     *      <br /><b>require</b>: <a href='window.jQuery.html'>jQuery</a>
+     * </p>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/Bizs.MultiDate.html' target='_blank'>API docs</a>
+     * | <a href='../../bizs/MultiDate/_demo' target='_blank'>demo link</a></p>
      * @class   MultiDate
      * @namespace   Bizs
      * @constructor
      * @private
+     * @author  qiushaowei   <suches@btbtd.org> | 75 Team
+     * @date    2013-09-03
+     * @example
      */
     function MultiDate( _selector ){
         if( MultiDate.getInstance( _selector ) ) return MultiDate.getInstance( _selector );

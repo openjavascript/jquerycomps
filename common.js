@@ -1,3 +1,9 @@
+/**
+ * 全局函数
+ * @namespace 
+ * @class   window
+ * @static
+ */
 !String.prototype.trim && ( String.prototype.trim = function(){ return $.trim( this ); } );
 /**
  * 全局 css z-index 控制属性
@@ -21,11 +27,6 @@ function sliceArgs( _arg ){
     }
     return _r;
 }
-/**
- * @namespace 
- * @class   window
- * @static
- */
  /**
  * 按格式输出字符串
  * @method printf
@@ -503,5 +504,20 @@ function parentSelector( _item, _selector, _finder ){
     }else{
         return _finder ? _finder.find( _selector ) : jQuery( _selector );
     }
+}
+/**
+ * 获取脚本模板的内容
+ * @method  scriptContent
+ * @param   {selector}  _selector
+ * @static
+ * @return  string
+ */
+function scriptContent( _selector ){
+    var _r = '';
+    _selector 
+        && ( _selector = $( _selector ) ).length 
+        && ( _r = _selector.html().trim().replace( /[\r\n]/g, '') )
+        ;
+    return _r;
 }
 

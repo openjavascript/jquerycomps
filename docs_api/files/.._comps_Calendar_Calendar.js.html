@@ -111,6 +111,8 @@
             
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
             
+                <li><a href="../classes/window.Bizs.html">window.Bizs</a></li>
+            
                 <li><a href="../classes/window.JC.html">window.JC</a></li>
             
                 <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
@@ -364,7 +366,8 @@
          */
         , hide: function(){ 
             this._view.hide(); 
-                this.trigger( Calendar.Model.HIDE );
+            this.trigger( Calendar.Model.HIDE );
+            this.selector() &amp;&amp; this.selector().blur();
             return this; 
         }
         /**
@@ -616,7 +619,14 @@
         function( _selector ){ 
             _selector = $( _selector );
             if( !(_selector &amp;&amp; _selector.length) ) return;
-            var _ins = Calendar.getInstance( _selector );
+
+            var _ins, _isIgnore = _selector.is(&#x27;[ignoreprocess]&#x27;);
+
+            _selector.attr(&#x27;ignoreprocess&#x27;, true);
+            _selector.blur();
+            !_isIgnore &amp;&amp; _selector.removeAttr(&#x27;ignoreprocess&#x27;);
+
+            _ins = Calendar.getInstance( _selector );
             !_ins &amp;&amp; ( _ins = new Calendar( _selector ) );
             _ins.show();
             return;
