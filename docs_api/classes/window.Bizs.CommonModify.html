@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JC.Fixed - jquery components</title>
+    <title>window.Bizs.CommonModify - jquery components</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -96,55 +96,91 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>JC.Fixed Class</h1>
+                        <h1>window.Bizs.CommonModify Class</h1>
 <div class="box meta">
         <div class="foundat">
-            Defined in: <a href="../files/.._comps_Fixed_Fixed.js.html#l6"><code>..&#x2F;comps&#x2F;Fixed&#x2F;Fixed.js:6</code></a>
+            Defined in: <a href="../files/.._bizs_CommonModify_CommonModify.js.html#l1"><code>..&#x2F;bizs&#x2F;CommonModify&#x2F;CommonModify.js:1</code></a>
         </div>
 </div>
 <div class="box intro">
-    <p>内容固定于屏幕某个位置显示</p>
+    <p>通用 添加删除 逻辑
+应用场景
+     需要动态添加删除内容的地方可以使用这个类</p>
+<p>a|button 需要 添加 class="js_autoCommonModify"</p>
+<h2>可用的 HTML 属性</h2>
 <dl>
-     <dd><b>require</b>: <a href='window.jQuery.html'>jQuery</a></dd>
-     <dd><b>require</b>: <a href='.window.html#property_$.support.isFixed'>$.support.isFixed</a></dd>
+     <dt>cmtemplate = script selector</dt>
+     <dd>指定保存模板的 script 标签</dd>
+     <dt>cmitem = selector</dt>
+     <dd>添加时, 当前的具体父节点</dd>
+     <dt>cmaction = string, [add, del], default = add</dt>
+     <dd>操作类型</dd>
+     <dt>cmdonecallback = function</dt>
+     <dd>添加或删除完后会触发的回调</dd>
+     <dt>cmtplfiltercallback = function</dt>
+     <dd>模板内容过滤回调</dd>
+     <dt>cmaddcallback = function</dt>
+     <dd>添加完成的回调</dd>
+     <dt>cmdelcallback = function</dt>
+     <dd>删除完成的回调</dd>
 </dl>
-<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Fixed.html' target='_blank'>API docs</a>
-| <a href='../../comps/Fixed/_demo' target='_blank'>demo link</a></p>
 </div>
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_JC.Fixed" class="method item">
-    <h3 class="name"><code>JC.Fixed</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_selector</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+        <div id="method_window.Bizs.CommonModify" class="method item">
+    <h3 class="name"><code>window.Bizs.CommonModify</code></h3>
+        <span class="paren">()</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Fixed_Fixed.js.html#l6"><code>..&#x2F;comps&#x2F;Fixed&#x2F;Fixed.js:6</code></a>
+        <a href="../files/.._bizs_CommonModify_CommonModify.js.html#l1"><code>..&#x2F;bizs&#x2F;CommonModify&#x2F;CommonModify.js:1</code></a>
         </p>
     </div>
     <div class="description">
     </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_selector</code>
-                        <span class="type">Selector | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
+                <pre class="code prettyprint"><code>  &lt;table&gt;
+        &lt;tr&gt;
+           &lt;td&gt;
+               &lt;label class="gray"&gt;甲方主体：&lt;/label&gt;
+           &lt;/td&gt;
+           &lt;td&gt;
+               &lt;input type="text" name="" class="ipt ipt-w320" /&gt;&amp;nbsp;
+                   &lt;a href="javascript:" 
+                   class="green js_autoCommonModify" 
+                   cmtemplate="#addMainFirstPartyTpl"
+                   cmitem="&lt;tr"
+                   cmaction="add"
+               &gt;+ 添加&lt;/a&gt;
+               &lt;em class="error"&gt;&lt;/em&gt;
+           &lt;/td&gt;
+       &lt;/tr&gt;
+   &lt;/table&gt;
+   &lt;script type="text/template" id="addMainFirstPartyTpl" &gt;
+    &lt;tr&gt;
+       &lt;td&gt;
+           &lt;label class="gray"&gt;甲方主体：&lt;/label&gt;
+       &lt;/td&gt;
+       &lt;td&gt;
+           &lt;input type="text" name="" class="ipt ipt-w320" /&gt;
+           &lt;a href="javascript:" 
+               class="green js_autoCommonModify" 
+               cmtemplate="#addMainFirstPartyTpl"
+               cmitem="&lt;tr"
+               cmaction="add"
+           &gt;+ 添加&lt;/a&gt;
+           &lt;a href="javascript:" class="red js_autoCommonModify"
+               cmtemplate="#addMainFirstPartyTpl"
+               cmitem="&lt;tr"
+               cmaction="del"
+           &gt;+ 删除&lt;/a&gt;
+           &lt;em class="error"&gt;&lt;/em&gt;
+       &lt;/td&gt;
+   &lt;/tr&gt;
+   &lt;/script&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -153,7 +189,6 @@
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
-            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
     <div>
         <div id="index" class="api-class-tabpanel index">
@@ -166,40 +201,17 @@
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_hide">hide</a>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_interval">interval</a>
+                                <a href="#method_isCommonModify">isCommonModify</a>
                                     <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_layout">layout</a>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_on">on</a>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_show">show</a>
+                                <a href="#method_selector">selector</a>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_trigger">trigger</a>
-                            </li>
-                    </ul>
-                </div>
-                <div class="index-section properties">
-                    <h3>Properties</h3>
-                    <ul class="index-list properties">
-                            <li class="index-item property">
-                                <a href="#property_autoInit">autoInit</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_durationms">durationms</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_stepms">stepms</a>
-                                    <span class="flag static">static</span>
                             </li>
                     </ul>
                 </div>
@@ -216,17 +228,17 @@
             </ul><span class="paren">)</span>
         </div>
         <span class="returns-inline">
-            <span class="type">Fixed instance</span>
+            <span class="type">CommonModify instance</span>
         </span>
         <span class="flag static">static</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Fixed_Fixed.js.html#l87"><code>..&#x2F;comps&#x2F;Fixed&#x2F;Fixed.js:87</code></a>
+        <a href="../files/.._bizs_CommonModify_CommonModify.js.html#l180"><code>..&#x2F;bizs&#x2F;CommonModify&#x2F;CommonModify.js:180</code></a>
         </p>
     </div>
     <div class="description">
-        <p>获取或设置 Fixed 的实例</p>
+        <p>获取或设置 CommonModify 的实例</p>
     </div>
         <div class="params">
             <h4>Parameters:</h4>
@@ -242,83 +254,47 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                        <span class="type">Fixed instance</span>:
+                        <span class="type">CommonModify instance</span>:
             </div>
         </div>
 </div>
-                    <div id="method_hide" class="method item">
-    <h3 class="name"><code>hide</code></h3>
-        <span class="paren">()</span>
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Fixed_Fixed.js.html#l59"><code>..&#x2F;comps&#x2F;Fixed&#x2F;Fixed.js:59</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>隐藏 Fixed</p>
-    </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                    FixedIns
-            </div>
-        </div>
-</div>
-                    <div id="method_interval" class="method item">
-    <h3 class="name"><code>interval</code></h3>
+                    <div id="method_isCommonModify" class="method item">
+    <h3 class="name"><code>isCommonModify</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>_interval</code>
+                        <code>_selector</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
         <span class="flag static">static</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Fixed_Fixed.js.html#l128"><code>..&#x2F;comps&#x2F;Fixed&#x2F;Fixed.js:128</code></a>
+        <a href="../files/.._bizs_CommonModify_CommonModify.js.html#l194"><code>..&#x2F;bizs&#x2F;CommonModify&#x2F;CommonModify.js:194</code></a>
         </p>
     </div>
     <div class="description">
-        <p>设置或者清除 interval
-<br />避免多个 interval 造成的干扰</p>
+        <p>判断 selector 是否可以初始化 CommonModify</p>
     </div>
         <div class="params">
             <h4>Parameters:</h4>
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">_interval</code>
-                        <span class="type">Interval</span>
+                        <code class="param-name">_selector</code>
+                        <span class="type">Selector</span>
                     <div class="param-description">
                     </div>
                 </li>
             </ul>
         </div>
-</div>
-                    <div id="method_layout" class="method item">
-    <h3 class="name"><code>layout</code></h3>
-        <span class="paren">()</span>
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Fixed_Fixed.js.html#l65"><code>..&#x2F;comps&#x2F;Fixed&#x2F;Fixed.js:65</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>获取 Fixed 外观的 选择器</p>
-    </div>
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    selector
+                    bool
             </div>
         </div>
 </div>
@@ -340,7 +316,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Fixed_Fixed.js.html#l71"><code>..&#x2F;comps&#x2F;Fixed&#x2F;Fixed.js:71</code></a>
+        <a href="../files/.._bizs_CommonModify_CommonModify.js.html#l149"><code>..&#x2F;bizs&#x2F;CommonModify&#x2F;CommonModify.js:149</code></a>
         </p>
     </div>
     <div class="description">
@@ -366,12 +342,12 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    FixedIns
+                    CommonModifyInstance
             </div>
         </div>
 </div>
-                    <div id="method_show" class="method item">
-    <h3 class="name"><code>show</code></h3>
+                    <div id="method_selector" class="method item">
+    <h3 class="name"><code>selector</code></h3>
         <span class="paren">()</span>
         <span class="returns-inline">
             <span class="type"></span>
@@ -379,16 +355,16 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Fixed_Fixed.js.html#l53"><code>..&#x2F;comps&#x2F;Fixed&#x2F;Fixed.js:53</code></a>
+        <a href="../files/.._bizs_CommonModify_CommonModify.js.html#l143"><code>..&#x2F;bizs&#x2F;CommonModify&#x2F;CommonModify.js:143</code></a>
         </p>
     </div>
     <div class="description">
-        <p>显示 Fixed</p>
+        <p>获取 显示 CommonModify 的触发源选择器, 比如 a 标签</p>
     </div>
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    FixedIns
+                    selector
             </div>
         </div>
 </div>
@@ -407,7 +383,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Fixed_Fixed.js.html#l79"><code>..&#x2F;comps&#x2F;Fixed&#x2F;Fixed.js:79</code></a>
+        <a href="../files/.._bizs_CommonModify_CommonModify.js.html#l157"><code>..&#x2F;bizs&#x2F;CommonModify&#x2F;CommonModify.js:157</code></a>
         </p>
     </div>
     <div class="description">
@@ -427,58 +403,9 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    FixedIns
+                    CommonModifyInstance
             </div>
         </div>
-</div>
-            </div>
-            <div id="properties" class="api-class-tabpanel">
-                <h2 class="off-left">Properties</h2>
-                    <div id="property_autoInit" class="property item">
-    <h3 class="name"><code>autoInit</code></h3>
-    <span class="type">Bool</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Fixed_Fixed.js.html#l103"><code>..&#x2F;comps&#x2F;Fixed&#x2F;Fixed.js:103</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>页面加载完毕时, 是否自动初始化
-<br /> 识别 class=js_autoFixed</p>
-    </div>
-        <p><strong>Default:</strong> true</p>
-</div>
-                    <div id="property_durationms" class="property item">
-    <h3 class="name"><code>durationms</code></h3>
-    <span class="type">Int</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Fixed_Fixed.js.html#l112"><code>..&#x2F;comps&#x2F;Fixed&#x2F;Fixed.js:112</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>滚动的持续时间( 时间运动 )</p>
-    </div>
-        <p><strong>Default:</strong> 300</p>
-</div>
-                    <div id="property_stepms" class="property item">
-    <h3 class="name"><code>stepms</code></h3>
-    <span class="type">Int</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_Fixed_Fixed.js.html#l120"><code>..&#x2F;comps&#x2F;Fixed&#x2F;Fixed.js:120</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>每次滚动的时间间隔( 时间运动 )</p>
-    </div>
-        <p><strong>Default:</strong> 3</p>
 </div>
             </div>
     </div>

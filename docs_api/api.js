@@ -26,6 +26,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.hideAllPopup",
         "JC.msgbox",
         "window.Bizs",
+        "window.Bizs.CommonModify",
+        "window.Bizs.DisableLogic",
         "window.Bizs.MultiDate",
         "window.JC",
         "window.UXC",
