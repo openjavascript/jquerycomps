@@ -10,7 +10,7 @@
      * | <a href='http://jc.openjavascript.org/docs_api/classes/Bizs.MultiDate.html' target='_blank'>API docs</a>
      * | <a href='../../bizs/MultiDate/_demo' target='_blank'>demo link</a></p>
      * @class   MultiDate
-     * @namespace   Bizs
+     * @namespace   window.Bizs
      * @constructor
      * @private
      * @author  qiushaowei   <suches@btbtd.org> | 75 Team

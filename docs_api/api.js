@@ -2,7 +2,6 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
         ".window",
-        "Bizs.MultiDate",
         "JC.AutoSelect",
         "JC.Calendar",
         "JC.Dialog",
@@ -27,6 +26,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.hideAllPopup",
         "JC.msgbox",
         "window.Bizs",
+        "window.Bizs.MultiDate",
         "window.JC",
         "window.UXC",
         "window.jQuery"
