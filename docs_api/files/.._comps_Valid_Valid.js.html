@@ -1833,13 +1833,15 @@
                 if( /^\^$/.test( _selector ) ){
                     _subselector = _subselector || Model.SELECTOR_ERROR;
                     _selector = $( _item.parent().find( _subselector ) );
-                }else if( /^\//.test( _selector ) ) {
-                    return parentSelector( _item, _selector );
+                }else if( /^[\/\|\&lt;]/.test( _selector ) ) {
+                    _selector = parentSelector( _item, _selector );
+                }else if( /\./.test( _selector ) ) {
+                    return $( _selector );
                 }else if( /^[\w-]+$/.test( _selector ) ) {
                     _selector = &#x27;#&#x27; + _selector;
+                    _selector = $( _selector.replace( /[\#]+/g, &#x27;#&#x27; ) );
                 }
-                _selector = _selector.replace( /[\#]+/g, &#x27;#&#x27; );
-                return $(_selector );
+                return _selector;
             }
         /**
          * 获取对应的错误信息, 默认的错误信息有 reqmsg, errmsg, &lt;br /&gt;

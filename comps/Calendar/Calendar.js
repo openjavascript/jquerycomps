@@ -160,12 +160,14 @@
 
                 _p.on( Calendar.Model.UPDATE, function( _evt ){
                     _p._model.selector() && _p._model.selector().blur();
+                    _p._model.selector() && _p._model.selector().trigger('change');
                     var _args = sliceArgs( arguments ).slice( 2 );
                     _p._model.calendarupdate()
                         && _p._model.calendarupdate().apply( _p._model.selector(), _args );
                 });
 
                 _p.on( Calendar.Model.CLEAR, function( _evt ){
+                    _p._model.selector() && _p._model.selector().trigger('change');
                     _p._model.calendarclear()
                         && _p._model.calendarclear().call( _p._model.selector(), _p._model.selector(), _p );
                 });
@@ -302,8 +304,9 @@
          */
         , clear:
             function(){
+                var _isEmpty = !this._model.selector().val().trim();
                 this._model && this._model.selector().val('');
-                this.trigger( Calendar.Model.CLEAR );
+                !_isEmpty && this.trigger( Calendar.Model.CLEAR );
                 return this;
             }
         /**

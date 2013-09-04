@@ -1665,13 +1665,15 @@
                 if( /^\^$/.test( _selector ) ){
                     _subselector = _subselector || Model.SELECTOR_ERROR;
                     _selector = $( _item.parent().find( _subselector ) );
-                }else if( /^\//.test( _selector ) ) {
-                    return parentSelector( _item, _selector );
+                }else if( /^[\/\|\<]/.test( _selector ) ) {
+                    _selector = parentSelector( _item, _selector );
+                }else if( /\./.test( _selector ) ) {
+                    return $( _selector );
                 }else if( /^[\w-]+$/.test( _selector ) ) {
                     _selector = '#' + _selector;
+                    _selector = $( _selector.replace( /[\#]+/g, '#' ) );
                 }
-                _selector = _selector.replace( /[\#]+/g, '#' );
-                return $(_selector );
+                return _selector;
             }
         /**
          * 获取对应的错误信息, 默认的错误信息有 reqmsg, errmsg, <br />

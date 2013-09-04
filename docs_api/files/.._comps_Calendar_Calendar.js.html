@@ -328,12 +328,14 @@
 
                 _p.on( Calendar.Model.UPDATE, function( _evt ){
                     _p._model.selector() &amp;&amp; _p._model.selector().blur();
+                    _p._model.selector() &amp;&amp; _p._model.selector().trigger(&#x27;change&#x27;);
                     var _args = sliceArgs( arguments ).slice( 2 );
                     _p._model.calendarupdate()
                         &amp;&amp; _p._model.calendarupdate().apply( _p._model.selector(), _args );
                 });
 
                 _p.on( Calendar.Model.CLEAR, function( _evt ){
+                    _p._model.selector() &amp;&amp; _p._model.selector().trigger(&#x27;change&#x27;);
                     _p._model.calendarclear()
                         &amp;&amp; _p._model.calendarclear().call( _p._model.selector(), _p._model.selector(), _p );
                 });
@@ -470,8 +472,9 @@
          */
         , clear:
             function(){
+                var _isEmpty = !this._model.selector().val().trim();
                 this._model &amp;&amp; this._model.selector().val(&#x27;&#x27;);
-                this.trigger( Calendar.Model.CLEAR );
+                !_isEmpty &amp;&amp; this.trigger( Calendar.Model.CLEAR );
                 return this;
             }
         /**

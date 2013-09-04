@@ -933,7 +933,7 @@
         , show:
             function(){
                 this.getPanel().css( { &#x27;z-index&#x27;: ZINDEX_COUNT++ } ).show();
-                this.focusButton();
+                //this.focusButton();
             }
         /**
          * focus button
@@ -1793,7 +1793,10 @@
             if( _logic.timeout ) clearTimeout( _logic.timeout );
 
             if( JC.Panel.getInstance( _selector ) ){
-                JC.Panel.getInstance( _selector ).center().show();
+                _logic.timeout = setTimeout( function(){
+                    JC.Panel.getInstance( _selector ).center().show();
+                }, _logic.showMs );
+
                 return JC.Panel.getInstance( _selector );
             }
 
@@ -1814,7 +1817,12 @@
             });
 
             _ins.on(&#x27;show_default&#x27;, function( _evt, _panel){
-                _logic.showMask();
+                _logic.showMask(); 
+
+                setTimeout( function(){  
+                    _logic.showMask(); 
+                    _ins.selector().css( { &#x27;z-index&#x27;: window.ZINDEX_COUNT++, &#x27;display&#x27;: &#x27;block&#x27; } );
+                }, 1 );
             });
             
             _logic.timeout = setTimeout( function(){
