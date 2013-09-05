@@ -4,7 +4,7 @@
  *      需要动态添加删除内容的地方可以使用这个类
  *
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
- * | <a href='http://jc.openjavascript.org/docs_api/classes/Bizs.CommonModify.html' target='_blank'>API docs</a>
+ * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>
  * | <a href='../../bizs/CommonModify/_demo' target='_blank'>demo link</a></p>
  *
  * a|button 需要 添加 class="js_autoCommonModify"
