@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            dt { font-weight: bold; margin: 10px auto; }
+            dd { line-height: 24px; }
+        </style>
+        <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+        <script src="../../../lib.js"></script>
+        <script>
+            JC.debug = true;
+            JC.use( 'Bizs.DisableLogic, Calendar, Valid' );
+
+            function dldonecallback( _triggerItem, _boxItem ){
+                JC.log( 'dldonecallback', new Date().getTime() );
+            }
+
+            function dldisablecallback( _triggerItem, _boxItem ){
+                JC.log( 'dldisablecallback', new Date().getTime() );
+            }
+
+            function dlenablecallback( _triggerItem, _boxItem ){
+                JC.log( 'dlenablecallback', new Date().getTime() );
+            }
+        </script>
+    </head>    
+    <body>
+
+        <dl class="defdl">
+            <dt> DisableLogic 禁用逻辑演示 1 </dt>
+            <dd>
+                <div class="js_bizsDisableLogic"
+                    dltrigger="|input[type=radio]"
+                    dltarget="|input.js_disableItem"
+
+                    dldonecallback="dldonecallback"
+                    dldisablecallback="dldisablecallback"
+                    dlenablecallback="dlenablecallback"
+                    >
+                    <label>
+                        <input type="radio" name="discount" checked  
+                        dldisable="true"
+                        />自本协议签订之日起10日内生效
+                    </label> <br>
+                    <label>
+                        <input type="radio" name="discount" 
+                        dldisable="false"
+                        />生效时间点
+                    </label>
+                    <input type="text" class="ipt js_disableItem" datatype="date" value=""
+                    /><input type="button" class="UXCCalendar_btn">
+                </div>
+            </dd>
+        </dl>
+
+        <dl class="defdl">
+            <dt> DisableLogic 禁用逻辑演示 2 ( disable one more item ) </dt>
+            <dd>
+                <div class="js_bizsDisableLogic"
+                    dltrigger="|input[type=radio]"
+                    dltarget="|input.js_disableItem,|select.testSelect"
+                    dlhidetarget="|span.targetBox"
+
+                    dldonecallback="dldonecallback"
+                    dldisablecallback="dldisablecallback"
+                    dlenablecallback="dlenablecallback"
+                    >
+                    <label>
+                        <input type="radio" name="discount1" checked  
+                        dldisable="true"
+                        />自本协议签订之日起10日内生效
+                    </label> <br>
+                    <label>
+                        <input type="radio" name="discount1" 
+                        dldisable="false"
+                        />生效时间点
+                    </label>
+                    <span class="targetBox">
+                        <input type="text" class="ipt js_disableItem" datatype="date" value=""
+                        /><input type="button" class="UXCCalendar_btn">
+                        <select class="testSelect">
+                            <option value="">test select</option>
+                        </select>
+                    </span>
+                </div>
+            </dd>
+        </dl>
+
+        <dl class="defdl">
+            <dt> DisableLogic 禁用逻辑演示 3 ( dlhidetarget ) </dt>
+            <dd>
+                <div class="js_bizsDisableLogic"
+                    dltrigger="|input[type=radio]"
+                    dltarget="|input.js_disableItem"
+                    dlhidetarget="|span.targetBox,|span.hidetargetEx"
+
+                    dldonecallback="dldonecallback"
+                    dldisablecallback="dldisablecallback"
+                    dlenablecallback="dlenablecallback"
+                    >
+                    <label>
+                        <input type="radio" name="discount2" checked  
+                        dldisable="true"
+                        />自本协议签订之日起10日内生效
+                    </label> <br>
+                    <label>
+                        <input type="radio" name="discount2" 
+                        dldisable="false"
+                        />生效时间点
+                    </label>
+                    <span class="targetBox">
+                        <input type="text" class="ipt js_disableItem" datatype="date" value=""
+                        /><input type="button" class="UXCCalendar_btn">
+                    </span>
+                    <span class="hidetargetEx">
+                        <h2>测试用</h2>
+                    </span>
+                </div>
+            </dd>
+        </dl>
+
+        <dl class="defdl">
+            <dt> DisableLogic 禁用逻辑演示 4 ( dlhidetoggle ) </dt>
+            <dd>
+                <div class="js_bizsDisableLogic"
+                    dltrigger="|input[type=radio]"
+                    dltarget="|input.js_disableItem"
+                    dlhidetarget="|span.targetBox,|span.hidetargetEx"
+
+                    dldonecallback="dldonecallback"
+                    dldisablecallback="dldisablecallback"
+                    dlenablecallback="dlenablecallback"
+                    >
+                    <label>
+                        <input type="radio" name="discount3" checked  
+                        dldisable="true"
+                        />自本协议签订之日起10日内生效
+                    </label> <br>
+                    <label>
+                        <input type="radio" name="discount3" 
+                        dldisable="false"
+                        />生效时间点
+                    </label>
+                    <span class="targetBox">
+                        <input type="text" class="ipt js_disableItem" datatype="date" value=""
+                        /><input type="button" class="UXCCalendar_btn">
+                    </span>
+                    <span class="hidetargetEx" dlhidetoggle="true" >
+                        <h2>测试用</h2>
+                    </span>
+                </div>
+            </dd>
+        </dl>
+
+    </body>
+</html>
+

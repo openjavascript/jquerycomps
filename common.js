@@ -475,6 +475,23 @@ function getJqParent( _selector, _filter ){
  */
 function parentSelector( _item, _selector, _finder ){
     _item && ( _item = $( _item ) );
+    if( /\,/.test( _selector ) ){
+        var _multiSelector, _tmp;
+        _selector = _selector.split(',');
+        $.each( _selector, function( _ix, _subSelector ){
+            _subSelector = _subSelector.trim();
+            _tmp = parentSelector( _item, _subSelector, _finder );
+            _tmp && _tmp.length 
+                &&  ( 
+                        _multiSelector && _multiSelector.length 
+                            ? ( _multiSelector = $( [_multiSelector, _tmp] ) )
+                            : ( _multiSelector = _tmp ) 
+                    );
+            window.JC && JC.log 
+                && JC.log( _multiSelector.length +', ' + _tmp.length + ', ' + _subSelector );
+        });
+        return _multiSelector;
+    }
     var _pntChildRe = /^([\/]+)/, _childRe = /^([\|]+)/, _pntRe = /^([<]+)/;
     if( _pntChildRe.test( _selector ) ){
         _selector = _selector.replace( _pntChildRe, function( $0, $1 ){

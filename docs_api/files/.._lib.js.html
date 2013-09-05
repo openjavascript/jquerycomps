@@ -663,6 +663,23 @@ function getJqParent( _selector, _filter ){
  */
 function parentSelector( _item, _selector, _finder ){
     _item &amp;&amp; ( _item = $( _item ) );
+    if( /\,/.test( _selector ) ){
+        var _multiSelector, _tmp;
+        _selector = _selector.split(&#x27;,&#x27;);
+        $.each( _selector, function( _ix, _subSelector ){
+            _subSelector = _subSelector.trim();
+            _tmp = parentSelector( _item, _subSelector, _finder );
+            _tmp &amp;&amp; _tmp.length 
+                &amp;&amp;  ( 
+                        _multiSelector &amp;&amp; _multiSelector.length 
+                            ? ( _multiSelector = $( [_multiSelector, _tmp] ) )
+                            : ( _multiSelector = _tmp ) 
+                    );
+            window.JC &amp;&amp; JC.log 
+                &amp;&amp; JC.log( _multiSelector.length +&#x27;, &#x27; + _tmp.length + &#x27;, &#x27; + _subSelector );
+        });
+        return _multiSelector;
+    }
     var _pntChildRe = /^([\/]+)/, _childRe = /^([\|]+)/, _pntRe = /^([&lt;]+)/;
     if( _pntChildRe.test( _selector ) ){
         _selector = _selector.replace( _pntChildRe, function( $0, $1 ){

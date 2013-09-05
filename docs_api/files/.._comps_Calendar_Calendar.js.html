@@ -211,7 +211,14 @@
      *      &lt;dd&gt;用户点击日历控件操作按钮后, 外观产生变化时触发的回调&lt;/dd&gt;
      *
      *      &lt;dt&gt;calendarupdate&lt;/dt&gt;
-     *      &lt;dd&gt;赋值后触发的回调, params: _CalendarType, _startDate, _endDate&lt;/dd&gt;
+     *      &lt;dd&gt;
+     *          赋值后触发的回调
+     *          &lt;dl&gt;
+     *              &lt;dt&gt;参数:&lt;/dt&gt;
+     *              &lt;dd&gt;&lt;b&gt;_startDate:&lt;/b&gt; 开始日期&lt;/dd&gt;
+     *              &lt;dd&gt;&lt;b&gt;_endDate:&lt;/b&gt; 结束日期&lt;/dd&gt;
+     *          &lt;/dl&gt;
+     *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;calendarclear&lt;/dt&gt;
      *      &lt;dd&gt;清空日期触发的回调&lt;/dd&gt;
@@ -229,7 +236,15 @@
      *      &lt;dd&gt;是否为多选日历, bool, default=false&lt;/dd&gt;
      *
      *      &lt;dt&gt;calendarupdatemultiselect&lt;/dt&gt;
-     *      &lt;dd&gt;多选日历赋值后触发的回调, params: _CalendarType, _dateArray( [ {start, end}, ... ] )&lt;/dd&gt;
+     *      &lt;dd&gt;
+     *          多选日历赋值后触发的回调
+     *          &lt;dl&gt;
+     *              &lt;dt&gt;参数: _data:&lt;/dt&gt;
+     *              &lt;dd&gt;
+     *                  [{&quot;start&quot;: Date,&quot;end&quot;: Date}[, {&quot;start&quot;: Date,&quot;end&quot;: Date}... ] ]
+     *              &lt;/dd&gt;
+     *          &lt;/dl&gt;
+     *      &lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
      * @class Calendar
@@ -327,16 +342,48 @@
                 });
 
                 _p.on( Calendar.Model.UPDATE, function( _evt ){
-                    _p._model.selector() &amp;&amp; _p._model.selector().blur();
-                    _p._model.selector() &amp;&amp; _p._model.selector().trigger(&#x27;change&#x27;);
-                    var _args = sliceArgs( arguments ).slice( 2 );
+                    if( !_p._model.selector() ) return;
+
+                    _p._model.selector().blur();
+                    _p._model.selector().trigger(&#x27;change&#x27;);
+
+                    var _data = [], _v = _p._model.selector().val().trim(), _startDate, _endDate, _tmp, _item, _tmpStart, _tmpEnd;
+
+                    if( _v ){
+                        _tmp = _v.split( &#x27;,&#x27; );
+                        for( var i = 0, j = _tmp.length; i &lt; j; i++ ){
+                            _item = _tmp[i].replace( /[^\d]/g, &#x27;&#x27; );
+                            if( _item.length == 16 ){
+                                _tmpStart = parseISODate( _item.slice( 0, 8 ) );
+                                _tmpEnd = parseISODate( _item.slice( 8 ) );
+                            }else if( _item.length == 8 ){
+                                _tmpStart = parseISODate( _item.slice( 0, 8 ) );
+                                _tmpEnd = cloneDate( _tmpStart );
+                            }
+                            if( i === 0 ){
+                                _startDate = cloneDate( _tmpStart );
+                                _endDate = cloneDate( _tmpEnd );
+                            }
+                            _data.push( {&#x27;start&#x27;: _tmpStart, &#x27;end&#x27;: _tmpEnd } );
+                        }
+                    }
+
                     _p._model.calendarupdate()
-                        &amp;&amp; _p._model.calendarupdate().apply( _p._model.selector(), _args );
+                        &amp;&amp; _p._model.calendarupdate().apply( _p._model.selector(), [ _startDate, _endDate ] );
+
+                    _p._model.multiselect()
+                        &amp;&amp; _p._model.calendarupdatemultiselect()
+                        &amp;&amp; _p._model.calendarupdatemultiselect().call( _p._model.selector(), _data, _p );
                 });
 
                 _p.on( Calendar.Model.CLEAR, function( _evt ){
                     _p._model.calendarclear()
                         &amp;&amp; _p._model.calendarclear().call( _p._model.selector(), _p._model.selector(), _p );
+                });
+
+                _p.on( Calendar.Model.CANCEL, function( _evt ){
+                    _p._model.calendarcancel()
+                        &amp;&amp; _p._model.calendarcancel().call( _p._model.selector(), _p._model.selector(), _p );
                 });
 
                 _p.on( Calendar.Model.LAYOUT_CHANGE, function( _evt ){
@@ -345,7 +392,8 @@
                 });
 
                 _p.on( Calendar.Model.UPDATE_MULTISELECT, function( _evt ){
-                    _p._model.calendarupdatemultiselect()
+                    _p._model.multiselect()
+                        &amp;&amp; _p._model.calendarupdatemultiselect()
                         &amp;&amp; _p._model.calendarupdatemultiselect().call( _p._model.selector(), _p._model.selector(), _p );
                 });
 
@@ -1031,6 +1079,14 @@
                 var _ipt = this.selector(), _cb, _tmp;
                 _ipt &amp;&amp; _ipt.attr(&#x27;calendarclear&#x27;) 
                     &amp;&amp; ( _tmp = window[ _ipt.attr(&#x27;calendarclear&#x27;) ] )
+                    &amp;&amp; ( _cb = _tmp );
+                return _cb;
+            }
+        , calendarcancel:
+            function(){
+                var _ipt = this.selector(), _cb, _tmp;
+                _ipt &amp;&amp; _ipt.attr(&#x27;calendarcancel&#x27;) 
+                    &amp;&amp; ( _tmp = window[ _ipt.attr(&#x27;calendarcancel&#x27;) ] )
                     &amp;&amp; ( _cb = _tmp );
                 return _cb;
             }

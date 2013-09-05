@@ -1626,7 +1626,7 @@
 
             if( JC.Panel.getInstance( _selector ) ){
                 _logic.timeout = setTimeout( function(){
-                    JC.Panel.getInstance( _selector ).center().show();
+                    JC.Panel.getInstance( _selector ).show(0);
                 }, _logic.showMs );
 
                 return JC.Panel.getInstance( _selector );

@@ -4,6 +4,10 @@
  * 但选择其他 radio 时, 其他的内容无效
  * checkbox / select 也可使用( 带change事件的标签 )
  *
+ * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+ * | <a href='http://jc.openjavascript.org/docs_api/classes/Bizs.DisableLogic.html' target='_blank'>API docs</a>
+ * | <a href='../../bizs/DisableLogic/_demo' target='_blank'>demo link</a></p>
+ *
  * div 需要 添加 class="js_bizsDisableLogic"
  *
  * <h2>box 的 HTML 属性</h2>
@@ -213,7 +217,7 @@
                 _triggerItem 
                     && ( _triggerItem = $(_triggerItem) ).length 
                     && _triggerItem.attr('dltrigger') 
-                    && ( _r = $( _triggerItem.attr('dltarget') ) )
+                    && ( _r = parentSelector( _triggerItem, _triggerItem.attr('dltarget') ) )
                     ;
                 return _r;
             }
@@ -235,7 +239,7 @@
                 if( !_triggerItem.is('[dldisplay]') ){
                     ( _triggerItem = $( _triggerItem ) ).length
                     && _triggerItem.is( '[dldisable]' )
-                    && ( _r = parseBool( _triggerItem.attr('dldisable') ) )
+                    && ( _r = !parseBool( _triggerItem.attr('dldisable') ) )
                     ;
                 }else{
                     ( _triggerItem = $( _triggerItem ) ).length
@@ -257,7 +261,7 @@
                 _triggerItem 
                     && ( _triggerItem = $(_triggerItem) ).length 
                     && _triggerItem.attr('dlhidetarget') 
-                    && ( _r = $( _triggerItem.attr('dlhidetarget') ) )
+                    && ( _r = parentSelector( _triggerItem, _triggerItem.attr('dlhidetarget') ) )
                     ;
                 return _r;
             }
@@ -333,7 +337,10 @@
                     , _dlHideTarget = _p._model.dlhidetarget( _triggerItem )
                     ;
 
-                _dlTarget && _dlTarget.length && _dlTarget.attr('disabled', _isDisable);
+                _dlTarget 
+                    && _dlTarget.length 
+                    && _dlTarget.each( function(){ $(this).attr('disabled', _isDisable) } );
+
                 if( _dlHideTarget &&  _dlHideTarget.length  ){
                     _dlHideTarget.each( function(){
                         var _display = _p._model.dlhidetoggle( $(this) ) ? !_dlDisplay : _dlDisplay;
@@ -357,7 +364,7 @@
 
     $(document).ready( function(){
         setTimeout( function(){
-            $('div.js_bizsDisableLogic').each( function(){
+            $('div.js_bizsDisableLogic, dl.js_bizsDisableLogic, table.js_bizsDisableLogic').each( function(){
                 new DisableLogic( $(this) );
             });
         }, 10);

@@ -35,33 +35,43 @@
 
     function calendarshow(){
         var _p = $(this);
-        UXC.log( 'calendarshow', _p.val() );
+        JC.log( 'calendarshow', _p.val() );
     }
 
     function calendarhide(){
         var _p = $(this);
-        UXC.log( 'calendarhide', _p.val() );
+        JC.log( 'calendarhide', _p.val() );
     }
     
     function calendarlayoutchange(){
         var _p = $(this);
-        UXC.log( 'calendarlayoutchange', _p.val() );
+        JC.log( 'calendarlayoutchange', _p.val() );
     }
 
     function calendarclear(){
         var _p = $(this);
-        UXC.log( 'calendarclear', _p.val() );
+        JC.log( 'calendarclear', _p.val() );
     }
 
-    function calendarupdate( _type, _start, _end ){
+    function calendarclear(){
         var _p = $(this);
-        UXC.log( 'calendarupdate', _p.val(), _type, _start, _end );
+        JC.log( 'calendarclear', _p.val() );
     }
 
-    function calendarupdatemultiselect( _type, _data ){
-        UXC.log( 'calendarupdatemultiselect:', new Date().getTime() );
-        UXC.log( '_type:', _type );
-        UXC.log( '_data:', JSON.stringify( _data ) );
+    function calendarcancel(){
+        var _p = $(this);
+        JC.log( 'calendarcancel', _p.val() );
+    }
+
+    function calendarupdate( _start, _end ){
+        var _p = $(this);
+        JC.log( 'calendarupdate', printf( 'val:{0}, start:{1}, end:{2}', _p.val(), _start, _end ) );
+    }
+
+    function calendarupdatemultiselect( _data ){
+        var _p = $(this);
+        JC.log( 'calendarupdatemultiselect:'
+            , printf( 'val:{0}, data:{1}', _p.val(), JSON.stringify( _data ) ) );
     }
 </script>
 </head>    
@@ -72,29 +82,55 @@
             <dt>JC.Calendar 示例, 如果没有特别声明, 默认type 都为 date</dt>
             <dd>
             <input type="text" name="date4" value="" size="60"
-                multidate="month" multiselect="true" 
+                multidate="month" 
+                multiselect="true" 
+
+                calendarshow="calendarshow"
+                calendarhide="calendarhide"
+                calendarlayoutchange="calendarlayoutchange"
+                calendarclear="calendarclear"
+                calendarcancel="calendarcancel"
+                calendarupdate="calendarupdate"
                 calendarupdatemultiselect="calendarupdatemultiselect"
                 /> month, multiselect=true
             </dd>
             <dd>
                 <button type="button" value="" 
                     datatype="date" 
-
                     calendarshow="calendarshow"
                     calendarhide="calendarhide"
                     calendarlayoutchange="calendarlayoutchange"
                     calendarclear="calendarclear"
+                    calendarcancel="calendarcancel"
                     calendarupdate="calendarupdate"
-
                     >pick date button</button>
                 <button type="button" value="2013-01-11" 
                     datatype="week"
+                    calendarshow="calendarshow"
+                    calendarhide="calendarhide"
+                    calendarlayoutchange="calendarlayoutchange"
+                    calendarclear="calendarclear"
+                    calendarcancel="calendarcancel"
+                    calendarupdate="calendarupdate"
                     >pick week button</button>
                 <button type="button" value="2013-02-02" 
                     datatype="month"
+                    multiselect="true" 
+                    calendarshow="calendarshow"
+                    calendarhide="calendarhide"
+                    calendarlayoutchange="calendarlayoutchange"
+                    calendarclear="calendarclear"
+                    calendarcancel="calendarcancel"
+                    calendarupdate="calendarupdate"
                     >pick month button</button>
                 <button type="button" value="2013-03-03" 
                     datatype="season"
+                    calendarshow="calendarshow"
+                    calendarhide="calendarhide"
+                    calendarlayoutchange="calendarlayoutchange"
+                    calendarclear="calendarclear"
+                    calendarcancel="calendarcancel"
+                    calendarupdate="calendarupdate"
                     >pick season button</button>
             </dd>
         </dl>

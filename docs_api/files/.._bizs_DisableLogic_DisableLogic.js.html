@@ -172,6 +172,10 @@
  * 但选择其他 radio 时, 其他的内容无效
  * checkbox / select 也可使用( 带change事件的标签 )
  *
+ * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
+ * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/Bizs.DisableLogic.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+ * | &lt;a href=&#x27;../../bizs/DisableLogic/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+ *
  * div 需要 添加 class=&quot;js_bizsDisableLogic&quot;
  *
  * &lt;h2&gt;box 的 HTML 属性&lt;/h2&gt;
@@ -381,7 +385,7 @@
                 _triggerItem 
                     &amp;&amp; ( _triggerItem = $(_triggerItem) ).length 
                     &amp;&amp; _triggerItem.attr(&#x27;dltrigger&#x27;) 
-                    &amp;&amp; ( _r = $( _triggerItem.attr(&#x27;dltarget&#x27;) ) )
+                    &amp;&amp; ( _r = parentSelector( _triggerItem, _triggerItem.attr(&#x27;dltarget&#x27;) ) )
                     ;
                 return _r;
             }
@@ -403,7 +407,7 @@
                 if( !_triggerItem.is(&#x27;[dldisplay]&#x27;) ){
                     ( _triggerItem = $( _triggerItem ) ).length
                     &amp;&amp; _triggerItem.is( &#x27;[dldisable]&#x27; )
-                    &amp;&amp; ( _r = parseBool( _triggerItem.attr(&#x27;dldisable&#x27;) ) )
+                    &amp;&amp; ( _r = !parseBool( _triggerItem.attr(&#x27;dldisable&#x27;) ) )
                     ;
                 }else{
                     ( _triggerItem = $( _triggerItem ) ).length
@@ -425,7 +429,7 @@
                 _triggerItem 
                     &amp;&amp; ( _triggerItem = $(_triggerItem) ).length 
                     &amp;&amp; _triggerItem.attr(&#x27;dlhidetarget&#x27;) 
-                    &amp;&amp; ( _r = $( _triggerItem.attr(&#x27;dlhidetarget&#x27;) ) )
+                    &amp;&amp; ( _r = parentSelector( _triggerItem, _triggerItem.attr(&#x27;dlhidetarget&#x27;) ) )
                     ;
                 return _r;
             }
@@ -501,7 +505,10 @@
                     , _dlHideTarget = _p._model.dlhidetarget( _triggerItem )
                     ;
 
-                _dlTarget &amp;&amp; _dlTarget.length &amp;&amp; _dlTarget.attr(&#x27;disabled&#x27;, _isDisable);
+                _dlTarget 
+                    &amp;&amp; _dlTarget.length 
+                    &amp;&amp; _dlTarget.each( function(){ $(this).attr(&#x27;disabled&#x27;, _isDisable) } );
+
                 if( _dlHideTarget &amp;&amp;  _dlHideTarget.length  ){
                     _dlHideTarget.each( function(){
                         var _display = _p._model.dlhidetoggle( $(this) ) ? !_dlDisplay : _dlDisplay;
@@ -525,7 +532,7 @@
 
     $(document).ready( function(){
         setTimeout( function(){
-            $(&#x27;div.js_bizsDisableLogic&#x27;).each( function(){
+            $(&#x27;div.js_bizsDisableLogic, dl.js_bizsDisableLogic, table.js_bizsDisableLogic&#x27;).each( function(){
                 new DisableLogic( $(this) );
             });
         }, 10);
