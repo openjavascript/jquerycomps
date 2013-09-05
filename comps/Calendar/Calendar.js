@@ -167,7 +167,6 @@
                 });
 
                 _p.on( Calendar.Model.CLEAR, function( _evt ){
-                    _p._model.selector() && _p._model.selector().trigger('change');
                     _p._model.calendarclear()
                         && _p._model.calendarclear().call( _p._model.selector(), _p._model.selector(), _p );
                 });

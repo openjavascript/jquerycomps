@@ -1691,6 +1691,8 @@
                 _msgAttr && (_msg = _item.attr( _msgAttr ) || _msg );
                 _fullMsg && _msg && ( _msg = ' ' + _msg );
 
+                _msg = (_msg||'').trim().toLowerCase() == 'undefined' || typeof _msg == undefined ? '' : _msg;
+
                 if( _msg && !/^[\s]/.test( _msg ) ){
                     switch( _item.prop('type').toLowerCase() ){
                         case 'file': _msg = '请上传' + _msg; break;

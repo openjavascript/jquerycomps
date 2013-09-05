@@ -63,20 +63,36 @@
             <dl class="def example24">
                 <dt>checkall example 24</dt>
                 <dd>
-                <input type="checkbox" id="checkall24" checktype="all" checkfor="dl.example24 input[type=checkbox]"><label for="checkall24">全选</label>
-                <input type="checkbox" id="checkall24_inverse" checktype="inverse" checkfor="dl.example24 input[type=checkbox]" checkall="dl.example24 input[checktype=all]"><label for="checkall24_inverse">反选</label>
+                    <label>
+                        <input type="checkbox" checktype="all" checkfor="dl.example24 input[type=checkbox]">
+                        全选
+                    </label>
+                    <label>
+                        <input type="checkbox" checktype="inverse" checkfor="dl.example24 input[type=checkbox]" checkall="dl.example24 input[checktype=all]">
+                        反选
+                    </label>
                 </dd>
                 <dd>
-                <input type="checkbox" id="checkall24_1" value="" name="" checked />
-                <label for="checkall24_1">checkall24_1</label>
-                <input type="checkbox" id="checkall24_2" value="" name="" checked />
-                <label for="checkall24_2">checkall24_2</label>
-                <input type="checkbox" id="checkall24_3" value="" name="" checked />
-                <label for="checkall24_3">checkall24_3</label>
-                <input type="checkbox" id="checkall24_4" value="" name="" checked />
-                <label for="checkall24_4">checkall24_4</label>
-                <input type="checkbox" id="checkall24_5" value="" name="" checked />
-                <label for="checkall24_5">checkall24_5</label>
+                    <label>
+                        <input type='checkbox' value='' name='' checked />
+                        checkall24_1
+                    </label>
+                    <label>
+                        <input type='checkbox' value='' name='' checked />
+                        checkall24_2
+                    </label>
+                    <label>
+                        <input type='checkbox' value='' name='' checked />
+                        checkall24_3
+                    </label>
+                    <label>
+                        <input type='checkbox' value='' name='' checked />
+                        checkall24_4
+                    </label>
+                    <label>
+                        <input type='checkbox' value='' name='' checked />
+                        checkall24_5
+                    </label>
                 </dd>
             </dl>
 
@@ -94,90 +110,277 @@
             });
             </script>
      */
-    JC.Form.initCheckAll = 
+    AutoChecked.initCheckAll = 
         function( _selector ){
             _selector = $( _selector );
-            var _ls = _selector.find( 'input[type=checkbox][checktype][checkfor]' );
+            var _ls = _selector.find( 'input[type=checkbox][checktype][checkfor]' ), _p;
             _ls.each( function(){
-                var _p = $(this)
-                    , _type = _p.attr('checktype').toLowerCase()
-                    , _for = _p.attr('checkfor');
-                if( _type != 'all' || !_for ) return;
-                fixCheckAllStatus( _p, _for );
-
-                if( !_p.data('initedCheckall') ){
-                    _p.data('initedCheckall', true);
-                    $(document).delegate( _for, 'click', function( _evt ){
-                        var _sp = $(this);
-                        if( isControler( _sp ) ) return;
-                        fixCheckAllStatus( _p, _for );
-                    });
-                }
+                _p = $(this);
+                if( !AutoChecked.isAutoChecked( _p ) ) return;
+                if( AutoChecked.getInstance( _p ) ) return;
+                new AutoChecked( _p );
             });
         };
+    JC.Form.initCheckAll = AutoChecked.initCheckAll;
 
+    function AutoChecked( _selector ){
+        if( AutoChecked.getInstance( _selector ) ) return AutoChecked.getInstance( _selector );
+        AutoChecked.getInstance( _selector, this );
+
+        JC.log( 'AutoChecked init', new Date().getTime() );
+
+        this._model = new Model( _selector );
+        this._view = new View( this._model );
+
+        this._init();
+    }
+    
+    AutoChecked.prototype = {
+        _init:
+            function(){
+                var _p = this;
+
+                _p._initHandlerEvent();
+
+                $( [ _p._view, _p._model ] ).on('BindEvent', function( _evt, _evtName, _cb ){
+                    _p.on( _evtName, _cb );
+                });
+
+                $([ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName ){
+                    var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
+                    _p.trigger( _evtName, _data );
+                });
+
+                _p._model.init();
+                _p._view.init();
+
+                _p._view.itemChange();
+
+                return _p;
+            }    
+
+        , _initHandlerEvent:
+            function(){
+                var _p = this;
+                _p.selector().on('change', function(){
+                    _p.trigger( _p._model.checktype() );
+                });
+
+                _p.on('all', function(){
+                    JC.log( 'AutoChecked all', new Date().getTime() );
+                    _p._view.allChange();
+                });
+
+                _p.on('inverse', function(){
+                    JC.log( 'AutoChecked inverse', new Date().getTime() );
+                    _p._view.inverseChange();
+                });
+
+                if( !( _p._model.checktype() == 'inverse' && _p._model.hasCheckAll() ) ){
+                    $( _p._model.delegateElement() ).delegate( _p._model.delegateSelector(), 'click', function( _evt ){
+                        if( AutoChecked.isAutoChecked( $(this) ) ) return;
+                        JC.log( 'AutoChecked change', new Date().getTime() );
+                        _p._view.itemChange();
+                    });
+                }
+
+            }
+        /**
+         * 获取 显示 AutoChecked 的触发源选择器, 比如 a 标签
+         * @method  selector
+         * @return  selector
+         */ 
+        , selector: function(){ return this._model.selector(); }
+        /**
+         * 使用 jquery on 绑定事件
+         * @method  {string}    on
+         * @param   {string}    _evtName
+         * @param   {function}  _cb
+         * @return  AutoCheckedInstance
+         */
+        , on: function( _evtName, _cb ){ $(this).on(_evtName, _cb ); return this;}
+        /**
+         * 使用 jquery trigger 绑定事件
+         * @method  {string}    trigger
+         * @param   {string}    _evtName
+         * @return  AutoCheckedInstance
+         */
+        , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
+    }
+    /**
+     * 获取或设置 AutoChecked 的实例
+     * @method getInstance
+     * @param   {selector}      _selector
+     * @static
+     * @return  {AutoChecked instance}
+     */
+    AutoChecked.getInstance =
+        function( _selector, _setter ){
+            if( typeof _selector == 'string' && !/</.test( _selector ) ) 
+                    _selector = $(_selector);
+            if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
+            typeof _setter != 'undefined' && _selector.data( 'AutoCheckedIns', _setter );
+
+            return _selector.data('AutoCheckedIns');
+        };
+    /**
+     * 判断 selector 是否可以初始化 AutoChecked
+     * @method  isAutoChecked
+     * @param   {selector}      _selector
+     * @static
+     * @return  bool
+     */
+    AutoChecked.isAutoChecked =
+        function( _selector ){
+            var _r;
+            _selector 
+                && ( _selector = $(_selector) ).length 
+                && ( _r = _selector.is( '[checkfor]' ) && _selector.is( '[checktype]' ) );
+            return _r;
+        };
+    
+    function Model( _selector ){
+        this._selector = _selector;
+    }
+
+    Model.isParentSelectorRe = /^[\/\|<]/;
+    Model.parentSelectorRe = /[^\/\|<]/g;
+    Model.childSelectorRe = /[\/\|<]/g;
+
+    Model.prototype = {
+        init:
+            function(){
+                return this;
+            }
+        , checktype:
+            function(){
+                return ( this.selector().attr('checktype') || '' ).toLowerCase();
+            }
+
+        , checkfor:
+            function(){
+                return ( this.selector().attr('checkfor') || '' );
+            }
+
+        , checkall:
+            function(){
+                return ( this.selector().attr('checkall') || '' );
+            }
+
+        , hasCheckAll: function(){ return this.selector().is('[checkall]') && this.selector().attr('checkall'); }
+
+        , selector: function(){ return this._selector; }
+
+        , isParentSelector: function(){ return Model.isParentSelectorRe.test( this.selector().attr( 'checkfor' ) ); }
+
+        , delegateSelector:
+            function(){
+                var _r = this.selector().attr('checkfor'), _tmp;
+                if( this.isParentSelector() ){
+                    if( /^</.test( this.checkfor() ) ){
+                        this.checkfor().replace( /[\s]([\s\S]+)/, function( $0, $1 ){
+                            _r = $1;
+                        });
+                    }else{
+                        _r = this.checkfor().replace( Model.childSelectorRe, '' );
+                    }
+                }
+                return _r;
+            }
+
+        , delegateElement:
+            function(){
+                var _p = this, _r = $(document), _tmp;
+                if( this.isParentSelector() ){
+                    if( /^</.test( this.checkfor() ) ){
+                        this.checkfor().replace( /^([^\s]+)/, function( $0, $1 ){
+                            _r = parentSelector( _p.selector(), $1 );
+                        });
+                    }else{
+                        _tmp = this.checkfor().replace( Model.parentSelectorRe, '' );
+                        _r = parentSelector( _p.selector(), _tmp );
+                    }
+                }
+                return _r;
+            }
+
+        , items:
+            function(){
+                return this.delegateElement().find( this.delegateSelector() );
+            }
+
+        , checkedAll: function(){ return this.selector().prop('checked'); }
+        , checkedInverse: function(){ return this.selector().prop('checked'); }
+
+        , allSelector:
+            function(){
+                var _r;
+                if( this.checktype() == 'inverse' ){
+                    this.checkall() 
+                        && ( _r = parentSelector( this.selector(), this.checkall() ) )
+                        ;
+                }else{
+                    _r = this.selector();
+                }
+                return _r;
+            }
+    };
+    
+    function View( _model ){
+        this._model = _model;
+    }
+    
+    View.prototype = {
+        init:
+            function() {
+                return this;
+            }
+        , itemChange:
+            function(){
+                switch( this._model.checktype() ){
+                    case 'all': this._fixAll(); break;
+                }
+            }
+        , allChange:
+            function(){
+                var _p = this, _checked = _p._model.checkedAll();
+                _p._model.items().each( function(){
+                    if( AutoChecked.isAutoChecked( $(this) ) ) return;
+                    if( $(this).is('[disabled]') ) return;
+                    $(this).prop( 'checked', _checked );
+                });
+            }
+        , inverseChange:
+            function(){
+                var _p = this;
+                _p._model.items().each( function(){
+                    var _sp = $(this);
+                    if( AutoChecked.isAutoChecked( _sp ) ) return;
+                    if( $(this).is('[disabled]') ) return;
+                    _sp.prop( 'checked', !_sp.prop('checked') );
+                });
+                this._fixAll();
+            }
+        , _fixAll:
+            function(){
+                var _p = this, _checkAll = true;
+                if( _p._model.allSelector().prop( 'disabled' ) ) return;
+
+                _p._model.items().each( function(){
+                    if( AutoChecked.isAutoChecked( $(this) ) ) return;
+                    if( $(this).is('[disabled]') ) return;
+                    if( !$(this).prop('checked') ) return _checkAll = false;
+                });
+
+                JC.log( '_fixAll:', _checkAll );
+
+                _p._model.allSelector().prop('checked', _checkAll);
+            }
+    };
+ 
     $(document).ready( function( _evt ){
         JC.Form.initCheckAll( $(document) );
     });
-    /**
-     * 监听 全选/反选 按钮的点击事件
-     */
-    $(document).delegate( 'input[type=checkbox][checktype][checkfor]', 'click', function( _evt ){
-        var _p = $(this)
-            , _type = _p.attr('checktype').toLowerCase()
-            , _for = _p.attr('checkfor');
-            JC.log( _type, _for );
-
-        switch( _type ){
-            case 'all':
-                {
-                    $(_for).each( function(){
-                        var _sp = $(this);
-                        if( isControler( _sp ) ) return;
-                        if( _sp.is( '[disabled]' ) ) return;
-                        _p.prop('checked') && _sp.prop('checked', true);
-                        !_p.prop('checked') && _sp.prop('checked', false);
-                        
-                    });
-                    break;
-                }
-
-            case 'inverse':
-                {
-                    $(_for).each( function(){
-                        var _sp = $(this);
-                        if( isControler( _sp ) ) return;
-                        if( _sp.is( '[disabled]' ) ) return;
-                        if( _sp.prop('checked') ) _sp.prop('checked', false);
-                        else _sp.prop('checked', true);
-                    });
-
-                    if( _p.is('[checkall]') ) fixCheckAllStatus( _p.attr('checkall'), _for );
-                    break;
-                }
-        }
-    });
-    /**
-     * 判断 input 是否为 全选反选 按钮
-     */
-    function isControler( _selector ){
-        _selector = $( _selector );
-        return _selector.is( '[checktype]' ) && _selector.is( '[checkfor]');
-    }
-    /**
-     * input 改变状态时, 全选按钮也改为正确的状态
-     */
-    function fixCheckAllStatus( _all, _for ){
-        var _isAll = true, _all = $(_all), _for = $(_for);
-        _for.each( function(){
-            var _sp = $(this);
-            if( isControler( _sp ) ) return;
-            if( _sp.is( '[checktype]' ) || _sp.is( '[checkfor]') ) return;
-            if( !_sp.prop('checked') ) return _isAll = false;
-        });
-        JC.log( '_isAll: ', _isAll );
-        _all && _all.length && _all.prop( 'checked', _isAll );
-    }
 }(jQuery));
 
  ;(function($){

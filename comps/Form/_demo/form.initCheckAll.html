@@ -16,32 +16,32 @@
         <script src="../../../lib.js"></script>
         <script>JC.debug = true; JC.use('Form');</script>
         <script>
-        $(document).delegate( 'button.js_ajaxTest', 'click', function(){
-            var _p = $(this);
-            _p.prop('disabled', true);
-            JC.Form.disableButton( _p );
+            $(document).delegate( 'button.js_ajaxTest', 'click', function(){
+                var _p = $(this);
+                _p.prop('disabled', true);
+                JC.Form.disableButton( _p );
 
-            $.get( './data/initCheckAll.php?rnd='+new Date().getTime(), function( _r ){
-                var _selector = $(_r);
-                $( $( 'body' ).children().first() ).before( _selector );
-                JC.Form.initCheckAll( _selector );
+                $.get( './data/initCheckAll.php?rnd='+new Date().getTime(), function( _r ){
+                    var _selector = $(_r);
+                    $( $( 'body' ).children().first() ).before( _selector );
+                    JC.Form.initCheckAll( _selector );
+                });
             });
-        });
 
-        /*
-        自动初始化成本太高, 这里就不自动实现了
-        动态添加的内容请使用 JC.Form.initCheckAll 方法
-        $(document).delegate( 'button.js_autoinit', 'click', function(){
-            var _p = $(this);
-            JC.Form.disableButton( _p );
-            setTimeout( function(){ _p.prop('disabled', false); }, 1000 );
+            /*
+            自动初始化成本太高, 这里就不自动实现了
+            动态添加的内容请使用 JC.Form.initCheckAll 方法
+            $(document).delegate( 'button.js_autoinit', 'click', function(){
+                var _p = $(this);
+                JC.Form.disableButton( _p );
+                setTimeout( function(){ _p.prop('disabled', false); }, 1000 );
 
-            $.get( './data/autoInitCheckAll.php?rnd='+new Date().getTime(), function( _r ){
-                var _selector = $(_r);
-                $( $( 'body' ).children().first() ).before( _selector );
+                $.get( './data/autoInitCheckAll.php?rnd='+new Date().getTime(), function( _r ){
+                    var _selector = $(_r);
+                    $( $( 'body' ).children().first() ).before( _selector );
+                });
             });
-        });
-        */
+            */
 
         </script>
     </head>    
@@ -55,64 +55,111 @@
             <button type="button" class="js_autoinit">auto init test</button>
         </div>
         -->
-
-        <dl class="def example1">
+        <dl class="def">
             <dt>checkall example 1</dt>
             <dd>
-            <input type="checkbox"  id="checkall1" checktype="all" checkfor="dl.example1 input[type=checkbox]"><label for="checkall1">全选</label>
-            <input type="checkbox"  id="checkall1_inverse" checktype="inverse" checkfor="dl.example1 input[type=checkbox]" checkall="dl.example1 input[checktype=all]"><label for="checkall1_inverse">反选</label>
+            <label>
+                <input type="checkbox"  checktype="all" checkfor="///input[type=checkbox]"> 
+                全选
+            </label>
+            <label>
+                <input type="checkbox" checktype="inverse" checkfor="<dl input[type=checkbox]" checkall="<dl input[checktype=all]">
+                反选
+            </label>
             </dd>
             <dd>
-            <input type='checkbox' id='checkall1_1' value='' name='' />
-            <label for='checkall1_1'>checkall1_1</label>
-            <input type='checkbox' id='checkall1_2' value='' name='' checked />
-            <label for='checkall1_2'>checkall1_2</label>
-            <input type='checkbox' id='checkall1_3' value='' name='' />
-            <label for='checkall1_3'>checkall1_3</label>
-            <input type='checkbox' id='checkall1_4' value='' name='' checked />
-            <label for='checkall1_4'>checkall1_4</label>
-            <input type='checkbox' id='checkall1_5' value='' name='' />
-            <label for='checkall1_5'>checkall1_5</label>
+            <label >
+                <input type='checkbox' value='' name='' />
+                checkall1_1
+            </label>
+            <label >
+                <input type='checkbox' value='' name='' checked />
+                checkall1_2
+            </label>
+            <label >
+                <input type='checkbox'value='' name='' />
+                checkall1_3
+            </label>
+            <label >
+                <input type='checkbox' value='' name='' checked />
+                checkall1_4
+            </label>
+            <label >
+                <input type='checkbox' value='' name='' />
+                checkall1_5
+            </label>
             </dd>
         </dl>
         <hr />
         <dl class="def example2">
             <dt>checkall example 2</dt>
             <dd>
-            <input type="checkbox"  id="checkall2" checktype="all" checkfor="dl.example2 input[type=checkbox]"><label for="checkall2">全选</label>
-            <input type="checkbox"  id="checkall2_inverse" checktype="inverse" checkfor="dl.example2 input[type=checkbox]" checkall="dl.example2 input[checktype=all]"><label for="checkall2_inverse">反选</label>
+            <label>
+                <input type="checkbox" checktype="all" checkfor="dl.example2 input[type=checkbox]">
+                全选
+            </label>
+            <label>
+                <input type="checkbox" checktype="inverse" checkfor="dl.example2 input[type=checkbox]" checkall="dl.example2 input[checktype=all]">
+                反选
+            </label>
             </dd>
             <dd>
-            <input type='checkbox' id='checkall2_1' value='' name='' checked />
-            <label for='checkall2_1'>checkall2_1</label>
-            <input type='checkbox' id='checkall2_2' value='' name='' checked />
-            <label for='checkall2_2'>checkall2_2</label>
-            <input type='checkbox' id='checkall2_3' value='' name='' checked />
-            <label for='checkall2_3'>checkall2_3</label>
-            <input type='checkbox' id='checkall2_4' value='' name='' checked />
-            <label for='checkall2_4'>checkall2_4</label>
-            <input type='checkbox' id='checkall2_5' value='' name='' checked />
-            <label for='checkall2_5'>checkall2_5</label>
+            <label>
+                <input type='checkbox' value='' name='' checked />
+                checkall2_1
+            </label>
+            <label>
+                <input type='checkbox' value='' name='' checked />
+                checkall2_2
+            </label>
+            <label>
+                <input type='checkbox' value='' name='' checked />
+                checkall2_3
+            </label>
+            <label>
+                <input type='checkbox' value='' name='' checked />
+                checkall2_4
+            </label>
+            <label>
+                <input type='checkbox' value='' name='' checked />
+                checkall2_5
+            </label>
             </dd>
         </dl>
         <hr />
         <dl class="def example3">
             <dt>checkall example 3</dt>
             <dd>
-            <input type="checkbox"  id="checkall3" checked checktype="all" checkfor="dl.example3 input[type=checkbox]"><label for="checkall3">全选</label>
-            <input type="checkbox"  id="checkall3_inverse" checktype="inverse" checkfor="dl.example3 input[type=checkbox]" checkall="dl.example3 input[checktype=all]"><label for="checkall3_inverse">反选</label>
+            <label>
+                <input type="checkbox" checked checktype="all" checkfor="dl.example3 input[type=checkbox]">
+                全选
+            </label>
+            <label>
+                <input type="checkbox" checktype="inverse" checkfor="dl.example3 input[type=checkbox]" checkall="dl.example3 input[checktype=all]">
+                反选
+            </label>
             </dd>
             <dd>
-            <input type='checkbox' id='checkall3_1' value='' name='' />
-            <label for='checkall3_1'>checkall3_1</label>
-            <input type='checkbox' id='checkall3_2' value='' name='' />
-            <label for='checkall3_2'>checkall3_2</label>
-            <input type='checkbox' id='checkall3_3' value='' name='' />
-            <label for='checkall3_3'>checkall3_3</label>
-            <input type='checkbox' id='checkall3_4' value='' name='' />
-            <label for='checkall3_4'>checkall3_4</label>
-            <input type='checkbox' id='checkall3_5' value='' name='' />
-            <label for='checkall3_5'>checkall3_5</label>
+            <label>
+                <input type='checkbox' value='' name='' />
+                checkall3_1
+            </label>
+            <label >
+                <input type='checkbox' value='' name='' checked />
+                checkall3_2
+            </label>
+            <label>
+                <input type='checkbox' value='' name='' />
+                checkall3_3
+            </label>
+            <label>
+                <input type='checkbox' value='' name='' checked />
+                checkall3_4
+            </label>
+            <label>
+                <input type='checkbox' value='' name='' />
+                checkall3_5
+            </label>
             </dd>
         </dl>
     </body>

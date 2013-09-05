@@ -484,7 +484,8 @@ function parentSelector( _item, _selector, _finder ){
             _finder = _item;
             return '';
         });
-        return _finder.find( $.trim( _selector ) );
+        _selector = _selector.trim();
+        return _selector ? _finder.find( _selector ) : _finder;
     }else if( _childRe.test( _selector ) ){
         _selector = _selector.replace( _childRe, function( $0, $1 ){
             for( var i = 1, j = $1.length; i < j; i++ ){
@@ -493,11 +494,20 @@ function parentSelector( _item, _selector, _finder ){
             _finder = _item;
             return '';
         });
-        return _finder.find( $.trim( _selector ) );
+        _selector = _selector.trim();
+        return _selector ? _finder.find( _selector ) : _finder;
     }else if( _pntRe.test( _selector ) ){
         _selector = _selector.replace( _pntRe, '' ).trim();
         if( _selector ){
-            return getJqParent( _item, _selector );
+            if( /[\s]/.test( _selector ) ){
+                var _r;
+                _selector.replace( /^([^\s]+)([\s\S]+)/, function( $0, $1, $2 ){
+                    _r = getJqParent( _item, $1 ).find( $2.trim() );
+                });
+                return _r || _selector;
+            }else{
+                return getJqParent( _item, _selector );
+            }
         }else{
             return _item.parent();
         }
