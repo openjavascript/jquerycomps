@@ -644,6 +644,7 @@
      * @method  clone
      * @param   {NewModel}  _model
      * @param   {NewView}   _view
+     * @static
      */
     Calendar.clone =
         function( _model, _view ){
