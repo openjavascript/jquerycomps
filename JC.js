@@ -1,5 +1,5 @@
 ;(function( $ ){
-    if( window.JC && window.JC.PATH != 'undefined' ) return;
+    if( window.JC && typeof JC.PATH != 'undefined' ) return;
     /**
      * JC jquery 组件库 资源调用控制类
      * <br />这是一个单例模式, 全局访问使用 JC 或 window.JC
@@ -167,11 +167,7 @@
         * @method log
         * @static
         */
-       , log: 
-           function(){
-                if( !this.debug ) return;
-                console.log( [].slice.apply( arguments ).join(' ') );
-            }
+       , log: function(){ JC.debug && window.console && console.log( sliceArgs( arguments ).join(' ') ); }
        /**
         * 定义输出路径的 v 参数, 以便控制缓存
         * @property     pathPostfix
@@ -302,15 +298,11 @@
      */
     window.UXC = window.JC;
     /**
-     * 如果 console 不可用, 则生成一个模拟的 console 对象
-     */
-    if( !window.console ) window.console = { log:function(){
-        window.status = [].slice.apply( arguments ).join(' ');
-    }};
-    /**
      * 自动识别组件库所在路径
      */
     JC.PATH = script_path_f();
+    //dev开发时因为脚本没合并, IE找不到库的正确路径, 这个判断仅针对dev开发分支
+    /\/JQueryComps_dev/i.test( location.href ) && ( JC.PATH = '/ignore/JQueryComps_dev/' );
     /**
      * <h2>业务逻辑命名空间</h2>
      * <br />这个命名空间的组件主要为满足业务需求, 不是通用组件~

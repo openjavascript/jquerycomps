@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JC.ExampleClass - jquery components</title>
+    <title>window.Bizs.KillISPCache - jquery components</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -98,55 +98,56 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>JC.ExampleClass Class</h1>
+                        <h1>window.Bizs.KillISPCache Class</h1>
 <div class="box meta">
+        <div class="extends">
+            Extends <a href="../classes/JC.BaseMVC.html" class="crosslink">JC.BaseMVC</a>
+        </div>
         <div class="foundat">
-            Defined in: <a href="../files/.._comps_ExampleClass_ExampleClass.js.html#l3"><code>..&#x2F;comps&#x2F;ExampleClass&#x2F;ExampleClass.js:3</code></a>
+            Defined in: <a href="../files/.._bizs_KillISPCache_KillISPCache.js.html#l2"><code>..&#x2F;bizs&#x2F;KillISPCache&#x2F;KillISPCache.js:2</code></a>
         </div>
 </div>
 <div class="box intro">
-    <p>ExampleClass 模板类
-<br />要新建一个组件时, 直接 copy ExampleClass 组件改一下命名就可以开始编码了</p>
-<dl>
-     <dd><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></dd>
-</dl>
+    <p>应用场景
+<br /><b>ISP 缓存问题 引起的用户串号</b>
+<br />ajax 或者动态添加的内容, 请显式调用  JC.KillISPCache.getInstance().process( newNodeContainer )
+<br /><b>这是个单例类</b></p>
 <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-| <a href='http://jc.openjavascript.org/docs_api/classes/JC.ExampleClass.html' target='_blank'>API docs</a>
-| <a href='../../comps/ExampleClass/_demo' target='_blank'>demo link</a></p>
+| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.KillISPCache.html' target='_blank'>API docs</a>
+| <a href='../../bizs/KillISPCache/_demo' target='_blank'>demo link</a></p>
+<h2>页面只要引用本文件, 默认会自动初始化 KillISPCache 逻辑</h2>
+<dl>
+     <dt>影响到的地方: </dt>
+     <dd>每个 a node 会添加 isp 参数</dd>
+     <dd>每个 form node 会添加 isp 参数</dd>
+     <dd>每个 ajax get 请求会添加 isp 参数</dd>
+</dl>
 </div>
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_JC.ExampleClass" class="method item">
-    <h3 class="name"><code>JC.ExampleClass</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_selector</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+        <div id="method_window.Bizs.KillISPCache" class="method item">
+    <h3 class="name"><code>window.Bizs.KillISPCache</code></h3>
+        <span class="paren">()</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_ExampleClass_ExampleClass.js.html#l3"><code>..&#x2F;comps&#x2F;ExampleClass&#x2F;ExampleClass.js:3</code></a>
+        <a href="../files/.._bizs_KillISPCache_KillISPCache.js.html#l2"><code>..&#x2F;bizs&#x2F;KillISPCache&#x2F;KillISPCache.js:2</code></a>
         </p>
     </div>
     <div class="description">
     </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_selector</code>
-                        <span class="type">Selector | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
+                <pre class="code prettyprint"><code> &lt;script&gt;
+ //动态添加的内容需要显式调用 process 方法去处理相关逻辑
+ $.get( _url, function( _html ){
+     var _node = $(_html);
+     _node.appendTo( document.body );
+     JC.KillISPCache.getInstance().process( _node );
+ });
+ &lt;/script&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -155,44 +156,133 @@
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
     <div>
         <div id="index" class="api-class-tabpanel index">
             <h2 class="off-left">Item Index</h2>
                 <div class="index-section methods">
                     <h3>Methods</h3>
-                    <ul class="index-list methods">
+                    <ul class="index-list methods extends">
+                            <li class="index-item method private inherited">
+                                <a href="#method__beforeInit">_beforeInit</a>
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method__init">_init</a>
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method__inited">_inited</a>
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method__initHanlderEvent">_initHanlderEvent</a>
+                            </li>
                             <li class="index-item method">
                                 <a href="#method_getInstance">getInstance</a>
                                     <span class="flag static">static</span>
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_hide">hide</a>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_isExampleClass">isExampleClass</a>
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_layout">layout</a>
-                            </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_on">on</a>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_process">process</a>
+                            </li>
+                            <li class="index-item method inherited">
                                 <a href="#method_selector">selector</a>
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_show">show</a>
-                            </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_trigger">trigger</a>
+                            </li>
+                    </ul>
+                </div>
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+                    <ul class="index-list properties extends">
+                            <li class="index-item property">
+                                <a href="#property_ignoreSameLinkText">ignoreSameLinkText</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_randName">randName</a>
+                                    <span class="flag static">static</span>
                             </li>
                     </ul>
                 </div>
         </div>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
+                    <div id="method__beforeInit" class="method item private inherited">
+    <h3 class="name"><code>_beforeInit</code></h3>
+        <span class="paren">()</span>
+        <span class="flag private">private</span>
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/JC.BaseMVC.html#method__beforeInit">JC.BaseMVC</a>:
+        <a href="../files/.._lib.js.html#l982"><code>..&#x2F;lib.js:982</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>初始化之前调用的方法</p>
+    </div>
+</div>
+                    <div id="method__init" class="method item private inherited">
+    <h3 class="name"><code>_init</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_selector</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/JC.BaseMVC.html#method__init">JC.BaseMVC</a>:
+        <a href="../files/.._lib.js.html#l952"><code>..&#x2F;lib.js:952</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>内部初始化方法</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_selector</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method__inited" class="method item private inherited">
+    <h3 class="name"><code>_inited</code></h3>
+        <span class="paren">()</span>
+        <span class="flag private">private</span>
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/JC.BaseMVC.html#method__inited">JC.BaseMVC</a>:
+        <a href="../files/.._lib.js.html#l998"><code>..&#x2F;lib.js:998</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>内部初始化完毕时, 调用的方法</p>
+    </div>
+</div>
+                    <div id="method__initHanlderEvent" class="method item private inherited">
+    <h3 class="name"><code>_initHanlderEvent</code></h3>
+        <span class="paren">()</span>
+        <span class="flag private">private</span>
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/JC.BaseMVC.html#method__initHanlderEvent">JC.BaseMVC</a>:
+        <a href="../files/.._lib.js.html#l990"><code>..&#x2F;lib.js:990</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>内部事件初始化方法</p>
+    </div>
+</div>
                     <div id="method_getInstance" class="method item">
     <h3 class="name"><code>getInstance</code></h3>
         <div class="args">
@@ -203,17 +293,17 @@
             </ul><span class="paren">)</span>
         </div>
         <span class="returns-inline">
-            <span class="type">ExampleClass instance</span>
+            <span class="type">KillISPCacheInstance</span>
         </span>
         <span class="flag static">static</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_ExampleClass_ExampleClass.js.html#l88"><code>..&#x2F;comps&#x2F;ExampleClass&#x2F;ExampleClass.js:88</code></a>
+        <a href="../files/.._bizs_KillISPCache_KillISPCache.js.html#l69"><code>..&#x2F;bizs&#x2F;KillISPCache&#x2F;KillISPCache.js:69</code></a>
         </p>
     </div>
     <div class="description">
-        <p>获取或设置 ExampleClass 的实例</p>
+        <p>获取 KillISPCache 实例 ( 单例模式 )</p>
     </div>
         <div class="params">
             <h4>Parameters:</h4>
@@ -229,95 +319,11 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                        <span class="type">ExampleClass instance</span>:
+                        <span class="type">KillISPCacheInstance</span>:
             </div>
         </div>
 </div>
-                    <div id="method_hide" class="method item">
-    <h3 class="name"><code>hide</code></h3>
-        <span class="paren">()</span>
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_ExampleClass_ExampleClass.js.html#l54"><code>..&#x2F;comps&#x2F;ExampleClass&#x2F;ExampleClass.js:54</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>隐藏 ExampleClass</p>
-    </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                    ExampleClassInstance
-            </div>
-        </div>
-</div>
-                    <div id="method_isExampleClass" class="method item">
-    <h3 class="name"><code>isExampleClass</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_selector</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_ExampleClass_ExampleClass.js.html#l104"><code>..&#x2F;comps&#x2F;ExampleClass&#x2F;ExampleClass.js:104</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>判断 selector 是否可以初始化 ExampleClass</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_selector</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                    bool
-            </div>
-        </div>
-</div>
-                    <div id="method_layout" class="method item">
-    <h3 class="name"><code>layout</code></h3>
-        <span class="paren">()</span>
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_ExampleClass_ExampleClass.js.html#l66"><code>..&#x2F;comps&#x2F;ExampleClass&#x2F;ExampleClass.js:66</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>获取 ExampleClass 外观的 选择器</p>
-    </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                    selector
-            </div>
-        </div>
-</div>
-                    <div id="method_on" class="method item">
+                    <div id="method_on" class="method item inherited">
     <h3 class="name"><code>on</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -333,9 +339,9 @@
             <span class="type"></span>
         </span>
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_ExampleClass_ExampleClass.js.html#l72"><code>..&#x2F;comps&#x2F;ExampleClass&#x2F;ExampleClass.js:72</code></a>
+                <p>Inherited from
+                <a href="../classes/JC.BaseMVC.html#method_on">JC.BaseMVC</a>:
+        <a href="../files/.._lib.js.html#l1012"><code>..&#x2F;lib.js:1012</code></a>
         </p>
     </div>
     <div class="description">
@@ -361,24 +367,72 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    ExampleClassInstance
+                    BaseMVCInstance
             </div>
         </div>
 </div>
-                    <div id="method_selector" class="method item">
+                    <div id="method_process" class="method item">
+    <h3 class="name"><code>process</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_selector</code>
+                </li>
+                <li class="arg">
+                        <code>_ignoreSameLinkText</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">KillISPCacheInstance</span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._bizs_KillISPCache_KillISPCache.js.html#l50"><code>..&#x2F;bizs&#x2F;KillISPCache&#x2F;KillISPCache.js:50</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>处理 _selector 的所有 child</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_selector</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_ignoreSameLinkText</code>
+                        <span class="type">Bool</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">KillISPCacheInstance</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_selector" class="method item inherited">
     <h3 class="name"><code>selector</code></h3>
         <span class="paren">()</span>
         <span class="returns-inline">
             <span class="type"></span>
         </span>
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_ExampleClass_ExampleClass.js.html#l60"><code>..&#x2F;comps&#x2F;ExampleClass&#x2F;ExampleClass.js:60</code></a>
+                <p>Inherited from
+                <a href="../classes/JC.BaseMVC.html#method_selector">JC.BaseMVC</a>:
+        <a href="../files/.._lib.js.html#l1006"><code>..&#x2F;lib.js:1006</code></a>
         </p>
     </div>
     <div class="description">
-        <p>获取 显示 ExampleClass 的触发源选择器, 比如 a 标签</p>
+        <p>获取 显示 BaseMVC 的触发源选择器, 比如 a 标签</p>
     </div>
         <div class="returns">
             <h4>Returns:</h4>
@@ -387,29 +441,7 @@
             </div>
         </div>
 </div>
-                    <div id="method_show" class="method item">
-    <h3 class="name"><code>show</code></h3>
-        <span class="paren">()</span>
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_ExampleClass_ExampleClass.js.html#l48"><code>..&#x2F;comps&#x2F;ExampleClass&#x2F;ExampleClass.js:48</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>显示 ExampleClass</p>
-    </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                    ExampleClassInstance
-            </div>
-        </div>
-</div>
-                    <div id="method_trigger" class="method item">
+                    <div id="method_trigger" class="method item inherited">
     <h3 class="name"><code>trigger</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -422,9 +454,9 @@
             <span class="type"></span>
         </span>
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._comps_ExampleClass_ExampleClass.js.html#l80"><code>..&#x2F;comps&#x2F;ExampleClass&#x2F;ExampleClass.js:80</code></a>
+                <p>Inherited from
+                <a href="../classes/JC.BaseMVC.html#method_trigger">JC.BaseMVC</a>:
+        <a href="../files/.._lib.js.html#l1020"><code>..&#x2F;lib.js:1020</code></a>
         </p>
     </div>
     <div class="description">
@@ -444,9 +476,42 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    ExampleClassInstance
+                    BaseMVCInstance
             </div>
         </div>
+</div>
+            </div>
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+                    <div id="property_ignoreSameLinkText" class="property item">
+    <h3 class="name"><code>ignoreSameLinkText</code></h3>
+    <span class="type">Bool</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._bizs_KillISPCache_KillISPCache.js.html#l81"><code>..&#x2F;bizs&#x2F;KillISPCache&#x2F;KillISPCache.js:81</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>是否忽略 url 跟 文本 相同的节点</p>
+    </div>
+        <p><strong>Default:</strong> true</p>
+</div>
+                    <div id="property_randName" class="property item">
+    <h3 class="name"><code>randName</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._bizs_KillISPCache_KillISPCache.js.html#l89"><code>..&#x2F;bizs&#x2F;KillISPCache&#x2F;KillISPCache.js:89</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>自定义随机数的参数名</p>
+    </div>
+        <p><strong>Default:</strong> empty</p>
 </div>
             </div>
     </div>

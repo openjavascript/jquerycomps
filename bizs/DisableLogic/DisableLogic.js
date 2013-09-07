@@ -1,8 +1,10 @@
+//TODO: 如果为禁用时, 应当清除错误状态
 /**
- * 应用场景
- * 表单操作时, 选择某个 radio 时, 对应的 内容有效,
- * 但选择其他 radio 时, 其他的内容无效
- * checkbox / select 也可使用( 带change事件的标签 )
+ * <h2>Form Control禁用启用逻辑</h2>
+ * <br/>应用场景</br>
+ * <br/>表单操作时, 选择某个 radio 时, 对应的 内容有效,
+ * <br/>但选择其他 radio 时, 其他的内容无效
+ * <br/>checkbox / select 也可使用( 带change事件的标签 )
  *
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html' target='_blank'>API docs</a>

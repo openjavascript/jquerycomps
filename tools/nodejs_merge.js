@@ -6,13 +6,24 @@ dir.pop();
 
 dir = dir.join('/') + '/';
 
+var jqFile = dir + 'jquery.js'
+    , commonFile = dir + 'common.js'
+    , jcFile = dir + 'JC.js'
+    , baseMVCFile = dir + 'comps/BaseMVC/BaseMVC.js'
+    ;
 
-if( !( fs.existsSync( dir + 'jquery.js' ) && fs.existsSync( dir + 'JC.js' ) && fs.existsSync( dir + 'common.js' )  ) ) return;
+
+if( !(  fs.existsSync( jqFile ) 
+        && fs.existsSync( jcFile ) 
+        && fs.existsSync( commonFile )  
+        && fs.existsSync( baseMVCFile )  
+)) return;
 
 var tmp = [];
-    tmp.push( fs.readFileSync( dir + 'jquery.js', 'utf8') );
-    tmp.push( fs.readFileSync(  dir + 'common.js', 'utf8') );
-    tmp.push( fs.readFileSync(  dir + 'JC.js', 'utf8') );
+    tmp.push( fs.readFileSync( jqFile, 'utf8') );
+    tmp.push( fs.readFileSync( commonFile, 'utf8') );
+    tmp.push( fs.readFileSync( jcFile, 'utf8') );
+    tmp.push( fs.readFileSync( baseMVCFile, 'utf8') );
 
 fs.writeFileSync( dir + 'lib.js', tmp.join('\n') );
 

@@ -26,6 +26,19 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
  */
 !String.prototype.trim && ( String.prototype.trim = function(){ return $.trim( this ); } );
 /**
+ * 如果 console 不可用, 则生成一个模拟的 console 对象
+ */
+if( !window.console ) window.console = { log:function(){
+    window.status = [].slice.apply( arguments ).join(' ');
+}};
+/**
+ * 声明主要命名空间, 方便迁移
+ */
+window.JC = window.JC || {
+    log: function(){ JC.debug && window.console && console.log( sliceArgs( arguments ).join(' ') ); }
+};
+window.Bizs = window.Bizs || {};
+/**
  * 全局 css z-index 控制属性
  * @property    ZINDEX_COUNT
  * @type        int
@@ -64,14 +77,14 @@ function printf( _str ){
 }
 /**
  * 判断URL中是否有某个get参数
- * @method  has_url_param
+ * @method  hasUrlParam
  * @static
  * @param   {string}    _url
  * @param   {string}    _key
  * @example
- *      var bool = has_url_param( 'getkey' );
+ *      var bool = hasUrlParam( 'getkey' );
  */
-function has_url_param( _url, _key ){
+function hasUrlParam( _url, _key ){
     var _r = false;
     if( !_key ){ _key = _url; _url = location.href; }
     if( /\?/.test( _url ) ){
@@ -83,51 +96,54 @@ function has_url_param( _url, _key ){
     }
     return _r;
 }
+//这个方法已经废弃, 请使用 hasUrlParam
+function has_url_param(){ return hasUrlParam.apply( null, sliceArgs( arguments ) ); }
 /**
  * 添加URL参数
- * <br /><b>require:</b> del\_url\_param 
- * @method  add_url_params
+ * <br /><b>require:</b> delUrlParam
+ * @method  addUrlParams
  * @static
  * @param   {string}    _url
- * @param   {object}    $params
+ * @param   {object}    _params
  * @example
-        var url = add_url_params( location.href, {'key1': 'key1value', 'key2': 'key2value' } );
+        var url = addUrlParams( location.href, {'key1': 'key1value', 'key2': 'key2value' } );
  */ 
-function add_url_params( $url, $params ){
+function addUrlParams( _url, _params ){
     var sharp = '';
-    !$params && ( $params = $url, $url = location.href );
-    $url.indexOf('#') > -1 && ( sharp = $url.split('#')[1], $url = $url.split('#')[0] );
-    for( var k in $params ){
-        $url = del_url_param($url, k);
-        $url.indexOf('?') > -1 
-            ? $url += '&' + k +'=' + $params[k]
-            : $url += '?' + k +'=' + $params[k];
+    !_params && ( _params = _url, _url = location.href );
+    _url.indexOf('#') > -1 && ( sharp = _url.split('#')[1], _url = _url.split('#')[0] );
+    for( var k in _params ){
+        _url = delUrlParam(_url, k);
+        _url.indexOf('?') > -1 
+            ? _url += '&' + k +'=' + _params[k]
+            : _url += '?' + k +'=' + _params[k];
     }
-    sharp && ( $url += '#' + sharp );
-    $url = $url.replace(/\?\&/g, '?' );
-    return $url;   
+    sharp && ( _url += '#' + sharp );
+    _url = _url.replace(/\?\&/g, '?' );
+    return _url;   
+
 }
- 
+//这个方法已经废弃, 请使用 addUrlParams
+function add_url_params(){ return addUrlParams.apply( null, sliceArgs( arguments ) ); }
 /**
  * 取URL参数的值
- * <br /><b>require:</b> del\_url\_param 
- * @method  get_url_param
+ * @method  getUrlParam
  * @static
- * @param   {string}    $url
- * @param   {string}    $key
+ * @param   {string}    _url
+ * @param   {string}    _key
  * @example
-        var defaultTag = get_url_param(location.href, 'tag');  
+        var defaultTag = getUrlParam(location.href, 'tag');  
  */ 
-function get_url_param( $url, $key ){
+function getUrlParam( _url, _key ){
     var result = '', paramAr, i, items;
-    !$key && ( $key = $url, $url = location.href );
-    $url.indexOf('#') > -1 && ( $url = $url.split('#')[0] );
-    if( $url.indexOf('?') > -1 ){
-        paramAr = $url.split('?')[1].split('&');
+    !_key && ( _key = _url, _url = location.href );
+    _url.indexOf('#') > -1 && ( _url = _url.split('#')[0] );
+    if( _url.indexOf('?') > -1 ){
+        paramAr = _url.split('?')[1].split('&');
         for( i = 0; i < paramAr.length; i++ ){
             items = paramAr[i].split('=');
             items[0] = items[0].replace(/^\s+|\s+$/g, '');
-            if( items[0].toLowerCase() == $key.toLowerCase() ){
+            if( items[0].toLowerCase() == _key.toLowerCase() ){
                 result = items[1];
                 break;
             } 
@@ -135,34 +151,37 @@ function get_url_param( $url, $key ){
     }
     return result;
 }
- 
+//这个方法已经废弃, 请使用 getUrlParam
+function get_url_param(){ return getUrlParam.apply( null, sliceArgs( arguments ) ); }
 /**
  * 删除URL参数
- * @method  del_url_param
+ * @method  delUrlParam
  * @static
- * @param  {string}    $url
- * @param  {string}    $key
+ * @param  {string}    _url
+ * @param  {string}    _key
  * @example
-        var url = del_url_param( location.href, 'tag' );
+        var url = delUrlParam( location.href, 'tag' );
  */ 
-function del_url_param( $url, $key ){
+function delUrlParam( _url, _key ){
     var sharp = '', params, tmpParams = [], i, item;
-    !$key && ( $key = $url, $url = location.href );
-    $url.indexOf('#') > -1 && ( sharp = $url.split('#')[1], $url = $url.split('#')[0] );
-    if( $url.indexOf('?') > -1 ){
-        params = $url.split('?')[1].split('&');
-        $url = $url.split('?')[0];
+    !_key && ( _key = _url, _url = location.href );
+    _url.indexOf('#') > -1 && ( sharp = _url.split('#')[1], _url = _url.split('#')[0] );
+    if( _url.indexOf('?') > -1 ){
+        params = _url.split('?')[1].split('&');
+        _url = _url.split('?')[0];
         for( i = 0; i < params.length; i++ ){
             items = params[i].split('=');
             items[0] = items[0].replace(/^\s+|\s+$/g, '');
-            if( items[0].toLowerCase() == $key.toLowerCase() ) continue;
+            if( items[0].toLowerCase() == _key.toLowerCase() ) continue;
             tmpParams.push( items.join('=') )
         }
-        $url += '?' + tmpParams.join('&');
+        _url += '?' + tmpParams.join('&');
     }
-    sharp && ( $url += '#' + sharp );
-    return $url;
+    sharp && ( _url += '#' + sharp );
+    return _url;
 }
+//这个方法已经废弃, 请使用 delUrlParam
+function del_url_param(){ return delUrlParam.apply( null, sliceArgs( arguments ) ); }
 /**
  * 提示需要 HTTP 环境
  * @method  httpRequire
@@ -180,7 +199,7 @@ function httpRequire( _msg ){
 }
 /**
  * 删除 URL 的锚点
- * <br /><b>require:</b> add\_url\_params
+ * <br /><b>require:</b> addUrlParams
  * @method removeUrlSharp
  * @static
  * @param   {string}    $url
@@ -189,59 +208,65 @@ function httpRequire( _msg ){
  */
 function removeUrlSharp($url, $nornd){   
     var url = $url.replace(/\#[\s\S]*/, '');
-    !$nornd && (url = add_url_params( url, { "rnd": new Date().getTime() } ) );
+    !$nornd && (url = addUrlParams( url, { "rnd": new Date().getTime() } ) );
     return url;
 }
 /**
  * 重载页面
  * <br /><b>require:</b> removeUrlSharp
- * <br /><b>require:</b> add\_url\_params
- * @method reload_page
+ * <br /><b>require:</b> addUrlParams
+ * @method reloadPage
  * @static
  * @param   {string}    $url
  * @param   {bool}      $nornd
  * @param   {int}       $delayms
  */ 
-function reload_page( $url, $nornd, $delayms ){
-    $delayms = $delayms || 0;
+function reloadPage( _url, _nornd, _delayMs  ){
+    _delayMs = _delayMs || 0;
     setTimeout( function(){
-        $url = removeUrlSharp( $url || location.href, $nornd );
-        !$nornd && ( $url = add_url_params( $url, { 'rnd': new Date().getTime() } ) );
-        location.href = $url;
-    }, $delayms);
+        _url = removeUrlSharp( _url || location.href, _nornd );
+        !_nornd && ( _url = addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
+        location.href = _url;
+    }, _delayMs);
 }
+//这个方法已经废弃, 请使用 reloadPage
+function reload_page(){ return reloadPage.apply( null, sliceArgs( arguments ) ); }
 /**
  * 取小数点的N位，
  * <br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题
- * @method  parse_finance_num
+ * @method  parseFinance
  * @static
- * @param   {number}    $i
- * @param   {int}       $dot
+ * @param   {number}    _i
+ * @param   {int}       _dot
  * @return  number
  */
-function parse_finance_num( $i, $dot ){
-    $i = parseFloat( $i ) || 0;
-    if( $i && $dot ) {
-        $i = Math.floor( $i * Math.pow( 10, $dot ) ) / Math.pow( 10, $dot );
+function parseFinance( _i, _dot ){
+    _i = parseFloat( _i ) || 0;
+    if( _i && _dot ) {
+        _i = Math.floor( _i * Math.pow( 10, _dot ) ) / Math.pow( 10, _dot );
     }
-    return $i;
+    return _i;
 }
+//这个方法已经废弃, 请使用 parseFinance
+function parse_finance_num(){ return parseFinance.apply( null, sliceArgs( arguments ) ); }
 /**
- * js 附加字串函数 pad_char_f
- * @method  pad_char_f
+ * js 附加字串函数
+ * @method  padChar
  * @static
  * @param   {string}    _str
  * @param   {intl}      _len
  * @param   {string}    _char
  * @return  string
  */
-function pad_char_f( _str, _len, _char ){
+function padChar( _str, _len, _char ){
 	_len  = _len || 2; _char = _char || "0"; 
 	_str += '';
 	if( _str.length >_str ) return _str;
 	_str = new Array( _len + 1 ).join( _char ) + _str
 	return _str.slice( _str.length - _len );
 }
+//这个方法已经废弃, 请使用 padChar
+function pad_char_f( _str, _len, _char ){ return padChar.apply( null, sliceArgs( arguments ) ); }
 /**
  * 格式化日期为 YYYY-mm-dd 格式
  * <br /><b>require</b>: pad\_char\_f
@@ -321,16 +346,18 @@ function maxDayOfMonth( _date ){
 }
 /**
  * 取当前脚本标签的 src路径 
- * @method  script_path_f
+ * @method  scriptPath
  * @static
  * @return  {string} 脚本所在目录的完整路径
  */
-function script_path_f(){
+function scriptPath(){
     var _sc = document.getElementsByTagName('script'), _sc = _sc[ _sc.length - 1 ], _path = _sc.getAttribute('src');
     if( /\//.test( _path ) ){ _path = _path.split('/'); _path.pop(); _path = _path.join('/') + '/'; }
     else if( /\\/.test( _path ) ){ _path = _path.split('\\'); _path.pop(); _path = _path.join('\\') + '/'; }
     return _path;
 }
+//这个方法已经废弃, 请使用 scriptPath
+function script_path_f(){ return scriptPath(); }
 /**
  * 缓动函数, 动画效果为按时间缓动 
  * <br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval 
@@ -496,21 +523,17 @@ function getJqParent( _selector, _filter ){
 function parentSelector( _item, _selector, _finder ){
     _item && ( _item = $( _item ) );
     if( /\,/.test( _selector ) ){
-        var _multiSelector, _tmp;
+        var _multiSelector = [], _tmp;
         _selector = _selector.split(',');
         $.each( _selector, function( _ix, _subSelector ){
             _subSelector = _subSelector.trim();
             _tmp = parentSelector( _item, _subSelector, _finder );
             _tmp && _tmp.length 
                 &&  ( 
-                        _multiSelector && _multiSelector.length 
-                            ? ( _multiSelector = $( [_multiSelector, _tmp] ) )
-                            : ( _multiSelector = _tmp ) 
+                        ( _tmp.each( function(){ _multiSelector.push( $(this) ) } ) )
                     );
-            window.JC && JC.log 
-                && JC.log( _multiSelector.length +', ' + _tmp.length + ', ' + _subSelector );
         });
-        return _multiSelector;
+        return $( _multiSelector );
     }
     var _pntChildRe = /^([\/]+)/, _childRe = /^([\|]+)/, _pntRe = /^([<]+)/;
     if( _pntChildRe.test( _selector ) ){
@@ -570,7 +593,7 @@ function scriptContent( _selector ){
 
 
 ;(function( $ ){
-    if( window.JC && window.JC.PATH != 'undefined' ) return;
+    if( window.JC && typeof JC.PATH != 'undefined' ) return;
     /**
      * JC jquery 组件库 资源调用控制类
      * <br />这是一个单例模式, 全局访问使用 JC 或 window.JC
@@ -738,11 +761,7 @@ function scriptContent( _selector ){
         * @method log
         * @static
         */
-       , log: 
-           function(){
-                if( !this.debug ) return;
-                console.log( [].slice.apply( arguments ).join(' ') );
-            }
+       , log: function(){ JC.debug && window.console && console.log( sliceArgs( arguments ).join(' ') ); }
        /**
         * 定义输出路径的 v 参数, 以便控制缓存
         * @property     pathPostfix
@@ -873,15 +892,11 @@ function scriptContent( _selector ){
      */
     window.UXC = window.JC;
     /**
-     * 如果 console 不可用, 则生成一个模拟的 console 对象
-     */
-    if( !window.console ) window.console = { log:function(){
-        window.status = [].slice.apply( arguments ).join(' ');
-    }};
-    /**
      * 自动识别组件库所在路径
      */
     JC.PATH = script_path_f();
+    //dev开发时因为脚本没合并, IE找不到库的正确路径, 这个判断仅针对dev开发分支
+    /\/JQueryComps_dev/i.test( location.href ) && ( JC.PATH = '/ignore/JQueryComps_dev/' );
     /**
      * <h2>业务逻辑命名空间</h2>
      * <br />这个命名空间的组件主要为满足业务需求, 不是通用组件~
@@ -903,3 +918,221 @@ function scriptContent( _selector ){
     window.Bizs = window.Bizs || {};
 }(jQuery));
 
+
+;(function($){
+    window.JC && ( window.BaseMVC = JC.BaseMVC = BaseMVC );
+    /**
+     * MVC 抽象类 ( <b>仅供扩展用</b> )
+     * <p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   
+     * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>
+     * | <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>
+     * @namespace JC
+     * @class BaseMVC
+     * @constructor
+     * @param   {selector|string}   _selector   
+     * @version dev 0.1 2013-09-07
+     * @author  qiushaowei   <suches@btbtd.org> | 75 Team
+     * @example
+     */
+    function BaseMVC( _selector ){
+        throw new Error( "JC.BaseMVC is abstract class, can't initialize!" );
+        /*
+        if( BaseMVC.getInstance( _selector ) ) return BaseMVC.getInstance( _selector );
+        BaseMVC.getInstance( _selector, this );
+        */
+        this._model = new Model( _selector );
+        this._view = new View( this._model );
+
+        this._init( _selector );
+    }
+    
+    BaseMVC.prototype = {
+        /**
+         * 内部初始化方法
+         * @method  _init
+         * @param   {selector}  _selector
+         * @private
+         */
+        _init:
+            function(){
+                var _p = this;
+
+
+                _p._beforeInit();
+                _p._initHanlderEvent();
+
+                $( [ _p._view, _p._model ] ).on('BindEvent', function( _evt, _evtName, _cb ){
+                    _p.on( _evtName, _cb );
+                });
+
+                $([ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName ){
+                    var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
+                    _p.trigger( _evtName, _data );
+                });
+
+                _p._model.init();
+                _p._view && _p._view.init();
+
+                _p._inited();
+
+                return _p;
+            }    
+        /**
+         * 初始化之前调用的方法
+         * @method  _beforeInit
+         * @private
+         */
+        , _beforeInit:
+            function(){
+            }
+        /**
+         * 内部事件初始化方法
+         * @method  _initHanlderEvent
+         * @private
+         */
+        , _initHanlderEvent:
+            function(){
+            }
+        /**
+         * 内部初始化完毕时, 调用的方法
+         * @method  _inited
+         * @private
+         */
+        , _inited:
+            function(){
+            }
+        /**
+         * 获取 显示 BaseMVC 的触发源选择器, 比如 a 标签
+         * @method  selector
+         * @return  selector
+         */ 
+        , selector: function(){ return this._model.selector(); }
+        /**
+         * 使用 jquery on 绑定事件
+         * @method  {string}    on
+         * @param   {string}    _evtName
+         * @param   {function}  _cb
+         * @return  BaseMVCInstance
+         */
+        , on: function( _evtName, _cb ){ $(this).on(_evtName, _cb ); return this;}
+        /**
+         * 使用 jquery trigger 绑定事件
+         * @method  {string}    trigger
+         * @param   {string}    _evtName
+         * @return  BaseMVCInstance
+         */
+        , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
+    }
+    /**
+     * 获取或设置 BaseMVC 的实例
+     * @method getInstance
+     * @param   {selector}      _selector
+     * @static
+     * @return  {BaseMVC instance}
+     */
+    BaseMVC.getInstance =
+        function( _selector, _setter ){
+            if( typeof _selector == 'string' && !/</.test( _selector ) ) 
+                    _selector = $(_selector);
+            if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
+            typeof _setter != 'undefined' && _selector.data( Model._instanceName, _setter );
+
+            return _selector.data( Model._instanceName );
+        };
+    /**
+     * 是否自动初始化
+     * @method  autoInit
+     * @type    bool
+     * @default true
+     * @static
+     */
+    BaseMVC.autoInit = true;
+    /**
+     * 复制 BaseMVC 的所有方法到 _outClass
+     * @method  build
+     * @param   {Class} _outClass
+     * @static
+     */
+    BaseMVC.build =
+        function( _outClass ){
+            BaseMVC.buildModel( _outClass );
+            BaseMVC.buildView( _outClass );
+
+            BaseMVC.buildClass( BaseMVC, _outClass );
+            BaseMVC.buildClass( BaseMVC.Model, _outClass.Model );
+            BaseMVC.buildClass( BaseMVC.View, _outClass.View );
+        };
+    /**
+     * 复制 _inClass 的所有方法到 _outClass
+     * @method  buildClass
+     * @param   {Class} _inClass
+     * @param   {Class} _outClass
+     * @static
+     */
+    BaseMVC.buildClass = 
+        function( _inClass, _outClass ){
+            if( !( _inClass && _outClass ) ) return;
+            var _k;
+            if( _outClass ){
+                for( _k in _inClass ) 
+                    !_outClass[_k] && ( _outClass[_k] = _inClass[_k] );
+
+                for( _k in _inClass.prototype ) 
+                    !_outClass.prototype[_k] && ( _outClass.prototype[_k] = _inClass.prototype[_k] );
+            }
+        };
+    /**
+     * 为 _outClass 生成一个通用 Model 类
+     * @method  buildModel
+     * @param   {Class} _outClass
+     * @static
+     */
+    BaseMVC.buildModel =
+        function( _outClass ){
+            !_outClass.Model && ( 
+                        _outClass.Model = function( _selector ){ this._selector = _selector; }
+                        , _outClass.Model._instanceName = 'CommonIns'
+                    );
+        }
+    /**
+     * 为 _outClass 生成一个通用 View 类
+     * @method  buildView
+     * @param   {Class} _outClass
+     * @static
+     */
+    BaseMVC.buildView =
+        function( _outClass ){
+            !_outClass.View && ( _outClass.View = function( _model ){ this._model = _model; } );
+        }
+    
+    BaseMVC.buildModel( BaseMVC );
+    BaseMVC.Model._instanceName = 'BaseMVCIns';
+    BaseMVC.Model.prototype = {
+        init:
+            function(){
+                return this;
+            }
+
+        , selector: 
+            function( _setter ){ 
+                typeof _setter != 'undefined' && ( this._selector = _setter );
+                return this._selector; 
+            }
+    };
+    
+    BaseMVC.buildView( BaseMVC );
+    BaseMVC.View.prototype = {
+        init:
+            function() {
+                return this;
+            }
+    };
+    /*
+    $(document).ready( function(){
+        setTimeout( function(){
+        }, 1 );
+    });
+    */
+}(jQuery));

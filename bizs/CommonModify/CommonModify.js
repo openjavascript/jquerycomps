@@ -1,7 +1,7 @@
 /**
- * 通用 添加删除 逻辑
- * 应用场景
- *      需要动态添加删除内容的地方可以使用这个类
+ * <h2>Dom 通用 添加删除 逻辑</h2>
+ * <br/>应用场景
+ * <br/>需要动态添加删除内容的地方可以使用这个类
  *
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>
@@ -359,7 +359,8 @@
             }
     };
 
-    $(document).delegate( 'a.js_autoCommonModify, button.js_autoCommonModify', 'click', function( _evt ){
+    $(document).delegate( 'a.js_autoCommonModify, button.js_autoCommonModify'
+                          + ', a.js_bizsCommonModify, button.js_bizsCommonModify', 'click', function( _evt ){
         CommonModify.getInstance().process(  $(this) );
     });
 

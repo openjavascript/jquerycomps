@@ -47,6 +47,10 @@
             
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
             
+                <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
+            
+                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
+            
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
                 <li><a href="../classes/JC.confirm.html">JC.confirm</a></li>
@@ -109,11 +113,11 @@
             
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
             
-                <li><a href="../classes/window.Bizs.html">window.Bizs</a></li>
-            
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
             
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
+            
+                <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
             
@@ -167,9 +171,9 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * 通用 添加删除 逻辑
- * 应用场景
- *      需要动态添加删除内容的地方可以使用这个类
+ * &lt;h2&gt;Dom 通用 添加删除 逻辑&lt;/h2&gt;
+ * &lt;br/&gt;应用场景
+ * &lt;br/&gt;需要动态添加删除内容的地方可以使用这个类
  *
  * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
  * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
@@ -527,7 +531,8 @@
             }
     };
 
-    $(document).delegate( &#x27;a.js_autoCommonModify, button.js_autoCommonModify&#x27;, &#x27;click&#x27;, function( _evt ){
+    $(document).delegate( &#x27;a.js_autoCommonModify, button.js_autoCommonModify&#x27;
+                          + &#x27;, a.js_bizsCommonModify, button.js_bizsCommonModify&#x27;, &#x27;click&#x27;, function( _evt ){
         CommonModify.getInstance().process(  $(this) );
     });
 
