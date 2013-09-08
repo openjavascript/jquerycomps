@@ -974,7 +974,6 @@ function funcName(_func){
             function(){
                 var _p = this;
 
-
                 _p._beforeInit();
                 _p._initHanlderEvent();
 
@@ -983,7 +982,7 @@ function funcName(_func){
                 });
 
                 $([ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
+                    var _data = sliceArgs( arguments ).slice( 2 );
                     _p.trigger( _evtName, _data );
                 });
 

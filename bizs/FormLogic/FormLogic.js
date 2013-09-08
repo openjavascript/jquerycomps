@@ -111,7 +111,7 @@
     !JC.Panel && JC.use( 'Panel' );
 
     /**
-     * 处理 form 或者 _selector 的所有form
+     * 处理 form 或者 _selector 的所有form.js_autoFormLogic
      * @method  init
      * @param   {selector}  _selector
      * @return  {Array}     Array of FormLogicInstance
@@ -143,7 +143,7 @@
     FormLogic.prototype = {
         _beforeInit:
             function(){
-                JC.log( 'FormLogic._beforeInit', new Date().getTime() );
+                //JC.log( 'FormLogic._beforeInit', new Date().getTime() );
             }
         , _initHanlderEvent:
             function(){
@@ -159,7 +159,7 @@
 
                     if( _p._model.formBeforeProcess() ){
                         if( _p._model.formBeforeProcess().call( _p._selector, _evt, _p ) === false ){
-                            _p._model.prevent( _evt );
+                            return _p._model.prevent( _evt );
                         }
                     }
 
@@ -169,24 +169,24 @@
 
                     if( _p._model.formAfterProcess() ){
                         if( _p._model.formAfterProcess().call( _p._selector, _evt, _p ) === false ){
-                            _p._model.prevent( _evt );
+                            return _p._model.prevent( _evt );
                         }
                     }
 
-                    if( _sp.data( FormLogic.Model.SUBMIT_BUTTON ) ){
-                        _p.trigger( 'SubmitConfirm' );
+                    if( _sp.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON ) ){
+                        _p.trigger( FormLogic.Model.EVT_CONFIRM );
                         return _p._model.prevent( _evt );
                     }
 
                     if( _type == FormLogic.Model.AJAX ){
-                        _p.trigger( 'AjaxSubmit' );
+                        _p.trigger( FormLogic.Model.EVT_AJAX_SUBMIT );
                         return _p._model.prevent( _evt );
                     }
                 });
 
-                _p.on( 'SubmitConfirm', function( _evt ){
+                _p.on( FormLogic.Model.EVT_CONFIRM, function( _evt ){
                     var _sp = _p._model.selector()
-                        , _btn = _sp.data( FormLogic.Model.SUBMIT_BUTTON )
+                        , _btn = _sp.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON )
                         ;
                     _btn && ( _btn = $( _btn ) );
                     if( !( _btn && _btn.length ) ) return;
@@ -200,12 +200,12 @@
                     }
 
                     _popup.on('confirm', function(){
-                        _sp.data( FormLogic.Model.SUBMIT_BUTTON, null );
+                        _sp.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON, null );
                         _sp.trigger( 'submit' );
                     });
 
                     _popup.on('close', function(){
-                        _sp.data( FormLogic.Model.SUBMIT_BUTTON, null );
+                        _sp.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON, null );
                     });
                 });
 
@@ -213,17 +213,17 @@
                     var _sp = $(this)
                         ;
 
-                    if( _sp.data( FormLogic.Model.RESET_BUTTON ) ){
-                        _p.trigger( 'ResetConfirm' );
+                    if( _sp.data( FormLogic.Model.RESET_CONFIRM_BUTTON ) ){
+                        _p.trigger( FormLogic.Model.EVT_RESET );
                         return _p._model.prevent( _evt );
                     }else{
                         _p._view.reset();
                     }
                 });
 
-                _p.on( 'ResetConfirm', function( _evt ){
+                _p.on( FormLogic.Model.EVT_RESET, function( _evt ){
                     var _sp = _p._model.selector()
-                        , _btn = _sp.data( FormLogic.Model.RESET_BUTTON )
+                        , _btn = _sp.data( FormLogic.Model.RESET_CONFIRM_BUTTON )
                         ;
                     _btn && ( _btn = $( _btn ) );
                     if( !( _btn && _btn.length ) ) return;
@@ -237,19 +237,19 @@
                     }
 
                     _popup.on('confirm', function(){
-                        _sp.data( FormLogic.Model.RESET_BUTTON, null );
+                        _sp.data( FormLogic.Model.RESET_CONFIRM_BUTTON, null );
                         _sp.trigger( 'reset' );
                         _p._view.reset();
                     });
 
                     _popup.on('close', function(){
-                        _sp.data( FormLogic.Model.RESET_BUTTON, null );
+                        _sp.data( FormLogic.Model.RESET_CONFIRM_BUTTON, null );
                     });
                 });
                 
-                _p.on( 'AjaxSubmit', function(){
+                _p.on( FormLogic.Model.EVT_AJAX_SUBMIT, function(){
                     var _method = _p._model.formAjaxMethod();
-                    JC.log( 'AjaxSubmit:', _method );
+                    JC.log( FormLogic.Model.EVT_AJAX_SUBMIT, _method );
 
                     var _data = _p._model.selector().serialize();
                     $[ _method ] &&
@@ -279,11 +279,15 @@
     FormLogic.Model.AJAX = 'ajax';
     FormLogic.Model.IFRAME = 'iframe';
 
-    FormLogic.Model.SUBMIT_BUTTON = 'SubmitButton';
-    FormLogic.Model.RESET_BUTTON = 'ResetButton';
+    FormLogic.Model.SUBMIT_CONFIRM_BUTTON = 'SubmitButton';
+    FormLogic.Model.RESET_CONFIRM_BUTTON = 'ResetButton';
 
     FormLogic.Model.GENERIC_SUBMIT_BUTTON = 'GenericSubmitButton';
     FormLogic.Model.GENERIC_RESET_BUTTON= 'GenericResetButton';
+
+    FormLogic.Model.EVT_CONFIRM = "ConfirmEvent"
+    FormLogic.Model.EVT_RESET = "ResetEvent"
+    FormLogic.Model.EVT_AJAX_SUBMIT = "AjaxSubmit"
 
     FormLogic.Model.prototype = {
         init:
@@ -310,7 +314,7 @@
         , formAjaxDone:
             function(){
                 var _p = this, _r = _p._innerAjaxDone
-                    , _btn = _p.selector().data( FormLogic.Model.GENERIC_RESET_BUTTON )
+                    , _btn = _p.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON )
                     ;
 
                 _p.selector().is('[formAjaxDone]')
@@ -336,10 +340,10 @@
                 }
             }
         , formPopupCloseMs:
-            function(){
+            function( _btn ){
                 var _p = this
                     , _r = FormLogic.popupCloseMs
-                    , _btn = _p.selector().data( FormLogic.Model.GENERIC_RESET_BUTTON )
+                    , _btn = _btn || _p.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON )
                     ;
 
                 _p.selector().is('[formPopupCloseMs]')
@@ -354,7 +358,7 @@
         , formAjaxDoneAction:
             function(){
                 var _p = this, _r = ''
-                    , _btn = _p.selector().data( FormLogic.Model.GENERIC_RESET_BUTTON )
+                    , _btn = _p.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON )
                     ;
 
                 _p.selector().is('[formAjaxDoneAction]')
@@ -371,7 +375,7 @@
         , formBeforeProcess: function(){ return this.callbackProp( 'formBeforeProcess' ); }
         , formAfterProcess: function(){ return this.callbackProp( 'formAfterProcess' ); }
 
-        , prevent: function( _evt ){ _evt.preventDefault(); return false; }
+        , prevent: function( _evt ){ _evt && _evt.preventDefault(); return false; }
 
         , formConfirmPopupType: 
             function( _btn ){ 
@@ -459,14 +463,14 @@
     $(document).delegate( 'input[formSubmitConfirm], button[formSubmitConfirm]', 'click', function( _evt ){
         var _p = $(this), _fm = getJqParent( _p, 'form' );
         _fm && _fm.length 
-            && _fm.data( FormLogic.Model.SUBMIT_BUTTON, _p )
+            && _fm.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON, _p )
             ;
     });
 
     $(document).delegate( 'input[formResetConfirm], button[formResetConfirm]', 'click', function( _evt ){
         var _p = $(this), _fm = getJqParent( _p, 'form' );
         _fm && _fm.length 
-            && _fm.data( FormLogic.Model.RESET_BUTTON, _p )
+            && _fm.data( FormLogic.Model.RESET_CONFIRM_BUTTON, _p )
             ;
     });
 

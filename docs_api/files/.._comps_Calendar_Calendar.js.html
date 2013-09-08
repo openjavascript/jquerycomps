@@ -643,7 +643,7 @@
                 if( _selector.prop(&#x27;nodeName&#x27;) 
                         &amp;&amp; _selector.attr(&#x27;multidate&#x27;)
                         &amp;&amp; ( _selector.prop(&#x27;nodeName&#x27;).toLowerCase()==&#x27;input&#x27; 
-                            || _selector.prop(&#x27;nodeName&#x27;).toLowerCase()==&#x27;input&#x27; )
+                            || _selector.prop(&#x27;nodeName&#x27;).toLowerCase()==&#x27;button&#x27; )
                         ) _r = 1;
             }
 
@@ -870,8 +870,10 @@
     Calendar.clone =
         function( _model, _view ){
             var _k;
-            for( _k in Model.prototype ) _model.prototype[_k] = Model.prototype[_k];
-            for( _k in View.prototype ) _view.prototype[_k] = View.prototype[_k];
+            if( _model )
+                for( _k in Model.prototype ) _model.prototype[_k] = Model.prototype[_k];
+            if( _view )
+                for( _k in View.prototype ) _view.prototype[_k] = View.prototype[_k];
         };
     
     function Model( _selector ){
@@ -1355,9 +1357,6 @@
         , _buildFooter:
             function( _dateo ){
             }
-    };
-
-    var staticMethod = {
     };
     /**
      * 捕获用户更改年份 
