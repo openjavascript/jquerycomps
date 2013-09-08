@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            dt { font-weight: bold; margin: 10px auto; }
+            dd { line-height: 24px; }
+        </style>
+<script src="../../../lib.js"></script>
+<script>
+;(function($){
+
+    JC.debug = true;
+
+    JC.CompExample = CompExample;
+
+    function CompExample( _selector ){
+
+        if( CompExample.getInstance( _selector ) ) return CompExample.getInstance( _selector );
+        CompExample.getInstance( _selector, this );
+        //JC.log( CompExample.Model._instanceName );
+
+        this._model = new CompExample.Model( _selector );
+        this._view = new CompExample.View( this._model );
+
+        this._init();
+    }
+    CompExample.prototype = {
+        _beforeInit:
+            function(){
+                JC.log( 'CompExample _beforeInit', new Date().getTime() );
+            }
+        , _initHanlderEvent:
+            function(){
+            }
+        , _inited:
+            function(){
+                JC.log( 'CompExample _inited', new Date().getTime() );
+            }
+    };
+
+    BaseMVC.buildModel( CompExample );
+    CompExample.Model._instanceName = 'CompExample';
+    CompExample.Model.prototype = {
+        init:
+            function(){
+                JC.log( 'CompExample.Model.init:', new Date().getTime() );
+            }
+    };
+
+    BaseMVC.buildView( CompExample );
+    CompExample.View.prototype = {
+        init:
+            function(){
+                JC.log( 'CompExample.View.init:', new Date().getTime() );
+            }
+    };
+
+    BaseMVC.build( CompExample );
+
+    $(document).ready( function(){
+        $('div.js_autoCompExample').each( function(){
+            CompExample.autoInit
+                && new CompExample( $(this) )
+                && $( printf( '<p>done: {0}, {1}</p>', CompExample.Model._instanceName, new Date().getTime() ) )
+                    .appendTo( document.body )
+                ;
+        });
+    });
+
+}(jQuery));
+</script>
+        <base target="_blank" />
+    </head>    
+    <body>
+
+        <dl class="defdl">
+            <dt>BaseMVC comps class - more advance 示例</dt>
+            <dd>
+                <div class="js_autoCompExample">
+                </div>
+            </dd>
+        </dl>
+
+    </body>
+</html>
+

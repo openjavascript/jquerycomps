@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            dt { font-weight: bold; margin: 10px auto; }
+            dd { line-height: 24px; }
+        </style>
+<script src="../../../lib.js"></script>
+<script>
+;(function($){
+    JC.debug = true;
+
+    Bizs.BizExample = BizExample;
+
+    function BizExample( _selector ){
+
+        if( BizExample.getInstance( _selector ) ) return BizExample.getInstance( _selector );
+        BizExample.getInstance( _selector, this );
+
+        this._model = new BizExample.Model( _selector );
+        this._view = new BizExample.View( this._model );
+
+        this._init();
+    }
+    BizExample.prototype = {
+        _beforeInit:
+            function(){
+                JC.log( 'BizExample _beforeInit', new Date().getTime() );
+            }
+        , _initHanlderEvent:
+            function(){
+            }
+        , _inited:
+            function(){
+                JC.log( 'BizExample _inited', new Date().getTime() );
+            }
+    };
+
+    BaseMVC.buildModel( BizExample );
+    BizExample.Model._instanceName = 'BizExample';
+    BizExample.Model.prototype = {
+        init:
+            function(){
+                JC.log( 'BizExample.Model.init:', new Date().getTime() );
+            }
+    };
+
+    BaseMVC.buildView( BizExample );
+    BizExample.View.prototype = {
+        init:
+            function(){
+                JC.log( 'BizExample.View.init:', new Date().getTime() );
+            }
+    };
+
+    BaseMVC.build( BizExample, 'Bizs' );
+
+    $(document).ready( function(){
+        $('div.js_autoBizExample').each( function(){
+            BizExample.autoInit
+                && new BizExample( $(this) )
+                && $( printf( '<p>done: {0}, {1}</p>', BizExample.Model._instanceName, new Date().getTime() ) )
+                    .appendTo( document.body )
+                ;
+        });
+    });
+
+}(jQuery));
+</script>
+        <base target="_blank" />
+    </head>    
+    <body>
+
+        <dl class="defdl">
+            <dt>BaseMVC bizs class 示例</dt>
+            <dd>
+                <div class="js_autoBizExample"
+                    >
+                </div>
+            </dd>
+        </dl>
+
+    </body>
+</html>
+

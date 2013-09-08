@@ -8,6 +8,8 @@
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.KillISPCache.html' target='_blank'>API docs</a>
      * | <a href='../../bizs/KillISPCache/_demo' target='_blank'>demo link</a></p>
+     * require: <a href='../classes/window.jQuery.html'>jQuery</a>
+     * <p>extend: <a href='../classes/JC.BaseMVC.html'>JC.BaseMVC</a></p>
      *
      * <h2>页面只要引用本文件, 默认会自动初始化 KillISPCache 逻辑</h2>
      * <dl>
@@ -31,7 +33,7 @@
      *      });
      *      </script>
      */
-    window.Bizs.KillISPCache = KillISPCache;
+    Bizs.KillISPCache = KillISPCache;
 
     function KillISPCache( _selector ){
         if( KillISPCache._instance ) return KillISPCache._instance;
@@ -160,7 +162,7 @@
 
     };
 
-    JC.BaseMVC.build( KillISPCache );
+    JC.BaseMVC.build( KillISPCache, 'Bizs' );
 
     $(document).ready( function(){
         setTimeout( function(){

@@ -559,8 +559,8 @@ function parentSelector( _item, _selector, _finder ){
  * 获取脚本模板的内容
  * @method  scriptContent
  * @param   {selector}  _selector
- * @static
  * @return  string
+ * @static
  */
 function scriptContent( _selector ){
     var _r = '';
@@ -569,5 +569,20 @@ function scriptContent( _selector ){
         && ( _r = _selector.html().trim().replace( /[\r\n]/g, '') )
         ;
     return _r;
+}
+/**
+ * 取函数名 ( 匿名函数返回空 )
+ * @method  funcName
+ * @param   {function}  _func
+ * @return  string
+ * @static
+ */
+function funcName(_func){
+  var _re = /^function\s+([^()]+)[\s\S]*/
+      , _r = ''
+      , _fStr = _func.toString();    
+  //JC.log( _fStr );
+  _re.test( _fStr ) && ( _r = _fStr.replace( _re, '$1' ) );
+  return _r.trim();
 }
 

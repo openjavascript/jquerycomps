@@ -27,6 +27,7 @@
                 _data.type = _method;
                 $[_method]( 'data/handler.php', _data, function( _d ){
                     JC.log( _d );
+                    $('textarea.js_txa').val( _d );
                 });
             });
         </script>
@@ -54,6 +55,8 @@
                 <dl>
                     <dd><button type="button" class="js_ajax" ajaxtype="get">$.get test</button></dd>
                     <dd><button type="button" class="js_ajax" ajaxtype="post">$.post test</button></dd>
+                    <dd>
+                        <textarea class="js_txa" cols="40" rows="8"></textarea>
                 </dl>
             </dd>
         </dl>
@@ -61,7 +64,7 @@
         <dl class="defdl">
             <dt> Bizs.KillISPCache 示例 3, 表单</dt>
             <dd>
-                <form action="?" method="GET" target="_self">
+                <form action="data/handler.php" method="GET" target="postIframe" >
                     <input type="hidden" name="getform" value="1" />
                     <button type="submit">get form</button>
                 </form>

@@ -117,6 +117,8 @@
             
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
             
+                <li><a href="../classes/window.Bizs.FormLogic.html">window.Bizs.FormLogic</a></li>
+            
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
@@ -580,32 +582,37 @@
 
             JC.log( &#x27;JC.Form.initAutoFill&#x27; );
 
-            _selector.find(&#x27;form.js_autoFillUrlForm&#x27;).each( function(){
-                var _p = $(this);
-                
-                _p.find( &#x27;input[type=text][name],input[type=password][name],textarea[name]&#x27; ).each( function(){
-                    var _sp = $(this);
-                    if( has_url_param( _url, _sp.attr(&#x27;name&#x27;) ) ){
-                        _sp.val( decode( get_url_param( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) );
-                    }
+            if( _selector.prop( &#x27;nodeName&#x27; ).toLowerCase() == &#x27;form&#x27; ){
+                fillForm( _selector, _url );
+            }else{
+                _selector.find(&#x27;form.js_autoFillUrlForm&#x27;).each( function(){
+                    fillForm( this, _url );
                 });
+            }
 
-                _p.find( &#x27;select[name]&#x27; ).each( function(){
-                    var _sp = $(this), _uval = decode( get_url_param( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) ;
-                    if( has_url_param( _url, _sp.attr(&#x27;name&#x27;) ) ){
-                        if( selectHasVal( _sp, _uval ) ){
-                            _sp.val( get_url_param( _url, _sp.attr(&#x27;name&#x27;) ) );
-                        }else{
-                            _sp.attr( &#x27;selectvalue&#x27;, _uval );
-                        }
-                    }
-                });
-
-            });
         };
 
-    $(document).ready( function( _evt ){ JC.Form.initAutoFill(); });
+    function fillForm( _selector, _url ){
+        _selector = $(_selector);
+        
+        _selector.find( &#x27;input[type=text][name],input[type=password][name],textarea[name]&#x27; ).each( function(){
+            var _sp = $(this);
+            if( hasUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) ){
+                _sp.val( decode( getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) );
+            }
+        });
 
+        _selector.find( &#x27;select[name]&#x27; ).each( function(){
+            var _sp = $(this), _uval = decode( getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) ;
+            if( hasUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) ){
+                if( selectHasVal( _sp, _uval ) ){
+                    _sp.val( getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) );
+                }else{
+                    _sp.attr( &#x27;selectvalue&#x27;, _uval );
+                }
+            }
+        });
+    }
     /**
      * 自定义 URI decode 函数
      * @property    initAutoFill.decodeFunc
@@ -641,6 +648,9 @@
         });
         return _r;
     }
+
+    $(document).ready( function( _evt ){ JC.Form.initAutoFill(); });
+
 }(jQuery));
 
 

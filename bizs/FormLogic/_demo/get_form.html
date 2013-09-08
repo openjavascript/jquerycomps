@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            dt { font-weight: bold; margin: 10px auto; }
+            dd { line-height: 24px; }
+        </style>
+        <script src="../../../lib.js"></script>
+        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
+        <script>
+            JC.debug = true;
+
+            JC.use( 'Bizs.FormLogic, Calendar, plugins.json2' );
+
+            function formBeforeProcess( _evt, _ins ){
+                var _form = $(this);
+                JC.log( 'formBeforeProcess', new Date().getTime() );
+            }
+
+            function formAfterProcess( _evt, _ins ){
+                var _form = $(this);
+                JC.log( 'formAfterProcess', new Date().getTime() );
+                //return false;
+            }
+
+        </script>
+    </head>    
+    <body>
+
+        <dl class="defdl">
+            <dt>Bizs.FormLogic, get form example 1</dt>
+            <dd>
+                <dl>
+                    <form action="?" method="GET"
+                            class="js_autoFormLogic"
+                        >
+                        <dl>
+                            <dd>
+                                文件框: <input type="text" name="text" reqmsg="文本框" value="test" />
+                            </dd>
+                            <dd>
+                                日期: <input type="text" name="date" datatype="date" reqmsg="日期" value="2013-05-20" />
+                                <em class="error"></em>
+                            </dd>
+                            <dd>
+                                下拉框:
+                                    <select name="dropdown" reqmsg="下拉框" >
+                                        <option value="">请选择</option>
+                                        <option value="1" selected>条件1</option>
+                                        <option value="2">条件2</option>
+                                        <option value="3">条件3</option>
+                                    </select>
+                            </dd>
+                            <dd>
+                                <input type="hidden" name="getform" value="1" />
+                                <button type="submit">submit</button>
+                                <button type="reset">reset</button>
+                                <a href="?">back</a>
+                            </dd>
+                        </dl>
+                    </form>
+                </dl>
+            </dd>
+        </dl>
+
+        <dl class="defdl">
+            <dt>Bizs.FormLogic, get form example 2</dt>
+            <dd>
+                <dl>
+                    <form action="?" method="GET"
+                            class="js_autoFormLogic"
+                            formType="get"
+                            formBeforeProcess="formBeforeProcess"
+                            formAfterProcess="formAfterProcess"
+                        >
+                        <dl>
+                            <dd>
+                                文件框: <input type="text" name="text" reqmsg="文本框" value="test2" />
+                            </dd>
+                            <dd>
+                                日期: <input type="text" name="date" datatype="date" reqmsg="日期" value="2014-05-20" />
+                                <em class="error"></em>
+                            </dd>
+                            <dd>
+                                下拉框:
+                                    <select name="dropdown" reqmsg="下拉框" >
+                                        <option value="">请选择</option>
+                                        <option value="1">条件1</option>
+                                        <option value="2" selected>条件2</option>
+                                        <option value="3">条件3</option>
+                                    </select>
+                            </dd>
+                            <dd>
+                                <input type="hidden" name="getform" value="1" />
+                                <button type="submit" formSubmitConfirm="确定要提交吗?" >submit - dialog</button>
+                                <button type="submit" formConfirmPopupType="popup" 
+                                                        formSubmitConfirm="确定要提交吗?" >submit - popup</button>
+
+                                <button type="reset" formResetConfirm="确定要重置吗?"  >reset</button>
+                                <button type="reset" formResetConfirm="确定要重置吗?" formResetUrl="?"  >reset - url</button>
+                                <a href="?">back</a>
+                            </dd>
+                        </dl>
+                    </form>
+                </dl>
+            </dd>
+        </dl>
+
+        <dl class="defdl">
+            <dt>Bizs.FormLogic, get form example 3</dt>
+            <dd>
+                <dl>
+                    <form action="?" method="GET"
+                            class="js_autoFormLogic"
+                            formType="get"
+                            formBeforeProcess="formBeforeProcess"
+                            formAfterProcess="formAfterProcess"
+                            formConfirmPopupType="popup"
+                        >
+                        <dl>
+                            <dd>
+                                文件框: <input type="text" name="text" reqmsg="文本框" value="test3" />
+                            </dd>
+                            <dd>
+                                日期: <input type="text" name="date" datatype="date" reqmsg="日期" value="2015-05-20" />
+                                <em class="error"></em>
+                            </dd>
+                            <dd>
+                                下拉框:
+                                    <select name="dropdown" reqmsg="下拉框" >
+                                        <option value="">请选择</option>
+                                        <option value="1">条件1</option>
+                                        <option value="2">条件2</option>
+                                        <option value="3" selected>条件3</option>
+                                    </select>
+                            </dd>
+                            <dd>
+                                <input type="hidden" name="getform" value="1" />
+                                <button type="submit" formSubmitConfirm="确定要提交吗?" >submit - dialog</button>
+                                <button type="submit" formConfirmPopupType="dialog" 
+                                                        formSubmitConfirm="确定要提交吗?" >submit - popup</button>
+
+                                <button type="reset" formResetConfirm="确定要重置吗?"  >reset</button>
+                                <button type="reset" formResetConfirm="确定要重置吗?" formResetUrl="?"  >reset - url</button>
+                                <a href="?">back</a>
+                            </dd>
+                        </dl>
+                    </form>
+                </dl>
+            </dd>
+        </dl>
+
+    </body>
+</html>
+

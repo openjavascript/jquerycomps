@@ -117,6 +117,8 @@
             
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
             
+                <li><a href="../classes/window.Bizs.FormLogic.html">window.Bizs.FormLogic</a></li>
+            
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
@@ -751,8 +753,8 @@ function parentSelector( _item, _selector, _finder ){
  * 获取脚本模板的内容
  * @method  scriptContent
  * @param   {selector}  _selector
- * @static
  * @return  string
+ * @static
  */
 function scriptContent( _selector ){
     var _r = &#x27;&#x27;;
@@ -761,6 +763,21 @@ function scriptContent( _selector ){
         &amp;&amp; ( _r = _selector.html().trim().replace( /[\r\n]/g, &#x27;&#x27;) )
         ;
     return _r;
+}
+/**
+ * 取函数名 ( 匿名函数返回空 )
+ * @method  funcName
+ * @param   {function}  _func
+ * @return  string
+ * @static
+ */
+function funcName(_func){
+  var _re = /^function\s+([^()]+)[\s\S]*/
+      , _r = &#x27;&#x27;
+      , _fStr = _func.toString();    
+  //JC.log( _fStr );
+  _re.test( _fStr ) &amp;&amp; ( _r = _fStr.replace( _re, &#x27;$1&#x27; ) );
+  return _r.trim();
 }
 
 
@@ -1109,15 +1126,15 @@ function scriptContent( _selector ){
      * @example
      */
     function BaseMVC( _selector ){
-        throw new Error( &quot;JC.BaseMVC is abstract class, can&#x27;t initialize!&quot; );
-        /*
+        throw new Error( &quot;JC.BaseMVC is an abstract class, can&#x27;t initialize!&quot; );
+
         if( BaseMVC.getInstance( _selector ) ) return BaseMVC.getInstance( _selector );
         BaseMVC.getInstance( _selector, this );
-        */
-        this._model = new Model( _selector );
-        this._view = new View( this._model );
 
-        this._init( _selector );
+        this._model = new BaseMVC.Model( _selector );
+        this._view = new BaseMVC.View( this._model );
+
+        this._init( );
     }
     
     BaseMVC.prototype = {
@@ -1199,25 +1216,25 @@ function scriptContent( _selector ){
     }
     /**
      * 获取或设置 BaseMVC 的实例
-     * @method getInstance
+     * @method  getInstance
      * @param   {selector}      _selector
      * @static
-     * @return  {BaseMVC instance}
+     * @return  {BaseMVCInstance}
      */
     BaseMVC.getInstance =
         function( _selector, _setter ){
             if( typeof _selector == &#x27;string&#x27; &amp;&amp; !/&lt;/.test( _selector ) ) 
                     _selector = $(_selector);
             if( !(_selector &amp;&amp; _selector.length ) || ( typeof _selector == &#x27;string&#x27; ) ) return;
-            typeof _setter != &#x27;undefined&#x27; &amp;&amp; _selector.data( Model._instanceName, _setter );
+            typeof _setter != &#x27;undefined&#x27; &amp;&amp; _selector.data( BaseMVC.Model._instanceName, _setter );
 
-            return _selector.data( Model._instanceName );
+            return _selector.data( BaseMVC.Model._instanceName );
         };
     /**
      * 是否自动初始化
-     * @method  autoInit
-     * @type    bool
-     * @default true
+     * @property    autoInit
+     * @type        bool
+     * @default     true
      * @static
      */
     BaseMVC.autoInit = true;
@@ -1228,28 +1245,47 @@ function scriptContent( _selector ){
      * @static
      */
     BaseMVC.build =
-        function( _outClass ){
+        function( _outClass, _namespace ){
             BaseMVC.buildModel( _outClass );
             BaseMVC.buildView( _outClass );
 
-            BaseMVC.buildClass( BaseMVC, _outClass );
+            BaseMVC.buildClass( BaseMVC, _outClass, _namespace );
             BaseMVC.buildClass( BaseMVC.Model, _outClass.Model );
             BaseMVC.buildClass( BaseMVC.View, _outClass.View );
         };
     /**
      * 复制 _inClass 的所有方法到 _outClass
      * @method  buildClass
-     * @param   {Class} _inClass
-     * @param   {Class} _outClass
+     * @param   {Class}     _inClass
+     * @param   {Class}     _outClass
+     * @param   {string}    _namespace  default=&#x27;JC&#x27;, 如果是业务组件, 请显式指明为 &#x27;Bizs&#x27;
      * @static
      */
     BaseMVC.buildClass = 
-        function( _inClass, _outClass ){
+        function( _inClass, _outClass, _namespace ){
             if( !( _inClass &amp;&amp; _outClass ) ) return;
-            var _k;
+            var _k
+                , _fStr, _tmp
+                , _inName = funcName( _inClass )
+                , _outName = funcName( _outClass )
+                , _inRe = _inName &amp;&amp; _outName ? new RegExp( _inName, &#x27;g&#x27; ) : null
+                , _namespace = _namespace ? _namespace + &#x27;.&#x27; : &#x27;JC.&#x27;
+                ;
+
+            _inName &amp;&amp; _outName &amp;&amp; JC.log( &#x27;BaseMVC.buildClass:&#x27;, _inName, &#x27;to&#x27;, _outName );
             if( _outClass ){
-                for( _k in _inClass ) 
-                    !_outClass[_k] &amp;&amp; ( _outClass[_k] = _inClass[_k] );
+                for( _k in _inClass ){ 
+                    if( !_outClass[_k] ){//clone static function
+                        if( _inName &amp;&amp; _outName &amp;&amp; _inClass[_k].constructor == Function ){
+                            _fStr = _inClass[ _k ].toString();
+                            _fStr = _fStr.replace( _inRe, _namespace + _outName );
+                            _tmp = printf( &#x27;( {0}{1}.{2} = {3})&#x27;, _namespace, _outName, _k, _fStr );
+                            eval( _tmp  );
+                        }else{//clone static property
+                            _outClass[_k] = _inClass[_k];
+                        }
+                    }
+                }
 
                 for( _k in _inClass.prototype ) 
                     !_outClass.prototype[_k] &amp;&amp; ( _outClass.prototype[_k] = _inClass.prototype[_k] );
@@ -1291,6 +1327,68 @@ function scriptContent( _selector ){
             function( _setter ){ 
                 typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._selector = _setter );
                 return this._selector; 
+            }
+
+        , intProp:
+            function( _selector, _key ){
+                if( typeof _key == &#x27;undefined&#x27; ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector &amp;&amp; ( _selector = $( _selector ) );
+                }
+                var _r = 0;
+                _selector 
+                    &amp;&amp; _selector.is( &#x27;[&#x27; + _key + &#x27;]&#x27; ) 
+                    &amp;&amp; ( _r = parseInt( _selector.attr( _key ).trim(), 10 ) || _r );
+                return _r;
+            }
+
+        , floatProp:
+            function( _selector, _key ){
+                if( typeof _key == &#x27;undefined&#x27; ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector &amp;&amp; ( _selector = $( _selector ) );
+                }
+                var _r = 0;
+                _selector 
+                    &amp;&amp; _selector.is( &#x27;[&#x27; + _key + &#x27;]&#x27; ) 
+                    &amp;&amp; ( _r = parseFloat( _selector.attr( _key ).trim() ) || _r );
+                return _r;
+            }
+
+        , stringProp:
+            function( _selector, _key ){
+                if( typeof _key == &#x27;undefined&#x27; ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector &amp;&amp; ( _selector = $( _selector ) );
+                }
+                var _r = &#x27;&#x27;;
+                _selector
+                    &amp;&amp; _selector.is( &#x27;[&#x27; + _key + &#x27;]&#x27; ) 
+                    &amp;&amp; ( _r = _selector.attr( _key ).trim().toLowerCase() );
+                return _r;
+            }
+
+        , callbackProp:
+            function( _selector, _key ){
+                if( typeof _key == &#x27;undefined&#x27; ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector &amp;&amp; ( _selector = $( _selector ) );
+                }
+                var _r, _tmp;
+                _selector 
+                    &amp;&amp; _selector.is( &#x27;[&#x27; + _key + &#x27;]&#x27; )
+                    &amp;&amp; ( _tmp = window[ _selector.attr( _key ) ] )
+                    &amp;&amp; ( _r = _tmp )
+                    ;
+                return _r;
             }
     };
     

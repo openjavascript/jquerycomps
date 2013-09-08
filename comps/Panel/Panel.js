@@ -295,6 +295,10 @@
          */
         , autoClose:
             function( _callback, _ms ){
+                if( typeof _callback == 'number' ){
+                    _ms = _callback;
+                    _callback = null;
+                }
                 var _p = this, _tm;
                 _ms = _p._model.panelautoclosems( _ms );
 
@@ -1032,7 +1036,7 @@
             }
             var _ins = _logic.popup( JC.msgbox.tpl || _logic.tpls.msgbox, _msg, _popupSrc, _status );
                 _cb && _ins.on('close', _cb );
-                setTimeout( function(){ _ins.autoClose(); }, 1 );
+                setTimeout( function(){ _ins.autoClose( _closeMs ); }, 1 );
 
             return _ins;
         };
@@ -1691,7 +1695,7 @@
 
             _logic.fixWidth( _msg, _ins );
             _cb && _ins.on('close', _cb);
-            setTimeout( function(){ _ins.autoClose(); }, 1 );
+            setTimeout( function(){ _ins.autoClose( _closeMs ); }, 1 );
 
             return _ins;
         };

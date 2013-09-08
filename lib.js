@@ -579,8 +579,8 @@ function parentSelector( _item, _selector, _finder ){
  * 获取脚本模板的内容
  * @method  scriptContent
  * @param   {selector}  _selector
- * @static
  * @return  string
+ * @static
  */
 function scriptContent( _selector ){
     var _r = '';
@@ -589,6 +589,21 @@ function scriptContent( _selector ){
         && ( _r = _selector.html().trim().replace( /[\r\n]/g, '') )
         ;
     return _r;
+}
+/**
+ * 取函数名 ( 匿名函数返回空 )
+ * @method  funcName
+ * @param   {function}  _func
+ * @return  string
+ * @static
+ */
+function funcName(_func){
+  var _re = /^function\s+([^()]+)[\s\S]*/
+      , _r = ''
+      , _fStr = _func.toString();    
+  //JC.log( _fStr );
+  _re.test( _fStr ) && ( _r = _fStr.replace( _re, '$1' ) );
+  return _r.trim();
 }
 
 
@@ -937,15 +952,15 @@ function scriptContent( _selector ){
      * @example
      */
     function BaseMVC( _selector ){
-        throw new Error( "JC.BaseMVC is abstract class, can't initialize!" );
-        /*
+        throw new Error( "JC.BaseMVC is an abstract class, can't initialize!" );
+
         if( BaseMVC.getInstance( _selector ) ) return BaseMVC.getInstance( _selector );
         BaseMVC.getInstance( _selector, this );
-        */
-        this._model = new Model( _selector );
-        this._view = new View( this._model );
 
-        this._init( _selector );
+        this._model = new BaseMVC.Model( _selector );
+        this._view = new BaseMVC.View( this._model );
+
+        this._init( );
     }
     
     BaseMVC.prototype = {
@@ -1027,25 +1042,25 @@ function scriptContent( _selector ){
     }
     /**
      * 获取或设置 BaseMVC 的实例
-     * @method getInstance
+     * @method  getInstance
      * @param   {selector}      _selector
      * @static
-     * @return  {BaseMVC instance}
+     * @return  {BaseMVCInstance}
      */
     BaseMVC.getInstance =
         function( _selector, _setter ){
             if( typeof _selector == 'string' && !/</.test( _selector ) ) 
                     _selector = $(_selector);
             if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
-            typeof _setter != 'undefined' && _selector.data( Model._instanceName, _setter );
+            typeof _setter != 'undefined' && _selector.data( BaseMVC.Model._instanceName, _setter );
 
-            return _selector.data( Model._instanceName );
+            return _selector.data( BaseMVC.Model._instanceName );
         };
     /**
      * 是否自动初始化
-     * @method  autoInit
-     * @type    bool
-     * @default true
+     * @property    autoInit
+     * @type        bool
+     * @default     true
      * @static
      */
     BaseMVC.autoInit = true;
@@ -1056,28 +1071,47 @@ function scriptContent( _selector ){
      * @static
      */
     BaseMVC.build =
-        function( _outClass ){
+        function( _outClass, _namespace ){
             BaseMVC.buildModel( _outClass );
             BaseMVC.buildView( _outClass );
 
-            BaseMVC.buildClass( BaseMVC, _outClass );
+            BaseMVC.buildClass( BaseMVC, _outClass, _namespace );
             BaseMVC.buildClass( BaseMVC.Model, _outClass.Model );
             BaseMVC.buildClass( BaseMVC.View, _outClass.View );
         };
     /**
      * 复制 _inClass 的所有方法到 _outClass
      * @method  buildClass
-     * @param   {Class} _inClass
-     * @param   {Class} _outClass
+     * @param   {Class}     _inClass
+     * @param   {Class}     _outClass
+     * @param   {string}    _namespace  default='JC', 如果是业务组件, 请显式指明为 'Bizs'
      * @static
      */
     BaseMVC.buildClass = 
-        function( _inClass, _outClass ){
+        function( _inClass, _outClass, _namespace ){
             if( !( _inClass && _outClass ) ) return;
-            var _k;
+            var _k
+                , _fStr, _tmp
+                , _inName = funcName( _inClass )
+                , _outName = funcName( _outClass )
+                , _inRe = _inName && _outName ? new RegExp( _inName, 'g' ) : null
+                , _namespace = _namespace ? _namespace + '.' : 'JC.'
+                ;
+
+            _inName && _outName && JC.log( 'BaseMVC.buildClass:', _inName, 'to', _outName );
             if( _outClass ){
-                for( _k in _inClass ) 
-                    !_outClass[_k] && ( _outClass[_k] = _inClass[_k] );
+                for( _k in _inClass ){ 
+                    if( !_outClass[_k] ){//clone static function
+                        if( _inName && _outName && _inClass[_k].constructor == Function ){
+                            _fStr = _inClass[ _k ].toString();
+                            _fStr = _fStr.replace( _inRe, _namespace + _outName );
+                            _tmp = printf( '( {0}{1}.{2} = {3})', _namespace, _outName, _k, _fStr );
+                            eval( _tmp  );
+                        }else{//clone static property
+                            _outClass[_k] = _inClass[_k];
+                        }
+                    }
+                }
 
                 for( _k in _inClass.prototype ) 
                     !_outClass.prototype[_k] && ( _outClass.prototype[_k] = _inClass.prototype[_k] );
@@ -1119,6 +1153,68 @@ function scriptContent( _selector ){
             function( _setter ){ 
                 typeof _setter != 'undefined' && ( this._selector = _setter );
                 return this._selector; 
+            }
+
+        , intProp:
+            function( _selector, _key ){
+                if( typeof _key == 'undefined' ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector && ( _selector = $( _selector ) );
+                }
+                var _r = 0;
+                _selector 
+                    && _selector.is( '[' + _key + ']' ) 
+                    && ( _r = parseInt( _selector.attr( _key ).trim(), 10 ) || _r );
+                return _r;
+            }
+
+        , floatProp:
+            function( _selector, _key ){
+                if( typeof _key == 'undefined' ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector && ( _selector = $( _selector ) );
+                }
+                var _r = 0;
+                _selector 
+                    && _selector.is( '[' + _key + ']' ) 
+                    && ( _r = parseFloat( _selector.attr( _key ).trim() ) || _r );
+                return _r;
+            }
+
+        , stringProp:
+            function( _selector, _key ){
+                if( typeof _key == 'undefined' ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector && ( _selector = $( _selector ) );
+                }
+                var _r = '';
+                _selector
+                    && _selector.is( '[' + _key + ']' ) 
+                    && ( _r = _selector.attr( _key ).trim().toLowerCase() );
+                return _r;
+            }
+
+        , callbackProp:
+            function( _selector, _key ){
+                if( typeof _key == 'undefined' ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector && ( _selector = $( _selector ) );
+                }
+                var _r, _tmp;
+                _selector 
+                    && _selector.is( '[' + _key + ']' )
+                    && ( _tmp = window[ _selector.attr( _key ) ] )
+                    && ( _r = _tmp )
+                    ;
+                return _r;
             }
     };
     

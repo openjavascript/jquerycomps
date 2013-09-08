@@ -117,6 +117,8 @@
             
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
             
+                <li><a href="../classes/window.Bizs.FormLogic.html">window.Bizs.FormLogic</a></li>
+            
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
@@ -467,6 +469,10 @@
          */
         , autoClose:
             function( _callback, _ms ){
+                if( typeof _callback == &#x27;number&#x27; ){
+                    _ms = _callback;
+                    _callback = null;
+                }
                 var _p = this, _tm;
                 _ms = _p._model.panelautoclosems( _ms );
 
@@ -1204,7 +1210,7 @@
             }
             var _ins = _logic.popup( JC.msgbox.tpl || _logic.tpls.msgbox, _msg, _popupSrc, _status );
                 _cb &amp;&amp; _ins.on(&#x27;close&#x27;, _cb );
-                setTimeout( function(){ _ins.autoClose(); }, 1 );
+                setTimeout( function(){ _ins.autoClose( _closeMs ); }, 1 );
 
             return _ins;
         };
@@ -1863,7 +1869,7 @@
 
             _logic.fixWidth( _msg, _ins );
             _cb &amp;&amp; _ins.on(&#x27;close&#x27;, _cb);
-            setTimeout( function(){ _ins.autoClose(); }, 1 );
+            setTimeout( function(){ _ins.autoClose( _closeMs ); }, 1 );
 
             return _ins;
         };

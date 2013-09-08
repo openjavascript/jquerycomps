@@ -29,6 +29,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.msgbox",
         "window.Bizs.CommonModify",
         "window.Bizs.DisableLogic",
+        "window.Bizs.FormLogic",
         "window.Bizs.KillISPCache",
         "window.Bizs.MultiDate",
         "window.JC",

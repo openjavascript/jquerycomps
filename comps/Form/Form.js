@@ -408,32 +408,37 @@
 
             JC.log( 'JC.Form.initAutoFill' );
 
-            _selector.find('form.js_autoFillUrlForm').each( function(){
-                var _p = $(this);
-                
-                _p.find( 'input[type=text][name],input[type=password][name],textarea[name]' ).each( function(){
-                    var _sp = $(this);
-                    if( has_url_param( _url, _sp.attr('name') ) ){
-                        _sp.val( decode( get_url_param( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) );
-                    }
+            if( _selector.prop( 'nodeName' ).toLowerCase() == 'form' ){
+                fillForm( _selector, _url );
+            }else{
+                _selector.find('form.js_autoFillUrlForm').each( function(){
+                    fillForm( this, _url );
                 });
+            }
 
-                _p.find( 'select[name]' ).each( function(){
-                    var _sp = $(this), _uval = decode( get_url_param( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) ;
-                    if( has_url_param( _url, _sp.attr('name') ) ){
-                        if( selectHasVal( _sp, _uval ) ){
-                            _sp.val( get_url_param( _url, _sp.attr('name') ) );
-                        }else{
-                            _sp.attr( 'selectvalue', _uval );
-                        }
-                    }
-                });
-
-            });
         };
 
-    $(document).ready( function( _evt ){ JC.Form.initAutoFill(); });
+    function fillForm( _selector, _url ){
+        _selector = $(_selector);
+        
+        _selector.find( 'input[type=text][name],input[type=password][name],textarea[name]' ).each( function(){
+            var _sp = $(this);
+            if( hasUrlParam( _url, _sp.attr('name') ) ){
+                _sp.val( decode( getUrlParam( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) );
+            }
+        });
 
+        _selector.find( 'select[name]' ).each( function(){
+            var _sp = $(this), _uval = decode( getUrlParam( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) ;
+            if( hasUrlParam( _url, _sp.attr('name') ) ){
+                if( selectHasVal( _sp, _uval ) ){
+                    _sp.val( getUrlParam( _url, _sp.attr('name') ) );
+                }else{
+                    _sp.attr( 'selectvalue', _uval );
+                }
+            }
+        });
+    }
     /**
      * 自定义 URI decode 函数
      * @property    initAutoFill.decodeFunc
@@ -469,6 +474,9 @@
         });
         return _r;
     }
+
+    $(document).ready( function( _evt ){ JC.Form.initAutoFill(); });
+
 }(jQuery));
 
 
