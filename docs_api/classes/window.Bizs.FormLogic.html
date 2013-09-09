@@ -120,7 +120,6 @@
 <br/>require: <a href='../classes/JC.Valid.html'>JC.Valid</a>
 <br/>require: <a href='../classes/JC.Form.html'>JC.Form</a>
 <br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a></p>
-<p>extend: <a href='../classes/JC.BaseMVC.html'>JC.BaseMVC</a></p>
 <h2>页面只要引用本文件, 默认会自动初始化 from class="js_autoFormLogic" 的表单</h2>
 <h2>Form 可用的 HTML 属性</h2>
 <dl>
@@ -143,10 +142,16 @@
      <dd>重置表单时进行二次确认的提示信息</dt>
      <dt>formPopupCloseMs = int, default = 2000</dt>
      <dd>msgbox 弹框的显示时间</dd>
+     <dt>ajaxSubmitType = string, default = plugins</dt>
+     <dd>
+         类型: plugins, form
+         <br/>plugins 支持 AJAX 文件上传, 但是在 弹框里 捕获不到提交事件
+         <br/>form 不支持 ajax 文件上传, 但可以在 popup 里捕获到提交事件
+     </dd>
      <dt>formAjaxMethod = string, default = get</dt>
      <dd>
-         ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性
-         <br/> 类型有: get, post
+         类型有: get, post
+         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性
      </dd>
      <dt>formAjaxAction = url</dt>
      <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>
@@ -246,6 +251,10 @@
                                 <a href="#property_popupCloseMs">popupCloseMs</a>
                                     <span class="flag static">static</span>
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_popupCloseMs">popupCloseMs</a>
+                                    <span class="flag static">static</span>
+                            </li>
                     </ul>
                 </div>
         </div>
@@ -340,7 +349,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l113"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:113</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l120"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:120</code></a>
         </p>
     </div>
     <div class="description">
@@ -484,13 +493,30 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l134"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:134</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l141"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:141</code></a>
         </p>
     </div>
     <div class="description">
         <p>msgbox 提示框的自动关闭时间</p>
     </div>
         <p><strong>Default:</strong> 2000</p>
+</div>
+                    <div id="property_popupCloseMs" class="property item">
+    <h3 class="name"><code>popupCloseMs</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l149"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:149</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>AJAX 表单的提交类型
+<br />plugins, form
+<br />plugins 可以支持文件上传</p>
+    </div>
+        <p><strong>Default:</strong> empty</p>
 </div>
             </div>
     </div>
