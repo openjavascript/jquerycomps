@@ -6,6 +6,7 @@ var path1 = dir + 'JC.Calendar.js';
 var path2 = dir + 'JC.Calendar.pickWeek.js';
 var path3 = dir + 'JC.Calendar.pickMonth.js';
 var path4 = dir + 'JC.Calendar.pickSeason.js';
+var path5 = dir + 'JC.Calendar.monthday.js';
 
 var outPath = dir + 'Calendar.js';
 
@@ -19,6 +20,7 @@ var tmp = [];
     tmp.push( fs.readFileSync( path2, 'utf8') );
     tmp.push( fs.readFileSync( path3, 'utf8') );
     tmp.push( fs.readFileSync( path4, 'utf8') );
+    tmp.push( fs.readFileSync( path5, 'utf8') );
 
 fs.writeFileSync( outPath, tmp.join('\n') );
 
@@ -26,3 +28,4 @@ fs.unlinkSync( path1 );
 fs.unlinkSync( path2 );
 fs.unlinkSync( path3 );
 fs.unlinkSync( path4 );
+fs.unlinkSync( path5 );
