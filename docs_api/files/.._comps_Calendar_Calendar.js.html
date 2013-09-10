@@ -199,7 +199,8 @@
      *          &lt;p&gt;&lt;b&gt;date:&lt;/b&gt; 日期日历&lt;/p&gt;
      *          &lt;p&gt;&lt;b&gt;week:&lt;/b&gt; 周日历&lt;/p&gt;
      *          &lt;p&gt;&lt;b&gt;month:&lt;/b&gt; 月日历&lt;/p&gt;
-     *          &lt;p&gt;&lt;b&gt;season:&lt;/b&gt; 级日历&lt;/p&gt;
+     *          &lt;p&gt;&lt;b&gt;season:&lt;/b&gt; 季日历&lt;/p&gt;
+     *          &lt;p&gt;&lt;b&gt;monthday:&lt;/b&gt; 多选日期日历&lt;/p&gt;
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;multidate&lt;/dt&gt;
@@ -284,6 +285,13 @@
                 {
                     this._model = new Calendar.SeasonModel( _selector );
                     this._view = new Calendar.SeasonView( this._model );
+                    break;
+                }
+            case &#x27;monthday&#x27;:
+                {   
+                   
+                    this._model = new Calendar.MonthDayModel( _selector );
+                    this._view = new Calendar.MonthDayView( this._model );
                     break;
                 }
             default:
@@ -608,6 +616,7 @@
                 case &#x27;week&#x27;: 
                 case &#x27;month&#x27;: 
                 case &#x27;season&#x27;: 
+                case &#x27;monthday&#x27;: 
                     {
                         _r = _type;
                         break;
@@ -639,6 +648,7 @@
                                 || _selector.attr(&#x27;datatype&#x27;).toLowerCase()==&#x27;season&#x27; 
                                 || _selector.attr(&#x27;datatype&#x27;).toLowerCase()==&#x27;year&#x27; 
                                 || _selector.attr(&#x27;datatype&#x27;).toLowerCase()==&#x27;daterange&#x27; 
+                                || _selector.attr(&#x27;datatype&#x27;).toLowerCase() == &#x27;monthday&#x27;
                             )) _r = 1;
                 if( _selector.prop(&#x27;nodeName&#x27;) 
                         &amp;&amp; _selector.attr(&#x27;multidate&#x27;)
@@ -850,9 +860,12 @@
                     return; 
                 }
 
-                if( !($.trim( _p.attr(&#x27;datatype&#x27;) || &#x27;&#x27;).toLowerCase() == &#x27;date&#x27; 
+                if( !(  
+                        $.trim( _p.attr(&#x27;datatype&#x27;) || &#x27;&#x27;).toLowerCase() == &#x27;date&#x27; 
                         || $.trim( _p.attr(&#x27;multidate&#x27;) || &#x27;&#x27;)
-                        || $.trim( _p.attr(&#x27;datatype&#x27;) || &#x27;&#x27;).toLowerCase() == &#x27;daterange&#x27;) ) return;
+                        || $.trim( _p.attr(&#x27;datatype&#x27;) || &#x27;&#x27;).toLowerCase() == &#x27;daterange&#x27;
+                        || $.trim( _p.attr(&#x27;datatype&#x27;) || &#x27;&#x27;).toLowerCase() == &#x27;monthday&#x27; 
+                        ) ) return;
 
                 var _btn = _p.find( &#x27;+ input.UXCCalendar_btn&#x27; );
                 if( !_btn.length ){
@@ -1009,7 +1022,49 @@
             }
         , defaultMultiselectDate:
             function( _r ){
-                var _p = this;
+                var _p = this
+                    , _selector = _p.selector()
+                    , _tmp
+                    , _multidatear
+                    , _dstart, _dend
+                    ;
+
+                    if( _selector.val() &amp;&amp; (_tmp = _selector.val().replace( /[^\d]/g, &#x27;&#x27; ) ).length ){
+                        _tmp = _tmp.split(&#x27;,&#x27;);
+                        _multidatear = [];
+
+                        $.each( _tmp, function( _ix, _item ){
+                            if( _item.length == 16 ){
+                                _dstart = parseISODate( _item.slice( 0, 8 ) );
+                                _dend = parseISODate( _item.slice( 8 ) );
+
+                                if( !_ix ){
+                                    _r.date = cloneDate( _dstart );
+                                    _r.enddate = cloneDate( _dend );
+                                }
+                                _multidatear.push( { &#x27;start&#x27;: _dstart, &#x27;end&#x27;: _dend } );
+                            }else if( _item.length == 8 ){
+                                _dstart = parseISODate( _item.slice( 0, 8 ) );
+                                _dend = cloneDate( _dstart );
+
+                                if( !_ix ){
+                                    _r.date = cloneDate( _dstart );
+                                    _r.enddate = cloneDate( _dend );
+                                }
+                                _multidatear.push( { &#x27;start&#x27;: _dstart, &#x27;end&#x27;: _dend } );
+                            }
+                        });
+
+                        _r.multidate = _multidatear;
+
+                    }else{
+                        _tmp = new Date();
+                        _r.date = new Date( _tmp.getFullYear(), _tmp.getMonth(), _tmp.getDate() );
+                        _r.enddate = cloneDate( _r.date );
+                        _r.enddate.setDate( maxDayOfMonth( _r.enddate ) );
+                        _r.multidate = [];
+                        _r.multidate.push( {&#x27;start&#x27;: cloneDate( _r.date ), &#x27;end&#x27;: cloneDate( _r.enddate ) } );
+                    }
                 return _r;
             }
         , layoutDate:
@@ -1533,11 +1588,11 @@
      * @private
      */
     $(document).delegate( [ &#x27;input[datatype=season]&#x27;, &#x27;input[datatype=month]&#x27;, &#x27;input[datatype=week]&#x27;
-            , &#x27;input[datatype=date]&#x27;, &#x27;input[datatype=daterange]&#x27;, &#x27;input[multidate]&#x27; ].join(), &#x27;focus&#x27; , function($evt){
+            , &#x27;input[datatype=date]&#x27;, &#x27;input[datatype=daterange]&#x27;, &#x27;input[multidate], input[datatype=monthday]&#x27; ].join(), &#x27;focus&#x27; , function($evt){
             Calendar.pickDate( this );
     });
     $(document).delegate( [ &#x27;button[datatype=season]&#x27;, &#x27;button[datatype=month]&#x27;, &#x27;button[datatype=week]&#x27;
-            , &#x27;button[datatype=date]&#x27;, &#x27;button[datatype=daterange]&#x27;, &#x27;button[multidate]&#x27; ].join(), &#x27;click&#x27; , function($evt){
+            , &#x27;button[datatype=date]&#x27;, &#x27;button[datatype=daterange]&#x27;, &#x27;button[multidate], button[datatype=monthday]&#x27; ].join(), &#x27;click&#x27; , function($evt){
             Calendar.pickDate( this );
     });
 }(jQuery));
@@ -1866,47 +1921,6 @@
                         , _r.end.setTime( _item.attr(&#x27;dend&#x27;) ) 
                     )
                 ;
-            return _r;
-        };
-
-    MonthModel.prototype.defaultMultiselectDate =
-        function( _r ){
-            var _p = this
-                , _selector = _p.selector()
-                , _tmp
-                , _multidatear
-                , _dstart, _dend
-                ;
-
-            if( _tmp = parseISODate( _selector.val() ) ) _r.date = _tmp;
-            else{
-                if( _selector.val() &amp;&amp; (_tmp = _selector.val().replace( /[^\d,]/g, &#x27;&#x27; ) ).length ){
-                    _tmp = _tmp.split(&#x27;,&#x27;);
-                    _multidatear = [];
-
-                    $.each( _tmp, function( _ix, _item ){
-                        if( _item.length != 16 ) return;
-                        _dstart = parseISODate( _item.slice( 0, 8 ) );
-                        _dend = parseISODate( _item.slice( 8 ) );
-
-                        if( !_ix ){
-                            _r.date = cloneDate( _dstart );
-                            _r.enddate = cloneDate( _dend );
-                        }
-                        _multidatear.push( { &#x27;start&#x27;: _dstart, &#x27;end&#x27;: _dend } );
-                    });
-
-                    _r.multidate = _multidatear;
-
-                }else{
-                    _tmp = new Date();
-                    _r.date = new Date( _tmp.getFullYear(), _tmp.getMonth(), _tmp.getDate() );
-                    _r.enddate = cloneDate( _r.date );
-                    _r.enddate.setDate( maxDayOfMonth( _r.enddate ) );
-                    _r.multidate = [];
-                    _r.multidate.push( {&#x27;start&#x27;: cloneDate( _r.date ), &#x27;end&#x27;: cloneDate( _r.enddate ) } );
-                }
-            }
             return _r;
         };
 

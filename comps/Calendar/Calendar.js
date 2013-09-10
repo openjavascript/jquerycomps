@@ -25,7 +25,8 @@
      *          <p><b>date:</b> 日期日历</p>
      *          <p><b>week:</b> 周日历</p>
      *          <p><b>month:</b> 月日历</p>
-     *          <p><b>season:</b> 级日历</p>
+     *          <p><b>season:</b> 季日历</p>
+     *          <p><b>monthday:</b> 多选日期日历</p>
      *      </dd>
      *
      *      <dt>multidate</dt>
@@ -110,6 +111,13 @@
                 {
                     this._model = new Calendar.SeasonModel( _selector );
                     this._view = new Calendar.SeasonView( this._model );
+                    break;
+                }
+            case 'monthday':
+                {   
+                   
+                    this._model = new Calendar.MonthDayModel( _selector );
+                    this._view = new Calendar.MonthDayView( this._model );
                     break;
                 }
             default:
@@ -434,6 +442,7 @@
                 case 'week': 
                 case 'month': 
                 case 'season': 
+                case 'monthday': 
                     {
                         _r = _type;
                         break;
@@ -465,6 +474,7 @@
                                 || _selector.attr('datatype').toLowerCase()=='season' 
                                 || _selector.attr('datatype').toLowerCase()=='year' 
                                 || _selector.attr('datatype').toLowerCase()=='daterange' 
+                                || _selector.attr('datatype').toLowerCase() == 'monthday'
                             )) _r = 1;
                 if( _selector.prop('nodeName') 
                         && _selector.attr('multidate')
@@ -676,9 +686,12 @@
                     return; 
                 }
 
-                if( !($.trim( _p.attr('datatype') || '').toLowerCase() == 'date' 
+                if( !(  
+                        $.trim( _p.attr('datatype') || '').toLowerCase() == 'date' 
                         || $.trim( _p.attr('multidate') || '')
-                        || $.trim( _p.attr('datatype') || '').toLowerCase() == 'daterange') ) return;
+                        || $.trim( _p.attr('datatype') || '').toLowerCase() == 'daterange'
+                        || $.trim( _p.attr('datatype') || '').toLowerCase() == 'monthday' 
+                        ) ) return;
 
                 var _btn = _p.find( '+ input.UXCCalendar_btn' );
                 if( !_btn.length ){
@@ -835,7 +848,49 @@
             }
         , defaultMultiselectDate:
             function( _r ){
-                var _p = this;
+                var _p = this
+                    , _selector = _p.selector()
+                    , _tmp
+                    , _multidatear
+                    , _dstart, _dend
+                    ;
+
+                    if( _selector.val() && (_tmp = _selector.val().replace( /[^\d]/g, '' ) ).length ){
+                        _tmp = _tmp.split(',');
+                        _multidatear = [];
+
+                        $.each( _tmp, function( _ix, _item ){
+                            if( _item.length == 16 ){
+                                _dstart = parseISODate( _item.slice( 0, 8 ) );
+                                _dend = parseISODate( _item.slice( 8 ) );
+
+                                if( !_ix ){
+                                    _r.date = cloneDate( _dstart );
+                                    _r.enddate = cloneDate( _dend );
+                                }
+                                _multidatear.push( { 'start': _dstart, 'end': _dend } );
+                            }else if( _item.length == 8 ){
+                                _dstart = parseISODate( _item.slice( 0, 8 ) );
+                                _dend = cloneDate( _dstart );
+
+                                if( !_ix ){
+                                    _r.date = cloneDate( _dstart );
+                                    _r.enddate = cloneDate( _dend );
+                                }
+                                _multidatear.push( { 'start': _dstart, 'end': _dend } );
+                            }
+                        });
+
+                        _r.multidate = _multidatear;
+
+                    }else{
+                        _tmp = new Date();
+                        _r.date = new Date( _tmp.getFullYear(), _tmp.getMonth(), _tmp.getDate() );
+                        _r.enddate = cloneDate( _r.date );
+                        _r.enddate.setDate( maxDayOfMonth( _r.enddate ) );
+                        _r.multidate = [];
+                        _r.multidate.push( {'start': cloneDate( _r.date ), 'end': cloneDate( _r.enddate ) } );
+                    }
                 return _r;
             }
         , layoutDate:
@@ -1359,11 +1414,11 @@
      * @private
      */
     $(document).delegate( [ 'input[datatype=season]', 'input[datatype=month]', 'input[datatype=week]'
-            , 'input[datatype=date]', 'input[datatype=daterange]', 'input[multidate]' ].join(), 'focus' , function($evt){
+            , 'input[datatype=date]', 'input[datatype=daterange]', 'input[multidate], input[datatype=monthday]' ].join(), 'focus' , function($evt){
             Calendar.pickDate( this );
     });
     $(document).delegate( [ 'button[datatype=season]', 'button[datatype=month]', 'button[datatype=week]'
-            , 'button[datatype=date]', 'button[datatype=daterange]', 'button[multidate]' ].join(), 'click' , function($evt){
+            , 'button[datatype=date]', 'button[datatype=daterange]', 'button[multidate], button[datatype=monthday]' ].join(), 'click' , function($evt){
             Calendar.pickDate( this );
     });
 }(jQuery));
@@ -1692,47 +1747,6 @@
                         , _r.end.setTime( _item.attr('dend') ) 
                     )
                 ;
-            return _r;
-        };
-
-    MonthModel.prototype.defaultMultiselectDate =
-        function( _r ){
-            var _p = this
-                , _selector = _p.selector()
-                , _tmp
-                , _multidatear
-                , _dstart, _dend
-                ;
-
-            if( _tmp = parseISODate( _selector.val() ) ) _r.date = _tmp;
-            else{
-                if( _selector.val() && (_tmp = _selector.val().replace( /[^\d,]/g, '' ) ).length ){
-                    _tmp = _tmp.split(',');
-                    _multidatear = [];
-
-                    $.each( _tmp, function( _ix, _item ){
-                        if( _item.length != 16 ) return;
-                        _dstart = parseISODate( _item.slice( 0, 8 ) );
-                        _dend = parseISODate( _item.slice( 8 ) );
-
-                        if( !_ix ){
-                            _r.date = cloneDate( _dstart );
-                            _r.enddate = cloneDate( _dend );
-                        }
-                        _multidatear.push( { 'start': _dstart, 'end': _dend } );
-                    });
-
-                    _r.multidate = _multidatear;
-
-                }else{
-                    _tmp = new Date();
-                    _r.date = new Date( _tmp.getFullYear(), _tmp.getMonth(), _tmp.getDate() );
-                    _r.enddate = cloneDate( _r.date );
-                    _r.enddate.setDate( maxDayOfMonth( _r.enddate ) );
-                    _r.multidate = [];
-                    _r.multidate.push( {'start': cloneDate( _r.date ), 'end': cloneDate( _r.enddate ) } );
-                }
-            }
             return _r;
         };
 

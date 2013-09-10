@@ -267,6 +267,12 @@
      *      &lt;dt&gt;formPopupCloseMs = int, default = 2000&lt;/dt&gt;
      *      &lt;dd&gt;msgbox 弹框的显示时间&lt;/dd&gt;
      * &lt;/dl&gt;
+     *
+     * &lt;h2&gt;普通 button 可用的 html 属性&lt;/h2&gt;
+     * &lt;dl&gt;
+     *      &lt;dt&gt;buttonReturnUrl&lt;/dt&gt;
+     *      &lt;dd&gt;点击button时, 返回的URL&lt;/dd&gt;
+     * &lt;/dl&gt;
      * @namespace       window.Bizs
      * @class           FormLogic
      * @extends         JC.BaseMVC
@@ -373,7 +379,7 @@
                         beforeSubmit:
                             function(){
                                 if( _p._model.formBeforeProcess() ){
-                                    if( _p._model.formBeforeProcess().call( _p._selector, null, _p ) === false ){
+                                    if( _p._model.formBeforeProcess().call( _p.selector(), null, _p ) === false ){
                                         return _p._model.prevent();
                                     }
                                 }
@@ -383,7 +389,7 @@
                                 }
 
                                 if( _p._model.formAfterProcess() ){
-                                    if( _p._model.formAfterProcess().call( _p._selector, null, _p ) === false ){
+                                    if( _p._model.formAfterProcess().call( _p.selector(), null, _p ) === false ){
                                         return _p._model.prevent();
                                     }
                                 }
@@ -411,26 +417,25 @@
                     });
                 }else{
                     _p.selector().on(&#x27;submit&#x27;, function( _evt ){
-                        var _sp = $(this);
                         //_evt.preventDefault();
 
                         if( _p._model.formBeforeProcess() ){
-                            if( _p._model.formBeforeProcess().call( _p._selector, _evt, _p ) === false ){
+                            if( _p._model.formBeforeProcess().call( _p.selector(), _evt, _p ) === false ){
                                 return _p._model.prevent( _evt );
                             }
                         }
 
-                        if( !JC.Valid.check( _sp ) ){
+                        if( !JC.Valid.check( _p.selector() ) ){
                             return _p._model.prevent( _evt );
                         }
 
                         if( _p._model.formAfterProcess() ){
-                            if( _p._model.formAfterProcess().call( _p._selector, _evt, _p ) === false ){
+                            if( _p._model.formAfterProcess().call( _p.selector(), _evt, _p ) === false ){
                                 return _p._model.prevent( _evt );
                             }
                         }
 
-                        if( _sp.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON ) ){
+                        if( _p.selector().data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON ) ){
                             _p.trigger( FormLogic.Model.EVT_CONFIRM );
                             return _p._model.prevent( _evt );
                         }
@@ -443,8 +448,7 @@
                 }
 
                 _p.on( FormLogic.Model.EVT_CONFIRM, function( _evt ){
-                    var _sp = _p._model.selector()
-                        , _btn = _sp.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON )
+                    var _btn = _p.selector().data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON )
                         ;
                     _btn &amp;&amp; ( _btn = $( _btn ) );
                     if( !( _btn &amp;&amp; _btn.length ) ) return;
@@ -458,20 +462,17 @@
                     }
 
                     _popup.on(&#x27;confirm&#x27;, function(){
-                        _sp.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON, null );
-                        _sp.trigger( &#x27;submit&#x27; );
+                        _p.selector().data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON, null );
+                        _p.selector().trigger( &#x27;submit&#x27; );
                     });
 
                     _popup.on(&#x27;close&#x27;, function(){
-                        _sp.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON, null );
+                        _p.selector().data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON, null );
                     });
                 });
 
                 _p.selector().on(&#x27;reset&#x27;, function( _evt ){
-                    var _sp = $(this)
-                        ;
-
-                    if( _sp.data( FormLogic.Model.RESET_CONFIRM_BUTTON ) ){
+                    if( _p.selector().data( FormLogic.Model.RESET_CONFIRM_BUTTON ) ){
                         _p.trigger( FormLogic.Model.EVT_RESET );
                         return _p._model.prevent( _evt );
                     }else{
@@ -480,8 +481,7 @@
                 });
 
                 _p.on( FormLogic.Model.EVT_RESET, function( _evt ){
-                    var _sp = _p._model.selector()
-                        , _btn = _sp.data( FormLogic.Model.RESET_CONFIRM_BUTTON )
+                    var _btn = _p.selector().data( FormLogic.Model.RESET_CONFIRM_BUTTON )
                         ;
                     _btn &amp;&amp; ( _btn = $( _btn ) );
                     if( !( _btn &amp;&amp; _btn.length ) ) return;
@@ -495,13 +495,13 @@
                     }
 
                     _popup.on(&#x27;confirm&#x27;, function(){
-                        _sp.data( FormLogic.Model.RESET_CONFIRM_BUTTON, null );
-                        _sp.trigger( &#x27;reset&#x27; );
+                        _p.selector().data( FormLogic.Model.RESET_CONFIRM_BUTTON, null );
+                        _p.selector().trigger( &#x27;reset&#x27; );
                         _p._view.reset();
                     });
 
                     _popup.on(&#x27;close&#x27;, function(){
-                        _sp.data( FormLogic.Model.RESET_CONFIRM_BUTTON, null );
+                        _p.selector().data( FormLogic.Model.RESET_CONFIRM_BUTTON, null );
                     });
                 });
                 
@@ -728,6 +728,11 @@
         _fm &amp;&amp; _fm.length 
             &amp;&amp; _fm.data( FormLogic.Model.GENERIC_SUBMIT_BUTTON , _p )
             ;
+    });
+
+    $(document).delegate( &#x27;input[buttonReturnUrl], button[buttonReturnUrl]&#x27;, &#x27;click&#x27;, function( _evt ){
+        var _p = $(this), _url = _p.attr(&#x27;buttonReturnUrl&#x27;).trim();
+        _url &amp;&amp; reloadPage( _url );
     });
 
     $(document).ready( function(){

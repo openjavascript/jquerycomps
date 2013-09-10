@@ -302,7 +302,7 @@
      */
     JC.PATH = script_path_f();
     //dev开发时因为脚本没合并, IE找不到库的正确路径, 这个判断仅针对dev开发分支
-    /\/JQueryComps_dev/i.test( location.href ) && ( JC.PATH = '/ignore/JQueryComps_dev/' );
+    /\/JQueryComps_dev\//i.test( location.href ) && ( JC.PATH = '/ignore/JQueryComps_dev/' );
     /**
      * <h2>业务逻辑命名空间</h2>
      * <br />这个命名空间的组件主要为满足业务需求, 不是通用组件~
