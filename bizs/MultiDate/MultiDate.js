@@ -13,9 +13,8 @@
      * @namespace   window.Bizs
      * @constructor
      * @private
+     * @version dev 0.1 2013-09-03
      * @author  qiushaowei   <suches@btbtd.org> | 75 Team
-     * @date    2013-09-03
-     * @example
      */
     function MultiDate( _selector ){
         if( MultiDate.getInstance( _selector ) ) return MultiDate.getInstance( _selector );

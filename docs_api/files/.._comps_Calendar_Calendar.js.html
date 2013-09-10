@@ -1023,14 +1023,15 @@
         , defaultMultiselectDate:
             function( _r ){
                 var _p = this
-                    , _selector = _p.selector()
+                    , _selector = Calendar.lastIpt
                     , _tmp
                     , _multidatear
                     , _dstart, _dend
                     ;
 
-                    if( _selector.val() &amp;&amp; (_tmp = _selector.val().replace( /[^\d]/g, &#x27;&#x27; ) ).length ){
-                        _tmp = _tmp.split(&#x27;,&#x27;);
+                    if( _selector.val() ){
+                        //JC.log( &#x27;defaultMultiselectDate:&#x27;, _p.selector().val(), &#x27;, &#x27;, _tmp );
+                        _tmp = _selector.val().trim().replace(/[^\d,]/g, &#x27;&#x27;).split(&#x27;,&#x27;);
                         _multidatear = [];
 
                         $.each( _tmp, function( _ix, _item ){
@@ -1054,6 +1055,7 @@
                                 _multidatear.push( { &#x27;start&#x27;: _dstart, &#x27;end&#x27;: _dend } );
                             }
                         });
+                        //alert( _multidatear + &#x27;, &#x27; + _selector.val() );
 
                         _r.multidate = _multidatear;
 
@@ -1343,8 +1345,12 @@
         , _buildLayout:
             function( _dateo ){
                 this._model.layout();
+                
+
+                //JC.log( &#x27;_buildBody: \n&#x27;, JSON.stringify( _dateo ) );
 
                 if( !( _dateo &amp;&amp; _dateo.date ) ) return;
+
                 this._buildHeader( _dateo );
                 this._buildBody( _dateo );
                 this._buildFooter( _dateo );
@@ -2539,6 +2545,7 @@
 					_tempDate, 
 					_tempDay,
 					_today = new Date();
+
 				
 				_tempDate = new Date(_dateo.date.getFullYear(), _dateo.date.getMonth(), 1);
 				_tempDay = _tempDate.getDay();
@@ -2590,6 +2597,8 @@
                 _ls = _ls.concat( _headLs, _dayLs, _ckLs );
 				
                 _layout.find(&#x27;table.UTableBorder tbody&#x27; ).html( $( _ls.join(&#x27;&#x27;) ) );
+
+                _p._model.fixCheckall();
         };
 	
 	function getClass(_dateo, _tempDate, _today) {
@@ -2612,7 +2621,10 @@
 		}
 
         for( var i = 0, j = _dateo.multidate.length; i &lt; j; i++ ){
-            isSameDay( _dateo.multidate[i].start, _tempDate ) &amp;&amp; _class.push( &#x27;cur&#x27; );
+            if( isSameDay( _dateo.multidate[i].start, _tempDate ) ){ 
+                _class.push( &#x27;cur&#x27; );
+                break;
+            }
         }
 
 		return _class;

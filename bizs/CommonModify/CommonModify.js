@@ -36,7 +36,8 @@
  * @namespace   window.Bizs
  * @class       CommonModify
  * @constructor
- * @author  qiushaowei  .1  2013-09-04
+ * @version dev 0.1 2013-09-04
+ * @author  qiushaowei   <suches@btbtd.org> | 75 Team
  *
  * @example
  *       <table>
@@ -79,8 +80,6 @@
             </td>
         </tr>
         </script>
-
- * @qiushaowei 2013-08-29
  */
 ;(function($){
     window.Bizs.CommonModify = CommonModify;

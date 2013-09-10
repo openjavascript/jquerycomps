@@ -21,7 +21,8 @@
      * @class           KillISPCache
      * @extends         JC.BaseMVC
      * @constructor 
-     * @author  qiushaowei  .1  2013-09-07
+     * @version dev 0.1 2013-09-07
+     * @author  qiushaowei   <suches@btbtd.org> | 75 Team
      * @example
      *      <script>
      *      //动态添加的内容需要显式调用 process 方法去处理相关逻辑

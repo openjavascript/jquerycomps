@@ -54,7 +54,8 @@
  * @namespace   window.Bizs
  * @class       DisableLogic
  * @constructor
- * @author  qiushaowei  .1  2013-09-04
+ * @version dev 0.1 2013-09-04
+ * @author  qiushaowei   <suches@btbtd.org> | 75 Team
  *
  * @example
         <div class="js_bizsDisableLogic"

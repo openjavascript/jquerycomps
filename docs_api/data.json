@@ -290,11 +290,11 @@
             "line": 1,
             "description": "<h2>Dom 通用 添加删除 逻辑</h2>\n<br/>应用场景\n<br/>需要动态添加删除内容的地方可以使用这个类\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>\n| <a href='../../bizs/CommonModify/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_autoCommonModify\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>cmtemplate = script selector</dt>\n     <dd>指定保存模板的 script 标签</dd>\n\n     <dt>cmitem = selector</dt>\n     <dd>添加时, 当前的具体父节点</dd>\n\n     <dt>cmaction = string, [add, del], default = add</dt>\n     <dd>操作类型</dd>\n\n     <dt>cmdonecallback = function</dt>\n     <dd>添加或删除完后会触发的回调</dd>\n\n     <dt>cmtplfiltercallback = function</dt>\n     <dd>模板内容过滤回调</dd>\n\n     <dt>cmaddcallback = function</dt>\n     <dd>添加完成的回调</dd>\n\n     <dt>cmdelcallback = function</dt>\n     <dd>删除完成的回调</dd>\n</dl>",
             "is_constructor": 1,
-            "author": "qiushaowei  .1  2013-09-04",
+            "version": "dev 0.1 2013-09-04",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
             "example": [
                 "\n      <table>\n            <tr>\n               <td>\n                   <label class=\"gray\">甲方主体：</label>\n               </td>\n               <td>\n                   <input type=\"text\" name=\"\" class=\"ipt ipt-w320\" />&nbsp;\n                       <a href=\"javascript:\" \n                       class=\"green js_autoCommonModify\" \n                       cmtemplate=\"#addMainFirstPartyTpl\"\n                       cmitem=\"<tr\"\n                       cmaction=\"add\"\n                   >+ 添加</a>\n                   <em class=\"error\"></em>\n               </td>\n           </tr>\n       </table>\n\n       <script type=\"text/template\" id=\"addMainFirstPartyTpl\" >\n        <tr>\n           <td>\n               <label class=\"gray\">甲方主体：</label>\n           </td>\n           <td>\n               <input type=\"text\" name=\"\" class=\"ipt ipt-w320\" />\n               <a href=\"javascript:\" \n                   class=\"green js_autoCommonModify\" \n                   cmtemplate=\"#addMainFirstPartyTpl\"\n                   cmitem=\"<tr\"\n                   cmaction=\"add\"\n               >+ 添加</a>\n               <a href=\"javascript:\" class=\"red js_autoCommonModify\"\n                   cmtemplate=\"#addMainFirstPartyTpl\"\n                   cmitem=\"<tr\"\n                   cmaction=\"del\"\n               >+ 删除</a>\n               <em class=\"error\"></em>\n           </td>\n       </tr>\n       </script>"
-            ],
-            "qiushaowei": "2013-08-29"
+            ]
         },
         "window.Bizs.DisableLogic": {
             "name": "window.Bizs.DisableLogic",
@@ -309,7 +309,8 @@
             "line": 2,
             "description": "<h2>Form Control禁用启用逻辑</h2>\n<br/>应用场景</br>\n<br/>表单操作时, 选择某个 radio 时, 对应的 内容有效,\n<br/>但选择其他 radio 时, 其他的内容无效\n<br/>checkbox / select 也可使用( 带change事件的标签 )\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/DisableLogic/_demo' target='_blank'>demo link</a></p>\n\ndiv 需要 添加 class=\"js_bizsDisableLogic\"\n\n<h2>box 的 HTML 属性</h2>\n<dl>\n     <dt>dltrigger</dt>\n     <dd>触发禁用/起用的control</dd>\n\n     <dt>dltarget</dt>\n     <dd>需要禁用/起用的control</dd>\n\n     <dt>dlhidetarget</dt>\n     <dd>需要根据禁用起用隐藏/可见的标签</dd>\n\n     <dt>dldonecallback = function</dt>\n     <dd>启用/禁用后会触发的回调</dd>\n\n     <dt>dlenablecallback = function</dt>\n     <dd>启用后的回调</dd>\n\n     <dt>dldisablecallback = function</dt>\n     <dd>禁用后的回调</dd>\n</dl>\n\n<h2>trigger 的 HTML 属性</h2>\n<dl>\n     <dt>dldisable = bool, default = false</dt>\n     <dd>\n         指定 dltarget 是否置为无效\n         <br />还可以根据这个属性 指定 dlhidetarget 是否显示\n     </dd>\n\n     <dt>dldisplay = bool</dt>\n     <dd>指定 dlhidetarget 是否显示</dd>\n</dl>\n\n<h2>hide target 的 HTML 属性</h2>\n<dl>\n     <dt>dlhidetoggle = bool</dt>\n     <dd>显示或显示的时候, 是否与他项相反</dd>\n</dl>",
             "is_constructor": 1,
-            "author": "qiushaowei  .1  2013-09-04",
+            "version": "dev 0.1 2013-09-04",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
             "example": [
                 "\n       <div class=\"js_bizsDisableLogic\"\n           dltrigger=\"/input[type=radio]\"\n           dltarget=\"/input.js_disableItem\"\n           >\n           <label>\n               <input type=\"radio\" name=\"discount\" checked  \n               dldisable=\"true\"\n               />自本协议签订之日起10日内生效\n           </label> <br>\n           <label>\n               <input type=\"radio\" name=\"discount\" \n               dldisable=\"false\"\n               />生效时间点\n           </label>\n           <input type=\"text\" class=\"ipt js_disableItem\" datatype=\"date\" value=\"\"\n           /><input type=\"button\" class=\"UXCCalendar_btn\">\n       </div>"
             ]
@@ -328,10 +329,8 @@
             "description": "应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>\nrequire: <a href='../classes/window.jQuery.html'>jQuery</a>\n<br/>require: <a href='../classes/JC.Valid.html'>JC.Valid</a>\n<br/>require: <a href='../classes/JC.Form.html'>JC.Form</a>\n<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_autoFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>表单开始提交时且没开始验证时, 触发的回调</dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>表单开始提交时且验证通过后, 触发的回调</dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>ajaxSubmitType = string, default = plugins</dt>\n     <dd>\n         类型: plugins, form\n         <br/>plugins 支持 AJAX 文件上传, 但是在 弹框里 捕获不到提交事件\n         <br/>form 不支持 ajax 文件上传, 但可以在 popup 里捕获到提交事件\n     </dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调\n         <br />如果没有显式声明, FormLogic将自行处理\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n         <br/> formResetConfirm 属性除外\n     </dd>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 button 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
-            "author": "qiushaowei  .1  2013-09-08",
-            "example": [
-                ""
-            ]
+            "version": "dev 0.1 2013-09-08",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team"
         },
         "window.Bizs.KillISPCache": {
             "name": "window.Bizs.KillISPCache",
@@ -347,7 +346,8 @@
             "description": "应用场景\n<br /><b>ISP 缓存问题 引起的用户串号</b>\n<br />ajax 或者动态添加的内容, 请显式调用  JC.KillISPCache.getInstance().process( newNodeContainer )\n<br /><b>这是个单例类</b>\n    \n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.KillISPCache.html' target='_blank'>API docs</a>\n| <a href='../../bizs/KillISPCache/_demo' target='_blank'>demo link</a></p>\nrequire: <a href='../classes/window.jQuery.html'>jQuery</a>\n\n<h2>页面只要引用本文件, 默认会自动初始化 KillISPCache 逻辑</h2>\n<dl>\n     <dt>影响到的地方: </dt>\n     <dd>每个 a node 会添加 isp 参数</dd>\n     <dd>每个 form node 会添加 isp 参数</dd>\n     <dd>每个 ajax get 请求会添加 isp 参数</dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
-            "author": "qiushaowei  .1  2013-09-07",
+            "version": "dev 0.1 2013-09-07",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
             "example": [
                 "\n     <script>\n     //动态添加的内容需要显式调用 process 方法去处理相关逻辑\n     $.get( _url, function( _html ){\n         var _node = $(_html);\n         _node.appendTo( document.body );\n         JC.KillISPCache.getInstance().process( _node );\n     });\n     </script>"
             ]
@@ -367,11 +367,8 @@
             "is_constructor": 1,
             "access": "private",
             "tagname": "",
-            "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
-            "date": "2013-09-03",
-            "example": [
-                ""
-            ]
+            "version": "dev 0.1 2013-09-03",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team"
         },
         "JC.AutoSelect": {
             "name": "JC.AutoSelect",
@@ -1388,7 +1385,7 @@
     "classitems": [
         {
             "file": "../bizs/CommonModify/CommonModify.js",
-            "line": 147,
+            "line": 146,
             "description": "获取 显示 CommonModify 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -1400,7 +1397,7 @@
         },
         {
             "file": "../bizs/CommonModify/CommonModify.js",
-            "line": 153,
+            "line": 152,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -1425,7 +1422,7 @@
         },
         {
             "file": "../bizs/CommonModify/CommonModify.js",
-            "line": 161,
+            "line": 160,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -1445,14 +1442,14 @@
         },
         {
             "file": "../bizs/CommonModify/CommonModify.js",
-            "line": 172,
+            "line": 171,
             "description": "update current selector",
             "class": "window.Bizs.CommonModify",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/CommonModify/CommonModify.js",
-            "line": 184,
+            "line": 183,
             "description": "获取或设置 CommonModify 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -1473,7 +1470,7 @@
         },
         {
             "file": "../bizs/CommonModify/CommonModify.js",
-            "line": 198,
+            "line": 197,
             "description": "判断 selector 是否可以初始化 CommonModify",
             "itemtype": "method",
             "name": "isCommonModify",
@@ -1493,7 +1490,7 @@
         },
         {
             "file": "../bizs/DisableLogic/DisableLogic.js",
-            "line": 141,
+            "line": 142,
             "description": "获取 显示 DisableLogic 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -1505,7 +1502,7 @@
         },
         {
             "file": "../bizs/DisableLogic/DisableLogic.js",
-            "line": 147,
+            "line": 148,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -1530,7 +1527,7 @@
         },
         {
             "file": "../bizs/DisableLogic/DisableLogic.js",
-            "line": 155,
+            "line": 156,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -1550,7 +1547,7 @@
         },
         {
             "file": "../bizs/DisableLogic/DisableLogic.js",
-            "line": 163,
+            "line": 164,
             "description": "获取或设置 DisableLogic 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -1616,7 +1613,7 @@
         },
         {
             "file": "../bizs/KillISPCache/KillISPCache.js",
-            "line": 51,
+            "line": 52,
             "description": "处理 _selector 的所有 child",
             "itemtype": "method",
             "name": "process",
@@ -1641,7 +1638,7 @@
         },
         {
             "file": "../bizs/KillISPCache/KillISPCache.js",
-            "line": 70,
+            "line": 71,
             "description": "获取 KillISPCache 实例 ( 单例模式 )",
             "itemtype": "method",
             "name": "getInstance",
@@ -1662,7 +1659,7 @@
         },
         {
             "file": "../bizs/KillISPCache/KillISPCache.js",
-            "line": 82,
+            "line": 83,
             "description": "是否忽略 url 跟 文本 相同的节点",
             "itemtype": "property",
             "name": "ignoreSameLinkText",
@@ -1674,7 +1671,7 @@
         },
         {
             "file": "../bizs/KillISPCache/KillISPCache.js",
-            "line": 90,
+            "line": 91,
             "description": "自定义随机数的参数名",
             "itemtype": "property",
             "name": "randName",
@@ -1686,7 +1683,7 @@
         },
         {
             "file": "../bizs/MultiDate/MultiDate.js",
-            "line": 89,
+            "line": 88,
             "description": "获取 显示 MultiDate 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -1698,7 +1695,7 @@
         },
         {
             "file": "../bizs/MultiDate/MultiDate.js",
-            "line": 95,
+            "line": 94,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -1723,7 +1720,7 @@
         },
         {
             "file": "../bizs/MultiDate/MultiDate.js",
-            "line": 103,
+            "line": 102,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -1743,7 +1740,7 @@
         },
         {
             "file": "../bizs/MultiDate/MultiDate.js",
-            "line": 111,
+            "line": 110,
             "description": "获取或设置 MultiDate 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -1764,7 +1761,7 @@
         },
         {
             "file": "../bizs/MultiDate/MultiDate.js",
-            "line": 127,
+            "line": 126,
             "description": "判断 selector 是否可以初始化 MultiDate",
             "itemtype": "method",
             "name": "isMultiDate",
@@ -2753,7 +2750,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1242,
+            "line": 1248,
             "description": "捕获用户更改年份 \n<p>监听 年份下拉框</p>",
             "itemtype": "event",
             "name": "year change",
@@ -2764,7 +2761,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1252,
+            "line": 1258,
             "description": "捕获用户更改年份 \n<p>监听 下一年按钮</p>",
             "itemtype": "event",
             "name": "next year",
@@ -2775,7 +2772,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1262,
+            "line": 1268,
             "description": "捕获用户更改年份 \n<p>监听 上一年按钮</p>",
             "itemtype": "event",
             "name": "previous year",
@@ -2786,7 +2783,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1272,
+            "line": 1278,
             "description": "增加或者减少一年\n<p>监听 年份map</p>",
             "itemtype": "event",
             "name": "year map click",
@@ -2797,7 +2794,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1286,
+            "line": 1292,
             "description": "增加或者减少一个月\n<p>监听 月份map</p>",
             "itemtype": "event",
             "name": "month map click",
@@ -2808,7 +2805,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1300,
+            "line": 1306,
             "description": "日期点击事件",
             "itemtype": "event",
             "name": "date click",
@@ -2819,7 +2816,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1313,
+            "line": 1319,
             "description": "选择当前日期\n<p>监听确定按钮</p>",
             "itemtype": "event",
             "name": "confirm click",
@@ -2830,7 +2827,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1323,
+            "line": 1329,
             "description": "清除文本框内容\n<p>监听 清空按钮</p>",
             "itemtype": "event",
             "name": "clear click",
@@ -2841,7 +2838,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1333,
+            "line": 1339,
             "description": "取消日历组件, 相当于隐藏\n<p>监听 取消按钮</p>",
             "itemtype": "event",
             "name": "cancel click",
@@ -2852,7 +2849,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1343,
+            "line": 1349,
             "description": "日历组件按钮点击事件",
             "itemtype": "event",
             "name": "calendar button click",
@@ -2863,7 +2860,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1353,
+            "line": 1359,
             "description": "日历组件点击事件, 阻止冒泡, 防止被 document click事件隐藏",
             "itemtype": "event",
             "name": "UXCCalendar click",
@@ -2874,7 +2871,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1362,
+            "line": 1368,
             "description": "DOM 加载完毕后, 初始化日历组件相关事件",
             "itemtype": "event",
             "name": "dom ready",
@@ -2885,14 +2882,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1368,
+            "line": 1374,
             "description": "延迟200毫秒初始化页面的所有日历控件\n之所以要延迟是可以让用户自己设置是否需要自动初始化",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1376,
+            "line": 1382,
             "description": "监听窗口滚动和改变大小, 实时变更日历组件显示位置",
             "itemtype": "event",
             "name": "window scroll, window resize",
@@ -2903,7 +2900,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1385,
+            "line": 1391,
             "description": "dom 点击时, 检查事件源是否为日历组件对象, 如果不是则会隐藏日历组件",
             "itemtype": "event",
             "name": "dom click",
@@ -2914,7 +2911,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1411,
+            "line": 1417,
             "description": "日历组件文本框获得焦点",
             "itemtype": "event",
             "name": "input focus",
@@ -2925,7 +2922,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1428,
+            "line": 1434,
             "description": "自定义周弹框的模板HTML",
             "itemtype": "property",
             "name": "weekTpl",
@@ -2937,7 +2934,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1437,
+            "line": 1443,
             "description": "自定义周日历每周的起始日期 \n<br /> 0 - 6, 0=周日, 1=周一",
             "itemtype": "property",
             "name": "weekDayOffset",
@@ -2949,7 +2946,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1636,
+            "line": 1642,
             "description": "取一年中所有的星期, 及其开始结束日期",
             "itemtype": "method",
             "name": "weekOfYear",
@@ -2974,14 +2971,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1648,
+            "line": 1654,
             "description": "元旦开始的第一个星期一开始的一周为政治经济上的第一周",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1672,
+            "line": 1678,
             "description": "自定义月份弹框的模板HTML",
             "itemtype": "property",
             "name": "monthTpl",
@@ -2993,7 +2990,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1951,
+            "line": 1957,
             "description": "自定义周弹框的模板HTML",
             "itemtype": "property",
             "name": "seasonTpl",
@@ -3005,7 +3002,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 2126,
+            "line": 2132,
             "description": "多选日期弹框的模板HTML",
             "itemtype": "property",
             "name": "monthdayTpl",
@@ -3017,7 +3014,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 2135,
+            "line": 2141,
             "description": "多先日期弹框标题末尾的附加字样",
             "itemtype": "property",
             "name": "monthdayHeadAppendText",
@@ -3029,7 +3026,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 2173,
+            "line": 2179,
             "description": "如果 atd 为空, 那么是 全选按钮触发的事件",
             "class": "JC.Calendar",
             "namespace": "JC"
@@ -12446,11 +12443,23 @@
     ],
     "warnings": [
         {
-            "message": "unknown tag: qiushaowei",
+            "message": "unknown tag: version",
             "line": " ../bizs/CommonModify/CommonModify.js:1"
         },
         {
-            "message": "unknown tag: date",
+            "message": "unknown tag: version",
+            "line": " ../bizs/DisableLogic/DisableLogic.js:2"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../bizs/FormLogic/FormLogic.js:2"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../bizs/KillISPCache/KillISPCache.js:2"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../bizs/MultiDate/MultiDate.js:3"
         },
         {
@@ -12835,7 +12844,7 @@
         },
         {
             "message": "Missing item type\nupdate current selector",
-            "line": " ../bizs/CommonModify/CommonModify.js:172"
+            "line": " ../bizs/CommonModify/CommonModify.js:171"
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",
@@ -12859,15 +12868,15 @@
         },
         {
             "message": "Missing item type\n延迟200毫秒初始化页面的所有日历控件\n之所以要延迟是可以让用户自己设置是否需要自动初始化",
-            "line": " ../comps/Calendar/Calendar.js:1368"
+            "line": " ../comps/Calendar/Calendar.js:1374"
         },
         {
             "message": "Missing item type\n元旦开始的第一个星期一开始的一周为政治经济上的第一周",
-            "line": " ../comps/Calendar/Calendar.js:1648"
+            "line": " ../comps/Calendar/Calendar.js:1654"
         },
         {
             "message": "Missing item type\n如果 atd 为空, 那么是 全选按钮触发的事件",
-            "line": " ../comps/Calendar/Calendar.js:2173"
+            "line": " ../comps/Calendar/Calendar.js:2179"
         },
         {
             "message": "Missing item type\n监听上一年按钮",
