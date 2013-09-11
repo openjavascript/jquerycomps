@@ -21,6 +21,12 @@
      *          <br/> 类型有: get, post, ajax 
      *      </dd>
      *
+     *      <dt>formSubmitDisable = bool, default = true</dt>
+     *      <dd>表单提交后, 是否禁用提交按钮</dd>
+     *
+     *      <dt>formResetAfterSubmit = bool, default = true</dt>
+     *      <dd>表单提交后, 是否重置内容</dd>
+     *
      *      <dt>formBeforeProcess = function</dt>
      *      <dd>表单开始提交时且没开始验证时, 触发的回调</dd>
      *
@@ -161,7 +167,23 @@
      * @default     empty
      * @static
      */
-    FormLogic.ajaxSubmitType = '' ;
+    FormLogic.ajaxSubmitType = '';
+    /**
+     * 表单提交后, 是否禁用提交按钮
+     * @property    submitDisable
+     * @type        bool
+     * @default     true
+     * @static
+     */
+    FormLogic.submitDisable = true;
+    /**
+     * 表单提交后, 是否重置表单内容
+     * @property    resetAfterSubmit
+     * @type        bool
+     * @default     true
+     * @static
+     */
+    FormLogic.resetAfterSubmit = true;
 
     FormLogic.prototype = {
         _beforeInit:
@@ -175,7 +197,9 @@
                     ;
 
                 _p._view.initQueryVal();
-
+                /**
+                 * jquery ajax 提交处理事件
+                 */
                 _p.on( FormLogic.Model.EVT_AJAX_SUBMIT, function(){
                     var _method = _p._model.formAjaxMethod();
                     JC.log( FormLogic.Model.EVT_AJAX_SUBMIT, _method );
@@ -185,22 +209,49 @@
                         $[ _method ]( _p._model.formAjaxAction(), _data )
                         .done( function( _d ){
                             JC.log( 'common ajax done' );
-                            //alert( 'form' );
-                            var _json;
-                            try{ _json = $.parseJSON( _d ); }catch(ex){}
-                            _json = _json || _d || {};
-                            _p._model.formAjaxDone()
-                                && _p._model.formAjaxDone().call( 
-                                    _p._model.selector() 
-                                    , _json
-                                    , _p._model.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON )
-                                    , _p
-                                );
+                            _p.trigger( 'AjaxDone', [ _d ] );
                         });
                     ;
                 });
+                /**
+                 * 全局 AJAX 提交完成后的处理事件
+                 */
+                _p.on('AjaxDone', function( _evt, _data ){
+
+                    _p._model.formResetAfterSubmit() 
+                        && _p.selector().trigger('reset');
+
+                    _p._model.formSubmitDisable() 
+                        && _p.selector().find('input[type=submit], button[type=submit]').each( function(){
+                            $( this ).prop('disabled', false );
+                        });
+
+                    var _json;
+                    try{ _json = $.parseJSON( _data ); }catch(ex){}
+                    _json = _json || _data || {};
+                    _p._model.formAjaxDone()
+                        && _p._model.formAjaxDone().call( 
+                            _p._model.selector() 
+                            , _json
+                            , _p._model.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON )
+                            , _p
+                        );
+                });
+                /**
+                 * 表单内容验证通过后, 开始提交前的处理事件
+                 */
+                _p.on('ProcessDone', function(){
+                    _p._model.formSubmitDisable() 
+                        && _p.selector().find('input[type=submit], button[type=submit]').each( function(){
+                            $( this ).prop('disabled', true);
+                        });
+                });
 
                 if( _p._model.formType() == 'ajax' && _p._model.ajaxSubmitType() == 'plugins' ){
+                    /**
+                     * jquery.form plugins 提交处理设置
+                     * 这个可以 AJAX 上传文件
+                     */
                     _p.selector().ajaxForm({
                         beforeSubmit:
                             function(){
@@ -224,24 +275,20 @@
                                     _p.trigger( FormLogic.Model.EVT_CONFIRM );
                                     return _p._model.prevent();
                                 }
+
+                                _p.trigger( 'ProcessDone' );
                             }
                         , success:
                             function( _d ){
                                 JC.log( 'plugins ajax done' );
-                                //alert( 'plugins' );
-                                try{ _json = $.parseJSON( _d ); }catch(ex){}
-                                var _json;
-                                _json = _json || _d || {};
-                                _p._model.formAjaxDone()
-                                    && _p._model.formAjaxDone().call( 
-                                        _p._model.selector() 
-                                        , _json
-                                        , _p._model.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON )
-                                        , _p
-                                    );
+                                _p.trigger( 'AjaxDone', [ _d ] );
                             }
                     });
                 }else{
+                    /**
+                     * 默认 form 提交处理事件
+                     * 这个如果是 AJAX 的话, 无法上传 文件 
+                     */
                     _p.selector().on('submit', function( _evt ){
                         //_evt.preventDefault();
 
@@ -265,6 +312,8 @@
                             _p.trigger( FormLogic.Model.EVT_CONFIRM );
                             return _p._model.prevent( _evt );
                         }
+
+                        _p.trigger( 'ProcessDone' );
 
                         if( _type == FormLogic.Model.AJAX ){
                             _p.trigger( FormLogic.Model.EVT_AJAX_SUBMIT );
@@ -377,6 +426,29 @@
         , formAjaxAction:
             function(){
                 var _r = this.stringProp( 'formAjaxAction' ) || this.stringProp( 'action' ) || '?';
+                return _r;
+            }
+        , formSubmitDisable:
+            function(){
+                var _p = this, _r = FormLogic.submitDisable
+                    , _btn = _p.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON )
+                    ;
+
+                _p.selector().is('[formSubmitDisable]')
+                    && ( _r = parseBool( _p.selector().attr('formSubmitDisable') ) );
+
+                _btn 
+                    && _btn.is('[formSubmitDisable]')
+                    && ( _r = parseBool( _btn.attr('formSubmitDisable') ) );
+
+                return _r;
+            }
+        , formResetAfterSubmit:
+            function(){
+                var _p = this, _r = FormLogic.resetAfterSubmit;
+
+                _p.selector().is('[formResetAfterSubmit]')
+                    && ( _r = parseBool( _p.selector().attr('formResetAfterSubmit') ) );
                 return _r;
             }
         , formAjaxDone:

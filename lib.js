@@ -923,7 +923,9 @@ function funcName(_func){
      */
     JC.PATH = script_path_f();
     //dev开发时因为脚本没合并, IE找不到库的正确路径, 这个判断仅针对dev开发分支
-    /\/JQueryComps_dev\//i.test( location.href ) && ( JC.PATH = '/ignore/JQueryComps_dev/' );
+    /\/JQueryComps_dev\//i.test( location.href ) 
+        && !( /file\:/.test( location.href ) || /\\/.test( location.href ) )
+        && ( JC.PATH = '/ignore/JQueryComps_dev/' );
     /**
      * <h2>业务逻辑命名空间</h2>
      * <br />这个命名空间的组件主要为满足业务需求, 不是通用组件~
@@ -961,7 +963,6 @@ function funcName(_func){
      * @param   {selector|string}   _selector   
      * @version dev 0.1 2013-09-07
      * @author  qiushaowei   <suches@btbtd.org> | 75 Team
-     * @example
      */
     function BaseMVC( _selector ){
         throw new Error( "JC.BaseMVC is an abstract class, can't initialize!" );
@@ -1151,21 +1152,53 @@ function funcName(_func){
         function( _outClass ){
             !_outClass.View && ( _outClass.View = function( _model ){ this._model = _model; } );
         }
-    
+    /**
+     * MVC Model 类( <b>仅供扩展用</b> )
+     * <p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   
+     * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>
+     * | <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>
+     * @namespace JC
+     * @class BaseMVC.Model
+     * @constructor
+     * @param   {selector|string}   _selector   
+     * @version dev 0.1 2013-09-11
+     * @author  qiushaowei   <suches@btbtd.org> | 75 Team
+     */
     BaseMVC.buildModel( BaseMVC );
+    /**
+     * 设置 selector 实例引用的 data 属性名
+     * @property    _instanceName
+     * @type        string
+     * @default     BaseMVCIns
+     * @private
+     * @static
+     */
     BaseMVC.Model._instanceName = 'BaseMVCIns';
     BaseMVC.Model.prototype = {
         init:
             function(){
                 return this;
             }
-
+        /**
+         * 初始化的 jq 选择器
+         * @method  selector
+         * @param   {selector}  _setter
+         * @return  selector
+         */
         , selector: 
             function( _setter ){ 
                 typeof _setter != 'undefined' && ( this._selector = _setter );
                 return this._selector; 
             }
-
+        /**
+         * 读取 int 属性的值
+         * @method  intProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  int
+         */
         , intProp:
             function( _selector, _key ){
                 if( typeof _key == 'undefined' ){
@@ -1180,7 +1213,13 @@ function funcName(_func){
                     && ( _r = parseInt( _selector.attr( _key ).trim(), 10 ) || _r );
                 return _r;
             }
-
+        /**
+         * 读取 float 属性的值
+         * @method  floatProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  float
+         */
         , floatProp:
             function( _selector, _key ){
                 if( typeof _key == 'undefined' ){
@@ -1195,7 +1234,13 @@ function funcName(_func){
                     && ( _r = parseFloat( _selector.attr( _key ).trim() ) || _r );
                 return _r;
             }
-
+        /**
+         * 读取 string 属性的值
+         * @method  stringProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  string
+         */
         , stringProp:
             function( _selector, _key ){
                 if( typeof _key == 'undefined' ){
@@ -1210,7 +1255,39 @@ function funcName(_func){
                     && ( _r = _selector.attr( _key ).trim().toLowerCase() );
                 return _r;
             }
-
+        /**
+         * 读取 boolean 属性的值
+         * @method  boolProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string|bool}       _key
+         * @param   {bool}              _defalut
+         * @return  {bool|undefined}
+         */
+        , boolProp:
+            function( _selector, _key, _defalut ){
+                if( typeof _key == 'boolean' ){
+                    _defalut = _key;
+                    _key = _selector;
+                    _selector = this.selector();
+                }else if( typeof _key == 'undefined' ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector && ( _selector = $( _selector ) );
+                }
+                var _r = undefined;
+                _selector
+                    && _selector.is( '[' + _key + ']' ) 
+                    && ( _r = parseBool( _selector.attr( _key ).trim() ) );
+                return _r;
+            }
+        /**
+         * 读取 callback 属性的值
+         * @method  callbackProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  {function|undefined}
+         */
         , callbackProp:
             function( _selector, _key ){
                 if( typeof _key == 'undefined' ){
