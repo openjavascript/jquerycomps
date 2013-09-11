@@ -19,7 +19,10 @@
      * | <a href='../../comps/Calendar/_demo/' target='_blank'>demo link</a></p>
      * <h2> 可用的html attribute, (input|button):(datatype|multidate)=(date|week|month|season) </h2> 
      * <dl>
-     *      <dt>datatype</dt>
+     *      <dt>defaultdate = ISO Date</dt>
+     *      <dd>默认显示日期, 如果 value 为空, 则尝试读取 defaultdate 属性</dd>
+     *
+     *      <dt>datatype = string</dt>
      *      <dd>
      *          声明日历控件的类型:
      *          <p><b>date:</b> 日期日历</p>
@@ -29,21 +32,21 @@
      *          <p><b>monthday:</b> 多选日期日历</p>
      *      </dd>
      *
-     *      <dt>multidate</dt>
+     *      <dt>multidate = string</dt>
      *      <dd>
      *          与 datatype 一样, 这个是扩展属性, 避免表单验证带来的逻辑冲突
      *      </dd>
      *
-     *      <dt>calendarshow</dt>
+     *      <dt>calendarshow = function</dt>
      *      <dd>显示日历时的回调</dd>
      *
-     *      <dt>calendarhide</dt>
+     *      <dt>calendarhide = function</dt>
      *      <dd>隐藏日历时的回调</dd>
      *
-     *      <dt>calendarlayoutchange</dt>
+     *      <dt>calendarlayoutchange = function</dt>
      *      <dd>用户点击日历控件操作按钮后, 外观产生变化时触发的回调</dd>
      *
-     *      <dt>calendarupdate</dt>
+     *      <dt>calendarupdate = function</dt>
      *      <dd>
      *          赋值后触发的回调
      *          <dl>
@@ -53,22 +56,22 @@
      *          </dl>
      *      </dd>
      *
-     *      <dt>calendarclear</dt>
+     *      <dt>calendarclear = function</dt>
      *      <dd>清空日期触发的回调</dd>
      *
-     *      <dt>minvalue</dt>
+     *      <dt>minvalue = ISO Date</dt>
      *      <dd>日期的最小时间, YYYY-MM-DD</dd>
      *
-     *      <dt>maxvalue</dt>
+     *      <dt>maxvalue = ISO Date</dt>
      *      <dd>日期的最大时间, YYYY-MM-DD</dd>
      *
-     *      <dt>currentcanselect</dt>
-     *      <dd>当前日期是否能选择, bool, default=true</dd>
+     *      <dt>currentcanselect = bool, default = true</dt>
+     *      <dd>当前日期是否能选择</dd>
      *
-     *      <dt>multiselect (目前只对月份日历有效)</dt>
-     *      <dd>是否为多选日历, bool, default=false</dd>
+     *      <dt>multiselect = bool (目前支持 month: default=false, monthday: default = treu)</dt>
+     *      <dd>是否为多选日历</dd>
      *
-     *      <dt>calendarupdatemultiselect</dt>
+     *      <dt>calendarupdatemultiselect = function</dt>
      *      <dd>
      *          多选日历赋值后触发的回调
      *          <dl>
@@ -681,8 +684,8 @@
            _selector.each( function(){
                 var _p = $(this), _nodeName = (_p.prop('nodeName')||'').toLowerCase();
 
-                if( _nodeName != 'input' ){ 
-                    Calendar.initTrigger( _selector.find( $('input[type=text]') ) ); 
+                if( _nodeName != 'input' && _nodeName != 'textarea' ){ 
+                    Calendar.initTrigger( _selector.find( 'input[type=text], textarea' ) ); 
                     return; 
                 }
 
@@ -697,9 +700,46 @@
                 if( !_btn.length ){
                     _p.after( _btn = $('<input type="button" class="UXCCalendar_btn"  />') );
                 }
+
+                if( ( _p.attr('datatype') || '' ).toLowerCase() == 'monthday'
+                    || ( _p.attr('multidate') || '' ).toLowerCase() == 'monthday' ){
+                    if( !_p.is('[placeholder]') ){
+                        var _tmpDate = new Date();
+                        _p.attr('defaultdate') && ( _tmpDate = parseISODate( _p.attr('defaultdate') ) || _tmpDate );
+                        _p.val().trim() && ( _tmpDate = parseISODate( _p.val().replace( /[^d]/g, '').slice( 0, 8 ) ) || _tmpDate );
+                        _tmpDate && _p.attr( 'placeholder', printf( '{0}年 {1}月', _tmpDate.getFullYear(), _tmpDate.getMonth() + 1 ) );
+                    }
+                }
+
                 _btn.data( Calendar.Model.INPUT, _p );
             });
         };
+
+    Calendar.updateMultiYear =
+        function ( _date, _offset ){
+            var _day, _max;
+            _day = _date.getDate();
+            _date.setDate( 1 );
+            _date.setFullYear( _date.getFullYear() + _offset );
+            _max = maxDayOfMonth( _date );
+            _day > _max && ( _day = _max );
+            _date.setDate( _day );
+            return _date;
+        };
+
+    Calendar.updateMultiMonth =
+        function ( _date, _offset ){
+            var _day, _max;
+            _day = _date.getDate();
+            _date.setDate( 1 );
+            _date.setMonth( _date.getMonth() + _offset );
+            _max = maxDayOfMonth( _date );
+            _day > _max && ( _day = _max );
+            _date.setDate( _day );
+            return _date;
+        };
+
+
     /**
      * 克隆 Calendar 默认 Model, View 的原型属性
      * @method  clone
@@ -841,6 +881,9 @@
                         _r.enddate = parseISODate( _tmp.slice( 8 ) );
                     }else{
                         _tmp = new Date();
+                        if( Calendar.lastIpt && Calendar.lastIpt.is('[defaultdate]') ){
+                            _tmp = parseISODate( Calendar.lastIpt.attr('defaultdate') ) || _tmp;
+                        }
                         _r.date = new Date( _tmp.getFullYear(), _tmp.getMonth(), _tmp.getDate() );
                     }
                 }
@@ -887,6 +930,9 @@
 
                     }else{
                         _tmp = new Date();
+                        if( Calendar.lastIpt && Calendar.lastIpt.is('[defaultdate]') ){
+                            _tmp = parseISODate( Calendar.lastIpt.attr('defaultdate') ) || _tmp;
+                        }
                         _r.date = new Date( _tmp.getFullYear(), _tmp.getMonth(), _tmp.getDate() );
                         _r.enddate = cloneDate( _r.date );
                         _r.enddate.setDate( maxDayOfMonth( _r.enddate ) );
@@ -916,6 +962,43 @@
         , multiLayoutDate:
             function(){
                 JC.log( 'Calendar.Model multiLayoutDate', new Date().getTime() );
+                var _p = this
+                    , _dateo = _p.defaultDate()
+                    , _year = _p.year()
+                    , _month = _p.month()
+                    , _monthSel = _p.layout().find('select.UMonth')
+                    ;
+
+                _dateo.multidate = [];
+
+                _p.layout().find('td.cur').each(function(){
+                    var _sp = $(this);
+                    var _item = _sp.find('> a[dstart]'), _dstart = new Date(), _dend = new Date();
+                    _dstart.setTime( _item.attr('dstart') );
+                    _dend.setTime( _item.attr('dend') );
+                    _dateo.multidate.push( { 'start': _dstart, 'end': _dend } );
+                });
+
+                _dateo.date.setFullYear( _year );
+                _dateo.enddate.setFullYear( _year );
+
+                if( _monthSel.length ){
+                    _dateo.date.setMonth( _month );
+                    _dateo.enddate.setMonth( _month );
+                }
+
+
+                $.each( _dateo.multidate, function( _ix, _item ){
+                    _item.start.setFullYear( _year );
+                    _item.end.setFullYear( _year );
+                    if( _monthSel.length ){
+                        _item.start.setMonth( _month );
+                        _item.end.setMonth( _month );
+                    }
+                });
+
+                return _dateo;
+
             }
         , selectedDate:
             function(){
@@ -1048,13 +1131,13 @@
             ,'    </div>'
             ,'</div>'
             ].join('')
-
     };
     
     function View( _model ){
         this._model = _model;
     }
     Calendar.View = View;
+
     
     View.prototype = {
         init:
@@ -1089,7 +1172,6 @@
                     ? this.updateMultiYear( _offset )
                     : this.updateSingleYear( _offset )
                     ;
-
             }
         , updateSingleYear:
             function( _offset ){
@@ -1104,10 +1186,47 @@
             }
         , updateMultiYear:
             function( _offset ){
+                var _dateo = this._model.layoutDate(), _day, _max;
+
+                JC.Calendar.updateMultiYear( _dateo.date, _offset );
+                JC.Calendar.updateMultiYear( _dateo.enddate, _offset );
+
+                if( _dateo.multidate ){
+                    $.each( _dateo.multidate, function( _ix, _item ){
+                        JC.Calendar.updateMultiYear( _item.start, _offset );
+                        JC.Calendar.updateMultiYear( _item.end, _offset );
+                    });
+                }
+                this._buildLayout( _dateo );
+                this._buildDone();
             }
         , updateMonth:
             function( _offset ){
                 if( typeof _offset == 'undefined' || _offset == 0 ) return;
+
+                this._model.multiselect() 
+                    ? this.updateMultiMonth( _offset )
+                    : this.updateSingleMonth( _offset )
+                    ;
+            }
+        , updateMultiMonth:
+            function( _offset ){
+                var _dateo = this._model.layoutDate(), _day, _max;
+
+                JC.Calendar.updateMultiMonth( _dateo.date, _offset );
+                JC.Calendar.updateMultiMonth( _dateo.enddate, _offset );
+
+                if( _dateo.multidate ){
+                    $.each( _dateo.multidate, function( _ix, _item ){
+                        JC.Calendar.updateMultiMonth( _item.start, _offset );
+                        JC.Calendar.updateMultiMonth( _item.end, _offset );
+                    });
+                }
+                this._buildLayout( _dateo );
+                this._buildDone();
+            }
+        , updateSingleMonth:
+            function( _offset ){
                 var _dateo = this._model.layoutDate(), _day = _dateo.date.getDate(), _max;
                 _dateo.date.setDate( 1 );
                 _dateo.date.setMonth( _dateo.date.getMonth() + _offset );
@@ -1116,7 +1235,6 @@
                 _dateo.date.setDate( _day );
                 this._buildLayout( _dateo );
                 this._buildDone();
-                //JC.log( 'updateMonth:', _offset, formatISODate( _dateo.date ) );
             }
         , updateSelected:
             function( _userSelectedItem ){
@@ -1251,7 +1369,7 @@
      * @event year change
      * @private
      */
-    $(document).delegate( 'body > div.UXCCalendar select.UYear, #UXCCalendar select.UMonth', 'change', function( $evt ){
+    $(document).delegate( 'body > div.UXCCalendar select.UYear, body > div.UXCCalendar select.UMonth', 'change', function( $evt ){
         Calendar.getInstance( Calendar.lastIpt )
             && Calendar.getInstance( Calendar.lastIpt ).updateLayout();
     });
@@ -1304,6 +1422,27 @@
                );
     });
     /**
+     * 捕获用户更改月份 
+     * <p>监听 下一月按钮</p>
+     * @event next year
+     * @private
+     */
+    $(document).delegate( 'body > div.UXCCalendar button.UNextMonth', 'click', function( $evt ){
+        Calendar.getInstance( Calendar.lastIpt )
+            && Calendar.getInstance( Calendar.lastIpt ).updateMonth( 1 );
+    });
+    /**
+     * 捕获用户更改月份
+     * <p>监听 上一月按钮</p>
+     * @event previous year
+     * @private
+     */
+    $(document).delegate( 'body > div.UXCCalendar button.UPreMonth', 'click', function( $evt ){
+        Calendar.getInstance( Calendar.lastIpt )
+            && Calendar.getInstance( Calendar.lastIpt ).updateMonth( -1 );
+    });
+
+    /**
      * 日期点击事件
      * @event date click
      * @private
@@ -1352,9 +1491,14 @@
      * @private
      */
     $(document).delegate( 'input.UXCCalendar_btn', 'click', function($evt){
-        $(this).data( Calendar.Model.INPUT ) 
-            && !$(this).data( Calendar.Model.INPUT ).is('[disabled]')
-            && Calendar.pickDate( $(this).data( Calendar.Model.INPUT ) );
+        var _p = $(this), _tmp;
+        if( !_p.data( Calendar.Model.INPUT ) ){
+            _tmp = _p.prev( 'input[type=text], textarea' );
+            _tmp.length && _p.data( Calendar.Model.INPUT, _tmp );
+        }
+        _p.data( Calendar.Model.INPUT ) 
+            && !_p.data( Calendar.Model.INPUT ).is('[disabled]')
+            && Calendar.pickDate( _p.data( Calendar.Model.INPUT ) );
     });
     /**
      * 日历组件点击事件, 阻止冒泡, 防止被 document click事件隐藏
@@ -1377,7 +1521,7 @@
          */
         setTimeout( function( $evt ){
             if( !Calendar.autoInit ) return;
-            Calendar.initTrigger( $('input[type=text]') );
+            Calendar.initTrigger( $(document) );
         }, 200 );
         /**
          * 监听窗口滚动和改变大小, 实时变更日历组件显示位置
@@ -1401,7 +1545,10 @@
 
             if( Calendar.isCalendar($evt.target||$evt.targetElement) ) return;
 
-            if( _src && ( _src.nodeName.toLowerCase() != 'input' && _src.nodeName.toLowerCase() != 'button' ) ){
+            if( _src && ( _src.nodeName.toLowerCase() != 'input'
+                    && _src.nodeName.toLowerCase() != 'button' 
+                    && _src.nodeName.toLowerCase() != 'textarea' 
+                    ) ){
                 Calendar.hide(); return;
             }
 
@@ -1425,6 +1572,10 @@
     });
     $(document).delegate( [ 'button[datatype=season]', 'button[datatype=month]', 'button[datatype=week]'
             , 'button[datatype=date]', 'button[datatype=daterange]', 'button[multidate], button[datatype=monthday]' ].join(), 'click' , function($evt){
+            Calendar.pickDate( this );
+    });
+    $(document).delegate( [ 'textarea[datatype=season]', 'textarea[datatype=month]', 'textarea[datatype=week]'
+            , 'textarea[datatype=date]', 'textarea[datatype=daterange]', 'textarea[multidate], textarea[datatype=monthday]' ].join(), 'click' , function($evt){
             Calendar.pickDate( this );
     });
 }(jQuery));
@@ -1755,67 +1906,6 @@
                 ;
             return _r;
         };
-
-    MonthModel.prototype.multiLayoutDate = 
-        function(){
-            var _p = this
-                , _dateo = _p.defaultDate()
-                , _year = _p.year()
-                ;
-
-            JC.log( 'MonthModel.multiLayoutDate:', new Date().getTime() );
-            _dateo.multidate = [];
-
-            _p.layout().find('td.cur').each(function(){
-                var _sp = $(this);
-                var _item = _sp.find('> a[dstart]'), _dstart = new Date(), _dend = new Date();
-                _dstart.setTime( _item.attr('dstart') );
-                _dend.setTime( _item.attr('dend') );
-                _dateo.multidate.push( { 'start': _dstart, 'end': _dend } );
-            });
-
-            _dateo.date.setFullYear( _year );
-            _dateo.enddate.setFullYear( _year );
-
-            $.each( _dateo.multidate, function( _ix, _item ){
-                _item.start.setFullYear( _year );
-                _item.end.setFullYear( _year );
-            });
-
-            return _dateo;
-        };
-
-    MonthView.prototype.updateMultiYear =
-        function( _offset ){
-            var _dateo = this._model.layoutDate(), _day, _max;
-
-            //JC.log( 'xdfsadfasefasf', _dateo.multidate == null );
-            JC.log( 'MonthView.updateMultiYear:', new Date().getTime() );
-
-            tmpUpdateMultiYear( _dateo.date, _offset );
-            tmpUpdateMultiYear( _dateo.enddate, _offset );
-
-            if( _dateo.multidate ){
-                //JC.log( _dateo.multidate.length );
-                $.each( _dateo.multidate, function( _ix, _item ){
-                    tmpUpdateMultiYear( _item.start, _offset );
-                    tmpUpdateMultiYear( _item.end, _offset );
-                    JC.log('xxxxxxxxxxxxxxxxxxxxxxx', _item.start, _item.end, _offset );
-                });
-            }
-
-            this._buildLayout( _dateo );
-            this._buildDone();
-        };
-    function tmpUpdateMultiYear( _date, _offset ){
-        var _day, _max;
-        _day = _date.getDate();
-        _date.setDate( 1 );
-        _date.setFullYear( _date.getFullYear() + _offset );
-        _max = maxDayOfMonth( _date );
-        _day > _max && ( _day = _max );
-        _date.setDate( _day );
-    }
 
     MonthView.prototype._buildBody =
         function( _dateo ){
@@ -2255,18 +2345,43 @@
             if( !_r.length ){
                 _r = $( printf( JC.Calendar.monthdayTpl || this.tpl, JC.Calendar.monthdayHeadAppendText ) ).hide();
                 _r.attr('id', 'UXCCalendar_monthday').hide().appendTo( document.body );
+
+                var _month = $( [
+                            '<option value="0">一月</option>'
+                            , '<option value="1">二月</option>'
+                            , '<option value="2">三月</option>'
+                            , '<option value="3">四月</option>'
+                            , '<option value="4">五月</option>'
+                            , '<option value="5">六月</option>'
+                            , '<option value="6">七月</option>'
+                            , '<option value="7">八月</option>'
+                            , '<option value="8">九月</option>'
+                            , '<option value="9">十月</option>'
+                            , '<option value="10">十一月</option>'
+                            , '<option value="11">十二月</option>'
+                        ].join('') ).appendTo( _r.find('select.UMonth' ) );
+
              }
             return _r;
         };
 		
 	MonthDayModel.prototype.tpl =
         [
-        '<div id="UXCCalendar_monthday" class="UXCCalendar UXCCalendar_monthday" >'
+        '<div id="UXCCalendar_monthday" class="UXCCalendar UXCCalendar_week UXCCalendar_monthday" >'
         ,'    <div class="UHeader">'
+        ,'        <button type="button" class="UButton UPreYear">&nbsp;&lt;&lt;&nbsp;</button>'
+        ,'        <button type="button" class="UButton UPreMonth">&nbsp;&nbsp;&lt;&nbsp;&nbsp;</button>'
+        ,'        <select class="UYear" style=""></select>'
+        ,'        <select class="UMonth"></select>'
+        ,'        {0}'
+        ,'        <button type="button" class="UButton UNextYear">&nbsp;&gt;&gt;&nbsp;</button>'
+        ,'        <button type="button" class="UButton UNextMonth">&nbsp;&nbsp;&gt;&nbsp;&nbsp;</button>'
+        /*
         ,'       <span class="UYear">'
         ,'       </span>年'
         ,'       <span class="UMonth">'
         ,'       </span>月{0}'
+        */
         ,'    </div>'
         ,'    <table class="UTable UTableBorder">'
         ,'        <tbody></tbody>'
@@ -2280,10 +2395,6 @@
         ].join('');
 
     MonthDayModel.prototype.multiselect = function(){ return true; };
-
-    MonthDayModel.prototype.multiLayoutDate = 
-    	function (){
-    	};
 
     MonthDayModel.prototype.multiselectDate =
         function(){
@@ -2341,6 +2452,10 @@
             }
 
             if( !_text ) return;
+            if( _tmp.length ){
+                _p._model.selector().attr('placeholder', printf( '{0}年 {1}', _tmp[0].getFullYear(), _tmp[0].getMonth() + 1 ) );
+                _p._model.selector().attr('defaultdate', formatISODate( _tmp[0] ) );
+            }
 
             _p._model.selector().val( _text );
             $(_p).trigger( 'TriggerEvent', [ JC.Calendar.Model.UPDATE, 'monthday', _tmp ] );
@@ -2348,6 +2463,7 @@
             JC.Calendar.hide();
         };
 	
+    /*
 	MonthDayView.prototype._buildHeader = 
 		function( _dateo ){
 			var _p = this, 
@@ -2356,10 +2472,28 @@
 			var year = _dateo.date.getFullYear(),
 				month = _dateo.date.getMonth() + 1;
 			
-			_layout.find('div.UHeader span.UYear').html(year);
-			_layout.find('div.UHeader span.UMonth').html(month);
+			//_layout.find('div.UHeader span.UYear').html(year);
+			//_layout.find('div.UHeader span.UMonth').html(month);
 				
 		};
+   */
+
+    MonthDayModel.prototype.fixedDate =
+        function( _dateo ){
+            var _p = this, _lastIpt = JC.Calendar.lastIpt, _tmpDate;
+            _lastIpt
+                && !_lastIpt.is('[defaultdate]')
+                && (
+                        _tmpDate = cloneDate( _dateo.multidate[0].start )
+                        //, _tmpDate.setDate( 1 )
+                        , _lastIpt.attr('defaultdate', formatISODate( _tmpDate ) )
+                        /*
+                        , !_lastIpt.is( '[placeholder]' ) 
+                            && _lastIpt.attr('placeholder', printf( '{0}年 {1}月', _tmpDate.getFullYear(), _tmpDate.getMonth() + 1 ) )
+                       */
+                    )
+                ;
+        };
 	
 	MonthDayView.prototype._buildBody =
         function( _dateo ){
@@ -2372,6 +2506,7 @@
 					_tempDay,
 					_today = new Date();
 
+                _p._model.fixedDate( _dateo );
 				
 				_tempDate = new Date(_dateo.date.getFullYear(), _dateo.date.getMonth(), 1);
 				_tempDay = _tempDate.getDay();
@@ -2381,7 +2516,8 @@
 
 				_headLs.push('<tr><td><span class="bold">星期</span></td>');
                 _dayLs.push('<tr><td><span class="bold">日期</span></td>'); 
-				_ckLs.push('<tr class="Uchkdate"><td><label><span class="bold">全选</span>&nbsp;<input type="checkbox" value="" class="js_JCCalendarCheckbox" action="all"  /></lable></td>');
+				_ckLs.push('<tr class="Uchkdate"><td><label><span class="bold">全选</span>&nbsp;'
+                            + '<input type="checkbox" class="js_JCCalendarCheckbox" action="all"  /></lable></td>');
 
 				for ( i = 0; i < _maxday; i++ ) {
 					_headClass  = [];

@@ -125,7 +125,9 @@
 | <a href='../../comps/Calendar/_demo/' target='_blank'>demo link</a></p>
 <h2> 可用的html attribute, (input|button):(datatype|multidate)=(date|week|month|season) </h2> 
 <dl>
-     <dt>datatype</dt>
+     <dt>defaultdate = ISO Date</dt>
+     <dd>默认显示日期, 如果 value 为空, 则尝试读取 defaultdate 属性</dd>
+     <dt>datatype = string</dt>
      <dd>
          声明日历控件的类型:
          <p><b>date:</b> 日期日历</p>
@@ -134,17 +136,17 @@
          <p><b>season:</b> 季日历</p>
          <p><b>monthday:</b> 多选日期日历</p>
      </dd>
-     <dt>multidate</dt>
+     <dt>multidate = string</dt>
      <dd>
          与 datatype 一样, 这个是扩展属性, 避免表单验证带来的逻辑冲突
      </dd>
-     <dt>calendarshow</dt>
+     <dt>calendarshow = function</dt>
      <dd>显示日历时的回调</dd>
-     <dt>calendarhide</dt>
+     <dt>calendarhide = function</dt>
      <dd>隐藏日历时的回调</dd>
-     <dt>calendarlayoutchange</dt>
+     <dt>calendarlayoutchange = function</dt>
      <dd>用户点击日历控件操作按钮后, 外观产生变化时触发的回调</dd>
-     <dt>calendarupdate</dt>
+     <dt>calendarupdate = function</dt>
      <dd>
          赋值后触发的回调
          <dl>
@@ -153,17 +155,17 @@
              <dd><b>_endDate:</b> 结束日期</dd>
          </dl>
      </dd>
-     <dt>calendarclear</dt>
+     <dt>calendarclear = function</dt>
      <dd>清空日期触发的回调</dd>
-     <dt>minvalue</dt>
+     <dt>minvalue = ISO Date</dt>
      <dd>日期的最小时间, YYYY-MM-DD</dd>
-     <dt>maxvalue</dt>
+     <dt>maxvalue = ISO Date</dt>
      <dd>日期的最大时间, YYYY-MM-DD</dd>
-     <dt>currentcanselect</dt>
-     <dd>当前日期是否能选择, bool, default=true</dd>
-     <dt>multiselect (目前只对月份日历有效)</dt>
-     <dd>是否为多选日历, bool, default=false</dd>
-     <dt>calendarupdatemultiselect</dt>
+     <dt>currentcanselect = bool, default = true</dt>
+     <dd>当前日期是否能选择</dd>
+     <dt>multiselect = bool (目前支持 month: default=false, monthday: default = treu)</dt>
+     <dd>是否为多选日历</dd>
+     <dt>calendarupdatemultiselect = function</dt>
      <dd>
          多选日历赋值后触发的回调
          <dl>
@@ -389,6 +391,12 @@
                                 <a href="#event_next year">next year</a>
                             </li>
                             <li class="index-item event private">
+                                <a href="#event_next year">next year</a>
+                            </li>
+                            <li class="index-item event private">
+                                <a href="#event_previous year">previous year</a>
+                            </li>
+                            <li class="index-item event private">
                                 <a href="#event_previous year">previous year</a>
                             </li>
                             <li class="index-item event private">
@@ -415,7 +423,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l135"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:135</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l138"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:138</code></a>
         </p>
     </div>
     <div class="description">
@@ -429,7 +437,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l160"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:160</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l163"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:163</code></a>
         </p>
     </div>
     <div class="description">
@@ -449,7 +457,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l673"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:673</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l676"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:676</code></a>
         </p>
     </div>
     <div class="description">
@@ -473,7 +481,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l367"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:367</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l370"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:370</code></a>
         </p>
     </div>
     <div class="description">
@@ -486,7 +494,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l356"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:356</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l359"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:359</code></a>
         </p>
     </div>
     <div class="description">
@@ -508,7 +516,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l703"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:703</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l743"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:743</code></a>
         </p>
     </div>
     <div class="description">
@@ -544,7 +552,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l391"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:391</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l394"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:394</code></a>
         </p>
     </div>
     <div class="description">
@@ -578,7 +586,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l644"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:644</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l647"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:647</code></a>
         </p>
     </div>
     <div class="description">
@@ -615,7 +623,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l616"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:616</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l619"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:619</code></a>
         </p>
     </div>
     <div class="description">
@@ -652,7 +660,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l401"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:401</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l404"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:404</code></a>
         </p>
     </div>
     <div class="description">
@@ -683,7 +691,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l599"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:599</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l602"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:602</code></a>
         </p>
     </div>
     <div class="description">
@@ -706,7 +714,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l255"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:255</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l258"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:258</code></a>
         </p>
     </div>
     <div class="description">
@@ -732,7 +740,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l454"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:454</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l457"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:457</code></a>
         </p>
     </div>
     <div class="description">
@@ -760,7 +768,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l272"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:272</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l275"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:275</code></a>
         </p>
     </div>
     <div class="description">
@@ -791,7 +799,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l278"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:278</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l281"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:281</code></a>
         </p>
     </div>
     <div class="description">
@@ -834,7 +842,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l492"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:492</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l495"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:495</code></a>
         </p>
     </div>
     <div class="description">
@@ -887,7 +895,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l658"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:658</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l661"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:661</code></a>
         </p>
     </div>
     <div class="description">
@@ -915,7 +923,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l266"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:266</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l269"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:269</code></a>
         </p>
     </div>
     <div class="description">
@@ -937,7 +945,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l242"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:242</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l245"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:245</code></a>
         </p>
     </div>
     <div class="description">
@@ -965,7 +973,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l286"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:286</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l289"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:289</code></a>
         </p>
     </div>
     <div class="description">
@@ -1005,7 +1013,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l428"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:428</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l431"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:431</code></a>
         </p>
     </div>
     <div class="description">
@@ -1036,7 +1044,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l293"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:293</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l296"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:296</code></a>
         </p>
     </div>
     <div class="description">
@@ -1055,7 +1063,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l324"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:324</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l327"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:327</code></a>
         </p>
     </div>
     <div class="description">
@@ -1079,7 +1087,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l347"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:347</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l350"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:350</code></a>
         </p>
     </div>
     <div class="description">
@@ -1098,7 +1106,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l335"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:335</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l338"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:338</code></a>
         </p>
     </div>
     <div class="description">
@@ -1129,7 +1137,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l302"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:302</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l305"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:305</code></a>
         </p>
     </div>
     <div class="description">
@@ -1159,7 +1167,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l313"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:313</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l316"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:316</code></a>
         </p>
     </div>
     <div class="description">
@@ -1186,7 +1194,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l377"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:377</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l380"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:380</code></a>
         </p>
     </div>
     <div class="description">
@@ -1218,7 +1226,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1642"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1642</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1793"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1793</code></a>
         </p>
     </div>
     <div class="description">
@@ -1259,7 +1267,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l530"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:530</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l533"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:533</code></a>
         </p>
     </div>
     <div class="description">
@@ -1274,7 +1282,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l636"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:636</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l639"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:639</code></a>
         </p>
     </div>
     <div class="description">
@@ -1289,7 +1297,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l628"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:628</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l631"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:631</code></a>
         </p>
     </div>
     <div class="description">
@@ -1304,7 +1312,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l539"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:539</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l542"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:542</code></a>
         </p>
     </div>
     <div class="description">
@@ -1319,7 +1327,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l589"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:589</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l592"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:592</code></a>
         </p>
     </div>
     <div class="description">
@@ -1336,7 +1344,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l548"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:548</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l551"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:551</code></a>
         </p>
     </div>
     <div class="description">
@@ -1350,7 +1358,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l581"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:581</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l584"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:584</code></a>
         </p>
     </div>
     <div class="description">
@@ -1365,7 +1373,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l565"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:565</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l568"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:568</code></a>
         </p>
     </div>
     <div class="description">
@@ -1380,7 +1388,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l573"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:573</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l576"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:576</code></a>
         </p>
     </div>
     <div class="description">
@@ -1395,7 +1403,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l2141"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:2141</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l2231"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:2231</code></a>
         </p>
     </div>
     <div class="description">
@@ -1410,7 +1418,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l2132"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:2132</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l2222"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:2222</code></a>
         </p>
     </div>
     <div class="description">
@@ -1425,7 +1433,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1678"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1678</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1829"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1829</code></a>
         </p>
     </div>
     <div class="description">
@@ -1440,7 +1448,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1957"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1957</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l2047"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:2047</code></a>
         </p>
     </div>
     <div class="description">
@@ -1455,7 +1463,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l555"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:555</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l558"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:558</code></a>
         </p>
     </div>
     <div class="description">
@@ -1472,7 +1480,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1443"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1443</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1594"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1594</code></a>
         </p>
     </div>
     <div class="description">
@@ -1488,7 +1496,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1434"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1434</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1585"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1585</code></a>
         </p>
     </div>
     <div class="description">
@@ -1506,7 +1514,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1349"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1349</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1488"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1488</code></a>
         </p>
     </div>
     <div class="description">
@@ -1520,7 +1528,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1339"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1339</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1478"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1478</code></a>
         </p>
     </div>
     <div class="description">
@@ -1535,7 +1543,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1329"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1329</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1468"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1468</code></a>
         </p>
     </div>
     <div class="description">
@@ -1550,7 +1558,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1319"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1319</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1458"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1458</code></a>
         </p>
     </div>
     <div class="description">
@@ -1565,7 +1573,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1306"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1306</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1445"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1445</code></a>
         </p>
     </div>
     <div class="description">
@@ -1579,7 +1587,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1391"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1391</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1535"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1535</code></a>
         </p>
     </div>
     <div class="description">
@@ -1593,7 +1601,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1368"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1368</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1512"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1512</code></a>
         </p>
     </div>
     <div class="description">
@@ -1607,7 +1615,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1417"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1417</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1564"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1564</code></a>
         </p>
     </div>
     <div class="description">
@@ -1621,7 +1629,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1292"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1292</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1410"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1410</code></a>
         </p>
     </div>
     <div class="description">
@@ -1636,12 +1644,27 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1258"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1258</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1376"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1376</code></a>
         </p>
     </div>
     <div class="description">
         <p>捕获用户更改年份 </p>
 <p>监听 下一年按钮</p>
+    </div>
+</div>
+                    <div id="event_next year" class="events item private">
+    <h3 class="name"><code>next year</code></h3>
+    <span class="type"></span>
+        <span class="flag private">private</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1424"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1424</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>捕获用户更改月份 </p>
+<p>监听 下一月按钮</p>
     </div>
 </div>
                     <div id="event_previous year" class="events item private">
@@ -1651,7 +1674,22 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1268"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1268</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1434"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1434</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>捕获用户更改月份</p>
+<p>监听 上一月按钮</p>
+    </div>
+</div>
+                    <div id="event_previous year" class="events item private">
+    <h3 class="name"><code>previous year</code></h3>
+    <span class="type"></span>
+        <span class="flag private">private</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1386"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1386</code></a>
         </p>
     </div>
     <div class="description">
@@ -1666,7 +1704,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1359"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1359</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1503"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1503</code></a>
         </p>
     </div>
     <div class="description">
@@ -1680,7 +1718,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1382"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1382</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1526"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1526</code></a>
         </p>
     </div>
     <div class="description">
@@ -1694,7 +1732,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1248"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1248</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1366"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1366</code></a>
         </p>
     </div>
     <div class="description">
@@ -1709,7 +1747,7 @@ return   { date: date, minvalue: date|null, maxvalue: date|null, enddate: date|n
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Calendar_Calendar.js.html#l1278"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1278</code></a>
+        <a href="../files/.._comps_Calendar_Calendar.js.html#l1396"><code>..&#x2F;comps&#x2F;Calendar&#x2F;Calendar.js:1396</code></a>
         </p>
     </div>
     <div class="description">

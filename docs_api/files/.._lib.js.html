@@ -474,6 +474,18 @@ function parseISODate( _datestr ){
     return _r;
 }
 /**
+ * 获取不带 时分秒的 日期对象
+ * @method  pureDate
+ * @param   {Date}  _d   可选参数, 如果为空 = new Date
+ * @return  Date
+ */
+function pureDate( _d ){
+    var _r;
+    _d = _d || new Date();
+    _r = new Date( _d.getFullYear(), _d.getMonth(), _d.getDate() );
+    return _r;
+}
+/**
 * 克隆日期对象
 * @method  cloneDate
 * @static

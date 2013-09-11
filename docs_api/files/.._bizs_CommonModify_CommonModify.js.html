@@ -205,6 +205,9 @@
  *
  *      &lt;dt&gt;cmdelcallback = function&lt;/dt&gt;
  *      &lt;dd&gt;删除完成的回调&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;cmappendtype = string, default = after&lt;/dt&gt;
+ *      &lt;dd&gt;指定 node 添加 dom 的方法, 可选类型: after, appendTo&lt;/dd&gt;
  * &lt;/dl&gt;
  *
  * @namespace   window.Bizs
@@ -484,6 +487,12 @@
                     ;
                 return _r;
             }
+
+        , cmappendtype:
+            function(){
+                var _r = this.selector().attr(&#x27;cmappendtype&#x27;) || &#x27;after&#x27;;
+                return _r;
+            }
     };
     
     function View( _model ){
@@ -512,7 +521,11 @@
 
                 if( !( _tpl &amp;&amp; _item &amp;&amp; _item.length ) ) return;
                 _newItem = $( _tpl );
-                _item.after( _newItem );
+
+                switch( _p._model.cmappendtype() ){
+                    case &#x27;appendTo&#x27;: _newItem.appendTo( _item ); break;
+                    default: _item.after( _newItem ); break;
+                }
 
                 $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ &#x27;add&#x27;, _newItem ] );
                 $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ &#x27;done&#x27;, _newItem ] );
