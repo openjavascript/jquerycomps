@@ -245,6 +245,10 @@
     for( var k in AutoSelectProp ) AutoSelect[k] = AutoSelectProp[k];
 
     function Control( _selector ){
+
+        if( AutoSelect.getInstance( _selector ) ) return AutoSelect.getInstance( _selector );
+        AutoSelect.getInstance( _selector, this );
+
         this._model = new Model( _selector );
         this._view = new View( this._model, this );
 

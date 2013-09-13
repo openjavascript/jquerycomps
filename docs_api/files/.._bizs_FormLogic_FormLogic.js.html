@@ -397,10 +397,7 @@
                     _p._model.formResetAfterSubmit() 
                         &amp;&amp; _p.selector().trigger(&#x27;reset&#x27;);
 
-                    _p._model.formSubmitDisable() 
-                        &amp;&amp; _p.selector().find(&#x27;input[type=submit], button[type=submit]&#x27;).each( function(){
-                            $( this ).prop(&#x27;disabled&#x27;, false );
-                        });
+                    _p._model.formSubmitDisable() &amp;&amp; _p.trigger( &#x27;EnableSubmit&#x27; );
 
                     var _json;
                     try{ _json = $.parseJSON( _data ); }catch(ex){}
@@ -528,7 +525,14 @@
                         return _p._model.prevent( _evt );
                     }else{
                         _p._view.reset();
+                        _p.trigger( &#x27;EnableSubmit&#x27; );
                     }
+                });
+
+                _p.on( &#x27;EnableSubmit&#x27;, function(){
+                    _p.selector().find(&#x27;input[type=submit], button[type=submit]&#x27;).each( function(){
+                        $( this ).prop(&#x27;disabled&#x27;, false );
+                    });
                 });
 
                 _p.on( FormLogic.Model.EVT_RESET, function( _evt ){
@@ -549,6 +553,7 @@
                         _p.selector().data( FormLogic.Model.RESET_CONFIRM_BUTTON, null );
                         _p.selector().trigger( &#x27;reset&#x27; );
                         _p._view.reset();
+                        _p.trigger( &#x27;EnableSubmit&#x27; );
                     });
 
                     _popup.on(&#x27;close&#x27;, function(){

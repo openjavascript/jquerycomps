@@ -233,6 +233,10 @@
                     && _triggerItem.is( '[dldisable]' )
                     && ( _r = parseBool( _triggerItem.attr('dldisable') ) )
                     ;
+
+                if( _triggerItem.prop('nodeName').toLowerCase() == 'input' &&  _triggerItem.attr('type').toLowerCase() == 'checkbox' ){
+                    _r = !_triggerItem.prop('checked');
+                }
                 return _r;
             }
 
@@ -250,6 +254,11 @@
                     && ( _r = parseBool( _triggerItem.attr('dldisplay') ) )
                     ;
                 }
+
+                if( _triggerItem.prop('nodeName').toLowerCase() == 'input' &&  _triggerItem.attr('type').toLowerCase() == 'checkbox' ){
+                    _r = _triggerItem.prop('checked');
+                }
+
                 return _r;
             }
 

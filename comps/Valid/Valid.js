@@ -138,6 +138,17 @@
      *      <dd><b>email:</b> 电子邮件</dd>
      *      <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>
      *
+     *      <dd>
+     *          <dl>
+     *              <dt>checkbox: 默认需要至少选中N 个 checkbox</dt>
+     *              <dd>
+     *                  默认必须选中一个 checkbox
+     *                  <br > 如果需要选中N个, 用这种格式 checkbox-n, checkbox-3 = 必须选中三个
+     *                  <br > datatarget: 声明所有 checkbox 的选择器
+     *              </dd>
+     *          </dl>
+     *      </dd>
+     *
      *      <dt>subdatatype: 特殊数据类型</dt>
      *      <dd>
      *          <dl>
@@ -240,6 +251,7 @@
             function(){
                 var _p = this, _r = true, _items = sliceArgs( arguments );
 
+
                 $.each( _items, function( _ix, _item ){
                     _item = $( _item );
                     _item.each( function(){
@@ -247,6 +259,7 @@
                         if( !_p._model.isAvalible( _sitem ) ) return;
                         if( !_p._model.isValid( _sitem ) ) return;
                         if( _p._model.isIgnoreProcess( _sitem ) ) return;
+
 
                         var _dt = _p._model.parseDatatype( _sitem )
                             , _subdt = _p._model.parseSubdatatype( _sitem )
@@ -279,6 +292,7 @@
                         _p.trigger( Model.CORRECT, _sitem ); 
                     });
                 });
+                
                 return _r;
             }
 
@@ -1782,6 +1796,58 @@
                 //JC.log( 'validemdisplaytype:', _r, Valid.emDisplayType );
                 return _r;
             }
+        /**
+         * 这里需要优化检查, 目前会重复检查
+         */
+        , checkbox:
+            function( _item ){
+                _item && ( _item = $( _item ) );
+                var _p = this, _r = true, _items, _tmp, _ckLen = 1, _count = 0;
+                if( _item.is( '[datatarget]' ) ){
+                    _items = parentSelector( _item, _item.attr('datatarget') );                    
+                    _tmp = [];
+                    _items.each( function(){
+                        var _sp = $(this);
+                            _sp.is(':visible')
+                            && !_sp.prop('disabled')
+                            && _tmp.push( _sp );
+                    });
+                    _items = $( _tmp );
+                }else{
+                    _tmp = parentSelector( _item, '/input[datatype]' );
+                    _items = [];
+                    _tmp.each( function(){
+                        var _sp = $(this);
+                        /checkbox/.test( _sp.attr('datatype') ) 
+                            && _sp.is(':visible')
+                            && !_sp.prop('disabled')
+                            && _items.push( _sp );
+                    });
+                    _items = $( _items );
+               }
+
+               _items.length && $( _item = _items[ _items.length - 1 ] ).data('LastCheckbox', true);
+
+               if( _items.length ){
+                    _item.is( '[datatype]' )
+                        && _item.attr('datatype').replace( /[^\-]+?\-([\d]+)/, function( $0, $1 ){ _ckLen = parseInt( $1, 10 ) || _ckLen; } );
+
+                    if( _items.length >= _ckLen ){
+                        _items.each( function(){
+                            $( this ).prop( 'checked' ) && _count++;
+                        });
+
+                        if( _count < _ckLen ){
+                            _r = false;
+                        }
+                    }
+
+                    !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+               }
+               //alert( _items.length + ', ' + _ckLen + ', ' + _count );
+
+                return _r;
+            }
     };
     
     function View( _model ){
@@ -1950,22 +2016,23 @@
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
      * @private
      */
-    $(document).delegate( 'select, input[type=file]', 'change', function($evt){
+    $(document).delegate( 'select, input[type=file], input[type=checkbox]', 'change', function($evt){
         Valid.check( $(this) );
     });
     /**
      * 响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
      * @private
      */
-    $(document).delegate( 'input[type=text], input[type=password], textarea, select, input[type=file]', 'focus', function($evt){
+    $(document).delegate( 'input[type=text], input[type=password], textarea, select, input[type=file], input[type=checkbox]', 'focus', function($evt){
         Valid.getInstance().trigger( 'FocusMsg',  [ $(this) ] );
     });
     /**
      * 响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
      * @private
      */
-    $(document).delegate( 'select, input[type=file]', 'blur', function($evt){
+    $(document).delegate( 'select, input[type=file], input[type=checkbox]', 'blur', function($evt){
         Valid.getInstance().trigger( 'FocusMsg',  [ $(this), true ] );
     });
+
 
 }(jQuery))

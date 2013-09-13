@@ -519,6 +519,8 @@
                 _p._model.cmtplfiltercallback() 
                     &amp;&amp; ( _tpl = _p._model.cmtplfiltercallback().call( _p._model.selector(), _tpl, _item ) );
 
+                _tpl = _tpl.replace( /&lt;([\d]+)&gt;/g, &quot;{$1}&quot; );
+
                 JC.log( &#x27;_item:&#x27;, _item, _item.length );
 
                 if( !( _tpl &amp;&amp; _item &amp;&amp; _item.length ) ) return;
@@ -528,6 +530,8 @@
                     case &#x27;appendTo&#x27;: _newItem.appendTo( _item ); break;
                     default: _item.after( _newItem ); break;
                 }
+                
+                window.jcAutoInitComps &amp;&amp; jcAutoInitComps( _newItem );
 
                 $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ &#x27;add&#x27;, _newItem ] );
                 $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ &#x27;done&#x27;, _newItem ] );

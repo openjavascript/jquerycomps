@@ -615,6 +615,7 @@
                     JC.log( 'user tpl', this.selector.parent().length );
                     if( !this.selector.parent().length ){
                         _p.selector.appendTo( $(document.body ) );
+                        window.jcAutoInitComps && jcAutoInitComps( _p.selector );
                     }
                 }else if( !_selector || _selector.length === 0 ){
                     this.footers = this.bodys;
@@ -727,6 +728,7 @@
                     }else{
                         this._model.panel = $(this._tpl);
                         this._model.panel.appendTo(document.body);
+                        window.jcAutoInitComps && jcAutoInitComps( this._model.panel );
                     }
                 }
 

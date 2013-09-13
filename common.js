@@ -597,4 +597,34 @@ function funcName(_func){
   _re.test( _fStr ) && ( _r = _fStr.replace( _re, '$1' ) );
   return _r.trim();
 }
+/**
+ * 动态添加内容时, 初始化可识别的组件
+ * <dl>
+ *      <dt>目前会自动识别的组件</dt>
+ *      <dd>
+ *          Bizs.CommonModify, JC.Panel, JC.Dialog
+ *      </dd>
+ * </d>
+ * <dl>
+ *      <dt>可识别的组件</dt>
+ *      <dd>
+ *          JC.AutoSelect, JC.Calendar 
+ *      </dd>
+ * </d>
+ * @method  jcAutoInitComps
+ * @param   {selector}  _selector
+ */
+function jcAutoInitComps( _selector ){
+    _selector = $( _selector || document );
+    
+    if( !( _selector && _selector.length ) ) return;
+    /**
+     * 自动初始化联动下拉框
+     */
+    window.JC && JC.AutoSelect && JC.AutoSelect( _selector );
+    /**
+     * 自动初始化日历组件
+     */
+    window.JC && JC.Calendar && JC.Calendar.initTrigger( _selector );
+}
 
