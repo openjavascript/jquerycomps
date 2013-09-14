@@ -1757,9 +1757,15 @@
                     , _type = _item.attr('datatype')
                     , _re = new RegExp( _type, 'i' )
                     ;
-                _pnt.find('input[datatype]').each( function(){
-                    _re.test( $(this).attr('datatype') ) && _r.push( $(this) );
-                });
+                if( /select/i.test( _item.prop('nodeName') ) ){
+                    _pnt.find('[datatype]').each( function(){
+                        _re.test( $(this).attr('datatype') ) && _r.push( $(this) );
+                    });
+                }else{
+                    _pnt.find('input[datatype]').each( function(){
+                        _re.test( $(this).attr('datatype') ) && _r.push( $(this) );
+                    });
+                }
                 return _r.length ? $( _r ) : _r;
             }
         , samesubtypeitems:

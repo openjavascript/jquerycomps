@@ -1933,9 +1933,15 @@
                     , _type = _item.attr(&#x27;datatype&#x27;)
                     , _re = new RegExp( _type, &#x27;i&#x27; )
                     ;
-                _pnt.find(&#x27;input[datatype]&#x27;).each( function(){
-                    _re.test( $(this).attr(&#x27;datatype&#x27;) ) &amp;&amp; _r.push( $(this) );
-                });
+                if( /select/i.test( _item.prop(&#x27;nodeName&#x27;) ) ){
+                    _pnt.find(&#x27;[datatype]&#x27;).each( function(){
+                        _re.test( $(this).attr(&#x27;datatype&#x27;) ) &amp;&amp; _r.push( $(this) );
+                    });
+                }else{
+                    _pnt.find(&#x27;input[datatype]&#x27;).each( function(){
+                        _re.test( $(this).attr(&#x27;datatype&#x27;) ) &amp;&amp; _r.push( $(this) );
+                    });
+                }
                 return _r.length ? $( _r ) : _r;
             }
         , samesubtypeitems:
