@@ -796,15 +796,17 @@ function funcName(_func){
 /**
  * 动态添加内容时, 初始化可识别的组件
  * &lt;dl&gt;
- *      &lt;dt&gt;目前会自动识别的组件&lt;/dt&gt;
+ *      &lt;dt&gt;目前会自动识别的组件,  &lt;/dt&gt;
  *      &lt;dd&gt;
  *          Bizs.CommonModify, JC.Panel, JC.Dialog
+ *          &lt;br /&gt;&lt;b&gt;自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件&lt;/b&gt;
  *      &lt;/dd&gt;
  * &lt;/d&gt;
  * &lt;dl&gt;
  *      &lt;dt&gt;可识别的组件&lt;/dt&gt;
  *      &lt;dd&gt;
- *          JC.AutoSelect, JC.Calendar 
+ *          JC.AutoSelect, JC.Calendar, JC.Form.initCheckAll 
+ *          &lt;br /&gt;Bizs.DisableLogic
  *      &lt;/dd&gt;
  * &lt;/d&gt;
  * @method  jcAutoInitComps
@@ -813,15 +815,25 @@ function funcName(_func){
 function jcAutoInitComps( _selector ){
     _selector = $( _selector || document );
     
-    if( !( _selector &amp;&amp; _selector.length ) ) return;
+    if( !( _selector &amp;&amp; _selector.length &amp;&amp; window.JC ) ) return;
     /**
-     * 自动初始化联动下拉框
+     * 联动下拉框
      */
-    window.JC &amp;&amp; JC.AutoSelect &amp;&amp; JC.AutoSelect( _selector );
+    JC.AutoSelect &amp;&amp; JC.AutoSelect( _selector );
     /**
-     * 自动初始化日历组件
+     * 日历组件
      */
-    window.JC &amp;&amp; JC.Calendar &amp;&amp; JC.Calendar.initTrigger( _selector );
+    JC.Calendar &amp;&amp; JC.Calendar.initTrigger( _selector );
+    /**
+     * 全选反选
+     */
+    JC.Form &amp;&amp; JC.Form.initCheckAll &amp;&amp; JC.Form.initCheckAll( _selector );
+
+    if( !window.Bizs ) return;
+    /**
+     * disable / enable
+     */
+    Bizs.DisableLogic &amp;&amp; Bizs.DisableLogic.init( _selector );
 }
 
 

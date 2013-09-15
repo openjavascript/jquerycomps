@@ -36,6 +36,9 @@
                 height: 23px;
                 line-height: 23px;
             }
+            select[multiple]{
+                height: 80px;
+            }
         </style>
         <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
         <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
@@ -86,7 +89,12 @@
                     <label>(reqmsg)公司名称:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_name" minlength="2" maxlength="120" reqmsg="公司名称" errmsg="请检查格式,长度2-120" /> 
+                    <input type="text" name="company_name" 
+                    minlength="2" 
+                    maxlength="120" 
+                    reqmsg="公司名称" 
+                    errmsg="请检查格式,长度2-120" 
+                    /> 
                 </div>
                 </dd>
 
@@ -146,10 +154,13 @@
                     <br />不允许带 http(s), 且结束不能带反斜扛(/)
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_domain" datatype="stricdomain" reqmsg="域名" errmsg="请填写正确的域名">
+                    <input type="text" name="company_domain" 
+                    datatype="stricdomain" 
+                    reqmsg="域名" 
+                    errmsg="请填写正确的域名"
+                    />
                 </div>
                 </dd>
-
 
                 <dd>
                 <div class="f-l label">
@@ -171,7 +182,9 @@
                 </div>
                 <div class="f-l">
                     <input type="text" name="company_email" 
-                    datatype="email" reqmsg="邮箱" errmsg="请填写正确的邮箱"
+                    datatype="email" 
+                    reqmsg="邮箱" 
+                    errmsg="请填写正确的邮箱"
                     focusmsg="请填写邮箱"
                     />
                 </div>
@@ -222,7 +235,11 @@
                     <label>(datatype n, 默认 0 - pow(10, 10 ))整数:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_n" errmsg="请填写正确的正整数" datatype="n" reqmsg="正整数"  >
+                    <input type="text" name="company_n" 
+                    errmsg="请填写正确的正整数" 
+                    datatype="n" 
+                    reqmsg="正整数"  
+                    />
                 </div>
                 </dd>
 
@@ -231,7 +248,12 @@
                     <label>(datatype n, -1000000 ~ 1000000 整数:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_n" errmsg="请填写正确的数字, -1000000 ~ 1000000" datatype="n" minvalue="-1000000" maxvalue="1000000" >
+                    <input type="text" name="company_n" 
+                    errmsg="请填写正确的数字, -1000000 ~ 1000000" 
+                    datatype="n" 
+                    minvalue="-1000000" 
+                    maxvalue="1000000" 
+                    />
                 </div>
                 </dd>
 
@@ -240,8 +262,18 @@
                     <label>(datatype nrange-7.2, -1000000 ~ 1000000 整数:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_n" errmsg="请填写正确的数字, -1000000.00 ~ 1000000.00" datatype="nrange-7.2" minvalue="-1000000" maxvalue="1000000" >
-                    <input type="text" name="company_n" errmsg="请填写正确的数字, -1000000.00 ~ 1000000.00" datatype="nrange-7.2" minvalue="-1000000" maxvalue="1000000" >
+                    <input type="text" name="company_n" 
+                    errmsg="请填写正确的数字, -1000000.00 ~ 1000000.00" 
+                    datatype="nrange-7.2" 
+                    minvalue="-1000000" 
+                    maxvalue="1000000" 
+                    />
+                    <input type="text" name="company_n" 
+                    errmsg="请填写正确的数字, -1000000.00 ~ 1000000.00" 
+                    datatype="nrange-7.2" 
+                    minvalue="-1000000" 
+                    maxvalue="1000000" 
+                    />
                     <em class="error"></em>
                     <em class="validmsg"></em>
                 </div>
@@ -253,7 +285,12 @@
                     <label>(datatype n, 1 - 100)整数:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_n1" errmsg="请填写正确的数字, 范围1-100" datatype="n" minvalue="1", maxvalue="100" >
+                    <input type="text" name="company_n1" 
+                    errmsg="请填写正确的数字, 范围1-100" 
+                    datatype="n" 
+                    minvalue="1" 
+                    maxvalue="100" 
+                    />
                 </div>
                 </dd>
 
@@ -262,7 +299,10 @@
                     <label>(datatype n, 7位.2位)正数:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_n2" errmsg="请填写正确的数字" datatype="n-7.2" >
+                    <input type="text" name="company_n2" 
+                    errmsg="请填写正确的数字" 
+                    datatype="n-7.2" 
+                    />
                 </div>
                 </dd>
 
@@ -271,10 +311,18 @@
                     <label>(datatype nrange)正数:<br/><b style="color:red">注意: 这个是大小颠倒位置的nrange</b></label>
                 </div>
                 <div class="f-l">
-                    大<input type="text" name="company_n10" id="company_n10" fromNEl="company_n11"
-                        errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1011" >
-                    - 小<input type="text" name="company_n11" id="company_n11" toNEl="company_n10"
-                        errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1011" >
+                    大<input type="text" name="company_n10" id="company_n10" 
+                        fromNEl="company_n11"
+                        errmsg="请填写正确的数值范围" 
+                        datatype="nrange" 
+                        emEl="nrange_n1011" 
+                        />
+                    - 小<input type="text" name="company_n11" id="company_n11" 
+                        toNEl="company_n10"
+                        errmsg="请填写正确的数值范围" 
+                        datatype="nrange" 
+                        emEl="nrange_n1011" 
+                        />
                     <em id="nrange_n1011"></em>
                     <em class="validmsg"></em>
                 </div>
@@ -286,8 +334,16 @@
                     <label>(datatype nrange)正数:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_n12" errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1213" >
-                    <input type="text" name="company_n13" errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1213" >
+                    <input type="text" name="company_n12" 
+                    errmsg="请填写正确的数值范围" 
+                    datatype="nrange" 
+                    emEl="nrange_n1213" 
+                    />
+                    <input type="text" name="company_n13" 
+                    errmsg="请填写正确的数值范围" 
+                    datatype="nrange" 
+                    emEl="nrange_n1213" 
+                    />
                     <em id="nrange_n1213"></em>
                     <em class="validmsg"></em>
                 </div>
@@ -298,8 +354,16 @@
                     <label>(datatype nrange-7.2)正数:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_n14" errmsg="请填写正确的数值范围" datatype="nrange-7.2" emEl="nrange_n1415" >
-                    <input type="text" name="company_n15" errmsg="请填写正确的数值范围" datatype="nrange-7.2" emEl="nrange_n1415" >
+                    <input type="text" name="company_n14" 
+                    errmsg="请填写正确的数值范围" 
+                    datatype="nrange-7.2" 
+                    emEl="nrange_n1415" 
+                    />
+                    <input type="text" name="company_n15" 
+                    errmsg="请填写正确的数值范围" 
+                    datatype="nrange-7.2" 
+                    emEl="nrange_n1415" 
+                    />
                     <em id="nrange_n1415"></em>
                     <em class="validmsg"></em>
                 </div>
@@ -317,8 +381,12 @@
                     <label>(datatype d, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD, YYYYMMDD )日期:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_d" errmsg="请填写正确的日期范围2013-05-01 - 2013-05-31" 
-                        datatype="date" minvalue="2013-05-01" maxvalue="2013-05-31" value="2013-05-15" >
+                    <input type="text" name="company_d" value="2013-05-15" 
+                        errmsg="请填写正确的日期范围2013-05-01 - 2013-05-31" 
+                        datatype="date" 
+                        minvalue="2013-05-01" 
+                        maxvalue="2013-05-31" 
+                        />
                     <em class="validmsg"></em>
                 </div>
                 </dd>
@@ -328,10 +396,18 @@
                     <label>(datatype daterange, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD, YYYYMMDD )日期范围:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
-                        datatype="daterange" emEl="date-err-em" validmsg="false">
-                    - <input type="text" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
-                        datatype="daterange" emEl="date-err-em" validmsg="false" >
+                    <input type="text" name="company_daterange" 
+                        errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
+                        datatype="daterange" 
+                        emEl="date-err-em" 
+                        validmsg="false"
+                        />
+                    - <input type="text" name="company_daterange" 
+                        errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
+                        datatype="daterange" 
+                        emEl="date-err-em" 
+                        validmsg="false" 
+                        />
                     <br /><em id="date-err-em"></em>
                     <em class="validmsg"></em>
                 </div>
@@ -349,10 +425,18 @@
                     <label>(datatype daterange, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD, YYYYMMDD )日期范围:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_daterange1_1" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
-                        id="start_date" datatype="daterange" toDateEl="end_date" value="2013-06-16" validmsg="false" >
-                    - <input type="text" name="company_daterange1_2" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
-                        id="end_date" datatype="daterange" fromDateEl="start_date" value="2013-06-08" validmsg="false" >
+                    <input type="text" name="company_daterange1_1" id="start_date" value="2013-06-16" 
+                        errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
+                        datatype="daterange" 
+                        toDateEl="end_date" 
+                        validmsg="false" 
+                        />
+                    - <input type="text" name="company_daterange1_2" id="end_date" value="2013-06-08" 
+                        errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
+                        datatype="daterange" 
+                        fromDateEl="start_date" 
+                        validmsg="false" 
+                        />
                     <br />
                     <em class="error"></em>
                     <em class="validmsg"></em>
@@ -371,10 +455,16 @@
                     <label>(datatype daterange, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD, YYYYMMDD )日期范围 - 自动初始化:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_daterange2_1" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
-                         datatype="daterange" emEl="date-err-em2" value="2013-06-16" >
-                    - <input type="text" name="company_daterange2_2" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
-                         datatype="daterange" emEl="date-err-em2" value="2013-06-08" >
+                    <input type="text" name="company_daterange2_1" value="2013-06-16" 
+                        errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期1" 
+                        datatype="daterange" 
+                        emEl="date-err-em2"
+                        />
+                    - <input type="text" name="company_daterange2_2" value="2013-06-08" 
+                        errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期2" 
+                        datatype="daterange" 
+                        emEl="date-err-em2" 
+                        />
                     <br /><em id="date-err-em2"></em>
                     <em class="validmsg"></em>
                 </div>
@@ -394,8 +484,15 @@
                 </div>
                 <div class="f-l">
                     <input type="password" name="company_pwd" 
-                    datatype="text" subdatatype="reconfirm" datatarget="input[name=company_repwd]" reconfirmmsg="用户密码和确认密码不一致"
-                    minlength="6" maxlength="15" reqmsg="用户密码" errmsg="请填写正确的用户密码">
+                    datatype="text" 
+                    subdatatype="reconfirm" 
+                    datatarget="input[name=company_repwd]" 
+                    reconfirmmsg="用户密码和确认密码不一致"
+                    minlength="6" 
+                    maxlength="15" 
+                    reqmsg="用户密码" 
+                    errmsg="请填写正确的用户密码"
+                    />
                 </div>
                 </dd>
 
@@ -405,8 +502,15 @@
                 </div>
                 <div class="f-l">
                     <input type="password" name="company_repwd" 
-                    datatype="text" subdatatype="reconfirm" datatarget="input[name=company_pwd]" reconfirmmsg="确认密码和用户密码不一致"
-                    minlength="6" maxlength="15" reqmsg="确认密码" errmsg="请填写正确的确认密码">
+                    datatype="text" 
+                    subdatatype="reconfirm" 
+                    datatarget="input[name=company_pwd]" 
+                    reconfirmmsg="确认密码和用户密码不一致"
+                    minlength="6" 
+                    maxlength="15" 
+                    reqmsg="确认密码" 
+                    errmsg="请填写正确的确认密码"
+                    />
                 </div>
                 </dd>
 
@@ -418,17 +522,27 @@
                 </div>
                 <div class="f-l">
                     <input type='text' name='company_countrycode1' style="width:60px;" value='' size="7" 
-                        datatype="countrycode" errmsg="请填写正确的地区代码" validmsg="false" />
+                    datatype="countrycode" 
+                    errmsg="请填写正确的地区代码" 
+                    validmsg="false" 
+                    />
                     - 
                     <input type='text' name='company_countrycode2' style="width:40px;" value='' size="4" 
-                        datatype="phonezone-2,4" errmsg="请填写正确的电话区号" validmsg="false" />
+                    datatype="phonezone-2,4" 
+                    errmsg="请填写正确的电话区号" 
+                    validmsg="false" 
+                    />
                     - 
                     <input type='text' name='countrycode3' style="width:80px;" value='' size="8" 
                     datatype="phonecode"
-                    errmsg="请检查电话号码格式" />
+                    errmsg="请检查电话号码格式" 
+                    />
                     - 
                     <input type='text' name='countrycode4' style="width:40px;" value='' size="4" 
-                    datatype="phoneext" errmsg="请填写正确的分机号" validmsg="false" />
+                    datatype="phoneext" 
+                    errmsg="请填写正确的分机号" 
+                    validmsg="false" 
+                    />
                     <em>地区代码 - 区号 - 电话号 - 分机号</em>
                     <em class="error"></em>
                     <em class="validmsg"></em>
@@ -445,12 +559,25 @@
                 </div>
                 <div class="f-l">
                     <input type='text' name='company_phonezone' style="width:40px;" value='' size="4" 
-                        datatype="phonezone" emEl="#phone-err-em" errmsg="请填写正确的电话区号" validmsg="false" />
+                    datatype="phonezone" 
+                    emEl="#phone-err-em" 
+                    errmsg="请填写正确的电话区号" 
+                    validmsg="false" 
+                    />
                     - <input type='text' name='company_phonecode' style="width:80px;" value='' size="8" 
-                        datatype="phonecode" subdatatype="alternative" datatarget="input[name=company_mobile]" alternativemsg="电话号码和手机号码至少填写一个"
-                        errmsg="请检查电话号码格式" emEl="#phone-err-em" />
+                    datatype="phonecode" 
+                    subdatatype="alternative" 
+                    datatarget="input[name=company_mobile]" 
+                    alternativemsg="电话号码和手机号码至少填写一个" 
+                    errmsg="请检查电话号码格式" 
+                    emEl="#phone-err-em" 
+                    />
                     - <input type='text' name='company_phoneext' style="width:40px;" value='' size="4" 
-                        datatype="phoneext" emEl="#phone-err-em" errmsg="请填写正确的分机号" validmsg="false" />
+                    datatype="phoneext" 
+                    emEl="#phone-err-em" 
+                    errmsg="请填写正确的分机号" 
+                    validmsg="false" 
+                    />
                     <em id="phone-err-em"></em>
                     <em class="validmsg"></em>
                 </div>
@@ -465,8 +592,12 @@
                 </div>
                 <div class="f-l">
                     <input type="text" name="company_mobile" 
-                        datatype="mobilecode" subdatatype="alternative" datatarget="input[name=company_phonecode]" alternativemsg=" "
-                        errmsg="请填写正确的手机号码">
+                    datatype="mobilecode" 
+                    subdatatype="alternative" 
+                    datatarget="input[name=company_phonecode]" 
+                    alternativemsg=" " 
+                    errmsg="请填写正确的手机号码"
+                    />
                 </div>
                 </dd>
 
@@ -477,7 +608,8 @@
                 <div class="f-l">
                     <input type="text" name="company_mobilezone" 
                         datatype="phone" 
-                        errmsg="请填写正确的电话号码">
+                        errmsg="请填写正确的电话号码"
+                        />
                 </div>
                 </dd>
 
@@ -488,7 +620,8 @@
                 <div class="f-l">
                     <input type="text" name="company_mobilezone" 
                         datatype="phoneall" 
-                        errmsg="请填写正确的电话号码">
+                        errmsg="请填写正确的电话号码"
+                        />
                 </div>
                 </dd>
 
@@ -499,7 +632,8 @@
                 <div class="f-l">
                     <input type="text" name="company_mobilezone" 
                         datatype="mobilezonecode" 
-                        errmsg="请填写正确的手机号码">
+                        errmsg="请填写正确的手机号码"
+                        />
                 </div>
                 </dd>
 
@@ -510,7 +644,8 @@
                 <div class="f-l">
                     <input type="text" name="company_mobilephone" 
                         datatype="mobilephone"
-                        errmsg="请填写正确的手机/电话号码">
+                        errmsg="请填写正确的手机/电话号码"
+                        />
                 </div>
                 </dd>
 
@@ -521,7 +656,8 @@
                 <div class="f-l">
                     <input type="text" name="company_mobilephoneall" 
                         datatype="mobilephoneall"
-                        errmsg="请填写正确的手机/电话号码">
+                        errmsg="请填写正确的手机/电话号码"
+                        />
                 </div>
                 </dd>
 
@@ -531,7 +667,10 @@
                 </div>
                 <div class="f-l">
                     <input type="text" name="company_vcode" style="width: 40px;"
-                        datatype="vcode" reqmsg="验证码" errmsg="请填写正确的验证码">
+                    datatype="vcode" 
+                    reqmsg="验证码" 
+                    errmsg="请填写正确的验证码"
+                    />
                 </div>
                 </dd>
 
@@ -541,7 +680,9 @@
                 </div>
                 <div class="f-l">
                     <input type="text" name="company_vcode" style="width: 40px;"
-                        datatype="vcode-5" errmsg="请填写正确的验证码">
+                    datatype="vcode-5" 
+                    errmsg="请填写正确的验证码"
+                    />
                 </div>
                 </dd>
 
@@ -551,7 +692,10 @@
                 </div>
                 <div class="f-l">
                     <input type="text" name="company_cnname" 
-                        datatype="cnname" reqmsg="姓名" errmsg="请填写正确的姓名">
+                    datatype="cnname" 
+                    reqmsg="姓名" 
+                    errmsg="请填写正确的姓名"
+                    />
                 </div>
                 </dd>
 
@@ -561,7 +705,10 @@
                 </div>
                 <div class="f-l">
                     <input type="text" name="company_username" 
-                        datatype="username" reqmsg="用户名" errmsg="请填写正确的用户名">
+                    datatype="username" 
+                    reqmsg="用户名" 
+                    errmsg="请填写正确的用户名"
+                    />
                 </div>
                 </dd>
 
@@ -571,7 +718,9 @@
                 </div>
                 <div class="f-l">
                     <input type="text" name="company_idnumber" 
-                        datatype="idnumber" errmsg="请填写正确的身份证号码">
+                    datatype="idnumber" 
+                    errmsg="请填写正确的身份证号码"
+                    />
                 </div>
                 </dd>
 
@@ -581,7 +730,9 @@
                 </div>
                 <div class="f-l">
                     <input type="text" name="company_bankcard" 
-                        datatype="bankcard" errmsg="请填写正确的银行卡号">
+                    datatype="bankcard" 
+                    errmsg="请填写正确的银行卡号"
+                    />
                 </div>
                 </dd>
 
@@ -590,7 +741,10 @@
                     <label>(reqmsg)公司行业:</label>
                 </div>
                 <div class="f-l">
-                    <select name="company_type" reqmsg="公司行业" focusmsg="请选择行业" >
+                    <select name="company_type" 
+                        reqmsg="公司行业" 
+                        focusmsg="请选择行业" 
+                        >
                         <option value="">请选择</option>
                         <option value="1">互联网</option>
                         <option value="2">教育</option>
@@ -603,7 +757,7 @@
                     <label>(reqmsg)公司行业:</label>
                 </div>
                 <div class="f-l">
-                    <select name="company_type1" reqmsg="公司行业" multiple rows="3" >
+                    <select name="company_type1" multiple rows="3" reqmsg="公司行业" >
                         <option value="">请选择</option>
                         <option value="1">互联网</option>
                         <option value="2">教育</option>
@@ -625,7 +779,12 @@
                     <label>(datatype text)简介:</label>
                 </div>
                 <div class="f-l">
-                    <textarea name="company_desc" datatype="text" reqmsg="简介" errmsg="最大长度500" maxlength="500" ></textarea>
+                    <textarea name="company_desc" 
+                        datatype="text" 
+                        reqmsg="简介" 
+                        errmsg="最大长度500" 
+                        maxlength="500" 
+                    ></textarea>
                 </div>
                 </dd>
 
@@ -634,7 +793,11 @@
                     <label>auto trim test:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_name" value=" d" maxlength="120" reqmsg="请输入内容" errmsg="最大长度120" /> <em>公司名称描述</em>
+                    <input type="text" name="company_name" value=" d" 
+                    maxlength="120" 
+                    reqmsg="请输入内容" 
+                    errmsg="最大长度120" 
+                    /> <em>公司名称描述</em>
                 </div>
                 </dd>
 
@@ -643,7 +806,11 @@
                     <label>auto trim test:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_name" value="d " maxlength="120" reqmsg="请输入内容" errmsg="最大长度120" /> <em>公司名称描述</em>
+                    <input type="text" name="company_name" value="d " 
+                    maxlength="120" 
+                    reqmsg="请输入内容" 
+                    errmsg="最大长度120" 
+                    /> <em>公司名称描述</em>
                 </div>
                 </dd>
 
@@ -652,7 +819,12 @@
                     <label>auto trim test:</label>
                 </div>
                 <div class="f-l">
-                    <input type="text" name="company_name" value=" d " minlength="2" maxlength="120" reqmsg="请输入内容" errmsg="请检查格式,长度2-120" /> <em>公司名称描述</em>
+                    <input type="text" name="company_name" value=" d " 
+                    minlength="2" 
+                    maxlength="120" 
+                    reqmsg="请输入内容" 
+                    errmsg="请检查格式,长度2-120" 
+                    /> <em>公司名称描述</em>
                 </div>
                 </dd>
 
@@ -665,12 +837,14 @@
                 </div>
                 <div class="f-l">
                     <input type="text" name="alternative_test[]" class="test" value="" 
-                        datatype="n" subdatatype="alternative" 
+                        datatype="n" 
+                        subdatatype="alternative" 
                         errmsg="请填写正确的正整数"
                         alternativemsg="数值1和数值2至少需要填写一个"
                         /> <em>数值1</em>
                     <input type="text" name="alternative_test[]" class="test" value="" 
-                        datatype="n" subdatatype="alternative" 
+                        datatype="n" 
+                        subdatatype="alternative" 
                         errmsg="请填写正确的正整数"
                         alternativemsg="数值1和数值2至少需要填写一个"
                         /> <em>数值2</em>
@@ -688,13 +862,15 @@
                 </div>
                 <div class="f-l">
                     <input type="text" name="alternative_test[]" class="test" value="" 
-                        datatype="n" subdatatype="alternative" 
+                        datatype="n" 
+                        subdatatype="alternative" 
                         errmsg="请填写正确的正整数"
                         alternativemsg="数值1和数值2至少需要填写一个"
                         datatarget="/input.test"
                         /> <em>数值1</em>
                     <input type="text" name="alternative_test[]" class="test" value="" 
-                        datatype="n" subdatatype="alternative" 
+                        datatype="n" 
+                        subdatatype="alternative" 
                         errmsg="请填写正确的正整数"
                         alternativemsg="数值1和数值2至少需要填写一个"
                         datatarget="/input.test"
@@ -713,14 +889,22 @@
                 </div>
                 <div class="f-l">
                     <input type="password" name="company_pwd_auto" 
-                        datatype="text" subdatatype="reconfirm" 
-                        reqmsg="用户密码" errmsg="长度6-15" reconfirmmsg="用户密码和确认密码不一致" 
-                        minlength="6" maxlength="15"
+                        datatype="text" 
+                        subdatatype="reconfirm" 
+                        reqmsg="用户密码" 
+                        errmsg="长度6-15" 
+                        reconfirmmsg="用户密码和确认密码不一致" 
+                        minlength="6" 
+                        maxlength="15"
                         />
                     <input type="password" name="company_pwd_auto" 
-                        datatype="text" subdatatype="reconfirm" 
-                        reqmsg="用户密码" errmsg="长度6-15" reconfirmmsg="用户密码和确认密码不一致" 
-                        minlength="6" maxlength="15"
+                        datatype="text" 
+                        subdatatype="reconfirm" 
+                        reqmsg="用户密码" 
+                        errmsg="长度6-15" 
+                        reconfirmmsg="用户密码和确认密码不一致" 
+                        minlength="6" 
+                        maxlength="15"
                         />
                     <em class="error"></em>
                     <em class="validmsg"></em>
@@ -732,7 +916,10 @@
                     <label>select nrange</label>
                 </div>
                 <div class="f-l">
-                    <select datatype="nrange" reqmsg="起始数值和结束数值">
+                    <select 
+                        datatype="nrange" 
+                        reqmsg="起始数值和结束数值"
+                        >
                         <option value="">请选择</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -741,7 +928,11 @@
                         <option value="5">5</option>
                         <option value="6">6</option>
                     </select>
-                    <select datatype="nrange" reqmsg="起始数值和结束数值" errmsg="起始数值不能大于结束数值">
+                    <select 
+                        datatype="nrange" 
+                        reqmsg="起始数值和结束数值" 
+                        errmsg="起始数值不能大于结束数值"
+                        >
                         <option value="">请选择</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -763,7 +954,6 @@
                 <button type="button" class="js-clear-error">清空错误信息</button>
             </div>
         </form>
-
 
     </body>
 </html>

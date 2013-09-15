@@ -45,7 +45,13 @@
      *      </dd>
      *
      *      <dt>emel = selector</dt>
-     *      <dd>显示错误的selector</dd>
+     *      <dd>显示错误信息的selector</dd>
+     *
+     *      <dt>validel = selector</dt>
+     *      <dd>显示正确信息的selector</dd>
+     *
+     *      <dt>focusel = selector</dt>
+     *      <dd>显示提示信息的selector</dd>
      *
      *      <dt>validemdisplaytype = string, default = inline</dt>
      *      <dd>
@@ -1646,22 +1652,21 @@
             }
         , findValidEle:
             function( _item ){
-                var _selector = '~ em.validmsg', _r = _item.find( _selector ), _tmp;
+                var _p = this, _selector = '~ em.validmsg', _r = _item.find( _selector ), _tmp;
                 if( _item.attr('validel') 
                         && ( _tmp = _p.getElement( _item.attr('validel'), _item, _selector ) ).length ) _r = _tmp;
                 return _r;
             }
         , findFocusEle:
             function( _item ){
-                var _selector = '~ em.focusmsg', _r = _item.find( _selector ), _tmp;
+                var _p = this, _selector = '~ em.focusmsg', _r = _item.find( _selector ), _tmp;
                 if( _item.attr('focusel') 
                         && ( _tmp = _p.getElement( _item.attr('focusel'), _item, _selector ) ).length ) _r = _tmp;
                 return _r;
             }
         , findErrorEle:
             function( _item ){
-                var _p = this;
-                var _selector = Model.SELECTOR_ERROR, _r = _item.find( _selector );
+                var _p = this, _selector = Model.SELECTOR_ERROR, _r = _item.find( _selector );
                 if( _item.attr('emel') 
                         && ( _tmp = _p.getElement( _item.attr('emel'), _item, _selector ) ).length ) _r = _tmp;
                 return _r;
@@ -1687,7 +1692,7 @@
                     _selector = '#' + _selector;
                     _selector = $( _selector.replace( /[\#]+/g, '#' ) );
                 }
-                return _selector;
+                return $(_selector);
             }
         /**
          * 获取对应的错误信息, 默认的错误信息有 reqmsg, errmsg, <br />
@@ -1808,7 +1813,16 @@
         , checkbox:
             function( _item ){
                 _item && ( _item = $( _item ) );
-                var _p = this, _r = true, _items, _tmp, _ckLen = 1, _count = 0;
+                var _p = this
+                    , _r = true
+                    , _items
+                    , _tmp
+                    , _ckLen = 1
+                    , _count = 0
+                    , _finder = _item
+                    , _pntIsLabel = _item.parent().prop('nodeName').toLowerCase() == 'label' 
+                    ;
+
                 if( _item.is( '[datatarget]' ) ){
                     _items = parentSelector( _item, _item.attr('datatarget') );                    
                     _tmp = [];
@@ -1820,23 +1834,39 @@
                     });
                     _items = $( _tmp );
                 }else{
-                    _tmp = parentSelector( _item, '/input[datatype]' );
+                    if( _pntIsLabel ){
+                        if( !_finder.is('[checkboxfinder]') ) _finder = _item.parent().parent();
+                        else _finder = parentSelector( _item, _item.attr('checkboxfinder') );
+                        _tmp = parentSelector( _finder, '|input[datatype]' );
+                    }
+                    else{
+                        _tmp = parentSelector( _finder, '/input[datatype]' );
+                    }
                     _items = [];
                     _tmp.each( function(){
                         var _sp = $(this);
-                        /checkbox/.test( _sp.attr('datatype') ) 
+                        /checkbox/i.test( _sp.attr('datatype') ) 
                             && _sp.is(':visible')
                             && !_sp.prop('disabled')
                             && _items.push( _sp );
                     });
                     _items = $( _items );
                }
+               if( _pntIsLabel ){
+                   _items.each( function(){
+                        var _sp = $(this);
+                        if( !_sp.is('[emel]') ) _sp.attr('emel', '//em.error');
+                        if( !_sp.is('[validel]') ) _sp.attr('validel', '//em.validmsg');
+                        if( !_sp.is('[focusel]') ) _sp.attr('focusel', '//em.focusmsg');
+                   });
+               }
 
                _items.length && $( _item = _items[ _items.length - 1 ] ).data('LastCheckbox', true);
 
                if( _items.length ){
                     _item.is( '[datatype]' )
-                        && _item.attr('datatype').replace( /[^\-]+?\-([\d]+)/, function( $0, $1 ){ _ckLen = parseInt( $1, 10 ) || _ckLen; } );
+                        && _item.attr('datatype')
+                        .replace( /[^\-]+?\-([\d]+)/, function( $0, $1 ){ _ckLen = parseInt( $1, 10 ) || _ckLen; } );
 
                     if( _items.length >= _ckLen ){
                         _items.each( function(){
@@ -1887,7 +1917,10 @@
                         && ( _tmp = _p._model.getElement( _item.attr('emel'), _item ) )
                         && _tmp.hide();
 
-                    typeof _noStyle == 'undefined' && !_item.val().trim() && ( _noStyle = 1 );
+                    typeof _noStyle == 'undefined' 
+                        && typeof _item.val() != 'object'
+                        && !_item.val().trim() 
+                        && ( _noStyle = 1 );
                     _p.validMsg( _item, _noStyle );
                     ( _tmp = _p._model.validitemcallback( _item ) ) && _tmp( _item, true );
                 }, _tm || 150);
@@ -1936,11 +1969,23 @@
                 if( _item.is( '[validnoerror]' ) ) return true;
 
                 setTimeout(function(){
-                    var _msg = _p._model.errorMsg.apply( _p._model, sliceArgs( arg ) ), _errEm;
+                    var _msg = _p._model.errorMsg.apply( _p._model, sliceArgs( arg ) )
+                        , _errEm
+                        , _validEm
+                        , _focusEm
+                        ;
 
                     _item.addClass( Model.CSS_ERROR );
                     _item.find( printf( '~ em:not({0})', Model.FILTER_ERROR ) ).hide();
 
+                    if( _item.is( '[validel]' ) ){
+                        ( _validEm = _p._model.getElement( _item.attr( 'validel' ) , _item) ) 
+                            && _validEm.hide();
+                    }
+                    if( _item.is( '[focusel]' ) ){
+                        ( _focusEm = _p._model.getElement( _item.attr( 'focusel' ) , _item) ) 
+                            && _focusEm.hide();
+                    }
                     if( _item.is( '[emEl]' ) ){
                         ( _errEm = _p._model.getElement( _item.attr( 'emEl' ) , _item) ) 
                             && _errEm.addClass( Model.CSS_ERROR );

@@ -200,13 +200,13 @@
  *      &lt;dd&gt;需要根据禁用起用隐藏/可见的标签&lt;/dd&gt;
  *
  *      &lt;dt&gt;dldonecallback = function&lt;/dt&gt;
- *      &lt;dd&gt;启用/禁用后会触发的回调&lt;/dd&gt;
+ *      &lt;dd&gt;启用/禁用后会触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
  *
  *      &lt;dt&gt;dlenablecallback = function&lt;/dt&gt;
- *      &lt;dd&gt;启用后的回调&lt;/dd&gt;
+ *      &lt;dd&gt;启用后的回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
  *
  *      &lt;dt&gt;dldisablecallback = function&lt;/dt&gt;
- *      &lt;dd&gt;禁用后的回调&lt;/dd&gt;
+ *      &lt;dd&gt;禁用后的回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
  * &lt;/dl&gt;
  *
  * &lt;h2&gt;trigger 的 HTML 属性&lt;/h2&gt;
@@ -357,6 +357,25 @@
     DisableLogic.doneCallback = null;
     DisableLogic.enableCallback = null;
     DisableLogic.disableCallback = null;
+    /**
+     * 初始化 _selector | document 可识别的 DisableLogic HTML属性
+     * @method  init
+     * @param   {selector}  _selector, default = document
+     * @static
+     */
+    DisableLogic.init =
+        function( _selector ){
+            _selector = $( _selector || document );
+            _selector.find(
+                    [ 
+                        &#x27;div.js_bizsDisableLogic&#x27;
+                        , &#x27;dl.js_bizsDisableLogic&#x27;
+                        , &#x27;table.js_bizsDisableLogic&#x27;
+                    ].join() 
+            ).each( function(){
+                new DisableLogic( $(this) );
+            });
+        };
     
     function Model( _selector ){
         this._selector = _selector;
@@ -552,9 +571,7 @@
 
     $(document).ready( function(){
         setTimeout( function(){
-            $(&#x27;div.js_bizsDisableLogic, dl.js_bizsDisableLogic, table.js_bizsDisableLogic&#x27;).each( function(){
-                new DisableLogic( $(this) );
-            });
+            DisableLogic.init();
         }, 10);
     });
     

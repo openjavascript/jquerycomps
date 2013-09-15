@@ -1,5 +1,6 @@
 ;(function($){
     /**
+     * <h2>提交表单控制逻辑</h2>
      * 应用场景
      * <br />get 查询表单
      * <br />post 提交表单
@@ -12,7 +13,7 @@
      * <br/>require: <a href='../classes/JC.Form.html'>JC.Form</a>
      * <br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>
      *
-     * <h2>页面只要引用本文件, 默认会自动初始化 from class="js_autoFormLogic" 的表单</h2>
+     * <h2>页面只要引用本文件, 默认会自动初始化 from class="js_bizsFormLogic" 的表单</h2>
      * <h2>Form 可用的 HTML 属性</h2>
      * <dl>
      *      <dt>formType = string, default = get</dt>
@@ -28,10 +29,10 @@
      *      <dd>表单提交后, 是否重置内容</dd>
      *
      *      <dt>formBeforeProcess = function</dt>
-     *      <dd>表单开始提交时且没开始验证时, 触发的回调</dd>
+     *      <dd>表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b></dd>
      *
      *      <dt>formAfterProcess = function</dt>
-     *      <dd>表单开始提交时且验证通过后, 触发的回调</dd>
+     *      <dd>表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b></dd>
      *
      *      <dt>formConfirmPopupType = string, default = dialog</dt>
      *      <dd>定义提示框的类型: dialog, popup</dd>
@@ -111,7 +112,82 @@
      * @constructor 
      * @version dev 0.1 2013-09-08
      * @author  qiushaowei   <suches@btbtd.org> | 75 Team
-     */
+     * @example
+            <script>
+                JC.debug = true;
+                JC.use( 'Bizs.FormLogic, Calendar, plugins.json2' );
+
+                function formBeforeProcess( _evt, _ins ){
+                    var _form = $(this);
+                    JC.log( 'formBeforeProcess', new Date().getTime() );
+                }
+
+                function formAfterProcess( _evt, _ins ){
+                    var _form = $(this);
+                    JC.log( 'formAfterProcess', new Date().getTime() );
+                    //return false;
+                }
+
+                function formAjaxDone( _json, _submitButton, _ins ){
+                    var _form = $(this);
+                    JC.log( 'custom formAjaxDone', new Date().getTime() );
+
+                    if( _json.errorno ){
+                        _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );
+                    }else{
+                        _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){
+                            reloadPage( "?donetype=custom" );
+                        });
+                    }
+                };
+            </script>
+
+            <dl class="defdl">
+                <dt>Bizs.FormLogic, get form example 3, nothing at done</dt>
+                <dd>
+                    <dl>
+                        <form action="./data/handler.php" method="POST"
+                            class="js_bizsFormLogic"
+                            formType="ajax"
+                            formAjaxMethod="POST"
+                            formBeforeProcess="formBeforeProcess"
+                            formAfterProcess="formAfterProcess"
+                            formAjaxDone="formAjaxDone"                            
+                            formAjaxDoneAction="?donetype=system"
+                            >
+                            <dl>
+                                <dd>
+                                    文件框: <input type="text" name="text" reqmsg="文本框" value="test3" />
+                                </dd>
+                                <dd>
+                                    日期: <input type="text" name="date" datatype="date" reqmsg="日期" value="2015-02-20" />
+                                    <em class="error"></em>
+                                </dd>
+                                <dd>
+                                    下拉框:
+                                        <select name="dropdown" reqmsg="下拉框" >
+                                            <option value="">请选择</option>
+                                            <option value="1">条件1</option>
+                                            <option value="2">条件2</option>
+                                            <option value="3" selected>条件3</option>
+                                        </select>
+                                </dd>
+                                <dd>
+                                    <input type="hidden" name="getform" value="1" />
+                                    <button type="submit" formSubmitConfirm="确定要提交吗?" >submit - dialog</button>
+                                    <button type="submit" formConfirmPopupType="dialog" 
+                                                            formSubmitConfirm="确定要提交吗?" >submit - popup</button>
+
+                                    <button type="reset" formResetConfirm="确定要重置吗?"  >reset</button>
+                                    <button type="reset" formResetConfirm="确定要重置吗?" formResetUrl="?"  >reset - url</button>
+                                    <a href="?">back</a>
+                                </dd>
+                            </dl>
+                        </form>
+                    </dl>
+                </dd>
+            </dl>     
+    */
     Bizs.FormLogic = FormLogic;
     function FormLogic( _selector ){
         _selector && ( _selector = $( _selector ) );
@@ -130,7 +206,7 @@
     !$(document).ajaxForm && JC.use( 'plugins.jquery.form' );
 
     /**
-     * 处理 form 或者 _selector 的所有form.js_autoFormLogic
+     * 处理 form 或者 _selector 的所有form.js_bizsFormLogic
      * @method  init
      * @param   {selector}  _selector
      * @return  {Array}     Array of FormLogicInstance
@@ -144,7 +220,7 @@
             if( _selector.prop('nodeName').toLowerCase() == 'form' ){
                 _r.push( new FormLogic( _selector ) );
             }else{
-                _selector.find('form.js_autoFormLogic').each( function(){
+                _selector.find('form.js_bizsFormLogic, form.js_autoFormLogic').each( function(){
                     _r.push( new FormLogic( this  ) );
                 });
             }

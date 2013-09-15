@@ -11,7 +11,7 @@
  *
  * <h2>可用的 HTML 属性</h2>
  * <dl>
- *      <dt>cmtemplate = script selector</dt>
+ *      <dt>[cmtpl | cmtemplate] = script selector</dt>
  *      <dd>指定保存模板的 script 标签</dd>
  *
  *      <dt>cmitem = selector</dt>
@@ -21,16 +21,16 @@
  *      <dd>操作类型</dd>
  *
  *      <dt>cmdonecallback = function</dt>
- *      <dd>添加或删除完后会触发的回调</dd>
+ *      <dd>添加或删除完后会触发的回调, <b>window 变量域</b></dd>
  *
  *      <dt>cmtplfiltercallback = function</dt>
- *      <dd>模板内容过滤回调</dd>
+ *      <dd>模板内容过滤回调, <b>window 变量域</b></dd>
  *
  *      <dt>cmaddcallback = function</dt>
- *      <dd>添加完成的回调</dd>
+ *      <dd>添加完成的回调, <b>window 变量域</b></dd>
  *
  *      <dt>cmdelcallback = function</dt>
- *      <dd>删除完成的回调</dd>
+ *      <dd>删除完成的回调, <b>window 变量域</b></dd>
  *
  *      <dt>cmappendtype = string, default = after</dt>
  *      <dd>指定 node 添加 dom 的方法, 可选类型: after, appendTo</dd>
@@ -246,7 +246,7 @@
             function(){
                 var _r = '', _tmp;
                 this.selector() 
-                    && ( _tmp = this.selector().attr('cmtemplate') )
+                    && ( _tmp = this.selector().attr('cmtemplate') || this.selector().attr('cmtpl') )
                     && ( _r = scriptContent( _tmp ) )
                     ;
                 return _r;

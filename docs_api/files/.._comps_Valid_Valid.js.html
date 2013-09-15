@@ -221,7 +221,13 @@
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;emel = selector&lt;/dt&gt;
-     *      &lt;dd&gt;显示错误的selector&lt;/dd&gt;
+     *      &lt;dd&gt;显示错误信息的selector&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;validel = selector&lt;/dt&gt;
+     *      &lt;dd&gt;显示正确信息的selector&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;focusel = selector&lt;/dt&gt;
+     *      &lt;dd&gt;显示提示信息的selector&lt;/dd&gt;
      *
      *      &lt;dt&gt;validemdisplaytype = string, default = inline&lt;/dt&gt;
      *      &lt;dd&gt;
@@ -1822,22 +1828,21 @@
             }
         , findValidEle:
             function( _item ){
-                var _selector = &#x27;~ em.validmsg&#x27;, _r = _item.find( _selector ), _tmp;
+                var _p = this, _selector = &#x27;~ em.validmsg&#x27;, _r = _item.find( _selector ), _tmp;
                 if( _item.attr(&#x27;validel&#x27;) 
                         &amp;&amp; ( _tmp = _p.getElement( _item.attr(&#x27;validel&#x27;), _item, _selector ) ).length ) _r = _tmp;
                 return _r;
             }
         , findFocusEle:
             function( _item ){
-                var _selector = &#x27;~ em.focusmsg&#x27;, _r = _item.find( _selector ), _tmp;
+                var _p = this, _selector = &#x27;~ em.focusmsg&#x27;, _r = _item.find( _selector ), _tmp;
                 if( _item.attr(&#x27;focusel&#x27;) 
                         &amp;&amp; ( _tmp = _p.getElement( _item.attr(&#x27;focusel&#x27;), _item, _selector ) ).length ) _r = _tmp;
                 return _r;
             }
         , findErrorEle:
             function( _item ){
-                var _p = this;
-                var _selector = Model.SELECTOR_ERROR, _r = _item.find( _selector );
+                var _p = this, _selector = Model.SELECTOR_ERROR, _r = _item.find( _selector );
                 if( _item.attr(&#x27;emel&#x27;) 
                         &amp;&amp; ( _tmp = _p.getElement( _item.attr(&#x27;emel&#x27;), _item, _selector ) ).length ) _r = _tmp;
                 return _r;
@@ -1863,7 +1868,7 @@
                     _selector = &#x27;#&#x27; + _selector;
                     _selector = $( _selector.replace( /[\#]+/g, &#x27;#&#x27; ) );
                 }
-                return _selector;
+                return $(_selector);
             }
         /**
          * 获取对应的错误信息, 默认的错误信息有 reqmsg, errmsg, &lt;br /&gt;
@@ -1984,7 +1989,16 @@
         , checkbox:
             function( _item ){
                 _item &amp;&amp; ( _item = $( _item ) );
-                var _p = this, _r = true, _items, _tmp, _ckLen = 1, _count = 0;
+                var _p = this
+                    , _r = true
+                    , _items
+                    , _tmp
+                    , _ckLen = 1
+                    , _count = 0
+                    , _finder = _item
+                    , _pntIsLabel = _item.parent().prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;label&#x27; 
+                    ;
+
                 if( _item.is( &#x27;[datatarget]&#x27; ) ){
                     _items = parentSelector( _item, _item.attr(&#x27;datatarget&#x27;) );                    
                     _tmp = [];
@@ -1996,23 +2010,39 @@
                     });
                     _items = $( _tmp );
                 }else{
-                    _tmp = parentSelector( _item, &#x27;/input[datatype]&#x27; );
+                    if( _pntIsLabel ){
+                        if( !_finder.is(&#x27;[checkboxfinder]&#x27;) ) _finder = _item.parent().parent();
+                        else _finder = parentSelector( _item, _item.attr(&#x27;checkboxfinder&#x27;) );
+                        _tmp = parentSelector( _finder, &#x27;|input[datatype]&#x27; );
+                    }
+                    else{
+                        _tmp = parentSelector( _finder, &#x27;/input[datatype]&#x27; );
+                    }
                     _items = [];
                     _tmp.each( function(){
                         var _sp = $(this);
-                        /checkbox/.test( _sp.attr(&#x27;datatype&#x27;) ) 
+                        /checkbox/i.test( _sp.attr(&#x27;datatype&#x27;) ) 
                             &amp;&amp; _sp.is(&#x27;:visible&#x27;)
                             &amp;&amp; !_sp.prop(&#x27;disabled&#x27;)
                             &amp;&amp; _items.push( _sp );
                     });
                     _items = $( _items );
                }
+               if( _pntIsLabel ){
+                   _items.each( function(){
+                        var _sp = $(this);
+                        if( !_sp.is(&#x27;[emel]&#x27;) ) _sp.attr(&#x27;emel&#x27;, &#x27;//em.error&#x27;);
+                        if( !_sp.is(&#x27;[validel]&#x27;) ) _sp.attr(&#x27;validel&#x27;, &#x27;//em.validmsg&#x27;);
+                        if( !_sp.is(&#x27;[focusel]&#x27;) ) _sp.attr(&#x27;focusel&#x27;, &#x27;//em.focusmsg&#x27;);
+                   });
+               }
 
                _items.length &amp;&amp; $( _item = _items[ _items.length - 1 ] ).data(&#x27;LastCheckbox&#x27;, true);
 
                if( _items.length ){
                     _item.is( &#x27;[datatype]&#x27; )
-                        &amp;&amp; _item.attr(&#x27;datatype&#x27;).replace( /[^\-]+?\-([\d]+)/, function( $0, $1 ){ _ckLen = parseInt( $1, 10 ) || _ckLen; } );
+                        &amp;&amp; _item.attr(&#x27;datatype&#x27;)
+                        .replace( /[^\-]+?\-([\d]+)/, function( $0, $1 ){ _ckLen = parseInt( $1, 10 ) || _ckLen; } );
 
                     if( _items.length &gt;= _ckLen ){
                         _items.each( function(){
@@ -2063,7 +2093,10 @@
                         &amp;&amp; ( _tmp = _p._model.getElement( _item.attr(&#x27;emel&#x27;), _item ) )
                         &amp;&amp; _tmp.hide();
 
-                    typeof _noStyle == &#x27;undefined&#x27; &amp;&amp; !_item.val().trim() &amp;&amp; ( _noStyle = 1 );
+                    typeof _noStyle == &#x27;undefined&#x27; 
+                        &amp;&amp; typeof _item.val() != &#x27;object&#x27;
+                        &amp;&amp; !_item.val().trim() 
+                        &amp;&amp; ( _noStyle = 1 );
                     _p.validMsg( _item, _noStyle );
                     ( _tmp = _p._model.validitemcallback( _item ) ) &amp;&amp; _tmp( _item, true );
                 }, _tm || 150);
@@ -2112,11 +2145,23 @@
                 if( _item.is( &#x27;[validnoerror]&#x27; ) ) return true;
 
                 setTimeout(function(){
-                    var _msg = _p._model.errorMsg.apply( _p._model, sliceArgs( arg ) ), _errEm;
+                    var _msg = _p._model.errorMsg.apply( _p._model, sliceArgs( arg ) )
+                        , _errEm
+                        , _validEm
+                        , _focusEm
+                        ;
 
                     _item.addClass( Model.CSS_ERROR );
                     _item.find( printf( &#x27;~ em:not({0})&#x27;, Model.FILTER_ERROR ) ).hide();
 
+                    if( _item.is( &#x27;[validel]&#x27; ) ){
+                        ( _validEm = _p._model.getElement( _item.attr( &#x27;validel&#x27; ) , _item) ) 
+                            &amp;&amp; _validEm.hide();
+                    }
+                    if( _item.is( &#x27;[focusel]&#x27; ) ){
+                        ( _focusEm = _p._model.getElement( _item.attr( &#x27;focusel&#x27; ) , _item) ) 
+                            &amp;&amp; _focusEm.hide();
+                    }
                     if( _item.is( &#x27;[emEl]&#x27; ) ){
                         ( _errEm = _p._model.getElement( _item.attr( &#x27;emEl&#x27; ) , _item) ) 
                             &amp;&amp; _errEm.addClass( Model.CSS_ERROR );
