@@ -1,4 +1,4 @@
-(function($){
+;(function($){
     ///
     /// TODO: 添加事件响应机制
     ///
@@ -1013,8 +1013,9 @@
 
 }(jQuery));
 
+;
 
-(function($){
+;(function($){
     JC.LunarCalendar.getFestivals = getFestivals;
     /**
      * 返回农历和国历的所在日期的所有节日
@@ -1224,8 +1225,9 @@
     }
 
 }(jQuery));
+;
 
-(function($){
+;(function($){
     /**
      * 从公历日期获得农历日期
      * <br /> 返回的数据格式
@@ -1317,8 +1319,9 @@
         lunarDate();
     }.call( window );
 }(jQuery));
+;
 
-(function($){
+;(function($){
     var o = JC.LunarCalendar.nationalHolidays = JC.LunarCalendar.nationalHolidays || {};
     //2013 元旦
     o['20130101'] = { 'isHoliday': true };

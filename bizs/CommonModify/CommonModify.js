@@ -105,6 +105,22 @@
 
         _selector && _selector.length && this.process( _selector );
     }
+    /**
+     * 获取或设置 CommonModify 的实例
+     * @method  getInstance
+     * @param   {selector}      _selector
+     * @static
+     * @return  {CommonModifyInstance}
+     */
+    CommonModify.getInstance =
+        function( _selector, _setter ){
+            if( typeof _selector == 'string' && !/</.test( _selector ) ) 
+                    _selector = $(_selector);
+            if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
+            typeof _setter != 'undefined' && _selector.data( CommonModify.Model._instanceName, _setter );
+
+            return _selector.data( CommonModify.Model._instanceName );
+        };
     
     CommonModify.prototype = {
         _init:

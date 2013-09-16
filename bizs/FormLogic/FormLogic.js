@@ -199,7 +199,23 @@
 
         this._init( );
     }
-    
+    /**
+     * 获取或设置 FormLogic 的实例
+     * @method getInstance
+     * @param   {selector}      _selector
+     * @static
+     * @return  {FormLogic instance}
+     */
+    FormLogic.getInstance =
+        function( _selector, _setter ){
+            if( typeof _selector == 'string' && !/</.test( _selector ) ) 
+                    _selector = $(_selector);
+            if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
+            typeof _setter != 'undefined' && _selector.data( 'FormLogicIns', _setter );
+
+            return _selector.data('FormLogicIns');
+        };
+
     !JC.Valid && JC.use( 'Valid' );
     !JC.Form && JC.use( 'Form' );
     !JC.Panel && JC.use( 'Panel' );

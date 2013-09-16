@@ -41,6 +41,7 @@
      * @static
      */
 }(jQuery));
+;
 
  ;(function($){
     /**
@@ -382,6 +383,7 @@
         JC.Form.initCheckAll( $(document) );
     });
 }(jQuery));
+;
 
  ;(function($){
     /**
@@ -479,6 +481,7 @@
 
 }(jQuery));
 
+;
 
  ;(function($){
     /**

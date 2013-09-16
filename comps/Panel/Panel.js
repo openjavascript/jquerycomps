@@ -1245,8 +1245,9 @@
     });
 
 }(jQuery));
+;
 
-(function($){
+;(function($){
     /**
      * msgbox 提示 popup
      * <br /> 这个是不带蒙板 不带按钮的 popup 弹框
@@ -1808,8 +1809,9 @@
         });
     });
 }(jQuery));
+;
 
-(function($){
+;(function($){
     var isIE6 = !!window.ActiveXObject && !window.XMLHttpRequest;
     /**
      * 带蒙板的会话弹框

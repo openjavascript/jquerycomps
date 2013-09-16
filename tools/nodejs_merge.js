@@ -25,7 +25,7 @@ var tmp = [];
     tmp.push( fs.readFileSync( jcFile, 'utf8') );
     tmp.push( fs.readFileSync( baseMVCFile, 'utf8') );
 
-fs.writeFileSync( dir + 'lib.js', tmp.join('\n') );
+fs.writeFileSync( dir + 'lib.js', tmp.join(';\n\n') );
 
 /*
 fs.unlinkSync( dir + 'jquery.js' );

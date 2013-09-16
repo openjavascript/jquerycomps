@@ -1,4 +1,4 @@
-(function($){
+;(function($){
     /**
      * 日期选择组件
      * <br />全局访问请使用 JC.Calendar 或 Calendar
@@ -1580,8 +1580,9 @@
     });
 }(jQuery));
 
+;
 
-(function($){
+;(function($){
     /**
      * 自定义周弹框的模板HTML
      * @for         JC.Calendar
@@ -1824,8 +1825,9 @@
         return _r;
     }
 }(jQuery));
+;
 
-(function($){
+;(function($){
     /**
      * 自定义月份弹框的模板HTML
      * @for         JC.Calendar
@@ -2042,8 +2044,9 @@
         };
 
 }(jQuery));
+;
 
-(function($){
+;(function($){
     /**
      * 自定义周弹框的模板HTML
      * @for         JC.Calendar
@@ -2217,8 +2220,9 @@
         };
 
 }(jQuery));
+;
 
-(function($){
+;(function($){
     /**
      * 多选日期弹框的模板HTML
      * @for         JC.Calendar

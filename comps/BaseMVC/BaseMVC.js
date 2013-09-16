@@ -109,6 +109,7 @@
      * @static
      * @return  {BaseMVCInstance}
      */
+    /*
     BaseMVC.getInstance =
         function( _selector, _setter ){
             if( typeof _selector == 'string' && !/</.test( _selector ) ) 
@@ -118,6 +119,7 @@
 
             return _selector.data( BaseMVC.Model._instanceName );
         };
+    */
     /**
      * 是否自动初始化
      * @property    autoInit
@@ -154,21 +156,23 @@
             if( !( _inClass && _outClass ) ) return;
             var _k
                 , _fStr, _tmp
-                , _inName = funcName( _inClass )
-                , _outName = funcName( _outClass )
-                , _inRe = _inName && _outName ? new RegExp( _inName, 'g' ) : null
-                , _namespace = _namespace ? _namespace + '.' : 'JC.'
+                //, _inName = funcName( _inClass )
+                //, _outName = funcName( _outClass )
+                //, _inRe = _inName && _outName ? new RegExp( _inName, 'g' ) : null
+                //, _namespace = _namespace ? _namespace + '.' : 'JC.'
                 ;
 
-            _inName && _outName && JC.log( 'BaseMVC.buildClass:', _inName, 'to', _outName );
+            //_inName && _outName && JC.log( 'BaseMVC.buildClass:', _inName, 'to', _outName );
             if( _outClass ){
                 for( _k in _inClass ){ 
                     if( !_outClass[_k] ){//clone static function
-                        if( _inName && _outName && _inClass[_k].constructor == Function ){
+                        if( _inClass[_k].constructor == Function ){
+                            /*
                             _fStr = _inClass[ _k ].toString();
                             _fStr = _fStr.replace( _inRe, _namespace + _outName );
                             _tmp = printf( '( {0}{1}.{2} = {3})', _namespace, _outName, _k, _fStr );
                             eval( _tmp  );
+                            */
                         }else{//clone static property
                             _outClass[_k] = _inClass[_k];
                         }

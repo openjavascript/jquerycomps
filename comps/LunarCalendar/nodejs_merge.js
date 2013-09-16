@@ -17,7 +17,7 @@ var tmp = [];
     tmp.push( fs.readFileSync( path3, 'utf8') );
     tmp.push( fs.readFileSync( path4, 'utf8') );
 
-fs.writeFileSync( outPath, tmp.join('\n') );
+fs.writeFileSync( outPath, tmp.join(';\n\n') );
 
 fs.unlinkSync( path1 );
 fs.unlinkSync( path2 );
