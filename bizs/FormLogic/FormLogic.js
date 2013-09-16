@@ -420,7 +420,7 @@
                     var _popup;
 
                     if( _p._model.formConfirmPopupType( _btn ) == 'dialog' ){
-                        _popup = JC.Dialog.confirm( _p._model.formSubmitConfirm(), 2 );
+                        _popup = JC.Dialog.confirm( _p._model.formSubmitConfirm( _btn ), 2 );
                     }else{
                         _popup = JC.confirm( _p._model.formSubmitConfirm( _btn ), _btn, 2 );
                     }
