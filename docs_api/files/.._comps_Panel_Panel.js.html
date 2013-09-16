@@ -1320,12 +1320,13 @@
                 ? parentSelector( _p, _p.attr(&#x27;panelmsgbox&#x27;) ) 
                 : null
             ;
-        _p.prop(&#x27;nodeName&#x27;) &amp;&amp; _p.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;a&#x27; &amp;&amp; _evt.preventDefault();
 
         if( !(_paneltype &amp;&amp; ( _panelmsg || ( _panelmsgBox &amp;&amp; _panelmsgBox.length ) ) ) ) return;
 
         _paneltype = _paneltype.toLowerCase();
         if( !_paneltype in PANEL_ATTR_TYPE ) return;
+
+        _p.prop(&#x27;nodeName&#x27;) &amp;&amp; _p.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;a&#x27; &amp;&amp; _evt.preventDefault();
 
         var _panel
             , _panelstatus = ( parseInt( _p.attr(&#x27;panelstatus&#x27;), 10 ) || 0 )

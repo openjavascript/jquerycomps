@@ -1144,12 +1144,13 @@
                 ? parentSelector( _p, _p.attr('panelmsgbox') ) 
                 : null
             ;
-        _p.prop('nodeName') && _p.prop('nodeName').toLowerCase() == 'a' && _evt.preventDefault();
 
         if( !(_paneltype && ( _panelmsg || ( _panelmsgBox && _panelmsgBox.length ) ) ) ) return;
 
         _paneltype = _paneltype.toLowerCase();
         if( !_paneltype in PANEL_ATTR_TYPE ) return;
+
+        _p.prop('nodeName') && _p.prop('nodeName').toLowerCase() == 'a' && _evt.preventDefault();
 
         var _panel
             , _panelstatus = ( parseInt( _p.attr('panelstatus'), 10 ) || 0 )
