@@ -660,6 +660,10 @@ function jcAutoInitComps( _selector ){
      * disable / enable
      */
     Bizs.DisableLogic && Bizs.DisableLogic.init( _selector );
+    /**
+     * 表单提交逻辑
+     */
+    Bizs.FormLogic && Bizs.FormLogic.init( _selector );
 }
 
 ;
@@ -1353,6 +1357,47 @@ function jcAutoInitComps( _selector ){
                     && ( _r = _tmp )
                     ;
                 return _r;
+            }
+        /**
+         * 获取 selector 属性的 jquery 选择器
+         * @method  selectorProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  bool
+         */
+        , selectorProp:
+            function( _selector, _key ){
+                var _r;
+                if( typeof _key == 'undefined' ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector && ( _selector = $( _selector ) );
+                }
+
+                _selector
+                    && _selector.is( '[' + _key + ']' ) 
+                    && ( _r = parentSelector( _selector, _selector.attr( _key ) ) );
+
+                return _r;
+            }
+        /**
+         * 判断 _selector 是否具体某种特征
+         * @method  is
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  bool
+         */
+        , is:
+            function( _selector, _key ){
+                if( typeof _key == 'undefined' ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector && ( _selector = $( _selector ) );
+                }
+
+                return _selector && _selector.is( _key );
             }
     };
     

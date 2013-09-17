@@ -7,6 +7,17 @@
         "logo": "jc_logo.png"
     },
     "files": {
+        "../bizs/ActionLogic/ActionLogic.js": {
+            "name": "../bizs/ActionLogic/ActionLogic.js",
+            "modules": {},
+            "classes": {
+                "window.Bizs.ActionLogic": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.Bizs": 1
+            }
+        },
         "../bizs/CommonModify/CommonModify.js": {
             "name": "../bizs/CommonModify/CommonModify.js",
             "modules": {},
@@ -278,6 +289,23 @@
     },
     "modules": {},
     "classes": {
+        "window.Bizs.ActionLogic": {
+            "name": "window.Bizs.ActionLogic",
+            "shortname": "window.Bizs.ActionLogic",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.Bizs",
+            "file": "../bizs/ActionLogic/ActionLogic.js",
+            "line": 1,
+            "description": "<h2>node 点击操作逻辑</h2>\n应用场景\n<br/>点击后弹框( 脚本模板 )\n<br/>点击后弹框( AJAX )\n<br/>点击后弹框( Dom 模板 )\n<br/>点击后执行 AJAX 操作\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/ActionLogic/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_bizsActionLogic\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "version": "dev 0.1 2013-09-17",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team"
+        },
         "window.Bizs.CommonModify": {
             "name": "window.Bizs.CommonModify",
             "shortname": "window.Bizs.CommonModify",
@@ -327,7 +355,7 @@
             "namespace": "window.Bizs",
             "file": "../bizs/FormLogic/FormLogic.js",
             "line": 2,
-            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>\nrequire: <a href='../classes/window.jQuery.html'>jQuery</a>\n<br/>require: <a href='../classes/JC.Valid.html'>JC.Valid</a>\n<br/>require: <a href='../classes/JC.Form.html'>JC.Form</a>\n<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b></dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b></dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>ajaxSubmitType = string, default = plugins</dt>\n     <dd>\n         类型: plugins, form\n         <br/>plugins 支持 AJAX 文件上传, 但是在 弹框里 捕获不到提交事件\n         <br/>form 不支持 ajax 文件上传, 但可以在 popup 里捕获到提交事件\n     </dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调\n         <br />如果没有显式声明, FormLogic将自行处理\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n         <br/> formResetConfirm 属性除外\n     </dd>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 button 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n</dl>",
+            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>\nrequire: <a href='../classes/window.jQuery.html'>jQuery</a>\n<br/>require: <a href='../classes/JC.Valid.html'>JC.Valid</a>\n<br/>require: <a href='../classes/JC.Form.html'>JC.Form</a>\n<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b></dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b></dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formSubmitType = string, default = plugins</dt>\n     <dd>\n         类型: plugins, form\n         <br/>plugins 支持 AJAX 文件上传, 但是在 弹框里 捕获不到提交事件\n         <br/>form 不支持 ajax 文件上传, 但可以在 popup 里捕获到提交事件\n     </dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调\n         <br />如果没有显式声明, FormLogic将自行处理\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n         <br/> formResetConfirm 属性除外\n     </dd>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 button 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-08",
@@ -1321,7 +1349,7 @@
             "extension_for": [],
             "namespace": "window",
             "file": "../lib.js",
-            "line": 669,
+            "line": 673,
             "description": "JC jquery 组件库 资源调用控制类\n<br />这是一个单例模式, 全局访问使用 JC 或 window.JC\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.JC.html' target='_blank'>API docs</a>\n| <a href='../../_demo' target='_blank'>demo link</a></p>",
             "static": 1,
             "example": [
@@ -1340,7 +1368,7 @@
             "extension_for": [],
             "namespace": "window",
             "file": "../lib.js",
-            "line": 955,
+            "line": 959,
             "description": "UXC 是 JC 的别名\n<br />存在这个变量是为了向后兼容\n<br />20130804 之前的命名空间是 UXC, 这个命名空间在一段时间后将会清除, 请使用 JC 命名空间\n<p><b>see</b>: <a href='window.JC.html'>JC</a></p>",
             "static": 1,
             "date": "2013-05-22"
@@ -1355,7 +1383,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../lib.js",
-            "line": 974,
+            "line": 978,
             "description": "<h2>业务逻辑命名空间</h2>\n<br />这个命名空间的组件主要为满足业务需求, 不是通用组件~\n<br />但在某个项目中应该是常用组件~\n<dl>\n     <dt>业务组件的存放位置:</dt>\n     <dd>libpath/bizs/</dd>\n\n     <dt>使用业务组件</dt>\n     <dd> JC.use( 'Bizs.BizComps' ); //  libpath/bizs/BizComps/BizComps.js </dd>\n\n     <dt>使用业务文件</dt>\n     <dd> JC.use( 'bizs.BizFile' ); //   libpath/bizs/BizFile.js </dd>\n</dl>",
             "static": 1
         },
@@ -1369,7 +1397,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../lib.js",
-            "line": 999,
+            "line": 1003,
             "description": "MVC 抽象类 ( <b>仅供扩展用</b> )\n<p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   \n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>",
             "is_constructor": 1,
             "params": [
@@ -1392,7 +1420,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../lib.js",
-            "line": 1205,
+            "line": 1209,
             "description": "MVC Model 类( <b>仅供扩展用</b> )\n<p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   \n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>",
             "is_constructor": 1,
             "params": [
@@ -1407,6 +1435,84 @@
         }
     },
     "classitems": [
+        {
+            "file": "../bizs/ActionLogic/ActionLogic.js",
+            "line": 41,
+            "description": "获取或设置 ActionLogic 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "ActionLogic instance"
+            },
+            "class": "window.Bizs.ActionLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/ActionLogic/ActionLogic.js",
+            "line": 57,
+            "description": "判断 selector 是否可以初始化 ActionLogic",
+            "itemtype": "method",
+            "name": "isActionLogic",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "bool"
+            },
+            "class": "window.Bizs.ActionLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/ActionLogic/ActionLogic.js",
+            "line": 72,
+            "description": "批量初始化 ActionLogic\n<br />页面加载完毕时, 已使用 事件代理 初始化\n<br />如果是弹框中的 ActionLogic, 由于事件冒泡被阻止了, 需要显示调用  init 方法",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "class": "window.Bizs.ActionLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/ActionLogic/ActionLogic.js",
+            "line": 91,
+            "description": "初始化 ActionLogic, 并执行",
+            "itemtype": "method",
+            "name": "process",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Instance|null"
+            },
+            "static": 1,
+            "class": "window.Bizs.ActionLogic",
+            "namespace": "window.Bizs"
+        },
         {
             "file": "../bizs/CommonModify/CommonModify.js",
             "line": 149,
@@ -1713,21 +1819,21 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 329,
+            "line": 337,
             "description": "表单内容验证通过后, 开始提交前的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 340,
+            "line": 348,
             "description": "jquery.form plugins 提交处理设置\n这个可以 AJAX 上传文件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 377,
+            "line": 385,
             "description": "默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
@@ -12301,7 +12407,13 @@
         },
         {
             "file": "../lib.js",
-            "line": 685,
+            "line": 663,
+            "description": "表单提交逻辑",
+            "class": ".window"
+        },
+        {
+            "file": "../lib.js",
+            "line": 689,
             "description": "JC组件库所在路径",
             "itemtype": "property",
             "name": "PATH",
@@ -12312,7 +12424,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 695,
+            "line": 699,
             "description": "是否显示调试信息",
             "itemtype": "property",
             "name": "debug",
@@ -12323,7 +12435,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 702,
+            "line": 706,
             "description": "导入JC组件",
             "itemtype": "method",
             "name": "use",
@@ -12353,7 +12465,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 808,
+            "line": 812,
             "description": "调用依赖的类\n<br />这个方法的存在是因为有一些类调整了结构, 但是原有的引用因为向后兼容的需要, 暂时不能去掉",
             "itemtype": "method",
             "name": "_usePatch",
@@ -12382,7 +12494,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 830,
+            "line": 834,
             "description": "输出调试信息, 可通过 JC.debug 指定是否显示调试信息",
             "params": [
                 {
@@ -12399,7 +12511,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 837,
+            "line": 841,
             "description": "定义输出路径的 v 参数, 以便控制缓存",
             "itemtype": "property",
             "name": "pathPostfix",
@@ -12411,7 +12523,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 845,
+            "line": 849,
             "description": "是否启用nginx concat 模块的路径格式",
             "itemtype": "property",
             "name": "enableNginxStyle",
@@ -12423,7 +12535,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 853,
+            "line": 857,
             "description": "定义 nginx style 的基础路径\n<br /><b>注意:</b> 如果这个属性为空, 即使 enableNginxStyle = true, 也是直接输出默认路径",
             "itemtype": "property",
             "name": "nginxBasePath",
@@ -12435,7 +12547,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 862,
+            "line": 866,
             "description": "资源路径映射对象\n<br />设置 JC.use 逗号(',') 分隔项的 对应URL路径",
             "itemtype": "property",
             "name": "FILE_MAP",
@@ -12450,7 +12562,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 900,
+            "line": 904,
             "description": "输出 nginx concat 模块的脚本路径格式",
             "itemtype": "method",
             "name": "_writeNginxScript",
@@ -12469,7 +12581,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 928,
+            "line": 932,
             "description": "输出的脚本路径格式",
             "itemtype": "method",
             "name": "_writeNormalScript",
@@ -12488,7 +12600,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 945,
+            "line": 949,
             "description": "保存 use 过的资源路径, 以便进行唯一性判断, 避免重复加载",
             "itemtype": "property",
             "name": "_USE_CACHE",
@@ -12502,14 +12614,14 @@
         },
         {
             "file": "../lib.js",
-            "line": 966,
+            "line": 970,
             "description": "自动识别组件库所在路径",
             "class": "window.UXC",
             "namespace": "window"
         },
         {
             "file": "../lib.js",
-            "line": 1026,
+            "line": 1030,
             "description": "内部初始化方法",
             "itemtype": "method",
             "name": "_init",
@@ -12527,7 +12639,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1055,
+            "line": 1059,
             "description": "初始化之前调用的方法",
             "itemtype": "method",
             "name": "_beforeInit",
@@ -12538,7 +12650,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1063,
+            "line": 1067,
             "description": "内部事件初始化方法",
             "itemtype": "method",
             "name": "_initHanlderEvent",
@@ -12549,7 +12661,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1071,
+            "line": 1075,
             "description": "内部初始化完毕时, 调用的方法",
             "itemtype": "method",
             "name": "_inited",
@@ -12560,7 +12672,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1079,
+            "line": 1083,
             "description": "获取 显示 BaseMVC 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -12572,7 +12684,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1085,
+            "line": 1089,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -12597,7 +12709,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1093,
+            "line": 1097,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -12617,7 +12729,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1101,
+            "line": 1105,
             "description": "获取或设置 BaseMVC 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -12638,7 +12750,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1119,
+            "line": 1123,
             "description": "是否自动初始化",
             "itemtype": "property",
             "name": "autoInit",
@@ -12650,7 +12762,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1127,
+            "line": 1131,
             "description": "复制 BaseMVC 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "build",
@@ -12667,7 +12779,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1142,
+            "line": 1146,
             "description": "复制 _inClass 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "buildClass",
@@ -12694,7 +12806,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1182,
+            "line": 1186,
             "description": "为 _outClass 生成一个通用 Model 类",
             "itemtype": "method",
             "name": "buildModel",
@@ -12711,7 +12823,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1195,
+            "line": 1199,
             "description": "为 _outClass 生成一个通用 View 类",
             "itemtype": "method",
             "name": "buildView",
@@ -12728,7 +12840,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1220,
+            "line": 1224,
             "description": "设置 selector 实例引用的 data 属性名",
             "itemtype": "property",
             "name": "_instanceName",
@@ -12742,7 +12854,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1234,
+            "line": 1238,
             "description": "初始化的 jq 选择器",
             "itemtype": "method",
             "name": "selector",
@@ -12761,7 +12873,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1245,
+            "line": 1249,
             "description": "读取 int 属性的值",
             "itemtype": "method",
             "name": "intProp",
@@ -12785,7 +12897,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1266,
+            "line": 1270,
             "description": "读取 float 属性的值",
             "itemtype": "method",
             "name": "floatProp",
@@ -12809,7 +12921,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1287,
+            "line": 1291,
             "description": "读取 string 属性的值",
             "itemtype": "method",
             "name": "stringProp",
@@ -12833,7 +12945,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1308,
+            "line": 1312,
             "description": "读取 boolean 属性的值",
             "itemtype": "method",
             "name": "boolProp",
@@ -12863,7 +12975,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1334,
+            "line": 1338,
             "description": "读取 callback 属性的值",
             "itemtype": "method",
             "name": "callbackProp",
@@ -12885,9 +12997,61 @@
             },
             "class": "JC.BaseMVC.Model",
             "namespace": "JC"
+        },
+        {
+            "file": "../lib.js",
+            "line": 1361,
+            "description": "获取 selector 属性的 jquery 选择器",
+            "itemtype": "method",
+            "name": "selectorProp",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()",
+                    "type": "Selector|string"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "bool"
+            },
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../lib.js",
+            "line": 1384,
+            "description": "判断 _selector 是否具体某种特征",
+            "itemtype": "method",
+            "name": "is",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()",
+                    "type": "Selector|string"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "bool"
+            },
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
         }
     ],
     "warnings": [
+        {
+            "message": "unknown tag: version",
+            "line": " ../bizs/ActionLogic/ActionLogic.js:1"
+        },
         {
             "message": "unknown tag: version",
             "line": " ../bizs/CommonModify/CommonModify.js:1"
@@ -13258,19 +13422,19 @@
         },
         {
             "message": "unknown tag: date",
-            "line": " ../lib.js:669"
+            "line": " ../lib.js:673"
         },
         {
             "message": "unknown tag: date",
-            "line": " ../lib.js:955"
+            "line": " ../lib.js:959"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../lib.js:999"
+            "line": " ../lib.js:1003"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../lib.js:1205"
+            "line": " ../lib.js:1209"
         },
         {
             "message": "Missing item type\nupdate current selector",
@@ -13286,15 +13450,15 @@
         },
         {
             "message": "Missing item type\n表单内容验证通过后, 开始提交前的处理事件",
-            "line": " ../bizs/FormLogic/FormLogic.js:329"
+            "line": " ../bizs/FormLogic/FormLogic.js:337"
         },
         {
             "message": "Missing item type\njquery.form plugins 提交处理设置\n这个可以 AJAX 上传文件",
-            "line": " ../bizs/FormLogic/FormLogic.js:340"
+            "line": " ../bizs/FormLogic/FormLogic.js:348"
         },
         {
             "message": "Missing item type\n默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
-            "line": " ../bizs/FormLogic/FormLogic.js:377"
+            "line": " ../bizs/FormLogic/FormLogic.js:385"
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",
@@ -13889,8 +14053,12 @@
             "line": " ../lib.js:659"
         },
         {
+            "message": "Missing item type\n表单提交逻辑",
+            "line": " ../lib.js:663"
+        },
+        {
             "message": "Missing item type\n自动识别组件库所在路径",
-            "line": " ../lib.js:966"
+            "line": " ../lib.js:970"
         }
     ]
 }

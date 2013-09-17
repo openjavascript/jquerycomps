@@ -639,5 +639,9 @@ function jcAutoInitComps( _selector ){
      * disable / enable
      */
     Bizs.DisableLogic && Bizs.DisableLogic.init( _selector );
+    /**
+     * 表单提交逻辑
+     */
+    Bizs.FormLogic && Bizs.FormLogic.init( _selector );
 }
 

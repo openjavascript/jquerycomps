@@ -49,7 +49,7 @@
      *      <dt>formPopupCloseMs = int, default = 2000</dt>
      *      <dd>msgbox 弹框的显示时间</dd>
      *
-     *      <dt>ajaxSubmitType = string, default = plugins</dt>
+     *      <dt>formSubmitType = string, default = plugins</dt>
      *      <dd>
      *          类型: plugins, form
      *          <br/>plugins 支持 AJAX 文件上传, 但是在 弹框里 捕获不到提交事件
@@ -197,7 +197,7 @@
         this._model = new FormLogic.Model( _selector );
         this._view = new FormLogic.View( this._model );
 
-        this._init( );
+        this._init();
     }
     /**
      * 获取或设置 FormLogic 的实例
@@ -259,7 +259,7 @@
      * @default     empty
      * @static
      */
-    FormLogic.ajaxSubmitType = '';
+    FormLogic.formSubmitType = '';
     /**
      * 表单提交后, 是否禁用提交按钮
      * @property    submitDisable
@@ -311,12 +311,20 @@
                 _p.on('AjaxDone', function( _evt, _data ){
 
                     _p._model.formResetAfterSubmit() 
+                        && !_p._model.userFormAjaxDone()
                         && _p.selector().trigger('reset');
 
                     _p._model.formSubmitDisable() && _p.trigger( 'EnableSubmit' );
 
                     var _json;
                     try{ _json = $.parseJSON( _data ); }catch(ex){}
+
+                    _json 
+                    && 'errorno' in _json 
+                    && !parseInt( _json.errorno, 10 )
+                    && _p.selector().trigger('reset')
+                    ;
+
                     _json = _json || _data || {};
                     _p._model.formAjaxDone()
                         && _p._model.formAjaxDone().call( 
@@ -336,7 +344,7 @@
                         });
                 });
 
-                if( _p._model.formType() == 'ajax' && _p._model.ajaxSubmitType() == 'plugins' ){
+                if( _p._model.formType() == 'ajax' && _p._model.formSubmitType() == 'plugins' ){
                     /**
                      * jquery.form plugins 提交处理设置
                      * 这个可以 AJAX 上传文件
@@ -509,9 +517,13 @@
                 _r = this.stringProp( 'formType' ) || _r;
                 return _r.toLowerCase();
            }
-        , ajaxSubmitType: 
+        , formSubmitType: 
             function(){ 
-                var _r = this.stringProp( 'ajaxSubmitType' ) || FormLogic.ajaxSubmitType || 'plugins';
+                var _r = this.stringProp( 'ajaxSubmitType' ) 
+                        || this.stringProp( 'formSubmitType' ) 
+                        || FormLogic.formSubmitType 
+                        || 'plugins'
+                        ;
                 return _r.toLowerCase();
            }
         , formAjaxMethod:
@@ -553,6 +565,14 @@
                 var _p = this, _r = _p._innerAjaxDone
                     , _btn = _p.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON )
                     ;
+                _r = _p.userFormAjaxDone() || _r;
+                return _r;
+            }
+        , userFormAjaxDone:
+            function(){
+                var _p = this, _r
+                    , _btn = _p.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON )
+                    ;
 
                 _p.selector().is('[formAjaxDone]')
                     && ( _r = this.callbackProp( 'formAjaxDone' ) || _r );
@@ -560,7 +580,6 @@
                 _btn && ( _btn = $( _btn ) ).length
                     && ( _r = _p.callbackProp( _btn, 'formAjaxDone' ) || _r )
                     ;
-
                 return _r;
             }
 

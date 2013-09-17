@@ -115,6 +115,8 @@
             
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
             
+                <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
+            
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
             
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
@@ -225,7 +227,7 @@
      *      &lt;dt&gt;formPopupCloseMs = int, default = 2000&lt;/dt&gt;
      *      &lt;dd&gt;msgbox 弹框的显示时间&lt;/dd&gt;
      *
-     *      &lt;dt&gt;ajaxSubmitType = string, default = plugins&lt;/dt&gt;
+     *      &lt;dt&gt;formSubmitType = string, default = plugins&lt;/dt&gt;
      *      &lt;dd&gt;
      *          类型: plugins, form
      *          &lt;br/&gt;plugins 支持 AJAX 文件上传, 但是在 弹框里 捕获不到提交事件
@@ -373,7 +375,7 @@
         this._model = new FormLogic.Model( _selector );
         this._view = new FormLogic.View( this._model );
 
-        this._init( );
+        this._init();
     }
     /**
      * 获取或设置 FormLogic 的实例
@@ -435,7 +437,7 @@
      * @default     empty
      * @static
      */
-    FormLogic.ajaxSubmitType = &#x27;&#x27;;
+    FormLogic.formSubmitType = &#x27;&#x27;;
     /**
      * 表单提交后, 是否禁用提交按钮
      * @property    submitDisable
@@ -487,12 +489,20 @@
                 _p.on(&#x27;AjaxDone&#x27;, function( _evt, _data ){
 
                     _p._model.formResetAfterSubmit() 
+                        &amp;&amp; !_p._model.userFormAjaxDone()
                         &amp;&amp; _p.selector().trigger(&#x27;reset&#x27;);
 
                     _p._model.formSubmitDisable() &amp;&amp; _p.trigger( &#x27;EnableSubmit&#x27; );
 
                     var _json;
                     try{ _json = $.parseJSON( _data ); }catch(ex){}
+
+                    _json 
+                    &amp;&amp; &#x27;errorno&#x27; in _json 
+                    &amp;&amp; !parseInt( _json.errorno, 10 )
+                    &amp;&amp; _p.selector().trigger(&#x27;reset&#x27;)
+                    ;
+
                     _json = _json || _data || {};
                     _p._model.formAjaxDone()
                         &amp;&amp; _p._model.formAjaxDone().call( 
@@ -512,7 +522,7 @@
                         });
                 });
 
-                if( _p._model.formType() == &#x27;ajax&#x27; &amp;&amp; _p._model.ajaxSubmitType() == &#x27;plugins&#x27; ){
+                if( _p._model.formType() == &#x27;ajax&#x27; &amp;&amp; _p._model.formSubmitType() == &#x27;plugins&#x27; ){
                     /**
                      * jquery.form plugins 提交处理设置
                      * 这个可以 AJAX 上传文件
@@ -685,9 +695,13 @@
                 _r = this.stringProp( &#x27;formType&#x27; ) || _r;
                 return _r.toLowerCase();
            }
-        , ajaxSubmitType: 
+        , formSubmitType: 
             function(){ 
-                var _r = this.stringProp( &#x27;ajaxSubmitType&#x27; ) || FormLogic.ajaxSubmitType || &#x27;plugins&#x27;;
+                var _r = this.stringProp( &#x27;ajaxSubmitType&#x27; ) 
+                        || this.stringProp( &#x27;formSubmitType&#x27; ) 
+                        || FormLogic.formSubmitType 
+                        || &#x27;plugins&#x27;
+                        ;
                 return _r.toLowerCase();
            }
         , formAjaxMethod:
@@ -729,6 +743,14 @@
                 var _p = this, _r = _p._innerAjaxDone
                     , _btn = _p.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON )
                     ;
+                _r = _p.userFormAjaxDone() || _r;
+                return _r;
+            }
+        , userFormAjaxDone:
+            function(){
+                var _p = this, _r
+                    , _btn = _p.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON )
+                    ;
 
                 _p.selector().is(&#x27;[formAjaxDone]&#x27;)
                     &amp;&amp; ( _r = this.callbackProp( &#x27;formAjaxDone&#x27; ) || _r );
@@ -736,7 +758,6 @@
                 _btn &amp;&amp; ( _btn = $( _btn ) ).length
                     &amp;&amp; ( _r = _p.callbackProp( _btn, &#x27;formAjaxDone&#x27; ) || _r )
                     ;
-
                 return _r;
             }
 

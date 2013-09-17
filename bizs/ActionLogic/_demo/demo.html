@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset=utf-8 />
+    <title>Open JQuery Components Library - suches</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+
+        dt { font-weight: bold; margin: 10px auto; }
+        dd { line-height: 24px; }
+    </style>
+    <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+    <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
+    <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+    <script src="../../../lib.js"></script>
+    <script>
+        JC.debug = true;
+        JC.use( 'Bizs.ActionLogic, Bizs.FormLogic, Calendar, Valid' );
+
+        function balPanelInitCb( _panelIns ){
+            //return true; //如果返回真的话, 表单提交后会关闭弹框
+        }
+
+        function formAjaxDone( _d, _selector, _formLogicIns ){
+            JC.hideAllPopup( 1 );
+            if( _d && _d.errorno ){
+                JC.alert( _d.errmsg || '操作失败, 请重试', _selector, 1 );
+            }else{
+                JC.Dialog.msgbox( '操作成功' );
+            }
+        }
+    </script>
+</head>    
+<body>
+
+<dl class="defdl">
+    <dt>ActionLogic 示例1, 弹框</dt>
+    <dd>
+        <button type="button" 
+            class="js_bizsActionLogic"
+            balType="panel" 
+            balPanelTpl="#scriptPanel" 
+            balPanelInitCb="balPanelInitCb"
+        >script tpl</button>
+        <a href="#"
+            class="js_bizsActionLogic"
+            balType="panel" 
+            balPanelTpl="#scriptPanel" 
+            balPanelInitCb="balPanelInitCb"
+        >script tpl</a>
+    </dd>
+    <dd>
+        <button type="button" 
+            class="js_bizsActionLogic"
+            balType="panel" 
+            balAjaxHtml="./data/htmlPanel.php" 
+            balPanelInitCb="balPanelInitCb"
+        >ajax html</button>
+        <a href="#"
+            class="js_bizsActionLogic"
+            balType="panel" 
+            balAjaxHtml="./data/htmlPanel.php" 
+            balPanelInitCb="balPanelInitCb"
+        >ajax html</a>
+    </dd>
+    <dd>
+        <button type="button" 
+            class="js_bizsActionLogic"
+            balType="panel" 
+            balAjaxData="./data/dataPanel.php" 
+            balPanelInitCb="balPanelInitCb"
+        >ajax data html</button>
+        <a  href="#"
+            class="js_bizsActionLogic"
+            balType="panel" 
+            balAjaxData="./data/dataPanel.php" 
+            balPanelInitCb="balPanelInitCb"
+        >ajax data html</a>
+
+    </dd>
+</dl>
+
+<dl>
+    <dt>ActionLogic 示例2, 点击跳转</dt>
+    <dd>
+        <button type="button" 
+            class="js_bizsActionLogic"
+            balType="link" 
+            balUrl="?type=direct1"
+        >直接跳转, balUrl</button>
+        , <a href="#"
+            class="js_bizsActionLogic"
+            balType="link" 
+            balUrl="?type=direct2"
+        >属性跳转 balUrl</a>
+        , <a href="?type=direct3"
+            class="js_bizsActionLogic"
+            balType="link" 
+        >href 跳转</a>
+    </dd>
+    <dd>
+        <button type="button" 
+            class="js_bizsActionLogic"
+            balType="link" 
+            balUrl="?type=direct2_1"
+            balConfirmMsg="确认要跳转吗?"
+        >确认后跳转, balUrl</button>
+        , <a href="#"
+            class="js_bizsActionLogic"
+            balType="link" 
+            balUrl="?type=direct2_2"
+            balConfirmMsg="确认要跳转吗?"
+        >确认后跳转 balUrl</a>
+        , <a href="?type=direct2_3"
+            class="js_bizsActionLogic"
+            balConfirmMsg="确认要跳转吗?"
+            balType="link" 
+        >确认后跳转 href</a>
+    </dd>
+</dl>
+
+<script type="text/template" id="scriptPanel">
+<div class="UPanel UPanelString" style="display:none; width: 600px;" >    
+    <form action="./data/handler.php" method="POST"
+        class="js_bizsFormLogic"
+        formType="ajax"
+        formConfirmPopupType="popup"
+        formBeforeProcess="formBeforeProcess"
+        formAfterProcess="formAfterProcess"
+        formAjaxDone="formAjaxDone"  
+        >    
+        <div class="UPContent">        
+            <div class="hd">dom panel</div>        
+            <div class="bd">            
+                <dl>                
+                    <dt><h2>form test</h2></dt>                
+                    <dd>
+                       <table>
+                           <tr>
+                               <td>文本框:</td> 
+                               <td>
+                                    <input type="text" name="txt1" value="test" reqmsg="内容" />                
+                               </td>
+                           </tr>
+                            <tr>
+                                <td>
+                                    <label class="gray">甲方主体：</label>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>日期</td>
+                                <td>
+                                    <input type="text" datatype="date" reqmsg="日期" value="2013-05-20" />
+                                    <em class="error"></em>
+                                </td>
+                            </tr>
+                        </table>
+                    </dd>
+                </dl>            
+                <div style="text-align:center" class="UButton">                
+                    <button type="submit" eventtype="confirm">确定</button>                
+                    <button type="button" eventtype="cancel">取消</button>            
+                </div>        
+            </div>        
+            <div class="ft">test footer</div>        
+            <span class="close" eventtype="close"></span>    
+        </div>
+        <!--end UPContent-->    
+    </form>
+</div>
+</script>
+
+</body>
+</html>
+
