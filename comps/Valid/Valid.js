@@ -143,6 +143,7 @@
      *      <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>
      *      <dd><b>email:</b> 电子邮件</dd>
      *      <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>
+     *      <dd><b>taxcode:</b> 纳税人识别号, 长度: 15, 18, 20 </dd>
      *
      *      <dd>
      *          <dl>
@@ -1529,6 +1530,27 @@
                 return _r;
             }
         /**
+         * 纳税人识别号, 15, 18, 20位字符
+         * @method  taxcode
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                <div class="f-l">
+                    <input type="TEXT" name="" datatype="taxcode" errmsg="请填空正确的纳税人识别号">
+                </div>
+         */
+        , taxcode: 
+            function( _item ){
+                var _p = this, _r = false, _v = _item.val().trim();
+                _r = /^[\w]{15}$/.test( _v ) 
+                    || /^[\w]{18}$/.test( _v ) 
+                    || /^[\w]{20}$/.test( _v ) 
+                    ;
+                !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
          * 此类型检查 2|N个对象必须至少有一个是有输入内容的, 
          * <br> 常用于 手机/电话 二填一
          * @method  alternative
@@ -1754,7 +1776,6 @@
                 JC.log( 'regmsgValid: ' + _r );
                 return _r;
             }
-
         , sametypeitems:
             function( _item ){
                 var _p = this, _r = []
