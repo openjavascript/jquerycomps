@@ -408,7 +408,7 @@
                     ;
 
                 if( _p._model.cmbeforedelcallback() 
-                        && _p._model.cmbeforedelcallback.call( _p._model.selector(), _item ) === false 
+                        && _p._model.cmbeforedelcallback().call( _p._model.selector(), _item ) === false 
                 ) return;
 
                 _item && _item.length && _item.remove();
