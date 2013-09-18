@@ -41,6 +41,19 @@
 
                 return _tpl;
             }
+
+            function cmbeforeaddcallabck( _appendBox, _ins ){
+                var _trigger = $(this);
+                JC.log( 'cmbeforeaddcallabck', new Date().getTime() );
+                //return false;
+            }
+
+            function cmbeforedelcallback( _appendBox, _ins ){
+                var _trigger = $(this);
+                JC.log( 'cmbeforedelcallback', new Date().getTime() );
+                //return false;
+            }
+
         </script>
     </head>    
     <body>
@@ -62,6 +75,8 @@
                                 cmaction="add"
                                 cmdonecallback="cmdonecallback"
                                 cmaddcallback="cmaddcallback"
+
+                                cmbeforeaddcallabck="cmbeforeaddcallabck"
                             >+ 添加</a>
                             <em class="error"></em>
                         </td>
@@ -117,6 +132,7 @@
                     cmaction="del"
                     cmdonecallback="cmdonecallback"
                     cmdelcallback="cmdelcallback"
+                    cmbeforedelcallback="cmbeforedelcallback"
                 >+ 删除</a>
                 <em class="error"></em>
             </td>
@@ -145,6 +161,7 @@
                     cmaction="del"
                     cmdonecallback="cmdonecallback"
                     cmdelcallback="cmdelcallback"
+                    cmbeforedelcallback="cmbeforedelcallback"
                 >+ 删除</a>
                 <b>{0}</b>
                 <em class="error"></em>

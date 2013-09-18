@@ -40,12 +40,6 @@
      *      <dt>formResetUrl = url</dt>
      *      <dd>表单重置时, 返回的URL</dd>
      *
-     *      <dt>formSubmitConfirm = string</dt>
-     *      <dd>提交表单时进行二次确认的提示信息</dt>
-     *
-     *      <dt>formResetConfirm = string</dt>
-     *      <dd>重置表单时进行二次确认的提示信息</dt>
-     *
      *      <dt>formPopupCloseMs = int, default = 2000</dt>
      *      <dd>msgbox 弹框的显示时间</dd>
      *
@@ -79,8 +73,10 @@
      * <dl>
      *      <dd>
      *          基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高
-     *          <br/> formResetConfirm 属性除外
      *      </dd>
+     *
+     *      <dt>formSubmitConfirm = string</dt>
+     *      <dd>提交表单时进行二次确认的提示信息</dt>
      * </dl>
      *
      * <h2>reset button 可用的 html 属性</h2>

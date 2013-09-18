@@ -204,8 +204,14 @@
  *      &lt;dt&gt;cmtplfiltercallback = function&lt;/dt&gt;
  *      &lt;dd&gt;模板内容过滤回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
  *
+ *      &lt;dt&gt;cmbeforeaddcallabck = function&lt;/dt&gt;
+ *      &lt;dd&gt;添加之前的回调, 如果返回 false, 将不执行添加操作, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
+ *
  *      &lt;dt&gt;cmaddcallback = function&lt;/dt&gt;
  *      &lt;dd&gt;添加完成的回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;cmbeforedelcallback = function&lt;/dt&gt;
+ *      &lt;dd&gt;删除之前的回调, 如果返回 false, 将不执行删除操作, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
  *
  *      &lt;dt&gt;cmdelcallback = function&lt;/dt&gt;
  *      &lt;dd&gt;删除完成的回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
@@ -393,7 +399,9 @@
 
     CommonModify.doneCallback = null;
     CommonModify.tplFilterCallback = null;
+    CommonModify.beforeAddCallback = null;
     CommonModify.addCallback = null;
+    CommonModify.beforeDelCallabck = null;
     CommonModify.delCallback = null;
     
     function Model( _selector ){
@@ -453,6 +461,7 @@
                     &amp;&amp; ( _r = _tmp )
                     ;
 
+
                 return _r;
             }
 
@@ -475,6 +484,32 @@
 
                 this.selector() 
                     &amp;&amp; ( _tmp = this.selector().attr(&#x27;cmdelcallback&#x27;) )
+                    &amp;&amp; ( _tmp = window[ _tmp ] )
+                    &amp;&amp; ( _r = _tmp )
+                    ;
+
+                return _r;
+            }
+
+        , cmbeforeaddcallabck:
+            function(){
+                var _r = CommonModify.beforeAddCallback, _tmp;
+
+                this.selector() 
+                    &amp;&amp; ( _tmp = this.selector().attr(&#x27;cmbeforeaddcallabck&#x27;) )
+                    &amp;&amp; ( _tmp = window[ _tmp ] )
+                    &amp;&amp; ( _r = _tmp )
+                    ;
+
+                return _r;
+            }
+
+        , cmbeforedelcallback:
+            function(){
+                var _r = CommonModify.beforeDelCallabck, _tmp;
+
+                this.selector() 
+                    &amp;&amp; ( _tmp = this.selector().attr(&#x27;cmbeforedelcallback&#x27;) )
                     &amp;&amp; ( _tmp = window[ _tmp ] )
                     &amp;&amp; ( _r = _tmp )
                     ;
@@ -518,6 +553,10 @@
                     , _newItem
                     ;
 
+                if( _p._model.cmbeforeaddcallabck() 
+                        &amp;&amp; _p._model.cmbeforeaddcallabck().call( _p._model.selector(), _item ) === false 
+                ) return;
+
                 _p._model.cmtplfiltercallback() 
                     &amp;&amp; ( _tpl = _p._model.cmtplfiltercallback().call( _p._model.selector(), _tpl, _item ) );
 
@@ -545,6 +584,10 @@
                 var _p = this
                     , _item = _p._model.cmitem()
                     ;
+
+                if( _p._model.cmbeforedelcallback() 
+                        &amp;&amp; _p._model.cmbeforedelcallback.call( _p._model.selector(), _item ) === false 
+                ) return;
 
                 _item &amp;&amp; _item.length &amp;&amp; _item.remove();
 

@@ -26,8 +26,14 @@
  *      <dt>cmtplfiltercallback = function</dt>
  *      <dd>模板内容过滤回调, <b>window 变量域</b></dd>
  *
+ *      <dt>cmbeforeaddcallabck = function</dt>
+ *      <dd>添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b></dd>
+ *
  *      <dt>cmaddcallback = function</dt>
  *      <dd>添加完成的回调, <b>window 变量域</b></dd>
+ *
+ *      <dt>cmbeforedelcallback = function</dt>
+ *      <dd>删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b></dd>
  *
  *      <dt>cmdelcallback = function</dt>
  *      <dd>删除完成的回调, <b>window 变量域</b></dd>
@@ -215,7 +221,9 @@
 
     CommonModify.doneCallback = null;
     CommonModify.tplFilterCallback = null;
+    CommonModify.beforeAddCallback = null;
     CommonModify.addCallback = null;
+    CommonModify.beforeDelCallabck = null;
     CommonModify.delCallback = null;
     
     function Model( _selector ){
@@ -275,6 +283,7 @@
                     && ( _r = _tmp )
                     ;
 
+
                 return _r;
             }
 
@@ -297,6 +306,32 @@
 
                 this.selector() 
                     && ( _tmp = this.selector().attr('cmdelcallback') )
+                    && ( _tmp = window[ _tmp ] )
+                    && ( _r = _tmp )
+                    ;
+
+                return _r;
+            }
+
+        , cmbeforeaddcallabck:
+            function(){
+                var _r = CommonModify.beforeAddCallback, _tmp;
+
+                this.selector() 
+                    && ( _tmp = this.selector().attr('cmbeforeaddcallabck') )
+                    && ( _tmp = window[ _tmp ] )
+                    && ( _r = _tmp )
+                    ;
+
+                return _r;
+            }
+
+        , cmbeforedelcallback:
+            function(){
+                var _r = CommonModify.beforeDelCallabck, _tmp;
+
+                this.selector() 
+                    && ( _tmp = this.selector().attr('cmbeforedelcallback') )
                     && ( _tmp = window[ _tmp ] )
                     && ( _r = _tmp )
                     ;
@@ -340,6 +375,10 @@
                     , _newItem
                     ;
 
+                if( _p._model.cmbeforeaddcallabck() 
+                        && _p._model.cmbeforeaddcallabck().call( _p._model.selector(), _item ) === false 
+                ) return;
+
                 _p._model.cmtplfiltercallback() 
                     && ( _tpl = _p._model.cmtplfiltercallback().call( _p._model.selector(), _tpl, _item ) );
 
@@ -367,6 +406,10 @@
                 var _p = this
                     , _item = _p._model.cmitem()
                     ;
+
+                if( _p._model.cmbeforedelcallback() 
+                        && _p._model.cmbeforedelcallback.call( _p._model.selector(), _item ) === false 
+                ) return;
 
                 _item && _item.length && _item.remove();
 
