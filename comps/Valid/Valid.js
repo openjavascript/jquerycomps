@@ -208,22 +208,22 @@
                 });
 
                 $([ this._view, this._model ] ).on(Model.TRIGGER, function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
+                    var _data = sliceArgs( arguments ).slice(2);
                     _p.trigger( _evtName, _data );
                 });
 
                 _p.on( Model.CORRECT, function( _evt ){
-                    var _data = sliceArgs( arguments ); _data.shift();
+                    var _data = sliceArgs( arguments ).slice(1);
                     _p._view.valid.apply( _p._view, _data );
                 });
 
                 _p.on( Model.ERROR, function( _evt ){
-                    var _data = sliceArgs( arguments ); _data.shift();
+                    var _data = sliceArgs( arguments ).slice(1);
                     _p._view.error.apply( _p._view, _data );
                 });
 
                 _p.on( 'FocusMsg', function( _evt ){
-                    var _data = sliceArgs( arguments ); _data.shift();
+                    var _data = sliceArgs( arguments ).slice(1);
                     _p._view.focusmsg.apply( _p._view, _data );
                 });
 
@@ -435,6 +435,7 @@
      * @method  setError
      * @param   {selector}  _item
      * @param   {string}    _msgAttr    - 显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名
+     *                                    <br /> 如果 _msgAttr 的第一个字符为空格, 将视为提示信息, 并自动生成属性 autoGenerateErrorMsg
      * @param   {bool}      _fullMsg    - 显示指定错误信息为属性的值, 而不是自动添加的 请上传/选择/填写
      * @static
      */
@@ -1985,9 +1986,14 @@
         , error: 
             function( _item, _msgAttr, _fullMsg ){
                 _item && ( _item = $(_item) );
-                var _p = this, arg = arguments;
+                var _p = this, arg = arguments, _autoKey = 'autoGenerateErrorMsg';
                 if( !_p._model.isValid( _item ) ) return true;
                 if( _item.is( '[validnoerror]' ) ) return true;
+
+                if( _msgAttr.trim() && /^[\s]/.test( _msgAttr ) ){
+                    _item.attr( _autoKey, _msgAttr );
+                    _msgAttr = _autoKey;
+                }
 
                 setTimeout(function(){
                     var _msg = _p._model.errorMsg.apply( _p._model, sliceArgs( arg ) )

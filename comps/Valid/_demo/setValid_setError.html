@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            body{ margin: 20px 20px; }
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #F0DC82;!important;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+
+            dd.odd {
+                background: #ececec;
+            }
+
+            dt{
+                font-weight: bold;
+            }
+
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
+
+            input[type=checkbox], input[type=radio], input.UXC{
+                height: auto;
+                line-height: auto;
+            }
+
+            select[multiple]{
+                height: 80px;
+            }
+
+            div, li{
+                margin: 2px auto;
+            }
+        </style>
+        <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../lib.js"></script>
+        <script>
+            JC.debug = true; JC.use( 'Valid, Calendar' );
+
+            $(document).ready( function($evt){
+                $(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
+                    window.console && console.clear && console.clear();
+                    JC.Valid.clearError( 'form.js-valid' );
+                });
+
+                $('form.js-valid').on('submit', function( $evt ){
+                    window.console && console.clear && console.clear();
+                        $evt.preventDefault();
+
+                    if( !JC.Valid.check( 'form.js-valid' ) ){
+                        $evt.preventDefault();
+                        return false;
+                    }
+                });
+
+                $(document).delegate( 'button.js_setError', 'click', function( _evt ){
+                    var _p = $(this)
+                        , _target = parentSelector( _p, _p.attr('target') )
+                        , _msgkey = _p.attr('msgkey')
+                        , _msg = _p.attr('msg') || ( !_msgkey ? 'test error' : '')
+                        ;
+
+                    _msgkey && _msg && _target.attr( _msgkey, _msg );
+
+                    //alert( _p.attr( _msgkey ) );
+
+                    JC.Valid.setError( _target, _msgkey || _msg );
+                });
+
+                $(document).delegate( 'button.js_setValid', 'click', function( _evt ){
+                    var _p = $(this)
+                        , _target = parentSelector( _p, _p.attr('target') )
+                        ;
+
+                    JC.Valid.setValid( _target );
+                });
+            });
+
+        </script>
+    </head>    
+    <body>
+
+        <form action='' method='get' class="js-valid" >
+            <div style="position:fixed; top: 10px; right:10px;">
+                <button type="submit">Save</button>
+                <button type="button" class="js-clear-error">清空错误信息</button>
+            </div>
+            <dl class="fm-items">
+                <dt>JC.Valid 示例, setError</dt>
+                <dd>
+                    文件: <input  type="file" reqmsg="文件" />
+                    <button type="button" class="js_setError" target="/input" msg="test ilu" msgkey="msgextent" >test - msg && msgkey</button>
+                    <em class="error"></em>
+                </dd>
+                <dd>
+                    文件: <input  type="file" reqmsg="文件" extendkey="test" />
+                    <button type="button" class="js_setError" target="/input" msgkey="extendkey" >test - msgkey</button>
+                    <em class="error"></em>
+                </dd>
+                <dd>
+                    文件: <input  type="file" reqmsg="文件" />
+                    <button type="button" class="js_setError" target="/input" msgkey=" test msg" >test - msgkey - auto generate key</button>
+                    <em class="error"></em>
+                </dd>
+            </dl>
+
+            <dl class="fm-items">
+                <dt>JC.Valid 示例, setValid</dt>
+                <dd>
+                    文件: <input  type="file" reqmsg="文件" />
+                    <button type="button" class="js_setError" target="/input" msgkey=" test msg" >set error</button>
+                    <button type="button" class="js_setValid" target="/input" >set valid</button>
+                    <em class="error"></em>
+                    <em class="validmsg"></em>
+                </dd>
+            </dl>
+
+
+            <div style="position:fixed; bottom: 10px; right:10px;">
+                <button type="submit">Save</button>
+                <button type="button" class="js-clear-error">清空错误信息</button>
+            </div>
+        </form>
+
+    </body>
+</html>
+
