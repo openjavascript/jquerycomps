@@ -120,9 +120,74 @@
 <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
 | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>
 | <a href='../../bizs/ActionLogic/_demo' target='_blank'>demo link</a></p>
+<p>require: <a href='../classes/window.jQuery.html'>jQuery</a>
+<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a></p>
 <p>a|button 需要 添加 class="js_bizsActionLogic"</p>
 <h2>可用的 HTML 属性</h2>
 <dl>
+     <dt>balType = string, 操作类型 </dt>
+     <dd>
+         <dl>
+             <dt>类型:</dt>
+             <dd>panel: 弹框</dd>
+             <dd>link: 链接跳转</dd>
+             <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>
+         </dl>
+     </dd>
+</dl>
+<h2>balType = panel 可用的 HTML 属性</h2>
+<dl>
+     <dt>balPanelTpl = script selector</dt>
+     <dd>脚本模板选择器</dd>
+     <dt>balAjaxHtml = url</dt>
+     <dd>返回 HTML 的 AJAX 模板</dd>
+     <dt>balAjaxData = url</dt>
+     <dd>返回 json 的 AJAX 模板, { errorno: int, data: html } </dd>
+     <dt>balCallback = function</dt>
+     <dd>
+         显示模板后的回调
+<xmp>function balPanelInitCb( _panelIns ){
+   var _trigger = $(this);
+   //return true; //如果返回真的话, 表单提交后会关闭弹框
+}</xmp>
+     </dd>
+</dl>
+<h2>balType = link 可用的 HTML 属性</h2>
+<dl>
+     <dt>balUrl = url</dt>
+     <dd>要跳转的目标 URL</dd>
+     <dt>balConfirmMsg = string</dt>
+     <dd>跳转前的二次确认提示信息</dd>
+     <dt>balConfirmPopupType = string, default = confirm</dt>
+     <dd>二次确认的弹框类型: confirm, dialog.confirm</dd>
+</dl>
+<h2>balType = ajaxaction 可用的 HTML 属性</h2>
+<dl>
+     <dt>balUrl = url</dt>
+     <dd>AJAX 操作的接口</dd>
+     <dt>balDoneUrl = url</dt>
+     <dd>AJAX 操作完成后跳转的URL</dd>
+     <dt>balConfirmMsg = string</dt>
+     <dd>操作前的二次确认提示信息</dd>
+     <dt>balErrorPopupType = string, default = dialog.alert</dt>
+     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>
+     <dt>balSuccessPopupType = string, default = msgbox</dt>
+     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>
+     <dt>balCallback = function</dt>
+     <dd>
+         操作完成后的回调
+<xmp>function ajaxDelCallback( _d, _ins ){
+   var _trigger = $(this);
+   if( _d && !_d.errorno ){
+       JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){
+           reloadPage( '?usercallback=ajaxaction' );
+       });
+   }else{
+       JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );
+   }
+}
+</xmp>
+     </dd>
 </dl>
 </div>
     <div class="constructor">
@@ -176,6 +241,9 @@
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_on">on</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_process">process</a>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_process">process</a>
@@ -281,7 +349,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l41"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:41</code></a>
+        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l117"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:117</code></a>
         </p>
     </div>
     <div class="description">
@@ -317,7 +385,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l72"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:72</code></a>
+        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l148"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:148</code></a>
         </p>
     </div>
     <div class="description">
@@ -353,7 +421,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l57"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:57</code></a>
+        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l133"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:133</code></a>
         </p>
     </div>
     <div class="description">
@@ -427,6 +495,28 @@
 </div>
                     <div id="method_process" class="method item">
     <h3 class="name"><code>process</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type">ActionLogicInstance</span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l371"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:371</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>执行操作</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">ActionLogicInstance</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_process" class="method item">
+    <h3 class="name"><code>process</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
@@ -441,7 +531,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l91"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:91</code></a>
+        <a href="../files/.._bizs_ActionLogic_ActionLogic.js.html#l167"><code>..&#x2F;bizs&#x2F;ActionLogic&#x2F;ActionLogic.js:167</code></a>
         </p>
     </div>
     <div class="description">

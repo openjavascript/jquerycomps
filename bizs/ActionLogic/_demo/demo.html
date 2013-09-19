@@ -121,23 +121,25 @@
         >href 跳转</a>
     </dd>
     <dd>
+        二次确认
         <button type="button" 
             class="js_bizsActionLogic"
             balType="link" 
             balUrl="?type=direct2_1"
             balConfirmMsg="确认要跳转吗?"
-        >确认后跳转, balUrl</button>
+        >balUrl</button>
         , <a href="#"
             class="js_bizsActionLogic"
             balType="link" 
             balUrl="?type=direct2_2"
             balConfirmMsg="确认要跳转吗?"
-        >确认后跳转 balUrl</a>
+            balConfirmPopupType="dialog.confirm"
+        >balUrl</a>
         , <a href="?type=direct2_3"
             class="js_bizsActionLogic"
             balConfirmMsg="确认要跳转吗?"
             balType="link" 
-        >确认后跳转 href</a>
+        >default</a>
     </dd>
 </dl>
 
@@ -145,6 +147,7 @@
     <dt>ActionLogic 示例1, AJAX 执行操作( 删除, 起用/禁用 )</dt>
     <dt>balType = ajaxaction</dt>
     <dd>
+        直接删除:
         <button type="button" 
             class="js_bizsActionLogic"
             balType="ajaxaction" 
@@ -155,6 +158,7 @@
             balType="ajaxaction" 
             balUrl="./data/handler.php"
             balDoneUrl="?baldone=test"
+            balErrorPopupType="alert"
         >delete</button>
         <a href="#"
             class="js_bizsActionLogic"
@@ -164,26 +168,38 @@
         >delete with callback</a>
     </dd>
     <dd>
+        二次确认
         <button type="button" 
             class="js_bizsActionLogic"
             balType="ajaxaction" 
             balUrl="./data/handler.php"
             balConfirmMsg="确认要删除吗?"
-        >delete(删除确认)</button>
+        >default</button>
         <button type="button" 
             class="js_bizsActionLogic"
             balType="ajaxaction" 
             balUrl="./data/handler.php"
             balDoneUrl="?baldone=test"
             balConfirmMsg="确认要删除吗?"
-        >delete(删除确认)</button>
+            balErrorPopupType="alert"
+            balSuccessPopupType="alert"
+        >balDoneUrl, balErrorPopupType, balSuccessPopupType</button>
+        <button type="button" 
+            class="js_bizsActionLogic"
+            balType="ajaxaction" 
+            balUrl="./data/handler.php"
+            balDoneUrl="?baldone=test"
+            balConfirmMsg="确认要删除吗?"
+            balErrorPopupType="msgbox"
+            balSuccessPopupType="dialog.alert"
+        >balDoneUrl, balErrorPopupType, balSuccessPopupType</button>
         <a href="#"
             class="js_bizsActionLogic"
             balType="ajaxaction" 
             balUrl="./data/handler.php"
             balCallback="ajaxDelCallback"
             balConfirmMsg="确认要删除吗?"
-        >delete with callback(删除确认)</a>
+        >balCallback</a>
     </dd>
 
 </dl>

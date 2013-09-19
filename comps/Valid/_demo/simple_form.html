@@ -608,153 +608,7 @@
                         </dd>
                     </dl>
                 </dd>
-
-                <dd>
-                    <dl>
-                        <dt>subdatatype = reconfirm, 输入的内容必须保持一值</dt>
-                        <dd>
-                            <div>
-                                <label>用户密码:</label>
-                                <input type="password" name="company_pwd" 
-                                datatype="text" 
-                                subdatatype="reconfirm" 
-                                datatarget="/input:last" 
-                                reconfirmmsg="用户密码和确认密码不一致"
-                                minlength="6" 
-                                maxlength="15" 
-                                reqmsg="用户密码" 
-                                errmsg="请填写正确的用户密码"
-                                />
-                                <label>确认密码:</label>
-                                <input type="password" name="company_repwd" 
-                                datatype="text" 
-                                subdatatype="reconfirm" 
-                                datatarget="/input:first" 
-                                reconfirmmsg="确认密码和用户密码不一致"
-                                minlength="6" 
-                                maxlength="15" 
-                                reqmsg="确认密码" 
-                                errmsg="请填写正确的确认密码"
-                                />
-                                <em class="error"></em>
-                            </div>
-                            <div>
-                                <input type="password" name="company_pwd_auto" 
-                                    datatype="text" 
-                                    subdatatype="reconfirm" 
-                                    reqmsg="用户密码" 
-                                    errmsg="长度6-15" 
-                                    reconfirmmsg="用户密码和确认密码不一致" 
-                                    minlength="6" 
-                                    maxlength="15"
-                                    />
-                                <input type="password" name="company_pwd_auto" 
-                                    datatype="text" 
-                                    subdatatype="reconfirm" 
-                                    reqmsg="用户密码" 
-                                    errmsg="长度6-15" 
-                                    reconfirmmsg="用户密码和确认密码不一致" 
-                                    minlength="6" 
-                                    maxlength="15"
-                                    />
-                                <em class="error"></em>
-                                <em class="validmsg"></em>
-                            </div>
-                        </dd>
-                    </dl>
-                </dd>
-
-                <dd>
-                    <dl>
-                        <dt>subdatatype = alternative, 2填1/N填1</dt>
-                        <dd>
-                            <div>
-                                <ul>
-                                    <li>
-                                        <label>电话号码:</label>
-                                        <input type='text' name='company_countrycode1' style="width:60px;" value='' size="7" 
-                                        datatype="countrycode" 
-                                        errmsg="请填写正确的地区代码" 
-                                        validmsg="false" 
-                                        placeholder="地区代码"
-                                        />
-                                        - 
-                                        <input type='text' name='company_countrycode2' style="width:40px;" value='' size="4" 
-                                        datatype="phonezone-2,4" 
-                                        errmsg="请填写正确的电话区号" 
-                                        validmsg="false" 
-                                        placeholder="区号"
-                                        />
-                                        - 
-                                        <input type='text' name='' style="width:80px;" value='' size="8" 
-                                        datatype="phonecode"
-                                        subdatatype="alternative" 
-                                        datatarget="<ul input[datatype=mobile]" 
-                                        alternativemsg="电话号码和手机号码至少填写一个" 
-                                        errmsg="请检查电话号码格式" 
-                                        placeholder="电话号码"
-                                        />
-                                        - 
-                                        <input type='text' name='countrycode4' style="width:40px;" value='' size="4" 
-                                        datatype="phoneext" 
-                                        errmsg="请填写正确的分机号" 
-                                        validmsg="false" 
-                                        placeholder="分机号"
-                                        />
-                                        <em class="error"></em>
-                                        <em class="validmsg"></em>
-                                    </li>
-                                    <li>
-                                        <label>手机号码:</label>
-                                        <input type="text" name="" 
-                                        datatype="mobilecode" 
-                                        subdatatype="alternative" 
-                                        datatarget="<ul input[datatype=phonecode]" 
-                                        alternativemsg=" " 
-                                        errmsg="请填写正确的手机号码"
-                                        placeholder="手机号码"
-                                        />
-                                    </li>
-                                </ul>
-                            </div>
-                            <div>
-                                <input type="text" name="alternative_test[]" class="test" value="" 
-                                    datatype="n" 
-                                    subdatatype="alternative" 
-                                    errmsg="请填写正确的正整数"
-                                    alternativemsg="数值1和数值2至少需要填写一个"
-                                    /> <em>数值1</em>
-                                <input type="text" name="alternative_test[]" class="test" value="" 
-                                    datatype="n" 
-                                    subdatatype="alternative" 
-                                    errmsg="请填写正确的正整数"
-                                    alternativemsg="数值1和数值2至少需要填写一个"
-                                    /> <em>数值2</em>
-                                <em class="error"></em>
-                                <em class="validmsg"></em>
-                            </div>
-                            <div>
-                                <input type="text" name="alternative_test[]" class="test" value="" 
-                                    datatype="n" 
-                                    subdatatype="alternative" 
-                                    errmsg="请填写正确的正整数"
-                                    alternativemsg="数值1和数值2至少需要填写一个"
-                                    datatarget="/input.test"
-                                    /> <em>数值1</em>
-                                <input type="text" name="alternative_test[]" class="test" value="" 
-                                    datatype="n" 
-                                    subdatatype="alternative" 
-                                    errmsg="请填写正确的正整数"
-                                    alternativemsg="数值1和数值2至少需要填写一个"
-                                    datatarget="/input.test"
-                                    /> <em>数值2</em>
-                                <em class="error"></em>
-                                <em class="validmsg"></em>
-                            </div>
-                        </dd>
-                    </dl>
-                </dd>
-
+      
                 <dd>
                     <dl>
                         <dt>datatype = phone, [区号]电话号码</dt>
@@ -914,6 +768,23 @@
 
                 <dd>
                     <dl>
+                        <dt>datatype= file, fileext=文件扩展名(逗号分隔)</dt>
+                        <dd>
+                        文件: <input type="file" 
+                                reqmsg="文件" 
+                                errmsg="允许上传的文件类型: .gif, .jpg, .jpeg, .png"
+                                datatype="file" 
+                                fileext=".gif, .jpg, .jpeg, .png" 
+                                />
+                                <label>.gif, .jpg, .jpeg, .png</label>
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
                         <dt>trim case</dt>
                         <dd>
                             <div>
@@ -940,6 +811,152 @@
                                 reqmsg="请输入内容" 
                                 errmsg="请检查格式,长度2-120" 
                                 /> <em>公司名称描述</em>
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>subdatatype = reconfirm, 输入的内容必须保持一值</dt>
+                        <dd>
+                            <div>
+                                <label>用户密码:</label>
+                                <input type="password" name="company_pwd" 
+                                datatype="text" 
+                                subdatatype="reconfirm" 
+                                datatarget="/input:last" 
+                                reconfirmmsg="用户密码和确认密码不一致"
+                                minlength="6" 
+                                maxlength="15" 
+                                reqmsg="用户密码" 
+                                errmsg="请填写正确的用户密码"
+                                />
+                                <label>确认密码:</label>
+                                <input type="password" name="company_repwd" 
+                                datatype="text" 
+                                subdatatype="reconfirm" 
+                                datatarget="/input:first" 
+                                reconfirmmsg="确认密码和用户密码不一致"
+                                minlength="6" 
+                                maxlength="15" 
+                                reqmsg="确认密码" 
+                                errmsg="请填写正确的确认密码"
+                                />
+                                <em class="error"></em>
+                            </div>
+                            <div>
+                                <input type="password" name="company_pwd_auto" 
+                                    datatype="text" 
+                                    subdatatype="reconfirm" 
+                                    reqmsg="用户密码" 
+                                    errmsg="长度6-15" 
+                                    reconfirmmsg="用户密码和确认密码不一致" 
+                                    minlength="6" 
+                                    maxlength="15"
+                                    />
+                                <input type="password" name="company_pwd_auto" 
+                                    datatype="text" 
+                                    subdatatype="reconfirm" 
+                                    reqmsg="用户密码" 
+                                    errmsg="长度6-15" 
+                                    reconfirmmsg="用户密码和确认密码不一致" 
+                                    minlength="6" 
+                                    maxlength="15"
+                                    />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd>
+                    <dl>
+                        <dt>subdatatype = alternative, 2填1/N填1</dt>
+                        <dd>
+                            <div>
+                                <ul>
+                                    <li>
+                                        <label>电话号码:</label>
+                                        <input type='text' name='company_countrycode1' style="width:60px;" value='' size="7" 
+                                        datatype="countrycode" 
+                                        errmsg="请填写正确的地区代码" 
+                                        validmsg="false" 
+                                        placeholder="地区代码"
+                                        />
+                                        - 
+                                        <input type='text' name='company_countrycode2' style="width:40px;" value='' size="4" 
+                                        datatype="phonezone-2,4" 
+                                        errmsg="请填写正确的电话区号" 
+                                        validmsg="false" 
+                                        placeholder="区号"
+                                        />
+                                        - 
+                                        <input type='text' name='' style="width:80px;" value='' size="8" 
+                                        datatype="phonecode"
+                                        subdatatype="alternative" 
+                                        datatarget="<ul input[datatype=mobile]" 
+                                        alternativemsg="电话号码和手机号码至少填写一个" 
+                                        errmsg="请检查电话号码格式" 
+                                        placeholder="电话号码"
+                                        />
+                                        - 
+                                        <input type='text' name='countrycode4' style="width:40px;" value='' size="4" 
+                                        datatype="phoneext" 
+                                        errmsg="请填写正确的分机号" 
+                                        validmsg="false" 
+                                        placeholder="分机号"
+                                        />
+                                        <em class="error"></em>
+                                        <em class="validmsg"></em>
+                                    </li>
+                                    <li>
+                                        <label>手机号码:</label>
+                                        <input type="text" name="" 
+                                        datatype="mobilecode" 
+                                        subdatatype="alternative" 
+                                        datatarget="<ul input[datatype=phonecode]" 
+                                        alternativemsg=" " 
+                                        errmsg="请填写正确的手机号码"
+                                        placeholder="手机号码"
+                                        />
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <input type="text" name="alternative_test[]" class="test" value="" 
+                                    datatype="n" 
+                                    subdatatype="alternative" 
+                                    errmsg="请填写正确的正整数"
+                                    alternativemsg="数值1和数值2至少需要填写一个"
+                                    /> <em>数值1</em>
+                                <input type="text" name="alternative_test[]" class="test" value="" 
+                                    datatype="n" 
+                                    subdatatype="alternative" 
+                                    errmsg="请填写正确的正整数"
+                                    alternativemsg="数值1和数值2至少需要填写一个"
+                                    /> <em>数值2</em>
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                            <div>
+                                <input type="text" name="alternative_test[]" class="test" value="" 
+                                    datatype="n" 
+                                    subdatatype="alternative" 
+                                    errmsg="请填写正确的正整数"
+                                    alternativemsg="数值1和数值2至少需要填写一个"
+                                    datatarget="/input.test"
+                                    /> <em>数值1</em>
+                                <input type="text" name="alternative_test[]" class="test" value="" 
+                                    datatype="n" 
+                                    subdatatype="alternative" 
+                                    errmsg="请填写正确的正整数"
+                                    alternativemsg="数值1和数值2至少需要填写一个"
+                                    datatarget="/input.test"
+                                    /> <em>数值2</em>
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
                             </div>
                         </dd>
                     </dl>

@@ -9,10 +9,86 @@
  * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>
  * | <a href='../../bizs/ActionLogic/_demo' target='_blank'>demo link</a></p>
  *
+ * require: <a href='../classes/window.jQuery.html'>jQuery</a>
+ * <br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>
+ *
  * a|button 需要 添加 class="js_bizsActionLogic"
  *
  * <h2>可用的 HTML 属性</h2>
  * <dl>
+ *      <dt>balType = string, 操作类型 </dt>
+ *      <dd>
+ *          <dl>
+ *              <dt>类型:</dt>
+ *              <dd>panel: 弹框</dd>
+ *              <dd>link: 链接跳转</dd>
+ *              <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>
+ *          </dl>
+ *      </dd>
+ * </dl>
+ * <h2>balType = panel 可用的 HTML 属性</h2>
+ * <dl>
+ *      <dt>balPanelTpl = script selector</dt>
+ *      <dd>脚本模板选择器</dd>
+ *
+ *      <dt>balAjaxHtml = url</dt>
+ *      <dd>返回 HTML 的 AJAX 模板</dd>
+ *
+ *      <dt>balAjaxData = url</dt>
+ *      <dd>返回 json 的 AJAX 模板, { errorno: int, data: html } </dd>
+ *
+ *      <dt>balCallback = function</dt>
+ *      <dd>
+ *          显示模板后的回调
+<xmp>function balPanelInitCb( _panelIns ){
+    var _trigger = $(this);
+    //return true; //如果返回真的话, 表单提交后会关闭弹框
+}</xmp>
+ *      </dd>
+ * </dl>
+ * <h2>balType = link 可用的 HTML 属性</h2>
+ * <dl>
+ *      <dt>balUrl = url</dt>
+ *      <dd>要跳转的目标 URL</dd>
+ *
+ *      <dt>balConfirmMsg = string</dt>
+ *      <dd>跳转前的二次确认提示信息</dd>
+ *
+ *      <dt>balConfirmPopupType = string, default = confirm</dt>
+ *      <dd>二次确认的弹框类型: confirm, dialog.confirm</dd>
+ * </dl>
+ * <h2>balType = ajaxaction 可用的 HTML 属性</h2>
+ * <dl>
+ *      <dt>balUrl = url</dt>
+ *      <dd>AJAX 操作的接口</dd>
+ *
+ *      <dt>balDoneUrl = url</dt>
+ *      <dd>AJAX 操作完成后跳转的URL</dd>
+ *
+ *      <dt>balConfirmMsg = string</dt>
+ *      <dd>操作前的二次确认提示信息</dd>
+ *
+ *      <dt>balErrorPopupType = string, default = dialog.alert</dt>
+ *      <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>
+ *
+ *      <dt>balSuccessPopupType = string, default = msgbox</dt>
+ *      <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>
+ *
+ *      <dt>balCallback = function</dt>
+ *      <dd>
+ *          操作完成后的回调
+<xmp>function ajaxDelCallback( _d, _ins ){
+    var _trigger = $(this);
+    if( _d && !_d.errorno ){
+        JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){
+            reloadPage( '?usercallback=ajaxaction' );
+        });
+    }else{
+        JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );
+    }
+}
+</xmp>
+ *      </dd>
  * </dl>
  *
  * @namespace   window.Bizs
@@ -154,7 +230,7 @@
                                     try{ _d = $.parseJSON( _d ); }catch(ex){}
                                     if( _d ){
                                         if( _d.errorno ){
-                                            JC.Dialog && JC.Dialog.alert( _d.errmsg || '操作失败, 请重试!' );
+                                            _p.trigger( 'ShowError', [ _d.errmsg || '操作失败, 请重试!', 1 ] );
                                         }else{
                                             _p.trigger( 'ShowPanel', [ _d.data ] );
                                         }
@@ -188,11 +264,18 @@
                         }else{
                             if( _d && 'errorno' in _d ){
                                 if( _d.errorno ){
-                                    JC.Dialog.alert( _d.errmsg || '操作失败, 请重试!', 1 );
+                                    _p.trigger( 'ShowError', [ _d.errmsg || '操作失败, 请重试!', 1 ] );
                                 }else{
-                                    JC.msgbox( _d.errmsg || '操作完成', _p.selector(), 0, function(){
-                                        reloadPage( _p._model.balDoneUrl() || location.href );
-                                    });
+                                    _p.trigger( 'ShowSuccess', 
+                                                [ 
+                                                    _d.errmsg || '操作完成'
+                                                    , function(){
+                                                            _p._model.balDoneUrl() 
+                                                            && reloadPage( _p._model.balDoneUrl() || location.href )
+                                                            ;
+                                                        }
+                                                ]
+                                    );
                                 }
                             }else{
                                 JC.Dialog.alert( _d, 1 );
@@ -200,7 +283,96 @@
                         }
                     });
                 });
+                /**
+                 * 处理错误提示
+                 */
+                _p.on('ShowError', function( _evt, _msg, _status, _cb ){
+                    var _panel;
+                    switch( _p._model.balErrorPopupType() ){
+                        case 'alert':
+                            {
+                                _panel = JC.alert( _msg, _p._model.selector(), _status || 1 );
+                                _cb && _panel.on('confirm', function(){ _cb() } );
+                                break;
+                            }
+                        case 'msgbox':
+                            {
+                                _panel = JC.msgbox( _msg, _p._model.selector(), _status || 1 );
+                                _cb && _panel.on('close', function(){ _cb() } );
+                                break;
+                            }
+                        case 'dialog.msgbox':
+                            {
+                                _panel = JC.Dialog.msgbox( _msg, _status || 1 );
+                                _cb && _panel.on('close', function(){ _cb() } );
+                                break;
+                            }
+                        default:
+                            {
+                                _panel = JC.Dialog.alert( _msg, _status || 1 );
+                                _cb && _panel.on('confirm', function(){ _cb() } );
+                                break;
+                            }
+                    }
+                });
+                /**
+                 * 处理二次确认
+                 */
+                _p.on('ShowConfirm', function( _evt, _msg, _status, _cb ){
+                    var _panel;
+                    switch( _p._model.balConfirmPopupType() ){
+                        case 'dialog.confirm':
+                            {
+                                _panel = JC.Dialog.confirm( _msg, _status || 1 );
+                                _cb && _panel.on('confirm', function(){ _cb() } );
+                                break;
+                            }
+                        default:
+                            {
+                                _panel = JC.confirm( _msg, _p._model.selector(), _status || 1 );
+                                _cb && _panel.on('confirm', function(){ _cb() } );
+                                break;
+                            }
+                    }
+                });
+                /**
+                 * 处理成功提示
+                 */
+                _p.on('ShowSuccess', function( _evt, _msg, _cb ){
+                    var _panel;
+                    switch( _p._model.balSuccessPopupType() ){
+                        case 'alert':
+                            {
+                                _panel = JC.alert( _msg, _p._model.selector() );
+                                _cb && _panel.on('confirm', function(){ _cb() } );
+                                break;
+                            }
+                        case 'dialog.alert':
+                            {
+                                _panel = JC.Dialog.alert( _msg );
+                                _cb && _panel.on('confirm', function(){ _cb() } );
+                                break;
+                            }
+                        case 'dialog.msgbox':
+                            {
+                                _panel = JC.Dialog.msgbox( _msg );
+                                _cb && _panel.on('close', function(){ _cb() } );
+                                break;
+                            }
+                        default:
+                            {
+                                _panel = JC.msgbox( _msg, _p.selector() );
+                                _cb && _panel.on('close', function(){ _cb() } );
+                                break;
+                            }
+                    }
+                });
             }
+        /**
+         * 执行操作
+         * @method  process
+         * @return  {ActionLogicInstance}
+         */
         , process:
             function(){
                 var _p = this;
@@ -221,10 +393,15 @@
                     case 'link'://点击跳转
                         {
                             if( _p._model.is( '[balConfirmMsg]' ) ){
-                                var _panel = JC.confirm( _p._model.balConfirmMsg(), _p.selector(), 2 );
-                                    _panel.on('confirm', function(){
-                                        _p.trigger( 'Go', _p._model.balUrl() );
-                                    });
+                                _p.trigger( 'ShowConfirm', 
+                                            [ 
+                                                _p._model.balConfirmMsg()
+                                                , 2
+                                                , function(){
+                                                    _p.trigger( 'Go', _p._model.balUrl() );
+                                                  }
+                                            ] 
+                                    );
                             }else{
                                 _p.trigger( 'Go', _p._model.balUrl() );
                             }
@@ -243,6 +420,7 @@
                             break;
                         }
                 }
+                return this;
             }
     };
 
@@ -292,6 +470,21 @@
             function(){
                 var _r = '确定要执行吗?';
                 _r = this.selector().attr('balConfirmMsg') || _r;
+                return _r;
+            }
+        , balErrorPopupType: 
+            function(){
+                var _r = this.stringProp('balErrorPopupType') || 'dialog';
+                return _r;
+            }
+        , balSuccessPopupType: 
+            function(){
+                var _r = this.stringProp('balSuccessPopupType') || 'msgbox';
+                return _r;
+            }
+        , balConfirmPopupType: 
+            function(){
+                var _r = this.stringProp('balConfirmPopupType') || 'confirm';
                 return _r;
             }
     }

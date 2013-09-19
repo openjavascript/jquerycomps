@@ -1,5 +1,4 @@
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
-//TODO: file 添加类型判断
 ;(function($){
     /**
      * <b>表单验证</b> (单例模式)
@@ -154,6 +153,26 @@
      *                  <br > 如果需要选中N个, 用这种格式 checkbox-n, checkbox-3 = 必须选中三个
      *                  <br > datatarget: 声明所有 checkbox 的选择器
      *              </dd>
+     *          </dl>
+     *      </dd>
+     *
+     *      <dd>
+     *          <dl>
+     *              <dt>file: 判断文件扩展名</dt>
+     *              <dd>属性名(文件扩展名列表): fileext</dd>
+     *              <dd>格式: .ext[, .ext]</dd>
+     *              <dd>
+<xmp>   <input type="file" 
+    reqmsg="文件" 
+    errmsg="允许上传的文件类型: .gif, .jpg, .jpeg, .png"
+    datatype="file" 
+    fileext=".gif, .jpg, .jpeg, .png" 
+    />
+    <label>.gif, .jpg, .jpeg, .png</label>
+    <em class="error"></em>
+    <em class="validmsg"></em>
+</xmp>
+                    </dd>
      *          </dl>
      *      </dd>
      *
@@ -1912,6 +1931,44 @@
                }
                //alert( _items.length + ', ' + _ckLen + ', ' + _count );
 
+                return _r;
+            }
+        /**
+         * 验证文件扩展名
+         */
+        , 'file':
+            function( _item ){
+                var _p = this
+                    , _r = true
+                    , _v = _item.val().trim().toLowerCase()
+                    , _extLs = _p.dataFileExt( _item )
+                    , _re
+                    , _tmp
+                    ;
+
+                if( _extLs.length ){
+                    _r = false;
+                    $.each( _extLs, function( _ix, _item ){
+                        _item += '$';
+                        _re = new RegExp( _item, 'i' );
+                        if( _re.test( _v ) ) {
+                            _r = true;
+                            return false;
+                        }
+                    });
+                }
+
+                !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        , dataFileExt:
+            function( _item ){
+                var _r = [], _tmp;
+                _item.is('[fileext]')
+                    && ( _tmp = _item.attr('fileext').replace(/[\s]+/g, '' ) )
+                    && ( _tmp = _tmp.replace( /\./g, '\\.' ) )
+                    && ( _r = _tmp.toLowerCase().split(',') )
+                    ;
                 return _r;
             }
     };
