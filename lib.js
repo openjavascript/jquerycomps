@@ -632,7 +632,7 @@ function funcName(_func){
  *      <dt>可识别的组件</dt>
  *      <dd>
  *          JC.AutoSelect, JC.Calendar, JC.Form.initCheckAll 
- *          <br />Bizs.DisableLogic
+ *          <br />Bizs.DisableLogic, Bizs.FormLogic
  *      </dd>
  * </d>
  * @method  jcAutoInitComps

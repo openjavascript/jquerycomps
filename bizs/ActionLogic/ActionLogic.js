@@ -116,21 +116,27 @@
         , _initHanlderEvent:
             function(){
                 var _p = this;
-
+                /**
+                 * 脚本模板 Panel
+                 */
                 _p.on('StaticPanel', function( _evt, _item ){
                     _p.trigger( 'ShowPanel', [ scriptContent( _item ) ] );
                 });
-
+                /**
+                 * 显示 Panel
+                 */
                 _p.on(ActionLogic.Model.SHOW_PANEL, function( _evt, _html){
                     var _pins = JC.Dialog( _html );
                     _pins.on('confirm', function(){
-                        if( _p._model.balPanelInitCb() 
-                            && _p._model.balPanelInitCb().call( _p._model.selector(), _pins, _p ) 
+                        if( _p._model.balCallback() 
+                            && _p._model.balCallback().call( _p._model.selector(), _pins, _p ) 
                         ) return true;
                         return false;
                     });
                 });
-
+                /**
+                 * ajax Panel
+                 */
                 _p.on('AjaxPanel', function( _evt, _type, _url ){
                     if( !( _type && _url ) ) return;
                     _p._model.balRandom() 
@@ -158,12 +164,41 @@
                         }
                     });
                 });
-
+                /**
+                 * 跳转到 URL
+                 */
                 _p.on( 'Go', function( _evt, _url ){
                     if( !_url ) return;
                     _p._model.balRandom() 
                         && ( _url = addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
                     reloadPage( _url );
+                });
+                /**
+                 * ajax 执行操作
+                 */
+                _p.on( 'AjaxAction', function( _evt, _url ){
+                    if( !_url ) return;
+                    _p._model.balRandom() 
+                        && ( _url = addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
+                    $.get( _url ).done( function( _d ){
+                        try{ _d = $.parseJSON( _d ); }catch(ex){}
+
+                        if( _p._model.balCallback() ){
+                            _p._model.balCallback().call( _p.selector(), _d, _p );
+                        }else{
+                            if( _d && 'errorno' in _d ){
+                                if( _d.errorno ){
+                                    JC.Dialog.alert( _d.errmsg || '操作失败, 请重试!', 1 );
+                                }else{
+                                    JC.msgbox( _d.errmsg || '操作完成', _p.selector(), 0, function(){
+                                        reloadPage( _p._model.balDoneUrl() || location.href );
+                                    });
+                                }
+                            }else{
+                                JC.Dialog.alert( _d, 1 );
+                            }
+                        }
+                    });
                 });
             }
         , process:
@@ -172,7 +207,7 @@
                 JC.hideAllPopup( 1 );
 
                 switch( _p._model.baltype() ){
-                    case 'panel':
+                    case 'panel'://显示弹框
                         {
                             if( _p._model.is('[balPanelTpl]') ){
                                 _p.trigger('StaticPanel', [  _p._model.balPanelTpl() ] );
@@ -183,7 +218,7 @@
                             }
                             break;
                         }
-                    case 'link':
+                    case 'link'://点击跳转
                         {
                             if( _p._model.is( '[balConfirmMsg]' ) ){
                                 var _panel = JC.confirm( _p._model.balConfirmMsg(), _p.selector(), 2 );
@@ -192,6 +227,18 @@
                                     });
                             }else{
                                 _p.trigger( 'Go', _p._model.balUrl() );
+                            }
+                            break;
+                        }
+                    case 'ajaxaction'://AJAX 执行操作
+                        {
+                            if( _p._model.is( '[balConfirmMsg]' ) ){
+                                var _panel = JC.confirm( _p._model.balConfirmMsg(), _p.selector(), 2 );
+                                    _panel.on('confirm', function(){
+                                        _p.trigger( 'AjaxAction', _p._model.balUrl() );
+                                    });
+                            }else{
+                                _p.trigger( 'AjaxAction', _p._model.balUrl() );
                             }
                             break;
                         }
@@ -214,10 +261,10 @@
                 _r = _p.selectorProp( 'balPanelTpl' ) || _r;
                 return _r;
             }
-        , balPanelInitCb: 
+        , balCallback: 
             function(){ 
                 var _r, _p = this;;
-                _r = _p.callbackProp( 'balPanelInitCb' ) || _r;
+                _r = _p.callbackProp( 'balCallback' ) || _r;
                 return _r;
             }
         , balAjaxHtml: function(){ return this.selector().attr('balAjaxHtml'); }
@@ -234,6 +281,11 @@
                 _p.selector().prop('nodeName').toLowerCase() == 'a'
                     && ( _r = _p.selector().attr('href') );
                 _p.is( '[balUrl]' ) && ( _r = _p.selector().attr('balUrl') );
+                return _r;
+            }
+        , balDoneUrl:
+            function(){
+                var _r = this.stringProp( 'balDoneUrl' );
                 return _r;
             }
         , balConfirmMsg:

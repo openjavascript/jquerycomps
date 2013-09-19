@@ -294,21 +294,27 @@
         , _initHanlderEvent:
             function(){
                 var _p = this;
-
+                /**
+                 * 脚本模板 Panel
+                 */
                 _p.on(&#x27;StaticPanel&#x27;, function( _evt, _item ){
                     _p.trigger( &#x27;ShowPanel&#x27;, [ scriptContent( _item ) ] );
                 });
-
+                /**
+                 * 显示 Panel
+                 */
                 _p.on(ActionLogic.Model.SHOW_PANEL, function( _evt, _html){
                     var _pins = JC.Dialog( _html );
                     _pins.on(&#x27;confirm&#x27;, function(){
-                        if( _p._model.balPanelInitCb() 
-                            &amp;&amp; _p._model.balPanelInitCb().call( _p._model.selector(), _pins, _p ) 
+                        if( _p._model.balCallback() 
+                            &amp;&amp; _p._model.balCallback().call( _p._model.selector(), _pins, _p ) 
                         ) return true;
                         return false;
                     });
                 });
-
+                /**
+                 * ajax Panel
+                 */
                 _p.on(&#x27;AjaxPanel&#x27;, function( _evt, _type, _url ){
                     if( !( _type &amp;&amp; _url ) ) return;
                     _p._model.balRandom() 
@@ -336,12 +342,41 @@
                         }
                     });
                 });
-
+                /**
+                 * 跳转到 URL
+                 */
                 _p.on( &#x27;Go&#x27;, function( _evt, _url ){
                     if( !_url ) return;
                     _p._model.balRandom() 
                         &amp;&amp; ( _url = addUrlParams( _url, { &#x27;rnd&#x27;: new Date().getTime() } ) );
                     reloadPage( _url );
+                });
+                /**
+                 * ajax 执行操作
+                 */
+                _p.on( &#x27;AjaxAction&#x27;, function( _evt, _url ){
+                    if( !_url ) return;
+                    _p._model.balRandom() 
+                        &amp;&amp; ( _url = addUrlParams( _url, { &#x27;rnd&#x27;: new Date().getTime() } ) );
+                    $.get( _url ).done( function( _d ){
+                        try{ _d = $.parseJSON( _d ); }catch(ex){}
+
+                        if( _p._model.balCallback() ){
+                            _p._model.balCallback().call( _p.selector(), _d, _p );
+                        }else{
+                            if( _d &amp;&amp; &#x27;errorno&#x27; in _d ){
+                                if( _d.errorno ){
+                                    JC.Dialog.alert( _d.errmsg || &#x27;操作失败, 请重试!&#x27;, 1 );
+                                }else{
+                                    JC.msgbox( _d.errmsg || &#x27;操作完成&#x27;, _p.selector(), 0, function(){
+                                        reloadPage( _p._model.balDoneUrl() || location.href );
+                                    });
+                                }
+                            }else{
+                                JC.Dialog.alert( _d, 1 );
+                            }
+                        }
+                    });
                 });
             }
         , process:
@@ -350,7 +385,7 @@
                 JC.hideAllPopup( 1 );
 
                 switch( _p._model.baltype() ){
-                    case &#x27;panel&#x27;:
+                    case &#x27;panel&#x27;://显示弹框
                         {
                             if( _p._model.is(&#x27;[balPanelTpl]&#x27;) ){
                                 _p.trigger(&#x27;StaticPanel&#x27;, [  _p._model.balPanelTpl() ] );
@@ -361,7 +396,7 @@
                             }
                             break;
                         }
-                    case &#x27;link&#x27;:
+                    case &#x27;link&#x27;://点击跳转
                         {
                             if( _p._model.is( &#x27;[balConfirmMsg]&#x27; ) ){
                                 var _panel = JC.confirm( _p._model.balConfirmMsg(), _p.selector(), 2 );
@@ -370,6 +405,18 @@
                                     });
                             }else{
                                 _p.trigger( &#x27;Go&#x27;, _p._model.balUrl() );
+                            }
+                            break;
+                        }
+                    case &#x27;ajaxaction&#x27;://AJAX 执行操作
+                        {
+                            if( _p._model.is( &#x27;[balConfirmMsg]&#x27; ) ){
+                                var _panel = JC.confirm( _p._model.balConfirmMsg(), _p.selector(), 2 );
+                                    _panel.on(&#x27;confirm&#x27;, function(){
+                                        _p.trigger( &#x27;AjaxAction&#x27;, _p._model.balUrl() );
+                                    });
+                            }else{
+                                _p.trigger( &#x27;AjaxAction&#x27;, _p._model.balUrl() );
                             }
                             break;
                         }
@@ -392,10 +439,10 @@
                 _r = _p.selectorProp( &#x27;balPanelTpl&#x27; ) || _r;
                 return _r;
             }
-        , balPanelInitCb: 
+        , balCallback: 
             function(){ 
                 var _r, _p = this;;
-                _r = _p.callbackProp( &#x27;balPanelInitCb&#x27; ) || _r;
+                _r = _p.callbackProp( &#x27;balCallback&#x27; ) || _r;
                 return _r;
             }
         , balAjaxHtml: function(){ return this.selector().attr(&#x27;balAjaxHtml&#x27;); }
@@ -412,6 +459,11 @@
                 _p.selector().prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;a&#x27;
                     &amp;&amp; ( _r = _p.selector().attr(&#x27;href&#x27;) );
                 _p.is( &#x27;[balUrl]&#x27; ) &amp;&amp; ( _r = _p.selector().attr(&#x27;balUrl&#x27;) );
+                return _r;
+            }
+        , balDoneUrl:
+            function(){
+                var _r = this.stringProp( &#x27;balDoneUrl&#x27; );
                 return _r;
             }
         , balConfirmMsg:
