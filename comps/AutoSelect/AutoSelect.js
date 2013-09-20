@@ -354,14 +354,26 @@
             function( _evt ){
                 var _sp = $(this)
                     , _p = AutoSelect.getInstance( _sp )
-                    , _next = _p._model.next( _sp );
+                    , _next = _p._model.next( _sp )
+                    , _v = _sp.val()
                     ;
-                JC.log( '_responeChange:', _sp.attr('name'), _sp.val() );
+
+                /*
+                _sp.is( '[selectvalue]' )
+                    && ( _v = _sp.attr('selectvalue') )
+                    && (
+                        _p._model.hasVal( _sp, _v ) && _sp.val( _v )
+                        , _sp.removeAttr( 'selectvalue' )
+                       )
+                    ;
+                */
+
+                JC.log( '_responeChange:', _sp.attr('name'), _v );
 
                 if( !( _next&& _next.length ) ){
                     _p.trigger( 'SelectChange' );
                 }else{
-                    _p._update( _next, _p._changeCb, _sp.val() );
+                    _p._update( _next, _p._changeCb, _v );
                 }
             }
 

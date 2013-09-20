@@ -303,12 +303,32 @@
                 }else{
                     _selector && ( _selector = $( _selector ) );
                 }
+                var _r = ( this.attrProp( _selector, _key ) || '' ).toLowerCase();
+                return _r;
+            }
+        /**
+         * 读取 html 属性值
+         * <br />这个跟 stringProp 的区别是不会强制转换为小写
+         * @method  attrProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  string
+         */
+        , attrProp:
+            function( _selector, _key ){
+                if( typeof _key == 'undefined' ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector && ( _selector = $( _selector ) );
+                }
                 var _r = '';
                 _selector
                     && _selector.is( '[' + _key + ']' ) 
-                    && ( _r = _selector.attr( _key ).trim().toLowerCase() );
+                    && ( _r = _selector.attr( _key ).trim() );
                 return _r;
             }
+
         /**
          * 读取 boolean 属性的值
          * @method  boolProp

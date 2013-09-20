@@ -1768,6 +1768,8 @@
 
                         case 'select-multiple':
                         case 'select-one':
+                        case 'checkbox':
+                        case 'radio':
                         case 'select': _msg = '请选择' + _msg; break;
 
                         case 'textarea':

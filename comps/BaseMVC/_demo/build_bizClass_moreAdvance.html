@@ -28,6 +28,23 @@
 
         this._init();
     }
+    /**
+     * 获取或设置 BizExample 的实例
+     * @method  getInstance
+     * @param   {selector}      _selector
+     * @static
+     * @return  {BizExampleInstance}
+     */
+    BizExample.getInstance =
+        function( _selector, _setter ){
+            if( typeof _selector == 'string' && !/</.test( _selector ) ) 
+                    _selector = $(_selector);
+            if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
+            typeof _setter != 'undefined' && _selector.data( BizExample.Model._instanceName, _setter );
+
+            return _selector.data( BizExample.Model._instanceName );
+        };
+
     BizExample.prototype = {
         _beforeInit:
             function(){
@@ -62,7 +79,7 @@
     BaseMVC.build( BizExample, 'Bizs' );
 
     $(document).ready( function(){
-        $('div.js_autoBizExample').each( function(){
+        $('div.js_bizBizExample').each( function(){
             BizExample.autoInit
                 && new BizExample( $(this) )
                 && $( printf( '<p>done: {0}, {1}</p>', BizExample.Model._instanceName, new Date().getTime() ) )
@@ -80,7 +97,7 @@
         <dl class="defdl">
             <dt>BaseMVC bizs class 示例</dt>
             <dd>
-                <div class="js_autoBizExample"
+                <div class="js_bizBizExample"
                     >
                 </div>
             </dd>

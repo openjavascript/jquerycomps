@@ -532,14 +532,26 @@
             function( _evt ){
                 var _sp = $(this)
                     , _p = AutoSelect.getInstance( _sp )
-                    , _next = _p._model.next( _sp );
+                    , _next = _p._model.next( _sp )
+                    , _v = _sp.val()
                     ;
-                JC.log( &#x27;_responeChange:&#x27;, _sp.attr(&#x27;name&#x27;), _sp.val() );
+
+                /*
+                _sp.is( &#x27;[selectvalue]&#x27; )
+                    &amp;&amp; ( _v = _sp.attr(&#x27;selectvalue&#x27;) )
+                    &amp;&amp; (
+                        _p._model.hasVal( _sp, _v ) &amp;&amp; _sp.val( _v )
+                        , _sp.removeAttr( &#x27;selectvalue&#x27; )
+                       )
+                    ;
+                */
+
+                JC.log( &#x27;_responeChange:&#x27;, _sp.attr(&#x27;name&#x27;), _v );
 
                 if( !( _next&amp;&amp; _next.length ) ){
                     _p.trigger( &#x27;SelectChange&#x27; );
                 }else{
-                    _p._update( _next, _p._changeCb, _sp.val() );
+                    _p._update( _next, _p._changeCb, _v );
                 }
             }
 
