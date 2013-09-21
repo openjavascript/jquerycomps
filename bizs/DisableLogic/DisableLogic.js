@@ -1,4 +1,3 @@
-//TODO: 如果为禁用时, 应当清除错误状态
 /**
  * <h2>Form Control禁用启用逻辑</h2>
  * <br/>应用场景</br>
@@ -24,13 +23,31 @@
  *      <dd>需要根据禁用起用隐藏/可见的标签</dd>
  *
  *      <dt>dldonecallback = function</dt>
- *      <dd>启用/禁用后会触发的回调, <b>window 变量域</b></dd>
+ *      <dd>
+ *      启用/禁用后会触发的回调, <b>window 变量域</b>
+<xmp>function dldonecallback( _triggerItem, _boxItem ){
+    var _ins = this;
+    JC.log( 'dldonecallback', new Date().getTime() );
+}</xmp>
+ *      </dd>
  *
  *      <dt>dlenablecallback = function</dt>
- *      <dd>启用后的回调, <b>window 变量域</b></dd>
+ *      <dd>
+ *      启用后的回调, <b>window 变量域</b>
+<xmp>function dlenablecallback( _triggerItem, _boxItem ){
+    var _ins = this;
+    JC.log( 'dlenablecallback', new Date().getTime() );
+}</xmp>
+ *      </dd>
  *
  *      <dt>dldisablecallback = function</dt>
- *      <dd>禁用后的回调, <b>window 变量域</b></dd>
+ *      <dd>
+ *      禁用后的回调, <b>window 变量域</b>
+<xmp>function dldisablecallback( _triggerItem, _boxItem ){
+    var _ins = this;
+    JC.log( 'dldisablecallback', new Date().getTime() );
+}</xmp>
+ *      </dd>
  * </dl>
  *
  * <h2>trigger 的 HTML 属性</h2>
@@ -370,7 +387,10 @@
 
                 _dlTarget 
                     && _dlTarget.length 
-                    && _dlTarget.each( function(){ $(this).attr('disabled', _isDisable) } );
+                    && _dlTarget.each( function(){ 
+                                            $(this).attr('disabled', _isDisable);
+                                            JC.Valid && JC.Valid.setValid( $(this) );
+                                       });
 
                 if( _dlHideTarget &&  _dlHideTarget.length  ){
                     _dlHideTarget.each( function(){

@@ -45,6 +45,8 @@
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
             
+                <li><a href="../classes/JC.AutoChecked.html">JC.AutoChecked</a></li>
+            
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
@@ -176,7 +178,6 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//TODO: 如果为禁用时, 应当清除错误状态
 /**
  * &lt;h2&gt;Form Control禁用启用逻辑&lt;/h2&gt;
  * &lt;br/&gt;应用场景&lt;/br&gt;
@@ -202,13 +203,31 @@
  *      &lt;dd&gt;需要根据禁用起用隐藏/可见的标签&lt;/dd&gt;
  *
  *      &lt;dt&gt;dldonecallback = function&lt;/dt&gt;
- *      &lt;dd&gt;启用/禁用后会触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
+ *      &lt;dd&gt;
+ *      启用/禁用后会触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;xmp&gt;function dldonecallback( _triggerItem, _boxItem ){
+    var _ins = this;
+    JC.log( &#x27;dldonecallback&#x27;, new Date().getTime() );
+}&lt;/xmp&gt;
+ *      &lt;/dd&gt;
  *
  *      &lt;dt&gt;dlenablecallback = function&lt;/dt&gt;
- *      &lt;dd&gt;启用后的回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
+ *      &lt;dd&gt;
+ *      启用后的回调, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;xmp&gt;function dlenablecallback( _triggerItem, _boxItem ){
+    var _ins = this;
+    JC.log( &#x27;dlenablecallback&#x27;, new Date().getTime() );
+}&lt;/xmp&gt;
+ *      &lt;/dd&gt;
  *
  *      &lt;dt&gt;dldisablecallback = function&lt;/dt&gt;
- *      &lt;dd&gt;禁用后的回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
+ *      &lt;dd&gt;
+ *      禁用后的回调, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;xmp&gt;function dldisablecallback( _triggerItem, _boxItem ){
+    var _ins = this;
+    JC.log( &#x27;dldisablecallback&#x27;, new Date().getTime() );
+}&lt;/xmp&gt;
+ *      &lt;/dd&gt;
  * &lt;/dl&gt;
  *
  * &lt;h2&gt;trigger 的 HTML 属性&lt;/h2&gt;
@@ -548,7 +567,10 @@
 
                 _dlTarget 
                     &amp;&amp; _dlTarget.length 
-                    &amp;&amp; _dlTarget.each( function(){ $(this).attr(&#x27;disabled&#x27;, _isDisable) } );
+                    &amp;&amp; _dlTarget.each( function(){ 
+                                            $(this).attr(&#x27;disabled&#x27;, _isDisable);
+                                            JC.Valid &amp;&amp; JC.Valid.setValid( $(this) );
+                                       });
 
                 if( _dlHideTarget &amp;&amp;  _dlHideTarget.length  ){
                     _dlHideTarget.each( function(){

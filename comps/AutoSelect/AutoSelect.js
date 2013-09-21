@@ -265,7 +265,10 @@
                 });
 
                 _p._model.beforeInited() && _p.on( 'SelectBeforeInited', _p._model.beforeInited() );
+
                 _p.on('SelectInited', function(){
+                    if( _p._model.isInited() ) return;
+
                     var _tmp = _p._model.first();
                     while( _p._model.next( _tmp ) ){
                         _tmp.on( 'change', _p._responeChange );
@@ -273,13 +276,14 @@
                     }
                     _p._model.isInited( true );
 
-                    //alert( _p._model.inited() );
-
                     _p._model.inited() && _p._model.inited().call( _p );
                 });
+
                 _p.on('SelectChange', function( _evt, _selector ){
-                    _p._model.change( _selector ) && _p._model.change( _selector ).call( _selector, _evt, _p );
+                    _p._model.change( _selector ) 
+                        && _p._model.change( _selector ).call( _selector, _evt, _p );
                 });
+
                 _p._model.allChanged() && _p.on( 'SelectAllChanged', _p._model.allChanged() );
 
                 _p.trigger('SelectBeforeInited');
@@ -349,77 +353,50 @@
          * @return  JSON
          */
         , data: function( _selector ){ return this._model.data( _selector ); }
+        /**
+         * 更新默认选中列表
+         * @method  update
+         * @param   {array|string}     _ls  ids for selected, (string with "," or array of ids );
+         * @return  AutoSelectInstance
+         */
+        , update:
+            function( _ls ){
+                if( !( _ls && _ls.length ) ) return this;
+                if( typeof _ls == 'string' ){
+                    var _tmp = _ls.replace( /[\s]+/g, '').trim();
+                    if( !_tmp ) return this;
+                    _ls = _tmp.split(',');
+                }
+                var _p = this, _items = _p._model.items();
+                if( !( _items && _items.length ) ) return;
+
+                $.each( _ls, function( _ix, _item ){
+                    if( !_items[ _ix ] ) return;
+                    $( _items[ _ix ] ).attr('selectvalue', (_item.toString()||'').trim() );
+                });
+
+                _p._update( _p._model.first(), _p._changeCb );
+
+                return this;
+            }
 
         , _responeChange:
-            function( _evt ){
+            function( _evt, _ignoreAction ){
                 var _sp = $(this)
                     , _p = AutoSelect.getInstance( _sp )
                     , _next = _p._model.next( _sp )
                     , _v = _sp.val()
                     ;
-
-                /*
-                _sp.is( '[selectvalue]' )
-                    && ( _v = _sp.attr('selectvalue') )
-                    && (
-                        _p._model.hasVal( _sp, _v ) && _sp.val( _v )
-                        , _sp.removeAttr( 'selectvalue' )
-                       )
-                    ;
-                */
+                if( _ignoreAction ) return;
 
                 JC.log( '_responeChange:', _sp.attr('name'), _v );
 
-                if( !( _next&& _next.length ) ){
+                if( !( _next && _next.length ) ){
                     _p.trigger( 'SelectChange' );
                 }else{
                     _p._update( _next, _p._changeCb, _v );
                 }
             }
-
-        , _changeCb:
-            function( _selector, _data ){
-                var _p = this
-                    , _next = _p._model.next( _selector );
-                ;
-
-                _p.trigger( 'SelectChange', [ _selector ] );
-
-                if( _p._model.isLast( _selector ) ){
-                    _p.trigger( 'SelectAllChanged' );
-                }
-
-                if( _next && _next.length ){
-                    JC.log( '_changeCb:', _selector.val(), _next.attr('name'), _selector.attr('name') );
-                    _p._update( _next, _p._firstInitCb, _selector.val() );
-                }
-                return this;
-            }
-
-        , _firstInitCb:
-            function( _selector, _data ){
-                var _p = this
-                    , _next = _p._model.next( _selector );
-                ;
-
-                _p._model.triggerInitChange() 
-                    && ( JC.log('triggerInitChange', _selector.attr('name')), _selector.trigger('change') );
-
-                _p.trigger( 'SelectChange', [ _selector ] );
-
-                if( _p._model.isLast( _selector ) ){
-                    _p.trigger( 'SelectAllChanged' );
-                    _p.trigger( 'SelectInited' );
-                }
-
-                if( _next && _next.length ){
-                    JC.log( '_firstInitCb:', _selector.val(), _next.attr('name'), _selector.attr('name') );
-                    _p._update( _next, _p._firstInitCb, _selector.val() );
-                }
-
-                return this;
-            }
-
 
         , _update:
             function( _selector, _cb, _pid ){
@@ -433,26 +410,13 @@
                 return this;
             }
 
-        , _updateStatic:
-            function( _selector, _cb, _pid ){
-                var _p = this, _data;
-                JC.log( 'static select' );
-                if( _p._model.isFirst( _selector ) ){
-                    typeof _pid == 'undefined' && ( _pid = _p._model.selectparentid( _selector ) || '' );
-                    if( typeof _pid != 'undefined' ){
-                        _data = _p._model.datacb( _selector )( _pid );
-                    }
-                }else{
-                    _data = _p._model.datacb( _selector )( _pid );
-                }
-                _p._view.update( _selector, _data );
-                _cb && _cb.call( _p, _selector, _data );
-                return this;
-            }
-
         , _updateAjax:
             function( _selector, _cb, _pid ){
-                var _p = this, _data, _next = _p._model.next( _selector ), _url;
+                var _p = this
+                    , _data
+                    , _next = _p._model.next( _selector )
+                    , _url
+                    ;
                 JC.log( 'ajax select' );
 
                 if( _p._model.isFirst( _selector ) ){
@@ -474,6 +438,67 @@
                         _cb && _cb.call( _p, _selector, _data );
                     });
                 }
+                return this;
+            }
+
+        , _changeCb:
+            function( _selector, _data ){
+                var _p = this
+                    , _next = _p._model.next( _selector );
+                ;
+
+                _p.trigger( 'SelectChange', [ _selector ] );
+
+                _selector.trigger( 'change', [ true ] );
+                if( _p._model.isLast( _selector ) ){
+                    _p.trigger( 'SelectAllChanged' );
+                }
+
+                if( _next && _next.length ){
+                    _p._update( _next, _p._changeCb, _selector.val() );
+                }
+                return this;
+            }
+
+        , _firstInitCb:
+            function( _selector, _data ){
+                var _p = this
+                    , _next = _p._model.next( _selector );
+                ;
+
+                if( !_p._model.isInited() ){
+                    _p._model.triggerInitChange() && _selector.trigger('change', [true] );
+                }
+
+                _p.trigger( 'SelectChange', [ _selector ] );
+                
+                if( _next && _next.length ){
+                    JC.log( '_firstInitCb:', _selector.val(), _next.attr('name'), _selector.attr('name') );
+                    _p._update( _next, _p._firstInitCb, _selector.val() );
+                }
+
+                if( _p._model.isLast( _selector ) ){
+                    _p.trigger( 'SelectAllChanged' );
+                    !_p._model.isInited() && _p.trigger( 'SelectInited' );
+                }
+
+                return this;
+            }
+
+        , _updateStatic:
+            function( _selector, _cb, _pid ){
+                var _p = this, _data;
+                JC.log( 'static select' );
+                if( _p._model.isFirst( _selector ) ){
+                    typeof _pid == 'undefined' && ( _pid = _p._model.selectparentid( _selector ) || '' );
+                    if( typeof _pid != 'undefined' ){
+                        _data = _p._model.datacb( _selector )( _pid );
+                    }
+                }else{
+                    _data = _p._model.datacb( _selector )( _pid );
+                }
+                _p._view.update( _selector, _data );
+                _cb && _cb.call( _p, _selector, _data );
                 return this;
             }
 
@@ -722,7 +747,7 @@
                 var _default = this._model.selectvalue( _selector );
                 _data = this._model.dataFilter( _selector, _data );
                 this._model.data( _selector, _data );
-                
+
                 this._control.trigger( 'SelectItemBeforeUpdate', [ _selector, _data ] );
                 this._removeExists( _selector );
 

@@ -459,12 +459,12 @@
                 _p.selector().prop('nodeName').toLowerCase() == 'a'
                     && ( _r = _p.selector().attr('href') );
                 _p.is( '[balUrl]' ) && ( _r = _p.selector().attr('balUrl') );
-                return _r;
+                return urlDetect( _r );
             }
         , balDoneUrl:
             function(){
                 var _r = this.stringProp( 'balDoneUrl' );
-                return _r;
+                return urlDetect( _r );
             }
         , balConfirmMsg:
             function(){

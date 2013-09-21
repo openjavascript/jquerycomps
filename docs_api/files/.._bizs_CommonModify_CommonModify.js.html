@@ -45,6 +45,8 @@
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
             
+                <li><a href="../classes/JC.AutoChecked.html">JC.AutoChecked</a></li>
+            
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
@@ -199,22 +201,64 @@
  *      &lt;dd&gt;操作类型&lt;/dd&gt;
  *
  *      &lt;dt&gt;cmdonecallback = function&lt;/dt&gt;
- *      &lt;dd&gt;添加或删除完后会触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
+ *      &lt;dd&gt;
+ *      添加或删除完后会触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;xmp&gt;function cmdonecallback( _ins ){
+    var _trigger = $(this);
+    JC.log( &#x27;cmdonecallback&#x27;, new Date().getTime() );
+}&lt;/xmp&gt;
+ *      &lt;/dd&gt;
  *
  *      &lt;dt&gt;cmtplfiltercallback = function&lt;/dt&gt;
- *      &lt;dd&gt;模板内容过滤回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
+ *      &lt;dd&gt;
+ *      模板内容过滤回调, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;xmp&gt;window.COUNT = 1;
+function cmtplfiltercallback( _tpl ){
+    var _trigger = $(this);
+    JC.log( &#x27;cmtplfiltercallback&#x27;, new Date().getTime() );
+    _tpl = printf( _tpl, COUNT++ );
+
+    return _tpl;
+}&lt;/xmp&gt;
+ *      &lt;/dd&gt;
  *
  *      &lt;dt&gt;cmbeforeaddcallabck = function&lt;/dt&gt;
- *      &lt;dd&gt;添加之前的回调, 如果返回 false, 将不执行添加操作, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
+ *      &lt;dd&gt;
+ *      添加之前的回调, 如果返回 false, 将不执行添加操作, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;xmp&gt;function cmbeforeaddcallabck( _appendBox, _ins ){
+    var _trigger = $(this);
+    JC.log( &#x27;cmbeforeaddcallabck&#x27;, new Date().getTime() );
+    //return false;
+}&lt;/xmp&gt;
+ *      &lt;/dd&gt;
  *
  *      &lt;dt&gt;cmaddcallback = function&lt;/dt&gt;
- *      &lt;dd&gt;添加完成的回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
+ *      &lt;dd&gt;
+ *      添加完成的回调, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;xmp&gt;function cmaddcallback( _ins, _newItem ){
+    var _trigger = $(this);
+    JC.log( &#x27;cmaddcallback&#x27;, new Date().getTime() );
+}&lt;/xmp&gt;
+ *      &lt;/dd&gt;
  *
  *      &lt;dt&gt;cmbeforedelcallback = function&lt;/dt&gt;
- *      &lt;dd&gt;删除之前的回调, 如果返回 false, 将不执行删除操作, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
+ *      &lt;dd&gt;
+ *      删除之前的回调, 如果返回 false, 将不执行删除操作, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;xmp&gt;function cmbeforedelcallback( _appendBox, _ins ){
+    var _trigger = $(this);
+    JC.log( &#x27;cmbeforedelcallback&#x27;, new Date().getTime() );
+    //return false;
+}&lt;/xmp&gt;
+ *      &lt;/dd&gt;
  *
  *      &lt;dt&gt;cmdelcallback = function&lt;/dt&gt;
- *      &lt;dd&gt;删除完成的回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
+ *      &lt;dd&gt;
+ *      删除完成的回调, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;xmp&gt;function cmdelcallback( _ins ){
+    var _trigger = $(this);
+    JC.log( &#x27;cmdelcallback&#x27;, new Date().getTime() );
+}&lt;/xmp&gt;
+ *      &lt;/dd&gt;
  *
  *      &lt;dt&gt;cmappendtype = string, default = after&lt;/dt&gt;
  *      &lt;dd&gt;指定 node 添加 dom 的方法, 可选类型: after, appendTo&lt;/dd&gt;

@@ -45,6 +45,8 @@
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
             
+                <li><a href="../classes/JC.AutoChecked.html">JC.AutoChecked</a></li>
+            
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
@@ -176,7 +178,6 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//TODO: 添加 页面URL 识别
 ;(function($){
     /**
      * &lt;h2&gt;提交表单控制逻辑&lt;/h2&gt;
@@ -208,10 +209,24 @@
      *      &lt;dd&gt;表单提交后, 是否重置内容&lt;/dd&gt;
      *
      *      &lt;dt&gt;formBeforeProcess = function&lt;/dt&gt;
-     *      &lt;dd&gt;表单开始提交时且没开始验证时, 触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
+     *      &lt;dd&gt;
+     *          表单开始提交时且没开始验证时, 触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;xmp&gt;function formBeforeProcess( _evt, _ins ){
+    var _form = $(this);
+    JC.log( &#x27;formBeforeProcess&#x27;, new Date().getTime() );
+    //return false;
+}&lt;/xmp&gt;
+     *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;formAfterProcess = function&lt;/dt&gt;
-     *      &lt;dd&gt;表单开始提交时且验证通过后, 触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dd&gt;
+     *      &lt;dd&gt;
+     *          表单开始提交时且验证通过后, 触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;xmp&gt;function formAfterProcess( _evt, _ins ){
+    var _form = $(this);
+    JC.log( &#x27;formAfterProcess&#x27;, new Date().getTime() );
+    //return false;
+}&lt;/xmp&gt;
+     *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;formConfirmPopupType = string, default = dialog&lt;/dt&gt;
      *      &lt;dd&gt;定义提示框的类型: dialog, popup&lt;/dd&gt;
@@ -242,6 +257,18 @@
      *      &lt;dd&gt;
      *          AJAX 提交完成后的回调
      *          &lt;br /&gt;如果没有显式声明, FormLogic将自行处理
+&lt;xmp&gt;function formAjaxDone( _json, _submitButton, _ins ){
+    var _form = $(this);
+    JC.log( &#x27;custom formAjaxDone&#x27;, new Date().getTime() );
+
+    if( _json.errorno ){
+        _panel = JC.Dialog.alert( _json.errmsg || &#x27;操作失败, 请重新尝试!&#x27;, 1 );
+    }else{
+        _panel = JC.msgbox( _json.errmsg || &#x27;操作成功&#x27;, _submitButton, 0, function(){
+            reloadPage( &quot;?donetype=custom&quot; );
+        });
+    }
+};&lt;/xmp&gt;
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;formAjaxDoneAction = url&lt;/dt&gt;
@@ -276,10 +303,19 @@
      *      &lt;dd&gt;msgbox 弹框的显示时间&lt;/dd&gt;
      * &lt;/dl&gt;
      *
-     * &lt;h2&gt;普通 button 可用的 html 属性&lt;/h2&gt;
+     * &lt;h2&gt;普通 [a | button] 可用的 html 属性&lt;/h2&gt;
      * &lt;dl&gt;
      *      &lt;dt&gt;buttonReturnUrl&lt;/dt&gt;
      *      &lt;dd&gt;点击button时, 返回的URL&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;returnConfirm = string&lt;/dt&gt;
+     *      &lt;dd&gt;二次确认提示信息&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;popupType = string, default = confirm&lt;/dt&gt;
+     *      &lt;dd&gt;弹框类型: confirm, dialog.confirm&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;popupstatus = int, default = 2&lt;/dt&gt;
+     *      &lt;dd&gt;提示状态: 0: 成功, 1: 失败, 2: 警告&lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace       window.Bizs
      * @class           FormLogic
@@ -643,7 +679,7 @@
                     var _popup;
 
                     if( _p._model.formConfirmPopupType( _btn ) == &#x27;dialog&#x27; ){
-                        _popup = JC.Dialog.confirm( _p._model.formResetConfirm(), 2 );
+                        _popup = JC.Dialog.confirm( _p._model.formResetConfirm( _btn ), 2 );
                     }else{
                         _popup = JC.confirm( _p._model.formResetConfirm( _btn ), _btn, 2 );
                     }
@@ -710,7 +746,7 @@
         , formAjaxAction:
             function(){
                 var _r = this.stringProp( &#x27;formAjaxAction&#x27; ) || this.stringProp( &#x27;action&#x27; ) || &#x27;?&#x27;;
-                return _r;
+                return urlDetect( _r );
             }
         , formSubmitDisable:
             function(){
@@ -799,7 +835,7 @@
                     &amp;&amp; ( _r = _p.stringProp( _btn, &#x27;formAjaxDoneAction&#x27; ) || _r )
                     ;
 
-                return _r;
+                return urlDetect( _r );
             }
 
 
@@ -828,7 +864,7 @@
                     &amp;&amp; ( _r = _p.stringProp( _btn, &#x27;formResetUrl&#x27; ) || _r )
                     ;
 
-                return _r;
+                return urlDetect( _r );
             }
         , formSubmitConfirm:
             function( _btn ){
@@ -880,6 +916,13 @@
                             if( cs.length &gt; 1 ){
                                 sp.val( $(cs[0]).val() );
                             }
+                            //for JC.Valid
+                            var _hasIgnore = sp.is(&#x27;[ignoreprocess]&#x27;);
+                            sp.attr(&#x27;ignoreprocess&#x27;, true);
+                            sp.trigger( &#x27;change&#x27; );
+                            setTimeout( function(){
+                                !_hasIgnore &amp;&amp; sp.removeAttr(&#x27;ignoreprocess&#x27;);
+                            }, 500 );
                         });
 
                         JC.Valid &amp;&amp; JC.Valid.clearError( _form );
@@ -919,9 +962,39 @@
             ;
     });
 
-    $(document).delegate( &#x27;input[buttonReturnUrl], button[buttonReturnUrl]&#x27;, &#x27;click&#x27;, function( _evt ){
-        var _p = $(this), _url = _p.attr(&#x27;buttonReturnUrl&#x27;).trim();
-        _url &amp;&amp; reloadPage( _url );
+    $(document).delegate( &#x27;a[buttonReturnUrl], input[buttonReturnUrl], button[buttonReturnUrl]&#x27;, &#x27;click&#x27;, function( _evt ){
+        var _p = $(this)
+            , _url = _p.attr(&#x27;buttonReturnUrl&#x27;).trim()
+            , _msg = _p.is(&#x27;[returnConfirm]&#x27;) ? _p.attr(&#x27;returnConfirm&#x27;) : &#x27;&#x27;
+            , _popupType = _p.is(&#x27;[popuptype]&#x27;) ? _p.attr(&#x27;popuptype&#x27;) : &#x27;confirm&#x27;
+            , _popupstatus = parseInt( _p.is(&#x27;[popupstatus]&#x27;) ? _p.attr(&#x27;popupstatus&#x27;) : &quot;2&quot;, 10 )
+            , _panel
+            ;
+
+        if( !_url ) return;
+        _url = urlDetect( _url );
+
+        _p.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;a&#x27; &amp;&amp; _evt.preventDefault();
+
+        if( _msg ){
+            switch( _popupType ){
+                case &#x27;dialog.confirm&#x27;:
+                    {
+                        _panel = JC.Dialog.confirm( _msg, _popupstatus );
+                        break;
+                    }
+                default:
+                    {
+                        _panel = JC.confirm( _msg, _p, _popupstatus );
+                        break;
+                    }
+            }
+            _panel.on(&#x27;confirm&#x27;, function(){
+                reloadPage( _url );
+            });
+        }else{
+            reloadPage( _url );
+        }
     });
 
     $(document).ready( function(){

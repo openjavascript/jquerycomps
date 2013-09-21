@@ -610,12 +610,13 @@ function funcName(_func){
  * <dl>
  *      <dt>可识别的组件</dt>
  *      <dd>
- *          JC.AutoSelect, JC.Calendar, JC.Form.initCheckAll 
+ *          JC.AutoSelect, JC.Calendar, JC.AutoChecked
  *          <br />Bizs.DisableLogic, Bizs.FormLogic
  *      </dd>
  * </d>
  * @method  jcAutoInitComps
  * @param   {selector}  _selector
+ * @static
  */
 function jcAutoInitComps( _selector ){
     _selector = $( _selector || document );
@@ -632,7 +633,7 @@ function jcAutoInitComps( _selector ){
     /**
      * 全选反选
      */
-    JC.Form && JC.Form.initCheckAll && JC.Form.initCheckAll( _selector );
+    JC.AutoChecked && JC.AutoChecked( _selector );
 
     if( !window.Bizs ) return;
     /**
@@ -644,4 +645,42 @@ function jcAutoInitComps( _selector ){
      */
     Bizs.FormLogic && Bizs.FormLogic.init( _selector );
 }
-
+/**
+ * URL 占位符识别功能
+ * @method  urlDetect
+ * @param   {String}    _url    如果 起始字符为 URL, 那么 URL 将祝为本页的URL
+ * @return  string
+ * @static
+ * @example
+ *      urlDetect( '?test' ); //output: ?test
+ *
+ *      urlDetect( 'URL,a=1&b=2' ); //output: your.com?a=1&b=2
+ *      urlDetect( 'URL,a=1,b=2' ); //output: your.com?a=1&b=2
+ *      urlDetect( 'URLa=1&b=2' ); //output: your.com?a=1&b=2
+ */
+function urlDetect( _url ){
+    _url = _url || '';
+    var _r = _url, _tmp, i, j;
+    if( /^URL/.test( _url ) ){
+        _tmp = _url.replace( /^URL/, '' ).replace( /[\s]*,[\s]*/g, ',' ).trim().split(',');
+        _url = location.href;
+        var _d = {}, _concat = [];
+        if( _tmp.length ){
+            for( i = 0, j = _tmp.length; i < j; i ++ ){
+                 /\&/.test( _tmp[i] )
+                     ? ( _concat = _concat.concat( _tmp[i].split('&') ) )
+                     : ( _concat = _concat.concat( _tmp[i] ) )
+                     ;
+            }
+            _tmp = _concat;
+        }
+        for( i = 0, j = _tmp.length; i < j; i++ ){
+            _items = _tmp[i].replace(/[\s]+/g, '').split( '=' );
+            if( !_items[0] ) continue;
+            _d[ _items[0] ] = _items[1] || '';
+        }
+        _url = addUrlParams( _url, _d );
+        _r = _url;
+    }
+    return _r;
+}

@@ -45,6 +45,8 @@
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
             
+                <li><a href="../classes/JC.AutoChecked.html">JC.AutoChecked</a></li>
+            
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
@@ -443,7 +445,10 @@
                 });
 
                 _p._model.beforeInited() &amp;&amp; _p.on( &#x27;SelectBeforeInited&#x27;, _p._model.beforeInited() );
+
                 _p.on(&#x27;SelectInited&#x27;, function(){
+                    if( _p._model.isInited() ) return;
+
                     var _tmp = _p._model.first();
                     while( _p._model.next( _tmp ) ){
                         _tmp.on( &#x27;change&#x27;, _p._responeChange );
@@ -451,13 +456,14 @@
                     }
                     _p._model.isInited( true );
 
-                    //alert( _p._model.inited() );
-
                     _p._model.inited() &amp;&amp; _p._model.inited().call( _p );
                 });
+
                 _p.on(&#x27;SelectChange&#x27;, function( _evt, _selector ){
-                    _p._model.change( _selector ) &amp;&amp; _p._model.change( _selector ).call( _selector, _evt, _p );
+                    _p._model.change( _selector ) 
+                        &amp;&amp; _p._model.change( _selector ).call( _selector, _evt, _p );
                 });
+
                 _p._model.allChanged() &amp;&amp; _p.on( &#x27;SelectAllChanged&#x27;, _p._model.allChanged() );
 
                 _p.trigger(&#x27;SelectBeforeInited&#x27;);
@@ -527,77 +533,50 @@
          * @return  JSON
          */
         , data: function( _selector ){ return this._model.data( _selector ); }
+        /**
+         * 更新默认选中列表
+         * @method  update
+         * @param   {array|string}     _ls  ids for selected, (string with &quot;,&quot; or array of ids );
+         * @return  AutoSelectInstance
+         */
+        , update:
+            function( _ls ){
+                if( !( _ls &amp;&amp; _ls.length ) ) return this;
+                if( typeof _ls == &#x27;string&#x27; ){
+                    var _tmp = _ls.replace( /[\s]+/g, &#x27;&#x27;).trim();
+                    if( !_tmp ) return this;
+                    _ls = _tmp.split(&#x27;,&#x27;);
+                }
+                var _p = this, _items = _p._model.items();
+                if( !( _items &amp;&amp; _items.length ) ) return;
+
+                $.each( _ls, function( _ix, _item ){
+                    if( !_items[ _ix ] ) return;
+                    $( _items[ _ix ] ).attr(&#x27;selectvalue&#x27;, (_item.toString()||&#x27;&#x27;).trim() );
+                });
+
+                _p._update( _p._model.first(), _p._changeCb );
+
+                return this;
+            }
 
         , _responeChange:
-            function( _evt ){
+            function( _evt, _ignoreAction ){
                 var _sp = $(this)
                     , _p = AutoSelect.getInstance( _sp )
                     , _next = _p._model.next( _sp )
                     , _v = _sp.val()
                     ;
-
-                /*
-                _sp.is( &#x27;[selectvalue]&#x27; )
-                    &amp;&amp; ( _v = _sp.attr(&#x27;selectvalue&#x27;) )
-                    &amp;&amp; (
-                        _p._model.hasVal( _sp, _v ) &amp;&amp; _sp.val( _v )
-                        , _sp.removeAttr( &#x27;selectvalue&#x27; )
-                       )
-                    ;
-                */
+                if( _ignoreAction ) return;
 
                 JC.log( &#x27;_responeChange:&#x27;, _sp.attr(&#x27;name&#x27;), _v );
 
-                if( !( _next&amp;&amp; _next.length ) ){
+                if( !( _next &amp;&amp; _next.length ) ){
                     _p.trigger( &#x27;SelectChange&#x27; );
                 }else{
                     _p._update( _next, _p._changeCb, _v );
                 }
             }
-
-        , _changeCb:
-            function( _selector, _data ){
-                var _p = this
-                    , _next = _p._model.next( _selector );
-                ;
-
-                _p.trigger( &#x27;SelectChange&#x27;, [ _selector ] );
-
-                if( _p._model.isLast( _selector ) ){
-                    _p.trigger( &#x27;SelectAllChanged&#x27; );
-                }
-
-                if( _next &amp;&amp; _next.length ){
-                    JC.log( &#x27;_changeCb:&#x27;, _selector.val(), _next.attr(&#x27;name&#x27;), _selector.attr(&#x27;name&#x27;) );
-                    _p._update( _next, _p._firstInitCb, _selector.val() );
-                }
-                return this;
-            }
-
-        , _firstInitCb:
-            function( _selector, _data ){
-                var _p = this
-                    , _next = _p._model.next( _selector );
-                ;
-
-                _p._model.triggerInitChange() 
-                    &amp;&amp; ( JC.log(&#x27;triggerInitChange&#x27;, _selector.attr(&#x27;name&#x27;)), _selector.trigger(&#x27;change&#x27;) );
-
-                _p.trigger( &#x27;SelectChange&#x27;, [ _selector ] );
-
-                if( _p._model.isLast( _selector ) ){
-                    _p.trigger( &#x27;SelectAllChanged&#x27; );
-                    _p.trigger( &#x27;SelectInited&#x27; );
-                }
-
-                if( _next &amp;&amp; _next.length ){
-                    JC.log( &#x27;_firstInitCb:&#x27;, _selector.val(), _next.attr(&#x27;name&#x27;), _selector.attr(&#x27;name&#x27;) );
-                    _p._update( _next, _p._firstInitCb, _selector.val() );
-                }
-
-                return this;
-            }
-
 
         , _update:
             function( _selector, _cb, _pid ){
@@ -611,26 +590,13 @@
                 return this;
             }
 
-        , _updateStatic:
-            function( _selector, _cb, _pid ){
-                var _p = this, _data;
-                JC.log( &#x27;static select&#x27; );
-                if( _p._model.isFirst( _selector ) ){
-                    typeof _pid == &#x27;undefined&#x27; &amp;&amp; ( _pid = _p._model.selectparentid( _selector ) || &#x27;&#x27; );
-                    if( typeof _pid != &#x27;undefined&#x27; ){
-                        _data = _p._model.datacb( _selector )( _pid );
-                    }
-                }else{
-                    _data = _p._model.datacb( _selector )( _pid );
-                }
-                _p._view.update( _selector, _data );
-                _cb &amp;&amp; _cb.call( _p, _selector, _data );
-                return this;
-            }
-
         , _updateAjax:
             function( _selector, _cb, _pid ){
-                var _p = this, _data, _next = _p._model.next( _selector ), _url;
+                var _p = this
+                    , _data
+                    , _next = _p._model.next( _selector )
+                    , _url
+                    ;
                 JC.log( &#x27;ajax select&#x27; );
 
                 if( _p._model.isFirst( _selector ) ){
@@ -652,6 +618,67 @@
                         _cb &amp;&amp; _cb.call( _p, _selector, _data );
                     });
                 }
+                return this;
+            }
+
+        , _changeCb:
+            function( _selector, _data ){
+                var _p = this
+                    , _next = _p._model.next( _selector );
+                ;
+
+                _p.trigger( &#x27;SelectChange&#x27;, [ _selector ] );
+
+                _selector.trigger( &#x27;change&#x27;, [ true ] );
+                if( _p._model.isLast( _selector ) ){
+                    _p.trigger( &#x27;SelectAllChanged&#x27; );
+                }
+
+                if( _next &amp;&amp; _next.length ){
+                    _p._update( _next, _p._changeCb, _selector.val() );
+                }
+                return this;
+            }
+
+        , _firstInitCb:
+            function( _selector, _data ){
+                var _p = this
+                    , _next = _p._model.next( _selector );
+                ;
+
+                if( !_p._model.isInited() ){
+                    _p._model.triggerInitChange() &amp;&amp; _selector.trigger(&#x27;change&#x27;, [true] );
+                }
+
+                _p.trigger( &#x27;SelectChange&#x27;, [ _selector ] );
+                
+                if( _next &amp;&amp; _next.length ){
+                    JC.log( &#x27;_firstInitCb:&#x27;, _selector.val(), _next.attr(&#x27;name&#x27;), _selector.attr(&#x27;name&#x27;) );
+                    _p._update( _next, _p._firstInitCb, _selector.val() );
+                }
+
+                if( _p._model.isLast( _selector ) ){
+                    _p.trigger( &#x27;SelectAllChanged&#x27; );
+                    !_p._model.isInited() &amp;&amp; _p.trigger( &#x27;SelectInited&#x27; );
+                }
+
+                return this;
+            }
+
+        , _updateStatic:
+            function( _selector, _cb, _pid ){
+                var _p = this, _data;
+                JC.log( &#x27;static select&#x27; );
+                if( _p._model.isFirst( _selector ) ){
+                    typeof _pid == &#x27;undefined&#x27; &amp;&amp; ( _pid = _p._model.selectparentid( _selector ) || &#x27;&#x27; );
+                    if( typeof _pid != &#x27;undefined&#x27; ){
+                        _data = _p._model.datacb( _selector )( _pid );
+                    }
+                }else{
+                    _data = _p._model.datacb( _selector )( _pid );
+                }
+                _p._view.update( _selector, _data );
+                _cb &amp;&amp; _cb.call( _p, _selector, _data );
                 return this;
             }
 
@@ -900,7 +927,7 @@
                 var _default = this._model.selectvalue( _selector );
                 _data = this._model.dataFilter( _selector, _data );
                 this._model.data( _selector, _data );
-                
+
                 this._control.trigger( &#x27;SelectItemBeforeUpdate&#x27;, [ _selector, _data ] );
                 this._removeExists( _selector );
 

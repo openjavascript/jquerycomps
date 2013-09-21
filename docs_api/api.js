@@ -2,6 +2,7 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
         ".window",
+        "JC.AutoChecked",
         "JC.AutoSelect",
         "JC.BaseMVC",
         "JC.BaseMVC.Model",

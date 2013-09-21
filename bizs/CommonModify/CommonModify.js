@@ -21,22 +21,64 @@
  *      <dd>操作类型</dd>
  *
  *      <dt>cmdonecallback = function</dt>
- *      <dd>添加或删除完后会触发的回调, <b>window 变量域</b></dd>
+ *      <dd>
+ *      添加或删除完后会触发的回调, <b>window 变量域</b>
+<xmp>function cmdonecallback( _ins ){
+    var _trigger = $(this);
+    JC.log( 'cmdonecallback', new Date().getTime() );
+}</xmp>
+ *      </dd>
  *
  *      <dt>cmtplfiltercallback = function</dt>
- *      <dd>模板内容过滤回调, <b>window 变量域</b></dd>
+ *      <dd>
+ *      模板内容过滤回调, <b>window 变量域</b>
+<xmp>window.COUNT = 1;
+function cmtplfiltercallback( _tpl ){
+    var _trigger = $(this);
+    JC.log( 'cmtplfiltercallback', new Date().getTime() );
+    _tpl = printf( _tpl, COUNT++ );
+
+    return _tpl;
+}</xmp>
+ *      </dd>
  *
  *      <dt>cmbeforeaddcallabck = function</dt>
- *      <dd>添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b></dd>
+ *      <dd>
+ *      添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b>
+<xmp>function cmbeforeaddcallabck( _appendBox, _ins ){
+    var _trigger = $(this);
+    JC.log( 'cmbeforeaddcallabck', new Date().getTime() );
+    //return false;
+}</xmp>
+ *      </dd>
  *
  *      <dt>cmaddcallback = function</dt>
- *      <dd>添加完成的回调, <b>window 变量域</b></dd>
+ *      <dd>
+ *      添加完成的回调, <b>window 变量域</b>
+<xmp>function cmaddcallback( _ins, _newItem ){
+    var _trigger = $(this);
+    JC.log( 'cmaddcallback', new Date().getTime() );
+}</xmp>
+ *      </dd>
  *
  *      <dt>cmbeforedelcallback = function</dt>
- *      <dd>删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b></dd>
+ *      <dd>
+ *      删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b>
+<xmp>function cmbeforedelcallback( _appendBox, _ins ){
+    var _trigger = $(this);
+    JC.log( 'cmbeforedelcallback', new Date().getTime() );
+    //return false;
+}</xmp>
+ *      </dd>
  *
  *      <dt>cmdelcallback = function</dt>
- *      <dd>删除完成的回调, <b>window 变量域</b></dd>
+ *      <dd>
+ *      删除完成的回调, <b>window 变量域</b>
+<xmp>function cmdelcallback( _ins ){
+    var _trigger = $(this);
+    JC.log( 'cmdelcallback', new Date().getTime() );
+}</xmp>
+ *      </dd>
  *
  *      <dt>cmappendtype = string, default = after</dt>
  *      <dd>指定 node 添加 dom 的方法, 可选类型: after, appendTo</dd>

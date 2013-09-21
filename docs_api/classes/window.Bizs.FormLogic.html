@@ -36,6 +36,7 @@
             <ul id="api-classes" class="apis classes">
                 <li><a href="../classes/.window.html">.window</a></li>
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
+                <li><a href="../classes/JC.AutoChecked.html">JC.AutoChecked</a></li>
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
@@ -107,7 +108,7 @@
             Extends <a href="../classes/JC.BaseMVC.html" class="crosslink">JC.BaseMVC</a>
         </div>
         <div class="foundat">
-            Defined in: <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l3"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:3</code></a>
+            Defined in: <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l2"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:2</code></a>
         </div>
 </div>
 <div class="box intro">
@@ -136,9 +137,23 @@
      <dt>formResetAfterSubmit = bool, default = true</dt>
      <dd>表单提交后, 是否重置内容</dd>
      <dt>formBeforeProcess = function</dt>
-     <dd>表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b></dd>
+     <dd>
+         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>
+<xmp>function formBeforeProcess( _evt, _ins ){
+   var _form = $(this);
+   JC.log( 'formBeforeProcess', new Date().getTime() );
+   //return false;
+}</xmp>
+     </dd>
      <dt>formAfterProcess = function</dt>
-     <dd>表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b></dd>
+     <dd>
+         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>
+<xmp>function formAfterProcess( _evt, _ins ){
+   var _form = $(this);
+   JC.log( 'formAfterProcess', new Date().getTime() );
+   //return false;
+}</xmp>
+     </dd>
      <dt>formConfirmPopupType = string, default = dialog</dt>
      <dd>定义提示框的类型: dialog, popup</dd>
      <dt>formResetUrl = url</dt>
@@ -162,6 +177,17 @@
      <dd>
          AJAX 提交完成后的回调
          <br />如果没有显式声明, FormLogic将自行处理
+<xmp>function formAjaxDone( _json, _submitButton, _ins ){
+   var _form = $(this);
+   JC.log( 'custom formAjaxDone', new Date().getTime() );
+   if( _json.errorno ){
+       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );
+   }else{
+       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){
+           reloadPage( "?donetype=custom" );
+       });
+   }
+};</xmp>
      </dd>
      <dt>formAjaxDoneAction = url</dt>
      <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>
@@ -188,10 +214,16 @@
      <dt>formPopupCloseMs = int, default = 2000</dt>
      <dd>msgbox 弹框的显示时间</dd>
 </dl>
-<h2>普通 button 可用的 html 属性</h2>
+<h2>普通 [a | button] 可用的 html 属性</h2>
 <dl>
      <dt>buttonReturnUrl</dt>
      <dd>点击button时, 返回的URL</dd>
+     <dt>returnConfirm = string</dt>
+     <dd>二次确认提示信息</dd>
+     <dt>popupType = string, default = confirm</dt>
+     <dd>弹框类型: confirm, dialog.confirm</dd>
+     <dt>popupstatus = int, default = 2</dt>
+     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>
 </dl>
 </div>
     <div class="constructor">
@@ -202,7 +234,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l3"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:3</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l2"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:2</code></a>
         </p>
     </div>
     <div class="description">
@@ -357,7 +389,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/JC.BaseMVC.html#method__beforeInit">JC.BaseMVC</a>:
-        <a href="../files/.._lib.js.html#l1059"><code>..&#x2F;lib.js:1059</code></a>
+        <a href="../files/.._lib.js.html#l1099"><code>..&#x2F;lib.js:1099</code></a>
         </p>
     </div>
     <div class="description">
@@ -377,7 +409,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/JC.BaseMVC.html#method__init">JC.BaseMVC</a>:
-        <a href="../files/.._lib.js.html#l1030"><code>..&#x2F;lib.js:1030</code></a>
+        <a href="../files/.._lib.js.html#l1070"><code>..&#x2F;lib.js:1070</code></a>
         </p>
     </div>
     <div class="description">
@@ -402,7 +434,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/JC.BaseMVC.html#method__inited">JC.BaseMVC</a>:
-        <a href="../files/.._lib.js.html#l1075"><code>..&#x2F;lib.js:1075</code></a>
+        <a href="../files/.._lib.js.html#l1115"><code>..&#x2F;lib.js:1115</code></a>
         </p>
     </div>
     <div class="description">
@@ -416,7 +448,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/JC.BaseMVC.html#method__initHanlderEvent">JC.BaseMVC</a>:
-        <a href="../files/.._lib.js.html#l1067"><code>..&#x2F;lib.js:1067</code></a>
+        <a href="../files/.._lib.js.html#l1107"><code>..&#x2F;lib.js:1107</code></a>
         </p>
     </div>
     <div class="description">
@@ -439,7 +471,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l199"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:199</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l233"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:233</code></a>
         </p>
     </div>
     <div class="description">
@@ -479,7 +511,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l221"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:221</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l255"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:255</code></a>
         </p>
     </div>
     <div class="description">
@@ -522,7 +554,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/JC.BaseMVC.html#method_on">JC.BaseMVC</a>:
-        <a href="../files/.._lib.js.html#l1089"><code>..&#x2F;lib.js:1089</code></a>
+        <a href="../files/.._lib.js.html#l1129"><code>..&#x2F;lib.js:1129</code></a>
         </p>
     </div>
     <div class="description">
@@ -561,7 +593,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/JC.BaseMVC.html#method_selector">JC.BaseMVC</a>:
-        <a href="../files/.._lib.js.html#l1083"><code>..&#x2F;lib.js:1083</code></a>
+        <a href="../files/.._lib.js.html#l1123"><code>..&#x2F;lib.js:1123</code></a>
         </p>
     </div>
     <div class="description">
@@ -589,7 +621,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/JC.BaseMVC.html#method_trigger">JC.BaseMVC</a>:
-        <a href="../files/.._lib.js.html#l1097"><code>..&#x2F;lib.js:1097</code></a>
+        <a href="../files/.._lib.js.html#l1137"><code>..&#x2F;lib.js:1137</code></a>
         </p>
     </div>
     <div class="description">
@@ -623,7 +655,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l242"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:242</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l276"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:276</code></a>
         </p>
     </div>
     <div class="description">
@@ -638,7 +670,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l250"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:250</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l284"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:284</code></a>
         </p>
     </div>
     <div class="description">
@@ -655,7 +687,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l268"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:268</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l302"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:302</code></a>
         </p>
     </div>
     <div class="description">
@@ -670,7 +702,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l260"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:260</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l294"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:294</code></a>
         </p>
     </div>
     <div class="description">
