@@ -69,8 +69,6 @@
             
                 <li><a href="../classes/JC.Dialog.msgbox.html">JC.Dialog.msgbox</a></li>
             
-                <li><a href="../classes/JC.ExampleClass.html">JC.ExampleClass</a></li>
-            
                 <li><a href="../classes/JC.Fixed.html">JC.Fixed</a></li>
             
                 <li><a href="../classes/JC.Form.html">JC.Form</a></li>
@@ -247,6 +245,7 @@ function sliceArgs( _arg ){
  * @method printf
  * @static
  * @param   {string}    _str
+ * @return  string
  * @example
  *      printf( &#x27;asdfasdf{0}sdfasdf{1}&#x27;, &#x27;000&#x27;, 1111 );
  *      //return asdfasdf000sdfasdf1111
@@ -263,6 +262,7 @@ function printf( _str ){
  * @static
  * @param   {string}    _url
  * @param   {string}    _key
+ * @return  bool
  * @example
  *      var bool = hasUrlParam( &#x27;getkey&#x27; );
  */
@@ -287,6 +287,7 @@ function has_url_param(){ return hasUrlParam.apply( null, sliceArgs( arguments )
  * @static
  * @param   {string}    _url
  * @param   {object}    _params
+ * @return  string
  * @example
         var url = addUrlParams( location.href, {&#x27;key1&#x27;: &#x27;key1value&#x27;, &#x27;key2&#x27;: &#x27;key2value&#x27; } );
  */ 
@@ -313,6 +314,7 @@ function add_url_params(){ return addUrlParams.apply( null, sliceArgs( arguments
  * @static
  * @param   {string}    _url
  * @param   {string}    _key
+ * @return  string
  * @example
         var defaultTag = getUrlParam(location.href, &#x27;tag&#x27;);  
  */ 
@@ -333,6 +335,35 @@ function getUrlParam( _url, _key ){
     }
     return result;
 }
+/**
+ * 取URL参数的值, 这个方法返回数组
+ * &lt;br /&gt;与 getUrlParam 的区别是可以获取 checkbox 的所有值
+ * @method  getUrlParams
+ * @static
+ * @param   {string}    _url
+ * @param   {string}    _key
+ * @return  Array
+ * @example
+        var params = getUrlParams(location.href, &#x27;tag&#x27;);  
+ */ 
+function getUrlParams( _url, _key ){
+    var _r = [], _params, i, j, _items;
+    !_key &amp;&amp; ( _key = _url, _url = location.href );
+    _url = _url.replace(/[\?]+/g, &#x27;?&#x27;).split(&#x27;?&#x27;);
+    if( _url.length &gt; 1 ){
+        _url = _url[1];
+        _params = _url.split(&#x27;&amp;&#x27;);
+        if( _params.length ){
+            for( i = 0, j = _params.length; i &lt; j; i++ ){
+                _items = _params[i].split(&#x27;=&#x27;);
+                if( _items[0].trim() == _key ){
+                    _r.push( _items[1] || &#x27;&#x27; );
+                }
+            }
+        }
+    }
+    return _r;
+}
 //这个方法已经废弃, 请使用 getUrlParam
 function get_url_param(){ return getUrlParam.apply( null, sliceArgs( arguments ) ); }
 /**
@@ -341,6 +372,7 @@ function get_url_param(){ return getUrlParam.apply( null, sliceArgs( arguments )
  * @static
  * @param  {string}    _url
  * @param  {string}    _key
+ * @return  string
  * @example
         var url = delUrlParam( location.href, &#x27;tag&#x27; );
  */ 

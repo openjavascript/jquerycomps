@@ -13,7 +13,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Dialog.confirm",
         "JC.Dialog.mask",
         "JC.Dialog.msgbox",
-        "JC.ExampleClass",
         "JC.Fixed",
         "JC.Form",
         "JC.LunarCalendar",

@@ -67,6 +67,7 @@ function sliceArgs( _arg ){
  * @method printf
  * @static
  * @param   {string}    _str
+ * @return  string
  * @example
  *      printf( 'asdfasdf{0}sdfasdf{1}', '000', 1111 );
  *      //return asdfasdf000sdfasdf1111
@@ -83,6 +84,7 @@ function printf( _str ){
  * @static
  * @param   {string}    _url
  * @param   {string}    _key
+ * @return  bool
  * @example
  *      var bool = hasUrlParam( 'getkey' );
  */
@@ -107,6 +109,7 @@ function has_url_param(){ return hasUrlParam.apply( null, sliceArgs( arguments )
  * @static
  * @param   {string}    _url
  * @param   {object}    _params
+ * @return  string
  * @example
         var url = addUrlParams( location.href, {'key1': 'key1value', 'key2': 'key2value' } );
  */ 
@@ -133,6 +136,7 @@ function add_url_params(){ return addUrlParams.apply( null, sliceArgs( arguments
  * @static
  * @param   {string}    _url
  * @param   {string}    _key
+ * @return  string
  * @example
         var defaultTag = getUrlParam(location.href, 'tag');  
  */ 
@@ -153,6 +157,35 @@ function getUrlParam( _url, _key ){
     }
     return result;
 }
+/**
+ * 取URL参数的值, 这个方法返回数组
+ * <br />与 getUrlParam 的区别是可以获取 checkbox 的所有值
+ * @method  getUrlParams
+ * @static
+ * @param   {string}    _url
+ * @param   {string}    _key
+ * @return  Array
+ * @example
+        var params = getUrlParams(location.href, 'tag');  
+ */ 
+function getUrlParams( _url, _key ){
+    var _r = [], _params, i, j, _items;
+    !_key && ( _key = _url, _url = location.href );
+    _url = _url.replace(/[\?]+/g, '?').split('?');
+    if( _url.length > 1 ){
+        _url = _url[1];
+        _params = _url.split('&');
+        if( _params.length ){
+            for( i = 0, j = _params.length; i < j; i++ ){
+                _items = _params[i].split('=');
+                if( _items[0].trim() == _key ){
+                    _r.push( _items[1] || '' );
+                }
+            }
+        }
+    }
+    return _r;
+}
 //这个方法已经废弃, 请使用 getUrlParam
 function get_url_param(){ return getUrlParam.apply( null, sliceArgs( arguments ) ); }
 /**
@@ -161,6 +194,7 @@ function get_url_param(){ return getUrlParam.apply( null, sliceArgs( arguments )
  * @static
  * @param  {string}    _url
  * @param  {string}    _key
+ * @return  string
  * @example
         var url = delUrlParam( location.href, 'tag' );
  */ 

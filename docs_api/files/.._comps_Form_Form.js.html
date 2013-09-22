@@ -69,8 +69,6 @@
             
                 <li><a href="../classes/JC.Dialog.msgbox.html">JC.Dialog.msgbox</a></li>
             
-                <li><a href="../classes/JC.ExampleClass.html">JC.ExampleClass</a></li>
-            
                 <li><a href="../classes/JC.Fixed.html">JC.Fixed</a></li>
             
                 <li><a href="../classes/JC.Form.html">JC.Form</a></li>
@@ -270,7 +268,7 @@
 
     function fillForm( _selector, _url ){
         _selector = $(_selector);
-        try{ _url = decodeURIComponent( _url ); }catch(ex){}
+        _url = decode( _url );
         
         _selector.find( &#x27;input[type=text][name],input[type=password][name],textarea[name]&#x27; ).each( function(){
             var _sp = $(this);
@@ -303,10 +301,27 @@
                 &amp;isp=1379841840601_232_161
         */
 
-        _selector.find( &#x27;input[type=checkbox][name]&#x27; ).each( function(){
-            var _sp = $(this);
+        var _keyObj = {};
+        _selector.find( &#x27;input[type=checkbox][name], input[type=radio][name]&#x27; ).each( function(){
+            var _sp = $(this), _key = _sp.attr(&#x27;name&#x27;).trim(), _keys, _v = _sp.val();
+            //alert( _sp.attr(&#x27;name&#x27;) );
+            if( !( _key in _keyObj ) ){
+                _keys = getUrlParams( _url, _key );
+                _keyObj[ _key ] = _keys;
+            }else{
+                _keys = _keyObj[ _key ];
+            }
 
+            if( _keys &amp;&amp; _keys.length ){
+                $.each( _keys, function( _ix, _item ){
+                    if( _item == _v ){
+                        _sp.prop(&#x27;checked&#x27;, true);
+                    }
+                });
+            }
         });
+
+        window.jcAutoInitComps &amp;&amp; jcAutoInitComps( _selector );
     }
     /**
      * 自定义 URI decode 函数

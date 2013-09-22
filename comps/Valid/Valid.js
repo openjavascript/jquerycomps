@@ -1,5 +1,4 @@
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
-//TODO: 添加 不允许内容重复类型
 ;(function($){
     /**
      * <b>表单验证</b> (单例模式)
@@ -190,6 +189,13 @@
      *              <dt>reconfirm: N 个 Control 的值必须保持一致</dt>
      *              <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>
      *              <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>
+     *          </dl>
+     *      </dd>
+     *      <dd>
+     *          <dl>
+     *              <dt>unique: N 个 Control 的值必须保持唯一性, 不能有重复</dt>
+     *              <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=unique]</dd>
+     *              <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>
      *          </dl>
      *      </dd>
      * </dl>
@@ -1701,6 +1707,73 @@
                 }
                 return _r;
             }
+        /**
+         * N 个值必须保持唯一性, 不能有重复
+         * @method  unique
+         * @private
+         * @static
+         * @param   {selector}  _item
+         */
+        , 'unique':
+            function( _item ){
+                var _p = this, _r = true, _target, _tmp
+
+                JC.log( 'unique' );
+
+                _p.isDatatarget( _item ) && (_target = _p.datatarget( _item ) );
+                !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item ) );
+
+                if( _target && _target.length ){
+                    _tmp = {};
+                    _errLs = [];
+                    _target.each( function(){ 
+                        var _sp = $(this), _v = _sp.val().trim();
+                        if( !_v ) return;
+                        
+                        if( _v in _tmp ){
+                            _tmp[ _v ].push( _sp );
+                            _r = false;
+                        }else{
+                            _tmp[ _v ] = [ _sp ];
+                        }
+                    });
+                    for( var _k in _tmp ){
+                        _tmp[ _k ].length > 1 
+                            && ( _errLs = _errLs.concat( _tmp[ _k ] ) )
+                            ;
+                    }
+                }
+
+                var _itemIn = false;
+
+                $.each( _errLs, function( _ix, _sitem ){
+                    if( _item[0] == _sitem[0] ){
+                        _itemIn = true;
+                        return false;
+                    }
+                });
+
+                if( _itemIn ){
+                    !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'uniquemsg', true ] );
+                }else{
+                   $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _item ] );
+                }
+
+                !_r && _errLs.length && $.each( _errLs, function( _ix, _sitem ){ 
+                    _sitem = $( _sitem );
+                    if( _item[0] == _sitem[0] ) return;
+                    $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _sitem, 'uniquemsg', true ] );
+                } );
+
+                if( _r && _target && _target.length ){
+                    _target.each( function(){
+                        if( _item[0] == this ) return;
+                        $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
+                    });
+                }
+                return _r;
+            }
+
         , findValidEle:
             function( _item ){
                 var _p = this, _selector = '~ em.validmsg', _r = _item.find( _selector ), _tmp;

@@ -69,8 +69,6 @@
             
                 <li><a href="../classes/JC.Dialog.msgbox.html">JC.Dialog.msgbox</a></li>
             
-                <li><a href="../classes/JC.ExampleClass.html">JC.ExampleClass</a></li>
-            
                 <li><a href="../classes/JC.Fixed.html">JC.Fixed</a></li>
             
                 <li><a href="../classes/JC.Form.html">JC.Form</a></li>
@@ -179,7 +177,6 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
-//TODO: 添加 不允许内容重复类型
 ;(function($){
     /**
      * &lt;b&gt;表单验证&lt;/b&gt; (单例模式)
@@ -370,6 +367,13 @@
      *              &lt;dt&gt;reconfirm: N 个 Control 的值必须保持一致&lt;/dt&gt;
      *              &lt;dd&gt;&lt;b&gt;datatarget:&lt;/b&gt; 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]&lt;/dd&gt;
      *              &lt;dd&gt;&lt;b&gt;reconfirmmsg:&lt;/b&gt; 值不一致时的错误提示&lt;/dd&gt;
+     *          &lt;/dl&gt;
+     *      &lt;/dd&gt;
+     *      &lt;dd&gt;
+     *          &lt;dl&gt;
+     *              &lt;dt&gt;unique: N 个 Control 的值必须保持唯一性, 不能有重复&lt;/dt&gt;
+     *              &lt;dd&gt;&lt;b&gt;datatarget:&lt;/b&gt; 显式指定同一组 control, 默认在父级下查找[subdatatype=unique]&lt;/dd&gt;
+     *              &lt;dd&gt;&lt;b&gt;uniquemsg:&lt;/b&gt; 值有重复的提示信息&lt;/dd&gt;
      *          &lt;/dl&gt;
      *      &lt;/dd&gt;
      * &lt;/dl&gt;
@@ -1881,6 +1885,73 @@
                 }
                 return _r;
             }
+        /**
+         * N 个值必须保持唯一性, 不能有重复
+         * @method  unique
+         * @private
+         * @static
+         * @param   {selector}  _item
+         */
+        , &#x27;unique&#x27;:
+            function( _item ){
+                var _p = this, _r = true, _target, _tmp
+
+                JC.log( &#x27;unique&#x27; );
+
+                _p.isDatatarget( _item ) &amp;&amp; (_target = _p.datatarget( _item ) );
+                !( _target &amp;&amp; _target.length ) &amp;&amp; ( _target = _p.samesubtypeitems( _item ) );
+
+                if( _target &amp;&amp; _target.length ){
+                    _tmp = {};
+                    _errLs = [];
+                    _target.each( function(){ 
+                        var _sp = $(this), _v = _sp.val().trim();
+                        if( !_v ) return;
+                        
+                        if( _v in _tmp ){
+                            _tmp[ _v ].push( _sp );
+                            _r = false;
+                        }else{
+                            _tmp[ _v ] = [ _sp ];
+                        }
+                    });
+                    for( var _k in _tmp ){
+                        _tmp[ _k ].length &gt; 1 
+                            &amp;&amp; ( _errLs = _errLs.concat( _tmp[ _k ] ) )
+                            ;
+                    }
+                }
+
+                var _itemIn = false;
+
+                $.each( _errLs, function( _ix, _sitem ){
+                    if( _item[0] == _sitem[0] ){
+                        _itemIn = true;
+                        return false;
+                    }
+                });
+
+                if( _itemIn ){
+                    !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, &#x27;uniquemsg&#x27;, true ] );
+                }else{
+                   $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _item ] );
+                }
+
+                !_r &amp;&amp; _errLs.length &amp;&amp; $.each( _errLs, function( _ix, _sitem ){ 
+                    _sitem = $( _sitem );
+                    if( _item[0] == _sitem[0] ) return;
+                    $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _sitem, &#x27;uniquemsg&#x27;, true ] );
+                } );
+
+                if( _r &amp;&amp; _target &amp;&amp; _target.length ){
+                    _target.each( function(){
+                        if( _item[0] == this ) return;
+                        $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
+                    });
+                }
+                return _r;
+            }
+
         , findValidEle:
             function( _item ){
                 var _p = this, _selector = &#x27;~ em.validmsg&#x27;, _r = _item.find( _selector ), _tmp;

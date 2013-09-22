@@ -90,7 +90,7 @@
 
     function fillForm( _selector, _url ){
         _selector = $(_selector);
-        try{ _url = decodeURIComponent( _url ); }catch(ex){}
+        _url = decode( _url );
         
         _selector.find( 'input[type=text][name],input[type=password][name],textarea[name]' ).each( function(){
             var _sp = $(this);
@@ -123,10 +123,27 @@
                 &isp=1379841840601_232_161
         */
 
-        _selector.find( 'input[type=checkbox][name]' ).each( function(){
-            var _sp = $(this);
+        var _keyObj = {};
+        _selector.find( 'input[type=checkbox][name], input[type=radio][name]' ).each( function(){
+            var _sp = $(this), _key = _sp.attr('name').trim(), _keys, _v = _sp.val();
+            //alert( _sp.attr('name') );
+            if( !( _key in _keyObj ) ){
+                _keys = getUrlParams( _url, _key );
+                _keyObj[ _key ] = _keys;
+            }else{
+                _keys = _keyObj[ _key ];
+            }
 
+            if( _keys && _keys.length ){
+                $.each( _keys, function( _ix, _item ){
+                    if( _item == _v ){
+                        _sp.prop('checked', true);
+                    }
+                });
+            }
         });
+
+        window.jcAutoInitComps && jcAutoInitComps( _selector );
     }
     /**
      * 自定义 URI decode 函数
