@@ -533,16 +533,19 @@
             }
         , _fixAll:
             function(){
-                var _p = this, _checkAll = true;
+                var _p = this, _checkAll = true, _count = 0;
                 if( _p._model.allSelector().prop( &#x27;disabled&#x27; ) ) return;
 
                 _p._model.items().each( function(){
                     if( AutoChecked.isAutoChecked( $(this) ) ) return;
                     if( $(this).is(&#x27;[disabled]&#x27;) ) return;
+                    _count++;
                     if( !$(this).prop(&#x27;checked&#x27;) ) return _checkAll = false;
                 });
 
                 JC.log( &#x27;_fixAll:&#x27;, _checkAll );
+
+                if( !_count ) _checkAll = false;
 
                 _p._model.allSelector().prop(&#x27;checked&#x27;, _checkAll);
             }

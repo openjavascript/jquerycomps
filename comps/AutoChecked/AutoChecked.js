@@ -353,16 +353,19 @@
             }
         , _fixAll:
             function(){
-                var _p = this, _checkAll = true;
+                var _p = this, _checkAll = true, _count = 0;
                 if( _p._model.allSelector().prop( 'disabled' ) ) return;
 
                 _p._model.items().each( function(){
                     if( AutoChecked.isAutoChecked( $(this) ) ) return;
                     if( $(this).is('[disabled]') ) return;
+                    _count++;
                     if( !$(this).prop('checked') ) return _checkAll = false;
                 });
 
                 JC.log( '_fixAll:', _checkAll );
+
+                if( !_count ) _checkAll = false;
 
                 _p._model.allSelector().prop('checked', _checkAll);
             }

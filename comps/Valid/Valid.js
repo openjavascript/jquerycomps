@@ -1,4 +1,5 @@
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
+//TODO: 添加 不允许内容重复类型
 ;(function($){
     /**
      * <b>表单验证</b> (单例模式)

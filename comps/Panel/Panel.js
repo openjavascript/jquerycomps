@@ -1,3 +1,4 @@
+//TODO: 扩展的 popup 和 dialog 添加 extends 扩展声明
 ;(function($){
     window.Panel = JC.Panel = Panel;
     /**

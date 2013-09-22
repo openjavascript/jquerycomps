@@ -250,6 +250,9 @@
      *
      *      &lt;dt&gt;sugplaceholder: selector&lt;/dt&gt;
      *      &lt;dd&gt;声明自动定位时, 显示位置的占位符标签&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;sugprevententer: bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;回车时, 是否阻止默认事件, 为真将阻止表单提交事件&lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
      * @class Suggest
@@ -377,7 +380,17 @@
                 });
 
                 _p._model.selector().on(&#x27;keyup&#x27;, function( _evt ){
-                    var _sp = $(this), _val = _sp.val().trim(), _keycode = _evt.keyCode;
+                    var _sp = $(this)
+                        , _val = _sp.val().trim()
+                        , _keycode = _evt.keyCode
+                        , _ignoreTime = _sp.data(&#x27;IgnoreTime&#x27;)
+                        ;
+
+                    if( _ignoreTime &amp;&amp; ( new Date().getTime() - _ignoreTime ) &lt; 300 ){
+                        //document.title = _ignoreTime;
+                        return;
+                    }
+                    
 
                     JC.log( &#x27;keyup&#x27;, _val, new Date().getTime(), _keycode );
 
@@ -439,8 +452,13 @@
                 });
 
                 _p._model.selector().on(&#x27;keydown&#x27;, function( _evt ){
-                   var _keycode = _evt.keyCode, _keyindex, _isBackward
-                        , _items = _p._model.items(), _item;
+                   var _keycode = _evt.keyCode
+                        , _sp = $(this)
+                        , _keyindex
+                        , _isBackward
+                        , _items = _p._model.items()
+                        , _item
+                        ;
                     _keycode == 38 &amp;&amp; ( _isBackward = true );
                     JC.log( &#x27;keyup&#x27;, new Date().getTime(), _keycode );
 
@@ -463,6 +481,14 @@
                             {
                                 _p.hide();
                                 return;
+                            }
+                        case 13://回车
+                            {
+                                _p.hide();
+                                _sp.data( &#x27;IgnoreTime&#x27;, new Date().getTime() );
+
+                                _p._model.sugprevententer() &amp;&amp; _evt.preventDefault();
+                                break;
                             }
                     }
                 });
@@ -738,6 +764,14 @@
                     &amp;&amp; ( this._sugqueryinterval = parseInt( this.selector().attr(&#x27;sugqueryinterval&#x27;) ) );
                 this._sugqueryinterval = this._sugqueryinterval || 200;
                 return this._sugqueryinterval;
+            }
+        , sugprevententer:
+            function(){
+                var _r;
+                this.selector().is( &#x27;[sugprevententer]&#x27; )
+                    &amp;&amp; ( _r = parseBool( this.selector().attr(&#x27;sugprevententer&#x27;) ) )
+                    ;
+                return _r;
             }
         , timeout: null
         , preValue: null

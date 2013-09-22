@@ -232,6 +232,7 @@
 }(jQuery));
 ;
 
+//TODO: add checkbox support
  ;(function($){
     /**
      * 表单自动填充 URL GET 参数
@@ -269,6 +270,7 @@
 
     function fillForm( _selector, _url ){
         _selector = $(_selector);
+        try{ _url = decodeURIComponent( _url ); }catch(ex){}
         
         _selector.find( &#x27;input[type=text][name],input[type=password][name],textarea[name]&#x27; ).each( function(){
             var _sp = $(this);
@@ -286,6 +288,24 @@
                     _sp.attr( &#x27;selectvalue&#x27;, _uval );
                 }
             }
+        });
+
+        /*
+            ?s_startTime=2013-08-28
+                &amp;s_endTime=2013-09-28
+                &amp;kword_type=
+                &amp;kword=
+                &amp;department[]=2
+                &amp;department[]=3
+                &amp;operator[]=328
+                &amp;operator[]=330
+                &amp;operator[]=331
+                &amp;isp=1379841840601_232_161
+        */
+
+        _selector.find( &#x27;input[type=checkbox][name]&#x27; ).each( function(){
+            var _sp = $(this);
+
         });
     }
     /**

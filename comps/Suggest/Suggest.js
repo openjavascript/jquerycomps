@@ -70,6 +70,9 @@
      *
      *      <dt>sugplaceholder: selector</dt>
      *      <dd>声明自动定位时, 显示位置的占位符标签</dd>
+     *
+     *      <dt>sugprevententer: bool, default = false</dt>
+     *      <dd>回车时, 是否阻止默认事件, 为真将阻止表单提交事件</dd>
      * </dl>
      * @namespace JC
      * @class Suggest
@@ -197,7 +200,17 @@
                 });
 
                 _p._model.selector().on('keyup', function( _evt ){
-                    var _sp = $(this), _val = _sp.val().trim(), _keycode = _evt.keyCode;
+                    var _sp = $(this)
+                        , _val = _sp.val().trim()
+                        , _keycode = _evt.keyCode
+                        , _ignoreTime = _sp.data('IgnoreTime')
+                        ;
+
+                    if( _ignoreTime && ( new Date().getTime() - _ignoreTime ) < 300 ){
+                        //document.title = _ignoreTime;
+                        return;
+                    }
+                    
 
                     JC.log( 'keyup', _val, new Date().getTime(), _keycode );
 
@@ -259,8 +272,13 @@
                 });
 
                 _p._model.selector().on('keydown', function( _evt ){
-                   var _keycode = _evt.keyCode, _keyindex, _isBackward
-                        , _items = _p._model.items(), _item;
+                   var _keycode = _evt.keyCode
+                        , _sp = $(this)
+                        , _keyindex
+                        , _isBackward
+                        , _items = _p._model.items()
+                        , _item
+                        ;
                     _keycode == 38 && ( _isBackward = true );
                     JC.log( 'keyup', new Date().getTime(), _keycode );
 
@@ -283,6 +301,14 @@
                             {
                                 _p.hide();
                                 return;
+                            }
+                        case 13://回车
+                            {
+                                _p.hide();
+                                _sp.data( 'IgnoreTime', new Date().getTime() );
+
+                                _p._model.sugprevententer() && _evt.preventDefault();
+                                break;
                             }
                     }
                 });
@@ -558,6 +584,14 @@
                     && ( this._sugqueryinterval = parseInt( this.selector().attr('sugqueryinterval') ) );
                 this._sugqueryinterval = this._sugqueryinterval || 200;
                 return this._sugqueryinterval;
+            }
+        , sugprevententer:
+            function(){
+                var _r;
+                this.selector().is( '[sugprevententer]' )
+                    && ( _r = parseBool( this.selector().attr('sugprevententer') ) )
+                    ;
+                return _r;
             }
         , timeout: null
         , preValue: null
