@@ -42,10 +42,11 @@
             }
         </style>
         <link href='../../../comps/Suggest/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
         <script src="../../../lib.js"></script>
         <script>
             JC.debug = true;
-            JC.use( 'Suggest, plugins/json2.js' );
+            JC.use( 'Suggest, Valid, plugins/json2.js' );
 
             $(document).ready( function(){
                 setTimeout( function(){
@@ -96,6 +97,8 @@
                         <div class="sug_wrapper" >
                             <input type="text" name="q" 
                                 class="sug_input" 
+                                reqmsg="内容"
+                                emel="//em.error"
                                 autocomplete="off" 
                                 x-webkit-speech=""
                                 sugurl="http://sug.so.360.cn/suggest/word?callback={1}&encodein=utf-8&encodeout=utf-8&word={0}"
@@ -108,6 +111,7 @@
                         </div>
                         <button type="submit">submit</button>
                         sugprevententer="true"
+                        <em class="error"></em>
                     </div>
                 </form>
             </dd>
