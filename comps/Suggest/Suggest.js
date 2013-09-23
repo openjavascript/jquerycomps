@@ -111,6 +111,8 @@
                 _p._view.init();
                 _p._model.init();
 
+                _p.selector().attr( 'autocomplete', 'off' );
+
                 _p._initActionEvent();
 
                 _p.trigger( 'SuggestInited' );

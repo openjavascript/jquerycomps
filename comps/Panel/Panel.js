@@ -1259,6 +1259,7 @@
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class   msgbox
+     * @extends JC.Panel
      * @static
      * @constructor
      * @param   {string}    _msg        提示内容
@@ -1302,6 +1303,7 @@
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class   alert
+     * @extends JC.Panel
      * @static
      * @constructor
      * @param   {string}    _msg        提示内容
@@ -1337,6 +1339,7 @@
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class   confirm
+     * @extends JC.Panel
      * @static
      * @constructor
      * @param   {string}    _msg        提示内容
@@ -1823,6 +1826,7 @@
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class   Dialog
+     * @extends JC.Panel
      * @static
      * @constructor
      * @param   {selector|string}   _selector   自定义弹框模板, 如果 _selector不能解析为 HTML, 将视为@param _headers 
@@ -1884,6 +1888,7 @@
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
      * @namespace JC.Dialog
      * @class   msgbox
+     * @extends JC.Panel
      * @static
      * @constructor
      * @param   {string}    _msg        提示内容
@@ -1924,6 +1929,7 @@
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
      * @namespace JC.Dialog
      * @class   alert
+     * @extends JC.Panel
      * @static
      * @constructor
      * @param   {string}    _msg        提示内容
@@ -1961,6 +1967,7 @@
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
      * @namespace JC.Dialog
      * @class   confirm
+     * @extends JC.Panel
      * @static
      * @constructor
      * @param   {string}    _msg        提示内容

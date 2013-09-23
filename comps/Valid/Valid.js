@@ -9,8 +9,11 @@
      * | <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>
      * <h2>Form 的可用 html attribute</h2>
      * <dl>
-     *      <dt>errorabort = bool, default = false</dt>
-     *      <dd>查检Form Control时, 如果发生错误是否继续检查下一个</dd>
+     *      <dt>errorabort = bool, default = true</dt>
+     *      <dd>
+     *          查检Form Control时, 如果发生错误是否继续检查下一个
+     *          <br />true: 继续检查, false, 停止检查下一个
+     *      </dd>
      *
      *      <dt>validmsg = bool | string</dt>
      *      <dd>
@@ -1365,7 +1368,7 @@
          */
         , mobilephoneall:
             function( _item ){
-                var _p = this, _r = this.mobilezonecode( _item, true ) || phoneall( _item, true );
+                var _p = this, _r = this.mobilezonecode( _item, true ) || this.phoneall( _item, true );
                 !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
             }
@@ -1935,9 +1938,10 @@
         /**
          * 这里需要优化检查, 目前会重复检查
          */
-        , checkbox:
-            function( _item ){
+        , checkedType:
+            function( _item, _type ){
                 _item && ( _item = $( _item ) );
+                _type = _type || 'checkbox';
                 var _p = this
                     , _r = true
                     , _items
@@ -1946,7 +1950,10 @@
                     , _count = 0
                     , _finder = _item
                     , _pntIsLabel = _item.parent().prop('nodeName').toLowerCase() == 'label' 
+                    , _finderKey = _type + 'finder';
                     ;
+
+                JC.log( _item.attr('name') + ', ' + _item.val() );
 
                 if( _item.is( '[datatarget]' ) ){
                     _items = parentSelector( _item, _item.attr('datatarget') );                    
@@ -1960,8 +1967,8 @@
                     _items = $( _tmp );
                 }else{
                     if( _pntIsLabel ){
-                        if( !_finder.is('[checkboxfinder]') ) _finder = _item.parent().parent();
-                        else _finder = parentSelector( _item, _item.attr('checkboxfinder') );
+                        if( !_finder.is('[' + _finderKey + ']') ) _finder = _item.parent().parent();
+                        else _finder = parentSelector( _item, _item.attr( _finderKey ) );
                         _tmp = parentSelector( _finder, '|input[datatype]' );
                     }
                     else{
@@ -1970,7 +1977,8 @@
                     _items = [];
                     _tmp.each( function(){
                         var _sp = $(this);
-                        /checkbox/i.test( _sp.attr('datatype') ) 
+                        var _re = new RegExp( _type, 'i' );
+                        _re.test( _sp.attr('datatype') ) 
                             && _sp.is(':visible')
                             && !_sp.prop('disabled')
                             && _items.push( _sp );
@@ -1986,7 +1994,7 @@
                    });
                }
 
-               _items.length && $( _item = _items[ _items.length - 1 ] ).data('LastCheckbox', true);
+               _items.length && $( _item = _items[ _items.length - 1 ] ).data('Last' + _type, true);
 
                if( _items.length ){
                     _item.is( '[datatype]' )
@@ -2005,10 +2013,18 @@
 
                     !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                }
-               //alert( _items.length + ', ' + _ckLen + ', ' + _count );
 
                 return _r;
             }
+        , 'checkbox':
+            function( _item ){
+                return this.checkedType( _item, 'checkbox' );
+            }
+        , 'radio':
+            function( _item ){
+                return this.checkedType( _item, 'radio' );
+            }
+
         /**
          * 验证文件扩展名
          */
@@ -2230,21 +2246,22 @@
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
      * @private
      */
-    $(document).delegate( 'select, input[type=file], input[type=checkbox]', 'change', function($evt){
+    $(document).delegate( 'select, input[type=file], input[type=checkbox], input[type=radio]', 'change', function($evt){
         Valid.check( $(this) );
     });
     /**
      * 响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
      * @private
      */
-    $(document).delegate( 'input[type=text], input[type=password], textarea, select, input[type=file], input[type=checkbox]', 'focus', function($evt){
+    $(document).delegate( 'input[type=text], input[type=password], textarea'
+                            +', select, input[type=file], input[type=checkbox], input[type=radio]', 'focus', function($evt){
         Valid.getInstance().trigger( 'FocusMsg',  [ $(this) ] );
     });
     /**
      * 响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
      * @private
      */
-    $(document).delegate( 'select, input[type=file], input[type=checkbox]', 'blur', function($evt){
+    $(document).delegate( 'select, input[type=file], input[type=checkbox], input[type=radio]', 'blur', function($evt){
         Valid.getInstance().trigger( 'FocusMsg',  [ $(this), true ] );
     });
 
