@@ -1,5 +1,6 @@
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
 //TODO: checkbox, radio 错误时, input 添加高亮显示
+//TODO: 添加 uniquelist
 ;(function($){
     /**
      * <b>表单验证</b> (单例模式)
@@ -62,9 +63,8 @@
      *          设置 em 的 CSS display 显示类型
      *      </dd>
      *
-     *      <dt>ignoreprocess = bool</dt>
-     *      <dd>验证表单时, 是否忽略</dd>
-     *      <dd>default = false</dd>
+     *      <dt>ignoreprocess = bool, default = false</dt>
+     *      <dd>验证表单控件时, 是否忽略</dd>
      *
      *      <dt>minlength = int(最小长度)</dt>
      *      <dd>验证内容的最小长度, 但不验证为空的值</dd>
@@ -296,8 +296,7 @@
                         var _sitem = $(this);
                         if( !_p._model.isAvalible( _sitem ) ) return;
                         if( !_p._model.isValid( _sitem ) ) return;
-                        if( _p._model.isIgnoreProcess( _sitem ) ) return;
-
+                        if( Valid.isIgnore( _sitem ) ) return;
 
                         var _dt = _p._model.parseDatatype( _sitem )
                             , _subdt = _p._model.parseSubdatatype( _sitem )
@@ -589,7 +588,46 @@
             });
      */
     Valid.formHasValue =
-        function(){ return Valid.getInstance().formHasValue.apply( Valid.getInstance(), sliceArgs( arguments ) ); };
+        function(){ 
+            return Valid.getInstance().formHasValue.apply( Valid.getInstance(), sliceArgs( arguments ) ); 
+        };
+    /**
+     * 对一个表单控件添加忽略检查属性[ignoreprocess], 或者删除忽略属性
+     * @method  ignore
+     * @param   {selector}  _item
+     * @param   {bool}      _delIgnore    是否删除忽略属性, default = false
+     * @static
+     */
+    Valid.ignore =
+        function( _item, _delIgnore ){
+            _item = $( _item );
+            if( !( _item && _item.length ) ) return _item;
+            _delIgnore 
+                ? _item.removeAttr('ignoreprocess')
+                : _item.attr('ignoreprocess', true)
+                ;
+            return _item;
+        };
+    /**
+     * 判断表单控制是否忽略检查[ignoreprocess]
+     * <br /><b>如果只有 ignoreprocess 但没有值, 返回 true</b>
+     * @method  isIgnore
+     * @param   {selector}  _item
+     * @static
+     * @return  bool
+     */
+    Valid.isIgnore =
+        function( _item ){
+            var _r = false;
+            _item.is( '[ignoreprocess]' ) 
+                && (
+                        ( _item.attr('ignoreprocess') || '' ).trim()
+                        ? ( _r = parseBool( _item.attr('ignoreprocess') ) )
+                        : ( _r = true )
+                   )
+                ;
+            return _r;
+        };
     
     function Model(){
         this._init();
@@ -651,10 +689,6 @@
                 var _r = Valid.errorAbort;
                 _item.is('[errorabort]') && ( _r = parseBool( _item.attr('errorabort') ) );
                 return _r;
-            }
-        , isIgnoreProcess:
-            function( _item ){
-                return _item.is('[ignoreprocess]');
             }
         , isValid:
             function( _item ){
@@ -1727,9 +1761,10 @@
                 _p.isDatatarget( _item ) && (_target = _p.datatarget( _item ) );
                 !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item ) );
 
+                _errLs = [];
+
                 if( _target && _target.length ){
                     _tmp = {};
-                    _errLs = [];
                     _target.each( function(){ 
                         var _sp = $(this), _v = _sp.val().trim();
                         if( !_v ) return;
@@ -1908,10 +1943,18 @@
                     , _pnt = _item.parent()
                     , _type = _item.attr('subdatatype')
                     , _re = new RegExp( _type, 'i' )
+                    , _nodeName = _item.prop('nodeName').toLowerCase()
+                    , _tagName = 'input'
                     ;
-                _pnt.find('input[subdatatype]').each( function(){
+                if( /select/.test( _nodeName ) ){
+                    _tagName = 'select';
+                }else if( /textarea/.test( _nodeName ) ){
+                    _tagName = 'textarea';
+                }
+                _pnt.find( _tagName + '[subdatatype]').each( function(){
                     _re.test( $(this).attr('subdatatype') ) && _r.push( $(this) );
                 });
+
                 return _r.length ? $( _r ) : _r;
             }
         , focusmsgeverytime:
