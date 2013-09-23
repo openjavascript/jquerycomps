@@ -1,4 +1,5 @@
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
+//TODO: checkbox, radio 错误时, input 添加高亮显示
 ;(function($){
     /**
      * <b>表单验证</b> (单例模式)
@@ -1280,7 +1281,7 @@
         , phoneall:
             function( _item, _noError ){
                 var _p = this
-                    , _r = /^(?:\+[\d]{1,6}(?: |\-)|)(?:0[\d]{2,3}(?:\-| |)|)[1-9][\d]{6,7}(?:(?: |)\#[\d]{1,6}|)$/.test( _item.val() );
+                    , _r = /^(?:\+[\d]{1,6}(?: |\-)|)(?:0[\d]{2,3}(?:\-| |)|)[1-9][\d]{6,7}(?:(?: |)(?:\#|\-)[\d]{1,6}|)$/.test( _item.val() );
                 !_noError && !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
             }
@@ -2087,7 +2088,7 @@
             function( _item, _tm, _noStyle ){
                 _item && ( _item = $(_item) );
                 var _p = this, _tmp;
-                if( !_p._model.isValid( _item ) ) return false;
+                //if( !_p._model.isValid( _item ) ) return false;
                 setTimeout(function(){
                     _item.removeClass( Model.CSS_ERROR );
                     _item.find( printf( '~ em:not("em.focusmsg, em.validmsg, {0}")', Model.FILTER_ERROR ) ).css('display', _p._model.validemdisplaytype( _item ) );
@@ -2144,7 +2145,7 @@
             function( _item, _msgAttr, _fullMsg ){
                 _item && ( _item = $(_item) );
                 var _p = this, arg = arguments; 
-                if( !_p._model.isValid( _item ) ) return true;
+                //if( !_p._model.isValid( _item ) ) return true;
                 if( _item.is( '[validnoerror]' ) ) return true;
 
                 setTimeout(function(){

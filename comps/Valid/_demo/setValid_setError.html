@@ -51,7 +51,7 @@
 
         <script src="../../../lib.js"></script>
         <script>
-            JC.debug = true; JC.use( 'Valid, Calendar' );
+            JC.debug = true; JC.use( 'Valid, Calendar, Form' );
 
             $(document).ready( function($evt){
                 $(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
@@ -78,9 +78,9 @@
 
                     _msgkey && _msg && _target.attr( _msgkey, _msg );
 
-                    //alert( _p.attr( _msgkey ) );
-
-                    JC.Valid.setError( _target, _msgkey || _msg );
+                    _target && _target.each( function(){
+                        JC.Valid.setError( $(this), _msgkey || _msg );
+                    });
                 });
 
                 $(document).delegate( 'button.js_setValid', 'click', function( _evt ){
@@ -88,7 +88,10 @@
                         , _target = parentSelector( _p, _p.attr('target') )
                         ;
 
-                    JC.Valid.setValid( _target );
+                    _target && _target.each( function(){
+                        JC.Valid.setValid( $(this) );
+                    });
+
                 });
             });
 
@@ -133,6 +136,27 @@
                 </dd>
             </dl>
 
+            <dl class="fm-items">
+                <dt>JC.Valid 示例, setValid</dt>
+                <dd>
+                    <select name='select20_1' 
+                        defaultselect 
+                        selectvalue="14" 
+                        selecturl="../../../comps/AutoSelect/_demo/data/shengshi.php" 
+                        selecttarget="/select:last"
+                        >
+                        <option value="-1" defaultoption>请选择</option></select>
+                    <select name='select20_2' 
+                        selecturl="../../../comps/AutoSelect/_demo/data/shengshi.php?id={0}" 
+                        >
+                        <option value="-1" defaultoption>请选择</option>
+                    </select>                    
+                    <button type="button" class="js_setError" target="/select" msgkey=" test msg" >set error</button>
+                    <button type="button" class="js_setValid" target="/select" >set valid</button>
+                    <em class="error"></em>
+                    <em class="validmsg"></em>
+                </dd>
+            </dl>
 
             <div style="position:fixed; bottom: 10px; right:10px;">
                 <button type="submit">Save</button>

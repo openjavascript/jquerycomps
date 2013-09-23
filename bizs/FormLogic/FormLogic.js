@@ -353,6 +353,7 @@
                     _json 
                     && 'errorno' in _json 
                     && !parseInt( _json.errorno, 10 )
+                    && _p._model.formResetAfterSubmit() 
                     && _p.selector().trigger('reset')
                     ;
 
