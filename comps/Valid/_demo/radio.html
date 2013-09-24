@@ -47,7 +47,7 @@
 
         <script src="../../../lib.js"></script>
         <script>
-            JC.debug = true; JC.use( 'Valid, Calendar' );
+            JC.debug = true; JC.use( 'Valid, Calendar, Bizs.FormLogic' );
 
             $(document).ready( function($evt){
                 $(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
@@ -55,6 +55,7 @@
                     JC.Valid.clearError( 'form.js_valid' );
                 });
 
+                /*
                 $('form.js_valid').on('submit', function( $evt ){
                     window.console && console.clear && console.clear();
                     $evt.preventDefault();
@@ -66,6 +67,7 @@
 
                     JC.log( 'form process valid', new Date().getTime() );
                 });
+                */
 
                 $( 'dl.fm-items > dd:odd').addClass( 'odd' );
 
@@ -81,7 +83,7 @@
     </head>    
     <body>
 
-        <form action='' method='get' class="js_valid" validmsg="true" >
+        <form action='' method='get' class="js_valid js_bizsFormLogic" validmsg="true" >
             <div style="position:fixed; top: 10px; right:10px;">
                 <button type="submit">Save</button>
                 <button type="button" class="js-clear-error">清空错误信息</button>
@@ -94,11 +96,11 @@
                         <dt>datatype = radio, 至少需要选择一个 radio</dt>
 
                         <dd>
-                            <input type="radio" name="test1" datatype="radio" errmsg="请选择一个单选框" />
+                            <input type="radio" name="test1" value="1" datatype="radio" errmsg="请选择一个单选框" />
                             1
-                            <input type="radio" name="test1" datatype="radio" errmsg="请选择一个单选框" />
+                            <input type="radio" name="test1" value="2" datatype="radio" errmsg="请选择一个单选框" />
                             2
-                            <input type="radio" name="test1" datatype="radio" errmsg="请选择一个单选框" />
+                            <input type="radio" name="test1" value="3" datatype="radio" errmsg="请选择一个单选框" />
                             3
                             <em class="error"></em>
                             <em class="validmsg"></em>
@@ -106,15 +108,15 @@
 
                         <dd>
                             <label>
-                                <input type="radio" name="test2" datatype="radio" errmsg="请选择一个单选框" />
+                                <input type="radio" name="test2" value="1" datatype="radio" errmsg="请选择一个单选框" />
                                 1
                             </label>
                             <label>
-                                <input type="radio" name="test2" datatype="radio" errmsg="请选择一个单选框" />
+                                <input type="radio" name="test2" value="2" datatype="radio" errmsg="请选择一个单选框" />
                                 2
                             </label>
                             <label>
-                                <input type="radio" name="test2" datatype="radio" errmsg="请选择一个单选框" />
+                                <input type="radio" name="test2" value="3" datatype="radio" errmsg="请选择一个单选框" />
                                 3
                             </label>
                             <em class="error"></em>
@@ -125,7 +127,7 @@
                             <ul>
                                 <li>
                                     <label>
-                                        <input type="radio" name="test3" 
+                                        <input type="radio" name="test3" value="1" 
                                             datatype="radio" 
                                             emel="<ul em.error" 
                                             validel="<ul em.validmsg" 
@@ -136,7 +138,7 @@
                                 </li>
                                 <li>
                                     <label>
-                                        <input type="radio" name="test3" 
+                                        <input type="radio" name="test3" value="2" 
                                             datatype="radio" 
                                             emel="<ul em.error" 
                                             validel="<ul em.validmsg" 
@@ -147,7 +149,7 @@
                                 </li>
                                 <li>
                                     <label>
-                                        <input type="radio" name="test3" 
+                                        <input type="radio" name="test3" value="3" 
                                             datatype="radio" 
                                             emel="<ul em.error" 
                                             validel="<ul em.validmsg" 
@@ -165,6 +167,13 @@
                         </dd>
                     </dl>
                 </dd>
+
+                <dd style="">
+                    <button type="submit">submit</button>
+                    <button type="reset">reset</button>
+                    <button type="button" class="js-clear-error">清空错误信息</button>
+                </dd>
+
             </dl>
 
             <div style="position:fixed; bottom: 10px; right:10px;">
