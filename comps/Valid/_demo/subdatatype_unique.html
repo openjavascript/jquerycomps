@@ -63,7 +63,7 @@
         <script src="../../../lib.js"></script>
         <script src="../../../comps/AutoSelect/_demo/data/SHENGSHI.js"></script>
         <script>
-            JC.debug = true; JC.use( 'Valid, Calendar, Form, Bizs.FormLogic' );
+            JC.debug = true; JC.use( 'Valid, Calendar, Form, Bizs.FormLogic, Bizs.CommonModify' );
 
             $(document).ready( function($evt){
 
@@ -76,6 +76,16 @@
                         return _r;
                     };
 
+            });
+
+            $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
+                window.console && console.clear && console.clear();
+                JC.Valid.clearError( 'form.js_valid' );
+            });
+
+            $(document).delegate( 'form.js_valid', 'submit', function( _evt ){
+                _evt.preventDefault();
+                JC.Valid( this );
             });
 
            function selectdata( _id ){
@@ -107,11 +117,17 @@
                return _d;
            }
 
+           function cmdonecallback(){
+               var _trigger = $(this);
+               getJqParent( _trigger, 'dl' ) 
+                && JC.Valid.check( getJqParent( _trigger, 'dl' ).find('select:last') );
+           }
+
         </script>
     </head>    
     <body>
 
-        <form action='' method='get' class="js-valid js_bizsFormLogic" >
+        <form action='' method='get' class="js_valid " >
             <div style="position:fixed; top: 10px; right:10px;">
                 <button type="submit">save</button>
                 <button type="reset">reset</button>
@@ -303,7 +319,7 @@
                     </dl>
                 </dd>
 
-                <dd>
+                <dd class="unique2_1">
                     <dl>
                         <dt>subdatatype = unique-2</dt>
                         <dd>
@@ -362,17 +378,20 @@
                     </dl>
                 </dd>
 
-                <dd>
+                <dd class="unique3_1">
                     <dl>
                         <dt>subdatatype = unique-3</dt>
                         <dd>
                             <div>
                                 <select name='' 
+                                    reqmsg="类别"
+                                    
                                     defaultselect 
                                     selectdatacb="selectdata" 
                                     selectparentid="0" 
                                     selectvalue="14" 
                                     selecttarget="/select:eq(1)"
+                                    selecttriggerinitchange="false"
 
                                     subdatatype="unique-3"
                                     datatarget="<dd select"
@@ -381,6 +400,8 @@
                                     <option value="" defaultoption>请选择</option>
                                 </select>
                                 <select name='' 
+                                    reqmsg="类别"
+
                                     selectdatacb="selectdata" 
                                     selectvalue="2341" 
                                     selecttarget="/select:last"
@@ -392,6 +413,8 @@
                                     <option value="" defaultoption>请选择</option>
                                 </select>
                                 <select name='select13_3' 
+                                    reqmsg="类别"
+                                    
                                     selectdatacb="selectdata" 
                                     selectvalue="2343" 
 
@@ -399,17 +422,27 @@
                                     datatarget="<dd select"
                                     uniquemsg="不能选择相同的地理信息"
                                     >
-                                    <option value="-1" defaultoption>请选择</option>
+                                    <option value="" defaultoption>请选择</option>
                                 </select>
+                                <a href="javascript:" 
+                                class="green js_autoCommonModify" 
+                                cmtemplate="#areaTpl"
+                                cmitem="<div"
+                                cmaction="add"
+                                cmdonecallback="cmdonecallback"
+                                >+ 添加</a>  
                                 <em class="error"></em>
                             </div>
                             <div>
                                 <select name='' 
+                                    reqmsg="类别"
+                                    
                                     defaultselect 
                                     selectdatacb="selectdata" 
                                     selectparentid="0" 
                                     selectvalue="14" 
                                     selecttarget="/select:eq(1)"
+                                    selecttriggerinitchange="false"
 
                                     subdatatype="unique-3"
                                     datatarget="<dd select"
@@ -418,6 +451,8 @@
                                     <option value="" defaultoption>请选择</option>
                                 </select>
                                 <select name='' 
+                                    reqmsg="类别"
+                                    
                                     selectdatacb="selectdata" 
                                     selectvalue="2341" 
                                     selecttarget="/select:last"
@@ -429,13 +464,15 @@
                                     <option value="" defaultoption>请选择</option>
                                 </select>
                                 <select name='select13_3' 
+                                    reqmsg="类别"
+                                    
                                     selectdatacb="selectdata" 
 
                                     subdatatype="unique-3"
                                     datatarget="<dd select"
                                     uniquemsg="不能选择相同的地理信息"
                                     >
-                                    <option value="-1" defaultoption>请选择</option>
+                                    <option value="" defaultoption>请选择</option>
                                 </select>
                                 <em class="error"></em>
                             </div>
@@ -447,14 +484,78 @@
                 <dd style="margin-top:20px; padding-left: 400px;">
                     <button type="submit">save</button>
                     <button type="reset">reset</button>
+                    <button type="button" class="js_clear_error">clear error</button>
+                    <a href="?">back</a>
                 </dd>
              </dl>
-
-            <div style="position:fixed; bottom: 10px; right:10px;">
-                <button type="submit">save</button>
-                <button type="reset">reset</button>
-            </div>
+             <!--
+                <div style="position:fixed; bottom: 10px; right:10px;">
+                    <button type="submit">save</button>
+                    <button type="reset">reset</button>
+                    <button type="button" class="js_clear_error">clear error</button>
+                </div>
+            -->
         </form>
+
+        <script type='text/template' id="areaTpl" >
+            <div>
+                <select name='' 
+                    reqmsg="类别"
+                                    
+                    defaultselect 
+                    selectdatacb="selectdata" 
+                    selectparentid="0" 
+                    selectvalue="14" 
+                    selecttarget="/select:eq(1)"
+
+                    subdatatype="unique-3"
+                    datatarget="<dd select"
+                    uniquemsg="不能选择相同的地理信息"
+                    selecttriggerinitchange="false"
+                    >
+                    <option value="" defaultoption>请选择</option>
+                </select>
+                <select name='' 
+                    reqmsg="类别"
+                                    
+                    selectdatacb="selectdata" 
+                    selectvalue="2341" 
+                    selecttarget="/select:last"
+
+                    subdatatype="unique-3"
+                    datatarget="<dd select"
+                    uniquemsg="不能选择相同的地理信息"
+                    >
+                    <option value="" defaultoption>请选择</option>
+                </select>
+                <select name='select13_3' 
+                    reqmsg="类别"
+                                    
+                    selectdatacb="selectdata" 
+                    selectvalue="2343" 
+
+                    subdatatype="unique-3"
+                    datatarget="<dd select"
+                    uniquemsg="不能选择相同的地理信息"
+                    >
+                    <option value="" defaultoption>请选择</option>
+                </select>
+                <a href="javascript:" 
+                class="green js_autoCommonModify" 
+                cmtemplate="#areaTpl"
+                cmitem="<div"
+                cmaction="add"
+                cmdonecallback="cmdonecallback"
+                >+ 添加</a>  
+                <a href="javascript:" 
+                class="green js_autoCommonModify" 
+                cmitem="<div"
+                cmaction="del"
+                cmdonecallback="cmdonecallback"
+                >- 删除</a>  
+                <em class="error"></em>
+            </div>
+        </script>
 
     </body>
 </html>

@@ -195,6 +195,9 @@
      *
      *      &lt;dt&gt;checkall = selector&lt;/dt&gt;
      *      &lt;dd&gt;声明 checkall input, 仅在 checktype = inverse 时才需要&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;checktrigger = string of event name&lt;/dt&gt;
+     *      &lt;dd&gt;点击全选反选后触发的事件, 可选&lt;/dd&gt;
      * &lt;/dl&gt;
      * @class       AutoChecked
      * @namespace   JC
@@ -435,6 +438,11 @@
                 return ( this.selector().attr(&#x27;checkall&#x27;) || &#x27;&#x27; );
             }
 
+        , checktrigger:
+            function(){
+                return ( this.selector().attr(&#x27;checktrigger&#x27;) || &#x27;&#x27; );
+            }
+
         , hasCheckAll: function(){ return this.selector().is(&#x27;[checkall]&#x27;) &amp;&amp; this.selector().attr(&#x27;checkall&#x27;); }
 
         , selector: function(){ return this._selector; }
@@ -513,9 +521,11 @@
             function(){
                 var _p = this, _checked = _p._model.checkedAll();
                 _p._model.items().each( function(){
-                    if( AutoChecked.isAutoChecked( $(this) ) ) return;
-                    if( $(this).is(&#x27;[disabled]&#x27;) ) return;
-                    $(this).prop( &#x27;checked&#x27;, _checked );
+                    var _sp = $(this);
+                    if( AutoChecked.isAutoChecked( _sp ) ) return;
+                    if( _sp.is(&#x27;[disabled]&#x27;) ) return;
+                    _sp.prop( &#x27;checked&#x27;, _checked );
+                    _p.triggerEvent( _sp );
                 });
             }
         , inverseChange:
@@ -524,8 +534,9 @@
                 _p._model.items().each( function(){
                     var _sp = $(this);
                     if( AutoChecked.isAutoChecked( _sp ) ) return;
-                    if( $(this).is(&#x27;[disabled]&#x27;) ) return;
+                    if( _sp.is(&#x27;[disabled]&#x27;) ) return;
                     _sp.prop( &#x27;checked&#x27;, !_sp.prop(&#x27;checked&#x27;) );
+                    _p.triggerEvent( _sp );
                 });
                 this._fixAll();
             }
@@ -546,6 +557,13 @@
                 if( !_count ) _checkAll = false;
 
                 _p._model.allSelector().prop(&#x27;checked&#x27;, _checkAll);
+            }
+        , triggerEvent:
+            function( _item ){
+                var _p = this, _triggerEvent = _p._model.checktrigger();
+                _triggerEvent 
+                    &amp;&amp; $(_item).trigger( _triggerEvent )
+                    ;
             }
     };
  

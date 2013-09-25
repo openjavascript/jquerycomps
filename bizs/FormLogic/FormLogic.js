@@ -1,3 +1,4 @@
+//TODO: 表单重置时, 不要触发 select 的 change 事件
 ;(function($){
     /**
      * <h2>提交表单控制逻辑</h2>

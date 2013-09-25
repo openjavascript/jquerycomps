@@ -17,6 +17,9 @@
      *
      *      <dt>checkall = selector</dt>
      *      <dd>声明 checkall input, 仅在 checktype = inverse 时才需要</dd>
+     *
+     *      <dt>checktrigger = string of event name</dt>
+     *      <dd>点击全选反选后触发的事件, 可选</dd>
      * </dl>
      * @class       AutoChecked
      * @namespace   JC
@@ -257,6 +260,11 @@
                 return ( this.selector().attr('checkall') || '' );
             }
 
+        , checktrigger:
+            function(){
+                return ( this.selector().attr('checktrigger') || '' );
+            }
+
         , hasCheckAll: function(){ return this.selector().is('[checkall]') && this.selector().attr('checkall'); }
 
         , selector: function(){ return this._selector; }
@@ -335,9 +343,11 @@
             function(){
                 var _p = this, _checked = _p._model.checkedAll();
                 _p._model.items().each( function(){
-                    if( AutoChecked.isAutoChecked( $(this) ) ) return;
-                    if( $(this).is('[disabled]') ) return;
-                    $(this).prop( 'checked', _checked );
+                    var _sp = $(this);
+                    if( AutoChecked.isAutoChecked( _sp ) ) return;
+                    if( _sp.is('[disabled]') ) return;
+                    _sp.prop( 'checked', _checked );
+                    _p.triggerEvent( _sp );
                 });
             }
         , inverseChange:
@@ -346,8 +356,9 @@
                 _p._model.items().each( function(){
                     var _sp = $(this);
                     if( AutoChecked.isAutoChecked( _sp ) ) return;
-                    if( $(this).is('[disabled]') ) return;
+                    if( _sp.is('[disabled]') ) return;
                     _sp.prop( 'checked', !_sp.prop('checked') );
+                    _p.triggerEvent( _sp );
                 });
                 this._fixAll();
             }
@@ -368,6 +379,13 @@
                 if( !_count ) _checkAll = false;
 
                 _p._model.allSelector().prop('checked', _checkAll);
+            }
+        , triggerEvent:
+            function( _item ){
+                var _p = this, _triggerEvent = _p._model.checktrigger();
+                _triggerEvent 
+                    && $(_item).trigger( _triggerEvent )
+                    ;
             }
     };
  
