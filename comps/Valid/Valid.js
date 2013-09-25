@@ -1691,15 +1691,13 @@
          */
         , alternative:
             function( _item ){
-                var _p = this, _r = true, _target, _KEY = "AlternativeValidTime";
+                var _p = this
+                    , _r = true
+                    , _target
+                    , _KEY = "AlternativeValidTime"
+                    , _dt = _p.parseDatatype( _item )
+                    ;
                 JC.log( 'alternative' );
-
-                if( _item.data( _KEY ) ){
-                     if( _p.checkRepeatProcess( _item, _KEY ) ){
-                        _item.data( _KEY, new Date().getTime() );
-                        return false;
-                    }
-                }
 
                 _p.isDatatarget( _item ) && (_target = _p.datatarget( _item ) );
                 !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item ) );
@@ -1712,31 +1710,40 @@
                         var _sp = $(this);
                         if( _p.checkRepeatProcess( _sp, _KEY, true ) ) {
                             _isReturn = true;
-                            return false;
                         }
 
                         if( $(this).val() ){ _hasVal = true; return false; } 
                     } );
                     _r = _hasVal;
                 }
-                if( _isReturn ) return _r;
 
                 !_r && _target && _target.length 
                     && _target.each( function(){ 
                         if( _item[0] == this ) return;
+                        if( _isReturn ) return false;
                         $(_p).trigger( Model.TRIGGER, [ Model.ERROR, $(this), 'alternativemsg', true ] );
                     });
 
                 if( _r && _target && _target.length ){
                     _target.each( function(){
-                        if( item[0] == this ) return;
-                        $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
+                        if( _item[0] == this ) return;
+
+                        if( _dt && _p[ _dt ] && $(this).val() ){
+                            _p[ _dt ]( $(this) );
+                        }else if( !$(this).val() ){
+                            $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
+                        }
                     });
                 }
-                _r 
-                    ?  $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _item ] )
-                    :  $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'alternativemsg', true ] )
-                    ;
+                if( _r ){
+                    if( _dt && _p[ _dt ] && _item.val() ){
+                        _p[ _dt ]( _item );
+                    }else if( !_item.val() ){
+                        $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _item ] );
+                    }
+                }else{
+                    $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'alternativemsg', true ] );
+                }
 
                 return _r;
             }
@@ -1776,13 +1783,6 @@
 
                 JC.log( 'reconfirm' );
 
-                if( _item.data( _KEY ) ){
-                     if( _p.checkRepeatProcess( _item, _KEY ) ){
-                        _item.data( _KEY, new Date().getTime() );
-                        return false;
-                    }
-                }
-
                 _p.isDatatarget( _item ) && (_target = _p.datatarget( _item ) );
                 !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item ) );
 
@@ -1793,15 +1793,11 @@
                         var _sp = $(this);
                         if( _p.checkRepeatProcess( _sp, _KEY, true ) ) {
                             _isReturn = true;
-                            return false;
                         }
 
                         if( _item.val() != $(this).val() )  _r = false; 
                     } );
                 }
-
-                if( _isReturn ) return _r;
-
 
                 !_r && _target.length && _target.each( function(){ 
                     if( _item[0] == this ) return;
@@ -1811,6 +1807,7 @@
                 if( _r && _target && _target.length ){
                     _target.each( function(){
                         if( _item[0] == this ) return;
+                        if( _isReturn ) return false;
                         $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
                     });
                 }
@@ -1849,12 +1846,14 @@
                     , _KEY = "UniqueValidTime"
                     ;
 
+                /*
                 if( _item.data( _KEY ) ){
                      if( _p.checkRepeatProcess( _item, _KEY ) ){
                         _item.data( _KEY, new Date().getTime() );
-                        return false;
+                        return _r;
                     }
                 }
+                */
 
                 _p.isDatatarget( _item ) && (_target = _p.datatarget( _item ) );
                 !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item ) );
@@ -1867,17 +1866,20 @@
                     _tmp = {};
                     _target.each( function( _ix ){
                         var _sp = $(this);
+
                         if( _p.checkRepeatProcess( _sp, _KEY, true ) ) {
                             _isReturn = true;
-                            return false;
+                            //return false;
                         }
 
                         if( _ix % _len === 0 ){
                             _group.push( [] );
                         }
-                        _group[ _group.length - 1 ] && _group[ _group.length - 1 ].push( _sp ); 
+                        _group[ _group.length - 1 ] 
+                        && _group[ _group.length - 1 ].push( _sp )
+                        ; 
                     });
-                    if( _isReturn ) return _r;
+                    //if( _isReturn ) return _r;
 
                     $.each( _group, function( _ix, _items ){
                         var _tmpAr = [];
@@ -1910,7 +1912,7 @@
                     }
                 }
 
-                if( _isReturn ) return _r;
+                //if( _isReturn ) return _r;
 
                 $.each( _corLs, function( _ix, _sitem ){
                     Valid.setValid( _sitem );
@@ -1918,6 +1920,7 @@
 
                 !_r && _errLs.length && $.each( _errLs, function( _ix, _sitem ){ 
                     _sitem = $( _sitem );
+                    if( _isReturn ) return false;
                     $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _sitem, 'uniquemsg', true ] );
                 } );
 

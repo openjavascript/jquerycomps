@@ -84,8 +84,10 @@
             });
 
             $(document).delegate( 'form.js_valid', 'submit', function( _evt ){
-                _evt.preventDefault();
-                JC.Valid( this );
+                if( ! JC.Valid( this ) ){
+                    _evt.preventDefault();
+                    return false;
+                }
             });
 
            function selectdata( _id ){
@@ -164,7 +166,7 @@
                             <hr />
                             <div>
                                 url: 
-                                <input type="text" placeholder="url" 
+                                <input type="text" placeholder="url" value="a.com" 
                                 datatype="url" 
                                 subdatatype="unique"  
                                 datatarget="<dd input"
@@ -175,7 +177,7 @@
                             </div>
                             <div>
                                 url: 
-                                <input type="text" placeholder="url" 
+                                <input type="text" placeholder="url" value="b.com" 
                                 datatype="url" 
                                 subdatatype="unique"  
                                 datatarget="<dd input"
@@ -186,7 +188,7 @@
                             </div>
                             <div>
                                 url: 
-                                <input type="text" placeholder="url" 
+                                <input type="text" placeholder="url" value="c.com"  
                                 datatype="url" 
                                 subdatatype="unique"  
                                 datatarget="<dd input"
@@ -201,14 +203,14 @@
                             <hr />
                             <div>
                                 日期: 
-                                <input type="text" placeholder="日期" 
+                                <input type="text" placeholder="日期" value="20130520" 
                                 datatype="daterange" 
                                 subdatatype="unique"  
                                 reqmsg="日期"
                                 errmsg="请输入正确的日期范围"
                                 uniquemsg="日期不能重复"
                                 />
-                                <input type="text" placeholder="日期" 
+                                <input type="text" placeholder="日期" value="20140520"  
                                 datatype="daterange" 
                                 subdatatype="unique"  
                                 reqmsg="日期"
@@ -224,7 +226,7 @@
                             <hr />
                             <div>
                                 日期: 
-                                <input type="text" placeholder="日期" 
+                                <input type="text" placeholder="日期" value="20130520"  
                                 datatype="date" 
                                 subdatatype="unique"  
                                 datatarget="<dd input"
@@ -237,7 +239,7 @@
                             </div>
                             <div>
                                 日期: 
-                                <input type="text" placeholder="日期" 
+                                <input type="text" placeholder="日期" value="20140520"  
                                 datatype="date" 
                                 subdatatype="unique"  
                                 datatarget="<dd input"
@@ -250,7 +252,7 @@
                             </div>
                             <div>
                                 日期: 
-                                <input type="text" placeholder="日期" 
+                                <input type="text" placeholder="日期" value="20150520"  
                                 datatype="date" 
                                 subdatatype="unique"  
                                 datatarget="<dd input"
@@ -274,7 +276,7 @@
                             <select reqmsg="url" subdatatype="unique" uniquemsg="不能选择相同的URL" >
                                 <option value="">请选择</option>
                                 <option value="1">www.qq.com</option>
-                                <option value="2">www.baidu.com</option>
+                                <option value="2" selected>www.baidu.com</option>
                                 <option value="3">www.google.com</option>
                             </select>
                             <em class="error"></em>
@@ -310,7 +312,7 @@
                                 <option value="1">www.qq.com</option>
                                 <option value="2">www.baidu.com</option>
                                 <option value="3">www.google.com</option>
-                                <option value="4">www.taobao.com</option>
+                                <option value="4" selected>www.taobao.com</option>
                             </select>
 
                             <em class="error"></em>
@@ -467,6 +469,7 @@
                                     reqmsg="类别"
                                     
                                     selectdatacb="selectdata" 
+                                    selectvalue="2343" 
 
                                     subdatatype="unique-3"
                                     datatarget="<dd select"

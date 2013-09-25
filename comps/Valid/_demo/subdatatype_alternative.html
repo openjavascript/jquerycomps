@@ -74,8 +74,10 @@
             });
 
             $(document).delegate( 'form.js_valid', 'submit', function( _evt ){
-                _evt.preventDefault();
-                JC.Valid( this );
+                if( ! JC.Valid( this ) ){
+                    _evt.preventDefault();
+                    return false;
+                }
             });
 
         </script>
@@ -89,7 +91,7 @@
             </div>
 
             <dl class="fm-items">
-                <dt>JC.Valid 示例, subdatatype = alternative, N 个 Control 的值必须保持唯一性, 不能有重复</dt>
+                <dt>JC.Valid 示例, subdatatype = alternative, 2填1/N填1</dt>
                 <dd>
                     <span>数值1</span>
                     <input type="text" name="alternative_test[]" class="test" value="" 
