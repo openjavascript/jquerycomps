@@ -39,6 +39,16 @@
 }</xmp>
      *      </dd>
      *
+     *      <dt>formProcessError = function</dt>
+     *      <dd>
+     *          提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>
+<xmp>function formProcessError( _evt, _ins ){
+    var _form = $(this);
+    JC.log( 'formProcessError', new Date().getTime() );
+    //return false;
+}</xmp>
+     *      </dd>
+     *
      *      <dt>formAfterProcess = function</dt>
      *      <dd>
      *          表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>
@@ -392,6 +402,8 @@
                                 }
 
                                 if( !JC.Valid.check( _p.selector() ) ){
+                                    _p._model.formProcessError() 
+                                        && _p._model.formProcessError().call( _p.selector(), null, _p );
                                     return _p._model.prevent();
                                 }
 
@@ -663,6 +675,7 @@
 
         , formBeforeProcess: function(){ return this.callbackProp( 'formBeforeProcess' ); }
         , formAfterProcess: function(){ return this.callbackProp( 'formAfterProcess' ); }
+        , formProcessError: function(){ return this.callbackProp( 'formProcessError' ); }
 
         , prevent: function( _evt ){ _evt && _evt.preventDefault(); return false; }
 

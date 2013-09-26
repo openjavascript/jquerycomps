@@ -67,6 +67,14 @@
                 _p._model.processForm();
                 return this;
             }
+        , ignoreUrl:
+            function( _url ){
+                return this._model.ignoreUrl( _url );
+            }
+        , ignoreSelector:
+            function( _selector ){
+                return this._model.ignoreSelector( _selector );
+            }
     };
     /**
      * 获取 KillISPCache 实例 ( 单例模式 )
@@ -96,6 +104,28 @@
      * @static
      */
     KillISPCache.randName = "";
+    /**
+     * 添加忽略随机数的 ULR
+     * @method      ignoreUrl
+     * @param       {string|Array}  _url
+     * return       Array
+     * @static
+     */
+    KillISPCache.ignoreUrl =
+        function( _url ){
+            return KillISPCache.getInstance().ignoreUrl( _url );
+        };
+    /**
+     * 添加忽略随机数的 选择器
+     * @method      ignoreSelector
+     * @param       {selector|Array}  _selector
+     * return       Array
+     * @static
+     */
+    KillISPCache.ignoreSelector =
+        function( _selector ){
+            return KillISPCache.getInstance().ignoreSelector( _selector );
+        };
 
     JC.BaseMVC.buildModel( KillISPCache );
 
@@ -109,7 +139,39 @@
                 this._count = 1;
                 this._ignoreSameLinkText = true;
                 this._randName = 'isp';
+
+                this._ignoreUrl = [];
+                this._ignoreSelector = [];
             }
+
+        , ignoreUrl:
+            function( _url ){
+                if( typeof _url == 'string' ){
+                    _url = _url.split(',');
+                }
+
+                _url 
+                    && _url.length 
+                    && ( this._ignoreUrl = this._ignoreUrl.concat( _url ) )
+                    ;
+
+                return this._ignoreUrl;
+            }
+
+        , ignoreSelector:
+            function( _selector ){
+                if( typeof _selector == 'string' ){
+                    _selector = _selector.split(',');
+                }
+
+                _selector 
+                    && _selector.length 
+                    && ( this._ignoreSelector = this._ignoreSelector.concat( _selector ) )
+                    ;
+
+                return this._ignoreSelector;
+            }
+
         , processLink:
             function(){
                 var _p = this;
@@ -118,6 +180,15 @@
                     if( /javascript\:/.test( _url ) || /^[\s]*\#/.test( _url ) ) return;
                     
                     if( _p.ignoreSameLinkText() && _url.trim() == _sp.html().trim() ) return;
+
+                    var _selectors = _p.ignoreSelector(), _ignore = false;
+                    $.each( _selectors, function( _ix, _selector ){
+                        if( _sp.is( _selector ) ){
+                            _ignore = true;
+                        }
+                    });
+
+                    if( _ignore ) return;
 
                     _url = addUrlParams( _url, _p.keyVal() );
                     _sp.attr( 'href', _url );
@@ -131,6 +202,16 @@
                 this.selector().find('form').each(function(){
                     var _sp = $( this ), _method = ( _sp.prop('method') || '' ).toLowerCase();
                     if( _method == 'post' ) return;
+
+                    var _selectors = _p.ignoreSelector(), _ignore = false;
+                    $.each( _selectors, function( _ix, _selector ){
+                        if( _sp.is( _selector ) ){
+                            _ignore = true;
+                        }
+                    });
+
+                    if( _ignore ) return;
+
                     if( !_sp.find('input[name=' + _p.randName() + ']').length ){
                         $( '<input type="hidden" name="' + _p.randName() + '" value="'+ _p.postfix() +'" >' ).appendTo( _sp );
                     }
@@ -140,8 +221,17 @@
             function(){
                 var _p = this;
                 $(document).ajaxSend(function( _event, _jqxhr, _settings) {
-                    _settings.type != 'POST'
-                        && ( _settings.url = addUrlParams( _settings.url, _p.keyVal() ) );
+                    if( _settings.type == 'POST' ) return;
+                    var _urls = _p.ignoreUrl(), _ignore = false;
+                    $.each( _urls, function( _ix, _url ){
+                        var _len = _url.length
+                            , _compare = _settings.url.slice( 0, _len );
+                            ;
+                        if( _url.toLowerCase() == _compare.toLowerCase() ){
+                            _ignore = true;
+                        }
+                    });
+                    !_ignore && ( _settings.url = addUrlParams( _settings.url, _p.keyVal() ) );
                 });
             }
         , ignoreSameLinkText:

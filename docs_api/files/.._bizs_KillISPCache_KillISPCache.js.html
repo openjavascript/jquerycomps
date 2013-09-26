@@ -245,6 +245,14 @@
                 _p._model.processForm();
                 return this;
             }
+        , ignoreUrl:
+            function( _url ){
+                return this._model.ignoreUrl( _url );
+            }
+        , ignoreSelector:
+            function( _selector ){
+                return this._model.ignoreSelector( _selector );
+            }
     };
     /**
      * 获取 KillISPCache 实例 ( 单例模式 )
@@ -274,6 +282,28 @@
      * @static
      */
     KillISPCache.randName = &quot;&quot;;
+    /**
+     * 添加忽略随机数的 ULR
+     * @method      ignoreUrl
+     * @param       {string|Array}  _url
+     * return       Array
+     * @static
+     */
+    KillISPCache.ignoreUrl =
+        function( _url ){
+            return KillISPCache.getInstance().ignoreUrl( _url );
+        };
+    /**
+     * 添加忽略随机数的 选择器
+     * @method      ignoreSelector
+     * @param       {selector|Array}  _selector
+     * return       Array
+     * @static
+     */
+    KillISPCache.ignoreSelector =
+        function( _selector ){
+            return KillISPCache.getInstance().ignoreSelector( _selector );
+        };
 
     JC.BaseMVC.buildModel( KillISPCache );
 
@@ -287,7 +317,39 @@
                 this._count = 1;
                 this._ignoreSameLinkText = true;
                 this._randName = &#x27;isp&#x27;;
+
+                this._ignoreUrl = [];
+                this._ignoreSelector = [];
             }
+
+        , ignoreUrl:
+            function( _url ){
+                if( typeof _url == &#x27;string&#x27; ){
+                    _url = _url.split(&#x27;,&#x27;);
+                }
+
+                _url 
+                    &amp;&amp; _url.length 
+                    &amp;&amp; ( this._ignoreUrl = this._ignoreUrl.concat( _url ) )
+                    ;
+
+                return this._ignoreUrl;
+            }
+
+        , ignoreSelector:
+            function( _selector ){
+                if( typeof _selector == &#x27;string&#x27; ){
+                    _selector = _selector.split(&#x27;,&#x27;);
+                }
+
+                _selector 
+                    &amp;&amp; _selector.length 
+                    &amp;&amp; ( this._ignoreSelector = this._ignoreSelector.concat( _selector ) )
+                    ;
+
+                return this._ignoreSelector;
+            }
+
         , processLink:
             function(){
                 var _p = this;
@@ -296,6 +358,15 @@
                     if( /javascript\:/.test( _url ) || /^[\s]*\#/.test( _url ) ) return;
                     
                     if( _p.ignoreSameLinkText() &amp;&amp; _url.trim() == _sp.html().trim() ) return;
+
+                    var _selectors = _p.ignoreSelector(), _ignore = false;
+                    $.each( _selectors, function( _ix, _selector ){
+                        if( _sp.is( _selector ) ){
+                            _ignore = true;
+                        }
+                    });
+
+                    if( _ignore ) return;
 
                     _url = addUrlParams( _url, _p.keyVal() );
                     _sp.attr( &#x27;href&#x27;, _url );
@@ -309,6 +380,16 @@
                 this.selector().find(&#x27;form&#x27;).each(function(){
                     var _sp = $( this ), _method = ( _sp.prop(&#x27;method&#x27;) || &#x27;&#x27; ).toLowerCase();
                     if( _method == &#x27;post&#x27; ) return;
+
+                    var _selectors = _p.ignoreSelector(), _ignore = false;
+                    $.each( _selectors, function( _ix, _selector ){
+                        if( _sp.is( _selector ) ){
+                            _ignore = true;
+                        }
+                    });
+
+                    if( _ignore ) return;
+
                     if( !_sp.find(&#x27;input[name=&#x27; + _p.randName() + &#x27;]&#x27;).length ){
                         $( &#x27;&lt;input type=&quot;hidden&quot; name=&quot;&#x27; + _p.randName() + &#x27;&quot; value=&quot;&#x27;+ _p.postfix() +&#x27;&quot; &gt;&#x27; ).appendTo( _sp );
                     }
@@ -318,8 +399,17 @@
             function(){
                 var _p = this;
                 $(document).ajaxSend(function( _event, _jqxhr, _settings) {
-                    _settings.type != &#x27;POST&#x27;
-                        &amp;&amp; ( _settings.url = addUrlParams( _settings.url, _p.keyVal() ) );
+                    if( _settings.type == &#x27;POST&#x27; ) return;
+                    var _urls = _p.ignoreUrl(), _ignore = false;
+                    $.each( _urls, function( _ix, _url ){
+                        var _len = _url.length
+                            , _compare = _settings.url.slice( 0, _len );
+                            ;
+                        if( _url.toLowerCase() == _compare.toLowerCase() ){
+                            _ignore = true;
+                        }
+                    });
+                    !_ignore &amp;&amp; ( _settings.url = addUrlParams( _settings.url, _p.keyVal() ) );
                 });
             }
         , ignoreSameLinkText:

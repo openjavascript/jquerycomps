@@ -1,0 +1,285 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            body{ margin: 20px 20px; }
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #F0DC82;!important;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+
+            dd.odd {
+                background: #ececec;
+            }
+
+            dt{
+                font-weight: bold;
+                display: block;
+            }
+
+            dl.fm-items > dt {
+                margin: 10px auto;
+            }
+
+            dd{
+                margin: 5px 40px;
+            }
+
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
+
+            input[type=checkbox], input[type=radio], input.UXC{
+                height: auto;
+                line-height: auto;
+            }
+
+            select[multiple]{
+                height: 80px;
+            }
+
+            div, li{
+                margin: 2px auto;
+            }
+
+            button.js_isIgnore{ display: none; }
+        </style>
+        <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../lib.js"></script>
+        <script src="../../../comps/AutoSelect/_demo/data/SHENGSHI.js"></script>
+        <script>
+            JC.debug = true; JC.use( 'Valid, Calendar, Form, Bizs.FormLogic, Bizs.CommonModify' );
+
+            $(document).ready( function($evt){
+
+                JC.AutoSelect.dataFilter = 
+                    function( _data, _select ){
+                        var _r = _data;
+                        if( _data && !_data.length && _data.data ){
+                            _r = _data.data;
+                        }
+                        return _r;
+                    };
+
+            });
+
+            $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
+                window.console && console.clear && console.clear();
+                JC.Valid.clearError( 'form.js_valid' );
+            });
+
+            $(document).delegate( 'form.js_valid', 'submit', function( _evt ){
+                if( ! JC.Valid( this ) ){
+                    _evt.preventDefault();
+                    return false;
+                }
+            });
+
+           function selectdata( _id ){
+               var _d = [];
+               for( var i = 0, j = SHENGSHI.length; i < j; i++ ){
+                   SHENGSHI[i][2] == _id && _d.push( SHENGSHI[i] );
+               }
+               //JC.log( _d + ', ' + _id );
+               return _d;
+           }
+
+           function DATA_cb(){
+               var _d = [];
+               for( var i = 0, j = DATA.length; i < j; i++ ){
+                   _d.push( DATA[i] );
+               }
+               return _d;
+           }
+
+           function DATA_EXT_cb( _id ){
+               var _d = [];
+               for( var i = 0, j = DATA_EXT.length; i < j; i++ ){
+                   if( _id ){
+                       _id == DATA_EXT[i][2] && _d.push( DATA_EXT[i] );
+                   }else{
+                       _d.push( DATA_EXT[i] );
+                   }
+               }
+               return _d;
+           }
+
+           function cmdonecallback(){
+               var _trigger = $(this);
+               getJqParent( _trigger, 'dl' ) 
+                && JC.Valid.check( getJqParent( _trigger, 'dl' ).find('select:last') );
+           }
+
+        </script>
+    </head>    
+    <body>
+
+        <form action='' method='get' class="js_valid " >
+            <div style="position:fixed; top: 10px; right:10px;">
+                <button type="submit">save</button>
+                <button type="reset">reset</button>
+            </div>
+
+            <dl class="fm-items">
+                <dt>JC.Valid 示例, subdatatype = unique, N 个 Control 的值必须保持唯一性, 不能有重复</dt>
+
+                <dd>
+                    <div>
+                        <ul>
+                            <li>
+                                <label>电话号码:</label>
+                                <input type='text' name='company_countrycode1' style="width:60px;" value='' size="7" 
+                                datatype="countrycode" 
+                                errmsg="请填写正确的地区代码" 
+                                validmsg="false" 
+                                placeholder="地区代码"
+                                />
+                                - 
+                                <input type='text' name='company_countrycode2' style="width:40px;" value='' size="4" 
+                                datatype="phonezone-2,4" 
+                                errmsg="请填写正确的电话区号" 
+                                validmsg="false" 
+                                placeholder="区号"
+                                />
+                                - 
+                                <input type='text' name='' style="width:80px;" value='88888888' size="8" 
+                                datatype="phonecode"
+
+                                subdatatype="alternative,unique" 
+                                uniquedatatarget="<dd input[datatype=phonecode],input[datatype=mobilecode]"
+                                uniquemsg="电话号和手机号不能有重复"
+
+                                emel="/em.uniqueErr"
+
+                                datatarget="<ul input[datatype=mobilecode]" 
+                                alternativemsg="电话号码和手机号码至少填写一个" 
+                                errmsg="请检查电话号码格式" 
+                                placeholder="电话号码"
+                                />
+                                - 
+                                <input type='text' name='countrycode4' style="width:40px;" value='' size="4" 
+                                datatype="phoneext" 
+                                errmsg="请填写正确的分机号" 
+                                validmsg="false" 
+                                placeholder="分机号"
+                                />
+                                <em class="error"></em>
+                                <span><em class="error uniqueErr"></em></span>
+                                <em class="validmsg"></em>
+                            </li>
+                            <li>
+                                <label>手机号码:</label>
+                                <input type="text" name="" value="18610033333" 
+                                datatype="mobilecode" 
+
+                                subdatatype="alternative,unique" 
+                                uniquedatatarget="<dd input[datatype=phonecode],input[datatype=mobilecode]"
+                                uniquemsg="电话号和手机号不能有重复"
+
+                                datatarget="<ul input[datatype=phonecode]" 
+                                alternativemsg="电话号码和手机号码至少填写一个" 
+                                errmsg="请填写正确的手机号码"
+                                placeholder="手机号码"
+                                />
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <ul>
+                            <li>
+                                <label>电话号码:</label>
+                                <input type='text' name='company_countrycode1' style="width:60px;" value='' size="7" 
+                                datatype="countrycode" 
+                                errmsg="请填写正确的地区代码" 
+                                validmsg="false" 
+                                placeholder="地区代码"
+                                />
+                                - 
+                                <input type='text' name='company_countrycode2' style="width:40px;" value='' size="4" 
+                                datatype="phonezone-2,4" 
+                                errmsg="请填写正确的电话区号" 
+                                validmsg="false" 
+                                placeholder="区号"
+                                />
+                                - 
+                                <input type='text' name='' style="width:80px;" value='88888888' size="8" 
+                                datatype="phonecode"
+
+                                subdatatype="alternative|unique" 
+                                uniquedatatarget="<dd input[datatype=phonecode],input[datatype=mobilecode]"
+                                uniquemsg="电话号和手机号不能有重复"
+
+                                emel="/em.uniqueErr"
+
+                                datatarget="<ul input[datatype=mobilecode]" 
+                                alternativemsg="电话号码和手机号码至少填写一个" 
+                                errmsg="请检查电话号码格式" 
+                                placeholder="电话号码"
+                                />
+                                - 
+                                <input type='text' name='countrycode4' style="width:40px;" value='' size="4" 
+                                datatype="phoneext" 
+                                errmsg="请填写正确的分机号" 
+                                validmsg="false" 
+                                placeholder="分机号"
+                                />
+                                <em class="error"></em>
+                                <span><em class="error uniqueErr"></em></span>
+                                <em class="validmsg"></em>
+                            </li>
+                            <li>
+                                <label>手机号码:</label>
+                                <input type="text" name="" value="18610033333" 
+                                datatype="mobilecode" 
+
+                                subdatatype="alternative|unique" 
+                                uniquedatatarget="<dd input[datatype=phonecode],input[datatype=mobilecode]"
+                                uniquemsg="电话号和手机号不能有重复"
+
+                                datatarget="<ul input[datatype=phonecode]" 
+                                alternativemsg="电话号码和手机号码至少填写一个" 
+                                errmsg="请填写正确的手机号码"
+                                placeholder="手机号码"
+                                />
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </dd>
+
+                <dd style="margin-top:20px; padding-left: 300px;">
+                    <div><em id="uniqueErr" class="error"></em></div>
+                    <button type="submit">save</button>
+                    <button type="reset">reset</button>
+                    <button type="button" class="js_clear_error">clear error</button>
+                    <a href="?">back</a>
+                </dd>
+             </dl>
+             <!--
+                <div style="position:fixed; bottom: 10px; right:10px;">
+                    <button type="submit">save</button>
+                    <button type="reset">reset</button>
+                    <button type="button" class="js_clear_error">clear error</button>
+                </div>
+            -->
+        </form>
+    </body>
+</html>
+

@@ -180,12 +180,11 @@
      *          </dl>
      *      </dd>
      *
-     *      <dt>subdatatype: 特殊数据类型, 以逗号分隔多个属性</dt>
+     *      <dt>subdatatype: 特殊数据类型</dt>
      *      <dd>
      *          <dl>
      *              <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>
      *              <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>
-     *              <dd><b>alternativedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>
      *              <dd><b>alternativemsg:</b> N 选一的错误提示</dd>
      *          </dl>
      *      </dd>
@@ -193,7 +192,6 @@
      *          <dl>
      *              <dt>reconfirm: N 个 Control 的值必须保持一致</dt>
      *              <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>
-     *              <dd><b>reconfirmdatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>
      *              <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>
      *          </dl>
      *      </dd>
@@ -201,7 +199,6 @@
      *          <dl>
      *              <dt>unique: N 个 Control 的值必须保持唯一性, 不能有重复</dt>
      *              <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=unique]</dd>
-     *              <dd><b>uniquedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>
      *              <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>
      *              <dd>unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组</dd>
      *          </dl>
@@ -303,7 +300,10 @@
                         if( Valid.ignore( _sitem ) ) return;
 
                         var _dt = _p._model.parseDatatype( _sitem )
+                            , _subdt = _p._model.parseSubdatatype( _sitem )
                             , _nm = _sitem.prop('nodeName').toLowerCase();
+
+                        JC.log( 'datatype:', _dt, _subdt );
 
                         switch( _nm ){
                             case 'input':
@@ -319,24 +319,14 @@
                         if( !_p._model.reqmsg( _sitem ) ){ _r = false; return; }
                         if( !_p._model.lengthValid( _sitem ) ){ _r = false; return; }
 
-                        //验证 datatype
                         if( _dt && _p._model[ _dt ] && _sitem.val() ){
                             if( !_p._model[ _dt ]( _sitem ) ){ _r = false; return; }
                         }
-                        //验证子类型
-                        var _subDtLs = _sitem.attr('subdatatype');
-                        if( _subDtLs ){
-                            _subDtLs = _subDtLs.replace(/[\s]+/g, '').split( /[,\|]/);
-                            $.each( _subDtLs, function( _ix, _sdt ){
-                                _sdt = _p._model.parseSubdatatype( _sdt );
-                                if( _sdt && _p._model[ _sdt ] && ( _sitem.val() || _sdt == 'alternative' ) ){
-                                    if( !_p._model[ _sdt ]( _sitem ) ){ 
-                                        _r = false; 
-                                        return false;
-                                    }
-                                }
-                            });
-                            if( !_r ) return;
+                        
+                        if( _subdt && _p._model[ _subdt ] 
+                                && ( _sitem.val() || _subdt == 'alternative' ) 
+                        ){
+                            if( !_p._model[ _subdt ]( _sitem ) ){ _r = false; return; }
                         }
 
                         _p.trigger( Model.CORRECT, _sitem ); 
@@ -695,34 +685,22 @@
          * @method  parseDatatype
          * @private
          * @static
-         * @param   {selector|string}  _item
+         * @param   {selector}  _item
          */
         , parseDatatype: 
             function( _item ){
-                var _r = ''
-                if( typeof _item == 'string' ){
-                    _r = _item;
-                }else{
-                    _r = _item.attr('datatype') || 'text';
-                }
-                return _r.toLowerCase().replace(/\-.*/, '');
+                return ( _item.attr('datatype') || 'text').toLowerCase().replace(/\-.*/, '');
             }
        /**
          * 获取 _item 的检查子类型, 所有可用的检查子类型位于 _logic.subdatatype 对象
          * @method  parseSubdatatype
          * @private
          * @static
-         * @param   {selector|string}  _item
+         * @param   {selector}  _item
          */
         , parseSubdatatype: 
             function( _item ){
-                var _r = ''
-                if( typeof _item == 'string' ){
-                    _r = _item;
-                }else{
-                    _r = _item.attr('subdatatype') || '';
-                }
-                return _r.toLowerCase().replace(/\-.*/, '');
+                return ( _item.attr('subdatatype') || '').toLowerCase().replace(/\-.*/, '');
             }
         , isAvalible: 
             function( _item ){
@@ -800,28 +778,10 @@
         , isMinvalue: function( _item ){ return _item.is('[minvalue]'); }
         , isMaxvalue: function( _item ){ return _item.is('[maxvalue]'); }
 
-        , isDatatarget: 
-            function( _item, _key ){ 
-                var _r = false, _defKey = 'datatarget';
-                _key 
-                    && ( _key += _defKey )
-                    && ( _r = _item.is( '[' + _key + ']' ) )
-                    ;
-                !_r && ( _r = _item.is( '[' + _defKey + ']' ) );
-                return _r;
-            }
+        , isDatatarget: function( _item ){ return _item.is( '[datatarget]'); }
         , datatarget: 
-            function( _item, _key ){ 
-                var _r, _defKey = 'datatarget';
-                _key 
-                    && ( _key += _defKey )
-                    && ( _key = _item.attr( _key ) )
-                    && ( _r = parentSelector( _item, _key ) )
-                    ;
-
-                !( _r && _r.length ) && ( _r = parentSelector( _item, _item.attr( _defKey ) ) );
-
-                return _r;
+            function( _item ){ 
+                return parentSelector( _item, _item.attr('datatarget') );
             }
 
         , minvalue: 
@@ -1695,6 +1655,99 @@
                 return _r;
             }
         /**
+         * 此类型检查 2|N个对象必须至少有一个是有输入内容的, 
+         * <br> 常用于 手机/电话 二填一
+         * @method  alternative
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype phonezone, phonecode, phoneext)电话号码:</label>
+                </div>
+                <div class="f-l">
+                    <input type='TEXT' name='company_phonezone' style="width:40px;" value='' size="4" 
+                        datatype="phonezone" emEl="#phone-err-em" errmsg="请填写正确的电话区号" />
+                    - <input type='TEXT' name='company_phonecode' style="width:80px;" value='' size="8" 
+                        datatype="phonecode" subdatatype="alternative" datatarget="input[name=company_mobile]" alternativemsg="电话号码和手机号码至少填写一个"
+                        errmsg="请检查电话号码格式" emEl="#phone-err-em" />
+                    - <input type='TEXT' name='company_phoneext' style="width:40px;" value='' size="4" 
+                        datatype="phoneext" emEl="#phone-err-em" errmsg="请填写正确的分机号" />
+                    <em id="phone-err-em"></em>
+                </div>
+                </dd>
+
+                <dd>
+                <div class="f-l label">
+                    <label>(datatype mobilecode)手机号码:</label>
+                </div>
+                <div class="f-l">
+                    <input type="TEXT" name="company_mobile" 
+                        datatype="mobilecode" subdatatype="alternative" datatarget="input[name=company_phonecode]" alternativemsg=" "
+                        errmsg="请填写正确的手机号码">
+                </div>
+                </dd>
+         */
+        , alternative:
+            function( _item ){
+                var _p = this
+                    , _r = true
+                    , _target
+                    , _KEY = "AlternativeValidTime"
+                    , _dt = _p.parseDatatype( _item )
+                    ;
+                JC.log( 'alternative' );
+
+                _p.isDatatarget( _item ) && (_target = _p.datatarget( _item ) );
+                !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item ) );
+
+                var _isReturn = false;
+
+                if( _target.length && !$.trim( _item.val() ) ){
+                    var _hasVal = false;
+                    _target.each( function(){ 
+                        var _sp = $(this);
+                        if( _p.checkRepeatProcess( _sp, _KEY, true ) ) {
+                            _isReturn = true;
+                        }
+
+                        if( $(this).val() ){ _hasVal = true; return false; } 
+                    } );
+                    _r = _hasVal;
+                }
+
+                !_r && _target && _target.length 
+                    && _target.each( function(){ 
+                        if( _item[0] == this ) return;
+                        if( _isReturn ) return false;
+                        $(_p).trigger( Model.TRIGGER, [ Model.ERROR, $(this), 'alternativemsg', true ] );
+                    });
+
+                if( _r && _target && _target.length ){
+                    _target.each( function(){
+                        if( _item[0] == this ) return;
+
+                        if( _dt && _p[ _dt ] && $(this).val() ){
+                            _p[ _dt ]( $(this) );
+                        }else if( !$(this).val() ){
+                            $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
+                        }
+                    });
+                }
+                if( _r ){
+                    if( _dt && _p[ _dt ] && _item.val() ){
+                        _p[ _dt ]( _item );
+                    }else if( !_item.val() ){
+                        $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _item ] );
+                    }
+                }else{
+                    $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'alternativemsg', true ] );
+                }
+
+                return _r;
+            }
+        /**
          * 此类型检查 2|N 个对象填写的值必须一致
          * 常用于注意时密码验证/重置密码
          * @method  reconfirm
@@ -1726,16 +1779,12 @@
          */
         , reconfirm:
             function( _item ){
-                var _p = this
-                    , _r = true
-                    , _target
-                    , _KEY = "ReconfirmValidTime"
-                    , _typeKey = 'reconfirm'
-                    ;
-                JC.log( _typeKey, new Date().getTime() );
+                var _p = this, _r = true, _target, _KEY = "ReconfirmValidTime";
 
-                _p.isDatatarget( _item, _typeKey ) && (_target = _p.datatarget( _item, _typeKey ) );
-                !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item, _typeKey ) );
+                JC.log( 'reconfirm' );
+
+                _p.isDatatarget( _item ) && (_target = _p.datatarget( _item ) );
+                !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item ) );
 
                 var _isReturn = false;
 
@@ -1783,103 +1832,6 @@
                 return _r;
             }
         /**
-         * 此类型检查 2|N个对象必须至少有一个是有输入内容的, 
-         * <br> 常用于 手机/电话 二填一
-         * @method  alternative
-         * @private
-         * @static
-         * @param   {selector}  _item
-         * @example
-                <dd>
-                <div class="f-l label">
-                    <label>(datatype phonezone, phonecode, phoneext)电话号码:</label>
-                </div>
-                <div class="f-l">
-                    <input type='TEXT' name='company_phonezone' style="width:40px;" value='' size="4" 
-                        datatype="phonezone" emEl="#phone-err-em" errmsg="请填写正确的电话区号" />
-                    - <input type='TEXT' name='company_phonecode' style="width:80px;" value='' size="8" 
-                        datatype="phonecode" subdatatype="alternative" datatarget="input[name=company_mobile]" alternativemsg="电话号码和手机号码至少填写一个"
-                        errmsg="请检查电话号码格式" emEl="#phone-err-em" />
-                    - <input type='TEXT' name='company_phoneext' style="width:40px;" value='' size="4" 
-                        datatype="phoneext" emEl="#phone-err-em" errmsg="请填写正确的分机号" />
-                    <em id="phone-err-em"></em>
-                </div>
-                </dd>
-
-                <dd>
-                <div class="f-l label">
-                    <label>(datatype mobilecode)手机号码:</label>
-                </div>
-                <div class="f-l">
-                    <input type="TEXT" name="company_mobile" 
-                        datatype="mobilecode" subdatatype="alternative" datatarget="input[name=company_phonecode]" alternativemsg=" "
-                        errmsg="请填写正确的手机号码">
-                </div>
-                </dd>
-         */
-        , alternative:
-            function( _item ){
-                var _p = this
-                    , _r = true
-                    , _target
-                    , _KEY = "AlternativeValidTime"
-                    , _dt = _p.parseDatatype( _item )
-                    , _typeKey = 'alternative'
-                    ;
-                JC.log( _typeKey, new Date().getTime() );
-
-                _p.isDatatarget( _item, _typeKey ) && (_target = _p.datatarget( _item, _typeKey ) );
-                !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item, _typeKey ) );
-
-                var _isReturn = false;
-
-                if( _target.length && !$.trim( _item.val() ) ){
-                    var _hasVal = false;
-                    _target.each( function(){ 
-                        var _sp = $(this);
-                        if( _item[0] == this ) return;
-                        if( _p.checkRepeatProcess( _sp, _KEY, true ) ) {
-                            _isReturn = true;
-                        }
-
-                        if( $(this).val() ){ _hasVal = true; return false; } 
-                    } );
-                    _r = _hasVal;
-                }
-
-                !_r && _target && _target.length 
-                    && _target.each( function(){ 
-                        if( _item[0] == this ) return;
-                        if( _isReturn ) return false;
-                        $(_p).trigger( Model.TRIGGER, [ Model.ERROR, $(this), 'alternativemsg', true ] );
-                    });
-
-                if( _r && _target && _target.length ){
-                    _target.each( function(){
-                        if( _item[0] == this ) return;
-                        var _sp = $(this), _sdt = _p.parseDatatype( _sp );
-
-                        if( _sdt && _p[ _sdt ] && $(this).val() ){
-                            _p[ _sdt ]( $(this) );
-                        }else if( !$(this).val() ){
-                            $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
-                        }
-                    });
-                }
-                if( _r ){
-                    if( _dt && _p[ _dt ] && _item.val() ){
-                        _p[ _dt ]( _item );
-                    }else if( !_item.val() ){
-                        $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _item ] );
-                    }
-                }else{
-                    $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'alternativemsg', true ] );
-                }
-
-                return _r;
-            }
-
-        /**
          * N 个值必须保持唯一性, 不能有重复
          * @method  unique
          * @private
@@ -1892,13 +1844,19 @@
                     , _target, _tmp, _group = []
                     , _len = _p.typeLen( _item.attr('subdatatype') )[0]
                     , _KEY = "UniqueValidTime"
-                    , _typeKey = 'unique'
                     ;
 
-                JC.log( _typeKey, new Date().getTime() );
+                /*
+                if( _item.data( _KEY ) ){
+                     if( _p.checkRepeatProcess( _item, _KEY ) ){
+                        _item.data( _KEY, new Date().getTime() );
+                        return _r;
+                    }
+                }
+                */
 
-                _p.isDatatarget( _item, _typeKey ) && (_target = _p.datatarget( _item, _typeKey ) );
-                !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item, _typeKey ) );
+                _p.isDatatarget( _item ) && (_target = _p.datatarget( _item ) );
+                !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item ) );
 
                 _errLs = [];
                 _corLs = [];
@@ -1937,6 +1895,7 @@
                         }else{
                             _tmp[ _compareVal ] = [ _items ];
                         }
+
                     });
 
                     for( var _k in _tmp ){
@@ -1962,8 +1921,7 @@
                 !_r && _errLs.length && $.each( _errLs, function( _ix, _sitem ){ 
                     _sitem = $( _sitem );
                     if( _isReturn ) return false;
-                    _sitem.val() 
-                        && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _sitem, 'uniquemsg', true ] );
+                    $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _sitem, 'uniquemsg', true ] );
                 } );
 
                 return _r;
@@ -2108,10 +2066,10 @@
                 return _r.length ? $( _r ) : _r;
             }
         , samesubtypeitems:
-            function( _item, _type ){
+            function( _item ){
                 var _p = this, _r = []
                     , _pnt = _item.parent()
-                    , _type = _type || _item.attr('subdatatype')
+                    , _type = _item.attr('subdatatype')
                     , _re = new RegExp( _type, 'i' )
                     , _nodeName = _item.prop('nodeName').toLowerCase()
                     , _tagName = 'input'
