@@ -1,4 +1,5 @@
- ;(function($){
+//TODO: 添加 AJAX忽略初始化请求属性
+;(function($){
     /**
      * <h2>select 级联下拉框无限联动</h2>
      * <br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能
@@ -211,7 +212,7 @@
          * <br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectrandomurl
          * @property    randomurl
          * @type    bool
-         * @default true
+         * @default false
          * @static
          */
         , randomurl: false
@@ -614,6 +615,16 @@
                     ;
                 return _r;
             }
+
+        , selectignoreinitrequest:
+            function( _selector ){
+                var _r = AutoSelect.ignoreInitRequest;
+                _selector.is('[selectignoreinitrequest]')
+                    && ( _r = parseBool( _selector.attr('selectignoreinitrequest') ) )
+                    ;
+                return _r;
+            }
+
         
         , triggerInitChange:
             function(){
