@@ -56,6 +56,22 @@
                     };
             });
 
+            /**
+             * 动态设置 选中值, 使用 update 方法
+             */
+             $(document).delegate( 'button.js_dynamicSettingUpdateMethod', 'click', function( _evt ){
+                 var _p = $(this)
+                 , _data = _p.attr('testdata')
+                 , _ls
+                 , _selLs
+                 ;
+                 if( !_data ) return;
+                 _selLs = _p.parent().find('select');
+                 if( !_selLs.length ) return;
+
+                 var _ins = JC.AutoSelect.getInstance( _selLs[0] );
+                    _ins && _ins.update( _data );
+             });
         </script>
     </head>    
     <body>
@@ -67,13 +83,37 @@
         <dl class='def'>
             <dt>auto select example</dt>
             <dd>
-                <select name='select10_1' defaultselect selecturl="data/shengshi.php?id=0" selecttarget="/select:last"><option value="-1" defaultoption>请选择</option></select>
-                <select name='select10_2' selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select10_1' 
+                    defaultselect 
+                    selecturl="data/shengshi.php?id=0" 
+                    selecttarget="/select:last"
+                    >
+                    <option value="-1" defaultoption>请选择</option>
+                </select>
+                <select name='select10_2' 
+                    selecturl="data/shengshi.php?id={0}"
+                    >
+                    <option value="-1" defaultoption>请选择</option>
+                </select>
+                <button type="button" class="js_dynamicSettingUpdateMethod" testdata="14, 2341" >
+                     [14, 2341], #ins.update 方法
+                </button>
             </dd>
 
             <dd>
-                <select name='select20_1' defaultselect selectvalue="14" selecturl="data/shengshi.php?id=0" selecttarget="/select:last"><option value="-1" defaultoption>请选择</option></select>
-                <select name='select20_2' selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select20_1' 
+                    defaultselect 
+                    selectvalue="14" 
+                    selecturl="data/shengshi.php?id=0" 
+                    selecttarget="/select:last"
+                    >
+                    <option value="-1" defaultoption>请选择</option>
+                </select>
+                <select name='select20_2' 
+                    selecturl="data/shengshi.php?id={0}"
+                    >
+                    <option value="-1" defaultoption>请选择</option>
+                </select>
             </dd>
 
             <dd>
@@ -81,9 +121,27 @@
                 <select name='select1_2' selectvalue="2341" selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
             </dd>
             <dd>
-                <select name='select2_1' defaultselect selecturl="data/shengshi.php?id=0" selecttarget="/select:eq(1)"><option value="-1" defaultoption>请选择</option></select>
-                <select name='select2_2' selecturl="data/shengshi.php?id={0}" selecttarget="/select:last"><option value="-1" defaultoption>请选择</option></select>
-                <select name='select2_3' selecturl="data/shengshi.php?id={0}"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select2_1' 
+                    defaultselect 
+                    selecturl="data/shengshi.php?id=0" 
+                    selecttarget="/select:eq(1)"
+                    >
+                    <option value="-1" defaultoption>请选择</option>
+                </select>
+                <select name='select2_2' 
+                    selecturl="data/shengshi.php?id={0}" 
+                    selecttarget="/select:last"
+                    >
+                    <option value="-1" defaultoption>请选择</option>
+                </select>
+                <select name='select2_3' 
+                    selecturl="data/shengshi.php?id={0}"
+                    >
+                    <option value="-1" defaultoption>请选择</option>
+                </select>
+                <button type="button" class="js_dynamicSettingUpdateMethod" testdata="14, 2341, 2343" >
+                     [14, 2341, 2343], #ins.update 方法
+                </button>
             </dd>
             <dd>
                 <select name='select11_1' defaultselect selectvalue="14" selecturl="data/shengshi.php?id=0" selecttarget="/select:eq(1)"><option value="-1" defaultoption>请选择</option></select>

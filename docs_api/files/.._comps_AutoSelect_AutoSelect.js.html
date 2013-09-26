@@ -688,17 +688,24 @@
 
         , _updateStatic:
             function( _selector, _cb, _pid ){
-                var _p = this, _data;
+                var _p = this, _data, _ignoreUpdate = false;
                 JC.log( &#x27;static select&#x27; );
                 if( _p._model.isFirst( _selector ) ){
-                    typeof _pid == &#x27;undefined&#x27; &amp;&amp; ( _pid = _p._model.selectparentid( _selector ) || &#x27;&#x27; );
-                    if( typeof _pid != &#x27;undefined&#x27; ){
+                    typeof _pid == &#x27;undefined&#x27; 
+                        &amp;&amp; ( _pid = _p._model.selectparentid( _selector ) 
+                                    || _p._model.selectvalue( _selector ) 
+                                    || &#x27;&#x27; 
+                           );
+                    if( _p._model.hasVal( _selector, _pid ) ){
+                        _selector.val( _pid );
+                        _ignoreUpdate = true;
+                    }else if( typeof _pid != &#x27;undefined&#x27; ){
                         _data = _p._model.datacb( _selector )( _pid );
                     }
                 }else{
                     _data = _p._model.datacb( _selector )( _pid );
                 }
-                _p._view.update( _selector, _data );
+                !_ignoreUpdate &amp;&amp; _p._view.update( _selector, _data );
                 _cb &amp;&amp; _cb.call( _p, _selector, _data );
                 return this;
             }

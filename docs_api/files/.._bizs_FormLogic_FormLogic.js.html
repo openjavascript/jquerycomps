@@ -264,7 +264,7 @@
      *
      *      &lt;dt&gt;formAjaxDone = function, default = system defined&lt;/dt&gt;
      *      &lt;dd&gt;
-     *          AJAX 提交完成后的回调
+     *          AJAX 提交完成后的回调, &lt;b&gt;window 变量域&lt;/b&gt;
      *          &lt;br /&gt;如果没有显式声明, FormLogic将自行处理
 &lt;xmp&gt;function formAjaxDone( _json, _submitButton, _ins ){
     var _form = $(this);
@@ -292,6 +292,19 @@
      *
      *      &lt;dt&gt;formSubmitConfirm = string&lt;/dt&gt;
      *      &lt;dd&gt;提交表单时进行二次确认的提示信息&lt;/dt&gt;
+     *
+     *      &lt;dt&gt;formConfirmCheckSelector = selector&lt;/dt&gt;
+     *      &lt;dd&gt;提交表单时, 进行二次确认的条件判断&lt;/dt&gt;
+     *
+     *      &lt;dt&gt;formConfirmCheckCallback = function&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          提交表单时, 进行二次确认的条件判断, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;xmp&gt;function formConfirmCheckCallback( _trigger, _evt, _ins ){
+    var _form = $(this);
+    JC.log( &#x27;formConfirmCheckCallback&#x27;, new Date().getTime() );
+    return _form.find(&#x27;td.js_confirmCheck input[value=0]:checked&#x27;).length;
+}&lt;/xmp&gt;
+     *      &lt;/dt&gt;
      * &lt;/dl&gt;
      *
      * &lt;h2&gt;reset button 可用的 html 属性&lt;/h2&gt;
@@ -530,8 +543,15 @@
                  */
                 _p.on(&#x27;AjaxDone&#x27;, function( _evt, _data ){
 
+                    /**
+                     * 这是个神奇的BUG
+                     * chrome 如果没有 reset button, 触发 reset 会导致页面刷新
+                     */
+                    var _resetBtn = _p._model.selector().find(&#x27;button[type=reset], input[type=reset]&#x27;);
+
                     _p._model.formResetAfterSubmit() 
                         &amp;&amp; !_p._model.userFormAjaxDone()
+                        &amp;&amp; _resetBtn.length
                         &amp;&amp; _p.selector().trigger(&#x27;reset&#x27;);
 
                     _p._model.formSubmitDisable() &amp;&amp; _p.trigger( &#x27;EnableSubmit&#x27; );
@@ -540,11 +560,12 @@
                     try{ _json = $.parseJSON( _data ); }catch(ex){}
 
                     _json 
-                    &amp;&amp; &#x27;errorno&#x27; in _json 
-                    &amp;&amp; !parseInt( _json.errorno, 10 )
-                    &amp;&amp; _p._model.formResetAfterSubmit() 
-                    &amp;&amp; _p.selector().trigger(&#x27;reset&#x27;)
-                    ;
+                        &amp;&amp; &#x27;errorno&#x27; in _json 
+                        &amp;&amp; !parseInt( _json.errorno, 10 )
+                        &amp;&amp; _p._model.formResetAfterSubmit() 
+                        &amp;&amp; _resetBtn.length
+                        &amp;&amp; _p.selector().trigger(&#x27;reset&#x27;)
+                        ;
 
                     _json = _json || _data || {};
                     _p._model.formAjaxDone()
@@ -808,13 +829,25 @@
 
         , _innerAjaxDone:
             function( _json, _btn, _p ){
-                var _form = $(this), _panel;
+                var _form = $(this)
+                    , _panel
+                    , _url = &#x27;&#x27;
+                    ;
+
+                _json.data 
+                    &amp;&amp; _json.data.returnurl
+                    &amp;&amp; ( _url = _json.data.returnurl )
+                    ;
+                _json.url 
+                    &amp;&amp; ( _url = _json.url )
+                    ;
+
                 if( _json.errorno ){
                     _panel = JC.Dialog.alert( _json.errmsg || &#x27;操作失败, 请重新尝试!&#x27;, 1 );
                 }else{
                     _panel = JC.Dialog.msgbox( _json.errmsg || &#x27;操作成功&#x27;, 0, function(){
                         _p._model.formAjaxDoneAction()
-                            &amp;&amp; reloadPage( _p._model.formAjaxDoneAction() );
+                            &amp;&amp; reloadPage( _url || _p._model.formAjaxDoneAction() );
                     }, _p._model.formPopupCloseMs() );
                 }
             }
@@ -948,10 +981,26 @@
     JC.BaseMVC.build( FormLogic, &#x27;Bizs&#x27; );
 
     $(document).delegate( &#x27;input[formSubmitConfirm], button[formSubmitConfirm]&#x27;, &#x27;click&#x27;, function( _evt ){
-        var _p = $(this), _fm = getJqParent( _p, &#x27;form&#x27; );
-        _fm &amp;&amp; _fm.length 
-            &amp;&amp; _fm.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON, _p )
+        var _p = $(this)
+            , _fm = getJqParent( _p, &#x27;form&#x27; )
+            , _ins = FormLogic.getInstance( _fm )
+            , _tmp 
             ;
+        if( _fm &amp;&amp; _fm.length ){
+            if( _ins ){
+                if( _p.is(&#x27;[formConfirmCheckSelector]&#x27;) ){
+                    _tmp = parentSelector( _p, _p.attr(&#x27;formConfirmCheckSelector&#x27;) );
+                    if( !( _tmp &amp;&amp; _tmp.length ) ) return;
+                }
+                else if( _p.is( &#x27;[formConfirmCheckCallback]&#x27;) ){
+                    _tmp = window[ _p.attr(&#x27;formConfirmCheckCallback&#x27;) ];
+                    if( _tmp ){
+                        if( ! _tmp.call( _fm, _p, _evt, _ins ) ) return;
+                    }
+                }
+            }
+            _fm.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON, _p )
+        }
     });
 
     $(document).delegate( &#x27;input[formResetConfirm], button[formResetConfirm]&#x27;, &#x27;click&#x27;, function( _evt ){

@@ -81,6 +81,22 @@
                return _d;
            }
 
+            /**
+             * 动态设置 选中值, 使用 update 方法
+             */
+             $(document).delegate( 'button.js_dynamicSettingUpdateMethod', 'click', function( _evt ){
+                 var _p = $(this)
+                 , _data = _p.attr('testdata')
+                 , _ls
+                 , _selLs
+                 ;
+                 if( !_data ) return;
+                 _selLs = _p.parent().find('select');
+                 if( !_selLs.length ) return;
+
+                 var _ins = JC.AutoSelect.getInstance( _selLs[0] );
+                    _ins && _ins.update( _data );
+             });
 
         </script>
     </head>    
@@ -94,9 +110,24 @@
             <dt>auto select example</dt>
 
             <dd>
-                <select name='select1_1' defaultselect selectdatacb="selectdata" selectparentid="0" selectvalue="14" 
-                    selecttarget="/select:last"><option value="-1" defaultoption>请选择</option></select>
-                <select name='select1_2' selectdatacb="selectdata" selectvalue="2341" ><option value="-1" defaultoption>请选择</option></select>
+                <select name='select1_1' 
+                    defaultselect 
+                    selectdatacb="selectdata" 
+                    selectparentid="0" 
+                    selectvalue="14" 
+                    selecttarget="/select:last"
+                    >
+                    <option value="-1" defaultoption>请选择</option>
+                </select>
+                <select name='select1_2' 
+                    selectdatacb="selectdata" 
+                    selectvalue="2341" 
+                    >
+                    <option value="-1" defaultoption>请选择</option>
+                </select>
+                <button type="button" class="js_dynamicSettingUpdateMethod" testdata="26,3457" >
+                     [26, 3457]
+                </button>
             </dd>
 
             <dd>
@@ -125,11 +156,21 @@
                     selectparentid="0" 
                     selecttarget="/select:eq(1)"
                     >
-                    <option value="-1" defaultoption>请选择</option></select>
-                <select name='select2_2' selectdatacb="selectdata" selecttarget="/select:last">
                     <option value="-1" defaultoption>请选择</option>
                 </select>
-                <select name='select2_3' selectdatacb="selectdata"><option value="-1" defaultoption>请选择</option></select>
+                <select name='select2_2' 
+                    selectdatacb="selectdata" 
+                    selecttarget="/select:last"
+                    >
+                    <option value="-1" defaultoption>请选择</option>
+                </select>
+                <select name='select2_3' 
+                    selectdatacb="selectdata"
+                    ><option value="-1" defaultoption>请选择</option>
+                </select>
+                <button type="button" class="js_dynamicSettingUpdateMethod" testdata="14, 2341, 2343" >
+                     [14, 2341, 2343], #ins.update 方法
+                </button>
             </dd>
 
             <dd>

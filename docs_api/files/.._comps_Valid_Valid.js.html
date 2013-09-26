@@ -178,7 +178,6 @@
     <pre class="code prettyprint linenums">
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
 //TODO: checkbox, radio 错误时, input 添加高亮显示
-//TODO: 添加 uniquerange
 ;(function($){
     /**
      * &lt;b&gt;表单验证&lt;/b&gt; (单例模式)
@@ -257,7 +256,12 @@
      *      &lt;dd&gt;验证内容的最大值, 但不验证为空的值&lt;/dd&gt;
      *
      *      &lt;dt&gt;validitemcallback = function name&lt;/dt&gt;
-     *      &lt;dd&gt;对一个 control 作检查后的回调, 无论正确与否都会触发&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          对一个 control 作检查后的回调, 无论正确与否都会触发, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;xmp&gt;function validItemCallback( _item, _isValid){
+    JC.log( _item.attr(&#x27;name&#x27;), _isValid );
+}&lt;/xmp&gt;
+     *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;datatype: 常用数据类型&lt;/dt&gt;
      *      &lt;dd&gt;&lt;b&gt;n:&lt;/b&gt; 检查是否为正确的数字&lt;/dd&gt;
@@ -828,6 +832,7 @@
      * @property    _formControls
      * @param       {selector}  _selector
      * @return  bool
+     * @private
      * @static
      */
     Valid._formControls = &#x27;input, select, textarea&#x27;;

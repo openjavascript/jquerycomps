@@ -1,6 +1,5 @@
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
 //TODO: checkbox, radio 错误时, input 添加高亮显示
-//TODO: 添加 uniquerange
 ;(function($){
     /**
      * <b>表单验证</b> (单例模式)
@@ -79,7 +78,12 @@
      *      <dd>验证内容的最大值, 但不验证为空的值</dd>
      *
      *      <dt>validitemcallback = function name</dt>
-     *      <dd>对一个 control 作检查后的回调, 无论正确与否都会触发</dt>
+     *      <dd>
+     *          对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>
+<xmp>function validItemCallback( _item, _isValid){
+    JC.log( _item.attr('name'), _isValid );
+}</xmp>
+     *      </dd>
      *
      *      <dt>datatype: 常用数据类型</dt>
      *      <dd><b>n:</b> 检查是否为正确的数字</dd>
@@ -650,6 +654,7 @@
      * @property    _formControls
      * @param       {selector}  _selector
      * @return  bool
+     * @private
      * @static
      */
     Valid._formControls = 'input, select, textarea';

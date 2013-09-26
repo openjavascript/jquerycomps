@@ -510,17 +510,24 @@
 
         , _updateStatic:
             function( _selector, _cb, _pid ){
-                var _p = this, _data;
+                var _p = this, _data, _ignoreUpdate = false;
                 JC.log( 'static select' );
                 if( _p._model.isFirst( _selector ) ){
-                    typeof _pid == 'undefined' && ( _pid = _p._model.selectparentid( _selector ) || '' );
-                    if( typeof _pid != 'undefined' ){
+                    typeof _pid == 'undefined' 
+                        && ( _pid = _p._model.selectparentid( _selector ) 
+                                    || _p._model.selectvalue( _selector ) 
+                                    || '' 
+                           );
+                    if( _p._model.hasVal( _selector, _pid ) ){
+                        _selector.val( _pid );
+                        _ignoreUpdate = true;
+                    }else if( typeof _pid != 'undefined' ){
                         _data = _p._model.datacb( _selector )( _pid );
                     }
                 }else{
                     _data = _p._model.datacb( _selector )( _pid );
                 }
-                _p._view.update( _selector, _data );
+                !_ignoreUpdate && _p._view.update( _selector, _data );
                 _cb && _cb.call( _p, _selector, _data );
                 return this;
             }
