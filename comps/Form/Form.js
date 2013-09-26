@@ -103,6 +103,7 @@
             var _sp = $(this), _uval = decode( getUrlParam( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) ;
             if( hasUrlParam( _url, _sp.attr('name') ) ){
                 if( selectHasVal( _sp, _uval ) ){
+                    _sp.removeAttr('selectignoreinitrequest');
                     _sp.val( getUrlParam( _url, _sp.attr('name') ) );
                 }else{
                     _sp.attr( 'selectvalue', _uval );

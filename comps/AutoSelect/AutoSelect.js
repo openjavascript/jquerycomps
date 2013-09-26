@@ -20,6 +20,12 @@
      *      <dt>selecturl = AJAX 数据请求的URL</dt>
      *      <dd>下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符</dd>
      *
+     *      <dt>selectignoreinitrequest = bool, default = false</dt>
+     *      <dd>
+     *          首次初始化时, 是否需要请求新数据
+     *          <br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多
+     *      </dd>
+     *
      *      <dt>selecttarget = selector</dt>
      *      <dd>下一级下拉框的选择器语法</dd>
      *
@@ -226,6 +232,15 @@
          */
         , processUrl: null
         /**
+         * 首次初始化时, 是否需要请求新数据
+         * <br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多
+         * @property    ignoreInitRequest
+         * @type        bool
+         * @default     false
+         * @static
+         */
+        , ignoreInitRequest: false
+        /**
          * 获取或设置 selector 的实例引用
          * @method  getInstance
          * @param   {selector}  _selector
@@ -289,7 +304,13 @@
 
                 _p.trigger('SelectBeforeInited');
                 
-                _p._update( _p._model.first(), _p._firstInitCb );
+                if( _p._model.selectignoreinitrequest() ){
+                    _p._model.triggerInitChange() && _p._model.first().trigger('change');
+                    _p.trigger( 'SelectAllChanged' );
+                    _p.trigger( 'SelectInited' );
+                }else{
+                    _p._update( _p._model.first(), _p._firstInitCb );
+                }
                 
                 return _p;
             }    
@@ -388,6 +409,7 @@
                     , _next = _p._model.next( _sp )
                     , _v = _sp.val()
                     ;
+
                 if( _ignoreAction ) return;
 
                 JC.log( '_responeChange:', _sp.attr('name'), _v );
@@ -509,8 +531,12 @@
                 JC.log( 'normal select' );
                 if( _p._model.isFirst( _selector ) ){
                     var _next = _p._model.next( _selector );
+                    typeof _pid == 'undefined' && ( _pid = _p._model.selectvalue( _selector ) || _selector.val() || '' );
+                    if( _p._model.hasVal( _selector, _pid ) ){
+                        _selector.val( _pid );
+                    }
                     if( _next && _next.length ){
-                        _p._update( _next, _cb, _selector.val() );
+                        _p._update( _next, _cb, _pid );
                         return this;
                     }
                 }else{
@@ -619,7 +645,13 @@
         , selectignoreinitrequest:
             function( _selector ){
                 var _r = AutoSelect.ignoreInitRequest;
-                _selector.is('[selectignoreinitrequest]')
+
+                this.first().is('[selectignoreinitrequest]')
+                    && ( _r = parseBool( this.first().attr('selectignoreinitrequest') ) )
+                    ;
+
+                _selector
+                    && _selector.is('[selectignoreinitrequest]')
                     && ( _r = parseBool( _selector.attr('selectignoreinitrequest') ) )
                     ;
                 return _r;
