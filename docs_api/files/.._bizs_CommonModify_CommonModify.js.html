@@ -43,6 +43,8 @@
             
                 <li><a href="../classes/.window.html">.window</a></li>
             
+                <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
+            
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
             
                 <li><a href="../classes/JC.AutoChecked.html">JC.AutoChecked</a></li>
@@ -259,7 +261,7 @@ function cmtplfiltercallback( _tpl ){
  *      &lt;/dd&gt;
  *
  *      &lt;dt&gt;cmappendtype = string, default = after&lt;/dt&gt;
- *      &lt;dd&gt;指定 node 添加 dom 的方法, 可选类型: after, appendTo&lt;/dd&gt;
+ *      &lt;dd&gt;指定 node 添加 dom 的方法, 可选类型: before, after, appendTo&lt;/dd&gt;
  * &lt;/dl&gt;
  *
  * @namespace   window.Bizs
@@ -611,6 +613,7 @@ function cmtplfiltercallback( _tpl ){
 
                 switch( _p._model.cmappendtype() ){
                     case &#x27;appendTo&#x27;: _newItem.appendTo( _item ); break;
+                    case &#x27;before&#x27;: _item.before( _newItem ); break;
                     default: _item.after( _newItem ); break;
                 }
                 

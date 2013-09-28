@@ -185,6 +185,7 @@
                     $.each( _selectors, function( _ix, _selector ){
                         if( _sp.is( _selector ) ){
                             _ignore = true;
+                            return false;
                         }
                     });
 
@@ -207,6 +208,7 @@
                     $.each( _selectors, function( _ix, _selector ){
                         if( _sp.is( _selector ) ){
                             _ignore = true;
+                            return false;
                         }
                     });
 

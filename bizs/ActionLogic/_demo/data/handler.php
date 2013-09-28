@@ -1,9 +1,14 @@
 <?php
     $r = array( 'errorno' => 0, 'errmsg' => '', 'data' => array () );
 
-    $rnd = rand( 0, 1 );
 
-    $r['errorno'] = $rnd;
+    if( isset( $_REQUEST['errorno'] ) ){
+        $r['errorno'] = (int)$_REQUEST['errorno'];
+    }else{
+        $rnd = rand( 0, 1 );
+        $r['errorno'] = $rnd;
+    }
+
 
     $r['data'] = $_REQUEST;
 

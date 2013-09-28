@@ -81,7 +81,7 @@ function cmtplfiltercallback( _tpl ){
  *      </dd>
  *
  *      <dt>cmappendtype = string, default = after</dt>
- *      <dd>指定 node 添加 dom 的方法, 可选类型: after, appendTo</dd>
+ *      <dd>指定 node 添加 dom 的方法, 可选类型: before, after, appendTo</dd>
  * </dl>
  *
  * @namespace   window.Bizs
@@ -433,6 +433,7 @@ function cmtplfiltercallback( _tpl ){
 
                 switch( _p._model.cmappendtype() ){
                     case 'appendTo': _newItem.appendTo( _item ); break;
+                    case 'before': _item.before( _newItem ); break;
                     default: _item.after( _newItem ); break;
                 }
                 

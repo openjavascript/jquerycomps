@@ -73,6 +73,17 @@
                 "window.Bizs": 1
             }
         },
+        "../comps/AjaxUpload/AjaxUpload.js": {
+            "name": "../comps/AjaxUpload/AjaxUpload.js",
+            "modules": {},
+            "classes": {
+                "JC.AjaxUpload": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../comps/AutoChecked/AutoChecked.js": {
             "name": "../comps/AutoChecked/AutoChecked.js",
             "modules": {},
@@ -317,7 +328,7 @@
             "namespace": "window.Bizs",
             "file": "../bizs/CommonModify/CommonModify.js",
             "line": 1,
-            "description": "<h2>Dom 通用 添加删除 逻辑</h2>\n<br/>应用场景\n<br/>需要动态添加删除内容的地方可以使用这个类\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>\n| <a href='../../bizs/CommonModify/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_autoCommonModify\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>[cmtpl | cmtemplate] = script selector</dt>\n     <dd>指定保存模板的 script 标签</dd>\n\n     <dt>cmitem = selector</dt>\n     <dd>添加时, 当前的具体父节点</dd>\n\n     <dt>cmaction = string, [add, del], default = add</dt>\n     <dd>操作类型</dd>\n\n     <dt>cmdonecallback = function</dt>\n     <dd>\n     添加或删除完后会触发的回调, <b>window 变量域</b>\n<xmp>function cmdonecallback( _ins ){\n   var _trigger = $(this);\n   JC.log( 'cmdonecallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmtplfiltercallback = function</dt>\n     <dd>\n     模板内容过滤回调, <b>window 变量域</b>\n<xmp>window.COUNT = 1;\nfunction cmtplfiltercallback( _tpl ){\n   var _trigger = $(this);\n   JC.log( 'cmtplfiltercallback', new Date().getTime() );\n   _tpl = printf( _tpl, COUNT++ );\n\n   return _tpl;\n}</xmp>\n     </dd>\n\n     <dt>cmbeforeaddcallabck = function</dt>\n     <dd>\n     添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b>\n<xmp>function cmbeforeaddcallabck( _appendBox, _ins ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforeaddcallabck', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>cmaddcallback = function</dt>\n     <dd>\n     添加完成的回调, <b>window 变量域</b>\n<xmp>function cmaddcallback( _ins, _newItem ){\n   var _trigger = $(this);\n   JC.log( 'cmaddcallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmbeforedelcallback = function</dt>\n     <dd>\n     删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b>\n<xmp>function cmbeforedelcallback( _appendBox, _ins ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforedelcallback', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>cmdelcallback = function</dt>\n     <dd>\n     删除完成的回调, <b>window 变量域</b>\n<xmp>function cmdelcallback( _ins ){\n   var _trigger = $(this);\n   JC.log( 'cmdelcallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmappendtype = string, default = after</dt>\n     <dd>指定 node 添加 dom 的方法, 可选类型: after, appendTo</dd>\n</dl>",
+            "description": "<h2>Dom 通用 添加删除 逻辑</h2>\n<br/>应用场景\n<br/>需要动态添加删除内容的地方可以使用这个类\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>\n| <a href='../../bizs/CommonModify/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_autoCommonModify\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>[cmtpl | cmtemplate] = script selector</dt>\n     <dd>指定保存模板的 script 标签</dd>\n\n     <dt>cmitem = selector</dt>\n     <dd>添加时, 当前的具体父节点</dd>\n\n     <dt>cmaction = string, [add, del], default = add</dt>\n     <dd>操作类型</dd>\n\n     <dt>cmdonecallback = function</dt>\n     <dd>\n     添加或删除完后会触发的回调, <b>window 变量域</b>\n<xmp>function cmdonecallback( _ins ){\n   var _trigger = $(this);\n   JC.log( 'cmdonecallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmtplfiltercallback = function</dt>\n     <dd>\n     模板内容过滤回调, <b>window 变量域</b>\n<xmp>window.COUNT = 1;\nfunction cmtplfiltercallback( _tpl ){\n   var _trigger = $(this);\n   JC.log( 'cmtplfiltercallback', new Date().getTime() );\n   _tpl = printf( _tpl, COUNT++ );\n\n   return _tpl;\n}</xmp>\n     </dd>\n\n     <dt>cmbeforeaddcallabck = function</dt>\n     <dd>\n     添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b>\n<xmp>function cmbeforeaddcallabck( _appendBox, _ins ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforeaddcallabck', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>cmaddcallback = function</dt>\n     <dd>\n     添加完成的回调, <b>window 变量域</b>\n<xmp>function cmaddcallback( _ins, _newItem ){\n   var _trigger = $(this);\n   JC.log( 'cmaddcallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmbeforedelcallback = function</dt>\n     <dd>\n     删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b>\n<xmp>function cmbeforedelcallback( _appendBox, _ins ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforedelcallback', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>cmdelcallback = function</dt>\n     <dd>\n     删除完成的回调, <b>window 变量域</b>\n<xmp>function cmdelcallback( _ins ){\n   var _trigger = $(this);\n   JC.log( 'cmdelcallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmappendtype = string, default = after</dt>\n     <dd>指定 node 添加 dom 的方法, 可选类型: before, after, appendTo</dd>\n</dl>",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-04",
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
@@ -401,6 +412,33 @@
             "tagname": "",
             "version": "dev 0.1 2013-09-03",
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team"
+        },
+        "JC.AjaxUpload": {
+            "name": "JC.AjaxUpload",
+            "shortname": "JC.AjaxUpload",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 2,
+            "description": "Ajax 文件上传\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../comps/AjaxUpload/_demo' target='_blank'>demo link</a>\n</p>\n<p>\n     <b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../comps/AjaxUpload/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<xmp>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</xmp>\n     </dd>\n</dl>",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "version": "dev 0.1",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 team",
+            "date": "2013-09-26",
+            "example": [
+                "\n           <div>\n               <input type=\"hidden\" class=\"js_compAjaxUpload\" value=\"\"\n                   cauStyle=\"w1\"\n                   cauButtonText=\"上传资质文件\"\n                   cauUrl=\"/ignore/JQueryComps_dev/comps/AjaxUpload/_demo/data/handler.php\"\n                   cauFileExt=\".jpg, .jpeg, .png, .gif\"\n                   cauFileName=\"file\"\n                   cauLabelKey=\"name\"\n                   cauValueKey=\"url\"\n                   cauStatusLabel=\"/label.js_statusLabel\"\n                   cauDisplayLabel=\"/label.js_fileLabel\"\n                   />\n               <label class=\"js_fileLabel\" style=\"display:none\"></label>\n               <label class=\"js_statusLabel\" style=\"display:none\">文件上传中, 请稍候...</label>\n           </div>\n\n           POST 数据:\n               ------WebKitFormBoundaryb1Xd1FMBhVgBoEKD\n               Content-Disposition: form-data; name=\"file\"; filename=\"disk.jpg\"\n               Content-Type: image/jpeg\n\n           返回数据:\n               {\n                   \"errorno\": 0, \n                   \"data\":\n                   {\n                       \"url\": \"/ignore/JQueryComps_dev/comps/AjaxUpload/_demo/data/images/test.jpg\", \n                       \"name\": \"test.jpg\"\n                   }, \n                   \"errmsg\": \"\"\n               }"
+            ]
         },
         "JC.AutoChecked": {
             "name": "JC.AutoChecked",
@@ -1355,7 +1393,7 @@
             "extension_for": [],
             "namespace": "window",
             "file": "../lib.js",
-            "line": 746,
+            "line": 750,
             "description": "JC jquery 组件库 资源调用控制类\n<br />这是一个单例模式, 全局访问使用 JC 或 window.JC\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.JC.html' target='_blank'>API docs</a>\n| <a href='../../_demo' target='_blank'>demo link</a></p>",
             "static": 1,
             "example": [
@@ -1374,7 +1412,7 @@
             "extension_for": [],
             "namespace": "window",
             "file": "../lib.js",
-            "line": 1033,
+            "line": 1037,
             "description": "UXC 是 JC 的别名\n<br />存在这个变量是为了向后兼容\n<br />20130804 之前的命名空间是 UXC, 这个命名空间在一段时间后将会清除, 请使用 JC 命名空间\n<p><b>see</b>: <a href='window.JC.html'>JC</a></p>",
             "static": 1,
             "date": "2013-05-22"
@@ -1389,7 +1427,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../lib.js",
-            "line": 1052,
+            "line": 1056,
             "description": "<h2>业务逻辑命名空间</h2>\n<br />这个命名空间的组件主要为满足业务需求, 不是通用组件~\n<br />但在某个项目中应该是常用组件~\n<dl>\n     <dt>业务组件的存放位置:</dt>\n     <dd>libpath/bizs/</dd>\n\n     <dt>使用业务组件</dt>\n     <dd> JC.use( 'Bizs.BizComps' ); //  libpath/bizs/BizComps/BizComps.js </dd>\n\n     <dt>使用业务文件</dt>\n     <dd> JC.use( 'bizs.BizFile' ); //   libpath/bizs/BizFile.js </dd>\n</dl>",
             "static": 1
         },
@@ -1403,7 +1441,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../lib.js",
-            "line": 1077,
+            "line": 1081,
             "description": "MVC 抽象类 ( <b>仅供扩展用</b> )\n<p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   \n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>",
             "is_constructor": 1,
             "params": [
@@ -1426,7 +1464,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../lib.js",
-            "line": 1283,
+            "line": 1287,
             "description": "MVC Model 类( <b>仅供扩展用</b> )\n<p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   \n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>",
             "is_constructor": 1,
             "params": [
@@ -2121,6 +2159,164 @@
             },
             "class": "window.Bizs.MultiDate",
             "namespace": "window.Bizs"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 114,
+            "description": "获取或设置 AjaxUpload 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "AjaxUploadInstance"
+            },
+            "static": 1,
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 130,
+            "description": "初始化可识别的组件",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "instance array",
+                "type": "Array"
+            },
+            "static": 1,
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 150,
+            "description": "frame 文件名",
+            "itemtype": "property",
+            "name": "frameFileName",
+            "type": "string",
+            "default": "\"default.html\"",
+            "static": 1,
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 158,
+            "description": "载入 frame 文件时, 是否添加随机数防止缓存",
+            "itemtype": "property",
+            "name": "randomFrame",
+            "type": "bool",
+            "default": "false",
+            "static": 1,
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 166,
+            "description": "frame 文件夹位于库的位置",
+            "itemtype": "property",
+            "name": "_FRAME_DIR",
+            "type": "string",
+            "default": "\"comps/AjaxUpload/frame/\"",
+            "static": 1,
+            "access": "private",
+            "tagname": "",
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 175,
+            "description": "初始化 frame 时递增的统计变量",
+            "itemtype": "property",
+            "name": "_INS_COUNT",
+            "type": "int",
+            "default": "1",
+            "access": "protected",
+            "tagname": "",
+            "static": 1,
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 195,
+            "description": "iframe 加载完毕后触发的事件, 执行初始化操作",
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 203,
+            "description": "文件扩展名错误",
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 210,
+            "description": "上传前触发的事件",
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 216,
+            "description": "上传完毕触发的事件",
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 246,
+            "description": "frame 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 263,
+            "description": "手动更新数据",
+            "itemtype": "method",
+            "name": "update",
+            "params": [
+                {
+                    "name": "_d",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "AjaxUploadInstance"
+            },
+            "example": [
+                "\n               JC.AjaxUpload.getInstance( _selector ).update( {\n                   \"errorno\": 0, \n                   \"data\":\n                   {\n                       \"url\": \"/ignore/JQueryComps_dev/comps/AjaxUpload/_demo/data/images/test.jpg\", \n                       \"name\": \"test.jpg\"\n                   }, \n                   \"errmsg\": \"\"\n               });"
+            ],
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 384,
+            "description": "恢复默认状态",
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
         },
         {
             "file": "../comps/AutoChecked/AutoChecked.js",
@@ -12530,7 +12726,7 @@
         {
             "file": "../lib.js",
             "line": 656,
-            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件,  </dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.Calendar, JC.AutoChecked\n         <br />Bizs.DisableLogic, Bizs.FormLogic\n     </dd>\n</d>",
+            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件,  </dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload\n         <br />Bizs.DisableLogic, Bizs.FormLogic\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
             "params": [
@@ -12563,19 +12759,25 @@
         },
         {
             "file": "../lib.js",
-            "line": 694,
-            "description": "disable / enable",
+            "line": 692,
+            "description": "Ajax 上传",
             "class": ".window"
         },
         {
             "file": "../lib.js",
             "line": 698,
+            "description": "disable / enable",
+            "class": ".window"
+        },
+        {
+            "file": "../lib.js",
+            "line": 702,
             "description": "表单提交逻辑",
             "class": ".window"
         },
         {
             "file": "../lib.js",
-            "line": 703,
+            "line": 707,
             "description": "URL 占位符识别功能",
             "itemtype": "method",
             "name": "urlDetect",
@@ -12597,7 +12799,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 762,
+            "line": 766,
             "description": "JC组件库所在路径",
             "itemtype": "property",
             "name": "PATH",
@@ -12608,7 +12810,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 772,
+            "line": 776,
             "description": "是否显示调试信息",
             "itemtype": "property",
             "name": "debug",
@@ -12619,7 +12821,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 779,
+            "line": 783,
             "description": "导入JC组件",
             "itemtype": "method",
             "name": "use",
@@ -12649,7 +12851,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 886,
+            "line": 890,
             "description": "调用依赖的类\n<br />这个方法的存在是因为有一些类调整了结构, 但是原有的引用因为向后兼容的需要, 暂时不能去掉",
             "itemtype": "method",
             "name": "_usePatch",
@@ -12678,7 +12880,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 908,
+            "line": 912,
             "description": "输出调试信息, 可通过 JC.debug 指定是否显示调试信息",
             "params": [
                 {
@@ -12695,7 +12897,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 915,
+            "line": 919,
             "description": "定义输出路径的 v 参数, 以便控制缓存",
             "itemtype": "property",
             "name": "pathPostfix",
@@ -12707,7 +12909,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 923,
+            "line": 927,
             "description": "是否启用nginx concat 模块的路径格式",
             "itemtype": "property",
             "name": "enableNginxStyle",
@@ -12719,7 +12921,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 931,
+            "line": 935,
             "description": "定义 nginx style 的基础路径\n<br /><b>注意:</b> 如果这个属性为空, 即使 enableNginxStyle = true, 也是直接输出默认路径",
             "itemtype": "property",
             "name": "nginxBasePath",
@@ -12731,7 +12933,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 940,
+            "line": 944,
             "description": "资源路径映射对象\n<br />设置 JC.use 逗号(',') 分隔项的 对应URL路径",
             "itemtype": "property",
             "name": "FILE_MAP",
@@ -12746,7 +12948,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 978,
+            "line": 982,
             "description": "输出 nginx concat 模块的脚本路径格式",
             "itemtype": "method",
             "name": "_writeNginxScript",
@@ -12765,7 +12967,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1006,
+            "line": 1010,
             "description": "输出的脚本路径格式",
             "itemtype": "method",
             "name": "_writeNormalScript",
@@ -12784,7 +12986,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1023,
+            "line": 1027,
             "description": "保存 use 过的资源路径, 以便进行唯一性判断, 避免重复加载",
             "itemtype": "property",
             "name": "_USE_CACHE",
@@ -12798,14 +13000,14 @@
         },
         {
             "file": "../lib.js",
-            "line": 1044,
+            "line": 1048,
             "description": "自动识别组件库所在路径",
             "class": "window.UXC",
             "namespace": "window"
         },
         {
             "file": "../lib.js",
-            "line": 1104,
+            "line": 1108,
             "description": "内部初始化方法",
             "itemtype": "method",
             "name": "_init",
@@ -12823,7 +13025,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1133,
+            "line": 1137,
             "description": "初始化之前调用的方法",
             "itemtype": "method",
             "name": "_beforeInit",
@@ -12834,7 +13036,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1141,
+            "line": 1145,
             "description": "内部事件初始化方法",
             "itemtype": "method",
             "name": "_initHanlderEvent",
@@ -12845,7 +13047,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1149,
+            "line": 1153,
             "description": "内部初始化完毕时, 调用的方法",
             "itemtype": "method",
             "name": "_inited",
@@ -12856,7 +13058,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1157,
+            "line": 1161,
             "description": "获取 显示 BaseMVC 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -12868,7 +13070,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1163,
+            "line": 1167,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -12893,7 +13095,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1171,
+            "line": 1175,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -12913,7 +13115,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1179,
+            "line": 1183,
             "description": "获取或设置 BaseMVC 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -12934,7 +13136,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1197,
+            "line": 1201,
             "description": "是否自动初始化",
             "itemtype": "property",
             "name": "autoInit",
@@ -12946,7 +13148,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1205,
+            "line": 1209,
             "description": "复制 BaseMVC 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "build",
@@ -12963,7 +13165,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1220,
+            "line": 1224,
             "description": "复制 _inClass 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "buildClass",
@@ -12990,7 +13192,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1260,
+            "line": 1264,
             "description": "为 _outClass 生成一个通用 Model 类",
             "itemtype": "method",
             "name": "buildModel",
@@ -13007,7 +13209,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1273,
+            "line": 1277,
             "description": "为 _outClass 生成一个通用 View 类",
             "itemtype": "method",
             "name": "buildView",
@@ -13024,7 +13226,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1298,
+            "line": 1302,
             "description": "设置 selector 实例引用的 data 属性名",
             "itemtype": "property",
             "name": "_instanceName",
@@ -13038,7 +13240,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1312,
+            "line": 1316,
             "description": "初始化的 jq 选择器",
             "itemtype": "method",
             "name": "selector",
@@ -13057,7 +13259,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1323,
+            "line": 1327,
             "description": "读取 int 属性的值",
             "itemtype": "method",
             "name": "intProp",
@@ -13081,7 +13283,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1344,
+            "line": 1348,
             "description": "读取 float 属性的值",
             "itemtype": "method",
             "name": "floatProp",
@@ -13105,7 +13307,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1365,
+            "line": 1369,
             "description": "读取 string 属性的值",
             "itemtype": "method",
             "name": "stringProp",
@@ -13129,7 +13331,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1383,
+            "line": 1387,
             "description": "读取 html 属性值\n<br />这个跟 stringProp 的区别是不会强制转换为小写",
             "itemtype": "method",
             "name": "attrProp",
@@ -13153,7 +13355,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1406,
+            "line": 1410,
             "description": "读取 boolean 属性的值",
             "itemtype": "method",
             "name": "boolProp",
@@ -13183,7 +13385,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1432,
+            "line": 1436,
             "description": "读取 callback 属性的值",
             "itemtype": "method",
             "name": "callbackProp",
@@ -13208,7 +13410,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1455,
+            "line": 1459,
             "description": "获取 selector 属性的 jquery 选择器",
             "itemtype": "method",
             "name": "selectorProp",
@@ -13232,7 +13434,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1478,
+            "line": 1482,
             "description": "判断 _selector 是否具体某种特征",
             "itemtype": "method",
             "name": "is",
@@ -13279,6 +13481,14 @@
         {
             "message": "unknown tag: version",
             "line": " ../bizs/MultiDate/MultiDate.js:3"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:2"
+        },
+        {
+            "message": "unknown tag: date",
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -13618,19 +13828,19 @@
         },
         {
             "message": "unknown tag: date",
-            "line": " ../lib.js:746"
+            "line": " ../lib.js:750"
         },
         {
             "message": "unknown tag: date",
-            "line": " ../lib.js:1033"
+            "line": " ../lib.js:1037"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../lib.js:1077"
+            "line": " ../lib.js:1081"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../lib.js:1283"
+            "line": " ../lib.js:1287"
         },
         {
             "message": "Missing item type\n脚本模板 Panel",
@@ -13691,6 +13901,30 @@
         {
             "message": "Missing item type\n默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
             "line": " ../bizs/FormLogic/FormLogic.js:451"
+        },
+        {
+            "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:195"
+        },
+        {
+            "message": "Missing item type\n文件扩展名错误",
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:203"
+        },
+        {
+            "message": "Missing item type\n上传前触发的事件",
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:210"
+        },
+        {
+            "message": "Missing item type\n上传完毕触发的事件",
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:216"
+        },
+        {
+            "message": "Missing item type\nframe 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:246"
+        },
+        {
+            "message": "Missing item type\n恢复默认状态",
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:384"
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",
@@ -14285,16 +14519,20 @@
             "line": " ../lib.js:688"
         },
         {
-            "message": "Missing item type\ndisable / enable",
-            "line": " ../lib.js:694"
+            "message": "Missing item type\nAjax 上传",
+            "line": " ../lib.js:692"
         },
         {
-            "message": "Missing item type\n表单提交逻辑",
+            "message": "Missing item type\ndisable / enable",
             "line": " ../lib.js:698"
         },
         {
+            "message": "Missing item type\n表单提交逻辑",
+            "line": " ../lib.js:702"
+        },
+        {
             "message": "Missing item type\n自动识别组件库所在路径",
-            "line": " ../lib.js:1044"
+            "line": " ../lib.js:1048"
         }
     ]
 }

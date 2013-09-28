@@ -15,5 +15,9 @@
 
     $result = array( 'errorno' => 0, 'data' => $r );
 
+    if( isset( $_REQUEST['errorno'] ) ){
+        $r['errorno'] = (int)$_REQUEST['errorno'];
+    }
+
     echo json_encode( $result );
 ?>
