@@ -6,7 +6,7 @@
     }
 
     $r['data']['name'] = 'test.jpg';
-    $r['data']['url'] = '/ignore/JQueryComps_dev/comps/AjaxUpload/_demo/data/images/test.jpg';
+    $r['data']['url'] = './data/images/test.jpg';
 
     echo json_encode( $r );
 ?>
