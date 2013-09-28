@@ -58,6 +58,7 @@
      * </dl>
      * @namespace JC
      * @class AjaxUpload
+     * @extends JC.BaseMVC
      * @constructor
      * @param   {selector}   _selector   
      * @version dev 0.1
