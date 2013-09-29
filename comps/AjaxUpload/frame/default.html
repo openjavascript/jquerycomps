@@ -58,6 +58,7 @@
                     });
 
                     _iframe.on( 'load', function( _evt ){
+                        if( !window.isSubmited ) return;
                         var _w = _iframe.prop('contentWindow')
                             , _wb = _w.document.body
                             , _d = $.trim( _wb.innerHTML )
@@ -68,6 +69,8 @@
                     });
 
                     _fm.on( 'submit', function( _evt ){
+                        window.isSubmited = true;
+
                         var _flPath = _flBtn.val().trim();
                         if( !_flPath ) return prevent( _evt );
 

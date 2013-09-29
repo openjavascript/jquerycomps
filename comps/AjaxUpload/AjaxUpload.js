@@ -47,7 +47,7 @@
      *      <dt>cauDisplayLabel = selector, optional</dt>
      *      <dd>上传完毕后, 用于显示文件名的 selector</dd>
      *
-     *      <dt>cauUploadDoneCallback = function</dt>
+     *      <dt>cauUploadDoneCallback = function, optional</dt>
      *      <dd>
      *          文件上传完毕时, 触发的回调
 <xmp>function cauUploadDoneCallback( _json, _selector, _frame ){
