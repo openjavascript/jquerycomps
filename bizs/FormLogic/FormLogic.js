@@ -604,8 +604,8 @@
                     ;
 
                 _files.length
-                    && !_p.selector().is( '[enctype]' ) 
                     && _p.selector().attr( 'enctype', 'multipart/form-data' )
+                    && _p.selector().attr( 'encoding', 'multipart/form-data' )
                     ;
 
                 _p.trigger( 'BindFrame' );

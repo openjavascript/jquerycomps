@@ -7,21 +7,23 @@
             *{ margin: 0; padding: 0; }
 
             html{ 
-                overflow: hidden; 
+                overflow: hidden;
             }
 
             body{
-                width 200px;
+                width 400px;
             }
 
             .file {
                 top: 0; left: 0;
                 position: absolute;
                 z-index: 100;
-                margin-left:-155px;
                 height: 40px;
                 opacity: 0;
+                zoom: 1;
                 filter: alpha( opacity = 0 );
+                /*
+                */
             }
 
             .btn {
@@ -49,56 +51,58 @@
 
                 $(document).ready( function(){
                     _fm = $('form');
-                    _iframe = $('#js_frame');
+                    _iframe = $('#IX_UPLOAD_IFRAME');
                     _flBtn = _fm.find('input.js_file');
                     _disBtn = _fm.find('button.js_btn');
 
-                    $( [ _flBtn, _disBtn ] ).on( 'focus', function(){
-                        $(this).blur();
+                    _flBtn.on( 'focus', function(){
+                        //$(this).blur();
                     });
 
                     _iframe.on( 'load', function( _evt ){
-                        if( !window.isSubmited ) return;
+                        if( !_auIns ) return;
                         var _w = _iframe.prop('contentWindow')
                             , _wb = _w.document.body
                             , _d = $.trim( _wb.innerHTML )
                             ;
 
-                        _flBtn.prop('disabled', false);
                         _auIns.trigger( 'UploadDone', [ _d ] );
+                        try{ _flBtn.val(''); }catch(ex){}
+                        _fm.trigger('reset');
                     });
 
                     _fm.on( 'submit', function( _evt ){
-                        window.isSubmited = true;
-
                         var _flPath = _flBtn.val().trim();
+                        JC.log( 's1', _flPath );
                         if( !_flPath ) return prevent( _evt );
+                        JC.log( 's2' );
 
                         if( !validFileExt( _flPath, _flBtn.attr('fileExt') ) ) {
                             _auIns.trigger( 'ERR_FILE_EXT', [ _flPath ] );
                             try{ _flBtn.val(''); }catch(ex){}
                             return prevent( _evt );
                         }
+                        JC.log( 's3' );
 
-                        setTimeout( function(){ _flBtn.prop('disabled', true); }, 2 );
+                        //_auIns.trigger( 'BeforeUpload' );
 
-                        _auIns.trigger( 'BeforeUpload' );
-
+                        JC.log( 's4' );
                     });
 
                     _disBtn.on('click', function( _evt ){
-                        _evt.stopPropagation();
+                        //_evt.stopPropagation();
                         _flBtn.trigger('click');
                     });
+                    /*
 
-                    _flBtn.on('click', function( _evt ){
-                        _evt.stopPropagation();
-                    });
+                    */
 
                     _flBtn.on('change', function( _evt ){
                         var _p = $(this);
-                        _fm.trigger('submit');
+                        _fm.submit();
                     });
+
+                    updateBtnX();
                 });
 
             }else{
@@ -110,7 +114,7 @@
             function initPage( _ins, _model ){
                 //alert( [ 'initPage', _model.cauUrl() ] );
                 _auIns = _ins; 
-                _fm.attr( 'action', _model.cauUrl() );
+                _fm.attr( 'action', addUrlParams( _model.cauUrl(), { 'rnd': new Date().getTime() } ) );
                 _model.cauFileExt() && _flBtn.attr( 'fileExt', _model.cauFileExt() );
 
                 _model.cauFileName() && _flBtn.attr( 'name', _model.cauFileName() );
@@ -139,6 +143,7 @@
                                                 , _disBtn 
                                           ] 
                                     ); 
+                        updateBtnX();
                     }, 1 );
 
                 //alert( _updateLayout + ', ' + _disBtn.html() );
@@ -168,19 +173,42 @@
                 return _r;
             }
 
+            function updateBtnX(){
+                var _flw = _flBtn.prop('offsetWidth')
+                    , _bw = _disBtn.prop('offsetWidth')
+                    , _realX = -(_flw - _bw)
+                    ;
+                _flBtn.css( { 'left': _realX + 'px' } );
+                return _realX;
+            }
+
             function prevent( _evt ){
                 _evt && _evt.preventDefault();
                 return false;
             }
+            /**
+             *  兼容各浏览器的附加事件函数
+             *  x@btbtd.org 2012/7/24      
+             */ 
+            function attach_event_f( $ele, $evtName, $func, $cap )
+            {
+                if(document.addEventListener) $ele.addEventListener($evtName, $func, $cap);
+                else if(document.attachEvent) $ele.attachEvent('on' + $evtName, $func);
+            }
+
         </script>
     </head>    
     <body>
-        <form action="?test" method="POST" enctype="multipart/form-data" style="display:inline" target="UPLOAD_IFRAME">
+        <form action="?test" method="POST" style="display:inline" 
+            enctype="multipart/form-data" 
+            encoding="multipart/form-data" 
+            target="IX_UPLOAD_IFRAME"
+            >
             <button type="button" class="btn AUBtn AUBtn-g1 js_btn">上传文件</button>
             <input type="file" name="file" class="file js_file" style="cursor:pointer!important;" />
             <input type="submit" class="js_submit" value="submit" style="display:none" />
         </form>
-        <iframe src="about:blank" name="UPLOAD_IFRAME" id="js_frame" style="display:none"></iframe>
+        <iframe src="about:blank" name="IX_UPLOAD_IFRAME" id="IX_UPLOAD_IFRAME" style="display:none"></iframe>
     </body>
 </html>
 
