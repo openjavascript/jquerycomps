@@ -73,6 +73,7 @@
 
                         if( !validFileExt( _flPath, _flBtn.attr('fileExt') ) ) {
                             _auIns.trigger( 'ERR_FILE_EXT', [ _flPath ] );
+                            try{ _flBtn.val(''); }catch(ex){}
                             return prevent( _evt );
                         }
 
