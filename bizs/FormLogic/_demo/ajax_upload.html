@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            dt { font-weight: bold; margin: 10px auto; }
+            dd { line-height: 24px; }
+        </style>
+        <script src="../../../lib.js"></script>
+        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
+        <script>
+            JC.debug = true;
+
+            JC.use( 'Panel, Bizs.FormLogic, Calendar, plugins.json2' );
+
+            function formBeforeProcess( _evt, _ins ){
+                var _form = $(this);
+                JC.log( 'formBeforeProcess', new Date().getTime() );
+                //return false;
+            }
+
+            function formProcessError( _evt, _ins ){
+                var _form = $(this);
+                JC.log( 'formProcessError', new Date().getTime() );
+                //return false;
+            }
+
+            function formAfterProcess( _evt, _ins ){
+                var _form = $(this);
+                JC.log( 'formAfterProcess', new Date().getTime() );
+                //return false;
+            }
+
+            function formAjaxDone( _json, _submitButton, _ins ){
+                var _form = $(this);
+                JC.log( 'custom formAjaxDone', new Date().getTime() );
+
+                if( _json.errorno ){
+                    _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );
+                }else{
+                    _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){
+                        reloadPage( "?donetype=custom" );
+                    });
+                }
+            };
+
+        </script>
+    </head>    
+    <body>
+
+        <h2>文件保存操作仅对 host = git.me.btbtd.org 生效</h2>
+
+        <dl class="defdl">
+            <dt>Bizs.FormLogic, ajax upload, normal file</dt>
+            <dd>
+                <dl>
+                    <form action="./data/upload.php" method="POST"
+                            class="js_bizsFormLogic"
+                            formType="ajax"
+                            formAjaxDoneAction="?upload=normal1"
+                        >
+                        <dl>
+                            <dd>
+                                文件框: <input type="text" name="text" reqmsg="文本框" value="test" />
+                            </dd>
+                            <dd>
+                                日期: <input type="text" name="date" datatype="date" reqmsg="日期" value="2013-05-20" />
+                                <em class="error"></em>
+                            </dd>
+                            <dd>
+                                下拉框:
+                                    <select name="dropdown" reqmsg="下拉框" >
+                                        <option value="">请选择</option>
+                                        <option value="1" selected>条件1</option>
+                                        <option value="2">条件2</option>
+                                        <option value="3">条件3</option>
+                                    </select>
+                            </dd>
+                            <dd>
+                                文件:
+                                <input type="file" name="file"
+                                reqmsg="文件" 
+                                errmsg="允许上传的文件类型: .gif, .jpg, .jpeg, .png"
+                                datatype="file" 
+                                fileext=".gif, .jpg, .jpeg, .png" 
+                                />
+                                <label>.gif, .jpg, .jpeg, .png</label>
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </dd>
+                            <dd>
+                                <input type="hidden" name="getform" value="1" />
+                                <button type="submit">submit</button>
+                                <button type="reset">reset</button>
+                                <button type="button" buttonReturnUrl="?btntest=1" >cancel</button>
+                                <a href="?">back</a>
+                            </dd>
+                        </dl>
+                    </form>
+                </dl>
+            </dd>
+        </dl>
+
+        <dl class="defdl">
+            <dt>Bizs.FormLogic, ajax upload, normal file, custom iframe for lower IE</dt>
+            <dd>
+                <dl>
+                    <iframe src="about:blank" id="POST_IFRAME_1" name="POST_IFRAME_1" style="display:none;"></iframe>
+                    <form action="./data/upload.php" method="POST"
+                            target="POST_IFRAME_1"
+                            class="js_bizsFormLogic"
+                            formType="ajax"
+                            formAjaxDoneAction="?upload=normal2"
+                        >
+                        <dl>
+                            <dd>
+                                文件框: <input type="text" name="text" reqmsg="文本框" value="test" />
+                            </dd>
+                            <dd>
+                                日期: <input type="text" name="date" datatype="date" reqmsg="日期" value="2013-05-20" />
+                                <em class="error"></em>
+                            </dd>
+                            <dd>
+                                下拉框:
+                                    <select name="dropdown" reqmsg="下拉框" >
+                                        <option value="">请选择</option>
+                                        <option value="1" selected>条件1</option>
+                                        <option value="2">条件2</option>
+                                        <option value="3">条件3</option>
+                                    </select>
+                            </dd>
+                            <dd>
+                                文件:
+                                <input type="file" name="file"
+                                reqmsg="文件" 
+                                errmsg="允许上传的文件类型: .gif, .jpg, .jpeg, .png"
+                                datatype="file" 
+                                fileext=".gif, .jpg, .jpeg, .png" 
+                                />
+                                <label>.gif, .jpg, .jpeg, .png</label>
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </dd>
+                            <dd>
+                                <input type="hidden" name="getform" value="1" />
+                                <button type="submit">submit</button>
+                                <button type="reset">reset</button>
+                                <button type="button" buttonReturnUrl="?btntest=1" >cancel</button>
+                                <a href="?">back</a>
+                            </dd>
+                        </dl>
+                    </form>
+                </dl>
+            </dd>
+        </dl>
+
+
+        <dl class="defdl">
+            <dt>Bizs.FormLogic, ajax upload, php file[] array</dt>
+            <dd>
+                <dl>
+                    <form action="./data/upload.php" method="POST"
+                            class="js_bizsFormLogic"
+                            formType="ajax"
+                            formAjaxDoneAction="?upload=multipart"
+                        >
+                        <dl>
+                            <dd>
+                                文件框: <input type="text" name="text" reqmsg="文本框" value="test" />
+                            </dd>
+                            <dd>
+                                日期: <input type="text" name="date" datatype="date" reqmsg="日期" value="2013-05-20" />
+                                <em class="error"></em>
+                            </dd>
+                            <dd>
+                                下拉框:
+                                    <select name="dropdown" reqmsg="下拉框" >
+                                        <option value="">请选择</option>
+                                        <option value="1" selected>条件1</option>
+                                        <option value="2">条件2</option>
+                                        <option value="3">条件3</option>
+                                    </select>
+                            </dd>
+                            <dd>
+                                文件:
+                                <input type="file" name="file[]" 
+                                reqmsg="文件" 
+                                errmsg="允许上传的文件类型: .gif, .jpg, .jpeg, .png"
+                                datatype="file" 
+                                fileext=".gif, .jpg, .jpeg, .png" 
+
+                                subdatatype="unique"
+                                uniquemsg="请不要上传相同的文件"
+                                datatarget="<dl input[type=file]"
+                                />
+                                <label>.gif, .jpg, .jpeg, .png</label>
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </dd>
+                            <dd>
+                                文件:
+                                <input type="file" name="file[]" 
+                                reqmsg="文件" 
+                                errmsg="允许上传的文件类型: .gif, .jpg, .jpeg, .png"
+                                datatype="file" 
+                                fileext=".gif, .jpg, .jpeg, .png" 
+
+                                subdatatype="unique"
+                                uniquemsg="请不要上传相同的文件"
+                                datatarget="<dl input[type=file]"
+                                />
+                                <label>.gif, .jpg, .jpeg, .png</label>
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </dd>
+
+                            <dd>
+                                <input type="hidden" name="getform" value="1" />
+                                <button type="submit">submit</button>
+                                <button type="reset">reset</button>
+                                <button type="button" buttonReturnUrl="?btntest=1" >cancel</button>
+                                <a href="?">back</a>
+                            </dd>
+                        </dl>
+                    </form>
+                </dl>
+            </dd>
+        </dl>
+
+    </body>
+</html>
+

@@ -53,7 +53,7 @@ if( !isset($_FILES[$fileKeyName]) ){
     move_uploaded_file($_FILES[$fileKeyName]["tmp_name"], $path);
     
     $r['data']['name'] = $_FILES[$fileKeyName]["name"];
-    $r['data']['url'] = "/ignore/JQueryComps_dev/comps/AjaxUpload/_demo/data/{$path}";
+    $r['data']['url'] = "./data/{$path}";
     $r['errorno'] = 0;
     
     print_data_f();

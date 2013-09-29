@@ -365,7 +365,7 @@
             "extension_for": [],
             "namespace": "window.Bizs",
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 3,
+            "line": 4,
             "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>\nrequire: <a href='../classes/window.jQuery.html'>jQuery</a>\n<br/>require: <a href='../classes/JC.Valid.html'>JC.Valid</a>\n<br/>require: <a href='../classes/JC.Form.html'>JC.Form</a>\n<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>\n<xmp>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>formProcessError = function</dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>\n<xmp>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>\n<xmp>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formSubmitType = string, default = plugins</dt>\n     <dd>\n         类型: plugins, form\n         <br/>plugins 支持 AJAX 文件上传, 但是在 弹框里 捕获不到提交事件\n         <br/>form 不支持 ajax 文件上传, 但可以在 popup 里捕获到提交事件\n     </dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<xmp>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</xmp>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<xmp>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</xmp>\n     </dt>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
@@ -424,7 +424,7 @@
             "namespace": "JC",
             "file": "../comps/AjaxUpload/AjaxUpload.js",
             "line": 2,
-            "description": "Ajax 文件上传\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../comps/AjaxUpload/_demo' target='_blank'>demo link</a>\n</p>\n<p>\n     <b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../comps/AjaxUpload/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<xmp>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</xmp>\n     </dd>\n</dl>",
+            "description": "Ajax 文件上传\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../comps/AjaxUpload/_demo' target='_blank'>demo link</a>\n</p>\n<p>\n     <b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../comps/AjaxUpload/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<xmp>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</xmp>\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -639,7 +639,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/Panel/Panel.js",
-            "line": 4,
+            "line": 5,
             "description": "弹出层基础类 JC.Panel\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<h2>Panel Layout 可用的 html attribute</h2>\n<dl>\n     <dt>panelclickclose = bool</dt>\n     <dd>点击 Panel 外时, 是否关闭 panel</dd>\n\n     <dt>panelautoclose = bool</dt>\n     <dd>Panel 是否自动关闭, 默认关闭时间间隔 = 2000 ms</dd>\n\n     <dt>panelautoclosems = int, default = 2000 ms</dt>\n     <dd>自动关闭 Panel 的时间间隔</dd>\n</dl>\n<h2>a, button 可用的 html attribute( 自动生成弹框)</h2>\n<dl>\n     <dt>paneltype = string, require</dt>\n     <dd>\n         弹框类型: alert, confirm, msgbox, panel \n         <br />dialog.alert, dialog.confirm, dialog.msgbox, dialog\n     </dd>\n\n     <dt>panelmsg = string</dt>\n     <dd>要显示的内容</dd>\n\n     <dt>panelmsgBox = script selector</dt>\n     <dd>要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性</dd>\n\n     <dt>panelstatus = int, default = 0</dt>\n     <dd>\n         弹框状态: 0: 成功, 1: 失败, 2: 警告 \n         <br /><b>类型不为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelcallback = function</dt>\n     <dd>点击确定按钮的回调, <b>window 变量域</b></dd>\n\n     <dt>panelcancelcallback = function</dt>\n     <dd>点击取消按钮的回调, <b>window 变量域</b></dd>\n\n     <dt>panelclosecallback = function</dt>\n     <dd>弹框关闭时的回调, <b>window 变量域</b></dd>\n\n     <dt>panelbutton = int, default = 0</dt>\n     <dd>\n         要显示的按钮, 0: 无, 1: 确定, 2: 确定, 取消\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelheader = string</dt>\n     <dd>\n         panel header 的显示内容\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelheaderBox = script selector</dt>\n     <dd>\n         panel header 的显示内容\n         <br />要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelfooterbox = script selector</dt>\n     <dd>\n         panel footer 的显示内容\n         <br />要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelhideclose = bool, default = false</dt>\n     <dd>\n         是否隐藏关闭按钮\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n</dl>",
             "is_constructor": 1,
             "params": [
@@ -681,7 +681,7 @@
             "extension_for": [],
             "namespace": "JC.Panel",
             "file": "../comps/Panel/Panel.js",
-            "line": 651,
+            "line": 652,
             "description": "存储 Panel 的基础数据类\n<br /><b>这个类为 Panel 的私有类</b>",
             "is_constructor": 1,
             "params": [
@@ -727,7 +727,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/Panel/Panel.js",
-            "line": 1033,
+            "line": 1034,
             "description": "隐藏或者清除所有 Panel\n<h2>使用这个方法应当谨慎, 容易为DOM造成垃圾Panel</h2>\n<br /><b>注意</b>: 这是个方法, 写成class是为了方便生成文档",
             "is_constructor": 1,
             "static": 1,
@@ -752,7 +752,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/Panel/Panel.js",
-            "line": 1056,
+            "line": 1057,
             "description": "隐藏 或 从DOM清除所有 JC.alert/JC.confirm\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>",
             "static": 1,
             "is_constructor": 1,
@@ -777,7 +777,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/Panel/Panel.js",
-            "line": 1252,
+            "line": 1253,
             "description": "msgbox 提示 popup\n<br /> 这个是不带蒙板 不带按钮的 popup 弹框\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.msgbox.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>",
             "extends": "JC.Panel",
             "static": 1,
@@ -823,7 +823,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/Panel/Panel.js",
-            "line": 1296,
+            "line": 1297,
             "description": "alert 提示 popup\n<br /> 这个是不带 蒙板的 popup 弹框\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.alert.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>",
             "extends": "JC.Panel",
             "static": 1,
@@ -864,7 +864,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/Panel/Panel.js",
-            "line": 1331,
+            "line": 1332,
             "description": "confirm 提示 popup\n<br /> 这个是不带 蒙板的 popup 弹框\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p>private property see: <a href='JC.alert.html'>JC.alert</a>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.confirm.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>",
             "extends": "JC.Panel",
             "static": 1,
@@ -905,7 +905,7 @@
             "extension_for": [],
             "namespace": "JC.Dialog",
             "file": "../comps/Panel/Panel.js",
-            "line": 1820,
+            "line": 1821,
             "description": "带蒙板的会话弹框\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Dialog.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>",
             "extends": "JC.Panel",
             "static": 1,
@@ -946,7 +946,7 @@
             "extension_for": [],
             "namespace": "JC.Dialog",
             "file": "../comps/Panel/Panel.js",
-            "line": 1881,
+            "line": 1882,
             "description": "会话框 msgbox 提示 (不带按钮)\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p>private property see: <a href='JC.Dialog.html'>JC.Dialog</a>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Dialog.msgbox.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>",
             "extends": "JC.Panel",
             "static": 1,
@@ -987,7 +987,7 @@
             "extension_for": [],
             "namespace": "JC.Dialog",
             "file": "../comps/Panel/Panel.js",
-            "line": 1922,
+            "line": 1923,
             "description": "会话框 alert 提示\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p>private property see: <a href='JC.Dialog.html'>JC.Dialog</a>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Dialog.alert.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>",
             "extends": "JC.Panel",
             "static": 1,
@@ -1023,7 +1023,7 @@
             "extension_for": [],
             "namespace": "JC.Dialog",
             "file": "../comps/Panel/Panel.js",
-            "line": 1960,
+            "line": 1961,
             "description": "会话框 confirm 提示\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p>private property see: <a href='JC.Dialog.html'>JC.Dialog</a>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Dialog.confirm.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>",
             "extends": "JC.Panel",
             "static": 1,
@@ -1059,7 +1059,7 @@
             "extension_for": [],
             "namespace": "JC.Dialog",
             "file": "../comps/Panel/Panel.js",
-            "line": 1998,
+            "line": 1999,
             "description": "显示或隐藏 蒙板\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>",
             "static": 1,
             "is_constructor": 1,
@@ -1829,7 +1829,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 257,
+            "line": 258,
             "description": "获取或设置 FormLogic 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -1850,7 +1850,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 279,
+            "line": 280,
             "description": "处理 form 或者 _selector 的所有form.js_bizsFormLogic",
             "itemtype": "method",
             "name": "init",
@@ -1871,7 +1871,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 300,
+            "line": 301,
             "description": "msgbox 提示框的自动关闭时间",
             "itemtype": "property",
             "name": "popupCloseMs",
@@ -1883,7 +1883,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 308,
+            "line": 309,
             "description": "AJAX 表单的提交类型\n<br />plugins, form\n<br />plugins 可以支持文件上传",
             "itemtype": "property",
             "name": "popupCloseMs",
@@ -1895,7 +1895,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 318,
+            "line": 319,
             "description": "表单提交后, 是否禁用提交按钮",
             "itemtype": "property",
             "name": "submitDisable",
@@ -1907,7 +1907,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 326,
+            "line": 327,
             "description": "表单提交后, 是否重置表单内容",
             "itemtype": "property",
             "name": "resetAfterSubmit",
@@ -1919,43 +1919,43 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 347,
+            "line": 349,
+            "description": "默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
+            "class": "window.Bizs.FormLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/FormLogic/FormLogic.js",
+            "line": 418,
             "description": "jquery ajax 提交处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 363,
+            "line": 434,
             "description": "全局 AJAX 提交完成后的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 368,
+            "line": 438,
             "description": "这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 401,
+            "line": 479,
             "description": "表单内容验证通过后, 开始提交前的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 412,
+            "line": 490,
             "description": "jquery.form plugins 提交处理设置\n这个可以 AJAX 上传文件",
-            "class": "window.Bizs.FormLogic",
-            "namespace": "window.Bizs"
-        },
-        {
-            "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 451,
-            "description": "默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
@@ -4892,7 +4892,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 117,
+            "line": 118,
             "description": "存放数据的model层, see <a href='JC.Panel.Model.html'>Panel.Model</a>",
             "itemtype": "property",
             "name": "_model",
@@ -4903,7 +4903,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 123,
+            "line": 124,
             "description": "控制视图的view层, see <a href='JC.Panel.View.html'>Panel.View</a>",
             "itemtype": "property",
             "name": "_view",
@@ -4914,7 +4914,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 132,
+            "line": 133,
             "description": "从 selector 获取 Panel 的实例\n<br /><b>如果从DOM初始化, 不进行判断的话, 会重复初始化多次</b>",
             "itemtype": "method",
             "name": "getInstance",
@@ -4935,7 +4935,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 147,
+            "line": 148,
             "description": "显示Panel时, 是否 focus 到 按钮上\nfocusButton",
             "itemtype": "property",
             "name": "focusButton",
@@ -4947,7 +4947,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 156,
+            "line": 157,
             "description": "页面点击时, 是否自动关闭 Panel",
             "itemtype": "property",
             "name": "clickClose",
@@ -4959,7 +4959,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 164,
+            "line": 165,
             "description": "自动关闭的时间间隔, 单位毫秒\n<br />调用 ins.autoClose() 时生效",
             "itemtype": "property",
             "name": "autoCloseMs",
@@ -4971,7 +4971,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 173,
+            "line": 174,
             "description": "修正弹框的默认显示宽度",
             "itemtype": "method",
             "name": "_fixWidth",
@@ -5005,7 +5005,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 196,
+            "line": 197,
             "description": "获取 显示的 BUTTON",
             "itemtype": "method",
             "name": "_getButton",
@@ -5024,7 +5024,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 220,
+            "line": 221,
             "description": "初始化Panel",
             "itemtype": "method",
             "name": "_init",
@@ -5035,7 +5035,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 230,
+            "line": 231,
             "description": "初始化Panel 默认事件",
             "access": "private",
             "tagname": "",
@@ -5044,7 +5044,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 253,
+            "line": 254,
             "description": "为Panel绑定事件\n<br /> 内置事件类型有 show, hide, close, center, confirm, cancel\n, beforeshow, beforehide, beforeclose, beforecenter\n<br /> 用户可通过 HTML eventtype 属性自定义事件类型",
             "itemtype": "method",
             "name": "on",
@@ -5068,7 +5068,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 279,
+            "line": 280,
             "description": "显示 Panel\n<br /> Panel初始后, 默认是隐藏状态, 显示 Panel 需要显式调用 show 方法",
             "itemtype": "method",
             "name": "show",
@@ -5087,7 +5087,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 332,
+            "line": 333,
             "description": "设置Panel的显示位置基于 _src 的左右上下",
             "itemtype": "method",
             "name": "positionWith",
@@ -5108,7 +5108,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 344,
+            "line": 345,
             "description": "隐藏 Panel\n<br /> 隐藏 Panel 设置 css display:none, 不会从DOM 删除 Panel",
             "itemtype": "method",
             "name": "hide",
@@ -5117,7 +5117,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 355,
+            "line": 356,
             "description": "关闭 Panel\n<br /> <b>关闭 Panel 是直接从 DOM 中删除 Panel</b>",
             "itemtype": "method",
             "name": "close",
@@ -5126,7 +5126,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 367,
+            "line": 368,
             "description": "判断点击页面时, 是否自动关闭 Panel",
             "itemtype": "method",
             "name": "isClickClose",
@@ -5138,7 +5138,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 376,
+            "line": 377,
             "description": "点击页面时, 添加自动隐藏功能",
             "itemtype": "method",
             "name": "clickClose",
@@ -5154,14 +5154,14 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 387,
+            "line": 388,
             "description": "clickClose 的别名\n<br />这个方法的存在是为了向后兼容, 请使用 clickClose",
             "class": "JC.Panel",
             "namespace": "JC"
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 396,
+            "line": 397,
             "description": "添加自动关闭功能",
             "itemtype": "method",
             "name": "autoClose",
@@ -5177,7 +5177,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 422,
+            "line": 423,
             "description": "focus 到 button\n<br />优先查找 input[eventtype=confirm], input[type=submit], button[eventtype=confirm], button[type=submit]\n<br />input[eventtype=cancel], input[type=buton], button[eventtype=cancel], button[type=button]",
             "itemtype": "method",
             "name": "focusButton",
@@ -5186,7 +5186,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 429,
+            "line": 430,
             "description": "从DOM清除Panel\n<br /> <b>close 方法清除 Panel可以被用户阻止, 该方法不会被用户阻止</b>",
             "itemtype": "method",
             "name": "dispose",
@@ -5195,7 +5195,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 440,
+            "line": 441,
             "description": "把 Panel 位置设为屏幕居中",
             "itemtype": "method",
             "name": "center",
@@ -5204,7 +5204,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 451,
+            "line": 452,
             "description": "返回 Panel 的 jquery dom选择器对象\n<br />这个方法以后将会清除, 请使用 layout 方法",
             "itemtype": "method",
             "name": "selector",
@@ -5217,7 +5217,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 458,
+            "line": 459,
             "description": "返回 Panel 的 jquery dom选择器对象",
             "itemtype": "method",
             "name": "layout",
@@ -5230,7 +5230,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 464,
+            "line": 465,
             "description": "从 Panel 选择器中查找内容\n<br />添加这个方法是为了方便jquery 使用者的习惯",
             "itemtype": "method",
             "name": "find",
@@ -5249,7 +5249,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 472,
+            "line": 473,
             "description": "触发 Panel 已绑定的事件\n<br />用户可以使用该方法主动触发绑定的事件",
             "itemtype": "method",
             "name": "trigger",
@@ -5273,7 +5273,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 508,
+            "line": 509,
             "description": "获取或者设置 Panel Header 的HTML内容\n<br />如果 Panel默认没有 Header的话, 使用该方法 _html 非空可动态创建一个Header",
             "itemtype": "method",
             "name": "header",
@@ -5293,7 +5293,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 522,
+            "line": 523,
             "description": "获取或者设置 Panel body 的HTML内容",
             "itemtype": "method",
             "name": "body",
@@ -5313,7 +5313,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 535,
+            "line": 536,
             "description": "获取或者设置 Panel footer 的HTML内容\n<br />如果 Panel默认没有 footer的话, 使用该方法 _html 非空可动态创建一个footer",
             "itemtype": "method",
             "name": "footer",
@@ -5333,7 +5333,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 549,
+            "line": 550,
             "description": "获取或者设置 Panel 的HTML内容",
             "itemtype": "method",
             "name": "panel",
@@ -5353,7 +5353,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 563,
+            "line": 564,
             "description": "Panel 显示前会触发的事件<br/>\n这个事件在用户调用 _panelInstance.show() 时触发",
             "itemtype": "event",
             "name": "beforeshow",
@@ -5366,7 +5366,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 571,
+            "line": 572,
             "description": "显示Panel时会触发的事件",
             "itemtype": "event",
             "name": "show",
@@ -5379,7 +5379,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 578,
+            "line": 579,
             "description": "Panel 隐藏前会触发的事件<br/>\n<br />这个事件在用户调用 _panelInstance.hide() 时触发",
             "itemtype": "event",
             "name": "beforehide",
@@ -5392,7 +5392,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 586,
+            "line": 587,
             "description": "Panel 隐藏时会触发的事件<br/>\n<br />这个事件在用户调用 _panelInstance.hide() 时触发",
             "itemtype": "event",
             "name": "hide",
@@ -5405,7 +5405,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 594,
+            "line": 595,
             "description": "Panel 关闭前会触发的事件<br/>\n这个事件在用户调用 _panelInstance.close() 时触发",
             "itemtype": "event",
             "name": "beforeclose",
@@ -5418,7 +5418,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 605,
+            "line": 606,
             "description": "关闭事件",
             "itemtype": "event",
             "name": "close",
@@ -5431,7 +5431,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 615,
+            "line": 616,
             "description": "Panel 居中显示前会触发的事件<br/>\n这个事件在用户调用 _panelInstance.center() 时触发",
             "itemtype": "event",
             "name": "beforecenter",
@@ -5444,7 +5444,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 623,
+            "line": 624,
             "description": "Panel 居中后会触发的事件",
             "itemtype": "event",
             "name": "center",
@@ -5457,7 +5457,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 630,
+            "line": 631,
             "description": "Panel 点击确认按钮触发的事件",
             "itemtype": "event",
             "name": "confirm",
@@ -5470,7 +5470,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 640,
+            "line": 641,
             "description": "Panel 点击确取消按钮触发的事件",
             "itemtype": "event",
             "name": "cancel",
@@ -5483,7 +5483,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 663,
+            "line": 664,
             "description": "panel 的 HTML 对象或者字符串\n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "selector",
@@ -5493,7 +5493,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 670,
+            "line": 671,
             "description": "header 内容 \n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "headers",
@@ -5503,7 +5503,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 677,
+            "line": 678,
             "description": "body 内容\n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "bodys",
@@ -5513,7 +5513,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 684,
+            "line": 685,
             "description": "footers 内容\n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "footers",
@@ -5523,7 +5523,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 691,
+            "line": 692,
             "description": "panel 初始化后的 selector 对象",
             "itemtype": "property",
             "name": "panel",
@@ -5533,7 +5533,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 697,
+            "line": 698,
             "description": "存储用户事件和默认事件的对象",
             "itemtype": "property",
             "name": "_events",
@@ -5545,7 +5545,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 708,
+            "line": 709,
             "description": "Model 初始化方法",
             "itemtype": "method",
             "name": "_init",
@@ -5560,7 +5560,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 734,
+            "line": 735,
             "description": "添加事件方法",
             "itemtype": "method",
             "name": "addEvent",
@@ -5581,7 +5581,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 750,
+            "line": 751,
             "description": "获取事件方法",
             "itemtype": "method",
             "name": "getEvent",
@@ -5601,7 +5601,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 803,
+            "line": 804,
             "description": "Panel的基础数据类, see <a href='JC.Panel.Model.html'>Panel.Model</a>",
             "itemtype": "property",
             "name": "_model",
@@ -5613,7 +5613,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 810,
+            "line": 811,
             "description": "默认模板",
             "prototype": "_tpl",
             "type": "string",
@@ -5624,7 +5624,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 822,
+            "line": 823,
             "description": "View 的初始方法",
             "itemtype": "method",
             "name": "_init",
@@ -5634,7 +5634,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 846,
+            "line": 847,
             "description": "设置Panel的显示位置基于 _src 的左右上下",
             "itemtype": "method",
             "name": "positionWith",
@@ -5649,7 +5649,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 883,
+            "line": 884,
             "description": "显示 Panel",
             "itemtype": "method",
             "name": "show",
@@ -5657,7 +5657,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 892,
+            "line": 893,
             "description": "focus button",
             "itemtype": "method",
             "name": "focus button",
@@ -5665,7 +5665,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 903,
+            "line": 904,
             "description": "隐藏 Panel",
             "itemtype": "method",
             "name": "hide",
@@ -5673,7 +5673,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 911,
+            "line": 912,
             "description": "关闭 Panel",
             "itemtype": "method",
             "name": "close",
@@ -5681,7 +5681,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 920,
+            "line": 921,
             "description": "获取 Panel 的 selector 对象",
             "itemtype": "method",
             "name": "getPanel",
@@ -5692,7 +5692,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 932,
+            "line": 933,
             "description": "获取或设置Panel的 header 内容, see <a href='JC.Panel.html#method_header'>Panel.header</a>",
             "itemtype": "method",
             "name": "getHeader",
@@ -5710,7 +5710,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 952,
+            "line": 953,
             "description": "获取或设置Panel的 body 内容, see <a href='JC.Panel.html#method_body'>Panel.body</a>",
             "itemtype": "method",
             "name": "getBody",
@@ -5728,7 +5728,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 968,
+            "line": 969,
             "description": "获取或设置Panel的 footer 内容, see <a href='JC.Panel.html#method_footer'>Panel.footer</a>",
             "itemtype": "method",
             "name": "getFooter",
@@ -5746,7 +5746,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 988,
+            "line": 989,
             "description": "居中显示 Panel",
             "itemtype": "method",
             "name": "center",
@@ -5754,7 +5754,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1020,
+            "line": 1021,
             "description": "Panel 的默认模板",
             "access": "private",
             "tagname": "",
@@ -5762,7 +5762,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1078,
+            "line": 1079,
             "description": "监听Panel的所有点击事件\n<br />如果事件源有 eventtype 属性, 则会触发eventtype的事件类型",
             "itemtype": "event",
             "name": "Panel click",
@@ -5773,7 +5773,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1131,
+            "line": 1132,
             "description": "从 HTML 属性 自动执行 popup",
             "attr": "{function}  panelcancelcallback cancel  回调",
             "class": "JC.hideAllPopup",
@@ -5781,14 +5781,14 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1173,
+            "line": 1174,
             "description": "隐藏关闭按钮",
             "class": "JC.hideAllPopup",
             "namespace": "JC"
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1288,
+            "line": 1289,
             "description": "自定义 JC.msgbox 的显示模板",
             "itemtype": "property",
             "name": "tpl",
@@ -5800,7 +5800,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1323,
+            "line": 1324,
             "description": "自定义 JC.alert 的显示模板",
             "itemtype": "property",
             "name": "tpl",
@@ -5812,7 +5812,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1359,
+            "line": 1360,
             "description": "自定义 JC.confirm 的显示模板",
             "itemtype": "property",
             "name": "tpl",
@@ -5824,7 +5824,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1367,
+            "line": 1368,
             "description": "弹框逻辑处理方法集",
             "itemtype": "property",
             "name": "_logic",
@@ -5835,7 +5835,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1374,
+            "line": 1375,
             "description": "弹框最小宽度",
             "itemtype": "property",
             "name": "_logic.minWidth",
@@ -5848,7 +5848,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1383,
+            "line": 1384,
             "description": "弹框最大宽度",
             "itemtype": "property",
             "name": "_logic.maxWidth",
@@ -5861,7 +5861,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1392,
+            "line": 1393,
             "description": "显示时 X轴的偏移值",
             "itemtype": "property",
             "name": "_logic.xoffset",
@@ -5874,7 +5874,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1401,
+            "line": 1402,
             "description": "显示时 Y轴的偏移值",
             "itemtype": "property",
             "name": "_logic.yoffset",
@@ -5887,7 +5887,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1410,
+            "line": 1411,
             "description": "设置弹框的唯一性",
             "itemtype": "method",
             "name": "_logic.popupIdentifier",
@@ -5905,7 +5905,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1434,
+            "line": 1435,
             "description": "弹框通用处理方法",
             "itemtype": "method",
             "name": "_logic.popup",
@@ -5946,7 +5946,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1506,
+            "line": 1507,
             "description": "隐藏弹框缓动效果",
             "itemtype": "method",
             "name": "_logic.hideEffect",
@@ -5974,7 +5974,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1559,
+            "line": 1560,
             "description": "隐藏弹框缓动效果",
             "itemtype": "method",
             "name": "_logic.showEffect",
@@ -5997,7 +5997,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1614,
+            "line": 1615,
             "description": "设置 Panel 的默认X,Y轴",
             "itemtype": "method",
             "name": "_logic.onresize",
@@ -6015,7 +6015,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1650,
+            "line": 1651,
             "description": "取得弹框最要显示的 y 轴",
             "itemtype": "method",
             "name": "_logic.getTop",
@@ -6052,7 +6052,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1671,
+            "line": 1672,
             "description": "取得弹框最要显示的 x 轴",
             "itemtype": "method",
             "name": "_logic.getLeft",
@@ -6089,7 +6089,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1694,
+            "line": 1695,
             "description": "修正弹框的默认显示宽度",
             "itemtype": "method",
             "name": "_logic.fixWidth",
@@ -6112,7 +6112,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1711,
+            "line": 1712,
             "description": "获取弹框的显示状态, 默认为0(成功)",
             "itemtype": "method",
             "name": "_logic.fixWidth",
@@ -6134,7 +6134,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1729,
+            "line": 1730,
             "description": "保存弹框的所有默认模板",
             "itemtype": "property",
             "name": "_logic.tpls",
@@ -6146,7 +6146,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1737,
+            "line": 1738,
             "description": "msgbox 弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.msgbox",
@@ -6158,7 +6158,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1757,
+            "line": 1758,
             "description": "alert 弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.alert",
@@ -6170,7 +6170,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1780,
+            "line": 1781,
             "description": "confirm 弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.confirm",
@@ -6182,14 +6182,14 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1806,
+            "line": 1807,
             "description": "响应窗口改变大小",
             "class": "JC.alert",
             "namespace": "JC"
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1914,
+            "line": 1915,
             "description": "自定义 JC.Dialog.alert 的显示模板",
             "itemtype": "property",
             "name": "tpl",
@@ -6201,7 +6201,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1952,
+            "line": 1953,
             "description": "自定义 JC.Dialog.alert 的显示模板",
             "itemtype": "property",
             "name": "tpl",
@@ -6213,7 +6213,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 1990,
+            "line": 1991,
             "description": "自定义 JC.Dialog.confirm 的显示模板",
             "itemtype": "property",
             "name": "tpl",
@@ -6225,7 +6225,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2012,
+            "line": 2013,
             "description": "会话弹框逻辑处理方法集",
             "itemtype": "property",
             "name": "_logic",
@@ -6236,7 +6236,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2019,
+            "line": 2020,
             "description": "延时处理的指针属性",
             "itemtype": "property",
             "name": "_logic.timeout",
@@ -6248,7 +6248,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2027,
+            "line": 2028,
             "description": "延时显示弹框\n<br />延时是为了使用户绑定的 show 事件能够被执行",
             "itemtype": "property",
             "name": "_logic.showMs",
@@ -6260,7 +6260,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2036,
+            "line": 2037,
             "description": "弹框最小宽度",
             "itemtype": "property",
             "name": "_logic.minWidth",
@@ -6273,7 +6273,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2045,
+            "line": 2046,
             "description": "弹框最大宽度",
             "itemtype": "property",
             "name": "_logic.maxWidth",
@@ -6286,7 +6286,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2054,
+            "line": 2055,
             "description": "设置会话弹框的唯一性",
             "itemtype": "method",
             "name": "_logic.dialogIdentifier",
@@ -6304,7 +6304,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2077,
+            "line": 2078,
             "description": "显示蒙板",
             "itemtype": "method",
             "name": "_logic.showMask",
@@ -6315,7 +6315,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2097,
+            "line": 2098,
             "description": "隐藏蒙板",
             "itemtype": "method",
             "name": "_logic.hideMask",
@@ -6326,7 +6326,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2109,
+            "line": 2110,
             "description": "窗口改变大小时, 改变蒙板的大小,\n<br />这个方法主要为了兼容 IE6",
             "itemtype": "method",
             "name": "_logic.setMaskSizeForIe6",
@@ -6337,7 +6337,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2132,
+            "line": 2133,
             "description": "获取弹框的显示状态, 默认为0(成功)",
             "itemtype": "method",
             "name": "_logic.fixWidth",
@@ -6359,7 +6359,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2150,
+            "line": 2151,
             "description": "修正弹框的默认显示宽度",
             "itemtype": "method",
             "name": "_logic.fixWidth",
@@ -6382,7 +6382,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2166,
+            "line": 2167,
             "description": "保存会话弹框的所有默认模板",
             "itemtype": "property",
             "name": "_logic.tpls",
@@ -6394,7 +6394,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2174,
+            "line": 2175,
             "description": "msgbox 会话弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.msgbox",
@@ -6406,7 +6406,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2194,
+            "line": 2195,
             "description": "alert 会话弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.alert",
@@ -6418,7 +6418,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2217,
+            "line": 2218,
             "description": "confirm 会话弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.confirm",
@@ -6430,7 +6430,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2241,
+            "line": 2242,
             "description": "会话弹框的蒙板模板",
             "itemtype": "property",
             "name": "_logic.tpls.mask",
@@ -6442,7 +6442,7 @@
         },
         {
             "file": "../comps/Panel/Panel.js",
-            "line": 2255,
+            "line": 2256,
             "description": "响应窗口改变大小和滚动",
             "class": "JC.Dialog",
             "namespace": "JC.Dialog"
@@ -13473,7 +13473,7 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../bizs/FormLogic/FormLogic.js:3"
+            "line": " ../bizs/FormLogic/FormLogic.js:4"
         },
         {
             "message": "unknown tag: version",
@@ -13557,35 +13557,35 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../comps/Panel/Panel.js:4"
+            "line": " ../comps/Panel/Panel.js:5"
         },
         {
             "message": "unknown tag: date",
-            "line": " ../comps/Panel/Panel.js:4"
+            "line": " ../comps/Panel/Panel.js:5"
         },
         {
             "message": "unknown tag: prototype",
-            "line": " ../comps/Panel/Panel.js:810"
+            "line": " ../comps/Panel/Panel.js:811"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/Panel.js:1131"
+            "line": " ../comps/Panel/Panel.js:1132"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/Panel.js:1131"
+            "line": " ../comps/Panel/Panel.js:1132"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/Panel.js:1131"
+            "line": " ../comps/Panel/Panel.js:1132"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/Panel.js:1131"
+            "line": " ../comps/Panel/Panel.js:1132"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/Panel.js:1131"
+            "line": " ../comps/Panel/Panel.js:1132"
         },
         {
             "message": "unknown tag: version",
@@ -13880,28 +13880,28 @@
             "line": " ../bizs/CommonModify/CommonModify.js:222"
         },
         {
+            "message": "Missing item type\n默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
+            "line": " ../bizs/FormLogic/FormLogic.js:349"
+        },
+        {
             "message": "Missing item type\njquery ajax 提交处理事件",
-            "line": " ../bizs/FormLogic/FormLogic.js:347"
+            "line": " ../bizs/FormLogic/FormLogic.js:418"
         },
         {
             "message": "Missing item type\n全局 AJAX 提交完成后的处理事件",
-            "line": " ../bizs/FormLogic/FormLogic.js:363"
+            "line": " ../bizs/FormLogic/FormLogic.js:434"
         },
         {
             "message": "Missing item type\n这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
-            "line": " ../bizs/FormLogic/FormLogic.js:368"
+            "line": " ../bizs/FormLogic/FormLogic.js:438"
         },
         {
             "message": "Missing item type\n表单内容验证通过后, 开始提交前的处理事件",
-            "line": " ../bizs/FormLogic/FormLogic.js:401"
+            "line": " ../bizs/FormLogic/FormLogic.js:479"
         },
         {
             "message": "Missing item type\njquery.form plugins 提交处理设置\n这个可以 AJAX 上传文件",
-            "line": " ../bizs/FormLogic/FormLogic.js:412"
-        },
-        {
-            "message": "Missing item type\n默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
-            "line": " ../bizs/FormLogic/FormLogic.js:451"
+            "line": " ../bizs/FormLogic/FormLogic.js:490"
         },
         {
             "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
@@ -14001,35 +14001,35 @@
         },
         {
             "message": "Missing item type\n初始化Panel 默认事件",
-            "line": " ../comps/Panel/Panel.js:230"
+            "line": " ../comps/Panel/Panel.js:231"
         },
         {
             "message": "Missing item type\nclickClose 的别名\n<br />这个方法的存在是为了向后兼容, 请使用 clickClose",
-            "line": " ../comps/Panel/Panel.js:387"
+            "line": " ../comps/Panel/Panel.js:388"
         },
         {
             "message": "Missing item type\n默认模板",
-            "line": " ../comps/Panel/Panel.js:810"
+            "line": " ../comps/Panel/Panel.js:811"
         },
         {
             "message": "Missing item type\nPanel 的默认模板",
-            "line": " ../comps/Panel/Panel.js:1020"
+            "line": " ../comps/Panel/Panel.js:1021"
         },
         {
             "message": "Missing item type\n从 HTML 属性 自动执行 popup",
-            "line": " ../comps/Panel/Panel.js:1131"
+            "line": " ../comps/Panel/Panel.js:1132"
         },
         {
             "message": "Missing item type\n隐藏关闭按钮",
-            "line": " ../comps/Panel/Panel.js:1173"
+            "line": " ../comps/Panel/Panel.js:1174"
         },
         {
             "message": "Missing item type\n响应窗口改变大小",
-            "line": " ../comps/Panel/Panel.js:1806"
+            "line": " ../comps/Panel/Panel.js:1807"
         },
         {
             "message": "Missing item type\n响应窗口改变大小和滚动",
-            "line": " ../comps/Panel/Panel.js:2255"
+            "line": " ../comps/Panel/Panel.js:2256"
         },
         {
             "message": "Missing item type\n初始化数据模型",
