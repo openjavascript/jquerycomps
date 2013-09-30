@@ -179,7 +179,6 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 //TODO: 表单重置时, 不要触发 select 的 change 事件
-//TODO: AJAX 提交改为 iframe 提交, 避免上传文件的兼容问题
 ;(function($){
     /**
      * &lt;h2&gt;提交表单控制逻辑&lt;/h2&gt;
@@ -248,13 +247,6 @@
      *
      *      &lt;dt&gt;formPopupCloseMs = int, default = 2000&lt;/dt&gt;
      *      &lt;dd&gt;msgbox 弹框的显示时间&lt;/dd&gt;
-     *
-     *      &lt;dt&gt;formSubmitType = string, default = plugins&lt;/dt&gt;
-     *      &lt;dd&gt;
-     *          类型: plugins, form
-     *          &lt;br/&gt;plugins 支持 AJAX 文件上传, 但是在 弹框里 捕获不到提交事件
-     *          &lt;br/&gt;form 不支持 ajax 文件上传, 但可以在 popup 里捕获到提交事件
-     *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;formAjaxMethod = string, default = get&lt;/dt&gt;
      *      &lt;dd&gt;
@@ -566,23 +558,13 @@
                 });
 
                 _p.on( &#x27;BindFrame&#x27;, function( _evt ){
-                    var _frame = _p._model.frame()
+                    var _frame
                         , _type = _p._model.formType()
                         , _frameName
                         ;
                     if( _type != FormLogic.Model.AJAX ) return;
 
-                    /*
-                    _frameName = _p._model.id() + &#x27;_frame&#x27;;
-
-                    _frame.attr( &#x27;name&#x27;, _frameName );
-                    _frame.attr( &#x27;id&#x27;, _frameName );
-
-                    setTimeout( function(){
-                        _p._model.selector()[0].target = _frameName;
-                    });
-                    */
-
+                    _frame = _p._model.frame();
                     _frame.on( &#x27;load&#x27;, function( _evt ){
                         var _w = _frame.prop(&#x27;contentWindow&#x27;)
                             , _wb = _w.document.body
@@ -594,23 +576,6 @@
                         _p.trigger( &#x27;AjaxDone&#x27;, [ _d ] );
                     });
                 });
-
-                /**
-                 * jquery ajax 提交处理事件
-                 */
-                /*_p.on( FormLogic.Model.EVT_AJAX_SUBMIT, function(){
-                    var _method = _p._model.formAjaxMethod();
-                    JC.log( FormLogic.Model.EVT_AJAX_SUBMIT, _method );
-
-                    var _data = _p._model.selector().serialize();
-                    $[ _method ] &amp;&amp;
-                        $[ _method ]( _p._model.formAjaxAction(), _data )
-                        .done( function( _d ){
-                            JC.log( &#x27;common ajax done&#x27; );
-                            _p.trigger( &#x27;AjaxDone&#x27;, [ _d ] );
-                        });
-                    ;
-                });*/
                 /**
                  * 全局 AJAX 提交完成后的处理事件
                  */
@@ -665,49 +630,6 @@
                             $( this ).prop(&#x27;disabled&#x27;, true);
                         });
                 });
-
-/*                if( _p._model.formType() == &#x27;ajax&#x27; &amp;&amp; _p._model.formSubmitType() == &#x27;plugins&#x27; ){*/
-                    /**
-                     * jquery.form plugins 提交处理设置
-                     * 这个可以 AJAX 上传文件
-                     */
-                    //_p.selector().ajaxForm({
-                        //beforeSubmit:
-                            //function(){
-                                //if( _p._model.formBeforeProcess() ){
-                                    //if( _p._model.formBeforeProcess().call( _p.selector(), null, _p ) === false ){
-                                        //return _p._model.prevent();
-                                    //}
-                                //}
-
-                                //if( !JC.Valid.check( _p.selector() ) ){
-                                    //_p._model.formProcessError() 
-                                        //&amp;&amp; _p._model.formProcessError().call( _p.selector(), null, _p );
-                                    //return _p._model.prevent();
-                                //}
-
-                                //if( _p._model.formAfterProcess() ){
-                                    //if( _p._model.formAfterProcess().call( _p.selector(), null, _p ) === false ){
-                                        //return _p._model.prevent();
-                                    //}
-                                //}
-
-                                //if( _p.selector().data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON ) ){
-                                    //_p.trigger( FormLogic.Model.EVT_CONFIRM );
-                                    //return _p._model.prevent();
-                                //}
-
-                                //_p.trigger( &#x27;ProcessDone&#x27; );
-                            //}
-                        //, success:
-                            //function( _d ){
-                                //JC.log( &#x27;plugins ajax done&#x27; );
-                                //_p.trigger( &#x27;AjaxDone&#x27;, [ _d ] );
-                            //}
-                    //});
-                //}else{
-                /*}*/
-
 
                 _p.on( FormLogic.Model.EVT_CONFIRM, function( _evt ){
                     var _btn = _p.selector().data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON )

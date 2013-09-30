@@ -1,3 +1,4 @@
+//TODO: 回调函数传 cmitem 节点的父节点
 /**
  * <h2>Dom 通用 添加删除 逻辑</h2>
  * <br/>应用场景
@@ -23,7 +24,7 @@
  *      <dt>cmdonecallback = function</dt>
  *      <dd>
  *      添加或删除完后会触发的回调, <b>window 变量域</b>
-<xmp>function cmdonecallback( _ins ){
+<xmp>function cmdonecallback( _ins, _boxParent ){
     var _trigger = $(this);
     JC.log( 'cmdonecallback', new Date().getTime() );
 }</xmp>
@@ -33,7 +34,7 @@
  *      <dd>
  *      模板内容过滤回调, <b>window 变量域</b>
 <xmp>window.COUNT = 1;
-function cmtplfiltercallback( _tpl ){
+function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
     var _trigger = $(this);
     JC.log( 'cmtplfiltercallback', new Date().getTime() );
     _tpl = printf( _tpl, COUNT++ );
@@ -45,7 +46,7 @@ function cmtplfiltercallback( _tpl ){
  *      <dt>cmbeforeaddcallabck = function</dt>
  *      <dd>
  *      添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b>
-<xmp>function cmbeforeaddcallabck( _appendBox, _ins ){
+<xmp>function cmbeforeaddcallabck( _cmitem, _boxParent ){
     var _trigger = $(this);
     JC.log( 'cmbeforeaddcallabck', new Date().getTime() );
     //return false;
@@ -55,7 +56,7 @@ function cmtplfiltercallback( _tpl ){
  *      <dt>cmaddcallback = function</dt>
  *      <dd>
  *      添加完成的回调, <b>window 变量域</b>
-<xmp>function cmaddcallback( _ins, _newItem ){
+<xmp>function cmaddcallback( _ins, _newItem, _cmitem, _boxParent ){
     var _trigger = $(this);
     JC.log( 'cmaddcallback', new Date().getTime() );
 }</xmp>
@@ -64,7 +65,7 @@ function cmtplfiltercallback( _tpl ){
  *      <dt>cmbeforedelcallback = function</dt>
  *      <dd>
  *      删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b>
-<xmp>function cmbeforedelcallback( _appendBox, _ins ){
+<xmp>function cmbeforedelcallback( _cmitem, _boxParent ){
     var _trigger = $(this);
     JC.log( 'cmbeforedelcallback', new Date().getTime() );
     //return false;
@@ -74,8 +75,7 @@ function cmtplfiltercallback( _tpl ){
  *      <dt>cmdelcallback = function</dt>
  *      <dd>
  *      删除完成的回调, <b>window 变量域</b>
-<xmp>function cmdelcallback( _ins ){
-    var _trigger = $(this);
+<xmp>function cmdelcallback( _ins, _boxParent ){
     JC.log( 'cmdelcallback', new Date().getTime() );
 }</xmp>
  *      </dd>
@@ -179,19 +179,19 @@ function cmtplfiltercallback( _tpl ){
             function(){
                 var _p = this;
 
-                _p.on('add', function( _evt, _newItem ){
+                _p.on('add', function( _evt, _newItem, _boxParent ){
                     _p._model.cmaddcallback()
-                        && _p._model.cmaddcallback().call( _p.selector(), _p, _newItem );
+                        && _p._model.cmaddcallback().call( _p.selector(), _p, _newItem, _p._model.cmitem(), _boxParent );
                 });
 
-                _p.on('del', function( _evt ){
+                _p.on('del', function( _evt, _newItem, _boxParent ){
                     _p._model.cmdelcallback()
-                        && _p._model.cmdelcallback().call( _p.selector(), _p );
+                        && _p._model.cmdelcallback().call( _p.selector(), _p, _boxParent );
                 });
 
-                _p.on('done', function( _evt ){
+                _p.on('done', function( _evt, _newItem, _boxParent ){
                     _p._model.cmdonecallback()
-                        && _p._model.cmdonecallback().call( _p.selector(), _p );
+                        && _p._model.cmdonecallback().call( _p.selector(), _p, _boxParent );
                 });
             }
         /**
@@ -414,15 +414,16 @@ function cmtplfiltercallback( _tpl ){
                 var _p = this
                     , _tpl = _p._model.cmtemplate()
                     , _item = _p._model.cmitem()
+                    , _boxParent = _item.parent()
                     , _newItem
                     ;
 
                 if( _p._model.cmbeforeaddcallabck() 
-                        && _p._model.cmbeforeaddcallabck().call( _p._model.selector(), _item ) === false 
+                        && _p._model.cmbeforeaddcallabck().call( _p._model.selector(), _item, _boxParent ) === false 
                 ) return;
 
                 _p._model.cmtplfiltercallback() 
-                    && ( _tpl = _p._model.cmtplfiltercallback().call( _p._model.selector(), _tpl, _item ) );
+                    && ( _tpl = _p._model.cmtplfiltercallback().call( _p._model.selector(), _tpl, _item, _boxParent ) );
 
                 _tpl = _tpl.replace( /<([\d]+)>/g, "{$1}" );
 
@@ -439,8 +440,8 @@ function cmtplfiltercallback( _tpl ){
                 
                 window.jcAutoInitComps && jcAutoInitComps( _newItem );
 
-                $( _p ).trigger( 'TriggerEvent', [ 'add', _newItem ] );
-                $( _p ).trigger( 'TriggerEvent', [ 'done', _newItem ] );
+                $( _p ).trigger( 'TriggerEvent', [ 'add', _newItem, _boxParent ] );
+                $( _p ).trigger( 'TriggerEvent', [ 'done', _newItem, _boxParent ] );
             }
 
         , del:
@@ -448,16 +449,17 @@ function cmtplfiltercallback( _tpl ){
                 JC.log( 'Bizs.CommonModify view del', new Date().getTime() );
                 var _p = this
                     , _item = _p._model.cmitem()
+                    , _boxParent = _item.parent()
                     ;
 
                 if( _p._model.cmbeforedelcallback() 
-                        && _p._model.cmbeforedelcallback().call( _p._model.selector(), _item ) === false 
+                        && _p._model.cmbeforedelcallback().call( _p._model.selector(), _item, _boxParent ) === false 
                 ) return;
 
                 _item && _item.length && _item.remove();
 
-                $( _p ).trigger( 'TriggerEvent', [ 'del', _item ] );
-                $( _p ).trigger( 'TriggerEvent', [ 'done', _item ] );
+                $( _p ).trigger( 'TriggerEvent', [ 'del', _item, _boxParent ] );
+                $( _p ).trigger( 'TriggerEvent', [ 'done', _item, _boxParent ] );
             }
     };
 

@@ -19,36 +19,35 @@
 
             COUNT = 1;
 
-            function cmdonecallback( _ins ){
-                var _trigger = $(this);
-                JC.log( 'cmdonecallback', new Date().getTime() );
-            }
-
-            function cmaddcallback( _ins, _newItem ){
+            function cmaddcallback( _ins, _newItem, _cmitem, _boxParent ){
                 var _trigger = $(this);
                 JC.log( 'cmaddcallback', new Date().getTime() );
             }
 
-            function cmdelcallback( _ins ){
-                var _trigger = $(this);
+            function cmdelcallback( _ins, _boxParent ){
                 JC.log( 'cmdelcallback', new Date().getTime() );
+                //alert( _boxParent.html() );
             }
 
-            function cmtplfiltercallback( _tpl ){
+            function cmdonecallback( _ins, _boxParent ){
+                var _trigger = $(this);
+                JC.log( 'cmdonecallback', new Date().getTime() );
+            }
+
+            function cmtplfiltercallback( _tpl, _item, _boxParent ){
                 var _trigger = $(this);
                 JC.log( 'cmtplfiltercallback', new Date().getTime() );
                 _tpl = printf( _tpl, COUNT++ );
-
                 return _tpl;
             }
 
-            function cmbeforeaddcallabck( _appendBox, _ins ){
+            function cmbeforeaddcallabck( _cmitem, _boxParent ){
                 var _trigger = $(this);
                 JC.log( 'cmbeforeaddcallabck', new Date().getTime() );
                 //return false;
             }
 
-            function cmbeforedelcallback( _appendBox, _ins ){
+            function cmbeforedelcallback( _cmitem, _boxParent ){
                 var _trigger = $(this);
                 JC.log( 'cmbeforedelcallback', new Date().getTime() );
                 //return false;

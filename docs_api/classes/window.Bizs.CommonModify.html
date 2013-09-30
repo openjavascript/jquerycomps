@@ -105,7 +105,7 @@
                         <h1>window.Bizs.CommonModify Class</h1>
 <div class="box meta">
         <div class="foundat">
-            Defined in: <a href="../files/.._bizs_CommonModify_CommonModify.js.html#l1"><code>..&#x2F;bizs&#x2F;CommonModify&#x2F;CommonModify.js:1</code></a>
+            Defined in: <a href="../files/.._bizs_CommonModify_CommonModify.js.html#l2"><code>..&#x2F;bizs&#x2F;CommonModify&#x2F;CommonModify.js:2</code></a>
         </div>
 </div>
 <div class="box intro">
@@ -127,7 +127,7 @@
      <dt>cmdonecallback = function</dt>
      <dd>
      添加或删除完后会触发的回调, <b>window 变量域</b>
-<xmp>function cmdonecallback( _ins ){
+<xmp>function cmdonecallback( _ins, _boxParent ){
    var _trigger = $(this);
    JC.log( 'cmdonecallback', new Date().getTime() );
 }</xmp>
@@ -136,7 +136,7 @@
      <dd>
      模板内容过滤回调, <b>window 变量域</b>
 <xmp>window.COUNT = 1;
-function cmtplfiltercallback( _tpl ){
+function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
    var _trigger = $(this);
    JC.log( 'cmtplfiltercallback', new Date().getTime() );
    _tpl = printf( _tpl, COUNT++ );
@@ -146,7 +146,7 @@ function cmtplfiltercallback( _tpl ){
      <dt>cmbeforeaddcallabck = function</dt>
      <dd>
      添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b>
-<xmp>function cmbeforeaddcallabck( _appendBox, _ins ){
+<xmp>function cmbeforeaddcallabck( _cmitem, _boxParent ){
    var _trigger = $(this);
    JC.log( 'cmbeforeaddcallabck', new Date().getTime() );
    //return false;
@@ -155,7 +155,7 @@ function cmtplfiltercallback( _tpl ){
      <dt>cmaddcallback = function</dt>
      <dd>
      添加完成的回调, <b>window 变量域</b>
-<xmp>function cmaddcallback( _ins, _newItem ){
+<xmp>function cmaddcallback( _ins, _newItem, _cmitem, _boxParent ){
    var _trigger = $(this);
    JC.log( 'cmaddcallback', new Date().getTime() );
 }</xmp>
@@ -163,7 +163,7 @@ function cmtplfiltercallback( _tpl ){
      <dt>cmbeforedelcallback = function</dt>
      <dd>
      删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b>
-<xmp>function cmbeforedelcallback( _appendBox, _ins ){
+<xmp>function cmbeforedelcallback( _cmitem, _boxParent ){
    var _trigger = $(this);
    JC.log( 'cmbeforedelcallback', new Date().getTime() );
    //return false;
@@ -172,8 +172,7 @@ function cmtplfiltercallback( _tpl ){
      <dt>cmdelcallback = function</dt>
      <dd>
      删除完成的回调, <b>window 变量域</b>
-<xmp>function cmdelcallback( _ins ){
-   var _trigger = $(this);
+<xmp>function cmdelcallback( _ins, _boxParent ){
    JC.log( 'cmdelcallback', new Date().getTime() );
 }</xmp>
      </dd>
@@ -189,7 +188,7 @@ function cmtplfiltercallback( _tpl ){
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_CommonModify_CommonModify.js.html#l1"><code>..&#x2F;bizs&#x2F;CommonModify&#x2F;CommonModify.js:1</code></a>
+        <a href="../files/.._bizs_CommonModify_CommonModify.js.html#l2"><code>..&#x2F;bizs&#x2F;CommonModify&#x2F;CommonModify.js:2</code></a>
         </p>
     </div>
     <div class="description">

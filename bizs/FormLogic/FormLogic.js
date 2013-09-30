@@ -1,5 +1,4 @@
 //TODO: 表单重置时, 不要触发 select 的 change 事件
-//TODO: AJAX 提交改为 iframe 提交, 避免上传文件的兼容问题
 ;(function($){
     /**
      * <h2>提交表单控制逻辑</h2>
@@ -68,13 +67,6 @@
      *
      *      <dt>formPopupCloseMs = int, default = 2000</dt>
      *      <dd>msgbox 弹框的显示时间</dd>
-     *
-     *      <dt>formSubmitType = string, default = plugins</dt>
-     *      <dd>
-     *          类型: plugins, form
-     *          <br/>plugins 支持 AJAX 文件上传, 但是在 弹框里 捕获不到提交事件
-     *          <br/>form 不支持 ajax 文件上传, 但可以在 popup 里捕获到提交事件
-     *      </dd>
      *
      *      <dt>formAjaxMethod = string, default = get</dt>
      *      <dd>
@@ -386,23 +378,13 @@
                 });
 
                 _p.on( 'BindFrame', function( _evt ){
-                    var _frame = _p._model.frame()
+                    var _frame
                         , _type = _p._model.formType()
                         , _frameName
                         ;
                     if( _type != FormLogic.Model.AJAX ) return;
 
-                    /*
-                    _frameName = _p._model.id() + '_frame';
-
-                    _frame.attr( 'name', _frameName );
-                    _frame.attr( 'id', _frameName );
-
-                    setTimeout( function(){
-                        _p._model.selector()[0].target = _frameName;
-                    });
-                    */
-
+                    _frame = _p._model.frame();
                     _frame.on( 'load', function( _evt ){
                         var _w = _frame.prop('contentWindow')
                             , _wb = _w.document.body
@@ -414,23 +396,6 @@
                         _p.trigger( 'AjaxDone', [ _d ] );
                     });
                 });
-
-                /**
-                 * jquery ajax 提交处理事件
-                 */
-                /*_p.on( FormLogic.Model.EVT_AJAX_SUBMIT, function(){
-                    var _method = _p._model.formAjaxMethod();
-                    JC.log( FormLogic.Model.EVT_AJAX_SUBMIT, _method );
-
-                    var _data = _p._model.selector().serialize();
-                    $[ _method ] &&
-                        $[ _method ]( _p._model.formAjaxAction(), _data )
-                        .done( function( _d ){
-                            JC.log( 'common ajax done' );
-                            _p.trigger( 'AjaxDone', [ _d ] );
-                        });
-                    ;
-                });*/
                 /**
                  * 全局 AJAX 提交完成后的处理事件
                  */
@@ -485,49 +450,6 @@
                             $( this ).prop('disabled', true);
                         });
                 });
-
-/*                if( _p._model.formType() == 'ajax' && _p._model.formSubmitType() == 'plugins' ){*/
-                    /**
-                     * jquery.form plugins 提交处理设置
-                     * 这个可以 AJAX 上传文件
-                     */
-                    //_p.selector().ajaxForm({
-                        //beforeSubmit:
-                            //function(){
-                                //if( _p._model.formBeforeProcess() ){
-                                    //if( _p._model.formBeforeProcess().call( _p.selector(), null, _p ) === false ){
-                                        //return _p._model.prevent();
-                                    //}
-                                //}
-
-                                //if( !JC.Valid.check( _p.selector() ) ){
-                                    //_p._model.formProcessError() 
-                                        //&& _p._model.formProcessError().call( _p.selector(), null, _p );
-                                    //return _p._model.prevent();
-                                //}
-
-                                //if( _p._model.formAfterProcess() ){
-                                    //if( _p._model.formAfterProcess().call( _p.selector(), null, _p ) === false ){
-                                        //return _p._model.prevent();
-                                    //}
-                                //}
-
-                                //if( _p.selector().data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON ) ){
-                                    //_p.trigger( FormLogic.Model.EVT_CONFIRM );
-                                    //return _p._model.prevent();
-                                //}
-
-                                //_p.trigger( 'ProcessDone' );
-                            //}
-                        //, success:
-                            //function( _d ){
-                                //JC.log( 'plugins ajax done' );
-                                //_p.trigger( 'AjaxDone', [ _d ] );
-                            //}
-                    //});
-                //}else{
-                /*}*/
-
 
                 _p.on( FormLogic.Model.EVT_CONFIRM, function( _evt ){
                     var _btn = _p.selector().data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON )
