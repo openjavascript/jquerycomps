@@ -178,7 +178,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//TODO: 表单重置时, 不要触发 select 的 change 事件
+//TODO: 添加 disabled bind hidden 操作
 ;(function($){
     /**
      * &lt;h2&gt;提交表单控制逻辑&lt;/h2&gt;
@@ -247,6 +247,9 @@
      *
      *      &lt;dt&gt;formPopupCloseMs = int, default = 2000&lt;/dt&gt;
      *      &lt;dd&gt;msgbox 弹框的显示时间&lt;/dd&gt;
+   *
+     *      &lt;dt&gt;formAjaxResultType = string, default = json&lt;/dt&gt;
+     *      &lt;dd&gt;AJAX 返回的数据类型: json, html&lt;/dd&gt;
      *
      *      &lt;dt&gt;formAjaxMethod = string, default = get&lt;/dt&gt;
      *      &lt;dd&gt;
@@ -588,8 +591,10 @@
 
                     _p._model.formSubmitDisable() &amp;&amp; _p.trigger( &#x27;EnableSubmit&#x27; );
 
-                    var _json, _fatalError;
-                    try{ _json = $.parseJSON( _data ); }catch(ex){ _fatalError = true; }
+                    var _json, _fatalError, _resultType = _p._model.formAjaxResultType();
+                    if( _resultType == &#x27;json&#x27; ){
+                        try{ _json = $.parseJSON( _data ); }catch(ex){ _fatalError = true; _json = _data; }
+                    }
 
                     if( _fatalError ){
                         var _msg = printf( &#x27;服务端错误, 无法解析返回数据: &lt;p class=&quot;auExtErr&quot; style=&quot;color:red&quot;&gt;{0}&lt;/p&gt;&#x27;
@@ -599,6 +604,7 @@
                     }
 
                     _json 
+                        &amp;&amp; _resultType == &#x27;json&#x27;
                         &amp;&amp; &#x27;errorno&#x27; in _json 
                         &amp;&amp; !parseInt( _json.errorno, 10 )
                         &amp;&amp; _p._model.formResetAfterSubmit() 
@@ -789,6 +795,11 @@
                         ;
                 return _r.toLowerCase();
            }
+        , formAjaxResultType:
+            function(){
+                var _r = this.stringProp( &#x27;formAjaxResultType&#x27; ) || &#x27;json&#x27;;
+                return _r;
+            }
         , formAjaxMethod:
             function(){
                 var _r = this.stringProp( &#x27;formAjaxMethod&#x27; ) || this.stringProp( &#x27;method&#x27; );

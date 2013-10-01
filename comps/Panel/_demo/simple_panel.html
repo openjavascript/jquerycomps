@@ -57,8 +57,9 @@
 
     $(document).delegate( 'button.js_panel_alert', 'click', function(_evt){
         tmpPanel = JC.alert( 'user manual JC.alert ' + count, this, 1 );
-        tmpPanel.on('confirm', function( _evt, _panel ){ 
-            JC.log('another uaer callback'); 
+        tmpPanel.on('confirm', function( _evt, _panelIns ){ 
+            var _btn = $(this);
+            JC.log( _btn.prop( 'nodeName' ), 'another uaer callback' ); 
         });
 
         count++;
@@ -66,7 +67,8 @@
 
     $(document).delegate( 'button.js_panel_confirm', 'click', function(_evt){
         tmpPanel = JC.confirm( 'user manual JC.confirm ' + count, this, 2 );
-        tmpPanel.on('confirm', function( _evt, _panel ){ 
+        tmpPanel.on('confirm', function( _evt, _panelIns ){ 
+            var _btn = $(this);
             JC.log('another uaer callback'); 
         });
 
@@ -75,7 +77,8 @@
 
     $(document).delegate( 'button.js_panel_msgbox', 'click', function(_evt){
         tmpPanel = JC.msgbox( 'user manual JC.msgbox ' + count, this, 0 );
-        tmpPanel.on('confirm', function( _evt, _panel ){ 
+        tmpPanel.on('confirm', function( _evt, _panelIns ){ 
+            var _btn = $(this);
             JC.log('another uaer callback'); 
         });
 

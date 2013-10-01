@@ -1,4 +1,4 @@
-//TODO: 表单重置时, 不要触发 select 的 change 事件
+//TODO: 添加 disabled bind hidden 操作
 ;(function($){
     /**
      * <h2>提交表单控制逻辑</h2>
@@ -67,6 +67,9 @@
      *
      *      <dt>formPopupCloseMs = int, default = 2000</dt>
      *      <dd>msgbox 弹框的显示时间</dd>
+   *
+     *      <dt>formAjaxResultType = string, default = json</dt>
+     *      <dd>AJAX 返回的数据类型: json, html</dd>
      *
      *      <dt>formAjaxMethod = string, default = get</dt>
      *      <dd>
@@ -408,8 +411,10 @@
 
                     _p._model.formSubmitDisable() && _p.trigger( 'EnableSubmit' );
 
-                    var _json, _fatalError;
-                    try{ _json = $.parseJSON( _data ); }catch(ex){ _fatalError = true; }
+                    var _json, _fatalError, _resultType = _p._model.formAjaxResultType();
+                    if( _resultType == 'json' ){
+                        try{ _json = $.parseJSON( _data ); }catch(ex){ _fatalError = true; _json = _data; }
+                    }
 
                     if( _fatalError ){
                         var _msg = printf( '服务端错误, 无法解析返回数据: <p class="auExtErr" style="color:red">{0}</p>'
@@ -419,6 +424,7 @@
                     }
 
                     _json 
+                        && _resultType == 'json'
                         && 'errorno' in _json 
                         && !parseInt( _json.errorno, 10 )
                         && _p._model.formResetAfterSubmit() 
@@ -609,6 +615,11 @@
                         ;
                 return _r.toLowerCase();
            }
+        , formAjaxResultType:
+            function(){
+                var _r = this.stringProp( 'formAjaxResultType' ) || 'json';
+                return _r;
+            }
         , formAjaxMethod:
             function(){
                 var _r = this.stringProp( 'formAjaxMethod' ) || this.stringProp( 'method' );

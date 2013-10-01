@@ -52,7 +52,6 @@
 }(jQuery));
 ;
 
-//TODO: add checkbox support
  ;(function($){
     /**
      * 表单自动填充 URL GET 参数
