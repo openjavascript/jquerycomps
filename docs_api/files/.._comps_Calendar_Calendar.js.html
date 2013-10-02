@@ -178,6 +178,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+//TODO: minvalue, maxvalue 添加默认日期属性识别属性
 ;(function($){
     /**
      * 日期选择组件
@@ -862,7 +863,7 @@
     Calendar.initTrigger = 
         function( _selector ){
            _selector.each( function(){
-                var _p = $(this), _nodeName = (_p.prop(&#x27;nodeName&#x27;)||&#x27;&#x27;).toLowerCase();
+                var _p = $(this), _nodeName = (_p.prop(&#x27;nodeName&#x27;)||&#x27;&#x27;).toLowerCase(), _tmp;
 
                 if( _nodeName != &#x27;input&#x27; &amp;&amp; _nodeName != &#x27;textarea&#x27; ){ 
                     Calendar.initTrigger( _selector.find( &#x27;input[type=text], textarea&#x27; ) ); 
@@ -880,6 +881,21 @@
                 if( !_btn.length ){
                     _p.after( _btn = $(&#x27;&lt;input type=&quot;button&quot; class=&quot;UXCCalendar_btn&quot;  /&gt;&#x27;) );
                 }
+
+                ( _tmp = _p.val().trim() )
+                    &amp;&amp; ( _tmp = dateDetect( _tmp ) )
+                    &amp;&amp; _p.val( formatISODate( _tmp ) )
+                    ; 
+
+                ( _tmp = ( _p.attr(&#x27;minvalue&#x27;) || &#x27;&#x27; ) )
+                    &amp;&amp; ( _tmp = dateDetect( _tmp ) )
+                    &amp;&amp; _p.attr( &#x27;minvalue&#x27;, formatISODate( _tmp ) )
+                    ; 
+
+                ( _tmp = ( _p.attr(&#x27;maxvalue&#x27;) || &#x27;&#x27; ) )
+                    &amp;&amp; ( _tmp = dateDetect( _tmp ) )
+                    &amp;&amp; _p.attr( &#x27;maxvalue&#x27;, formatISODate( _tmp ) )
+                    ; 
 
                 if( ( _p.attr(&#x27;datatype&#x27;) || &#x27;&#x27; ).toLowerCase() == &#x27;monthday&#x27;
                     || ( _p.attr(&#x27;multidate&#x27;) || &#x27;&#x27; ).toLowerCase() == &#x27;monthday&#x27; ){
@@ -1759,7 +1775,6 @@
             Calendar.pickDate( this );
     });
 }(jQuery));
-
 ;
 
 ;(function($){

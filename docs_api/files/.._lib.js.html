@@ -923,8 +923,67 @@ function urlDetect( _url ){
     }
     return _r;
 }
+/**
+ * 日期占位符识别功能
+ * @method  dateDetect
+ * @param   {String}    _dateStr    如果 起始字符为 NOW, 那么将视为当前日期
+ * @return  {date|null}
+ * @static
+ * @example
+ *      dateDetect( &#x27;now&#x27; ); //2014-10-02
+ *      dateDetect( &#x27;now,3d&#x27; ); //2013-10-05
+ *      dateDetect( &#x27;now,-3d&#x27; ); //2013-09-29
+ *      dateDetect( &#x27;now,2w&#x27; ); //2013-10-16
+ *      dateDetect( &#x27;now,-2m&#x27; ); //2013-08-02
+ *      dateDetect( &#x27;now,4y&#x27; ); //2017-10-02
+ *
+ *      dateDetect( &#x27;now,1d,1w,1m,1y&#x27; ); //2014-11-10
+ */
+function dateDetect( _dateStr ){
+    var _r = null   
+        , _re = /^now/i
+        , _d, _ar, _item
+        ;
+    if( _dateStr &amp;&amp; typeof _dateStr == &#x27;string&#x27; ){
+        if( _re.test( _dateStr ) ){
+            _d = new Date();
+            _dateStr = _dateStr.replace( _re, &#x27;&#x27; ).replace(/[\s]+/g, &#x27;&#x27;);
+            _ar = _dateStr.split(&#x27;,&#x27;);
+
+            var _red = /d$/i
+                , _rew = /w$/i
+                , _rem = /m$/i
+                , _rey = /y$/i
+                ;
+            for( var i = 0, j = _ar.length; i &lt; j; i++ ){
+                _item = _ar[i] || &#x27;&#x27;;
+                if( !_item ) continue;
+                _item = _item.replace( /[^\-\ddwmy]+/gi, &#x27;&#x27; );
+
+                if( _red.test( _item ) ){
+                    _item = parseInt( _item.replace( _red, &#x27;&#x27; ), 10 );
+                    _item &amp;&amp; _d.setDate( _d.getDate() + _item );
+                }else if( _rew.test( _item ) ){
+                    _item = parseInt( _item.replace( _rew, &#x27;&#x27; ), 10 );
+                    _item &amp;&amp; _d.setDate( _d.getDate() + _item * 7 );
+                }else if( _rem.test( _item ) ){
+                    _item = parseInt( _item.replace( _rem, &#x27;&#x27; ), 10 );
+                    _item &amp;&amp; _d.setMonth( _d.getMonth() + _item );
+                }else if( _rey.test( _item ) ){
+                    _item = parseInt( _item.replace( _rey, &#x27;&#x27; ), 10 );
+                    _item &amp;&amp; _d.setFullYear( _d.getFullYear() + _item );
+                }
+            }
+            _r = _d;
+        }else{
+            _r = parseISODate( _dateStr );
+        }
+    }
+    return _r;
+}
 ;
 
+//TODO: use 方法 nginx 模式添加 url 最大长度判断
 ;(function( $ ){
     if( window.JC &amp;&amp; typeof JC.PATH != &#x27;undefined&#x27; ) return;
     /**
