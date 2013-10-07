@@ -1,3 +1,4 @@
+//TODO: html popup add trigger ref
 ;(function($){
     window.Panel = JC.Panel = Panel;
     /**
@@ -573,6 +574,16 @@
                 if( _selector && _selector.length ) _html = _selector.html();
                 return _html || '';
             }
+        /**
+         * 获取 html popup/dialog 的触发 node
+         * @method  triggerSelector
+         * @param   {Selector}      _setterSelector
+         * @return  {Selector|null}
+         */
+        , triggerSelector:
+            function( _setterSelector ){
+                return this._model.triggerSelector( _setterSelector );
+            }
     }
     /**
      * Panel 显示前会触发的事件<br/>
@@ -744,6 +755,13 @@
                 }
                 setTimeout( function(){ Panel.ignoreClick = false; }, 1 );
                 return this;
+            }
+        , triggerSelector:
+            function( _setterSelector ){
+                typeof _setterSelector != 'undefined' 
+                    && ( this._triggerSelector = _setterSelector )
+                    ;
+                return this._triggerSelector;
             }
         /**
          * 添加事件方法
@@ -1257,6 +1275,8 @@
         }
         _closecallback && _panel.on( 'close', _closecallback );
         _cancelcallback && _panel.on( 'cancel', _cancelcallback );
+
+        _panel.triggerSelector( _p );
     });
 
 }(jQuery));

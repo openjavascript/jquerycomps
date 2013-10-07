@@ -178,6 +178,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+//TODO: html popup add trigger ref
 ;(function($){
     window.Panel = JC.Panel = Panel;
     /**
@@ -753,6 +754,16 @@
                 if( _selector &amp;&amp; _selector.length ) _html = _selector.html();
                 return _html || &#x27;&#x27;;
             }
+        /**
+         * 获取 html popup/dialog 的触发 node
+         * @method  triggerSelector
+         * @param   {Selector}      _setterSelector
+         * @return  {Selector|null}
+         */
+        , triggerSelector:
+            function( _setterSelector ){
+                return this._model.triggerSelector( _setterSelector );
+            }
     }
     /**
      * Panel 显示前会触发的事件&lt;br/&gt;
@@ -924,6 +935,13 @@
                 }
                 setTimeout( function(){ Panel.ignoreClick = false; }, 1 );
                 return this;
+            }
+        , triggerSelector:
+            function( _setterSelector ){
+                typeof _setterSelector != &#x27;undefined&#x27; 
+                    &amp;&amp; ( this._triggerSelector = _setterSelector )
+                    ;
+                return this._triggerSelector;
             }
         /**
          * 添加事件方法
@@ -1437,6 +1455,8 @@
         }
         _closecallback &amp;&amp; _panel.on( &#x27;close&#x27;, _closecallback );
         _cancelcallback &amp;&amp; _panel.on( &#x27;cancel&#x27;, _cancelcallback );
+
+        _panel.triggerSelector( _p );
     });
 
 }(jQuery));

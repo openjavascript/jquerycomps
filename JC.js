@@ -1,4 +1,5 @@
 //TODO: use 方法 nginx 模式添加 url 最大长度判断
+//TODO: use add custom type
 ;(function( $ ){
     if( window.JC && typeof JC.PATH != 'undefined' ) return;
     /**
