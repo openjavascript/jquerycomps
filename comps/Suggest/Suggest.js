@@ -273,6 +273,10 @@
                     }
                 });
 
+                _p._model.selector().on('blur', function( _evt ){
+                    _p._model.timeout && clearTimeout( _p._model.timeout );
+                });
+
                 _p._model.selector().on('keydown', function( _evt ){
                    var _keycode = _evt.keyCode
                         , _sp = $(this)

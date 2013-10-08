@@ -214,18 +214,26 @@
      *      <dd>
      *          <dl>
      *              <dt>datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )</dt>
-     *              <dd><b>datavalidmsg:</b> 值不合法时的提示信息</dd>
+     *              <dd><b>datavalidMsg:</b> 值不合法时的提示信息</dd>
      *              <dd>
-     *                  <b>datavalidurl:</b> 验证内容正确与否的 url api
+     *                  <b>datavalidUrl:</b> 验证内容正确与否的 url api
      *                  <p>{"errorno":0,"errmsg":""}</p>
      *                  errorno: 0( 正确 ), 非0( 错误 )
      *                  <p>datavalidurl="./data/handler.php?key={0}"</p>
      *                  {0} 代表 value
      *              </dd>
      *              <dd>
-     *                  <b>datavalidcallback:</b> 请求 datavalidurl 后调用的回调
-<xmp>function datavalidcallback( _json ){
+     *                  <b>datavalidCallback:</b> 请求 datavalidUrl 后调用的回调
+<xmp>function datavalidCallback( _json ){
     var _selector = $(this);
+});</xmp>
+     *              </dd>
+     *              <dd>
+     *                  <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调
+<xmp>function datavalidUrlFilter( _url ){
+    var _selector = $(this);
+    _url = addUrlParams( _url, { 'xtest': 'customData' } );
+    return _url;
 });</xmp>
      *              </dd>
      *          </dl>
@@ -2557,25 +2565,32 @@
      * 初始化 subdatatype = datavalid 相关事件
      */
     $(document).delegate( 'input[type=text][subdatatype=datavalid]', 'keyup', function( _evt ){
-        var _sp = $(this), _url = _sp.attr('datavalidurl');
+        var _sp = $(this);
 
         Valid.dataValid( _sp, false, true );
-        if( !_url ) return;
 
         if( _sp.data( 'DataValidInited' ) ) return;
         _sp.data( 'DataValidInited', true );
 
         _sp.on( 'blur', function( _evt ){
-            var _v = _sp.val().trim(), _tmp, _strData;
+            var _v = _sp.val().trim(), _tmp, _strData, _url = _sp.attr('datavalidurl');
             if( !_v ) return;
+            if( !_url ) return;
+
+            _url = printf( _url, _v );
+            _sp.attr('datavalidUrlFilter')
+                && ( _tmp = window[ _sp.attr('datavalidUrlFilter') ] )
+                && ( _url = _tmp.call( _sp, _url ) )
+                ;
+            
             $.get( _url ).done( function( _d ){
                 _strData = _d;
                 try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
                 _v === 'suchestest' && (  _d.errorno = 0 );
                 Valid.dataValid( _sp, !_d.errorno, false, _d.errmsg );
 
-                _sp.attr('datavalidcallback')
-                    && ( _tmp = window[ _sp.attr('datavalidcallback') ] )
+                _sp.attr('datavalidCallback')
+                    && ( _tmp = window[ _sp.attr('datavalidCallback') ] )
                     && _tmp.call( _sp, _d, _strData )
                     ;
             });

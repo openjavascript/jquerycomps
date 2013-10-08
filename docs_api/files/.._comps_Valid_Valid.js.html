@@ -394,18 +394,26 @@
      *      &lt;dd&gt;
      *          &lt;dl&gt;
      *              &lt;dt&gt;datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )&lt;/dt&gt;
-     *              &lt;dd&gt;&lt;b&gt;datavalidmsg:&lt;/b&gt; 值不合法时的提示信息&lt;/dd&gt;
+     *              &lt;dd&gt;&lt;b&gt;datavalidMsg:&lt;/b&gt; 值不合法时的提示信息&lt;/dd&gt;
      *              &lt;dd&gt;
-     *                  &lt;b&gt;datavalidurl:&lt;/b&gt; 验证内容正确与否的 url api
+     *                  &lt;b&gt;datavalidUrl:&lt;/b&gt; 验证内容正确与否的 url api
      *                  &lt;p&gt;{&quot;errorno&quot;:0,&quot;errmsg&quot;:&quot;&quot;}&lt;/p&gt;
      *                  errorno: 0( 正确 ), 非0( 错误 )
      *                  &lt;p&gt;datavalidurl=&quot;./data/handler.php?key={0}&quot;&lt;/p&gt;
      *                  {0} 代表 value
      *              &lt;/dd&gt;
      *              &lt;dd&gt;
-     *                  &lt;b&gt;datavalidcallback:&lt;/b&gt; 请求 datavalidurl 后调用的回调
-&lt;xmp&gt;function datavalidcallback( _json ){
+     *                  &lt;b&gt;datavalidCallback:&lt;/b&gt; 请求 datavalidUrl 后调用的回调
+&lt;xmp&gt;function datavalidCallback( _json ){
     var _selector = $(this);
+});&lt;/xmp&gt;
+     *              &lt;/dd&gt;
+     *              &lt;dd&gt;
+     *                  &lt;b&gt;datavalidUrlFilter:&lt;/b&gt; 请求数据前对 url 进行操作的回调
+&lt;xmp&gt;function datavalidUrlFilter( _url ){
+    var _selector = $(this);
+    _url = addUrlParams( _url, { &#x27;xtest&#x27;: &#x27;customData&#x27; } );
+    return _url;
 });&lt;/xmp&gt;
      *              &lt;/dd&gt;
      *          &lt;/dl&gt;
@@ -2737,25 +2745,32 @@
      * 初始化 subdatatype = datavalid 相关事件
      */
     $(document).delegate( &#x27;input[type=text][subdatatype=datavalid]&#x27;, &#x27;keyup&#x27;, function( _evt ){
-        var _sp = $(this), _url = _sp.attr(&#x27;datavalidurl&#x27;);
+        var _sp = $(this);
 
         Valid.dataValid( _sp, false, true );
-        if( !_url ) return;
 
         if( _sp.data( &#x27;DataValidInited&#x27; ) ) return;
         _sp.data( &#x27;DataValidInited&#x27;, true );
 
         _sp.on( &#x27;blur&#x27;, function( _evt ){
-            var _v = _sp.val().trim(), _tmp, _strData;
+            var _v = _sp.val().trim(), _tmp, _strData, _url = _sp.attr(&#x27;datavalidurl&#x27;);
             if( !_v ) return;
+            if( !_url ) return;
+
+            _url = printf( _url, _v );
+            _sp.attr(&#x27;datavalidUrlFilter&#x27;)
+                &amp;&amp; ( _tmp = window[ _sp.attr(&#x27;datavalidUrlFilter&#x27;) ] )
+                &amp;&amp; ( _url = _tmp.call( _sp, _url ) )
+                ;
+            
             $.get( _url ).done( function( _d ){
                 _strData = _d;
                 try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
                 _v === &#x27;suchestest&#x27; &amp;&amp; (  _d.errorno = 0 );
                 Valid.dataValid( _sp, !_d.errorno, false, _d.errmsg );
 
-                _sp.attr(&#x27;datavalidcallback&#x27;)
-                    &amp;&amp; ( _tmp = window[ _sp.attr(&#x27;datavalidcallback&#x27;) ] )
+                _sp.attr(&#x27;datavalidCallback&#x27;)
+                    &amp;&amp; ( _tmp = window[ _sp.attr(&#x27;datavalidCallback&#x27;) ] )
                     &amp;&amp; _tmp.call( _sp, _d, _strData )
                     ;
             });

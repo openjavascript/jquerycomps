@@ -60,6 +60,9 @@
  *
  *      <dt>dldisplay = bool</dt>
  *      <dd>指定 dlhidetarget 是否显示</dd>
+ *
+ *      <dt>dlhidetargetsub = selector</dt>
+ *      <dd>根据 trigger 的 checked 状态 显示或者隐藏 dlhidetargetsub node</dd>
  * </dl>
  *
  * <h2>hide target 的 HTML 属性</h2>
