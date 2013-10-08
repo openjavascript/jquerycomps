@@ -556,8 +556,7 @@
         , change:
             function( _triggerItem ){
                 _triggerItem &amp;&amp; ( _triggerItem = $( _triggerItem ) );
-                if( !( _triggerItem &amp;&amp; _triggerItem.length ) ) return;
-
+                if( !( _triggerItem &amp;&amp; _triggerItem.length &amp;&amp; _triggerItem.is(&#x27;:visible&#x27;) ) ) return;
                 var _p = this
                     , _isDisable = _p._model.dldisable( _triggerItem )
                     , _dlTarget = _p._model.dltarget( _triggerItem )
@@ -565,12 +564,38 @@
                     , _dlHideTarget = _p._model.dlhidetarget( _triggerItem )
                     ;
 
-                _dlTarget 
-                    &amp;&amp; _dlTarget.length 
-                    &amp;&amp; _dlTarget.each( function(){ 
-                                            $(this).attr(&#x27;disabled&#x27;, _isDisable);
-                                            JC.Valid &amp;&amp; JC.Valid.setValid( $(this) );
-                                       });
+                if( _triggerItem.is( &#x27;[dlhidetargetsub]&#x27; ) ){
+                    var _starget = parentSelector( _triggerItem, _triggerItem.attr( &#x27;dlhidetargetsub&#x27; ) );
+                    if( _starget &amp;&amp; _starget.length ){
+                        if( _triggerItem.prop(&#x27;checked&#x27;) ){
+                            _starget.show();
+                        }else{
+                            _starget.hide();
+                        }
+                    }
+                }
+
+                if( _dlTarget &amp;&amp; _dlTarget.length ){
+                    _dlTarget.each( function(){ 
+                        var _sp = $( this );
+                        _sp.attr(&#x27;disabled&#x27;, _isDisable);
+                        JC.Valid &amp;&amp; JC.Valid.setValid( _sp );
+
+                        if( _sp.is( &#x27;[dlhidetargetsub]&#x27; ) ){
+                            var _starget = parentSelector( _sp, _sp.attr( &#x27;dlhidetargetsub&#x27; ) );
+                            if( !( _starget &amp;&amp; _starget.length ) ) return;
+                            if( _isDisable ){
+                                _starget.hide();
+                            }else{
+                                if( _sp.prop(&#x27;checked&#x27;) ){
+                                    _starget.show();
+                                }else{
+                                    _starget.hide();
+                                }
+                            }
+                        }
+                    });
+                }
 
                 if( _dlHideTarget &amp;&amp;  _dlHideTarget.length  ){
                     _dlHideTarget.each( function(){

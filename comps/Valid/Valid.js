@@ -207,7 +207,27 @@
      *              <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=unique]</dd>
      *              <dd><b>uniquedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>
      *              <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>
+     *              <dd><b>uniqueIgnoreCase:</b> 是否忽略大小写</dd>
      *              <dd>unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组</dd>
+     *          </dl>
+     *      </dd>
+     *      <dd>
+     *          <dl>
+     *              <dt>datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )</dt>
+     *              <dd><b>datavalidmsg:</b> 值不合法时的提示信息</dd>
+     *              <dd>
+     *                  <b>datavalidurl:</b> 验证内容正确与否的 url api
+     *                  <p>{"errorno":0,"errmsg":""}</p>
+     *                  errorno: 0( 正确 ), 非0( 错误 )
+     *                  <p>datavalidurl="./data/handler.php?key={0}"</p>
+     *                  {0} 代表 value
+     *              </dd>
+     *              <dd>
+     *                  <b>datavalidcallback:</b> 请求 datavalidurl 后调用的回调
+<xmp>function datavalidcallback( _json ){
+    var _selector = $(this);
+});</xmp>
+     *              </dd>
      *          </dl>
      *      </dd>
      * </dl>
@@ -355,7 +375,9 @@
                 var _p = this, _r = true, _items = sliceArgs( arguments ), i, j;
                 $.each( _items, function( _ix, _item ){
                     _item = $(_item);
+                    Valid.isFormValid = false;
                     if( _p._model.isForm( _item ) ){
+                        Valid.isFormValid = true;
                         var _errorabort = _p._model.isErrorAbort( _item ), tmp;
                         for( i = 0, j = _item[0].length; i < j; i++ ){
                             var _sitem = $( $(_item[0][i]) );
@@ -470,6 +492,41 @@
      * @return  {Valid instance}
      */
     Valid.getInstance = function(){ !Valid._instance && new Valid(); return Valid._instance; };
+    /**
+     * 判断/设置 selector 的数据是否合法
+     * <br /> 通过 datavalid 属性判断
+     * @method dataValid
+     * @param   {selector}  _selector
+     * @param   {bool}      _settter
+     * @param   {bool}      _noStatus
+     * @param   {string}    _customMsg
+     * @static
+     * @return  bool
+     */
+    Valid.dataValid =
+        function( _selector, _settter, _noStatus, _customMsg ){
+            var _r = false, _msg = 'datavalidmsg';
+            _selector && ( _selector = $( _selector ) );
+
+            if( typeof _settter != 'undefined' ){
+                _r = _settter;
+                _selector.attr( 'datavalid', _settter );
+                if( !_noStatus ){
+                    if( _settter ){
+                        Valid.setValid( _selector );
+                    }else{
+                        _customMsg && ( _msg = ' ' + _customMsg );
+                        Valid.setError( _selector, _msg, true );
+                    }
+                }
+            }else{
+                if( _selector && _selector.length ){
+                    _r = parseBool( _selector.attr('datavalid') );
+                }
+            }
+
+            return _r;
+        };
     /**
      * 判断 selector 是否 Valid 的处理对象
      * @method  isValid
@@ -1898,6 +1955,7 @@
                     , _len = _p.typeLen( _item.attr('subdatatype') )[0]
                     , _KEY = "UniqueValidTime"
                     , _typeKey = 'unique'
+                    , _ignoreCase = parseBool( _item.attr('uniqueIgnoreCase') )
                     ;
 
                 JC.log( _typeKey, new Date().getTime() );
@@ -1935,6 +1993,7 @@
                         });
                         var _pureVal = _tmpAr.join(''), _compareVal = _tmpAr.join('IOU~IOU');
                         if( !_pureVal ) return;
+                        _ignoreCase && ( _compareVal = _compareVal.toLowerCase() );
 
                         if( _compareVal in _tmp ){
                             _tmp[ _compareVal ].push( _items );
@@ -1970,6 +2029,17 @@
                     _sitem.val() 
                         && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _sitem, 'uniquemsg', true ] );
                 } );
+
+                return _r;
+            }
+
+        , datavalid:
+            function( _item ){
+                var _r = true;
+                if( !Valid.isFormValid ) return _r;
+
+                _r = parseBool( _item.attr('datavalid') );
+                !_r && $(this).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'datavalidmsg', true ] );
 
                 return _r;
             }
@@ -2483,6 +2553,33 @@
     $(document).delegate( 'select, input[type=file], input[type=checkbox], input[type=radio]', 'blur', function($evt){
         Valid.getInstance().trigger( 'FocusMsg',  [ $(this), true ] );
     });
+    /**
+     * 初始化 subdatatype = datavalid 相关事件
+     */
+    $(document).delegate( 'input[type=text][subdatatype=datavalid]', 'keyup', function( _evt ){
+        var _sp = $(this), _url = _sp.attr('datavalidurl');
 
+        Valid.dataValid( _sp, false, true );
+        if( !_url ) return;
+
+        if( _sp.data( 'DataValidInited' ) ) return;
+        _sp.data( 'DataValidInited', true );
+
+        _sp.on( 'blur', function( _evt ){
+            var _v = _sp.val().trim(), _tmp, _strData;
+            if( !_v ) return;
+            $.get( _url ).done( function( _d ){
+                _strData = _d;
+                try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
+                _v === 'suchestest' && (  _d.errorno = 0 );
+                Valid.dataValid( _sp, !_d.errorno, false, _d.errmsg );
+
+                _sp.attr('datavalidcallback')
+                    && ( _tmp = window[ _sp.attr('datavalidcallback') ] )
+                    && _tmp.call( _sp, _d, _strData )
+                    ;
+            });
+        });
+    });
 
 }(jQuery))
