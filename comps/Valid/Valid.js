@@ -2564,8 +2564,11 @@
     /**
      * 初始化 subdatatype = datavalid 相关事件
      */
-    $(document).delegate( 'input[type=text][subdatatype=datavalid]', 'keyup', function( _evt ){
+    $(document).delegate( 'input[type=text][subdatatype]', 'keyup', function( _evt ){
         var _sp = $(this);
+
+        var _isDatavalid = /datavalid/i.test( _sp.attr('subdatatype') );
+        if( !_isDatavalid ) return;
 
         Valid.dataValid( _sp, false, true );
 
@@ -2577,23 +2580,28 @@
             if( !_v ) return;
             if( !_url ) return;
 
-            _url = printf( _url, _v );
-            _sp.attr('datavalidUrlFilter')
-                && ( _tmp = window[ _sp.attr('datavalidUrlFilter') ] )
-                && ( _url = _tmp.call( _sp, _url ) )
-                ;
-            
-            $.get( _url ).done( function( _d ){
-                _strData = _d;
-                try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
-                _v === 'suchestest' && (  _d.errorno = 0 );
-                Valid.dataValid( _sp, !_d.errorno, false, _d.errmsg );
 
-                _sp.attr('datavalidCallback')
-                    && ( _tmp = window[ _sp.attr('datavalidCallback') ] )
-                    && _tmp.call( _sp, _d, _strData )
+            setTimeout( function( _evt ){
+                _v = _sp.val().trim();
+                if( !_v ) return;
+                _url = printf( _url, _v );
+                _sp.attr('datavalidUrlFilter')
+                    && ( _tmp = window[ _sp.attr('datavalidUrlFilter') ] )
+                    && ( _url = _tmp.call( _sp, _url ) )
                     ;
-            });
+                $.get( _url ).done( function( _d ){
+                    _strData = _d;
+                    try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
+                    _v === 'suchestest' && (  _d.errorno = 0 );
+                    Valid.dataValid( _sp, !_d.errorno, false, _d.errmsg );
+
+                    _sp.attr('datavalidCallback')
+                        && ( _tmp = window[ _sp.attr('datavalidCallback') ] )
+                        && _tmp.call( _sp, _d, _strData )
+                        ;
+                });
+            }, 200);
+            
         });
     });
 

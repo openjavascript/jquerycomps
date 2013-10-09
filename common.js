@@ -538,7 +538,7 @@ function getJqParent( _selector, _filter ){
  * 扩展 jquery 选择器
  * <br />扩展起始字符的 '/' 符号为 jquery 父节点选择器
  * <br />扩展起始字符的 '|' 符号为 jquery 子节点选择器
- * <br />扩展起始字符的 '<' 符号为 jquery 父节点查找识别符( getJqParent )
+ * <br />扩展起始字符的 '(' 符号为 jquery 父节点查找识别符( getJqParent )
  * @method  parentSelector
  * @param   {selector}  _item
  * @param   {String}    _selector
@@ -562,7 +562,7 @@ function parentSelector( _item, _selector, _finder ){
         });
         return $( _multiSelector );
     }
-    var _pntChildRe = /^([\/]+)/, _childRe = /^([\|]+)/, _pntRe = /^([<]+)/;
+    var _pntChildRe = /^([\/]+)/, _childRe = /^([\|]+)/, _pntRe = /^([<\(]+)/;
     if( _pntChildRe.test( _selector ) ){
         _selector = _selector.replace( _pntChildRe, function( $0, $1 ){
             for( var i = 0, j = $1.length; i < j; i++ ){

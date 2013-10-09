@@ -2744,8 +2744,11 @@
     /**
      * 初始化 subdatatype = datavalid 相关事件
      */
-    $(document).delegate( &#x27;input[type=text][subdatatype=datavalid]&#x27;, &#x27;keyup&#x27;, function( _evt ){
+    $(document).delegate( &#x27;input[type=text][subdatatype]&#x27;, &#x27;keyup&#x27;, function( _evt ){
         var _sp = $(this);
+
+        var _isDatavalid = /datavalid/i.test( _sp.attr(&#x27;subdatatype&#x27;) );
+        if( !_isDatavalid ) return;
 
         Valid.dataValid( _sp, false, true );
 
@@ -2757,23 +2760,28 @@
             if( !_v ) return;
             if( !_url ) return;
 
-            _url = printf( _url, _v );
-            _sp.attr(&#x27;datavalidUrlFilter&#x27;)
-                &amp;&amp; ( _tmp = window[ _sp.attr(&#x27;datavalidUrlFilter&#x27;) ] )
-                &amp;&amp; ( _url = _tmp.call( _sp, _url ) )
-                ;
-            
-            $.get( _url ).done( function( _d ){
-                _strData = _d;
-                try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
-                _v === &#x27;suchestest&#x27; &amp;&amp; (  _d.errorno = 0 );
-                Valid.dataValid( _sp, !_d.errorno, false, _d.errmsg );
 
-                _sp.attr(&#x27;datavalidCallback&#x27;)
-                    &amp;&amp; ( _tmp = window[ _sp.attr(&#x27;datavalidCallback&#x27;) ] )
-                    &amp;&amp; _tmp.call( _sp, _d, _strData )
+            setTimeout( function( _evt ){
+                _v = _sp.val().trim();
+                if( !_v ) return;
+                _url = printf( _url, _v );
+                _sp.attr(&#x27;datavalidUrlFilter&#x27;)
+                    &amp;&amp; ( _tmp = window[ _sp.attr(&#x27;datavalidUrlFilter&#x27;) ] )
+                    &amp;&amp; ( _url = _tmp.call( _sp, _url ) )
                     ;
-            });
+                $.get( _url ).done( function( _d ){
+                    _strData = _d;
+                    try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
+                    _v === &#x27;suchestest&#x27; &amp;&amp; (  _d.errorno = 0 );
+                    Valid.dataValid( _sp, !_d.errorno, false, _d.errmsg );
+
+                    _sp.attr(&#x27;datavalidCallback&#x27;)
+                        &amp;&amp; ( _tmp = window[ _sp.attr(&#x27;datavalidCallback&#x27;) ] )
+                        &amp;&amp; _tmp.call( _sp, _d, _strData )
+                        ;
+                });
+            }, 200);
+            
         });
     });
 
