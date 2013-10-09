@@ -20,14 +20,18 @@
         if( MultiDate.getInstance( _selector ) ) return MultiDate.getInstance( _selector );
         MultiDate.getInstance( _selector, this );
 
-        this._model = new Model( _selector );
-        this._view = new View( this._model );
+        this._model = new MultiDate.Model( _selector );
+        this._view = new MultiDate.View( this._model );
 
-        this._init();
+        this._init();    
     }
     
     MultiDate.prototype = {
-        _init:
+        _beforeInit:
+            function(){
+                JC.log( 'MultiDate _beforeInit', new Date().getTime() );
+            }
+        , _initHanlderEvent:
             function(){
                 var _p = this;
 
@@ -39,18 +43,19 @@
                     var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
                     _p.trigger( _evtName, _data );
                 });
-
-                _p._model.init();
-                _p._view.init();
-
                 _p._initDefaultValue();
                 _p._initHandlerEvent();
 
-                return _p;
-            }    
+                _p.selector().trigger( 'change', [ true ] );
+            }
         , _initDefaultValue:
             function(){
-                var _p = this, _qs = _p._model.qstartdate(), _qe = _p._model.qenddate();
+                var _p = this
+                    , _qs = _p._model.qstartdate()
+                    , _qe = _p._model.qenddate()
+                    , _mdcusStart = _p._model.mdCustomStartDate()
+                    , _mdcusEnd= _p._model.mdCustomEndDate()
+                    ;
 
                 _p._model.selector( _p._model.qtype() );
                 _p._model.mdstartdate( _qs );
@@ -70,58 +75,67 @@
                 }else{
                     _p._model.mddate( _p._model.qdate() );
                 }
+
+                _mdcusStart && _mdcusStart.length && _mdcusStart.val( _qs ? formatISODate( parseISODate( _qs ) ) : _qs );
+                _mdcusEnd&& _mdcusEnd.length && _mdcusEnd.val( _qe ? formatISODate( parseISODate( _qe ) ) : _qe );
+
             }
         , _initHandlerEvent:
             function(){
                 var _p = this;
-                _p._model.selector().on('change', function(_evt){
-                    var _sp = $(this);
-                    JC.log( 'type:', _sp.val() );
-                    _p._model.settype( _sp.val() );
-                    setTimeout(function(){
-                        JC.Calendar.pickDate( _p._model.mddate()[0] );
-                        _p._model.mdstartdate( '' );
-                        _p._model.mdenddate( '' );
-                    }, 10);
+                _p._model.selector().on('change', function( _evt, _noPick ){
+                    var _sp = $(this)
+                        , _type = _sp.val().trim().toLowerCase()
+                        , _defaultBox = _p._model.mdDefaultBox()
+                        , _customBox = _p._model.mdCustomBox()
+                        ;
+                    JC.log( 'type:', _type );
+                    if( _type == 'custom' ){
+                        if( _defaultBox && _customBox && _defaultBox.length && _customBox.length ){
+                            _defaultBox.hide();
+                            _defaultBox.find('input').prop( 'disabled', true );
+
+                            _customBox.find('input').prop( 'disabled', false );
+                            _customBox.show();
+                        }
+                    }else{
+                        if( _defaultBox && _customBox && _defaultBox.length && _customBox.length ){
+                            _customBox.hide();
+                            _customBox.find('input').prop( 'disabled', true);
+
+                            _defaultBox.find('input').prop( 'disabled', false);
+                            _defaultBox.show();
+                        }
+                        if( _noPick ) return;
+                        _p._model.settype( _type );
+                        setTimeout(function(){
+                            JC.Calendar.pickDate( _p._model.mddate()[0] );
+                            _p._model.mdstartdate( '' );
+                            _p._model.mdenddate( '' );
+                        }, 10);
+                    }
                 });
             }
-        /**
-         * 获取 显示 MultiDate 的触发源选择器, 比如 a 标签
-         * @method  selector
-         * @return  selector
-         */ 
-        , selector: function(){ return this._model.selector(); }
-        /**
-         * 使用 jquery on 绑定事件
-         * @method  {string}    on
-         * @param   {string}    _evtName
-         * @param   {function}  _cb
-         * @return  MultiDateInstance
-         */
-        , on: function( _evtName, _cb ){ $(this).on(_evtName, _cb ); return this;}
-        /**
-         * 使用 jquery trigger 绑定事件
-         * @method  {string}    trigger
-         * @param   {string}    _evtName
-         * @return  MultiDateInstance
-         */
-        , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
+        , _inited:
+            function(){
+                JC.log( 'MultiDate _inited', new Date().getTime() );
+            }
     }
     /**
      * 获取或设置 MultiDate 的实例
-     * @method getInstance
+     * @method  getInstance
      * @param   {selector}      _selector
      * @static
-     * @return  {MultiDate instance}
+     * @return  {MultiDateInstance}
      */
     MultiDate.getInstance =
         function( _selector, _setter ){
             if( typeof _selector == 'string' && !/</.test( _selector ) ) 
                     _selector = $(_selector);
             if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
-            typeof _setter != 'undefined' && _selector.data( 'MultiDateIns', _setter );
+            typeof _setter != 'undefined' && _selector.data( MultiDate.Model._instanceName, _setter );
 
-            return _selector.data('MultiDateIns');
+            return _selector.data( MultiDate.Model._instanceName );
         };
     /**
      * 判断 selector 是否可以初始化 MultiDate
@@ -138,23 +152,23 @@
                 && ( _r = _selector.is( '[MultiDatelayout]' ) );
             return _r;
         };
-    
-    function Model( _selector ){
-        this._selector = _selector;
-    }
 
-    Model._inscount = 1;
+
+    BaseMVC.buildModel( MultiDate );
+    MultiDate.Model._instanceName = 'MultiDate';
+
+    MultiDate.Model._inscount = 1;
     
-    Model.prototype = {
+    MultiDate.Model.prototype = {
         init:
             function(){
                 var _p = this
-                    , _updatecb = 'Bizs.MultiDate_' + ( Model._inscount)
-                    , _showcb = 'Bizs.MultiDate_show_' + ( Model._inscount)
-                    , _hidecb = 'Bizs.MultiDate_hide_' + ( Model._inscount)
-                    , _layoutchangecb = 'Bizs.MultiDate_layoutchange_' + ( Model._inscount)
+                    , _updatecb = 'Bizs.MultiDate_' + ( MultiDate.Model._inscount)
+                    , _showcb = 'Bizs.MultiDate_show_' + ( MultiDate.Model._inscount)
+                    , _hidecb = 'Bizs.MultiDate_hide_' + ( MultiDate.Model._inscount)
+                    , _layoutchangecb = 'Bizs.MultiDate_layoutchange_' + ( MultiDate.Model._inscount)
                     ;
-                Model._inscount++;
+                MultiDate.Model._inscount++;
 
                 window[ _updatecb ] = 
                     function( _type, _startDate, _endDate ){
@@ -187,6 +201,12 @@
 
                 return _p;
             }
+
+        , mdDefaultBox: function(){ return this.selectorProp( 'mdDefaultBox' ); }
+        , mdCustomBox: function(){ return this.selectorProp( 'mdCustomBox' ); }
+
+        , mdCustomStartDate: function(){ return this.selectorProp( 'mdCustomStartDate' ); }
+        , mdCustomEndDate: function(){ return this.selectorProp( 'mdCustomEndDate' ); }
 
         , selector: 
             function( _setter ){ 
@@ -275,12 +295,9 @@
             }
 
     };
-    
-    function View( _model ){
-        this._model = _model;
-    }
-    
-    View.prototype = {
+
+    BaseMVC.buildView( MultiDate );
+    MultiDate.View.prototype = {
         init:
             function() {
                 return this;
@@ -294,6 +311,8 @@
             function(){
             }
     };
+
+    BaseMVC.build( MultiDate, 'Bizs' );
 
     $(document).ready( function(){
         $('select.js_autoMultidate').each( function(){
