@@ -236,9 +236,10 @@
         this._selector = _selector;
     }
 
-    Model.isParentSelectorRe = /^[\/\|<]/;
-    Model.parentSelectorRe = /[^\/\|<]/g;
-    Model.childSelectorRe = /[\/\|<]/g;
+    Model.isParentSelectorRe = /^[\/\|<\(]/;
+    Model.parentSelectorRe = /[^\/\|<\(]/g;
+    Model.childSelectorRe = /[\/\|<\(]/g;
+    Model.parentNodeRe = /^[<\(]/;
 
     Model.prototype = {
         init:
@@ -275,7 +276,7 @@
             function(){
                 var _r = this.selector().attr('checkfor'), _tmp;
                 if( this.isParentSelector() ){
-                    if( /^</.test( this.checkfor() ) ){
+                    if( Model.parentNodeRe.test( this.checkfor() ) ){
                         this.checkfor().replace( /[\s]([\s\S]+)/, function( $0, $1 ){
                             _r = $1;
                         });
@@ -290,7 +291,7 @@
             function(){
                 var _p = this, _r = $(document), _tmp;
                 if( this.isParentSelector() ){
-                    if( /^</.test( this.checkfor() ) ){
+                    if( Model.parentNodeRe.test( this.checkfor() ) ){
                         this.checkfor().replace( /^([^\s]+)/, function( $0, $1 ){
                             _r = parentSelector( _p.selector(), $1 );
                         });

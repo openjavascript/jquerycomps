@@ -1,5 +1,6 @@
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
 //TODO: checkbox, radio 错误时, input 添加高亮显示
+//TODO: subdatatype = alternative, 需要 处理 区号 + 电话号码 && 手机号码这样的逻辑
 ;(function($){
     /**
      * <b>表单验证</b> (单例模式)
@@ -191,6 +192,9 @@
      *              <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>
      *              <dd><b>alternativedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>
      *              <dd><b>alternativemsg:</b> N 选一的错误提示</dd>
+     *
+     *              <dd><b>alternativeReqTarget:</b> 为 alternative node 指定一个不能为空的 node</dd>
+     *              <dd><b>alternativeReqmsg:</b> alternativeReqTarget 目标 node 的html属性, 错误时显示的提示信息</dd>
      *          </dl>
      *      </dd>
      *      <dd>
@@ -426,45 +430,6 @@
                 return this;
             }
         , isValid: function( _selector ){ return this._model.isValid( _selector ); }
-        , formHasValue:
-            function( _fm, _ignoreSelector ){
-               var _r = false, _item, _nt;
-                _fm && ( _fm = $( _fm ) );
-
-                if( _fm && _fm.length ){
-                    for( var i = 0, j = _fm[0].length; i < j; i++ ){
-                        _item = $(_fm[0][i]);
-                        if( _item.is('[disabled]') ) continue;
-                        _nt = _item.prop('nodeName').toLowerCase();
-
-                        if( _ignoreSelector && _item.is( _ignoreSelector ) ) continue;
-                                        
-                        switch( _item.prop('type').toLowerCase() ){
-
-                            case 'select-multiple':
-                            case 'select-one':
-                            case 'select':
-                            case 'file': 
-                            case 'textarea':
-                            case 'password':
-                            case 'hidden':
-                            case 'text': 
-                                {
-                                    if( $.trim( _item.val() ).length ) return true;
-                                    break;
-                                }
-
-                           case 'checkbox':
-                            case 'radio':
-                                {
-                                    if( _item.prop('checked') ) return true;
-                                    break;
-                                }
-                        }
-                    }
-                }
-                return _r;
-            }
     }
 
     /**
@@ -521,7 +486,8 @@
                 _selector.attr( 'datavalid', _settter );
                 if( !_noStatus ){
                     if( _settter ){
-                        Valid.setValid( _selector );
+                        //Valid.setValid( _selector );
+                        _selector.trigger('blur', [true]);
                     }else{
                         _customMsg && ( _msg = ' ' + _customMsg );
                         Valid.setError( _selector, _msg, true );
@@ -654,34 +620,6 @@
             });
      */
     Valid.itemCallback;
-
-    /**
-     * 检查一个表单是否有内容
-     * @method  formHasValue
-     * @param   {selector}      _fm
-     * @param   {selector}      _ignoreSelector
-     * @return  bool
-     * @static
-     * @example
-             $('form.js-valid').on('submit', function( $evt ){
-                var _p = $(this);
-
-                if( !JC.Valid.formHasValue( _p ) ){
-                    $evt.preventDefault();
-                    JC.alert( '表单内容为空, 不能提交!', _p.find('button[type=submit]'), 1 );
-                    return false;
-                }
-
-                if( !JC.Valid.check( _p ) ){
-                    $evt.preventDefault();
-                    return false;
-                }
-            });
-     */
-    Valid.formHasValue =
-        function(){ 
-            return Valid.getInstance().formHasValue.apply( Valid.getInstance(), sliceArgs( arguments ) ); 
-        };
     /**
      * 判断 表单控件是否为忽略检查 或者 设置 表单控件是否为忽略检查
      * @method  ignore
@@ -1912,7 +1850,9 @@
                             _isReturn = true;
                         }
 
-                        if( $(this).val() ){ _hasVal = true; return false; } 
+                        if( $(this).val() ){ 
+                            _hasVal = true; return false; 
+                        } 
                     } );
                     _r = _hasVal;
                 }
@@ -1936,6 +1876,51 @@
                         }
                     });
                 }
+
+                if( _r && _target && _target.length ){
+                    var _hasReqTarget = false, _reqErrList = [];
+                    _target.each( function(){
+                        if( _item[0] == this ) return;
+                        var _sp = $(this), _reqTarget;
+                        if( _sp.is( '[alternativeReqTarget]' ) ){
+                            _reqTarget = parentSelector( _sp, _sp.attr('alternativeReqTarget') );
+                            if( _reqTarget && _reqTarget.length ){
+                                _reqTarget.each( function(){
+                                    var _ssp = $(this), _v = _ssp.val().trim();
+                                    if( !_v ){
+                                        _reqErrList.push( _ssp );
+                                        _hasReqTarget = true;
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                    if( _item.is( '[alternativeReqTarget]' ) ){
+                        _reqTarget = parentSelector( _item, _item.attr('alternativeReqTarget') );
+                        if( _reqTarget && _reqTarget.length ){
+                            _reqTarget.each( function(){
+                                var _ssp = $(this), _v = _ssp.val().trim();
+                                if( !_v ){
+                                    _reqErrList.push( _ssp );
+                                    _hasReqTarget = true;
+                                }
+                            });
+                        }
+                    }
+
+                    //alert( _hasReqTarget + ', ' + _reqErrList.length );
+
+                    if( _hasReqTarget && _reqErrList.length ){
+                        _r = false;
+                        $.each( _reqErrList, function( _ix, _sitem ){
+                            _sitem = $( _sitem );
+                            $( _p ).trigger( Model.TRIGGER, [ Model.ERROR, _sitem, 'alternativeReqmsg', true ] );
+                        });
+                        return _r;
+                    }
+                }
+
                 if( _r ){
                     if( _dt && _p[ _dt ] && _item.val() ){
                         _p[ _dt ]( _item );
@@ -2100,7 +2085,7 @@
                 if( /^\^$/.test( _selector ) ){
                     _subselector = _subselector || Model.SELECTOR_ERROR;
                     _selector = $( _item.parent().find( _subselector ) );
-                }else if( /^[\/\|\<]/.test( _selector ) ) {
+                }else if( /^[\/\|\<\(]/.test( _selector ) ) {
                     _selector = parentSelector( _item, _selector );
                 }else if( /\./.test( _selector ) ) {
                     return $( _selector );
@@ -2384,6 +2369,7 @@
             function( _item, _tm, _noStyle ){
                 _item && ( _item = $(_item) );
                 var _p = this, _tmp;
+                _item.data( 'JCValidStatus', true );
                 //if( !_p._model.isValid( _item ) ) return false;
                 setTimeout(function(){
                     _item.removeClass( Model.CSS_ERROR );
@@ -2443,6 +2429,7 @@
                 var _p = this, arg = arguments; 
                 //if( !_p._model.isValid( _item ) ) return true;
                 if( _item.is( '[validnoerror]' ) ) return true;
+                _item.data( 'JCValidStatus', false );
 
                 setTimeout(function(){
                     var _msg = _p._model.errorMsg.apply( _p._model, sliceArgs( arg ) )
@@ -2575,32 +2562,38 @@
         if( _sp.data( 'DataValidInited' ) ) return;
         _sp.data( 'DataValidInited', true );
 
-        _sp.on( 'blur', function( _evt ){
+        _sp.on( 'blur', function( _evt, _ignoreProcess ){
+            JC.log( 'datavalid', new Date().getTime() );
+            if( _ignoreProcess ) return;
             var _v = _sp.val().trim(), _tmp, _strData, _url = _sp.attr('datavalidurl');
             if( !_v ) return;
             if( !_url ) return;
 
+            _sp.data( 'DataValidTm' ) && clearTimeout( _sp.data( 'DataValidTm') );
 
-            setTimeout( function( _evt ){
-                _v = _sp.val().trim();
-                if( !_v ) return;
-                _url = printf( _url, _v );
-                _sp.attr('datavalidUrlFilter')
-                    && ( _tmp = window[ _sp.attr('datavalidUrlFilter') ] )
-                    && ( _url = _tmp.call( _sp, _url ) )
-                    ;
-                $.get( _url ).done( function( _d ){
-                    _strData = _d;
-                    try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
-                    _v === 'suchestest' && (  _d.errorno = 0 );
-                    Valid.dataValid( _sp, !_d.errorno, false, _d.errmsg );
-
-                    _sp.attr('datavalidCallback')
-                        && ( _tmp = window[ _sp.attr('datavalidCallback') ] )
-                        && _tmp.call( _sp, _d, _strData )
+            _sp.data( 'DataValidTm'
+                , setTimeout( function(){
+                    _v = _sp.val().trim();
+                    if( !_v ) return;
+                    if( !_sp.data('JCValidStatus') ) return;
+                    _url = printf( _url, _v );
+                    _sp.attr('datavalidUrlFilter')
+                        && ( _tmp = window[ _sp.attr('datavalidUrlFilter') ] )
+                        && ( _url = _tmp.call( _sp, _url ) )
                         ;
-                });
-            }, 200);
+                    $.get( _url ).done( function( _d ){
+                        _strData = _d;
+                        try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
+                        _v === 'suchestest' && (  _d.errorno = 0 );
+                        Valid.dataValid( _sp, !_d.errorno, false, _d.errmsg );
+
+                        _sp.attr('datavalidCallback')
+                            && ( _tmp = window[ _sp.attr('datavalidCallback') ] )
+                            && _tmp.call( _sp, _d, _strData )
+                            ;
+                    });
+                }, 151)
+            );
             
         });
     });

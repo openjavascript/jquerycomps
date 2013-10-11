@@ -110,7 +110,7 @@
                                 validmsg="false" 
                                 placeholder="区号"
                                 subdatatype="unique-3" 
-                                uniquedatatarget="<dd input.ss"
+                                uniquedatatarget="(dd input.ss"
                                 class="ss"
                                 />
                                 - 
@@ -118,7 +118,7 @@
                                 datatype="phonecode"
 
                                 subdatatype="alternative,unique-3" 
-                                uniquedatatarget="<dd input.ss"
+                                uniquedatatarget="(dd input.ss"
                                 uniquemsg="电话号不能有重复"
                                 class="ss"
                                 emel="/em.uniqueErr"
@@ -136,7 +136,7 @@
                                 placeholder="分机号"
                                 subdatatype="unique-3"
                                 uniquemsg="电话号不能有重复"
-                                uniquedatatarget="<dd input.ss"
+                                uniquedatatarget="(dd input.ss"
                                 class="ss"
                                 />
                                 <em class="error"></em>
@@ -149,7 +149,7 @@
                                 datatype="mobilecode" 
 
                                 subdatatype="alternative,unique" 
-                                uniquedatatarget="<dd input[datatype=mobilecode]"
+                                uniquedatatarget="(dd input[datatype=mobilecode]"
                                 uniquemsg="手机号不能有重复"
 
                                 datatarget="<ul input[datatype=phonecode]" 
@@ -174,7 +174,7 @@
                                 placeholder="区号"
                                 subdatatype="unique-3" 
                                 uniquemsg="电话号不能有重复"
-                                uniquedatatarget="<dd input.ss"
+                                uniquedatatarget="(dd input.ss"
                                 class="ss"
                                 />
                                 - 
@@ -182,7 +182,7 @@
                                 datatype="phonecode"
 
                                 subdatatype="alternative,unique-3" 
-                                uniquedatatarget="<dd input.ss"
+                                uniquedatatarget="(dd input.ss"
                                 uniquemsg="电话号不能有重复"
                                 class="ss"
                                 emel="/em.uniqueErr"
@@ -199,7 +199,7 @@
                                 validmsg="false" 
                                 placeholder="分机号"
                                 subdatatype="unique-3"
-                                uniquedatatarget="<dd input.ss"
+                                uniquedatatarget="(dd input.ss"
                                 class="ss"
                                 />
                                 <em class="error"></em>
@@ -212,7 +212,80 @@
                                 datatype="mobilecode" 
 
                                 subdatatype="alternative,unique" 
-                                uniquedatatarget="<dd input[datatype=mobilecode]"
+                                uniquedatatarget="(dd input[datatype=mobilecode]"
+                                uniquemsg="手机号不能有重复"
+
+                                datatarget="<ul input[datatype=phonecode]" 
+                                alternativemsg="电话号码和手机号码至少填写一个" 
+                                errmsg="请填写正确的手机号码"
+                                placeholder="手机号码"
+                                />
+                            </li>
+                        </ul>
+                    </div>
+                </dd>
+
+                <dd>
+                    <hr />
+                    <div>
+                        <ul>
+                            <li>
+                                <label>电话号码:</label>
+                                <input type='text' name='company_countrycode1' style="width:60px;" value='' size="7" 
+                                datatype="countrycode" 
+                                errmsg="请填写正确的地区代码" 
+                                validmsg="false" 
+                                placeholder="地区代码"
+                                />
+                                - 
+                                <input type='text' name='company_countrycode2' style="width:40px;" value='' size="4" 
+                                datatype="phonezone-2,4" 
+                                errmsg="请填写正确的电话区号" 
+                                validmsg="false" 
+                                placeholder="区号"
+                                subdatatype="unique-3" 
+                                uniquedatatarget="(dd input.ss"
+                                alternativeReqmsg="请填写区号"
+                                class="ss x"
+                                />
+                                - 
+                                <input type='text' name='' style="width:80px;" value='88888888' size="8" 
+                                datatype="phonecode"
+
+                                subdatatype="alternative,unique-3" 
+                                uniquedatatarget="(dd input.ss"
+                                uniquemsg="电话号不能有重复"
+                                emel="/em.uniqueErr"
+                                class="ss"
+
+                                datatarget="<ul input[datatype=mobilecode]" 
+                                alternativemsg="电话号码和手机号码至少填写一个" 
+                                errmsg="请检查电话号码格式" 
+                                placeholder="电话号码"
+                                alternativeReqTarget="/input.x"
+                                />
+                                - 
+                                <input type='text' name='countrycode4' style="width:40px;" value='' size="4" 
+                                datatype="phoneext" 
+                                errmsg="请填写正确的分机号" 
+                                validmsg="false" 
+                                placeholder="分机号"
+                                subdatatype="unique-3"
+                                uniquemsg="电话号不能有重复"
+                                uniquedatatarget="(dd input.ss"
+                                class="ss"
+                                />
+                                <em class="error"></em>
+                                <span><em class="error uniqueErr"></em></span>
+                                <em class="validmsg"></em>
+                            </li>
+                            <li>
+                                <label>手机号码:</label>
+                                <input type="text" name="" value="" 
+                                datatype="mobilecode" 
+
+                                subdatatype="alternative,unique" 
+                                uniquedatatarget="(dd input[datatype=mobilecode]"
                                 uniquemsg="手机号不能有重复"
 
                                 datatarget="<ul input[datatype=phonecode]" 
@@ -225,6 +298,7 @@
                     </div>
 
                 </dd>
+
 
                 <dd style="margin-top:20px; padding-left: 300px;">
                     <div><em id="uniqueErr" class="error"></em></div>
