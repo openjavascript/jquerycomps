@@ -628,7 +628,7 @@
             }
         , formAjaxAction:
             function(){
-                var _r = this.stringProp( 'formAjaxAction' ) || this.stringProp( 'action' ) || '?';
+                var _r = this.attrProp( 'formAjaxAction' ) || this.attrProp( 'action' ) || '?';
                 return urlDetect( _r );
             }
         , formSubmitDisable:
@@ -724,10 +724,10 @@
                     ;
 
                 _p.selector().is('[formAjaxDoneAction]')
-                    && ( _r = this.stringProp( 'formAjaxDoneAction' ) || _r );
+                    && ( _r = this.attrProp( 'formAjaxDoneAction' ) || _r );
 
                 _btn && ( _btn = $( _btn ) ).length
-                    && ( _r = _p.stringProp( _btn, 'formAjaxDoneAction' ) || _r )
+                    && ( _r = _p.attrProp( _btn, 'formAjaxDoneAction' ) || _r )
                     ;
 
                 return urlDetect( _r );
@@ -757,7 +757,7 @@
                     ;
 
                 _btn && ( _btn = $( _btn ) ).length
-                    && ( _r = _p.stringProp( _btn, 'formResetUrl' ) || _r )
+                    && ( _r = _p.attrProp( _btn, 'formResetUrl' ) || _r )
                     ;
 
                 return urlDetect( _r );

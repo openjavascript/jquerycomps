@@ -463,7 +463,7 @@
             }
         , balDoneUrl:
             function(){
-                var _r = this.stringProp( 'balDoneUrl' );
+                var _r = this.attrProp( 'balDoneUrl' );
                 return urlDetect( _r );
             }
         , balConfirmMsg:
