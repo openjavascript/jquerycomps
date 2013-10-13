@@ -238,19 +238,19 @@
             }
 
         , qtype: function(){
-            return this.decodedata( get_url_param( this.selector().attr('name') || '' ) || '' ).toLowerCase();
+            return this.decodedata( getUrlParam( this.selector().attr('name') || '' ) || '' ).toLowerCase();
         }
 
         , qdate: function(){
-            return this.decodedata( get_url_param( this.mddate().attr('name') || '' ) || '' ).toLowerCase();
+            return this.decodedata( getUrlParam( this.mddate().attr('name') || '' ) || '' ).toLowerCase();
         }
 
         , qstartdate: function(){
-            return this.decodedata( get_url_param( this.mdstartdate().attr('name') || '' ) || '' ).toLowerCase();
+            return this.decodedata( getUrlParam( this.mdstartdate().attr('name') || '' ) || '' ).toLowerCase();
         }
 
         , qenddate: function(){
-            return this.decodedata( get_url_param( this.mdenddate().attr('name') || '' ) || '' ).toLowerCase();
+            return this.decodedata( getUrlParam( this.mdenddate().attr('name') || '' ) || '' ).toLowerCase();
         }
 
         , hastype:

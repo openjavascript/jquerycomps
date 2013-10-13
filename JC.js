@@ -274,7 +274,7 @@
                 var _postfix = JC.pathPostfix ? '?v=' + JC.pathPostfix : '';
                 for( var i = 0, j = _paths.length, _path; i < j; i++ ){
                     _path = _paths[i];
-                    JC.pathPostfix && ( _path = add_url_params( _path, { 'v': JC.pathPostfix } ) );
+                    JC.pathPostfix && ( _path = addUrlParams( _path, { 'v': JC.pathPostfix } ) );
                     _paths[i] = printf( '<script src="{0}"><\/script>', _path );
                 }
                 _paths.length && document.write( _paths.join('') );
@@ -303,7 +303,7 @@
     /**
      * 自动识别组件库所在路径
      */
-    JC.PATH = script_path_f();
+    JC.PATH = scriptPath();
     //dev开发时因为脚本没合并, IE找不到库的正确路径, 这个判断仅针对dev开发分支
     /\/JQueryComps_dev\//i.test( location.href ) 
         && !( /file\:/.test( location.href ) || /\\/.test( location.href ) )

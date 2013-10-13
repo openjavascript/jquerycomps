@@ -38,13 +38,13 @@ var fm = document.getElementById( 'upload_form' )
 , btn = document.getElementById('btn');
 ;
 
-var infoBtnval = (get_url_param( 'infoBtn' ) || get_url_param( 'info' ) )
-, uploadurl = get_url_param( 'url' )
-, uploadname = get_url_param( 'name' )
-, btntext = get_url_param( 'btntext' )
-, styles = get_url_param( 'style' )
-, callback = get_url_param( 'cb' ) || 'IFRAME_UPLOAD'
-, filetype = get_url_param('filetype')
+var infoBtnval = (getUrlParam( 'infoBtn' ) || getUrlParam( 'info' ) )
+, uploadurl = getUrlParam( 'url' )
+, uploadname = getUrlParam( 'name' )
+, btntext = getUrlParam( 'btntext' )
+, styles = getUrlParam( 'style' )
+, callback = getUrlParam( 'cb' ) || 'IFRAME_UPLOAD'
+, filetype = getUrlParam('filetype')
 ;
 
 filetype = filetype.replace(/[\s]+/g, '').toLowerCase();
@@ -61,7 +61,7 @@ if( uploadurl ){ try{ uploadurl = decodeURIComponent( uploadurl ); }catch(ex){} 
 if( uploadname ){ try{ uploadname = decodeURIComponent( uploadname ); }catch(ex){} }
 if( btntext ){ try{ btntext = decodeURIComponent( btntext ); }catch(ex){} }
 
-uploadurl && ( uploadurl = add_url_params( uploadurl, { 'cb': callback, 'info': infoBtnval } ) );
+uploadurl && ( uploadurl = addUrlParams( uploadurl, { 'cb': callback, 'info': infoBtnval } ) );
 
 uploadurl && fm.setAttribute( 'action', uploadurl );
 uploadname && flBtn.setAttribute( 'name', uploadname );
@@ -107,14 +107,14 @@ function IFRAME_UPLOAD(){
  * 添加URL参数
  * x@btbtd.org  2013-06-12
  * @example
-        var url = add_url_params( location.href, {'key1': 'key1value', 'key2': 'key2value' } );
+        var url = addUrlParams( location.href, {'key1': 'key1value', 'key2': 'key2value' } );
  */ 
-function add_url_params( $url, $params ){
+function addUrlParams( $url, $params ){
     var sharp = '';
     !$params && ( $params = $url, $url = location.href );
     $url.indexOf('#') > -1 && ( sharp = $url.split('#')[1], $url = $url.split('#')[0] );
     for( var k in $params ){
-        $url = del_url_param($url, k);
+        $url = delUrlParam($url, k);
         $url.indexOf('?') > -1 
             ? $url += '&' + k +'=' + $params[k]
             : $url += '?' + k +'=' + $params[k];
@@ -127,14 +127,14 @@ function add_url_params( $url, $params ){
 /**
  * 取URL参数的值
  * x@btbtd.org  2012/4/24 
- * @method  get_url_param
+ * @method  getUrlParam
  * @param   {string}    $url
  * @param   {string}    $key
- * @require del_url_param 
+ * @require delUrlParam 
  * @example
-        var defaultTag = get_url_param(location.href, 'tag');  
+        var defaultTag = getUrlParam(location.href, 'tag');  
  */ 
-function get_url_param( $url, $key ){
+function getUrlParam( $url, $key ){
     var result = '', paramAr, i, items;
     !$key && ( $key = $url, $url = location.href );
     $url.indexOf('#') > -1 && ( $url = $url.split('#')[0] );
@@ -154,13 +154,13 @@ function get_url_param( $url, $key ){
 /**
  * 删除URL参数
  * x@btbtd.org  2012/4/24  
- * @method  del_url_param
+ * @method  delUrlParam
  * @params  {string}    $url
  * @params  {string}    $key
  * @example
-        var url = del_url_param( location.href, 'tag' );
+        var url = delUrlParam( location.href, 'tag' );
  */ 
-function del_url_param( $url, $key ){
+function delUrlParam( $url, $key ){
     var sharp = '', params, tmpParams = [], i, item;
     !$key && ( $key = $url, $url = location.href );
     $url.indexOf('#') > -1 && ( sharp = $url.split('#')[1], $url = $url.split('#')[0] );

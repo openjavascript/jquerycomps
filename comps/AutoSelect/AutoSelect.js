@@ -693,7 +693,7 @@
                         && ( _cb = window[ _selector.attr('selectprocessurl' ) ] )
                         ;
                     _r = printf( _r, _pid );
-                    this.randomurl( _selector ) && ( _r = add_url_params( _r, {'rnd': new Date().getTime() } ) );
+                    this.randomurl( _selector ) && ( _r = addUrlParams( _r, {'rnd': new Date().getTime() } ) );
                     _cb && ( _r = _cb.call( _selector, _r, _pid ) );
                 return _r;
             }

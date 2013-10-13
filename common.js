@@ -136,6 +136,8 @@ function getUrlParam( _url, _key ){
     }
     return result;
 }
+//这个方法已经废弃, 请使用 getUrlParam
+function get_url_param(){ return getUrlParam.apply( null, sliceArgs( arguments ) ); }
 /**
  * 取URL参数的值, 这个方法返回数组
  * <br />与 getUrlParam 的区别是可以获取 checkbox 的所有值
@@ -165,8 +167,6 @@ function getUrlParams( _url, _key ){
     }
     return _r;
 }
-//这个方法已经废弃, 请使用 getUrlParam
-function get_url_param(){ return getUrlParam.apply( null, sliceArgs( arguments ) ); }
 /**
  * 删除URL参数
  * @method  delUrlParam
@@ -294,7 +294,7 @@ function pad_char_f( _str, _len, _char ){ return padChar.apply( null, sliceArgs(
  */
 function formatISODate( _date, _split ){
 	_date = _date || new Date(); typeof _split == 'undefined' && ( _split = '-' );
-	return [ _date.getFullYear(), pad_char_f( _date.getMonth() + 1 ), pad_char_f( _date.getDate() ) ].join(_split);
+	return [ _date.getFullYear(), padChar( _date.getMonth() + 1 ), padChar( _date.getDate() ) ].join(_split);
 }
 /**
  * 从 ISODate 字符串解析日期对象
