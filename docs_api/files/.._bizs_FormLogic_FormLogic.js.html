@@ -536,6 +536,9 @@
                     }
 
                     if( !JC.Valid.check( _p.selector() ) ){
+                        if( _p._model.formProcessError() ){
+                            _p._model.formProcessError().call( _p.selector(), _evt, _p );
+                        }
                         return _p._model.prevent( _evt );
                     }
 

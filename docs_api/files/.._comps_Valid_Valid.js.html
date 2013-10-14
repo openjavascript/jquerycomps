@@ -181,6 +181,7 @@
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
 //TODO: checkbox, radio 错误时, input 添加高亮显示
 //TODO: subdatatype = alternative, 需要 处理 区号 + 电话号码 &amp;&amp; 手机号码这样的逻辑
+//TODO: subdatatype 添加一个类型 reqtarget, 如果 源的值不为空, reqtarget的值也不能为空
 ;(function($){
     /**
      * &lt;b&gt;表单验证&lt;/b&gt; (单例模式)
@@ -373,8 +374,19 @@
      *              &lt;dd&gt;&lt;b&gt;alternativedatatarget:&lt;/b&gt; 与 datatarget相同, 区别是优先级高于 datatarget&lt;/dd&gt;
      *              &lt;dd&gt;&lt;b&gt;alternativemsg:&lt;/b&gt; N 选一的错误提示&lt;/dd&gt;
      *
-     *              &lt;dd&gt;&lt;b&gt;alternativeReqTarget:&lt;/b&gt; 为 alternative node 指定一个不能为空的 node&lt;/dd&gt;
+     *              &lt;dd&gt;
+     *                  &lt;b&gt;alternativeReqTarget:&lt;/b&gt; 为 alternative node 指定一个不能为空的 node
+     *                  &lt;br /&gt;&lt;b&gt;请使用 subdatatype = reqtarget&lt;/b&gt;, 这个附加属性将弃除
+     *              &lt;/dd&gt;
      *              &lt;dd&gt;&lt;b&gt;alternativeReqmsg:&lt;/b&gt; alternativeReqTarget 目标 node 的html属性, 错误时显示的提示信息&lt;/dd&gt;
+     *          &lt;/dl&gt;
+     *      &lt;/dd&gt;
+     *      &lt;dd&gt;
+     *          &lt;dl&gt;
+     *              &lt;dt&gt;reqtarget: 如果 selector 的值非空, 那么 datatarget 的值也不能为空&lt;/dt&gt;
+     *              &lt;dd&gt;&lt;b&gt;datatarget:&lt;/b&gt; 显式指定 目标 target&lt;/dd&gt;
+     *              &lt;dd&gt;&lt;b&gt;reqTargetDatatarget:&lt;/b&gt; 与 datatarget相同, 区别是优先级高于 datatarget&lt;/dd&gt;
+     *              &lt;dd&gt;&lt;b&gt;reqtargetmsg:&lt;/b&gt; target node 用于显示错误提示的 html 属性&lt;/dd&gt;
      *          &lt;/dl&gt;
      *      &lt;/dd&gt;
      *      &lt;dd&gt;
@@ -2053,6 +2065,11 @@
                             _p[ _sdt ]( $(this) );
                         }else if( !$(this).val() ){
                             $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
+                            var _reqTarget = parentSelector( $(this), $(this).attr( &#x27;reqtargetdatatarget&#x27; ) );
+                            _reqTarget 
+                                &amp;&amp; _reqTarget.length
+                                &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _reqTarget ] )
+                                ;
                         }
                     });
                 }
@@ -2113,13 +2130,36 @@
 
                 return _r;
             }
+        /**
+         * 如果 _item 的值非空, 那么 reqtarget 的值也不能为空
+         * @method  reqtarget
+         * @param   {selector}  _item
+         * @private
+         * @static
+         */
+        , &#x27;reqtarget&#x27;:
+            function( _item ){
+                var _p = this, _r = true
+                    , _v = _item.val().trim(), _tv
+                    , _target = parentSelector( _item, _item.attr(&#x27;reqtargetdatatarget&#x27;) || _item.attr(&#x27;datatarget&#x27;) )
+                    ;
+                if( _v &amp;&amp; _target &amp;&amp; _target.length ){
+                    _tv = _target.val().trim();
+                    !_tv &amp;&amp; ( _r = false );
+                    !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _target, &#x27;reqtargetmsg&#x27;, true ] );
+                    _r &amp;&amp; _target.trigger(&#x27;blur&#x27;);
+                }else if( _target &amp;&amp; _target.length ){
+                    _target.trigger(&#x27;blur&#x27;);
+                }
 
+                return _r;
+            }
         /**
          * N 个值必须保持唯一性, 不能有重复
          * @method  unique
+         * @param   {selector}  _item
          * @private
          * @static
-         * @param   {selector}  _item
          */
         , &#x27;unique&#x27;:
             function( _item ){

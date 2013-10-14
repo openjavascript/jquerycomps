@@ -235,6 +235,15 @@
     //alert( _json ); //object object
 }&lt;/xmp&gt;
      *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauUploadErrorCallback = function, optional&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          文件上传完毕时, 发生错误触发的回调
+&lt;xmp&gt;function cauUploadErrorCallback( _json, _selector, _frame ){
+    var _ins = this;
+    //alert( _json ); //object object
+}&lt;/xmp&gt;
+     *      &lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
      * @class AjaxUpload
@@ -409,6 +418,13 @@
                     if( _err ){
                         _p._view.errFatalError( _od );
                         _p._view.updateChange();
+
+                        _p._model.cauUploadErrorCallback()
+                            &amp;&amp; _p._model.cauUploadErrorCallback().call(    _p
+                                                                        , _d
+                                                                        , _p._model.selector()
+                                                                        , _p._model.frame() 
+                                                                    );
                     }else{
                         if( _d.errorno ){
                             _p._view.errUpload( _d );
@@ -493,6 +509,11 @@
         , cauUploadDoneCallback:
             function(){
                 return this.callbackProp( &#x27;cauUploadDoneCallback&#x27; );
+            }
+
+        , cauUploadErrorCallback:
+            function(){
+                return this.callbackProp( &#x27;cauUploadErrorCallback&#x27; );
             }
 
         , cauValue:
