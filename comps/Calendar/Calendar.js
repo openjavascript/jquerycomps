@@ -1616,7 +1616,7 @@
      * @type    int
      * @default 1
      */
-    JC.Calendar.weekDayOffset = 1;
+    JC.Calendar.weekDayOffset = 0;
 
     function WeekModel( _selector ){
         this._selector = _selector;
@@ -1811,7 +1811,7 @@
      * @method  weekOfYear
      * @static
      * @param   {int}   _year
-     * @param   {int}   _dayOffset  每周的默认开始为周几, 默认0(周日)
+     * @param   {int}   _dayOffset  每周的默认开始为周几, 默认0(周一)
      * @return  Array
      */
     function weekOfYear( _year, _dayOffset ){
@@ -1822,6 +1822,8 @@
          * 元旦开始的第一个星期一开始的一周为政治经济上的第一周
          */
          _d.getDay() > 1 && _d.setDate( _d.getDate() - _d.getDay() + 7 );
+
+         _d.getDay() === 0 && _d.setDate( _d.getDate() + 1 );
 
          _dayOffset > 0 && ( _dayOffset = (new Date( 2000, 1, 2 ) - new Date( 2000, 1, 1 )) * _dayOffset );
 
