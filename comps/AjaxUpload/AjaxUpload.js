@@ -1,3 +1,4 @@
+//TODO: 更改 cauValue 处理逻辑
  ;(function($){
     /**
      * Ajax 文件上传
@@ -62,6 +63,20 @@
 <xmp>function cauUploadErrorCallback( _json, _selector, _frame ){
     var _ins = this;
     //alert( _json ); //object object
+}</xmp>
+     *      </dd>
+     *
+     *      <dt>cauDisplayLabelCallback = function, optional, return = string</dt>
+     *      <dd>
+     *          自定义上传完毕后显示的内容 模板
+<xmp>function cauDisplayLabelCallback( _json, _label, _value ){
+    var _selector = this
+        , _label = printf( '<a href="{0}" class="green js_auLink" target="_blank">{1}</a>{2}'
+                        , _value, _label
+                        ,  '&nbsp;<a href="javascript:" class="btn btn-cls2 js_cleanCauData"></a>&nbsp;&nbsp;'
+                    )
+        ;
+    return _label;
 }</xmp>
      *      </dd>
      * </dl>
@@ -209,6 +224,15 @@
                     var _w = _p._model.frame().prop( 'contentWindow' );
                     if( !( _w && _w.initPage ) ) return;
                     _w.initPage( _p, _p._model );
+
+                    if( _p._model.INITED ) return;
+                    _p._model.INITED = true;
+                    if( _p._model.cauDefaultHide() ){
+                        setTimeout( function(){
+                            _p._model.frame().hide();
+                            _p._model.selector().hide();
+                        }, 1);
+                    }
                 });
                 /**
                  * 文件扩展名错误
@@ -326,6 +350,11 @@
         , cauDisplayLabel: function(){ return this.selectorProp( 'cauDisplayLabel' ); }
         , cauDisplayLabelCallback: function(){ return this.callbackProp( 'cauDisplayLabelCallback' ); }
 
+        , cauDefaultHide:
+            function(){
+                return this.boolProp( 'cauDefaultHide' );
+            }
+
         , cauUploadDoneCallback:
             function(){
                 return this.callbackProp( 'cauUploadDoneCallback' );
@@ -346,7 +375,7 @@
                 }
 
                 if( _p.cauDisplayLabelCallback() ){
-                    _label = _p.cauDisplayLabelCallback().call( _p.selector(), _d );
+                    _label = _p.cauDisplayLabelCallback().call( _p.selector(), _d, _label, _value );
                 //}else if( _label != _value ){
                 }else{
                     _label = printf( '<a href="{0}" class="green js_auLink" target="_blank">{1}</a>', _value, _label);
@@ -410,11 +439,16 @@
                     var _statusLabel = _p._model.cauStatusLabel()
                         , _displayLabel = _p._model.cauDisplayLabel()
                     ;
-
+                    
                     _p.updateChange();
+                    _p._model.frame().show();
 
                     _statusLabel && _statusLabel.length && _statusLabel.hide();
                     _displayLabel && _displayLabel.length && _displayLabel.hide();
+
+                    ( _p._model.selector().attr('type') || '' ).toLowerCase() != 'hidden'
+                        && _p._model.selector().show()
+                        ;
                 });
             }
 
@@ -470,6 +504,12 @@
                 _p._model.selector().val( '' );
                 if( _d && ( 'errorno' in _d ) && !_d.errorno ){
                     _p._model.cauValue( _d );
+
+                    _p._model.selector().val() 
+                        && _p._model.selector().is(':visible')
+                        && _p._model.selector().prop('type').toLowerCase() == 'text'
+                        && _p._model.selector().trigger('blur')
+                        ;
 
                     if( _displayLabel && _displayLabel.length ){
                         _p._model.selector().hide();

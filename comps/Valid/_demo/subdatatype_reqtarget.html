@@ -90,9 +90,53 @@
                 <button type="reset">reset</button>
             </div>
 
-            <dl class="fm-items">
-                <dt>JC.Valid 示例, subdatatype = alternative, 2填1/N填1</dt>
 
+            <dl class="fm-items">
+
+                <dt>JC.Valid 示例, subdatatype = reqtarget, 如果 selector 的值非空, 那么 datatarget 的值也不能为空</dt>
+                <dd>
+                    <ul>
+                        <li>
+                            <label>电话号码:</label>
+                            <input type='text' name='countrycode3_1' style="width:60px;" value='' size="7" 
+                            datatype="countrycode" 
+                            errmsg="请填写正确的地区代码" 
+                            validmsg="false" 
+                            placeholder="地区代码"
+                            />
+                            - 
+                            <input type='text' name='countrycode3_2' style="width:40px;" value='' size="4" 
+                            class="js_phonezone"
+                            datatype="phonezone-2,4" 
+                            errmsg="请填写正确的电话区号" 
+                            validmsg="false" 
+                            placeholder="区号"
+                            reqtargetmsg="请填写区号"
+                            emel="/span.js_reqtargetEm em.error"
+                            />
+                            - 
+                            <input type='text' name='phone3_3' style="width:80px;" value='20121110' size="8" 
+                            datatype="phonecode"
+                            subdatatype="reqtarget"
+                            datatarget="/input.js_phonezone"
+                            errmsg="请检查电话号码格式" 
+                            placeholder="电话号码"
+                            />
+                            - 
+                            <input type='text' name='countrycode3_4' style="width:40px;" value='' size="4" 
+                            datatype="phoneext" 
+                            errmsg="请填写正确的分机号" 
+                            validmsg="false" 
+                            placeholder="分机号"
+                            />
+                            <em class="error"></em>
+                            <span class="js_reqtargetEm"><em class="error"></em></span>
+                            <em class="validmsg"></em>
+                        </li>
+                    </ul>
+                </dd>
+
+                <dt>JC.Valid 示例, subdatatype = alternative && reqtarget, 2填1/N填1</dt>
                 <dd>
                     <ul>
                         <li>
@@ -146,48 +190,6 @@
                             errmsg="请填写正确的手机号码"
                             placeholder="手机号码"
                             />
-                        </li>
-                    </ul>
-                </dd>
-
-                <dd>
-                    <ul>
-                        <li>
-                            <label>电话号码:</label>
-                            <input type='text' name='countrycode3_1' style="width:60px;" value='' size="7" 
-                            datatype="countrycode" 
-                            errmsg="请填写正确的地区代码" 
-                            validmsg="false" 
-                            placeholder="地区代码"
-                            />
-                            - 
-                            <input type='text' name='countrycode3_2' style="width:40px;" value='' size="4" 
-                            class="js_phonezone"
-                            datatype="phonezone-2,4" 
-                            errmsg="请填写正确的电话区号" 
-                            validmsg="false" 
-                            placeholder="区号"
-                            reqtargetmsg="请填写区号"
-                            emel="/span.js_reqtargetEm em.error"
-                            />
-                            - 
-                            <input type='text' name='phone3_3' style="width:80px;" value='20121110' size="8" 
-                            datatype="phonecode"
-                            subdatatype="reqtarget"
-                            datatarget="/input.js_phonezone"
-                            errmsg="请检查电话号码格式" 
-                            placeholder="电话号码"
-                            />
-                            - 
-                            <input type='text' name='countrycode3_4' style="width:40px;" value='' size="4" 
-                            datatype="phoneext" 
-                            errmsg="请填写正确的分机号" 
-                            validmsg="false" 
-                            placeholder="分机号"
-                            />
-                            <em class="error"></em>
-                            <span class="js_reqtargetEm"><em class="error"></em></span>
-                            <em class="validmsg"></em>
                         </li>
                     </ul>
                 </dd>

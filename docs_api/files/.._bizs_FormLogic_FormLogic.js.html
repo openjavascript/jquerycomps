@@ -507,6 +507,14 @@
      * @static
      */
     FormLogic.resetAfterSubmit = true;
+    /**
+     * 表单提交时, 内容填写不完整时触发的全局回调
+     * @property    processErrorCb
+     * @type        function
+     * @default     null
+     * @static
+     */
+    FormLogic.processErrorCb;
 
     FormLogic.prototype = {
         _beforeInit:
@@ -919,7 +927,11 @@
 
         , formBeforeProcess: function(){ return this.callbackProp( &#x27;formBeforeProcess&#x27; ); }
         , formAfterProcess: function(){ return this.callbackProp( &#x27;formAfterProcess&#x27; ); }
-        , formProcessError: function(){ return this.callbackProp( &#x27;formProcessError&#x27; ); }
+        , formProcessError: 
+            function(){ 
+                var _r = this.callbackProp( &#x27;formProcessError&#x27; ) || FormLogic.processErrorCb;
+                return _r;
+            }
 
         , prevent: function( _evt ){ _evt &amp;&amp; _evt.preventDefault(); return false; }
 

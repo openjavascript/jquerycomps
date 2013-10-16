@@ -424,6 +424,11 @@
     var _selector = $(this);
 });&lt;/xmp&gt;
      *              &lt;/dd&gt;
+     *                  &lt;b&gt;datavalidKeyupCallback:&lt;/b&gt; 每次 keyup 的回调
+&lt;xmp&gt;function datavalidKeyupCallback( _evt ){
+    var _selector = $(this);
+});&lt;/xmp&gt;
+     *              &lt;/dd&gt;
      *              &lt;dd&gt;
      *                  &lt;b&gt;datavalidUrlFilter:&lt;/b&gt; 请求数据前对 url 进行操作的回调
 &lt;xmp&gt;function datavalidUrlFilter( _url ){
@@ -2776,11 +2781,32 @@
 
         var _isDatavalid = /datavalid/i.test( _sp.attr(&#x27;subdatatype&#x27;) );
         if( !_isDatavalid ) return;
+        if( _sp.prop(&#x27;disabled&#x27;) || _sp.prop(&#x27;readonly&#x27;) ) return;
 
         Valid.dataValid( _sp, false, true );
+        var _keyUpCb;
+        _sp.attr(&#x27;datavalidKeyupCallback&#x27;)
+            &amp;&amp; ( _keyUpCb = window[ _sp.attr(&#x27;datavalidKeyupCallback&#x27;) ] )
+            &amp;&amp; _keyUpCb.call( _sp, _evt )
+            ;
 
         if( _sp.data( &#x27;DataValidInited&#x27; ) ) return;
         _sp.data( &#x27;DataValidInited&#x27;, true );
+        _sp.data( &#x27;DataValidCache&#x27;, {} );
+
+        _sp.on( &#x27;DataValidUpdate&#x27;, function( _evt, _v ){
+            var _tmp, _json;
+            if( !_sp.data( &#x27;DataValidCache&#x27;) ) return;
+            _json = _sp.data( &#x27;DataValidCache&#x27; )[ _v ];
+            if( !_json ) return;
+
+            _v === &#x27;suchestest&#x27; &amp;&amp; (  _json.data.errorno = 0 );
+            Valid.dataValid( _sp, !_json.data.errorno, false, _json.data.errmsg );
+            _sp.attr(&#x27;datavalidCallback&#x27;)
+                &amp;&amp; ( _tmp = window[ _sp.attr(&#x27;datavalidCallback&#x27;) ] )
+                &amp;&amp; _tmp.call( _sp, _json.data, _json.text )
+                ;
+        });
 
         _sp.on( &#x27;blur&#x27;, function( _evt, _ignoreProcess ){
             JC.log( &#x27;datavalid&#x27;, new Date().getTime() );
@@ -2790,7 +2816,6 @@
             if( !_url ) return;
 
             _sp.data( &#x27;DataValidTm&#x27; ) &amp;&amp; clearTimeout( _sp.data( &#x27;DataValidTm&#x27;) );
-
             _sp.data( &#x27;DataValidTm&#x27;
                 , setTimeout( function(){
                     _v = _sp.val().trim();
@@ -2801,16 +2826,15 @@
                         &amp;&amp; ( _tmp = window[ _sp.attr(&#x27;datavalidUrlFilter&#x27;) ] )
                         &amp;&amp; ( _url = _tmp.call( _sp, _url ) )
                         ;
+                    if( _v in _sp.data( &#x27;DataValidCache&#x27; ) ){
+                        _sp.trigger( &#x27;DataValidUpdate&#x27;, _v );
+                        return;
+                    }
                     $.get( _url ).done( function( _d ){
                         _strData = _d;
                         try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
-                        _v === &#x27;suchestest&#x27; &amp;&amp; (  _d.errorno = 0 );
-                        Valid.dataValid( _sp, !_d.errorno, false, _d.errmsg );
-
-                        _sp.attr(&#x27;datavalidCallback&#x27;)
-                            &amp;&amp; ( _tmp = window[ _sp.attr(&#x27;datavalidCallback&#x27;) ] )
-                            &amp;&amp; _tmp.call( _sp, _d, _strData )
-                            ;
+                        _sp.data( &#x27;DataValidCache&#x27; )[ _v ] = { &#x27;key&#x27;: _v, data: _d, &#x27;text&#x27;: _strData };
+                        _sp.trigger( &#x27;DataValidUpdate&#x27;, _v );
                     });
                 }, 151)
             );

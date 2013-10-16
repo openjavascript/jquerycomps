@@ -178,6 +178,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+//TODO: 更改 cauValue 处理逻辑
  ;(function($){
     /**
      * Ajax 文件上传
@@ -242,6 +243,20 @@
 &lt;xmp&gt;function cauUploadErrorCallback( _json, _selector, _frame ){
     var _ins = this;
     //alert( _json ); //object object
+}&lt;/xmp&gt;
+     *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauDisplayLabelCallback = function, optional, return = string&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          自定义上传完毕后显示的内容 模板
+&lt;xmp&gt;function cauDisplayLabelCallback( _json, _label, _value ){
+    var _selector = this
+        , _label = printf( &#x27;&lt;a href=&quot;{0}&quot; class=&quot;green js_auLink&quot; target=&quot;_blank&quot;&gt;{1}&lt;/a&gt;{2}&#x27;
+                        , _value, _label
+                        ,  &#x27;&amp;nbsp;&lt;a href=&quot;javascript:&quot; class=&quot;btn btn-cls2 js_cleanCauData&quot;&gt;&lt;/a&gt;&amp;nbsp;&amp;nbsp;&#x27;
+                    )
+        ;
+    return _label;
 }&lt;/xmp&gt;
      *      &lt;/dd&gt;
      * &lt;/dl&gt;
@@ -389,6 +404,15 @@
                     var _w = _p._model.frame().prop( &#x27;contentWindow&#x27; );
                     if( !( _w &amp;&amp; _w.initPage ) ) return;
                     _w.initPage( _p, _p._model );
+
+                    if( _p._model.INITED ) return;
+                    _p._model.INITED = true;
+                    if( _p._model.cauDefaultHide() ){
+                        setTimeout( function(){
+                            _p._model.frame().hide();
+                            _p._model.selector().hide();
+                        }, 1);
+                    }
                 });
                 /**
                  * 文件扩展名错误
@@ -506,6 +530,11 @@
         , cauDisplayLabel: function(){ return this.selectorProp( &#x27;cauDisplayLabel&#x27; ); }
         , cauDisplayLabelCallback: function(){ return this.callbackProp( &#x27;cauDisplayLabelCallback&#x27; ); }
 
+        , cauDefaultHide:
+            function(){
+                return this.boolProp( &#x27;cauDefaultHide&#x27; );
+            }
+
         , cauUploadDoneCallback:
             function(){
                 return this.callbackProp( &#x27;cauUploadDoneCallback&#x27; );
@@ -526,7 +555,7 @@
                 }
 
                 if( _p.cauDisplayLabelCallback() ){
-                    _label = _p.cauDisplayLabelCallback().call( _p.selector(), _d );
+                    _label = _p.cauDisplayLabelCallback().call( _p.selector(), _d, _label, _value );
                 //}else if( _label != _value ){
                 }else{
                     _label = printf( &#x27;&lt;a href=&quot;{0}&quot; class=&quot;green js_auLink&quot; target=&quot;_blank&quot;&gt;{1}&lt;/a&gt;&#x27;, _value, _label);
@@ -590,11 +619,16 @@
                     var _statusLabel = _p._model.cauStatusLabel()
                         , _displayLabel = _p._model.cauDisplayLabel()
                     ;
-
+                    
                     _p.updateChange();
+                    _p._model.frame().show();
 
                     _statusLabel &amp;&amp; _statusLabel.length &amp;&amp; _statusLabel.hide();
                     _displayLabel &amp;&amp; _displayLabel.length &amp;&amp; _displayLabel.hide();
+
+                    ( _p._model.selector().attr(&#x27;type&#x27;) || &#x27;&#x27; ).toLowerCase() != &#x27;hidden&#x27;
+                        &amp;&amp; _p._model.selector().show()
+                        ;
                 });
             }
 
@@ -650,6 +684,12 @@
                 _p._model.selector().val( &#x27;&#x27; );
                 if( _d &amp;&amp; ( &#x27;errorno&#x27; in _d ) &amp;&amp; !_d.errorno ){
                     _p._model.cauValue( _d );
+
+                    _p._model.selector().val() 
+                        &amp;&amp; _p._model.selector().is(&#x27;:visible&#x27;)
+                        &amp;&amp; _p._model.selector().prop(&#x27;type&#x27;).toLowerCase() == &#x27;text&#x27;
+                        &amp;&amp; _p._model.selector().trigger(&#x27;blur&#x27;)
+                        ;
 
                     if( _displayLabel &amp;&amp; _displayLabel.length ){
                         _p._model.selector().hide();

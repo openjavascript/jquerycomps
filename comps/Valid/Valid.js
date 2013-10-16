@@ -244,6 +244,11 @@
     var _selector = $(this);
 });</xmp>
      *              </dd>
+     *                  <b>datavalidKeyupCallback:</b> 每次 keyup 的回调
+<xmp>function datavalidKeyupCallback( _evt ){
+    var _selector = $(this);
+});</xmp>
+     *              </dd>
      *              <dd>
      *                  <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调
 <xmp>function datavalidUrlFilter( _url ){
@@ -2596,11 +2601,32 @@
 
         var _isDatavalid = /datavalid/i.test( _sp.attr('subdatatype') );
         if( !_isDatavalid ) return;
+        if( _sp.prop('disabled') || _sp.prop('readonly') ) return;
 
         Valid.dataValid( _sp, false, true );
+        var _keyUpCb;
+        _sp.attr('datavalidKeyupCallback')
+            && ( _keyUpCb = window[ _sp.attr('datavalidKeyupCallback') ] )
+            && _keyUpCb.call( _sp, _evt )
+            ;
 
         if( _sp.data( 'DataValidInited' ) ) return;
         _sp.data( 'DataValidInited', true );
+        _sp.data( 'DataValidCache', {} );
+
+        _sp.on( 'DataValidUpdate', function( _evt, _v ){
+            var _tmp, _json;
+            if( !_sp.data( 'DataValidCache') ) return;
+            _json = _sp.data( 'DataValidCache' )[ _v ];
+            if( !_json ) return;
+
+            _v === 'suchestest' && (  _json.data.errorno = 0 );
+            Valid.dataValid( _sp, !_json.data.errorno, false, _json.data.errmsg );
+            _sp.attr('datavalidCallback')
+                && ( _tmp = window[ _sp.attr('datavalidCallback') ] )
+                && _tmp.call( _sp, _json.data, _json.text )
+                ;
+        });
 
         _sp.on( 'blur', function( _evt, _ignoreProcess ){
             JC.log( 'datavalid', new Date().getTime() );
@@ -2610,7 +2636,6 @@
             if( !_url ) return;
 
             _sp.data( 'DataValidTm' ) && clearTimeout( _sp.data( 'DataValidTm') );
-
             _sp.data( 'DataValidTm'
                 , setTimeout( function(){
                     _v = _sp.val().trim();
@@ -2621,16 +2646,15 @@
                         && ( _tmp = window[ _sp.attr('datavalidUrlFilter') ] )
                         && ( _url = _tmp.call( _sp, _url ) )
                         ;
+                    if( _v in _sp.data( 'DataValidCache' ) ){
+                        _sp.trigger( 'DataValidUpdate', _v );
+                        return;
+                    }
                     $.get( _url ).done( function( _d ){
                         _strData = _d;
                         try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
-                        _v === 'suchestest' && (  _d.errorno = 0 );
-                        Valid.dataValid( _sp, !_d.errorno, false, _d.errmsg );
-
-                        _sp.attr('datavalidCallback')
-                            && ( _tmp = window[ _sp.attr('datavalidCallback') ] )
-                            && _tmp.call( _sp, _d, _strData )
-                            ;
+                        _sp.data( 'DataValidCache' )[ _v ] = { 'key': _v, data: _d, 'text': _strData };
+                        _sp.trigger( 'DataValidUpdate', _v );
                     });
                 }, 151)
             );
