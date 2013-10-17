@@ -521,7 +521,10 @@
 
         , cauFileExt: function(){ return this.stringProp( &#x27;cauFileExt&#x27; ); }
 
-        , cauFileName: function(){ return this.attrProp(&#x27;cauFileName&#x27;); }
+        , cauFileName: 
+            function(){ 
+                return this.attrProp(&#x27;cauFileName&#x27;) || this.attrProp(&#x27;name&#x27;); 
+            }
 
         , cauLabelKey: function(){ return this.attrProp( &#x27;cauLabelKey&#x27; ) || &#x27;name&#x27;; }
         , cauValueKey: function(){ return this.attrProp( &#x27;cauValueKey&#x27; ) || &#x27;url&#x27;; }

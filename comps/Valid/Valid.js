@@ -111,7 +111,7 @@
      *      <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>
      *      <dd>
      *          <b>bankcard:</b> 是否为正确的银行卡
-     *          <br />  格式为 d{19} | d{16} | 1111 1111 1111 1111 111 | 1111 1111 1111 1111111
+     *          <br />格式为: d{15}, d{16}, d{17}, d{19}
      *      </dd>
      *      <dd>
      *          <b>cnname:</b> 中文姓名
@@ -968,7 +968,8 @@
                     , _valStr = _item.val()
                     , _val = +_valStr
                     ,_min = 0
-                    , _max = Math.pow( 10, 10 )
+                    , _pow = 10
+                    , _max = Math.pow( 10, _pow )
                     , _n, _f, _tmp;
 
                 _p.isMinvalue( _item ) && ( _min = _p.minvalue( _item, /\./.test( _item.attr('minvalue') ) ) || _min );
@@ -976,8 +977,9 @@
                 if( !isNaN( _val ) && _val >= _min ){
                     _item.attr('datatype').replace( /^n[^\-]*\-(.*)$/, function( $0, $1 ){
                         _tmp = $1.split('.');
-                        _n = _tmp[0];
-                        _f = _tmp[1];
+                        _n = parseInt( _tmp[0] );
+                        _f = parseInt( _tmp[1] );
+                        _n > _pow && ( _max = Math.pow( 10, _n ) );
                     });
 
                     _p.isMaxvalue( _item ) && ( _max = _p.maxvalue( _item, /\./.test( _item.attr('maxvalue') ) ) || _max );
@@ -1221,7 +1223,7 @@
             }
         /**
          * 检查银行卡号码
-         * <br />格式为 d{19} | d{16} | 1111 1111 1111 1111 111 | 1111 1111 1111 1111111
+         * <br />格式为: d{15}, d{16}, d{17}, d{19}
          * @method  bankcard
          * @private
          * @static
@@ -1235,8 +1237,13 @@
         , bankcard:
             function( _item ){
                 var _p = this
-                    , _r = /^[1-9][\d]{3}(?: |)(?:[\d]{4}(?: |))(?:[\d]{4}(?: |))(?:[\d]{4})(?:(?: |)[\d]{3}|)$/.test( _item.val() );
-                !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                    , _v = _item.val().trim().replace(/[\s]+/g, ' ')
+                    ;
+                     _item.val( _v );
+                var _dig = _v.replace( /[^\d]/g, '' )
+                    , _r = /^[1-9](?:[\d]{18}|[\d]{16}|[\d]{15}|[\d]{14})$/.test( _dig )
+                    ;
+                    !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
             }
         /**

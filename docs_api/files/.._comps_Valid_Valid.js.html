@@ -291,7 +291,7 @@
      *      &lt;dd&gt;&lt;b&gt;minute:&lt;/b&gt; 是否为正确的时间, hh:mm&lt;/dd&gt;
      *      &lt;dd&gt;
      *          &lt;b&gt;bankcard:&lt;/b&gt; 是否为正确的银行卡
-     *          &lt;br /&gt;  格式为 d{19} | d{16} | 1111 1111 1111 1111 111 | 1111 1111 1111 1111111
+     *          &lt;br /&gt;格式为: d{15}, d{16}, d{17}, d{19}
      *      &lt;/dd&gt;
      *      &lt;dd&gt;
      *          &lt;b&gt;cnname:&lt;/b&gt; 中文姓名
@@ -1148,7 +1148,8 @@
                     , _valStr = _item.val()
                     , _val = +_valStr
                     ,_min = 0
-                    , _max = Math.pow( 10, 10 )
+                    , _pow = 10
+                    , _max = Math.pow( 10, _pow )
                     , _n, _f, _tmp;
 
                 _p.isMinvalue( _item ) &amp;&amp; ( _min = _p.minvalue( _item, /\./.test( _item.attr(&#x27;minvalue&#x27;) ) ) || _min );
@@ -1156,8 +1157,9 @@
                 if( !isNaN( _val ) &amp;&amp; _val &gt;= _min ){
                     _item.attr(&#x27;datatype&#x27;).replace( /^n[^\-]*\-(.*)$/, function( $0, $1 ){
                         _tmp = $1.split(&#x27;.&#x27;);
-                        _n = _tmp[0];
-                        _f = _tmp[1];
+                        _n = parseInt( _tmp[0] );
+                        _f = parseInt( _tmp[1] );
+                        _n &gt; _pow &amp;&amp; ( _max = Math.pow( 10, _n ) );
                     });
 
                     _p.isMaxvalue( _item ) &amp;&amp; ( _max = _p.maxvalue( _item, /\./.test( _item.attr(&#x27;maxvalue&#x27;) ) ) || _max );
@@ -1401,7 +1403,7 @@
             }
         /**
          * 检查银行卡号码
-         * &lt;br /&gt;格式为 d{19} | d{16} | 1111 1111 1111 1111 111 | 1111 1111 1111 1111111
+         * &lt;br /&gt;格式为: d{15}, d{16}, d{17}, d{19}
          * @method  bankcard
          * @private
          * @static
@@ -1415,8 +1417,13 @@
         , bankcard:
             function( _item ){
                 var _p = this
-                    , _r = /^[1-9][\d]{3}(?: |)(?:[\d]{4}(?: |))(?:[\d]{4}(?: |))(?:[\d]{4})(?:(?: |)[\d]{3}|)$/.test( _item.val() );
-                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                    , _v = _item.val().trim().replace(/[\s]+/g, &#x27; &#x27;)
+                    ;
+                     _item.val( _v );
+                var _dig = _v.replace( /[^\d]/g, &#x27;&#x27; )
+                    , _r = /^[1-9](?:[\d]{18}|[\d]{16}|[\d]{15}|[\d]{14})$/.test( _dig )
+                    ;
+                    !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
             }
         /**
