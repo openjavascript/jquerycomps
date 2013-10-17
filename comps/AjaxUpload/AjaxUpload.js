@@ -341,7 +341,10 @@
 
         , cauFileExt: function(){ return this.stringProp( 'cauFileExt' ); }
 
-        , cauFileName: function(){ return this.attrProp('cauFileName'); }
+        , cauFileName: 
+            function(){ 
+                return this.attrProp('cauFileName') || this.attrProp('name'); 
+            }
 
         , cauLabelKey: function(){ return this.attrProp( 'cauLabelKey' ) || 'name'; }
         , cauValueKey: function(){ return this.attrProp( 'cauValueKey' ) || 'url'; }
