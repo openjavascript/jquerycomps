@@ -46,7 +46,7 @@
             }
 
             dt { font-weight: bold; margin: 10px auto; }
-            dd { line-height: 24px; }
+            dd { line-height: 24px; margin-bottom: 4px; }
 
             input, button{    
                 display: inline-block; 
@@ -59,13 +59,16 @@
             .AUIframe {
                 margin-right: 2px;
             }
+
+            .green{ color: green; }
+            .red{ color: red; }
         </style>
         <link href='../../AjaxUpload/res/default/style.css' rel='stylesheet' />
         <link href='../../Panel/res/default/style.css' rel='stylesheet' />
         <script src="../../../lib.js"></script>
         <script>
             JC.debug = true;
-            JC.use( 'AjaxUpload, Panel, Valid, Bizs.FormLogic' );
+            JC.use( 'AjaxUpload, Panel, Valid, Bizs.FormLogic, Bizs.CommonModify' );
 
             $(document).ready(function(){
                 JC.AjaxUpload.randomFrame = true;
@@ -115,7 +118,7 @@
                 <dd>
                     <button type="button" class="AUBtn AUBtn-w1">placehoder test</button>
 
-                    <input type="text" class="js_compAjaxUpload" name="ctlFileName2" value=""
+                    <input type="text" readonly class="js_compAjaxUpload" name="ctlFileName2" value=""
                         reqmsg=" 请上传文件"
                         cauUrl="../_demo/data/handler.php?errorno=0"
                         cauFileExt=".jpg, .jpeg, .png, .gif"
@@ -130,11 +133,9 @@
             </dl>
 
             <dl class="defdl">
-                <dt> JC.AjaxUpload 示例, with textbox</dt>
+                <dt> JC.AjaxUpload 示例, with textbox, 上传多个文件</dt>
                 <dd>
-                    <button type="button" class="AUBtn AUBtn-w1">placehoder test</button>
-
-                    <input type="text" class="js_compAjaxUpload" name="ctlFileName2" value=""
+                    <input type="text" readonly class="js_compAjaxUpload" name="ctlFileName3[]" value=""
                         reqmsg=" 请上传文件"
                         cauUrl="../_demo/data/handler.php?errorno=0"
                         cauFileExt=".jpg, .jpeg, .png, .gif"
@@ -144,8 +145,36 @@
                         cauStatusLabel="/label.js_statusLabel"
                         />
                     <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
-                    <button type="button" class="AUBtn AUBtn-w1 js_updateData">JC.AjaxUpload#update for clear</button>
+                    <a href="javascript:" 
+                    class="green js_autoCommonModify" 
+                    cmtemplate="(dl script.js_tpl"
+                    cmitem="(dd"
+                    cmaction="add"
+                    >+ 添加</a>
                     <em class="error"></em>
+                </dd>
+                <dd style="display:none">
+                    <script type="text/template" class="js_tpl">
+                        <dd>
+                            <input type="text" readonly class="js_compAjaxUpload" name="ctlFileName3[]" value=""
+                                reqmsg=" 请上传文件"
+                                cauUrl="../_demo/data/handler.php?errorno=0"
+                                cauFileExt=".jpg, .jpeg, .png, .gif"
+                                cauValueKey="url"
+                                cauLabelKey="name"
+                                cauFileName="customFileName"
+                                cauStatusLabel="/label.js_statusLabel"
+                                />
+                            <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
+                            <a href="javascript:" 
+                            class="red js_autoCommonModify" 
+                            cmitem="(dd"
+                            cmaction="del"
+                            >- 删除</a>
+                            <em class="error"></em>
+                        </dd>
+
+                    </script>
                 </dd>
             </dl>
 

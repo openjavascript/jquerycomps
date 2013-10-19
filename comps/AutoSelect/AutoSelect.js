@@ -422,11 +422,11 @@
             }
 
         , _update:
-            function( _selector, _cb, _pid ){
+            function( _selector, _cb, _pid, _oldToken ){
                 if( this._model.isStatic( _selector ) ){
                     this._updateStatic( _selector, _cb, _pid );
                 }else if( this._model.isAjax( _selector ) ){
-                    this._updateAjax( _selector, _cb, _pid );
+                    this._updateAjax( _selector, _cb, _pid, _oldToken );
                 }else{
                     this._updateNormal( _selector, _cb, _pid );
                 }
@@ -434,41 +434,60 @@
             }
 
         , _updateAjax:
-            function( _selector, _cb, _pid ){
+            function( _selector, _cb, _pid, _oldToken ){
                 var _p = this
                     , _data
                     , _next = _p._model.next( _selector )
-                    , _url
+                    , _url, _token
                     ;
                 JC.log( 'ajax select' );
+
 
                 if( _p._model.isFirst( _selector ) ){
                     typeof _pid == 'undefined' && ( _pid = _p._model.selectparentid( _selector ) || '' );
                     if( typeof _pid != 'undefined' ){
                         _url = _p._model.selecturl( _selector, _pid );
+                        _token = _p._model.token( true );
+
                         $.get( _url, function( _data ){
                             _data = $.parseJSON( _data );
                             _p._view.update( _selector, _data );
-                            _cb && _cb.call( _p, _selector, _data );
+                            _cb && _cb.call( _p, _selector, _data, _token );
                         });
                     }
                 }else{
-                   _url = _p._model.selecturl( _selector, _pid );
+                    if( typeof _oldToken != 'undefined' && _oldToken != _p._model.token() ){
+                        return;
+                    }
+                    /*
+                    setTimeout( function(){
+                    }, Math.random() * 1000 );
+                    */
+                    _url = _p._model.selecturl( _selector, _pid );
                     $.get( _url, function( _data ){
+                        if( typeof _oldToken != 'undefined' && _oldToken != _p._model.token() ){
+                            return;
+                        }
                         JC.log( '_url:', _url, _pid );
                         _data = $.parseJSON( _data );
                         _p._view.update( _selector, _data );
-                        _cb && _cb.call( _p, _selector, _data );
+                        _cb && _cb.call( _p, _selector, _data, _oldToken );
                     });
                 }
                 return this;
             }
 
         , _changeCb:
-            function( _selector, _data ){
+            function( _selector, _data, _oldToken ){
                 var _p = this
-                    , _next = _p._model.next( _selector );
+                    , _next = _p._model.next( _selector )
+                    , _token = _p._model.token()
                 ;
+                if( typeof _oldToken != 'undefined' ){
+                    if( _oldToken !== _token ){
+                        return;
+                    }
+                }
 
                 _p.trigger( 'SelectChange', [ _selector ] );
 
@@ -478,7 +497,7 @@
                 }
 
                 if( _next && _next.length ){
-                    _p._update( _next, _p._changeCb, _selector.val() );
+                    _p._update( _next, _p._changeCb, _selector.val(), _oldToken );
                 }
                 return this;
             }
@@ -570,6 +589,13 @@
                 JC.log( 'select items.length:', this._items.length );
                 this._initRelationship();
                 return this;
+            }
+
+        , token:
+            function( _next ){
+                typeof this._token == 'undefined' && ( this._token = 0 );
+                _next && ( this._token++ );
+                return this._token;
             }
 
         , _findAllItems:

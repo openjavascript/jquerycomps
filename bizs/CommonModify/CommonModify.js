@@ -100,7 +100,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                         <a href="javascript:" 
                         class="green js_autoCommonModify" 
                         cmtemplate="#addMainFirstPartyTpl"
-                        cmitem="<tr"
+                        cmitem="(tr"
                         cmaction="add"
                     >+ 添加</a>
                     <em class="error"></em>
@@ -118,12 +118,12 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                 <a href="javascript:" 
                     class="green js_autoCommonModify" 
                     cmtemplate="#addMainFirstPartyTpl"
-                    cmitem="<tr"
+                    cmitem="(tr"
                     cmaction="add"
                 >+ 添加</a>
                 <a href="javascript:" class="red js_autoCommonModify"
                     cmtemplate="#addMainFirstPartyTpl"
-                    cmitem="<tr"
+                    cmitem="(tr"
                     cmaction="del"
                 >+ 删除</a>
                 <em class="error"></em>
