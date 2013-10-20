@@ -44,6 +44,30 @@
 
             return _selector.data( BizExample.Model._instanceName );
         };
+    /**
+     * 初始化可识别的 BizExample 实例
+     * @method  init
+     * @param   {selector}      _selector
+     * @static
+     * @return  {Array of BizExampleInstance}
+     */
+    BizExample.init =
+        function( _selector ){
+            var _r = [];
+            _selector = $( _selector || document );
+
+            if( _selector && _selector.length ){
+                if( _selector.hasClass( '.js_bizBizExample' )  ){
+                    _r.push( new BizExample( _selector ) );
+                }else{
+                    _selector.find( 'div.js_bizBizExample' ).each( function(){
+                        _r.push( new BizExample( this ) );
+                    });
+                }
+            }
+            return _r;
+        };
+
 
     BizExample.prototype = {
         _beforeInit:
@@ -79,13 +103,11 @@
     BaseMVC.build( BizExample, 'Bizs' );
 
     $(document).ready( function(){
-        $('div.js_bizBizExample').each( function(){
-            BizExample.autoInit
-                && new BizExample( $(this) )
-                && $( printf( '<p>done: {0}, {1}</p>', BizExample.Model._instanceName, new Date().getTime() ) )
-                    .appendTo( document.body )
-                ;
-        });
+        var _insAr = 0;
+        BizExample.autoInit
+            && ( _insAr = BizExample.init() )
+            && $( '<h2>BizExample total ins: ' + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
+            ;
     });
 
 }(jQuery));

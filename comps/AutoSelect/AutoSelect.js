@@ -702,7 +702,14 @@
 
         , hideempty:
             function( _selector ){
-                var _r = AutoSelect.hideEmpty;
+                var _r = AutoSelect.hideEmpty, _first = this.first();
+
+                _first 
+                    && _first.length
+                    && _first.is('[selecthideempty]')
+                    && ( _r = parseBool( _first.attr('selecthideempty') ) )
+                    ;
+
                 _selector 
                     && _selector.length
                     && _selector.is('[selecthideempty]')

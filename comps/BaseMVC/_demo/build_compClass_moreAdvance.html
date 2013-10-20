@@ -46,6 +46,29 @@
 
             return _selector.data( CompExample.Model._instanceName );
         };
+    /**
+     * 初始化可识别的 CompExample 实例
+     * @method  init
+     * @param   {selector}      _selector
+     * @static
+     * @return  {Array of CompExampleInstance}
+     */
+    CompExample.init =
+        function( _selector ){
+            var _r = [];
+            _selector = $( _selector || document );
+
+            if( _selector && _selector.length ){
+                if( _selector.hasClass( '.js_compCompExample' )  ){
+                    _r.push( new CompExample( _selector ) );
+                }else{
+                    _selector.find( 'div.js_compCompExample' ).each( function(){
+                        _r.push( new CompExample( this ) );
+                    });
+                }
+            }
+            return _r;
+        };
 
     CompExample.prototype = {
         _beforeInit:
@@ -81,13 +104,11 @@
     BaseMVC.build( CompExample );
 
     $(document).ready( function(){
-        $('div.js_compCompExample').each( function(){
-            CompExample.autoInit
-                && new CompExample( $(this) )
-                && $( printf( '<p>done: {0}, {1}</p>', CompExample.Model._instanceName, new Date().getTime() ) )
-                    .appendTo( document.body )
-                ;
-        });
+        var _insAr = 0;
+        CompExample.autoInit
+            && ( _insAr = CompExample.init() )
+            && $( '<h2>CompExample total ins: ' + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
+            ;
     });
 
 }(jQuery));

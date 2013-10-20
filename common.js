@@ -672,6 +672,10 @@ function jcAutoInitComps( _selector ){
      * Ajax 上传
      */
     JC.AjaxUpload && JC.AjaxUpload.init( _selector );
+    /**
+     * Placeholder 占位符
+     */
+    JC.Placeholder && JC.Placeholder.init( _selector );
 
     if( !window.Bizs ) return;
     /**

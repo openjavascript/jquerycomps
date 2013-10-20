@@ -106,6 +106,15 @@
                 "JC": 1
             }
         },
+        "../comps/BaseMVC/BaseMVC.js": {
+            "name": "../comps/BaseMVC/BaseMVC.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../comps/Calendar/Calendar.js": {
             "name": "../comps/Calendar/Calendar.js",
             "modules": {},
@@ -277,6 +286,22 @@
             "fors": {},
             "namespaces": {}
         },
+        "../JC.js": {
+            "name": "../JC.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {
+                "window": 1
+            }
+        },
+        "../common.js": {
+            "name": "../common.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "../jquery.js": {
             "name": "../jquery.js",
             "modules": {},
@@ -290,13 +315,13 @@
             "name": "../lib.js",
             "modules": {},
             "classes": {
-                "window.jQuery": 1,
-                ".window": 1,
+                "JC.BaseMVC": 1,
+                "JC.BaseMVC.Model": 1,
                 "window.JC": 1,
                 "window.UXC": 1,
-                "JC.Bizs": 1,
-                "JC.BaseMVC": 1,
-                "JC.BaseMVC.Model": 1
+                ".window": 1,
+                "window.jQuery": 1,
+                "JC.Bizs": 1
             },
             "fors": {},
             "namespaces": {
@@ -500,6 +525,52 @@
             "example": [
                 "\n       <h2>AJAX 返回内容</h2>\n       <code>\n           <dd>    \n               <select name='select102_1' defaultselect selecturl=\"data/shengshi_with_error_code.php?id=0\" selecttarget=\"select[name=select102_2]\">\n                   <option value=\"-1\" defaultoption>请选择</option>\n               </select>\n               <select name='select102_2' selecturl=\"data/shengshi_with_error_code.php?id={0}\" selecttarget=\"select[name=select102_3]\">\n                   <option value=\"-1\" defaultoption>请选择</option>\n               </select>\n               <select name='select102_3' selecturl=\"data/shengshi_with_error_code.php?id={0}\">\n                   <option value=\"-1\" defaultoption>请选择</option>\n               </select>\n           </dd>\n       </code>\n       <script>\n           $.get( './data/shengshi_html.php?rnd='+new Date().getTime(), function( _r ){\n               var _selector = $(_r);\n               $( 'dl.def > dt' ).after( _selector );\n               JC.AutoSelect( _selector );\n           });\n\n           JC.AutoSelect.dataFilter = \n               function( _data, _select ){\n                   var _r = _data;\n                   if( _data && !_data.length && _data.data ){\n                       _r = _data.data;\n                   }\n                   return _r;\n               };\n       </script>"
             ]
+        },
+        "JC.BaseMVC": {
+            "name": "JC.BaseMVC",
+            "shortname": "JC.BaseMVC",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../lib.js",
+            "line": 1141,
+            "description": "MVC 抽象类 ( <b>仅供扩展用</b> )\n<p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   \n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-09-07",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team"
+        },
+        "JC.BaseMVC.Model": {
+            "name": "JC.BaseMVC.Model",
+            "shortname": "JC.BaseMVC.Model",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../lib.js",
+            "line": 1347,
+            "description": "MVC Model 类( <b>仅供扩展用</b> )\n<p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   \n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-09-11",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team"
         },
         "JC.Calendar": {
             "name": "JC.Calendar",
@@ -1373,34 +1444,6 @@
             "version": "0.1,  2013-05-22",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
         },
-        "window.jQuery": {
-            "name": "window.jQuery",
-            "shortname": "window.jQuery",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "namespace": "window",
-            "file": "../lib.js",
-            "line": 1,
-            "description": "jQuery JavaScript Library v1.9.1\n<pre>http://jquery.com/\n\nIncludes Sizzle.js\nhttp://sizzlejs.com/\n\nCopyright 2005, 2012 jQuery Foundation, Inc. and other contributors\nReleased under the MIT license\nhttp://jquery.org/license\nDate: 2013-2-4</pre>",
-            "global": ""
-        },
-        ".window": {
-            "name": ".window",
-            "shortname": ".window",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "namespace": "",
-            "file": "../lib.js",
-            "line": 23,
-            "description": "全局函数",
-            "static": 1
-        },
         "window.JC": {
             "name": "window.JC",
             "shortname": "window.JC",
@@ -1435,6 +1478,34 @@
             "static": 1,
             "date": "2013-05-22"
         },
+        ".window": {
+            "name": ".window",
+            "shortname": ".window",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "",
+            "file": "../lib.js",
+            "line": 23,
+            "description": "全局函数",
+            "static": 1
+        },
+        "window.jQuery": {
+            "name": "window.jQuery",
+            "shortname": "window.jQuery",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window",
+            "file": "../lib.js",
+            "line": 1,
+            "description": "jQuery JavaScript Library v1.9.1\n<pre>http://jquery.com/\n\nIncludes Sizzle.js\nhttp://sizzlejs.com/\n\nCopyright 2005, 2012 jQuery Foundation, Inc. and other contributors\nReleased under the MIT license\nhttp://jquery.org/license\nDate: 2013-2-4</pre>",
+            "global": ""
+        },
         "JC.Bizs": {
             "name": "JC.Bizs",
             "shortname": "window.Bizs",
@@ -1448,52 +1519,6 @@
             "line": 1116,
             "description": "<h2>业务逻辑命名空间</h2>\n<br />这个命名空间的组件主要为满足业务需求, 不是通用组件~\n<br />但在某个项目中应该是常用组件~\n<dl>\n     <dt>业务组件的存放位置:</dt>\n     <dd>libpath/bizs/</dd>\n\n     <dt>使用业务组件</dt>\n     <dd> JC.use( 'Bizs.BizComps' ); //  libpath/bizs/BizComps/BizComps.js </dd>\n\n     <dt>使用业务文件</dt>\n     <dd> JC.use( 'bizs.BizFile' ); //   libpath/bizs/BizFile.js </dd>\n</dl>",
             "static": 1
-        },
-        "JC.BaseMVC": {
-            "name": "JC.BaseMVC",
-            "shortname": "JC.BaseMVC",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "namespace": "JC",
-            "file": "../lib.js",
-            "line": 1141,
-            "description": "MVC 抽象类 ( <b>仅供扩展用</b> )\n<p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   \n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "",
-                    "type": "Selector|string"
-                }
-            ],
-            "version": "dev 0.1 2013-09-07",
-            "author": "qiushaowei   <suches@btbtd.org> | 75 Team"
-        },
-        "JC.BaseMVC.Model": {
-            "name": "JC.BaseMVC.Model",
-            "shortname": "JC.BaseMVC.Model",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "namespace": "JC",
-            "file": "../lib.js",
-            "line": 1347,
-            "description": "MVC Model 类( <b>仅供扩展用</b> )\n<p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   \n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "",
-                    "type": "Selector|string"
-                }
-            ],
-            "version": "dev 0.1 2013-09-11",
-            "author": "qiushaowei   <suches@btbtd.org> | 75 Team"
         }
     },
     "classitems": [
@@ -2826,6 +2851,457 @@
             "line": 883,
             "description": "页面加载完毕时, 延时进行自动化, 延时可以避免来自其他逻辑的干扰",
             "class": "JC.AutoSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 30,
+            "description": "内部初始化方法",
+            "itemtype": "method",
+            "name": "_init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 59,
+            "description": "初始化之前调用的方法",
+            "itemtype": "method",
+            "name": "_beforeInit",
+            "access": "private",
+            "tagname": "",
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 67,
+            "description": "内部事件初始化方法",
+            "itemtype": "method",
+            "name": "_initHanlderEvent",
+            "access": "private",
+            "tagname": "",
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 75,
+            "description": "内部初始化完毕时, 调用的方法",
+            "itemtype": "method",
+            "name": "_inited",
+            "access": "private",
+            "tagname": "",
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 83,
+            "description": "获取 显示 BaseMVC 的触发源选择器, 比如 a 标签",
+            "itemtype": "method",
+            "name": "selector",
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 89,
+            "description": "使用 jquery on 绑定事件",
+            "itemtype": "method",
+            "name": "on",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_cb",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "BaseMVCInstance"
+            },
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 97,
+            "description": "使用 jquery trigger 绑定事件",
+            "itemtype": "method",
+            "name": "trigger",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "BaseMVCInstance"
+            },
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 105,
+            "description": "获取或设置 BaseMVC 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "BaseMVCInstance"
+            },
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 123,
+            "description": "是否自动初始化",
+            "itemtype": "property",
+            "name": "autoInit",
+            "type": "bool",
+            "default": "true",
+            "static": 1,
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 131,
+            "description": "复制 BaseMVC 的所有方法到 _outClass",
+            "itemtype": "method",
+            "name": "build",
+            "params": [
+                {
+                    "name": "_outClass",
+                    "description": "",
+                    "type": "Class"
+                }
+            ],
+            "static": 1,
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 146,
+            "description": "复制 _inClass 的所有方法到 _outClass",
+            "itemtype": "method",
+            "name": "buildClass",
+            "params": [
+                {
+                    "name": "_inClass",
+                    "description": "",
+                    "type": "Class"
+                },
+                {
+                    "name": "_outClass",
+                    "description": "",
+                    "type": "Class"
+                },
+                {
+                    "name": "_namespace",
+                    "description": "default='JC', 如果是业务组件, 请显式指明为 'Bizs'",
+                    "type": "String"
+                }
+            ],
+            "static": 1,
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 186,
+            "description": "为 _outClass 生成一个通用 Model 类",
+            "itemtype": "method",
+            "name": "buildModel",
+            "params": [
+                {
+                    "name": "_outClass",
+                    "description": "",
+                    "type": "Class"
+                }
+            ],
+            "static": 1,
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 199,
+            "description": "为 _outClass 生成一个通用 View 类",
+            "itemtype": "method",
+            "name": "buildView",
+            "params": [
+                {
+                    "name": "_outClass",
+                    "description": "",
+                    "type": "Class"
+                }
+            ],
+            "static": 1,
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 224,
+            "description": "设置 selector 实例引用的 data 属性名",
+            "itemtype": "property",
+            "name": "_instanceName",
+            "type": "string",
+            "default": "BaseMVCIns",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 238,
+            "description": "初始化的 jq 选择器",
+            "itemtype": "method",
+            "name": "selector",
+            "params": [
+                {
+                    "name": "_setter",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 249,
+            "description": "读取 int 属性的值",
+            "itemtype": "method",
+            "name": "intProp",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()",
+                    "type": "Selector|string"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "int"
+            },
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 270,
+            "description": "读取 float 属性的值",
+            "itemtype": "method",
+            "name": "floatProp",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()",
+                    "type": "Selector|string"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "float"
+            },
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 291,
+            "description": "读取 string 属性的值",
+            "itemtype": "method",
+            "name": "stringProp",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()",
+                    "type": "Selector|string"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 309,
+            "description": "读取 html 属性值\n<br />这个跟 stringProp 的区别是不会强制转换为小写",
+            "itemtype": "method",
+            "name": "attrProp",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()",
+                    "type": "Selector|string"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 332,
+            "description": "读取 boolean 属性的值",
+            "itemtype": "method",
+            "name": "boolProp",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()",
+                    "type": "Selector|string"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String|bool"
+                },
+                {
+                    "name": "_defalut",
+                    "description": "",
+                    "type": "Bool"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Bool|undefined"
+            },
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 358,
+            "description": "读取 callback 属性的值",
+            "itemtype": "method",
+            "name": "callbackProp",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()",
+                    "type": "Selector|string"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Function|undefined"
+            },
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 381,
+            "description": "获取 selector 属性的 jquery 选择器",
+            "itemtype": "method",
+            "name": "selectorProp",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()",
+                    "type": "Selector|string"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "bool"
+            },
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 404,
+            "description": "判断 _selector 是否具体某种特征",
+            "itemtype": "method",
+            "name": "is",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()",
+                    "type": "Selector|string"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "bool"
+            },
+            "class": "JC.BaseMVC.Model",
             "namespace": "JC"
         },
         {
@@ -10872,14 +11348,14 @@
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 3,
             "description": "Top level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 10,
             "access": "private",
             "tagname": "",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -10887,25 +11363,25 @@
             "description": "Use <code>jasmine.undefined</code> instead of <code>undefined</code>, since <code>undefined</code> is just\na plain old variable and may be redefined by somebody else.",
             "access": "private",
             "tagname": "",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 25,
             "description": "Show diagnostic messages in the console if set to true",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 31,
             "description": "Default interval in milliseconds for event loop yields (e.g. to allow network activity or to refresh the screen with the HTML-based runner). Small values here may result in slow test running. Zero means no updates until all tests have completed.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 37,
             "description": "Default timeout interval in milliseconds for waitsFor() blocks.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -10926,13 +11402,13 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 114,
             "description": "Getter for the Jasmine environment. Ensures one gets created",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -10950,7 +11426,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -10968,7 +11444,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -10986,7 +11462,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11009,7 +11485,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11026,7 +11502,7 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11043,7 +11519,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11062,7 +11538,7 @@
             "return": {
                 "description": "matchable object of the type clazz"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11081,7 +11557,7 @@
             "return": {
                 "description": "matchable object for the sample"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11103,25 +11579,25 @@
                     "type": "String"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 259,
             "description": "The name of the spy, if provided.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 263,
             "description": "Is this Object a spy?",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 267,
             "description": "The actual function this spy stubs.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11130,7 +11606,7 @@
             "example": [
                 "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy.mostRecentCall.args = [1, 2];"
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11139,7 +11615,7 @@
             "example": [
                 "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy(7, 8);\nmySpy.mostRecentCall.args = [7, 8];\nmySpy.argsForCall[0] = [1, 2];\nmySpy.argsForCall[1] = [7, 8];"
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11148,7 +11624,7 @@
             "example": [
                 "\nvar foo = {\n  bar: function() { // do some stuff }\n}\n\n// defining a spy on an existing property: foo.bar\nspyOn(foo, 'bar').andCallThrough();"
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11164,7 +11640,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11180,7 +11656,7 @@
                     "type": "String"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11196,7 +11672,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11205,7 +11681,7 @@
             "example": [
                 "\nspyOn(foo, 'bar');\n\nfoo.bar();\n\nexpect(foo.bar.callCount).toEqual(1);\n\nfoo.bar.reset();\n\nexpect(foo.bar.callCount).toEqual(0);"
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11222,7 +11698,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11240,13 +11716,13 @@
                     "type": "Array"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 443,
             "description": "All parameters are pretty-printed and concatenated together, then written to the current spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11271,7 +11747,7 @@
             "return": {
                 "description": "a Jasmine spy that can be chained with all spy methods"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11292,7 +11768,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11310,7 +11786,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11323,7 +11799,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11336,7 +11812,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11351,7 +11827,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11374,7 +11850,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11387,7 +11863,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11400,7 +11876,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11421,7 +11897,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11439,12 +11915,12 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 633,
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11464,21 +11940,21 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 646,
             "access": "private",
             "tagname": "",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 700,
             "description": "Environment for Jasmine",
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11486,7 +11962,7 @@
             "return": {
                 "description": "an object containing jasmine version build info, if set."
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11494,7 +11970,7 @@
             "return": {
                 "description": "string containing jasmine version build info, if set."
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11502,7 +11978,7 @@
             "return": {
                 "description": "a sequential integer starting at 0"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11510,7 +11986,7 @@
             "return": {
                 "description": "a sequential integer starting at 0"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11523,13 +11999,13 @@
                     "type": "jasmine.Reporter"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 977,
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11553,13 +12029,13 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1030,
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11581,7 +12057,7 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11593,7 +12069,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11607,7 +12083,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toBe() instead.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11619,7 +12095,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11633,7 +12109,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toEqual() instead.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11645,7 +12121,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11659,48 +12135,48 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toMatch() instead.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1263,
             "description": "Matcher that compares the actual to jasmine.undefined.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1270,
             "description": "Matcher that compares the actual to jasmine.undefined.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1277,
             "description": "Matcher that compares the actual to null.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1284,
             "description": "Matcher that boolean not-nots the actual.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1292,
             "description": "Matcher that boolean nots the actual.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1300,
             "description": "Matcher that checks to see if the actual, a Jasmine spy, was called.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1322,
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11708,7 +12184,7 @@
             "description": "Matcher that checks to see if the actual, a Jasmine spy, was not called.",
             "deprecated": true,
             "deprecationMessage": "Use expect(xxx).not.toHaveBeenCalled() instead",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11717,17 +12193,17 @@
             "example": [
                 "\n"
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1378,
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1381,
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11740,7 +12216,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11755,7 +12231,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toContain() instead.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11773,7 +12249,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11786,55 +12262,55 @@
                     "type": "String"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1619,
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1715,
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1750,
             "description": "Holds results for a set of Jasmine spec. Allows for the results array to hold another jasmine.NestedResults",
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1756,
             "description": "The total count of results",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1760,
             "description": "Number of passed results",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1764,
             "description": "Number of failed results",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1768,
             "description": "Was this suite/spec skipped?",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1772,
             "ignore": "",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11846,7 +12322,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11858,13 +12334,13 @@
                     "description": "Array of message parts which will be concatenated later."
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1797,
             "description": "Getter for the results: message & results.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11877,7 +12353,7 @@
                     "type": "jasmine.ExpectationResult|jasmine.NestedResults"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11886,13 +12362,13 @@
                 "description": "True if <b>everything</b> below passed",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1830,
             "description": "Base class for pretty printing for expectation results.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11904,7 +12380,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11918,7 +12394,7 @@
                     "type": "jasmine.Env"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11942,13 +12418,13 @@
                     "type": "String"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 2168,
             "description": "All parameters are pretty-printed and concatenated together, then written to the spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11960,7 +12436,7 @@
                     "type": "jasmine.ExpectationResult"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11975,7 +12451,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11998,7 +12474,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -12027,7 +12503,7 @@
                     "type": "jasmine.Suite"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -12062,7 +12538,7 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/aes.js",
@@ -12084,7 +12560,7 @@
                 "description": "Encrypted output state array",
                 "type": "Number[]"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/aes.js",
@@ -12101,7 +12577,7 @@
                 "description": "Expanded key schedule as 2D byte-array (Nr+1 x Nb bytes)",
                 "type": "Number[][]"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/aes.js",
@@ -12128,7 +12604,7 @@
                 "description": "Encrypted text",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/aes.js",
@@ -12155,7 +12631,7 @@
                 "description": "Decrypted text",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/aes.js",
@@ -12179,7 +12655,7 @@
                 "description": "Base64-encoded string",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/aes.js",
@@ -12203,7 +12679,7 @@
                 "description": "decoded string",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/aes.js",
@@ -12220,7 +12696,7 @@
                 "description": "encoded string",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
         },
         {
             "file": "../plugins/aes.js",
@@ -12237,7 +12713,983 @@
                 "description": "decoded string",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.JC"
+        },
+        {
+            "file": "../JC.js",
+            "line": 21,
+            "description": "JC组件库所在路径",
+            "itemtype": "property",
+            "name": "PATH",
+            "static": 1,
+            "type": "{string}",
+            "class": "window.JC",
+            "namespace": "window"
+        },
+        {
+            "file": "../JC.js",
+            "line": 31,
+            "description": "是否显示调试信息",
+            "itemtype": "property",
+            "name": "debug",
+            "static": 1,
+            "type": "{bool}",
+            "class": "window.JC",
+            "namespace": "window"
+        },
+        {
+            "file": "../JC.js",
+            "line": 38,
+            "description": "导入JC组件",
+            "itemtype": "method",
+            "name": "use",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_names",
+                    "description": "-            模块名\n                                          或者模块下面的某个js文件(test/test1.js, 路径前面不带\"/\"将视为test模块下的test1.js)\n                                          或者一个绝对路径的js文件, 路径前面带 \"/\"",
+                    "type": "String"
+                },
+                {
+                    "name": "_basePath",
+                    "description": "-         指定要导入资源所在的主目录, 这个主要应用于 nginx 路径输出",
+                    "type": "String"
+                },
+                {
+                    "name": "_enableNginxStyle",
+                    "description": "-       指定是否需要使用 nginx 路径输出脚本资源",
+                    "type": "Bool"
+                }
+            ],
+            "example": [
+                "\n               JC.use( 'SomeClass' );                              //导入类 SomeClass\n               JC.use( 'SomeClass, AnotherClass' );                //导入类 SomeClass, AnotherClass\n               //\n               ///  导入类 SomeClass, SomeClass目录下的file1.js, \n               ///  AnotherClass, AnotherClass 下的file2.js\n               //\n               JC.use( 'SomeClass, comps/SomeClass/file1.js, comps/AnotherClass/file2.js' );   \n               JC.use( 'SomeClass, plugins/swfobject.js., plugins/json2.js' );   \n               JC.use( '/js/Test/Test1.js' );     //导入文件  /js/Test/Test1.js, 如果起始处为 \"/\", 将视为文件的绝对路径\n               //\n               /// 导入 URL 资源 // JC.use( 'http://test.com/file1.js', 'https://another.com/file2.js' ); \n               //\n               /// in libpath/_demo/\n               //\n               JC.use(\n                   [\n                       'Panel'                     //  ../comps/Panel/Panel.js\n                       , 'Tips'                    //  ../comps/Tips/Tips.js\n                       , 'Valid'                   //  ../comps/Valid/Valid.js\n                       , 'Bizs.KillISPCache'       //  ../bizs/KillISPCache/KillISPCache.js\n                       , 'bizs.TestBizFile'        //  ../bizs/TestBizFile.js\n                       , 'comps.TestCompFile'      //  ../comps/TestCompFile.js \n                       , 'Plugins.rate'            //  ../plugins/rate/rate.js\n                       , 'plugins.json2'           //  ../plugins/json2.js\n                       , '/js/fullpathtest.js'     //  /js/fullpathtest.js\n                   ].join()\n               );"
+            ],
+            "class": "window.JC",
+            "namespace": "window"
+        },
+        {
+            "file": "../JC.js",
+            "line": 145,
+            "description": "调用依赖的类\n<br />这个方法的存在是因为有一些类调整了结构, 但是原有的引用因为向后兼容的需要, 暂时不能去掉",
+            "itemtype": "method",
+            "name": "_usePatch",
+            "params": [
+                {
+                    "name": "_items",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "_fromClass",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_patchClass",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "class": "window.JC",
+            "namespace": "window"
+        },
+        {
+            "file": "../JC.js",
+            "line": 167,
+            "description": "输出调试信息, 可通过 JC.debug 指定是否显示调试信息",
+            "params": [
+                {
+                    "name": "任意参数任意长度的字符串内容",
+                    "description": "",
+                    "type": "[string[,string]]"
+                }
+            ],
+            "itemtype": "method",
+            "name": "log",
+            "static": 1,
+            "class": "window.JC",
+            "namespace": "window"
+        },
+        {
+            "file": "../JC.js",
+            "line": 174,
+            "description": "定义输出路径的 v 参数, 以便控制缓存",
+            "itemtype": "property",
+            "name": "pathPostfix",
+            "type": "string",
+            "default": "empty",
+            "static": 1,
+            "class": "window.JC",
+            "namespace": "window"
+        },
+        {
+            "file": "../JC.js",
+            "line": 182,
+            "description": "是否启用nginx concat 模块的路径格式",
+            "itemtype": "property",
+            "name": "enableNginxStyle",
+            "type": "bool",
+            "default": "false",
+            "static": 1,
+            "class": "window.JC",
+            "namespace": "window"
+        },
+        {
+            "file": "../JC.js",
+            "line": 190,
+            "description": "定义 nginx style 的基础路径\n<br /><b>注意:</b> 如果这个属性为空, 即使 enableNginxStyle = true, 也是直接输出默认路径",
+            "itemtype": "property",
+            "name": "nginxBasePath",
+            "type": "string",
+            "default": "empty",
+            "static": 1,
+            "class": "window.JC",
+            "namespace": "window"
+        },
+        {
+            "file": "../JC.js",
+            "line": 199,
+            "description": "资源路径映射对象\n<br />设置 JC.use 逗号(',') 分隔项的 对应URL路径",
+            "itemtype": "property",
+            "name": "FILE_MAP",
+            "type": "object",
+            "default": "null",
+            "static": 1,
+            "example": [
+                "\n               以下例子假定 libpath = http://git.me.btbtd.org/ignore/JQueryComps_dev/\n               <script>\n                   JC.FILE_MAP = {\n                       'Calendar': 'http://jc.openjavascript.org/comps/Calendar/Calendar.js'\n                       , 'Form': 'http://jc.openjavascript.org/comps/Form/Form.js'\n                       , 'LunarCalendar': 'http://jc.openjavascript.org/comps/LunarCalendar/LunarCalendar.js'\n                       , 'Panel': 'http://jc.openjavascript.org/comps/Panel/Panel.js' \n                       , 'Tab': 'http://jc.openjavascript.org/comps/Tab/Tab.js'\n                       , 'Tips': 'http://jc.openjavascript.org/comps/Tips/Tips.js' \n                       , 'Tree': 'http://jc.openjavascript.org/comps/Tree/Tree.js'\n                       , 'Valid': 'http://jc.openjavascript.org/comps/Valid/Valid.js'\n                       , 'plugins/jquery.form.js': 'http://jc.openjavascript.org/plugins/jquery.form.js'\n                       , 'plugins/json2.js': 'http://jc.openjavascript.org/plugins/json2.js'\n                   };\n\n                   JC.use( 'Panel, Tips, Valid, plugins/jquery.form.js' );\n\n                   $(document).ready(function(){\n                       //JC.Dialog( 'JC.use example', 'test issue' );\n                   });\n               </script>\n\n               output should be:\n                   http://git.me.btbtd.org/ignore/JQueryComps_dev/lib.js\n                   http://jc.openjavascript.org/comps/Panel/Panel.js\n                   http://jc.openjavascript.org/comps/Tips/Tips.js\n                   http://jc.openjavascript.org/comps/Valid/Valid.js\n                   http://jc.openjavascript.org/plugins/jquery.form.js"
+            ],
+            "class": "window.JC",
+            "namespace": "window"
+        },
+        {
+            "file": "../JC.js",
+            "line": 237,
+            "description": "输出 nginx concat 模块的脚本路径格式",
+            "itemtype": "method",
+            "name": "_writeNginxScript",
+            "params": [
+                {
+                    "name": "_paths",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "class": "window.JC",
+            "namespace": "window"
+        },
+        {
+            "file": "../JC.js",
+            "line": 265,
+            "description": "输出的脚本路径格式",
+            "itemtype": "method",
+            "name": "_writeNormalScript",
+            "params": [
+                {
+                    "name": "_paths",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "class": "window.JC",
+            "namespace": "window"
+        },
+        {
+            "file": "../JC.js",
+            "line": 282,
+            "description": "保存 use 过的资源路径, 以便进行唯一性判断, 避免重复加载",
+            "itemtype": "property",
+            "name": "_USE_CACHE",
+            "type": "object",
+            "default": "{}",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "class": "window.JC",
+            "namespace": "window"
+        },
+        {
+            "file": "../JC.js",
+            "line": 303,
+            "description": "自动识别组件库所在路径",
+            "class": "window.UXC",
+            "namespace": "window"
+        },
+        {
+            "file": "../common.js",
+            "line": 9,
+            "description": "如果 console 不可用, 则生成一个模拟的 console 对象",
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 15,
+            "description": "声明主要命名空间, 方便迁移",
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 22,
+            "description": "全局 css z-index 控制属性",
+            "itemtype": "property",
+            "name": "ZINDEX_COUNT",
+            "type": "int",
+            "default": "50001",
+            "static": 1,
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 30,
+            "description": "把函数的参数转为数组",
+            "itemtype": "method",
+            "name": "sliceArgs",
+            "params": [
+                {
+                    "name": "args",
+                    "description": "",
+                    "type": "Arguments"
+                }
+            ],
+            "return": {
+                "description": "Array"
+            },
+            "static": 1,
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 44,
+            "description": "按格式输出字符串",
+            "itemtype": "method",
+            "name": "printf",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_str",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "example": [
+                "\n     printf( 'asdfasdf{0}sdfasdf{1}', '000', 1111 );\n     //return asdfasdf000sdfasdf1111"
+            ],
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 60,
+            "description": "判断URL中是否有某个get参数",
+            "itemtype": "method",
+            "name": "hasUrlParam",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "bool"
+            },
+            "example": [
+                "\n     var bool = hasUrlParam( 'getkey' );"
+            ],
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 84,
+            "description": "添加URL参数\n<br /><b>require:</b> delUrlParam",
+            "itemtype": "method",
+            "name": "addUrlParams",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_params",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "example": [
+                "\n       var url = addUrlParams( location.href, {'key1': 'key1value', 'key2': 'key2value' } );"
+            ],
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 112,
+            "description": "取URL参数的值",
+            "itemtype": "method",
+            "name": "getUrlParam",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "example": [
+                "\n       var defaultTag = getUrlParam(location.href, 'tag');  "
+            ],
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 141,
+            "description": "取URL参数的值, 这个方法返回数组\n<br />与 getUrlParam 的区别是可以获取 checkbox 的所有值",
+            "itemtype": "method",
+            "name": "getUrlParams",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Array"
+            },
+            "example": [
+                "\n       var params = getUrlParams(location.href, 'tag');  "
+            ],
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 170,
+            "description": "删除URL参数",
+            "itemtype": "method",
+            "name": "delUrlParam",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "example": [
+                "\n       var url = delUrlParam( location.href, 'tag' );"
+            ],
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 200,
+            "description": "提示需要 HTTP 环境",
+            "itemtype": "method",
+            "name": "httpRequire",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_msg",
+                    "description": "要提示的文字, 默认 \"本示例需要HTTP环境'",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "bool     如果是HTTP环境返回true, 否则返回false"
+            },
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 215,
+            "description": "删除 URL 的锚点\n<br /><b>require:</b> addUrlParams",
+            "itemtype": "method",
+            "name": "removeUrlSharp",
+            "static": 1,
+            "params": [
+                {
+                    "name": "$url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "$nornd",
+                    "description": "是否不添加随机参数",
+                    "type": "Bool"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 229,
+            "description": "重载页面\n<br /><b>require:</b> removeUrlSharp\n<br /><b>require:</b> addUrlParams",
+            "itemtype": "method",
+            "name": "reloadPage",
+            "static": 1,
+            "params": [
+                {
+                    "name": "$url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "$nornd",
+                    "description": "",
+                    "type": "Bool"
+                },
+                {
+                    "name": "$delayms",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 249,
+            "description": "取小数点的N位，\n<br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题",
+            "itemtype": "method",
+            "name": "parseFinance",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_i",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "_dot",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "number"
+            },
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 267,
+            "description": "js 附加字串函数",
+            "itemtype": "method",
+            "name": "padChar",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_str",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_len",
+                    "description": "",
+                    "type": "Intl"
+                },
+                {
+                    "name": "_char",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 285,
+            "description": "格式化日期为 YYYY-mm-dd 格式\n<br /><b>require</b>: pad\\_char\\_f",
+            "itemtype": "method",
+            "name": "formatISODate",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_date",
+                    "description": "要格式化日期的日期对象",
+                    "type": "Date"
+                },
+                {
+                    "name": "_split",
+                    "description": "定义年月日的分隔符, 默认为 '-'",
+                    "type": "String|undefined"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 299,
+            "description": "从 ISODate 字符串解析日期对象",
+            "itemtype": "method",
+            "name": "parseISODate",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_datestr",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "date"
+            },
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 317,
+            "description": "获取不带 时分秒的 日期对象",
+            "itemtype": "method",
+            "name": "pureDate",
+            "params": [
+                {
+                    "name": "_d",
+                    "description": "可选参数, 如果为空 = new Date",
+                    "type": "Date"
+                }
+            ],
+            "return": {
+                "description": "Date"
+            },
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 329,
+            "description": "克隆日期对象",
+            "itemtype": "method",
+            "name": "cloneDate",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_date",
+                    "description": "需要克隆的日期",
+                    "type": "Date"
+                }
+            ],
+            "return": {
+                "description": "需要克隆的日期对象",
+                "type": "Date"
+            },
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 337,
+            "description": "判断两个日期是否为同一天",
+            "itemtype": "method",
+            "name": "isSameDay",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_d1",
+                    "description": "需要判断的日期1",
+                    "type": "Date"
+                },
+                {
+                    "name": "_d2",
+                    "description": "需要判断的日期2",
+                    "type": "Date"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Bool"
+            },
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 349,
+            "description": "判断两个日期是否为同一月份",
+            "itemtype": "method",
+            "name": "isSameMonth",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_d1",
+                    "description": "需要判断的日期1",
+                    "type": "Date"
+                },
+                {
+                    "name": "_d2",
+                    "description": "需要判断的日期2",
+                    "type": "Date"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Bool"
+            },
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 361,
+            "description": "取得一个月份中最大的一天",
+            "itemtype": "method",
+            "name": "maxDayOfMonth",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_date",
+                    "description": "",
+                    "type": "Date"
+                }
+            ],
+            "return": {
+                "description": "月份中最大的一天",
+                "type": "Int"
+            },
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 374,
+            "description": "取当前脚本标签的 src路径",
+            "itemtype": "method",
+            "name": "scriptPath",
+            "static": 1,
+            "return": {
+                "description": "脚本所在目录的完整路径",
+                "type": "String"
+            },
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 388,
+            "description": "缓动函数, 动画效果为按时间缓动 \n<br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval",
+            "itemtype": "method",
+            "name": "easyEffect",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_cb",
+                    "description": "缓动运动时的回调",
+                    "type": "Function"
+                },
+                {
+                    "name": "_maxVal",
+                    "description": "缓动的最大值, default = 200",
+                    "type": "Number"
+                },
+                {
+                    "name": "_startVal",
+                    "description": "缓动的起始值, default = 0",
+                    "type": "Number"
+                },
+                {
+                    "name": "_duration",
+                    "description": "缓动的总时间, 单位毫秒, default = 200",
+                    "type": "Number"
+                },
+                {
+                    "name": "_stepMs",
+                    "description": "缓动的间隔, 单位毫秒, default = 2",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "interval"
+            },
+            "example": [
+                "\n       $(document).ready(function(){\n           window.js_output = $('span.js_output');\n           window.ls = [];\n           window.EFF_INTERVAL = easyEffect( effectcallback, 100);\n       });\n\n       function effectcallback( _stepval, _done ){\n           js_output.html( _stepval );\n           ls.push( _stepval );\n\n           !_done && js_output.html( _stepval );\n           _done && js_output.html( _stepval + '<br />' + ls.join() );\n       }"
+            ],
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 441,
+            "description": "把输入值转换为布尔值",
+            "itemtype": "method",
+            "name": "parseBool",
+            "params": [
+                {
+                    "name": "_input",
+                    "description": "",
+                    "type": "*"
+                }
+            ],
+            "return": {
+                "description": "bool"
+            },
+            "static": 1,
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 460,
+            "description": "判断是否支持 CSS position: fixed",
+            "itemtype": "property",
+            "name": "$.support.isFixed",
+            "type": "bool",
+            "require": "jquery",
+            "static": 1,
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 489,
+            "description": "绑定或清除 mousewheel 事件",
+            "itemtype": "method",
+            "name": "mousewheelEvent",
+            "params": [
+                {
+                    "name": "_cb",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "_detach",
+                    "description": "",
+                    "type": "Bool"
+                }
+            ],
+            "static": 1,
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 511,
+            "description": "获取 selector 的指定父级标签",
+            "itemtype": "method",
+            "name": "getJqParent",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_filter",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "selector"
+            },
+            "require": "jquery",
+            "static": 1,
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 537,
+            "description": "扩展 jquery 选择器\n<br />扩展起始字符的 '/' 符号为 jquery 父节点选择器\n<br />扩展起始字符的 '|' 符号为 jquery 子节点选择器\n<br />扩展起始字符的 '(' 符号为 jquery 父节点查找识别符( getJqParent )",
+            "itemtype": "method",
+            "name": "parentSelector",
+            "params": [
+                {
+                    "name": "_item",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_finder",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "selector"
+            },
+            "require": "jquery",
+            "static": 1,
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 605,
+            "description": "获取脚本模板的内容",
+            "itemtype": "method",
+            "name": "scriptContent",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "static": 1,
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 620,
+            "description": "取函数名 ( 匿名函数返回空 )",
+            "itemtype": "method",
+            "name": "funcName",
+            "params": [
+                {
+                    "name": "_func",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "static": 1,
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 635,
+            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件,  </dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload\n         <br />Bizs.DisableLogic, Bizs.FormLogic\n     </dd>\n</d>",
+            "itemtype": "method",
+            "name": "jcAutoInitComps",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 659,
+            "description": "联动下拉框",
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 663,
+            "description": "日历组件",
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 667,
+            "description": "全选反选",
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 671,
+            "description": "Ajax 上传",
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 677,
+            "description": "disable / enable",
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 681,
+            "description": "表单提交逻辑",
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 686,
+            "description": "URL 占位符识别功能",
+            "itemtype": "method",
+            "name": "urlDetect",
+            "params": [
+                {
+                    "name": "_url",
+                    "description": "如果 起始字符为 URL, 那么 URL 将祝为本页的URL",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "static": 1,
+            "example": [
+                "\n     urlDetect( '?test' ); //output: ?test\n\n     urlDetect( 'URL,a=1&b=2' ); //output: your.com?a=1&b=2\n     urlDetect( 'URL,a=1,b=2' ); //output: your.com?a=1&b=2\n     urlDetect( 'URLa=1&b=2' ); //output: your.com?a=1&b=2"
+            ],
+            "class": ".window"
+        },
+        {
+            "file": "../common.js",
+            "line": 725,
+            "description": "日期占位符识别功能",
+            "itemtype": "method",
+            "name": "dateDetect",
+            "params": [
+                {
+                    "name": "_dateStr",
+                    "description": "如果 起始字符为 NOW, 那么将视为当前日期",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Date|null"
+            },
+            "static": 1,
+            "example": [
+                "\n     dateDetect( 'now' ); //2014-10-02\n     dateDetect( 'now,3d' ); //2013-10-05\n     dateDetect( 'now,-3d' ); //2013-09-29\n     dateDetect( 'now,2w' ); //2013-10-16\n     dateDetect( 'now,-2m' ); //2013-08-02\n     dateDetect( 'now,4y' ); //2017-10-02\n\n     dateDetect( 'now,1d,1w,1m,1y' ); //2014-11-10"
+            ],
+            "class": ".window"
         },
         {
             "file": "../lib.js",
@@ -13714,6 +15166,14 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../comps/BaseMVC/BaseMVC.js:3"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../comps/BaseMVC/BaseMVC.js:209"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../comps/Calendar/Calendar.js:3"
         },
         {
@@ -14055,6 +15515,26 @@
         {
             "message": "replacing incorrect tag: returns with return",
             "line": " ../plugins/aes.js:440"
+        },
+        {
+            "message": "unknown tag: date",
+            "line": " ../JC.js:5"
+        },
+        {
+            "message": "unknown tag: date",
+            "line": " ../JC.js:292"
+        },
+        {
+            "message": "unknown tag: require",
+            "line": " ../common.js:460"
+        },
+        {
+            "message": "unknown tag: require",
+            "line": " ../common.js:511"
+        },
+        {
+            "message": "unknown tag: require",
+            "line": " ../common.js:537"
         },
         {
             "message": "unknown tag: require",
@@ -14767,6 +16247,42 @@
         {
             "message": "Missing item type\nDecode utf-8 encoded string back into multi-byte Unicode characters",
             "line": " ../plugins/aes.js:440"
+        },
+        {
+            "message": "Missing item type\n自动识别组件库所在路径",
+            "line": " ../JC.js:303"
+        },
+        {
+            "message": "Missing item type\n如果 console 不可用, 则生成一个模拟的 console 对象",
+            "line": " ../common.js:9"
+        },
+        {
+            "message": "Missing item type\n声明主要命名空间, 方便迁移",
+            "line": " ../common.js:15"
+        },
+        {
+            "message": "Missing item type\n联动下拉框",
+            "line": " ../common.js:659"
+        },
+        {
+            "message": "Missing item type\n日历组件",
+            "line": " ../common.js:663"
+        },
+        {
+            "message": "Missing item type\n全选反选",
+            "line": " ../common.js:667"
+        },
+        {
+            "message": "Missing item type\nAjax 上传",
+            "line": " ../common.js:671"
+        },
+        {
+            "message": "Missing item type\ndisable / enable",
+            "line": " ../common.js:677"
+        },
+        {
+            "message": "Missing item type\n表单提交逻辑",
+            "line": " ../common.js:681"
         },
         {
             "message": "Missing item type\n如果 console 不可用, 则生成一个模拟的 console 对象",
