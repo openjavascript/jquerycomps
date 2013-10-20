@@ -93,6 +93,8 @@
             
                 <li><a href="../classes/JC.Panel.View.html">JC.Panel.View</a></li>
             
+                <li><a href="../classes/JC.Placeholder.html">JC.Placeholder</a></li>
+            
                 <li><a href="../classes/JC.Slider.html">JC.Slider</a></li>
             
                 <li><a href="../classes/JC.Slider.Model.html">JC.Slider.Model</a></li>
@@ -178,7 +180,6 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//TODO: 更改 cauValue 处理逻辑
  ;(function($){
     /**
      * Ajax 文件上传
@@ -548,31 +549,6 @@
                 return this.callbackProp( &#x27;cauUploadErrorCallback&#x27; );
             }
 
-        , cauValue:
-            function( _d ){
-                var _p = this, _displayLabel = _p.cauDisplayLabel(), _label = &#x27;&#x27;
-                if( typeof _d != &#x27;undefined&#x27; ){
-                    var _value = _d.data[ _p.cauValueKey() ];
-                    _label = _d.data[ _p.cauLabelKey() ];
-                    _p.selector().val( _value )
-                }
-
-                if( _p.cauDisplayLabelCallback() ){
-                    _label = _p.cauDisplayLabelCallback().call( _p.selector(), _d, _label, _value );
-                //}else if( _label != _value ){
-                }else{
-                    _label = printf( &#x27;&lt;a href=&quot;{0}&quot; class=&quot;green js_auLink&quot; target=&quot;_blank&quot;&gt;{1}&lt;/a&gt;&#x27;, _value, _label);
-                }
-
-                //$( _p ).trigger( &#x27;AUUpdateDisplayLabel&#x27;, [ _label ] );
-
-                _displayLabel 
-                    &amp;&amp; _displayLabel.length
-                    &amp;&amp; _displayLabel.html( _label ) 
-                    ;
-                return _p.selector().val();
-            }
-
         , framePath:
             function(){
                 var _fl = this.attrProp(&#x27;cauFrameFileName&#x27;) || AjaxUpload.frameFileName
@@ -633,6 +609,28 @@
                         &amp;&amp; _p._model.selector().show()
                         ;
                 });
+
+                $( _p ).on( &#x27;CAUUpdate&#x27;, function( _evt, _d ){
+                    var _displayLabel = _p._model.cauDisplayLabel()
+                        , _label = &#x27;&#x27;, _value = &#x27;&#x27;
+                        ;
+
+                    if( typeof _d != &#x27;undefined&#x27; ){
+                        _value = _d.data[ _p._model.cauValueKey() ];
+                        _label = _d.data[ _p._model.cauLabelKey() ];
+                        _p._model.selector().val( _value )
+                    }
+
+                    if( _p._model.cauDisplayLabelCallback() ){
+                        _label = _p._model.cauDisplayLabelCallback().call( _p._model.selector(), _d, _label, _value );
+                    }else{
+                        _label = printf( &#x27;&lt;a href=&quot;{0}&quot; class=&quot;green js_auLink&quot; target=&quot;_blank&quot;&gt;{1}&lt;/a&gt;&#x27;, _value, _label);
+                    }
+                    _displayLabel 
+                        &amp;&amp; _displayLabel.length
+                        &amp;&amp; _displayLabel.html( _label ) 
+                        ;
+                });
             }
 
         , loadFrame:
@@ -686,7 +684,7 @@
 
                 _p._model.selector().val( &#x27;&#x27; );
                 if( _d &amp;&amp; ( &#x27;errorno&#x27; in _d ) &amp;&amp; !_d.errorno ){
-                    _p._model.cauValue( _d );
+                    $(_p).trigger( &#x27;CAUUpdate&#x27;, [ _d ] );
 
                     _p._model.selector().val() 
                         &amp;&amp; _p._model.selector().is(&#x27;:visible&#x27;)

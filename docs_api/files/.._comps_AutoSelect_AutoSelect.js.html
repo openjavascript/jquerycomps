@@ -93,6 +93,8 @@
             
                 <li><a href="../classes/JC.Panel.View.html">JC.Panel.View</a></li>
             
+                <li><a href="../classes/JC.Placeholder.html">JC.Placeholder</a></li>
+            
                 <li><a href="../classes/JC.Slider.html">JC.Slider</a></li>
             
                 <li><a href="../classes/JC.Slider.Model.html">JC.Slider.Model</a></li>
@@ -882,7 +884,14 @@
 
         , hideempty:
             function( _selector ){
-                var _r = AutoSelect.hideEmpty;
+                var _r = AutoSelect.hideEmpty, _first = this.first();
+
+                _first 
+                    &amp;&amp; _first.length
+                    &amp;&amp; _first.is(&#x27;[selecthideempty]&#x27;)
+                    &amp;&amp; ( _r = parseBool( _first.attr(&#x27;selecthideempty&#x27;) ) )
+                    ;
+
                 _selector 
                     &amp;&amp; _selector.length
                     &amp;&amp; _selector.is(&#x27;[selecthideempty]&#x27;)
