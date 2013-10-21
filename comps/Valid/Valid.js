@@ -224,6 +224,7 @@
      *              <dd><b>uniquedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>
      *              <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>
      *              <dd><b>uniqueIgnoreCase:</b> 是否忽略大小写</dd>
+     *              <dd><b>uniqueIgnoreEmpty:</b> 是否忽略空的值, 如果组中有空值也会被忽略</dd>
      *              <dd>unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组</dd>
      *          </dl>
      *      </dd>
@@ -2034,10 +2035,14 @@
                     //if( _isReturn ) return _r;
 
                     $.each( _group, function( _ix, _items ){
-                        var _tmpAr = [];
+                        var _tmpAr = [], _ignoreEmpty = false;
                         $.each( _items, function( _six, _sitem ){
-                            _tmpAr.push( $(_sitem).val().trim() );
+                            var _tmpV, _ignore = parseBool( _sitem.attr('uniqueIgnoreEmpty') );
+                            _tmpV = $(_sitem).val().trim();
+                            _ignore && !_tmpV && _sitem.is(':visible') && ( _ignoreEmpty = true );
+                            _tmpAr.push( _tmpV );
                         });
+                        if( _ignoreEmpty ) return;
                         var _pureVal = _tmpAr.join(''), _compareVal = _tmpAr.join('IOU~IOU');
                         if( !_pureVal ) return;
                         _ignoreCase && ( _compareVal = _compareVal.toLowerCase() );

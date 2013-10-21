@@ -440,8 +440,6 @@
                     , _next = _p._model.next( _selector )
                     , _url, _token
                     ;
-                JC.log( 'ajax select' );
-
 
                 if( _p._model.isFirst( _selector ) ){
                     typeof _pid == 'undefined' && ( _pid = _p._model.selectparentid( _selector ) || '' );
@@ -449,32 +447,51 @@
                         _url = _p._model.selecturl( _selector, _pid );
                         _token = _p._model.token( true );
 
-                        $.get( _url, function( _data ){
-                            _data = $.parseJSON( _data );
-                            _p._view.update( _selector, _data );
-                            _cb && _cb.call( _p, _selector, _data, _token );
-                        });
+                        if( Model.ajaxCache( _url ) ){
+                            setTimeout( function(){
+                                _data = Model.ajaxCache( _url );
+                                _p._view.update( _selector, _data );
+                                _cb && _cb.call( _p, _selector, _data, _token );
+                            }, 10 );
+                        }else{
+                            setTimeout( function(){
+                                $.get( _url, function( _data ){
+                                    _data = $.parseJSON( _data );
+                                    Model.ajaxCache( _url, _data );
+                                    _p._view.update( _selector, _data );
+                                    _cb && _cb.call( _p, _selector, _data, _token );
+                                });
+                            }, 10 );
+                        }
                     }
                 }else{
                     if( typeof _oldToken != 'undefined' && _oldToken != _p._model.token() ){
                         return;
                     }
-                    /*
-                    setTimeout( function(){
-                    }, Math.random() * 1000 );
-                    */
                     _url = _p._model.selecturl( _selector, _pid );
-                    $.get( _url, function( _data ){
-                        if( typeof _oldToken != 'undefined' && _oldToken != _p._model.token() ){
-                            return;
-                        }
-                        JC.log( '_url:', _url, _pid );
-                        _data = $.parseJSON( _data );
-                        _p._view.update( _selector, _data );
-                        _cb && _cb.call( _p, _selector, _data, _oldToken );
-                    });
+
+                    if( Model.ajaxCache( _url ) ){
+                            _p._processData( _oldToken, _selector, _cb, Model.ajaxCache( _url ) );
+                    }else{
+                        $.get( _url, function( _data ){
+                            _data = $.parseJSON( _data );
+                            _p._processData( _oldToken, _selector, _cb, Model.ajaxCache( _url, _data ) );
+                        });
+                    }
                 }
                 return this;
+            }
+
+        , _processData:
+            function( _oldToken, _selector, _cb, _data ){
+                var _p = this;
+                setTimeout( function(){
+                    if( typeof _oldToken != 'undefined' && _oldToken != _p._model.token() ){
+                        return;
+                    }
+                    _p._view.update( _selector, _data );
+                    _cb && _cb.call( _p, _selector, _data, _oldToken );
+                }, 10 );
             }
 
         , _changeCb:
@@ -581,6 +598,13 @@
 
         this._init();
     }
+
+    Model._ajaxCache = {};
+    Model.ajaxCache = 
+        function( _key, _val ){
+            _val && ( Model._ajaxCache[ _key ] = _val );
+            return Model._ajaxCache[ _key ];
+        };
     
     Model.prototype = {
         _init:
@@ -836,7 +860,7 @@
 
                 if( !_data.length ){
                     if( this._model.hideempty( _selector ) ){
-                        _selector.hide();
+                        this.hideItem( _selector );
                         this._control.trigger( 'SelectItemUpdated', [ _selector, _data ] );
                         return;
                     }
@@ -860,6 +884,14 @@
         , _removeExists:
             function( _selector ){
                 _selector.find('> option:not([defaultoption])').remove();
+            }
+
+        , hideItem:
+            function( _selector ){
+                _selector.hide();
+                while( _selector = this._model.next( _selector ) ){
+                    _selector.hide();
+                }
             }
         
     };

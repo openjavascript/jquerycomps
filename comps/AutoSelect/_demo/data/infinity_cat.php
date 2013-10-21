@@ -9,7 +9,7 @@
 
     if( ($isId || $isId == '0') && $hasData ){
         for( $i = 0; $i < $items; $i++ ){
-            array_push( $r, array( $i, "label_{$i}" ) );
+            array_push( $r, array( "{$id}_{$i}", "label_{$id}_{$i}" ) );
             //echo "$i";
         }
     }

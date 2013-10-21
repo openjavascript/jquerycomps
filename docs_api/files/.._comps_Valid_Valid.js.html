@@ -406,6 +406,7 @@
      *              &lt;dd&gt;&lt;b&gt;uniquedatatarget:&lt;/b&gt; 与 datatarget相同, 区别是优先级高于 datatarget&lt;/dd&gt;
      *              &lt;dd&gt;&lt;b&gt;uniquemsg:&lt;/b&gt; 值有重复的提示信息&lt;/dd&gt;
      *              &lt;dd&gt;&lt;b&gt;uniqueIgnoreCase:&lt;/b&gt; 是否忽略大小写&lt;/dd&gt;
+     *              &lt;dd&gt;&lt;b&gt;uniqueIgnoreEmpty:&lt;/b&gt; 是否忽略空的值, 如果组中有空值也会被忽略&lt;/dd&gt;
      *              &lt;dd&gt;unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组&lt;/dd&gt;
      *          &lt;/dl&gt;
      *      &lt;/dd&gt;
@@ -2216,10 +2217,14 @@
                     //if( _isReturn ) return _r;
 
                     $.each( _group, function( _ix, _items ){
-                        var _tmpAr = [];
+                        var _tmpAr = [], _ignoreEmpty = false;
                         $.each( _items, function( _six, _sitem ){
-                            _tmpAr.push( $(_sitem).val().trim() );
+                            var _tmpV, _ignore = parseBool( _sitem.attr(&#x27;uniqueIgnoreEmpty&#x27;) );
+                            _tmpV = $(_sitem).val().trim();
+                            _ignore &amp;&amp; !_tmpV &amp;&amp; _sitem.is(&#x27;:visible&#x27;) &amp;&amp; ( _ignoreEmpty = true );
+                            _tmpAr.push( _tmpV );
                         });
+                        if( _ignoreEmpty ) return;
                         var _pureVal = _tmpAr.join(&#x27;&#x27;), _compareVal = _tmpAr.join(&#x27;IOU~IOU&#x27;);
                         if( !_pureVal ) return;
                         _ignoreCase &amp;&amp; ( _compareVal = _compareVal.toLowerCase() );

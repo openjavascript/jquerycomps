@@ -13,13 +13,13 @@
                 margin: 10px 0;
             }
         </style>
+        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
         <script src="../../../lib.js"></script>
         <script>
-            if( /file\:|\\/.test( location.href ) ){
-                alert('本示例需要HTTP环境');
-            }
+            httpRequire();
 
-            JC.debug = true; JC.use('AutoSelect');
+            JC.debug = true; 
+            JC.use( 'AutoSelect, Valid, Bizs.CommonModify, Bizs.FormLogic' );
 
             $(document).ready(function(){
 
@@ -80,53 +80,159 @@
         <div style="position:fixed; top: 20px; right: 20px">
             <button type="button" class="js_ajaxTest">ajax test</button>
         </div>
+        <div class="js_positionBox">
+            <dl class='def'>
+                <dt>auto select example</dt>
 
-        <dl class='def'>
-            <dt>auto select example</dt>
+                <dd>
+                    <label class="gray">可选位置：</label>
+                    <select name='pos1[0]' class="sel sel-w110 js_fixedPosition" 
+                        reqmsg="位置" subdatatype="unique-6"
+                        uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                        uniqueIgnoreEmpty="true"
 
+                        defaultselect 
+                        selecttriggerinitchange="false"
+                        selecturl="./data/infinity_cat.php?id=0&hasData=1" 
+                        selecttarget="/select:eq(1)"
+                        selecthideempty="true"
+                        >
+                        <option value="" defaultoption>请选择广告位</option>
+                    </select>
+                    <select name='pos2[0]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                        reqmsg="位置" subdatatype="unique-6"
+                        uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                        uniqueIgnoreEmpty="true"
+
+                        selecturl="./data/infinity_cat.php?id={0}&hasData=1" 
+                        selecttarget="/select:eq(2)"
+                        >
+                        <option value="" defaultoption>请选择广告位</option>
+                    </select>
+                    <select name='pos3[0]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                        reqmsg="位置" subdatatype="unique-6"
+                        uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                        uniqueIgnoreEmpty="true"
+
+                        selecturl="./data/infinity_cat.php?id={0}&hasData=1" 
+                        selecttarget="/select:eq(3)"
+                        >
+                        <option value="" defaultoption>请选择广告位</option>
+                    </select>
+                    <select name='pos4[0]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                        reqmsg="位置" subdatatype="unique-6"
+                        uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                        uniqueIgnoreEmpty="true"
+
+                        selecturl="./data/infinity_cat.php?id={0}&hasData=1" 
+                        selecttarget="/select:eq(4)"
+                        >
+                        <option value="" defaultoption>请选择广告位</option>
+                    </select>
+                    <select name='pos5[0]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                        reqmsg="位置" subdatatype="unique-6"
+                        uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                        uniqueIgnoreEmpty="true"
+
+                        selecturl="./data/infinity_cat.php?id={0}&hasData=1" 
+                        selecttarget="/select:eq(5)"
+                        >
+                        <option value="" defaultoption>请选择广告位</option>
+                    </select>
+                    <select name='pos6[0]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                        reqmsg="位置" subdatatype="unique-6"
+                        uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                        uniqueIgnoreEmpty="true"
+
+                        selecturl="./data/infinity_cat.php?id={0}&hasData=0" 
+                        >
+                        <option value="" defaultoption>请选择广告位</option>
+                    </select>
+                    <a href="javascript:" 
+                    class="green js_autoCommonModify" 
+                    cmtemplate="#testPosTpl"
+                    cmitem="(dd"
+                    cmaction="add"
+                    >+ 添加</a>
+                    <em class="error"></em>
+                </dd>
+            </dl>
+        </div>
+
+        <script type="text/template" id="testPosTpl">
             <dd>
-                <select name='select2_1' 
+                <label class="gray">可选位置：</label>
+                <select name='pos1[{0}]' class="sel sel-w110 js_fixedPosition" 
+                    reqmsg="位置" subdatatype="unique-6"
+                    uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                    uniqueIgnoreEmpty="true"
+
                     defaultselect 
-                    selecturl="data/infinity_cat.php?id=0&hasData=1" 
+                    selecttriggerinitchange="false"
+                    selecturl="./data/infinity_cat.php?id=0&hasData=1" 
                     selecttarget="/select:eq(1)"
                     selecthideempty="true"
                     >
-                    <option value="" defaultoption>请选择</option>
+                    <option value="" defaultoption>请选择广告位</option>
                 </select>
-                <select name='select2_2' style="display:none;"  
-                    selecturl="data/infinity_cat.php?id={0}&hasData=1" 
+                <select name='pos2[{0}]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                    reqmsg="位置" subdatatype="unique-6"
+                    uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                    uniqueIgnoreEmpty="true"
+
+                    selecturl="./data/infinity_cat.php?id=<0>&hasData=1" 
                     selecttarget="/select:eq(2)"
                     >
-                    <option value="" defaultoption>请选择</option>
+                    <option value="" defaultoption>请选择广告位</option>
                 </select>
-                <select name='select2_2' style="display:none;"  
-                    selecturl="data/infinity_cat.php?id={0}&hasData=1" 
+                <select name='pos3[{0}]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                    reqmsg="位置" subdatatype="unique-6"
+                    uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                    uniqueIgnoreEmpty="true"
+
+                    selecturl="./data/infinity_cat.php?id=<0>&hasData=1" 
                     selecttarget="/select:eq(3)"
                     >
-                    <option value="" defaultoption>请选择</option>
+                    <option value="" defaultoption>请选择广告位</option>
                 </select>
-                <select name='select2_2' style="display:none;"  
-                    selecturl="data/infinity_cat.php?id={0}&hasData=1" 
+                <select name='pos4[{0}]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                    reqmsg="位置" subdatatype="unique-6"
+                    uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                    uniqueIgnoreEmpty="true"
+
+                    selecturl="./data/infinity_cat.php?id=<0>&hasData=1" 
                     selecttarget="/select:eq(4)"
                     >
-                    <option value="" defaultoption>请选择</option>
+                    <option value="" defaultoption>请选择广告位</option>
                 </select>
-                <select name='select2_2' style="display:none;"  
-                    selecturl="data/infinity_cat.php?id={0}&hasData=1" 
+                <select name='pos5[{0}]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                    reqmsg="位置" subdatatype="unique-6"
+                    uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                    uniqueIgnoreEmpty="true"
+
+                    selecturl="./data/infinity_cat.php?id=<0>&hasData=1" 
                     selecttarget="/select:eq(5)"
                     >
-                    <option value="" defaultoption>请选择</option>
+                    <option value="" defaultoption>请选择广告位</option>
                 </select>
-                <select name='select2_3' style="display:none;"  
-                    selecturl="data/infinity_cat.php?id={0}&hasData=0"
+                <select name='pos6[{0}]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                    reqmsg="位置" subdatatype="unique-6"
+                    uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                    uniqueIgnoreEmpty="true"
+
+                    selecturl="./data/infinity_cat.php?id=<0>&hasData=0" 
                     >
-                    <option value="" defaultoption>请选择</option>
+                    <option value="" defaultoption>请选择广告位</option>
                 </select>
+                <a href="javascript:" 
+                class="red js_autoCommonModify" 
+                cmitem="(dd"
+                cmaction="del"
+                >- 删除</a>
+                <em class="error"></em>
             </dd>
 
-
-        </dl>
-
+        </script>
     </body>
 </html>
 
