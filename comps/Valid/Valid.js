@@ -1,7 +1,5 @@
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
 //TODO: checkbox, radio 错误时, input 添加高亮显示
-//TODO: subdatatype = alternative, 需要 处理 区号 + 电话号码 && 手机号码这样的逻辑
-//TODO: subdatatype 添加一个类型 reqtarget, 如果 源的值不为空, reqtarget的值也不能为空
 ;(function($){
     /**
      * <b>表单验证</b> (单例模式)
@@ -311,7 +309,7 @@
                     _p._view.error.apply( _p._view, _data );
                 });
 
-                _p.on( 'FocusMsg', function( _evt ){
+                _p.on( Model.FOCUS_MSG, function( _evt ){
                     var _data = sliceArgs( arguments ).slice(1);
                     _p._view.focusmsg.apply( _p._view, _data );
                 });
@@ -555,13 +553,26 @@
         };
     /**
      * 显示 focusmsg 属性的提示信息( 如果有的话 )
-     * @method  focusmsg
+     * @method  setFocusMsg
      * @param   {selector}  _item
      * @param   {bool}      _setHide
+     * @param   {string}    _msgAttr    - 显示指定需要读取的focusmsg信息属性名, 默认为 focusmsg, 通过该属性可以指定别的属性名
+     *                                    <br /> 如果 _msgAttr 的第一个字符为空格, 将视为提示信息, 并自动生成属性 autoGenerateFocusMsg
      * @static
      */
-    Valid.focusmsg =
-        function( _item, _setHide ){ return Valid.getInstance().trigger( 'FocusMsg', sliceArgs( arguments ) ); };
+    Valid.focusmsg = Valid.setFocusMsg =
+        function( _item, _setHide, _msgAttr ){ 
+            if( typeof _setHide == 'string' ){
+                _msgAttr = _setHide;
+                _setHide = false;
+            }
+            if( _msgAttr && _msgAttr.trim() && /^[\s]/.test( _msgAttr ) ){
+                var _autoKey = 'autoGenerateFocusMsg';
+                _item.attr( _autoKey, _msgAttr );
+                _msgAttr = _autoKey;
+            }
+            return Valid.getInstance().trigger( Model.FOCUS_MSG, [ _item, _setHide, _msgAttr ] ); 
+        };
     /**
      * focus 时,是否总是显示 focusmsg 提示信息
      * @property    focusmsgEverytime
@@ -704,6 +715,7 @@
     Model.BIND = 'BindEvent';
     Model.ERROR = 'ValidError';
     Model.CORRECT = 'ValidCorrect';
+    Model.FOCUS_MSG = 'ValidFocusMsg';
 
     Model.SELECTOR_ERROR = '~ em.error, ~ em.errormsg';
 
@@ -2427,9 +2439,10 @@
         , valid:
             function( _item, _tm, _noStyle ){
                 _item && ( _item = $(_item) );
-                var _p = this, _tmp;
+                var _p = this, _tmp, _focusEm;
                 _item.data( 'JCValidStatus', true );
                 //if( !_p._model.isValid( _item ) ) return false;
+                var _hideFocusMsg = !parseBool( _item.attr('validnoerror' ) );
                 setTimeout(function(){
                     _item.removeClass( Model.CSS_ERROR );
                     _item.find( printf( '~ em:not("em.focusmsg, em.validmsg, {0}")', Model.FILTER_ERROR ) ).css('display', _p._model.validemdisplaytype( _item ) );
@@ -2442,13 +2455,18 @@
                         && typeof _item.val() != 'object'
                         && !_item.val().trim() 
                         && ( _noStyle = 1 );
-                    _p.validMsg( _item, _noStyle );
+
+                    _p.validMsg( _item, _noStyle, _hideFocusMsg );
                     ( _tmp = _p._model.validitemcallback( _item ) ) && _tmp( _item, true );
+
                 }, _tm || 150);
             }
         , validMsg:
-            function( _item, _noStyle ){
-                var _p = this, _msg = ( _item.attr('validmsg') || '' ).trim().toLowerCase();
+            function( _item, _noStyle, _hideFocusMsg ){
+                var _p = this, _msg = ( _item.attr('validmsg') || '' ).trim().toLowerCase(), _focusEm;
+
+                /*
+                */
 
                 if( _p._model.isValidMsg( _item ) ){
                     if( _msg == 'true' || _msg == '1' ) _msg = '';
@@ -2463,6 +2481,8 @@
                              , _item.after( _validmsgem )
                            );
 
+                    //_focusmsgem && _focusmsgem.length && _focusmsgem.hide();
+
                     _validmsgem.html( _msg );
                     _noStyle 
                         ? _validmsgem.hide() 
@@ -2471,6 +2491,11 @@
                                 , _errorEm && _errorEm.hide()
                           )
                         ;
+                }else{
+                    if( _hideFocusMsg ){
+                        ( _focusEm = _p._model.findFocusEle( _item ) ) 
+                            && _focusEm.hide();
+                    }
                 }
             }
         /**
@@ -2527,8 +2552,11 @@
                 return false;
             }
         , focusmsg:
-            function( _item, _setHide ){
-                if( _item && ( _item = $( _item ) ).length && _item.is('[focusmsg]') ){
+            function( _item, _setHide, _msgAttr ){
+                //alert( _msgAttr );
+                if( _item && ( _item = $( _item ) ).length 
+                        && ( _item.is('[focusmsg]') || ( _msgAttr && _item.is( '[' + _msgAttr + ']') ) )
+                    ){
                     JC.log( 'focusmsg', new Date().getTime() );
 
                     var _r, _p = this
@@ -2537,6 +2565,7 @@
                         , _errorEm = _p._model.findErrorEle( _item )
                         , _msg = _item.attr('focusmsg')
                         ;
+                    _msgAttr && ( _msg = _item.attr( _msgAttr || _msg ) );
 
                     if( _setHide && _focusmsgem && _focusmsgem.length ){
                         _focusmsgem.hide();
@@ -2550,7 +2579,6 @@
                         && ( _focusmsgem = $('<em class="focusmsg"></em>')
                              , _item.after( _focusmsgem )
                            );
-
                     if( _item.is( '[validnoerror]' ) ){
                         _r = Valid.getInstance().parse( _item );
                     }else{
@@ -2582,7 +2610,7 @@
      * @private
      */
     $(document).delegate( 'input[type=text], input[type=password], textarea', 'blur', function($evt){
-        Valid.getInstance().trigger( 'FocusMsg',  [ $(this), true ] );
+        Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
         Valid.check( $(this) );
     });
     /**
@@ -2598,14 +2626,14 @@
      */
     $(document).delegate( 'input[type=text], input[type=password], textarea'
                             +', select, input[type=file], input[type=checkbox], input[type=radio]', 'focus', function($evt){
-        Valid.getInstance().trigger( 'FocusMsg',  [ $(this) ] );
+        Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this) ] );
     });
     /**
      * 响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
      * @private
      */
     $(document).delegate( 'select, input[type=file], input[type=checkbox], input[type=radio]', 'blur', function($evt){
-        Valid.getInstance().trigger( 'FocusMsg',  [ $(this), true ] );
+        Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
     });
     /**
      * 初始化 subdatatype = datavalid 相关事件
@@ -2676,4 +2704,4 @@
         });
     });
 
-}(jQuery))
+}(jQuery));

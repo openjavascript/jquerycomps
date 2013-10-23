@@ -83,6 +83,21 @@
                     });
                 });
 
+                $(document).delegate( 'button.js_setFocusMsg', 'click', function( _evt ){
+                    var _p = $(this)
+                        , _target = parentSelector( _p, _p.attr('target') )
+                        , _msgkey = _p.attr('msgkey')
+                        , _msg = _p.attr('msg') || ( !_msgkey ? ' test focusmsg' : '')
+                        ;
+
+                    _msgkey && _msg && _target.attr( _msgkey, _msg );
+
+                    _target && _target.each( function(){
+                        JC.Valid.focusmsg( $(this), _msgkey || _msg );
+                    });
+                });
+
+
                 $(document).delegate( 'button.js_setValid', 'click', function( _evt ){
                     var _p = $(this)
                         , _target = parentSelector( _p, _p.attr('target') )
@@ -109,14 +124,17 @@
                 <dd>
                     文件: <input  type="file" reqmsg="文件" />
                     <button type="button" class="js_setError" target="/input" msg="test ilu" msgkey="msgextent" >test - msg && msgkey</button>
-                    <button type="button" class="js_setValid" target="/input" >set valid</button>
+                    <button type="button" class="js_setValid" target="/input" >setValid</button>
+                    <button type="button" class="js_setFocusMsg" target="/input" >setFocusMsg</button>
                     <em class="error"></em>
+                    <em class="focusmsg"></em>
                 </dd>
                 <dd>
                     文件: <input  type="file" reqmsg="文件" extendkey="test" />
                     <button type="button" class="js_setError" target="/input" msgkey="extendkey" >test - msgkey</button>
                     <button type="button" class="js_setValid" target="/input" >set valid</button>
                     <em class="error"></em>
+                    <em class="focusmsg"></em>
                 </dd>
                 <dd>
                     文件: <input  type="file" reqmsg="文件" />
@@ -125,6 +143,7 @@
                         msgkey=" test msg" >test - msgkey - auto generate key - (space at first char)</button>
                     <button type="button" class="js_setValid" target="/input" >set valid</button>
                     <em class="error"></em>
+                    <em class="focusmsg"></em>
                 </dd>
             </dl>
 
@@ -136,6 +155,28 @@
                     <button type="button" class="js_setValid" target="/input" >set valid</button>
                     <em class="error"></em>
                     <em class="validmsg"></em>
+                </dd>
+            </dl>
+
+            <dl class="fm-items">
+                <dt>JC.Valid 示例, setValid</dt>
+                <dd>
+                    内容: <input type="text" reqmsg="内容" />
+                    <button type="button" class="js_setError" target="/input" msgkey=" test msg" >set error</button>
+                    <button type="button" class="js_setValid" target="/input" >set valid</button>
+                    <button type="button" class="js_setFocusMsg" target="/input" >setFocusMsg</button>
+                    <em class="error"></em>
+                    <em class="validmsg"></em>
+                    <em class="focusmsg"></em>
+                </dd>
+                <dd>
+                    内容: <input type="text" reqmsg="内容" disabled />
+                    <button type="button" class="js_setError" target="/input" msgkey=" test msg" >set error</button>
+                    <button type="button" class="js_setValid" target="/input" >set valid</button>
+                    <button type="button" class="js_setFocusMsg" target="/input" >setFocusMsg</button>
+                    <em class="error"></em>
+                    <em class="validmsg"></em>
+                    <em class="focusmsg"></em>
                 </dd>
             </dl>
 

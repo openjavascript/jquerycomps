@@ -47,8 +47,16 @@
      *      <dt>selectbeforeinited = 初始化之前的回调</dt>
      *
      *      <dt>selectinited = 初始化后的回调</dt>
+<dd><xmp>function selectinited( _items ){
+    var _ins = this;
+}</xmp>
+</dd>
      *
-     *      <dt>selectallchanged = 所有select请求完数据之后的回调</dt>
+     *      <dt>selectallchanged = 所有select请求完数据之后的回调, <b>window 变量域</b></dt>
+     *      <dd><xmp>function selectallchanged( _items ){
+    var _ins = this;
+}</xmp>
+     *      </dd>
      * </dl>
      * <h2>option 标签可用的 HTML 属性</h2>
      * <dl>
@@ -292,7 +300,7 @@
                     }
                     _p._model.isInited( true );
 
-                    _p._model.inited() && _p._model.inited().call( _p );
+                    _p._model.inited() && _p._model.inited().call( _p, _p._model.items() );
                 });
 
                 _p.on('SelectChange', function( _evt, _selector ){
@@ -300,7 +308,10 @@
                         && _p._model.change( _selector ).call( _selector, _evt, _p );
                 });
 
-                _p._model.allChanged() && _p.on( 'SelectAllChanged', _p._model.allChanged() );
+                _p._model.allChanged() 
+                    && _p.on( 'SelectAllChanged', function( _evt ){
+                            _p._model.allChanged().call( _p, _p._model.items() );
+                        });
 
                 _p.trigger('SelectBeforeInited');
                 

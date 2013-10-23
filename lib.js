@@ -805,6 +805,31 @@ function dateDetect( _dateStr ){
     }
     return _r;
 }
+/**
+ * 模块加载器自动识别函数
+ * <br />目前可识别 requirejs
+ * <br />计划支持的加载器 seajs
+ * @method  loaderDetect
+ * @param   {array of dependency|class}     _require
+ * @param   {class|callback}                _class
+ * @param   {callback}                      _cb
+ * @static
+ * @example
+ *      loaderDetect( JC.AutoSelect );
+ *      loaderDetect( [ 'JC.AutoSelect', 'JC.AutoChecked' ], JC.Form );
+ */
+function loaderDetect( _require, _class, _cb ){
+    if( !( typeof define === 'function' && define.amd ) ) return;
+    if( _require.constructor != Array ){
+        _cb = _class;
+        _class = _require;
+        _require = [];
+    }
+    define( _require, function() {
+        _cb && _cb.apply( _class, sliceArgs( arguments ) );
+        return _class;
+    });
+}
 ;
 
 //TODO: use 方法 nginx 模式添加 url 最大长度判断

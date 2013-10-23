@@ -229,8 +229,16 @@
      *      &lt;dt&gt;selectbeforeinited = 初始化之前的回调&lt;/dt&gt;
      *
      *      &lt;dt&gt;selectinited = 初始化后的回调&lt;/dt&gt;
+&lt;dd&gt;&lt;xmp&gt;function selectinited( _items ){
+    var _ins = this;
+}&lt;/xmp&gt;
+&lt;/dd&gt;
      *
-     *      &lt;dt&gt;selectallchanged = 所有select请求完数据之后的回调&lt;/dt&gt;
+     *      &lt;dt&gt;selectallchanged = 所有select请求完数据之后的回调, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dt&gt;
+     *      &lt;dd&gt;&lt;xmp&gt;function selectallchanged( _items ){
+    var _ins = this;
+}&lt;/xmp&gt;
+     *      &lt;/dd&gt;
      * &lt;/dl&gt;
      * &lt;h2&gt;option 标签可用的 HTML 属性&lt;/h2&gt;
      * &lt;dl&gt;
@@ -474,7 +482,7 @@
                     }
                     _p._model.isInited( true );
 
-                    _p._model.inited() &amp;&amp; _p._model.inited().call( _p );
+                    _p._model.inited() &amp;&amp; _p._model.inited().call( _p, _p._model.items() );
                 });
 
                 _p.on(&#x27;SelectChange&#x27;, function( _evt, _selector ){
@@ -482,7 +490,10 @@
                         &amp;&amp; _p._model.change( _selector ).call( _selector, _evt, _p );
                 });
 
-                _p._model.allChanged() &amp;&amp; _p.on( &#x27;SelectAllChanged&#x27;, _p._model.allChanged() );
+                _p._model.allChanged() 
+                    &amp;&amp; _p.on( &#x27;SelectAllChanged&#x27;, function( _evt ){
+                            _p._model.allChanged().call( _p, _p._model.items() );
+                        });
 
                 _p.trigger(&#x27;SelectBeforeInited&#x27;);
                 

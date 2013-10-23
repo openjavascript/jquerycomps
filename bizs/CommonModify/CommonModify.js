@@ -15,10 +15,13 @@
  *      <dd>指定保存模板的 script 标签</dd>
  *
  *      <dt>cmitem = selector</dt>
- *      <dd>添加时, 当前的具体父节点</dd>
+ *      <dd>添加时, 目标位置的 父节点/兄弟节点</dd>
  *
  *      <dt>cmaction = string, [add, del], default = add</dt>
  *      <dd>操作类型</dd>
+ *
+ *      <dt>cmappendtype = string, default = after</dt>
+ *      <dd>指定 node 添加 dom 的方法, 可选类型: before, after, appendTo</dd>
  *
  *      <dt>cmdonecallback = function</dt>
  *      <dd>
@@ -78,9 +81,6 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
     JC.log( 'cmdelcallback', new Date().getTime() );
 }</xmp>
  *      </dd>
- *
- *      <dt>cmappendtype = string, default = after</dt>
- *      <dd>指定 node 添加 dom 的方法, 可选类型: before, after, appendTo</dd>
  * </dl>
  *
  * @namespace   window.Bizs
