@@ -707,8 +707,12 @@
                     _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );
                 }else{
                     _panel = JC.Dialog.msgbox( _json.errmsg || '操作成功', 0, function(){
-                        _p._model.formAjaxDoneAction()
-                            && reloadPage( _url || _p._model.formAjaxDoneAction() );
+                        _url = _url || _p._model.formAjaxDoneAction();
+                        if( _url ){
+                            try{_url = decodeURIComponent( _url ); } catch(ex){}
+                            /^URL/.test( _url) && ( _url = urlDetect( _url ) );
+                            reloadPage( _url );
+                        }
                     }, _p._model.formPopupCloseMs() );
                 }
             }

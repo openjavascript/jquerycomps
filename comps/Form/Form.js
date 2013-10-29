@@ -138,6 +138,7 @@
                 $.each( _keys, function( _ix, _item ){
                     if( _item == _v ){
                         _sp.prop('checked', true);
+                        _sp.trigger('change');
                     }
                 });
             }

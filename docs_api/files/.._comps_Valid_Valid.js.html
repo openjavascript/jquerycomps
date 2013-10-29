@@ -1160,7 +1160,7 @@
         , n: 
             function( _item, _noError ){
                 var _p = this, _r = true
-                    , _valStr = _item.val()
+                    , _valStr = _item.val().trim()
                     , _val = +_valStr
                     ,_min = 0
                     , _pow = 10
@@ -1169,7 +1169,11 @@
 
                 _p.isMinvalue( _item ) &amp;&amp; ( _min = _p.minvalue( _item, /\./.test( _item.attr(&#x27;minvalue&#x27;) ) ) || _min );
 
-                if( !isNaN( _val ) &amp;&amp; _val &gt;= _min ){
+                if( /^[0]+$/.test( _valStr ) &amp;&amp; _valStr.length &gt; 1 ){
+                    _r = false;
+                }
+
+                if( _r &amp;&amp; !isNaN( _val ) &amp;&amp; _val &gt;= _min ){
                     _item.attr(&#x27;datatype&#x27;).replace( /^n[^\-]*\-(.*)$/, function( $0, $1 ){
                         _tmp = $1.split(&#x27;.&#x27;);
                         _n = parseInt( _tmp[0] );

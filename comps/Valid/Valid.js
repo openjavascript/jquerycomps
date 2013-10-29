@@ -978,7 +978,7 @@
         , n: 
             function( _item, _noError ){
                 var _p = this, _r = true
-                    , _valStr = _item.val()
+                    , _valStr = _item.val().trim()
                     , _val = +_valStr
                     ,_min = 0
                     , _pow = 10
@@ -987,7 +987,11 @@
 
                 _p.isMinvalue( _item ) && ( _min = _p.minvalue( _item, /\./.test( _item.attr('minvalue') ) ) || _min );
 
-                if( !isNaN( _val ) && _val >= _min ){
+                if( /^[0]+$/.test( _valStr ) && _valStr.length > 1 ){
+                    _r = false;
+                }
+
+                if( _r && !isNaN( _val ) && _val >= _min ){
                     _item.attr('datatype').replace( /^n[^\-]*\-(.*)$/, function( $0, $1 ){
                         _tmp = $1.split('.');
                         _n = parseInt( _tmp[0] );

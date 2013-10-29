@@ -414,6 +414,23 @@
                             _p._model.selector().hide();
                         }, 1);
                     }
+
+                    _p._model.selector().on( &#x27;show&#x27;, function( _evt ){
+                        JC.log( &#x27;show&#x27;);
+                    });
+
+                     _p._model.selector().on( &#x27;hide&#x27;, function( _evt ){
+                         JC.log(&#x27;hide&#x27;);
+                    });
+
+                    _p._model.frame().on( &#x27;show&#x27;, function( _evt ){
+                        JC.log( &#x27;show&#x27;);
+                    });
+
+                     _p._model.frame().on( &#x27;hide&#x27;, function( _evt ){
+                         JC.log(&#x27;hide&#x27;);
+                    });
+
                 });
                 /**
                  * 文件扩展名错误
@@ -759,6 +776,15 @@
     };
 
     BaseMVC.build( AjaxUpload );
+
+    $.event.special.AjaxUploadShowEvent = {
+        show: 
+            function(o) {
+                if (o.handler) {
+                    o.handler()
+                }
+            }
+    };
 
     AjaxUpload.frameTpl =
         printf(

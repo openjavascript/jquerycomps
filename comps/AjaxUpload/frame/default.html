@@ -19,8 +19,8 @@
                 position: absolute;
                 z-index: 100;
                 height: 40px;
-                opacity: 0;
                 zoom: 1;
+                opacity: 0;
                 filter: alpha( opacity = 0 );
                 /*
                 */
@@ -132,14 +132,15 @@
                     && ( _updateLayout = true )
                     ;
 
+                var _defH = _disBtn.prop('offsetHeight') || 24;
+
                 _updateLayout
-                    && _disBtn.css( 'line-height', _disBtn.prop('offsetHeight') + 'px' )
+                    && _disBtn.css( 'line-height', _defH + 'px' )
                     && setTimeout( function(){ 
-                        JC.log(  );
                         _ins.trigger( 'AUUpdateLayout'
                                         , [ 
                                                 _disBtn.prop('offsetWidth')
-                                                , _disBtn.prop('offsetHeight')
+                                                , _defH
                                                 , _disBtn 
                                           ] 
                                     ); 
@@ -178,6 +179,13 @@
                     , _bw = _disBtn.prop('offsetWidth')
                     , _realX = -(_flw - _bw)
                     ;
+                //alert( [ _flw, _bw, _realX ] );
+                if( !( _flw || _bw || _realX ) ){
+                    _flw = 220;
+                    _bw = 76;
+                    _realX = -144;
+                }
+
                 _flBtn.css( { 'left': _realX + 'px' } );
                 return _realX;
             }

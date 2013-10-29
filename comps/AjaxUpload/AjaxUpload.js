@@ -232,6 +232,23 @@
                             _p._model.selector().hide();
                         }, 1);
                     }
+
+                    _p._model.selector().on( 'show', function( _evt ){
+                        JC.log( 'show');
+                    });
+
+                     _p._model.selector().on( 'hide', function( _evt ){
+                         JC.log('hide');
+                    });
+
+                    _p._model.frame().on( 'show', function( _evt ){
+                        JC.log( 'show');
+                    });
+
+                     _p._model.frame().on( 'hide', function( _evt ){
+                         JC.log('hide');
+                    });
+
                 });
                 /**
                  * 文件扩展名错误
@@ -577,6 +594,15 @@
     };
 
     BaseMVC.build( AjaxUpload );
+
+    $.event.special.AjaxUploadShowEvent = {
+        show: 
+            function(o) {
+                if (o.handler) {
+                    o.handler()
+                }
+            }
+    };
 
     AjaxUpload.frameTpl =
         printf(
