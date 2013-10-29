@@ -72,6 +72,7 @@
      */
      JC.Form.initAutoFill =
         function( _selector, _url ){
+            _selector = $( _selector || document );
             if( !(_selector && _selector.length ) ) _selector = $(document);
             _url = _url || location.href;
 
@@ -80,14 +81,19 @@
             if( _selector.prop( 'nodeName' ).toLowerCase() == 'form' ){
                 fillForm( _selector, _url );
             }else{
-                _selector.find('form.js_autoFillUrlForm').each( function(){
+                var _fms = _selector.find('form.js_autoFillUrlForm');
+                _fms.each( function(){
                     fillForm( this, _url );
                 });
+
+                if( !_fms.length ){
+                    fillItems( _selector, _url );
+                }
             }
 
         };
 
-    function fillForm( _selector, _url ){
+    function fillItems( _selector, _url ){
         _selector = $(_selector);
         _url = decode( _url );
         
@@ -109,19 +115,6 @@
                 }
             }
         });
-
-        /*
-            ?s_startTime=2013-08-28
-                &s_endTime=2013-09-28
-                &kword_type=
-                &kword=
-                &department[]=2
-                &department[]=3
-                &operator[]=328
-                &operator[]=330
-                &operator[]=331
-                &isp=1379841840601_232_161
-        */
 
         var _keyObj = {};
         _selector.find( 'input[type=checkbox][name], input[type=radio][name]' ).each( function(){
@@ -145,6 +138,22 @@
         });
 
         window.jcAutoInitComps && jcAutoInitComps( _selector );
+    }
+
+    function fillForm( _selector, _url ){
+        fillItems( _selector, _url );
+        /*
+            ?s_startTime=2013-08-28
+                &s_endTime=2013-09-28
+                &kword_type=
+                &kword=
+                &department[]=2
+                &department[]=3
+                &operator[]=328
+                &operator[]=330
+                &operator[]=331
+                &isp=1379841840601_232_161
+        */
     }
     /**
      * 自定义 URI decode 函数

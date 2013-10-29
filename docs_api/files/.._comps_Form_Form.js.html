@@ -254,6 +254,7 @@
      */
      JC.Form.initAutoFill =
         function( _selector, _url ){
+            _selector = $( _selector || document );
             if( !(_selector &amp;&amp; _selector.length ) ) _selector = $(document);
             _url = _url || location.href;
 
@@ -262,14 +263,19 @@
             if( _selector.prop( &#x27;nodeName&#x27; ).toLowerCase() == &#x27;form&#x27; ){
                 fillForm( _selector, _url );
             }else{
-                _selector.find(&#x27;form.js_autoFillUrlForm&#x27;).each( function(){
+                var _fms = _selector.find(&#x27;form.js_autoFillUrlForm&#x27;);
+                _fms.each( function(){
                     fillForm( this, _url );
                 });
+
+                if( !_fms.length ){
+                    fillItems( _selector, _url );
+                }
             }
 
         };
 
-    function fillForm( _selector, _url ){
+    function fillItems( _selector, _url ){
         _selector = $(_selector);
         _url = decode( _url );
         
@@ -291,19 +297,6 @@
                 }
             }
         });
-
-        /*
-            ?s_startTime=2013-08-28
-                &amp;s_endTime=2013-09-28
-                &amp;kword_type=
-                &amp;kword=
-                &amp;department[]=2
-                &amp;department[]=3
-                &amp;operator[]=328
-                &amp;operator[]=330
-                &amp;operator[]=331
-                &amp;isp=1379841840601_232_161
-        */
 
         var _keyObj = {};
         _selector.find( &#x27;input[type=checkbox][name], input[type=radio][name]&#x27; ).each( function(){
@@ -327,6 +320,22 @@
         });
 
         window.jcAutoInitComps &amp;&amp; jcAutoInitComps( _selector );
+    }
+
+    function fillForm( _selector, _url ){
+        fillItems( _selector, _url );
+        /*
+            ?s_startTime=2013-08-28
+                &amp;s_endTime=2013-09-28
+                &amp;kword_type=
+                &amp;kword=
+                &amp;department[]=2
+                &amp;department[]=3
+                &amp;operator[]=328
+                &amp;operator[]=330
+                &amp;operator[]=331
+                &amp;isp=1379841840601_232_161
+        */
     }
     /**
      * 自定义 URI decode 函数
