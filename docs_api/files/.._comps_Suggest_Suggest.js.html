@@ -582,6 +582,14 @@
      */
     Suggest.layoutTpl = &#x27;&#x27;;
     /**
+     * Suggest 返回列表的内容是否只使用
+     * @property    layoutTpl
+     * @type        string
+     * @default     empty
+     * @static
+     */
+    Suggest.layoutTpl = &#x27;&#x27;;
+    /**
      * 数据过滤回调
      * @property    dataFilter
      * @type        function
@@ -893,12 +901,16 @@
 
                 for( var i = 0, j = _data.s.length; i &lt; j; i++ ){
                     _tmp = _data.s[i], _text = _tmp, _query = _data.q || &#x27;&#x27;;
+
+                    _text = _text.replace( _query, printf( &#x27;&lt;b&gt;{0}&lt;/b&gt;&#x27;, _query ) );
+                    /*
                     if( _tmp.indexOf( _query ) &gt; -1 ){
                         _text = _text.slice( _query.length );
                         _text = &#x27;&lt;b&gt;&#x27; + _text + &#x27;&lt;/b&gt;&#x27;;
                     }
                     else _query = &#x27;&#x27;;
-                    _ls.push( printf(&#x27;&lt;{4} keyword=&quot;{2}&quot; keyindex=&quot;{3}&quot; class=&quot;js_sugItem&quot;&gt;{0}{1}&lt;/{4}&gt;&#x27;
+                    */
+                    _ls.push( printf(&#x27;&lt;{4} keyword=&quot;{2}&quot; keyindex=&quot;{3}&quot; class=&quot;js_sugItem&quot;&gt;{1}&lt;/{4}&gt;&#x27;
                                 , _query, _text, encodeURIComponent( _tmp ), i
                                 , _subtagname
                             ));

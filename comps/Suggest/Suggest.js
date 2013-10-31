@@ -400,6 +400,14 @@
      */
     Suggest.layoutTpl = '';
     /**
+     * Suggest 返回列表的内容是否只使用
+     * @property    layoutTpl
+     * @type        string
+     * @default     empty
+     * @static
+     */
+    Suggest.layoutTpl = '';
+    /**
      * 数据过滤回调
      * @property    dataFilter
      * @type        function
@@ -711,12 +719,16 @@
 
                 for( var i = 0, j = _data.s.length; i < j; i++ ){
                     _tmp = _data.s[i], _text = _tmp, _query = _data.q || '';
+
+                    _text = _text.replace( _query, printf( '<b>{0}</b>', _query ) );
+                    /*
                     if( _tmp.indexOf( _query ) > -1 ){
                         _text = _text.slice( _query.length );
                         _text = '<b>' + _text + '</b>';
                     }
                     else _query = '';
-                    _ls.push( printf('<{4} keyword="{2}" keyindex="{3}" class="js_sugItem">{0}{1}</{4}>'
+                    */
+                    _ls.push( printf('<{4} keyword="{2}" keyindex="{3}" class="js_sugItem">{1}</{4}>'
                                 , _query, _text, encodeURIComponent( _tmp ), i
                                 , _subtagname
                             ));
