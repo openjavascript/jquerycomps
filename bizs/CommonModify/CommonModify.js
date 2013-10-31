@@ -81,10 +81,27 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
     JC.log( 'cmdelcallback', new Date().getTime() );
 }</xmp>
  *      </dd>
+ *
+ *      <dt>cmMaxItems = int</dt>
+ *      <dd>
+ *          指定最多可添加数量
+ *          <br /><b>要使 cmMaxItems 生效, 必须声明 cmAddedItemsSelector</b>
+ *      </dd>
+ *
+ *      <dt>cmAddedItemsSelector = selector</dt>
+ *      <dd>
+ *          指定查找所有上传项的选择器语法
+ *      </dd>
+ *
+ *      <dt>cmOutRangeMsg = string, default = "最多只能上传 {0}个文件!"</dt>
+ *      <dd>
+ *          添加数量超出 cmMaxItems 时的提示信息
+ *      </dd>
  * </dl>
  *
  * @namespace   window.Bizs
  * @class       CommonModify
+ * @extends     JC.BaseMVC
  * @constructor
  * @version dev 0.1 2013-09-04
  * @author  qiushaowei   <suches@btbtd.org> | 75 Team
@@ -145,8 +162,8 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
             CommonModify._instance = this;
         }
 
-        this._model = new Model( _selector );
-        this._view = new View( this._model );
+        this._model = new CommonModify.Model( _selector );
+        this._view = new CommonModify.View( this._model );
 
         this._init();
 
@@ -154,27 +171,11 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
     }
     
     CommonModify.prototype = {
-        _init:
+        _beforeInit:
             function(){
-                var _p = this;
-
-                _p._initHandlerEvent();
-
-                $( [ _p._view, _p._model ] ).on('BindEvent', function( _evt, _evtName, _cb ){
-                    _p.on( _evtName, _cb );
-                });
-
-                $([ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
-                    _p.trigger( _evtName, _data );
-                });
-
-                _p._model.init();
-                _p._view.init();
-
-                return _p;
-            }    
-        , _initHandlerEvent:
+                JC.log( 'CommonModify _beforeInit', new Date().getTime() );
+            }
+        , _initHanlderEvent:
             function(){
                 var _p = this;
 
@@ -192,6 +193,13 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                     _p._model.cmdonecallback()
                         && _p._model.cmdonecallback().call( _p.selector(), _p, _boxParent );
                 });
+
+                return _p;
+
+            }
+        , _inited:
+            function(){
+                JC.log( 'CommonModify _inited', new Date().getTime() );
             }
         /**
          * 获取 显示 CommonModify 的触发源选择器, 比如 a 标签
@@ -267,11 +275,9 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
     CommonModify.beforeDelCallabck = null;
     CommonModify.delCallback = null;
     
-    function Model( _selector ){
-        this._selector = _selector;
-    }
-    
-    Model.prototype = {
+    BaseMVC.buildModel( CommonModify );
+
+    CommonModify.Model.prototype = {
         init:
             function(){
                 return this;
@@ -328,6 +334,24 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                     ;
 
 
+                return _r;
+            }
+
+        , cmAddedItemsSelector:
+            function(){
+                var _r = this.selectorProp('cmAddedItemsSelector');
+                return _r;
+            }
+
+        , cmMaxItems:
+            function(){
+                var _r = this.intProp( 'cmMaxItems' );
+                return _r;
+            }
+
+        , cmOutRangeMsg:
+            function(){
+                var _r = printf( this.attrProp( 'cmOutRangeMsg' ) ||'最多只能上传 {0}个文件!', this.cmMaxItems() );
                 return _r;
             }
 
@@ -400,11 +424,9 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
             }
     };
     
-    function View( _model ){
-        this._model = _model;
-    }
+    BaseMVC.buildView( CommonModify );
     
-    View.prototype = {
+    CommonModify.View.prototype = {
         init:
             function() {
                 return this;
@@ -418,7 +440,21 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                     , _item = _p._model.cmitem()
                     , _boxParent = _item.parent()
                     , _newItem
+                    , _maxItems = _p._model.cmMaxItems()
+                    , _addedItems = _p._model.cmAddedItemsSelector()
                     ;
+
+                if( _maxItems && _addedItems && _addedItems.length ){
+                    if( _addedItems.length >= _maxItems ){
+                        var _msg = _p._model.cmOutRangeMsg();
+                        if( JC.msgbox ){
+                            JC.msgbox( _msg, _p._model.selector(), 2 );
+                        }else{
+                            alert( _msg );
+                        }
+                        return;
+                    }
+                }
 
                 if( _p._model.cmbeforeaddcallabck() 
                         && _p._model.cmbeforeaddcallabck().call( _p._model.selector(), _item, _boxParent ) === false 
@@ -464,6 +500,8 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                 $( _p ).trigger( 'TriggerEvent', [ 'done', _item, _boxParent ] );
             }
     };
+
+    BaseMVC.build( CommonModify );
 
     $(document).delegate( 'a.js_autoCommonModify, button.js_autoCommonModify'
                           + ', a.js_bizsCommonModify, button.js_bizsCommonModify', 'click', function( _evt ){

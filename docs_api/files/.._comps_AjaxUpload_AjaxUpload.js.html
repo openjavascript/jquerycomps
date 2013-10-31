@@ -208,6 +208,11 @@
      *      &lt;dt&gt;cauButtonText = string, default = 上传文件&lt;/dt&gt;
      *      &lt;dd&gt;定义上传按钮的显示文本&lt;/dd&gt;
      *
+     *      &lt;dt&gt;cauHideButton = bool, default = false( no label ), true( has label )&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          上传完成后是否隐藏上传按钮
+     *      &lt;/dd&gt;
+     *
      *      &lt;dt&gt;cauUrl = url, require&lt;/dt&gt;
      *      &lt;dd&gt;上传文件的接口地址&lt;/dd&gt;
      *
@@ -551,6 +556,14 @@
         , cauDisplayLabel: function(){ return this.selectorProp( &#x27;cauDisplayLabel&#x27; ); }
         , cauDisplayLabelCallback: function(){ return this.callbackProp( &#x27;cauDisplayLabelCallback&#x27; ); }
 
+        , cauHideButton: 
+            function(){
+                var _r = false;
+                this.is( &#x27;[cauHideButton]&#x27; ) 
+                    &amp;&amp; ( _r = this.boolProp( this.attrProp(&#x27;cauHideButton&#x27;) ) );
+                return _r;
+            }
+
         , cauDefaultHide:
             function(){
                 return this.boolProp( &#x27;cauDefaultHide&#x27; );
@@ -711,7 +724,11 @@
 
                     if( _displayLabel &amp;&amp; _displayLabel.length ){
                         _p._model.selector().hide();
-                        _p._model.frame().hide();
+                        if( _p._model.is(&#x27;[cauHideButton]&#x27;) ){
+                            _p._model.cauHideButton() &amp;&amp; _p._model.frame().hide();
+                        }else{
+                            _p._model.frame().hide();
+                        }
                         _displayLabel.show();
                         return;
                     }

@@ -263,10 +263,27 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
     JC.log( &#x27;cmdelcallback&#x27;, new Date().getTime() );
 }&lt;/xmp&gt;
  *      &lt;/dd&gt;
+ *
+ *      &lt;dt&gt;cmMaxItems = int&lt;/dt&gt;
+ *      &lt;dd&gt;
+ *          指定最多可添加数量
+ *          &lt;br /&gt;&lt;b&gt;要使 cmMaxItems 生效, 必须声明 cmAddedItemsSelector&lt;/b&gt;
+ *      &lt;/dd&gt;
+ *
+ *      &lt;dt&gt;cmAddedItemsSelector = selector&lt;/dt&gt;
+ *      &lt;dd&gt;
+ *          指定查找所有上传项的选择器语法
+ *      &lt;/dd&gt;
+ *
+ *      &lt;dt&gt;cmOutRangeMsg = string, default = &quot;最多只能上传 {0}个文件!&quot;&lt;/dt&gt;
+ *      &lt;dd&gt;
+ *          添加数量超出 cmMaxItems 时的提示信息
+ *      &lt;/dd&gt;
  * &lt;/dl&gt;
  *
  * @namespace   window.Bizs
  * @class       CommonModify
+ * @extends     JC.BaseMVC
  * @constructor
  * @version dev 0.1 2013-09-04
  * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 Team
@@ -327,8 +344,8 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
             CommonModify._instance = this;
         }
 
-        this._model = new Model( _selector );
-        this._view = new View( this._model );
+        this._model = new CommonModify.Model( _selector );
+        this._view = new CommonModify.View( this._model );
 
         this._init();
 
@@ -336,27 +353,11 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
     }
     
     CommonModify.prototype = {
-        _init:
+        _beforeInit:
             function(){
-                var _p = this;
-
-                _p._initHandlerEvent();
-
-                $( [ _p._view, _p._model ] ).on(&#x27;BindEvent&#x27;, function( _evt, _evtName, _cb ){
-                    _p.on( _evtName, _cb );
-                });
-
-                $([ _p._view, _p._model ] ).on(&#x27;TriggerEvent&#x27;, function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
-                    _p.trigger( _evtName, _data );
-                });
-
-                _p._model.init();
-                _p._view.init();
-
-                return _p;
-            }    
-        , _initHandlerEvent:
+                JC.log( &#x27;CommonModify _beforeInit&#x27;, new Date().getTime() );
+            }
+        , _initHanlderEvent:
             function(){
                 var _p = this;
 
@@ -374,6 +375,13 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                     _p._model.cmdonecallback()
                         &amp;&amp; _p._model.cmdonecallback().call( _p.selector(), _p, _boxParent );
                 });
+
+                return _p;
+
+            }
+        , _inited:
+            function(){
+                JC.log( &#x27;CommonModify _inited&#x27;, new Date().getTime() );
             }
         /**
          * 获取 显示 CommonModify 的触发源选择器, 比如 a 标签
@@ -449,11 +457,9 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
     CommonModify.beforeDelCallabck = null;
     CommonModify.delCallback = null;
     
-    function Model( _selector ){
-        this._selector = _selector;
-    }
-    
-    Model.prototype = {
+    BaseMVC.buildModel( CommonModify );
+
+    CommonModify.Model.prototype = {
         init:
             function(){
                 return this;
@@ -510,6 +516,24 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                     ;
 
 
+                return _r;
+            }
+
+        , cmAddedItemsSelector:
+            function(){
+                var _r = this.selectorProp(&#x27;cmAddedItemsSelector&#x27;);
+                return _r;
+            }
+
+        , cmMaxItems:
+            function(){
+                var _r = this.intProp( &#x27;cmMaxItems&#x27; );
+                return _r;
+            }
+
+        , cmOutRangeMsg:
+            function(){
+                var _r = printf( this.attrProp( &#x27;cmOutRangeMsg&#x27; ) ||&#x27;最多只能上传 {0}个文件!&#x27;, this.cmMaxItems() );
                 return _r;
             }
 
@@ -582,11 +606,9 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
             }
     };
     
-    function View( _model ){
-        this._model = _model;
-    }
+    BaseMVC.buildView( CommonModify );
     
-    View.prototype = {
+    CommonModify.View.prototype = {
         init:
             function() {
                 return this;
@@ -600,7 +622,21 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                     , _item = _p._model.cmitem()
                     , _boxParent = _item.parent()
                     , _newItem
+                    , _maxItems = _p._model.cmMaxItems()
+                    , _addedItems = _p._model.cmAddedItemsSelector()
                     ;
+
+                if( _maxItems &amp;&amp; _addedItems &amp;&amp; _addedItems.length ){
+                    if( _addedItems.length &gt;= _maxItems ){
+                        var _msg = _p._model.cmOutRangeMsg();
+                        if( JC.msgbox ){
+                            JC.msgbox( _msg, _p._model.selector(), 2 );
+                        }else{
+                            alert( _msg );
+                        }
+                        return;
+                    }
+                }
 
                 if( _p._model.cmbeforeaddcallabck() 
                         &amp;&amp; _p._model.cmbeforeaddcallabck().call( _p._model.selector(), _item, _boxParent ) === false 
@@ -646,6 +682,8 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                 $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ &#x27;done&#x27;, _item, _boxParent ] );
             }
     };
+
+    BaseMVC.build( CommonModify );
 
     $(document).delegate( &#x27;a.js_autoCommonModify, button.js_autoCommonModify&#x27;
                           + &#x27;, a.js_bizsCommonModify, button.js_bizsCommonModify&#x27;, &#x27;click&#x27;, function( _evt ){

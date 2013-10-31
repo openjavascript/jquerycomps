@@ -346,7 +346,8 @@
             "namespace": "window.Bizs",
             "file": "../bizs/CommonModify/CommonModify.js",
             "line": 1,
-            "description": "<h2>Dom 通用 添加删除 逻辑</h2>\n<br/>应用场景\n<br/>需要动态添加删除内容的地方可以使用这个类\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>\n| <a href='../../bizs/CommonModify/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_autoCommonModify\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>[cmtpl | cmtemplate] = script selector</dt>\n     <dd>指定保存模板的 script 标签</dd>\n\n     <dt>cmitem = selector</dt>\n     <dd>添加时, 目标位置的 父节点/兄弟节点</dd>\n\n     <dt>cmaction = string, [add, del], default = add</dt>\n     <dd>操作类型</dd>\n\n     <dt>cmappendtype = string, default = after</dt>\n     <dd>指定 node 添加 dom 的方法, 可选类型: before, after, appendTo</dd>\n\n     <dt>cmdonecallback = function</dt>\n     <dd>\n     添加或删除完后会触发的回调, <b>window 变量域</b>\n<xmp>function cmdonecallback( _ins, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmdonecallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmtplfiltercallback = function</dt>\n     <dd>\n     模板内容过滤回调, <b>window 变量域</b>\n<xmp>window.COUNT = 1;\nfunction cmtplfiltercallback( _tpl, _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmtplfiltercallback', new Date().getTime() );\n   _tpl = printf( _tpl, COUNT++ );\n\n   return _tpl;\n}</xmp>\n     </dd>\n\n     <dt>cmbeforeaddcallabck = function</dt>\n     <dd>\n     添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b>\n<xmp>function cmbeforeaddcallabck( _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforeaddcallabck', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>cmaddcallback = function</dt>\n     <dd>\n     添加完成的回调, <b>window 变量域</b>\n<xmp>function cmaddcallback( _ins, _newItem, _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmaddcallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmbeforedelcallback = function</dt>\n     <dd>\n     删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b>\n<xmp>function cmbeforedelcallback( _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforedelcallback', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>cmdelcallback = function</dt>\n     <dd>\n     删除完成的回调, <b>window 变量域</b>\n<xmp>function cmdelcallback( _ins, _boxParent ){\n   JC.log( 'cmdelcallback', new Date().getTime() );\n}</xmp>\n     </dd>\n</dl>",
+            "description": "<h2>Dom 通用 添加删除 逻辑</h2>\n<br/>应用场景\n<br/>需要动态添加删除内容的地方可以使用这个类\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>\n| <a href='../../bizs/CommonModify/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_autoCommonModify\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>[cmtpl | cmtemplate] = script selector</dt>\n     <dd>指定保存模板的 script 标签</dd>\n\n     <dt>cmitem = selector</dt>\n     <dd>添加时, 目标位置的 父节点/兄弟节点</dd>\n\n     <dt>cmaction = string, [add, del], default = add</dt>\n     <dd>操作类型</dd>\n\n     <dt>cmappendtype = string, default = after</dt>\n     <dd>指定 node 添加 dom 的方法, 可选类型: before, after, appendTo</dd>\n\n     <dt>cmdonecallback = function</dt>\n     <dd>\n     添加或删除完后会触发的回调, <b>window 变量域</b>\n<xmp>function cmdonecallback( _ins, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmdonecallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmtplfiltercallback = function</dt>\n     <dd>\n     模板内容过滤回调, <b>window 变量域</b>\n<xmp>window.COUNT = 1;\nfunction cmtplfiltercallback( _tpl, _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmtplfiltercallback', new Date().getTime() );\n   _tpl = printf( _tpl, COUNT++ );\n\n   return _tpl;\n}</xmp>\n     </dd>\n\n     <dt>cmbeforeaddcallabck = function</dt>\n     <dd>\n     添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b>\n<xmp>function cmbeforeaddcallabck( _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforeaddcallabck', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>cmaddcallback = function</dt>\n     <dd>\n     添加完成的回调, <b>window 变量域</b>\n<xmp>function cmaddcallback( _ins, _newItem, _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmaddcallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmbeforedelcallback = function</dt>\n     <dd>\n     删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b>\n<xmp>function cmbeforedelcallback( _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforedelcallback', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>cmdelcallback = function</dt>\n     <dd>\n     删除完成的回调, <b>window 变量域</b>\n<xmp>function cmdelcallback( _ins, _boxParent ){\n   JC.log( 'cmdelcallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmMaxItems = int</dt>\n     <dd>\n         指定最多可添加数量\n         <br /><b>要使 cmMaxItems 生效, 必须声明 cmAddedItemsSelector</b>\n     </dd>\n\n     <dt>cmAddedItemsSelector = selector</dt>\n     <dd>\n         指定查找所有上传项的选择器语法\n     </dd>\n\n     <dt>cmOutRangeMsg = string, default = \"最多只能上传 {0}个文件!\"</dt>\n     <dd>\n         添加数量超出 cmMaxItems 时的提示信息\n     </dd>\n</dl>",
+            "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-04",
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
@@ -442,7 +443,7 @@
             "namespace": "JC",
             "file": "../comps/AjaxUpload/AjaxUpload.js",
             "line": 2,
-            "description": "Ajax 文件上传\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../comps/AjaxUpload/_demo' target='_blank'>demo link</a>\n</p>\n<p>\n     <b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../comps/AjaxUpload/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<xmp>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</xmp>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<xmp>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</xmp>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<xmp>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = printf( '<a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}</a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;<a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\"></a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</xmp>\n     </dd>\n</dl>",
+            "description": "Ajax 文件上传\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../comps/AjaxUpload/_demo' target='_blank'>demo link</a>\n</p>\n<p>\n     <b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../comps/AjaxUpload/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>\n     <dd>\n         上传完成后是否隐藏上传按钮\n     </dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<xmp>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</xmp>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<xmp>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</xmp>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<xmp>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = printf( '<a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}</a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;<a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\"></a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</xmp>\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -1682,7 +1683,7 @@
         },
         {
             "file": "../bizs/CommonModify/CommonModify.js",
-            "line": 196,
+            "line": 204,
             "description": "获取 显示 CommonModify 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -1694,7 +1695,7 @@
         },
         {
             "file": "../bizs/CommonModify/CommonModify.js",
-            "line": 202,
+            "line": 210,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -1719,7 +1720,7 @@
         },
         {
             "file": "../bizs/CommonModify/CommonModify.js",
-            "line": 210,
+            "line": 218,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -1739,14 +1740,14 @@
         },
         {
             "file": "../bizs/CommonModify/CommonModify.js",
-            "line": 221,
+            "line": 229,
             "description": "update current selector",
             "class": "window.Bizs.CommonModify",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/CommonModify/CommonModify.js",
-            "line": 233,
+            "line": 241,
             "description": "获取或设置 CommonModify 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -1767,7 +1768,7 @@
         },
         {
             "file": "../bizs/CommonModify/CommonModify.js",
-            "line": 247,
+            "line": 255,
             "description": "判断 selector 是否可以初始化 CommonModify",
             "itemtype": "method",
             "name": "isCommonModify",
@@ -2157,7 +2158,7 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 138,
+            "line": 143,
             "description": "获取或设置 AjaxUpload 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -2178,7 +2179,7 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 154,
+            "line": 159,
             "description": "初始化可识别的组件",
             "itemtype": "method",
             "name": "init",
@@ -2199,7 +2200,7 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 174,
+            "line": 179,
             "description": "frame 文件名",
             "itemtype": "property",
             "name": "frameFileName",
@@ -2211,7 +2212,7 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 182,
+            "line": 187,
             "description": "载入 frame 文件时, 是否添加随机数防止缓存",
             "itemtype": "property",
             "name": "randomFrame",
@@ -2223,7 +2224,7 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 190,
+            "line": 195,
             "description": "frame 文件夹位于库的位置",
             "itemtype": "property",
             "name": "_FRAME_DIR",
@@ -2237,7 +2238,7 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 199,
+            "line": 204,
             "description": "初始化 frame 时递增的统计变量",
             "itemtype": "property",
             "name": "_INS_COUNT",
@@ -2251,42 +2252,42 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 219,
+            "line": 224,
             "description": "iframe 加载完毕后触发的事件, 执行初始化操作",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 253,
+            "line": 258,
             "description": "文件扩展名错误",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 260,
+            "line": 265,
             "description": "上传前触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 266,
+            "line": 271,
             "description": "上传完毕触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 303,
+            "line": 308,
             "description": "frame 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 320,
+            "line": 325,
             "description": "手动更新数据",
             "itemtype": "method",
             "name": "update",
@@ -2308,7 +2309,7 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 429,
+            "line": 442,
             "description": "恢复默认状态",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
@@ -14326,7 +14327,7 @@
         },
         {
             "message": "Missing item type\nupdate current selector",
-            "line": " ../bizs/CommonModify/CommonModify.js:221"
+            "line": " ../bizs/CommonModify/CommonModify.js:229"
         },
         {
             "message": "Missing item type\n默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
@@ -14346,27 +14347,27 @@
         },
         {
             "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:219"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:224"
         },
         {
             "message": "Missing item type\n文件扩展名错误",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:253"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:258"
         },
         {
             "message": "Missing item type\n上传前触发的事件",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:260"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:265"
         },
         {
             "message": "Missing item type\n上传完毕触发的事件",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:266"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:271"
         },
         {
             "message": "Missing item type\nframe 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:303"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:308"
         },
         {
             "message": "Missing item type\n恢复默认状态",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:429"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:442"
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",
