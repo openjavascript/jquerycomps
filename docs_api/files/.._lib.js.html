@@ -450,18 +450,19 @@ function reloadPage( _url, _nornd, _delayMs  ){
 //这个方法已经废弃, 请使用 reloadPage
 function reload_page(){ return reloadPage.apply( null, sliceArgs( arguments ) ); }
 /**
- * 取小数点的N位，
+ * 取小数点的N位
  * &lt;br /&gt;JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题
  * @method  parseFinance
  * @static
  * @param   {number}    _i
- * @param   {int}       _dot
+ * @param   {int}       _dot, default = 2
  * @return  number
  */
 function parseFinance( _i, _dot ){
     _i = parseFloat( _i ) || 0;
+    _dot = _dot || 2;
     if( _i &amp;&amp; _dot ) {
-        _i = Math.floor( _i * Math.pow( 10, _dot ) ) / Math.pow( 10, _dot );
+        _i = parseFloat( _i.toFixed( _dot ) );
     }
     return _i;
 }
@@ -1012,6 +1013,25 @@ function loaderDetect( _require, _class, _cb ){
         return _class;
     });
 }
+;(function(){
+    /**
+     * inject jquery val func, for hidden change event
+     */
+    if( !window.jQuery ) return;
+    var _oldVal = $.fn.val;
+    $.fn.val = 
+        function(){
+            var _r = _oldVal.apply( this, arguments ), _p = this;
+            if( 
+                arguments.length
+                &amp;&amp; ( this.prop(&#x27;nodeName&#x27;) || &#x27;&#x27;).toLowerCase() == &#x27;input&#x27; 
+                &amp;&amp; this.attr(&#x27;type&#x27;).toLowerCase() == &#x27;hidden&#x27;
+            ){
+                setTimeout( function(){ _p.trigger( &#x27;change&#x27; ); }, 1 );
+            }
+            return _r;
+        };
+}());
 ;
 
 //TODO: use 方法 nginx 模式添加 url 最大长度判断

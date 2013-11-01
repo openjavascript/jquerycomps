@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            body{ margin: 20px 20px; }
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #F0DC82;!important;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+
+            dd.odd {
+                background: #ececec;
+            }
+
+            dt{
+                font-weight: bold;
+                display: block;
+            }
+
+            dl.fm-items > dt {
+                margin: 10px auto;
+            }
+
+            dd{
+                margin: 5px 40px;
+            }
+
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
+
+            input[type=checkbox], input[type=radio], input.UXC{
+                height: auto;
+                line-height: auto;
+            }
+
+            select[multiple]{
+                height: 80px;
+            }
+
+            div, li{
+                margin: 2px auto;
+            }
+
+            button.js_isIgnore{ display: none; }
+        </style>
+        <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../lib.js"></script>
+        <script src="../../../comps/AutoSelect/_demo/data/SHENGSHI.js"></script>
+        <script>
+            JC.debug = true; 
+            JC.use( 'Valid, AjaxUpload, Panel, Bizs.CommonModify' );
+
+            $(document).ready( function($evt){
+            });
+
+            $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
+                window.console && console.clear && console.clear();
+                JC.Valid.clearError( 'form.js_valid' );
+            });
+
+            $(document).delegate( 'form.js_valid', 'submit', function( _evt ){
+                if( ! JC.Valid( this ) ){
+                    _evt.preventDefault();
+                    return false;
+                }
+            });
+
+        </script>
+    </head>    
+    <body>
+
+        <form action='' method='get' class="js_valid " >
+            <div style="position:fixed; top: 10px; right:10px;">
+                <button type="submit">save</button>
+                <button type="reset">reset</button>
+            </div>
+
+            <dl class="fm-items">
+                <dt>JC.Valid 示例, subdatatype="hidden", 验证 input[type=hidden] 的值</dt>
+                <dd>
+                    <label>上传文件:</label>
+                    <input type="hidden" name="file1" class="js_compAjaxUpload" value=""
+                        cauUrl="../_demo/data/handler.php"
+                        cauFileExt=".jpg, .jpeg, .png, .gif"
+                        cauFileName="file"
+                        cauValueKey="url"
+                        cauLabelKey="name"
+
+                        subdatatype="hidden"
+                        reqmsg="请上传文件"
+                        />
+                    <em class="error"></em>
+                </dd>
+
+                <dd style="margin-top:20px; padding-left: 400px;">
+                    <button type="submit">save</button>
+                    <button type="reset">reset</button>
+                    <button type="button" class="js_clear_error">clear error</button>
+                    <a href="?">back</a>
+                </dd>
+             </dl>
+             <!--
+                <div style="position:fixed; bottom: 10px; right:10px;">
+                    <button type="submit">save</button>
+                    <button type="reset">reset</button>
+                    <button type="button" class="js_clear_error">clear error</button>
+                </div>
+            -->
+        </form>
+
+    </body>
+</html>
+

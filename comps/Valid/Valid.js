@@ -258,6 +258,14 @@
      *              </dd>
      *          </dl>
      *      </dd>
+     *      <dd>
+     *          <dl>
+     *              <dt>hidden: 验证隐藏域的值</dt>
+     *              <dd>
+     *                  有些特殊情况需要验证隐藏域的值, 请使用 subdatatype="hidden"
+     *              </dd>
+     *          </dl>
+     *      </dd>
      * </dl>
      * @namespace JC
      * @class Valid
@@ -342,59 +350,52 @@
          * @private
          */
         , parse: 
-            function(){
-                var _p = this, _r = true, _items = sliceArgs( arguments );
+            function( _item ){
+                var _p = this, _r = true, _item = $( _item );
 
+                if( !_p._model.isAvalible( _item ) ) return;
+                if( !_p._model.isValid( _item ) ) return;
+                if( Valid.ignore( _item ) ) return;
 
-                $.each( _items, function( _ix, _item ){
-                    _item = $( _item );
-                    _item.each( function(){
-                        var _sitem = $(this);
-                        if( !_p._model.isAvalible( _sitem ) ) return;
-                        if( !_p._model.isValid( _sitem ) ) return;
-                        if( Valid.ignore( _sitem ) ) return;
+                var _dt = _p._model.parseDatatype( _item )
+                    , _nm = _item.prop('nodeName').toLowerCase();
 
-                        var _dt = _p._model.parseDatatype( _sitem )
-                            , _nm = _sitem.prop('nodeName').toLowerCase();
-
-                        switch( _nm ){
-                            case 'input':
-                            case 'textarea':
-                                {
-                                    ( _sitem.attr('type') || '' ).toLowerCase() != 'file' 
-                                        && _p._model.isAutoTrim( _sitem ) 
-                                        && _sitem.val( $.trim( _sitem.val() ) );
-                                    break;
-                                }
+                switch( _nm ){
+                    case 'input':
+                    case 'textarea':
+                        {
+                            ( _item.attr('type') || '' ).toLowerCase() != 'file' 
+                                && _p._model.isAutoTrim( _item ) 
+                                && _item.val( $.trim( _item.val() ) );
+                            break;
                         }
+                }
 
-                        if( !_p._model.reqmsg( _sitem ) ){ _r = false; return; }
-                        if( !_p._model.lengthValid( _sitem ) ){ _r = false; return; }
+                if( !_p._model.reqmsg( _item ) ){ _r = false; return; }
+                if( !_p._model.lengthValid( _item ) ){ _r = false; return; }
 
-                        //验证 datatype
-                        if( _dt && _p._model[ _dt ] && _sitem.val() ){
-                            if( !_p._model[ _dt ]( _sitem ) ){ _r = false; return; }
+                //验证 datatype
+                if( _dt && _p._model[ _dt ] && _item.val() ){
+                    if( !_p._model[ _dt ]( _item ) ){ _r = false; return; }
+                }
+                //验证子类型
+                var _subDtLs = _item.attr('subdatatype');
+                if( _subDtLs ){
+                    _subDtLs = _subDtLs.replace(/[\s]+/g, '').split( /[,\|]/);
+                    $.each( _subDtLs, function( _ix, _sdt ){
+                        _sdt = _p._model.parseSubdatatype( _sdt );
+                        if( _sdt && _p._model[ _sdt ] && ( _item.val() || _sdt == 'alternative' ) ){
+                            if( !_p._model[ _sdt ]( _item ) ){ 
+                                _r = false; 
+                                return false;
+                            }
                         }
-                        //验证子类型
-                        var _subDtLs = _sitem.attr('subdatatype');
-                        if( _subDtLs ){
-                            _subDtLs = _subDtLs.replace(/[\s]+/g, '').split( /[,\|]/);
-                            $.each( _subDtLs, function( _ix, _sdt ){
-                                _sdt = _p._model.parseSubdatatype( _sdt );
-                                if( _sdt && _p._model[ _sdt ] && ( _sitem.val() || _sdt == 'alternative' ) ){
-                                    if( !_p._model[ _sdt ]( _sitem ) ){ 
-                                        _r = false; 
-                                        return false;
-                                    }
-                                }
-                            });
-                            if( !_r ) return;
-                        }
-
-                        _p.trigger( Model.CORRECT, _sitem ); 
                     });
-                });
-                
+                    if( !_r ) return;
+                }
+
+                _p.trigger( Model.CORRECT, _item ); 
+
                 return _r;
             }
 
@@ -764,7 +765,7 @@
             }
         , isAvalible: 
             function( _item ){
-                return _item.is(':visible') && !_item.is('[disabled]');
+                return ( _item.is(':visible') || this.isValidHidden( _item ) ) && !_item.is('[disabled]');
             }
         , isForm:
             function( _item ){
@@ -811,6 +812,15 @@
                 var _r = Valid.showValidStatus, _form = getJqParent( _item, 'form' );
                 _form && _form.length && _form.is( '[validmsg]' ) && ( _r = parseBool( _form.attr('validmsg') ) );
                 _item.is( '[validmsg]' ) && ( _r = parseBool( _item.attr('validmsg') ) );
+                return _r;
+            }
+        , isValidHidden:
+            function( _item ){
+                var _r = false;
+                _item.is( '[subdatatype]' )
+                    && /hidden/i.test( _item.attr( 'subdatatype' ) ) 
+                    && ( _r = true )
+                    ;
                 return _r;
             }
         , validitemcallback: 
@@ -2584,10 +2594,10 @@
                              , _item.after( _focusmsgem )
                            );
                     if( _item.is( '[validnoerror]' ) ){
-                        _r = Valid.getInstance().parse( _item );
+                        _r = Valid.check( _item );
                     }else{
                         _item.attr('validnoerror', true);
-                        _r = Valid.getInstance().parse( _item );
+                        _r = Valid.check( _item );
                         _item.removeAttr('validnoerror');
                     }
                     !_msg.trim() && ( _msg = "&nbsp;" );
@@ -2630,7 +2640,9 @@
      */
     $(document).delegate( 'input[type=text], input[type=password], textarea'
                             +', select, input[type=file], input[type=checkbox], input[type=radio]', 'focus', function($evt){
+        var _sp = $(this), _v = _sp.val().trim();
         Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this) ] );
+        !_v && Valid.setValid( _sp );
     });
     /**
      * 响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
@@ -2638,6 +2650,24 @@
      */
     $(document).delegate( 'select, input[type=file], input[type=checkbox], input[type=radio]', 'blur', function($evt){
         Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
+    });
+
+    $(document).delegate( 'input[type=hidden][subdatatype]', 'change', function( _evt ){
+        var _sp = $(this), _isHidden = false, _tmp;
+        _sp.is( '[subdatatype]' ) && ( _isHidden = /hidden/i.test( _sp.attr('subdatatype') ) );
+        if( _sp.data('HID_CHANGE_CHECK') ){
+            _tmp = new Date().getTime() - _sp.data('HID_CHANGE_CHECK') ;
+            if( _tmp < 50 ){
+                return;
+            }
+        }
+        if( !_sp.val() ){
+            //Valid.setValid( _sp );
+            return;
+        }
+        _sp.data('HID_CHANGE_CHECK', new Date().getTime() );
+        JC.log( 'hidden val', new Date().getTime(), _sp.val() );
+        Valid.check( _sp );
     });
     /**
      * 初始化 subdatatype = datavalid 相关事件
