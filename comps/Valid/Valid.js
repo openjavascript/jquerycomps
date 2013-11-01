@@ -353,9 +353,9 @@
             function( _item ){
                 var _p = this, _r = true, _item = $( _item );
 
-                if( !_p._model.isAvalible( _item ) ) return;
-                if( !_p._model.isValid( _item ) ) return;
-                if( Valid.ignore( _item ) ) return;
+                if( !_p._model.isAvalible( _item ) ) return _r;
+                if( !_p._model.isValid( _item ) ) return _r;
+                if( Valid.ignore( _item ) ) return _r;
 
                 var _dt = _p._model.parseDatatype( _item )
                     , _nm = _item.prop('nodeName').toLowerCase();
@@ -371,12 +371,12 @@
                         }
                 }
 
-                if( !_p._model.reqmsg( _item ) ){ _r = false; return; }
-                if( !_p._model.lengthValid( _item ) ){ _r = false; return; }
+                if( !_p._model.reqmsg( _item ) ){ _r = false; return _r; }
+                if( !_p._model.lengthValid( _item ) ){ _r = false; return _r; }
 
                 //验证 datatype
                 if( _dt && _p._model[ _dt ] && _item.val() ){
-                    if( !_p._model[ _dt ]( _item ) ){ _r = false; return; }
+                    if( !_p._model[ _dt ]( _item ) ){ _r = false; return _r; }
                 }
                 //验证子类型
                 var _subDtLs = _item.attr('subdatatype');
@@ -391,10 +391,9 @@
                             }
                         }
                     });
-                    if( !_r ) return;
                 }
 
-                _p.trigger( Model.CORRECT, _item ); 
+                _r && _p.trigger( Model.CORRECT, _item ); 
 
                 return _r;
             }
