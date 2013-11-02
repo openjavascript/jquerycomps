@@ -2044,6 +2044,7 @@
                     _tmp = {};
                     _target.each( function( _ix ){
                         var _sp = $(this);
+                        if( ! _p.isAvalible( _sp ) ) return;
 
                         if( _p.checkRepeatProcess( _sp, _KEY, true ) ) {
                             _isReturn = true;
@@ -2112,11 +2113,14 @@
 
         , datavalid:
             function( _item ){
-                var _r = true;
+                var _r = true, _p = this;
                 if( !Valid.isFormValid ) return _r;
 
                 _r = parseBool( _item.attr('datavalid') );
-                !_r && $(this).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'datavalidmsg', true ] );
+
+                setTimeout( function(){
+                    !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'datavalidmsg', true ] );
+                }, 1 );
 
                 return _r;
             }

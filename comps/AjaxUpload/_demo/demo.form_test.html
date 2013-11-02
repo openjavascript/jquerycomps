@@ -200,7 +200,6 @@
 
 
         <form action='?' method='get' class="js_bizsFormLogic" >
-
             <dl class="defdl">
                 <dt> JC.AjaxUpload 示例, with textbox, 上传多个文件, 上传后显示 label 和 button</dt>
                 <dd>
@@ -314,6 +313,131 @@
                 </dd>
             </dl>
 
+            <div>
+                <button type="submit">submit</button>
+                <button type="reset">reset</button>
+            </div>
+        </form>
+
+        
+        <form action='?' method='get' class="js_bizsFormLogic" >
+            <dl class="defdl">
+                <dt> JC.AjaxUpload 示例, with textbox, 上传多个文件, 绑定 cauSaveLabelSelector 用于保存 cauLabelKey 的值</dt>
+                <dd>
+                    <div class="js_bizsDisableLogic"
+                        dltrigger="|input[type=radio]"
+                        dlhidetarget="(dl dd.js_hidDefault"
+                        >
+                        <label>默认隐藏:</label>
+                        <label>
+                            <input type="radio" name="discount" value="1"
+                            dldisplay="true"
+                            />显示
+                        </label>
+                        <label>
+                            <input type="radio" name="discount" value="0" checked 
+                            dldisplay="false"
+                            />隐藏
+                        </label>
+                    </div>
+                </dd>
+                <dd class="js_hidDefault">
+                    <label>默认隐藏:</label>
+                    <input type="text" readonly class="js_compAjaxUpload" name="ctlFileName4" value=""
+                        reqmsg=" 请上传文件"
+                        cauStyle="w1" 
+                        cauUrl="../_demo/data/handler.php?errorno=0"
+                        cauFileExt=".jpg, .jpeg, .png, .gif"
+                        cauValueKey="url"
+                        cauLabelKey="name"
+                        cauFileName="customFileName"
+                        cauStatusLabel="/label.js_statusLabel"
+                        cauDisplayLabel="/label.js_displayLabel"
+                        cauHideButton="false"
+                        />
+                        <em class="error"></em>
+                        <label class="js_displayLabel"></label>
+                        <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
+                </dd>
+                <dd >
+                    <label>上传文件:</label>
+                    <input type="text" readonly class="js_compAjaxUpload" name="" value=""
+                        reqmsg=" 请上传文件"
+                        cauStyle="w1" 
+                        cauUrl="../_demo/data/handler.php?errorno=0"
+                        cauFileExt=".jpg, .jpeg, .png, .gif"
+                        cauValueKey="name"
+                        cauLabelKey="url"
+                        cauSaveLabelSelector="/input.js_hidCtl"
+                        cauFileName="customFileName"
+                        cauStatusLabel="/label.js_statusLabel"
+                        />
+                        <input type="text" class="js_hidCtl" name="ctlFileName5" value="" />
+                        <em class="error"></em>
+                        <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
+                        <label class="js_displayLabel"></label>
+                        <button type="button" class="AUBtn AUBtn-w1 js_updateData">JC.AjaxUpload#update for clear</button>
+                </dd>
+
+                <dd class="js_maxUploadItem">
+                    <label>上传文件:</label>
+                    <input type="text" readonly class="js_compAjaxUpload" name="ctlFileName3[]" value=""
+                        reqmsg=" 请上传文件"
+                        cauUrl="../_demo/data/handler.php?errorno=0"
+                        cauFileExt=".jpg, .jpeg, .png, .gif"
+                        cauValueKey="url"
+                        cauLabelKey="name"
+                        cauSaveLabelSelector="/input[type=hidden]"
+                        cauFileName="customFileName"
+                        cauStatusLabel="/label.js_statusLabel"
+                        cauDisplayLabel="/label.js_displayLabel"
+                        cauHideButton="false"
+                        />
+                        <input type="hidden" name="ctlFileName5" value="" />
+                        <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
+                        <label class="js_displayLabel"></label>
+                        <a href="javascript:" 
+                        class="green js_autoCommonModify" 
+                        cmtemplate="(dl script.js_tpl"
+                        cmitem="(dd"
+                        cmaction="add"
+                        cmMaxItems="5"
+                        cmAddedItemsSelector="(dl dd.js_maxUploadItem"
+                        cmOutRangeMsg="最多只能上传5个文件"
+                        >+ 添加</a>
+                        <em class="error"></em>
+                        <span class="gray">绿色按钮最多可上传五个文件</span>
+                </dd>
+                <dd style="display:none">
+                    <script type="text/template" class="js_tpl">
+                        <dd class="js_maxUploadItem">
+                            <label>上传文件:</label>
+                            <input type="text" readonly class="js_compAjaxUpload" name="ctlFileName3[]" value=""
+                                reqmsg=" 请上传文件"
+                                cauUrl="../_demo/data/handler.php?errorno=0"
+                                cauFileExt=".jpg, .jpeg, .png, .gif"
+                                cauValueKey="url"
+                                cauLabelKey="name"
+                                cauSaveLabelSelector="/input[type=hidden]"
+                                cauFileName="customFileName"
+                                cauStatusLabel="/label.js_statusLabel"
+                                cauDisplayLabel="/label.js_displayLabel"
+                                cauHideButton="false"
+                                />
+                            <input type="hidden" name="ctlFileName3" value="" />
+                            <label class="js_displayLabel"></label>
+                            <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
+                            <a href="javascript:" 
+                            class="red js_autoCommonModify" 
+                            cmitem="(dd"
+                            cmaction="del"
+                            >- 删除</a>
+                            <em class="error"></em>
+                        </dd>
+
+                    </script>
+                </dd>
+            </dl>
 
             <div>
                 <button type="submit">submit</button>

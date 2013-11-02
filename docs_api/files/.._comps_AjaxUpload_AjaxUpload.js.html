@@ -228,6 +228,9 @@
      *      &lt;dt&gt;cauLabelKey = string, default = name&lt;/dt&gt;
      *      &lt;dd&gt;返回数据用于显示的字段&lt;/dd&gt;
      *
+     *      &lt;dt&gt;cauSaveLabelSelector = selector&lt;/dt&gt;
+     *      &lt;dd&gt;指定保存 cauLabelKey 值的 selector&lt;/dd&gt;
+     *
      *      &lt;dt&gt;cauStatusLabel = selector, optional&lt;/dt&gt;
      *      &lt;dd&gt;开始上传时, 用于显示状态的 selector&lt;/dd&gt;
      *
@@ -551,6 +554,11 @@
 
         , cauLabelKey: function(){ return this.attrProp( &#x27;cauLabelKey&#x27; ) || &#x27;name&#x27;; }
         , cauValueKey: function(){ return this.attrProp( &#x27;cauValueKey&#x27; ) || &#x27;url&#x27;; }
+        , cauSaveLabelSelector:
+            function(){
+                var _r = this.selectorProp( &#x27;cauSaveLabelSelector&#x27; );
+                return _r;
+            }
 
         , cauStatusLabel: function(){ return this.selectorProp( &#x27;cauStatusLabel&#x27; ); }
         , cauDisplayLabel: function(){ return this.selectorProp( &#x27;cauDisplayLabel&#x27; ); }
@@ -648,7 +656,10 @@
                     if( typeof _d != &#x27;undefined&#x27; ){
                         _value = _d.data[ _p._model.cauValueKey() ];
                         _label = _d.data[ _p._model.cauLabelKey() ];
+
                         _p._model.selector().val( _value )
+                        _p._model.cauSaveLabelSelector()
+                            &amp;&amp; _p._model.cauSaveLabelSelector().val( _label );
                     }
 
                     if( _p._model.cauDisplayLabelCallback() ){
@@ -713,6 +724,10 @@
                 }
 
                 _p._model.selector().val( &#x27;&#x27; );
+
+                _p._model.cauSaveLabelSelector()
+                    &amp;&amp; _p._model.cauSaveLabelSelector().val( &#x27;&#x27; );
+
                 if( _d &amp;&amp; ( &#x27;errorno&#x27; in _d ) &amp;&amp; !_d.errorno ){
                     $(_p).trigger( &#x27;CAUUpdate&#x27;, [ _d ] );
 

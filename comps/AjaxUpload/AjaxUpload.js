@@ -46,6 +46,9 @@
      *      <dt>cauLabelKey = string, default = name</dt>
      *      <dd>返回数据用于显示的字段</dd>
      *
+     *      <dt>cauSaveLabelSelector = selector</dt>
+     *      <dd>指定保存 cauLabelKey 值的 selector</dd>
+     *
      *      <dt>cauStatusLabel = selector, optional</dt>
      *      <dd>开始上传时, 用于显示状态的 selector</dd>
      *
@@ -369,6 +372,11 @@
 
         , cauLabelKey: function(){ return this.attrProp( 'cauLabelKey' ) || 'name'; }
         , cauValueKey: function(){ return this.attrProp( 'cauValueKey' ) || 'url'; }
+        , cauSaveLabelSelector:
+            function(){
+                var _r = this.selectorProp( 'cauSaveLabelSelector' );
+                return _r;
+            }
 
         , cauStatusLabel: function(){ return this.selectorProp( 'cauStatusLabel' ); }
         , cauDisplayLabel: function(){ return this.selectorProp( 'cauDisplayLabel' ); }
@@ -466,7 +474,10 @@
                     if( typeof _d != 'undefined' ){
                         _value = _d.data[ _p._model.cauValueKey() ];
                         _label = _d.data[ _p._model.cauLabelKey() ];
+
                         _p._model.selector().val( _value )
+                        _p._model.cauSaveLabelSelector()
+                            && _p._model.cauSaveLabelSelector().val( _label );
                     }
 
                     if( _p._model.cauDisplayLabelCallback() ){
@@ -531,6 +542,10 @@
                 }
 
                 _p._model.selector().val( '' );
+
+                _p._model.cauSaveLabelSelector()
+                    && _p._model.cauSaveLabelSelector().val( '' );
+
                 if( _d && ( 'errorno' in _d ) && !_d.errorno ){
                     $(_p).trigger( 'CAUUpdate', [ _d ] );
 
