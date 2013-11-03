@@ -62,13 +62,14 @@
         <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
 
         <script src="../../../lib.js"></script>
-        <script src="../../../comps/AutoSelect/_demo/data/SHENGSHI.js"></script>
+        <script src="../../../config.js"></script>
         <script>
             JC.debug = true; 
-            JC.use( 'Valid, AjaxUpload, Panel, Bizs.CommonModify' );
 
-            $(document).ready( function($evt){
-            });
+            requirejs( [ 'JC.Valid', 'JC.AjaxUpload', 'JC.Panel', 'Bizs.CommonModify' ]
+                , function(){
+                }
+            );
 
             $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
                 window.console && console.clear && console.clear();
@@ -81,6 +82,26 @@
                     return false;
                 }
             });
+
+            $(document).delegate( 'a.js_cleanCauData', 'click', function(){
+                var _p = $(this)
+                    , _pnt = getJqParent( _p, 'dd' )
+                    , _ctl = _pnt.find( 'input.js_compAjaxUpload' )
+                    , _ins = JC.AjaxUpload.getInstance( _ctl )
+                    ;
+
+                    _ins && _ins.update();
+            });
+
+            function cauDisplayLabelCallback( _json, _label, _value ){
+               var _selector = this
+                   , _label = printf( '<a href="{0}" class="green js_auLink" target="_blank">{1}</a>{2}'
+                                   , _value, _label
+                                   ,  '&nbsp;<a href="javascript:" class="btn btn-cls2 js_cleanCauData" style="color:red;">删除</a>&nbsp;&nbsp;'
+                               )
+                   ;
+               return _label;
+            }
 
         </script>
     </head>    
@@ -102,11 +123,14 @@
                         cauFileName="file"
                         cauValueKey="url"
                         cauLabelKey="name"
+                        cauDisplayLabel="/label.js_displayLabel"
+                        cauDisplayLabelCallback="cauDisplayLabelCallback"
 
                         subdatatype="hidden"
                         reqmsg="请上传文件"
                         />
                     <em class="error"></em>
+                    <label class="js_displayLabel"></label>
                 </dd>
 
                 <dd style="margin-top:20px; padding-left: 400px;">

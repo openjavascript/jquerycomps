@@ -30,8 +30,11 @@
 </style>
 <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
 <script src="../../../lib.js"></script>
+<script src="../../../config.js"></script>
 <script>
-    JC.debug = true; JC.use( 'Panel' ); 
+    JC.debug = true; 
+    requirejs( [ 'JC.Panel' ], function(){
+    }); 
 
     var count = 1;
     var btnstr = [
@@ -40,16 +43,6 @@
         , '<button type="button" eventtype="cancel">取消</button>\n'
         , '</div>'
     ].join('');
-
-    $(document).ready( function(_evt){
-
-        /*
-        tmpPanel = JC.Dialog( '默认Dialog', '<h2>test content</h2>' + btnstr, 'test footer');
-        tmpPanel.on('close', function(_evt, _panel){
-            JC.log('user close evnet');
-        });
-        */
-    });
 
     $(document).delegate( 'button.js_panel', 'click', function(_evt){
         tmpPanel = JC.Dialog( '默认Dialog' + count, 'body ' + count + btnstr, 'footer ' + count);

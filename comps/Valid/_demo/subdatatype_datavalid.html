@@ -67,11 +67,13 @@
         <link href='../../../comps/Suggest/res/default/style.css' rel='stylesheet' />
 
         <script src="../../../lib.js"></script>
+        <script src="../../../config.js"></script>
+
         <script src="../../../comps/AutoSelect/_demo/data/SHENGSHI.js"></script>
         <script>
-            JC.debug = true; JC.use( 'Valid, Bizs.FormLogic, Suggest' );
-
-            $(document).ready( function($evt){
+            JC.debug = true; 
+            
+            requirejs( [ 'JC.Valid', 'Bizs.FormLogic', 'JC.Suggest' ], function(){
 
             });
 
@@ -92,6 +94,26 @@
 
             <dl class="fm-items">
                 <dt>JC.Valid 示例, subdatatype = datavalid, 判断 html 属性 datavalid 是否为真</dt>
+                <dd>
+                    内容: 
+                    <input type="text" class="sug_input" style="width: 300px!important" 
+                    reqmsg="内容" 
+                    subdatatype="datavalid,unique" 
+                    uniquedatatarget="(dl input"
+                    uniquemsg="内容不能重复"
+
+                    datavalidmsg="内容不存在" 
+                    datavalidurl="./data/handler.php?key={0}"
+
+                    autocomplete="off" 
+                    sugurl="http://sug.so.360.cn/suggest/word?callback={1}&encodein=utf-8&encodeout=utf-8&word={0}"
+                    sugneedscripttag="true"
+                    sugselectedcallback="sugselectedcallback1"
+                    sugoffsetleft="0"
+                    sugoffsettop="3"
+                    sugoffsetwidth="2"
+                    />
+                </dd>
                 <dd>
                     内容: 
                     <input type="text" class="sug_input" style="width: 300px!important" 

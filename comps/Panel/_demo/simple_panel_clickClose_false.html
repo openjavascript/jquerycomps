@@ -28,8 +28,12 @@
 </style>
 <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
 <script src="../../../lib.js"></script>
+<script src="../../../config.js"></script>
 <script>
-    JC.debug = true; JC.use( 'Panel' ); 
+    JC.debug = true; 
+    requirejs( [ 'JC.Panel' ], function(){
+        JC.Panel.clickClose = false;
+    }); 
 
     var count = 1;
     var btnstr = [
@@ -38,17 +42,6 @@
         , '<button type="button" eventtype="cancel">取消</button>\n'
         , '</div>'
     ].join('');
-
-    $(document).ready( function(_evt){
-        /*
-        tmpPanel = new JC.Panel( '默认panel', '<h2>test content</h2>' + btnstr, 'test footer');
-        tmpPanel.on('close', function(_evt, _panel){
-            JC.log('user close evnet');
-        });
-        tmpPanel.show( $('button.custom_position') );
-        */
-        JC.Panel.clickClose = false;
-    });
 
     $(document).delegate( 'button.js_panel', 'click', function(_evt){
         tmpPanel = new JC.Panel( '默认panel ' + count, 'body ' + count + btnstr, 'footer ' + count);

@@ -28,6 +28,7 @@ requirejs.config( {
         , 'JC.Tree': 'comps/Tree/Tree'
 
         , 'JC.Panel': 'comps/Panel/Panel'
+        , 'JC.Placeholder': 'comps/Placeholder/Placeholder'
         , 'JC.Valid': 'comps/Valid/Valid'
 
         , 'Bizs.ActionLogic': 'bizs/ActionLogic/ActionLogic'

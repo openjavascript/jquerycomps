@@ -50,20 +50,21 @@
         <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
 
         <script src="../../../lib.js"></script>
+        <script src="../../../config.js"></script>
         <script>
-            JC.debug = true; JC.use( 'Valid, Calendar, Form' );
-
-            $(document).ready( function($evt){
-                $(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
+            JC.debug = true; 
+            
+            requirejs( [ 'JC.Valid', 'JC.Calendar', 'JC.Form' ], function(){
+                $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
                     window.console && console.clear && console.clear();
-                    JC.Valid.clearError( 'form.js-valid' );
+                    JC.Valid.clearError( 'form.js_valid' );
                 });
 
-                $('form.js-valid').on('submit', function( $evt ){
+                $('form.js_valid').on('submit', function( $evt ){
                     window.console && console.clear && console.clear();
                         $evt.preventDefault();
 
-                    if( !JC.Valid.check( 'form.js-valid' ) ){
+                    if( !JC.Valid.check( 'form.js_valid' ) ){
                         $evt.preventDefault();
                         return false;
                     }
@@ -109,15 +110,14 @@
 
                 });
             });
-
         </script>
     </head>    
     <body>
 
-        <form action='' method='get' class="js-valid" >
+        <form action='' method='get' class="js_valid" >
             <div style="position:fixed; top: 10px; right:10px;">
                 <button type="submit">Save</button>
-                <button type="button" class="js-clear-error">清空错误信息</button>
+                <button type="button" class="js_clear_error">清空错误信息</button>
             </div>
             <dl class="fm-items">
                 <dt>JC.Valid 示例, setError</dt>
@@ -204,7 +204,7 @@
 
             <div style="position:fixed; bottom: 10px; right:10px;">
                 <button type="submit">Save</button>
-                <button type="button" class="js-clear-error">清空错误信息</button>
+                <button type="button" class="js_clear_error">清空错误信息</button>
             </div>
         </form>
 

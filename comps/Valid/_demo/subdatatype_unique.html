@@ -61,22 +61,25 @@
         <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
 
         <script src="../../../lib.js"></script>
+        <script src="../../../config.js"></script>
+
         <script src="../../../comps/AutoSelect/_demo/data/SHENGSHI.js"></script>
         <script>
-            JC.debug = true; JC.use( 'Valid, Calendar, Form, Bizs.FormLogic, Bizs.CommonModify' );
+            JC.debug = true; 
 
-            $(document).ready( function($evt){
-
-                JC.AutoSelect.dataFilter = 
-                    function( _data, _select ){
-                        var _r = _data;
-                        if( _data && !_data.length && _data.data ){
-                            _r = _data.data;
-                        }
-                        return _r;
-                    };
-
-            });
+            requirejs( [ 'JC.Valid', 'JC.Calendar', 'JC.Form'
+                , 'Bizs.FormLogic', 'Bizs.CommonModify' ], 
+                function(){
+                    JC.AutoSelect.dataFilter = 
+                        function( _data, _select ){
+                            var _r = _data;
+                            if( _data && !_data.length && _data.data ){
+                                _r = _data.data;
+                            }
+                            return _r;
+                        };
+                }
+            );
 
             $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
                 window.console && console.clear && console.clear();
