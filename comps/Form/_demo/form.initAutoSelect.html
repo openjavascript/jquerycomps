@@ -14,14 +14,12 @@
             }
         </style>
         <script src="../../../lib.js"></script>
+        <script src="../../../config.js"></script>
         <script>
-            if( /file\:|\\/.test( location.href ) ){
-                alert('本示例需要HTTP环境');
-            }
+            JC.debug = true; 
 
-            JC.debug = true; JC.use('Form');
-
-            $(document).ready(function(){
+            requirejs( [ 'JC.Form' ], function(){
+                httpRequire();
 
                 //JC.Form.initAutoSelect.hideEmpty = true;
                 $(document).delegate( 'button.js_ajaxTest', 'click', function(){
@@ -55,7 +53,6 @@
                         JC.log( 'user allChanged' );
                     };
             });
-
         </script>
     </head>    
     <body>

@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: html popup add trigger ref
 ;(function($){
     window.Panel = JC.Panel = Panel;
@@ -106,7 +107,7 @@
      * @date    2013-06-04
      * @example
             <script src="../../../lib.js"></script>
-            <script>JC.use( 'Panel' ); </script>
+            <script src="../../../config.js"></script>
             <script>
                 var btnstr = [
                     '<div style="text-align:center" class="UButton">'
@@ -114,7 +115,8 @@
                     , '<button type="button" eventtype="cancel">取消</button>\n'
                     , '</div>'
                 ].join('');
-                $(document).ready( function(_evt){
+		
+                requirejs( [ 'JC.Panel' ], function(){
                     tmpPanel = new JC.Panel( '默认panel', '<h2>test content</h2>' + btnstr, 'test footer');
                     tmpPanel.on('close', function(_evt, _panel){
                         JC.log('user close evnet');
@@ -323,16 +325,15 @@
 
                                     if( !_p._model.bindedPositionWithEvent ){
                                         _p._model.bindedPositionWithEvent = true;
-
+                                        var changePosition = function(){
+                                            _p.positionWith( _position, _selectorDiretion );
+                                        }
+					
                                         $(window).on('resize', changePosition );
                                         _p.on('close', function(){
                                             _p._model.bindedPositionWithEvent = false;
                                             $(window).unbind('resize', changePosition);
                                         });
-
-                                        function changePosition(){
-                                            _p.positionWith( _position, _selectorDiretion );
-                                        }
                                     }
 
                                     break;
@@ -2330,3 +2331,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

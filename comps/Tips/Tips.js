@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 ;(function($){
     window.Tips = JC.Tips = Tips;
     /**
@@ -38,9 +39,9 @@
      * @date    2013-06-23
      * @example
             <script src="../../../lib.js"></script>
+            <script src="../../../config.js"></script>
             <script>
-                JC.use( 'Tips' );
-                $(document).ready( function(_evt){
+                requirejs( [ 'JC.Tips' ], function(){
                     //默认是自动初始化, 也就是只要导入 JC.Tips 就会自己初始化 带 title/tipsData 属性的标签
                     //下面示例是手动初始化
                     JC.Tips.autoInit = false;
@@ -177,9 +178,9 @@
      * @static
      * @example
             <script src="../../../lib.js"></script>
+            <script src="../../../config.js"></script>
             <script>
-                JC.use( 'Tips' );
-                $(document).ready( function(_evt){
+                requirejs( [ 'JC.Tips' ], function(){
                     JC.Tips.autoInit = false;
                     JC.Tips.init( $( 'a' ) ); 
                 });
@@ -612,3 +613,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

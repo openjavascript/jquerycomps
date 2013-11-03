@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 ;( function( $ ){
     window.Tree = JC.Tree = Tree;
     /**
@@ -18,24 +19,25 @@
      * @example
             <link href='../../../comps/Tree/res/default/style.css' rel='stylesheet' />
             <script src="../../../lib.js"></script>
+            <script src="../../../config.js"></script>
             <script>
-                JC.use( 'Tree' );
-                $(document).ready( function(){
-                    var treeData = {
-                        data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["28","\u9500\u552e\u4e8c\u7ec4"],["24","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
-                        root: ["23",'客户发展部']
-                    };
-                    var _tree = new JC.Tree( $('#tree_box2'), treeData );
-                        _tree.on('RenderLabel', function( _data ){
-                            var _node = $(this);
-                            _node.html( printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
-                        });
-                        _tree.on('click', function( _evt ){
-                            var _p = $(this);
-                            JC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
-                        });
-                        _tree.init();
-                        //_queryNode && _tree.open( _queryNode );
+                requirejs( [ 'JC.Tree' ], function(){
+                     var treeData = {
+                            data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["28","\u9500\u552e\u4e8c\u7ec4"],["24","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
+                            root: ["23",'客户发展部']
+                        };
+                        var _tree = new JC.Tree( $('#tree_box2'), treeData );
+                            _tree.on('RenderLabel', function( _data ){
+                                var _node = $(this);
+                                _node.html( printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
+                            });
+                            _tree.on('click', function( _evt ){
+                                var _p = $(this);
+                                JC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
+                            });
+                            _tree.init();
+                            //_queryNode && _tree.open( _queryNode );
+
                 });
             </script>
             <div id="tree_box2" class="tree_container"></div>
@@ -678,3 +680,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

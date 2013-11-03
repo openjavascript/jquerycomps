@@ -10,10 +10,13 @@
 <link href='../../../comps/Tree/res/default/style.css' rel='stylesheet' />
 <link href='data/crm.css' rel='stylesheet' />
 <script src="../../../lib.js"></script>
-<script src="data/crm.js"></script>
+<script src="../../../config.js"></script>
 <script>
     JC.debug = 1;
-    JC.use( 'Tree' );
+
+    requirejs( [ './data/crm.js' ], function(){
+        var _queryNode = getUrlParam( 'node' );
+    });
 
     var dptTreeData = {
         data:{"24":[["file","25","\u4e8c\u7ec4\u4e00\u961f"],["file","26","\u4e8c\u7ec4\u4e8c\u961f"],["file","27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["file","28","\u9500\u552e\u4e8c\u7ec4"],["folder","24","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
@@ -24,11 +27,6 @@
         data:{"24":[["file","25","第二份数据"],["file","26","第二份数据2第二份数据2第二份数据2第二份数据2第二份数据2"],["file","27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["folder","24","二组二队二组二队二组二队二组二队二组二队二组二队二组二队二组二队据"],["file","28","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
         root: ["folderRoot","23",'客服一部']
         };	
-
-    $(document).ready( function(){
-        var _queryNode = getUrlParam( 'node' );
-
-    });
 
     $(document).delegate('#open_to_val', 'click', function( _evt ){
         _evt.stopPropagation();

@@ -46,28 +46,27 @@
         <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
 
         <script src="../../../lib.js"></script>
+        <script src="../../../config.js"></script>
         <script>
-            JC.debug = true; JC.use( 'Valid, Calendar, Bizs.FormLogic' );
+            JC.debug = true;
 
-            $(document).ready( function($evt){
-                $(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
+            requirejs( ['JC.Valid', 'JC.Calendar', 'Bizs.FormLogic' ], function(){
+				$(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
                     window.console && console.clear && console.clear();
                     JC.Valid.clearError( 'form.js_valid' );
                 });
-
-                /*
-                $('form.js_valid').on('submit', function( $evt ){
+                $('form.js_valid')
+                .on('submit', function( _evt ){
                     window.console && console.clear && console.clear();
-                    $evt.preventDefault();
+                    _evt.preventDefault();
 
                     if( !JC.Valid.check( 'form.js_valid' ) ){
-                        $evt.preventDefault();
+                        _evt.preventDefault();
                         return false;
                     }
 
                     JC.log( 'form process valid', new Date().getTime() );
                 });
-                */
 
                 $( 'dl.fm-items > dd:odd').addClass( 'odd' );
 

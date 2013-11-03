@@ -19,8 +19,8 @@
                 position: absolute;
                 z-index: 100;
                 height: 40px;
-                zoom: 1;
                 opacity: 0;
+                zoom: 1;
                 filter: alpha( opacity = 0 );
                 /*
                 */
@@ -33,8 +33,9 @@
         </style>
         <link href='../res/default/style.css' rel='stylesheet' />
         <script type='text/javascript' src="../../../lib.js"></script>
+        <script type='text/javascript' src="../../../config.js"></script>
         <script>
-            
+
             var _pw = window.parent
                 , _fm
                 , _iframe
@@ -43,13 +44,13 @@
                 , _auIns
                 ;
 
-            if( _pw && _pw != this ){
-                JC.debug = _pw.JC.debug;
+            requirejs( ['JC.common' ], function(){
+                if( _pw && _pw != this ){
+                    JC.debug = _pw.JC.debug;
 
-                JC.PATH = _pw.JC.PATH;
-                window.name = 'AJAX_UPLOAD_WIN_' + ( _pw.JC.AjaxUpload._INS_COUNT++ )
+                    JC.PATH = _pw.JC.PATH;
+                    window.name = 'AJAX_UPLOAD_WIN_' + ( _pw.JC.AjaxUpload._INS_COUNT++ )
 
-                $(document).ready( function(){
                     _fm = $('form');
                     _iframe = $('#IX_UPLOAD_IFRAME');
                     _flBtn = _fm.find('input.js_file');
@@ -103,19 +104,21 @@
                     });
 
                     updateBtnX();
-                });
 
-            }else{
-                JC.log( "can't get parent window!" );
-            }
+                }else{
+                    JC.log( "can't get parent window!" );
+                }
+            });
+       // }
             /**
              * iframe 加载完毕时, 初始化页面
              */
             function initPage( _ins, _model ){
                 //alert( [ 'initPage', _model.cauUrl() ] );
-                _auIns = _ins; 
-                _fm.attr( 'action', addUrlParams( _model.cauUrl(), { 'rnd': new Date().getTime() } ) );
-                _model.cauFileExt() && _flBtn.attr( 'fileExt', _model.cauFileExt() );
+                requirejs( [ 'JC.common' ], function(){
+                    _auIns = _ins; 
+                    _fm.attr( 'action', addUrlParams( _model.cauUrl(), { 'rnd': new Date().getTime() } ) );
+                    _model.cauFileExt() && _flBtn.attr( 'fileExt', _model.cauFileExt() );
 
                 _model.cauFileName() && _flBtn.attr( 'name', _model.cauFileName() );
 
@@ -147,6 +150,7 @@
                         updateBtnX();
                     }, 1 );
 
+                });
                 //alert( _updateLayout + ', ' + _disBtn.html() );
             }
             /**

@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC', 'JC.Valid', 'JC.Form', 'JC.Panel' ], function(){
 //TODO: 添加 disabled bind hidden 操作
 ;(function($){
     /**
@@ -267,10 +268,11 @@
             return _selector.data('FormLogicIns');
         };
 
-    !JC.Valid && JC.use( 'Valid' );
-    !JC.Form && JC.use( 'Form' );
-    !JC.Panel && JC.use( 'Panel' );
-    !$(document).ajaxForm && JC.use( 'plugins.jquery.form' );
+    if( !define.amd && JC.use ){
+        !JC.Valid && JC.use( 'Valid' );
+        !JC.Form && JC.use( 'Form' );
+        !JC.Panel && JC.use( 'Panel' );
+    }
 
     /**
      * 处理 form 或者 _selector 的所有form.js_bizsFormLogic
@@ -937,3 +939,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

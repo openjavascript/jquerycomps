@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 ;(function($){
     window.Tab = JC.Tab = Tab;
     /**
@@ -54,11 +55,24 @@
      * @example
             <link href='../../../comps/Tab/res/default/style.css' rel='stylesheet' />
             <script src="../../../lib.js"></script>
+            <script src="../../../config.js"></script>
             <script>
                 JC.debug = 1;
-                JC.use( 'Tab' );
 
-                httpRequire();
+                requirejs( [ 'JC.Tab' ], function(){
+                    httpRequire();
+
+                    JC.Tab.ajaxCallback =
+                        function( _data, _label, _container ){
+                            _data && ( _data = $.parseJSON( _data ) );
+                            if( _data && _data.errorno === 0 ){
+                                _container.html( printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
+                            }else{
+                                Tab.isAjaxInited( _label, 0 );
+                                _container.html( '<h2>内容加载失败!</h2>' );
+                            }
+                        };
+                });
 
                 function tabactive( _evt, _container, _tabIns ){
                     var _label = $(this);
@@ -72,19 +86,6 @@
                     var _label = $(this);
                     JC.log( 'tab change: ', _label.html(), new Date().getTime() );
                 }
-
-                $(document).ready( function(){
-                    JC.Tab.ajaxCallback =
-                        function( _data, _label, _container ){
-                            _data && ( _data = $.parseJSON( _data ) );
-                            if( _data && _data.errorno === 0 ){
-                                _container.html( printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
-                            }else{
-                                Tab.isAjaxInited( _label, 0 );
-                                _container.html( '<h2>内容加载失败!</h2>' );
-                            }
-                        };
-                });
 
                 function ajaxcallback( _data, _label, _container ){
                     _data && ( _data = $.parseJSON( _data ) );
@@ -658,3 +659,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

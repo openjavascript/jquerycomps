@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC', 'JC.Panel' ], function(){
 /**
  * <h2>node 点击操作逻辑</h2>
  * 应用场景
@@ -112,7 +113,7 @@
         this._init();
     }
 
-    !JC.Panel && JC.use( 'Panel' );
+    !define.amd && JC.use && !JC.Panel && JC.use( 'Panel' );
 
     /**
      * 获取或设置 ActionLogic 的实例
@@ -509,3 +510,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

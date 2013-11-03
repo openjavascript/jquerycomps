@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
  ;(function($){
     /**
      * 全选/反选
@@ -395,4 +396,4 @@
     });
 
 }(jQuery));
-
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

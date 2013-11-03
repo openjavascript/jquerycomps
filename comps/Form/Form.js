@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.AutoSelect', 'JC.AutoChecked' ], function(){
 ;(function($){
     /**
      * 表单常用功能类 JC.Form
@@ -301,3 +302,4 @@
         JC.Form.initNumericStepper( $(document) );
     });
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

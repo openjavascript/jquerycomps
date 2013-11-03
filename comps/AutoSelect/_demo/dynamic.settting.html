@@ -15,14 +15,13 @@
         </style>
         <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
         <script src="../../../lib.js"></script>
+        <script src="../../../config.js"></script>
         <script>
-            if( /file\:|\\/.test( location.href ) ){
-                alert('本示例需要HTTP环境');
-            }
 
-            JC.debug = true; JC.use('Bizs.FormLogic, Valid, AutoSelect');
+            JC.debug = true; 
 
-            $(document).ready(function(){
+            requirejs( [ 'Bizs.FormLogic', 'JC.Valid', 'JC.AutoSelect' ], function(){
+                httpRequire();
 
                 //JC.AutoSelect.hideEmpty = true;
                 $(document).delegate( 'button.js_ajaxTest', 'click', function(){

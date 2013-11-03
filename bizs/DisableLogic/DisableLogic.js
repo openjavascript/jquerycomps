@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 /**
  * <h2>Form Control禁用启用逻辑</h2>
  * <br/>应用场景</br>
@@ -448,3 +449,4 @@
     });
     
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

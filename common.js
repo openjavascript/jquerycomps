@@ -15,9 +15,9 @@ if( !window.console ) window.console = { log:function(){
 /**
  * 声明主要命名空间, 方便迁移
  */
-window.JC = window.JC || {
-    log: function(){ JC.debug && window.console && console.log( sliceArgs( arguments ).join(' ') ); }
-};
+window.JC = window.JC || {};
+JC.log = JC.log || function(){ JC.debug && window.console && console.log( sliceArgs( arguments ).join(' ') ); };
+JC.PATH = JC.PATH || scriptPath();
 window.Bizs = window.Bizs || {};
 /**
  * 全局 css z-index 控制属性
@@ -645,7 +645,7 @@ function funcName(_func){
  * <dl>
  *      <dt>可识别的组件</dt>
  *      <dd>
- *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload
+ *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder
  *          <br />Bizs.DisableLogic, Bizs.FormLogic
  *      </dd>
  * </d>
@@ -784,31 +784,6 @@ function dateDetect( _dateStr ){
         }
     }
     return _r;
-}
-/**
- * 模块加载器自动识别函数
- * <br />目前可识别 requirejs
- * <br />计划支持的加载器 seajs
- * @method  loaderDetect
- * @param   {array of dependency|class}     _require
- * @param   {class|callback}                _class
- * @param   {callback}                      _cb
- * @static
- * @example
- *      loaderDetect( JC.AutoSelect );
- *      loaderDetect( [ 'JC.AutoSelect', 'JC.AutoChecked' ], JC.Form );
- */
-function loaderDetect( _require, _class, _cb ){
-    if( !( typeof define === 'function' && define.amd ) ) return;
-    if( _require.constructor != Array ){
-        _cb = _class;
-        _class = _require;
-        _require = [];
-    }
-    define( _require, function() {
-        _cb && _cb.apply( _class, sliceArgs( arguments ) );
-        return _class;
-    });
 }
 ;(function(){
     /**

@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 /**
  * <h2>Dom 通用 添加删除 逻辑</h2>
  * <br/>应用场景
@@ -509,3 +510,4 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

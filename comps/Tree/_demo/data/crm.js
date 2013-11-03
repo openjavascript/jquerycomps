@@ -1,4 +1,5 @@
-$(document).ready( function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.Tree' ], function(){
+;( function( $ ){
     window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
 
     JC.Tree.dataFilter =
@@ -71,5 +72,5 @@ $(document).ready( function(){
             _treeNode.css( { 'top': _p.prop( 'offsetHeight' ) -2 + 'px', 'left': '-1px' } );
         }
     });
-
-});
+}(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

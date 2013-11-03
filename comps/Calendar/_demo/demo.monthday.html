@@ -11,20 +11,21 @@
 <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
 <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
 <script src="../../../lib.js"></script>
+<script src="../../../config.js"></script>
 <script>
-    JC.debug = true; JC.use( 'Calendar, Valid, plugins.json2' );
+    JC.debug = true; 
+    
+    requirejs( [ 'JC.Calendar', 'JC.Valid', 'plugins.json2' ], function(){
+        var _today = formatISODate( new Date() );
+        $('input.js_minDate').attr('minvalue', _today );
+        $('input.js_maxDate').attr('maxvalue', _today );
+    });
     /**
      * 注意: 如果 input 已经声明了 datatype=date, 那就不需要执行下面的语法
      * 带 datatype=date 的 input 页面加载完毕后都会自动初始化
      */
     $(document).delegate('input.manualPickDate', 'focus', function($evt){
         JC.Calendar.pickDate( this );
-    });
-
-    $(document).ready( function(){
-        var _today = formatISODate( new Date() );
-        $('input.js_minDate').attr('minvalue', _today );
-        $('input.js_maxDate').attr('maxvalue', _today );
     });
 </script>
 </head>    

@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: 添加数据缓存逻辑
 ;(function($){
     /**
@@ -954,4 +955,4 @@
     });
 
 }(jQuery));
-
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

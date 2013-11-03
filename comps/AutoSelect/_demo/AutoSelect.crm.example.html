@@ -15,48 +15,49 @@
         </style>
         <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
         <script src="../../../lib.js"></script>
+        <script src="../../../config.js"></script>
         <script>
-            httpRequire();
-
             JC.debug = true; 
-            JC.use( 'AutoSelect, Valid, Bizs.CommonModify, Bizs.FormLogic' );
 
-            $(document).ready(function(){
+            requirejs( [ 'JC.AutoSelect', 'JC.Valid', 'Bizs.CommonModify', 'Bizs.FormLogic' ]
+                , function(){
+                    httpRequire();
 
-                //JC.AutoSelect.hideEmpty = true;
+                    //JC.AutoSelect.hideEmpty = true;
 
-                $(document).delegate( 'button.js_ajaxTest', 'click', function(){
-                    var _p = $(this);
-                    _p.prop('disabled', true);
-                    setTimeout( function(){ _p.prop('disabled', false); }, 1000 );
+                    $(document).delegate( 'button.js_ajaxTest', 'click', function(){
+                        var _p = $(this);
+                        _p.prop('disabled', true);
+                        setTimeout( function(){ _p.prop('disabled', false); }, 1000 );
 
-                    $.get( './data/shengshi_html.php?rnd='+new Date().getTime(), function( _r ){
-                        var _selector = $(_r);
-                        $( 'dl.def > dt' ).after( _selector );
-                        JC.AutoSelect( _selector );
+                        $.get( './data/shengshi_html.php?rnd='+new Date().getTime(), function( _r ){
+                            var _selector = $(_r);
+                            $( 'dl.def > dt' ).after( _selector );
+                            JC.AutoSelect( _selector );
+                        });
                     });
-                });
 
-                JC.AutoSelect.dataFilter = 
-                    function( _data, _select ){
-                        var _r = _data;
-                        if( _data && !_data.length && _data.data ){
-                            _r = _data.data;
-                        }
-                        return _r;
-                    };
+                    JC.AutoSelect.dataFilter = 
+                        function( _data, _select ){
+                            var _r = _data;
+                            if( _data && !_data.length && _data.data ){
+                                _r = _data.data;
+                            }
+                            return _r;
+                        };
 
-               JC.AutoSelect.inited =
-                    function(){
-                        JC.log( 'user inited' );
-                    };
+                   JC.AutoSelect.inited =
+                        function(){
+                            JC.log( 'user inited' );
+                        };
 
-               JC.AutoSelect.allChanged =
-                    function(){
-                        JC.log( 'user allChanged' );
-                    };
-            });
+                   JC.AutoSelect.allChanged =
+                        function(){
+                            JC.log( 'user allChanged' );
+                        };
 
+                    }
+            );
             /**
              * 动态设置 选中值, 使用 update 方法
              */

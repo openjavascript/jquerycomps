@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 ;(function($){
     window.Slider = JC.Slider = Slider;
     /**
@@ -74,9 +75,10 @@
             </style>
             <link href='../../Slider/res/hslider/style.css' rel='stylesheet' />
             <script src="../../../lib.js"></script>
+            <script src="../../../config.js"></script>
             <script>
                 JC.debug = true;
-                JC.use( 'Slider' );
+                requirejs( [ 'JC.Slider' ] );
 
                 function sliderinitedcb(){
                     var _sliderIns = this;
@@ -970,3 +972,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));
