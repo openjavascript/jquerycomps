@@ -48,7 +48,6 @@ requirejs.config( {
 });
 /**
  * 取当前脚本标签的 src路径 
- * @method  scriptPath
  * @static
  * @return  {string} 脚本所在目录的完整路径
  */
