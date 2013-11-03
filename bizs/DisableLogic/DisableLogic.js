@@ -7,7 +7,7 @@
  * <br/>checkbox / select 也可使用( 带change事件的标签 )
  *
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
- * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html' target='_blank'>API docs</a>
+ * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html' target='_blank'>API docs</a>
  * | <a href='../../bizs/DisableLogic/_demo' target='_blank'>demo link</a></p>
  *
  * div 需要 添加 class="js_bizsDisableLogic"

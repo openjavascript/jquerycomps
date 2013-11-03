@@ -8,7 +8,7 @@
      * <br />post 提交表单
      * <br />ajax 提交表单
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>
      * | <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>
      * require: <a href='../classes/window.jQuery.html'>jQuery</a>
      * <br/>require: <a href='../classes/JC.Valid.html'>JC.Valid</a>

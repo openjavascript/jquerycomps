@@ -13,6 +13,4 @@
     var _path = scriptPath();
     document.write( '<script src="'+_path+'require.js" ><\/script>' );
     document.write( '<script src="'+_path+'jquery.js" ><\/script>' );
-    document.write( '<script src="'+_path+'common.js" ><\/script>' );
-    document.write( '<script src="'+_path+'JC.js" ><\/script>' );
 }();

@@ -7,7 +7,7 @@
  * <br/>点击后弹框( Dom 模板 )
  * <br/>点击后执行 AJAX 操作
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
- * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>
+ * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>
  * | <a href='../../bizs/ActionLogic/_demo' target='_blank'>demo link</a></p>
  *
  * require: <a href='../classes/window.jQuery.html'>jQuery</a>

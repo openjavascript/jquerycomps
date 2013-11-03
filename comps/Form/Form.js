@@ -4,7 +4,7 @@
      * 表单常用功能类 JC.Form
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Form/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class Form
@@ -59,7 +59,7 @@
      * <br />只要引用本脚本, DOM 加载完毕后, 页面上所有带 class js_autoFillUrlForm 的 form 都会自动初始化默认值
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>
+     * | <a href='http://jc2.openjavascript.org/docs/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>
      * @method  initAutoFill
      * @static
      * @for JC.Form

@@ -6,7 +6,7 @@
      * <br />页面加载完毕后, Slider 会查找那些有 class = js_autoSlider 的标签进行自动初始化
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Slider.html' target='_blank'>API docs</a>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Slider.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Slider/_demo' target='_blank'>demo link</a></p>
      * <h2> 可用的 html attribute </h2>
      * <dl>
