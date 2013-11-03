@@ -7,9 +7,7 @@ window.requirejs &&
 requirejs.config( {
     baseUrl: JC.PATH
     , paths: {
-        'domReady': 'plugins/domReady'
-
-        , 'JC.common': 'common'
+        'JC.common': 'common'
         , 'JC.BaseMVC': 'comps/BaseMVC/BaseMVC'
 
         , 'JC.AjaxUpload': 'comps/AjaxUpload/AjaxUpload'
@@ -38,6 +36,7 @@ requirejs.config( {
         , 'Bizs.KillISPCache': 'bizs/KillISPCache/KillISPCache'
         , 'Bizs.MultiDate': 'bizs/MultiDate/MultiDate'
 
+        , 'plugins.domReady': 'plugins/domReady'
         , 'plugins.aes': 'plugins/aes'
         , 'plugins.base64': 'plugins/base64'
         , 'plugins.json2': 'plugins/json2'
