@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC', 'JC.Panel' ], function(){
 /**
  * <h2>node 点击操作逻辑</h2>
  * 应用场景
@@ -6,7 +7,7 @@
  * <br/>点击后弹框( Dom 模板 )
  * <br/>点击后执行 AJAX 操作
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
- * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>
+ * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>
  * | <a href='../../bizs/ActionLogic/_demo' target='_blank'>demo link</a></p>
  *
  * require: <a href='../classes/window.jQuery.html'>jQuery</a>
@@ -112,7 +113,7 @@
         this._init();
     }
 
-    !JC.Panel && JC.use( 'Panel' );
+    !define.amd && JC.use && !JC.Panel && JC.use( 'Panel' );
 
     /**
      * 获取或设置 ActionLogic 的实例
@@ -509,3 +510,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

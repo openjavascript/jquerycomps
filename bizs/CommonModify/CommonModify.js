@@ -1,10 +1,11 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 /**
  * <h2>Dom 通用 添加删除 逻辑</h2>
  * <br/>应用场景
  * <br/>需要动态添加删除内容的地方可以使用这个类
  *
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
- * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>
+ * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>
  * | <a href='../../bizs/CommonModify/_demo' target='_blank'>demo link</a></p>
  *
  * a|button 需要 添加 class="js_autoCommonModify"
@@ -509,3 +510,4 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

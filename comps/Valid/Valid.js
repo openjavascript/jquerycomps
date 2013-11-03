@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
 //TODO: checkbox, radio 错误时, input 添加高亮显示
 ;(function($){
@@ -6,7 +7,7 @@
      * <br />全局访问请使用 JC.Valid 或 Valid
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>
      * <h2>Form 的可用 html attribute</h2>
      * <dl>
@@ -1892,6 +1893,7 @@
                 !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item, _typeKey ) );
 
                 var _isReturn = false;
+                var _reqTarget;
 
                 if( _target.length && !$.trim( _item.val() ) ){
                     var _hasVal = false;
@@ -2029,6 +2031,7 @@
                     , _KEY = "UniqueValidTime"
                     , _typeKey = 'unique'
                     , _ignoreCase = parseBool( _item.attr('uniqueIgnoreCase') )
+                    , _errLs, _corLs
                     ;
 
                 JC.log( _typeKey, new Date().getTime() );
@@ -2155,7 +2158,7 @@
             }
         , findErrorEle:
             function( _item ){
-                var _p = this, _selector = Model.SELECTOR_ERROR, _r = _item.find( _selector );
+                var _p = this, _selector = Model.SELECTOR_ERROR, _r = _item.find( _selector ), _tmp;
                 if( _item.attr('emel') 
                         && ( _tmp = _p.getElement( _item.attr('emel'), _item, _selector ) ).length ) _r = _tmp;
                 return _r;
@@ -2456,7 +2459,7 @@
         , valid:
             function( _item, _tm, _noStyle ){
                 _item && ( _item = $(_item) );
-                var _p = this, _tmp, _focusEm;
+                var _p = this, _tmp;
                 _item.data( 'JCValidStatus', true );
                 //if( !_p._model.isValid( _item ) ) return false;
                 var _hideFocusMsg = !parseBool( _item.attr('validnoerror' ) );
@@ -2527,7 +2530,7 @@
         , error: 
             function( _item, _msgAttr, _fullMsg ){
                 _item && ( _item = $(_item) );
-                var _p = this, arg = arguments; 
+                var _p = this, arg = arguments, _tmp; 
                 //if( !_p._model.isValid( _item ) ) return true;
                 if( _item.is( '[validnoerror]' ) ) return true;
                 _item.data( 'JCValidStatus', false );
@@ -2742,3 +2745,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

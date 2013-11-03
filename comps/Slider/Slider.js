@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 ;(function($){
     window.Slider = JC.Slider = Slider;
     /**
@@ -5,7 +6,7 @@
      * <br />页面加载完毕后, Slider 会查找那些有 class = js_autoSlider 的标签进行自动初始化
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Slider.html' target='_blank'>API docs</a>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Slider.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Slider/_demo' target='_blank'>demo link</a></p>
      * <h2> 可用的 html attribute </h2>
      * <dl>
@@ -74,9 +75,10 @@
             </style>
             <link href='../../Slider/res/hslider/style.css' rel='stylesheet' />
             <script src="../../../lib.js"></script>
+            <script src="../../../config.js"></script>
             <script>
                 JC.debug = true;
-                JC.use( 'Slider' );
+                requirejs( [ 'JC.Slider' ] );
 
                 function sliderinitedcb(){
                     var _sliderIns = this;
@@ -970,3 +972,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

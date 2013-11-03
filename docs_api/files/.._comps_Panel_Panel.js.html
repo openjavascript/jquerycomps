@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../comps/Panel/Panel.js - jquery components</title>
+    <title>../comps/Panel/Panel.js - open jquery components library</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -15,11 +15,11 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="../jc_logo.png" title="jquery components"></h1>
+                <h1><img src="../jc_logo.png" title="open jquery components library"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1</em>
+            <em>API Docs for: 0.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,8 +54,6 @@
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
-            
-                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -131,11 +129,9 @@
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
             
-                <li><a href="../classes/window.JC.html">window.JC</a></li>
-            
                 <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
             
-                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
+                <li><a href="../classes/window.requirejs.html">window.requirejs</a></li>
             
             </ul>
 
@@ -180,13 +176,14 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
 //TODO: html popup add trigger ref
 ;(function($){
     window.Panel = JC.Panel = Panel;
     /**
      * 弹出层基础类 JC.Panel
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Panel.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Panel.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
      * &lt;h2&gt;Panel Layout 可用的 html attribute&lt;/h2&gt;
@@ -288,7 +285,7 @@
      * @date    2013-06-04
      * @example
             &lt;script src=&quot;../../../lib.js&quot;&gt;&lt;/script&gt;
-            &lt;script&gt;JC.use( &#x27;Panel&#x27; ); &lt;/script&gt;
+            &lt;script src=&quot;../../../config.js&quot;&gt;&lt;/script&gt;
             &lt;script&gt;
                 var btnstr = [
                     &#x27;&lt;div style=&quot;text-align:center&quot; class=&quot;UButton&quot;&gt;&#x27;
@@ -296,7 +293,8 @@
                     , &#x27;&lt;button type=&quot;button&quot; eventtype=&quot;cancel&quot;&gt;取消&lt;/button&gt;\n&#x27;
                     , &#x27;&lt;/div&gt;&#x27;
                 ].join(&#x27;&#x27;);
-                $(document).ready( function(_evt){
+		
+                requirejs( [ &#x27;JC.Panel&#x27; ], function(){
                     tmpPanel = new JC.Panel( &#x27;默认panel&#x27;, &#x27;&lt;h2&gt;test content&lt;/h2&gt;&#x27; + btnstr, &#x27;test footer&#x27;);
                     tmpPanel.on(&#x27;close&#x27;, function(_evt, _panel){
                         JC.log(&#x27;user close evnet&#x27;);
@@ -505,16 +503,15 @@
 
                                     if( !_p._model.bindedPositionWithEvent ){
                                         _p._model.bindedPositionWithEvent = true;
-
+                                        var changePosition = function(){
+                                            _p.positionWith( _position, _selectorDiretion );
+                                        }
+					
                                         $(window).on(&#x27;resize&#x27;, changePosition );
                                         _p.on(&#x27;close&#x27;, function(){
                                             _p._model.bindedPositionWithEvent = false;
                                             $(window).unbind(&#x27;resize&#x27;, changePosition);
                                         });
-
-                                        function changePosition(){
-                                            _p.positionWith( _position, _selectorDiretion );
-                                        }
                                     }
 
                                     break;
@@ -1471,7 +1468,7 @@
      * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
      * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.msgbox.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.msgbox.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * @namespace JC
      * @class   msgbox
@@ -1518,7 +1515,7 @@
      * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
      * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.alert.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.alert.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * @namespace JC
      * @class   alert
@@ -1557,7 +1554,7 @@
      * &lt;p&gt;private property see: &lt;a href=&#x27;JC.alert.html&#x27;&gt;JC.alert&lt;/a&gt;
      * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.confirm.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.confirm.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * @namespace JC
      * @class   confirm
@@ -2053,7 +2050,7 @@
      * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
      * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Dialog.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * @namespace JC
      * @class   Dialog
@@ -2115,7 +2112,7 @@
      * &lt;p&gt;private property see: &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;JC.Dialog&lt;/a&gt;
      * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;, &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;Dialog&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Dialog.msgbox.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.msgbox.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * @namespace JC.Dialog
      * @class   msgbox
@@ -2159,7 +2156,7 @@
      * &lt;p&gt;private property see: &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;JC.Dialog&lt;/a&gt;
      * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;, &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;Dialog&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Dialog.alert.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.alert.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * @namespace JC.Dialog
      * @class   alert
@@ -2200,7 +2197,7 @@
      * &lt;p&gt;private property see: &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;JC.Dialog&lt;/a&gt;
      * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;, &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;Dialog&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Dialog.confirm.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.confirm.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * @namespace JC.Dialog
      * @class   confirm
@@ -2512,6 +2509,7 @@
     });
 
 }(jQuery));
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>
 </div>

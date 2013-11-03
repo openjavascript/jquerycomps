@@ -38,10 +38,11 @@
         <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
 
         <script src="../../../lib.js"></script>
+        <script src="../../../config.js"></script>
         <script>
-            JC.debug = true; JC.use( 'Valid, Calendar' );
+            JC.debug = true;
 
-            $(document).ready( function($evt){
+            requirejs( ['JC.Valid', 'JC.Calendar'], function(){
                 /**
                  * 发生错误是否停止验证, 这是全局控制.
                  * 如果要控制具体表单的话, 在 form 标签里添加 errorabort 属性即可, 解析时这个属性优先级比 JC.Valid.errorAbort 高
@@ -49,29 +50,30 @@
                  */
                 JC.Valid.errorAbort = false;
 
-                $(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
+                $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
                     window.console && console.clear && console.clear();
-                    JC.Valid.clearError( 'form.js-valid' );
+                    JC.Valid.clearError( 'form.js_valid' );
                 });
 
-                $('form.js-valid').on('submit', function( $evt ){
+                $('form.js_valid').on('submit', function( $evt ){
                     window.console && console.clear && console.clear();
                         $evt.preventDefault();
 
-                    if( !JC.Valid.check( 'form.js-valid' ) ){
+                    if( !JC.Valid.check( 'form.js_valid' ) ){
                         $evt.preventDefault();
                         return false;
                     }
                 });
+
             });
         </script>
     </head>    
     <body>
 
-        <form action='' method='get' class="js-valid" errorabort="true">
+        <form action='' method='get' class="js_valid" errorabort="true">
             <div style="position:fixed; top: 10px; right:10px;">
                 <button type="submit">Save</button>
-                <button type="button" class="js-clear-error">清空错误信息</button>
+                <button type="button" class="js_clear_error">清空错误信息</button>
             </div>
             <dl class="fm-items">
                 <dt>JC.Valid 示例 - 表单发生错误时停止继续验证</dt>
@@ -440,7 +442,7 @@
             </dl>
             <div style="position:fixed; bottom: 10px; right:10px;">
                 <button type="submit">Save</button>
-                <button type="button" class="js-clear-error">清空错误信息</button>
+                <button type="button" class="js_clear_error">清空错误信息</button>
             </div>
 
         </form>

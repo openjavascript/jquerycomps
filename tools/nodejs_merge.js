@@ -1,36 +1,30 @@
-var fs = require('fs');
+var fs = require('fs')
+    , i
+    , dir
+    , items
+    , result = []
+    , outpath
+    ;
 
-var dir = __dirname;
+dir = __dirname;
 dir = dir.split('/');
 dir.pop();
 
 dir = dir.join('/') + '/';
 
-var jqFile = dir + 'jquery.js'
-    , commonFile = dir + 'common.js'
-    , jcFile = dir + 'JC.js'
-    , baseMVCFile = dir + 'comps/BaseMVC/BaseMVC.js'
-    ;
+outpath = dir + 'lib.js';
 
+items = [
+    dir + 'require.js'
+    , dir + 'jquery.js'
+];
 
-if( !(  fs.existsSync( jqFile ) 
-        && fs.existsSync( jcFile ) 
-        && fs.existsSync( commonFile )  
-        && fs.existsSync( baseMVCFile )  
-)) return;
+for( i = 0, j = items.length; i < j; i++ ){
+    if( !fs.existsSync( items[i] ) ) return;
+}
 
-var tmp = [];
-    tmp.push( fs.readFileSync( jqFile, 'utf8') );
-    tmp.push( fs.readFileSync( commonFile, 'utf8') );
-    tmp.push( fs.readFileSync( jcFile, 'utf8') );
-    tmp.push( fs.readFileSync( baseMVCFile, 'utf8') );
+for( i = 0, j = items.length; i < j; i++ ){
+    result.push( fs.readFileSync( items[i], 'utf8') );
+}
 
-fs.writeFileSync( dir + 'lib.js', tmp.join(';\n\n') );
-
-/*
-fs.unlinkSync( dir + 'jquery.js' );
-fs.unlinkSync( dir + 'common.js' );
-fs.unlinkSync( dir + 'JC.js' );
-*/
-
-
+fs.writeFileSync( outpath, result.join(';\n') );

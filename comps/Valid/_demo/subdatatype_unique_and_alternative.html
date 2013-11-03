@@ -61,24 +61,20 @@
         <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
 
         <script src="../../../lib.js"></script>
+        <script src="../../../config.js"></script>
+
         <script src="../../../comps/AutoSelect/_demo/data/SHENGSHI.js"></script>
         <script>
             JC.debug = true; 
-            JC.use( 'Valid, Bizs.FormLogic' );
+
+            requirejs( [ 'JC.Valid', 'Bizs.FormLogic' ], function(){
+            });
 
             $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
                 window.console && console.clear && console.clear();
                 JC.Valid.clearError( 'form.js_valid' );
             });
 
-            /*
-            $(document).delegate( 'form.js_valid', 'submit', function( _evt ){
-                if( ! JC.Valid( this ) ){
-                    _evt.preventDefault();
-                    return false;
-                }
-            });
-            */
         </script>
     </head>    
     <body>

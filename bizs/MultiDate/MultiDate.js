@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 ;(function($){
     window.Bizs.MultiDate = MultiDate;
     /**
@@ -7,7 +8,7 @@
      *      <br /><b>require</b>: <a href='window.jQuery.html'>jQuery</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.MultiDate.html' target='_blank'>API docs</a>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.MultiDate.html' target='_blank'>API docs</a>
      * | <a href='../../bizs/MultiDate/_demo' target='_blank'>demo link</a></p>
      * @class   MultiDate
      * @namespace   window.Bizs
@@ -321,3 +322,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

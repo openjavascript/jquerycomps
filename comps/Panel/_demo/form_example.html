@@ -45,165 +45,169 @@
 <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
 <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
 <script src="../../../lib.js"></script>
-<script>JC.debug = true; JC.use( 'Panel, Valid, Form, Calendar, Bizs.CommonModify, plugins/jquery.form.js' );</script>
+<script src="../../../config.js"></script>
 <script>
+    JC.debug = true; 
 
-    $(document).ready( function(_evt){
-        $('button.dom_panel').on( 'click', function( _evt ){
-            JC.hideAllPanel( 1 );
-            /**
-             * 注意, 如果是从DOM读取模板的话, 
-             * 需要做个判断, 是否之前初始化过, 否则会导致重复初始化
-             *
-             * 如果需要重复使用的话, 还需要对 close 事件做一次重载, 避免关闭时从DOM清除
-             *      panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
-             *      //如果要强制从DOM清除, 可以调用 panel.dispose();
-             */
+    requirejs( [ 'JC.Panel', 'JC.Valid', 'JC.Form', 'JC.Calendar'
+        , 'Bizs.CommonModify', 'plugins.jquery.form' ]
+        , function(){
+            $('button.dom_panel').on( 'click', function( _evt ){
+                JC.hideAllPanel( 1 );
+                /**
+                 * 注意, 如果是从DOM读取模板的话, 
+                 * 需要做个判断, 是否之前初始化过, 否则会导致重复初始化
+                 *
+                 * 如果需要重复使用的话, 还需要对 close 事件做一次重载, 避免关闭时从DOM清除
+                 *      panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
+                 *      //如果要强制从DOM清除, 可以调用 panel.dispose();
+                 */
 
-            var panel = JC.Panel.getInstance( $('div.dom_panel') ); 
-            if( !panel ){
-                panel = new JC.Panel( $('div.dom_panel') ); 
+                var panel = JC.Panel.getInstance( $('div.dom_panel') ); 
+                if( !panel ){
+                    panel = new JC.Panel( $('div.dom_panel') ); 
 
-                panel.find('form').ajaxForm( {
-                    beforeSubmit:
-                        function(formData, jqForm, options){
-                            if( !JC.Valid.check( jqForm ) ) return false;
-                        }
-                    , success:
-                        function( responseText, statusText ){
-                            JC.log( responseText, '\n\n', statusText );
-                            panel.close();
-                        }
-                });
-
-                panel.on( 'confirm', function( _evt, _panel ){
-                    JC.log( 'dom confirm' );
-                    return false;
-                });
-
-                panel.on( 'cancel', function( _evt, _panel ){
-                    JC.log( 'dom cancel' );
-                });
-
-                panel.on( 'beforeshow', function( _evt, _panel ){
-                    JC.log( 'beforeshow' );
-                    _panel.find('form').resetForm();
-                    JC.Valid.clearError( _panel.find('form') );
-                });
-
-                panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
-            }
-            panel.show( this ); //让Panel显示在 this 的上方或下方
-        });
-        /**
-         * 从字符串创建弹框问题会少很多, 每次都是创建新的, 每次关闭都会从DOM 清除
-         */
-        $('button.string_panel').on( 'click', function( _evt ){
-            JC.hideAllPanel( 1 );
-            var panel = new JC.Panel( scriptContent( $('#scritpTpl') ), 'string panel' ), _fm;
-                _fm = panel.find('form');
-                _fm.ajaxForm( {
-                    beforeSubmit:
-                        function(formData, jqForm, options){
-                            if( !JC.Valid.check( jqForm ) ) {
-                                JC.msgbox( '请检查内容', _fm.find( 'button[type=submit]' ), 1 );
-                                return false;
+                    panel.find('form').ajaxForm( {
+                        beforeSubmit:
+                            function(formData, jqForm, options){
+                                if( !JC.Valid.check( jqForm ) ) return false;
                             }
-                        }
-                    , success:
-                        function( responseText, statusText ){
-                            JC.log( responseText, '\n\n', statusText );
-                            panel.close();
-                        }
-                });
+                        , success:
+                            function( responseText, statusText ){
+                                JC.log( responseText, '\n\n', statusText );
+                                panel.close();
+                            }
+                    });
 
-                panel.on( 'confirm', function( _evt, _panel ){
-                    JC.log( 'dom confirm' );
-                    return false;
-                });
+                    panel.on( 'confirm', function( _evt, _panel ){
+                        JC.log( 'dom confirm' );
+                        return false;
+                    });
 
-                panel.on( 'cancel', function( _evt, _panel ){
-                    JC.log( 'dom cancel' );
-                });
+                    panel.on( 'cancel', function( _evt, _panel ){
+                        JC.log( 'dom cancel' );
+                    });
 
-                panel.show( this );
-        });
+                    panel.on( 'beforeshow', function( _evt, _panel ){
+                        JC.log( 'beforeshow' );
+                        _panel.find('form').resetForm();
+                        JC.Valid.clearError( _panel.find('form') );
+                    });
 
-
-        $('button.dialog_dom_panel').on( 'click', function( _evt ){
+                    panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
+                }
+                panel.show( this ); //让Panel显示在 this 的上方或下方
+            });
             /**
-             * 注意, 如果是从DOM读取模板的话, 
-             * 需要做个判断, 是否之前初始化过, 否则会导致重复初始化
-             *
-             * 如果需要重复使用的话, 还需要对 close 事件做一次重载, 避免关闭时从DOM清除
-             *      panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
-             *      //如果要强制从DOM清除, 可以调用 panel.dispose();
+             * 从字符串创建弹框问题会少很多, 每次都是创建新的, 每次关闭都会从DOM 清除
              */
-            JC.hideAllPanel( 1 );
-            if( !Panel.getInstance( $('div.dialog_dom_panel') ) ){
-                var panel = JC.Dialog( $('div.dialog_dom_panel'), 'dialog dom panel' ); 
+            $('button.string_panel').on( 'click', function( _evt ){
+                JC.hideAllPanel( 1 );
+                var panel = new JC.Panel( scriptContent( $('#scritpTpl') ), 'string panel' ), _fm;
+                    _fm = panel.find('form');
+                    _fm.ajaxForm( {
+                        beforeSubmit:
+                            function(formData, jqForm, options){
+                                if( !JC.Valid.check( jqForm ) ) {
+                                    JC.msgbox( '请检查内容', _fm.find( 'button[type=submit]' ), 1 );
+                                    return false;
+                                }
+                            }
+                        , success:
+                            function( responseText, statusText ){
+                                JC.log( responseText, '\n\n', statusText );
+                                panel.close();
+                            }
+                    });
 
-                panel.find('form').ajaxForm( {
-                    beforeSubmit:
-                        function(formData, jqForm, options){
-                            if( !JC.Valid.check( jqForm ) ) return false;
-                        }
-                    , success:
-                        function( responseText, statusText ){
-                            JC.log( responseText, '\n\n', statusText );
-                            panel.close();
-                        }
-                });
+                    panel.on( 'confirm', function( _evt, _panel ){
+                        JC.log( 'dom confirm' );
+                        return false;
+                    });
 
-                panel.on( 'confirm', function( _evt, _panel ){
-                    JC.log( 'dom confirm' );
-                    return false;
-                });
+                    panel.on( 'cancel', function( _evt, _panel ){
+                        JC.log( 'dom cancel' );
+                    });
 
-                panel.on( 'cancel', function( _evt, _panel ){
-                    JC.log( 'dom cancel' );
-                });
+                    panel.show( this );
+            });
 
-                panel.on( 'beforeshow', function( _evt, _panel ){
-                    JC.log( 'beforeshow' );
-                    _panel.find('form').resetForm();
-                    JC.Valid.clearError( _panel.find('form') );
-                });
 
-                panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
-            }else{
-                JC.Dialog( $('div.dialog_dom_panel') );
-            }
-        });
-        /**
-         * 从字符串创建弹框问题会少很多, 每次都是创建新的, 每次关闭都会从DOM 清除
-         */
-        $('button.dialog_string_panel').on( 'click', function( _evt ){
-            JC.hideAllPanel( 1 );
-            var panel = JC.Dialog( scriptContent( $('#scritpTpl') ), 'dialog string panel' ); 
-                panel.find('form').ajaxForm( {
-                    beforeSubmit:
-                        function(formData, jqForm, options){
-                            if( !JC.Valid.check( jqForm ) ) return false;
-                        }
-                    , success:
-                        function( responseText, statusText ){
-                            JC.log( responseText, '\n\n', statusText );
-                            panel.close();
-                        }
-                });
+            $('button.dialog_dom_panel').on( 'click', function( _evt ){
+                /**
+                 * 注意, 如果是从DOM读取模板的话, 
+                 * 需要做个判断, 是否之前初始化过, 否则会导致重复初始化
+                 *
+                 * 如果需要重复使用的话, 还需要对 close 事件做一次重载, 避免关闭时从DOM清除
+                 *      panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
+                 *      //如果要强制从DOM清除, 可以调用 panel.dispose();
+                 */
+                JC.hideAllPanel( 1 );
+                if( !Panel.getInstance( $('div.dialog_dom_panel') ) ){
+                    var panel = JC.Dialog( $('div.dialog_dom_panel'), 'dialog dom panel' ); 
 
-                panel.on( 'confirm', function( _evt, _panel ){
-                    JC.log( 'dom confirm' );
-                    return false;
-                });
+                    panel.find('form').ajaxForm( {
+                        beforeSubmit:
+                            function(formData, jqForm, options){
+                                if( !JC.Valid.check( jqForm ) ) return false;
+                            }
+                        , success:
+                            function( responseText, statusText ){
+                                JC.log( responseText, '\n\n', statusText );
+                                panel.close();
+                            }
+                    });
 
-                panel.on( 'cancel', function( _evt, _panel ){
-                    JC.log( 'dom cancel' );
-                });
-        });
+                    panel.on( 'confirm', function( _evt, _panel ){
+                        JC.log( 'dom confirm' );
+                        return false;
+                    });
 
-    });//end ready
+                    panel.on( 'cancel', function( _evt, _panel ){
+                        JC.log( 'dom cancel' );
+                    });
+
+                    panel.on( 'beforeshow', function( _evt, _panel ){
+                        JC.log( 'beforeshow' );
+                        _panel.find('form').resetForm();
+                        JC.Valid.clearError( _panel.find('form') );
+                    });
+
+                    panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
+                }else{
+                    JC.Dialog( $('div.dialog_dom_panel') );
+                }
+            });
+            /**
+             * 从字符串创建弹框问题会少很多, 每次都是创建新的, 每次关闭都会从DOM 清除
+             */
+            $('button.dialog_string_panel').on( 'click', function( _evt ){
+                JC.hideAllPanel( 1 );
+                var panel = JC.Dialog( scriptContent( $('#scritpTpl') ), 'dialog string panel' ); 
+                    panel.find('form').ajaxForm( {
+                        beforeSubmit:
+                            function(formData, jqForm, options){
+                                if( !JC.Valid.check( jqForm ) ) return false;
+                            }
+                        , success:
+                            function( responseText, statusText ){
+                                JC.log( responseText, '\n\n', statusText );
+                                panel.close();
+                            }
+                    });
+
+                    panel.on( 'confirm', function( _evt, _panel ){
+                        JC.log( 'dom confirm' );
+                        return false;
+                    });
+
+                    panel.on( 'cancel', function( _evt, _panel ){
+                        JC.log( 'dom cancel' );
+                    });
+            });
+
+        }
+    );
 
     function userHideAllPanel(){
         JC.hideAllPanel();

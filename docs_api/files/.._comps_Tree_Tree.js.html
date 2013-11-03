@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../comps/Tree/Tree.js - jquery components</title>
+    <title>../comps/Tree/Tree.js - open jquery components library</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -15,11 +15,11 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="../jc_logo.png" title="jquery components"></h1>
+                <h1><img src="../jc_logo.png" title="open jquery components library"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1</em>
+            <em>API Docs for: 0.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -54,8 +54,6 @@
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
-            
-                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -131,11 +129,9 @@
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
             
-                <li><a href="../classes/window.JC.html">window.JC</a></li>
-            
                 <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
             
-                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
+                <li><a href="../classes/window.requirejs.html">window.requirejs</a></li>
             
             </ul>
 
@@ -180,6 +176,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
 ;( function( $ ){
     window.Tree = JC.Tree = Tree;
     /**
@@ -187,7 +184,7 @@
      * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, 
      * &lt;a href=&#x27;.window.html#method_printf&#x27;&gt;window.printf&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Tree.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Tree.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Tree/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * @namespace JC
      * @class Tree
@@ -200,24 +197,25 @@
      * @example
             &lt;link href=&#x27;../../../comps/Tree/res/default/style.css&#x27; rel=&#x27;stylesheet&#x27; /&gt;
             &lt;script src=&quot;../../../lib.js&quot;&gt;&lt;/script&gt;
+            &lt;script src=&quot;../../../config.js&quot;&gt;&lt;/script&gt;
             &lt;script&gt;
-                JC.use( &#x27;Tree&#x27; );
-                $(document).ready( function(){
-                    var treeData = {
-                        data: {&quot;24&quot;:[[&quot;25&quot;,&quot;\u4e8c\u7ec4\u4e00\u961f&quot;],[&quot;26&quot;,&quot;\u4e8c\u7ec4\u4e8c\u961f&quot;],[&quot;27&quot;,&quot;\u4e8c\u7ec4\u4e09\u961f&quot;]],&quot;23&quot;:[[&quot;28&quot;,&quot;\u9500\u552e\u4e8c\u7ec4&quot;],[&quot;24&quot;,&quot;\u552e\u524d\u5ba1\u6838\u7ec4&quot;]]},
-                        root: [&quot;23&quot;,&#x27;客户发展部&#x27;]
-                    };
-                    var _tree = new JC.Tree( $(&#x27;#tree_box2&#x27;), treeData );
-                        _tree.on(&#x27;RenderLabel&#x27;, function( _data ){
-                            var _node = $(this);
-                            _node.html( printf( &#x27;&lt;a href=&quot;javascript:&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#x27;, _data[0], _data[1] ) );
-                        });
-                        _tree.on(&#x27;click&#x27;, function( _evt ){
-                            var _p = $(this);
-                            JC.log( &#x27;tree click:&#x27;, _p.html(), _p.attr(&#x27;dataid&#x27;), _p.attr(&#x27;dataname&#x27;) );
-                        });
-                        _tree.init();
-                        //_queryNode &amp;&amp; _tree.open( _queryNode );
+                requirejs( [ &#x27;JC.Tree&#x27; ], function(){
+                     var treeData = {
+                            data: {&quot;24&quot;:[[&quot;25&quot;,&quot;\u4e8c\u7ec4\u4e00\u961f&quot;],[&quot;26&quot;,&quot;\u4e8c\u7ec4\u4e8c\u961f&quot;],[&quot;27&quot;,&quot;\u4e8c\u7ec4\u4e09\u961f&quot;]],&quot;23&quot;:[[&quot;28&quot;,&quot;\u9500\u552e\u4e8c\u7ec4&quot;],[&quot;24&quot;,&quot;\u552e\u524d\u5ba1\u6838\u7ec4&quot;]]},
+                            root: [&quot;23&quot;,&#x27;客户发展部&#x27;]
+                        };
+                        var _tree = new JC.Tree( $(&#x27;#tree_box2&#x27;), treeData );
+                            _tree.on(&#x27;RenderLabel&#x27;, function( _data ){
+                                var _node = $(this);
+                                _node.html( printf( &#x27;&lt;a href=&quot;javascript:&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#x27;, _data[0], _data[1] ) );
+                            });
+                            _tree.on(&#x27;click&#x27;, function( _evt ){
+                                var _p = $(this);
+                                JC.log( &#x27;tree click:&#x27;, _p.html(), _p.attr(&#x27;dataid&#x27;), _p.attr(&#x27;dataname&#x27;) );
+                            });
+                            _tree.init();
+                            //_queryNode &amp;&amp; _tree.open( _queryNode );
+
                 });
             &lt;/script&gt;
             &lt;div id=&quot;tree_box2&quot; class=&quot;tree_container&quot;&gt;&lt;/div&gt;
@@ -860,6 +858,7 @@
     });
 
 }(jQuery));
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>
 </div>

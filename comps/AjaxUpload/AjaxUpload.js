@@ -1,10 +1,10 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
-;(function($){
+(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC', 'JC.Panel' ], function(){
+ ;(function($){
     /**
      * Ajax 文件上传
      * <p>
      *      <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     *      | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>
+     *      | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>
      *      | <a href='../../comps/AjaxUpload/_demo' target='_blank'>demo link</a>
      * </p>
      * <p>
@@ -649,4 +649,4 @@
     });
 
 }(jQuery));
-});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));
+}); }(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

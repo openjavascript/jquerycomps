@@ -50,56 +50,56 @@
         </style>
         <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
         <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
-
         <script src="../../../lib.js"></script>
+        <script src="../../../config.js"></script>
         <script>
-            JC.debug = true; JC.use( 'Valid, Calendar, Form' );
+            JC.debug = true;
 
-            $(document).ready( function($evt){
-
-                $('form.js-valid').on('submit', function( $evt ){
+            requirejs( ['JC.Valid', 'JC.Calendar', 'JC.Form'], function(){
+                $('form.js_valid').on('submit', function( $evt ){
                     window.console && console.clear && console.clear();
                         $evt.preventDefault();
 
-                    if( !JC.Valid.check( 'form.js-valid' ) ){
+                    if( !JC.Valid.check( 'form.js_valid' ) ){
                         $evt.preventDefault();
                         return false;
                     }
                 });
 
                 $('button.js_isIgnore').trigger('click');
-            });
 
-            $(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
-                window.console && console.clear && console.clear();
-                JC.Valid.clearError( 'form.js-valid' );
-            });
-
-            $(document).delegate( 'button.js_ignore', 'click', function( _evt ){
-                var _p = $(this)
-                    , _target = parentSelector( _p, _p.attr('target') )
-                    , _ignore = parseBool( _p.attr('ignore') )
-                    ;
-
-                _target && _target.each( function(){
-                    JC.Valid.ignore( $(this), !_ignore );
-                    JC.Valid.setValid( $(this) );
-                });
-                getJqParent( _p, 'dd' ).find('button.js_isIgnore').trigger('click');
-            });
-
-            $(document).delegate( 'button.js_isIgnore', 'click', function( _evt ){
-                var _p = $(this)
-                    , _target = parentSelector( _p, _p.attr('target') )
-                    ;
-
-                 var _r = [];
-
-                _target && _target.each( function(){
-                    _r.push( JC.Valid.ignore( $(this) ) );
+                $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
+                    window.console && console.clear && console.clear();
+                    JC.Valid.clearError( 'form.js_valid' );
                 });
 
-                getJqParent( _p, 'dd' ).find('em.js_isIgnoreEm').html( _r.join() ).show();
+                $(document).delegate( 'button.js_ignore', 'click', function( _evt ){
+                    var _p = $(this)
+                        , _target = parentSelector( _p, _p.attr('target') )
+                        , _ignore = parseBool( _p.attr('ignore') )
+                        ;
+
+                    _target && _target.each( function(){
+                        JC.Valid.ignore( $(this), !_ignore );
+                        JC.Valid.setValid( $(this) );
+                    });
+                    getJqParent( _p, 'dd' ).find('button.js_isIgnore').trigger('click');
+                });
+
+                $(document).delegate( 'button.js_isIgnore', 'click', function( _evt ){
+                    var _p = $(this)
+                        , _target = parentSelector( _p, _p.attr('target') )
+                        ;
+
+                     var _r = [];
+
+                    _target && _target.each( function(){
+                        _r.push( JC.Valid.ignore( $(this) ) );
+                    });
+
+                    getJqParent( _p, 'dd' ).find('em.js_isIgnoreEm').html( _r.join() ).show();
+
+                });
 
             });
 
@@ -107,10 +107,10 @@
     </head>    
     <body>
 
-        <form action='' method='get' class="js-valid" >
+        <form action='' method='get' class="js_valid" >
             <div style="position:fixed; top: 10px; right:10px;">
                 <button type="submit">Save</button>
-                <button type="button" class="js-clear-error">清空错误信息</button>
+                <button type="button" class="js_clear_error">清空错误信息</button>
             </div>
 
             <dl class="fm-items">
@@ -134,14 +134,14 @@
 
                 <dd style="margin-top:20px; padding-left: 400px;">
                     <button type="submit">Save</button>
-                    <button type="button" class="js-clear-error">清空错误信息</button>
+                    <button type="button" class="js_clear_error">清空错误信息</button>
                 </dd>
              </dl>
 
 
             <div style="position:fixed; bottom: 10px; right:10px;">
                 <button type="submit">Save</button>
-                <button type="button" class="js-clear-error">清空错误信息</button>
+                <button type="button" class="js_clear_error">清空错误信息</button>
             </div>
         </form>
 

@@ -52,43 +52,35 @@
         <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
 
         <script src="../../../lib.js"></script>
+        <script src="../../../config.js"></script>
         <script>
-            JC.debug = true; JC.use( 'Valid, Calendar' );
+            JC.debug = true; 
 
-            $(document).ready( function($evt){
-                $(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
+            requirejs( ['JC.Valid', 'JC.Calendar' ], function(){
+
+                $(document).delegate( 'button.js_clear_error', 'click', function( _evt ){
                     window.console && console.clear && console.clear();
-                    JC.Valid.clearError( 'form.js-valid' );
+                    JC.Valid.clearError( 'form.js_valid' );
                 });
 
-                $('form.js-valid').on('submit', function( $evt ){
+                $('form.js_valid').on('submit', function( _evt ){
                     window.console && console.clear && console.clear();
-                        $evt.preventDefault();
+                    _evt.preventDefault();
 
-                    if( !JC.Valid.check( 'form.js-valid' ) ){
-                        $evt.preventDefault();
+                    if( !JC.Valid.check( 'form.js_valid' ) ){
+                        _evt.preventDefault();
                         return false;
                     }
                 });
-
-                //$( 'dl.fm-items > dd:odd').addClass( 'odd' );
-
-                /*
-                JC.Valid.itemCallback =
-                    function( _item, _isValid ){
-                        JC.log( 'JC.Valid.itemCallback _isValid:', _isValid );
-                    };
-                */
             });
-
         </script>
     </head>    
     <body>
 
-        <form action='' method='get' class="js-valid" validmsg="true" >
+        <form action='' method='get' class="js_valid" validmsg="true" >
             <div style="position:fixed; top: 10px; right:10px;">
                 <button type="submit">Save</button>
-                <button type="button" class="js-clear-error">清空错误信息</button>
+                <button type="button" class="js_clear_error">清空错误信息</button>
             </div>
             <dl class="fm-items">
                 <dt>JC.Valid 示例</dt>
@@ -391,7 +383,7 @@
                                 datatype="n" 
                                 reqmsg="正整数"  
                                 />
-                            </div>
+                                </div>
                             <div>
                                 <label>-1000000 ~ 1000000:</label>
                                 <input type="text" name="company_n" 
@@ -1352,7 +1344,7 @@
 
             <div style="position:fixed; bottom: 10px; right:10px;">
                 <button type="submit">Save</button>
-                <button type="button" class="js-clear-error">清空错误信息</button>
+                <button type="button" class="js_clear_error">清空错误信息</button>
             </div>
         </form>
 

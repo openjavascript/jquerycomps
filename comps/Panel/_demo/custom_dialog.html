@@ -26,10 +26,11 @@
 </style>
 <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
 <script src="../../../lib.js"></script>
+<script src="../../../config.js"></script>
 <script>
-    JC.debug = true; JC.use( 'Panel' ); 
-
-    $(document).ready( function(_evt){
+    JC.debug = true; 
+    
+    requirejs( [ 'JC.Panel' ], function(){
         $('button.dom_dialog').on( 'click', function( _evt ){
             /**
              * 注意, 如果是从DOM读取模板的话, 
@@ -88,8 +89,7 @@
                 dialog.on( 'close', function( _evt, _dialog ){ JC.log( 'string_dialog_with_src close' ); }); 
         }); 
 
-    });
-
+    }); 
 
     var str_dialog_content =
     [

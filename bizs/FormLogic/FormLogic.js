@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC', 'JC.Valid', 'JC.Form', 'JC.Panel' ], function(){
 //TODO: 添加 disabled bind hidden 操作
 ;(function($){
     /**
@@ -7,7 +8,7 @@
      * <br />post 提交表单
      * <br />ajax 提交表单
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>
      * | <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>
      * require: <a href='../classes/window.jQuery.html'>jQuery</a>
      * <br/>require: <a href='../classes/JC.Valid.html'>JC.Valid</a>
@@ -267,10 +268,11 @@
             return _selector.data('FormLogicIns');
         };
 
-    !JC.Valid && JC.use( 'Valid' );
-    !JC.Form && JC.use( 'Form' );
-    !JC.Panel && JC.use( 'Panel' );
-    !$(document).ajaxForm && JC.use( 'plugins.jquery.form' );
+    if( !define.amd && JC.use ){
+        !JC.Valid && JC.use( 'Valid' );
+        !JC.Form && JC.use( 'Form' );
+        !JC.Panel && JC.use( 'Panel' );
+    }
 
     /**
      * 处理 form 或者 _selector 的所有form.js_bizsFormLogic
@@ -937,3 +939,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

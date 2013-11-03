@@ -7,7 +7,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.AutoSelect",
         "JC.BaseMVC",
         "JC.BaseMVC.Model",
-        "JC.Bizs",
         "JC.Calendar",
         "JC.Dialog",
         "JC.Dialog.alert",
@@ -36,9 +35,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.FormLogic",
         "window.Bizs.KillISPCache",
         "window.Bizs.MultiDate",
-        "window.JC",
-        "window.UXC",
-        "window.jQuery"
+        "window.jQuery",
+        "window.requirejs"
     ],
     "modules": [],
     "allModules": []

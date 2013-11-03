@@ -66,14 +66,18 @@
         </style>
         <link href='../../AjaxUpload/res/default/style.css' rel='stylesheet' />
         <link href='../../Panel/res/default/style.css' rel='stylesheet' />
+
         <script src="../../../lib.js"></script>
+        <script src="../../../config.js"></script>
         <script>
             JC.debug = true;
-            JC.use( 'AjaxUpload, Panel, Valid, Bizs.FormLogic, Bizs.CommonModify, Bizs.DisableLogic' );
 
-            $(document).ready(function(){
-                JC.AjaxUpload.randomFrame = true;
-            });
+            requirejs( [ 'JC.AjaxUpload', 'JC.Panel', 'JC.Valid'
+                , 'Bizs.FormLogic', 'Bizs.CommonModify', 'Bizs.DisableLogic' ]
+                , function(){
+                    JC.AjaxUpload.randomFrame = true;
+                }
+            );
 
             $(document).delegate( 'button.js_updateData', 'click', function( _evt ){
                 var _p = $(this)

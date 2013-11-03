@@ -11,14 +11,17 @@
             dt { font-weight: bold; margin: 10px auto; }
             dd { line-height: 24px; }
         </style>
-        <script src="../../../lib.js"></script>
         <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
         <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
         <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../lib.js"></script>
+        <script src="../../../config.js"></script>
         <script>
             JC.debug = true;
 
-            JC.use( 'Bizs.FormLogic, Calendar, plugins.json2' );
+            requirejs( [ 'JC.Calendar', 'plugins.json2', 'Bizs.FormLogic' ], function(){
+            });
 
             function formBeforeProcess( _evt, _ins ){
                 var _form = $(this);

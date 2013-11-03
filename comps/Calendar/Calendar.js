@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: minvalue, maxvalue 添加默认日期属性识别属性
 ;(function($){
     /**
@@ -16,7 +17,7 @@
      * <br /><b>require</b>: <a href='.window.html#method_isSameMonth'>window.isSameMonth</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Calendar.html' target='_blank'>API docs</a>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Calendar.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Calendar/_demo/' target='_blank'>demo link</a></p>
      * <h2> 可用的html attribute, (input|button):(datatype|multidate)=(date|week|month|season) </h2> 
      * <dl>
@@ -840,7 +841,7 @@
             function(){
                 var _r = true;
                 this.selector().is('[currentcanselect]') 
-                    && ( currentcanselect = parseBool( this.selector().attr('currentcanselect') ) );
+                    && ( _r = parseBool( this.selector().attr('currentcanselect') ) );
                 return _r;
             }
         , year: 
@@ -1733,7 +1734,7 @@
             }
 
             _ls.push('<tr>');
-            for( i = 1, j = _rows * 8; i <= j; i++ ){
+            for( var i = 1, j = _rows * 8; i <= j; i++ ){
                 _data = weeks[ i - 1];
                 if( !_data ) {
                     _data = nextYearWeeks[ nextCount++ ];
@@ -1945,7 +1946,7 @@
                 }
 
                 _ls.push('<tr>');
-                for( i = 1, j = 12; i <= j; i++ ){
+                for( var i = 1, j = 12; i <= j; i++ ){
                     _dstart = new Date( _year, i - 1, 1 ); 
                     _dend = new Date( _year, i - 1, maxDayOfMonth( _dstart ) );
 
@@ -1984,7 +1985,7 @@
                     }
                     if( today >= _dstart.getTime() && today <= _dend.getTime() ) _class.push( 'today' );
 
-                    _cnUnit = JC.Calendar.cnUnit.charAt( i % 10 );
+                    var _cnUnit = JC.Calendar.cnUnit.charAt( i % 10 );
                     i > 10 && ( _cnUnit = "十" + _cnUnit );
 
                     _ls.push( printf( '<td class="{0}"><a href="javascript:" title="{1}"'+
@@ -2169,12 +2170,12 @@
                 }
 
                 _ls.push('<tr>');
-                for( i = 1, j = 4; i <= j; i++ ){
+                for( var i = 1, j = 4; i <= j; i++ ){
                     _sdate = new Date( _year, i * 3 - 3, 1 ); 
                     _edate = new Date( _year, i * 3 - 1, 1 );
                     _edate.setDate( maxDayOfMonth( _edate ) );
 
-                    _cnUnit = JC.Calendar.cnUnit.charAt( i % 10 );
+                    var _cnUnit = JC.Calendar.cnUnit.charAt( i % 10 );
                     i > 10 && ( _cnUnit = "十" + _cnUnit );
 
                     _title = printf( "{0}年 第{1}季度<br/>开始日期: {2} (周{4})<br />结束日期: {3} (周{5})"
@@ -2632,5 +2633,5 @@
         $( _ins._view ).trigger( 'MonthDayInputToggle', [ _p ] );
     });
 
-
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

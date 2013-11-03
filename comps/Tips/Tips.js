@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 ;(function($){
     window.Tips = JC.Tips = Tips;
     /**
@@ -9,7 +10,7 @@
      * <br />, 如果需要处理多个标签, 请使用静态方法 Tips.init( _selector )</p>
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tips.html' target='_blank'>API docs</a>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Tips.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Tips/_demo' target='_blank'>demo link</a></p>
      * <h2>可用的 html attribute</h2>
      * <dl>
@@ -38,9 +39,9 @@
      * @date    2013-06-23
      * @example
             <script src="../../../lib.js"></script>
+            <script src="../../../config.js"></script>
             <script>
-                JC.use( 'Tips' );
-                $(document).ready( function(_evt){
+                requirejs( [ 'JC.Tips' ], function(){
                     //默认是自动初始化, 也就是只要导入 JC.Tips 就会自己初始化 带 title/tipsData 属性的标签
                     //下面示例是手动初始化
                     JC.Tips.autoInit = false;
@@ -177,9 +178,9 @@
      * @static
      * @example
             <script src="../../../lib.js"></script>
+            <script src="../../../config.js"></script>
             <script>
-                JC.use( 'Tips' );
-                $(document).ready( function(_evt){
+                requirejs( [ 'JC.Tips' ], function(){
                     JC.Tips.autoInit = false;
                     JC.Tips.init( $( 'a' ) ); 
                 });
@@ -612,3 +613,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

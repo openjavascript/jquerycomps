@@ -61,12 +61,14 @@
         <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
 
         <script src="../../../lib.js"></script>
-        <script src="../../../comps/AutoSelect/_demo/data/SHENGSHI.js"></script>
+        <script src="../../../config.js"></script>
         <script>
-            JC.debug = true; JC.use( 'Valid, Calendar, Form, Bizs.FormLogic, Bizs.CommonModify' );
-
-            $(document).ready( function($evt){
-            });
+            JC.debug = true; 
+            
+            requirejs( [ 'JC.Valid', 'Bizs.FormLogic' ]
+                , function(){
+                }
+            );
 
             $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
                 window.console && console.clear && console.clear();

@@ -62,11 +62,11 @@
 <link href='comps/Tips/res/default/style.css' rel='stylesheet' />
 <link href='comps/Tree/res/default/style.css' rel='stylesheet' />
 <script src="./lib.js"></script>
+<script src="./config.js"></script>
 <script>
     JC.debug = true;
-    JC.use( 'Tree' );
 
-    $(document).ready(function(){
+    requirejs( [ 'JC.Tree' ], function(){
         var treeData = {
             data: 
                 {
@@ -99,7 +99,7 @@
             _tree.init();
             _tree.open();
 
-            if( /jc.openjavascript.org/.test( location.href ) ){
+            if( /jc2.openjavascript.org/.test( location.href ) ){
                 $('p.js_jcSiteLink').hide();
             }
     });
@@ -127,9 +127,9 @@
                         <dt><h2><a name='part_222'></a>文档和资源链接</h2></dt>
                         <dd>
                             <p><label>项目主页(git):</label> <a href="https://github.com/openjavascript/jquerycomps" target="_blank">https://github.com/openjavascript/jquerycomps</a></p>
-                            <p class="js_jcSiteLink" style="display:none"><label>演示网站:</label> <a href="http://jc.openjavascript.org/" target="_blank">http://jc.openjavascript.org/</a></p>
-                            <!--<p class="js_jcDocLink"><label>项目文档:</label> <a href="http://jc.openjavascript.org/document.html" target="_blank">http://jc.openjavascript.org/document.html</a></p>-->
-                            <p><label>API文档:</label> <a href="http://jc.openjavascript.org/docs_api/index.html" target="_blank">http://jc.openjavascript.org/docs_api/index.html</a></p>
+                            <p class="js_jcSiteLink" style="display:none"><label>演示网站:</label> <a href="http://jc2.openjavascript.org/" target="_blank">http://jc2.openjavascript.org/</a></p>
+                            <!--<p class="js_jcDocLink"><label>项目文档:</label> <a href="http://jc2.openjavascript.org/document.html" target="_blank">http://jc2.openjavascript.org/document.html</a></p>-->
+                            <p><label>API文档:</label> <a href="http://jc2.openjavascript.org/docs_api/index.html" target="_blank">http://jc2.openjavascript.org/docs_api/index.html</a></p>
                             <p><label>API文档(本地):</label> <a href="docs_api/index.html" target="_blank">docs_api/index.html</a></p>
                             <!--
                             <p><label>演示网站(内网):</label> <a href="http://360.75team.com/~qiushaowei/jcjs/" target="_blank">http://360.75team.com/~qiushaowei/jcjs/</a></p>
@@ -173,14 +173,13 @@
                                         <dt>加载 jquery 1.9.1 && JC 资源管理器</dt>
                                         <dd><xmp>
 <script src="./lib.js"></script>
+<script src="./config.js"></script>
 <script>
     //声明组件库所在路径, 这个属性组件库加载时会自动识别， 如无特殊需求不需要显式声明
     //JC.PATH = '/jcjs/';                   
 
     JC.debug = true;                       //是否显示调试信息
-    JC.use( 'Calendar, Valid, Panel' );    //导入常用组件
-
-    $(document).ready(function(){
+    requirejs( [ 'JC.Calendar', 'JC.Valid', 'JC.Panel' ], function(){ //导入常用组件
         //在这里可以开始使用导入的组件
     });
 </script>
@@ -193,7 +192,7 @@
                                         <dt>JC.use 资源管理器的使用</dt>
                                         <dd>
                                             <p><label>本地演示:</label> <a href="_demo" target="_blank">_demo</a></p>
-                                            <p><label>公网演示:</label> <a href="http://jc.openjavascript.org/_demo" target="_blank">http://jc.openjavascript.org/_demo</a></p>
+                                            <p><label>公网演示:</label> <a href="http://jc2.openjavascript.org/_demo" target="_blank">http://jc2.openjavascript.org/_demo</a></p>
                                             <p><label>内网演示:</label> <a href="http://360.75team.com/~qiushaowei/jcjs/_demo" target="_blank">http://360.75team.com/~qiushaowei/jcjs/_demo</a></p>
                                         </dd>
                                     </dl>
@@ -203,7 +202,7 @@
                                         <dt>组件的使用请查看 API 文档</dt>
                                         <dd>
                                             <p><label>本地文档:</label> <a href="docs_api/index.html" target="_blank">docs_api/index.html</a></p>
-                                            <p><label>公网文档:</label> <a href="http://jc.openjavascript.org/docs_api/index.html" target="_blank">http://jc.openjavascript.org/docs_api/index.html</a></p>
+                                            <p><label>公网文档:</label> <a href="http://jc2.openjavascript.org/docs_api/index.html" target="_blank">http://jc2.openjavascript.org/docs_api/index.html</a></p>
                                             <p><label>内网文档:</label> <a href="http://360.75team.com/~qiushaowei/jcjs/docs_api/index.html" target="_blank">http://360.75team.com/~qiushaowei/jcjs/docs_api/index.html</a></p>
                                         </dd>
                                     </dl>

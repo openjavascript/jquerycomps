@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: 添加回调处理
 //TODO: 添加值运动 
 //TODO: 完善注释
@@ -10,7 +11,7 @@
      *      <dd><b>require</b>: <a href='.window.html#property_$.support.isFixed'>$.support.isFixed</a></dd>
      * </dl>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Fixed.html' target='_blank'>API docs</a>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Fixed.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Fixed/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class Fixed
@@ -447,3 +448,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

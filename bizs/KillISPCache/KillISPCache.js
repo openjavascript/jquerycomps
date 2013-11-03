@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 ;(function($){
     /**
      * 应用场景
@@ -6,7 +7,7 @@
      * <br /><b>这是个单例类</b>
      
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.KillISPCache.html' target='_blank'>API docs</a>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.KillISPCache.html' target='_blank'>API docs</a>
      * | <a href='../../bizs/KillISPCache/_demo' target='_blank'>demo link</a></p>
      * require: <a href='../classes/window.jQuery.html'>jQuery</a>
      *
@@ -264,3 +265,4 @@
     });
 
 }(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

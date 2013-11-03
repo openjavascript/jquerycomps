@@ -1,8 +1,9 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
  ;(function($){
     /**
      * 全选/反选
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoChecked.html' target='_blank'>API docs</a>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoChecked.html' target='_blank'>API docs</a>
      * | <a href='../../comps/AutoChecked/_demo' target='_blank'>demo link</a></p>
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <h2>input[type=checkbox] 可用的 HTML 属性</h2>
@@ -395,4 +396,4 @@
     });
 
 }(jQuery));
-
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));
