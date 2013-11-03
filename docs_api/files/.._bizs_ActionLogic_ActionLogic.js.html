@@ -55,8 +55,6 @@
             
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
             
-                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
-            
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
                 <li><a href="../classes/JC.confirm.html">JC.confirm</a></li>
@@ -131,11 +129,7 @@
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
             
-                <li><a href="../classes/window.JC.html">window.JC</a></li>
-            
                 <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
-            
-                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
             
             </ul>
 
@@ -180,6 +174,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27;, &#x27;JC.BaseMVC&#x27;, &#x27;JC.Panel&#x27; ], function(){
 /**
  * &lt;h2&gt;node 点击操作逻辑&lt;/h2&gt;
  * 应用场景
@@ -188,7 +183,7 @@
  * &lt;br/&gt;点击后弹框( Dom 模板 )
  * &lt;br/&gt;点击后执行 AJAX 操作
  * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
- * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+ * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
  * | &lt;a href=&#x27;../../bizs/ActionLogic/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
  *
  * require: &lt;a href=&#x27;../classes/window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
@@ -294,7 +289,7 @@
         this._init();
     }
 
-    !JC.Panel &amp;&amp; JC.use( &#x27;Panel&#x27; );
+    !define.amd &amp;&amp; JC.use &amp;&amp; !JC.Panel &amp;&amp; JC.use( &#x27;Panel&#x27; );
 
     /**
      * 获取或设置 ActionLogic 的实例
@@ -691,6 +686,7 @@
     });
 
 }(jQuery));
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>
 </div>

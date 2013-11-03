@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../lib.js - jquery components</title>
+    <title>../config.js - jquery components</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -170,26 +170,71 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../lib.js</h1>
+                        <h1 class="file-heading">File: ../config.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;void function(){
-    /**
-     * 取当前脚本标签的 src路径 
-     * @author  scuehs@btbtd.org 2013-05-23
-     * @return  {string} 脚本所在目录的完整路径
-     */
-    function scriptPath(){
-        var _sc = document.getElementsByTagName(&#x27;script&#x27;), _sc = _sc[ _sc.length - 1 ], _path = _sc.getAttribute(&#x27;src&#x27;);
-        if( /\//.test( _path ) ){ _path = _path.split(&#x27;/&#x27;); _path.pop(); _path = _path.join(&#x27;/&#x27;) + &#x27;/&#x27;; }
-        else if( /\\/.test( _path ) ){ _path = _path.split(&#x27;\\&#x27;); _path.pop(); _path = _path.join(&#x27;\\&#x27;) + &#x27;/&#x27;; }
-        return _path;
+window.JC = window.JC || {};
+JC.PATH = JC.PATH || scriptPath();
+/**
+ * requirejs config.js for JC Project
+ */
+window.requirejs &amp;&amp; 
+requirejs.config( {
+    baseUrl: JC.PATH
+    , paths: {
+        &#x27;domReady&#x27;: &#x27;plugins/domReady&#x27;
+
+        , &#x27;JC.common&#x27;: &#x27;common&#x27;
+        , &#x27;JC.BaseMVC&#x27;: &#x27;comps/BaseMVC/BaseMVC&#x27;
+
+        , &#x27;JC.AjaxUpload&#x27;: &#x27;comps/AjaxUpload/AjaxUpload&#x27;
+        , &#x27;JC.AutoChecked&#x27;: &#x27;comps/AutoChecked/AutoChecked&#x27;
+        , &#x27;JC.AutoSelect&#x27;: &#x27;comps/AutoSelect/AutoSelect&#x27;
+
+        , &#x27;JC.Calendar&#x27;: &#x27;comps/Calendar/Calendar&#x27;
+
+        , &#x27;JC.Form&#x27;: &#x27;comps/Form/Form&#x27;
+        , &#x27;JC.Fixed&#x27;: &#x27;comps/Fixed/Fixed&#x27;
+        , &#x27;JC.LunarCalendar&#x27;: &#x27;comps/LunarCalendar/LunarCalendar&#x27;
+        , &#x27;JC.Slider&#x27;: &#x27;comps/Slider/Slider&#x27;
+        , &#x27;JC.Suggest&#x27;: &#x27;comps/Suggest/Suggest&#x27;
+        , &#x27;JC.Tab&#x27;: &#x27;comps/Tab/Tab&#x27;
+        , &#x27;JC.Tips&#x27;: &#x27;comps/Tips/Tips&#x27;
+        , &#x27;JC.Tree&#x27;: &#x27;comps/Tree/Tree&#x27;
+
+        , &#x27;JC.Panel&#x27;: &#x27;comps/Panel/Panel&#x27;
+        , &#x27;JC.Placeholder&#x27;: &#x27;comps/Placeholder/Placeholder&#x27;
+        , &#x27;JC.Valid&#x27;: &#x27;comps/Valid/Valid&#x27;
+
+        , &#x27;Bizs.ActionLogic&#x27;: &#x27;bizs/ActionLogic/ActionLogic&#x27;
+        , &#x27;Bizs.DisableLogic&#x27;: &#x27;bizs/DisableLogic/DisableLogic&#x27;
+        , &#x27;Bizs.CommonModify&#x27;: &#x27;bizs/CommonModify/CommonModify&#x27;
+        , &#x27;Bizs.FormLogic&#x27;: &#x27;bizs/FormLogic/FormLogic&#x27;
+        , &#x27;Bizs.KillISPCache&#x27;: &#x27;bizs/KillISPCache/KillISPCache&#x27;
+        , &#x27;Bizs.MultiDate&#x27;: &#x27;bizs/MultiDate/MultiDate&#x27;
+
+        , &#x27;plugins.aes&#x27;: &#x27;plugins/aes&#x27;
+        , &#x27;plugins.base64&#x27;: &#x27;plugins/base64&#x27;
+        , &#x27;plugins.json2&#x27;: &#x27;plugins/json2&#x27;
+        , &#x27;plugins.jquery.form&#x27;: &#x27;plugins/jquery.form&#x27;
+        , &#x27;plugins.md5&#x27;: &#x27;plugins/md5.js&#x27;
+        , &#x27;plugins.rate&#x27;: &#x27;plugins/rate/rate&#x27;
     }
-    var _path = scriptPath();
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;require.js&quot; &gt;&lt;\/script&gt;&#x27; );
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;jquery.js&quot; &gt;&lt;\/script&gt;&#x27; );
-}();
+});
+/**
+ * 取当前脚本标签的 src路径 
+ * @method  scriptPath
+ * @static
+ * @return  {string} 脚本所在目录的完整路径
+ */
+function scriptPath(){
+    var _sc = document.getElementsByTagName(&#x27;script&#x27;), _sc = _sc[ _sc.length - 1 ], _path = _sc.getAttribute(&#x27;src&#x27;);
+    if( /\//.test( _path ) ){ _path = _path.split(&#x27;/&#x27;); _path.pop(); _path = _path.join(&#x27;/&#x27;) + &#x27;/&#x27;; }
+    else if( /\\/.test( _path ) ){ _path = _path.split(&#x27;\\&#x27;); _path.pop(); _path = _path.join(&#x27;\\&#x27;) + &#x27;/&#x27;; }
+    return _path;
+}
+
 
     </pre>
 </div>

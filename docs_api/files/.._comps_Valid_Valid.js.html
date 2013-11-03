@@ -55,8 +55,6 @@
             
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
             
-                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
-            
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
                 <li><a href="../classes/JC.confirm.html">JC.confirm</a></li>
@@ -131,11 +129,7 @@
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
             
-                <li><a href="../classes/window.JC.html">window.JC</a></li>
-            
                 <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
-            
-                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
             
             </ul>
 
@@ -180,6 +174,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
 //TODO: checkbox, radio 错误时, input 添加高亮显示
 ;(function($){
@@ -188,7 +183,7 @@
      * &lt;br /&gt;全局访问请使用 JC.Valid 或 Valid
      * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Valid.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Valid/_demo/&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * &lt;h2&gt;Form 的可用 html attribute&lt;/h2&gt;
      * &lt;dl&gt;
@@ -2074,6 +2069,7 @@
                 !( _target &amp;&amp; _target.length ) &amp;&amp; ( _target = _p.samesubtypeitems( _item, _typeKey ) );
 
                 var _isReturn = false;
+                var _reqTarget;
 
                 if( _target.length &amp;&amp; !$.trim( _item.val() ) ){
                     var _hasVal = false;
@@ -2211,6 +2207,7 @@
                     , _KEY = &quot;UniqueValidTime&quot;
                     , _typeKey = &#x27;unique&#x27;
                     , _ignoreCase = parseBool( _item.attr(&#x27;uniqueIgnoreCase&#x27;) )
+                    , _errLs, _corLs
                     ;
 
                 JC.log( _typeKey, new Date().getTime() );
@@ -2337,7 +2334,7 @@
             }
         , findErrorEle:
             function( _item ){
-                var _p = this, _selector = Model.SELECTOR_ERROR, _r = _item.find( _selector );
+                var _p = this, _selector = Model.SELECTOR_ERROR, _r = _item.find( _selector ), _tmp;
                 if( _item.attr(&#x27;emel&#x27;) 
                         &amp;&amp; ( _tmp = _p.getElement( _item.attr(&#x27;emel&#x27;), _item, _selector ) ).length ) _r = _tmp;
                 return _r;
@@ -2638,7 +2635,7 @@
         , valid:
             function( _item, _tm, _noStyle ){
                 _item &amp;&amp; ( _item = $(_item) );
-                var _p = this, _tmp, _focusEm;
+                var _p = this, _tmp;
                 _item.data( &#x27;JCValidStatus&#x27;, true );
                 //if( !_p._model.isValid( _item ) ) return false;
                 var _hideFocusMsg = !parseBool( _item.attr(&#x27;validnoerror&#x27; ) );
@@ -2709,7 +2706,7 @@
         , error: 
             function( _item, _msgAttr, _fullMsg ){
                 _item &amp;&amp; ( _item = $(_item) );
-                var _p = this, arg = arguments; 
+                var _p = this, arg = arguments, _tmp; 
                 //if( !_p._model.isValid( _item ) ) return true;
                 if( _item.is( &#x27;[validnoerror]&#x27; ) ) return true;
                 _item.data( &#x27;JCValidStatus&#x27;, false );
@@ -2924,6 +2921,7 @@
     });
 
 }(jQuery));
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>
 </div>

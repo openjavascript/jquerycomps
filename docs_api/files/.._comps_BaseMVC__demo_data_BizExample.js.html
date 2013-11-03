@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../lib.js - jquery components</title>
+    <title>../comps/BaseMVC/_demo/data/BizExample.js - jquery components</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -170,26 +170,79 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../lib.js</h1>
+                        <h1 class="file-heading">File: ../comps/BaseMVC/_demo/data/BizExample.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;void function(){
-    /**
-     * 取当前脚本标签的 src路径 
-     * @author  scuehs@btbtd.org 2013-05-23
-     * @return  {string} 脚本所在目录的完整路径
-     */
-    function scriptPath(){
-        var _sc = document.getElementsByTagName(&#x27;script&#x27;), _sc = _sc[ _sc.length - 1 ], _path = _sc.getAttribute(&#x27;src&#x27;);
-        if( /\//.test( _path ) ){ _path = _path.split(&#x27;/&#x27;); _path.pop(); _path = _path.join(&#x27;/&#x27;) + &#x27;/&#x27;; }
-        else if( /\\/.test( _path ) ){ _path = _path.split(&#x27;\\&#x27;); _path.pop(); _path = _path.join(&#x27;\\&#x27;) + &#x27;/&#x27;; }
-        return _path;
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27;, &#x27;JC.BaseMVC&#x27; ], function(){
+;(function($){
+
+    Bizs.BizExample = BizExample;
+
+    function BizExample( _selector ){
+
+        if( BizExample.getInstance( _selector ) ) return BizExample.getInstance( _selector );
+        BizExample.getInstance( _selector, this );
+
+        this._model = new BizExample.Model( _selector );
+        this._view = new BizExample.View( this._model );
+
+        this._init();
     }
-    var _path = scriptPath();
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;require.js&quot; &gt;&lt;\/script&gt;&#x27; );
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;jquery.js&quot; &gt;&lt;\/script&gt;&#x27; );
-}();
+    /**
+     * 获取或设置 BizExample 的实例
+     * @method  getInstance
+     * @param   {selector}      _selector
+     * @static
+     * @return  {BizExampleInstance}
+     */
+    BizExample.getInstance =
+        function( _selector, _setter ){
+            if( typeof _selector == &#x27;string&#x27; &amp;&amp; !/&lt;/.test( _selector ) ) 
+                    _selector = $(_selector);
+            if( !(_selector &amp;&amp; _selector.length ) || ( typeof _selector == &#x27;string&#x27; ) ) return;
+            typeof _setter != &#x27;undefined&#x27; &amp;&amp; _selector.data( BizExample.Model._instanceName, _setter );
+
+            return _selector.data( BizExample.Model._instanceName );
+        };
+    /**
+     * 初始化可识别的 BizExample 实例
+     * @method  init
+     * @param   {selector}      _selector
+     * @static
+     * @return  {Array of BizExampleInstance}
+     */
+    BizExample.init =
+        function( _selector ){
+            var _r = [];
+            _selector = $( _selector || document );
+
+            if( _selector &amp;&amp; _selector.length ){
+                if( _selector.hasClass( &#x27;.js_bizBizExample&#x27; )  ){
+                    _r.push( new BizExample( _selector ) );
+                }else{
+                    _selector.find( &#x27;div.js_bizBizExample&#x27; ).each( function(){
+                        _r.push( new BizExample( this ) );
+                    });
+                }
+            }
+            return _r;
+        };
+
+    BaseMVC.build( BizExample, &#x27;Bizs&#x27; );
+    BizExample.Model._instanceName = &#x27;BizExample&#x27;;
+
+    $(document).ready( function(){
+        var _insAr = 0;
+        BizExample.autoInit
+            &amp;&amp; ( _insAr = BizExample.init() )
+            &amp;&amp; $( &#x27;&lt;h2&gt;BizExample total ins: &#x27; + _insAr.length + &#x27;&lt;br/&gt;&#x27; + new Date().getTime() + &#x27;&lt;/h2&gt;&#x27; ).appendTo( document.body )
+            ;
+    });
+
+}(jQuery));
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
+
 
     </pre>
 </div>
