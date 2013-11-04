@@ -1,5 +1,6 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 ;(function($){
+    window.JC = window.JC || {log:function(){}};
     JC.CompExample = CompExample;
 
     function CompExample( _selector ){
@@ -65,4 +66,5 @@
     });
 
 }(jQuery));
+    return JC.CompExample;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

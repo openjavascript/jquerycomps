@@ -1,6 +1,7 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: html popup add trigger ref
 ;(function($){
+    window.JC = window.JC || {log:function(){}};
     window.Panel = JC.Panel = Panel;
     /**
      * 弹出层基础类 JC.Panel
@@ -2331,4 +2332,5 @@
     });
 
 }(jQuery));
+    return JC.Panel;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

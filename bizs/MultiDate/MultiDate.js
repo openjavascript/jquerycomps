@@ -1,5 +1,6 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 ;(function($){
+    window.Bizs = window.Bizs || {};
     window.Bizs.MultiDate = MultiDate;
     /**
      * MultiDate 复合日历业务逻辑
@@ -322,4 +323,5 @@
     });
 
 }(jQuery));
+    return Bizs.MultiDate;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

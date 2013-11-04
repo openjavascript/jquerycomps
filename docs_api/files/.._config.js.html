@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1</em>
+            <em>API Docs for: 0.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -131,6 +131,8 @@
             
                 <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
             
+                <li><a href="../classes/window.requirejs.html">window.requirejs</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -174,7 +176,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-window.JC = window.JC || {};
+window.JC = window.JC || {log:function(){}};
 JC.PATH = JC.PATH || scriptPath();
 /**
  * requirejs config.js for JC Project
@@ -183,9 +185,7 @@ window.requirejs &amp;&amp;
 requirejs.config( {
     baseUrl: JC.PATH
     , paths: {
-        &#x27;domReady&#x27;: &#x27;plugins/domReady&#x27;
-
-        , &#x27;JC.common&#x27;: &#x27;common&#x27;
+        &#x27;JC.common&#x27;: &#x27;common&#x27;
         , &#x27;JC.BaseMVC&#x27;: &#x27;comps/BaseMVC/BaseMVC&#x27;
 
         , &#x27;JC.AjaxUpload&#x27;: &#x27;comps/AjaxUpload/AjaxUpload&#x27;
@@ -214,6 +214,7 @@ requirejs.config( {
         , &#x27;Bizs.KillISPCache&#x27;: &#x27;bizs/KillISPCache/KillISPCache&#x27;
         , &#x27;Bizs.MultiDate&#x27;: &#x27;bizs/MultiDate/MultiDate&#x27;
 
+        , &#x27;plugins.domReady&#x27;: &#x27;plugins/domReady&#x27;
         , &#x27;plugins.aes&#x27;: &#x27;plugins/aes&#x27;
         , &#x27;plugins.base64&#x27;: &#x27;plugins/base64&#x27;
         , &#x27;plugins.json2&#x27;: &#x27;plugins/json2&#x27;
@@ -224,7 +225,6 @@ requirejs.config( {
 });
 /**
  * 取当前脚本标签的 src路径 
- * @method  scriptPath
  * @static
  * @return  {string} 脚本所在目录的完整路径
  */

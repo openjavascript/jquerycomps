@@ -100,6 +100,7 @@
  * @author  qiushaowei   <suches@btbtd.org> | 75 Team
  */
 ;(function($){
+    window.Bizs = window.Bizs || {};
     window.Bizs.ActionLogic = ActionLogic;
 
     function ActionLogic( _selector ){
@@ -510,4 +511,5 @@
     });
 
 }(jQuery));
+    return Bizs.ActionLogic;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

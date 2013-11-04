@@ -34,6 +34,7 @@
      *      });
      *      </script>
      */
+    window.Bizs = window.Bizs || {};
     Bizs.KillISPCache = KillISPCache;
 
     function KillISPCache( _selector ){
@@ -265,4 +266,5 @@
     });
 
 }(jQuery));
+    return Bizs.KillISPCache;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

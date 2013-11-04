@@ -129,6 +129,7 @@
                     "errmsg": ""
                 }
      */
+    window.JC = window.JC || {log:function(){}};
     JC.AjaxUpload = AjaxUpload;
 
     function AjaxUpload( _selector ){
@@ -649,4 +650,5 @@
     });
 
 }(jQuery));
+    return JC.AjaxUpload;
 }); }(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

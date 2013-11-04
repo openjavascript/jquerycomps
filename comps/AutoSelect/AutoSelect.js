@@ -109,6 +109,7 @@
                 };
         </script>
      */
+    window.JC = window.JC || {log:function(){}};
     JC.AutoSelect = AutoSelect;
     JC.Form && ( JC.Form.initAutoSelect = AutoSelect );
 
@@ -955,4 +956,5 @@
     });
 
 }(jQuery));
+    return JC.AutoSelect;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

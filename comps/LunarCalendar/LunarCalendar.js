@@ -3,6 +3,7 @@
     ///
     /// TODO: 添加事件响应机制
     ///
+    window.JC = window.JC || {log:function(){}};
     JC.LunarCalendar = window.LunarCalendar = LunarCalendar;
     /**
      * 农历日历组件
@@ -1416,4 +1417,5 @@
     o['20141007'] = { 'isHoliday': true };
     o['20141011'] = { 'isWorkday': true };
 }(jQuery));
+    return JC.LunarCalendar;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

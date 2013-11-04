@@ -90,6 +90,7 @@
      * @version dev 0.1, 2013-06-04
      * @author  qiushaowei   <suches@btbtd.org> | 75 team
      */
+    window.JC = window.JC || {log:function(){}};
     window.Calendar = JC.Calendar = Calendar;
     function Calendar( _selector ){
         if( Calendar.getInstance( _selector ) ) return Calendar.getInstance( _selector );
@@ -2634,4 +2635,5 @@
     });
 
 }(jQuery));
+    return JC.Calendar;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

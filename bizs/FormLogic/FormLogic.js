@@ -240,6 +240,7 @@
                 </dd>
             </dl>     
     */
+    window.Bizs = window.Bizs || {};
     Bizs.FormLogic = FormLogic;
     function FormLogic( _selector ){
         _selector && ( _selector = $( _selector ) );
@@ -940,4 +941,5 @@
     });
 
 }(jQuery));
+    return Bizs.FormLogic;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));
