@@ -418,6 +418,7 @@
                 &lt;/dd&gt;
             &lt;/dl&gt;     
     */
+    window.Bizs = window.Bizs || {};
     Bizs.FormLogic = FormLogic;
     function FormLogic( _selector ){
         _selector &amp;&amp; ( _selector = $( _selector ) );
@@ -1037,6 +1038,7 @@
             ;
         if( _fm &amp;&amp; _fm.length ){
             if( _ins ){
+                _fm.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON, null )
                 if( _p.is(&#x27;[formConfirmCheckSelector]&#x27;) ){
                     _tmp = parentSelector( _p, _p.attr(&#x27;formConfirmCheckSelector&#x27;) );
                     if( !( _tmp &amp;&amp; _tmp.length ) ) return;
@@ -1117,6 +1119,7 @@
     });
 
 }(jQuery));
+    return Bizs.FormLogic;
 });}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>

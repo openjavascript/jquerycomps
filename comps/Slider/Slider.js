@@ -1,5 +1,6 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 ;(function($){
+    window.JC = window.JC || {log:function(){}};
     window.Slider = JC.Slider = Slider;
     /**
      * Slider 划动菜单类
@@ -972,4 +973,5 @@
     });
 
 }(jQuery));
+    return JC.Slider;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

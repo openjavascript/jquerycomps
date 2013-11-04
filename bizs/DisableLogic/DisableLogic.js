@@ -99,6 +99,7 @@
  */
 ;(function($){
 
+    window.Bizs = window.Bizs || {};
     window.Bizs.DisableLogic = DisableLogic;
 
     function DisableLogic( _selector ){
@@ -449,4 +450,5 @@
     });
     
 }(jQuery));
+    return Bizs.DisableLogic;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

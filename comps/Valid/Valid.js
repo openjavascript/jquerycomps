@@ -275,6 +275,7 @@
      * @version     0.1,  2013-05-22
      * @author  qiushaowei   <suches@btbtd.org> | 75 team
      */
+    window.JC = window.JC || {log:function(){}};
     JC.Valid = window.Valid = Valid;
     
     function Valid(){
@@ -2745,4 +2746,5 @@
     });
 
 }(jQuery));
+    return JC.Valid;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

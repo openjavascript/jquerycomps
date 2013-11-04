@@ -54,7 +54,8 @@
         <script>
             JC.debug = true; 
             
-            requirejs( [ 'JC.Valid', 'JC.Calendar', 'JC.Form' ], function(){
+            requirejs( [ 'JC.Valid', 'JC.Calendar', 'JC.Form' ]
+            , function( Valid, Calendar, JCForm ){
                 $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
                     window.console && console.clear && console.clear();
                     JC.Valid.clearError( 'form.js_valid' );

@@ -1,8 +1,9 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 ;(function($){
-    window.JC && ( window.BaseMVC = JC.BaseMVC = BaseMVC );
+    window.JC = window.JC || {log:function(){}};
+    window.BaseMVC = JC.BaseMVC = BaseMVC;
     /**
      * MVC 抽象类 ( <b>仅供扩展用</b> )
-     * <p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>
@@ -435,3 +436,5 @@
     });
     */
 }(jQuery));
+    return JC.BaseMVC;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

@@ -13,6 +13,7 @@
      * @author  qiushaowei   <suches@btbtd.org> | 75 team
      * @date    2013-06-11
      */
+    window.JC = window.JC || {log:function(){}};
     window.JCForm = JC.Form = {
         /**
          * 禁用按钮一定时间, 默认为1秒
@@ -302,4 +303,5 @@
         JC.Form.initNumericStepper( $(document) );
     });
 }(jQuery));
+    return JC.Form;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

@@ -80,6 +80,7 @@
             });
             </script>
      */
+    window.JC = window.JC || {log:function(){}};
     JC.Form && ( JC.Form.initCheckAll = AutoChecked );
     JC.AutoChecked = AutoChecked;
 
@@ -396,4 +397,5 @@
     });
 
 }(jQuery));
+    return JC.AutoChecked;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

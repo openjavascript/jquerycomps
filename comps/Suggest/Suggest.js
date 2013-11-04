@@ -1,5 +1,6 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 ;(function($){
+    window.JC = window.JC || {log:function(){}};
     window.Suggest = JC.Suggest = Suggest;
     /**
      * Suggest 关键词补全提示类
@@ -785,4 +786,5 @@
     });
 
 }(jQuery));
+    return JC.Suggest;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

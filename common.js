@@ -16,7 +16,7 @@ if( !window.console ) window.console = { log:function(){
  * 声明主要命名空间, 方便迁移
  */
 window.JC = window.JC || {};
-JC.log = JC.log || function(){ JC.debug && window.console && console.log( sliceArgs( arguments ).join(' ') ); };
+JC.log = function(){ JC.debug && window.console && console.log( sliceArgs( arguments ).join(' ') ); };
 JC.PATH = JC.PATH || scriptPath();
 window.Bizs = window.Bizs || {};
 /**
@@ -79,8 +79,6 @@ function hasUrlParam( _url, _key ){
     }
     return _r;
 }
-//这个方法已经废弃, 请使用 hasUrlParam
-function has_url_param(){ return hasUrlParam.apply( null, sliceArgs( arguments ) ); }
 /**
  * 添加URL参数
  * <br /><b>require:</b> delUrlParam
@@ -107,8 +105,6 @@ function addUrlParams( _url, _params ){
     return _url;   
 
 }
-//这个方法已经废弃, 请使用 addUrlParams
-function add_url_params(){ return addUrlParams.apply( null, sliceArgs( arguments ) ); }
 /**
  * 取URL参数的值
  * @method  getUrlParam
@@ -136,8 +132,6 @@ function getUrlParam( _url, _key ){
     }
     return result;
 }
-//这个方法已经废弃, 请使用 getUrlParam
-function get_url_param(){ return getUrlParam.apply( null, sliceArgs( arguments ) ); }
 /**
  * 取URL参数的值, 这个方法返回数组
  * <br />与 getUrlParam 的区别是可以获取 checkbox 的所有值
@@ -195,8 +189,6 @@ function delUrlParam( _url, _key ){
     sharp && ( _url += '#' + sharp );
     return _url;
 }
-//这个方法已经废弃, 请使用 delUrlParam
-function del_url_param(){ return delUrlParam.apply( null, sliceArgs( arguments ) ); }
 /**
  * 提示需要 HTTP 环境
  * @method  httpRequire
@@ -244,8 +236,6 @@ function reloadPage( _url, _nornd, _delayMs  ){
         location.href = _url;
     }, _delayMs);
 }
-//这个方法已经废弃, 请使用 reloadPage
-function reload_page(){ return reloadPage.apply( null, sliceArgs( arguments ) ); }
 /**
  * 取小数点的N位
  * <br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题
@@ -263,8 +253,6 @@ function parseFinance( _i, _dot ){
     }
     return _i;
 }
-//这个方法已经废弃, 请使用 parseFinance
-function parse_finance_num(){ return parseFinance.apply( null, sliceArgs( arguments ) ); }
 /**
  * js 附加字串函数
  * @method  padChar
@@ -281,8 +269,6 @@ function padChar( _str, _len, _char ){
 	_str = new Array( _len + 1 ).join( _char ) + _str
 	return _str.slice( _str.length - _len );
 }
-//这个方法已经废弃, 请使用 padChar
-function pad_char_f( _str, _len, _char ){ return padChar.apply( null, sliceArgs( arguments ) ); }
 /**
  * 格式化日期为 YYYY-mm-dd 格式
  * <br /><b>require</b>: pad\_char\_f
@@ -384,8 +370,6 @@ function scriptPath(){
     else if( /\\/.test( _path ) ){ _path = _path.split('\\'); _path.pop(); _path = _path.join('\\') + '/'; }
     return _path;
 }
-//这个方法已经废弃, 请使用 scriptPath
-function script_path_f(){ return scriptPath(); }
 /**
  * 缓动函数, 动画效果为按时间缓动 
  * <br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval 

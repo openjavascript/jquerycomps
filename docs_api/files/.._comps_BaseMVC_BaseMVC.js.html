@@ -176,11 +176,12 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
 ;(function($){
-    window.JC &amp;&amp; ( window.BaseMVC = JC.BaseMVC = BaseMVC );
+    window.JC = window.JC || {log:function(){}};
+    window.BaseMVC = JC.BaseMVC = BaseMVC;
     /**
      * MVC 抽象类 ( &lt;b&gt;仅供扩展用&lt;/b&gt; )
-     * &lt;p&gt;这个类默认已经包含在lib.js里面, 不需要显式引用&lt;/p&gt;   
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
@@ -613,6 +614,8 @@
     });
     */
 }(jQuery));
+    return JC.BaseMVC;
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>
 </div>

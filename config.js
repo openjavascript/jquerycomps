@@ -1,4 +1,4 @@
-window.JC = window.JC || {};
+window.JC = window.JC || {log:function(){}};
 JC.PATH = JC.PATH || scriptPath();
 /**
  * requirejs config.js for JC Project

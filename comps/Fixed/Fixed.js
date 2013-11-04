@@ -3,6 +3,7 @@
 //TODO: 添加值运动 
 //TODO: 完善注释
 ;(function($){
+    window.JC = window.JC || {log:function(){}};
     window.Fixed = JC.Fixed = Fixed;
     /**
      * 内容固定于屏幕某个位置显示
@@ -448,4 +449,5 @@
     });
 
 }(jQuery));
+    return JC.Fixed;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

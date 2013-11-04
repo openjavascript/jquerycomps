@@ -150,6 +150,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
         </script>
  */
 ;(function($){
+    window.Bizs = window.Bizs || {};
     window.Bizs.CommonModify = CommonModify;
 
     function CommonModify( _selector ){
@@ -510,4 +511,5 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
     });
 
 }(jQuery));
+    return Bizs.CommonModify;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

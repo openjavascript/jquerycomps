@@ -15,7 +15,7 @@
  * @date    2013-10-19
  */
 ;(function($){
-
+    window.JC = window.JC || {log:function(){}};
     JC.Placeholder = Placeholder;
 
     function Placeholder( _selector ){
@@ -343,4 +343,5 @@
     });
 
 }(jQuery));
+    return JC.Placeholder;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

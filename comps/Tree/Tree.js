@@ -1,5 +1,6 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 ;( function( $ ){
+    window.JC = window.JC || {log:function(){}};
     window.Tree = JC.Tree = Tree;
     /**
      * 树菜单类 JC.Tree
@@ -680,4 +681,5 @@
     });
 
 }(jQuery));
+    return JC.Tree;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

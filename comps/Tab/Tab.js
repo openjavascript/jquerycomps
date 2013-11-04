@@ -1,5 +1,6 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 ;(function($){
+    window.JC = window.JC || {log:function(){}};
     window.Tab = JC.Tab = Tab;
     /**
      * Tab 菜单类
@@ -659,4 +660,5 @@
     });
 
 }(jQuery));
+    return JC.Tab;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));
