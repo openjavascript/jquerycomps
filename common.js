@@ -797,7 +797,7 @@ function dateDetect( _dateStr ){
             if( 
                 arguments.length
                 && ( this.prop('nodeName') || '').toLowerCase() == 'input' 
-                && this.attr('type').toLowerCase() == 'hidden'
+                && ( this.attr('type') || '' ).toLowerCase() == 'hidden'
             ){
                 setTimeout( function(){ _p.trigger( 'change' ); }, 1 );
             }
