@@ -857,6 +857,7 @@
             ;
         if( _fm && _fm.length ){
             if( _ins ){
+                _fm.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON, null )
                 if( _p.is('[formConfirmCheckSelector]') ){
                     _tmp = parentSelector( _p, _p.attr('formConfirmCheckSelector') );
                     if( !( _tmp && _tmp.length ) ) return;
