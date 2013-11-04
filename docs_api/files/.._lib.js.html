@@ -1025,7 +1025,7 @@ function loaderDetect( _require, _class, _cb ){
             if( 
                 arguments.length
                 &amp;&amp; ( this.prop(&#x27;nodeName&#x27;) || &#x27;&#x27;).toLowerCase() == &#x27;input&#x27; 
-                &amp;&amp; this.attr(&#x27;type&#x27;).toLowerCase() == &#x27;hidden&#x27;
+                &amp;&amp; ( this.attr(&#x27;type&#x27;) || &#x27;&#x27; ).toLowerCase() == &#x27;hidden&#x27;
             ){
                 setTimeout( function(){ _p.trigger( &#x27;change&#x27; ); }, 1 );
             }

@@ -18,7 +18,7 @@
         <script>
             JC.debug = true;
 
-            JC.use( 'Bizs.FormLogic, Calendar, plugins.json2' );
+            JC.use( 'Bizs.FormLogic, Calendar, plugins.json2, Bizs.DisableLogic' );
 
             function formBeforeProcess( _evt, _ins ){
                 var _form = $(this);
@@ -58,8 +58,22 @@
                                 <tr>
                                     <th>审批操作：</th>
                                     <td class="js_confirmCheck">
-                                        <input type="radio" name="is_passed" value="1" checked="">&nbsp;通过
-                                        <input type="radio" name="is_passed" value="0">&nbsp;拒绝
+    <div   
+       dltrigger="|input[type=radio]"
+       dlhidetarget="|span.js_refuseBox"
+       class="js_bizsDisableLogic"
+       >
+        <label>
+        <input type="radio" name="is_passed" value="1" checked="" dldisplay="false" />&nbsp;通过
+        </label>
+        <label>
+        <input type="radio" name="is_passed" value="0" dldisplay="true" />&nbsp;拒绝
+        </label>
+        <span class="js_refuseBox" style="display:none;">
+            拒绝理由:
+            <input type="text" value="" reqmsg="拒绝理由" />
+        </span>
+    </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -102,8 +116,12 @@
                                 <tr>
                                     <th>审批操作：</th>
                                     <td class="js_confirmCheck">
+                                        <label>
                                         <input type="radio" name="is_passed" value="1" checked="">&nbsp;通过
+                                        </label>
+                                        <label>
                                         <input type="radio" name="is_passed" value="0">&nbsp;拒绝
+                                        </label>
                                     </td>
                                 </tr>
                                 <tr>
