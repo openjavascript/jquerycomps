@@ -41,7 +41,7 @@
                 });
 
                 $([ this._view, this._model ] ).on('TriggerEvent', function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
+                    var _data = JC.f.sliceArgs( arguments ); _data.shift(); _data.shift();
                     _p.trigger( _evtName, _data );
                 });
 
@@ -226,8 +226,8 @@
         , fixedeffect: 
             function( _item ){ 
                 var _r = true, _p = this;
-                _p.layout().is('[fixedeffect]') && ( _r = parseBool( _p.layout().attr( 'fixedeffect' ) ) );
-                _item && _item.is('[fixedeffect]') && ( _r = parseBool( _item.attr( 'fixedeffect' ) ) );
+                _p.layout().is('[fixedeffect]') && ( _r = JC.f.parseBool( _p.layout().attr( 'fixedeffect' ) ) );
+                _item && _item.is('[fixedeffect]') && ( _r = JC.f.parseBool( _item.attr( 'fixedeffect' ) ) );
                 return _r;
             }
     };
@@ -265,7 +265,7 @@
                     Fixed.interval();
                 });
 
-                mousewheelEvent( function mousewheel( _evt ){ Fixed.interval(); });
+                JC.f.mousewheelEvent( function mousewheel( _evt ){ Fixed.interval(); });
             }
 
         , _processMoveto:
@@ -329,7 +329,7 @@
                 */
 
                 Fixed.interval(
-                    easyEffect( 
+                    JC.f.easyEffect( 
                         function( _cur, _done ){
                             _isUp && ( _cur = _endVal - _cur + _beginVal );
                             //console.log( 'Fixed scrollTo:', _cur, _tmpCount++ );

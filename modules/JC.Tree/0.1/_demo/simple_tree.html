@@ -6,14 +6,14 @@
 <style>
     body{ width: 680px; margin: 20px auto; }
 </style>
-<link href='../../../comps/Tree/res/default/style.css' rel='stylesheet' />
+<link href='../../../../modules/JC.Tree/0.1/res/default/style.css' rel='stylesheet' />
 <script src="../../../../lib.js"></script>
 <script src="../../../../config.js"></script>
 <script>
     JC.debug = 1;
 
     requirejs( [ 'JC.Tree' ], function( Tree ){
-        var _queryNode = getUrlParam( 'node' );
+        var _queryNode = JC.f.getUrlParam( 'node' );
 
         var treeData = {
             data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["24","\u9500\u552e\u4e8c\u7ec4"],["28","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
@@ -35,7 +35,7 @@
         var _tree = new JC.Tree( $('#tree_box1'), treeData );
             _tree.on('RenderLabel', function( _data ){
                 var _node = $(this);
-                _node.html( printf( '<a href="?node={0}" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
+                _node.html( JC.f.printf( '<a href="?node={0}" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
             });
             _tree.init();
             _queryNode && _tree.open( _queryNode );
@@ -48,7 +48,7 @@
         var _tree = new JC.Tree( $('#tree_box2'), treeData );
             _tree.on('RenderLabel', function( _data ){
                 var _node = $(this);
-                _node.html( printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
+                _node.html( JC.f.printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
             });
             _tree.on('change', function( _evt ){
                 var _p = $(this);

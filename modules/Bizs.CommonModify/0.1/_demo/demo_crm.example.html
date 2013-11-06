@@ -30,9 +30,9 @@
             .green{ color: green; }
             .red{ color: red; }
         </style>
-        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
         <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
-        <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Panel/0.1/res/default/style.css' rel='stylesheet' />
 
         <script src="../../../../lib.js"></script>
         <script src="../../../../config.js"></script>
@@ -76,9 +76,9 @@
                     _inputLs = _box.find('input[multidate=monthday]');
                     if( _inputLs.length < 2 ) return;
                     _inputLs.each( function( _ix ){
-                        var _date = parseISODate( $(this).val().replace( /[^\d]/g, '' ).slice( 0, 8 ) ), _err = false;
+                        var _date = JC.f.parseISODate( $(this).val().replace( /[^\d]/g, '' ).slice( 0, 8 ) ), _err = false;
                         if(  !_date ) return;
-                        var _key = printf('{0}_{1}', _date.getFullYear(), _date.getMonth() );
+                        var _key = JC.f.printf('{0}_{1}', _date.getFullYear(), _date.getMonth() );
 
                         if( _key in _data ){
                             _err = true;
@@ -113,13 +113,13 @@
 
             var TPL_COUNT = 1000;
             function deleteFilterSubPrice( _tpl ){
-                return printf( _tpl, TPL_COUNT++ );
+                return JC.f.printf( _tpl, TPL_COUNT++ );
             }
             /**
              * 添加 多选日期控件的回调
              */
             function addMonthDayCallabck( _ins, _newItem ){
-                var _dl = getJqParent( _newItem, 'dl' ), _items = _dl.find('> dd'), _plus = 1; 
+                var _dl = JC.f.getJqParent( _newItem, 'dl' ), _items = _dl.find('> dd'), _plus = 1; 
                 JC.log( 'cmaddcallback', new Date().getTime() );
 
                 var _maxDate;
@@ -128,9 +128,9 @@
                 _dl.find( 'input[multidate=monthday]' ).each( function(){
                     var _p = $(this), _date = new Date();
 
-                    _p.is( '[defaultdate]' ) && ( _date = parseISODate( _p.attr('defaultdate') ) );
+                    _p.is( '[defaultdate]' ) && ( _date = JC.f.parseISODate( _p.attr('defaultdate') ) );
                     if( _p.val().trim() ){
-                        _date = parseISODate( _p.val().replace( /[^\d]/g, '' ).slice( 0, 8 ) );
+                        _date = JC.f.parseISODate( _p.val().replace( /[^\d]/g, '' ).slice( 0, 8 ) );
                     }
 
                     !_maxDate && ( _maxDate = _date );
@@ -140,8 +140,8 @@
                 _maxDate.setMonth( _maxDate.getMonth() + _plus );
 
                 _newItem.find('input[multidate=monthday]')
-                    .attr('defaultdate', formatISODate( _maxDate ) )
-                    .attr('placeholder', printf( '{0}年 {1}月', _maxDate.getFullYear(), _maxDate.getMonth() + 1 ) );
+                    .attr('defaultdate', JC.f.formatISODate( _maxDate ) )
+                    .attr('placeholder', JC.f.printf( '{0}年 {1}月', _maxDate.getFullYear(), _maxDate.getMonth() + 1 ) );
                     ;
             }
             /**
@@ -151,8 +151,8 @@
                 _newItem.each( function(){
                     var _tmp = $(this), _ipt = _tmp.find('input[multidate=monthday]');
                     if( !_ipt.length ) return;
-                    addMonthDayCallabck( _ins, getJqParent( _ipt, 'dd' ) );
-                    //alert( getJqParent( _ipt, 'dd' ).html() );
+                    addMonthDayCallabck( _ins, JC.f.getJqParent( _ipt, 'dd' ) );
+                    //alert( JC.f.getJqParent( _ipt, 'dd' ).html() );
                     return false;
                 });
             }

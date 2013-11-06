@@ -134,7 +134,7 @@
                 });
 
                 $([ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
+                    var _data = JC.f.sliceArgs( arguments ); _data.shift(); _data.shift();
                     _p.trigger( _evtName, _data );
                 });
 
@@ -295,11 +295,11 @@
                 if( this.isParentSelector() ){
                     if( Model.parentNodeRe.test( this.checkfor() ) ){
                         this.checkfor().replace( /^([^\s]+)/, function( $0, $1 ){
-                            _r = parentSelector( _p.selector(), $1 );
+                            _r = JC.f.parentSelector( _p.selector(), $1 );
                         });
                     }else{
                         _tmp = this.checkfor().replace( Model.parentSelectorRe, '' );
-                        _r = parentSelector( _p.selector(), _tmp );
+                        _r = JC.f.parentSelector( _p.selector(), _tmp );
                     }
                 }
                 return _r;
@@ -318,7 +318,7 @@
                 var _r;
                 if( this.checktype() == 'inverse' ){
                     this.checkall() 
-                        && ( _r = parentSelector( this.selector(), this.checkall() ) )
+                        && ( _r = JC.f.parentSelector( this.selector(), this.checkall() ) )
                         ;
                 }else{
                     _r = this.selector();

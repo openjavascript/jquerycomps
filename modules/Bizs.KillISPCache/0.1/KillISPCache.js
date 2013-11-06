@@ -134,7 +134,7 @@
     KillISPCache.Model.prototype = {
         init:
             function(){
-                this._postfix = printf( '{0}_{1}_'
+                this._postfix = JC.f.printf( '{0}_{1}_'
                                         , new Date().getTime().toString()
                                         , Math.round( Math.random() * 100000 )
                                     );
@@ -193,7 +193,7 @@
 
                     if( _ignore ) return;
 
-                    _url = addUrlParams( _url, _p.keyVal() );
+                    _url = JC.f.addUrlParams( _url, _p.keyVal() );
                     _sp.attr( 'href', _url );
                     _sp.html( _text );
                 });
@@ -235,7 +235,7 @@
                             _ignore = true;
                         }
                     });
-                    !_ignore && ( _settings.url = addUrlParams( _settings.url, _p.keyVal() ) );
+                    !_ignore && ( _settings.url = JC.f.addUrlParams( _settings.url, _p.keyVal() ) );
                 });
             }
         , ignoreSameLinkText:

@@ -93,7 +93,7 @@
         _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );
     }else{
         _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){
-            reloadPage( "?donetype=custom" );
+            JC.f.reloadPage( "?donetype=custom" );
         });
     }
 };</xmp>
@@ -188,7 +188,7 @@
                         _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );
                     }else{
                         _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){
-                            reloadPage( "?donetype=custom" );
+                            JC.f.reloadPage( "?donetype=custom" );
                         });
                     }
                 };
@@ -431,7 +431,7 @@
                     }
 
                     if( _fatalError ){
-                        var _msg = printf( '服务端错误, 无法解析返回数据: <p class="auExtErr" style="color:red">{0}</p>'
+                        var _msg = JC.f.printf( '服务端错误, 无法解析返回数据: <p class="auExtErr" style="color:red">{0}</p>'
                                             , _data );
                         JC.Dialog.alert( _msg, 1 )
                         return;
@@ -605,12 +605,12 @@
                 if( !( _p._frame && _p._frame.length && _p._frame.parent() ) ){
 
                     if( _p.selector().is('[target]') ){
-                        _p._frame = $( printf( 'iframe[name={0}]', _p.selector().attr('target') ) );
+                        _p._frame = $( JC.f.printf( 'iframe[name={0}]', _p.selector().attr('target') ) );
                     }
                     
                     if( !( _p._frame && _p._frame.length ) ) {
                         _p.selector().prop( 'target', _p.frameId() );
-                        _p._frame = $( printf( FormLogic.frameTpl, _p.frameId() ) );
+                        _p._frame = $( JC.f.printf( FormLogic.frameTpl, _p.frameId() ) );
                         _p.selector().after( _p._frame );
                     }
 
@@ -643,7 +643,7 @@
         , formAjaxAction:
             function(){
                 var _r = this.attrProp( 'formAjaxAction' ) || this.attrProp( 'action' ) || '?';
-                return urlDetect( _r );
+                return JC.f.urlDetect( _r );
             }
         , formSubmitDisable:
             function(){
@@ -652,11 +652,11 @@
                     ;
 
                 _p.selector().is('[formSubmitDisable]')
-                    && ( _r = parseBool( _p.selector().attr('formSubmitDisable') ) );
+                    && ( _r = JC.f.parseBool( _p.selector().attr('formSubmitDisable') ) );
 
                 _btn 
                     && _btn.is('[formSubmitDisable]')
-                    && ( _r = parseBool( _btn.attr('formSubmitDisable') ) );
+                    && ( _r = JC.f.parseBool( _btn.attr('formSubmitDisable') ) );
 
                 return _r;
             }
@@ -665,7 +665,7 @@
                 var _p = this, _r = FormLogic.resetAfterSubmit;
 
                 _p.selector().is('[formResetAfterSubmit]')
-                    && ( _r = parseBool( _p.selector().attr('formResetAfterSubmit') ) );
+                    && ( _r = JC.f.parseBool( _p.selector().attr('formResetAfterSubmit') ) );
                 return _r;
             }
         , formAjaxDone:
@@ -713,8 +713,8 @@
                         _url = _url || _p._model.formAjaxDoneAction();
                         if( _url ){
                             try{_url = decodeURIComponent( _url ); } catch(ex){}
-                            /^URL/.test( _url) && ( _url = urlDetect( _url ) );
-                            reloadPage( _url );
+                            /^URL/.test( _url) && ( _url = JC.f.urlDetect( _url ) );
+                            JC.f.reloadPage( _url );
                         }
                     }, _p._model.formPopupCloseMs() );
                 }
@@ -748,7 +748,7 @@
                     && ( _r = _p.attrProp( _btn, 'formAjaxDoneAction' ) || _r )
                     ;
 
-                return urlDetect( _r );
+                return JC.f.urlDetect( _r );
             }
 
 
@@ -782,7 +782,7 @@
                     && ( _r = _p.attrProp( _btn, 'formResetUrl' ) || _r )
                     ;
 
-                return urlDetect( _r );
+                return JC.f.urlDetect( _r );
             }
         , formSubmitConfirm:
             function( _btn ){
@@ -820,7 +820,7 @@
             function( _btn ){
                 var _p = this, _resetUrl = _p._model.formResetUrl();
 
-                _resetUrl && reloadPage( _resetUrl );
+                _resetUrl && JC.f.reloadPage( _resetUrl );
 
                 _p._model.resetTimeout && clearTimeout( _p._model.resetTimeout );
                 _p._model.resetTimeout =
@@ -854,7 +854,7 @@
 
     $(document).delegate( 'input[formSubmitConfirm], button[formSubmitConfirm]', 'click', function( _evt ){
         var _p = $(this)
-            , _fm = getJqParent( _p, 'form' )
+            , _fm = JC.f.getJqParent( _p, 'form' )
             , _ins = FormLogic.getInstance( _fm )
             , _tmp 
             ;
@@ -862,7 +862,7 @@
             if( _ins ){
                 _fm.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON, null )
                 if( _p.is('[formConfirmCheckSelector]') ){
-                    _tmp = parentSelector( _p, _p.attr('formConfirmCheckSelector') );
+                    _tmp = JC.f.parentSelector( _p, _p.attr('formConfirmCheckSelector') );
                     if( !( _tmp && _tmp.length ) ) return;
                 }
                 else if( _p.is( '[formConfirmCheckCallback]') ){
@@ -877,21 +877,21 @@
     });
 
     $(document).delegate( 'input[formResetConfirm], button[formResetConfirm]', 'click', function( _evt ){
-        var _p = $(this), _fm = getJqParent( _p, 'form' );
+        var _p = $(this), _fm = JC.f.getJqParent( _p, 'form' );
         _fm && _fm.length 
             && _fm.data( FormLogic.Model.RESET_CONFIRM_BUTTON, _p )
             ;
     });
 
     $(document).delegate( 'input[type=reset], button[type=reset]', 'click', function( _evt ){
-        var _p = $(this), _fm = getJqParent( _p, 'form' );
+        var _p = $(this), _fm = JC.f.getJqParent( _p, 'form' );
         _fm && _fm.length 
             && _fm.data( FormLogic.Model.GENERIC_RESET_BUTTON , _p )
             ;
     });
 
     $(document).delegate( 'input[type=submit], button[type=submit]', 'click', function( _evt ){
-        var _p = $(this), _fm = getJqParent( _p, 'form' );
+        var _p = $(this), _fm = JC.f.getJqParent( _p, 'form' );
         _fm && _fm.length 
             && _fm.data( FormLogic.Model.GENERIC_SUBMIT_BUTTON , _p )
             ;
@@ -907,7 +907,7 @@
             ;
 
         if( !_url ) return;
-        _url = urlDetect( _url );
+        _url = JC.f.urlDetect( _url );
 
         _p.prop('nodeName').toLowerCase() == 'a' && _evt.preventDefault();
 
@@ -925,10 +925,10 @@
                     }
             }
             _panel.on('confirm', function(){
-                reloadPage( _url );
+                JC.f.reloadPage( _url );
             });
         }else{
-            reloadPage( _url );
+            JC.f.reloadPage( _url );
         }
     });
 

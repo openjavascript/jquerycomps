@@ -30,9 +30,9 @@
             .green{ color: green; }
             .red{ color: red; }
         </style>
-        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
         <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
-        <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Panel/0.1/res/default/style.css' rel='stylesheet' />
 
         <script src="../../../../lib.js"></script>
         <script src="../../../../config.js"></script>
@@ -95,8 +95,8 @@
 
                         if( !( _startVal && _endVal ) ) return;
 
-                        _startTime = parseISODate( _startVal ).getTime();
-                        _endTime = parseISODate( _endVal ).getTime();
+                        _startTime = JC.f.parseISODate( _startVal ).getTime();
+                        _endTime = JC.f.parseISODate( _endVal ).getTime();
 
 
                         _subData = {
@@ -156,7 +156,7 @@
 
             var TPL_COUNT = 1000;
             function deleteFilterSubPrice( _tpl ){
-                return printf( _tpl, TPL_COUNT++ );
+                return JC.f.printf( _tpl, TPL_COUNT++ );
             }
             /**
              * 添加 多选日期控件的回调
@@ -171,8 +171,8 @@
                 _newItem.each( function(){
                     var _tmp = $(this), _ipt = _tmp.find('input[multidate=monthday]');
                     if( !_ipt.length ) return;
-                    addMonthDayCallabck( _ins, getJqParent( _ipt, 'dd' ) );
-                    //alert( getJqParent( _ipt, 'dd' ).html() );
+                    addMonthDayCallabck( _ins, JC.f.getJqParent( _ipt, 'dd' ) );
+                    //alert( JC.f.getJqParent( _ipt, 'dd' ).html() );
                     return false;
                 });
             }

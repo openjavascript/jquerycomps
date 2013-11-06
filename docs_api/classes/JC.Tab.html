@@ -34,7 +34,6 @@
         </div>
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
-                <li><a href="../classes/.window.html">.window</a></li>
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
                 <li><a href="../classes/JC.AutoChecked.html">JC.AutoChecked</a></li>
@@ -194,12 +193,12 @@
        &lt;script&gt;
            JC.debug = 1;
            requirejs( [ 'JC.Tab' ], function(){
-               httpRequire();
+               JC.f.httpRequire();
                JC.Tab.ajaxCallback =
                    function( _data, _label, _container ){
                        _data &amp;&amp; ( _data = $.parseJSON( _data ) );
                        if( _data &amp;&amp; _data.errorno === 0 ){
-                           _container.html( printf( '&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}', _data.data ) );
+                           _container.html( JC.f.printf( '&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}', _data.data ) );
                        }else{
                            Tab.isAjaxInited( _label, 0 );
                            _container.html( '&lt;h2&gt;内容加载失败!&lt;/h2&gt;' );
@@ -220,7 +219,7 @@
            function ajaxcallback( _data, _label, _container ){
                _data &amp;&amp; ( _data = $.parseJSON( _data ) );
                if( _data &amp;&amp; _data.errorno === 0 ){
-                   _container.html( printf( '&lt;h2&gt;label attr ajaxcallback&lt;/h2&gt;{0}', _data.data ) );
+                   _container.html( JC.f.printf( '&lt;h2&gt;label attr ajaxcallback&lt;/h2&gt;{0}', _data.data ) );
                }else{
                    Tab.isAjaxInited( _label, 0 );
                    _container.html( '&lt;h2&gt;内容加载失败!&lt;/h2&gt;' );
@@ -588,7 +587,7 @@
                function( _data, _label, _container, _textStatus, _jqXHR ){
                    _data &amp;&amp; ( _data = $.parseJSON( _data ) );
                    if( _data &amp;&amp; _data.errorno === 0 ){
-                       _container.html( printf( '&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}', _data.data ) );
+                       _container.html( JC.f.printf( '&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}', _data.data ) );
                    }else{
                        Tab.isAjaxInited( _label, 0 );
                        _container.html( '&lt;h2&gt;内容加载失败!&lt;/h2&gt;' );

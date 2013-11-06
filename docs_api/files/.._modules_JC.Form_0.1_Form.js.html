@@ -41,8 +41,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/.window.html">.window</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -281,17 +279,17 @@
         
         _selector.find( &#x27;input[type=text][name],input[type=password][name],textarea[name]&#x27; ).each( function(){
             var _sp = $(this);
-            if( hasUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) ){
-                _sp.val( decode( getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) );
+            if( JC.f.hasUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) ){
+                _sp.val( decode( JC.f.getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) );
             }
         });
 
         _selector.find( &#x27;select[name]&#x27; ).each( function(){
-            var _sp = $(this), _uval = decode( getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) ;
-            if( hasUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) ){
+            var _sp = $(this), _uval = decode( JC.f.getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) ;
+            if( JC.f.hasUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) ){
                 if( selectHasVal( _sp, _uval ) ){
                     _sp.removeAttr(&#x27;selectignoreinitrequest&#x27;);
-                    _sp.val( getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) );
+                    _sp.val( JC.f.getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) );
                 }else{
                     _sp.attr( &#x27;selectvalue&#x27;, _uval );
                 }
@@ -303,7 +301,7 @@
             var _sp = $(this), _key = _sp.attr(&#x27;name&#x27;).trim(), _keys, _v = _sp.val();
             //alert( _sp.attr(&#x27;name&#x27;) );
             if( !( _key in _keyObj ) ){
-                _keys = getUrlParams( _url, _key );
+                _keys = JC.f.getUrlParams( _url, _key );
                 _keyObj[ _key ] = _keys;
             }else{
                 _keys = _keyObj[ _key ];
@@ -319,7 +317,7 @@
             }
         });
 
-        window.jcAutoInitComps &amp;&amp; jcAutoInitComps( _selector );
+        window.JC.f.jcAutoInitComps &amp;&amp; JC.f.jcAutoInitComps( _selector );
     }
 
     function fillForm( _selector, _url ){

@@ -41,8 +41,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/.window.html">.window</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -314,7 +312,7 @@
     KillISPCache.Model.prototype = {
         init:
             function(){
-                this._postfix = printf( &#x27;{0}_{1}_&#x27;
+                this._postfix = JC.f.printf( &#x27;{0}_{1}_&#x27;
                                         , new Date().getTime().toString()
                                         , Math.round( Math.random() * 100000 )
                                     );
@@ -373,7 +371,7 @@
 
                     if( _ignore ) return;
 
-                    _url = addUrlParams( _url, _p.keyVal() );
+                    _url = JC.f.addUrlParams( _url, _p.keyVal() );
                     _sp.attr( &#x27;href&#x27;, _url );
                     _sp.html( _text );
                 });
@@ -415,7 +413,7 @@
                             _ignore = true;
                         }
                     });
-                    !_ignore &amp;&amp; ( _settings.url = addUrlParams( _settings.url, _p.keyVal() ) );
+                    !_ignore &amp;&amp; ( _settings.url = JC.f.addUrlParams( _settings.url, _p.keyVal() ) );
                 });
             }
         , ignoreSameLinkText:

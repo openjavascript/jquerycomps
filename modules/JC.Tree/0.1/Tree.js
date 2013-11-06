@@ -5,7 +5,7 @@
     /**
      * 树菜单类 JC.Tree
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, 
-     * <a href='.window.html#method_printf'>window.printf</a></p>
+     * <a href='.window.html#method_JC.f.printf'>window.JC.f.printf</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Tree.html' target='_blank'>API docs</a>
      * | <a href='../../modules/JC.Tree/0.1/_demo' target='_blank'>demo link</a></p>
@@ -30,7 +30,7 @@
                         var _tree = new JC.Tree( $('#tree_box2'), treeData );
                             _tree.on('RenderLabel', function( _data ){
                                 var _node = $(this);
-                                _node.html( printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
+                                _node.html( JC.f.printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
                             });
                             _tree.on('click', function( _evt ){
                                 var _p = $(this);
@@ -223,7 +223,7 @@
      * @example
             _tree.on('RenderLabel', function( _data ){
                 var _node = $(this);
-                _node.html( printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
+                _node.html( JC.f.printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
             });
      */
 
@@ -484,8 +484,8 @@
 
                 var _label = this._initLabel( _data );
 
-                var _node = $( printf( '<li><span class="folder_img_closed folder {1}">&nbsp;</span></li>', _data[1], _last ) );
-                    _node.addClass( printf( 'folder_closed {0} folder', _last1 ));
+                var _node = $( JC.f.printf( '<li><span class="folder_img_closed folder {1}">&nbsp;</span></li>', _data[1], _last ) );
+                    _node.addClass( JC.f.printf( 'folder_closed {0} folder', _last1 ));
                     _label.appendTo( _node );
 
                 var _r =  $( '<ul style="display:none;" class="folder_ul_lst" ></ul>' )
@@ -509,7 +509,7 @@
 
                 var _label = this._initLabel( _data );
 
-                var _node = $( printf( '<li><span class="{1}file">&nbsp;</span></li>', _data[1], _last ) );
+                var _node = $( JC.f.printf( '<li><span class="{1}file">&nbsp;</span></li>', _data[1], _last ) );
                     _node.addClass( 'folder_closed file');
                     _label.appendTo( _node );
 

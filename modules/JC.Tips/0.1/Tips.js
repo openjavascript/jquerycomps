@@ -416,7 +416,7 @@
             function(){
                 var _r;
                 this._selector.attr('tipsupdateonce') 
-                    && ( _r = parseBool( this._selector.attr('tipsupdateonce') ) );
+                    && ( _r = JC.f.parseBool( this._selector.attr('tipsupdateonce') ) );
                 return _r;
             }
         , tipsIsUpdated: 

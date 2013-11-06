@@ -41,8 +41,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/.window.html">.window</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -226,7 +224,7 @@
                 });
 
                 $([ _p._view, _p._model ] ).on(&#x27;TriggerEvent&#x27;, function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ).slice( 2 );
+                    var _data = JC.f.sliceArgs( arguments ).slice( 2 );
                     _p.trigger( _evtName, _data );
                 });
 
@@ -337,8 +335,8 @@
             if( !( _inClass &amp;&amp; _outClass ) ) return;
             var _k
                 , _fStr, _tmp
-                //, _inName = funcName( _inClass )
-                //, _outName = funcName( _outClass )
+                //, _inName = JC.f.funcName( _inClass )
+                //, _outName = JC.f.funcName( _outClass )
                 //, _inRe = _inName &amp;&amp; _outName ? new RegExp( _inName, &#x27;g&#x27; ) : null
                 //, _namespace = _namespace ? _namespace + &#x27;.&#x27; : &#x27;JC.&#x27;
                 ;
@@ -351,7 +349,7 @@
                             /*
                             _fStr = _inClass[ _k ].toString();
                             _fStr = _fStr.replace( _inRe, _namespace + _outName );
-                            _tmp = printf( &#x27;( {0}{1}.{2} = {3})&#x27;, _namespace, _outName, _k, _fStr );
+                            _tmp = JC.f.printf( &#x27;( {0}{1}.{2} = {3})&#x27;, _namespace, _outName, _k, _fStr );
                             eval( _tmp  );
                             */
                         }else{//clone static property
@@ -533,7 +531,7 @@
                 var _r = undefined;
                 _selector
                     &amp;&amp; _selector.is( &#x27;[&#x27; + _key + &#x27;]&#x27; ) 
-                    &amp;&amp; ( _r = parseBool( _selector.attr( _key ).trim() ) );
+                    &amp;&amp; ( _r = JC.f.parseBool( _selector.attr( _key ).trim() ) );
                 return _r;
             }
         /**
@@ -578,7 +576,7 @@
 
                 _selector
                     &amp;&amp; _selector.is( &#x27;[&#x27; + _key + &#x27;]&#x27; ) 
-                    &amp;&amp; ( _r = parentSelector( _selector, _selector.attr( _key ) ) );
+                    &amp;&amp; ( _r = JC.f.parentSelector( _selector, _selector.attr( _key ) ) );
 
                 return _r;
             }

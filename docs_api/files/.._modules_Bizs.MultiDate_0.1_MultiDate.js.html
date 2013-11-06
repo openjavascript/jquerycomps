@@ -41,8 +41,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/.window.html">.window</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -222,7 +220,7 @@
                 });
 
                 $([ _p._view, _p._model ] ).on(&#x27;TriggerEvent&#x27;, function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
+                    var _data = JC.f.sliceArgs( arguments ); _data.shift(); _data.shift();
                     _p.trigger( _evtName, _data );
                 });
                 _p._initDefaultValue();
@@ -246,11 +244,11 @@
                 if( !_p._model.mddate().attr(&#x27;name&#x27;) ){
                     if( _qs &amp;&amp; _qe ){
                         if( _qs == _qe ){
-                            _p._model.mddate( formatISODate(parseISODate(_qs)) );
+                            _p._model.mddate( JC.f.formatISODate(JC.f.parseISODate(_qs)) );
                         }else{
-                            _p._model.mddate( printf( &#x27;{0} 至 {1}&#x27;
-                                        , formatISODate(parseISODate(_qs))
-                                        , formatISODate(parseISODate(_qe))
+                            _p._model.mddate( JC.f.printf( &#x27;{0} 至 {1}&#x27;
+                                        , JC.f.formatISODate(JC.f.parseISODate(_qs))
+                                        , JC.f.formatISODate(JC.f.parseISODate(_qe))
                                         ) );
                         }
                     }
@@ -258,8 +256,8 @@
                     _p._model.mddate( _p._model.qdate() );
                 }
 
-                _mdcusStart &amp;&amp; _mdcusStart.length &amp;&amp; _mdcusStart.val( _qs ? formatISODate( parseISODate( _qs ) ) : _qs );
-                _mdcusEnd&amp;&amp; _mdcusEnd.length &amp;&amp; _mdcusEnd.val( _qe ? formatISODate( parseISODate( _qe ) ) : _qe );
+                _mdcusStart &amp;&amp; _mdcusStart.length &amp;&amp; _mdcusStart.val( _qs ? JC.f.formatISODate( JC.f.parseISODate( _qs ) ) : _qs );
+                _mdcusEnd&amp;&amp; _mdcusEnd.length &amp;&amp; _mdcusEnd.val( _qe ? JC.f.formatISODate( JC.f.parseISODate( _qe ) ) : _qe );
 
             }
         , _initHandlerEvent:
@@ -354,8 +352,8 @@
 
                 window[ _updatecb ] = 
                     function( _type, _startDate, _endDate ){
-                        _p.mdstartdate( formatISODate( _startDate, &#x27;&#x27; ) );
-                        _p.mdenddate( formatISODate( _endDate, &#x27;&#x27; ) );
+                        _p.mdstartdate( JC.f.formatISODate( _startDate, &#x27;&#x27; ) );
+                        _p.mdenddate( JC.f.formatISODate( _endDate, &#x27;&#x27; ) );
                     };
                 _p.mddate().attr(&#x27;calendarupdate&#x27;, _updatecb);
 
@@ -402,37 +400,37 @@
 
         , mddate: 
             function( _setter ){ 
-                var _r = parentSelector( this.selector(), this.selector().attr(&#x27;mddate&#x27;) );
+                var _r = JC.f.parentSelector( this.selector(), this.selector().attr(&#x27;mddate&#x27;) );
                 typeof _setter != &#x27;undefined&#x27; &amp;&amp; _r.val( _setter );
                 return _r; 
             }
         , mdstartdate: 
             function( _setter ){ 
-                var _r = parentSelector( this.selector(), this.selector().attr(&#x27;mdstartdate&#x27;) );
+                var _r = JC.f.parentSelector( this.selector(), this.selector().attr(&#x27;mdstartdate&#x27;) );
                 typeof _setter != &#x27;undefined&#x27; &amp;&amp; _r.val( _setter.replace(/[^\d]/g, &#x27;&#x27;) );
                 return _r;
             }
         , mdenddate: 
             function( _setter ){ 
-                var _r = parentSelector( this.selector(), this.selector().attr(&#x27;mdenddate&#x27;) );
+                var _r = JC.f.parentSelector( this.selector(), this.selector().attr(&#x27;mdenddate&#x27;) );
                 typeof _setter != &#x27;undefined&#x27; &amp;&amp; _r.val( _setter.replace(/[^\d]/g, &#x27;&#x27;) );
                 return _r;
             }
 
         , qtype: function(){
-            return this.decodedata( getUrlParam( this.selector().attr(&#x27;name&#x27;) || &#x27;&#x27; ) || &#x27;&#x27; ).toLowerCase();
+            return this.decodedata( JC.f.getUrlParam( this.selector().attr(&#x27;name&#x27;) || &#x27;&#x27; ) || &#x27;&#x27; ).toLowerCase();
         }
 
         , qdate: function(){
-            return this.decodedata( getUrlParam( this.mddate().attr(&#x27;name&#x27;) || &#x27;&#x27; ) || &#x27;&#x27; ).toLowerCase();
+            return this.decodedata( JC.f.getUrlParam( this.mddate().attr(&#x27;name&#x27;) || &#x27;&#x27; ) || &#x27;&#x27; ).toLowerCase();
         }
 
         , qstartdate: function(){
-            return this.decodedata( getUrlParam( this.mdstartdate().attr(&#x27;name&#x27;) || &#x27;&#x27; ) || &#x27;&#x27; ).toLowerCase();
+            return this.decodedata( JC.f.getUrlParam( this.mdstartdate().attr(&#x27;name&#x27;) || &#x27;&#x27; ) || &#x27;&#x27; ).toLowerCase();
         }
 
         , qenddate: function(){
-            return this.decodedata( getUrlParam( this.mdenddate().attr(&#x27;name&#x27;) || &#x27;&#x27; ) || &#x27;&#x27; ).toLowerCase();
+            return this.decodedata( JC.f.getUrlParam( this.mdenddate().attr(&#x27;name&#x27;) || &#x27;&#x27; ) || &#x27;&#x27; ).toLowerCase();
         }
 
         , hastype:

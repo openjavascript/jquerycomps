@@ -49,7 +49,7 @@
             button.js_isIgnore{ display: none; }
         </style>
         <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
-        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
         <script src="../../../../lib.js"></script>
         <script src="../../../../config.js"></script>
         <script>
@@ -76,20 +76,20 @@
 
                 $(document).delegate( 'button.js_ignore', 'click', function( _evt ){
                     var _p = $(this)
-                        , _target = parentSelector( _p, _p.attr('target') )
-                        , _ignore = parseBool( _p.attr('ignore') )
+                        , _target = JC.f.parentSelector( _p, _p.attr('target') )
+                        , _ignore = JC.f.parseBool( _p.attr('ignore') )
                         ;
 
                     _target && _target.each( function(){
                         JC.Valid.ignore( $(this), !_ignore );
                         JC.Valid.setValid( $(this) );
                     });
-                    getJqParent( _p, 'dd' ).find('button.js_isIgnore').trigger('click');
+                    JC.f.getJqParent( _p, 'dd' ).find('button.js_isIgnore').trigger('click');
                 });
 
                 $(document).delegate( 'button.js_isIgnore', 'click', function( _evt ){
                     var _p = $(this)
-                        , _target = parentSelector( _p, _p.attr('target') )
+                        , _target = JC.f.parentSelector( _p, _p.attr('target') )
                         ;
 
                      var _r = [];
@@ -98,7 +98,7 @@
                         _r.push( JC.Valid.ignore( $(this) ) );
                     });
 
-                    getJqParent( _p, 'dd' ).find('em.js_isIgnoreEm').html( _r.join() ).show();
+                    JC.f.getJqParent( _p, 'dd' ).find('em.js_isIgnoreEm').html( _r.join() ).show();
 
                 });
 

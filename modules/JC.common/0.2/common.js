@@ -9,7 +9,7 @@
 
     window.Bizs = window.Bizs || {};
     /**
-     * JC 组件通用静态方法和属性 ( JC.common )
+     * JC 组件通用静态方法和属性 ( JC.common, <b>别名: JC.f</b> )
      * <br />所有 JC 组件都会依赖这个静态类
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.common.html' target='_blank'>API docs</a>
@@ -22,8 +22,41 @@
      * @version dev 0.1 2013-07-04
      * @author  qiushaowei   <suches@btbtd.org> | 360 75 Team
      */
-    JC.common = {
+    JC.common = JC.f = {
+        "addUrlParams": addUrlParams
+        , "cloneDate": cloneDate
+        , "dateDetect": dateDetect
+        , "delUrlParam": delUrlParam
+        , "easyEffect": easyEffect
+        , "formatISODate": formatISODate
+        , "funcName": funcName
+        , "getJqParent": getJqParent
+        , "getUrlParam": getUrlParam
+        , "getUrlParams": getUrlParams
+        , "hasUrlParam": hasUrlParam
+        , "httpRequire": httpRequire
+        , "isSameDay": isSameDay
+        , "isSameMonth": isSameMonth
+        , "jcAutoInitComps": jcAutoInitComps
+        , "maxDayOfMonth": maxDayOfMonth
+        , "mousewheelEvent": mousewheelEvent
+        , "padChar": padChar
+        , "parentSelector": parentSelector
+        , "parseBool": parseBool
+        , "parseFinance": parseFinance
+        , "parseISODate": parseISODate
+        , "printf": printf
+        , "pureDate": pureDate
+        , "reloadPage": reloadPage
+        , "removeUrlSharp": removeUrlSharp
+        , "scriptContent": scriptContent
+        , "scriptPath": scriptPath
+        , "sliceArgs": sliceArgs
+        , "urlDetect": urlDetect
     };
+    /**
+     * jquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法
+     */
     !String.prototype.trim && ( String.prototype.trim = function(){ return $.trim( this ); } );
     /**
      * 如果 console 不可用, 则生成一个模拟的 console 对象
@@ -33,6 +66,7 @@
     }};
     /**
      * 全局 css z-index 控制属性
+     * <br /> <b>注意</b>: 这个变量 window.ZINDEX_COUNT
      * @property    ZINDEX_COUNT
      * @type        int
      * @default     50001
@@ -191,7 +225,7 @@
             params = _url.split('?')[1].split('&');
             _url = _url.split('?')[0];
             for( i = 0; i < params.length; i++ ){
-                items = params[i].split('=');
+                var items = params[i].split('=');
                 items[0] = items[0].replace(/^\s+|\s+$/g, '');
                 if( items[0].toLowerCase() == _key.toLowerCase() ) continue;
                 tmpParams.push( items.join('=') )
@@ -802,5 +836,5 @@
     }());
 
 }(jQuery));
-    return JC.Tab;
+    return JC.f;
 });}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

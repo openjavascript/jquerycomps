@@ -101,17 +101,17 @@
         
         _selector.find( 'input[type=text][name],input[type=password][name],textarea[name]' ).each( function(){
             var _sp = $(this);
-            if( hasUrlParam( _url, _sp.attr('name') ) ){
-                _sp.val( decode( getUrlParam( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) );
+            if( JC.f.hasUrlParam( _url, _sp.attr('name') ) ){
+                _sp.val( decode( JC.f.getUrlParam( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) );
             }
         });
 
         _selector.find( 'select[name]' ).each( function(){
-            var _sp = $(this), _uval = decode( getUrlParam( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) ;
-            if( hasUrlParam( _url, _sp.attr('name') ) ){
+            var _sp = $(this), _uval = decode( JC.f.getUrlParam( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) ;
+            if( JC.f.hasUrlParam( _url, _sp.attr('name') ) ){
                 if( selectHasVal( _sp, _uval ) ){
                     _sp.removeAttr('selectignoreinitrequest');
-                    _sp.val( getUrlParam( _url, _sp.attr('name') ) );
+                    _sp.val( JC.f.getUrlParam( _url, _sp.attr('name') ) );
                 }else{
                     _sp.attr( 'selectvalue', _uval );
                 }
@@ -123,7 +123,7 @@
             var _sp = $(this), _key = _sp.attr('name').trim(), _keys, _v = _sp.val();
             //alert( _sp.attr('name') );
             if( !( _key in _keyObj ) ){
-                _keys = getUrlParams( _url, _key );
+                _keys = JC.f.getUrlParams( _url, _key );
                 _keyObj[ _key ] = _keys;
             }else{
                 _keys = _keyObj[ _key ];
@@ -139,7 +139,7 @@
             }
         });
 
-        window.jcAutoInitComps && jcAutoInitComps( _selector );
+        window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( _selector );
     }
 
     function fillForm( _selector, _url ){

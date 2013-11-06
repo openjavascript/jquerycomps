@@ -41,8 +41,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/.window.html">.window</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -306,7 +304,7 @@
                 });
 
                 $([ _p._view, _p._model ] ).on(&#x27;TriggerEvent&#x27;, function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ).slice( 2 );
+                    var _data = JC.f.sliceArgs( arguments ).slice( 2 );
                     _p.trigger( _evtName, _data );
                 });
 
@@ -417,7 +415,7 @@
 
         , dltrigger:
             function( _curItem ){
-                var _p = this, _r = parentSelector( this.selector(), this.selector().attr(&#x27;dltrigger&#x27;) ), _tmp;
+                var _p = this, _r = JC.f.parentSelector( this.selector(), this.selector().attr(&#x27;dltrigger&#x27;) ), _tmp;
                 if( _curItem ){
                     _r.each( function(){
                         _tmp = $(this);
@@ -435,13 +433,13 @@
                 var _p = this, _r, _tmp;
 
                 _p.selector().attr(&#x27;dltarget&#x27;) 
-                    &amp;&amp; ( _r = parentSelector( _p.selector(), _p.selector().attr(&#x27;dltarget&#x27;) ) )
+                    &amp;&amp; ( _r = JC.f.parentSelector( _p.selector(), _p.selector().attr(&#x27;dltarget&#x27;) ) )
                     ;
 
                 _triggerItem 
                     &amp;&amp; ( _triggerItem = $(_triggerItem) ).length 
                     &amp;&amp; _triggerItem.attr(&#x27;dltrigger&#x27;) 
-                    &amp;&amp; ( _r = parentSelector( _triggerItem, _triggerItem.attr(&#x27;dltarget&#x27;) ) )
+                    &amp;&amp; ( _r = JC.f.parentSelector( _triggerItem, _triggerItem.attr(&#x27;dltarget&#x27;) ) )
                     ;
                 return _r;
             }
@@ -452,7 +450,7 @@
                 _triggerItem 
                     &amp;&amp; ( _triggerItem = $( _triggerItem ) ).length
                     &amp;&amp; _triggerItem.is( &#x27;[dldisable]&#x27; )
-                    &amp;&amp; ( _r = parseBool( _triggerItem.attr(&#x27;dldisable&#x27;) ) )
+                    &amp;&amp; ( _r = JC.f.parseBool( _triggerItem.attr(&#x27;dldisable&#x27;) ) )
                     ;
 
                 if( _triggerItem.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;input&#x27; &amp;&amp;  _triggerItem.attr(&#x27;type&#x27;).toLowerCase() == &#x27;checkbox&#x27; ){
@@ -467,12 +465,12 @@
                 if( !_triggerItem.is(&#x27;[dldisplay]&#x27;) ){
                     ( _triggerItem = $( _triggerItem ) ).length
                     &amp;&amp; _triggerItem.is( &#x27;[dldisable]&#x27; )
-                    &amp;&amp; ( _r = !parseBool( _triggerItem.attr(&#x27;dldisable&#x27;) ) )
+                    &amp;&amp; ( _r = !JC.f.parseBool( _triggerItem.attr(&#x27;dldisable&#x27;) ) )
                     ;
                 }else{
                     ( _triggerItem = $( _triggerItem ) ).length
                     &amp;&amp; _triggerItem.is( &#x27;[dldisplay]&#x27; )
-                    &amp;&amp; ( _r = parseBool( _triggerItem.attr(&#x27;dldisplay&#x27;) ) )
+                    &amp;&amp; ( _r = JC.f.parseBool( _triggerItem.attr(&#x27;dldisplay&#x27;) ) )
                     ;
                 }
 
@@ -488,13 +486,13 @@
                 var _p = this, _r, _tmp;
 
                 _p.selector().attr(&#x27;dlhidetarget&#x27;) 
-                    &amp;&amp; ( _r = parentSelector( _p.selector(), _p.selector().attr(&#x27;dlhidetarget&#x27;) ) )
+                    &amp;&amp; ( _r = JC.f.parentSelector( _p.selector(), _p.selector().attr(&#x27;dlhidetarget&#x27;) ) )
                     ;
 
                 _triggerItem 
                     &amp;&amp; ( _triggerItem = $(_triggerItem) ).length 
                     &amp;&amp; _triggerItem.attr(&#x27;dlhidetarget&#x27;) 
-                    &amp;&amp; ( _r = parentSelector( _triggerItem, _triggerItem.attr(&#x27;dlhidetarget&#x27;) ) )
+                    &amp;&amp; ( _r = JC.f.parentSelector( _triggerItem, _triggerItem.attr(&#x27;dlhidetarget&#x27;) ) )
                     ;
                 return _r;
             }
@@ -503,7 +501,7 @@
             function( _hideTarget ){
                 var _r;
                 _hideTarget &amp;&amp; _hideTarget.is( &#x27;[dlhidetoggle]&#x27; ) 
-                    &amp;&amp; ( _r = parseBool( _hideTarget.attr(&#x27;dlhidetoggle&#x27;) ) );
+                    &amp;&amp; ( _r = JC.f.parseBool( _hideTarget.attr(&#x27;dlhidetoggle&#x27;) ) );
                 return _r;
             }
 
@@ -570,7 +568,7 @@
                     ;
 
                 if( _triggerItem.is( &#x27;[dlhidetargetsub]&#x27; ) ){
-                    var _starget = parentSelector( _triggerItem, _triggerItem.attr( &#x27;dlhidetargetsub&#x27; ) );
+                    var _starget = JC.f.parentSelector( _triggerItem, _triggerItem.attr( &#x27;dlhidetargetsub&#x27; ) );
                     if( _starget &amp;&amp; _starget.length ){
                         if( _triggerItem.prop(&#x27;checked&#x27;) ){
                             _starget.show();
@@ -587,7 +585,7 @@
                         JC.Valid &amp;&amp; JC.Valid.setValid( _sp );
 
                         if( _sp.is( &#x27;[dlhidetargetsub]&#x27; ) ){
-                            var _starget = parentSelector( _sp, _sp.attr( &#x27;dlhidetargetsub&#x27; ) );
+                            var _starget = JC.f.parentSelector( _sp, _sp.attr( &#x27;dlhidetargetsub&#x27; ) );
                             if( !( _starget &amp;&amp; _starget.length ) ) return;
                             if( _isDisable ){
                                 _starget.hide();

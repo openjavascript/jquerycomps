@@ -12,8 +12,8 @@
         dd { line-height: 24px; }
     </style>
     <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
-    <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
-    <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+    <link href='../../../../modules/JC.Panel/0.1/res/default/style.css' rel='stylesheet' />
+    <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
     <script src="../../../../lib.js"></script>
     <script src="../../../../config.js"></script>
     <script>
@@ -42,7 +42,7 @@
 
             if( _d && !_d.errorno ){
                 JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){
-                    reloadPage( '?usercallback=ajaxaction' );
+                    JC.f.reloadPage( '?usercallback=ajaxaction' );
                 });
             }else{
                 JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );

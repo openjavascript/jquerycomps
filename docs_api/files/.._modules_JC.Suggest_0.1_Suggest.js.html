@@ -41,8 +41,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/.window.html">.window</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -645,7 +643,7 @@
             function(){
                 var _p = this;
                 !_p._layout &amp;&amp; _p.selector().is(&#x27;[suglayout]&#x27;) 
-                    &amp;&amp; ( _p._layout = parentSelector( _p.selector(), _p.selector().attr(&#x27;suglayout&#x27;) ) );
+                    &amp;&amp; ( _p._layout = JC.f.parentSelector( _p.selector(), _p.selector().attr(&#x27;suglayout&#x27;) ) );
 
                 !_p._layout &amp;&amp; ( _p._layout = $( _p.suglayouttpl() )
                                     , _p._layout.hide()
@@ -666,7 +664,7 @@
         , sugautoposition: 
             function(){ 
                 this.layout().is(&#x27;sugautoposition&#x27;) 
-                    &amp;&amp; ( this._sugautoposition = parseBool( this.layout().attr(&#x27;sugautoposition&#x27;) ) );
+                    &amp;&amp; ( this._sugautoposition = JC.f.parseBool( this.layout().attr(&#x27;sugautoposition&#x27;) ) );
                 return this._sugautoposition; 
             }
 
@@ -721,14 +719,14 @@
                 this.selector().is(&#x27;[sugurl]&#x27;) 
                     &amp;&amp; ( this._sugurl = this.selector().attr(&#x27;sugurl&#x27;) );
                 !this.selector().is(&#x27;[sugurl]&#x27;) &amp;&amp; ( this._sugurl = &#x27;?word={0}&amp;callback={1}&#x27; );
-                this._sugurl = printf( this._sugurl, _word, this.sugdatacallback() );
+                this._sugurl = JC.f.printf( this._sugurl, _word, this.sugdatacallback() );
                 return this._sugurl;
             }
         , sugneedscripttag:
             function(){
                 this._sugneedscripttag = true;
                 this.selector().is(&#x27;[sugneedscripttag]&#x27;) 
-                    &amp;&amp; ( this._sugneedscripttag = parseBool( this.selector().attr(&#x27;sugneedscripttag&#x27;) ) );
+                    &amp;&amp; ( this._sugneedscripttag = JC.f.parseBool( this.selector().attr(&#x27;sugneedscripttag&#x27;) ) );
                 return this._sugneedscripttag;
             }
         , getData:
@@ -737,7 +735,7 @@
                 JC.log( _url, new Date().getTime() );
                 if( this.sugneedscripttag() ){
                     $( &#x27;#&#x27; + _scriptId ).remove();
-                    _script = printf( &#x27;&lt;script id=&quot;{1}&quot; src=&quot;{0}&quot;&gt;&lt;\/script&gt;&#x27;, _url, _scriptId );
+                    _script = JC.f.printf( &#x27;&lt;script id=&quot;{1}&quot; src=&quot;{0}&quot;&gt;&lt;\/script&gt;&#x27;, _url, _scriptId );
                     $( _script ).appendTo( document.body );
                 }else{
                     $.get( _url, function( _d ){
@@ -785,7 +783,7 @@
             function(){
                 var _r;
                 this.selector().is( &#x27;[sugprevententer]&#x27; )
-                    &amp;&amp; ( _r = parseBool( this.selector().attr(&#x27;sugprevententer&#x27;) ) )
+                    &amp;&amp; ( _r = JC.f.parseBool( this.selector().attr(&#x27;sugprevententer&#x27;) ) )
                     ;
                 return _r;
             }
@@ -843,7 +841,7 @@
             function(){
                 var _r = this.selector();
                 this.selector().is(&#x27;[sugplaceholder]&#x27;) 
-                    &amp;&amp; ( _r = parentSelector( this.selector(), this.selector().attr(&#x27;sugplaceholder&#x27;) ) );
+                    &amp;&amp; ( _r = JC.f.parentSelector( this.selector(), this.selector().attr(&#x27;sugplaceholder&#x27;) ) );
                 return _r;
             }
     };
@@ -902,7 +900,7 @@
                 for( var i = 0, j = _data.s.length; i &lt; j; i++ ){
                     _tmp = _data.s[i], _text = _tmp, _query = _data.q || &#x27;&#x27;;
 
-                    _text = _text.replace( _query, printf( &#x27;&lt;b&gt;{0}&lt;/b&gt;&#x27;, _query ) );
+                    _text = _text.replace( _query, JC.f.printf( &#x27;&lt;b&gt;{0}&lt;/b&gt;&#x27;, _query ) );
                     /*
                     if( _tmp.indexOf( _query ) &gt; -1 ){
                         _text = _text.slice( _query.length );
@@ -910,7 +908,7 @@
                     }
                     else _query = &#x27;&#x27;;
                     */
-                    _ls.push( printf(&#x27;&lt;{4} keyword=&quot;{2}&quot; keyindex=&quot;{3}&quot; class=&quot;js_sugItem&quot;&gt;{1}&lt;/{4}&gt;&#x27;
+                    _ls.push( JC.f.printf(&#x27;&lt;{4} keyword=&quot;{2}&quot; keyindex=&quot;{3}&quot; class=&quot;js_sugItem&quot;&gt;{1}&lt;/{4}&gt;&#x27;
                                 , _query, _text, encodeURIComponent( _tmp ), i
                                 , _subtagname
                             ));

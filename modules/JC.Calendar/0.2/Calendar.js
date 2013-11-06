@@ -9,12 +9,12 @@
      * <br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动使用Calendar.init( _selector )
      * <br />_selector 可以是 新加载的容器, 也可以是新加载的所有input
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a>
-     * <br /><b>require</b>: <a href='.window.html#method_cloneDate'>window.cloneDate</a>
-     * <br /><b>require</b>: <a href='.window.html#method_parseISODate'>window.parseISODate</a>
-     * <br /><b>require</b>: <a href='.window.html#method_formatISODate'>window.formatISODate</a>
-     * <br /><b>require</b>: <a href='.window.html#method_maxDayOfMonth'>window.maxDayOfMonth</a>
-     * <br /><b>require</b>: <a href='.window.html#method_isSameDay'>window.isSameDay</a>
-     * <br /><b>require</b>: <a href='.window.html#method_isSameMonth'>window.isSameMonth</a>
+     * <br /><b>require</b>: <a href='.window.html#method_JC.f.cloneDate'>window.JC.f.cloneDate</a>
+     * <br /><b>require</b>: <a href='.window.html#method_JC.f.parseISODate'>window.JC.f.parseISODate</a>
+     * <br /><b>require</b>: <a href='.window.html#method_JC.f.formatISODate'>window.JC.f.formatISODate</a>
+     * <br /><b>require</b>: <a href='.window.html#method_JC.f.maxDayOfMonth'>window.JC.f.maxDayOfMonth</a>
+     * <br /><b>require</b>: <a href='.window.html#method_JC.f.isSameDay'>window.JC.f.isSameDay</a>
+     * <br /><b>require</b>: <a href='.window.html#method_JC.f.isSameMonth'>window.JC.f.isSameMonth</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Calendar.html' target='_blank'>API docs</a>
@@ -154,7 +154,7 @@
                 });
 
                 $([ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ).slice(2);
+                    var _data = JC.f.sliceArgs( arguments ).slice(2);
                     _p.trigger( _evtName, _data );
                 });
 
@@ -200,15 +200,15 @@
                         for( var i = 0, j = _tmp.length; i < j; i++ ){
                             _item = _tmp[i].replace( /[^\d]/g, '' );
                             if( _item.length == 16 ){
-                                _tmpStart = parseISODate( _item.slice( 0, 8 ) );
-                                _tmpEnd = parseISODate( _item.slice( 8 ) );
+                                _tmpStart = JC.f.parseISODate( _item.slice( 0, 8 ) );
+                                _tmpEnd = JC.f.parseISODate( _item.slice( 8 ) );
                             }else if( _item.length == 8 ){
-                                _tmpStart = parseISODate( _item.slice( 0, 8 ) );
-                                _tmpEnd = cloneDate( _tmpStart );
+                                _tmpStart = JC.f.parseISODate( _item.slice( 0, 8 ) );
+                                _tmpEnd = JC.f.cloneDate( _tmpStart );
                             }
                             if( i === 0 ){
-                                _startDate = cloneDate( _tmpStart );
-                                _endDate = cloneDate( _tmpEnd );
+                                _startDate = JC.f.cloneDate( _tmpStart );
+                                _endDate = JC.f.cloneDate( _tmpEnd );
                             }
                             _data.push( {'start': _tmpStart, 'end': _tmpEnd } );
                         }
@@ -705,27 +705,27 @@
                 }
 
                 ( _tmp = _p.val().trim() )
-                    && ( _tmp = dateDetect( _tmp ) )
-                    && _p.val( formatISODate( _tmp ) )
+                    && ( _tmp = JC.f.dateDetect( _tmp ) )
+                    && _p.val( JC.f.formatISODate( _tmp ) )
                     ; 
 
                 ( _tmp = ( _p.attr('minvalue') || '' ) )
-                    && ( _tmp = dateDetect( _tmp ) )
-                    && _p.attr( 'minvalue', formatISODate( _tmp ) )
+                    && ( _tmp = JC.f.dateDetect( _tmp ) )
+                    && _p.attr( 'minvalue', JC.f.formatISODate( _tmp ) )
                     ; 
 
                 ( _tmp = ( _p.attr('maxvalue') || '' ) )
-                    && ( _tmp = dateDetect( _tmp ) )
-                    && _p.attr( 'maxvalue', formatISODate( _tmp ) )
+                    && ( _tmp = JC.f.dateDetect( _tmp ) )
+                    && _p.attr( 'maxvalue', JC.f.formatISODate( _tmp ) )
                     ; 
 
                 if( ( _p.attr('datatype') || '' ).toLowerCase() == 'monthday'
                     || ( _p.attr('multidate') || '' ).toLowerCase() == 'monthday' ){
                     if( !_p.is('[placeholder]') ){
                         var _tmpDate = new Date();
-                        _p.attr('defaultdate') && ( _tmpDate = parseISODate( _p.attr('defaultdate') ) || _tmpDate );
-                        _p.val().trim() && ( _tmpDate = parseISODate( _p.val().replace( /[^d]/g, '').slice( 0, 8 ) ) || _tmpDate );
-                        _tmpDate && _p.attr( 'placeholder', printf( '{0}年 {1}月', _tmpDate.getFullYear(), _tmpDate.getMonth() + 1 ) );
+                        _p.attr('defaultdate') && ( _tmpDate = JC.f.parseISODate( _p.attr('defaultdate') ) || _tmpDate );
+                        _p.val().trim() && ( _tmpDate = JC.f.parseISODate( _p.val().replace( /[^d]/g, '').slice( 0, 8 ) ) || _tmpDate );
+                        _tmpDate && _p.attr( 'placeholder', JC.f.printf( '{0}年 {1}月', _tmpDate.getFullYear(), _tmpDate.getMonth() + 1 ) );
                     }
                 }
 
@@ -739,7 +739,7 @@
             _day = _date.getDate();
             _date.setDate( 1 );
             _date.setFullYear( _date.getFullYear() + _offset );
-            _max = maxDayOfMonth( _date );
+            _max = JC.f.maxDayOfMonth( _date );
             _day > _max && ( _day = _max );
             _date.setDate( _day );
             return _date;
@@ -751,7 +751,7 @@
             _day = _date.getDate();
             _date.setDate( 1 );
             _date.setMonth( _date.getMonth() + _offset );
-            _max = maxDayOfMonth( _date );
+            _max = JC.f.maxDayOfMonth( _date );
             _day > _max && ( _day = _max );
             _date.setDate( _day );
             return _date;
@@ -842,7 +842,7 @@
             function(){
                 var _r = true;
                 this.selector().is('[currentcanselect]') 
-                    && ( _r = parseBool( this.selector().attr('currentcanselect') ) );
+                    && ( _r = JC.f.parseBool( this.selector().attr('currentcanselect') ) );
                 return _r;
             }
         , year: 
@@ -880,8 +880,8 @@
                             : _p.defaultSingleSelectDate( _r )
                     );
 
-                _r.minvalue = parseISODate( _p.selector().attr('minvalue') );
-                _r.maxvalue = parseISODate( _p.selector().attr('maxvalue') );
+                _r.minvalue = JC.f.parseISODate( _p.selector().attr('minvalue') );
+                _r.maxvalue = JC.f.parseISODate( _p.selector().attr('maxvalue') );
 
                 return _r;
             }
@@ -892,15 +892,15 @@
                     , _tmp
                     ;
 
-                if( _tmp = parseISODate( _selector.val() ) ) _r.date = _tmp;
+                if( _tmp = JC.f.parseISODate( _selector.val() ) ) _r.date = _tmp;
                 else{
                     if( _selector.val() && (_tmp = _selector.val().replace( /[^\d]/g, '' ) ).length == 16 ){
-                        _r.date = parseISODate( _tmp.slice( 0, 8 ) );
-                        _r.enddate = parseISODate( _tmp.slice( 8 ) );
+                        _r.date = JC.f.parseISODate( _tmp.slice( 0, 8 ) );
+                        _r.enddate = JC.f.parseISODate( _tmp.slice( 8 ) );
                     }else{
                         _tmp = new Date();
                         if( Calendar.lastIpt && Calendar.lastIpt.is('[defaultdate]') ){
-                            _tmp = parseISODate( Calendar.lastIpt.attr('defaultdate') ) || _tmp;
+                            _tmp = JC.f.parseISODate( Calendar.lastIpt.attr('defaultdate') ) || _tmp;
                         }
                         _r.date = new Date( _tmp.getFullYear(), _tmp.getMonth(), _tmp.getDate() );
                     }
@@ -923,21 +923,21 @@
 
                         $.each( _tmp, function( _ix, _item ){
                             if( _item.length == 16 ){
-                                _dstart = parseISODate( _item.slice( 0, 8 ) );
-                                _dend = parseISODate( _item.slice( 8 ) );
+                                _dstart = JC.f.parseISODate( _item.slice( 0, 8 ) );
+                                _dend = JC.f.parseISODate( _item.slice( 8 ) );
 
                                 if( !_ix ){
-                                    _r.date = cloneDate( _dstart );
-                                    _r.enddate = cloneDate( _dend );
+                                    _r.date = JC.f.cloneDate( _dstart );
+                                    _r.enddate = JC.f.cloneDate( _dend );
                                 }
                                 _multidatear.push( { 'start': _dstart, 'end': _dend } );
                             }else if( _item.length == 8 ){
-                                _dstart = parseISODate( _item.slice( 0, 8 ) );
-                                _dend = cloneDate( _dstart );
+                                _dstart = JC.f.parseISODate( _item.slice( 0, 8 ) );
+                                _dend = JC.f.cloneDate( _dstart );
 
                                 if( !_ix ){
-                                    _r.date = cloneDate( _dstart );
-                                    _r.enddate = cloneDate( _dend );
+                                    _r.date = JC.f.cloneDate( _dstart );
+                                    _r.enddate = JC.f.cloneDate( _dend );
                                 }
                                 _multidatear.push( { 'start': _dstart, 'end': _dend } );
                             }
@@ -949,13 +949,13 @@
                     }else{
                         _tmp = new Date();
                         if( Calendar.lastIpt && Calendar.lastIpt.is('[defaultdate]') ){
-                            _tmp = parseISODate( Calendar.lastIpt.attr('defaultdate') ) || _tmp;
+                            _tmp = JC.f.parseISODate( Calendar.lastIpt.attr('defaultdate') ) || _tmp;
                         }
                         _r.date = new Date( _tmp.getFullYear(), _tmp.getMonth(), _tmp.getDate() );
-                        _r.enddate = cloneDate( _r.date );
-                        _r.enddate.setDate( maxDayOfMonth( _r.enddate ) );
+                        _r.enddate = JC.f.cloneDate( _r.date );
+                        _r.enddate.setDate( JC.f.maxDayOfMonth( _r.enddate ) );
                         _r.multidate = [];
-                        _r.multidate.push( {'start': cloneDate( _r.date ), 'end': cloneDate( _r.enddate ) } );
+                        _r.multidate.push( {'start': JC.f.cloneDate( _r.date ), 'end': JC.f.cloneDate( _r.enddate ) } );
                     }
                 return _r;
             }
@@ -972,7 +972,7 @@
                 _dateo.date.setDate( 1 );
                 _dateo.date.setFullYear( this.year() );
                 _dateo.date.setMonth( this.month() );
-                _max = maxDayOfMonth( _dateo.date );
+                _max = JC.f.maxDayOfMonth( _dateo.date );
                 _day > _max && ( _day = _max );
                 _dateo.date.setDate( _day );
                 return _dateo;
@@ -1094,7 +1094,7 @@
             function(){
                 var _r;
                 this.selector().is('[multiselect]')
-                    && ( _r = parseBool( this.selector().attr('multiselect') ) );
+                    && ( _r = JC.f.parseBool( this.selector().attr('multiselect') ) );
                 return _r;
             }
         , calendarupdatemultiselect:
@@ -1171,7 +1171,7 @@
         , show:
             function(){
                 var _dateo = this._model.defaultDate();
-                JC.log( 'Calendar.View: show', new Date().getTime(), formatISODate( _dateo.date ) );
+                JC.log( 'Calendar.View: show', new Date().getTime(), JC.f.formatISODate( _dateo.date ) );
 
                 this._buildLayout( _dateo );
                 this._buildDone();
@@ -1196,7 +1196,7 @@
                 var _dateo = this._model.layoutDate(), _day = _dateo.date.getDate(), _max;
                 _dateo.date.setDate( 1 );
                 _dateo.date.setFullYear( _dateo.date.getFullYear() + _offset );
-                _max = maxDayOfMonth( _dateo.date );
+                _max = JC.f.maxDayOfMonth( _dateo.date );
                 _day > _max && ( _day = _max );
                 _dateo.date.setDate( _day );
                 this._buildLayout( _dateo );
@@ -1248,7 +1248,7 @@
                 var _dateo = this._model.layoutDate(), _day = _dateo.date.getDate(), _max;
                 _dateo.date.setDate( 1 );
                 _dateo.date.setMonth( _dateo.date.getMonth() + _offset );
-                _max = maxDayOfMonth( _dateo.date );
+                _max = JC.f.maxDayOfMonth( _dateo.date );
                 _day > _max && ( _day = _max );
                 _dateo.date.setDate( _day );
                 this._buildLayout( _dateo );
@@ -1261,14 +1261,14 @@
                     _date = this._model.selectedDate(); 
                 }else{
                     _userSelectedItem = $( _userSelectedItem );
-                    _tmp = getJqParent( _userSelectedItem, 'td' );
+                    _tmp = JC.f.getJqParent( _userSelectedItem, 'td' );
                     if( _tmp && _tmp.hasClass('unable') ) return;
                     _date = new Date();
                     _date.setTime( _userSelectedItem.attr('date') );
                 }
                 if( !_date ) return;
 
-                _p._model.selector().val( formatISODate( _date ) );
+                _p._model.selector().val( JC.f.formatISODate( _date ) );
 
                 $(_p).trigger( 'TriggerEvent', [ JC.Calendar.Model.UPDATE, 'date', _date, _date ] );
                 Calendar.hide();
@@ -1329,7 +1329,7 @@
                     ;
                 JC.log( _startYear, _endYear );
                 for( var i = _startYear; i <= _endYear; i++ ){
-                    _ls.push( printf( '<option value="{0}"{1}>{0}</option>', i, i === _selected ? ' selected' : '' ) );
+                    _ls.push( JC.f.printf( '<option value="{0}"{1}>{0}</option>', i, i === _selected ? ' selected' : '' ) );
                 }
                 $( _ls.join('') ).appendTo( _layout.find('select.UYear').html('') );
 
@@ -1338,7 +1338,7 @@
         , _buildBody:
             function( _dateo ){
                 var _p = this, _layout = _p._model.layout();
-                var _maxday = maxDayOfMonth( _dateo.date ), _weekday = _dateo.date.getDay() || 7
+                var _maxday = JC.f.maxDayOfMonth( _dateo.date ), _weekday = _dateo.date.getDay() || 7
                     , _sumday = _weekday + _maxday, _row = 6, _ls = [], _premaxday, _prebegin
                     , _tmp, i, _class;
 
@@ -1359,17 +1359,17 @@
                 for( i = 1; i <= 42; i++ ){
                     _class = [];
                     if( _beginDate.getDay() === 0 || _beginDate.getDay() == 6 ) _class.push('weekend');
-                    if( !isSameMonth( _dateo.date, _beginDate ) ) _class.push( 'other' );
+                    if( !JC.f.isSameMonth( _dateo.date, _beginDate ) ) _class.push( 'other' );
                     if( _dateo.minvalue && _beginDate.getTime() < _dateo.minvalue.getTime() ) 
                         _class.push( 'unable' );
                     if( _dateo.maxvalue && _beginDate.getTime() > _dateo.maxvalue.getTime() ) 
                         _class.push( 'unable' );
 
-                    if( isSameDay( _beginDate, today ) ) _class.push( 'today' );
-                    if( isSameDay( _dateo.date, _beginDate ) ) _class.push( 'cur' );
+                    if( JC.f.isSameDay( _beginDate, today ) ) _class.push( 'today' );
+                    if( JC.f.isSameDay( _dateo.date, _beginDate ) ) _class.push( 'cur' );
 
                     _ls.push( '<td class="', _class.join(' '),'">'
-                            ,'<a href="javascript:" date="', _beginDate.getTime(),'" title="'+formatISODate(_beginDate)+'" >'
+                            ,'<a href="javascript:" date="', _beginDate.getTime(),'" title="'+JC.f.formatISODate(_beginDate)+'" >'
                             , _beginDate.getDate(), '</a></td>' );
                     _beginDate.setDate( _beginDate.getDate() + 1 );
                     if( i % 7 === 0 && i != 42 ) _ls.push( '</tr><tr>' );
@@ -1702,7 +1702,7 @@
             _dateo.date.setDate( 1 );
             _dateo.date.setFullYear( this.year() );
             _dateo.date.setMonth( this.month() );
-            _max = maxDayOfMonth( _dateo.date );
+            _max = JC.f.maxDayOfMonth( _dateo.date );
             _day > _max && ( _day = _max );
             _dateo.date.setDate( _day );
 
@@ -1724,7 +1724,7 @@
                 , _ls = [], _class, _data, _title, _sdate, _edate, _year = _date.getFullYear()
                 , _rows = Math.ceil( weeks.length / 8 )
                 , ipt = JC.Calendar.lastIpt
-                , currentcanselect = parseBool( ipt.attr('currentcanselect') )
+                , currentcanselect = JC.f.parseBool( ipt.attr('currentcanselect') )
                 ;
 
             if( _dateo.maxvalue && currentcanselect ){
@@ -1744,11 +1744,11 @@
                 _sdate = new Date(); _edate = new Date();
                 _sdate.setTime( _data.start ); _edate.setTime( _data.end );
 
-                _title = printf( "{0}年 第{1}周\n开始日期: {2} (周{4})\n结束日期: {3} (周{5})"
+                _title = JC.f.printf( "{0}年 第{1}周\n开始日期: {2} (周{4})\n结束日期: {3} (周{5})"
                             , _year
                             , JC.Calendar.getCnNum( _data.week )
-                            , formatISODate( _sdate )
-                            , formatISODate( _edate )
+                            , JC.f.formatISODate( _sdate )
+                            , JC.f.formatISODate( _edate )
                             , JC.Calendar.cnWeek.charAt( _sdate.getDay() % 7 )
                             , JC.Calendar.cnWeek.charAt( _edate.getDay() % 7 )
                             );
@@ -1771,7 +1771,7 @@
 
                 if( today >= _sdate.getTime() && today <= _edate.getTime() ) _class.push( 'today' );
 
-                _ls.push( printf( '<td class="{0}"><a href="javascript:" title="{2}"'+
+                _ls.push( JC.f.printf( '<td class="{0}"><a href="javascript:" title="{2}"'+
                                 ' dstart="{3}" dend="{4}" week="{1}" date="{5}" >{1}</a></td>'
                             , _class.join(' ')
                             , _data.week 
@@ -1795,7 +1795,7 @@
                 _tmp && ( _dstart = _tmp.start, _dend = _tmp.end );
             }else{
                 _userSelectedItem = $( _userSelectedItem );
-                _tmp = getJqParent( _userSelectedItem, 'td' );
+                _tmp = JC.f.getJqParent( _userSelectedItem, 'td' );
                 if( _tmp && _tmp.hasClass('unable') ) return;
                 _dstart = new Date(); _dend = new Date();
                 _dstart.setTime( _userSelectedItem.attr('dstart') );
@@ -1803,7 +1803,7 @@
             }
             if( !( _dstart && _dend ) ) return;
 
-            _p._model.selector().val( printf( '{0} 至 {1}', formatISODate( _dstart ), formatISODate( _dend ) ) );
+            _p._model.selector().val( JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) );
             $(_p).trigger( 'TriggerEvent', [ JC.Calendar.Model.UPDATE, 'week', _dstart, _dend ] );
 
             JC.Calendar.hide();
@@ -1938,24 +1938,24 @@
                 , _ls = [], _class, _data, _title, _dstart, _dend, _year = _date.getFullYear()
                 , _rows = 4
                 , ipt = JC.Calendar.lastIpt
-                , currentcanselect = parseBool( ipt.attr('currentcanselect') )
+                , currentcanselect = JC.f.parseBool( ipt.attr('currentcanselect') )
                 , _tmpMultidate = _dateo.multidate ? _dateo.multidate.slice() : null
                 ;
 
                 if( _dateo.maxvalue && currentcanselect ){
-                    _dateo.maxvalue.setDate( maxDayOfMonth( _dateo.maxvalue ) );
+                    _dateo.maxvalue.setDate( JC.f.maxDayOfMonth( _dateo.maxvalue ) );
                 }
 
                 _ls.push('<tr>');
                 for( var i = 1, j = 12; i <= j; i++ ){
                     _dstart = new Date( _year, i - 1, 1 ); 
-                    _dend = new Date( _year, i - 1, maxDayOfMonth( _dstart ) );
+                    _dend = new Date( _year, i - 1, JC.f.maxDayOfMonth( _dstart ) );
 
-                    _title = printf( "{0}年 {1}月<br/>开始日期: {2} (周{4})<br />结束日期: {3} (周{5})"
+                    _title = JC.f.printf( "{0}年 {1}月<br/>开始日期: {2} (周{4})<br />结束日期: {3} (周{5})"
                                 , _year
                                 , JC.Calendar.getCnNum( i )
-                                , formatISODate( _dstart )
-                                , formatISODate( _dend )
+                                , JC.f.formatISODate( _dstart )
+                                , JC.f.formatISODate( _dend )
                                 , JC.Calendar.cnWeek.charAt( _dstart.getDay() % 7 )
                                 , JC.Calendar.cnWeek.charAt( _dend.getDay() % 7 )
                                 );
@@ -1989,7 +1989,7 @@
                     var _cnUnit = JC.Calendar.cnUnit.charAt( i % 10 );
                     i > 10 && ( _cnUnit = "十" + _cnUnit );
 
-                    _ls.push( printf( '<td class="{0}"><a href="javascript:" title="{1}"'+
+                    _ls.push( JC.f.printf( '<td class="{0}"><a href="javascript:" title="{1}"'+
                                     ' dstart="{3}" dend="{4}" month="{5}" >{2}月</a></td>'
                                 , _class.join(' ')
                                 , _title
@@ -2028,7 +2028,7 @@
                     if( !_tmp.length ) return;
                     _ar = [];
                     $.each( _tmp, function( _ix, _item ){
-                        _ar.push( printf( '{0} 至 {1}', formatISODate( _item.start ), formatISODate( _item.end ) ) );
+                        _ar.push( JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _item.start ), JC.f.formatISODate( _item.end ) ) );
                     });
                     _text = _ar.join(',');
                 }else{
@@ -2036,11 +2036,11 @@
                     _tmp && ( _dstart = _tmp.start, _dend = _tmp.end );
 
                     _dstart && _dend 
-                        && ( _text = printf( '{0} 至 {1}', formatISODate( _dstart ), formatISODate( _dend ) ) );
+                        && ( _text = JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) );
                 }
             }else{
                 _userSelectedItem = $( _userSelectedItem );
-                _tmp = getJqParent( _userSelectedItem, 'td' );
+                _tmp = JC.f.getJqParent( _userSelectedItem, 'td' );
                 if( _tmp && _tmp.hasClass('unable') ) return;
 
                 if( _p._model.multiselect() ){
@@ -2051,7 +2051,7 @@
                 _dstart.setTime( _userSelectedItem.attr('dstart') );
                 _dend.setTime( _userSelectedItem.attr('dend') );
 
-                _text = printf( '{0} 至 {1}', formatISODate( _dstart ), formatISODate( _dend ) );
+                _text = JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) );
             }
 
             if( !_text ) return;
@@ -2157,7 +2157,7 @@
                 , _ls = [], _class, _data, _title, _sdate, _edate, _year = _date.getFullYear()
                 , _rows = 4
                 , ipt = JC.Calendar.lastIpt
-                , currentcanselect = parseBool( ipt.attr('currentcanselect') )
+                , currentcanselect = JC.f.parseBool( ipt.attr('currentcanselect') )
                 ;
 
                 if( _dateo.maxvalue && currentcanselect ){
@@ -2167,23 +2167,23 @@
                         _dateo.maxvalue.setDate( 1 );
                         _dateo.maxvalue.setMonth( _m + ( 3 - ( _m % 3 ) - 1 ) );
                     }
-                    _dateo.maxvalue.setDate( maxDayOfMonth( _dateo.maxvalue ) );
+                    _dateo.maxvalue.setDate( JC.f.maxDayOfMonth( _dateo.maxvalue ) );
                 }
 
                 _ls.push('<tr>');
                 for( var i = 1, j = 4; i <= j; i++ ){
                     _sdate = new Date( _year, i * 3 - 3, 1 ); 
                     _edate = new Date( _year, i * 3 - 1, 1 );
-                    _edate.setDate( maxDayOfMonth( _edate ) );
+                    _edate.setDate( JC.f.maxDayOfMonth( _edate ) );
 
                     var _cnUnit = JC.Calendar.cnUnit.charAt( i % 10 );
                     i > 10 && ( _cnUnit = "十" + _cnUnit );
 
-                    _title = printf( "{0}年 第{1}季度<br/>开始日期: {2} (周{4})<br />结束日期: {3} (周{5})"
+                    _title = JC.f.printf( "{0}年 第{1}季度<br/>开始日期: {2} (周{4})<br />结束日期: {3} (周{5})"
                                 , _year
                                 , JC.Calendar.getCnNum( i )
-                                , formatISODate( _sdate )
-                                , formatISODate( _edate )
+                                , JC.f.formatISODate( _sdate )
+                                , JC.f.formatISODate( _edate )
                                 , JC.Calendar.cnWeek.charAt( _sdate.getDay() % 7 )
                                 , JC.Calendar.cnWeek.charAt( _edate.getDay() % 7 )
                                 );
@@ -2200,7 +2200,7 @@
                     if( today >= _sdate.getTime() && today <= _edate.getTime() ) _class.push( 'today' );
 
 
-                    _ls.push( printf( '<td class="{0}"><a href="javascript:" title="{1}"'+
+                    _ls.push( JC.f.printf( '<td class="{0}"><a href="javascript:" title="{1}"'+
                                     ' dstart="{3}" dend="{4}" month="{5}" >{2}季度</a></td>'
                                 , _class.join(' ')
                                 , _title
@@ -2224,7 +2224,7 @@
                 _tmp && ( _dstart = _tmp.start, _dend = _tmp.end );
             }else{
                 _userSelectedItem = $( _userSelectedItem );
-                _tmp = getJqParent( _userSelectedItem, 'td' );
+                _tmp = JC.f.getJqParent( _userSelectedItem, 'td' );
                 if( _tmp && _tmp.hasClass('unable') ) return;
                 _dstart = new Date(); _dend = new Date();
                 _dstart.setTime( _userSelectedItem.attr('dstart') );
@@ -2232,7 +2232,7 @@
             }
             if( !( _dstart && _dend ) ) return;
 
-            _p._model.selector().val( printf( '{0} 至 {1}', formatISODate( _dstart ), formatISODate( _dend ) ) );
+            _p._model.selector().val( JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) );
             $(_p).trigger( 'TriggerEvent', [ JC.Calendar.Model.UPDATE, 'season', _dstart, _dend ] );
 
             JC.Calendar.hide();
@@ -2309,7 +2309,7 @@
                 //JC.log( 'MonthDayView: MonthDayToggleAll', _input.attr('action'), _input.prop('checked'), _all.length );
                 if( !_all.length ) return;
                 _all.each( function(){
-                    var _sp = $(this), _td = getJqParent( _sp, 'td' );
+                    var _sp = $(this), _td = JC.f.getJqParent( _sp, 'td' );
                     if( _td.hasClass('unable') ) return;
                     _td[ _checked ? 'addClass' : 'removeClass' ]( 'cur' );
                     $( _p ).trigger( 'MonthDayToggle', [ _sp ] );
@@ -2350,12 +2350,12 @@
                                 };
 
             if( _tm ){
-                _r.a = _p.layout().find( printf( 'a[dstart={0}]', _tm ) );
-                _r.atd = getJqParent( _r.a, 'td' );
-                _r.atr = getJqParent( _r.a, 'tr' );
+                _r.a = _p.layout().find( JC.f.printf( 'a[dstart={0}]', _tm ) );
+                _r.atd = JC.f.getJqParent( _r.a, 'td' );
+                _r.atr = JC.f.getJqParent( _r.a, 'tr' );
 
-                _r.input = _p.layout().find( printf( 'input[dstart={0}]', _tm ) );
-                _r.inputtr = getJqParent( _r.input, 'tr' );
+                _r.input = _p.layout().find( JC.f.printf( 'input[dstart={0}]', _tm ) );
+                _r.inputtr = JC.f.getJqParent( _r.input, 'tr' );
             }
 
             return _r;
@@ -2366,7 +2366,7 @@
             var _r = $('#UXCCalendar_monthday');
 
             if( !_r.length ){
-                _r = $( printf( JC.Calendar.monthdayTpl || this.tpl, JC.Calendar.monthdayHeadAppendText ) ).hide();
+                _r = $( JC.f.printf( JC.Calendar.monthdayTpl || this.tpl, JC.Calendar.monthdayHeadAppendText ) ).hide();
                 _r.attr('id', 'UXCCalendar_monthday').hide().appendTo( document.body );
 
                 var _month = $( [
@@ -2455,12 +2455,12 @@
                 _ar = [];
                 
                 for (var i = 0; i < _tmp.length; i++) {
-                    _ar.push(formatISODate(_tmp[i]));
+                    _ar.push(JC.f.formatISODate(_tmp[i]));
                 }
                 _text = _ar.join(',');
             } else {
                 _userSelectedItem = $( _userSelectedItem );
-                _tmp = getJqParent( _userSelectedItem, 'td' );
+                _tmp = JC.f.getJqParent( _userSelectedItem, 'td' );
                 if( _tmp && _tmp.hasClass('unable') ) return;
 
                 if( _p._model.multiselect() ){
@@ -2471,13 +2471,13 @@
                 _date = new Date(); 
                 _date.setTime( _userSelectedItem.attr('date') );
                 _text = _userSelectedItem.attr("date");
-                _text = printf( '{0}', formatISODate( _date ) );
+                _text = JC.f.printf( '{0}', JC.f.formatISODate( _date ) );
             }
 
             if( !_text ) return;
             if( _tmp.length ){
-                _p._model.selector().attr('placeholder', printf( '{0}年 {1}', _tmp[0].getFullYear(), _tmp[0].getMonth() + 1 ) );
-                _p._model.selector().attr('defaultdate', formatISODate( _tmp[0] ) );
+                _p._model.selector().attr('placeholder', JC.f.printf( '{0}年 {1}', _tmp[0].getFullYear(), _tmp[0].getMonth() + 1 ) );
+                _p._model.selector().attr('defaultdate', JC.f.formatISODate( _tmp[0] ) );
             }
 
             _p._model.selector().val( _text );
@@ -2507,12 +2507,12 @@
             _lastIpt
                 && !_lastIpt.is('[defaultdate]')
                 && (
-                        _tmpDate = cloneDate( _dateo.multidate[0].start )
+                        _tmpDate = JC.f.cloneDate( _dateo.multidate[0].start )
                         //, _tmpDate.setDate( 1 )
-                        , _lastIpt.attr('defaultdate', formatISODate( _tmpDate ) )
+                        , _lastIpt.attr('defaultdate', JC.f.formatISODate( _tmpDate ) )
                         /*
                         , !_lastIpt.is( '[placeholder]' ) 
-                            && _lastIpt.attr('placeholder', printf( '{0}年 {1}月', _tmpDate.getFullYear(), _tmpDate.getMonth() + 1 ) )
+                            && _lastIpt.attr('placeholder', JC.f.printf( '{0}年 {1}月', _tmpDate.getFullYear(), _tmpDate.getMonth() + 1 ) )
                        */
                     )
                 ;
@@ -2521,7 +2521,7 @@
 	MonthDayView.prototype._buildBody =
         function( _dateo ){
 				var _p = this, _layout = _p._model.layout();
-                var _maxday = maxDayOfMonth( _dateo.date ), 
+                var _maxday = JC.f.maxDayOfMonth( _dateo.date ), 
                     _ls = [],
                     i, 
 					_class, 
@@ -2547,25 +2547,25 @@
 					_dayClass = getClass(_dateo, _tempDate, _today).join(' ');
 					
 					if (_tempDay == 0 || _tempDay == 6) _headClass.push("red");
-                    _headLs.push( printf( 
+                    _headLs.push( JC.f.printf( 
                                 '<td class="{0}">{1}</td>'
                                 , _headClass.join(" ") 
                                 , Calendar.cnWeek[_tempDay]
                             ));
 
-                    _dayLs.push( printf(
+                    _dayLs.push( JC.f.printf(
                         '<td class="{0}"><a href="javascript:;" dstart="{1}" dend="{1}" title="{3}" >{2}</a></td>'
                         , _dayClass
                         , _tempDate.getTime()
                         , i + 1
-                        , formatISODate(_tempDate)
+                        , JC.f.formatISODate(_tempDate)
                      ));
 
-                   _ckLs.push( printf(
+                   _ckLs.push( JC.f.printf(
                         '<td><input type="checkbox" date="{1}" dstart="{1}" dend="{1}" class="js_JCCalendarCheckbox" action="item" {3} {4} title="{2}" /></td>'
                         , ''
                         , _tempDate.getTime()
-                        , formatISODate(_tempDate)
+                        , JC.f.formatISODate(_tempDate)
                         , /\bcur\b/.test( _dayClass ) ? 'checked' : ''
                         , /\bunable\b/.test( _dayClass ) ? 'disabled' : ''
                      ));
@@ -2601,12 +2601,12 @@
 			}
 		} 
            
-		if( isSameDay( _tempDate, _today ) ) {
+		if( JC.f.isSameDay( _tempDate, _today ) ) {
 			_class.push( 'today' );
 		}
 
         for( var i = 0, j = _dateo.multidate.length; i < j; i++ ){
-            if( isSameDay( _dateo.multidate[i].start, _tempDate ) ){ 
+            if( JC.f.isSameDay( _dateo.multidate[i].start, _tempDate ) ){ 
                 _class.push( 'cur' );
                 break;
             }

@@ -41,8 +41,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/.window.html">.window</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -189,7 +187,7 @@
 
     window.Bizs = window.Bizs || {};
     /**
-     * JC 组件通用静态方法和属性 ( JC.common )
+     * JC 组件通用静态方法和属性 ( JC.common, &lt;b&gt;别名: JC.f&lt;/b&gt; )
      * &lt;br /&gt;所有 JC 组件都会依赖这个静态类
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.common.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
@@ -202,8 +200,41 @@
      * @version dev 0.1 2013-07-04
      * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 360 75 Team
      */
-    JC.common = {
+    JC.common = JC.f = {
+        &quot;addUrlParams&quot;: addUrlParams
+        , &quot;cloneDate&quot;: cloneDate
+        , &quot;dateDetect&quot;: dateDetect
+        , &quot;delUrlParam&quot;: delUrlParam
+        , &quot;easyEffect&quot;: easyEffect
+        , &quot;formatISODate&quot;: formatISODate
+        , &quot;funcName&quot;: funcName
+        , &quot;getJqParent&quot;: getJqParent
+        , &quot;getUrlParam&quot;: getUrlParam
+        , &quot;getUrlParams&quot;: getUrlParams
+        , &quot;hasUrlParam&quot;: hasUrlParam
+        , &quot;httpRequire&quot;: httpRequire
+        , &quot;isSameDay&quot;: isSameDay
+        , &quot;isSameMonth&quot;: isSameMonth
+        , &quot;jcAutoInitComps&quot;: jcAutoInitComps
+        , &quot;maxDayOfMonth&quot;: maxDayOfMonth
+        , &quot;mousewheelEvent&quot;: mousewheelEvent
+        , &quot;padChar&quot;: padChar
+        , &quot;parentSelector&quot;: parentSelector
+        , &quot;parseBool&quot;: parseBool
+        , &quot;parseFinance&quot;: parseFinance
+        , &quot;parseISODate&quot;: parseISODate
+        , &quot;printf&quot;: printf
+        , &quot;pureDate&quot;: pureDate
+        , &quot;reloadPage&quot;: reloadPage
+        , &quot;removeUrlSharp&quot;: removeUrlSharp
+        , &quot;scriptContent&quot;: scriptContent
+        , &quot;scriptPath&quot;: scriptPath
+        , &quot;sliceArgs&quot;: sliceArgs
+        , &quot;urlDetect&quot;: urlDetect
     };
+    /**
+     * jquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法
+     */
     !String.prototype.trim &amp;&amp; ( String.prototype.trim = function(){ return $.trim( this ); } );
     /**
      * 如果 console 不可用, 则生成一个模拟的 console 对象
@@ -213,6 +244,7 @@
     }};
     /**
      * 全局 css z-index 控制属性
+     * &lt;br /&gt; &lt;b&gt;注意&lt;/b&gt;: 这个变量 window.ZINDEX_COUNT
      * @property    ZINDEX_COUNT
      * @type        int
      * @default     50001
@@ -371,7 +403,7 @@
             params = _url.split(&#x27;?&#x27;)[1].split(&#x27;&amp;&#x27;);
             _url = _url.split(&#x27;?&#x27;)[0];
             for( i = 0; i &lt; params.length; i++ ){
-                items = params[i].split(&#x27;=&#x27;);
+                var items = params[i].split(&#x27;=&#x27;);
                 items[0] = items[0].replace(/^\s+|\s+$/g, &#x27;&#x27;);
                 if( items[0].toLowerCase() == _key.toLowerCase() ) continue;
                 tmpParams.push( items.join(&#x27;=&#x27;) )
@@ -982,7 +1014,7 @@
     }());
 
 }(jQuery));
-    return JC.Tab;
+    return JC.f;
 });}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>

@@ -105,7 +105,7 @@
      */
     Placeholder.update =
         function(){
-            var _items = $( printf( '#{0} > div', Placeholder.Model._boxId ) );
+            var _items = $( JC.f.printf( '#{0} > div', Placeholder.Model._boxId ) );
             if( !_items.length ) return;
             _items.each( function(){
                 var _p = $(this), _ins = _p.data( 'CPHIns' );
@@ -211,7 +211,7 @@
         , placeholder:
             function(){
                 if( !this._placeholder ){
-                    this._placeholder = $( printf( '<div class="{0}"></div>'
+                    this._placeholder = $( JC.f.printf( '<div class="{0}"></div>'
                                 , this.className() 
                             ) )
                             .appendTo( this.placeholderBox() );
@@ -226,7 +226,7 @@
             function(){
                 var _r = $( '#' + Placeholder.Model._boxId );
                 if( !( _r && _r.length ) ){
-                    _r = $( printf( '<div id="{0}"></div>', Placeholder.Model._boxId ) ).appendTo( document.body );
+                    _r = $( JC.f.printf( '<div id="{0}"></div>', Placeholder.Model._boxId ) ).appendTo( document.body );
                 }
                 return _r;
             }

@@ -58,8 +58,8 @@
             button.js_isIgnore{ display: none; }
         </style>
         <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
-        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
-        <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Panel/0.1/res/default/style.css' rel='stylesheet' />
 
         <script src="../../../../lib.js"></script>
         <script src="../../../../config.js"></script>
@@ -85,7 +85,7 @@
 
             $(document).delegate( 'a.js_cleanCauData', 'click', function(){
                 var _p = $(this)
-                    , _pnt = getJqParent( _p, 'dd' )
+                    , _pnt = JC.f.getJqParent( _p, 'dd' )
                     , _ctl = _pnt.find( 'input.js_compAjaxUpload' )
                     , _ins = JC.AjaxUpload.getInstance( _ctl )
                     ;
@@ -95,7 +95,7 @@
 
             function cauDisplayLabelCallback( _json, _label, _value ){
                var _selector = this
-                   , _label = printf( '<a href="{0}" class="green js_auLink" target="_blank">{1}</a>{2}'
+                   , _label = JC.f.printf( '<a href="{0}" class="green js_auLink" target="_blank">{1}</a>{2}'
                                    , _value, _label
                                    ,  '&nbsp;<a href="javascript:" class="btn btn-cls2 js_cleanCauData" style="color:red;">删除</a>&nbsp;&nbsp;'
                                )

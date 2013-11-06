@@ -46,7 +46,7 @@
                 });
 
                 $([ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ).slice( 2 );
+                    var _data = JC.f.sliceArgs( arguments ).slice( 2 );
                     _p.trigger( _evtName, _data );
                 });
 
@@ -157,8 +157,8 @@
             if( !( _inClass && _outClass ) ) return;
             var _k
                 , _fStr, _tmp
-                //, _inName = funcName( _inClass )
-                //, _outName = funcName( _outClass )
+                //, _inName = JC.f.funcName( _inClass )
+                //, _outName = JC.f.funcName( _outClass )
                 //, _inRe = _inName && _outName ? new RegExp( _inName, 'g' ) : null
                 //, _namespace = _namespace ? _namespace + '.' : 'JC.'
                 ;
@@ -171,7 +171,7 @@
                             /*
                             _fStr = _inClass[ _k ].toString();
                             _fStr = _fStr.replace( _inRe, _namespace + _outName );
-                            _tmp = printf( '( {0}{1}.{2} = {3})', _namespace, _outName, _k, _fStr );
+                            _tmp = JC.f.printf( '( {0}{1}.{2} = {3})', _namespace, _outName, _k, _fStr );
                             eval( _tmp  );
                             */
                         }else{//clone static property
@@ -353,7 +353,7 @@
                 var _r = undefined;
                 _selector
                     && _selector.is( '[' + _key + ']' ) 
-                    && ( _r = parseBool( _selector.attr( _key ).trim() ) );
+                    && ( _r = JC.f.parseBool( _selector.attr( _key ).trim() ) );
                 return _r;
             }
         /**
@@ -398,7 +398,7 @@
 
                 _selector
                     && _selector.is( '[' + _key + ']' ) 
-                    && ( _r = parentSelector( _selector, _selector.attr( _key ) ) );
+                    && ( _r = JC.f.parentSelector( _selector, _selector.attr( _key ) ) );
 
                 return _r;
             }

@@ -23,20 +23,20 @@
             dl.def > dd > button {
             }
         </style>
-        <link href='../../../comps/Tab/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Tab/0.1/res/default/style.css' rel='stylesheet' />
         <script src="../../../../lib.js"></script>
         <script src="../../../../config.js"></script>
         <script>
             JC.debug = 1;
 
             requirejs( [ 'JC.Tab' ], function( Tab ){
-                httpRequire();
+                JC.f.httpRequire();
 
                 JC.Tab.ajaxCallback =
                 function( _data, _label, _container ){
                     _data && ( _data = $.parseJSON( _data ) );
                     if( _data && _data.errorno === 0 ){
-                        _container.html( printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
+                        _container.html( JC.f.printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
                         }else{
                         Tab.isAjaxInited( _label, 0 );
                         _container.html( '<h2>内容加载失败!</h2>' );
@@ -60,7 +60,7 @@
             function ajaxcallback( _data, _label, _container ){
                 _data && ( _data = $.parseJSON( _data ) );
                 if( _data && _data.errorno === 0 ){
-                    _container.html( printf( '<h2>label attr ajaxcallback</h2>{0}', _data.data ) );
+                    _container.html( JC.f.printf( '<h2>label attr ajaxcallback</h2>{0}', _data.data ) );
                     }else{
                     Tab.isAjaxInited( _label, 0 );
                     _container.html( '<h2>内容加载失败!</h2>' );

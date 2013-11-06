@@ -36,17 +36,17 @@
             $(document).delegate( 'button.js_dynAdd', 'click', function( _evt ){
                 var _p = $(this)
                     , _quantity = parseInt( _p.attr('daquantity'), 10 ) || 1
-                    , _dabox = parentSelector( _p, _p.attr('dabox') )
-                    , _daboxitem = parentSelector( _p, _p.attr('daboxitem') )
+                    , _dabox = JC.f.parentSelector( _p, _p.attr('dabox') )
+                    , _daboxitem = JC.f.parentSelector( _p, _p.attr('daboxitem') )
                     , _ix = ITEM_COUNT
-                    , _tpl = scriptContent( '#itemTpl' )
+                    , _tpl = JC.f.scriptContent( '#itemTpl' )
                     , _ls = []
                     ;
 
                 if( !( _quantity && _dabox && _dabox.length ) ) return;
 
                 for( var i = 0; i < _quantity; i++ ){
-                    _ls.push( printf( _tpl, _ix++ ) );
+                    _ls.push( JC.f.printf( _tpl, _ix++ ) );
                 }
 
                 var _new = $( _ls.join('') );

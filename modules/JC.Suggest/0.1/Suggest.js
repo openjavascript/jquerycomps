@@ -465,7 +465,7 @@
             function(){
                 var _p = this;
                 !_p._layout && _p.selector().is('[suglayout]') 
-                    && ( _p._layout = parentSelector( _p.selector(), _p.selector().attr('suglayout') ) );
+                    && ( _p._layout = JC.f.parentSelector( _p.selector(), _p.selector().attr('suglayout') ) );
 
                 !_p._layout && ( _p._layout = $( _p.suglayouttpl() )
                                     , _p._layout.hide()
@@ -486,7 +486,7 @@
         , sugautoposition: 
             function(){ 
                 this.layout().is('sugautoposition') 
-                    && ( this._sugautoposition = parseBool( this.layout().attr('sugautoposition') ) );
+                    && ( this._sugautoposition = JC.f.parseBool( this.layout().attr('sugautoposition') ) );
                 return this._sugautoposition; 
             }
 
@@ -541,14 +541,14 @@
                 this.selector().is('[sugurl]') 
                     && ( this._sugurl = this.selector().attr('sugurl') );
                 !this.selector().is('[sugurl]') && ( this._sugurl = '?word={0}&callback={1}' );
-                this._sugurl = printf( this._sugurl, _word, this.sugdatacallback() );
+                this._sugurl = JC.f.printf( this._sugurl, _word, this.sugdatacallback() );
                 return this._sugurl;
             }
         , sugneedscripttag:
             function(){
                 this._sugneedscripttag = true;
                 this.selector().is('[sugneedscripttag]') 
-                    && ( this._sugneedscripttag = parseBool( this.selector().attr('sugneedscripttag') ) );
+                    && ( this._sugneedscripttag = JC.f.parseBool( this.selector().attr('sugneedscripttag') ) );
                 return this._sugneedscripttag;
             }
         , getData:
@@ -557,7 +557,7 @@
                 JC.log( _url, new Date().getTime() );
                 if( this.sugneedscripttag() ){
                     $( '#' + _scriptId ).remove();
-                    _script = printf( '<script id="{1}" src="{0}"><\/script>', _url, _scriptId );
+                    _script = JC.f.printf( '<script id="{1}" src="{0}"><\/script>', _url, _scriptId );
                     $( _script ).appendTo( document.body );
                 }else{
                     $.get( _url, function( _d ){
@@ -605,7 +605,7 @@
             function(){
                 var _r;
                 this.selector().is( '[sugprevententer]' )
-                    && ( _r = parseBool( this.selector().attr('sugprevententer') ) )
+                    && ( _r = JC.f.parseBool( this.selector().attr('sugprevententer') ) )
                     ;
                 return _r;
             }
@@ -663,7 +663,7 @@
             function(){
                 var _r = this.selector();
                 this.selector().is('[sugplaceholder]') 
-                    && ( _r = parentSelector( this.selector(), this.selector().attr('sugplaceholder') ) );
+                    && ( _r = JC.f.parentSelector( this.selector(), this.selector().attr('sugplaceholder') ) );
                 return _r;
             }
     };
@@ -722,7 +722,7 @@
                 for( var i = 0, j = _data.s.length; i < j; i++ ){
                     _tmp = _data.s[i], _text = _tmp, _query = _data.q || '';
 
-                    _text = _text.replace( _query, printf( '<b>{0}</b>', _query ) );
+                    _text = _text.replace( _query, JC.f.printf( '<b>{0}</b>', _query ) );
                     /*
                     if( _tmp.indexOf( _query ) > -1 ){
                         _text = _text.slice( _query.length );
@@ -730,7 +730,7 @@
                     }
                     else _query = '';
                     */
-                    _ls.push( printf('<{4} keyword="{2}" keyindex="{3}" class="js_sugItem">{1}</{4}>'
+                    _ls.push( JC.f.printf('<{4} keyword="{2}" keyindex="{3}" class="js_sugItem">{1}</{4}>'
                                 , _query, _text, encodeURIComponent( _tmp ), i
                                 , _subtagname
                             ));

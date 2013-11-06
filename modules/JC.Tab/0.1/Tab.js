@@ -61,13 +61,13 @@
                 JC.debug = 1;
 
                 requirejs( [ 'JC.Tab' ], function(){
-                    httpRequire();
+                    JC.f.httpRequire();
 
                     JC.Tab.ajaxCallback =
                         function( _data, _label, _container ){
                             _data && ( _data = $.parseJSON( _data ) );
                             if( _data && _data.errorno === 0 ){
-                                _container.html( printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
+                                _container.html( JC.f.printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
                             }else{
                                 Tab.isAjaxInited( _label, 0 );
                                 _container.html( '<h2>内容加载失败!</h2>' );
@@ -91,7 +91,7 @@
                 function ajaxcallback( _data, _label, _container ){
                     _data && ( _data = $.parseJSON( _data ) );
                     if( _data && _data.errorno === 0 ){
-                        _container.html( printf( '<h2>label attr ajaxcallback</h2>{0}', _data.data ) );
+                        _container.html( JC.f.printf( '<h2>label attr ajaxcallback</h2>{0}', _data.data ) );
                     }else{
                         Tab.isAjaxInited( _label, 0 );
                         _container.html( '<h2>内容加载失败!</h2>' );
@@ -218,7 +218,7 @@
                     function( _data, _label, _container, _textStatus, _jqXHR ){
                         _data && ( _data = $.parseJSON( _data ) );
                         if( _data && _data.errorno === 0 ){
-                            _container.html( printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
+                            _container.html( JC.f.printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
                         }else{
                             Tab.isAjaxInited( _label, 0 );
                             _container.html( '<h2>内容加载失败!</h2>' );
@@ -364,13 +364,13 @@
                 if( _p.isFromChild( _p.layout().attr('tablabels') ) ){
                     this._tablabels = _p.layout().find( _p.layout().attr('tablabels').replace( _re, '' ) );
                 }else{
-                    this._tablabels = parentSelector( _p.layout(), _p.layout().attr('tablabels') );
+                    this._tablabels = JC.f.parentSelector( _p.layout(), _p.layout().attr('tablabels') );
                 }
 
                 if( _p.isFromChild( _p.layout().attr('tabcontainers') ) ){
                     this._tabcontainers = _p.layout().find( _p.layout().attr('tabcontainers').replace( _re, '' ) );
                 }else{
-                    this._tabcontainers = parentSelector( _p.layout(), _p.layout().attr('tabcontainers') );
+                    this._tabcontainers = JC.f.parentSelector( _p.layout(), _p.layout().attr('tabcontainers') );
                 }
 
                 this._tablabels.each( function(){ _p.tablabel( this, 1 ); } );

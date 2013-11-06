@@ -8,7 +8,7 @@
     body{ width: 600px; margin: 20px auto 20px; background:#ececec; }
     dl dd{ margin: 10px 0; }
 </style>
-<link href='../../../comps/Tips/res/default/style.css' rel='stylesheet' />
+<link href='../../../../modules/JC.Tips/0.1/res/default/style.css' rel='stylesheet' />
 <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
 <script src="../../../../lib.js"></script>
 <script src="../../../../config.js"></script>
@@ -31,7 +31,7 @@
         var today = new Date();
         var maxDate = today;
 
-        $( 'input.testitem' ).val( formatISODate( today ) ).attr('maxvalue', formatISODate( maxDate ) );
+        $( 'input.testitem' ).val( JC.f.formatISODate( today ) ).attr('maxvalue', JC.f.formatISODate( maxDate ) );
 
     });
 
@@ -67,13 +67,13 @@
 
     function calendarupdate( _start, _end ){
         var _p = $(this);
-        JC.log( 'calendarupdate', printf( 'val:{0}, start:{1}, end:{2}', _p.val(), _start, _end ) );
+        JC.log( 'calendarupdate', JC.f.printf( 'val:{0}, start:{1}, end:{2}', _p.val(), _start, _end ) );
     }
 
     function calendarupdatemultiselect( _data ){
         var _p = $(this);
         JC.log( 'calendarupdatemultiselect:'
-            , printf( 'val:{0}, data:{1}', _p.val(), JSON.stringify( _data ) ) );
+            , JC.f.printf( 'val:{0}, data:{1}', _p.val(), JSON.stringify( _data ) ) );
     }
 </script>
 </head>    

@@ -41,8 +41,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/.window.html">.window</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -657,7 +655,7 @@
                 this.subitems();
                 this.totalpage();
 
-                JC.log( printf(&#x27;w:{0}, h:{1}, iw:{2}, ih:{3}, dr:{4}, si:{6}, hi:{5}, totalpage:{7}&#x27;
+                JC.log( JC.f.printf(&#x27;w:{0}, h:{1}, iw:{2}, ih:{3}, dr:{4}, si:{6}, hi:{5}, totalpage:{7}&#x27;
                             , this.width(), this.height()
                             , this.itemwidth(), this.itemheight()
                             , this.direction(), this.howmanyitem()
@@ -746,7 +744,7 @@
          * @default false
          * @return bool
          */
-        , loop: function(){ return parseBool( this._layout.attr(&#x27;sliderloop&#x27;) ); }
+        , loop: function(){ return JC.f.parseBool( this._layout.attr(&#x27;sliderloop&#x27;) ); }
         /**
          * 获取每次移动间隔的毫秒数
          * @method stepms
@@ -774,7 +772,7 @@
          * @default false
          * @return bool
          */
-        , automove: function(){ return parseBool( this._layout.attr(&#x27;sliderautomove&#x27;) ); }
+        , automove: function(){ return JC.f.parseBool( this._layout.attr(&#x27;sliderautomove&#x27;) ); }
         /**
          * 获取默认显示的索引
          * @method  defaultpage
@@ -1002,7 +1000,7 @@
                 JC.log( &#x27;HorizontalView move, is backwrad&#x27;, _backwrad, this._model.pointer() );
 
                 var _newpointer = this._model.newpointer( _backwrad );
-                JC.log( printf( &#x27;is backwrad: {0}, pointer:{1}, new pointer:{2}&#x27;
+                JC.log( JC.f.printf( &#x27;is backwrad: {0}, pointer:{1}, new pointer:{2}&#x27;
                             , _backwrad, this._model.pointer(), _newpointer
                             ));
 
@@ -1071,7 +1069,7 @@
                 });
 
                 JC.log( &#x27;zzzzzzzzzz&#x27;, _begin, this._itemspace, this._model.moveDirection() );
-                _p._model.interval( easyEffect( function( _step, _done ){
+                _p._model.interval( JC.f.easyEffect( function( _step, _done ){
                     //JC.log( _step );
                     $( _concat ).each(function( _ix, _item ){
                         _item.css( {&#x27;left&#x27;: _item.data(&#x27;TMP_LEFT&#x27;) +  (_isPlus? _step : -_step ) + &#x27;px&#x27; } );

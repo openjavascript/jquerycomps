@@ -41,8 +41,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/.window.html">.window</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -285,7 +283,7 @@
      */
     Placeholder.update =
         function(){
-            var _items = $( printf( &#x27;#{0} &gt; div&#x27;, Placeholder.Model._boxId ) );
+            var _items = $( JC.f.printf( &#x27;#{0} &gt; div&#x27;, Placeholder.Model._boxId ) );
             if( !_items.length ) return;
             _items.each( function(){
                 var _p = $(this), _ins = _p.data( &#x27;CPHIns&#x27; );
@@ -391,7 +389,7 @@
         , placeholder:
             function(){
                 if( !this._placeholder ){
-                    this._placeholder = $( printf( &#x27;&lt;div class=&quot;{0}&quot;&gt;&lt;/div&gt;&#x27;
+                    this._placeholder = $( JC.f.printf( &#x27;&lt;div class=&quot;{0}&quot;&gt;&lt;/div&gt;&#x27;
                                 , this.className() 
                             ) )
                             .appendTo( this.placeholderBox() );
@@ -406,7 +404,7 @@
             function(){
                 var _r = $( &#x27;#&#x27; + Placeholder.Model._boxId );
                 if( !( _r &amp;&amp; _r.length ) ){
-                    _r = $( printf( &#x27;&lt;div id=&quot;{0}&quot;&gt;&lt;/div&gt;&#x27;, Placeholder.Model._boxId ) ).appendTo( document.body );
+                    _r = $( JC.f.printf( &#x27;&lt;div id=&quot;{0}&quot;&gt;&lt;/div&gt;&#x27;, Placeholder.Model._boxId ) ).appendTo( document.body );
                 }
                 return _r;
             }

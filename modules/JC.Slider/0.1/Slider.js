@@ -477,7 +477,7 @@
                 this.subitems();
                 this.totalpage();
 
-                JC.log( printf('w:{0}, h:{1}, iw:{2}, ih:{3}, dr:{4}, si:{6}, hi:{5}, totalpage:{7}'
+                JC.log( JC.f.printf('w:{0}, h:{1}, iw:{2}, ih:{3}, dr:{4}, si:{6}, hi:{5}, totalpage:{7}'
                             , this.width(), this.height()
                             , this.itemwidth(), this.itemheight()
                             , this.direction(), this.howmanyitem()
@@ -566,7 +566,7 @@
          * @default false
          * @return bool
          */
-        , loop: function(){ return parseBool( this._layout.attr('sliderloop') ); }
+        , loop: function(){ return JC.f.parseBool( this._layout.attr('sliderloop') ); }
         /**
          * 获取每次移动间隔的毫秒数
          * @method stepms
@@ -594,7 +594,7 @@
          * @default false
          * @return bool
          */
-        , automove: function(){ return parseBool( this._layout.attr('sliderautomove') ); }
+        , automove: function(){ return JC.f.parseBool( this._layout.attr('sliderautomove') ); }
         /**
          * 获取默认显示的索引
          * @method  defaultpage
@@ -822,7 +822,7 @@
                 JC.log( 'HorizontalView move, is backwrad', _backwrad, this._model.pointer() );
 
                 var _newpointer = this._model.newpointer( _backwrad );
-                JC.log( printf( 'is backwrad: {0}, pointer:{1}, new pointer:{2}'
+                JC.log( JC.f.printf( 'is backwrad: {0}, pointer:{1}, new pointer:{2}'
                             , _backwrad, this._model.pointer(), _newpointer
                             ));
 
@@ -891,7 +891,7 @@
                 });
 
                 JC.log( 'zzzzzzzzzz', _begin, this._itemspace, this._model.moveDirection() );
-                _p._model.interval( easyEffect( function( _step, _done ){
+                _p._model.interval( JC.f.easyEffect( function( _step, _done ){
                     //JC.log( _step );
                     $( _concat ).each(function( _ix, _item ){
                         _item.css( {'left': _item.data('TMP_LEFT') +  (_isPlus? _step : -_step ) + 'px' } );

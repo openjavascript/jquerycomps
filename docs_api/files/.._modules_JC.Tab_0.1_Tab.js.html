@@ -41,8 +41,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/.window.html">.window</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -241,13 +239,13 @@
                 JC.debug = 1;
 
                 requirejs( [ &#x27;JC.Tab&#x27; ], function(){
-                    httpRequire();
+                    JC.f.httpRequire();
 
                     JC.Tab.ajaxCallback =
                         function( _data, _label, _container ){
                             _data &amp;&amp; ( _data = $.parseJSON( _data ) );
                             if( _data &amp;&amp; _data.errorno === 0 ){
-                                _container.html( printf( &#x27;&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}&#x27;, _data.data ) );
+                                _container.html( JC.f.printf( &#x27;&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}&#x27;, _data.data ) );
                             }else{
                                 Tab.isAjaxInited( _label, 0 );
                                 _container.html( &#x27;&lt;h2&gt;内容加载失败!&lt;/h2&gt;&#x27; );
@@ -271,7 +269,7 @@
                 function ajaxcallback( _data, _label, _container ){
                     _data &amp;&amp; ( _data = $.parseJSON( _data ) );
                     if( _data &amp;&amp; _data.errorno === 0 ){
-                        _container.html( printf( &#x27;&lt;h2&gt;label attr ajaxcallback&lt;/h2&gt;{0}&#x27;, _data.data ) );
+                        _container.html( JC.f.printf( &#x27;&lt;h2&gt;label attr ajaxcallback&lt;/h2&gt;{0}&#x27;, _data.data ) );
                     }else{
                         Tab.isAjaxInited( _label, 0 );
                         _container.html( &#x27;&lt;h2&gt;内容加载失败!&lt;/h2&gt;&#x27; );
@@ -398,7 +396,7 @@
                     function( _data, _label, _container, _textStatus, _jqXHR ){
                         _data &amp;&amp; ( _data = $.parseJSON( _data ) );
                         if( _data &amp;&amp; _data.errorno === 0 ){
-                            _container.html( printf( &#x27;&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}&#x27;, _data.data ) );
+                            _container.html( JC.f.printf( &#x27;&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}&#x27;, _data.data ) );
                         }else{
                             Tab.isAjaxInited( _label, 0 );
                             _container.html( &#x27;&lt;h2&gt;内容加载失败!&lt;/h2&gt;&#x27; );
@@ -544,13 +542,13 @@
                 if( _p.isFromChild( _p.layout().attr(&#x27;tablabels&#x27;) ) ){
                     this._tablabels = _p.layout().find( _p.layout().attr(&#x27;tablabels&#x27;).replace( _re, &#x27;&#x27; ) );
                 }else{
-                    this._tablabels = parentSelector( _p.layout(), _p.layout().attr(&#x27;tablabels&#x27;) );
+                    this._tablabels = JC.f.parentSelector( _p.layout(), _p.layout().attr(&#x27;tablabels&#x27;) );
                 }
 
                 if( _p.isFromChild( _p.layout().attr(&#x27;tabcontainers&#x27;) ) ){
                     this._tabcontainers = _p.layout().find( _p.layout().attr(&#x27;tabcontainers&#x27;).replace( _re, &#x27;&#x27; ) );
                 }else{
-                    this._tabcontainers = parentSelector( _p.layout(), _p.layout().attr(&#x27;tabcontainers&#x27;) );
+                    this._tabcontainers = JC.f.parentSelector( _p.layout(), _p.layout().attr(&#x27;tabcontainers&#x27;) );
                 }
 
                 this._tablabels.each( function(){ _p.tablabel( this, 1 ); } );

@@ -79,7 +79,7 @@
      *          自定义上传完毕后显示的内容 模板
 <xmp>function cauDisplayLabelCallback( _json, _label, _value ){
     var _selector = this
-        , _label = printf( '<a href="{0}" class="green js_auLink" target="_blank">{1}</a>{2}'
+        , _label = JC.f.printf( '<a href="{0}" class="green js_auLink" target="_blank">{1}</a>{2}'
                         , _value, _label
                         ,  '&nbsp;<a href="javascript:" class="btn btn-cls2 js_cleanCauData"></a>&nbsp;&nbsp;'
                     )
@@ -205,7 +205,7 @@
      * @static
      * @private
      */
-    AjaxUpload._FRAME_DIR = "comps/AjaxUpload/frame/";
+    AjaxUpload._FRAME_DIR = "modules/JC.AjaxUpload/0.1/frame/";
     /**
      * 初始化 frame 时递增的统计变量
      * @property    _INS_COUNT
@@ -410,10 +410,10 @@
         , framePath:
             function(){
                 var _fl = this.attrProp('cauFrameFileName') || AjaxUpload.frameFileName
-                    , _r = printf( '{0}{1}{2}', JC.PATH, AjaxUpload._FRAME_DIR, _fl )
+                    , _r = JC.f.printf( '{0}{1}{2}', JC.PATH, AjaxUpload._FRAME_DIR, _fl )
                     ;
                 this.randomFrame() 
-                    && ( _r = addUrlParams( _r, { 'rnd': new Date().getTime() } ) )
+                    && ( _r = JC.f.addUrlParams( _r, { 'rnd': new Date().getTime() } ) )
                     ;
                 return _r;
             }
@@ -431,7 +431,7 @@
                 if( !this._iframe ){
                     var _tpl = AjaxUpload.frameTpl;
                     if( this.selector().is('[cauFrameScriptTpl]') ){
-                        _tpl = scriptContent( parentSelector( 
+                        _tpl = JC.f.scriptContent( JC.f.parentSelector( 
                                                             this.selector()
                                                             , this.selector().attr('cauFrameScriptTpl') 
                                                             ) 
@@ -485,7 +485,7 @@
                     if( _p._model.cauDisplayLabelCallback() ){
                         _label = _p._model.cauDisplayLabelCallback().call( _p._model.selector(), _d, _label, _value );
                     }else{
-                        _label = printf( '<a href="{0}" class="green js_auLink" target="_blank">{1}</a>', _value, _label);
+                        _label = JC.f.printf( '<a href="{0}" class="green js_auLink" target="_blank">{1}</a>', _value, _label);
                     }
                     _displayLabel 
                         && _displayLabel.length
@@ -601,7 +601,7 @@
                 if( _cb ){
                     _cb.call( _p._model.selector(), _p._model.cauFileExt(), _flPath, _p._model.frame() );
                 }else{
-                    var _msg = printf( '类型错误, 允许上传的文件类型: {0} <p class="auExtErr" style="color:red">{1}</p>'
+                    var _msg = JC.f.printf( '类型错误, 允许上传的文件类型: {0} <p class="auExtErr" style="color:red">{1}</p>'
                                         , _p._model.cauFileExt(), _flPath );
                     JC.Dialog 
                         ? JC.Dialog.alert( _msg, 1 )
@@ -616,7 +616,7 @@
                 if( _cb ){
                     _cb.call( _p._model.selector(), _d, _p._model.frame() );
                 }else{
-                    var _msg = printf( '服务端错误, 无法解析返回数据: <p class="auExtErr" style="color:red">{0}</p>'
+                    var _msg = JC.f.printf( '服务端错误, 无法解析返回数据: <p class="auExtErr" style="color:red">{0}</p>'
                                         , _d );
                     JC.Dialog 
                         ? JC.Dialog.alert( _msg, 1 )
@@ -639,7 +639,7 @@
     };
 
     AjaxUpload.frameTpl =
-        printf(
+        JC.f.printf(
                 '<iframe src="about:blank" frameborder="0" class="AUIframe" style="{0}"></iframe>'
                 , 'width: 84px; height: 24px;cursor: pointer; vertical-align: middle;'
               );

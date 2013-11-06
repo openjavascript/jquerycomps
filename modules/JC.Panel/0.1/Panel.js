@@ -407,7 +407,7 @@
          */
         , addAutoClose:
             function(){
-                this.clickClose.apply( this, sliceArgs( arguments ) );
+                this.clickClose.apply( this, JC.f.sliceArgs( arguments ) );
                 return this;
             }
         /**
@@ -747,7 +747,7 @@
                     JC.log( 'user tpl', this.selector.parent().length );
                     if( !this.selector.parent().length ){
                         _p.selector.appendTo( $(document.body ) );
-                        window.jcAutoInitComps && jcAutoInitComps( _p.selector );
+                        window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( _p.selector );
                     }
                 }else if( !_selector || _selector.length === 0 ){
                     this.footers = this.bodys;
@@ -795,7 +795,7 @@
             function(){
                 var _r = Panel.focusButton;
                 if( this.panel.is( '[panelfocusbutton]' ) ){
-                    _r = parseBool( this.panel.attr('panelfocusbutton') );
+                    _r = JC.f.parseBool( this.panel.attr('panelfocusbutton') );
                 }
                 return _r;
             }
@@ -803,7 +803,7 @@
             function(){
                 var _r = Panel.clickClose;
                 if( this.panel.is( '[panelclickclose]' ) ){
-                    _r = parseBool( this.panel.attr('panelclickclose') );
+                    _r = JC.f.parseBool( this.panel.attr('panelclickclose') );
                 }
                 return _r;
             }
@@ -811,7 +811,7 @@
             function(){
                 var _r;
                 if( this.panel.is( '[panelautoclose]' ) ){
-                    _r = parseBool( this.panel.attr('panelautoclose') );
+                    _r = JC.f.parseBool( this.panel.attr('panelautoclose') );
                 }
                 return _r;
             }
@@ -867,7 +867,7 @@
                     }else{
                         this._model.panel = $(this._tpl);
                         this._model.panel.appendTo(document.body);
-                        window.jcAutoInitComps && jcAutoInitComps( this._model.panel );
+                        window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( this._model.panel );
                     }
                 }
 
@@ -1176,7 +1176,7 @@
 
             , _panelmsg = _p.attr('panelmsg')
             , _panelmsgBox = _p.is('[panelmsgbox]') 
-                ? parentSelector( _p, _p.attr('panelmsgbox') ) 
+                ? JC.f.parentSelector( _p, _p.attr('panelmsgbox') ) 
                 : null
             ;
 
@@ -1197,26 +1197,26 @@
 
             , _panelheader = _p.attr('panelheader') || ''
             , _panelheaderBox = _p.is('[panelheaderbox]') 
-                ? parentSelector( _p, _p.attr('panelheaderbox') ) 
+                ? JC.f.parentSelector( _p, _p.attr('panelheaderbox') ) 
                 : null
 
             , _panelfooter = _p.attr('panelfooter') || ''
             , _panelfooterBox = _p.is('[panelfooterbox]') 
-                ? parentSelector( _p, _p.attr('panelfooterbox') ) 
+                ? JC.f.parentSelector( _p, _p.attr('panelfooterbox') ) 
                 : null
             /**
              * 隐藏关闭按钮
              */
             , _hideclose = _p.is('[panelhideclose]') 
-                ? parseBool( _p.attr('panelhideclose') )
+                ? JC.f.parseBool( _p.attr('panelhideclose') )
                 : false
             ;
 
-        _panelmsgBox && ( _panelmsg = scriptContent( _panelmsgBox ) || _panelmsg );
+        _panelmsgBox && ( _panelmsg = JC.f.scriptContent( _panelmsgBox ) || _panelmsg );
         _panelheaderBox && _panelheaderBox.length 
-            && ( _panelheader = scriptContent( _panelheaderBox ) || _panelfooter );
+            && ( _panelheader = JC.f.scriptContent( _panelheaderBox ) || _panelfooter );
         _panelfooterBox && _panelfooterBox.length 
-            && ( _panelfooter = scriptContent( _panelfooterBox ) || _panelfooter );
+            && ( _panelfooter = JC.f.scriptContent( _panelfooterBox ) || _panelfooter );
 
         _p.prop('nodeName') && _p.prop('nodeName').toLowerCase() == 'a' && _evt.preventDefault();
 
@@ -1292,7 +1292,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.msgbox.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class   msgbox
      * @extends JC.Panel
@@ -1339,7 +1339,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.alert.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class   alert
      * @extends JC.Panel
@@ -1378,7 +1378,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.confirm.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class   confirm
      * @extends JC.Panel
@@ -1591,7 +1591,7 @@
                 _selector.css( { 'left': _left  + 'px' } );
 
                 _dom.interval = 
-                    easyEffect( function( _curVal, _done ){
+                    JC.f.easyEffect( function( _curVal, _done ){
                         _selector.css( {
                             'top': _top + _curVal + 'px'
                             , 'height': _sh - _curVal + 'px'
@@ -1642,7 +1642,7 @@
 
                 if( _top > _poffset.top ){
                     _dom.interval = 
-                        easyEffect( function( _curVal, _done ){
+                        JC.f.easyEffect( function( _curVal, _done ){
                             _selector.css( {
                                 'top': _top - _sh - _logic.yoffset + 'px'
                                 , 'height': _curVal + 'px'
@@ -1652,7 +1652,7 @@
 
                 }else{
                     _dom.interval = 
-                        easyEffect( function( _curVal, _done ){
+                        JC.f.easyEffect( function( _curVal, _done ){
                             _selector.css( {
                                 'top': _top - _curVal - _logic.yoffset + 'px'
                                 , 'height': _curVal + 'px'
@@ -1874,7 +1874,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class   Dialog
      * @extends JC.Panel
@@ -1936,7 +1936,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.msgbox.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
      * @namespace JC.Dialog
      * @class   msgbox
      * @extends JC.Panel
@@ -1980,7 +1980,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.alert.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
      * @namespace JC.Dialog
      * @class   alert
      * @extends JC.Panel
@@ -2021,7 +2021,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.confirm.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
      * @namespace JC.Dialog
      * @class   confirm
      * @extends JC.Panel

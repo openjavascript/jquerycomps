@@ -27,9 +27,9 @@
                 padding: 2px 4px!important;
             }
         </style>
-        <link href='../../../comps/LunarCalendar/res/default/style.css' rel='stylesheet' />
-        <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
-        <link href='../../../comps/Tips/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.LunarCalendar/0.1/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Panel/0.1/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Tips/0.1/res/default/style.css' rel='stylesheet' />
         <script src="../../../../lib.js"></script>
         <script src="../../../../config.js"></script>
         <script>
@@ -52,11 +52,11 @@
             requirejs( [ 'JC.LunarCalendar', 'JC.Panel', 'JC.Form', 'JC.Valid', 'JC.Tips' ]
             , function( LunarCalendar, Panel, JCForm, Valid, Tips ){
 
-                if( !httpRequire() ) return;
+                if( !JC.f.httpRequire() ) return;
 
                 var date = new Date(2013, 5, 1);
                 $('div.js_LunarCalendar').each( function(){
-                    $(this).attr('defaultdate', [date.getFullYear(), padChar( date.getMonth()+1 ), padChar( date.getDate() )].join('-') );
+                    $(this).attr('defaultdate', [date.getFullYear(), JC.f.padChar( date.getMonth()+1 ), JC.f.padChar( date.getDate() )].join('-') );
                     date.setMonth( date.getMonth()+1 );
                 });
 
@@ -84,7 +84,7 @@
             });
 
             $(document).delegate('button.js_setWorkday', 'click', function(){
-                if( !httpRequire() ) return;
+                if( !JC.f.httpRequire() ) return;
                 JC.hideAllPopup( 1 );
                 var item = JC.LunarCalendar.getSelectedItemGlobal(), _action;
                 if( !item ){
@@ -119,7 +119,7 @@
             }
 
             $(document).delegate('button.js_setHoliday', 'click', function(){
-                if( !httpRequire() ) return;
+                if( !JC.f.httpRequire() ) return;
                 JC.hideAllPopup( 1 );
                 var item = JC.LunarCalendar.getSelectedItemGlobal(), _action;
                 if( !item ){
@@ -167,10 +167,10 @@
 
                 if( _action ){
                     JC.log( 'add comment' );
-                    commentDialog( '添加注释 '+formatISODate(item.date), './data/dataspan.php', _ptm, '', commentAddTpl );
+                    commentDialog( '添加注释 '+JC.f.formatISODate(item.date), './data/dataspan.php', _ptm, '', commentAddTpl );
                     }else{
                     JC.log( 'delete comment' );
-                    commentDialog( '编辑注释 '+formatISODate(item.date), './data/dataspan.php', _ptm, JC.LunarCalendar.getComment( item.td ), commentEditTpl );
+                    commentDialog( '编辑注释 '+JC.f.formatISODate(item.date), './data/dataspan.php', _ptm, JC.LunarCalendar.getComment( item.td ), commentEditTpl );
                     /*
                     $.post( './data/dataspan.php', { 'tm': _ptm, 'dayaction': _action }, function( _r ){
                         JC.log( 'post result: ', _r );
@@ -191,7 +191,7 @@
                 var _p = $(this), _a = _p.parent('a'), _d;
                 _d = new Date(); _d.setTime( _a.attr('date' ) );
                 var _ptm = toPostTimestamp( _d ), _comment = _a.attr('comment');
-                commentDialog( '编辑注释 '+formatISODate(_d), './data/dataspan.php', _ptm, _comment, commentEditTpl );
+                commentDialog( '编辑注释 '+JC.f.formatISODate(_d), './data/dataspan.php', _ptm, _comment, commentEditTpl );
             });
 
             function commentDialog( _header, _url, _tm, _comment, _tpl ){
@@ -201,7 +201,7 @@
                 _selector.find('textarea').val( _comment );
 
                 _ins.on('confirm', function( _evt, _panel ){
-                    if( !httpRequire() ) return false;
+                    if( !JC.f.httpRequire() ) return false;
                     var _p = _selector.find('form');
 
                     var _btn = $(this);
