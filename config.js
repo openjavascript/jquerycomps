@@ -7,7 +7,7 @@ window.requirejs &&
 requirejs.config( {
     baseUrl: JC.PATH
     , paths: {
-        'JC.common': 'modules/JC.common/0.1/common'
+        'JC.common': 'modules/JC.common/0.2/common'
         , 'JC.BaseMVC': 'modules/JC.BaseMVC/0.1/BaseMVC'
 
         , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload'
@@ -25,7 +25,7 @@ requirejs.config( {
         , 'JC.Tips': 'modules/JC.Tips/0.1/Tips'
         , 'JC.Tree': 'modules/JC.Tree/0.1/Tree'
 
-        , 'JC.Panel': 'modules/JC.Panel/0.2/Panel'
+        , 'JC.Panel': 'modules/JC.Panel/0.1/Panel'
         , 'JC.Placeholder': 'modules/JC.Placeholder/0.1/Placeholder'
         , 'JC.Valid': 'modules/JC.Valid/0.2/Valid'
 
@@ -41,7 +41,7 @@ requirejs.config( {
         , 'plugins.base64': 'modules/JC.plugins/base64'
         , 'plugins.json2': 'modules/JC.plugins/json2'
         , 'plugins.jquery.form': 'modules/JC.plugins/jquery.form'
-        , 'plugins.md5': 'modules/JC.plugins/md5.js'
+        , 'plugins.md5': 'modules/JC.plugins/md5'
         , 'plugins.rate': 'modules/JC.plugins/rate/rate'
     }
 });

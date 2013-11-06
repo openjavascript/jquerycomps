@@ -8,7 +8,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/Valid/0.2/_demo/' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Valid/0.2/_demo/' target='_blank'>demo link</a></p>
      * <h2>Form 的可用 html attribute</h2>
      * <dl>
      *      <dt>errorabort = bool, default = true</dt>

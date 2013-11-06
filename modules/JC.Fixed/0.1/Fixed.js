@@ -13,7 +13,7 @@
      * </dl>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Fixed.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/Fixed/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Fixed/0.1/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class Fixed
      * @constructor

@@ -7,7 +7,7 @@
      * 弹出层基础类 JC.Panel
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <h2>Panel Layout 可用的 html attribute</h2>
      * <dl>
@@ -1292,7 +1292,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.msgbox.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class   msgbox
      * @extends JC.Panel
@@ -1339,7 +1339,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.alert.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class   alert
      * @extends JC.Panel
@@ -1378,7 +1378,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.confirm.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class   confirm
      * @extends JC.Panel
@@ -1874,7 +1874,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class   Dialog
      * @extends JC.Panel
@@ -1936,7 +1936,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.msgbox.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/_demo' target='_blank'>demo link</a></p>
      * @namespace JC.Dialog
      * @class   msgbox
      * @extends JC.Panel
@@ -1980,7 +1980,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.alert.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/_demo' target='_blank'>demo link</a></p>
      * @namespace JC.Dialog
      * @class   alert
      * @extends JC.Panel
@@ -2021,7 +2021,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.confirm.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/_demo' target='_blank'>demo link</a></p>
      * @namespace JC.Dialog
      * @class   confirm
      * @extends JC.Panel

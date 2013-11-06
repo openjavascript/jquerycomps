@@ -7,7 +7,7 @@
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.BaseMVC/0.1/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class BaseMVC
      * @constructor
@@ -213,7 +213,7 @@
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.BaseMVC/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class BaseMVC.Model
      * @constructor

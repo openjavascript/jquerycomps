@@ -5,7 +5,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/Form/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Form/0.1/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class Form
      * @static

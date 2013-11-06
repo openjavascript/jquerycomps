@@ -8,7 +8,7 @@
      * <a href='.window.html#method_printf'>window.printf</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Tree.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/Tree/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Tree/0.1/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class Tree
      * @constructor
@@ -18,7 +18,7 @@
      * @author  qiushaowei   <suches@btbtd.org> | 75 Team
      * @date    2013-06-29
      * @example
-            <link href='../../../comps/Tree/res/default/style.css' rel='stylesheet' />
+            <link href='../../../modules/JC.Tree/res/default/style.css' rel='stylesheet' />
             <script src="../../../lib.js"></script>
             <script src="../../../config.js"></script>
             <script>

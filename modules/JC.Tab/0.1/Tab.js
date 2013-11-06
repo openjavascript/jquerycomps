@@ -9,7 +9,7 @@
      * <br />需要手动初始化, 请使用: var ins = new JC.Tab( _tabSelector );
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Tab.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/Tab/_demo/' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Tab/0.1/_demo/' target='_blank'>demo link</a></p>
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <h2>Tab 容器的HTML属性</h2>
      * <dl>
@@ -54,7 +54,7 @@
      * @author  qiushaowei   <suches@btbtd.org> | 360 75 Team
      * @date    2013-07-04
      * @example
-            <link href='../../../comps/Tab/res/default/style.css' rel='stylesheet' />
+            <link href='../../../modules/JC.Tab/res/default/style.css' rel='stylesheet' />
             <script src="../../../lib.js"></script>
             <script src="../../../config.js"></script>
             <script>

@@ -25,6 +25,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Tree",
         "JC.Valid",
         "JC.alert",
+        "JC.common",
         "JC.confirm",
         "JC.hideAllPanel",
         "JC.hideAllPopup",
