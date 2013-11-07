@@ -52,6 +52,7 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
         , "formatISODate": formatISODate
         , "funcName": funcName
         , "getJqParent": getJqParent
+
         , "getUrlParam": getUrlParam
         , "getUrlParams": getUrlParams
         , "hasUrlParam": hasUrlParam
@@ -59,6 +60,7 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
         , "isSameDay": isSameDay
         , "isSameMonth": isSameMonth
         , "jcAutoInitComps": jcAutoInitComps
+
         , "maxDayOfMonth": maxDayOfMonth
         , "mousewheelEvent": mousewheelEvent
         , "padChar": padChar
@@ -67,6 +69,7 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
         , "parseFinance": parseFinance
         , "parseISODate": parseISODate
         , "printf": printf
+
         , "pureDate": pureDate
         , "reloadPage": reloadPage
         , "removeUrlSharp": removeUrlSharp
@@ -87,6 +90,14 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
                     }
                 }
             }
+        , "has_url_param": hasUrlParam
+        , "add_url_params": addUrlParams
+        , "get_url_param": getUrlParam
+        , "del_url_param": delUrlParam
+        , "reload_page": reloadPage
+        , "parse_finance_num": parseFinance
+        , "pad_char_f": padChar
+        , "script_path_f": scriptPath
     };
     JC.f.backward();
     /**
@@ -879,7 +890,7 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
 //TODO: use add custom type
 ;(function( $ ){
     if( window.JC && typeof JC.compsDir != 'undefined' ) return;
-    JC.f.backward( 1 ); //这里启用 JC.common 的向后兼容, 为 window 注入全局静态函数变量
+    window.JC && JC.f && JC.f.backward( 1 ); //这里启用 JC.common 的向后兼容, 为 window 注入全局静态函数变量
     /**
      * JC jquery 组件库 资源调用控制类
      * <br />这是一个单例模式, 全局访问使用 JC 或 window.JC

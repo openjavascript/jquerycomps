@@ -31,6 +31,7 @@
         , "formatISODate": formatISODate
         , "funcName": funcName
         , "getJqParent": getJqParent
+
         , "getUrlParam": getUrlParam
         , "getUrlParams": getUrlParams
         , "hasUrlParam": hasUrlParam
@@ -38,6 +39,7 @@
         , "isSameDay": isSameDay
         , "isSameMonth": isSameMonth
         , "jcAutoInitComps": jcAutoInitComps
+
         , "maxDayOfMonth": maxDayOfMonth
         , "mousewheelEvent": mousewheelEvent
         , "padChar": padChar
@@ -46,6 +48,7 @@
         , "parseFinance": parseFinance
         , "parseISODate": parseISODate
         , "printf": printf
+
         , "pureDate": pureDate
         , "reloadPage": reloadPage
         , "removeUrlSharp": removeUrlSharp
@@ -66,6 +69,14 @@
                     }
                 }
             }
+        , "has_url_param": hasUrlParam
+        , "add_url_params": addUrlParams
+        , "get_url_param": getUrlParam
+        , "del_url_param": delUrlParam
+        , "reload_page": reloadPage
+        , "parse_finance_num": parseFinance
+        , "pad_char_f": padChar
+        , "script_path_f": scriptPath
     };
     JC.f.backward();
     /**
