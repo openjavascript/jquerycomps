@@ -209,6 +209,7 @@
         , &quot;formatISODate&quot;: formatISODate
         , &quot;funcName&quot;: funcName
         , &quot;getJqParent&quot;: getJqParent
+
         , &quot;getUrlParam&quot;: getUrlParam
         , &quot;getUrlParams&quot;: getUrlParams
         , &quot;hasUrlParam&quot;: hasUrlParam
@@ -216,6 +217,7 @@
         , &quot;isSameDay&quot;: isSameDay
         , &quot;isSameMonth&quot;: isSameMonth
         , &quot;jcAutoInitComps&quot;: jcAutoInitComps
+
         , &quot;maxDayOfMonth&quot;: maxDayOfMonth
         , &quot;mousewheelEvent&quot;: mousewheelEvent
         , &quot;padChar&quot;: padChar
@@ -224,6 +226,7 @@
         , &quot;parseFinance&quot;: parseFinance
         , &quot;parseISODate&quot;: parseISODate
         , &quot;printf&quot;: printf
+
         , &quot;pureDate&quot;: pureDate
         , &quot;reloadPage&quot;: reloadPage
         , &quot;removeUrlSharp&quot;: removeUrlSharp
@@ -231,7 +234,29 @@
         , &quot;scriptPath&quot;: scriptPath
         , &quot;sliceArgs&quot;: sliceArgs
         , &quot;urlDetect&quot;: urlDetect
+
+        /**
+         * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量
+         */
+        , &quot;backward&quot;:
+            function( _setter ){
+                if( window.JC_BACKWARD || _setter ){
+                    for( var k in JC.common ){
+                        if( k == &#x27;backward&#x27; ) continue;
+                        window[ k ] = window[ k ] || JC.common[ k ];
+                    }
+                }
+            }
+        , &quot;has_url_param&quot;: hasUrlParam
+        , &quot;add_url_params&quot;: addUrlParams
+        , &quot;get_url_param&quot;: getUrlParam
+        , &quot;del_url_param&quot;: delUrlParam
+        , &quot;reload_page&quot;: reloadPage
+        , &quot;parse_finance_num&quot;: parseFinance
+        , &quot;pad_char_f&quot;: padChar
+        , &quot;script_path_f&quot;: scriptPath
     };
+    JC.f.backward();
     /**
      * jquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法
      */
