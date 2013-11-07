@@ -31,6 +31,7 @@
         , "formatISODate": formatISODate
         , "funcName": funcName
         , "getJqParent": getJqParent
+
         , "getUrlParam": getUrlParam
         , "getUrlParams": getUrlParams
         , "hasUrlParam": hasUrlParam
@@ -38,6 +39,7 @@
         , "isSameDay": isSameDay
         , "isSameMonth": isSameMonth
         , "jcAutoInitComps": jcAutoInitComps
+
         , "maxDayOfMonth": maxDayOfMonth
         , "mousewheelEvent": mousewheelEvent
         , "padChar": padChar
@@ -46,6 +48,7 @@
         , "parseFinance": parseFinance
         , "parseISODate": parseISODate
         , "printf": printf
+
         , "pureDate": pureDate
         , "reloadPage": reloadPage
         , "removeUrlSharp": removeUrlSharp
@@ -53,7 +56,29 @@
         , "scriptPath": scriptPath
         , "sliceArgs": sliceArgs
         , "urlDetect": urlDetect
+
+        /**
+         * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量
+         */
+        , "backward":
+            function( _setter ){
+                if( window.JC_BACKWARD || _setter ){
+                    for( var k in JC.common ){
+                        if( k == 'backward' ) continue;
+                        window[ k ] = window[ k ] || JC.common[ k ];
+                    }
+                }
+            }
+        , "has_url_param": hasUrlParam
+        , "add_url_params": addUrlParams
+        , "get_url_param": getUrlParam
+        , "del_url_param": delUrlParam
+        , "reload_page": reloadPage
+        , "parse_finance_num": parseFinance
+        , "pad_char_f": padChar
+        , "script_path_f": scriptPath
     };
+    JC.f.backward();
     /**
      * jquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法
      */

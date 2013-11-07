@@ -334,6 +334,34 @@
             ctrl.focus();   
         }
     }
+    /**
+     * inject jquery show, hide func, for Placeholder change event
+     */
+    var _oldShow= $.fn.show, _oldHide = $.fn.hide, EVENT_BINDER = $( {} );
+    $.fn.show = 
+        function(){
+            var _r = _oldShow.apply( this, arguments ), _p = this;
+            setTimeout( function(){ 
+                EVENT_BINDER.trigger( 'show' );
+            }, 1 );
+            return _r;
+        };
+
+    $.fn.hide = 
+        function(){
+            var _r = _oldHide.apply( this, arguments ), _p = this;
+            setTimeout( function(){ 
+                EVENT_BINDER.trigger( 'hide' );
+            }, 1 );
+            return _r;
+        };
+
+    EVENT_BINDER.on( 'show hide', function(){
+        EVENT_BINDER.data('timer') && clearTimeout( EVENT_BINDER.data( 'timer' ) );
+        EVENT_BINDER.data( 'timer', setTimeout( function(){
+            Placeholder.update();
+        }, 100 ) );
+    });
  
     $(document).ready( function(){
         var _insAr = 0;
