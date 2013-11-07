@@ -534,7 +534,7 @@
      * @static
      */
     Valid.setValid = function(_item, _tm, _noStyle, _isUserSet){ 
-        _isUserSet = true;
+        typeof _isUserSet == 'undefined' && ( _isUserSet = true );
         return Valid.getInstance().trigger( Model.CORRECT, [_item, _tm, _noStyle, _isUserSet] ); 
     };
     /**
