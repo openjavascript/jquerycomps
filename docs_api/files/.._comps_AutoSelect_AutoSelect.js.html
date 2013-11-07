@@ -180,6 +180,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
 //TODO: 添加数据缓存逻辑
 ;(function($){
     /**
@@ -290,6 +291,7 @@
                 };
         &lt;/script&gt;
      */
+    window.JC = window.JC || {log:function(){}};
     JC.AutoSelect = AutoSelect;
     JC.Form &amp;&amp; ( JC.Form.initAutoSelect = AutoSelect );
 
@@ -840,7 +842,7 @@
             function( _selector ){
                 this._items.push( _selector );
                 _selector.is( &#x27;[selecttarget]&#x27; )
-                    &amp;&amp; this._findAllItems( parentSelector( _selector, _selector.attr(&#x27;selecttarget&#x27;) ) );
+                    &amp;&amp; this._findAllItems( JC.f.parentSelector( _selector, _selector.attr(&#x27;selecttarget&#x27;) ) );
             }
 
         , _initRelationship:
@@ -908,7 +910,7 @@
             function( _selector ){
                 var _r = AutoSelect.randomurl;
                 _selector.is(&#x27;[selectrandomurl]&#x27;)
-                    &amp;&amp; ( _r = parseBool( _selector.attr(&#x27;selectrandomurl&#x27;) ) )
+                    &amp;&amp; ( _r = JC.f.parseBool( _selector.attr(&#x27;selectrandomurl&#x27;) ) )
                     ;
                 return _r;
             }
@@ -918,12 +920,12 @@
                 var _r = AutoSelect.ignoreInitRequest;
 
                 this.first().is(&#x27;[selectignoreinitrequest]&#x27;)
-                    &amp;&amp; ( _r = parseBool( this.first().attr(&#x27;selectignoreinitrequest&#x27;) ) )
+                    &amp;&amp; ( _r = JC.f.parseBool( this.first().attr(&#x27;selectignoreinitrequest&#x27;) ) )
                     ;
 
                 _selector
                     &amp;&amp; _selector.is(&#x27;[selectignoreinitrequest]&#x27;)
-                    &amp;&amp; ( _r = parseBool( _selector.attr(&#x27;selectignoreinitrequest&#x27;) ) )
+                    &amp;&amp; ( _r = JC.f.parseBool( _selector.attr(&#x27;selectignoreinitrequest&#x27;) ) )
                     ;
                 return _r;
             }
@@ -933,7 +935,7 @@
             function(){
                 var _r = AutoSelect.triggerInitChange, _selector = this.first();
                 _selector.attr(&#x27;selecttriggerinitchange&#x27;)
-                    &amp;&amp; ( _r = parseBool( _selector.attr(&#x27;selecttriggerinitchange&#x27;) ) )
+                    &amp;&amp; ( _r = JC.f.parseBool( _selector.attr(&#x27;selecttriggerinitchange&#x27;) ) )
                     ;
                 return _r;
             }
@@ -945,13 +947,13 @@
                 _first 
                     &amp;&amp; _first.length
                     &amp;&amp; _first.is(&#x27;[selecthideempty]&#x27;)
-                    &amp;&amp; ( _r = parseBool( _first.attr(&#x27;selecthideempty&#x27;) ) )
+                    &amp;&amp; ( _r = JC.f.parseBool( _first.attr(&#x27;selecthideempty&#x27;) ) )
                     ;
 
                 _selector 
                     &amp;&amp; _selector.length
                     &amp;&amp; _selector.is(&#x27;[selecthideempty]&#x27;)
-                    &amp;&amp; ( _r = parseBool( _selector.attr(&#x27;selecthideempty&#x27;) ) )
+                    &amp;&amp; ( _r = JC.f.parseBool( _selector.attr(&#x27;selecthideempty&#x27;) ) )
                     ;
                 return _r;
             }
@@ -963,8 +965,8 @@
                         &amp;&amp; window[ _selector.attr(&#x27;selectprocessurl&#x27; ) ]
                         &amp;&amp; ( _cb = window[ _selector.attr(&#x27;selectprocessurl&#x27; ) ] )
                         ;
-                    _r = printf( _r, _pid );
-                    this.randomurl( _selector ) &amp;&amp; ( _r = addUrlParams( _r, {&#x27;rnd&#x27;: new Date().getTime() } ) );
+                    _r = JC.f.printf( _r, _pid );
+                    this.randomurl( _selector ) &amp;&amp; ( _r = JC.f.addUrlParams( _r, {&#x27;rnd&#x27;: new Date().getTime() } ) );
                     _cb &amp;&amp; ( _r = _cb.call( _selector, _r, _pid ) );
                 return _r;
             }
@@ -1085,7 +1087,7 @@
                 var _html = [], _tmp, _selected;
                 for( var i = 0, j = _data.length; i &lt; j; i++ ){
                     _tmp = _data[i];
-                    _html.push( printf( &#x27;&lt;option value=&quot;{0}&quot; {2}&gt;{1}&lt;/option&gt;&#x27;, _tmp[0], _tmp[1], _selected ) );
+                    _html.push( JC.f.printf( &#x27;&lt;option value=&quot;{0}&quot; {2}&gt;{1}&lt;/option&gt;&#x27;, _tmp[0], _tmp[1], _selected ) );
                 }
                 $( _html.join(&#x27;&#x27;) ).appendTo( _selector );
 
@@ -1136,7 +1138,8 @@
     });
 
 }(jQuery));
-
+    return JC.AutoSelect;
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>
 </div>

@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
 //TODO: checkbox, radio 错误时, input 添加高亮显示
 ;(function($){
@@ -77,11 +78,10 @@
      *      <dt>maxvalue = [number|ISO date](最大值)</dt>
      *      <dd>验证内容的最大值, 但不验证为空的值</dd>
      *
-     *      <dt>validitemcallback = function name</dt>
+     *      <dt>validitemcallback = function</dt>
      *      <dd>
      *          对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>
-<xmp>function validItemCallback( _item, _isValid){
-    JC.log( _item.attr('name'), _isValid );
+<xmp>function validItemCallback( _selector, _isValid ){
 }</xmp>
      *      </dd>
      *
@@ -252,7 +252,7 @@
      *                  <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调
 <xmp>function datavalidUrlFilter( _url ){
     var _selector = $(this);
-    _url = addUrlParams( _url, { 'xtest': 'customData' } );
+    _url = JC.f.addUrlParams( _url, { 'xtest': 'customData' } );
     return _url;
 });</xmp>
      *              </dd>
@@ -274,13 +274,14 @@
      * @version     0.1,  2013-05-22
      * @author  qiushaowei   <suches@btbtd.org> | 75 team
      */
+    window.JC = window.JC || {log:function(){}};
     JC.Valid = window.Valid = Valid;
     
     function Valid(){
         /**
          * 兼容函数式使用
          */
-        var _args = sliceArgs( arguments );
+        var _args = JC.f.sliceArgs( arguments );
         if( _args.length ){
             return Valid.check.apply( null, _args );
         }
@@ -303,22 +304,22 @@
                 });
 
                 $([ this._view, this._model ] ).on(Model.TRIGGER, function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ).slice(2);
+                    var _data = JC.f.sliceArgs( arguments ).slice(2);
                     _p.trigger( _evtName, _data );
                 });
 
                 _p.on( Model.CORRECT, function( _evt ){
-                    var _data = sliceArgs( arguments ).slice(1);
+                    var _data = JC.f.sliceArgs( arguments ).slice(1);
                     _p._view.valid.apply( _p._view, _data );
                 });
 
                 _p.on( Model.ERROR, function( _evt ){
-                    var _data = sliceArgs( arguments ).slice(1);
+                    var _data = JC.f.sliceArgs( arguments ).slice(1);
                     _p._view.error.apply( _p._view, _data );
                 });
 
                 _p.on( Model.FOCUS_MSG, function( _evt ){
-                    var _data = sliceArgs( arguments ).slice(1);
+                    var _data = JC.f.sliceArgs( arguments ).slice(1);
                     _p._view.focusmsg.apply( _p._view, _data );
                 });
 
@@ -400,7 +401,7 @@
 
         , check:
             function(){
-                var _p = this, _r = true, _items = sliceArgs( arguments ), i, j;
+                var _p = this, _r = true, _items = JC.f.sliceArgs( arguments ), i, j;
                 $.each( _items, function( _ix, _item ){
                     _item = $(_item);
                     Valid.isFormValid = false;
@@ -426,7 +427,7 @@
             }
         , clearError:
             function(){
-                var _items = sliceArgs( arguments ), _p = this;
+                var _items = JC.f.sliceArgs( arguments ), _p = this;
                 $.each( _items, function( _ix, _item ){
                     $( _item ).each( function(){
                         var _item = $(this);
@@ -465,7 +466,7 @@
      * @return    {boolean}
      */
     Valid.checkAll = Valid.check = 
-        function(){ return Valid.getInstance().check.apply( Valid.getInstance(), sliceArgs( arguments ) ); }
+        function(){ return Valid.getInstance().check.apply( Valid.getInstance(), JC.f.sliceArgs( arguments ) ); }
     /**
      * 这个方法是 <a href='JC.Valid.html#method_check'>Valid.check</a> 的别名
      * @method checkAll
@@ -511,7 +512,7 @@
                 }
             }else{
                 if( _selector && _selector.length ){
-                    _r = parseBool( _selector.attr('datavalid') );
+                    _r = JC.f.parseBool( _selector.attr('datavalid') );
                 }
             }
 
@@ -532,7 +533,10 @@
      * @param   {int}       _tm     延时 _tm 毫秒显示处理结果, 默认=150
      * @static
      */
-    Valid.setValid = function(_item, _tm){ return Valid.getInstance().trigger( Model.CORRECT, sliceArgs( arguments) ); };
+    Valid.setValid = function(_item, _tm, _noStyle, _isUserSet){ 
+        _isUserSet = true;
+        return Valid.getInstance().trigger( Model.CORRECT, [_item, _tm, _noStyle, _isUserSet] ); 
+    };
     /**
      * 把一个表单项的状态设为错误状态
      * @method  setError
@@ -549,7 +553,7 @@
                 _item.attr( _autoKey, _msgAttr );
                 _msgAttr = _autoKey;
             }
-            return Valid.getInstance().trigger( Model.ERROR, sliceArgs( arguments) ); 
+            return Valid.getInstance().trigger( Model.ERROR, JC.f.sliceArgs( arguments) ); 
         };
     /**
      * 显示 focusmsg 属性的提示信息( 如果有的话 )
@@ -608,7 +612,7 @@
      *          JC.Valid.clearError( 'input.some' );
      */
     Valid.clearError = 
-        function(){ return Valid.getInstance().clearError.apply( Valid.getInstance(), sliceArgs( arguments ) ); };
+        function(){ return Valid.getInstance().clearError.apply( Valid.getInstance(), JC.f.sliceArgs( arguments ) ); };
     /**
      * 验证发生错误时, 是否终止继续验证
      * <br /> 为真终止继续验证, 为假将验证表单的所有项, 默认为 false
@@ -674,7 +678,7 @@
                 _item.is( '[ignoreprocess]' ) 
                     && (
                             ( _item.attr('ignoreprocess') || '' ).trim()
-                            ? ( _r = parseBool( _item.attr('ignoreprocess') ) )
+                            ? ( _r = JC.f.parseBool( _item.attr('ignoreprocess') ) )
                             : ( _r = true )
                        )
                     ;
@@ -778,7 +782,7 @@
         , isErrorAbort:
             function( _item ){
                 var _r = Valid.errorAbort;
-                _item.is('[errorabort]') && ( _r = parseBool( _item.attr('errorabort') ) );
+                _item.is('[errorabort]') && ( _r = JC.f.parseBool( _item.attr('errorabort') ) );
                 return _r;
             }
         , isValid:
@@ -799,18 +803,18 @@
         , isAutoTrim:
             function( _item ){
                 _item = $( _item );
-                var _r = Valid.autoTrim, _form = getJqParent( _item, 'form' );
-                _form && _form.length && _form.is( '[validautotrim]' ) && ( _r = parseBool( _form.attr('validautotrim') ) );
-                _item.is( '[validautotrim]' ) && ( _r = parseBool( _item.attr('validautotrim') ) );
+                var _r = Valid.autoTrim, _form = JC.f.getJqParent( _item, 'form' );
+                _form && _form.length && _form.is( '[validautotrim]' ) && ( _r = JC.f.parseBool( _form.attr('validautotrim') ) );
+                _item.is( '[validautotrim]' ) && ( _r = JC.f.parseBool( _item.attr('validautotrim') ) );
                 return _r;
             }
         , isReqmsg: function( _item ){ return _item.is('[reqmsg]'); }
         , isValidMsg: 
             function( _item ){ 
                 _item = $( _item );
-                var _r = Valid.showValidStatus, _form = getJqParent( _item, 'form' );
-                _form && _form.length && _form.is( '[validmsg]' ) && ( _r = parseBool( _form.attr('validmsg') ) );
-                _item.is( '[validmsg]' ) && ( _r = parseBool( _item.attr('validmsg') ) );
+                var _r = Valid.showValidStatus, _form = JC.f.getJqParent( _item, 'form' );
+                _form && _form.length && _form.is( '[validmsg]' ) && ( _r = JC.f.parseBool( _form.attr('validmsg') ) );
+                _item.is( '[validmsg]' ) && ( _r = JC.f.parseBool( _item.attr('validmsg') ) );
                 return _r;
             }
         , isValidHidden:
@@ -825,7 +829,7 @@
         , validitemcallback: 
             function( _item ){ 
                 _item = $( _item );
-                var _r = Valid.itemCallback, _form = getJqParent( _item, 'form' ), _tmp;
+                var _r = Valid.itemCallback, _form = JC.f.getJqParent( _item, 'form' ), _tmp;
                 _form &&_form.length 
                     && _form.is( '[validitemcallback]' ) 
                     && ( _tmp = _form.attr('validitemcallback') )
@@ -863,10 +867,10 @@
                 _key 
                     && ( _key += _defKey )
                     && ( _key = _item.attr( _key ) )
-                    && ( _r = parentSelector( _item, _key ) )
+                    && ( _r = JC.f.parentSelector( _item, _key ) )
                     ;
 
-                !( _r && _r.length ) && ( _r = parentSelector( _item, _item.attr( _defKey ) ) );
+                !( _r && _r.length ) && ( _r = JC.f.parentSelector( _item, _item.attr( _defKey ) ) );
 
                 return _r;
             }
@@ -878,7 +882,7 @@
                     switch( _datatype ){
                         default:
                             {
-                                return parseISODate( _item.attr('minvalue') );
+                                return JC.f.parseISODate( _item.attr('minvalue') );
                             }
                     }
                 }else{
@@ -896,7 +900,7 @@
                     switch( _datatype ){
                         default:
                             {
-                                return parseISODate( _item.attr('maxvalue') );
+                                return JC.f.parseISODate( _item.attr('maxvalue') );
                             }
                     }
                 }else{
@@ -1124,7 +1128,7 @@
          */
         , d: 
             function( _item, _noError ){
-                var _p = this, _val = $.trim( _item.val() ), _r = true, _date = parseISODate( _val ), _tmpDate;
+                var _p = this, _val = $.trim( _item.val() ), _r = true, _date = JC.f.parseISODate( _val ), _tmpDate;
                     
                 if( _val && _date ){
 
@@ -1141,7 +1145,7 @@
 
                 return _r;
             }
-        , 'date': function(){ return this.d.apply( this, sliceArgs( arguments ) ); }
+        , 'date': function(){ return this.d.apply( this, JC.f.sliceArgs( arguments ) ); }
         /**
          * 检查两个输入框的日期
          * <br />日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD
@@ -1195,8 +1199,8 @@
 
                         if( _toDateEl[0] != _fromDateEl[0] && _toDateEl.val().length && _fromDateEl.val().length ){
 
-                            _r && ( _r = _p.d( _toDateEl, true ) ) && ( _min = parseISODate( _fromDateEl.val() ) );
-                            _r && ( _r = _p.d( _fromDateEl, true ) ) && ( _max = parseISODate( _toDateEl.val() ) );
+                            _r && ( _r = _p.d( _toDateEl, true ) ) && ( _min = JC.f.parseISODate( _fromDateEl.val() ) );
+                            _r && ( _r = _p.d( _fromDateEl, true ) ) && ( _max = JC.f.parseISODate( _toDateEl.val() ) );
 
                             _r && _min && _max 
                                && _min.getTime() > _max.getTime() 
@@ -1892,6 +1896,7 @@
                 !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item, _typeKey ) );
 
                 var _isReturn = false;
+                var _reqTarget;
 
                 if( _target.length && !$.trim( _item.val() ) ){
                     var _hasVal = false;
@@ -1925,7 +1930,7 @@
                             _p[ _sdt ]( $(this) );
                         }else if( !$(this).val() ){
                             $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
-                            var _reqTarget = parentSelector( $(this), $(this).attr( 'reqtargetdatatarget' ) );
+                            var _reqTarget = JC.f.parentSelector( $(this), $(this).attr( 'reqtargetdatatarget' ) );
                             _reqTarget 
                                 && _reqTarget.length
                                 && $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _reqTarget ] )
@@ -1940,7 +1945,7 @@
                         if( _item[0] == this ) return;
                         var _sp = $(this), _reqTarget;
                         if( _sp.is( '[alternativeReqTarget]' ) ){
-                            _reqTarget = parentSelector( _sp, _sp.attr('alternativeReqTarget') );
+                            _reqTarget = JC.f.parentSelector( _sp, _sp.attr('alternativeReqTarget') );
                             if( _reqTarget && _reqTarget.length ){
                                 _reqTarget.each( function(){
                                     var _ssp = $(this), _v = _ssp.val().trim();
@@ -1954,7 +1959,7 @@
                     });
 
                     if( _item.is( '[alternativeReqTarget]' ) ){
-                        _reqTarget = parentSelector( _item, _item.attr('alternativeReqTarget') );
+                        _reqTarget = JC.f.parentSelector( _item, _item.attr('alternativeReqTarget') );
                         if( _reqTarget && _reqTarget.length ){
                             _reqTarget.each( function(){
                                 var _ssp = $(this), _v = _ssp.val().trim();
@@ -2001,7 +2006,7 @@
             function( _item ){
                 var _p = this, _r = true
                     , _v = _item.val().trim(), _tv
-                    , _target = parentSelector( _item, _item.attr('reqtargetdatatarget') || _item.attr('datatarget') )
+                    , _target = JC.f.parentSelector( _item, _item.attr('reqtargetdatatarget') || _item.attr('datatarget') )
                     ;
                 if( _v && _target && _target.length ){
                     _tv = _target.val().trim();
@@ -2028,7 +2033,8 @@
                     , _len = _p.typeLen( _item.attr('subdatatype') )[0]
                     , _KEY = "UniqueValidTime"
                     , _typeKey = 'unique'
-                    , _ignoreCase = parseBool( _item.attr('uniqueIgnoreCase') )
+                    , _ignoreCase = JC.f.parseBool( _item.attr('uniqueIgnoreCase') )
+                    , _errLs, _corLs
                     ;
 
                 JC.log( _typeKey, new Date().getTime() );
@@ -2063,7 +2069,7 @@
                     $.each( _group, function( _ix, _items ){
                         var _tmpAr = [], _ignoreEmpty = false;
                         $.each( _items, function( _six, _sitem ){
-                            var _tmpV, _ignore = parseBool( _sitem.attr('uniqueIgnoreEmpty') );
+                            var _tmpV, _ignore = JC.f.parseBool( _sitem.attr('uniqueIgnoreEmpty') );
                             _tmpV = $(_sitem).val().trim();
                             _ignore && !_tmpV && _sitem.is(':visible') && ( _ignoreEmpty = true );
                             _tmpAr.push( _tmpV );
@@ -2116,7 +2122,7 @@
                 var _r = true, _p = this;
                 if( !Valid.isFormValid ) return _r;
 
-                _r = parseBool( _item.attr('datavalid') );
+                _r = JC.f.parseBool( _item.attr('datavalid') );
 
                 setTimeout( function(){
                     !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'datavalidmsg', true ] );
@@ -2155,7 +2161,7 @@
             }
         , findErrorEle:
             function( _item ){
-                var _p = this, _selector = Model.SELECTOR_ERROR, _r = _item.find( _selector );
+                var _p = this, _selector = Model.SELECTOR_ERROR, _r = _item.find( _selector ), _tmp;
                 if( _item.attr('emel') 
                         && ( _tmp = _p.getElement( _item.attr('emel'), _item, _selector ) ).length ) _r = _tmp;
                 return _r;
@@ -2174,7 +2180,7 @@
                     _subselector = _subselector || Model.SELECTOR_ERROR;
                     _selector = $( _item.parent().find( _subselector ) );
                 }else if( /^[\/\|\<\(]/.test( _selector ) ) {
-                    _selector = parentSelector( _item, _selector );
+                    _selector = JC.f.parentSelector( _item, _selector );
                 }else if( /\./.test( _selector ) ) {
                     return $( _selector );
                 }else if( /^[\w-]+$/.test( _selector ) ) {
@@ -2286,13 +2292,13 @@
         , focusmsgeverytime:
             function( _item ){
                 var _r = Valid.focusmsgEverytime;
-                _item.is( '[focusmsgeverytime]' ) && ( _r = parseBool( _item.attr('focusmsgeverytime') ) );
+                _item.is( '[focusmsgeverytime]' ) && ( _r = JC.f.parseBool( _item.attr('focusmsgeverytime') ) );
                 return _r;
             }
         , validemdisplaytype:
             function( _item ){
                 _item && ( _item = $( _item ) );
-                var _r = Valid.emDisplayType, _form = getJqParent( _item, 'form' ), _tmp;
+                var _r = Valid.emDisplayType, _form = JC.f.getJqParent( _item, 'form' ), _tmp;
                 _form &&_form.length 
                     && _form.is( '[validemdisplaytype]' ) 
                     && ( _tmp = _form.attr('validemdisplaytype') )
@@ -2326,7 +2332,7 @@
                 JC.log( _item.attr('name') + ', ' + _item.val() );
 
                 if( _item.is( '[datatarget]' ) ){
-                    _items = parentSelector( _item, _item.attr('datatarget') );                    
+                    _items = JC.f.parentSelector( _item, _item.attr('datatarget') );                    
                     _tmp = [];
                     _items.each( function(){
                         var _sp = $(this);
@@ -2338,11 +2344,11 @@
                 }else{
                     if( _pntIsLabel ){
                         if( !_finder.is('[' + _finderKey + ']') ) _finder = _item.parent().parent();
-                        else _finder = parentSelector( _item, _item.attr( _finderKey ) );
-                        _tmp = parentSelector( _finder, '|input[datatype]' );
+                        else _finder = JC.f.parentSelector( _item, _item.attr( _finderKey ) );
+                        _tmp = JC.f.parentSelector( _finder, '|input[datatype]' );
                     }
                     else{
-                        _tmp = parentSelector( _finder, '/input[datatype]' );
+                        _tmp = JC.f.parentSelector( _finder, '/input[datatype]' );
                     }
                     _items = [];
                     _tmp.each( function(){
@@ -2454,15 +2460,15 @@
          * @param   {bool}      _noStyle
          */
         , valid:
-            function( _item, _tm, _noStyle ){
+            function( _item, _tm, _noStyle, _isUserSet ){
                 _item && ( _item = $(_item) );
-                var _p = this, _tmp, _focusEm;
+                var _p = this, _tmp;
                 _item.data( 'JCValidStatus', true );
                 //if( !_p._model.isValid( _item ) ) return false;
-                var _hideFocusMsg = !parseBool( _item.attr('validnoerror' ) );
+                var _hideFocusMsg = !JC.f.parseBool( _item.attr('validnoerror' ) );
                 setTimeout(function(){
                     _item.removeClass( Model.CSS_ERROR );
-                    _item.find( printf( '~ em:not("em.focusmsg, em.validmsg, {0}")', Model.FILTER_ERROR ) ).css('display', _p._model.validemdisplaytype( _item ) );
+                    _item.find( JC.f.printf( '~ em:not("em.focusmsg, em.validmsg, {0}")', Model.FILTER_ERROR ) ).css('display', _p._model.validemdisplaytype( _item ) );
                     _item.find( Model.SELECTOR_ERROR ).hide();
                     _item.attr('emel') 
                         && ( _tmp = _p._model.getElement( _item.attr('emel'), _item ) )
@@ -2474,7 +2480,7 @@
                         && ( _noStyle = 1 );
 
                     _p.validMsg( _item, _noStyle, _hideFocusMsg );
-                    ( _tmp = _p._model.validitemcallback( _item ) ) && _tmp( _item, true );
+                    !_isUserSet && ( _tmp = _p._model.validitemcallback( _item ) ) && _tmp( _item, true );
 
                 }, _tm || 150);
             }
@@ -2527,20 +2533,20 @@
         , error: 
             function( _item, _msgAttr, _fullMsg ){
                 _item && ( _item = $(_item) );
-                var _p = this, arg = arguments; 
+                var _p = this, arg = arguments, _tmp; 
                 //if( !_p._model.isValid( _item ) ) return true;
                 if( _item.is( '[validnoerror]' ) ) return true;
                 _item.data( 'JCValidStatus', false );
 
                 setTimeout(function(){
-                    var _msg = _p._model.errorMsg.apply( _p._model, sliceArgs( arg ) )
+                    var _msg = _p._model.errorMsg.apply( _p._model, JC.f.sliceArgs( arg ) )
                         , _errEm
                         , _validEm
                         , _focusEm
                         ;
 
                     _item.addClass( Model.CSS_ERROR );
-                    _item.find( printf( '~ em:not({0})', Model.FILTER_ERROR ) ).hide();
+                    _item.find( JC.f.printf( '~ em:not({0})', Model.FILTER_ERROR ) ).hide();
 
                     if( _item.is( '[validel]' ) ){
                         ( _validEm = _p._model.getElement( _item.attr( 'validel' ) , _item) ) 
@@ -2556,7 +2562,7 @@
                     }
                     !( _errEm && _errEm.length ) && ( _errEm = _item.find( Model.SELECTOR_ERROR ) );
                     if( !_errEm.length ){
-                        ( _errEm = $( printf( '<em class="{0}"></em>', Model.CSS_ERROR ) ) ).insertAfter( _item );
+                        ( _errEm = $( JC.f.printf( '<em class="{0}"></em>', Model.CSS_ERROR ) ) ).insertAfter( _item );
                     }
                     !_msg.trim() && ( _msg = "&nbsp;" );
                     _errEm.html( _msg ).css('display', _p._model.validemdisplaytype( _item ) );
@@ -2634,7 +2640,8 @@
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
      * @private
      */
-    $(document).delegate( 'select, input[type=file], input[type=checkbox], input[type=radio]', 'change', function($evt){
+    $(document).delegate( 'select, input[type=file], input[type=checkbox], input[type=radio]', 'change', function($evt, _ignore){
+        if( _ignore ) return;
         Valid.check( $(this) );
     });
     /**
@@ -2720,7 +2727,7 @@
                     _v = _sp.val().trim();
                     if( !_v ) return;
                     if( !_sp.data('JCValidStatus') ) return;
-                    _url = printf( _url, _v );
+                    _url = JC.f.printf( _url, _v );
                     _sp.attr('datavalidUrlFilter')
                         && ( _tmp = window[ _sp.attr('datavalidUrlFilter') ] )
                         && ( _url = _tmp.call( _sp, _url ) )
@@ -2742,3 +2749,5 @@
     });
 
 }(jQuery));
+    return JC.Valid;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

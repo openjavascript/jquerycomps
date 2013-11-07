@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: 添加数据缓存逻辑
 ;(function($){
     /**
@@ -108,6 +109,7 @@
                 };
         </script>
      */
+    window.JC = window.JC || {log:function(){}};
     JC.AutoSelect = AutoSelect;
     JC.Form && ( JC.Form.initAutoSelect = AutoSelect );
 
@@ -658,7 +660,7 @@
             function( _selector ){
                 this._items.push( _selector );
                 _selector.is( '[selecttarget]' )
-                    && this._findAllItems( parentSelector( _selector, _selector.attr('selecttarget') ) );
+                    && this._findAllItems( JC.f.parentSelector( _selector, _selector.attr('selecttarget') ) );
             }
 
         , _initRelationship:
@@ -726,7 +728,7 @@
             function( _selector ){
                 var _r = AutoSelect.randomurl;
                 _selector.is('[selectrandomurl]')
-                    && ( _r = parseBool( _selector.attr('selectrandomurl') ) )
+                    && ( _r = JC.f.parseBool( _selector.attr('selectrandomurl') ) )
                     ;
                 return _r;
             }
@@ -736,12 +738,12 @@
                 var _r = AutoSelect.ignoreInitRequest;
 
                 this.first().is('[selectignoreinitrequest]')
-                    && ( _r = parseBool( this.first().attr('selectignoreinitrequest') ) )
+                    && ( _r = JC.f.parseBool( this.first().attr('selectignoreinitrequest') ) )
                     ;
 
                 _selector
                     && _selector.is('[selectignoreinitrequest]')
-                    && ( _r = parseBool( _selector.attr('selectignoreinitrequest') ) )
+                    && ( _r = JC.f.parseBool( _selector.attr('selectignoreinitrequest') ) )
                     ;
                 return _r;
             }
@@ -751,7 +753,7 @@
             function(){
                 var _r = AutoSelect.triggerInitChange, _selector = this.first();
                 _selector.attr('selecttriggerinitchange')
-                    && ( _r = parseBool( _selector.attr('selecttriggerinitchange') ) )
+                    && ( _r = JC.f.parseBool( _selector.attr('selecttriggerinitchange') ) )
                     ;
                 return _r;
             }
@@ -763,13 +765,13 @@
                 _first 
                     && _first.length
                     && _first.is('[selecthideempty]')
-                    && ( _r = parseBool( _first.attr('selecthideempty') ) )
+                    && ( _r = JC.f.parseBool( _first.attr('selecthideempty') ) )
                     ;
 
                 _selector 
                     && _selector.length
                     && _selector.is('[selecthideempty]')
-                    && ( _r = parseBool( _selector.attr('selecthideempty') ) )
+                    && ( _r = JC.f.parseBool( _selector.attr('selecthideempty') ) )
                     ;
                 return _r;
             }
@@ -781,8 +783,8 @@
                         && window[ _selector.attr('selectprocessurl' ) ]
                         && ( _cb = window[ _selector.attr('selectprocessurl' ) ] )
                         ;
-                    _r = printf( _r, _pid );
-                    this.randomurl( _selector ) && ( _r = addUrlParams( _r, {'rnd': new Date().getTime() } ) );
+                    _r = JC.f.printf( _r, _pid );
+                    this.randomurl( _selector ) && ( _r = JC.f.addUrlParams( _r, {'rnd': new Date().getTime() } ) );
                     _cb && ( _r = _cb.call( _selector, _r, _pid ) );
                 return _r;
             }
@@ -903,7 +905,7 @@
                 var _html = [], _tmp, _selected;
                 for( var i = 0, j = _data.length; i < j; i++ ){
                     _tmp = _data[i];
-                    _html.push( printf( '<option value="{0}" {2}>{1}</option>', _tmp[0], _tmp[1], _selected ) );
+                    _html.push( JC.f.printf( '<option value="{0}" {2}>{1}</option>', _tmp[0], _tmp[1], _selected ) );
                 }
                 $( _html.join('') ).appendTo( _selector );
 
@@ -954,4 +956,5 @@
     });
 
 }(jQuery));
-
+    return JC.AutoSelect;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

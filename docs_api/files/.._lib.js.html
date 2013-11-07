@@ -1088,7 +1088,8 @@ return(!i||i!==r&amp;&amp;!b.contains(r,i))&amp;&amp;(e.type=o.origType,n=o.hand
      * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 team
      * @date    2013-08-04
      */
-    window.JC = {
+    window.JC = window.JC || {};
+    var CLASS = {
         /**
          * JC组件库所在路径
          * @property    PATH
@@ -1360,6 +1361,7 @@ return(!i||i!==r&amp;&amp;!b.contains(r,i))&amp;&amp;(e.type=o.origType,n=o.hand
         */
        , _USE_CACHE: {}
     };
+    for( var k in CLASS ) JC[ k ] = CLASS[ k ];
     /**
      * UXC 是 JC 的别名
      * &lt;br /&gt;存在这个变量是为了向后兼容
@@ -1370,7 +1372,7 @@ return(!i||i!==r&amp;&amp;!b.contains(r,i))&amp;&amp;(e.type=o.origType,n=o.hand
      * @static
      * @date    2013-05-22
      */
-    window.UXC = window.JC;
+    window.UXC = JC;
     /**
      * 自动识别组件库所在路径
      */
