@@ -1,7 +1,8 @@
 //TODO: use 方法 nginx 模式添加 url 最大长度判断
 //TODO: use add custom type
 ;(function( $ ){
-    if( window.JC && typeof JC.PATH != 'undefined' ) return;
+    if( window.JC && typeof JC.compsDir != 'undefined' ) return;
+    JC.f.backward( 1 ); //这里启用 JC.common 的向后兼容, 为 window 注入全局静态函数变量
     /**
      * JC jquery 组件库 资源调用控制类
      * <br />这是一个单例模式, 全局访问使用 JC 或 window.JC

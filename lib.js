@@ -19,843 +19,867 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
 }b.merge(d,s.childNodes),s.textContent="";while(s.firstChild)s.removeChild(s.firstChild);s=f.lastChild}else d.push(t.createTextNode(o));s&&f.removeChild(s),b.support.appendChecked||b.grep(Ot(d,"input"),Bt),h=0;while(o=d[h++])if((!r||-1===b.inArray(o,r))&&(a=b.contains(o.ownerDocument,o),s=Ot(f.appendChild(o),"script"),a&&Mt(s),n)){i=0;while(o=s[i++])kt.test(o.type||"")&&n.push(o)}return s=null,f},cleanData:function(e,t){var n,r,o,a,s=0,u=b.expando,l=b.cache,p=b.support.deleteExpando,f=b.event.special;for(;null!=(n=e[s]);s++)if((t||b.acceptData(n))&&(o=n[u],a=o&&l[o])){if(a.events)for(r in a.events)f[r]?b.event.remove(n,r):b.removeEvent(n,r,a.handle);l[o]&&(delete l[o],p?delete n[u]:typeof n.removeAttribute!==i?n.removeAttribute(u):n[u]=null,c.push(o))}}});var Pt,Rt,Wt,$t=/alpha\([^)]*\)/i,It=/opacity\s*=\s*([^)]*)/,zt=/^(top|right|bottom|left)$/,Xt=/^(none|table(?!-c[ea]).+)/,Ut=/^margin/,Vt=RegExp("^("+x+")(.*)$","i"),Yt=RegExp("^("+x+")(?!px)[a-z%]+$","i"),Jt=RegExp("^([+-])=("+x+")","i"),Gt={BODY:"block"},Qt={position:"absolute",visibility:"hidden",display:"block"},Kt={letterSpacing:0,fontWeight:400},Zt=["Top","Right","Bottom","Left"],en=["Webkit","O","Moz","ms"];function tn(e,t){if(t in e)return t;var n=t.charAt(0).toUpperCase()+t.slice(1),r=t,i=en.length;while(i--)if(t=en[i]+n,t in e)return t;return r}function nn(e,t){return e=t||e,"none"===b.css(e,"display")||!b.contains(e.ownerDocument,e)}function rn(e,t){var n,r,i,o=[],a=0,s=e.length;for(;s>a;a++)r=e[a],r.style&&(o[a]=b._data(r,"olddisplay"),n=r.style.display,t?(o[a]||"none"!==n||(r.style.display=""),""===r.style.display&&nn(r)&&(o[a]=b._data(r,"olddisplay",un(r.nodeName)))):o[a]||(i=nn(r),(n&&"none"!==n||!i)&&b._data(r,"olddisplay",i?n:b.css(r,"display"))));for(a=0;s>a;a++)r=e[a],r.style&&(t&&"none"!==r.style.display&&""!==r.style.display||(r.style.display=t?o[a]||"":"none"));return e}b.fn.extend({css:function(e,n){return b.access(this,function(e,n,r){var i,o,a={},s=0;if(b.isArray(n)){for(o=Rt(e),i=n.length;i>s;s++)a[n[s]]=b.css(e,n[s],!1,o);return a}return r!==t?b.style(e,n,r):b.css(e,n)},e,n,arguments.length>1)},show:function(){return rn(this,!0)},hide:function(){return rn(this)},toggle:function(e){var t="boolean"==typeof e;return this.each(function(){(t?e:nn(this))?b(this).show():b(this).hide()})}}),b.extend({cssHooks:{opacity:{get:function(e,t){if(t){var n=Wt(e,"opacity");return""===n?"1":n}}}},cssNumber:{columnCount:!0,fillOpacity:!0,fontWeight:!0,lineHeight:!0,opacity:!0,orphans:!0,widows:!0,zIndex:!0,zoom:!0},cssProps:{"float":b.support.cssFloat?"cssFloat":"styleFloat"},style:function(e,n,r,i){if(e&&3!==e.nodeType&&8!==e.nodeType&&e.style){var o,a,s,u=b.camelCase(n),l=e.style;if(n=b.cssProps[u]||(b.cssProps[u]=tn(l,u)),s=b.cssHooks[n]||b.cssHooks[u],r===t)return s&&"get"in s&&(o=s.get(e,!1,i))!==t?o:l[n];if(a=typeof r,"string"===a&&(o=Jt.exec(r))&&(r=(o[1]+1)*o[2]+parseFloat(b.css(e,n)),a="number"),!(null==r||"number"===a&&isNaN(r)||("number"!==a||b.cssNumber[u]||(r+="px"),b.support.clearCloneStyle||""!==r||0!==n.indexOf("background")||(l[n]="inherit"),s&&"set"in s&&(r=s.set(e,r,i))===t)))try{l[n]=r}catch(c){}}},css:function(e,n,r,i){var o,a,s,u=b.camelCase(n);return n=b.cssProps[u]||(b.cssProps[u]=tn(e.style,u)),s=b.cssHooks[n]||b.cssHooks[u],s&&"get"in s&&(a=s.get(e,!0,r)),a===t&&(a=Wt(e,n,i)),"normal"===a&&n in Kt&&(a=Kt[n]),""===r||r?(o=parseFloat(a),r===!0||b.isNumeric(o)?o||0:a):a},swap:function(e,t,n,r){var i,o,a={};for(o in t)a[o]=e.style[o],e.style[o]=t[o];i=n.apply(e,r||[]);for(o in t)e.style[o]=a[o];return i}}),e.getComputedStyle?(Rt=function(t){return e.getComputedStyle(t,null)},Wt=function(e,n,r){var i,o,a,s=r||Rt(e),u=s?s.getPropertyValue(n)||s[n]:t,l=e.style;return s&&(""!==u||b.contains(e.ownerDocument,e)||(u=b.style(e,n)),Yt.test(u)&&Ut.test(n)&&(i=l.width,o=l.minWidth,a=l.maxWidth,l.minWidth=l.maxWidth=l.width=u,u=s.width,l.width=i,l.minWidth=o,l.maxWidth=a)),u}):o.documentElement.currentStyle&&(Rt=function(e){return e.currentStyle},Wt=function(e,n,r){var i,o,a,s=r||Rt(e),u=s?s[n]:t,l=e.style;return null==u&&l&&l[n]&&(u=l[n]),Yt.test(u)&&!zt.test(n)&&(i=l.left,o=e.runtimeStyle,a=o&&o.left,a&&(o.left=e.currentStyle.left),l.left="fontSize"===n?"1em":u,u=l.pixelLeft+"px",l.left=i,a&&(o.left=a)),""===u?"auto":u});function on(e,t,n){var r=Vt.exec(t);return r?Math.max(0,r[1]-(n||0))+(r[2]||"px"):t}function an(e,t,n,r,i){var o=n===(r?"border":"content")?4:"width"===t?1:0,a=0;for(;4>o;o+=2)"margin"===n&&(a+=b.css(e,n+Zt[o],!0,i)),r?("content"===n&&(a-=b.css(e,"padding"+Zt[o],!0,i)),"margin"!==n&&(a-=b.css(e,"border"+Zt[o]+"Width",!0,i))):(a+=b.css(e,"padding"+Zt[o],!0,i),"padding"!==n&&(a+=b.css(e,"border"+Zt[o]+"Width",!0,i)));return a}function sn(e,t,n){var r=!0,i="width"===t?e.offsetWidth:e.offsetHeight,o=Rt(e),a=b.support.boxSizing&&"border-box"===b.css(e,"boxSizing",!1,o);if(0>=i||null==i){if(i=Wt(e,t,o),(0>i||null==i)&&(i=e.style[t]),Yt.test(i))return i;r=a&&(b.support.boxSizingReliable||i===e.style[t]),i=parseFloat(i)||0}return i+an(e,t,n||(a?"border":"content"),r,o)+"px"}function un(e){var t=o,n=Gt[e];return n||(n=ln(e,t),"none"!==n&&n||(Pt=(Pt||b("<iframe frameborder='0' width='0' height='0'/>").css("cssText","display:block !important")).appendTo(t.documentElement),t=(Pt[0].contentWindow||Pt[0].contentDocument).document,t.write("<!doctype html><html><body>"),t.close(),n=ln(e,t),Pt.detach()),Gt[e]=n),n}function ln(e,t){var n=b(t.createElement(e)).appendTo(t.body),r=b.css(n[0],"display");return n.remove(),r}b.each(["height","width"],function(e,n){b.cssHooks[n]={get:function(e,r,i){return r?0===e.offsetWidth&&Xt.test(b.css(e,"display"))?b.swap(e,Qt,function(){return sn(e,n,i)}):sn(e,n,i):t},set:function(e,t,r){var i=r&&Rt(e);return on(e,t,r?an(e,n,r,b.support.boxSizing&&"border-box"===b.css(e,"boxSizing",!1,i),i):0)}}}),b.support.opacity||(b.cssHooks.opacity={get:function(e,t){return It.test((t&&e.currentStyle?e.currentStyle.filter:e.style.filter)||"")?.01*parseFloat(RegExp.$1)+"":t?"1":""},set:function(e,t){var n=e.style,r=e.currentStyle,i=b.isNumeric(t)?"alpha(opacity="+100*t+")":"",o=r&&r.filter||n.filter||"";n.zoom=1,(t>=1||""===t)&&""===b.trim(o.replace($t,""))&&n.removeAttribute&&(n.removeAttribute("filter"),""===t||r&&!r.filter)||(n.filter=$t.test(o)?o.replace($t,i):o+" "+i)}}),b(function(){b.support.reliableMarginRight||(b.cssHooks.marginRight={get:function(e,n){return n?b.swap(e,{display:"inline-block"},Wt,[e,"marginRight"]):t}}),!b.support.pixelPosition&&b.fn.position&&b.each(["top","left"],function(e,n){b.cssHooks[n]={get:function(e,r){return r?(r=Wt(e,n),Yt.test(r)?b(e).position()[n]+"px":r):t}}})}),b.expr&&b.expr.filters&&(b.expr.filters.hidden=function(e){return 0>=e.offsetWidth&&0>=e.offsetHeight||!b.support.reliableHiddenOffsets&&"none"===(e.style&&e.style.display||b.css(e,"display"))},b.expr.filters.visible=function(e){return!b.expr.filters.hidden(e)}),b.each({margin:"",padding:"",border:"Width"},function(e,t){b.cssHooks[e+t]={expand:function(n){var r=0,i={},o="string"==typeof n?n.split(" "):[n];for(;4>r;r++)i[e+Zt[r]+t]=o[r]||o[r-2]||o[0];return i}},Ut.test(e)||(b.cssHooks[e+t].set=on)});var cn=/%20/g,pn=/\[\]$/,fn=/\r?\n/g,dn=/^(?:submit|button|image|reset|file)$/i,hn=/^(?:input|select|textarea|keygen)/i;b.fn.extend({serialize:function(){return b.param(this.serializeArray())},serializeArray:function(){return this.map(function(){var e=b.prop(this,"elements");return e?b.makeArray(e):this}).filter(function(){var e=this.type;return this.name&&!b(this).is(":disabled")&&hn.test(this.nodeName)&&!dn.test(e)&&(this.checked||!Nt.test(e))}).map(function(e,t){var n=b(this).val();return null==n?null:b.isArray(n)?b.map(n,function(e){return{name:t.name,value:e.replace(fn,"\r\n")}}):{name:t.name,value:n.replace(fn,"\r\n")}}).get()}}),b.param=function(e,n){var r,i=[],o=function(e,t){t=b.isFunction(t)?t():null==t?"":t,i[i.length]=encodeURIComponent(e)+"="+encodeURIComponent(t)};if(n===t&&(n=b.ajaxSettings&&b.ajaxSettings.traditional),b.isArray(e)||e.jquery&&!b.isPlainObject(e))b.each(e,function(){o(this.name,this.value)});else for(r in e)gn(r,e[r],n,o);return i.join("&").replace(cn,"+")};function gn(e,t,n,r){var i;if(b.isArray(t))b.each(t,function(t,i){n||pn.test(e)?r(e,i):gn(e+"["+("object"==typeof i?t:"")+"]",i,n,r)});else if(n||"object"!==b.type(t))r(e,t);else for(i in t)gn(e+"["+i+"]",t[i],n,r)}b.each("blur focus focusin focusout load resize scroll unload click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup error contextmenu".split(" "),function(e,t){b.fn[t]=function(e,n){return arguments.length>0?this.on(t,null,e,n):this.trigger(t)}}),b.fn.hover=function(e,t){return this.mouseenter(e).mouseleave(t||e)};var mn,yn,vn=b.now(),bn=/\?/,xn=/#.*$/,wn=/([?&])_=[^&]*/,Tn=/^(.*?):[ \t]*([^\r\n]*)\r?$/gm,Nn=/^(?:about|app|app-storage|.+-extension|file|res|widget):$/,Cn=/^(?:GET|HEAD)$/,kn=/^\/\//,En=/^([\w.+-]+:)(?:\/\/([^\/?#:]*)(?::(\d+)|)|)/,Sn=b.fn.load,An={},jn={},Dn="*/".concat("*");try{yn=a.href}catch(Ln){yn=o.createElement("a"),yn.href="",yn=yn.href}mn=En.exec(yn.toLowerCase())||[];function Hn(e){return function(t,n){"string"!=typeof t&&(n=t,t="*");var r,i=0,o=t.toLowerCase().match(w)||[];if(b.isFunction(n))while(r=o[i++])"+"===r[0]?(r=r.slice(1)||"*",(e[r]=e[r]||[]).unshift(n)):(e[r]=e[r]||[]).push(n)}}function qn(e,n,r,i){var o={},a=e===jn;function s(u){var l;return o[u]=!0,b.each(e[u]||[],function(e,u){var c=u(n,r,i);return"string"!=typeof c||a||o[c]?a?!(l=c):t:(n.dataTypes.unshift(c),s(c),!1)}),l}return s(n.dataTypes[0])||!o["*"]&&s("*")}function Mn(e,n){var r,i,o=b.ajaxSettings.flatOptions||{};for(i in n)n[i]!==t&&((o[i]?e:r||(r={}))[i]=n[i]);return r&&b.extend(!0,e,r),e}b.fn.load=function(e,n,r){if("string"!=typeof e&&Sn)return Sn.apply(this,arguments);var i,o,a,s=this,u=e.indexOf(" ");return u>=0&&(i=e.slice(u,e.length),e=e.slice(0,u)),b.isFunction(n)?(r=n,n=t):n&&"object"==typeof n&&(a="POST"),s.length>0&&b.ajax({url:e,type:a,dataType:"html",data:n}).done(function(e){o=arguments,s.html(i?b("<div>").append(b.parseHTML(e)).find(i):e)}).complete(r&&function(e,t){s.each(r,o||[e.responseText,t,e])}),this},b.each(["ajaxStart","ajaxStop","ajaxComplete","ajaxError","ajaxSuccess","ajaxSend"],function(e,t){b.fn[t]=function(e){return this.on(t,e)}}),b.each(["get","post"],function(e,n){b[n]=function(e,r,i,o){return b.isFunction(r)&&(o=o||i,i=r,r=t),b.ajax({url:e,type:n,dataType:o,data:r,success:i})}}),b.extend({active:0,lastModified:{},etag:{},ajaxSettings:{url:yn,type:"GET",isLocal:Nn.test(mn[1]),global:!0,processData:!0,async:!0,contentType:"application/x-www-form-urlencoded; charset=UTF-8",accepts:{"*":Dn,text:"text/plain",html:"text/html",xml:"application/xml, text/xml",json:"application/json, text/javascript"},contents:{xml:/xml/,html:/html/,json:/json/},responseFields:{xml:"responseXML",text:"responseText"},converters:{"* text":e.String,"text html":!0,"text json":b.parseJSON,"text xml":b.parseXML},flatOptions:{url:!0,context:!0}},ajaxSetup:function(e,t){return t?Mn(Mn(e,b.ajaxSettings),t):Mn(b.ajaxSettings,e)},ajaxPrefilter:Hn(An),ajaxTransport:Hn(jn),ajax:function(e,n){"object"==typeof e&&(n=e,e=t),n=n||{};var r,i,o,a,s,u,l,c,p=b.ajaxSetup({},n),f=p.context||p,d=p.context&&(f.nodeType||f.jquery)?b(f):b.event,h=b.Deferred(),g=b.Callbacks("once memory"),m=p.statusCode||{},y={},v={},x=0,T="canceled",N={readyState:0,getResponseHeader:function(e){var t;if(2===x){if(!c){c={};while(t=Tn.exec(a))c[t[1].toLowerCase()]=t[2]}t=c[e.toLowerCase()]}return null==t?null:t},getAllResponseHeaders:function(){return 2===x?a:null},setRequestHeader:function(e,t){var n=e.toLowerCase();return x||(e=v[n]=v[n]||e,y[e]=t),this},overrideMimeType:function(e){return x||(p.mimeType=e),this},statusCode:function(e){var t;if(e)if(2>x)for(t in e)m[t]=[m[t],e[t]];else N.always(e[N.status]);return this},abort:function(e){var t=e||T;return l&&l.abort(t),k(0,t),this}};if(h.promise(N).complete=g.add,N.success=N.done,N.error=N.fail,p.url=((e||p.url||yn)+"").replace(xn,"").replace(kn,mn[1]+"//"),p.type=n.method||n.type||p.method||p.type,p.dataTypes=b.trim(p.dataType||"*").toLowerCase().match(w)||[""],null==p.crossDomain&&(r=En.exec(p.url.toLowerCase()),p.crossDomain=!(!r||r[1]===mn[1]&&r[2]===mn[2]&&(r[3]||("http:"===r[1]?80:443))==(mn[3]||("http:"===mn[1]?80:443)))),p.data&&p.processData&&"string"!=typeof p.data&&(p.data=b.param(p.data,p.traditional)),qn(An,p,n,N),2===x)return N;u=p.global,u&&0===b.active++&&b.event.trigger("ajaxStart"),p.type=p.type.toUpperCase(),p.hasContent=!Cn.test(p.type),o=p.url,p.hasContent||(p.data&&(o=p.url+=(bn.test(o)?"&":"?")+p.data,delete p.data),p.cache===!1&&(p.url=wn.test(o)?o.replace(wn,"$1_="+vn++):o+(bn.test(o)?"&":"?")+"_="+vn++)),p.ifModified&&(b.lastModified[o]&&N.setRequestHeader("If-Modified-Since",b.lastModified[o]),b.etag[o]&&N.setRequestHeader("If-None-Match",b.etag[o])),(p.data&&p.hasContent&&p.contentType!==!1||n.contentType)&&N.setRequestHeader("Content-Type",p.contentType),N.setRequestHeader("Accept",p.dataTypes[0]&&p.accepts[p.dataTypes[0]]?p.accepts[p.dataTypes[0]]+("*"!==p.dataTypes[0]?", "+Dn+"; q=0.01":""):p.accepts["*"]);for(i in p.headers)N.setRequestHeader(i,p.headers[i]);if(p.beforeSend&&(p.beforeSend.call(f,N,p)===!1||2===x))return N.abort();T="abort";for(i in{success:1,error:1,complete:1})N[i](p[i]);if(l=qn(jn,p,n,N)){N.readyState=1,u&&d.trigger("ajaxSend",[N,p]),p.async&&p.timeout>0&&(s=setTimeout(function(){N.abort("timeout")},p.timeout));try{x=1,l.send(y,k)}catch(C){if(!(2>x))throw C;k(-1,C)}}else k(-1,"No Transport");function k(e,n,r,i){var c,y,v,w,T,C=n;2!==x&&(x=2,s&&clearTimeout(s),l=t,a=i||"",N.readyState=e>0?4:0,r&&(w=_n(p,N,r)),e>=200&&300>e||304===e?(p.ifModified&&(T=N.getResponseHeader("Last-Modified"),T&&(b.lastModified[o]=T),T=N.getResponseHeader("etag"),T&&(b.etag[o]=T)),204===e?(c=!0,C="nocontent"):304===e?(c=!0,C="notmodified"):(c=Fn(p,w),C=c.state,y=c.data,v=c.error,c=!v)):(v=C,(e||!C)&&(C="error",0>e&&(e=0))),N.status=e,N.statusText=(n||C)+"",c?h.resolveWith(f,[y,C,N]):h.rejectWith(f,[N,C,v]),N.statusCode(m),m=t,u&&d.trigger(c?"ajaxSuccess":"ajaxError",[N,p,c?y:v]),g.fireWith(f,[N,C]),u&&(d.trigger("ajaxComplete",[N,p]),--b.active||b.event.trigger("ajaxStop")))}return N},getScript:function(e,n){return b.get(e,t,n,"script")},getJSON:function(e,t,n){return b.get(e,t,n,"json")}});function _n(e,n,r){var i,o,a,s,u=e.contents,l=e.dataTypes,c=e.responseFields;for(s in c)s in r&&(n[c[s]]=r[s]);while("*"===l[0])l.shift(),o===t&&(o=e.mimeType||n.getResponseHeader("Content-Type"));if(o)for(s in u)if(u[s]&&u[s].test(o)){l.unshift(s);break}if(l[0]in r)a=l[0];else{for(s in r){if(!l[0]||e.converters[s+" "+l[0]]){a=s;break}i||(i=s)}a=a||i}return a?(a!==l[0]&&l.unshift(a),r[a]):t}function Fn(e,t){var n,r,i,o,a={},s=0,u=e.dataTypes.slice(),l=u[0];if(e.dataFilter&&(t=e.dataFilter(t,e.dataType)),u[1])for(i in e.converters)a[i.toLowerCase()]=e.converters[i];for(;r=u[++s];)if("*"!==r){if("*"!==l&&l!==r){if(i=a[l+" "+r]||a["* "+r],!i)for(n in a)if(o=n.split(" "),o[1]===r&&(i=a[l+" "+o[0]]||a["* "+o[0]])){i===!0?i=a[n]:a[n]!==!0&&(r=o[0],u.splice(s--,0,r));break}if(i!==!0)if(i&&e["throws"])t=i(t);else try{t=i(t)}catch(c){return{state:"parsererror",error:i?c:"No conversion from "+l+" to "+r}}}l=r}return{state:"success",data:t}}b.ajaxSetup({accepts:{script:"text/javascript, application/javascript, application/ecmascript, application/x-ecmascript"},contents:{script:/(?:java|ecma)script/},converters:{"text script":function(e){return b.globalEval(e),e}}}),b.ajaxPrefilter("script",function(e){e.cache===t&&(e.cache=!1),e.crossDomain&&(e.type="GET",e.global=!1)}),b.ajaxTransport("script",function(e){if(e.crossDomain){var n,r=o.head||b("head")[0]||o.documentElement;return{send:function(t,i){n=o.createElement("script"),n.async=!0,e.scriptCharset&&(n.charset=e.scriptCharset),n.src=e.url,n.onload=n.onreadystatechange=function(e,t){(t||!n.readyState||/loaded|complete/.test(n.readyState))&&(n.onload=n.onreadystatechange=null,n.parentNode&&n.parentNode.removeChild(n),n=null,t||i(200,"success"))},r.insertBefore(n,r.firstChild)},abort:function(){n&&n.onload(t,!0)}}}});var On=[],Bn=/(=)\?(?=&|$)|\?\?/;b.ajaxSetup({jsonp:"callback",jsonpCallback:function(){var e=On.pop()||b.expando+"_"+vn++;return this[e]=!0,e}}),b.ajaxPrefilter("json jsonp",function(n,r,i){var o,a,s,u=n.jsonp!==!1&&(Bn.test(n.url)?"url":"string"==typeof n.data&&!(n.contentType||"").indexOf("application/x-www-form-urlencoded")&&Bn.test(n.data)&&"data");return u||"jsonp"===n.dataTypes[0]?(o=n.jsonpCallback=b.isFunction(n.jsonpCallback)?n.jsonpCallback():n.jsonpCallback,u?n[u]=n[u].replace(Bn,"$1"+o):n.jsonp!==!1&&(n.url+=(bn.test(n.url)?"&":"?")+n.jsonp+"="+o),n.converters["script json"]=function(){return s||b.error(o+" was not called"),s[0]},n.dataTypes[0]="json",a=e[o],e[o]=function(){s=arguments},i.always(function(){e[o]=a,n[o]&&(n.jsonpCallback=r.jsonpCallback,On.push(o)),s&&b.isFunction(a)&&a(s[0]),s=a=t}),"script"):t});var Pn,Rn,Wn=0,$n=e.ActiveXObject&&function(){var e;for(e in Pn)Pn[e](t,!0)};function In(){try{return new e.XMLHttpRequest}catch(t){}}function zn(){try{return new e.ActiveXObject("Microsoft.XMLHTTP")}catch(t){}}b.ajaxSettings.xhr=e.ActiveXObject?function(){return!this.isLocal&&In()||zn()}:In,Rn=b.ajaxSettings.xhr(),b.support.cors=!!Rn&&"withCredentials"in Rn,Rn=b.support.ajax=!!Rn,Rn&&b.ajaxTransport(function(n){if(!n.crossDomain||b.support.cors){var r;return{send:function(i,o){var a,s,u=n.xhr();if(n.username?u.open(n.type,n.url,n.async,n.username,n.password):u.open(n.type,n.url,n.async),n.xhrFields)for(s in n.xhrFields)u[s]=n.xhrFields[s];n.mimeType&&u.overrideMimeType&&u.overrideMimeType(n.mimeType),n.crossDomain||i["X-Requested-With"]||(i["X-Requested-With"]="XMLHttpRequest");try{for(s in i)u.setRequestHeader(s,i[s])}catch(l){}u.send(n.hasContent&&n.data||null),r=function(e,i){var s,l,c,p;try{if(r&&(i||4===u.readyState))if(r=t,a&&(u.onreadystatechange=b.noop,$n&&delete Pn[a]),i)4!==u.readyState&&u.abort();else{p={},s=u.status,l=u.getAllResponseHeaders(),"string"==typeof u.responseText&&(p.text=u.responseText);try{c=u.statusText}catch(f){c=""}s||!n.isLocal||n.crossDomain?1223===s&&(s=204):s=p.text?200:404}}catch(d){i||o(-1,d)}p&&o(s,c,p,l)},n.async?4===u.readyState?setTimeout(r):(a=++Wn,$n&&(Pn||(Pn={},b(e).unload($n)),Pn[a]=r),u.onreadystatechange=r):r()},abort:function(){r&&r(t,!0)}}}});var Xn,Un,Vn=/^(?:toggle|show|hide)$/,Yn=RegExp("^(?:([+-])=|)("+x+")([a-z%]*)$","i"),Jn=/queueHooks$/,Gn=[nr],Qn={"*":[function(e,t){var n,r,i=this.createTween(e,t),o=Yn.exec(t),a=i.cur(),s=+a||0,u=1,l=20;if(o){if(n=+o[2],r=o[3]||(b.cssNumber[e]?"":"px"),"px"!==r&&s){s=b.css(i.elem,e,!0)||n||1;do u=u||".5",s/=u,b.style(i.elem,e,s+r);while(u!==(u=i.cur()/a)&&1!==u&&--l)}i.unit=r,i.start=s,i.end=o[1]?s+(o[1]+1)*n:n}return i}]};function Kn(){return setTimeout(function(){Xn=t}),Xn=b.now()}function Zn(e,t){b.each(t,function(t,n){var r=(Qn[t]||[]).concat(Qn["*"]),i=0,o=r.length;for(;o>i;i++)if(r[i].call(e,t,n))return})}function er(e,t,n){var r,i,o=0,a=Gn.length,s=b.Deferred().always(function(){delete u.elem}),u=function(){if(i)return!1;var t=Xn||Kn(),n=Math.max(0,l.startTime+l.duration-t),r=n/l.duration||0,o=1-r,a=0,u=l.tweens.length;for(;u>a;a++)l.tweens[a].run(o);return s.notifyWith(e,[l,o,n]),1>o&&u?n:(s.resolveWith(e,[l]),!1)},l=s.promise({elem:e,props:b.extend({},t),opts:b.extend(!0,{specialEasing:{}},n),originalProperties:t,originalOptions:n,startTime:Xn||Kn(),duration:n.duration,tweens:[],createTween:function(t,n){var r=b.Tween(e,l.opts,t,n,l.opts.specialEasing[t]||l.opts.easing);return l.tweens.push(r),r},stop:function(t){var n=0,r=t?l.tweens.length:0;if(i)return this;for(i=!0;r>n;n++)l.tweens[n].run(1);return t?s.resolveWith(e,[l,t]):s.rejectWith(e,[l,t]),this}}),c=l.props;for(tr(c,l.opts.specialEasing);a>o;o++)if(r=Gn[o].call(l,e,c,l.opts))return r;return Zn(l,c),b.isFunction(l.opts.start)&&l.opts.start.call(e,l),b.fx.timer(b.extend(u,{elem:e,anim:l,queue:l.opts.queue})),l.progress(l.opts.progress).done(l.opts.done,l.opts.complete).fail(l.opts.fail).always(l.opts.always)}function tr(e,t){var n,r,i,o,a;for(i in e)if(r=b.camelCase(i),o=t[r],n=e[i],b.isArray(n)&&(o=n[1],n=e[i]=n[0]),i!==r&&(e[r]=n,delete e[i]),a=b.cssHooks[r],a&&"expand"in a){n=a.expand(n),delete e[r];for(i in n)i in e||(e[i]=n[i],t[i]=o)}else t[r]=o}b.Animation=b.extend(er,{tweener:function(e,t){b.isFunction(e)?(t=e,e=["*"]):e=e.split(" ");var n,r=0,i=e.length;for(;i>r;r++)n=e[r],Qn[n]=Qn[n]||[],Qn[n].unshift(t)},prefilter:function(e,t){t?Gn.unshift(e):Gn.push(e)}});function nr(e,t,n){var r,i,o,a,s,u,l,c,p,f=this,d=e.style,h={},g=[],m=e.nodeType&&nn(e);n.queue||(c=b._queueHooks(e,"fx"),null==c.unqueued&&(c.unqueued=0,p=c.empty.fire,c.empty.fire=function(){c.unqueued||p()}),c.unqueued++,f.always(function(){f.always(function(){c.unqueued--,b.queue(e,"fx").length||c.empty.fire()})})),1===e.nodeType&&("height"in t||"width"in t)&&(n.overflow=[d.overflow,d.overflowX,d.overflowY],"inline"===b.css(e,"display")&&"none"===b.css(e,"float")&&(b.support.inlineBlockNeedsLayout&&"inline"!==un(e.nodeName)?d.zoom=1:d.display="inline-block")),n.overflow&&(d.overflow="hidden",b.support.shrinkWrapBlocks||f.always(function(){d.overflow=n.overflow[0],d.overflowX=n.overflow[1],d.overflowY=n.overflow[2]}));for(i in t)if(a=t[i],Vn.exec(a)){if(delete t[i],u=u||"toggle"===a,a===(m?"hide":"show"))continue;g.push(i)}if(o=g.length){s=b._data(e,"fxshow")||b._data(e,"fxshow",{}),"hidden"in s&&(m=s.hidden),u&&(s.hidden=!m),m?b(e).show():f.done(function(){b(e).hide()}),f.done(function(){var t;b._removeData(e,"fxshow");for(t in h)b.style(e,t,h[t])});for(i=0;o>i;i++)r=g[i],l=f.createTween(r,m?s[r]:0),h[r]=s[r]||b.style(e,r),r in s||(s[r]=l.start,m&&(l.end=l.start,l.start="width"===r||"height"===r?1:0))}}function rr(e,t,n,r,i){return new rr.prototype.init(e,t,n,r,i)}b.Tween=rr,rr.prototype={constructor:rr,init:function(e,t,n,r,i,o){this.elem=e,this.prop=n,this.easing=i||"swing",this.options=t,this.start=this.now=this.cur(),this.end=r,this.unit=o||(b.cssNumber[n]?"":"px")},cur:function(){var e=rr.propHooks[this.prop];return e&&e.get?e.get(this):rr.propHooks._default.get(this)},run:function(e){var t,n=rr.propHooks[this.prop];return this.pos=t=this.options.duration?b.easing[this.easing](e,this.options.duration*e,0,1,this.options.duration):e,this.now=(this.end-this.start)*t+this.start,this.options.step&&this.options.step.call(this.elem,this.now,this),n&&n.set?n.set(this):rr.propHooks._default.set(this),this}},rr.prototype.init.prototype=rr.prototype,rr.propHooks={_default:{get:function(e){var t;return null==e.elem[e.prop]||e.elem.style&&null!=e.elem.style[e.prop]?(t=b.css(e.elem,e.prop,""),t&&"auto"!==t?t:0):e.elem[e.prop]},set:function(e){b.fx.step[e.prop]?b.fx.step[e.prop](e):e.elem.style&&(null!=e.elem.style[b.cssProps[e.prop]]||b.cssHooks[e.prop])?b.style(e.elem,e.prop,e.now+e.unit):e.elem[e.prop]=e.now}}},rr.propHooks.scrollTop=rr.propHooks.scrollLeft={set:function(e){e.elem.nodeType&&e.elem.parentNode&&(e.elem[e.prop]=e.now)}},b.each(["toggle","show","hide"],function(e,t){var n=b.fn[t];b.fn[t]=function(e,r,i){return null==e||"boolean"==typeof e?n.apply(this,arguments):this.animate(ir(t,!0),e,r,i)}}),b.fn.extend({fadeTo:function(e,t,n,r){return this.filter(nn).css("opacity",0).show().end().animate({opacity:t},e,n,r)},animate:function(e,t,n,r){var i=b.isEmptyObject(e),o=b.speed(t,n,r),a=function(){var t=er(this,b.extend({},e),o);a.finish=function(){t.stop(!0)},(i||b._data(this,"finish"))&&t.stop(!0)};return a.finish=a,i||o.queue===!1?this.each(a):this.queue(o.queue,a)},stop:function(e,n,r){var i=function(e){var t=e.stop;delete e.stop,t(r)};return"string"!=typeof e&&(r=n,n=e,e=t),n&&e!==!1&&this.queue(e||"fx",[]),this.each(function(){var t=!0,n=null!=e&&e+"queueHooks",o=b.timers,a=b._data(this);if(n)a[n]&&a[n].stop&&i(a[n]);else for(n in a)a[n]&&a[n].stop&&Jn.test(n)&&i(a[n]);for(n=o.length;n--;)o[n].elem!==this||null!=e&&o[n].queue!==e||(o[n].anim.stop(r),t=!1,o.splice(n,1));(t||!r)&&b.dequeue(this,e)})},finish:function(e){return e!==!1&&(e=e||"fx"),this.each(function(){var t,n=b._data(this),r=n[e+"queue"],i=n[e+"queueHooks"],o=b.timers,a=r?r.length:0;for(n.finish=!0,b.queue(this,e,[]),i&&i.cur&&i.cur.finish&&i.cur.finish.call(this),t=o.length;t--;)o[t].elem===this&&o[t].queue===e&&(o[t].anim.stop(!0),o.splice(t,1));for(t=0;a>t;t++)r[t]&&r[t].finish&&r[t].finish.call(this);delete n.finish})}});function ir(e,t){var n,r={height:e},i=0;for(t=t?1:0;4>i;i+=2-t)n=Zt[i],r["margin"+n]=r["padding"+n]=e;return t&&(r.opacity=r.width=e),r}b.each({slideDown:ir("show"),slideUp:ir("hide"),slideToggle:ir("toggle"),fadeIn:{opacity:"show"},fadeOut:{opacity:"hide"},fadeToggle:{opacity:"toggle"}},function(e,t){b.fn[e]=function(e,n,r){return this.animate(t,e,n,r)}}),b.speed=function(e,t,n){var r=e&&"object"==typeof e?b.extend({},e):{complete:n||!n&&t||b.isFunction(e)&&e,duration:e,easing:n&&t||t&&!b.isFunction(t)&&t};return r.duration=b.fx.off?0:"number"==typeof r.duration?r.duration:r.duration in b.fx.speeds?b.fx.speeds[r.duration]:b.fx.speeds._default,(null==r.queue||r.queue===!0)&&(r.queue="fx"),r.old=r.complete,r.complete=function(){b.isFunction(r.old)&&r.old.call(this),r.queue&&b.dequeue(this,r.queue)},r},b.easing={linear:function(e){return e},swing:function(e){return.5-Math.cos(e*Math.PI)/2}},b.timers=[],b.fx=rr.prototype.init,b.fx.tick=function(){var e,n=b.timers,r=0;for(Xn=b.now();n.length>r;r++)e=n[r],e()||n[r]!==e||n.splice(r--,1);n.length||b.fx.stop(),Xn=t},b.fx.timer=function(e){e()&&b.timers.push(e)&&b.fx.start()},b.fx.interval=13,b.fx.start=function(){Un||(Un=setInterval(b.fx.tick,b.fx.interval))},b.fx.stop=function(){clearInterval(Un),Un=null},b.fx.speeds={slow:600,fast:200,_default:400},b.fx.step={},b.expr&&b.expr.filters&&(b.expr.filters.animated=function(e){return b.grep(b.timers,function(t){return e===t.elem}).length}),b.fn.offset=function(e){if(arguments.length)return e===t?this:this.each(function(t){b.offset.setOffset(this,e,t)});var n,r,o={top:0,left:0},a=this[0],s=a&&a.ownerDocument;if(s)return n=s.documentElement,b.contains(n,a)?(typeof a.getBoundingClientRect!==i&&(o=a.getBoundingClientRect()),r=or(s),{top:o.top+(r.pageYOffset||n.scrollTop)-(n.clientTop||0),left:o.left+(r.pageXOffset||n.scrollLeft)-(n.clientLeft||0)}):o},b.offset={setOffset:function(e,t,n){var r=b.css(e,"position");"static"===r&&(e.style.position="relative");var i=b(e),o=i.offset(),a=b.css(e,"top"),s=b.css(e,"left"),u=("absolute"===r||"fixed"===r)&&b.inArray("auto",[a,s])>-1,l={},c={},p,f;u?(c=i.position(),p=c.top,f=c.left):(p=parseFloat(a)||0,f=parseFloat(s)||0),b.isFunction(t)&&(t=t.call(e,n,o)),null!=t.top&&(l.top=t.top-o.top+p),null!=t.left&&(l.left=t.left-o.left+f),"using"in t?t.using.call(e,l):i.css(l)}},b.fn.extend({position:function(){if(this[0]){var e,t,n={top:0,left:0},r=this[0];return"fixed"===b.css(r,"position")?t=r.getBoundingClientRect():(e=this.offsetParent(),t=this.offset(),b.nodeName(e[0],"html")||(n=e.offset()),n.top+=b.css(e[0],"borderTopWidth",!0),n.left+=b.css(e[0],"borderLeftWidth",!0)),{top:t.top-n.top-b.css(r,"marginTop",!0),left:t.left-n.left-b.css(r,"marginLeft",!0)}}},offsetParent:function(){return this.map(function(){var e=this.offsetParent||o.documentElement;while(e&&!b.nodeName(e,"html")&&"static"===b.css(e,"position"))e=e.offsetParent;return e||o.documentElement})}}),b.each({scrollLeft:"pageXOffset",scrollTop:"pageYOffset"},function(e,n){var r=/Y/.test(n);b.fn[e]=function(i){return b.access(this,function(e,i,o){var a=or(e);return o===t?a?n in a?a[n]:a.document.documentElement[i]:e[i]:(a?a.scrollTo(r?b(a).scrollLeft():o,r?o:b(a).scrollTop()):e[i]=o,t)},e,i,arguments.length,null)}});function or(e){return b.isWindow(e)?e:9===e.nodeType?e.defaultView||e.parentWindow:!1}b.each({Height:"height",Width:"width"},function(e,n){b.each({padding:"inner"+e,content:n,"":"outer"+e},function(r,i){b.fn[i]=function(i,o){var a=arguments.length&&(r||"boolean"!=typeof i),s=r||(i===!0||o===!0?"margin":"border");return b.access(this,function(n,r,i){var o;return b.isWindow(n)?n.document.documentElement["client"+e]:9===n.nodeType?(o=n.documentElement,Math.max(n.body["scroll"+e],o["scroll"+e],n.body["offset"+e],o["offset"+e],o["client"+e])):i===t?b.css(n,r,s):b.style(n,r,i,s)},n,a?i:t,a,null)}})}),e.jQuery=e.$=b,"function"==typeof define&&define.amd&&define.amd.jQuery&&define("jquery",[],function(){return b})})(window);
 ;
 
-;
-/**
- * 全局函数
- * @namespace 
- * @class   window
- * @static
- */
-!String.prototype.trim && ( String.prototype.trim = function(){ return $.trim( this ); } );
-/**
- * 如果 console 不可用, 则生成一个模拟的 console 对象
- */
-if( !window.console ) window.console = { log:function(){
-    window.status = [].slice.apply( arguments ).join(' ');
-}};
-/**
- * 声明主要命名空间, 方便迁移
- */
-window.JC = window.JC || {
-    log: function(){ JC.debug && window.console && console.log( sliceArgs( arguments ).join(' ') ); }
-};
-window.Bizs = window.Bizs || {};
-/**
- * 全局 css z-index 控制属性
- * @property    ZINDEX_COUNT
- * @type        int
- * @default     50001
- * @static
- */
-window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
-/**
- * 把函数的参数转为数组
- * @method  sliceArgs
- * @param   {arguments}     args
- * @return Array
- * @static
- */
-function sliceArgs( _arg ){
-    var _r = [], _i, _len;
-    for( _i = 0, _len = _arg.length; _i < _len; _i++){
-        _r.push( _arg[_i] );
-    }
-    return _r;
-}
- /**
- * 按格式输出字符串
- * @method printf
- * @static
- * @param   {string}    _str
- * @return  string
- * @example
- *      printf( 'asdfasdf{0}sdfasdf{1}', '000', 1111 );
- *      //return asdfasdf000sdfasdf1111
- */
-function printf( _str ){
-    for(var i = 1, _len = arguments.length; i < _len; i++){
-        _str = _str.replace( new RegExp('\\{'+( i - 1 )+'\\}', 'g'), arguments[i] );
-    }
-    return _str;
-}
-/**
- * 判断URL中是否有某个get参数
- * @method  hasUrlParam
- * @static
- * @param   {string}    _url
- * @param   {string}    _key
- * @return  bool
- * @example
- *      var bool = hasUrlParam( 'getkey' );
- */
-function hasUrlParam( _url, _key ){
-    var _r = false;
-    if( !_key ){ _key = _url; _url = location.href; }
-    if( /\?/.test( _url ) ){
-        _url = _url.split( '?' ); _url = _url[ _url.length - 1 ];
-        _url = _url.split('&');
-        for( var i = 0, j = _url.length; i < j; i++ ){
-            if( _url[i].split('=')[0].toLowerCase() == _key.toLowerCase() ){ _r = true; break; };
-        }
-    }
-    return _r;
-}
-//这个方法已经废弃, 请使用 hasUrlParam
-function has_url_param(){ return hasUrlParam.apply( null, sliceArgs( arguments ) ); }
-/**
- * 添加URL参数
- * <br /><b>require:</b> delUrlParam
- * @method  addUrlParams
- * @static
- * @param   {string}    _url
- * @param   {object}    _params
- * @return  string
- * @example
-        var url = addUrlParams( location.href, {'key1': 'key1value', 'key2': 'key2value' } );
- */ 
-function addUrlParams( _url, _params ){
-    var sharp = '';
-    !_params && ( _params = _url, _url = location.href );
-    _url.indexOf('#') > -1 && ( sharp = _url.split('#')[1], _url = _url.split('#')[0] );
-    for( var k in _params ){
-        _url = delUrlParam(_url, k);
-        _url.indexOf('?') > -1 
-            ? _url += '&' + k +'=' + _params[k]
-            : _url += '?' + k +'=' + _params[k];
-    }
-    sharp && ( _url += '#' + sharp );
-    _url = _url.replace(/\?\&/g, '?' );
-    return _url;   
+;(function(define, _win) { 'use strict'; define( [], function(){
+;(function($){
+    /**
+     * 声明主要命名空间, 方便迁移
+     */
+    window.JC = window.JC || {};
+    JC.log = function(){ JC.debug && window.console && console.log( sliceArgs( arguments ).join(' ') ); };
+    JC.PATH = JC.PATH || scriptPath();
 
-}
-//这个方法已经废弃, 请使用 addUrlParams
-function add_url_params(){ return addUrlParams.apply( null, sliceArgs( arguments ) ); }
-/**
- * 取URL参数的值
- * @method  getUrlParam
- * @static
- * @param   {string}    _url
- * @param   {string}    _key
- * @return  string
- * @example
-        var defaultTag = getUrlParam(location.href, 'tag');  
- */ 
-function getUrlParam( _url, _key ){
-    var result = '', paramAr, i, items;
-    !_key && ( _key = _url, _url = location.href );
-    _url.indexOf('#') > -1 && ( _url = _url.split('#')[0] );
-    if( _url.indexOf('?') > -1 ){
-        paramAr = _url.split('?')[1].split('&');
-        for( i = 0; i < paramAr.length; i++ ){
-            items = paramAr[i].split('=');
-            items[0] = items[0].replace(/^\s+|\s+$/g, '');
-            if( items[0].toLowerCase() == _key.toLowerCase() ){
-                result = items[1];
-                break;
-            } 
+    window.Bizs = window.Bizs || {};
+    /**
+     * JC 组件通用静态方法和属性 ( JC.common, <b>别名: JC.f</b> )
+     * <br />所有 JC 组件都会依赖这个静态类
+     * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.common.html' target='_blank'>API docs</a>
+     * | <a href='../../modules/JC.common/0.2/_demo/' target='_blank'>demo link</a></p>
+     * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
+     * @namespace JC
+     * @class JC.common
+     * @static
+     * @version dev 0.2 2013-11-06 
+     * @version dev 0.1 2013-07-04
+     * @author  qiushaowei   <suches@btbtd.org> | 360 75 Team
+     */
+    JC.common = JC.f = {
+        "addUrlParams": addUrlParams
+        , "cloneDate": cloneDate
+        , "dateDetect": dateDetect
+        , "delUrlParam": delUrlParam
+        , "easyEffect": easyEffect
+        , "formatISODate": formatISODate
+        , "funcName": funcName
+        , "getJqParent": getJqParent
+        , "getUrlParam": getUrlParam
+        , "getUrlParams": getUrlParams
+        , "hasUrlParam": hasUrlParam
+        , "httpRequire": httpRequire
+        , "isSameDay": isSameDay
+        , "isSameMonth": isSameMonth
+        , "jcAutoInitComps": jcAutoInitComps
+        , "maxDayOfMonth": maxDayOfMonth
+        , "mousewheelEvent": mousewheelEvent
+        , "padChar": padChar
+        , "parentSelector": parentSelector
+        , "parseBool": parseBool
+        , "parseFinance": parseFinance
+        , "parseISODate": parseISODate
+        , "printf": printf
+        , "pureDate": pureDate
+        , "reloadPage": reloadPage
+        , "removeUrlSharp": removeUrlSharp
+        , "scriptContent": scriptContent
+        , "scriptPath": scriptPath
+        , "sliceArgs": sliceArgs
+        , "urlDetect": urlDetect
+
+        /**
+         * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量
+         */
+        , "backward":
+            function( _setter ){
+                if( window.JC_BACKWARD || _setter ){
+                    for( var k in JC.common ){
+                        if( k == 'backward' ) continue;
+                        window[ k ] = window[ k ] || JC.common[ k ];
+                    }
+                }
+            }
+    };
+    JC.f.backward();
+    /**
+     * jquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法
+     */
+    !String.prototype.trim && ( String.prototype.trim = function(){ return $.trim( this ); } );
+    /**
+     * 如果 console 不可用, 则生成一个模拟的 console 对象
+     */
+    if( !window.console ) window.console = { log:function(){
+        window.status = [].slice.apply( arguments ).join(' ');
+    }};
+    /**
+     * 全局 css z-index 控制属性
+     * <br /> <b>注意</b>: 这个变量 window.ZINDEX_COUNT
+     * @property    ZINDEX_COUNT
+     * @type        int
+     * @default     50001
+     * @static
+     */
+    window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
+    /**
+     * 把函数的参数转为数组
+     * @method  sliceArgs
+     * @param   {arguments}     args
+     * @return Array
+     * @static
+     */
+    function sliceArgs( _arg ){
+        var _r = [], _i, _len;
+        for( _i = 0, _len = _arg.length; _i < _len; _i++){
+            _r.push( _arg[_i] );
         }
+        return _r;
     }
-    return result;
-}
-//这个方法已经废弃, 请使用 getUrlParam
-function get_url_param(){ return getUrlParam.apply( null, sliceArgs( arguments ) ); }
-/**
- * 取URL参数的值, 这个方法返回数组
- * <br />与 getUrlParam 的区别是可以获取 checkbox 的所有值
- * @method  getUrlParams
- * @static
- * @param   {string}    _url
- * @param   {string}    _key
- * @return  Array
- * @example
-        var params = getUrlParams(location.href, 'tag');  
- */ 
-function getUrlParams( _url, _key ){
-    var _r = [], _params, i, j, _items;
-    !_key && ( _key = _url, _url = location.href );
-    _url = _url.replace(/[\?]+/g, '?').split('?');
-    if( _url.length > 1 ){
-        _url = _url[1];
-        _params = _url.split('&');
-        if( _params.length ){
-            for( i = 0, j = _params.length; i < j; i++ ){
-                _items = _params[i].split('=');
-                if( _items[0].trim() == _key ){
-                    _r.push( _items[1] || '' );
+     /**
+     * 按格式输出字符串
+     * @method printf
+     * @static
+     * @param   {string}    _str
+     * @return  string
+     * @example
+     *      printf( 'asdfasdf{0}sdfasdf{1}', '000', 1111 );
+     *      //return asdfasdf000sdfasdf1111
+     */
+    function printf( _str ){
+        for(var i = 1, _len = arguments.length; i < _len; i++){
+            _str = _str.replace( new RegExp('\\{'+( i - 1 )+'\\}', 'g'), arguments[i] );
+        }
+        return _str;
+    }
+    /**
+     * 判断URL中是否有某个get参数
+     * @method  hasUrlParam
+     * @static
+     * @param   {string}    _url
+     * @param   {string}    _key
+     * @return  bool
+     * @example
+     *      var bool = hasUrlParam( 'getkey' );
+     */
+    function hasUrlParam( _url, _key ){
+        var _r = false;
+        if( !_key ){ _key = _url; _url = location.href; }
+        if( /\?/.test( _url ) ){
+            _url = _url.split( '?' ); _url = _url[ _url.length - 1 ];
+            _url = _url.split('&');
+            for( var i = 0, j = _url.length; i < j; i++ ){
+                if( _url[i].split('=')[0].toLowerCase() == _key.toLowerCase() ){ _r = true; break; };
+            }
+        }
+        return _r;
+    }
+    /**
+     * 添加URL参数
+     * <br /><b>require:</b> delUrlParam
+     * @method  addUrlParams
+     * @static
+     * @param   {string}    _url
+     * @param   {object}    _params
+     * @return  string
+     * @example
+            var url = addUrlParams( location.href, {'key1': 'key1value', 'key2': 'key2value' } );
+     */ 
+    function addUrlParams( _url, _params ){
+        var sharp = '';
+        !_params && ( _params = _url, _url = location.href );
+        _url.indexOf('#') > -1 && ( sharp = _url.split('#')[1], _url = _url.split('#')[0] );
+        for( var k in _params ){
+            _url = delUrlParam(_url, k);
+            _url.indexOf('?') > -1 
+                ? _url += '&' + k +'=' + _params[k]
+                : _url += '?' + k +'=' + _params[k];
+        }
+        sharp && ( _url += '#' + sharp );
+        _url = _url.replace(/\?\&/g, '?' );
+        return _url;   
+
+    }
+    /**
+     * 取URL参数的值
+     * @method  getUrlParam
+     * @static
+     * @param   {string}    _url
+     * @param   {string}    _key
+     * @return  string
+     * @example
+            var defaultTag = getUrlParam(location.href, 'tag');  
+     */ 
+    function getUrlParam( _url, _key ){
+        var result = '', paramAr, i, items;
+        !_key && ( _key = _url, _url = location.href );
+        _url.indexOf('#') > -1 && ( _url = _url.split('#')[0] );
+        if( _url.indexOf('?') > -1 ){
+            paramAr = _url.split('?')[1].split('&');
+            for( i = 0; i < paramAr.length; i++ ){
+                items = paramAr[i].split('=');
+                items[0] = items[0].replace(/^\s+|\s+$/g, '');
+                if( items[0].toLowerCase() == _key.toLowerCase() ){
+                    result = items[1];
+                    break;
+                } 
+            }
+        }
+        return result;
+    }
+    /**
+     * 取URL参数的值, 这个方法返回数组
+     * <br />与 getUrlParam 的区别是可以获取 checkbox 的所有值
+     * @method  getUrlParams
+     * @static
+     * @param   {string}    _url
+     * @param   {string}    _key
+     * @return  Array
+     * @example
+            var params = getUrlParams(location.href, 'tag');  
+     */ 
+    function getUrlParams( _url, _key ){
+        var _r = [], _params, i, j, _items;
+        !_key && ( _key = _url, _url = location.href );
+        _url = _url.replace(/[\?]+/g, '?').split('?');
+        if( _url.length > 1 ){
+            _url = _url[1];
+            _params = _url.split('&');
+            if( _params.length ){
+                for( i = 0, j = _params.length; i < j; i++ ){
+                    _items = _params[i].split('=');
+                    if( _items[0].trim() == _key ){
+                        _r.push( _items[1] || '' );
+                    }
                 }
             }
         }
+        return _r;
     }
-    return _r;
-}
-/**
- * 删除URL参数
- * @method  delUrlParam
- * @static
- * @param  {string}    _url
- * @param  {string}    _key
- * @return  string
- * @example
-        var url = delUrlParam( location.href, 'tag' );
- */ 
-function delUrlParam( _url, _key ){
-    var sharp = '', params, tmpParams = [], i, item;
-    !_key && ( _key = _url, _url = location.href );
-    _url.indexOf('#') > -1 && ( sharp = _url.split('#')[1], _url = _url.split('#')[0] );
-    if( _url.indexOf('?') > -1 ){
-        params = _url.split('?')[1].split('&');
-        _url = _url.split('?')[0];
-        for( i = 0; i < params.length; i++ ){
-            items = params[i].split('=');
-            items[0] = items[0].replace(/^\s+|\s+$/g, '');
-            if( items[0].toLowerCase() == _key.toLowerCase() ) continue;
-            tmpParams.push( items.join('=') )
+    /**
+     * 删除URL参数
+     * @method  delUrlParam
+     * @static
+     * @param  {string}    _url
+     * @param  {string}    _key
+     * @return  string
+     * @example
+            var url = delUrlParam( location.href, 'tag' );
+     */ 
+    function delUrlParam( _url, _key ){
+        var sharp = '', params, tmpParams = [], i, item;
+        !_key && ( _key = _url, _url = location.href );
+        _url.indexOf('#') > -1 && ( sharp = _url.split('#')[1], _url = _url.split('#')[0] );
+        if( _url.indexOf('?') > -1 ){
+            params = _url.split('?')[1].split('&');
+            _url = _url.split('?')[0];
+            for( i = 0; i < params.length; i++ ){
+                var items = params[i].split('=');
+                items[0] = items[0].replace(/^\s+|\s+$/g, '');
+                if( items[0].toLowerCase() == _key.toLowerCase() ) continue;
+                tmpParams.push( items.join('=') )
+            }
+            _url += '?' + tmpParams.join('&');
         }
-        _url += '?' + tmpParams.join('&');
+        sharp && ( _url += '#' + sharp );
+        return _url;
     }
-    sharp && ( _url += '#' + sharp );
-    return _url;
-}
-//这个方法已经废弃, 请使用 delUrlParam
-function del_url_param(){ return delUrlParam.apply( null, sliceArgs( arguments ) ); }
-/**
- * 提示需要 HTTP 环境
- * @method  httpRequire
- * @static
- * @param  {string}  _msg   要提示的文字, 默认 "本示例需要HTTP环境'
- * @return  bool     如果是HTTP环境返回true, 否则返回false
- */
-function httpRequire( _msg ){
-    _msg = _msg || '本示例需要HTTP环境';
-    if( /file\:|\\/.test( location.href ) ){
-        alert( _msg );
-        return false;
-    }
-    return true;
-}
-/**
- * 删除 URL 的锚点
- * <br /><b>require:</b> addUrlParams
- * @method removeUrlSharp
- * @static
- * @param   {string}    $url
- * @param   {bool}      $nornd      是否不添加随机参数
- * @return  string
- */
-function removeUrlSharp($url, $nornd){   
-    var url = $url.replace(/\#[\s\S]*/, '');
-    !$nornd && (url = addUrlParams( url, { "rnd": new Date().getTime() } ) );
-    return url;
-}
-/**
- * 重载页面
- * <br /><b>require:</b> removeUrlSharp
- * <br /><b>require:</b> addUrlParams
- * @method reloadPage
- * @static
- * @param   {string}    $url
- * @param   {bool}      $nornd
- * @param   {int}       $delayms
- */ 
-function reloadPage( _url, _nornd, _delayMs  ){
-    _delayMs = _delayMs || 0;
-    setTimeout( function(){
-        _url = removeUrlSharp( _url || location.href, _nornd );
-        !_nornd && ( _url = addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
-        location.href = _url;
-    }, _delayMs);
-}
-//这个方法已经废弃, 请使用 reloadPage
-function reload_page(){ return reloadPage.apply( null, sliceArgs( arguments ) ); }
-/**
- * 取小数点的N位
- * <br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题
- * @method  parseFinance
- * @static
- * @param   {number}    _i
- * @param   {int}       _dot, default = 2
- * @return  number
- */
-function parseFinance( _i, _dot ){
-    _i = parseFloat( _i ) || 0;
-    _dot = _dot || 2;
-    if( _i && _dot ) {
-        _i = parseFloat( _i.toFixed( _dot ) );
-    }
-    return _i;
-}
-//这个方法已经废弃, 请使用 parseFinance
-function parse_finance_num(){ return parseFinance.apply( null, sliceArgs( arguments ) ); }
-/**
- * js 附加字串函数
- * @method  padChar
- * @static
- * @param   {string}    _str
- * @param   {intl}      _len
- * @param   {string}    _char
- * @return  string
- */
-function padChar( _str, _len, _char ){
-	_len  = _len || 2; _char = _char || "0"; 
-	_str += '';
-	if( _str.length >_str ) return _str;
-	_str = new Array( _len + 1 ).join( _char ) + _str
-	return _str.slice( _str.length - _len );
-}
-//这个方法已经废弃, 请使用 padChar
-function pad_char_f( _str, _len, _char ){ return padChar.apply( null, sliceArgs( arguments ) ); }
-/**
- * 格式化日期为 YYYY-mm-dd 格式
- * <br /><b>require</b>: pad\_char\_f
- * @method  formatISODate
- * @static
- * @param   {date}                  _date       要格式化日期的日期对象
- * @param   {string|undefined}      _split      定义年月日的分隔符, 默认为 '-'
- * @return  string
- *
- */
-function formatISODate( _date, _split ){
-	_date = _date || new Date(); typeof _split == 'undefined' && ( _split = '-' );
-	return [ _date.getFullYear(), padChar( _date.getMonth() + 1 ), padChar( _date.getDate() ) ].join(_split);
-}
-/**
- * 从 ISODate 字符串解析日期对象
- * @method  parseISODate
- * @static
- * @param   {string}    _datestr
- * @return  date
- */
-function parseISODate( _datestr ){
-    if( !_datestr ) return;
-    _datestr = _datestr.replace( /[^\d]+/g, '');
-    var _r;
-    if( _datestr.length === 8 ){
-        _r = new Date( _datestr.slice( 0, 4 )
-                        , parseInt( _datestr.slice( 4, 6 ), 10 ) - 1
-                        , parseInt( _datestr.slice( 6 ), 10 ) );
-    }
-    return _r;
-}
-/**
- * 获取不带 时分秒的 日期对象
- * @method  pureDate
- * @param   {Date}  _d   可选参数, 如果为空 = new Date
- * @return  Date
- */
-function pureDate( _d ){
-    var _r;
-    _d = _d || new Date();
-    _r = new Date( _d.getFullYear(), _d.getMonth(), _d.getDate() );
-    return _r;
-}
-/**
-* 克隆日期对象
-* @method  cloneDate
-* @static
-* @param   {Date}  _date   需要克隆的日期
-* @return  {Date}  需要克隆的日期对象
-*/
-function cloneDate( _date ){ var d = new Date(); d.setTime( _date.getTime() ); return d; }
-/**
- * 判断两个日期是否为同一天
- * @method  isSameDay
- * @static
- * @param   {Date}  _d1     需要判断的日期1
- * @param   {Date}  _d2     需要判断的日期2
- * @return {bool}
- */
-function isSameDay( _d1, _d2 ){
-    return [_d1.getFullYear(), _d1.getMonth(), _d1.getDate()].join() === [
-            _d2.getFullYear(), _d2.getMonth(), _d2.getDate()].join()
-}
-/**
- * 判断两个日期是否为同一月份
- * @method  isSameMonth
- * @static
- * @param   {Date}  _d1     需要判断的日期1
- * @param   {Date}  _d2     需要判断的日期2
- * @return {bool}
- */
-function isSameMonth( _d1, _d2 ){
-    return [_d1.getFullYear(), _d1.getMonth()].join() === [
-            _d2.getFullYear(), _d2.getMonth()].join()
-}
-/**
- * 取得一个月份中最大的一天
- * @method  maxDayOfMonth
- * @static
- * @param   {Date}  _date
- * @return {int} 月份中最大的一天
- */
-function maxDayOfMonth( _date ){
-    var _r, _d = new Date( _date.getFullYear(), _date.getMonth() + 1 );
-        _d.setDate( _d.getDate() - 1 );
-        _r = _d.getDate();
-    return _r;
-}
-/**
- * 取当前脚本标签的 src路径 
- * @method  scriptPath
- * @static
- * @return  {string} 脚本所在目录的完整路径
- */
-function scriptPath(){
-    var _sc = document.getElementsByTagName('script'), _sc = _sc[ _sc.length - 1 ], _path = _sc.getAttribute('src');
-    if( /\//.test( _path ) ){ _path = _path.split('/'); _path.pop(); _path = _path.join('/') + '/'; }
-    else if( /\\/.test( _path ) ){ _path = _path.split('\\'); _path.pop(); _path = _path.join('\\') + '/'; }
-    return _path;
-}
-//这个方法已经废弃, 请使用 scriptPath
-function script_path_f(){ return scriptPath(); }
-/**
- * 缓动函数, 动画效果为按时间缓动 
- * <br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval 
- * @method  easyEffect
- * @static
- * @param   {function}  _cb         缓动运动时的回调
- * @param   {number}    _maxVal     缓动的最大值, default = 200
- * @param   {number}    _startVal   缓动的起始值, default = 0
- * @param   {number}    _duration   缓动的总时间, 单位毫秒, default = 200
- * @param   {number}    _stepMs     缓动的间隔, 单位毫秒, default = 2
- * @return  interval
- * @example
-        $(document).ready(function(){
-            window.js_output = $('span.js_output');
-            window.ls = [];
-            window.EFF_INTERVAL = easyEffect( effectcallback, 100);
-        });
-
-        function effectcallback( _stepval, _done ){
-            js_output.html( _stepval );
-            ls.push( _stepval );
-
-            !_done && js_output.html( _stepval );
-            _done && js_output.html( _stepval + '<br />' + ls.join() );
+    /**
+     * 提示需要 HTTP 环境
+     * @method  httpRequire
+     * @static
+     * @param  {string}  _msg   要提示的文字, 默认 "本示例需要HTTP环境'
+     * @return  bool     如果是HTTP环境返回true, 否则返回false
+     */
+    function httpRequire( _msg ){
+        _msg = _msg || '本示例需要HTTP环境';
+        if( /file\:|\\/.test( location.href ) ){
+            alert( _msg );
+            return false;
         }
- */
-function easyEffect( _cb, _maxVal, _startVal, _duration, _stepMs ){
-    var _beginDate = new Date(), _timepass
-        , _maxVal = _maxVal || 200
-        , _startVal = _startVal || 0
-        , _maxVal = _maxVal - _startVal 
-        , _tmp = 0
-        , _done
-        , _duration = _duration || 200
-        , _stepMs = _stepMs || 2
-        ;
-    //JC.log( '_maxVal:', _maxVal, '_startVal:', _startVal, '_duration:', _duration, '_stepMs:', _stepMs );
-
-    var _interval = setInterval(
-        function(){
-            _timepass = new Date() - _beginDate;
-            _tmp = _timepass / _duration * _maxVal;
-            _tmp;
-            if( _tmp >= _maxVal ){
-                _tmp = _maxVal;
-                _done = true;
-                clearInterval( _interval );
-            }
-            _cb && _cb( _tmp + _startVal, _done );
-        }, _stepMs );
-
-    return _interval;
-}
-/**
- * 把输入值转换为布尔值
- * @method parseBool
- * @param   {*} _input
- * @return bool
- * @static
- */
-function parseBool( _input ){
-    if( typeof _input == 'string' ){
-        _input = _input.replace( /[\s]/g, '' ).toLowerCase();
-        if( _input && ( _input == 'false' 
-                        || _input == '0' 
-                        || _input == 'null'
-                        || _input == 'undefined'
-       )) _input = false;
-       else if( _input ) _input = true;
+        return true;
     }
-    return !!_input;
-}
-/**
- * 判断是否支持 CSS position: fixed
- * @property    $.support.isFixed
- * @type        bool
- * @require jquery
- * @static
- */
-window.jQuery && jQuery.support && (jQuery.support.isFixed = (function ($){
-    try{
-        var r, contain = $( document.documentElement ),
-            el = $( "<div style='position:fixed;top:100px;visibility:hidden;'>x</div>" ).appendTo( contain ),
-            originalHeight = contain[ 0 ].style.height,
-            w = window;
-        
-        contain.height( screen.height * 2 + "px" );
-     
-        w.scrollTo( 0, 100 );
-     
-        r = el[ 0 ].getBoundingClientRect().top === 100;
-     
-        contain.height( originalHeight );
-     
-        el.remove();
-     
-        w.scrollTo( 0, 0 );
-     
-        return r;
-    }catch(ex){}
-})(jQuery));
-/**
- * 绑定或清除 mousewheel 事件
- * @method  mousewheelEvent
- * @param   {function}  _cb
- * @param   {bool}      _detach
- * @static
- */
-function mousewheelEvent( _cb, _detach ){
-    var _evt =  (/Firefox/i.test(navigator.userAgent))
-        ? "DOMMouseScroll" 
-        : "mousewheel"
-        ;
-    document.attachEvent && ( _evt = 'on' + _evt );
-
-    if( _detach ){
-        document.detachEvent && document.detachEvent( _evt, _cb )
-        document.removeEventListener && document.removeEventListener( _evt, _cb );
-    }else{
-        document.attachEvent && document.attachEvent( _evt, _cb )
-        document.addEventListener && document.addEventListener( _evt, _cb );
+    /**
+     * 删除 URL 的锚点
+     * <br /><b>require:</b> addUrlParams
+     * @method removeUrlSharp
+     * @static
+     * @param   {string}    $url
+     * @param   {bool}      $nornd      是否不添加随机参数
+     * @return  string
+     */
+    function removeUrlSharp($url, $nornd){   
+        var url = $url.replace(/\#[\s\S]*/, '');
+        !$nornd && (url = addUrlParams( url, { "rnd": new Date().getTime() } ) );
+        return url;
     }
-}
-/**
- * 获取 selector 的指定父级标签
- * @method  getJqParent
- * @param   {selector}  _selector
- * @param   {selector}  _filter
- * @return selector
- * @require jquery
- * @static
- */
-function getJqParent( _selector, _filter ){
-    _selector = $(_selector);
-    var _r;
-
-    if( _filter ){
-        while( (_selector = _selector.parent()).length ){
-            if( _selector.is( _filter ) ){
-                _r = _selector;
-                break;
-            }
+    /**
+     * 重载页面
+     * <br /><b>require:</b> removeUrlSharp
+     * <br /><b>require:</b> addUrlParams
+     * @method reloadPage
+     * @static
+     * @param   {string}    $url
+     * @param   {bool}      $nornd
+     * @param   {int}       $delayms
+     */ 
+    function reloadPage( _url, _nornd, _delayMs  ){
+        _delayMs = _delayMs || 0;
+        setTimeout( function(){
+            _url = removeUrlSharp( _url || location.href, _nornd );
+            !_nornd && ( _url = addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
+            location.href = _url;
+        }, _delayMs);
+    }
+    /**
+     * 取小数点的N位
+     * <br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题
+     * @method  parseFinance
+     * @static
+     * @param   {number}    _i
+     * @param   {int}       _dot, default = 2
+     * @return  number
+     */
+    function parseFinance( _i, _dot ){
+        _i = parseFloat( _i ) || 0;
+        _dot = _dot || 2;
+        if( _i && _dot ) {
+            _i = parseFloat( _i.toFixed( _dot ) );
         }
-    }else{
-        _r = _selector.parent();
+        return _i;
     }
+    /**
+     * js 附加字串函数
+     * @method  padChar
+     * @static
+     * @param   {string}    _str
+     * @param   {intl}      _len
+     * @param   {string}    _char
+     * @return  string
+     */
+    function padChar( _str, _len, _char ){
+        _len  = _len || 2; _char = _char || "0"; 
+        _str += '';
+        if( _str.length >_str ) return _str;
+        _str = new Array( _len + 1 ).join( _char ) + _str
+        return _str.slice( _str.length - _len );
+    }
+    /**
+     * 格式化日期为 YYYY-mm-dd 格式
+     * <br /><b>require</b>: pad\_char\_f
+     * @method  formatISODate
+     * @static
+     * @param   {date}                  _date       要格式化日期的日期对象
+     * @param   {string|undefined}      _split      定义年月日的分隔符, 默认为 '-'
+     * @return  string
+     *
+     */
+    function formatISODate( _date, _split ){
+        _date = _date || new Date(); typeof _split == 'undefined' && ( _split = '-' );
+        return [ _date.getFullYear(), padChar( _date.getMonth() + 1 ), padChar( _date.getDate() ) ].join(_split);
+    }
+    /**
+     * 从 ISODate 字符串解析日期对象
+     * @method  parseISODate
+     * @static
+     * @param   {string}    _datestr
+     * @return  date
+     */
+    function parseISODate( _datestr ){
+        if( !_datestr ) return;
+        _datestr = _datestr.replace( /[^\d]+/g, '');
+        var _r;
+        if( _datestr.length === 8 ){
+            _r = new Date( _datestr.slice( 0, 4 )
+                            , parseInt( _datestr.slice( 4, 6 ), 10 ) - 1
+                            , parseInt( _datestr.slice( 6 ), 10 ) );
+        }
+        return _r;
+    }
+    /**
+     * 获取不带 时分秒的 日期对象
+     * @method  pureDate
+     * @param   {Date}  _d   可选参数, 如果为空 = new Date
+     * @return  Date
+     */
+    function pureDate( _d ){
+        var _r;
+        _d = _d || new Date();
+        _r = new Date( _d.getFullYear(), _d.getMonth(), _d.getDate() );
+        return _r;
+    }
+    /**
+    * 克隆日期对象
+    * @method  cloneDate
+    * @static
+    * @param   {Date}  _date   需要克隆的日期
+    * @return  {Date}  需要克隆的日期对象
+    */
+    function cloneDate( _date ){ var d = new Date(); d.setTime( _date.getTime() ); return d; }
+    /**
+     * 判断两个日期是否为同一天
+     * @method  isSameDay
+     * @static
+     * @param   {Date}  _d1     需要判断的日期1
+     * @param   {Date}  _d2     需要判断的日期2
+     * @return {bool}
+     */
+    function isSameDay( _d1, _d2 ){
+        return [_d1.getFullYear(), _d1.getMonth(), _d1.getDate()].join() === [
+                _d2.getFullYear(), _d2.getMonth(), _d2.getDate()].join()
+    }
+    /**
+     * 判断两个日期是否为同一月份
+     * @method  isSameMonth
+     * @static
+     * @param   {Date}  _d1     需要判断的日期1
+     * @param   {Date}  _d2     需要判断的日期2
+     * @return {bool}
+     */
+    function isSameMonth( _d1, _d2 ){
+        return [_d1.getFullYear(), _d1.getMonth()].join() === [
+                _d2.getFullYear(), _d2.getMonth()].join()
+    }
+    /**
+     * 取得一个月份中最大的一天
+     * @method  maxDayOfMonth
+     * @static
+     * @param   {Date}  _date
+     * @return {int} 月份中最大的一天
+     */
+    function maxDayOfMonth( _date ){
+        var _r, _d = new Date( _date.getFullYear(), _date.getMonth() + 1 );
+            _d.setDate( _d.getDate() - 1 );
+            _r = _d.getDate();
+        return _r;
+    }
+    /**
+     * 取当前脚本标签的 src路径 
+     * @method  scriptPath
+     * @static
+     * @return  {string} 脚本所在目录的完整路径
+     */
+    function scriptPath(){
+        var _sc = document.getElementsByTagName('script'), _sc = _sc[ _sc.length - 1 ], _path = _sc.getAttribute('src');
+        if( /\//.test( _path ) ){ _path = _path.split('/'); _path.pop(); _path = _path.join('/') + '/'; }
+        else if( /\\/.test( _path ) ){ _path = _path.split('\\'); _path.pop(); _path = _path.join('\\') + '/'; }
+        return _path;
+    }
+    /**
+     * 缓动函数, 动画效果为按时间缓动 
+     * <br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval 
+     * @method  easyEffect
+     * @static
+     * @param   {function}  _cb         缓动运动时的回调
+     * @param   {number}    _maxVal     缓动的最大值, default = 200
+     * @param   {number}    _startVal   缓动的起始值, default = 0
+     * @param   {number}    _duration   缓动的总时间, 单位毫秒, default = 200
+     * @param   {number}    _stepMs     缓动的间隔, 单位毫秒, default = 2
+     * @return  interval
+     * @example
+            $(document).ready(function(){
+                window.js_output = $('span.js_output');
+                window.ls = [];
+                window.EFF_INTERVAL = easyEffect( effectcallback, 100);
+            });
 
-    return _r;
-}
-/**
- * 扩展 jquery 选择器
- * <br />扩展起始字符的 '/' 符号为 jquery 父节点选择器
- * <br />扩展起始字符的 '|' 符号为 jquery 子节点选择器
- * <br />扩展起始字符的 '(' 符号为 jquery 父节点查找识别符( getJqParent )
- * @method  parentSelector
- * @param   {selector}  _item
- * @param   {String}    _selector
- * @param   {selector}  _finder
- * @return  selector
- * @require jquery
- * @static
- */
-function parentSelector( _item, _selector, _finder ){
-    _item && ( _item = $( _item ) );
-    if( /\,/.test( _selector ) ){
-        var _multiSelector = [], _tmp;
-        _selector = _selector.split(',');
-        $.each( _selector, function( _ix, _subSelector ){
-            _subSelector = _subSelector.trim();
-            _tmp = parentSelector( _item, _subSelector, _finder );
-            _tmp && _tmp.length 
-                &&  ( 
-                        ( _tmp.each( function(){ _multiSelector.push( $(this) ) } ) )
-                    );
-        });
-        return $( _multiSelector );
+            function effectcallback( _stepval, _done ){
+                js_output.html( _stepval );
+                ls.push( _stepval );
+
+                !_done && js_output.html( _stepval );
+                _done && js_output.html( _stepval + '<br />' + ls.join() );
+            }
+     */
+    function easyEffect( _cb, _maxVal, _startVal, _duration, _stepMs ){
+        var _beginDate = new Date(), _timepass
+            , _maxVal = _maxVal || 200
+            , _startVal = _startVal || 0
+            , _maxVal = _maxVal - _startVal 
+            , _tmp = 0
+            , _done
+            , _duration = _duration || 200
+            , _stepMs = _stepMs || 2
+            ;
+        //JC.log( '_maxVal:', _maxVal, '_startVal:', _startVal, '_duration:', _duration, '_stepMs:', _stepMs );
+
+        var _interval = setInterval(
+            function(){
+                _timepass = new Date() - _beginDate;
+                _tmp = _timepass / _duration * _maxVal;
+                _tmp;
+                if( _tmp >= _maxVal ){
+                    _tmp = _maxVal;
+                    _done = true;
+                    clearInterval( _interval );
+                }
+                _cb && _cb( _tmp + _startVal, _done );
+            }, _stepMs );
+
+        return _interval;
     }
-    var _pntChildRe = /^([\/]+)/, _childRe = /^([\|]+)/, _pntRe = /^([<\(]+)/;
-    if( _pntChildRe.test( _selector ) ){
-        _selector = _selector.replace( _pntChildRe, function( $0, $1 ){
-            for( var i = 0, j = $1.length; i < j; i++ ){
-                _item = _item.parent();
+    /**
+     * 把输入值转换为布尔值
+     * @method parseBool
+     * @param   {*} _input
+     * @return bool
+     * @static
+     */
+    function parseBool( _input ){
+        if( typeof _input == 'string' ){
+            _input = _input.replace( /[\s]/g, '' ).toLowerCase();
+            if( _input && ( _input == 'false' 
+                            || _input == '0' 
+                            || _input == 'null'
+                            || _input == 'undefined'
+           )) _input = false;
+           else if( _input ) _input = true;
+        }
+        return !!_input;
+    }
+    /**
+     * 判断是否支持 CSS position: fixed
+     * @property    $.support.isFixed
+     * @type        bool
+     * @require jquery
+     * @static
+     */
+    window.jQuery && jQuery.support && (jQuery.support.isFixed = (function ($){
+        try{
+            var r, contain = $( document.documentElement ),
+                el = $( "<div style='position:fixed;top:100px;visibility:hidden;'>x</div>" ).appendTo( contain ),
+                originalHeight = contain[ 0 ].style.height,
+                w = window;
+            
+            contain.height( screen.height * 2 + "px" );
+         
+            w.scrollTo( 0, 100 );
+         
+            r = el[ 0 ].getBoundingClientRect().top === 100;
+         
+            contain.height( originalHeight );
+         
+            el.remove();
+         
+            w.scrollTo( 0, 0 );
+         
+            return r;
+        }catch(ex){}
+    })(jQuery));
+    /**
+     * 绑定或清除 mousewheel 事件
+     * @method  mousewheelEvent
+     * @param   {function}  _cb
+     * @param   {bool}      _detach
+     * @static
+     */
+    function mousewheelEvent( _cb, _detach ){
+        var _evt =  (/Firefox/i.test(navigator.userAgent))
+            ? "DOMMouseScroll" 
+            : "mousewheel"
+            ;
+        document.attachEvent && ( _evt = 'on' + _evt );
+
+        if( _detach ){
+            document.detachEvent && document.detachEvent( _evt, _cb )
+            document.removeEventListener && document.removeEventListener( _evt, _cb );
+        }else{
+            document.attachEvent && document.attachEvent( _evt, _cb )
+            document.addEventListener && document.addEventListener( _evt, _cb );
+        }
+    }
+    /**
+     * 获取 selector 的指定父级标签
+     * @method  getJqParent
+     * @param   {selector}  _selector
+     * @param   {selector}  _filter
+     * @return selector
+     * @require jquery
+     * @static
+     */
+    function getJqParent( _selector, _filter ){
+        _selector = $(_selector);
+        var _r;
+
+        if( _filter ){
+            while( (_selector = _selector.parent()).length ){
+                if( _selector.is( _filter ) ){
+                    _r = _selector;
+                    break;
+                }
             }
-            _finder = _item;
-            return '';
-        });
-        _selector = _selector.trim();
-        return _selector ? _finder.find( _selector ) : _finder;
-    }else if( _childRe.test( _selector ) ){
-        _selector = _selector.replace( _childRe, function( $0, $1 ){
-            for( var i = 1, j = $1.length; i < j; i++ ){
-                _item = _item.parent();
-            }
-            _finder = _item;
-            return '';
-        });
-        _selector = _selector.trim();
-        return _selector ? _finder.find( _selector ) : _finder;
-    }else if( _pntRe.test( _selector ) ){
-        _selector = _selector.replace( _pntRe, '' ).trim();
-        if( _selector ){
-            if( /[\s]/.test( _selector ) ){
-                var _r;
-                _selector.replace( /^([^\s]+)([\s\S]+)/, function( $0, $1, $2 ){
-                    _r = getJqParent( _item, $1 ).find( $2.trim() );
-                });
-                return _r || _selector;
+        }else{
+            _r = _selector.parent();
+        }
+
+        return _r;
+    }
+    /**
+     * 扩展 jquery 选择器
+     * <br />扩展起始字符的 '/' 符号为 jquery 父节点选择器
+     * <br />扩展起始字符的 '|' 符号为 jquery 子节点选择器
+     * <br />扩展起始字符的 '(' 符号为 jquery 父节点查找识别符( getJqParent )
+     * @method  parentSelector
+     * @param   {selector}  _item
+     * @param   {String}    _selector
+     * @param   {selector}  _finder
+     * @return  selector
+     * @require jquery
+     * @static
+     */
+    function parentSelector( _item, _selector, _finder ){
+        _item && ( _item = $( _item ) );
+        if( /\,/.test( _selector ) ){
+            var _multiSelector = [], _tmp;
+            _selector = _selector.split(',');
+            $.each( _selector, function( _ix, _subSelector ){
+                _subSelector = _subSelector.trim();
+                _tmp = parentSelector( _item, _subSelector, _finder );
+                _tmp && _tmp.length 
+                    &&  ( 
+                            ( _tmp.each( function(){ _multiSelector.push( $(this) ) } ) )
+                        );
+            });
+            return $( _multiSelector );
+        }
+        var _pntChildRe = /^([\/]+)/, _childRe = /^([\|]+)/, _pntRe = /^([<\(]+)/;
+        if( _pntChildRe.test( _selector ) ){
+            _selector = _selector.replace( _pntChildRe, function( $0, $1 ){
+                for( var i = 0, j = $1.length; i < j; i++ ){
+                    _item = _item.parent();
+                }
+                _finder = _item;
+                return '';
+            });
+            _selector = _selector.trim();
+            return _selector ? _finder.find( _selector ) : _finder;
+        }else if( _childRe.test( _selector ) ){
+            _selector = _selector.replace( _childRe, function( $0, $1 ){
+                for( var i = 1, j = $1.length; i < j; i++ ){
+                    _item = _item.parent();
+                }
+                _finder = _item;
+                return '';
+            });
+            _selector = _selector.trim();
+            return _selector ? _finder.find( _selector ) : _finder;
+        }else if( _pntRe.test( _selector ) ){
+            _selector = _selector.replace( _pntRe, '' ).trim();
+            if( _selector ){
+                if( /[\s]/.test( _selector ) ){
+                    var _r;
+                    _selector.replace( /^([^\s]+)([\s\S]+)/, function( $0, $1, $2 ){
+                        _r = getJqParent( _item, $1 ).find( $2.trim() );
+                    });
+                    return _r || _selector;
+                }else{
+                    return getJqParent( _item, _selector );
+                }
             }else{
-                return getJqParent( _item, _selector );
+                return _item.parent();
             }
         }else{
-            return _item.parent();
+            return _finder ? _finder.find( _selector ) : jQuery( _selector );
         }
-    }else{
-        return _finder ? _finder.find( _selector ) : jQuery( _selector );
     }
-}
-/**
- * 获取脚本模板的内容
- * @method  scriptContent
- * @param   {selector}  _selector
- * @return  string
- * @static
- */
-function scriptContent( _selector ){
-    var _r = '';
-    _selector 
-        && ( _selector = $( _selector ) ).length 
-        && ( _r = _selector.html().trim().replace( /[\r\n]/g, '') )
-        ;
-    return _r;
-}
-/**
- * 取函数名 ( 匿名函数返回空 )
- * @method  funcName
- * @param   {function}  _func
- * @return  string
- * @static
- */
-function funcName(_func){
-  var _re = /^function\s+([^()]+)[\s\S]*/
-      , _r = ''
-      , _fStr = _func.toString();    
-  //JC.log( _fStr );
-  _re.test( _fStr ) && ( _r = _fStr.replace( _re, '$1' ) );
-  return _r.trim();
-}
-/**
- * 动态添加内容时, 初始化可识别的组件
- * <dl>
- *      <dt>目前会自动识别的组件,  </dt>
- *      <dd>
- *          Bizs.CommonModify, JC.Panel, JC.Dialog
- *          <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>
- *      </dd>
- * </d>
- * <dl>
- *      <dt>可识别的组件</dt>
- *      <dd>
- *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload
- *          <br />Bizs.DisableLogic, Bizs.FormLogic
- *      </dd>
- * </d>
- * @method  jcAutoInitComps
- * @param   {selector}  _selector
- * @static
- */
-function jcAutoInitComps( _selector ){
-    _selector = $( _selector || document );
-    
-    if( !( _selector && _selector.length && window.JC ) ) return;
     /**
-     * 联动下拉框
+     * 获取脚本模板的内容
+     * @method  scriptContent
+     * @param   {selector}  _selector
+     * @return  string
+     * @static
      */
-    JC.AutoSelect && JC.AutoSelect( _selector );
-    /**
-     * 日历组件
-     */
-    JC.Calendar && JC.Calendar.initTrigger( _selector );
-    /**
-     * 全选反选
-     */
-    JC.AutoChecked && JC.AutoChecked( _selector );
-    /**
-     * Ajax 上传
-     */
-    JC.AjaxUpload && JC.AjaxUpload.init( _selector );
-    /**
-     * Placeholder 占位符
-     */
-    JC.Placeholder && JC.Placeholder.init( _selector );
-
-    if( !window.Bizs ) return;
-    /**
-     * disable / enable
-     */
-    Bizs.DisableLogic && Bizs.DisableLogic.init( _selector );
-    /**
-     * 表单提交逻辑
-     */
-    Bizs.FormLogic && Bizs.FormLogic.init( _selector );
-}
-/**
- * URL 占位符识别功能
- * @method  urlDetect
- * @param   {String}    _url    如果 起始字符为 URL, 那么 URL 将祝为本页的URL
- * @return  string
- * @static
- * @example
- *      urlDetect( '?test' ); //output: ?test
- *
- *      urlDetect( 'URL,a=1&b=2' ); //output: your.com?a=1&b=2
- *      urlDetect( 'URL,a=1,b=2' ); //output: your.com?a=1&b=2
- *      urlDetect( 'URLa=1&b=2' ); //output: your.com?a=1&b=2
- */
-function urlDetect( _url ){
-    _url = _url || '';
-    var _r = _url, _tmp, i, j;
-    if( /^URL/.test( _url ) ){
-        _tmp = _url.replace( /^URL/, '' ).replace( /[\s]*,[\s]*/g, ',' ).trim().split(',');
-        _url = location.href;
-        var _d = {}, _concat = [];
-        if( _tmp.length ){
-            for( i = 0, j = _tmp.length; i < j; i ++ ){
-                 /\&/.test( _tmp[i] )
-                     ? ( _concat = _concat.concat( _tmp[i].split('&') ) )
-                     : ( _concat = _concat.concat( _tmp[i] ) )
-                     ;
-            }
-            _tmp = _concat;
-        }
-        for( i = 0, j = _tmp.length; i < j; i++ ){
-            _items = _tmp[i].replace(/[\s]+/g, '').split( '=' );
-            if( !_items[0] ) continue;
-            _d[ _items[0] ] = _items[1] || '';
-        }
-        _url = addUrlParams( _url, _d );
-        _r = _url;
+    function scriptContent( _selector ){
+        var _r = '';
+        _selector 
+            && ( _selector = $( _selector ) ).length 
+            && ( _r = _selector.html().trim().replace( /[\r\n]/g, '') )
+            ;
+        return _r;
     }
-    return _r;
-}
-/**
- * 日期占位符识别功能
- * @method  dateDetect
- * @param   {String}    _dateStr    如果 起始字符为 NOW, 那么将视为当前日期
- * @return  {date|null}
- * @static
- * @example
- *      dateDetect( 'now' ); //2014-10-02
- *      dateDetect( 'now,3d' ); //2013-10-05
- *      dateDetect( 'now,-3d' ); //2013-09-29
- *      dateDetect( 'now,2w' ); //2013-10-16
- *      dateDetect( 'now,-2m' ); //2013-08-02
- *      dateDetect( 'now,4y' ); //2017-10-02
- *
- *      dateDetect( 'now,1d,1w,1m,1y' ); //2014-11-10
- */
-function dateDetect( _dateStr ){
-    var _r = null   
-        , _re = /^now/i
-        , _d, _ar, _item
-        ;
-    if( _dateStr && typeof _dateStr == 'string' ){
-        if( _re.test( _dateStr ) ){
-            _d = new Date();
-            _dateStr = _dateStr.replace( _re, '' ).replace(/[\s]+/g, '');
-            _ar = _dateStr.split(',');
+    /**
+     * 取函数名 ( 匿名函数返回空 )
+     * @method  funcName
+     * @param   {function}  _func
+     * @return  string
+     * @static
+     */
+    function funcName(_func){
+      var _re = /^function\s+([^()]+)[\s\S]*/
+          , _r = ''
+          , _fStr = _func.toString();    
+      //JC.log( _fStr );
+      _re.test( _fStr ) && ( _r = _fStr.replace( _re, '$1' ) );
+      return _r.trim();
+    }
+    /**
+     * 动态添加内容时, 初始化可识别的组件
+     * <dl>
+     *      <dt>目前会自动识别的组件,  </dt>
+     *      <dd>
+     *          Bizs.CommonModify, JC.Panel, JC.Dialog
+     *          <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>
+     *      </dd>
+     * </d>
+     * <dl>
+     *      <dt>可识别的组件</dt>
+     *      <dd>
+     *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder
+     *          <br />Bizs.DisableLogic, Bizs.FormLogic
+     *      </dd>
+     * </d>
+     * @method  jcAutoInitComps
+     * @param   {selector}  _selector
+     * @static
+     */
+    function jcAutoInitComps( _selector ){
+        _selector = $( _selector || document );
+        
+        if( !( _selector && _selector.length && window.JC ) ) return;
+        /**
+         * 联动下拉框
+         */
+        JC.AutoSelect && JC.AutoSelect( _selector );
+        /**
+         * 日历组件
+         */
+        JC.Calendar && JC.Calendar.initTrigger( _selector );
+        /**
+         * 全选反选
+         */
+        JC.AutoChecked && JC.AutoChecked( _selector );
+        /**
+         * Ajax 上传
+         */
+        JC.AjaxUpload && JC.AjaxUpload.init( _selector );
+        /**
+         * Placeholder 占位符
+         */
+        JC.Placeholder && JC.Placeholder.init( _selector );
 
-            var _red = /d$/i
-                , _rew = /w$/i
-                , _rem = /m$/i
-                , _rey = /y$/i
-                ;
-            for( var i = 0, j = _ar.length; i < j; i++ ){
-                _item = _ar[i] || '';
-                if( !_item ) continue;
-                _item = _item.replace( /[^\-\ddwmy]+/gi, '' );
-
-                if( _red.test( _item ) ){
-                    _item = parseInt( _item.replace( _red, '' ), 10 );
-                    _item && _d.setDate( _d.getDate() + _item );
-                }else if( _rew.test( _item ) ){
-                    _item = parseInt( _item.replace( _rew, '' ), 10 );
-                    _item && _d.setDate( _d.getDate() + _item * 7 );
-                }else if( _rem.test( _item ) ){
-                    _item = parseInt( _item.replace( _rem, '' ), 10 );
-                    _item && _d.setMonth( _d.getMonth() + _item );
-                }else if( _rey.test( _item ) ){
-                    _item = parseInt( _item.replace( _rey, '' ), 10 );
-                    _item && _d.setFullYear( _d.getFullYear() + _item );
+        if( !window.Bizs ) return;
+        /**
+         * disable / enable
+         */
+        Bizs.DisableLogic && Bizs.DisableLogic.init( _selector );
+        /**
+         * 表单提交逻辑
+         */
+        Bizs.FormLogic && Bizs.FormLogic.init( _selector );
+    }
+    /**
+     * URL 占位符识别功能
+     * @method  urlDetect
+     * @param   {String}    _url    如果 起始字符为 URL, 那么 URL 将祝为本页的URL
+     * @return  string
+     * @static
+     * @example
+     *      urlDetect( '?test' ); //output: ?test
+     *
+     *      urlDetect( 'URL,a=1&b=2' ); //output: your.com?a=1&b=2
+     *      urlDetect( 'URL,a=1,b=2' ); //output: your.com?a=1&b=2
+     *      urlDetect( 'URLa=1&b=2' ); //output: your.com?a=1&b=2
+     */
+    function urlDetect( _url ){
+        _url = _url || '';
+        var _r = _url, _tmp, i, j;
+        if( /^URL/.test( _url ) ){
+            _tmp = _url.replace( /^URL/, '' ).replace( /[\s]*,[\s]*/g, ',' ).trim().split(',');
+            _url = location.href;
+            var _d = {}, _concat = [];
+            if( _tmp.length ){
+                for( i = 0, j = _tmp.length; i < j; i ++ ){
+                     /\&/.test( _tmp[i] )
+                         ? ( _concat = _concat.concat( _tmp[i].split('&') ) )
+                         : ( _concat = _concat.concat( _tmp[i] ) )
+                         ;
                 }
+                _tmp = _concat;
             }
-            _r = _d;
-        }else{
-            _r = parseISODate( _dateStr );
+            for( i = 0, j = _tmp.length; i < j; i++ ){
+                _items = _tmp[i].replace(/[\s]+/g, '').split( '=' );
+                if( !_items[0] ) continue;
+                _d[ _items[0] ] = _items[1] || '';
+            }
+            _url = addUrlParams( _url, _d );
+            _r = _url;
         }
+        return _r;
     }
-    return _r;
-}
-/**
- * 模块加载器自动识别函数
- * <br />目前可识别 requirejs
- * <br />计划支持的加载器 seajs
- * @method  loaderDetect
- * @param   {array of dependency|class}     _require
- * @param   {class|callback}                _class
- * @param   {callback}                      _cb
- * @static
- * @example
- *      loaderDetect( JC.AutoSelect );
- *      loaderDetect( [ 'JC.AutoSelect', 'JC.AutoChecked' ], JC.Form );
- */
-function loaderDetect( _require, _class, _cb ){
-    if( !( typeof define === 'function' && define.amd ) ) return;
-    if( _require.constructor != Array ){
-        _cb = _class;
-        _class = _require;
-        _require = [];
-    }
-    define( _require, function() {
-        _cb && _cb.apply( _class, sliceArgs( arguments ) );
-        return _class;
-    });
-}
-;(function(){
     /**
-     * inject jquery val func, for hidden change event
+     * 日期占位符识别功能
+     * @method  dateDetect
+     * @param   {String}    _dateStr    如果 起始字符为 NOW, 那么将视为当前日期
+     * @return  {date|null}
+     * @static
+     * @example
+     *      dateDetect( 'now' ); //2014-10-02
+     *      dateDetect( 'now,3d' ); //2013-10-05
+     *      dateDetect( 'now,-3d' ); //2013-09-29
+     *      dateDetect( 'now,2w' ); //2013-10-16
+     *      dateDetect( 'now,-2m' ); //2013-08-02
+     *      dateDetect( 'now,4y' ); //2017-10-02
+     *
+     *      dateDetect( 'now,1d,1w,1m,1y' ); //2014-11-10
      */
-    if( !window.jQuery ) return;
-    var _oldVal = $.fn.val;
-    $.fn.val = 
-        function(){
-            var _r = _oldVal.apply( this, arguments ), _p = this;
-            if( 
-                arguments.length
-                && ( this.prop('nodeName') || '').toLowerCase() == 'input' 
-                && ( this.attr('type') || '' ).toLowerCase() == 'hidden'
-            ){
-                setTimeout( function(){ _p.trigger( 'change' ); }, 1 );
+    function dateDetect( _dateStr ){
+        var _r = null   
+            , _re = /^now/i
+            , _d, _ar, _item
+            ;
+        if( _dateStr && typeof _dateStr == 'string' ){
+            if( _re.test( _dateStr ) ){
+                _d = new Date();
+                _dateStr = _dateStr.replace( _re, '' ).replace(/[\s]+/g, '');
+                _ar = _dateStr.split(',');
+
+                var _red = /d$/i
+                    , _rew = /w$/i
+                    , _rem = /m$/i
+                    , _rey = /y$/i
+                    ;
+                for( var i = 0, j = _ar.length; i < j; i++ ){
+                    _item = _ar[i] || '';
+                    if( !_item ) continue;
+                    _item = _item.replace( /[^\-\ddwmy]+/gi, '' );
+
+                    if( _red.test( _item ) ){
+                        _item = parseInt( _item.replace( _red, '' ), 10 );
+                        _item && _d.setDate( _d.getDate() + _item );
+                    }else if( _rew.test( _item ) ){
+                        _item = parseInt( _item.replace( _rew, '' ), 10 );
+                        _item && _d.setDate( _d.getDate() + _item * 7 );
+                    }else if( _rem.test( _item ) ){
+                        _item = parseInt( _item.replace( _rem, '' ), 10 );
+                        _item && _d.setMonth( _d.getMonth() + _item );
+                    }else if( _rey.test( _item ) ){
+                        _item = parseInt( _item.replace( _rey, '' ), 10 );
+                        _item && _d.setFullYear( _d.getFullYear() + _item );
+                    }
+                }
+                _r = _d;
+            }else{
+                _r = parseISODate( _dateStr );
             }
-            return _r;
-        };
-}());
+        }
+        return _r;
+    }
+    ;(function(){
+        /**
+         * inject jquery val func, for hidden change event
+         */
+        if( !window.jQuery ) return;
+        var _oldVal = $.fn.val;
+        $.fn.val = 
+            function(){
+                var _r = _oldVal.apply( this, arguments ), _p = this;
+                if( 
+                    arguments.length
+                    && ( this.prop('nodeName') || '').toLowerCase() == 'input' 
+                    && ( this.attr('type') || '' ).toLowerCase() == 'hidden'
+                ){
+                    setTimeout( function(){ _p.trigger( 'change' ); }, 1 );
+                }
+                return _r;
+            };
+    }());
+
+}(jQuery));
+    return JC.f;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));
 ;
 
 //TODO: use 方法 nginx 模式添加 url 最大长度判断
 //TODO: use add custom type
 ;(function( $ ){
-    if( window.JC && typeof JC.PATH != 'undefined' ) return;
+    if( window.JC && typeof JC.compsDir != 'undefined' ) return;
+    JC.f.backward( 1 ); //这里启用 JC.common 的向后兼容, 为 window 注入全局静态函数变量
     /**
      * JC jquery 组件库 资源调用控制类
      * <br />这是一个单例模式, 全局访问使用 JC 或 window.JC

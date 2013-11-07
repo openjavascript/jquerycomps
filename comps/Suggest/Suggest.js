@@ -400,14 +400,6 @@
      */
     Suggest.layoutTpl = '';
     /**
-     * Suggest 返回列表的内容是否只使用
-     * @property    layoutTpl
-     * @type        string
-     * @default     empty
-     * @static
-     */
-    Suggest.layoutTpl = '';
-    /**
      * 数据过滤回调
      * @property    dataFilter
      * @type        function

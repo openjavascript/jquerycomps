@@ -1,7 +1,6 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        ".window",
         "JC.AjaxUpload",
         "JC.AutoChecked",
         "JC.AutoSelect",
@@ -26,9 +25,11 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Tree",
         "JC.Valid",
         "JC.alert",
+        "JC.common",
         "JC.confirm",
         "JC.hideAllPanel",
         "JC.hideAllPopup",
+        "JC.jQuery",
         "JC.msgbox",
         "window.Bizs.ActionLogic",
         "window.Bizs.CommonModify",
@@ -37,8 +38,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.KillISPCache",
         "window.Bizs.MultiDate",
         "window.JC",
-        "window.UXC",
-        "window.jQuery"
+        "window.UXC"
     ],
     "modules": [],
     "allModules": []
