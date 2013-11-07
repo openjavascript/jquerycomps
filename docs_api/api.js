@@ -1,7 +1,6 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        ".window",
         "JC.AjaxUpload",
         "JC.AutoChecked",
         "JC.AutoSelect",
@@ -25,6 +24,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Tree",
         "JC.Valid",
         "JC.alert",
+        "JC.common",
         "JC.confirm",
         "JC.hideAllPanel",
         "JC.hideAllPopup",
