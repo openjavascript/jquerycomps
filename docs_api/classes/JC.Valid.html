@@ -110,11 +110,11 @@
 <div class="box intro">
     <p><b>表单验证</b> (单例模式)
 <br />全局访问请使用 JC.Valid 或 Valid</p>
-<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
-<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+<p><p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p></p>
+<p><p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
 | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>
-| <a href='../../modules/JC.Valid/0.2/_demo/' target='_blank'>demo link</a></p>
-<h2>Form 的可用 html attribute</h2>
+| <a href='../../modules/JC.Valid/0.2/_demo/' target='_blank'>demo link</a></p></p>
+<p><h2>Form 的可用 html attribute</h2></p>
 <dl>
      <dt>errorabort = bool, default = true</dt>
      <dd>
@@ -164,15 +164,14 @@
      <dd>验证内容的最小长度, 但不验证为空的值</dd>
      <dt>maxlength = int(最大长度)</dt>
      <dd>验证内容的最大长度, 但不验证为空的值</dd>
-     <dt>minvalue = [number|ISO date](最小值)</dt>
+     <dt>minvalue = <a href="最小值">number|ISO date</a></dt>
      <dd>验证内容的最小值, 但不验证为空的值</dd>
-     <dt>maxvalue = [number|ISO date](最大值)</dt>
+     <dt>maxvalue = <a href="最大值">number|ISO date</a></dt>
      <dd>验证内容的最大值, 但不验证为空的值</dd>
-     <dt>validitemcallback = function name</dt>
+     <dt>validitemcallback = function</dt>
      <dd>
          对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>
-<xmp>function validItemCallback( _item, _isValid){
-   JC.log( _item.attr('name'), _isValid );
+<xmp>function validItemCallback( <em>selector, _isValid ){
 }</xmp>
      </dd>
      <dt>datatype: 常用数据类型</dt>
@@ -208,7 +207,7 @@
      </dd>
      <dd>
          <b>username:</b> 注册用户名
-         <br>格式: a-zA-Z0-9_-
+         <br>格式: a-zA-Z0-9</em>-
          <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30
      </dd>
      <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>
@@ -318,9 +317,9 @@
              <dd><b>datavalidMsg:</b> 值不合法时的提示信息</dd>
              <dd>
                  <b>datavalidUrl:</b> 验证内容正确与否的 url api
-                 <p>{"errorno":0,"errmsg":""}</p>
+                 <p>{&quot;errorno&quot;:0,&quot;errmsg&quot;:&quot;&quot;}</p>
                  errorno: 0( 正确 ), 非0( 错误 )
-                 <p>datavalidurl="./data/handler.php?key={0}"</p>
+                 <p>datavalidurl=&quot;./data/handler.php?key={0}&quot;</p>
                  {0} 代表 value
              </dd>
              <dd>
@@ -338,7 +337,7 @@
                  <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调
 <xmp>function datavalidUrlFilter( _url ){
    var _selector = $(this);
-   _url = JC.f.addUrlParams( _url, { 'xtest': 'customData' } );
+   _url = JC.f.addUrlParams( _url, { &#39;xtest&#39;: &#39;customData&#39; } );
    return _url;
 });</xmp>
              </dd>
@@ -348,7 +347,7 @@
          <dl>
              <dt>hidden: 验证隐藏域的值</dt>
              <dd>
-                 有些特殊情况需要验证隐藏域的值, 请使用 subdatatype="hidden"
+                 有些特殊情况需要验证隐藏域的值, 请使用 subdatatype=&quot;hidden&quot;
              </dd>
          </dl>
      </dd>
@@ -663,7 +662,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1847"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1847</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1849"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1849</code></a>
         </p>
     </div>
     <div class="description">
@@ -685,31 +684,30 @@
             <h4>Example:</h4>
             <div class="example-content">
                 <pre class="code prettyprint"><code>           &lt;dd&gt;
-           &lt;div class="f-l label"&gt;
+           &lt;div class=&quot;f-l label&quot;&gt;
                &lt;label&gt;(datatype phonezone, phonecode, phoneext)电话号码:&lt;/label&gt;
            &lt;/div&gt;
-           &lt;div class="f-l"&gt;
-               &lt;input type='TEXT' name='company_phonezone' style="width:40px;" value='' size="4" 
-                   datatype="phonezone" emEl="#phone-err-em" errmsg="请填写正确的电话区号" /&gt;
-               - &lt;input type='TEXT' name='company_phonecode' style="width:80px;" value='' size="8" 
-                   datatype="phonecode" subdatatype="alternative" datatarget="input[name=company_mobile]" alternativemsg="电话号码和手机号码至少填写一个"
-                   errmsg="请检查电话号码格式" emEl="#phone-err-em" /&gt;
-               - &lt;input type='TEXT' name='company_phoneext' style="width:40px;" value='' size="4" 
-                   datatype="phoneext" emEl="#phone-err-em" errmsg="请填写正确的分机号" /&gt;
-               &lt;em id="phone-err-em"&gt;&lt;/em&gt;
+           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&#39;TEXT&#39; name=&#39;company_phonezone&#39; style=&quot;width:40px;&quot; value=&#39;&#39; size=&quot;4&quot; 
+                   datatype=&quot;phonezone&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的电话区号&quot; /&gt;
+               - &lt;input type=&#39;TEXT&#39; name=&#39;company_phonecode&#39; style=&quot;width:80px;&quot; value=&#39;&#39; size=&quot;8&quot; 
+                   datatype=&quot;phonecode&quot; subdatatype=&quot;alternative&quot; datatarget=&quot;input[name=company_mobile]&quot; alternativemsg=&quot;电话号码和手机号码至少填写一个&quot;
+                   errmsg=&quot;请检查电话号码格式&quot; emEl=&quot;#phone-err-em&quot; /&gt;
+               - &lt;input type=&#39;TEXT&#39; name=&#39;company_phoneext&#39; style=&quot;width:40px;&quot; value=&#39;&#39; size=&quot;4&quot; 
+                   datatype=&quot;phoneext&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的分机号&quot; /&gt;
+               &lt;em id=&quot;phone-err-em&quot;&gt;&lt;/em&gt;
            &lt;/div&gt;
            &lt;/dd&gt;
            &lt;dd&gt;
-           &lt;div class="f-l label"&gt;
+           &lt;div class=&quot;f-l label&quot;&gt;
                &lt;label&gt;(datatype mobilecode)手机号码:&lt;/label&gt;
            &lt;/div&gt;
-           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_mobile" 
-                   datatype="mobilecode" subdatatype="alternative" datatarget="input[name=company_phonecode]" alternativemsg=" "
-                   errmsg="请填写正确的手机号码"&gt;
+           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_mobile&quot; 
+                   datatype=&quot;mobilecode&quot; subdatatype=&quot;alternative&quot; datatarget=&quot;input[name=company_phonecode]&quot; alternativemsg=&quot; &quot;
+                   errmsg=&quot;请填写正确的手机号码&quot;&gt;
            &lt;/div&gt;
-           &lt;/dd&gt;
-</code></pre>
+           &lt;/dd&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -727,7 +725,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1252"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1252</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1254"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1254</code></a>
         </p>
     </div>
     <div class="description">
@@ -748,11 +746,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_idnumber" 
-                   datatype="idnumber" errmsg="请填写正确的身份证号码"&gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_idnumber&quot; 
+                   datatype=&quot;idnumber&quot; errmsg=&quot;请填写正确的身份证号码&quot;&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -770,7 +767,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1621"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1621</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1623"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1623</code></a>
         </p>
     </div>
     <div class="description">
@@ -796,7 +793,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1602"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1602</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1604"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1604</code></a>
         </p>
     </div>
     <div class="description">
@@ -819,7 +816,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l453"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:453</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l452"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:452</code></a>
         </p>
     </div>
     <div class="description">
@@ -849,11 +846,10 @@
                 <pre class="code prettyprint"><code>     JC.Valid.check( $( selector ) );
      JC.Valid.check( $( selector ), $( anotherSelector );
      JC.Valid.check( document.getElementById( item ) );
-     if( !JC.Valid.check( $('form') ) ){
+     if( !JC.Valid.check( $(&#39;form&#39;) ) ){
          _evt.preventDefault();
          return false;
-     }
-</code></pre>
+     }</code></pre>
             </div>
         </div>
 </div>
@@ -870,7 +866,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l471"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:471</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l470"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:470</code></a>
         </p>
     </div>
     <div class="description">
@@ -904,7 +900,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l603"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:603</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l605"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:605</code></a>
         </p>
     </div>
     <div class="description">
@@ -927,9 +923,8 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>     JC.Valid.clearError( 'form' );
-     JC.Valid.clearError( 'input.some' );
-</code></pre>
+                <pre class="code prettyprint"><code>     JC.Valid.clearError( &#39;form&#39; );
+     JC.Valid.clearError( &#39;input.some&#39; );</code></pre>
             </div>
         </div>
 </div>
@@ -947,7 +942,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1277"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1277</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1279"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1279</code></a>
         </p>
     </div>
     <div class="description">
@@ -969,11 +964,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_cnname" 
-                   datatype="cnname" reqmsg="姓名" errmsg="请填写正确的姓名"&gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_cnname&quot; 
+                   datatype=&quot;cnname&quot; reqmsg=&quot;姓名&quot; errmsg=&quot;请填写正确的姓名&quot;&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -991,7 +985,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1704"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1704</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1706"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1706</code></a>
         </p>
     </div>
     <div class="description">
@@ -1011,10 +1005,9 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_countrycode" datatype="countrycode" errmsg="请填写正确的地区代码"&gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_countrycode&quot; datatype=&quot;countrycode&quot; errmsg=&quot;请填写正确的地区代码&quot;&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -1032,7 +1025,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1112"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1112</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1114"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1114</code></a>
         </p>
     </div>
     <div class="description">
@@ -1053,10 +1046,9 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_d" errmsg="请填写正确的日期范围2013-05-01 - 2013-05-31" datatype="daterange" minvalue="2013-05-01" maxvalue="2013-05-31" &gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_d&quot; errmsg=&quot;请填写正确的日期范围2013-05-01 - 2013-05-31&quot; datatype=&quot;daterange&quot; minvalue=&quot;2013-05-01&quot; maxvalue=&quot;2013-05-31&quot; &gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -1085,7 +1077,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l486"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:486</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l485"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:485</code></a>
         </p>
     </div>
     <div class="description">
@@ -1124,7 +1116,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    bool
+                    <p>bool</p>
             </div>
         </div>
 </div>
@@ -1142,7 +1134,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1147"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1147</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1149"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1149</code></a>
         </p>
     </div>
     <div class="description">
@@ -1165,14 +1157,13 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期" id="start_date" 
-                   datatype="daterange" toDateEl="end_date" emEl="date-err-em" &gt;
-               - &lt;input type="TEXT" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期" id="end_date" 
-                   datatype="daterange" fromDateEl="start_date" emEl="date-err-em" &gt;
-               &lt;br /&gt;&lt;em id="date-err-em"&gt;&lt;/em&gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_daterange&quot; errmsg=&quot;请填写正确的日期范围,并且起始日期不能大于结束日期&quot; id=&quot;start_date&quot; 
+                   datatype=&quot;daterange&quot; toDateEl=&quot;end_date&quot; emEl=&quot;date-err-em&quot; &gt;
+               - &lt;input type=&quot;TEXT&quot; name=&quot;company_daterange&quot; errmsg=&quot;请填写正确的日期范围,并且起始日期不能大于结束日期&quot; id=&quot;end_date&quot; 
+                   datatype=&quot;daterange&quot; fromDateEl=&quot;start_date&quot; emEl=&quot;date-err-em&quot; &gt;
+               &lt;br /&gt;&lt;em id=&quot;date-err-em&quot;&gt;&lt;/em&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -1190,7 +1181,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1652"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1652</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1654"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1654</code></a>
         </p>
     </div>
     <div class="description">
@@ -1225,7 +1216,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1687"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1687</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1689"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1689</code></a>
         </p>
     </div>
     <div class="description">
@@ -1245,10 +1236,9 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_email" datatype="email" reqmsg="邮箱" errmsg="请填写正确的邮箱"&gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_email&quot; datatype=&quot;email&quot; reqmsg=&quot;邮箱&quot; errmsg=&quot;请填写正确的邮箱&quot;&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -1272,7 +1262,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2522"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2522</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2524"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2524</code></a>
         </p>
     </div>
     <div class="description">
@@ -1328,7 +1318,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2190"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2190</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2192"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2192</code></a>
         </p>
     </div>
     <div class="description">
@@ -1379,7 +1369,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2167"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2167</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2169"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2169</code></a>
         </p>
     </div>
     <div class="description">
@@ -1414,7 +1404,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l478"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:478</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l477"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:477</code></a>
         </p>
     </div>
     <div class="description">
@@ -1452,7 +1442,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1318"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1318</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1320"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1320</code></a>
         </p>
     </div>
     <div class="description">
@@ -1473,11 +1463,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>       &lt;div class="f-l"&gt;
-           &lt;input type="TEXT" name="company_idnumber" 
-               datatype="idnumber" errmsg="请填写正确的身份证号码"&gt;
-       &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>       &lt;div class=&quot;f-l&quot;&gt;
+           &lt;input type=&quot;TEXT&quot; name=&quot;company_idnumber&quot; 
+               datatype=&quot;idnumber&quot; errmsg=&quot;请填写正确的身份证号码&quot;&gt;
+       &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -1500,7 +1489,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l654"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:654</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l656"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:656</code></a>
         </p>
     </div>
     <div class="description">
@@ -1527,7 +1516,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    bool
+                    <p>bool</p>
             </div>
         </div>
 </div>
@@ -1547,7 +1536,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l695"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:695</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l697"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:697</code></a>
         </p>
     </div>
     <div class="description">
@@ -1567,7 +1556,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    bool
+                    <p>bool</p>
             </div>
         </div>
 </div>
@@ -1587,7 +1576,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l522"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:522</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l521"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:521</code></a>
         </p>
     </div>
     <div class="description">
@@ -1607,7 +1596,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    bool
+                    <p>bool</p>
             </div>
         </div>
 </div>
@@ -1625,7 +1614,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l913"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:913</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l915"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:915</code></a>
         </p>
     </div>
     <div class="description">
@@ -1645,10 +1634,9 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_name" minlength="2" maxlength="120" reqmsg="公司名称" errmsg="请检查格式,长度2-120" /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_name&quot; minlength=&quot;2&quot; maxlength=&quot;120&quot; reqmsg=&quot;公司名称&quot; errmsg=&quot;请检查格式,长度2-120&quot; /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -1666,7 +1654,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1235"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1235</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1237"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1237</code></a>
         </p>
     </div>
     <div class="description">
@@ -1686,10 +1674,9 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_time" errmsg="正确的时间, 格式为 hh:mm" datatype="minute" &gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_time&quot; errmsg=&quot;正确的时间, 格式为 hh:mm&quot; datatype=&quot;minute&quot; &gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -1710,7 +1697,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1357"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1357</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1359"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1359</code></a>
         </p>
     </div>
     <div class="description">
@@ -1752,7 +1739,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1337"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1337</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1339"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1339</code></a>
         </p>
     </div>
     <div class="description">
@@ -1778,12 +1765,11 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>       &lt;div class="f-l"&gt;
-           &lt;input type="TEXT" name="company_mobile" 
-               datatype="mobilecode" subdatatype="alternative" datatarget="input[name=company_phonecode]" alternativemsg=" "
-               errmsg="请填写正确的手机号码"&gt;
-       &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>       &lt;div class=&quot;f-l&quot;&gt;
+           &lt;input type=&quot;TEXT&quot; name=&quot;company_mobile&quot; 
+               datatype=&quot;mobilecode&quot; subdatatype=&quot;alternative&quot; datatarget=&quot;input[name=company_phonecode]&quot; alternativemsg=&quot; &quot;
+               errmsg=&quot;请填写正确的手机号码&quot;&gt;
+       &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -1801,7 +1787,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1494"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1494</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1496"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1496</code></a>
         </p>
     </div>
     <div class="description">
@@ -1822,15 +1808,14 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l label"&gt;
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l label&quot;&gt;
                &lt;label&gt;(datatype mobilephone, phone + mobilecode)手机号码或电话号码:&lt;/label&gt;
            &lt;/div&gt;
-           &lt;div class="f-l"&gt;
-               &lt;input type="text" name="company_mobilephone" 
-                   datatype="mobilephone"
-                   errmsg="请填写正确的手机/电话号码"&gt;
-           &lt;/div&gt;
-</code></pre>
+           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;text&quot; name=&quot;company_mobilephone&quot; 
+                   datatype=&quot;mobilephone&quot;
+                   errmsg=&quot;请填写正确的手机/电话号码&quot;&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -1848,7 +1833,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1518"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1518</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1520"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1520</code></a>
         </p>
     </div>
     <div class="description">
@@ -1869,15 +1854,14 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l label"&gt;
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l label&quot;&gt;
                &lt;label&gt;(datatype mobilephoneall, phoneall + mobilezonecode)手机号码或电话号码:&lt;/label&gt;
            &lt;/div&gt;
-           &lt;div class="f-l"&gt;
-               &lt;input type="text" name="company_mobilephoneall" 
-                   datatype="mobilephoneall"
-                   errmsg="请填写正确的手机/电话号码"&gt;
-           &lt;/div&gt;
-</code></pre>
+           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;text&quot; name=&quot;company_mobilephoneall&quot; 
+                   datatype=&quot;mobilephoneall&quot;
+                   errmsg=&quot;请填写正确的手机/电话号码&quot;&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -1898,7 +1882,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1370"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1370</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1372"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1372</code></a>
         </p>
     </div>
     <div class="description">
@@ -1925,12 +1909,11 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_mobilezone" 
-                   datatype="mobilezonecode" 
-                   errmsg="请填写正确的手机号码"&gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_mobilezone&quot; 
+                   datatype=&quot;mobilezonecode&quot; 
+                   errmsg=&quot;请填写正确的手机号码&quot;&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -1948,7 +1931,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l966"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:966</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l968"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:968</code></a>
         </p>
     </div>
     <div class="description">
@@ -1969,16 +1952,15 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_n" errmsg="请填写正确的正整数" datatype="n" &gt;
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_n&quot; errmsg=&quot;请填写正确的正整数&quot; datatype=&quot;n&quot; &gt;
            &lt;/div&gt;
-           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_n1" errmsg="请填写正确的数字, 范围1-100" datatype="n" minvalue="1", maxvalue="100" &gt;
+           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_n1&quot; errmsg=&quot;请填写正确的数字, 范围1-100&quot; datatype=&quot;n&quot; minvalue=&quot;1&quot;, maxvalue=&quot;100&quot; &gt;
            &lt;/div&gt;
-           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_n2" errmsg="请填写正确的数字" datatype="n-7.2" &gt;
-           &lt;/div&gt;
-</code></pre>
+           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_n2&quot; errmsg=&quot;请填写正确的数字&quot; datatype=&quot;n-7.2&quot; &gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -1996,7 +1978,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1038"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1038</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1040"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1040</code></a>
         </p>
     </div>
     <div class="description">
@@ -2020,15 +2002,14 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>       &lt;div class="f-l label"&gt;
-           &lt;label&gt;(datatype nrange)正数:&lt;br/&gt;&lt;b style="color:red"&gt;注意: 这个是大小颠倒位置的nrange&lt;/b&gt;&lt;/label&gt;
-           大&lt;input type="text" name="company_n10" id="company_n10" fromNEl="company_n11"
-               errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1011" &gt;
-           - 小&lt;input type="text" name="company_n11" id="company_n11" toNEl="company_n10"
-               errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1011" &gt;
-           &lt;em id="nrange_n1011"&gt;&lt;/em&gt;
-       &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>       &lt;div class=&quot;f-l label&quot;&gt;
+           &lt;label&gt;(datatype nrange)正数:&lt;br/&gt;&lt;b style=&quot;color:red&quot;&gt;注意: 这个是大小颠倒位置的nrange&lt;/b&gt;&lt;/label&gt;
+           大&lt;input type=&quot;text&quot; name=&quot;company_n10&quot; id=&quot;company_n10&quot; fromNEl=&quot;company_n11&quot;
+               errmsg=&quot;请填写正确的数值范围&quot; datatype=&quot;nrange&quot; emEl=&quot;nrange_n1011&quot; &gt;
+           - 小&lt;input type=&quot;text&quot; name=&quot;company_n11&quot; id=&quot;company_n11&quot; toNEl=&quot;company_n10&quot;
+               errmsg=&quot;请填写正确的数值范围&quot; datatype=&quot;nrange&quot; emEl=&quot;nrange_n1011&quot; &gt;
+           &lt;em id=&quot;nrange_n1011&quot;&gt;&lt;/em&gt;
+       &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -2051,7 +2032,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l331"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:331</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l330"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:330</code></a>
         </p>
     </div>
     <div class="description">
@@ -2077,7 +2058,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    ValidInstance
+                    <p>ValidInstance</p>
             </div>
         </div>
 </div>
@@ -2094,7 +2075,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l348"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:348</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l347"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:347</code></a>
         </p>
     </div>
     <div class="description">
@@ -2126,7 +2107,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l733"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:733</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l735"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:735</code></a>
         </p>
     </div>
     <div class="description">
@@ -2158,7 +2139,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l750"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:750</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l752"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:752</code></a>
         </p>
     </div>
     <div class="description">
@@ -2193,7 +2174,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1410"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1410</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1412"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1412</code></a>
         </p>
     </div>
     <div class="description">
@@ -2220,12 +2201,11 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_phone" 
-                   datatype="phone" 
-                   errmsg="请填写正确的电话号码"&gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_phone&quot; 
+                   datatype=&quot;phone&quot; 
+                   errmsg=&quot;请填写正确的电话号码&quot;&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -2246,7 +2226,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1431"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1431</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1433"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1433</code></a>
         </p>
     </div>
     <div class="description">
@@ -2273,12 +2253,11 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_mobilezone" 
-                   datatype="phoneall" 
-                   errmsg="请填写正确的电话号码"&gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_mobilezone&quot; 
+                   datatype=&quot;phoneall&quot; 
+                   errmsg=&quot;请填写正确的电话号码&quot;&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -2296,7 +2275,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1391"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1391</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1393"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1393</code></a>
         </p>
     </div>
     <div class="description">
@@ -2318,10 +2297,9 @@
             <h4>Example:</h4>
             <div class="example-content">
                 <pre class="code prettyprint"><code>           &lt;div&gt;
-               &lt;input type='TEXT' name='company_phonecode' style="width:80px;" value='' size="8" 
-                   datatype="phonecode" errmsg="请检查电话号码格式" emEl="#phone-err-em" /&gt;
-           &lt;/div&gt;
-</code></pre>
+               &lt;input type=&#39;TEXT&#39; name=&#39;company_phonecode&#39; style=&quot;width:80px;&quot; value=&#39;&#39; size=&quot;8&quot; 
+                   datatype=&quot;phonecode&quot; errmsg=&quot;请检查电话号码格式&quot; emEl=&quot;#phone-err-em&quot; /&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -2339,7 +2317,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1476"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1476</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1478"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1478</code></a>
         </p>
     </div>
     <div class="description">
@@ -2360,10 +2338,9 @@
             <h4>Example:</h4>
             <div class="example-content">
                 <pre class="code prettyprint"><code>           &lt;div&gt;
-               &lt;input type='TEXT' name='company_phoneext' style="width:40px;" value='' size="4" 
-                   datatype="phoneext" emEl="#phone-err-em" errmsg="请填写正确的分机号" /&gt;
-           &lt;/div&gt;
-</code></pre>
+               &lt;input type=&#39;TEXT&#39; name=&#39;company_phoneext&#39; style=&quot;width:40px;&quot; value=&#39;&#39; size=&quot;4&quot; 
+                   datatype=&quot;phoneext&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的分机号&quot; /&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -2381,7 +2358,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1453"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1453</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1455"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1455</code></a>
         </p>
     </div>
     <div class="description">
@@ -2402,10 +2379,9 @@
             <h4>Example:</h4>
             <div class="example-content">
                 <pre class="code prettyprint"><code>           &lt;div&gt;
-               &lt;input type='TEXT' name='company_phonezone' style="width:40px;" value='' size="4" 
-                   datatype="phonezone" emEl="#phone-err-em" errmsg="请填写正确的电话区号" /&gt;
-           &lt;/div&gt;
-</code></pre>
+               &lt;input type=&#39;TEXT&#39; name=&#39;company_phonezone&#39; style=&quot;width:40px;&quot; value=&#39;&#39; size=&quot;4&quot; 
+                   datatype=&quot;phonezone&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的电话区号&quot; /&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -2423,7 +2399,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1759"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1759</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1761"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1761</code></a>
         </p>
     </div>
     <div class="description">
@@ -2445,26 +2421,25 @@
             <h4>Example:</h4>
             <div class="example-content">
                 <pre class="code prettyprint"><code>           &lt;dd&gt;
-           &lt;div class="f-l label"&gt;
+           &lt;div class=&quot;f-l label&quot;&gt;
                &lt;label&gt;(datatype text, subdatatype reconfirm)用户密码:&lt;/label&gt;
            &lt;/div&gt;
-           &lt;div class="f-l"&gt;
-               &lt;input type="PASSWORD" name="company_pwd" 
-               datatype="text" subdatatype="reconfirm" datatarget="input[name=company_repwd]" reconfirmmsg="用户密码和确认密码不一致"
-               minlength="6" maxlength="15" reqmsg="用户密码" errmsg="请填写正确的用户密码"&gt;
+           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;PASSWORD&quot; name=&quot;company_pwd&quot; 
+               datatype=&quot;text&quot; subdatatype=&quot;reconfirm&quot; datatarget=&quot;input[name=company_repwd]&quot; reconfirmmsg=&quot;用户密码和确认密码不一致&quot;
+               minlength=&quot;6&quot; maxlength=&quot;15&quot; reqmsg=&quot;用户密码&quot; errmsg=&quot;请填写正确的用户密码&quot;&gt;
            &lt;/div&gt;
            &lt;/dd&gt;
            &lt;dd&gt;
-           &lt;div class="f-l label"&gt;
+           &lt;div class=&quot;f-l label&quot;&gt;
                &lt;label&gt;(datatype text, subdatatype reconfirm)确认密码:&lt;/label&gt;
            &lt;/div&gt;
-           &lt;div class="f-l"&gt;
-               &lt;input type="PASSWORD" name="company_repwd" 
-               datatype="text" subdatatype="reconfirm" datatarget="input[name=company_pwd]" reconfirmmsg="确认密码和用户密码不一致"
-               minlength="6" maxlength="15" reqmsg="确认密码" errmsg="请填写正确的确认密码"&gt;
+           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;PASSWORD&quot; name=&quot;company_repwd&quot; 
+               datatype=&quot;text&quot; subdatatype=&quot;reconfirm&quot; datatarget=&quot;input[name=company_pwd]&quot; reconfirmmsg=&quot;确认密码和用户密码不一致&quot;
+               minlength=&quot;6&quot; maxlength=&quot;15&quot; reqmsg=&quot;确认密码&quot; errmsg=&quot;请填写正确的确认密码&quot;&gt;
            &lt;/div&gt;
-           &lt;/dd&gt;
-</code></pre>
+           &lt;/dd&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -2482,7 +2457,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1541"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1541</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1543"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1543</code></a>
         </p>
     </div>
     <div class="description">
@@ -2502,9 +2477,8 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>               &lt;div&gt;&lt;input type="TEXT" name="company_addr" datatype="reg" reg-pattern="/^[\s\S]{2,120}$/i" errmsg="请填写正确的地址"&gt;&lt;/div&gt;
-               &lt;div&gt;&lt;input type="TEXT" name="company_addr" datatype="reg-/^[\s\S]{2,120}$/i" errmsg="请填写正确的地址"&gt;&lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>               &lt;div&gt;&lt;input type=&quot;TEXT&quot; name=&quot;company_addr&quot; datatype=&quot;reg&quot; reg-pattern=&quot;/^[\s\S]{2,120}$/i&quot; errmsg=&quot;请填写正确的地址&quot;&gt;&lt;/div&gt;
+               &lt;div&gt;&lt;input type=&quot;TEXT&quot; name=&quot;company_addr&quot; datatype=&quot;reg-/^[\s\S]{2,120}$/i&quot; errmsg=&quot;请填写正确的地址&quot;&gt;&lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -2522,7 +2496,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2225"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2225</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2227"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2227</code></a>
         </p>
     </div>
     <div class="description">
@@ -2543,10 +2517,9 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_name" reqmsg="公司名称" /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_name&quot; reqmsg=&quot;公司名称&quot; /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -2564,7 +2537,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1996"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1996</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1998"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1998</code></a>
         </p>
     </div>
     <div class="description">
@@ -2590,7 +2563,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1611"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1611</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1613"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1613</code></a>
         </p>
     </div>
     <div class="description">
@@ -2617,7 +2590,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l538"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:538</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l540"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:540</code></a>
         </p>
     </div>
     <div class="description">
@@ -2637,8 +2610,8 @@
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
                     <div class="param-description">
                         <ul>
-<li>显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名
-                               <br /> 如果 _msgAttr 的第一个字符为空格, 将视为提示信息, 并自动生成属性 autoGenerateErrorMsg</li>
+<li>显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名<pre><code>                             &lt;br /&gt; 如果 _msgAttr 的第一个字符为空格, 将视为提示信息, 并自动生成属性 autoGenerateErrorMsg</code></pre>
+</li>
 </ul>
                     </div>
                 </li>
@@ -2673,7 +2646,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l556"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:556</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l558"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:558</code></a>
         </p>
     </div>
     <div class="description">
@@ -2699,8 +2672,8 @@
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
                     <div class="param-description">
                         <ul>
-<li>显示指定需要读取的focusmsg信息属性名, 默认为 focusmsg, 通过该属性可以指定别的属性名
-                               <br /> 如果 _msgAttr 的第一个字符为空格, 将视为提示信息, 并自动生成属性 autoGenerateFocusMsg</li>
+<li>显示指定需要读取的focusmsg信息属性名, 默认为 focusmsg, 通过该属性可以指定别的属性名<pre><code>                             &lt;br /&gt; 如果 _msgAttr 的第一个字符为空格, 将视为提示信息, 并自动生成属性 autoGenerateFocusMsg</code></pre>
+</li>
 </ul>
                     </div>
                 </li>
@@ -2723,7 +2696,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l530"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:530</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l529"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:529</code></a>
         </p>
     </div>
     <div class="description">
@@ -2762,7 +2735,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1670"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1670</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1672"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1672</code></a>
         </p>
     </div>
     <div class="description">
@@ -2797,7 +2770,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1738"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1738</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1740"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1740</code></a>
         </p>
     </div>
     <div class="description">
@@ -2817,10 +2790,9 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="" datatype="taxcode" errmsg="请填空正确的纳税人识别号"&gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;&quot; datatype=&quot;taxcode&quot; errmsg=&quot;请填空正确的纳税人识别号&quot;&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -2832,7 +2804,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1593"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1593</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1595"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1595</code></a>
         </p>
     </div>
     <div class="description">
@@ -2853,7 +2825,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1218"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1218</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1220"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1220</code></a>
         </p>
     </div>
     <div class="description">
@@ -2873,10 +2845,9 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_time" errmsg="正确的时间, 格式为 hh:mm:ss" datatype="time" &gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_time&quot; errmsg=&quot;正确的时间, 格式为 hh:mm:ss&quot; datatype=&quot;time&quot; &gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -2896,7 +2867,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l340"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:340</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l339"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:339</code></a>
         </p>
     </div>
     <div class="description">
@@ -2916,7 +2887,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    ValidInstance
+                    <p>ValidInstance</p>
             </div>
         </div>
 </div>
@@ -2934,7 +2905,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2020"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2020</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2022"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2022</code></a>
         </p>
     </div>
     <div class="description">
@@ -2966,7 +2937,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1632"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1632</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1634"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1634</code></a>
         </p>
     </div>
     <div class="description">
@@ -2986,10 +2957,9 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_url" datatype="url" errmsg="请填写正确的网址"&gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_url&quot; datatype=&quot;url&quot; errmsg=&quot;请填写正确的网址&quot;&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -3007,7 +2977,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1298"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1298</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1300"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1300</code></a>
         </p>
     </div>
     <div class="description">
@@ -3029,11 +2999,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_username" 
-                   datatype="username" reqmsg="用户名" errmsg="请填写正确的用户名"&gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_username&quot; 
+                   datatype=&quot;username&quot; reqmsg=&quot;用户名&quot; errmsg=&quot;请填写正确的用户名&quot;&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -3057,7 +3026,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2451"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2451</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2453"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2453</code></a>
         </p>
     </div>
     <div class="description">
@@ -3101,7 +3070,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1567"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1567</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1569"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1569</code></a>
         </p>
     </div>
     <div class="description">
@@ -3122,15 +3091,14 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_vcode" style="width: 40px;"
-                   datatype="vcode" reqmsg="验证码" errmsg="请填写正确的验证码"&gt;
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_vcode&quot; style=&quot;width: 40px;&quot;
+                   datatype=&quot;vcode&quot; reqmsg=&quot;验证码&quot; errmsg=&quot;请填写正确的验证码&quot;&gt;
            &lt;/div&gt;
-           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_vcode" style="width: 40px;"
-                   datatype="vcode-5" errmsg="请填写正确的验证码"&gt;
-           &lt;/div&gt;
-</code></pre>
+           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_vcode&quot; style=&quot;width: 40px;&quot;
+                   datatype=&quot;vcode-5&quot; errmsg=&quot;请填写正确的验证码&quot;&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -3148,7 +3116,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1721"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1721</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1723"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1723</code></a>
         </p>
     </div>
     <div class="description">
@@ -3168,10 +3136,9 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
-               &lt;input type="TEXT" name="company_zipcode" datatype="zipcode" errmsg="请填写正确的邮编"&gt;
-           &lt;/div&gt;
-</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_zipcode&quot; datatype=&quot;zipcode&quot; errmsg=&quot;请填写正确的邮编&quot;&gt;
+           &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -3186,7 +3153,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l686"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:686</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l688"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:688</code></a>
         </p>
     </div>
     <div class="description">
@@ -3209,7 +3176,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l627"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:627</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l629"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:629</code></a>
         </p>
     </div>
     <div class="description">
@@ -3221,8 +3188,7 @@
             <div class="example-content">
                 <pre class="code prettyprint"><code>       $(document).ready( function($evt){
            JC.Valid.autoTrim = false;
-       });
-</code></pre>
+       });</code></pre>
             </div>
         </div>
 </div>
@@ -3233,7 +3199,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l586"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:586</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l588"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:588</code></a>
         </p>
     </div>
     <div class="description">
@@ -3248,7 +3214,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l614"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:614</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l616"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:616</code></a>
         </p>
     </div>
     <div class="description">
@@ -3261,8 +3227,7 @@
             <div class="example-content">
                 <pre class="code prettyprint"><code>       $(document).ready( function($evt){
            JC.Valid.errorAbort = true;
-       });
-</code></pre>
+       });</code></pre>
             </div>
         </div>
 </div>
@@ -3273,7 +3238,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l578"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:578</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l580"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:580</code></a>
         </p>
     </div>
     <div class="description">
@@ -3288,7 +3253,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l639"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:639</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l641"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:641</code></a>
         </p>
     </div>
     <div class="description">
@@ -3301,10 +3266,9 @@
                 <pre class="code prettyprint"><code>       $(document).ready( function($evt){
            JC.Valid.itemCallback =
                function( _item, _isValid ){
-                   JC.log( 'JC.Valid.itemCallback _isValid:', _isValid );
+                   JC.log( &#39;JC.Valid.itemCallback _isValid:&#39;, _isValid );
                };
-       });
-</code></pre>
+       });</code></pre>
             </div>
         </div>
 </div>
@@ -3315,7 +3279,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l595"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:595</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l597"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:597</code></a>
         </p>
     </div>
     <div class="description">
@@ -3332,7 +3296,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2625"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2625</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2627"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2627</code></a>
         </p>
     </div>
     <div class="description">
@@ -3345,7 +3309,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2621"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2621</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2623"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2623</code></a>
         </p>
     </div>
     <div class="description">

@@ -256,11 +256,10 @@
      *      &lt;dt&gt;maxvalue = [number|ISO date](最大值)&lt;/dt&gt;
      *      &lt;dd&gt;验证内容的最大值, 但不验证为空的值&lt;/dd&gt;
      *
-     *      &lt;dt&gt;validitemcallback = function name&lt;/dt&gt;
+     *      &lt;dt&gt;validitemcallback = function&lt;/dt&gt;
      *      &lt;dd&gt;
      *          对一个 control 作检查后的回调, 无论正确与否都会触发, &lt;b&gt;window 变量域&lt;/b&gt;
-&lt;xmp&gt;function validItemCallback( _item, _isValid){
-    JC.log( _item.attr(&#x27;name&#x27;), _isValid );
+&lt;xmp&gt;function validItemCallback( _selector, _isValid ){
 }&lt;/xmp&gt;
      *      &lt;/dd&gt;
      *
@@ -712,7 +711,10 @@
      * @param   {int}       _tm     延时 _tm 毫秒显示处理结果, 默认=150
      * @static
      */
-    Valid.setValid = function(_item, _tm){ return Valid.getInstance().trigger( Model.CORRECT, JC.f.sliceArgs( arguments) ); };
+    Valid.setValid = function(_item, _tm, _noStyle, _isUserSet){ 
+        _isUserSet = true;
+        return Valid.getInstance().trigger( Model.CORRECT, [_item, _tm, _noStyle, _isUserSet] ); 
+    };
     /**
      * 把一个表单项的状态设为错误状态
      * @method  setError
@@ -2636,7 +2638,7 @@
          * @param   {bool}      _noStyle
          */
         , valid:
-            function( _item, _tm, _noStyle ){
+            function( _item, _tm, _noStyle, _isUserSet ){
                 _item &amp;&amp; ( _item = $(_item) );
                 var _p = this, _tmp;
                 _item.data( &#x27;JCValidStatus&#x27;, true );
@@ -2656,7 +2658,7 @@
                         &amp;&amp; ( _noStyle = 1 );
 
                     _p.validMsg( _item, _noStyle, _hideFocusMsg );
-                    ( _tmp = _p._model.validitemcallback( _item ) ) &amp;&amp; _tmp( _item, true );
+                    !_isUserSet &amp;&amp; ( _tmp = _p._model.validitemcallback( _item ) ) &amp;&amp; _tmp( _item, true );
 
                 }, _tm || 150);
             }
@@ -2816,7 +2818,8 @@
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
      * @private
      */
-    $(document).delegate( &#x27;select, input[type=file], input[type=checkbox], input[type=radio]&#x27;, &#x27;change&#x27;, function($evt){
+    $(document).delegate( &#x27;select, input[type=file], input[type=checkbox], input[type=radio]&#x27;, &#x27;change&#x27;, function($evt, _ignore){
+        if( _ignore ) return;
         Valid.check( $(this) );
     });
     /**

@@ -112,11 +112,11 @@
 <br />DOM 加载完毕后
 , 只要鼠标移动到具有识别符的Tab上面, Tab就会自动初始化, 目前可识别: <b>.js_autoTab</b>( CSS class )
 <br />需要手动初始化, 请使用: var ins = new JC.Tab( _tabSelector );</p>
-<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+<p><p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
 | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Tab.html' target='_blank'>API docs</a>
-| <a href='../../modules/JC.Tab/0.1/_demo/' target='_blank'>demo link</a></p>
-<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
-<h2>Tab 容器的HTML属性</h2>
+| <a href='../../modules/JC.Tab/0.1/_demo/' target='_blank'>demo link</a></p></p>
+<p><p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p></p>
+<p><h2>Tab 容器的HTML属性</h2></p>
 <dl>
      <dt>tablabels</dt>
      <dd>声明 tab 标签的选择器语法</dd>
@@ -187,91 +187,90 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>       &lt;link href='../../../modules/JC.Tab/res/default/style.css' rel='stylesheet' /&gt;
-       &lt;script src="../../../lib.js"&gt;&lt;/script&gt;
-       &lt;script src="../../../config.js"&gt;&lt;/script&gt;
+                <pre class="code prettyprint"><code>       &lt;link href=&#39;../../../modules/JC.Tab/res/default/style.css&#39; rel=&#39;stylesheet&#39; /&gt;
+       &lt;script src=&quot;../../../lib.js&quot;&gt;&lt;/script&gt;
+       &lt;script src=&quot;../../../config.js&quot;&gt;&lt;/script&gt;
        &lt;script&gt;
            JC.debug = 1;
-           requirejs( [ 'JC.Tab' ], function(){
+           requirejs( [ &#39;JC.Tab&#39; ], function(){
                JC.f.httpRequire();
                JC.Tab.ajaxCallback =
                    function( _data, _label, _container ){
                        _data &amp;&amp; ( _data = $.parseJSON( _data ) );
                        if( _data &amp;&amp; _data.errorno === 0 ){
-                           _container.html( JC.f.printf( '&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}', _data.data ) );
+                           _container.html( JC.f.printf( &#39;&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}&#39;, _data.data ) );
                        }else{
                            Tab.isAjaxInited( _label, 0 );
-                           _container.html( '&lt;h2&gt;内容加载失败!&lt;/h2&gt;' );
+                           _container.html( &#39;&lt;h2&gt;内容加载失败!&lt;/h2&gt;&#39; );
                        }
                    };
            });
            function tabactive( _evt, _container, _tabIns ){
                var _label = $(this);
-               JC.log( 'tab ', _evt.type, _label.html(), new Date().getTime() );
+               JC.log( &#39;tab &#39;, _evt.type, _label.html(), new Date().getTime() );
                if( JC.Tab.isAjax( _label ) &amp;&amp; ! JC.Tab.isAjaxInited( _label ) ){
-                   _container.html( '&lt;h2&gt;内容加载中...&lt;/h2&gt;' );
+                   _container.html( &#39;&lt;h2&gt;内容加载中...&lt;/h2&gt;&#39; );
                }
            }
            function tabchange( _container, _tabIns ){
                var _label = $(this);
-               JC.log( 'tab change: ', _label.html(), new Date().getTime() );
+               JC.log( &#39;tab change: &#39;, _label.html(), new Date().getTime() );
            }
            function ajaxcallback( _data, _label, _container ){
                _data &amp;&amp; ( _data = $.parseJSON( _data ) );
                if( _data &amp;&amp; _data.errorno === 0 ){
-                   _container.html( JC.f.printf( '&lt;h2&gt;label attr ajaxcallback&lt;/h2&gt;{0}', _data.data ) );
+                   _container.html( JC.f.printf( &#39;&lt;h2&gt;label attr ajaxcallback&lt;/h2&gt;{0}&#39;, _data.data ) );
                }else{
                    Tab.isAjaxInited( _label, 0 );
-                   _container.html( '&lt;h2&gt;内容加载失败!&lt;/h2&gt;' );
+                   _container.html( &#39;&lt;h2&gt;内容加载失败!&lt;/h2&gt;&#39; );
                }
            };
        &lt;/script&gt;
-       &lt;dl class="def"&gt;
+       &lt;dl class=&quot;def&quot;&gt;
            &lt;dt&gt;JC.Tab 示例 - 静态内容&lt;/dt&gt;
            &lt;dd&gt;
-           &lt;div class="le-tabview js_autoTab" tablabels="ul.js_tabLabel &gt; li &gt; a" tabcontainers="div.js_tabContent &gt; div" 
-                                               tabactiveclass="active" tablabelparent="li" 
-                                               tabactivecallback="tabactive" tabchangecallback="tabchange"
+           &lt;div class=&quot;le-tabview js_autoTab&quot; tablabels=&quot;ul.js_tabLabel &gt; li &gt; a&quot; tabcontainers=&quot;div.js_tabContent &gt; div&quot; 
+                                               tabactiveclass=&quot;active&quot; tablabelparent=&quot;li&quot; 
+                                               tabactivecallback=&quot;tabactive&quot; tabchangecallback=&quot;tabchange&quot;
                                                &gt;
-                   &lt;ul class="le-tabs js_tabLabel"&gt;
-                       &lt;li class="active"&gt;&lt;a href="javascript:"&gt;电视剧&lt;/a&gt;&lt;/li&gt;
-                       &lt;li&gt;&lt;a href="javascript:"&gt;电影&lt;/a&gt;&lt;/li&gt;
-                       &lt;li&gt;&lt;a href="javascript:"&gt;综艺&lt;/a&gt;&lt;/li&gt;
-                       &lt;li&gt;&lt;a href="javascript:"&gt;热点&lt;/a&gt;&lt;/li&gt;
+                   &lt;ul class=&quot;le-tabs js_tabLabel&quot;&gt;
+                       &lt;li class=&quot;active&quot;&gt;&lt;a href=&quot;javascript:&quot;&gt;电视剧&lt;/a&gt;&lt;/li&gt;
+                       &lt;li&gt;&lt;a href=&quot;javascript:&quot;&gt;电影&lt;/a&gt;&lt;/li&gt;
+                       &lt;li&gt;&lt;a href=&quot;javascript:&quot;&gt;综艺&lt;/a&gt;&lt;/li&gt;
+                       &lt;li&gt;&lt;a href=&quot;javascript:&quot;&gt;热点&lt;/a&gt;&lt;/li&gt;
                    &lt;/ul&gt;
-                   &lt;div class="views js_tabContent"&gt;
-                       &lt;div class="view-item active"&gt;1. 集地议送能拿距还杨雷火，永鲜提只风超洋轻绿动视落清各只江执口。&lt;/div&gt;
-                       &lt;div class="view-item"&gt;2. 相送黄血富打万念却烟会华它表本雷烟形烟消卷效难标否标滑固小实。&lt;/div&gt;
-                       &lt;div class="view-item"&gt;3. 理往局背剧养认被站推简沉形括於穿短，精白自没路绿往优八益是入。&lt;/div&gt;
-                       &lt;div class="view-item"&gt;4. 鲁杆格滑那双来班五材实死听顶脱本续克修先课丝另乡型茶父报孔图。&lt;/div&gt;
+                   &lt;div class=&quot;views js_tabContent&quot;&gt;
+                       &lt;div class=&quot;view-item active&quot;&gt;1. 集地议送能拿距还杨雷火，永鲜提只风超洋轻绿动视落清各只江执口。&lt;/div&gt;
+                       &lt;div class=&quot;view-item&quot;&gt;2. 相送黄血富打万念却烟会华它表本雷烟形烟消卷效难标否标滑固小实。&lt;/div&gt;
+                       &lt;div class=&quot;view-item&quot;&gt;3. 理往局背剧养认被站推简沉形括於穿短，精白自没路绿往优八益是入。&lt;/div&gt;
+                       &lt;div class=&quot;view-item&quot;&gt;4. 鲁杆格滑那双来班五材实死听顶脱本续克修先课丝另乡型茶父报孔图。&lt;/div&gt;
                    &lt;/div&gt;
                &lt;/div&gt;
            &lt;/dd&gt;
        &lt;/dl&gt;
-       &lt;dl class="def"&gt;
+       &lt;dl class=&quot;def&quot;&gt;
            &lt;dt&gt;JC.Tab 示例 - 动态内容 - AJAX&lt;/dt&gt;
            &lt;dd&gt;
-           &lt;div class="le-tabview js_autoTab" tablabels="ul.js_tabLabel2 &gt; li &gt; a" tabcontainers="div.js_tabContent2 &gt; div" 
-                                               tabactiveclass="active" tablabelparent="li" 
-                                               tabactivecallback="tabactive" tabchangecallback="tabchange"
+           &lt;div class=&quot;le-tabview js_autoTab&quot; tablabels=&quot;ul.js_tabLabel2 &gt; li &gt; a&quot; tabcontainers=&quot;div.js_tabContent2 &gt; div&quot; 
+                                               tabactiveclass=&quot;active&quot; tablabelparent=&quot;li&quot; 
+                                               tabactivecallback=&quot;tabactive&quot; tabchangecallback=&quot;tabchange&quot;
                                                &gt;
-                   &lt;ul class="le-tabs js_tabLabel2"&gt;
-                       &lt;li class="active"&gt;&lt;a href="javascript:"&gt;电视剧&lt;/a&gt;&lt;/li&gt;
-                       &lt;li&gt;&lt;a href="javascript:" tabajaxurl="data/test.php" tabajaxmethod="post" 
-                                                 tabajaxdata="{a:1,b:2}" tabajaxcallback="ajaxcallback" &gt;电影&lt;/a&gt;&lt;/li&gt;
-                       &lt;li&gt;&lt;a href="javascript:" tabajaxurl="data/test.php" tabajaxcallback="ajaxcallback" &gt;综艺&lt;/a&gt;&lt;/li&gt;
-                       &lt;li&gt;&lt;a href="javascript:" tabajaxurl="data/test.php" &gt;热点&lt;/a&gt;&lt;/li&gt;
+                   &lt;ul class=&quot;le-tabs js_tabLabel2&quot;&gt;
+                       &lt;li class=&quot;active&quot;&gt;&lt;a href=&quot;javascript:&quot;&gt;电视剧&lt;/a&gt;&lt;/li&gt;
+                       &lt;li&gt;&lt;a href=&quot;javascript:&quot; tabajaxurl=&quot;data/test.php&quot; tabajaxmethod=&quot;post&quot; 
+                                                 tabajaxdata=&quot;{a:1,b:2}&quot; tabajaxcallback=&quot;ajaxcallback&quot; &gt;电影&lt;/a&gt;&lt;/li&gt;
+                       &lt;li&gt;&lt;a href=&quot;javascript:&quot; tabajaxurl=&quot;data/test.php&quot; tabajaxcallback=&quot;ajaxcallback&quot; &gt;综艺&lt;/a&gt;&lt;/li&gt;
+                       &lt;li&gt;&lt;a href=&quot;javascript:&quot; tabajaxurl=&quot;data/test.php&quot; &gt;热点&lt;/a&gt;&lt;/li&gt;
                    &lt;/ul&gt;
-                   &lt;div class="views js_tabContent2"&gt;
-                       &lt;div class="view-item active"&gt;1. 集地议送能拿距还杨雷火，永鲜提只风超洋轻绿动视落清各只江执口。&lt;/div&gt;
-                       &lt;div class="view-item"&gt;&lt;/div&gt;
-                       &lt;div class="view-item"&gt;&lt;/div&gt;
-                       &lt;div class="view-item"&gt;&lt;/div&gt;
+                   &lt;div class=&quot;views js_tabContent2&quot;&gt;
+                       &lt;div class=&quot;view-item active&quot;&gt;1. 集地议送能拿距还杨雷火，永鲜提只风超洋轻绿动视落清各只江执口。&lt;/div&gt;
+                       &lt;div class=&quot;view-item&quot;&gt;&lt;/div&gt;
+                       &lt;div class=&quot;view-item&quot;&gt;&lt;/div&gt;
+                       &lt;div class=&quot;view-item&quot;&gt;&lt;/div&gt;
                    &lt;/div&gt;
                &lt;/div&gt;
            &lt;/dd&gt;
-       &lt;/dl&gt;
-</code></pre>
+       &lt;/dl&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -510,12 +509,11 @@
             <div class="example-content">
                 <pre class="code prettyprint"><code>   function tabactive( _evt, _container, _tabIns ){
        var _label = $(this);
-       JC.log( 'tab ', _evt.type, _label.html(), new Date().getTime() );
+       JC.log( &#39;tab &#39;, _evt.type, _label.html(), new Date().getTime() );
        if( JC.Tab.isAjax( _label ) &amp;&amp; ! JC.Tab.isAjaxInited( _label ) ){
-           _container.html( '&lt;h2&gt;内容加载中...&lt;/h2&gt;' );
+           _container.html( &#39;&lt;h2&gt;内容加载中...&lt;/h2&gt;&#39; );
        }
-   }
-</code></pre>
+   }</code></pre>
             </div>
         </div>
 </div>
@@ -587,14 +585,13 @@
                function( _data, _label, _container, _textStatus, _jqXHR ){
                    _data &amp;&amp; ( _data = $.parseJSON( _data ) );
                    if( _data &amp;&amp; _data.errorno === 0 ){
-                       _container.html( JC.f.printf( '&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}', _data.data ) );
+                       _container.html( JC.f.printf( &#39;&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}&#39;, _data.data ) );
                    }else{
                        Tab.isAjaxInited( _label, 0 );
-                       _container.html( '&lt;h2&gt;内容加载失败!&lt;/h2&gt;' );
+                       _container.html( &#39;&lt;h2&gt;内容加载失败!&lt;/h2&gt;&#39; );
                    }
                };
-       });
-</code></pre>
+       });</code></pre>
             </div>
         </div>
 </div>

@@ -78,11 +78,10 @@
      *      <dt>maxvalue = [number|ISO date](最大值)</dt>
      *      <dd>验证内容的最大值, 但不验证为空的值</dd>
      *
-     *      <dt>validitemcallback = function name</dt>
+     *      <dt>validitemcallback = function</dt>
      *      <dd>
      *          对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>
-<xmp>function validItemCallback( _item, _isValid){
-    JC.log( _item.attr('name'), _isValid );
+<xmp>function validItemCallback( _selector, _isValid ){
 }</xmp>
      *      </dd>
      *
@@ -534,7 +533,10 @@
      * @param   {int}       _tm     延时 _tm 毫秒显示处理结果, 默认=150
      * @static
      */
-    Valid.setValid = function(_item, _tm){ return Valid.getInstance().trigger( Model.CORRECT, JC.f.sliceArgs( arguments) ); };
+    Valid.setValid = function(_item, _tm, _noStyle, _isUserSet){ 
+        _isUserSet = true;
+        return Valid.getInstance().trigger( Model.CORRECT, [_item, _tm, _noStyle, _isUserSet] ); 
+    };
     /**
      * 把一个表单项的状态设为错误状态
      * @method  setError
@@ -2458,7 +2460,7 @@
          * @param   {bool}      _noStyle
          */
         , valid:
-            function( _item, _tm, _noStyle ){
+            function( _item, _tm, _noStyle, _isUserSet ){
                 _item && ( _item = $(_item) );
                 var _p = this, _tmp;
                 _item.data( 'JCValidStatus', true );
@@ -2478,7 +2480,7 @@
                         && ( _noStyle = 1 );
 
                     _p.validMsg( _item, _noStyle, _hideFocusMsg );
-                    ( _tmp = _p._model.validitemcallback( _item ) ) && _tmp( _item, true );
+                    !_isUserSet && ( _tmp = _p._model.validitemcallback( _item ) ) && _tmp( _item, true );
 
                 }, _tm || 150);
             }
@@ -2638,7 +2640,8 @@
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
      * @private
      */
-    $(document).delegate( 'select, input[type=file], input[type=checkbox], input[type=radio]', 'change', function($evt){
+    $(document).delegate( 'select, input[type=file], input[type=checkbox], input[type=radio]', 'change', function($evt, _ignore){
+        if( _ignore ) return;
         Valid.check( $(this) );
     });
     /**
