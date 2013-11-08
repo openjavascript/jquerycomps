@@ -2287,13 +2287,23 @@
                 //if( _isReturn ) return _r;
 
                 $.each( _corLs, function( _ix, _sitem ){
-                    Valid.setValid( _sitem );
+                    var _dt = _p.parseDatatype( _sitem )
+                    if( _dt &amp;&amp; _p[ _dt ] &amp;&amp; _sitem.val() ){
+                        if( _p[ _dt ]( _sitem ) ){ 
+                            Valid.setValid( _sitem );
+                        }
+                    }else{
+                        Valid.setValid( _sitem );
+                    }
                 });
 
                 !_r &amp;&amp; _errLs.length &amp;&amp; $.each( _errLs, function( _ix, _sitem ){ 
                     _sitem = $( _sitem );
+                    var _sv = _sitem.val().trim();
                     if( _isReturn ) return false;
-                    _sitem.val() 
+                    if( ! _sv ) return;
+                    JC.log(&#x27;yyyyyyyyyyyyy&#x27;, _sitem.data(&#x27;JCValidStatus&#x27;) );
+                    _sv 
                         &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _sitem, &#x27;uniquemsg&#x27;, true ] );
                 } );
 
@@ -2634,6 +2644,7 @@
                 var _p = this;
                 
                 $(_p).on( &#x27;setValid&#x27;, function( _evt, _item, _tm, _noStyle, _hideFocusMsg ){
+                    var _tmp;
                     _item.removeClass( Model.CSS_ERROR );
                     _item.find( 
                         JC.f.printf( &#x27;~ em:not(&quot;em.focusmsg, em.validmsg, {0}&quot;)&#x27;, Model.FILTER_ERROR ) )
@@ -2657,6 +2668,7 @@
                         , _errEm
                         , _validEm
                         , _focusEm
+                        , _tmp
                         ;
 
                     _item.addClass( Model.CSS_ERROR );
@@ -2877,8 +2889,6 @@
         var _sp = $(this);
 
         var _isDatavalid = /datavalid/i.test( _sp.attr(&#x27;subdatatype&#x27;) );
-        if( !_isDatavalid ) return;
-        if( _sp.prop(&#x27;disabled&#x27;) || _sp.prop(&#x27;readonly&#x27;) ) return;
 
         Valid.dataValid( _sp, false, true );
         var _keyUpCb;

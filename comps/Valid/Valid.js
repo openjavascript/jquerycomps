@@ -2105,13 +2105,23 @@
                 //if( _isReturn ) return _r;
 
                 $.each( _corLs, function( _ix, _sitem ){
-                    Valid.setValid( _sitem );
+                    var _dt = _p.parseDatatype( _sitem )
+                    if( _dt && _p[ _dt ] && _sitem.val() ){
+                        if( _p[ _dt ]( _sitem ) ){ 
+                            Valid.setValid( _sitem );
+                        }
+                    }else{
+                        Valid.setValid( _sitem );
+                    }
                 });
 
                 !_r && _errLs.length && $.each( _errLs, function( _ix, _sitem ){ 
                     _sitem = $( _sitem );
+                    var _sv = _sitem.val().trim();
                     if( _isReturn ) return false;
-                    _sitem.val() 
+                    if( ! _sv ) return;
+                    JC.log('yyyyyyyyyyyyy', _sitem.data('JCValidStatus') );
+                    _sv 
                         && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _sitem, 'uniquemsg', true ] );
                 } );
 
@@ -2452,6 +2462,7 @@
                 var _p = this;
                 
                 $(_p).on( 'setValid', function( _evt, _item, _tm, _noStyle, _hideFocusMsg ){
+                    var _tmp;
                     _item.removeClass( Model.CSS_ERROR );
                     _item.find( 
                         JC.f.printf( '~ em:not("em.focusmsg, em.validmsg, {0}")', Model.FILTER_ERROR ) )
@@ -2475,6 +2486,7 @@
                         , _errEm
                         , _validEm
                         , _focusEm
+                        , _tmp
                         ;
 
                     _item.addClass( Model.CSS_ERROR );
@@ -2695,8 +2707,6 @@
         var _sp = $(this);
 
         var _isDatavalid = /datavalid/i.test( _sp.attr('subdatatype') );
-        if( !_isDatavalid ) return;
-        if( _sp.prop('disabled') || _sp.prop('readonly') ) return;
 
         Valid.dataValid( _sp, false, true );
         var _keyUpCb;
