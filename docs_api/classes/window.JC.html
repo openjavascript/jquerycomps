@@ -366,9 +366,9 @@
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
                     <div class="param-description">
                         <ul>
-<li>模块名<pre><code>                         或者模块下面的某个js文件(test/test1.js, 路径前面不带&quot;/&quot;将视为test模块下的test1.js)
-                         或者一个绝对路径的js文件, 路径前面带 &quot;/&quot;</code></pre>
-</li>
+<li>模块名
+                                      或者模块下面的某个js文件(test/test1.js, 路径前面不带"/"将视为test模块下的test1.js)
+                                      或者一个绝对路径的js文件, 路径前面带 "/"</li>
 </ul>
                     </div>
                 </li>
@@ -395,33 +395,34 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           JC.use( &#39;SomeClass&#39; );                              //导入类 SomeClass
-           JC.use( &#39;SomeClass, AnotherClass&#39; );                //导入类 SomeClass, AnotherClass
+                <pre class="code prettyprint"><code>           JC.use( 'SomeClass' );                              //导入类 SomeClass
+           JC.use( 'SomeClass, AnotherClass' );                //导入类 SomeClass, AnotherClass
            //
            ///  导入类 SomeClass, SomeClass目录下的file1.js, 
            ///  AnotherClass, AnotherClass 下的file2.js
            //
-           JC.use( &#39;SomeClass, comps/SomeClass/file1.js, comps/AnotherClass/file2.js&#39; );   
-           JC.use( &#39;SomeClass, plugins/swfobject.js., plugins/json2.js&#39; );   
-           JC.use( &#39;/js/Test/Test1.js&#39; );     //导入文件  /js/Test/Test1.js, 如果起始处为 &quot;/&quot;, 将视为文件的绝对路径
+           JC.use( 'SomeClass, comps/SomeClass/file1.js, comps/AnotherClass/file2.js' );   
+           JC.use( 'SomeClass, plugins/swfobject.js., plugins/json2.js' );   
+           JC.use( '/js/Test/Test1.js' );     //导入文件  /js/Test/Test1.js, 如果起始处为 "/", 将视为文件的绝对路径
            //
-           /// 导入 URL 资源 // JC.use( &#39;http://test.com/file1.js&#39;, &#39;https://another.com/file2.js&#39; ); 
+           /// 导入 URL 资源 // JC.use( 'http://test.com/file1.js', 'https://another.com/file2.js' ); 
            //
            /// in libpath/_demo/
            //
            JC.use(
                [
-                   &#39;Panel&#39;                     //  ../comps/Panel/Panel.js
-                   , &#39;Tips&#39;                    //  ../comps/Tips/Tips.js
-                   , &#39;Valid&#39;                   //  ../comps/Valid/Valid.js
-                   , &#39;Bizs.KillISPCache&#39;       //  ../bizs/KillISPCache/KillISPCache.js
-                   , &#39;bizs.TestBizFile&#39;        //  ../bizs/TestBizFile.js
-                   , &#39;comps.TestCompFile&#39;      //  ../comps/TestCompFile.js 
-                   , &#39;Plugins.rate&#39;            //  ../plugins/rate/rate.js
-                   , &#39;plugins.json2&#39;           //  ../plugins/json2.js
-                   , &#39;/js/fullpathtest.js&#39;     //  /js/fullpathtest.js
+                   'Panel'                     //  ../comps/Panel/Panel.js
+                   , 'Tips'                    //  ../comps/Tips/Tips.js
+                   , 'Valid'                   //  ../comps/Valid/Valid.js
+                   , 'Bizs.KillISPCache'       //  ../bizs/KillISPCache/KillISPCache.js
+                   , 'bizs.TestBizFile'        //  ../bizs/TestBizFile.js
+                   , 'comps.TestCompFile'      //  ../comps/TestCompFile.js 
+                   , 'Plugins.rate'            //  ../plugins/rate/rate.js
+                   , 'plugins.json2'           //  ../plugins/json2.js
+                   , '/js/fullpathtest.js'     //  /js/fullpathtest.js
                ].join()
-           );</code></pre>
+           );
+</code></pre>
             </div>
         </div>
 </div>
@@ -485,7 +486,7 @@
     </div>
     <div class="description">
         <p>资源路径映射对象
-<br />设置 JC.use 逗号(&#39;,&#39;) 分隔项的 对应URL路径</p>
+<br />设置 JC.use 逗号(',') 分隔项的 对应URL路径</p>
     </div>
         <p><strong>Default:</strong> null</p>
         <div class="example">
@@ -494,20 +495,20 @@
                 <pre class="code prettyprint"><code>           以下例子假定 libpath = http://git.me.btbtd.org/ignore/JQueryComps_dev/
            &lt;script&gt;
                JC.FILE_MAP = {
-                   &#39;Calendar&#39;: &#39;http://jc.openjavascript.org/comps/Calendar/Calendar.js&#39;
-                   , &#39;Form&#39;: &#39;http://jc.openjavascript.org/comps/Form/Form.js&#39;
-                   , &#39;LunarCalendar&#39;: &#39;http://jc.openjavascript.org/comps/LunarCalendar/LunarCalendar.js&#39;
-                   , &#39;Panel&#39;: &#39;http://jc.openjavascript.org/comps/Panel/Panel.js&#39; 
-                   , &#39;Tab&#39;: &#39;http://jc.openjavascript.org/comps/Tab/Tab.js&#39;
-                   , &#39;Tips&#39;: &#39;http://jc.openjavascript.org/comps/Tips/Tips.js&#39; 
-                   , &#39;Tree&#39;: &#39;http://jc.openjavascript.org/comps/Tree/Tree.js&#39;
-                   , &#39;Valid&#39;: &#39;http://jc.openjavascript.org/comps/Valid/Valid.js&#39;
-                   , &#39;plugins/jquery.form.js&#39;: &#39;http://jc.openjavascript.org/plugins/jquery.form.js&#39;
-                   , &#39;plugins/json2.js&#39;: &#39;http://jc.openjavascript.org/plugins/json2.js&#39;
+                   'Calendar': 'http://jc.openjavascript.org/comps/Calendar/Calendar.js'
+                   , 'Form': 'http://jc.openjavascript.org/comps/Form/Form.js'
+                   , 'LunarCalendar': 'http://jc.openjavascript.org/comps/LunarCalendar/LunarCalendar.js'
+                   , 'Panel': 'http://jc.openjavascript.org/comps/Panel/Panel.js' 
+                   , 'Tab': 'http://jc.openjavascript.org/comps/Tab/Tab.js'
+                   , 'Tips': 'http://jc.openjavascript.org/comps/Tips/Tips.js' 
+                   , 'Tree': 'http://jc.openjavascript.org/comps/Tree/Tree.js'
+                   , 'Valid': 'http://jc.openjavascript.org/comps/Valid/Valid.js'
+                   , 'plugins/jquery.form.js': 'http://jc.openjavascript.org/plugins/jquery.form.js'
+                   , 'plugins/json2.js': 'http://jc.openjavascript.org/plugins/json2.js'
                };
-               JC.use( &#39;Panel, Tips, Valid, plugins/jquery.form.js&#39; );
+               JC.use( 'Panel, Tips, Valid, plugins/jquery.form.js' );
                $(document).ready(function(){
-                   //JC.Dialog( &#39;JC.use example&#39;, &#39;test issue&#39; );
+                   //JC.Dialog( 'JC.use example', 'test issue' );
                });
            &lt;/script&gt;
            output should be:
@@ -515,7 +516,8 @@
                http://jc.openjavascript.org/comps/Panel/Panel.js
                http://jc.openjavascript.org/comps/Tips/Tips.js
                http://jc.openjavascript.org/comps/Valid/Valid.js
-               http://jc.openjavascript.org/plugins/jquery.form.js</code></pre>
+               http://jc.openjavascript.org/plugins/jquery.form.js
+</code></pre>
             </div>
         </div>
 </div>

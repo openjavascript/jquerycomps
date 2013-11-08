@@ -534,8 +534,8 @@
      * @static
      */
     Valid.setValid = function(_item, _tm, _noStyle, _isUserSet){ 
-        _isUserSet = true;
-        return Valid.getInstance().trigger( Model.CORRECT, [_item, _tm, _noStyle, _isUserSet] ); 
+        $( Valid.getInstance()._view ).trigger( 'setValid', [_item, _tm, _noStyle, _isUserSet] ); 
+        return Valid.getInstance();
     };
     /**
      * 把一个表单项的状态设为错误状态
@@ -553,7 +553,8 @@
                 _item.attr( _autoKey, _msgAttr );
                 _msgAttr = _autoKey;
             }
-            return Valid.getInstance().trigger( Model.ERROR, JC.f.sliceArgs( arguments) ); 
+            $( Valid.getInstance()._view ).trigger( 'setError', [ _item, _msgAttr, _fullMsg ] );
+            return Valid.getInstance();
         };
     /**
      * 显示 focusmsg 属性的提示信息( 如果有的话 )
@@ -2448,6 +2449,58 @@
     View.prototype = {
         init:
             function() {
+                var _p = this;
+                
+                $(_p).on( 'setValid', function( _evt, _item, _tm, _noStyle, _hideFocusMsg ){
+                    _item.removeClass( Model.CSS_ERROR );
+                    _item.find( 
+                        JC.f.printf( '~ em:not("em.focusmsg, em.validmsg, {0}")', Model.FILTER_ERROR ) )
+                        .css('display', _p._model.validemdisplaytype( _item ) 
+                    );
+                    _item.find( Model.SELECTOR_ERROR ).hide();
+                    _item.attr('emel') 
+                        && ( _tmp = _p._model.getElement( _item.attr('emel'), _item ) )
+                        && _tmp.hide();
+
+                    typeof _noStyle == 'undefined' 
+                        && typeof _item.val() != 'object'
+                        && !_item.val().trim() 
+                        && ( _noStyle = 1 );
+
+                    _p.validMsg( _item, _noStyle, _hideFocusMsg );
+                });
+
+                $( _p ).on( 'setError', function( _evt, _item, _msgAttr, _fullMsg ){
+                    var _msg = _p._model.errorMsg.apply( _p._model, [ _item, _msgAttr, _fullMsg ] )
+                        , _errEm
+                        , _validEm
+                        , _focusEm
+                        ;
+
+                    _item.addClass( Model.CSS_ERROR );
+                    _item.find( JC.f.printf( '~ em:not({0})', Model.FILTER_ERROR ) ).hide();
+
+                    if( _item.is( '[validel]' ) ){
+                        ( _validEm = _p._model.getElement( _item.attr( 'validel' ) , _item) ) 
+                            && _validEm.hide();
+                    }
+                    if( _item.is( '[focusel]' ) ){
+                        ( _focusEm = _p._model.getElement( _item.attr( 'focusel' ) , _item) ) 
+                            && _focusEm.hide();
+                    }
+                    if( _item.is( '[emEl]' ) ){
+                        ( _errEm = _p._model.getElement( _item.attr( 'emEl' ) , _item) ) 
+                            && _errEm.addClass( Model.CSS_ERROR );
+                    }
+                    !( _errEm && _errEm.length ) && ( _errEm = _item.find( Model.SELECTOR_ERROR ) );
+                    if( !_errEm.length ){
+                        ( _errEm = $( JC.f.printf( '<em class="{0}"></em>', Model.CSS_ERROR ) ) ).insertAfter( _item );
+                    }
+                    !_msg.trim() && ( _msg = "&nbsp;" );
+                    _errEm.html( _msg ).css('display', _p._model.validemdisplaytype( _item ) );
+                    JC.log( 'error:', _msg );
+                });
+
                 return this;
             }
         /**
@@ -2460,36 +2513,20 @@
          * @param   {bool}      _noStyle
          */
         , valid:
-            function( _item, _tm, _noStyle, _isUserSet ){
+            function( _item, _tm, _noStyle ){
                 _item && ( _item = $(_item) );
                 var _p = this, _tmp;
                 _item.data( 'JCValidStatus', true );
                 //if( !_p._model.isValid( _item ) ) return false;
                 var _hideFocusMsg = !JC.f.parseBool( _item.attr('validnoerror' ) );
                 setTimeout(function(){
-                    _item.removeClass( Model.CSS_ERROR );
-                    _item.find( JC.f.printf( '~ em:not("em.focusmsg, em.validmsg, {0}")', Model.FILTER_ERROR ) ).css('display', _p._model.validemdisplaytype( _item ) );
-                    _item.find( Model.SELECTOR_ERROR ).hide();
-                    _item.attr('emel') 
-                        && ( _tmp = _p._model.getElement( _item.attr('emel'), _item ) )
-                        && _tmp.hide();
-
-                    typeof _noStyle == 'undefined' 
-                        && typeof _item.val() != 'object'
-                        && !_item.val().trim() 
-                        && ( _noStyle = 1 );
-
-                    _p.validMsg( _item, _noStyle, _hideFocusMsg );
-                    !_isUserSet && ( _tmp = _p._model.validitemcallback( _item ) ) && _tmp( _item, true );
-
+                    $(_p).trigger( 'setValid', [ _item, _tm, _noStyle, _hideFocusMsg ] );
+                    ( _tmp = _p._model.validitemcallback( _item ) ) && _tmp( _item, true );
                 }, _tm || 150);
             }
         , validMsg:
             function( _item, _noStyle, _hideFocusMsg ){
                 var _p = this, _msg = ( _item.attr('validmsg') || '' ).trim().toLowerCase(), _focusEm;
-
-                /*
-                */
 
                 if( _p._model.isValidMsg( _item ) ){
                     if( _msg == 'true' || _msg == '1' ) _msg = '';
@@ -2539,38 +2576,10 @@
                 _item.data( 'JCValidStatus', false );
 
                 setTimeout(function(){
-                    var _msg = _p._model.errorMsg.apply( _p._model, JC.f.sliceArgs( arg ) )
-                        , _errEm
-                        , _validEm
-                        , _focusEm
-                        ;
-
-                    _item.addClass( Model.CSS_ERROR );
-                    _item.find( JC.f.printf( '~ em:not({0})', Model.FILTER_ERROR ) ).hide();
-
-                    if( _item.is( '[validel]' ) ){
-                        ( _validEm = _p._model.getElement( _item.attr( 'validel' ) , _item) ) 
-                            && _validEm.hide();
-                    }
-                    if( _item.is( '[focusel]' ) ){
-                        ( _focusEm = _p._model.getElement( _item.attr( 'focusel' ) , _item) ) 
-                            && _focusEm.hide();
-                    }
-                    if( _item.is( '[emEl]' ) ){
-                        ( _errEm = _p._model.getElement( _item.attr( 'emEl' ) , _item) ) 
-                            && _errEm.addClass( Model.CSS_ERROR );
-                    }
-                    !( _errEm && _errEm.length ) && ( _errEm = _item.find( Model.SELECTOR_ERROR ) );
-                    if( !_errEm.length ){
-                        ( _errEm = $( JC.f.printf( '<em class="{0}"></em>', Model.CSS_ERROR ) ) ).insertAfter( _item );
-                    }
-                    !_msg.trim() && ( _msg = "&nbsp;" );
-                    _errEm.html( _msg ).css('display', _p._model.validemdisplaytype( _item ) );
-
-                    JC.log( 'error:', _msg );
+                    $(_p).trigger( 'setError', [ _item, _msgAttr, _fullMsg ] );
+                    ( _tmp = _p._model.validitemcallback( _item ) ) && _tmp( _item, false);
 
                 }, 150);
-                ( _tmp = _p._model.validitemcallback( _item ) ) && _tmp( _item, false);
 
                 return false;
             }

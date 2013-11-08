@@ -112,11 +112,11 @@
 <div class="box intro">
     <p>Slider 划动菜单类
 <br />页面加载完毕后, Slider 会查找那些有 class = js_autoSlider 的标签进行自动初始化</p>
-<p><p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p></p>
-<p><p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
+<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
 | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Slider.html' target='_blank'>API docs</a>
-| <a href='../../comps/Slider/_demo' target='_blank'>demo link</a></p></p>
-<p><h2> 可用的 html attribute </h2></p>
+| <a href='../../comps/Slider/_demo' target='_blank'>demo link</a></p>
+<h2> 可用的 html attribute </h2>
 <dl>
      <dt>slidersubitems</dt>
      <dd>指定具体子元素是那些, selector ( 子元素默认是 layout的子标签 )</dd>
@@ -192,50 +192,51 @@
                height: 230px;
            }
        &lt;/style&gt;
-       &lt;link href=&#39;../../Slider/res/hslider/style.css&#39; rel=&#39;stylesheet&#39; /&gt;
-       &lt;script src=&quot;../../../lib.js&quot;&gt;&lt;/script&gt;
+       &lt;link href='../../Slider/res/hslider/style.css' rel='stylesheet' /&gt;
+       &lt;script src="../../../lib.js"&gt;&lt;/script&gt;
        &lt;script&gt;
            JC.debug = true;
-           JC.use( &#39;Slider&#39; );
+           JC.use( 'Slider' );
            function sliderinitedcb(){
                var _sliderIns = this;
-               JC.log( &#39;sliderinitedcb&#39;, new Date().getTime() );
-               _sliderIns.on(&#39;outmin&#39;, function(){
-                   JC.log( &#39;slider outmin&#39; );
-               }).on(&#39;outmax&#39;, function(){
-                   JC.log( &#39;slider outmax&#39; );
-               }).on(&#39;movedone&#39;, function( _evt, _oldpointer, _newpointer){
-                   JC.log( &#39;slider movedone&#39;, _evt, _oldpointer, _newpointer );
-               }).on(&#39;beforemove&#39;, function( _evt, _oldpointer, _newpointer ){
-                   JC.log( &#39;slider beforemove&#39;, _evt, _oldpointer, _newpointer );
+               JC.log( 'sliderinitedcb', new Date().getTime() );
+               _sliderIns.on('outmin', function(){
+                   JC.log( 'slider outmin' );
+               }).on('outmax', function(){
+                   JC.log( 'slider outmax' );
+               }).on('movedone', function( _evt, _oldpointer, _newpointer){
+                   JC.log( 'slider movedone', _evt, _oldpointer, _newpointer );
+               }).on('beforemove', function( _evt, _oldpointer, _newpointer ){
+                   JC.log( 'slider beforemove', _evt, _oldpointer, _newpointer );
                });
            }
        &lt;/script&gt;
-       &lt;table class=&quot;hslide_wra&quot;&gt;
+       &lt;table class="hslide_wra"&gt;
            &lt;tr&gt;
-               &lt;td class=&quot;hslide_left&quot;&gt;
-                   &lt;a href=&quot;javascript:&quot; hidefocus=&quot;true&quot; style=&quot;outline:none;&quot; class=&quot;js_slideleft&quot;&gt;左边滚动&lt;/a&gt;
+               &lt;td class="hslide_left"&gt;
+                   &lt;a href="javascript:" hidefocus="true" style="outline:none;" class="js_slideleft"&gt;左边滚动&lt;/a&gt;
                &lt;/td&gt;
-               &lt;td class=&quot;hslide_mid&quot;&gt;
+               &lt;td class="hslide_mid"&gt;
                    &lt;dl 
-                       style=&quot;width:820px; height: 230px; margin:0 5px;&quot;
-                       class=&quot;hslide_list clearfix js_slideList js_autoSlider&quot; 
-                       slidersubitems=&quot;&gt; dd&quot; sliderleft=&quot;a.js_slideleft&quot; sliderright=&quot;a.js_slideright&quot; 
-                       sliderwidth=&quot;820&quot; slideritemwidth=&quot;160&quot;
-                       sliderdirection=&quot;horizontal&quot; sliderhowmanyitem=&quot;5&quot;
-                       sliderloop=&quot;false&quot; sliderdurationms=&quot;300&quot;
-                       sliderinitedcb=&quot;sliderinitedcb&quot;
+                       style="width:820px; height: 230px; margin:0 5px;"
+                       class="hslide_list clearfix js_slideList js_autoSlider" 
+                       slidersubitems="&gt; dd" sliderleft="a.js_slideleft" sliderright="a.js_slideright" 
+                       sliderwidth="820" slideritemwidth="160"
+                       sliderdirection="horizontal" sliderhowmanyitem="5"
+                       sliderloop="false" sliderdurationms="300"
+                       sliderinitedcb="sliderinitedcb"
                        &gt;
-                       &lt;dd style=&quot;display: block; left: 0; &quot; class=&quot;tipsItem&quot;&gt;content...&lt;/dd&gt;
-                       &lt;dd style=&quot;display: block; left: 0; &quot; class=&quot;tipsItem&quot;&gt;content...&lt;/dd&gt;
-                       &lt;dd style=&quot;display: block; left: 0; &quot; class=&quot;tipsItem&quot;&gt;content...&lt;/dd&gt;
+                       &lt;dd style="display: block; left: 0; " class="tipsItem"&gt;content...&lt;/dd&gt;
+                       &lt;dd style="display: block; left: 0; " class="tipsItem"&gt;content...&lt;/dd&gt;
+                       &lt;dd style="display: block; left: 0; " class="tipsItem"&gt;content...&lt;/dd&gt;
                    &lt;/dl&gt;
                &lt;/td&gt;
-               &lt;td class=&quot;hslide_right&quot;&gt;
-                   &lt;a href=&quot;javascript:&quot; hidefocus=&quot;true&quot; style=&quot;outline:none;&quot; class=&quot;js_slideright&quot;&gt;右边滚动&lt;/a&gt;
+               &lt;td class="hslide_right"&gt;
+                   &lt;a href="javascript:" hidefocus="true" style="outline:none;" class="js_slideright"&gt;右边滚动&lt;/a&gt;
                &lt;/td&gt;
            &lt;/tr&gt;
-       &lt;/table&gt;</code></pre>
+       &lt;/table&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -351,7 +352,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>bool</p>
+                    bool
             </div>
         </div>
 </div>
@@ -375,7 +376,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>SliderInstance</p>
+                    SliderInstance
             </div>
         </div>
 </div>
@@ -414,7 +415,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>selector</p>
+                    selector
             </div>
         </div>
 </div>
@@ -463,7 +464,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>SliderInstance</p>
+                    SliderInstance
             </div>
         </div>
 </div>
@@ -503,7 +504,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>array</p>
+                    array
             </div>
         </div>
 </div>
@@ -543,7 +544,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>bool</p>
+                    bool
             </div>
         </div>
 </div>
@@ -565,7 +566,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>selector</p>
+                    selector
             </div>
         </div>
 </div>
@@ -605,7 +606,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>SliderInstance</p>
+                    SliderInstance
             </div>
         </div>
 </div>
@@ -644,7 +645,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>SliderInstance</p>
+                    SliderInstance
             </div>
         </div>
 </div>
@@ -693,7 +694,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>SliderInstance</p>
+                    SliderInstance
             </div>
         </div>
 </div>
@@ -732,7 +733,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>array</p>
+                    array
             </div>
         </div>
 </div>
@@ -754,7 +755,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>int</p>
+                    int
             </div>
         </div>
 </div>
@@ -776,7 +777,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>int</p>
+                    int
             </div>
         </div>
 </div>
@@ -816,7 +817,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>SliderInstance</p>
+                    SliderInstance
             </div>
         </div>
 </div>
