@@ -81,6 +81,10 @@
                 }
             );
 
+            $(document).delegate( 'input[type=text]', 'blur', function(){
+                JC.log( 'xxxxxxxxxxxx', $(this).data( 'JCValidStatus' ) );
+            });
+
             $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
                 window.console && console.clear && console.clear();
                 JC.Valid.clearError( 'form.js_valid' );
@@ -149,20 +153,51 @@
                                 <input type="text" placeholder="url" 
                                 datatype="url" 
                                 subdatatype="unique"  
+                                uniquedatatarget="(dd input[type=text]"
                                 errmsg="请输入正确的URL"
                                 uniquemsg="URL不能重复"
+                                value="a.com"
                                 />
                                 <em class="error"></em>
-                                <div></div>
+                            </div>
+                            <div>
                                 url: 
                                 <input type="text" placeholder="url" 
                                 datatype="url" 
                                 subdatatype="unique"  
+                                uniquedatatarget="(dd input[type=text]"
+                                errmsg="请输入正确的URL"
+                                uniquemsg="URL不能重复"
+                                value="a.coccccccccccccm"
+                                />
+                                <em class="error"></em>
+                            </div>
+                            <div>
+                                url: 
+                                <input type="text" placeholder="url" 
+                                datatype="url" 
+                                subdatatype="unique"  
+                                uniquedatatarget="(dd input[type=text]"
+                                errmsg="请输入正确的URL"
+                                uniquemsg="URL不能重复"
+                                value="a.com"
+                                />
+                                <em class="error"></em>
+                            </div>
+
+                            <div>
+                                url: 
+                                <input type="text" placeholder="url" 
+                                datatype="url" 
+                                subdatatype="unique"  
+                                uniquedatatarget="(dd input[type=text]"
                                 errmsg="请输入正确的URL"
                                 uniquemsg="URL不能重复"
                                 />
                                 <em class="error"></em>
                             </div>
+
+
                         </dd>
 
                         <dd>
