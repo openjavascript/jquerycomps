@@ -109,11 +109,11 @@
 </div>
 <div class="box intro">
     <p>弹出层基础类 JC.Panel</p>
-<p><p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
 | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>
-| <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p></p>
-<p><p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p></p>
-<p><h2>Panel Layout 可用的 html attribute</h2></p>
+| <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
+<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
+<h2>Panel Layout 可用的 html attribute</h2>
 <dl>
      <dt>panelclickclose = bool</dt>
      <dd>点击 Panel 外时, 是否关闭 panel</dd>
@@ -252,23 +252,24 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>       &lt;script src=&quot;../../../lib.js&quot;&gt;&lt;/script&gt;
-       &lt;script src=&quot;../../../config.js&quot;&gt;&lt;/script&gt;
+                <pre class="code prettyprint"><code>       &lt;script src="../../../lib.js"&gt;&lt;/script&gt;
+       &lt;script src="../../../config.js"&gt;&lt;/script&gt;
        &lt;script&gt;
            var btnstr = [
-               &#39;&lt;div style=&quot;text-align:center&quot; class=&quot;UButton&quot;&gt;&#39;
-               , &#39;&lt;button type=&quot;button&quot; eventtype=&quot;confirm&quot;&gt;确定&lt;/button&gt;&#39;
-               , &#39;&lt;button type=&quot;button&quot; eventtype=&quot;cancel&quot;&gt;取消&lt;/button&gt;\n&#39;
-               , &#39;&lt;/div&gt;&#39;
-           ].join(&#39;&#39;);
-           requirejs( [ &#39;JC.Panel&#39; ], function(){
-               tmpPanel = new JC.Panel( &#39;默认panel&#39;, &#39;&lt;h2&gt;test content&lt;/h2&gt;&#39; + btnstr, &#39;test footer&#39;);
-               tmpPanel.on(&#39;close&#39;, function(_evt, _panel){
-                   JC.log(&#39;user close evnet&#39;);
+               '&lt;div style="text-align:center" class="UButton"&gt;'
+               , '&lt;button type="button" eventtype="confirm"&gt;确定&lt;/button&gt;'
+               , '&lt;button type="button" eventtype="cancel"&gt;取消&lt;/button&gt;\n'
+               , '&lt;/div&gt;'
+           ].join('');
+           requirejs( [ 'JC.Panel' ], function(){
+               tmpPanel = new JC.Panel( '默认panel', '&lt;h2&gt;test content&lt;/h2&gt;' + btnstr, 'test footer');
+               tmpPanel.on('close', function(_evt, _panel){
+                   JC.log('user close evnet');
                });
                tmpPanel.show( 0 );
            });
-       &lt;/script&gt;</code></pre>
+       &lt;/script&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -597,7 +598,7 @@
             <h4>Returns:</h4>
             <div class="returns-description">
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
-                    <p>body 的HTML内容</p>
+                    body 的HTML内容
             </div>
         </div>
 </div>
@@ -708,7 +709,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>selector</p>
+                    selector
             </div>
         </div>
 </div>
@@ -764,7 +765,7 @@
             <h4>Returns:</h4>
             <div class="returns-description">
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
-                    <p>footer 的HTML内容</p>
+                    footer 的HTML内容
             </div>
         </div>
 </div>
@@ -846,7 +847,7 @@
             <h4>Returns:</h4>
             <div class="returns-description">
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
-                    <p>header 的HTML内容</p>
+                    header 的HTML内容
             </div>
         </div>
 </div>
@@ -882,7 +883,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>bool</p>
+                    bool
             </div>
         </div>
 </div>
@@ -955,15 +956,16 @@
             <h4>Example:</h4>
             <div class="example-content">
                 <pre class="code prettyprint"><code>           //绑定内置事件
-           &lt;button type=&quot;button&quot; eventtype=&quot;close&quot;&gt;text&lt;/button&gt;
+           &lt;button type="button" eventtype="close"&gt;text&lt;/button&gt;
            &lt;script&gt;
-           panelInstace.on( &#39;close&#39;, function( _evt, _panel ){ do something } );
+           panelInstace.on( 'close', function( _evt, _panel ){ do something } );
            &lt;/script&gt;
            //绑定自定义事件
-           &lt;button type=&quot;button&quot; eventtype=&quot;userevent&quot;&gt;text&lt;/button&gt;
+           &lt;button type="button" eventtype="userevent"&gt;text&lt;/button&gt;
            &lt;script&gt;
-           panelInstace.on( &#39;userevent&#39;, function( _evt, _pan:el ){ do something } );
-           &lt;/script&gt;</code></pre>
+           panelInstace.on( 'userevent', function( _evt, _pan:el ){ do something } );
+           &lt;/script&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1003,7 +1005,7 @@
             <h4>Returns:</h4>
             <div class="returns-description">
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
-                    <p>panel 的HTML内容</p>
+                    panel 的HTML内容
             </div>
         </div>
 </div>
@@ -1108,7 +1110,8 @@
             <div class="example-content">
                 <pre class="code prettyprint"><code> panelInstace.show();            //默认显示
  panelInstace.show( 0 );         //居中显示
- panelInstace.show( _selector ); //位于 _selector 的上下左右</code></pre>
+ panelInstace.show( _selector ); //位于 _selector 的上下左右
+</code></pre>
             </div>
         </div>
 </div>
@@ -1156,8 +1159,9 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code> panelInstace.trigger(&#39;close&#39;);
- panelInstace.trigger(&#39;userevent&#39;, sourceElement);</code></pre>
+                <pre class="code prettyprint"><code> panelInstace.trigger('close');
+ panelInstace.trigger('userevent', sourceElement);
+</code></pre>
             </div>
         </div>
 </div>
@@ -1295,7 +1299,8 @@ focusButton</p>
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code> panelInstace.on( &#39;beforecenter&#39;, function( _evt, _panelInstance ){ do something });</code></pre>
+                <pre class="code prettyprint"><code> panelInstace.on( 'beforecenter', function( _evt, _panelInstance ){ do something });
+</code></pre>
             </div>
         </div>
 </div>
@@ -1315,10 +1320,11 @@ focusButton</p>
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code> &lt;button type=&quot;button&quot; eventtype=&quot;close&quot;&gt;text&lt;/button&gt;
+                <pre class="code prettyprint"><code> &lt;button type="button" eventtype="close"&gt;text&lt;/button&gt;
  &lt;script&gt;
- panelInstace.on( &#39;beforeclose&#39;, function( _evt, _panelInstance ){ do something });
- &lt;/script&gt;</code></pre>
+ panelInstace.on( 'beforeclose', function( _evt, _panelInstance ){ do something });
+ &lt;/script&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1338,7 +1344,8 @@ focusButton</p>
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code> panelInstace.on( &#39;beforehide&#39;, function( _evt, _panelInstance ){ do something });</code></pre>
+                <pre class="code prettyprint"><code> panelInstace.on( 'beforehide', function( _evt, _panelInstance ){ do something });
+</code></pre>
             </div>
         </div>
 </div>
@@ -1358,7 +1365,8 @@ focusButton</p>
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code> panelInstace.on( &#39;beforeshow&#39;, function( _evt, _panelInstance ){ do something });</code></pre>
+                <pre class="code prettyprint"><code> panelInstace.on( 'beforeshow', function( _evt, _panelInstance ){ do something });
+</code></pre>
             </div>
         </div>
 </div>
@@ -1377,10 +1385,11 @@ focusButton</p>
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code> &lt;button type=&quot;button&quot; eventtype=&quot;cancel&quot;&gt;text&lt;/button&gt;
+                <pre class="code prettyprint"><code> &lt;button type="button" eventtype="cancel"&gt;text&lt;/button&gt;
  &lt;script&gt;
- panelInstace.on( &#39;cancel&#39;, function( _evt, _panelInstance ){ do something });
- &lt;/script&gt;</code></pre>
+ panelInstace.on( 'cancel', function( _evt, _panelInstance ){ do something });
+ &lt;/script&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1399,7 +1408,8 @@ focusButton</p>
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code> panelInstace.on( &#39;center&#39;, function( _evt, _panelInstance ){ do something });</code></pre>
+                <pre class="code prettyprint"><code> panelInstace.on( 'center', function( _evt, _panelInstance ){ do something });
+</code></pre>
             </div>
         </div>
 </div>
@@ -1418,10 +1428,11 @@ focusButton</p>
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code> &lt;button type=&quot;button&quot; eventtype=&quot;close&quot;&gt;text&lt;/button&gt;
+                <pre class="code prettyprint"><code> &lt;button type="button" eventtype="close"&gt;text&lt;/button&gt;
  &lt;script&gt;
- panelInstace.on( &#39;close&#39;, function( _evt, _panelInstance ){ do something });
- &lt;/script&gt;</code></pre>
+ panelInstace.on( 'close', function( _evt, _panelInstance ){ do something });
+ &lt;/script&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1440,10 +1451,11 @@ focusButton</p>
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code> &lt;button type=&quot;button&quot; eventtype=&quot;confirm&quot;&gt;text&lt;/button&gt;
+                <pre class="code prettyprint"><code> &lt;button type="button" eventtype="confirm"&gt;text&lt;/button&gt;
  &lt;script&gt;
- panelInstace.on( &#39;confirm&#39;, function( _evt, _panelInstance ){ do something });
- &lt;/script&gt;</code></pre>
+ panelInstace.on( 'confirm', function( _evt, _panelInstance ){ do something });
+ &lt;/script&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1463,7 +1475,8 @@ focusButton</p>
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code> panelInstace.on( &#39;hide&#39;, function( _evt, _panelInstance ){ do something });</code></pre>
+                <pre class="code prettyprint"><code> panelInstace.on( 'hide', function( _evt, _panelInstance ){ do something });
+</code></pre>
             </div>
         </div>
 </div>
@@ -1482,7 +1495,8 @@ focusButton</p>
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code> panelInstace.on( &#39;show&#39;, function( _evt, _panelInstance ){ do something });</code></pre>
+                <pre class="code prettyprint"><code> panelInstace.on( 'show', function( _evt, _panelInstance ){ do something });
+</code></pre>
             </div>
         </div>
 </div>

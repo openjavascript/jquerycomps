@@ -111,14 +111,14 @@
         </div>
 </div>
 <div class="box intro">
-    <p><h2>Dom 通用 添加删除 逻辑</h2>
-<br/>应用场景
+    <h2>Dom 通用 添加删除 逻辑</h2>
+<p><br/>应用场景
 <br/>需要动态添加删除内容的地方可以使用这个类</p>
 <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
 | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>
 | <a href='../../modules/Bizs.CommonModify/0.1/_demo' target='_blank'>demo link</a></p>
-<p>a|button 需要 添加 class=&quot;js_autoCommonModify&quot;</p>
-<p><h2>可用的 HTML 属性</h2></p>
+<p>a|button 需要 添加 class="js_autoCommonModify"</p>
+<h2>可用的 HTML 属性</h2>
 <dl>
      <dt>[cmtpl | cmtemplate] = script selector</dt>
      <dd>指定保存模板的 script 标签</dd>
@@ -133,7 +133,7 @@
      添加或删除完后会触发的回调, <b>window 变量域</b>
 <xmp>function cmdonecallback( _ins, _boxParent ){
    var _trigger = $(this);
-   JC.log( &#39;cmdonecallback&#39;, new Date().getTime() );
+   JC.log( 'cmdonecallback', new Date().getTime() );
 }</xmp>
      </dd>
      <dt>cmtplfiltercallback = function</dt>
@@ -142,7 +142,7 @@
 <xmp>window.COUNT = 1;
 function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
    var _trigger = $(this);
-   JC.log( &#39;cmtplfiltercallback&#39;, new Date().getTime() );
+   JC.log( 'cmtplfiltercallback', new Date().getTime() );
    _tpl = JC.f.printf( _tpl, COUNT++ );
    return _tpl;
 }</xmp>
@@ -152,7 +152,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
      添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b>
 <xmp>function cmbeforeaddcallabck( _cmitem, _boxParent ){
    var _trigger = $(this);
-   JC.log( &#39;cmbeforeaddcallabck&#39;, new Date().getTime() );
+   JC.log( 'cmbeforeaddcallabck', new Date().getTime() );
    //return false;
 }</xmp>
      </dd>
@@ -161,7 +161,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
      添加完成的回调, <b>window 变量域</b>
 <xmp>function cmaddcallback( _ins, _newItem, _cmitem, _boxParent ){
    var _trigger = $(this);
-   JC.log( &#39;cmaddcallback&#39;, new Date().getTime() );
+   JC.log( 'cmaddcallback', new Date().getTime() );
 }</xmp>
      </dd>
      <dt>cmbeforedelcallback = function</dt>
@@ -169,7 +169,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
      删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b>
 <xmp>function cmbeforedelcallback( _cmitem, _boxParent ){
    var _trigger = $(this);
-   JC.log( &#39;cmbeforedelcallback&#39;, new Date().getTime() );
+   JC.log( 'cmbeforedelcallback', new Date().getTime() );
    //return false;
 }</xmp>
      </dd>
@@ -177,7 +177,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
      <dd>
      删除完成的回调, <b>window 变量域</b>
 <xmp>function cmdelcallback( _ins, _boxParent ){
-   JC.log( &#39;cmdelcallback&#39;, new Date().getTime() );
+   JC.log( 'cmdelcallback', new Date().getTime() );
 }</xmp>
      </dd>
      <dt>cmMaxItems = int</dt>
@@ -189,7 +189,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
      <dd>
          指定查找所有上传项的选择器语法
      </dd>
-     <dt>cmOutRangeMsg = string, default = &quot;最多只能上传 {0}个文件!&quot;</dt>
+     <dt>cmOutRangeMsg = string, default = "最多只能上传 {0}个文件!"</dt>
      <dd>
          添加数量超出 cmMaxItems 时的提示信息
      </dd>
@@ -214,42 +214,43 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                 <pre class="code prettyprint"><code>  &lt;table&gt;
         &lt;tr&gt;
            &lt;td&gt;
-               &lt;label class=&quot;gray&quot;&gt;甲方主体：&lt;/label&gt;
+               &lt;label class="gray"&gt;甲方主体：&lt;/label&gt;
            &lt;/td&gt;
            &lt;td&gt;
-               &lt;input type=&quot;text&quot; name=&quot;&quot; class=&quot;ipt ipt-w320&quot; /&gt;&amp;nbsp;
-                   &lt;a href=&quot;javascript:&quot; 
-                   class=&quot;green js_autoCommonModify&quot; 
-                   cmtemplate=&quot;#addMainFirstPartyTpl&quot;
-                   cmitem=&quot;(tr&quot;
-                   cmaction=&quot;add&quot;
+               &lt;input type="text" name="" class="ipt ipt-w320" /&gt;&amp;nbsp;
+                   &lt;a href="javascript:" 
+                   class="green js_autoCommonModify" 
+                   cmtemplate="#addMainFirstPartyTpl"
+                   cmitem="(tr"
+                   cmaction="add"
                &gt;+ 添加&lt;/a&gt;
-               &lt;em class=&quot;error&quot;&gt;&lt;/em&gt;
+               &lt;em class="error"&gt;&lt;/em&gt;
            &lt;/td&gt;
        &lt;/tr&gt;
    &lt;/table&gt;
-   &lt;script type=&quot;text/template&quot; id=&quot;addMainFirstPartyTpl&quot; &gt;
+   &lt;script type="text/template" id="addMainFirstPartyTpl" &gt;
     &lt;tr&gt;
        &lt;td&gt;
-           &lt;label class=&quot;gray&quot;&gt;甲方主体：&lt;/label&gt;
+           &lt;label class="gray"&gt;甲方主体：&lt;/label&gt;
        &lt;/td&gt;
        &lt;td&gt;
-           &lt;input type=&quot;text&quot; name=&quot;&quot; class=&quot;ipt ipt-w320&quot; /&gt;
-           &lt;a href=&quot;javascript:&quot; 
-               class=&quot;green js_autoCommonModify&quot; 
-               cmtemplate=&quot;#addMainFirstPartyTpl&quot;
-               cmitem=&quot;(tr&quot;
-               cmaction=&quot;add&quot;
+           &lt;input type="text" name="" class="ipt ipt-w320" /&gt;
+           &lt;a href="javascript:" 
+               class="green js_autoCommonModify" 
+               cmtemplate="#addMainFirstPartyTpl"
+               cmitem="(tr"
+               cmaction="add"
            &gt;+ 添加&lt;/a&gt;
-           &lt;a href=&quot;javascript:&quot; class=&quot;red js_autoCommonModify&quot;
-               cmtemplate=&quot;#addMainFirstPartyTpl&quot;
-               cmitem=&quot;(tr&quot;
-               cmaction=&quot;del&quot;
+           &lt;a href="javascript:" class="red js_autoCommonModify"
+               cmtemplate="#addMainFirstPartyTpl"
+               cmitem="(tr"
+               cmaction="del"
            &gt;+ 删除&lt;/a&gt;
-           &lt;em class=&quot;error&quot;&gt;&lt;/em&gt;
+           &lt;em class="error"&gt;&lt;/em&gt;
        &lt;/td&gt;
    &lt;/tr&gt;
-   &lt;/script&gt;</code></pre>
+   &lt;/script&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -448,7 +449,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>bool</p>
+                    bool
             </div>
         </div>
 </div>
@@ -499,7 +500,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>CommonModifyInstance</p>
+                    CommonModifyInstance
             </div>
         </div>
 </div>
@@ -524,7 +525,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>selector</p>
+                    selector
             </div>
         </div>
 </div>
@@ -566,7 +567,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>CommonModifyInstance</p>
+                    CommonModifyInstance
             </div>
         </div>
 </div>

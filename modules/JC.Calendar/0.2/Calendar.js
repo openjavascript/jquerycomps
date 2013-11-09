@@ -1951,7 +1951,7 @@
                     _dstart = new Date( _year, i - 1, 1 ); 
                     _dend = new Date( _year, i - 1, JC.f.maxDayOfMonth( _dstart ) );
 
-                    _title = JC.f.printf( "{0}年 {1}月<br/>开始日期: {2} (周{4})<br />结束日期: {3} (周{5})"
+                    _title = JC.f.printf( "{0}年 {1}月\n开始日期: {2} (周{4})\n结束日期: {3} (周{5})"
                                 , _year
                                 , JC.Calendar.getCnNum( i )
                                 , JC.f.formatISODate( _dstart )
@@ -2179,7 +2179,7 @@
                     var _cnUnit = JC.Calendar.cnUnit.charAt( i % 10 );
                     i > 10 && ( _cnUnit = "十" + _cnUnit );
 
-                    _title = JC.f.printf( "{0}年 第{1}季度<br/>开始日期: {2} (周{4})<br />结束日期: {3} (周{5})"
+                    _title = JC.f.printf( "{0}年 第{1}季度\n开始日期: {2} (周{4})\n结束日期: {3} (周{5})"
                                 , _year
                                 , JC.Calendar.getCnNum( i )
                                 , JC.f.formatISODate( _sdate )
