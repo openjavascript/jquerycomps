@@ -712,8 +712,8 @@
      * @static
      */
     Valid.setValid = function(_item, _tm, _noStyle, _isUserSet){ 
-        _isUserSet = true;
-        return Valid.getInstance().trigger( Model.CORRECT, [_item, _tm, _noStyle, _isUserSet] ); 
+        $( Valid.getInstance()._view ).trigger( &#x27;setValid&#x27;, [_item, _tm, _noStyle, _isUserSet] ); 
+        return Valid.getInstance();
     };
     /**
      * 把一个表单项的状态设为错误状态
@@ -731,7 +731,8 @@
                 _item.attr( _autoKey, _msgAttr );
                 _msgAttr = _autoKey;
             }
-            return Valid.getInstance().trigger( Model.ERROR, JC.f.sliceArgs( arguments) ); 
+            $( Valid.getInstance()._view ).trigger( &#x27;setError&#x27;, [ _item, _msgAttr, _fullMsg ] );
+            return Valid.getInstance();
         };
     /**
      * 显示 focusmsg 属性的提示信息( 如果有的话 )
@@ -1190,7 +1191,9 @@
                         _n &gt; _pow &amp;&amp; ( _max = Math.pow( 10, _n ) );
                     });
 
-                    _p.isMaxvalue( _item ) &amp;&amp; ( _max = _p.maxvalue( _item, /\./.test( _item.attr(&#x27;maxvalue&#x27;) ) ) || _max );
+
+                    //_p.isMaxvalue( _item ) &amp;&amp; ( _max = _p.maxvalue( _item, /\./.test( _item.attr(&#x27;maxvalue&#x27;) ) ) || _max );
+                    _p.isMaxvalue( _item ) &amp;&amp; ( _max = _p.maxvalue( _item, /\./.test( _item.attr(&#x27;maxvalue&#x27;) ) ) );
 
                     if( _val &gt;= _min &amp;&amp; _val &lt;= _max ){
                         typeof _n != &#x27;undefined&#x27; 
@@ -2282,13 +2285,23 @@
                 //if( _isReturn ) return _r;
 
                 $.each( _corLs, function( _ix, _sitem ){
-                    Valid.setValid( _sitem );
+                    var _dt = _p.parseDatatype( _sitem )
+                    if( _dt &amp;&amp; _p[ _dt ] &amp;&amp; _sitem.val() ){
+                        if( _p[ _dt ]( _sitem ) ){ 
+                            Valid.setValid( _sitem );
+                        }
+                    }else{
+                        Valid.setValid( _sitem );
+                    }
                 });
 
                 !_r &amp;&amp; _errLs.length &amp;&amp; $.each( _errLs, function( _ix, _sitem ){ 
                     _sitem = $( _sitem );
+                    var _sv = _sitem.val().trim();
                     if( _isReturn ) return false;
-                    _sitem.val() 
+                    if( ! _sv ) return;
+                    JC.log(&#x27;yyyyyyyyyyyyy&#x27;, _sitem.data(&#x27;JCValidStatus&#x27;) );
+                    _sv 
                         &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _sitem, &#x27;uniquemsg&#x27;, true ] );
                 } );
 
@@ -2626,6 +2639,60 @@
     View.prototype = {
         init:
             function() {
+                var _p = this;
+                
+                $(_p).on( &#x27;setValid&#x27;, function( _evt, _item, _tm, _noStyle, _hideFocusMsg ){
+                    var _tmp;
+                    _item.removeClass( Model.CSS_ERROR );
+                    _item.find( 
+                        JC.f.printf( &#x27;~ em:not(&quot;em.focusmsg, em.validmsg, {0}&quot;)&#x27;, Model.FILTER_ERROR ) )
+                        .css(&#x27;display&#x27;, _p._model.validemdisplaytype( _item ) 
+                    );
+                    _item.find( Model.SELECTOR_ERROR ).hide();
+                    _item.attr(&#x27;emel&#x27;) 
+                        &amp;&amp; ( _tmp = _p._model.getElement( _item.attr(&#x27;emel&#x27;), _item ) )
+                        &amp;&amp; _tmp.hide();
+
+                    typeof _noStyle == &#x27;undefined&#x27; 
+                        &amp;&amp; typeof _item.val() != &#x27;object&#x27;
+                        &amp;&amp; !_item.val().trim() 
+                        &amp;&amp; ( _noStyle = 1 );
+
+                    _p.validMsg( _item, _noStyle, _hideFocusMsg );
+                });
+
+                $( _p ).on( &#x27;setError&#x27;, function( _evt, _item, _msgAttr, _fullMsg ){
+                    var _msg = _p._model.errorMsg.apply( _p._model, [ _item, _msgAttr, _fullMsg ] )
+                        , _errEm
+                        , _validEm
+                        , _focusEm
+                        , _tmp
+                        ;
+
+                    _item.addClass( Model.CSS_ERROR );
+                    _item.find( JC.f.printf( &#x27;~ em:not({0})&#x27;, Model.FILTER_ERROR ) ).hide();
+
+                    if( _item.is( &#x27;[validel]&#x27; ) ){
+                        ( _validEm = _p._model.getElement( _item.attr( &#x27;validel&#x27; ) , _item) ) 
+                            &amp;&amp; _validEm.hide();
+                    }
+                    if( _item.is( &#x27;[focusel]&#x27; ) ){
+                        ( _focusEm = _p._model.getElement( _item.attr( &#x27;focusel&#x27; ) , _item) ) 
+                            &amp;&amp; _focusEm.hide();
+                    }
+                    if( _item.is( &#x27;[emEl]&#x27; ) ){
+                        ( _errEm = _p._model.getElement( _item.attr( &#x27;emEl&#x27; ) , _item) ) 
+                            &amp;&amp; _errEm.addClass( Model.CSS_ERROR );
+                    }
+                    !( _errEm &amp;&amp; _errEm.length ) &amp;&amp; ( _errEm = _item.find( Model.SELECTOR_ERROR ) );
+                    if( !_errEm.length ){
+                        ( _errEm = $( JC.f.printf( &#x27;&lt;em class=&quot;{0}&quot;&gt;&lt;/em&gt;&#x27;, Model.CSS_ERROR ) ) ).insertAfter( _item );
+                    }
+                    !_msg.trim() &amp;&amp; ( _msg = &quot;&amp;nbsp;&quot; );
+                    _errEm.html( _msg ).css(&#x27;display&#x27;, _p._model.validemdisplaytype( _item ) );
+                    JC.log( &#x27;error:&#x27;, _msg );
+                });
+
                 return this;
             }
         /**
@@ -2638,36 +2705,20 @@
          * @param   {bool}      _noStyle
          */
         , valid:
-            function( _item, _tm, _noStyle, _isUserSet ){
+            function( _item, _tm, _noStyle ){
                 _item &amp;&amp; ( _item = $(_item) );
                 var _p = this, _tmp;
                 _item.data( &#x27;JCValidStatus&#x27;, true );
                 //if( !_p._model.isValid( _item ) ) return false;
                 var _hideFocusMsg = !JC.f.parseBool( _item.attr(&#x27;validnoerror&#x27; ) );
                 setTimeout(function(){
-                    _item.removeClass( Model.CSS_ERROR );
-                    _item.find( JC.f.printf( &#x27;~ em:not(&quot;em.focusmsg, em.validmsg, {0}&quot;)&#x27;, Model.FILTER_ERROR ) ).css(&#x27;display&#x27;, _p._model.validemdisplaytype( _item ) );
-                    _item.find( Model.SELECTOR_ERROR ).hide();
-                    _item.attr(&#x27;emel&#x27;) 
-                        &amp;&amp; ( _tmp = _p._model.getElement( _item.attr(&#x27;emel&#x27;), _item ) )
-                        &amp;&amp; _tmp.hide();
-
-                    typeof _noStyle == &#x27;undefined&#x27; 
-                        &amp;&amp; typeof _item.val() != &#x27;object&#x27;
-                        &amp;&amp; !_item.val().trim() 
-                        &amp;&amp; ( _noStyle = 1 );
-
-                    _p.validMsg( _item, _noStyle, _hideFocusMsg );
-                    !_isUserSet &amp;&amp; ( _tmp = _p._model.validitemcallback( _item ) ) &amp;&amp; _tmp( _item, true );
-
+                    $(_p).trigger( &#x27;setValid&#x27;, [ _item, _tm, _noStyle, _hideFocusMsg ] );
+                    ( _tmp = _p._model.validitemcallback( _item ) ) &amp;&amp; _tmp( _item, true );
                 }, _tm || 150);
             }
         , validMsg:
             function( _item, _noStyle, _hideFocusMsg ){
                 var _p = this, _msg = ( _item.attr(&#x27;validmsg&#x27;) || &#x27;&#x27; ).trim().toLowerCase(), _focusEm;
-
-                /*
-                */
 
                 if( _p._model.isValidMsg( _item ) ){
                     if( _msg == &#x27;true&#x27; || _msg == &#x27;1&#x27; ) _msg = &#x27;&#x27;;
@@ -2717,38 +2768,10 @@
                 _item.data( &#x27;JCValidStatus&#x27;, false );
 
                 setTimeout(function(){
-                    var _msg = _p._model.errorMsg.apply( _p._model, JC.f.sliceArgs( arg ) )
-                        , _errEm
-                        , _validEm
-                        , _focusEm
-                        ;
-
-                    _item.addClass( Model.CSS_ERROR );
-                    _item.find( JC.f.printf( &#x27;~ em:not({0})&#x27;, Model.FILTER_ERROR ) ).hide();
-
-                    if( _item.is( &#x27;[validel]&#x27; ) ){
-                        ( _validEm = _p._model.getElement( _item.attr( &#x27;validel&#x27; ) , _item) ) 
-                            &amp;&amp; _validEm.hide();
-                    }
-                    if( _item.is( &#x27;[focusel]&#x27; ) ){
-                        ( _focusEm = _p._model.getElement( _item.attr( &#x27;focusel&#x27; ) , _item) ) 
-                            &amp;&amp; _focusEm.hide();
-                    }
-                    if( _item.is( &#x27;[emEl]&#x27; ) ){
-                        ( _errEm = _p._model.getElement( _item.attr( &#x27;emEl&#x27; ) , _item) ) 
-                            &amp;&amp; _errEm.addClass( Model.CSS_ERROR );
-                    }
-                    !( _errEm &amp;&amp; _errEm.length ) &amp;&amp; ( _errEm = _item.find( Model.SELECTOR_ERROR ) );
-                    if( !_errEm.length ){
-                        ( _errEm = $( JC.f.printf( &#x27;&lt;em class=&quot;{0}&quot;&gt;&lt;/em&gt;&#x27;, Model.CSS_ERROR ) ) ).insertAfter( _item );
-                    }
-                    !_msg.trim() &amp;&amp; ( _msg = &quot;&amp;nbsp;&quot; );
-                    _errEm.html( _msg ).css(&#x27;display&#x27;, _p._model.validemdisplaytype( _item ) );
-
-                    JC.log( &#x27;error:&#x27;, _msg );
+                    $(_p).trigger( &#x27;setError&#x27;, [ _item, _msgAttr, _fullMsg ] );
+                    ( _tmp = _p._model.validitemcallback( _item ) ) &amp;&amp; _tmp( _item, false);
 
                 }, 150);
-                ( _tmp = _p._model.validitemcallback( _item ) ) &amp;&amp; _tmp( _item, false);
 
                 return false;
             }
@@ -2864,8 +2887,6 @@
         var _sp = $(this);
 
         var _isDatavalid = /datavalid/i.test( _sp.attr(&#x27;subdatatype&#x27;) );
-        if( !_isDatavalid ) return;
-        if( _sp.prop(&#x27;disabled&#x27;) || _sp.prop(&#x27;readonly&#x27;) ) return;
 
         Valid.dataValid( _sp, false, true );
         var _keyUpCb;
