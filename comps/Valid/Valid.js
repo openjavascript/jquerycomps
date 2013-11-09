@@ -1013,7 +1013,9 @@
                         _n > _pow && ( _max = Math.pow( 10, _n ) );
                     });
 
-                    _p.isMaxvalue( _item ) && ( _max = _p.maxvalue( _item, /\./.test( _item.attr('maxvalue') ) ) || _max );
+
+                    //_p.isMaxvalue( _item ) && ( _max = _p.maxvalue( _item, /\./.test( _item.attr('maxvalue') ) ) || _max );
+                    _p.isMaxvalue( _item ) && ( _max = _p.maxvalue( _item, /\./.test( _item.attr('maxvalue') ) ) );
 
                     if( _val >= _min && _val <= _max ){
                         typeof _n != 'undefined' 
