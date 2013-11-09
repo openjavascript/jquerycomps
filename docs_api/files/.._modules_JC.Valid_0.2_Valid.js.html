@@ -2887,6 +2887,8 @@
         var _sp = $(this);
 
         var _isDatavalid = /datavalid/i.test( _sp.attr(&#x27;subdatatype&#x27;) );
+        if( !_isDatavalid ) return;
+        if( _sp.prop(&#x27;disabled&#x27;) || _sp.prop(&#x27;readonly&#x27;) ) return;
 
         Valid.dataValid( _sp, false, true );
         var _keyUpCb;
