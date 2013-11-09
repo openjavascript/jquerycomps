@@ -189,8 +189,8 @@
      * &lt;br /&gt;全局访问请使用 JC.Valid 或 Valid
      * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Valid.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
-     * | &lt;a href=&#x27;../../comps/Valid/_demo/&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;../../modules/JC.Valid/0.2/_demo/&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * &lt;h2&gt;Form 的可用 html attribute&lt;/h2&gt;
      * &lt;dl&gt;
      *      &lt;dt&gt;errorabort = bool, default = true&lt;/dt&gt;
@@ -2891,6 +2891,8 @@
         var _sp = $(this);
 
         var _isDatavalid = /datavalid/i.test( _sp.attr(&#x27;subdatatype&#x27;) );
+        if( !_isDatavalid ) return;
+        if( _sp.prop(&#x27;disabled&#x27;) || _sp.prop(&#x27;readonly&#x27;) ) return;
 
         Valid.dataValid( _sp, false, true );
         var _keyUpCb;

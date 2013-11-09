@@ -7,8 +7,8 @@
      * <br />全局访问请使用 JC.Valid 或 Valid
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>
+     * | <a href='../../modules/JC.Valid/0.2/_demo/' target='_blank'>demo link</a></p>
      * <h2>Form 的可用 html attribute</h2>
      * <dl>
      *      <dt>errorabort = bool, default = true</dt>
@@ -2709,6 +2709,8 @@
         var _sp = $(this);
 
         var _isDatavalid = /datavalid/i.test( _sp.attr('subdatatype') );
+        if( !_isDatavalid ) return;
+        if( _sp.prop('disabled') || _sp.prop('readonly') ) return;
 
         Valid.dataValid( _sp, false, true );
         var _keyUpCb;
