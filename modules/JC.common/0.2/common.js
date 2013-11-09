@@ -91,7 +91,7 @@
     }};
     /**
      * 全局 css z-index 控制属性
-     * <br /> <b>注意</b>: 这个变量 window.ZINDEX_COUNT
+     * <br /> <b>注意</b>: 这个变量是 window.ZINDEX_COUNT
      * @property    ZINDEX_COUNT
      * @type        int
      * @default     50001
