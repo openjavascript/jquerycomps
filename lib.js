@@ -111,7 +111,7 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
     }};
     /**
      * 全局 css z-index 控制属性
-     * <br /> <b>注意</b>: 这个变量 window.ZINDEX_COUNT
+     * <br /> <b>注意</b>: 这个变量是 window.ZINDEX_COUNT
      * @property    ZINDEX_COUNT
      * @type        int
      * @default     50001
@@ -778,7 +778,7 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
      */
     function urlDetect( _url ){
         _url = _url || '';
-        var _r = _url, _tmp, i, j;
+        var _r = _url, _tmp, i, j, _items;
         if( /^URL/.test( _url ) ){
             _tmp = _url.replace( /^URL/, '' ).replace( /[\s]*,[\s]*/g, ',' ).trim().split(',');
             _url = location.href;
