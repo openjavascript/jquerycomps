@@ -758,7 +758,7 @@
      */
     function urlDetect( _url ){
         _url = _url || '';
-        var _r = _url, _tmp, i, j;
+        var _r = _url, _tmp, i, j, _items;
         if( /^URL/.test( _url ) ){
             _tmp = _url.replace( /^URL/, '' ).replace( /[\s]*,[\s]*/g, ',' ).trim().split(',');
             _url = location.href;
