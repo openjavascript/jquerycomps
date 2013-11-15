@@ -529,54 +529,69 @@
     /**
      * 把一个表单项的状态设为正确状态
      * @method  setValid
-     * @param   {selector}  _item
+     * @param   {selector}  _items
      * @param   {int}       _tm     延时 _tm 毫秒显示处理结果, 默认=150
      * @static
      */
-    Valid.setValid = function(_item, _tm, _noStyle, _isUserSet){ 
-        $( Valid.getInstance()._view ).trigger( 'setValid', [_item, _tm, _noStyle, _isUserSet] ); 
+    Valid.setValid = function(_items, _tm, _noStyle, _isUserSet){ 
+        _items = $( _items );
+        _items.each( function( _ix, _item ){
+            _item = $(this);
+            $( Valid.getInstance()._view ).trigger( 'setValid', [_item, _tm, _noStyle, _isUserSet] ); 
+        });
+
         return Valid.getInstance();
     };
     /**
      * 把一个表单项的状态设为错误状态
      * @method  setError
-     * @param   {selector}  _item
+     * @param   {selector}  _items
      * @param   {string}    _msgAttr    - 显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名
      *                                    <br /> 如果 _msgAttr 的第一个字符为空格, 将视为提示信息, 并自动生成属性 autoGenerateErrorMsg
      * @param   {bool}      _fullMsg    - 显示指定错误信息为属性的值, 而不是自动添加的 请上传/选择/填写
      * @static
      */
     Valid.setError = 
-        function(_item, _msgAttr, _fullMsg){ 
-            if( _msgAttr && _msgAttr.trim() && /^[\s]/.test( _msgAttr ) ){
-                var _autoKey = 'autoGenerateErrorMsg';
-                _item.attr( _autoKey, _msgAttr );
-                _msgAttr = _autoKey;
-            }
-            $( Valid.getInstance()._view ).trigger( 'setError', [ _item, _msgAttr, _fullMsg ] );
+        function(_items, _msgAttr, _fullMsg){ 
+            _items = $(_items);
+
+            _items.each( function( _ix, _item ){
+                _item = $(this);
+                if( _msgAttr && _msgAttr.trim() && /^[\s]/.test( _msgAttr ) ){
+                    var _autoKey = 'autoGenerateErrorMsg';
+                    _item.attr( _autoKey, _msgAttr );
+                    _msgAttr = _autoKey;
+                }
+                $( Valid.getInstance()._view ).trigger( 'setError', [ _item, _msgAttr, _fullMsg ] );
+            });
             return Valid.getInstance();
         };
     /**
      * 显示 focusmsg 属性的提示信息( 如果有的话 )
      * @method  setFocusMsg
-     * @param   {selector}  _item
+     * @param   {selector}  _items
      * @param   {bool}      _setHide
      * @param   {string}    _msgAttr    - 显示指定需要读取的focusmsg信息属性名, 默认为 focusmsg, 通过该属性可以指定别的属性名
      *                                    <br /> 如果 _msgAttr 的第一个字符为空格, 将视为提示信息, 并自动生成属性 autoGenerateFocusMsg
      * @static
      */
     Valid.focusmsg = Valid.setFocusMsg =
-        function( _item, _setHide, _msgAttr ){ 
-            if( typeof _setHide == 'string' ){
-                _msgAttr = _setHide;
-                _setHide = false;
-            }
-            if( _msgAttr && _msgAttr.trim() && /^[\s]/.test( _msgAttr ) ){
-                var _autoKey = 'autoGenerateFocusMsg';
-                _item.attr( _autoKey, _msgAttr );
-                _msgAttr = _autoKey;
-            }
-            return Valid.getInstance().trigger( Model.FOCUS_MSG, [ _item, _setHide, _msgAttr ] ); 
+        function( _items, _setHide, _msgAttr ){ 
+            _items = $( _items );
+            _items.each( function( _ix, _item ){
+                _item = $( this );
+                if( typeof _setHide == 'string' ){
+                    _msgAttr = _setHide;
+                    _setHide = false;
+                }
+                if( _msgAttr && _msgAttr.trim() && /^[\s]/.test( _msgAttr ) ){
+                    var _autoKey = 'autoGenerateFocusMsg';
+                    _item.attr( _autoKey, _msgAttr );
+                    _msgAttr = _autoKey;
+                }
+                Valid.getInstance().trigger( Model.FOCUS_MSG, [ _item, _setHide, _msgAttr ] ); 
+            });
+            return Valid.getInstance();
         };
     /**
      * focus 时,是否总是显示 focusmsg 提示信息

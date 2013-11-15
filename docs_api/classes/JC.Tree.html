@@ -159,30 +159,29 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>       &lt;link href='../../../modules/JC.Tree/res/default/style.css' rel='stylesheet' /&gt;
-       &lt;script src="../../../lib.js"&gt;&lt;/script&gt;
-       &lt;script src="../../../config.js"&gt;&lt;/script&gt;
+                <pre class="code prettyprint"><code>       &lt;link href=&#39;../../../modules/JC.Tree/res/default/style.css&#39; rel=&#39;stylesheet&#39; /&gt;
+       &lt;script src=&quot;../../../lib.js&quot;&gt;&lt;/script&gt;
+       &lt;script src=&quot;../../../config.js&quot;&gt;&lt;/script&gt;
        &lt;script&gt;
-           requirejs( [ 'JC.Tree' ], function(){
+           requirejs( [ &#39;JC.Tree&#39; ], function(){
                 var treeData = {
-                       data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["28","\u9500\u552e\u4e8c\u7ec4"],["24","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
-                       root: ["23",'客户发展部']
+                       data: {&quot;24&quot;:[[&quot;25&quot;,&quot;\u4e8c\u7ec4\u4e00\u961f&quot;],[&quot;26&quot;,&quot;\u4e8c\u7ec4\u4e8c\u961f&quot;],[&quot;27&quot;,&quot;\u4e8c\u7ec4\u4e09\u961f&quot;]],&quot;23&quot;:[[&quot;28&quot;,&quot;\u9500\u552e\u4e8c\u7ec4&quot;],[&quot;24&quot;,&quot;\u552e\u524d\u5ba1\u6838\u7ec4&quot;]]},
+                       root: [&quot;23&quot;,&#39;客户发展部&#39;]
                    };
-                   var _tree = new JC.Tree( $('#tree_box2'), treeData );
-                       _tree.on('RenderLabel', function( _data ){
+                   var _tree = new JC.Tree( $(&#39;#tree_box2&#39;), treeData );
+                       _tree.on(&#39;RenderLabel&#39;, function( _data ){
                            var _node = $(this);
-                           _node.html( JC.f.printf( '&lt;a href="javascript:" dataid="{0}"&gt;{1}&lt;/a&gt;', _data[0], _data[1] ) );
+                           _node.html( JC.f.printf( &#39;&lt;a href=&quot;javascript:&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#39;, _data[0], _data[1] ) );
                        });
-                       _tree.on('click', function( _evt ){
+                       _tree.on(&#39;click&#39;, function( _evt ){
                            var _p = $(this);
-                           JC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
+                           JC.log( &#39;tree click:&#39;, _p.html(), _p.attr(&#39;dataid&#39;), _p.attr(&#39;dataname&#39;) );
                        });
                        _tree.init();
                        //_queryNode &amp;&amp; _tree.open( _queryNode );
            });
        &lt;/script&gt;
-       &lt;div id="tree_box2" class="tree_container"&gt;&lt;/div&gt;
-</code></pre>
+       &lt;div id=&quot;tree_box2&quot; class=&quot;tree_container&quot;&gt;&lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -287,8 +286,8 @@
                         <code class="param-name">_nodeId</code>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | Int</span>
                     <div class="param-description">
-                        <p>如果<em>nodeId='undefined', 将会关闭树的所有节点
-                                     <br /></em>nodeId 不为空, 将关闭树 _nodeId 所在的节点</p>
+                        <p>如果_nodeId=&#39;undefined&#39;, 将会关闭树的所有节点
+                                     <br />_nodeId 不为空, 将关闭树 _nodeId 所在的节点</p>
                     </div>
                 </li>
             </ul>
@@ -439,7 +438,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    selector
+                    <p>selector</p>
             </div>
         </div>
 </div>
@@ -463,7 +462,7 @@
             <h4>Returns:</h4>
             <div class="returns-description">
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
-                    树的ID前缀
+                    <p>树的ID前缀</p>
             </div>
         </div>
 </div>
@@ -483,9 +482,8 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           var _tree = new JC.Tree( $('#tree_box'), treeData );
-           _tree.init();
-</code></pre>
+                <pre class="code prettyprint"><code>           var _tree = new JC.Tree( $(&#39;#tree_box&#39;), treeData );
+           _tree.init();</code></pre>
             </div>
         </div>
 </div>
@@ -554,8 +552,8 @@
                         <code class="param-name">_nodeId</code>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | Int</span>
                     <div class="param-description">
-                        <p>如果<em>nodeId='undefined', 将会展开树的所有节点
-                                     <br /></em>nodeId 不为空, 将展开树到 _nodeId 所在的节点</p>
+                        <p>如果_nodeId=&#39;undefined&#39;, 将会展开树的所有节点
+                                     <br />_nodeId 不为空, 将展开树到 _nodeId 所在的节点</p>
                     </div>
                 </li>
             </ul>
@@ -627,8 +625,7 @@
                }
            }
            return _r;
-       };
-</code></pre>
+       };</code></pre>
             </div>
         </div>
 </div>
@@ -661,11 +658,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>       _tree.on('click', function( _evt ){
+                <pre class="code prettyprint"><code>       _tree.on(&#39;click&#39;, function( _evt ){
            var _p = $(this);
-           JC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
-       });
-</code></pre>
+           JC.log( &#39;tree click:&#39;, _p.html(), _p.attr(&#39;dataid&#39;), _p.attr(&#39;dataname&#39;) );
+       });</code></pre>
             </div>
         </div>
 </div>
@@ -695,11 +691,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>       _tree.on('FolderClick', function( _evt ){
+                <pre class="code prettyprint"><code>       _tree.on(&#39;FolderClick&#39;, function( _evt ){
            var _p = $(this);
-           alert( 'folder click' );
-       });
-</code></pre>
+           alert( &#39;folder click&#39; );
+       });</code></pre>
             </div>
         </div>
 </div>
@@ -735,11 +730,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>       _tree.on('RenderLabel', function( _data ){
+                <pre class="code prettyprint"><code>       _tree.on(&#39;RenderLabel&#39;, function( _data ){
            var _node = $(this);
-           _node.html( JC.f.printf( '&lt;a href="javascript:" dataid="{0}"&gt;{1}&lt;/a&gt;', _data[0], _data[1] ) );
-       });
-</code></pre>
+           _node.html( JC.f.printf( &#39;&lt;a href=&quot;javascript:&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#39;, _data[0], _data[1] ) );
+       });</code></pre>
             </div>
         </div>
 </div>
