@@ -2137,7 +2137,7 @@
                     var _sv = _sitem.val().trim();
                     if( _isReturn ) return false;
                     if( ! _sv ) return;
-                    JC.log('yyyyyyyyyyyyy', _sitem.data('JCValidStatus') );
+                    JC.log('yyyyyyyyyyyyy', _sitem.data('JCValidStatus'), new Date().getTime() );
                     _sv 
                         && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _sitem, 'uniquemsg', true ] );
                 } );
@@ -2149,6 +2149,9 @@
             function( _item ){
                 var _r = true, _p = this;
                 if( !Valid.isFormValid ) return _r;
+                if( !_item.is( '[datavalid]') ) return _r;
+
+                JC.log( 'datavalid', new Date().getTime() ); 
 
                 _r = JC.f.parseBool( _item.attr('datavalid') );
 

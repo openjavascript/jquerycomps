@@ -2530,9 +2530,7 @@
 					_today = new Date();
 
                 _p._model.fixedDate( _dateo );
-				
-				_tempDate = new Date(_dateo.date.getFullYear(), _dateo.date.getMonth(), 1);
-				_tempDay = _tempDate.getDay();
+				JC.log( _dateo.date );
 
                 var _headLs = [], _dayLs = [], _ckLs = [];
                 var _headClass = [], _dayClass = [];
@@ -2543,14 +2541,18 @@
                             + '<input type="checkbox" class="js_JCCalendarCheckbox" action="all"  /></lable></td>');
 
 				for ( i = 0; i < _maxday; i++ ) {
-					_headClass  = [];
+					
+                    _tempDate = new Date(_dateo.date.getFullYear(), _dateo.date.getMonth(), i+1);
+                    _tempDay = _tempDate.getDay();
+
+                    _headClass  = [];
 					_dayClass = getClass(_dateo, _tempDate, _today).join(' ');
 					
 					if (_tempDay == 0 || _tempDay == 6) _headClass.push("red");
                     _headLs.push( JC.f.printf( 
                                 '<td class="{0}">{1}</td>'
                                 , _headClass.join(" ") 
-                                , Calendar.cnWeek[_tempDay]
+                                , Calendar.cnWeek.charAt( _tempDay )
                             ));
 
                     _dayLs.push( JC.f.printf(

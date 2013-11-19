@@ -110,11 +110,11 @@
 <div class="box intro">
     <p><b>表单验证</b> (单例模式)
 <br />全局访问请使用 JC.Valid 或 Valid</p>
-<p><p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p></p>
-<p><p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
+<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
 | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>
-| <a href='../../modules/JC.Valid/0.2/_demo/' target='_blank'>demo link</a></p></p>
-<p><h2>Form 的可用 html attribute</h2></p>
+| <a href='../../modules/JC.Valid/0.2/_demo/' target='_blank'>demo link</a></p>
+<h2>Form 的可用 html attribute</h2>
 <dl>
      <dt>errorabort = bool, default = true</dt>
      <dd>
@@ -164,14 +164,14 @@
      <dd>验证内容的最小长度, 但不验证为空的值</dd>
      <dt>maxlength = int(最大长度)</dt>
      <dd>验证内容的最大长度, 但不验证为空的值</dd>
-     <dt>minvalue = <a href="最小值">number|ISO date</a></dt>
+     <dt>minvalue = [number|ISO date](最小值)</dt>
      <dd>验证内容的最小值, 但不验证为空的值</dd>
-     <dt>maxvalue = <a href="最大值">number|ISO date</a></dt>
+     <dt>maxvalue = [number|ISO date](最大值)</dt>
      <dd>验证内容的最大值, 但不验证为空的值</dd>
      <dt>validitemcallback = function</dt>
      <dd>
          对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>
-<xmp>function validItemCallback( <em>selector, _isValid ){
+<xmp>function validItemCallback( _selector, _isValid ){
 }</xmp>
      </dd>
      <dt>datatype: 常用数据类型</dt>
@@ -207,7 +207,7 @@
      </dd>
      <dd>
          <b>username:</b> 注册用户名
-         <br>格式: a-zA-Z0-9</em>-
+         <br>格式: a-zA-Z0-9_-
          <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30
      </dd>
      <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>
@@ -317,9 +317,9 @@
              <dd><b>datavalidMsg:</b> 值不合法时的提示信息</dd>
              <dd>
                  <b>datavalidUrl:</b> 验证内容正确与否的 url api
-                 <p>{&quot;errorno&quot;:0,&quot;errmsg&quot;:&quot;&quot;}</p>
+                 <p>{"errorno":0,"errmsg":""}</p>
                  errorno: 0( 正确 ), 非0( 错误 )
-                 <p>datavalidurl=&quot;./data/handler.php?key={0}&quot;</p>
+                 <p>datavalidurl="./data/handler.php?key={0}"</p>
                  {0} 代表 value
              </dd>
              <dd>
@@ -337,7 +337,7 @@
                  <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调
 <xmp>function datavalidUrlFilter( _url ){
    var _selector = $(this);
-   _url = JC.f.addUrlParams( _url, { &#39;xtest&#39;: &#39;customData&#39; } );
+   _url = JC.f.addUrlParams( _url, { 'xtest': 'customData' } );
    return _url;
 });</xmp>
              </dd>
@@ -347,7 +347,7 @@
          <dl>
              <dt>hidden: 验证隐藏域的值</dt>
              <dd>
-                 有些特殊情况需要验证隐藏域的值, 请使用 subdatatype=&quot;hidden&quot;
+                 有些特殊情况需要验证隐藏域的值, 请使用 subdatatype="hidden"
              </dd>
          </dl>
      </dd>
@@ -684,30 +684,31 @@
             <h4>Example:</h4>
             <div class="example-content">
                 <pre class="code prettyprint"><code>           &lt;dd&gt;
-           &lt;div class=&quot;f-l label&quot;&gt;
+           &lt;div class="f-l label"&gt;
                &lt;label&gt;(datatype phonezone, phonecode, phoneext)电话号码:&lt;/label&gt;
            &lt;/div&gt;
-           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&#39;TEXT&#39; name=&#39;company_phonezone&#39; style=&quot;width:40px;&quot; value=&#39;&#39; size=&quot;4&quot; 
-                   datatype=&quot;phonezone&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的电话区号&quot; /&gt;
-               - &lt;input type=&#39;TEXT&#39; name=&#39;company_phonecode&#39; style=&quot;width:80px;&quot; value=&#39;&#39; size=&quot;8&quot; 
-                   datatype=&quot;phonecode&quot; subdatatype=&quot;alternative&quot; datatarget=&quot;input[name=company_mobile]&quot; alternativemsg=&quot;电话号码和手机号码至少填写一个&quot;
-                   errmsg=&quot;请检查电话号码格式&quot; emEl=&quot;#phone-err-em&quot; /&gt;
-               - &lt;input type=&#39;TEXT&#39; name=&#39;company_phoneext&#39; style=&quot;width:40px;&quot; value=&#39;&#39; size=&quot;4&quot; 
-                   datatype=&quot;phoneext&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的分机号&quot; /&gt;
-               &lt;em id=&quot;phone-err-em&quot;&gt;&lt;/em&gt;
+           &lt;div class="f-l"&gt;
+               &lt;input type='TEXT' name='company_phonezone' style="width:40px;" value='' size="4" 
+                   datatype="phonezone" emEl="#phone-err-em" errmsg="请填写正确的电话区号" /&gt;
+               - &lt;input type='TEXT' name='company_phonecode' style="width:80px;" value='' size="8" 
+                   datatype="phonecode" subdatatype="alternative" datatarget="input[name=company_mobile]" alternativemsg="电话号码和手机号码至少填写一个"
+                   errmsg="请检查电话号码格式" emEl="#phone-err-em" /&gt;
+               - &lt;input type='TEXT' name='company_phoneext' style="width:40px;" value='' size="4" 
+                   datatype="phoneext" emEl="#phone-err-em" errmsg="请填写正确的分机号" /&gt;
+               &lt;em id="phone-err-em"&gt;&lt;/em&gt;
            &lt;/div&gt;
            &lt;/dd&gt;
            &lt;dd&gt;
-           &lt;div class=&quot;f-l label&quot;&gt;
+           &lt;div class="f-l label"&gt;
                &lt;label&gt;(datatype mobilecode)手机号码:&lt;/label&gt;
            &lt;/div&gt;
-           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_mobile&quot; 
-                   datatype=&quot;mobilecode&quot; subdatatype=&quot;alternative&quot; datatarget=&quot;input[name=company_phonecode]&quot; alternativemsg=&quot; &quot;
-                   errmsg=&quot;请填写正确的手机号码&quot;&gt;
+           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_mobile" 
+                   datatype="mobilecode" subdatatype="alternative" datatarget="input[name=company_phonecode]" alternativemsg=" "
+                   errmsg="请填写正确的手机号码"&gt;
            &lt;/div&gt;
-           &lt;/dd&gt;</code></pre>
+           &lt;/dd&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -746,10 +747,11 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_idnumber&quot; 
-                   datatype=&quot;idnumber&quot; errmsg=&quot;请填写正确的身份证号码&quot;&gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_idnumber" 
+                   datatype="idnumber" errmsg="请填写正确的身份证号码"&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -846,10 +848,11 @@
                 <pre class="code prettyprint"><code>     JC.Valid.check( $( selector ) );
      JC.Valid.check( $( selector ), $( anotherSelector );
      JC.Valid.check( document.getElementById( item ) );
-     if( !JC.Valid.check( $(&#39;form&#39;) ) ){
+     if( !JC.Valid.check( $('form') ) ){
          _evt.preventDefault();
          return false;
-     }</code></pre>
+     }
+</code></pre>
             </div>
         </div>
 </div>
@@ -923,8 +926,9 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>     JC.Valid.clearError( &#39;form&#39; );
-     JC.Valid.clearError( &#39;input.some&#39; );</code></pre>
+                <pre class="code prettyprint"><code>     JC.Valid.clearError( 'form' );
+     JC.Valid.clearError( 'input.some' );
+</code></pre>
             </div>
         </div>
 </div>
@@ -964,10 +968,11 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_cnname&quot; 
-                   datatype=&quot;cnname&quot; reqmsg=&quot;姓名&quot; errmsg=&quot;请填写正确的姓名&quot;&gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_cnname" 
+                   datatype="cnname" reqmsg="姓名" errmsg="请填写正确的姓名"&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1005,9 +1010,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_countrycode&quot; datatype=&quot;countrycode&quot; errmsg=&quot;请填写正确的地区代码&quot;&gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_countrycode" datatype="countrycode" errmsg="请填写正确的地区代码"&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1046,9 +1052,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_d&quot; errmsg=&quot;请填写正确的日期范围2013-05-01 - 2013-05-31&quot; datatype=&quot;daterange&quot; minvalue=&quot;2013-05-01&quot; maxvalue=&quot;2013-05-31&quot; &gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_d" errmsg="请填写正确的日期范围2013-05-01 - 2013-05-31" datatype="daterange" minvalue="2013-05-01" maxvalue="2013-05-31" &gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1116,7 +1123,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>bool</p>
+                    bool
             </div>
         </div>
 </div>
@@ -1157,13 +1164,14 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_daterange&quot; errmsg=&quot;请填写正确的日期范围,并且起始日期不能大于结束日期&quot; id=&quot;start_date&quot; 
-                   datatype=&quot;daterange&quot; toDateEl=&quot;end_date&quot; emEl=&quot;date-err-em&quot; &gt;
-               - &lt;input type=&quot;TEXT&quot; name=&quot;company_daterange&quot; errmsg=&quot;请填写正确的日期范围,并且起始日期不能大于结束日期&quot; id=&quot;end_date&quot; 
-                   datatype=&quot;daterange&quot; fromDateEl=&quot;start_date&quot; emEl=&quot;date-err-em&quot; &gt;
-               &lt;br /&gt;&lt;em id=&quot;date-err-em&quot;&gt;&lt;/em&gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期" id="start_date" 
+                   datatype="daterange" toDateEl="end_date" emEl="date-err-em" &gt;
+               - &lt;input type="TEXT" name="company_daterange" errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期" id="end_date" 
+                   datatype="daterange" fromDateEl="start_date" emEl="date-err-em" &gt;
+               &lt;br /&gt;&lt;em id="date-err-em"&gt;&lt;/em&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1236,9 +1244,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_email&quot; datatype=&quot;email&quot; reqmsg=&quot;邮箱&quot; errmsg=&quot;请填写正确的邮箱&quot;&gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_email" datatype="email" reqmsg="邮箱" errmsg="请填写正确的邮箱"&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1262,7 +1271,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2590"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2590</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2593"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2593</code></a>
         </p>
     </div>
     <div class="description">
@@ -1318,7 +1327,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2220"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2220</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2223"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2223</code></a>
         </p>
     </div>
     <div class="description">
@@ -1369,7 +1378,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2197"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2197</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2200"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2200</code></a>
         </p>
     </div>
     <div class="description">
@@ -1463,10 +1472,11 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>       &lt;div class=&quot;f-l&quot;&gt;
-           &lt;input type=&quot;TEXT&quot; name=&quot;company_idnumber&quot; 
-               datatype=&quot;idnumber&quot; errmsg=&quot;请填写正确的身份证号码&quot;&gt;
-       &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>       &lt;div class="f-l"&gt;
+           &lt;input type="TEXT" name="company_idnumber" 
+               datatype="idnumber" errmsg="请填写正确的身份证号码"&gt;
+       &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1516,7 +1526,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>bool</p>
+                    bool
             </div>
         </div>
 </div>
@@ -1556,7 +1566,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>bool</p>
+                    bool
             </div>
         </div>
 </div>
@@ -1596,7 +1606,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>bool</p>
+                    bool
             </div>
         </div>
 </div>
@@ -1634,9 +1644,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_name&quot; minlength=&quot;2&quot; maxlength=&quot;120&quot; reqmsg=&quot;公司名称&quot; errmsg=&quot;请检查格式,长度2-120&quot; /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_name" minlength="2" maxlength="120" reqmsg="公司名称" errmsg="请检查格式,长度2-120" /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1674,9 +1685,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_time&quot; errmsg=&quot;正确的时间, 格式为 hh:mm&quot; datatype=&quot;minute&quot; &gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_time" errmsg="正确的时间, 格式为 hh:mm" datatype="minute" &gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1765,11 +1777,12 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>       &lt;div class=&quot;f-l&quot;&gt;
-           &lt;input type=&quot;TEXT&quot; name=&quot;company_mobile&quot; 
-               datatype=&quot;mobilecode&quot; subdatatype=&quot;alternative&quot; datatarget=&quot;input[name=company_phonecode]&quot; alternativemsg=&quot; &quot;
-               errmsg=&quot;请填写正确的手机号码&quot;&gt;
-       &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>       &lt;div class="f-l"&gt;
+           &lt;input type="TEXT" name="company_mobile" 
+               datatype="mobilecode" subdatatype="alternative" datatarget="input[name=company_phonecode]" alternativemsg=" "
+               errmsg="请填写正确的手机号码"&gt;
+       &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1808,14 +1821,15 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l label&quot;&gt;
+                <pre class="code prettyprint"><code>           &lt;div class="f-l label"&gt;
                &lt;label&gt;(datatype mobilephone, phone + mobilecode)手机号码或电话号码:&lt;/label&gt;
            &lt;/div&gt;
-           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;text&quot; name=&quot;company_mobilephone&quot; 
-                   datatype=&quot;mobilephone&quot;
-                   errmsg=&quot;请填写正确的手机/电话号码&quot;&gt;
-           &lt;/div&gt;</code></pre>
+           &lt;div class="f-l"&gt;
+               &lt;input type="text" name="company_mobilephone" 
+                   datatype="mobilephone"
+                   errmsg="请填写正确的手机/电话号码"&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1854,14 +1868,15 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l label&quot;&gt;
+                <pre class="code prettyprint"><code>           &lt;div class="f-l label"&gt;
                &lt;label&gt;(datatype mobilephoneall, phoneall + mobilezonecode)手机号码或电话号码:&lt;/label&gt;
            &lt;/div&gt;
-           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;text&quot; name=&quot;company_mobilephoneall&quot; 
-                   datatype=&quot;mobilephoneall&quot;
-                   errmsg=&quot;请填写正确的手机/电话号码&quot;&gt;
-           &lt;/div&gt;</code></pre>
+           &lt;div class="f-l"&gt;
+               &lt;input type="text" name="company_mobilephoneall" 
+                   datatype="mobilephoneall"
+                   errmsg="请填写正确的手机/电话号码"&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1909,11 +1924,12 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_mobilezone&quot; 
-                   datatype=&quot;mobilezonecode&quot; 
-                   errmsg=&quot;请填写正确的手机号码&quot;&gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_mobilezone" 
+                   datatype="mobilezonecode" 
+                   errmsg="请填写正确的手机号码"&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -1952,15 +1968,16 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_n&quot; errmsg=&quot;请填写正确的正整数&quot; datatype=&quot;n&quot; &gt;
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_n" errmsg="请填写正确的正整数" datatype="n" &gt;
            &lt;/div&gt;
-           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_n1&quot; errmsg=&quot;请填写正确的数字, 范围1-100&quot; datatype=&quot;n&quot; minvalue=&quot;1&quot;, maxvalue=&quot;100&quot; &gt;
+           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_n1" errmsg="请填写正确的数字, 范围1-100" datatype="n" minvalue="1", maxvalue="100" &gt;
            &lt;/div&gt;
-           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_n2&quot; errmsg=&quot;请填写正确的数字&quot; datatype=&quot;n-7.2&quot; &gt;
-           &lt;/div&gt;</code></pre>
+           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_n2" errmsg="请填写正确的数字" datatype="n-7.2" &gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -2002,14 +2019,15 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>       &lt;div class=&quot;f-l label&quot;&gt;
-           &lt;label&gt;(datatype nrange)正数:&lt;br/&gt;&lt;b style=&quot;color:red&quot;&gt;注意: 这个是大小颠倒位置的nrange&lt;/b&gt;&lt;/label&gt;
-           大&lt;input type=&quot;text&quot; name=&quot;company_n10&quot; id=&quot;company_n10&quot; fromNEl=&quot;company_n11&quot;
-               errmsg=&quot;请填写正确的数值范围&quot; datatype=&quot;nrange&quot; emEl=&quot;nrange_n1011&quot; &gt;
-           - 小&lt;input type=&quot;text&quot; name=&quot;company_n11&quot; id=&quot;company_n11&quot; toNEl=&quot;company_n10&quot;
-               errmsg=&quot;请填写正确的数值范围&quot; datatype=&quot;nrange&quot; emEl=&quot;nrange_n1011&quot; &gt;
-           &lt;em id=&quot;nrange_n1011&quot;&gt;&lt;/em&gt;
-       &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>       &lt;div class="f-l label"&gt;
+           &lt;label&gt;(datatype nrange)正数:&lt;br/&gt;&lt;b style="color:red"&gt;注意: 这个是大小颠倒位置的nrange&lt;/b&gt;&lt;/label&gt;
+           大&lt;input type="text" name="company_n10" id="company_n10" fromNEl="company_n11"
+               errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1011" &gt;
+           - 小&lt;input type="text" name="company_n11" id="company_n11" toNEl="company_n10"
+               errmsg="请填写正确的数值范围" datatype="nrange" emEl="nrange_n1011" &gt;
+           &lt;em id="nrange_n1011"&gt;&lt;/em&gt;
+       &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -2058,7 +2076,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>ValidInstance</p>
+                    ValidInstance
             </div>
         </div>
 </div>
@@ -2201,11 +2219,12 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_phone&quot; 
-                   datatype=&quot;phone&quot; 
-                   errmsg=&quot;请填写正确的电话号码&quot;&gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_phone" 
+                   datatype="phone" 
+                   errmsg="请填写正确的电话号码"&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -2253,11 +2272,12 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_mobilezone&quot; 
-                   datatype=&quot;phoneall&quot; 
-                   errmsg=&quot;请填写正确的电话号码&quot;&gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_mobilezone" 
+                   datatype="phoneall" 
+                   errmsg="请填写正确的电话号码"&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -2297,9 +2317,10 @@
             <h4>Example:</h4>
             <div class="example-content">
                 <pre class="code prettyprint"><code>           &lt;div&gt;
-               &lt;input type=&#39;TEXT&#39; name=&#39;company_phonecode&#39; style=&quot;width:80px;&quot; value=&#39;&#39; size=&quot;8&quot; 
-                   datatype=&quot;phonecode&quot; errmsg=&quot;请检查电话号码格式&quot; emEl=&quot;#phone-err-em&quot; /&gt;
-           &lt;/div&gt;</code></pre>
+               &lt;input type='TEXT' name='company_phonecode' style="width:80px;" value='' size="8" 
+                   datatype="phonecode" errmsg="请检查电话号码格式" emEl="#phone-err-em" /&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -2338,9 +2359,10 @@
             <h4>Example:</h4>
             <div class="example-content">
                 <pre class="code prettyprint"><code>           &lt;div&gt;
-               &lt;input type=&#39;TEXT&#39; name=&#39;company_phoneext&#39; style=&quot;width:40px;&quot; value=&#39;&#39; size=&quot;4&quot; 
-                   datatype=&quot;phoneext&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的分机号&quot; /&gt;
-           &lt;/div&gt;</code></pre>
+               &lt;input type='TEXT' name='company_phoneext' style="width:40px;" value='' size="4" 
+                   datatype="phoneext" emEl="#phone-err-em" errmsg="请填写正确的分机号" /&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -2379,9 +2401,10 @@
             <h4>Example:</h4>
             <div class="example-content">
                 <pre class="code prettyprint"><code>           &lt;div&gt;
-               &lt;input type=&#39;TEXT&#39; name=&#39;company_phonezone&#39; style=&quot;width:40px;&quot; value=&#39;&#39; size=&quot;4&quot; 
-                   datatype=&quot;phonezone&quot; emEl=&quot;#phone-err-em&quot; errmsg=&quot;请填写正确的电话区号&quot; /&gt;
-           &lt;/div&gt;</code></pre>
+               &lt;input type='TEXT' name='company_phonezone' style="width:40px;" value='' size="4" 
+                   datatype="phonezone" emEl="#phone-err-em" errmsg="请填写正确的电话区号" /&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -2421,25 +2444,26 @@
             <h4>Example:</h4>
             <div class="example-content">
                 <pre class="code prettyprint"><code>           &lt;dd&gt;
-           &lt;div class=&quot;f-l label&quot;&gt;
+           &lt;div class="f-l label"&gt;
                &lt;label&gt;(datatype text, subdatatype reconfirm)用户密码:&lt;/label&gt;
            &lt;/div&gt;
-           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;PASSWORD&quot; name=&quot;company_pwd&quot; 
-               datatype=&quot;text&quot; subdatatype=&quot;reconfirm&quot; datatarget=&quot;input[name=company_repwd]&quot; reconfirmmsg=&quot;用户密码和确认密码不一致&quot;
-               minlength=&quot;6&quot; maxlength=&quot;15&quot; reqmsg=&quot;用户密码&quot; errmsg=&quot;请填写正确的用户密码&quot;&gt;
+           &lt;div class="f-l"&gt;
+               &lt;input type="PASSWORD" name="company_pwd" 
+               datatype="text" subdatatype="reconfirm" datatarget="input[name=company_repwd]" reconfirmmsg="用户密码和确认密码不一致"
+               minlength="6" maxlength="15" reqmsg="用户密码" errmsg="请填写正确的用户密码"&gt;
            &lt;/div&gt;
            &lt;/dd&gt;
            &lt;dd&gt;
-           &lt;div class=&quot;f-l label&quot;&gt;
+           &lt;div class="f-l label"&gt;
                &lt;label&gt;(datatype text, subdatatype reconfirm)确认密码:&lt;/label&gt;
            &lt;/div&gt;
-           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;PASSWORD&quot; name=&quot;company_repwd&quot; 
-               datatype=&quot;text&quot; subdatatype=&quot;reconfirm&quot; datatarget=&quot;input[name=company_pwd]&quot; reconfirmmsg=&quot;确认密码和用户密码不一致&quot;
-               minlength=&quot;6&quot; maxlength=&quot;15&quot; reqmsg=&quot;确认密码&quot; errmsg=&quot;请填写正确的确认密码&quot;&gt;
+           &lt;div class="f-l"&gt;
+               &lt;input type="PASSWORD" name="company_repwd" 
+               datatype="text" subdatatype="reconfirm" datatarget="input[name=company_pwd]" reconfirmmsg="确认密码和用户密码不一致"
+               minlength="6" maxlength="15" reqmsg="确认密码" errmsg="请填写正确的确认密码"&gt;
            &lt;/div&gt;
-           &lt;/dd&gt;</code></pre>
+           &lt;/dd&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -2477,8 +2501,9 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>               &lt;div&gt;&lt;input type=&quot;TEXT&quot; name=&quot;company_addr&quot; datatype=&quot;reg&quot; reg-pattern=&quot;/^[\s\S]{2,120}$/i&quot; errmsg=&quot;请填写正确的地址&quot;&gt;&lt;/div&gt;
-               &lt;div&gt;&lt;input type=&quot;TEXT&quot; name=&quot;company_addr&quot; datatype=&quot;reg-/^[\s\S]{2,120}$/i&quot; errmsg=&quot;请填写正确的地址&quot;&gt;&lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>               &lt;div&gt;&lt;input type="TEXT" name="company_addr" datatype="reg" reg-pattern="/^[\s\S]{2,120}$/i" errmsg="请填写正确的地址"&gt;&lt;/div&gt;
+               &lt;div&gt;&lt;input type="TEXT" name="company_addr" datatype="reg-/^[\s\S]{2,120}$/i" errmsg="请填写正确的地址"&gt;&lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -2496,7 +2521,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2255"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2255</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2258"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2258</code></a>
         </p>
     </div>
     <div class="description">
@@ -2517,9 +2542,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_name&quot; reqmsg=&quot;公司名称&quot; /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_name" reqmsg="公司名称" /&gt; &lt;em&gt;公司名称描述&lt;/em&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -2610,8 +2636,8 @@
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
                     <div class="param-description">
                         <ul>
-<li>显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名<pre><code>                             &lt;br /&gt; 如果 _msgAttr 的第一个字符为空格, 将视为提示信息, 并自动生成属性 autoGenerateErrorMsg</code></pre>
-</li>
+<li>显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名
+                               <br /> 如果 _msgAttr 的第一个字符为空格, 将视为提示信息, 并自动生成属性 autoGenerateErrorMsg</li>
 </ul>
                     </div>
                 </li>
@@ -2672,8 +2698,8 @@
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
                     <div class="param-description">
                         <ul>
-<li>显示指定需要读取的focusmsg信息属性名, 默认为 focusmsg, 通过该属性可以指定别的属性名<pre><code>                             &lt;br /&gt; 如果 _msgAttr 的第一个字符为空格, 将视为提示信息, 并自动生成属性 autoGenerateFocusMsg</code></pre>
-</li>
+<li>显示指定需要读取的focusmsg信息属性名, 默认为 focusmsg, 通过该属性可以指定别的属性名
+                               <br /> 如果 _msgAttr 的第一个字符为空格, 将视为提示信息, 并自动生成属性 autoGenerateFocusMsg</li>
 </ul>
                     </div>
                 </li>
@@ -2790,9 +2816,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;&quot; datatype=&quot;taxcode&quot; errmsg=&quot;请填空正确的纳税人识别号&quot;&gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="" datatype="taxcode" errmsg="请填空正确的纳税人识别号"&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -2845,9 +2872,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_time&quot; errmsg=&quot;正确的时间, 格式为 hh:mm:ss&quot; datatype=&quot;time&quot; &gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_time" errmsg="正确的时间, 格式为 hh:mm:ss" datatype="time" &gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -2887,7 +2915,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    <p>ValidInstance</p>
+                    ValidInstance
             </div>
         </div>
 </div>
@@ -2957,9 +2985,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_url&quot; datatype=&quot;url&quot; errmsg=&quot;请填写正确的网址&quot;&gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_url" datatype="url" errmsg="请填写正确的网址"&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -2999,10 +3028,11 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_username&quot; 
-                   datatype=&quot;username&quot; reqmsg=&quot;用户名&quot; errmsg=&quot;请填写正确的用户名&quot;&gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_username" 
+                   datatype="username" reqmsg="用户名" errmsg="请填写正确的用户名"&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -3026,7 +3056,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2535"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2535</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2538"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2538</code></a>
         </p>
     </div>
     <div class="description">
@@ -3091,14 +3121,15 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_vcode&quot; style=&quot;width: 40px;&quot;
-                   datatype=&quot;vcode&quot; reqmsg=&quot;验证码&quot; errmsg=&quot;请填写正确的验证码&quot;&gt;
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_vcode" style="width: 40px;"
+                   datatype="vcode" reqmsg="验证码" errmsg="请填写正确的验证码"&gt;
            &lt;/div&gt;
-           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_vcode&quot; style=&quot;width: 40px;&quot;
-                   datatype=&quot;vcode-5&quot; errmsg=&quot;请填写正确的验证码&quot;&gt;
-           &lt;/div&gt;</code></pre>
+           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_vcode" style="width: 40px;"
+                   datatype="vcode-5" errmsg="请填写正确的验证码"&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -3136,9 +3167,10 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
-               &lt;input type=&quot;TEXT&quot; name=&quot;company_zipcode&quot; datatype=&quot;zipcode&quot; errmsg=&quot;请填写正确的邮编&quot;&gt;
-           &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>           &lt;div class="f-l"&gt;
+               &lt;input type="TEXT" name="company_zipcode" datatype="zipcode" errmsg="请填写正确的邮编"&gt;
+           &lt;/div&gt;
+</code></pre>
             </div>
         </div>
 </div>
@@ -3188,7 +3220,8 @@
             <div class="example-content">
                 <pre class="code prettyprint"><code>       $(document).ready( function($evt){
            JC.Valid.autoTrim = false;
-       });</code></pre>
+       });
+</code></pre>
             </div>
         </div>
 </div>
@@ -3227,7 +3260,8 @@
             <div class="example-content">
                 <pre class="code prettyprint"><code>       $(document).ready( function($evt){
            JC.Valid.errorAbort = true;
-       });</code></pre>
+       });
+</code></pre>
             </div>
         </div>
 </div>
@@ -3266,9 +3300,10 @@
                 <pre class="code prettyprint"><code>       $(document).ready( function($evt){
            JC.Valid.itemCallback =
                function( _item, _isValid ){
-                   JC.log( &#39;JC.Valid.itemCallback _isValid:&#39;, _isValid );
+                   JC.log( 'JC.Valid.itemCallback _isValid:', _isValid );
                };
-       });</code></pre>
+       });
+</code></pre>
             </div>
         </div>
 </div>
@@ -3296,7 +3331,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2665"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2665</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2668"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2668</code></a>
         </p>
     </div>
     <div class="description">
@@ -3309,7 +3344,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2661"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2661</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2664"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2664</code></a>
         </p>
     </div>
     <div class="description">
