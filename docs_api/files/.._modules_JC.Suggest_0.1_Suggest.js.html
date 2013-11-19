@@ -520,6 +520,9 @@
                     
                     _p.trigger(&#x27;SuggestSelected&#x27;, [_sp]);
                     _p._model.sugselectedcallback() &amp;&amp; _p._model.sugselectedcallback().call( _p, _keyword );
+                    setTimeout( function(){
+                        _p.selector().trigger( &#x27;blur&#x27; );
+                    }, 50);
                 });
 
                 if( _p._model.sugautoposition() ){
