@@ -342,6 +342,9 @@
                     
                     _p.trigger('SuggestSelected', [_sp]);
                     _p._model.sugselectedcallback() && _p._model.sugselectedcallback().call( _p, _keyword );
+                    setTimeout( function(){
+                        _p.selector().trigger( 'blur' );
+                    }, 50);
                 });
 
                 if( _p._model.sugautoposition() ){

@@ -223,6 +223,7 @@
      *              <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>
      *              <dd><b>uniqueIgnoreCase:</b> 是否忽略大小写</dd>
      *              <dd><b>uniqueIgnoreEmpty:</b> 是否忽略空的值, 如果组中有空值也会被忽略</dd>
+     *              <dd><b>processDisabled:</b> 是否处理 disabled 但 visible 的node</dd>
      *              <dd>unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组</dd>
      *          </dl>
      *      </dd>
@@ -2068,7 +2069,15 @@
                     _tmp = {};
                     _target.each( function( _ix ){
                         var _sp = $(this);
-                        if( ! _p.isAvalible( _sp ) ) return;
+                        if( _sp.is('[processDisabled]') 
+                            && ( !_sp.attr('processDisabled') 
+                                || JC.f.parseBool( _sp.attr('processDisabled' ) ) 
+                                )
+                        ){
+                            if( !_sp.is(':visible') ) return;
+                        }else{
+                            if( ! _p.isAvalible( _sp ) ) return;
+                        }
 
                         if( _p.checkRepeatProcess( _sp, _KEY, true ) ) {
                             _isReturn = true;

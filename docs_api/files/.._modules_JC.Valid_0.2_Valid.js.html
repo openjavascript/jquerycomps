@@ -401,6 +401,7 @@
      *              &lt;dd&gt;&lt;b&gt;uniquemsg:&lt;/b&gt; 值有重复的提示信息&lt;/dd&gt;
      *              &lt;dd&gt;&lt;b&gt;uniqueIgnoreCase:&lt;/b&gt; 是否忽略大小写&lt;/dd&gt;
      *              &lt;dd&gt;&lt;b&gt;uniqueIgnoreEmpty:&lt;/b&gt; 是否忽略空的值, 如果组中有空值也会被忽略&lt;/dd&gt;
+     *              &lt;dd&gt;&lt;b&gt;processDisabled:&lt;/b&gt; 是否处理 disabled 但 visible 的node&lt;/dd&gt;
      *              &lt;dd&gt;unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组&lt;/dd&gt;
      *          &lt;/dl&gt;
      *      &lt;/dd&gt;
@@ -2246,7 +2247,15 @@
                     _tmp = {};
                     _target.each( function( _ix ){
                         var _sp = $(this);
-                        if( ! _p.isAvalible( _sp ) ) return;
+                        if( _sp.is(&#x27;[processDisabled]&#x27;) 
+                            &amp;&amp; ( !_sp.attr(&#x27;processDisabled&#x27;) 
+                                || JC.f.parseBool( _sp.attr(&#x27;processDisabled&#x27; ) ) 
+                                )
+                        ){
+                            if( !_sp.is(&#x27;:visible&#x27;) ) return;
+                        }else{
+                            if( ! _p.isAvalible( _sp ) ) return;
+                        }
 
                         if( _p.checkRepeatProcess( _sp, _KEY, true ) ) {
                             _isReturn = true;
