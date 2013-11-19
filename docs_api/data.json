@@ -288,20 +288,10 @@
             "fors": {},
             "namespaces": {}
         },
-        "../jquery.js": {
-            "name": "../jquery.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {
-                "window": 1
-            }
-        },
         "../lib.js": {
             "name": "../lib.js",
             "modules": {},
             "classes": {
-                "JC.jQuery": 1,
                 "JC.common": 1,
                 "window.JC": 1,
                 "window.UXC": 1,
@@ -311,8 +301,8 @@
             },
             "fors": {},
             "namespaces": {
-                "window": 1,
-                "JC": 1
+                "JC": 1,
+                "window": 1
             }
         }
     },
@@ -329,7 +319,7 @@
             "namespace": "window.Bizs",
             "file": "../bizs/ActionLogic/ActionLogic.js",
             "line": 1,
-            "description": "<h2>node 点击操作逻辑</h2>\n应用场景\n<br/>点击后弹框( 脚本模板 )\n<br/>点击后弹框( AJAX )\n<br/>点击后弹框( Dom 模板 )\n<br/>点击后执行 AJAX 操作\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/ActionLogic/_demo' target='_blank'>demo link</a></p>\n\nrequire: <a href='../classes/window.jQuery.html'>jQuery</a>\n<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>\n\na|button 需要 添加 class=\"js_bizsActionLogic\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>balType = string, 操作类型 </dt>\n     <dd>\n         <dl>\n             <dt>类型:</dt>\n             <dd>panel: 弹框</dd>\n             <dd>link: 链接跳转</dd>\n             <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>\n         </dl>\n     </dd>\n</dl>\n<h2>balType = panel 可用的 HTML 属性</h2>\n<dl>\n     <dt>balPanelTpl = script selector</dt>\n     <dd>脚本模板选择器</dd>\n\n     <dt>balAjaxHtml = url</dt>\n     <dd>返回 HTML 的 AJAX 模板</dd>\n\n     <dt>balAjaxData = url</dt>\n     <dd>返回 json 的 AJAX 模板, { errorno: int, data: html } </dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         显示模板后的回调\n<xmp>function balPanelInitCb( _panelIns ){\n   var _trigger = $(this);\n   //return true; //如果返回真的话, 表单提交后会关闭弹框\n}</xmp>\n     </dd>\n</dl>\n<h2>balType = link 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>要跳转的目标 URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>跳转前的二次确认提示信息</dd>\n\n     <dt>balConfirmPopupType = string, default = confirm</dt>\n     <dd>二次确认的弹框类型: confirm, dialog.confirm</dd>\n</dl>\n<h2>balType = ajaxaction 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>AJAX 操作的接口</dd>\n\n     <dt>balDoneUrl = url</dt>\n     <dd>AJAX 操作完成后跳转的URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>操作前的二次确认提示信息</dd>\n\n     <dt>balErrorPopupType = string, default = dialog.alert</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balSuccessPopupType = string, default = msgbox</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         操作完成后的回调\n<xmp>function ajaxDelCallback( _d, _ins ){\n   var _trigger = $(this);\n   if( _d && !_d.errorno ){\n       JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){\n           reloadPage( '?usercallback=ajaxaction' );\n       });\n   }else{\n       JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );\n   }\n}\n</xmp>\n     </dd>\n</dl>",
+            "description": "<h2>node 点击操作逻辑</h2>\n应用场景\n<br/>点击后弹框( 脚本模板 )\n<br/>点击后弹框( AJAX )\n<br/>点击后弹框( Dom 模板 )\n<br/>点击后执行 AJAX 操作\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/ActionLogic/_demo' target='_blank'>demo link</a></p>\n\nrequire: <a href='../classes/window.jQuery.html'>jQuery</a>\n<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>\n\na|button 需要 添加 class=\"js_bizsActionLogic\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>balType = string, 操作类型 </dt>\n     <dd>\n         <dl>\n             <dt>类型:</dt>\n             <dd>panel: 弹框</dd>\n             <dd>link: 链接跳转</dd>\n             <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>\n         </dl>\n     </dd>\n</dl>\n<h2>balType = panel 可用的 HTML 属性</h2>\n<dl>\n     <dt>balPanelTpl = script selector</dt>\n     <dd>脚本模板选择器</dd>\n\n     <dt>balAjaxHtml = url</dt>\n     <dd>返回 HTML 的 AJAX 模板</dd>\n\n     <dt>balAjaxData = url</dt>\n     <dd>返回 json 的 AJAX 模板, { errorno: int, data: html } </dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         显示模板后的回调\n<pre>function balPanelInitCb( _panelIns ){\n   var _trigger = $(this);\n   //return true; //如果返回真的话, 表单提交后会关闭弹框\n}</pre>\n     </dd>\n</dl>\n<h2>balType = link 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>要跳转的目标 URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>跳转前的二次确认提示信息</dd>\n\n     <dt>balConfirmPopupType = string, default = confirm</dt>\n     <dd>二次确认的弹框类型: confirm, dialog.confirm</dd>\n</dl>\n<h2>balType = ajaxaction 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>AJAX 操作的接口</dd>\n\n     <dt>balDoneUrl = url</dt>\n     <dd>AJAX 操作完成后跳转的URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>操作前的二次确认提示信息</dd>\n\n     <dt>balErrorPopupType = string, default = dialog.alert</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balSuccessPopupType = string, default = msgbox</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         操作完成后的回调\n<pre>function ajaxDelCallback( _d, _ins ){\n   var _trigger = $(this);\n   if( _d && !_d.errorno ){\n       JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){\n           reloadPage( '?usercallback=ajaxaction' );\n       });\n   }else{\n       JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );\n   }\n}\n</pre>\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-17",
@@ -346,7 +336,7 @@
             "namespace": "window.Bizs",
             "file": "../bizs/CommonModify/CommonModify.js",
             "line": 1,
-            "description": "<h2>Dom 通用 添加删除 逻辑</h2>\n<br/>应用场景\n<br/>需要动态添加删除内容的地方可以使用这个类\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>\n| <a href='../../bizs/CommonModify/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_autoCommonModify\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>[cmtpl | cmtemplate] = script selector</dt>\n     <dd>指定保存模板的 script 标签</dd>\n\n     <dt>cmitem = selector</dt>\n     <dd>添加时, 目标位置的 父节点/兄弟节点</dd>\n\n     <dt>cmaction = string, [add, del], default = add</dt>\n     <dd>操作类型</dd>\n\n     <dt>cmappendtype = string, default = after</dt>\n     <dd>指定 node 添加 dom 的方法, 可选类型: before, after, appendTo</dd>\n\n     <dt>cmdonecallback = function</dt>\n     <dd>\n     添加或删除完后会触发的回调, <b>window 变量域</b>\n<xmp>function cmdonecallback( _ins, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmdonecallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmtplfiltercallback = function</dt>\n     <dd>\n     模板内容过滤回调, <b>window 变量域</b>\n<xmp>window.COUNT = 1;\nfunction cmtplfiltercallback( _tpl, _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmtplfiltercallback', new Date().getTime() );\n   _tpl = printf( _tpl, COUNT++ );\n\n   return _tpl;\n}</xmp>\n     </dd>\n\n     <dt>cmbeforeaddcallabck = function</dt>\n     <dd>\n     添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b>\n<xmp>function cmbeforeaddcallabck( _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforeaddcallabck', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>cmaddcallback = function</dt>\n     <dd>\n     添加完成的回调, <b>window 变量域</b>\n<xmp>function cmaddcallback( _ins, _newItem, _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmaddcallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmbeforedelcallback = function</dt>\n     <dd>\n     删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b>\n<xmp>function cmbeforedelcallback( _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforedelcallback', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>cmdelcallback = function</dt>\n     <dd>\n     删除完成的回调, <b>window 变量域</b>\n<xmp>function cmdelcallback( _ins, _boxParent ){\n   JC.log( 'cmdelcallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmMaxItems = int</dt>\n     <dd>\n         指定最多可添加数量\n         <br /><b>要使 cmMaxItems 生效, 必须声明 cmAddedItemsSelector</b>\n     </dd>\n\n     <dt>cmAddedItemsSelector = selector</dt>\n     <dd>\n         指定查找所有上传项的选择器语法\n     </dd>\n\n     <dt>cmOutRangeMsg = string, default = \"最多只能上传 {0}个文件!\"</dt>\n     <dd>\n         添加数量超出 cmMaxItems 时的提示信息\n     </dd>\n</dl>",
+            "description": "<h2>Dom 通用 添加删除 逻辑</h2>\n<br/>应用场景\n<br/>需要动态添加删除内容的地方可以使用这个类\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>\n| <a href='../../bizs/CommonModify/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_autoCommonModify\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>[cmtpl | cmtemplate] = script selector</dt>\n     <dd>指定保存模板的 script 标签</dd>\n\n     <dt>cmitem = selector</dt>\n     <dd>添加时, 目标位置的 父节点/兄弟节点</dd>\n\n     <dt>cmaction = string, [add, del], default = add</dt>\n     <dd>操作类型</dd>\n\n     <dt>cmappendtype = string, default = after</dt>\n     <dd>指定 node 添加 dom 的方法, 可选类型: before, after, appendTo</dd>\n\n     <dt>cmdonecallback = function</dt>\n     <dd>\n     添加或删除完后会触发的回调, <b>window 变量域</b>\n<pre>function cmdonecallback( _ins, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmdonecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>cmtplfiltercallback = function</dt>\n     <dd>\n     模板内容过滤回调, <b>window 变量域</b>\n<pre>window.COUNT = 1;\nfunction cmtplfiltercallback( _tpl, _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmtplfiltercallback', new Date().getTime() );\n   _tpl = printf( _tpl, COUNT++ );\n\n   return _tpl;\n}</pre>\n     </dd>\n\n     <dt>cmbeforeaddcallabck = function</dt>\n     <dd>\n     添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b>\n<pre>function cmbeforeaddcallabck( _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforeaddcallabck', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>cmaddcallback = function</dt>\n     <dd>\n     添加完成的回调, <b>window 变量域</b>\n<pre>function cmaddcallback( _ins, _newItem, _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmaddcallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>cmbeforedelcallback = function</dt>\n     <dd>\n     删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b>\n<pre>function cmbeforedelcallback( _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforedelcallback', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>cmdelcallback = function</dt>\n     <dd>\n     删除完成的回调, <b>window 变量域</b>\n<pre>function cmdelcallback( _ins, _boxParent ){\n   JC.log( 'cmdelcallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>cmMaxItems = int</dt>\n     <dd>\n         指定最多可添加数量\n         <br /><b>要使 cmMaxItems 生效, 必须声明 cmAddedItemsSelector</b>\n     </dd>\n\n     <dt>cmAddedItemsSelector = selector</dt>\n     <dd>\n         指定查找所有上传项的选择器语法\n     </dd>\n\n     <dt>cmOutRangeMsg = string, default = \"最多只能上传 {0}个文件!\"</dt>\n     <dd>\n         添加数量超出 cmMaxItems 时的提示信息\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-04",
@@ -366,7 +356,7 @@
             "namespace": "window.Bizs",
             "file": "../bizs/DisableLogic/DisableLogic.js",
             "line": 1,
-            "description": "<h2>Form Control禁用启用逻辑</h2>\n<br/>应用场景</br>\n<br/>表单操作时, 选择某个 radio 时, 对应的 内容有效,\n<br/>但选择其他 radio 时, 其他的内容无效\n<br/>checkbox / select 也可使用( 带change事件的标签 )\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/DisableLogic/_demo' target='_blank'>demo link</a></p>\n\ndiv 需要 添加 class=\"js_bizsDisableLogic\"\n\n<h2>box 的 HTML 属性</h2>\n<dl>\n     <dt>dltrigger</dt>\n     <dd>触发禁用/起用的control</dd>\n\n     <dt>dltarget</dt>\n     <dd>需要禁用/起用的control</dd>\n\n     <dt>dlhidetarget</dt>\n     <dd>需要根据禁用起用隐藏/可见的标签</dd>\n\n     <dt>dldonecallback = function</dt>\n     <dd>\n     启用/禁用后会触发的回调, <b>window 变量域</b>\n<xmp>function dldonecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldonecallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>dlenablecallback = function</dt>\n     <dd>\n     启用后的回调, <b>window 变量域</b>\n<xmp>function dlenablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dlenablecallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>dldisablecallback = function</dt>\n     <dd>\n     禁用后的回调, <b>window 变量域</b>\n<xmp>function dldisablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldisablecallback', new Date().getTime() );\n}</xmp>\n     </dd>\n</dl>\n\n<h2>trigger 的 HTML 属性</h2>\n<dl>\n     <dt>dldisable = bool, default = false</dt>\n     <dd>\n         指定 dltarget 是否置为无效\n         <br />还可以根据这个属性 指定 dlhidetarget 是否显示\n     </dd>\n\n     <dt>dldisplay = bool</dt>\n     <dd>指定 dlhidetarget 是否显示</dd>\n\n     <dt>dlhidetargetsub = selector</dt>\n     <dd>根据 trigger 的 checked 状态 显示或者隐藏 dlhidetargetsub node</dd>\n</dl>\n\n<h2>hide target 的 HTML 属性</h2>\n<dl>\n     <dt>dlhidetoggle = bool</dt>\n     <dd>显示或显示的时候, 是否与他项相反</dd>\n</dl>",
+            "description": "<h2>Form Control禁用启用逻辑</h2>\n<br/>应用场景</br>\n<br/>表单操作时, 选择某个 radio 时, 对应的 内容有效,\n<br/>但选择其他 radio 时, 其他的内容无效\n<br/>checkbox / select 也可使用( 带change事件的标签 )\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/DisableLogic/_demo' target='_blank'>demo link</a></p>\n\ndiv 需要 添加 class=\"js_bizsDisableLogic\"\n\n<h2>box 的 HTML 属性</h2>\n<dl>\n     <dt>dltrigger</dt>\n     <dd>触发禁用/起用的control</dd>\n\n     <dt>dltarget</dt>\n     <dd>需要禁用/起用的control</dd>\n\n     <dt>dlhidetarget</dt>\n     <dd>需要根据禁用起用隐藏/可见的标签</dd>\n\n     <dt>dldonecallback = function</dt>\n     <dd>\n     启用/禁用后会触发的回调, <b>window 变量域</b>\n<pre>function dldonecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldonecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>dlenablecallback = function</dt>\n     <dd>\n     启用后的回调, <b>window 变量域</b>\n<pre>function dlenablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dlenablecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>dldisablecallback = function</dt>\n     <dd>\n     禁用后的回调, <b>window 变量域</b>\n<pre>function dldisablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldisablecallback', new Date().getTime() );\n}</pre>\n     </dd>\n</dl>\n\n<h2>trigger 的 HTML 属性</h2>\n<dl>\n     <dt>dldisable = bool, default = false</dt>\n     <dd>\n         指定 dltarget 是否置为无效\n         <br />还可以根据这个属性 指定 dlhidetarget 是否显示\n     </dd>\n\n     <dt>dldisplay = bool</dt>\n     <dd>指定 dlhidetarget 是否显示</dd>\n\n     <dt>dlhidetargetsub = selector</dt>\n     <dd>根据 trigger 的 checked 状态 显示或者隐藏 dlhidetargetsub node</dd>\n</dl>\n\n<h2>hide target 的 HTML 属性</h2>\n<dl>\n     <dt>dlhidetoggle = bool</dt>\n     <dd>显示或显示的时候, 是否与他项相反</dd>\n</dl>",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-04",
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
@@ -385,7 +375,7 @@
             "namespace": "window.Bizs",
             "file": "../bizs/FormLogic/FormLogic.js",
             "line": 3,
-            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>\nrequire: <a href='../classes/window.jQuery.html'>jQuery</a>\n<br/>require: <a href='../classes/JC.Valid.html'>JC.Valid</a>\n<br/>require: <a href='../classes/JC.Form.html'>JC.Form</a>\n<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>\n<xmp>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>formProcessError = function</dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>\n<xmp>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>\n<xmp>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<xmp>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</xmp>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<xmp>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</xmp>\n     </dt>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n</dl>",
+            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>\nrequire: <a href='../classes/window.jQuery.html'>jQuery</a>\n<br/>require: <a href='../classes/JC.Valid.html'>JC.Valid</a>\n<br/>require: <a href='../classes/JC.Form.html'>JC.Form</a>\n<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function</dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dt>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-08",
@@ -443,7 +433,7 @@
             "namespace": "JC",
             "file": "../comps/AjaxUpload/AjaxUpload.js",
             "line": 3,
-            "description": "Ajax 文件上传\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../comps/AjaxUpload/_demo' target='_blank'>demo link</a>\n</p>\n<p>\n     <b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../comps/AjaxUpload/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>\n     <dd>\n         上传完成后是否隐藏上传按钮\n     </dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<xmp>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</xmp>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<xmp>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</xmp>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<xmp>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = printf( '<a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}</a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;<a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\"></a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</xmp>\n     </dd>\n</dl>",
+            "description": "Ajax 文件上传\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../comps/AjaxUpload/_demo' target='_blank'>demo link</a>\n</p>\n<p>\n     <b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../comps/AjaxUpload/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>\n     <dd>\n         上传完成后是否隐藏上传按钮\n     </dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<pre>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = printf( '<a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}</a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;<a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\"></a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</pre>\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -497,7 +487,7 @@
             "namespace": "JC",
             "file": "../comps/AutoSelect/AutoSelect.js",
             "line": 4,
-            "description": "<h2>select 级联下拉框无限联动</h2>\n<br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能\n<br /><br />动态添加的 DOM 需要显式调用 JC.AutoSelect( domSelector ) 进行初始化\n<br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoSelect.html' target='_blank'>API docs</a>\n| <a href='../../comps/AutoSelect/_demo' target='_blank'>demo link</a></p>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<h2>select 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultselect, 这个属性不需要赋值</dt>\n     <dd>该属性声明这是级联下拉框的第一个下拉框, <b>这是必填项,初始化时以这个为入口</b></dd>\n\n     <dt>selectvalue = string</dt>\n     <dd>下拉框的默认选中值</dd>\n\n     <dt>selecturl = AJAX 数据请求的URL</dt>\n     <dd>下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符</dd>\n\n     <dt>selectignoreinitrequest = bool, default = false</dt>\n     <dd>\n         首次初始化时, 是否需要请求新数据\n         <br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多\n     </dd>\n\n     <dt>selecttarget = selector</dt>\n     <dd>下一级下拉框的选择器语法</dd>\n\n     <dt>selectdatacb = 静态数据请求回调</dt>\n     <dd>如果数据不需要 AJAX 请求, 可使用这个属性, 自行定义数据处理方式</dd>\n\n     <dt>selectrandomurl = bool, default = false</dt>\n     <dd>AJAX 请求时, 添加随机参数, 防止数据缓存</dd>\n\n     <dt>selecttriggerinitchange = bool, default = true</dt>\n     <dd>首次初始化时, 是否触发 change 事件</dd>\n\n     <dt>selecthideempty = bool, default = false</dt>\n     <dd>是否隐藏没有数据的 selecct</dd>\n\n     <dt>selectdatafilter = 请求数据后的处理回调</dt>\n     <dd>如果接口的数据不符合 select 的要求, 可通过这个属性定义数据过滤函数</dd>\n\n     <dt>selectbeforeinited = 初始化之前的回调</dt>\n\n     <dt>selectinited = 初始化后的回调</dt>\n<dd><xmp>function selectinited( _items ){\n   var _ins = this;\n}</xmp>\n</dd>\n\n     <dt>selectallchanged = 所有select请求完数据之后的回调, <b>window 变量域</b></dt>\n     <dd><xmp>function selectallchanged( _items ){\n   var _ins = this;\n}</xmp>\n     </dd>\n</dl>\n<h2>option 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultoption, 这个属性不需要赋值</dt>\n     <dd>声明默认 option 选项, 更新option时, 有该属性的项不会被清除</dd>\n</dl>\n<h2>数据格式</h2>\n<p>\n     [ [id, name], [id, name] ... ]\n     <br /> 如果获取到的数据格式不是默认格式,\n     可以通过 <a href='JC.AutoSelect.html#property_dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤\n</p>",
+            "description": "<h2>select 级联下拉框无限联动</h2>\n<br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能\n<br /><br />动态添加的 DOM 需要显式调用 JC.AutoSelect( domSelector ) 进行初始化\n<br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoSelect.html' target='_blank'>API docs</a>\n| <a href='../../comps/AutoSelect/_demo' target='_blank'>demo link</a></p>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<h2>select 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultselect, 这个属性不需要赋值</dt>\n     <dd>该属性声明这是级联下拉框的第一个下拉框, <b>这是必填项,初始化时以这个为入口</b></dd>\n\n     <dt>selectvalue = string</dt>\n     <dd>下拉框的默认选中值</dd>\n\n     <dt>selecturl = AJAX 数据请求的URL</dt>\n     <dd>下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符</dd>\n\n     <dt>selectignoreinitrequest = bool, default = false</dt>\n     <dd>\n         首次初始化时, 是否需要请求新数据\n         <br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多\n     </dd>\n\n     <dt>selecttarget = selector</dt>\n     <dd>下一级下拉框的选择器语法</dd>\n\n     <dt>selectdatacb = 静态数据请求回调</dt>\n     <dd>如果数据不需要 AJAX 请求, 可使用这个属性, 自行定义数据处理方式</dd>\n\n     <dt>selectrandomurl = bool, default = false</dt>\n     <dd>AJAX 请求时, 添加随机参数, 防止数据缓存</dd>\n\n     <dt>selecttriggerinitchange = bool, default = true</dt>\n     <dd>首次初始化时, 是否触发 change 事件</dd>\n\n     <dt>selecthideempty = bool, default = false</dt>\n     <dd>是否隐藏没有数据的 selecct</dd>\n\n     <dt>selectdatafilter = 请求数据后的处理回调</dt>\n     <dd>如果接口的数据不符合 select 的要求, 可通过这个属性定义数据过滤函数</dd>\n\n     <dt>selectbeforeinited = 初始化之前的回调</dt>\n\n     <dt>selectinited = 初始化后的回调</dt>\n<dd><pre>function selectinited( _items ){\n   var _ins = this;\n}</pre>\n</dd>\n\n     <dt>selectallchanged = 所有select请求完数据之后的回调, <b>window 变量域</b></dt>\n     <dd><pre>function selectallchanged( _items ){\n   var _ins = this;\n}</pre>\n     </dd>\n</dl>\n<h2>option 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultoption, 这个属性不需要赋值</dt>\n     <dd>声明默认 option 选项, 更新option时, 有该属性的项不会被清除</dd>\n</dl>\n<h2>数据格式</h2>\n<p>\n     [ [id, name], [id, name] ... ]\n     <br /> 如果获取到的数据格式不是默认格式,\n     可以通过 <a href='JC.AutoSelect.html#property_dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤\n</p>",
             "static": 1,
             "version": "dev 0.2",
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
@@ -523,7 +513,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/Calendar/Calendar.js",
-            "line": 3,
+            "line": 4,
             "description": "日期选择组件\n<br />全局访问请使用 JC.Calendar 或 Calendar\n<br />DOM 加载完毕后\n, Calendar会自动初始化页面所有日历组件, input[type=text][datatype=date]标签\n<br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动使用Calendar.init( _selector )\n<br />_selector 可以是 新加载的容器, 也可以是新加载的所有input\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n<br /><b>require</b>: <a href='.window.html#method_cloneDate'>window.cloneDate</a>\n<br /><b>require</b>: <a href='.window.html#method_parseISODate'>window.parseISODate</a>\n<br /><b>require</b>: <a href='.window.html#method_formatISODate'>window.formatISODate</a>\n<br /><b>require</b>: <a href='.window.html#method_maxDayOfMonth'>window.maxDayOfMonth</a>\n<br /><b>require</b>: <a href='.window.html#method_isSameDay'>window.isSameDay</a>\n<br /><b>require</b>: <a href='.window.html#method_isSameMonth'>window.isSameMonth</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Calendar.html' target='_blank'>API docs</a>\n| <a href='../../comps/Calendar/_demo/' target='_blank'>demo link</a></p>\n<h2> 可用的html attribute, (input|button):(datatype|multidate)=(date|week|month|season) </h2> \n<dl>\n     <dt>defaultdate = ISO Date</dt>\n     <dd>默认显示日期, 如果 value 为空, 则尝试读取 defaultdate 属性</dd>\n\n     <dt>datatype = string</dt>\n     <dd>\n         声明日历控件的类型:\n         <p><b>date:</b> 日期日历</p>\n         <p><b>week:</b> 周日历</p>\n         <p><b>month:</b> 月日历</p>\n         <p><b>season:</b> 季日历</p>\n         <p><b>monthday:</b> 多选日期日历</p>\n     </dd>\n\n     <dt>multidate = string</dt>\n     <dd>\n         与 datatype 一样, 这个是扩展属性, 避免表单验证带来的逻辑冲突\n     </dd>\n\n     <dt>calendarshow = function</dt>\n     <dd>显示日历时的回调</dd>\n\n     <dt>calendarhide = function</dt>\n     <dd>隐藏日历时的回调</dd>\n\n     <dt>calendarlayoutchange = function</dt>\n     <dd>用户点击日历控件操作按钮后, 外观产生变化时触发的回调</dd>\n\n     <dt>calendarupdate = function</dt>\n     <dd>\n         赋值后触发的回调\n         <dl>\n             <dt>参数:</dt>\n             <dd><b>_startDate:</b> 开始日期</dd>\n             <dd><b>_endDate:</b> 结束日期</dd>\n         </dl>\n     </dd>\n\n     <dt>calendarclear = function</dt>\n     <dd>清空日期触发的回调</dd>\n\n     <dt>minvalue = ISO Date</dt>\n     <dd>日期的最小时间, YYYY-MM-DD</dd>\n\n     <dt>maxvalue = ISO Date</dt>\n     <dd>日期的最大时间, YYYY-MM-DD</dd>\n\n     <dt>currentcanselect = bool, default = true</dt>\n     <dd>当前日期是否能选择</dd>\n\n     <dt>multiselect = bool (目前支持 month: default=false, monthday: default = treu)</dt>\n     <dd>是否为多选日历</dd>\n\n     <dt>calendarupdatemultiselect = function</dt>\n     <dd>\n         多选日历赋值后触发的回调\n         <dl>\n             <dt>参数: _data:</dt>\n             <dd>\n                 [{\"start\": Date,\"end\": Date}[, {\"start\": Date,\"end\": Date}... ] ]\n             </dd>\n         </dl>\n     </dd>\n</dl>",
             "version": "dev 0.1, 2013-06-04",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
@@ -659,7 +649,7 @@
             "namespace": "JC",
             "file": "../comps/Panel/Panel.js",
             "line": 4,
-            "description": "弹出层基础类 JC.Panel\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<h2>Panel Layout 可用的 html attribute</h2>\n<dl>\n     <dt>panelclickclose = bool</dt>\n     <dd>点击 Panel 外时, 是否关闭 panel</dd>\n\n     <dt>panelautoclose = bool</dt>\n     <dd>Panel 是否自动关闭, 默认关闭时间间隔 = 2000 ms</dd>\n\n     <dt>panelautoclosems = int, default = 2000 ms</dt>\n     <dd>自动关闭 Panel 的时间间隔</dd>\n</dl>\n<h2>a, button 可用的 html attribute( 自动生成弹框)</h2>\n<dl>\n     <dt>paneltype = string, require</dt>\n     <dd>\n         弹框类型: alert, confirm, msgbox, panel \n         <br />dialog.alert, dialog.confirm, dialog.msgbox, dialog\n     </dd>\n\n     <dt>panelmsg = string</dt>\n     <dd>要显示的内容</dd>\n\n     <dt>panelmsgBox = script selector</dt>\n     <dd>要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性</dd>\n\n     <dt>panelstatus = int, default = 0</dt>\n     <dd>\n         弹框状态: 0: 成功, 1: 失败, 2: 警告 \n         <br /><b>类型不为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelcallback = function</dt>\n     <dd>\n         点击确定按钮的回调, <b>window 变量域</b>\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>\n     </dd>\n\n     <dt>panelcancelcallback = function</dt>\n     <dd>\n         点击取消按钮的回调, <b>window 变量域</b>\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>\n     </dd>\n\n     <dt>panelclosecallback = function</dt>\n     <dd>\n         弹框关闭时的回调, <b>window 变量域</b>\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>\n     </dd>\n\n     <dt>panelbutton = int, default = 0</dt>\n     <dd>\n         要显示的按钮, 0: 无, 1: 确定, 2: 确定, 取消\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelheader = string</dt>\n     <dd>\n         panel header 的显示内容\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelheaderBox = script selector</dt>\n     <dd>\n         panel header 的显示内容\n         <br />要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelfooterbox = script selector</dt>\n     <dd>\n         panel footer 的显示内容\n         <br />要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelhideclose = bool, default = false</dt>\n     <dd>\n         是否隐藏关闭按钮\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n</dl>",
+            "description": "弹出层基础类 JC.Panel\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>\n| <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<h2>Panel Layout 可用的 html attribute</h2>\n<dl>\n     <dt>panelclickclose = bool</dt>\n     <dd>点击 Panel 外时, 是否关闭 panel</dd>\n\n     <dt>panelautoclose = bool</dt>\n     <dd>Panel 是否自动关闭, 默认关闭时间间隔 = 2000 ms</dd>\n\n     <dt>panelautoclosems = int, default = 2000 ms</dt>\n     <dd>自动关闭 Panel 的时间间隔</dd>\n</dl>\n<h2>a, button 可用的 html attribute( 自动生成弹框)</h2>\n<dl>\n     <dt>paneltype = string, require</dt>\n     <dd>\n         弹框类型: alert, confirm, msgbox, panel \n         <br />dialog.alert, dialog.confirm, dialog.msgbox, dialog\n     </dd>\n\n     <dt>panelmsg = string</dt>\n     <dd>要显示的内容</dd>\n\n     <dt>panelmsgBox = script selector</dt>\n     <dd>要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性</dd>\n\n     <dt>panelstatus = int, default = 0</dt>\n     <dd>\n         弹框状态: 0: 成功, 1: 失败, 2: 警告 \n         <br /><b>类型不为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelcallback = function</dt>\n     <dd>\n         点击确定按钮的回调, <b>window 变量域</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>\n     </dd>\n\n     <dt>panelcancelcallback = function</dt>\n     <dd>\n         点击取消按钮的回调, <b>window 变量域</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>\n     </dd>\n\n     <dt>panelclosecallback = function</dt>\n     <dd>\n         弹框关闭时的回调, <b>window 变量域</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>\n     </dd>\n\n     <dt>panelbutton = int, default = 0</dt>\n     <dd>\n         要显示的按钮, 0: 无, 1: 确定, 2: 确定, 取消\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelheader = string</dt>\n     <dd>\n         panel header 的显示内容\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelheaderBox = script selector</dt>\n     <dd>\n         panel header 的显示内容\n         <br />要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelfooterbox = script selector</dt>\n     <dd>\n         panel footer 的显示内容\n         <br />要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelhideclose = bool, default = false</dt>\n     <dd>\n         是否隐藏关闭按钮\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n</dl>",
             "is_constructor": 1,
             "params": [
                 {
@@ -819,7 +809,7 @@
                 },
                 {
                     "name": "_cb",
-                    "description": "弹框自动关闭后的的回调, <b>如果 _cb 为 int 值, 将视为 _closeMs</b>\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "弹框自动关闭后的的回调, <b>如果 _cb 为 int 值, 将视为 _closeMs</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 },
                 {
@@ -865,7 +855,7 @@
                 },
                 {
                     "name": "_cb",
-                    "description": "点击弹框确定按钮的回调\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "点击弹框确定按钮的回调\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 }
             ],
@@ -906,12 +896,12 @@
                 },
                 {
                     "name": "_cb",
-                    "description": "点击弹框确定按钮的回调\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "点击弹框确定按钮的回调\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 },
                 {
                     "name": "_cancelCb",
-                    "description": "点击弹框取消按钮的回调\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "点击弹框取消按钮的回调\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 }
             ],
@@ -988,7 +978,7 @@
                 },
                 {
                     "name": "_cb",
-                    "description": "弹框自动关闭后的的回调, <b>如果 _cb 为 int 值, 将视为 _closeMs</b>\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "弹框自动关闭后的的回调, <b>如果 _cb 为 int 值, 将视为 _closeMs</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 },
                 {
@@ -1029,7 +1019,7 @@
                 },
                 {
                     "name": "_cb",
-                    "description": "点击弹框确定按钮的回调\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "点击弹框确定按钮的回调\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 }
             ],
@@ -1065,12 +1055,12 @@
                 },
                 {
                     "name": "_cb",
-                    "description": "点击弹框确定按钮的回调\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "点击弹框确定按钮的回调\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 },
                 {
                     "name": "_cancelCb",
-                    "description": "点击弹框取消按钮的回调\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "点击弹框取消按钮的回调\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 }
             ],
@@ -1183,7 +1173,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/Suggest/Suggest.js",
-            "line": 3,
+            "line": 5,
             "description": "Suggest 关键词补全提示类\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Suggest.html' target='_blank'>API docs</a>\n| <a href='../../comps/Suggest/_demo' target='_blank'>demo link</a></p>\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>sugwidth: int</dt>\n     <dd>显示列表的宽度</dd>\n\n     <dt>suglayout: selector</dt>\n     <dd>显示列表的容器</dd>\n\n     <dt>sugdatacallback: string</dt>\n     <dd>\n         请求 JSONP 数据的回调名\n         <br /><b>注意:</b> 是字符串, 不是函数, 并且确保 window 下没有同名函数\n     </dd>\n\n     <dt>suginitedcallback: string</dt>\n     <dd>\n         初始化完毕后的回调名称\n     </dd>\n\n     <dt>sugurl: string</dt>\n     <dd>\n         数据请求 URL API\n         <br />例: http://sug.so.360.cn/suggest/word?callback={1}&encodein=utf-8&encodeout=utf-8&word={0} \n         <br />{0}=关键词, {1}=回调名称\n     </dd>\n\n     <dt>sugqueryinterval: int, default = 200</dt>\n     <dd>\n         设置用户输入内容时, 响应的间隔, 避免不必要的请求\n     </dd>\n\n     <dt>sugneedscripttag: bool, default=true</dt>\n     <dd>\n         是否需要 自动添加 script 标签\n         <br />Sugggest 设计为支持三种数据格式: JSONP, AJAX, static data\n         <br />目前只支持 JSONP 数据\n     </dd>\n\n     <dt>sugselectedcallback: function</dt>\n     <dd>用户鼠标点击选择关键词后的回调</dd>\n\n     <dt>sugdatafilter: function</dt>\n     <dd>数据过滤回调</dd>\n\n     <dt>sugsubtagname: string, default = dd</dt>\n     <dd>显式定义 suggest 列表的子标签名</dd>\n\n     <dt>suglayouttpl: string</dt>\n     <dd>显式定义 suggest 列表显示模板</dd>\n\n     <dt>sugautoposition: bool, default = false</dt>\n     <dd>式声明是否要自动识别显示位置</dd>\n\n     <dt>sugoffsetleft: int, default = 0</dt>\n     <dd>声明显示时, x轴的偏移像素</dd>\n\n     <dt>sugoffsettop: int, default = 0</dt>\n     <dd>声明显示时, y轴的偏移像素</dd>\n\n     <dt>sugoffsetwidth: int, default = 0</dt>\n     <dd>首次初始化时, layout的偏移宽度</dd>\n\n     <dt>sugplaceholder: selector</dt>\n     <dd>声明自动定位时, 显示位置的占位符标签</dd>\n\n     <dt>sugprevententer: bool, default = false</dt>\n     <dd>回车时, 是否阻止默认事件, 为真将阻止表单提交事件</dd>\n</dl>",
             "is_constructor": 1,
             "params": [
@@ -1405,24 +1395,10 @@
             "namespace": "JC",
             "file": "../comps/Valid/Valid.js",
             "line": 5,
-            "description": "<b>表单验证</b> (单例模式)\n<br />全局访问请使用 JC.Valid 或 Valid\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Valid/0.2/_demo/' target='_blank'>demo link</a></p>\n<h2>Form 的可用 html attribute</h2>\n<dl>\n     <dt>errorabort = bool, default = true</dt>\n     <dd>\n         查检Form Control时, 如果发生错误是否继续检查下一个\n         <br />true: 继续检查, false, 停止检查下一个\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 表单所有控件的 em  CSS display 显示类型\n     </dd>\n</dl>\n<h2>Form Control的可用 html attribute</h2>\n<dl>\n     <dt>reqmsg = 错误提示</dt>\n     <dd>值不能为空, class=error errormsg</dd>\n\n     <dt>errmsg = 错误提示</dt>\n     <dd>格式错误, 但不验证为空的值, class=error errormsg</dd>\n\n     <dt>focusmsg = 控件获得焦点的提示信息</dt>\n     <dd>\n         这个只作提示用, class=focusmsg\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>emel = selector</dt>\n     <dd>显示错误信息的selector</dd>\n\n     <dt>validel = selector</dt>\n     <dd>显示正确信息的selector</dd>\n\n     <dt>focusel = selector</dt>\n     <dd>显示提示信息的selector</dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 em 的 CSS display 显示类型\n     </dd>\n\n     <dt>ignoreprocess = bool, default = false</dt>\n     <dd>验证表单控件时, 是否忽略</dd>\n\n     <dt>minlength = int(最小长度)</dt>\n     <dd>验证内容的最小长度, 但不验证为空的值</dd>\n\n     <dt>maxlength = int(最大长度)</dt>\n     <dd>验证内容的最大长度, 但不验证为空的值</dd>\n\n     <dt>minvalue = [number|ISO date](最小值)</dt>\n     <dd>验证内容的最小值, 但不验证为空的值</dd>\n\n     <dt>maxvalue = [number|ISO date](最大值)</dt>\n     <dd>验证内容的最大值, 但不验证为空的值</dd>\n\n     <dt>validitemcallback = function</dt>\n     <dd>\n         对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>\n<xmp>function validItemCallback( _selector, _isValid ){\n}</xmp>\n     </dd>\n\n     <dt>datatype: 常用数据类型</dt>\n     <dd><b>n:</b> 检查是否为正确的数字</dd>\n     <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>\n     <dd>\n         <b>nrange:</b> 检查两个control的数值范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>d:</b> 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD</dd>\n     <dd>\n         <b>daterange:</b> 检查两个control的日期范围\n         <dl>\n             <dd>html attr <b>fromDateEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toDateEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 daterange, 按顺序定为 fromDateEl, toDateEl</dd>\n         </dl>\n     </dd>\n     <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>\n     <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>\n     <dd>\n         <b>bankcard:</b> 是否为正确的银行卡\n         <br />格式为: d{15}, d{16}, d{17}, d{19}\n     </dd>\n     <dd>\n         <b>cnname:</b> 中文姓名\n         <br>格式: 汉字和大小写字母\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>username:</b> 注册用户名\n         <br>格式: a-zA-Z0-9_-\n         <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30\n     </dd>\n     <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>\n     <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\\d]{9}</dd>\n     <dd><b>mobile:</b> mobilecode 的别名</dd>\n     <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>\n     <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>\n     <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>\n     <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>\n     <dd><b>phonezone:</b> 电话区号, 3~4位数字. phonezone-n,m 可指定位数长度</dd>\n     <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>\n     <dd><b>countrycode:</b> 地区代码, [+]1~6位数字</dd>\n     <dd><b>mobilephone:</b> mobilecode | phone</dd>\n     <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>\n     <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>\n     <dd>\n         <b>vcode:</b> 验证码, 0-9a-zA-Z, 长度 默认为4\n         <br />可通过 vcode-[\\d], 指定验证码长度\n     </dd>\n     <dd>\n         <b>text:</b> 显示声明检查的内容为文本类型\n         <br />默认就是 text, 没有特殊原因其实不用显示声明\n     </dd>\n     <dd>\n         <b>bytetext:</b> 声明按字节检查文本长度\n         <br /> ASCII 算一个字符, 非 ASCII 算两个字符\n     </dd>\n     <dd><b>url:</b> URL 格式, ftp, http, https</dd>\n     <dd><b>domain:</b> 匹配域名, 宽松模式, 允许匹配 http(s), 且结尾允许匹配反斜扛(/)</dd>\n     <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>\n     <dd><b>email:</b> 电子邮件</dd>\n     <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>\n     <dd><b>taxcode:</b> 纳税人识别号, 长度: 15, 18, 20 </dd>\n\n     <dd>\n         <dl>\n             <dt>checkbox: 默认需要至少选中N 个 checkbox</dt>\n             <dd>\n                 默认必须选中一个 checkbox\n                 <br > 如果需要选中N个, 用这种格式 checkbox-n, checkbox-3 = 必须选中三个\n                 <br > datatarget: 声明所有 checkbox 的选择器\n             </dd>\n         </dl>\n     </dd>\n\n     <dd>\n         <dl>\n             <dt>file: 判断文件扩展名</dt>\n             <dd>属性名(文件扩展名列表): fileext</dd>\n             <dd>格式: .ext[, .ext]</dd>\n             <dd>\n<xmp>   <input type=\"file\" \n   reqmsg=\"文件\" \n   errmsg=\"允许上传的文件类型: .gif, .jpg, .jpeg, .png\"\n   datatype=\"file\" \n   fileext=\".gif, .jpg, .jpeg, .png\" \n   />\n   <label>.gif, .jpg, .jpeg, .png</label>\n   <em class=\"error\"></em>\n   <em class=\"validmsg\"></em>\n</xmp>\n                   </dd>\n         </dl>\n     </dd>\n\n     <dt>subdatatype: 特殊数据类型, 以逗号分隔多个属性</dt>\n     <dd>\n         <dl>\n             <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>\n             <dd><b>alternativedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>alternativemsg:</b> N 选一的错误提示</dd>\n\n             <dd>\n                 <b>alternativeReqTarget:</b> 为 alternative node 指定一个不能为空的 node\n                 <br /><b>请使用 subdatatype = reqtarget</b>, 这个附加属性将弃除\n             </dd>\n             <dd><b>alternativeReqmsg:</b> alternativeReqTarget 目标 node 的html属性, 错误时显示的提示信息</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reqtarget: 如果 selector 的值非空, 那么 datatarget 的值也不能为空</dt>\n             <dd><b>datatarget:</b> 显式指定 目标 target</dd>\n             <dd><b>reqTargetDatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reqtargetmsg:</b> target node 用于显示错误提示的 html 属性</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reconfirm: N 个 Control 的值必须保持一致</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>\n             <dd><b>reconfirmdatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>unique: N 个 Control 的值必须保持唯一性, 不能有重复</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=unique]</dd>\n             <dd><b>uniquedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>\n             <dd><b>uniqueIgnoreCase:</b> 是否忽略大小写</dd>\n             <dd><b>uniqueIgnoreEmpty:</b> 是否忽略空的值, 如果组中有空值也会被忽略</dd>\n             <dd>unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )</dt>\n             <dd><b>datavalidMsg:</b> 值不合法时的提示信息</dd>\n             <dd>\n                 <b>datavalidUrl:</b> 验证内容正确与否的 url api\n                 <p>{\"errorno\":0,\"errmsg\":\"\"}</p>\n                 errorno: 0( 正确 ), 非0( 错误 )\n                 <p>datavalidurl=\"./data/handler.php?key={0}\"</p>\n                 {0} 代表 value\n             </dd>\n             <dd>\n                 <b>datavalidCallback:</b> 请求 datavalidUrl 后调用的回调\n<xmp>function datavalidCallback( _json ){\n   var _selector = $(this);\n});</xmp>\n             </dd>\n                 <b>datavalidKeyupCallback:</b> 每次 keyup 的回调\n<xmp>function datavalidKeyupCallback( _evt ){\n   var _selector = $(this);\n});</xmp>\n             </dd>\n             <dd>\n                 <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调\n<xmp>function datavalidUrlFilter( _url ){\n   var _selector = $(this);\n   _url = JC.f.addUrlParams( _url, { 'xtest': 'customData' } );\n   return _url;\n});</xmp>\n             </dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>hidden: 验证隐藏域的值</dt>\n             <dd>\n                 有些特殊情况需要验证隐藏域的值, 请使用 subdatatype=\"hidden\"\n             </dd>\n         </dl>\n     </dd>\n</dl>",
+            "description": "<b>表单验证</b> (单例模式)\n<br />全局访问请使用 JC.Valid 或 Valid\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>\n| <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>\n<h2>Form 的可用 html attribute</h2>\n<dl>\n     <dt>errorabort = bool, default = true</dt>\n     <dd>\n         查检Form Control时, 如果发生错误是否继续检查下一个\n         <br />true: 继续检查, false, 停止检查下一个\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 表单所有控件的 em  CSS display 显示类型\n     </dd>\n</dl>\n<h2>Form Control的可用 html attribute</h2>\n<dl>\n     <dt>reqmsg = 错误提示</dt>\n     <dd>值不能为空, class=error errormsg</dd>\n\n     <dt>errmsg = 错误提示</dt>\n     <dd>格式错误, 但不验证为空的值, class=error errormsg</dd>\n\n     <dt>focusmsg = 控件获得焦点的提示信息</dt>\n     <dd>\n         这个只作提示用, class=focusmsg\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>emel = selector</dt>\n     <dd>显示错误信息的selector</dd>\n\n     <dt>validel = selector</dt>\n     <dd>显示正确信息的selector</dd>\n\n     <dt>focusel = selector</dt>\n     <dd>显示提示信息的selector</dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 em 的 CSS display 显示类型\n     </dd>\n\n     <dt>ignoreprocess = bool, default = false</dt>\n     <dd>验证表单控件时, 是否忽略</dd>\n\n     <dt>minlength = int(最小长度)</dt>\n     <dd>验证内容的最小长度, 但不验证为空的值</dd>\n\n     <dt>maxlength = int(最大长度)</dt>\n     <dd>验证内容的最大长度, 但不验证为空的值</dd>\n\n     <dt>minvalue = [number|ISO date](最小值)</dt>\n     <dd>验证内容的最小值, 但不验证为空的值</dd>\n\n     <dt>maxvalue = [number|ISO date](最大值)</dt>\n     <dd>验证内容的最大值, 但不验证为空的值</dd>\n\n     <dt>validitemcallback = function</dt>\n     <dd>\n         对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>\n<pre>function validItemCallback( _selector, _isValid ){\n}</pre>\n     </dd>\n\n     <dt>datatype: 常用数据类型</dt>\n     <dd><b>n:</b> 检查是否为正确的数字</dd>\n     <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>\n     <dd>\n         <b>nrange:</b> 检查两个control的数值范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>d:</b> 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD</dd>\n     <dd>\n         <b>daterange:</b> 检查两个control的日期范围\n         <dl>\n             <dd>html attr <b>fromDateEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toDateEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 daterange, 按顺序定为 fromDateEl, toDateEl</dd>\n         </dl>\n     </dd>\n     <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>\n     <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>\n     <dd>\n         <b>bankcard:</b> 是否为正确的银行卡\n         <br />格式为: d{15}, d{16}, d{17}, d{19}\n     </dd>\n     <dd>\n         <b>cnname:</b> 中文姓名\n         <br>格式: 汉字和大小写字母\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>username:</b> 注册用户名\n         <br>格式: a-zA-Z0-9_-\n         <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30\n     </dd>\n     <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>\n     <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\\d]{9}</dd>\n     <dd><b>mobile:</b> mobilecode 的别名</dd>\n     <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>\n     <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>\n     <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>\n     <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>\n     <dd><b>phonezone:</b> 电话区号, 3~4位数字. phonezone-n,m 可指定位数长度</dd>\n     <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>\n     <dd><b>countrycode:</b> 地区代码, [+]1~6位数字</dd>\n     <dd><b>mobilephone:</b> mobilecode | phone</dd>\n     <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>\n     <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>\n     <dd>\n         <b>vcode:</b> 验证码, 0-9a-zA-Z, 长度 默认为4\n         <br />可通过 vcode-[\\d], 指定验证码长度\n     </dd>\n     <dd>\n         <b>text:</b> 显示声明检查的内容为文本类型\n         <br />默认就是 text, 没有特殊原因其实不用显示声明\n     </dd>\n     <dd>\n         <b>bytetext:</b> 声明按字节检查文本长度\n         <br /> ASCII 算一个字符, 非 ASCII 算两个字符\n     </dd>\n     <dd><b>url:</b> URL 格式, ftp, http, https</dd>\n     <dd><b>domain:</b> 匹配域名, 宽松模式, 允许匹配 http(s), 且结尾允许匹配反斜扛(/)</dd>\n     <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>\n     <dd><b>email:</b> 电子邮件</dd>\n     <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>\n     <dd><b>taxcode:</b> 纳税人识别号, 长度: 15, 18, 20 </dd>\n\n     <dd>\n         <dl>\n             <dt>checkbox: 默认需要至少选中N 个 checkbox</dt>\n             <dd>\n                 默认必须选中一个 checkbox\n                 <br > 如果需要选中N个, 用这种格式 checkbox-n, checkbox-3 = 必须选中三个\n                 <br > datatarget: 声明所有 checkbox 的选择器\n             </dd>\n         </dl>\n     </dd>\n\n     <dd>\n         <dl>\n             <dt>file: 判断文件扩展名</dt>\n             <dd>属性名(文件扩展名列表): fileext</dd>\n             <dd>格式: .ext[, .ext]</dd>\n             <dd>\n<xmp>   <input type=\"file\" \n   reqmsg=\"文件\" \n   errmsg=\"允许上传的文件类型: .gif, .jpg, .jpeg, .png\"\n   datatype=\"file\" \n   fileext=\".gif, .jpg, .jpeg, .png\" \n   />\n   <label>.gif, .jpg, .jpeg, .png</label>\n   <em class=\"error\"></em>\n   <em class=\"validmsg\"></em>\n</xmp>\n                   </dd>\n         </dl>\n     </dd>\n\n     <dt>subdatatype: 特殊数据类型, 以逗号分隔多个属性</dt>\n     <dd>\n         <dl>\n             <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>\n             <dd><b>alternativedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>alternativemsg:</b> N 选一的错误提示</dd>\n\n             <dd>\n                 <b>alternativeReqTarget:</b> 为 alternative node 指定一个不能为空的 node\n                 <br /><b>请使用 subdatatype = reqtarget</b>, 这个附加属性将弃除\n             </dd>\n             <dd><b>alternativeReqmsg:</b> alternativeReqTarget 目标 node 的html属性, 错误时显示的提示信息</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reqtarget: 如果 selector 的值非空, 那么 datatarget 的值也不能为空</dt>\n             <dd><b>datatarget:</b> 显式指定 目标 target</dd>\n             <dd><b>reqTargetDatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reqtargetmsg:</b> target node 用于显示错误提示的 html 属性</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reconfirm: N 个 Control 的值必须保持一致</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>\n             <dd><b>reconfirmdatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>unique: N 个 Control 的值必须保持唯一性, 不能有重复</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=unique]</dd>\n             <dd><b>uniquedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>\n             <dd><b>uniqueIgnoreCase:</b> 是否忽略大小写</dd>\n             <dd><b>uniqueIgnoreEmpty:</b> 是否忽略空的值, 如果组中有空值也会被忽略</dd>\n             <dd><b>processDisabled:</b> 是否处理 disabled 但 visible 的node</dd>\n             <dd>unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )</dt>\n             <dd><b>datavalidMsg:</b> 值不合法时的提示信息</dd>\n             <dd>\n                 <b>datavalidUrl:</b> 验证内容正确与否的 url api\n                 <p>{\"errorno\":0,\"errmsg\":\"\"}</p>\n                 errorno: 0( 正确 ), 非0( 错误 )\n                 <p>datavalidurl=\"./data/handler.php?key={0}\"</p>\n                 {0} 代表 value\n             </dd>\n             <dd>\n                 <b>datavalidCallback:</b> 请求 datavalidUrl 后调用的回调\n<pre>function datavalidCallback( _json ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n                 <b>datavalidKeyupCallback:</b> 每次 keyup 的回调\n<pre>function datavalidKeyupCallback( _evt ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n             <dd>\n                 <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调\n<pre>function datavalidUrlFilter( _url ){\n   var _selector = $(this);\n   _url = JC.f.addUrlParams( _url, { 'xtest': 'customData' } );\n   return _url;\n});</pre>\n             </dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>hidden: 验证隐藏域的值</dt>\n             <dd>\n                 有些特殊情况需要验证隐藏域的值, 请使用 subdatatype=\"hidden\"\n             </dd>\n         </dl>\n     </dd>\n</dl>",
             "static": 1,
             "version": "0.1,  2013-05-22",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
-        },
-        "JC.jQuery": {
-            "name": "JC.jQuery",
-            "shortname": "window.jQuery",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "namespace": "JC",
-            "file": "../lib.js",
-            "line": 1,
-            "description": "jQuery JavaScript Library v1.9.1\n<pre>http://jquery.com/\n\nIncludes Sizzle.js\nhttp://sizzlejs.com/\n\nCopyright 2005, 2012 jQuery Foundation, Inc. and other contributors\nReleased under the MIT license\nhttp://jquery.org/license\nDate: 2013-2-4</pre>",
-            "global": ""
         },
         "JC.common": {
             "name": "JC.common",
@@ -1434,7 +1410,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../lib.js",
-            "line": 32,
+            "line": 29,
             "description": "JC 组件通用静态方法和属性 ( JC.common, <b>别名: JC.f</b> )\n<br />所有 JC 组件都会依赖这个静态类\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.common.html' target='_blank'>API docs</a>\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>",
             "static": 1,
             "version": "dev 0.1 2013-07-04",
@@ -1450,7 +1426,7 @@
             "extension_for": [],
             "namespace": "window",
             "file": "../lib.js",
-            "line": 893,
+            "line": 890,
             "description": "JC jquery 组件库 资源调用控制类\n<br />这是一个单例模式, 全局访问使用 JC 或 window.JC\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.JC.html' target='_blank'>API docs</a>\n| <a href='../../_demo' target='_blank'>demo link</a></p>",
             "static": 1,
             "example": [
@@ -1469,7 +1445,7 @@
             "extension_for": [],
             "namespace": "window",
             "file": "../lib.js",
-            "line": 1182,
+            "line": 1179,
             "description": "UXC 是 JC 的别名\n<br />存在这个变量是为了向后兼容\n<br />20130804 之前的命名空间是 UXC, 这个命名空间在一段时间后将会清除, 请使用 JC 命名空间\n<p><b>see</b>: <a href='window.JC.html'>JC</a></p>",
             "static": 1,
             "date": "2013-05-22"
@@ -1484,7 +1460,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../lib.js",
-            "line": 1201,
+            "line": 1198,
             "description": "<h2>业务逻辑命名空间</h2>\n<br />这个命名空间的组件主要为满足业务需求, 不是通用组件~\n<br />但在某个项目中应该是常用组件~\n<dl>\n     <dt>业务组件的存放位置:</dt>\n     <dd>libpath/bizs/</dd>\n\n     <dt>使用业务组件</dt>\n     <dd> JC.use( 'Bizs.BizComps' ); //  libpath/bizs/BizComps/BizComps.js </dd>\n\n     <dt>使用业务文件</dt>\n     <dd> JC.use( 'bizs.BizFile' ); //   libpath/bizs/BizFile.js </dd>\n</dl>",
             "static": 1
         },
@@ -1498,7 +1474,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../lib.js",
-            "line": 1226,
+            "line": 1223,
             "description": "MVC 抽象类 ( <b>仅供扩展用</b> )\n<p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   \n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>",
             "is_constructor": 1,
             "params": [
@@ -1521,7 +1497,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../lib.js",
-            "line": 1432,
+            "line": 1429,
             "description": "MVC Model 类( <b>仅供扩展用</b> )\n<p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   \n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>",
             "is_constructor": 1,
             "params": [
@@ -2890,7 +2866,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 139,
+            "line": 141,
             "description": "内部初始化函数",
             "itemtype": "method",
             "name": "_init",
@@ -2901,7 +2877,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 164,
+            "line": 166,
             "description": "初始化相关操作事件",
             "itemtype": "method",
             "name": "_initHanlderEvent",
@@ -2912,7 +2888,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 246,
+            "line": 248,
             "description": "显示 Calendar",
             "itemtype": "method",
             "name": "show",
@@ -2924,7 +2900,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 259,
+            "line": 261,
             "description": "隐藏 Calendar",
             "itemtype": "method",
             "name": "hide",
@@ -2936,7 +2912,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 270,
+            "line": 272,
             "description": "获取 显示 Calendar 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -2948,7 +2924,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 276,
+            "line": 278,
             "description": "获取 Calendar 外观的 选择器",
             "itemtype": "method",
             "name": "layout",
@@ -2960,7 +2936,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 282,
+            "line": 284,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -2985,7 +2961,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 290,
+            "line": 292,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -3005,7 +2981,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 297,
+            "line": 299,
             "description": "用户操作日期控件时响应改变",
             "itemtype": "method",
             "name": "updateLayout",
@@ -3014,7 +2990,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 306,
+            "line": 308,
             "description": "切换到不同日期控件源时, 更新对应的控件源",
             "itemtype": "method",
             "name": "updateSelector",
@@ -3030,7 +3006,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 317,
+            "line": 319,
             "description": "用户改变年份时, 更新到对应的年份",
             "itemtype": "method",
             "name": "updateYear",
@@ -3046,7 +3022,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 328,
+            "line": 330,
             "description": "用户改变月份时, 更新到对应的月份",
             "itemtype": "method",
             "name": "updateMonth",
@@ -3062,7 +3038,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 339,
+            "line": 341,
             "description": "把选中的值赋给控件源\n<br />用户点击日期/确定按钮",
             "itemtype": "method",
             "name": "updateSelected",
@@ -3078,7 +3054,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 351,
+            "line": 353,
             "description": "显示日历外观到对应的控件源",
             "itemtype": "method",
             "name": "updatePosition",
@@ -3087,7 +3063,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 360,
+            "line": 362,
             "description": "清除控件源内容",
             "itemtype": "method",
             "name": "clear",
@@ -3096,7 +3072,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 371,
+            "line": 373,
             "description": "用户点击取消按钮时隐藏日历外观",
             "itemtype": "method",
             "name": "cancel",
@@ -3105,7 +3081,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 381,
+            "line": 383,
             "description": "返回日历外观是否可见",
             "itemtype": "method",
             "name": "visible",
@@ -3117,7 +3093,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 395,
+            "line": 397,
             "description": "获取控件源的初始日期对象",
             "itemtype": "method",
             "name": "defaultDate",
@@ -3133,7 +3109,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 405,
+            "line": 407,
             "description": "获取或设置 Calendar 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -3154,7 +3130,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 421,
+            "line": 423,
             "description": "保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",
             "prototype": "_ins",
             "type": "object",
@@ -3167,7 +3143,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 432,
+            "line": 434,
             "description": "获取控件源的实例类型\n<br />目前有 date, week, month, season 四种类型的实例",
             "itemtype": "method",
             "name": "type",
@@ -3187,7 +3163,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 458,
+            "line": 460,
             "description": "判断选择器是否为日历组件的对象",
             "itemtype": "method",
             "name": "isCalendar",
@@ -3204,14 +3180,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 492,
+            "line": 494,
             "description": "请使用 isCalendar, 这个方法是为了向后兼容",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 496,
+            "line": 498,
             "description": "弹出日期选择框",
             "itemtype": "method",
             "name": "pickDate",
@@ -3231,7 +3207,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 534,
+            "line": 536,
             "description": "设置是否在 DOM 加载完毕后, 自动初始化所有日期控件",
             "itemtype": "property",
             "name": "autoInit",
@@ -3243,7 +3219,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 543,
+            "line": 545,
             "description": "设置默认显示的年份数, 该数为前后各多少年 默认为前后各10年",
             "itemtype": "property",
             "name": "defaultDateSpan",
@@ -3255,7 +3231,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 552,
+            "line": 554,
             "description": "最后一个显示日历组件的文本框",
             "itemtype": "property",
             "name": "lastIpt",
@@ -3266,7 +3242,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 559,
+            "line": 561,
             "description": "自定义日历组件模板\n<p>默认模板为_logic.tpl</p>\n<p>如果用户显示定义JC.Calendar.tpl的话, 将采用用户的模板</p>",
             "itemtype": "property",
             "name": "tpl",
@@ -3278,7 +3254,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 569,
+            "line": 571,
             "description": "初始化外观后的回调函数",
             "itemtype": "property",
             "name": "layoutInitedCallback",
@@ -3290,7 +3266,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 577,
+            "line": 579,
             "description": "显示为可见时的回调",
             "itemtype": "property",
             "name": "layoutShowCallback",
@@ -3302,7 +3278,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 585,
+            "line": 587,
             "description": "日历隐藏后的回调函数",
             "itemtype": "property",
             "name": "layoutHideCallback",
@@ -3314,7 +3290,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 593,
+            "line": 595,
             "description": "DOM 点击的过滤函数\n<br />默认 dom 点击时, 判断事件源不为 input[datatype=date|daterange] 会隐藏 Calendar\n<br /> 通过该回调可自定义过滤, 返回 false 不执行隐藏操作",
             "itemtype": "property",
             "name": "domClickFilter",
@@ -3326,7 +3302,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 603,
+            "line": 605,
             "description": "隐藏日历组件",
             "itemtype": "method",
             "name": "hide",
@@ -3339,7 +3315,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 620,
+            "line": 622,
             "description": "获取初始日期对象\n<p style=\"bold\">这个方法将要废除, 请使用 instance.defaultDate()</p>",
             "itemtype": "method",
             "name": "getDate",
@@ -3356,7 +3332,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 632,
+            "line": 634,
             "description": "每周的中文对应数字",
             "itemtype": "property",
             "name": "cnWeek",
@@ -3368,7 +3344,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 640,
+            "line": 642,
             "description": "100以内的中文对应数字",
             "itemtype": "property",
             "name": "cnUnit",
@@ -3380,7 +3356,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 648,
+            "line": 650,
             "description": "转换 100 以内的数字为中文数字",
             "itemtype": "method",
             "name": "getCnNum",
@@ -3400,7 +3376,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 662,
+            "line": 664,
             "description": "设置日历组件的显示位置",
             "itemtype": "method",
             "name": "position",
@@ -3417,14 +3393,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 673,
+            "line": 675,
             "description": "这个方法后续版本不再使用, 请使用 Calendar.position",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 677,
+            "line": 679,
             "description": "初始化日历组件的触发按钮",
             "itemtype": "method",
             "name": "_logic.initTrigger",
@@ -3442,7 +3418,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 759,
+            "line": 761,
             "description": "克隆 Calendar 默认 Model, View 的原型属性",
             "itemtype": "method",
             "name": "clone",
@@ -3463,7 +3439,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1382,
+            "line": 1384,
             "description": "捕获用户更改年份 \n<p>监听 年份下拉框</p>",
             "itemtype": "event",
             "name": "year change",
@@ -3474,7 +3450,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1392,
+            "line": 1394,
             "description": "捕获用户更改年份 \n<p>监听 下一年按钮</p>",
             "itemtype": "event",
             "name": "next year",
@@ -3485,7 +3461,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1402,
+            "line": 1404,
             "description": "捕获用户更改年份 \n<p>监听 上一年按钮</p>",
             "itemtype": "event",
             "name": "previous year",
@@ -3496,7 +3472,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1412,
+            "line": 1414,
             "description": "增加或者减少一年\n<p>监听 年份map</p>",
             "itemtype": "event",
             "name": "year map click",
@@ -3507,7 +3483,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1426,
+            "line": 1428,
             "description": "增加或者减少一个月\n<p>监听 月份map</p>",
             "itemtype": "event",
             "name": "month map click",
@@ -3518,7 +3494,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1440,
+            "line": 1442,
             "description": "捕获用户更改月份 \n<p>监听 下一月按钮</p>",
             "itemtype": "event",
             "name": "next year",
@@ -3529,7 +3505,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1450,
+            "line": 1452,
             "description": "捕获用户更改月份\n<p>监听 上一月按钮</p>",
             "itemtype": "event",
             "name": "previous year",
@@ -3540,7 +3516,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1461,
+            "line": 1463,
             "description": "日期点击事件",
             "itemtype": "event",
             "name": "date click",
@@ -3551,7 +3527,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1474,
+            "line": 1476,
             "description": "选择当前日期\n<p>监听确定按钮</p>",
             "itemtype": "event",
             "name": "confirm click",
@@ -3562,7 +3538,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1484,
+            "line": 1486,
             "description": "清除文本框内容\n<p>监听 清空按钮</p>",
             "itemtype": "event",
             "name": "clear click",
@@ -3573,7 +3549,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1494,
+            "line": 1496,
             "description": "取消日历组件, 相当于隐藏\n<p>监听 取消按钮</p>",
             "itemtype": "event",
             "name": "cancel click",
@@ -3584,7 +3560,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1504,
+            "line": 1506,
             "description": "日历组件按钮点击事件",
             "itemtype": "event",
             "name": "calendar button click",
@@ -3595,7 +3571,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1519,
+            "line": 1521,
             "description": "日历组件点击事件, 阻止冒泡, 防止被 document click事件隐藏",
             "itemtype": "event",
             "name": "UXCCalendar click",
@@ -3606,7 +3582,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1528,
+            "line": 1530,
             "description": "DOM 加载完毕后, 初始化日历组件相关事件",
             "itemtype": "event",
             "name": "dom ready",
@@ -3617,14 +3593,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1534,
+            "line": 1536,
             "description": "延迟200毫秒初始化页面的所有日历控件\n之所以要延迟是可以让用户自己设置是否需要自动初始化",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1542,
+            "line": 1544,
             "description": "监听窗口滚动和改变大小, 实时变更日历组件显示位置",
             "itemtype": "event",
             "name": "window scroll, window resize",
@@ -3635,7 +3611,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1551,
+            "line": 1553,
             "description": "dom 点击时, 检查事件源是否为日历组件对象, 如果不是则会隐藏日历组件",
             "itemtype": "event",
             "name": "dom click",
@@ -3646,7 +3622,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1580,
+            "line": 1582,
             "description": "日历组件文本框获得焦点",
             "itemtype": "event",
             "name": "input focus",
@@ -3657,7 +3633,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1601,
+            "line": 1603,
             "description": "自定义周弹框的模板HTML",
             "itemtype": "property",
             "name": "weekTpl",
@@ -3669,7 +3645,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1610,
+            "line": 1612,
             "description": "自定义周日历每周的起始日期 \n<br /> 0 - 6, 0=周日, 1=周一",
             "itemtype": "property",
             "name": "weekDayOffset",
@@ -3681,7 +3657,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1809,
+            "line": 1811,
             "description": "取一年中所有的星期, 及其开始结束日期",
             "itemtype": "method",
             "name": "weekOfYear",
@@ -3706,14 +3682,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1821,
+            "line": 1823,
             "description": "元旦开始的第一个星期一开始的一周为政治经济上的第一周",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1848,
+            "line": 1850,
             "description": "自定义月份弹框的模板HTML",
             "itemtype": "property",
             "name": "monthTpl",
@@ -3725,7 +3701,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 2067,
+            "line": 2069,
             "description": "自定义周弹框的模板HTML",
             "itemtype": "property",
             "name": "seasonTpl",
@@ -3737,7 +3713,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 2243,
+            "line": 2245,
             "description": "多选日期弹框的模板HTML",
             "itemtype": "property",
             "name": "monthdayTpl",
@@ -3749,7 +3725,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 2252,
+            "line": 2254,
             "description": "多先日期弹框标题末尾的附加字样",
             "itemtype": "property",
             "name": "monthdayHeadAppendText",
@@ -3761,7 +3737,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 2290,
+            "line": 2292,
             "description": "如果 atd 为空, 那么是 全选按钮触发的事件",
             "class": "JC.Calendar",
             "namespace": "JC"
@@ -7378,14 +7354,14 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 122,
+            "line": 124,
             "description": "suggest_so({ \"p\" : true,\n              \"q\" : \"shinee\",\n              \"s\" : [ \"shinee 综艺\",\n                  \"shinee美好的一天\",\n                  \"shinee hello baby\",\n                  \"shinee吧\",\n                  \"shinee泰民\",\n                  \"shinee fx\",\n                  \"shinee快乐大本营\",\n                  \"shinee钟铉车祸\",\n                  \"shinee年下男的约会\",\n                  \"shinee dream girl\"\n                ]\n            });",
             "class": "JC.Suggest",
             "namespace": "JC"
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 154,
+            "line": 156,
             "description": "显示 Suggest",
             "itemtype": "method",
             "name": "show",
@@ -7397,7 +7373,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 160,
+            "line": 162,
             "description": "隐藏 Suggest",
             "itemtype": "method",
             "name": "hide",
@@ -7409,7 +7385,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 166,
+            "line": 168,
             "description": "获取 显示 Suggest 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -7421,7 +7397,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 172,
+            "line": 174,
             "description": "获取 Suggest 外观的 选择器",
             "itemtype": "method",
             "name": "layout",
@@ -7433,7 +7409,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 178,
+            "line": 180,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -7458,7 +7434,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 186,
+            "line": 188,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -7478,7 +7454,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 354,
+            "line": 359,
             "description": "获取或设置 Suggest 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -7504,7 +7480,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 371,
+            "line": 376,
             "description": "判断 selector 是否可以初始化 Suggest",
             "itemtype": "method",
             "name": "isSuggest",
@@ -7524,7 +7500,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 386,
+            "line": 391,
             "description": "设置 Suggest 是否需要自动初始化",
             "itemtype": "property",
             "name": "autoInit",
@@ -7536,7 +7512,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 394,
+            "line": 399,
             "description": "自定义列表显示模板",
             "itemtype": "property",
             "name": "layoutTpl",
@@ -7548,7 +7524,19 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 402,
+            "line": 407,
+            "description": "Suggest 返回列表的内容是否只使用",
+            "itemtype": "property",
+            "name": "layoutTpl",
+            "type": "string",
+            "default": "empty",
+            "static": 1,
+            "class": "JC.Suggest",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Suggest/Suggest.js",
+            "line": 415,
             "description": "数据过滤回调",
             "itemtype": "property",
             "name": "dataFilter",
@@ -7560,7 +7548,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 410,
+            "line": 423,
             "description": "保存所有初始化过的实例",
             "itemtype": "property",
             "name": "_allIns",
@@ -7574,7 +7562,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 419,
+            "line": 432,
             "description": "隐藏其他 Suggest 显示列表",
             "itemtype": "method",
             "name": "_hideOther",
@@ -7593,7 +7581,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 746,
+            "line": 759,
             "description": "初始化完后的事件",
             "itemtype": "event",
             "name": "SuggestInited",
@@ -7602,7 +7590,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 750,
+            "line": 763,
             "description": "获得新数据的事件",
             "itemtype": "event",
             "name": "SuggestUpdate",
@@ -7611,7 +7599,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 754,
+            "line": 767,
             "description": "数据更新完毕后的事件",
             "itemtype": "event",
             "name": "SuggestUpdated",
@@ -7620,7 +7608,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 758,
+            "line": 771,
             "description": "显示前的事件",
             "itemtype": "event",
             "name": "SuggestBeforeShow",
@@ -7629,7 +7617,7 @@
         },
         {
             "file": "../comps/Suggest/Suggest.js",
-            "line": 762,
+            "line": 775,
             "description": "显示后的事件",
             "itemtype": "event",
             "name": "SuggestShow",
@@ -9515,14 +9503,14 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 281,
+            "line": 282,
             "description": "兼容函数式使用",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 330,
+            "line": 331,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -9549,7 +9537,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 339,
+            "line": 340,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -9571,7 +9559,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 347,
+            "line": 348,
             "description": "分析_item是否附合规则要求",
             "itemtype": "method",
             "name": "parse",
@@ -9589,7 +9577,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 452,
+            "line": 453,
             "description": "验证一个表单项, 如 文本框, 下拉框, 复选框, 单选框, 文本域, 隐藏域",
             "itemtype": "method",
             "name": "check",
@@ -9613,7 +9601,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 470,
+            "line": 471,
             "description": "这个方法是 <a href='JC.Valid.html#method_check'>Valid.check</a> 的别名",
             "itemtype": "method",
             "name": "checkAll",
@@ -9633,7 +9621,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 477,
+            "line": 478,
             "description": "获取 Valid 的实例 ( <b>Valid 是单例模式</b> )",
             "itemtype": "method",
             "name": "getInstance",
@@ -9654,7 +9642,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 485,
+            "line": 486,
             "description": "判断/设置 selector 的数据是否合法\n<br /> 通过 datavalid 属性判断",
             "itemtype": "method",
             "name": "dataValid",
@@ -9689,7 +9677,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 521,
+            "line": 522,
             "description": "判断 selector 是否 Valid 的处理对象",
             "itemtype": "method",
             "name": "isValid",
@@ -9709,13 +9697,13 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 529,
+            "line": 530,
             "description": "把一个表单项的状态设为正确状态",
             "itemtype": "method",
             "name": "setValid",
             "params": [
                 {
-                    "name": "_item",
+                    "name": "_items",
                     "description": "",
                     "type": "Selector"
                 },
@@ -9731,13 +9719,13 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 540,
+            "line": 546,
             "description": "把一个表单项的状态设为错误状态",
             "itemtype": "method",
             "name": "setError",
             "params": [
                 {
-                    "name": "_item",
+                    "name": "_items",
                     "description": "",
                     "type": "Selector"
                 },
@@ -9758,13 +9746,13 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 559,
+            "line": 570,
             "description": "显示 focusmsg 属性的提示信息( 如果有的话 )",
             "itemtype": "method",
             "name": "setFocusMsg",
             "params": [
                 {
-                    "name": "_item",
+                    "name": "_items",
                     "description": "",
                     "type": "Selector"
                 },
@@ -9785,7 +9773,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 581,
+            "line": 597,
             "description": "focus 时,是否总是显示 focusmsg 提示信息",
             "itemtype": "property",
             "name": "focusmsgEverytime",
@@ -9797,7 +9785,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 589,
+            "line": 605,
             "description": "设置 em 的 css display 属性",
             "itemtype": "property",
             "name": "emDisplayType",
@@ -9809,7 +9797,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 598,
+            "line": 614,
             "description": "验证正确时, 是否显示正确的样式",
             "itemtype": "property",
             "name": "showValidStatus",
@@ -9821,7 +9809,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 606,
+            "line": 622,
             "description": "清除Valid生成的错误样式",
             "itemtype": "method",
             "name": "clearError",
@@ -9841,7 +9829,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 617,
+            "line": 633,
             "description": "验证发生错误时, 是否终止继续验证\n<br /> 为真终止继续验证, 为假将验证表单的所有项, 默认为 false",
             "itemtype": "property",
             "name": "errorAbort",
@@ -9856,7 +9844,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 630,
+            "line": 646,
             "description": "是否自动清除两边的空格",
             "itemtype": "property",
             "name": "autoTrim",
@@ -9871,7 +9859,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 642,
+            "line": 658,
             "description": "对一个 control 作检查后的回调, 无论正确与否都会触发",
             "itemtype": "property",
             "name": "itemCallback",
@@ -9886,7 +9874,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 657,
+            "line": 673,
             "description": "判断 表单控件是否为忽略检查 或者 设置 表单控件是否为忽略检查",
             "itemtype": "method",
             "name": "ignore",
@@ -9911,7 +9899,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 689,
+            "line": 705,
             "description": "定义 form control",
             "itemtype": "property",
             "name": "_formControls",
@@ -9933,7 +9921,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 698,
+            "line": 714,
             "description": "判断 _selector 是否为 form control",
             "itemtype": "method",
             "name": "isFormControl",
@@ -9953,7 +9941,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 736,
+            "line": 752,
             "description": "获取 _item 的检查类型",
             "itemtype": "method",
             "name": "parseDatatype",
@@ -9972,7 +9960,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 753,
+            "line": 769,
             "description": "获取 _item 的检查子类型, 所有可用的检查子类型位于 _logic.subdatatype 对象",
             "itemtype": "method",
             "name": "parseSubdatatype",
@@ -9991,7 +9979,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 916,
+            "line": 932,
             "description": "检查内容的长度",
             "itemtype": "method",
             "name": "lengthValid",
@@ -10014,14 +10002,14 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 943,
+            "line": 959,
             "description": "根据特殊的 datatype 实现不同的计算方法",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 969,
+            "line": 985,
             "description": "检查是否为正确的数字<br />\n<br>默认范围 0 - Math.pow(10, 10)",
             "itemtype": "method",
             "name": "n",
@@ -10044,7 +10032,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1043,
+            "line": 1059,
             "description": "检查两个输入框的数值\n<br /> 数字格式为 0-pow(10,10)\n<br /> 带小数点使用 nrange-int.float, 例: nrange-1.2  nrange-2.2\n<br /> <b>注意:</b> 如果不显示指定 fromNEl, toNEl, \n             将会从父级查找 datatype=nrange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略",
             "itemtype": "method",
             "name": "nrange",
@@ -10067,7 +10055,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1117,
+            "line": 1133,
             "description": "检查是否为合法的日期,\n<br />日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD",
             "itemtype": "method",
             "name": "d",
@@ -10090,7 +10078,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1152,
+            "line": 1168,
             "description": "检查两个输入框的日期\n<br />日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD\n<br /> <b>注意:</b> 如果不显示指定 fromDateEl, toDateEl, \n             将会从父级查找 datatype=daterange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略",
             "itemtype": "method",
             "name": "daterange",
@@ -10113,7 +10101,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1223,
+            "line": 1239,
             "description": "检查时间格式, 格式为 hh:mm:ss",
             "itemtype": "method",
             "name": "time",
@@ -10135,7 +10123,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1240,
+            "line": 1256,
             "description": "检查时间格式, 格式为 hh:mm",
             "itemtype": "method",
             "name": "minute",
@@ -10157,7 +10145,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1257,
+            "line": 1273,
             "description": "检查银行卡号码\n<br />格式为: d{15}, d{16}, d{17}, d{19}",
             "itemtype": "method",
             "name": "bankcard",
@@ -10179,7 +10167,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1282,
+            "line": 1298,
             "description": "检查中文姓名\n<br>格式: 汉字和大小写字母\n<br>规则: 长度 2-32个字节, 非 ASCII 算2个字节",
             "itemtype": "method",
             "name": "cnname",
@@ -10201,7 +10189,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1303,
+            "line": 1319,
             "description": "检查注册用户名\n<br>格式: a-zA-Z0-9_-\n<br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30",
             "itemtype": "method",
             "name": "username",
@@ -10223,7 +10211,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1323,
+            "line": 1339,
             "description": "检查身份证号码<br />\n目前只使用最简单的位数判断~ 有待完善",
             "itemtype": "method",
             "name": "idnumber",
@@ -10245,7 +10233,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1342,
+            "line": 1358,
             "description": "检查手机号码<br />",
             "itemtype": "method",
             "name": "mobilecode",
@@ -10272,7 +10260,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1362,
+            "line": 1378,
             "description": "检查手机号码\n<br />这个方法是 mobilecode 的别名",
             "itemtype": "method",
             "name": "mobile",
@@ -10296,7 +10284,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1375,
+            "line": 1391,
             "description": "检查手机号码加强方法\n<br>格式: [+国家代码] [零]11位数字",
             "itemtype": "method",
             "name": "mobilezonecode",
@@ -10323,7 +10311,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1396,
+            "line": 1412,
             "description": "检查电话号码\n<br>格式: 7/8位数字",
             "itemtype": "method",
             "name": "phonecode",
@@ -10345,7 +10333,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1415,
+            "line": 1431,
             "description": "检查电话号码\n<br>格式: [区号]7/8位电话号码",
             "itemtype": "method",
             "name": "phone",
@@ -10372,7 +10360,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1436,
+            "line": 1452,
             "description": "检查电话号码\n<br>格式: [+国家代码][ ][电话区号][ ]7/8位电话号码[#分机号]",
             "itemtype": "method",
             "name": "phoneall",
@@ -10399,7 +10387,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1458,
+            "line": 1474,
             "description": "检查电话区号",
             "itemtype": "method",
             "name": "phonezone",
@@ -10421,7 +10409,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1481,
+            "line": 1497,
             "description": "检查电话分机号码",
             "itemtype": "method",
             "name": "phoneext",
@@ -10443,7 +10431,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1499,
+            "line": 1515,
             "description": "检查手机号码/电话号码\n<br />这个方法是原有方法的混合验证 mobilecode + phone",
             "itemtype": "method",
             "name": "mobilephone",
@@ -10465,7 +10453,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1523,
+            "line": 1539,
             "description": "检查手机号码/电话号码, 泛匹配\n<br />这个方法是原有方法的混合验证 mobilezonecode + phoneall",
             "itemtype": "method",
             "name": "mobilephoneall",
@@ -10487,7 +10475,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1546,
+            "line": 1562,
             "description": "自定义正则校验",
             "itemtype": "method",
             "name": "reg",
@@ -10510,7 +10498,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1572,
+            "line": 1588,
             "description": "检查验证码<br />\n格式: 为 0-9a-zA-Z, 长度 默认为4",
             "itemtype": "method",
             "name": "vcode",
@@ -10533,7 +10521,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1598,
+            "line": 1614,
             "description": "检查文本长度",
             "itemtype": "method",
             "name": "text",
@@ -10549,7 +10537,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1607,
+            "line": 1623,
             "description": "检查文本的字节长度",
             "itemtype": "method",
             "name": "bytetext",
@@ -10565,7 +10553,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1616,
+            "line": 1632,
             "description": "检查富文本的字节\n<br />TODO: 完成富文本长度检查",
             "itemtype": "method",
             "name": "richtext",
@@ -10581,7 +10569,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1626,
+            "line": 1642,
             "description": "计算字符串的字节长度, 非 ASCII 0-255的字符视为两个字节",
             "itemtype": "method",
             "name": "bytelen",
@@ -10600,7 +10588,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1637,
+            "line": 1653,
             "description": "检查URL",
             "itemtype": "method",
             "name": "url",
@@ -10622,7 +10610,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1657,
+            "line": 1673,
             "description": "检查域名",
             "itemtype": "method",
             "name": "domain",
@@ -10641,7 +10629,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1675,
+            "line": 1691,
             "description": "检查域名",
             "itemtype": "method",
             "name": "stricdomain",
@@ -10660,7 +10648,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1692,
+            "line": 1708,
             "description": "检查电子邮件",
             "itemtype": "method",
             "name": "email",
@@ -10682,7 +10670,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1709,
+            "line": 1725,
             "description": "检查地区代码",
             "itemtype": "method",
             "name": "countrycode",
@@ -10704,7 +10692,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1726,
+            "line": 1742,
             "description": "检查邮政编码",
             "itemtype": "method",
             "name": "zipcode",
@@ -10726,7 +10714,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1743,
+            "line": 1759,
             "description": "纳税人识别号, 15, 18, 20位字符",
             "itemtype": "method",
             "name": "taxcode",
@@ -10748,7 +10736,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1764,
+            "line": 1780,
             "description": "此类型检查 2|N 个对象填写的值必须一致\n常用于注意时密码验证/重置密码",
             "itemtype": "method",
             "name": "reconfirm",
@@ -10770,7 +10758,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1852,
+            "line": 1868,
             "description": "此类型检查 2|N个对象必须至少有一个是有输入内容的, \n<br> 常用于 手机/电话 二填一",
             "itemtype": "method",
             "name": "alternative",
@@ -10792,7 +10780,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2001,
+            "line": 2017,
             "description": "如果 _item 的值非空, 那么 reqtarget 的值也不能为空",
             "itemtype": "method",
             "name": "reqtarget",
@@ -10811,7 +10799,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2025,
+            "line": 2041,
             "description": "N 个值必须保持唯一性, 不能有重复",
             "itemtype": "method",
             "name": "unique",
@@ -10830,7 +10818,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2182,
+            "line": 2209,
             "description": "获取 _selector 对象\n<br />这个方法的存在是为了向后兼容qwrap, qwrap DOM参数都为ID",
             "itemtype": "method",
             "name": "getElement",
@@ -10849,7 +10837,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2205,
+            "line": 2232,
             "description": "获取对应的错误信息, 默认的错误信息有 reqmsg, errmsg, <br />\n注意: 错误信息第一个字符如果为空格的话, 将完全使用用户定义的错误信息, 将不会动态添加 请上传/选择/填写",
             "itemtype": "method",
             "name": "errorMsg",
@@ -10878,7 +10866,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2240,
+            "line": 2267,
             "description": "检查内容是否为空,\n<br>如果声明了该属性, 那么 value 须不为空",
             "itemtype": "method",
             "name": "reqmsg",
@@ -10900,21 +10888,21 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2327,
+            "line": 2354,
             "description": "这里需要优化检查, 目前会重复检查",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2417,
+            "line": 2444,
             "description": "验证文件扩展名",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2520,
+            "line": 2547,
             "description": "显示正确的视觉效果",
             "itemtype": "method",
             "name": "valid",
@@ -10943,7 +10931,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2575,
+            "line": 2602,
             "description": "显示错误的视觉效果",
             "itemtype": "method",
             "name": "error",
@@ -10972,7 +10960,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2646,
+            "line": 2673,
             "description": "解析错误时触发的时件",
             "itemtype": "event",
             "name": "ValidError",
@@ -10981,7 +10969,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2650,
+            "line": 2677,
             "description": "解析正确时触发的时件",
             "itemtype": "event",
             "name": "ValidCorrect",
@@ -10990,7 +10978,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2654,
+            "line": 2681,
             "description": "响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果",
             "access": "private",
             "tagname": "",
@@ -10999,7 +10987,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2662,
+            "line": 2689,
             "description": "响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果",
             "access": "private",
             "tagname": "",
@@ -11008,7 +10996,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2670,
+            "line": 2697,
             "description": "响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
             "access": "private",
             "tagname": "",
@@ -11017,7 +11005,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2680,
+            "line": 2707,
             "description": "响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
             "access": "private",
             "tagname": "",
@@ -11026,7 +11014,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2705,
+            "line": 2732,
             "description": "初始化 subdatatype = datavalid 相关事件",
             "class": "JC.Valid",
             "namespace": "JC"
@@ -11035,14 +11023,14 @@
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 3,
             "description": "Top level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 10,
             "access": "private",
             "tagname": "",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11050,25 +11038,25 @@
             "description": "Use <code>jasmine.undefined</code> instead of <code>undefined</code>, since <code>undefined</code> is just\na plain old variable and may be redefined by somebody else.",
             "access": "private",
             "tagname": "",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 25,
             "description": "Show diagnostic messages in the console if set to true",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 31,
             "description": "Default interval in milliseconds for event loop yields (e.g. to allow network activity or to refresh the screen with the HTML-based runner). Small values here may result in slow test running. Zero means no updates until all tests have completed.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 37,
             "description": "Default timeout interval in milliseconds for waitsFor() blocks.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11089,13 +11077,13 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 114,
             "description": "Getter for the Jasmine environment. Ensures one gets created",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11113,7 +11101,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11131,7 +11119,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11149,7 +11137,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11172,7 +11160,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11189,7 +11177,7 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11206,7 +11194,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11225,7 +11213,7 @@
             "return": {
                 "description": "matchable object of the type clazz"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11244,7 +11232,7 @@
             "return": {
                 "description": "matchable object for the sample"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11266,25 +11254,25 @@
                     "type": "String"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 259,
             "description": "The name of the spy, if provided.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 263,
             "description": "Is this Object a spy?",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 267,
             "description": "The actual function this spy stubs.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11293,7 +11281,7 @@
             "example": [
                 "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy.mostRecentCall.args = [1, 2];"
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11302,7 +11290,7 @@
             "example": [
                 "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy(7, 8);\nmySpy.mostRecentCall.args = [7, 8];\nmySpy.argsForCall[0] = [1, 2];\nmySpy.argsForCall[1] = [7, 8];"
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11311,7 +11299,7 @@
             "example": [
                 "\nvar foo = {\n  bar: function() { // do some stuff }\n}\n\n// defining a spy on an existing property: foo.bar\nspyOn(foo, 'bar').andCallThrough();"
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11327,7 +11315,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11343,7 +11331,7 @@
                     "type": "String"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11359,7 +11347,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11368,7 +11356,7 @@
             "example": [
                 "\nspyOn(foo, 'bar');\n\nfoo.bar();\n\nexpect(foo.bar.callCount).toEqual(1);\n\nfoo.bar.reset();\n\nexpect(foo.bar.callCount).toEqual(0);"
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11385,7 +11373,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11403,13 +11391,13 @@
                     "type": "Array"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 443,
             "description": "All parameters are pretty-printed and concatenated together, then written to the current spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11434,7 +11422,7 @@
             "return": {
                 "description": "a Jasmine spy that can be chained with all spy methods"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11455,7 +11443,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11473,7 +11461,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11486,7 +11474,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11499,7 +11487,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11514,7 +11502,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11537,7 +11525,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11550,7 +11538,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11563,7 +11551,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11584,7 +11572,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11602,12 +11590,12 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 633,
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11627,21 +11615,21 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 646,
             "access": "private",
             "tagname": "",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 700,
             "description": "Environment for Jasmine",
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11649,7 +11637,7 @@
             "return": {
                 "description": "an object containing jasmine version build info, if set."
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11657,7 +11645,7 @@
             "return": {
                 "description": "string containing jasmine version build info, if set."
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11665,7 +11653,7 @@
             "return": {
                 "description": "a sequential integer starting at 0"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11673,7 +11661,7 @@
             "return": {
                 "description": "a sequential integer starting at 0"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11686,13 +11674,13 @@
                     "type": "jasmine.Reporter"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 977,
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11716,13 +11704,13 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1030,
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11744,7 +11732,7 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11756,7 +11744,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11770,7 +11758,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toBe() instead.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11782,7 +11770,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11796,7 +11784,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toEqual() instead.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11808,7 +11796,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11822,48 +11810,48 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toMatch() instead.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1263,
             "description": "Matcher that compares the actual to jasmine.undefined.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1270,
             "description": "Matcher that compares the actual to jasmine.undefined.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1277,
             "description": "Matcher that compares the actual to null.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1284,
             "description": "Matcher that boolean not-nots the actual.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1292,
             "description": "Matcher that boolean nots the actual.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1300,
             "description": "Matcher that checks to see if the actual, a Jasmine spy, was called.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1322,
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11871,7 +11859,7 @@
             "description": "Matcher that checks to see if the actual, a Jasmine spy, was not called.",
             "deprecated": true,
             "deprecationMessage": "Use expect(xxx).not.toHaveBeenCalled() instead",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11880,17 +11868,17 @@
             "example": [
                 "\n"
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1378,
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1381,
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11903,7 +11891,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11918,7 +11906,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toContain() instead.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11936,7 +11924,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -11949,55 +11937,55 @@
                     "type": "String"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1619,
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1715,
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1750,
             "description": "Holds results for a set of Jasmine spec. Allows for the results array to hold another jasmine.NestedResults",
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1756,
             "description": "The total count of results",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1760,
             "description": "Number of passed results",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1764,
             "description": "Number of failed results",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1768,
             "description": "Was this suite/spec skipped?",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1772,
             "ignore": "",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -12009,7 +11997,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -12021,13 +12009,13 @@
                     "description": "Array of message parts which will be concatenated later."
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1797,
             "description": "Getter for the results: message & results.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -12040,7 +12028,7 @@
                     "type": "jasmine.ExpectationResult|jasmine.NestedResults"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -12049,13 +12037,13 @@
                 "description": "True if <b>everything</b> below passed",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1830,
             "description": "Base class for pretty printing for expectation results.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -12067,7 +12055,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -12081,7 +12069,7 @@
                     "type": "jasmine.Env"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -12105,13 +12093,13 @@
                     "type": "String"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 2168,
             "description": "All parameters are pretty-printed and concatenated together, then written to the spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -12123,7 +12111,7 @@
                     "type": "jasmine.ExpectationResult"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -12138,7 +12126,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -12161,7 +12149,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -12190,7 +12178,7 @@
                     "type": "jasmine.Suite"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -12225,7 +12213,7 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/aes.js",
@@ -12247,7 +12235,7 @@
                 "description": "Encrypted output state array",
                 "type": "Number[]"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/aes.js",
@@ -12264,7 +12252,7 @@
                 "description": "Expanded key schedule as 2D byte-array (Nr+1 x Nb bytes)",
                 "type": "Number[][]"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/aes.js",
@@ -12291,7 +12279,7 @@
                 "description": "Encrypted text",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/aes.js",
@@ -12318,7 +12306,7 @@
                 "description": "Decrypted text",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/aes.js",
@@ -12342,7 +12330,7 @@
                 "description": "Base64-encoded string",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/aes.js",
@@ -12366,7 +12354,7 @@
                 "description": "decoded string",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/aes.js",
@@ -12383,7 +12371,7 @@
                 "description": "encoded string",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../plugins/aes.js",
@@ -12400,39 +12388,44 @@
                 "description": "decoded string",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "JC.common"
         },
         {
             "file": "../lib.js",
-            "line": 24,
+            "line": 1,
+            "description": "jQuery JavaScript Library v1.9.1\n<pre>http://jquery.com/\n\nIncludes Sizzle.js\nhttp://sizzlejs.com/\n\nCopyright 2005, 2012 jQuery Foundation, Inc. and other contributors\nReleased under the MIT license\nhttp://jquery.org/license\nDate: 2013-2-4</pre>",
+            "class": "JC.common"
+        },
+        {
+            "file": "../lib.js",
+            "line": 21,
             "description": "声明主要命名空间, 方便迁移",
-            "class": "window.jQuery",
-            "namespace": "window"
+            "class": "JC.common"
         },
         {
             "file": "../lib.js",
-            "line": 80,
+            "line": 77,
             "description": "判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../lib.js",
-            "line": 102,
+            "line": 99,
             "description": "jquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../lib.js",
-            "line": 106,
+            "line": 103,
             "description": "如果 console 不可用, 则生成一个模拟的 console 对象",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../lib.js",
-            "line": 112,
+            "line": 109,
             "description": "全局 css z-index 控制属性\n<br /> <b>注意</b>: 这个变量是 window.ZINDEX_COUNT",
             "itemtype": "property",
             "name": "ZINDEX_COUNT",
@@ -12444,7 +12437,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 121,
+            "line": 118,
             "description": "把函数的参数转为数组",
             "itemtype": "method",
             "name": "sliceArgs",
@@ -12464,7 +12457,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 135,
+            "line": 132,
             "description": "按格式输出字符串",
             "itemtype": "method",
             "name": "printf",
@@ -12487,7 +12480,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 151,
+            "line": 148,
             "description": "判断URL中是否有某个get参数",
             "itemtype": "method",
             "name": "hasUrlParam",
@@ -12515,7 +12508,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 173,
+            "line": 170,
             "description": "添加URL参数\n<br /><b>require:</b> delUrlParam",
             "itemtype": "method",
             "name": "addUrlParams",
@@ -12543,7 +12536,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 199,
+            "line": 196,
             "description": "取URL参数的值",
             "itemtype": "method",
             "name": "getUrlParam",
@@ -12571,7 +12564,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 226,
+            "line": 223,
             "description": "取URL参数的值, 这个方法返回数组\n<br />与 getUrlParam 的区别是可以获取 checkbox 的所有值",
             "itemtype": "method",
             "name": "getUrlParams",
@@ -12599,7 +12592,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 255,
+            "line": 252,
             "description": "删除URL参数",
             "itemtype": "method",
             "name": "delUrlParam",
@@ -12627,7 +12620,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 283,
+            "line": 280,
             "description": "提示需要 HTTP 环境",
             "itemtype": "method",
             "name": "httpRequire",
@@ -12647,7 +12640,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 298,
+            "line": 295,
             "description": "删除 URL 的锚点\n<br /><b>require:</b> addUrlParams",
             "itemtype": "method",
             "name": "removeUrlSharp",
@@ -12672,7 +12665,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 312,
+            "line": 309,
             "description": "重载页面\n<br /><b>require:</b> removeUrlSharp\n<br /><b>require:</b> addUrlParams",
             "itemtype": "method",
             "name": "reloadPage",
@@ -12699,7 +12692,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 330,
+            "line": 327,
             "description": "取小数点的N位\n<br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题",
             "itemtype": "method",
             "name": "parseFinance",
@@ -12724,7 +12717,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 347,
+            "line": 344,
             "description": "js 附加字串函数",
             "itemtype": "method",
             "name": "padChar",
@@ -12754,7 +12747,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 363,
+            "line": 360,
             "description": "格式化日期为 YYYY-mm-dd 格式\n<br /><b>require</b>: pad\\_char\\_f",
             "itemtype": "method",
             "name": "formatISODate",
@@ -12779,7 +12772,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 377,
+            "line": 374,
             "description": "从 ISODate 字符串解析日期对象",
             "itemtype": "method",
             "name": "parseISODate",
@@ -12799,7 +12792,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 395,
+            "line": 392,
             "description": "获取不带 时分秒的 日期对象",
             "itemtype": "method",
             "name": "pureDate",
@@ -12818,7 +12811,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 407,
+            "line": 404,
             "description": "克隆日期对象",
             "itemtype": "method",
             "name": "cloneDate",
@@ -12839,7 +12832,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 415,
+            "line": 412,
             "description": "判断两个日期是否为同一天",
             "itemtype": "method",
             "name": "isSameDay",
@@ -12865,7 +12858,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 427,
+            "line": 424,
             "description": "判断两个日期是否为同一月份",
             "itemtype": "method",
             "name": "isSameMonth",
@@ -12891,7 +12884,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 439,
+            "line": 436,
             "description": "取得一个月份中最大的一天",
             "itemtype": "method",
             "name": "maxDayOfMonth",
@@ -12912,7 +12905,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 452,
+            "line": 449,
             "description": "取当前脚本标签的 src路径",
             "itemtype": "method",
             "name": "scriptPath",
@@ -12926,7 +12919,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 464,
+            "line": 461,
             "description": "缓动函数, 动画效果为按时间缓动 \n<br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval",
             "itemtype": "method",
             "name": "easyEffect",
@@ -12969,7 +12962,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 517,
+            "line": 514,
             "description": "把输入值转换为布尔值",
             "itemtype": "method",
             "name": "parseBool",
@@ -12989,7 +12982,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 536,
+            "line": 533,
             "description": "判断是否支持 CSS position: fixed",
             "itemtype": "property",
             "name": "$.support.isFixed",
@@ -13001,7 +12994,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 565,
+            "line": 562,
             "description": "绑定或清除 mousewheel 事件",
             "itemtype": "method",
             "name": "mousewheelEvent",
@@ -13023,7 +13016,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 587,
+            "line": 584,
             "description": "获取 selector 的指定父级标签",
             "itemtype": "method",
             "name": "getJqParent",
@@ -13049,7 +13042,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 613,
+            "line": 610,
             "description": "扩展 jquery 选择器\n<br />扩展起始字符的 '/' 符号为 jquery 父节点选择器\n<br />扩展起始字符的 '|' 符号为 jquery 子节点选择器\n<br />扩展起始字符的 '(' 符号为 jquery 父节点查找识别符( getJqParent )",
             "itemtype": "method",
             "name": "parentSelector",
@@ -13080,7 +13073,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 681,
+            "line": 678,
             "description": "获取脚本模板的内容",
             "itemtype": "method",
             "name": "scriptContent",
@@ -13100,7 +13093,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 696,
+            "line": 693,
             "description": "取函数名 ( 匿名函数返回空 )",
             "itemtype": "method",
             "name": "funcName",
@@ -13120,7 +13113,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 711,
+            "line": 708,
             "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件,  </dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder\n         <br />Bizs.DisableLogic, Bizs.FormLogic\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
@@ -13137,56 +13130,56 @@
         },
         {
             "file": "../lib.js",
-            "line": 735,
+            "line": 732,
             "description": "联动下拉框",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../lib.js",
-            "line": 739,
+            "line": 736,
             "description": "日历组件",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../lib.js",
-            "line": 743,
+            "line": 740,
             "description": "全选反选",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../lib.js",
-            "line": 747,
+            "line": 744,
             "description": "Ajax 上传",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../lib.js",
-            "line": 751,
+            "line": 748,
             "description": "Placeholder 占位符",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../lib.js",
-            "line": 757,
+            "line": 754,
             "description": "disable / enable",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../lib.js",
-            "line": 761,
+            "line": 758,
             "description": "表单提交逻辑",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../lib.js",
-            "line": 766,
+            "line": 763,
             "description": "URL 占位符识别功能",
             "itemtype": "method",
             "name": "urlDetect",
@@ -13209,7 +13202,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 805,
+            "line": 802,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -13233,14 +13226,14 @@
         },
         {
             "file": "../lib.js",
-            "line": 864,
+            "line": 861,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../lib.js",
-            "line": 910,
+            "line": 907,
             "description": "JC组件库所在路径",
             "itemtype": "property",
             "name": "PATH",
@@ -13251,7 +13244,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 920,
+            "line": 917,
             "description": "是否显示调试信息",
             "itemtype": "property",
             "name": "debug",
@@ -13262,7 +13255,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 927,
+            "line": 924,
             "description": "导入JC组件",
             "itemtype": "method",
             "name": "use",
@@ -13292,7 +13285,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1034,
+            "line": 1031,
             "description": "调用依赖的类\n<br />这个方法的存在是因为有一些类调整了结构, 但是原有的引用因为向后兼容的需要, 暂时不能去掉",
             "itemtype": "method",
             "name": "_usePatch",
@@ -13321,7 +13314,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1056,
+            "line": 1053,
             "description": "输出调试信息, 可通过 JC.debug 指定是否显示调试信息",
             "params": [
                 {
@@ -13338,7 +13331,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1063,
+            "line": 1060,
             "description": "定义输出路径的 v 参数, 以便控制缓存",
             "itemtype": "property",
             "name": "pathPostfix",
@@ -13350,7 +13343,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1071,
+            "line": 1068,
             "description": "是否启用nginx concat 模块的路径格式",
             "itemtype": "property",
             "name": "enableNginxStyle",
@@ -13362,7 +13355,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1079,
+            "line": 1076,
             "description": "定义 nginx style 的基础路径\n<br /><b>注意:</b> 如果这个属性为空, 即使 enableNginxStyle = true, 也是直接输出默认路径",
             "itemtype": "property",
             "name": "nginxBasePath",
@@ -13374,7 +13367,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1088,
+            "line": 1085,
             "description": "资源路径映射对象\n<br />设置 JC.use 逗号(',') 分隔项的 对应URL路径",
             "itemtype": "property",
             "name": "FILE_MAP",
@@ -13389,7 +13382,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1126,
+            "line": 1123,
             "description": "输出 nginx concat 模块的脚本路径格式",
             "itemtype": "method",
             "name": "_writeNginxScript",
@@ -13408,7 +13401,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1154,
+            "line": 1151,
             "description": "输出的脚本路径格式",
             "itemtype": "method",
             "name": "_writeNormalScript",
@@ -13427,7 +13420,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1171,
+            "line": 1168,
             "description": "保存 use 过的资源路径, 以便进行唯一性判断, 避免重复加载",
             "itemtype": "property",
             "name": "_USE_CACHE",
@@ -13441,14 +13434,14 @@
         },
         {
             "file": "../lib.js",
-            "line": 1193,
+            "line": 1190,
             "description": "自动识别组件库所在路径",
             "class": "window.UXC",
             "namespace": "window"
         },
         {
             "file": "../lib.js",
-            "line": 1253,
+            "line": 1250,
             "description": "内部初始化方法",
             "itemtype": "method",
             "name": "_init",
@@ -13466,7 +13459,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1282,
+            "line": 1279,
             "description": "初始化之前调用的方法",
             "itemtype": "method",
             "name": "_beforeInit",
@@ -13477,7 +13470,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1290,
+            "line": 1287,
             "description": "内部事件初始化方法",
             "itemtype": "method",
             "name": "_initHanlderEvent",
@@ -13488,7 +13481,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1298,
+            "line": 1295,
             "description": "内部初始化完毕时, 调用的方法",
             "itemtype": "method",
             "name": "_inited",
@@ -13499,7 +13492,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1306,
+            "line": 1303,
             "description": "获取 显示 BaseMVC 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -13511,7 +13504,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1312,
+            "line": 1309,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -13536,7 +13529,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1320,
+            "line": 1317,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -13556,7 +13549,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1328,
+            "line": 1325,
             "description": "获取或设置 BaseMVC 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -13577,7 +13570,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1346,
+            "line": 1343,
             "description": "是否自动初始化",
             "itemtype": "property",
             "name": "autoInit",
@@ -13589,7 +13582,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1354,
+            "line": 1351,
             "description": "复制 BaseMVC 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "build",
@@ -13606,7 +13599,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1369,
+            "line": 1366,
             "description": "复制 _inClass 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "buildClass",
@@ -13633,7 +13626,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1409,
+            "line": 1406,
             "description": "为 _outClass 生成一个通用 Model 类",
             "itemtype": "method",
             "name": "buildModel",
@@ -13650,7 +13643,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1422,
+            "line": 1419,
             "description": "为 _outClass 生成一个通用 View 类",
             "itemtype": "method",
             "name": "buildView",
@@ -13667,7 +13660,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1447,
+            "line": 1444,
             "description": "设置 selector 实例引用的 data 属性名",
             "itemtype": "property",
             "name": "_instanceName",
@@ -13681,7 +13674,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1461,
+            "line": 1458,
             "description": "初始化的 jq 选择器",
             "itemtype": "method",
             "name": "selector",
@@ -13700,7 +13693,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1472,
+            "line": 1469,
             "description": "读取 int 属性的值",
             "itemtype": "method",
             "name": "intProp",
@@ -13724,7 +13717,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1493,
+            "line": 1490,
             "description": "读取 float 属性的值",
             "itemtype": "method",
             "name": "floatProp",
@@ -13748,7 +13741,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1514,
+            "line": 1511,
             "description": "读取 string 属性的值",
             "itemtype": "method",
             "name": "stringProp",
@@ -13772,7 +13765,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1532,
+            "line": 1529,
             "description": "读取 html 属性值\n<br />这个跟 stringProp 的区别是不会强制转换为小写",
             "itemtype": "method",
             "name": "attrProp",
@@ -13796,7 +13789,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1555,
+            "line": 1552,
             "description": "读取 boolean 属性的值",
             "itemtype": "method",
             "name": "boolProp",
@@ -13826,7 +13819,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1581,
+            "line": 1578,
             "description": "读取 callback 属性的值",
             "itemtype": "method",
             "name": "callbackProp",
@@ -13851,7 +13844,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1604,
+            "line": 1601,
             "description": "获取 selector 属性的 jquery 选择器",
             "itemtype": "method",
             "name": "selectorProp",
@@ -13875,7 +13868,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1627,
+            "line": 1624,
             "description": "判断 _selector 是否具体某种特征",
             "itemtype": "method",
             "name": "is",
@@ -13945,15 +13938,15 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../comps/Calendar/Calendar.js:3"
+            "line": " ../comps/Calendar/Calendar.js:4"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../comps/Calendar/Calendar.js:3"
+            "line": " ../comps/Calendar/Calendar.js:4"
         },
         {
             "message": "unknown tag: prototype",
-            "line": " ../comps/Calendar/Calendar.js:421"
+            "line": " ../comps/Calendar/Calendar.js:423"
         },
         {
             "message": "unknown tag: version",
@@ -14045,11 +14038,11 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../comps/Suggest/Suggest.js:3"
+            "line": " ../comps/Suggest/Suggest.js:5"
         },
         {
             "message": "unknown tag: date",
-            "line": " ../comps/Suggest/Suggest.js:3"
+            "line": " ../comps/Suggest/Suggest.js:5"
         },
         {
             "message": "unknown tag: version",
@@ -14085,99 +14078,99 @@
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:916"
+            "line": " ../comps/Valid/Valid.js:932"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:916"
+            "line": " ../comps/Valid/Valid.js:932"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:916"
+            "line": " ../comps/Valid/Valid.js:932"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:969"
+            "line": " ../comps/Valid/Valid.js:985"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:969"
+            "line": " ../comps/Valid/Valid.js:985"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:969"
+            "line": " ../comps/Valid/Valid.js:985"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1043"
+            "line": " ../comps/Valid/Valid.js:1059"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1043"
+            "line": " ../comps/Valid/Valid.js:1059"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1043"
+            "line": " ../comps/Valid/Valid.js:1059"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1043"
+            "line": " ../comps/Valid/Valid.js:1059"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1043"
+            "line": " ../comps/Valid/Valid.js:1059"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1117"
+            "line": " ../comps/Valid/Valid.js:1133"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1117"
+            "line": " ../comps/Valid/Valid.js:1133"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1117"
+            "line": " ../comps/Valid/Valid.js:1133"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1152"
+            "line": " ../comps/Valid/Valid.js:1168"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1152"
+            "line": " ../comps/Valid/Valid.js:1168"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1152"
+            "line": " ../comps/Valid/Valid.js:1168"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1152"
+            "line": " ../comps/Valid/Valid.js:1168"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1152"
+            "line": " ../comps/Valid/Valid.js:1168"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1546"
+            "line": " ../comps/Valid/Valid.js:1562"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1572"
+            "line": " ../comps/Valid/Valid.js:1588"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1598"
+            "line": " ../comps/Valid/Valid.js:1614"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1607"
+            "line": " ../comps/Valid/Valid.js:1623"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1616"
+            "line": " ../comps/Valid/Valid.js:1632"
         },
         {
             "message": "unknown tag: ignore",
@@ -14297,39 +14290,39 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../lib.js:32"
+            "line": " ../lib.js:29"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../lib.js:32"
+            "line": " ../lib.js:29"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../lib.js:536"
+            "line": " ../lib.js:533"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../lib.js:587"
+            "line": " ../lib.js:584"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../lib.js:613"
+            "line": " ../lib.js:610"
         },
         {
             "message": "unknown tag: date",
-            "line": " ../lib.js:893"
+            "line": " ../lib.js:890"
         },
         {
             "message": "unknown tag: date",
-            "line": " ../lib.js:1182"
+            "line": " ../lib.js:1179"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../lib.js:1226"
+            "line": " ../lib.js:1223"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../lib.js:1432"
+            "line": " ../lib.js:1429"
         },
         {
             "message": "Missing item type\n脚本模板 Panel",
@@ -14417,27 +14410,27 @@
         },
         {
             "message": "Missing item type\n保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",
-            "line": " ../comps/Calendar/Calendar.js:421"
+            "line": " ../comps/Calendar/Calendar.js:423"
         },
         {
             "message": "Missing item type\n请使用 isCalendar, 这个方法是为了向后兼容",
-            "line": " ../comps/Calendar/Calendar.js:492"
+            "line": " ../comps/Calendar/Calendar.js:494"
         },
         {
             "message": "Missing item type\n这个方法后续版本不再使用, 请使用 Calendar.position",
-            "line": " ../comps/Calendar/Calendar.js:673"
+            "line": " ../comps/Calendar/Calendar.js:675"
         },
         {
             "message": "Missing item type\n延迟200毫秒初始化页面的所有日历控件\n之所以要延迟是可以让用户自己设置是否需要自动初始化",
-            "line": " ../comps/Calendar/Calendar.js:1534"
+            "line": " ../comps/Calendar/Calendar.js:1536"
         },
         {
             "message": "Missing item type\n元旦开始的第一个星期一开始的一周为政治经济上的第一周",
-            "line": " ../comps/Calendar/Calendar.js:1821"
+            "line": " ../comps/Calendar/Calendar.js:1823"
         },
         {
             "message": "Missing item type\n如果 atd 为空, 那么是 全选按钮触发的事件",
-            "line": " ../comps/Calendar/Calendar.js:2290"
+            "line": " ../comps/Calendar/Calendar.js:2292"
         },
         {
             "message": "Missing item type\n监听上一年按钮",
@@ -14533,7 +14526,7 @@
         },
         {
             "message": "Missing item type\nsuggest_so({ \"p\" : true,\n              \"q\" : \"shinee\",\n              \"s\" : [ \"shinee 综艺\",\n                  \"shinee美好的一天\",\n                  \"shinee hello baby\",\n                  \"shinee吧\",\n                  \"shinee泰民\",\n                  \"shinee fx\",\n                  \"shinee快乐大本营\",\n                  \"shinee钟铉车祸\",\n                  \"shinee年下男的约会\",\n                  \"shinee dream girl\"\n                ]\n            });",
-            "line": " ../comps/Suggest/Suggest.js:122"
+            "line": " ../comps/Suggest/Suggest.js:124"
         },
         {
             "message": "Missing item type\nTab 视图类的实例",
@@ -14565,39 +14558,39 @@
         },
         {
             "message": "Missing item type\n兼容函数式使用",
-            "line": " ../comps/Valid/Valid.js:281"
+            "line": " ../comps/Valid/Valid.js:282"
         },
         {
             "message": "Missing item type\n根据特殊的 datatype 实现不同的计算方法",
-            "line": " ../comps/Valid/Valid.js:943"
+            "line": " ../comps/Valid/Valid.js:959"
         },
         {
             "message": "Missing item type\n这里需要优化检查, 目前会重复检查",
-            "line": " ../comps/Valid/Valid.js:2327"
+            "line": " ../comps/Valid/Valid.js:2354"
         },
         {
             "message": "Missing item type\n验证文件扩展名",
-            "line": " ../comps/Valid/Valid.js:2417"
+            "line": " ../comps/Valid/Valid.js:2444"
         },
         {
             "message": "Missing item type\n响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果",
-            "line": " ../comps/Valid/Valid.js:2654"
+            "line": " ../comps/Valid/Valid.js:2681"
         },
         {
             "message": "Missing item type\n响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果",
-            "line": " ../comps/Valid/Valid.js:2662"
+            "line": " ../comps/Valid/Valid.js:2689"
         },
         {
             "message": "Missing item type\n响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
-            "line": " ../comps/Valid/Valid.js:2670"
+            "line": " ../comps/Valid/Valid.js:2697"
         },
         {
             "message": "Missing item type\n响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
-            "line": " ../comps/Valid/Valid.js:2680"
+            "line": " ../comps/Valid/Valid.js:2707"
         },
         {
             "message": "Missing item type\n初始化 subdatatype = datavalid 相关事件",
-            "line": " ../comps/Valid/Valid.js:2705"
+            "line": " ../comps/Valid/Valid.js:2732"
         },
         {
             "message": "Missing item type\nTop level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
@@ -15024,56 +15017,60 @@
             "line": " ../plugins/aes.js:440"
         },
         {
+            "message": "Missing item type\njQuery JavaScript Library v1.9.1\n<pre>http://jquery.com/\n\nIncludes Sizzle.js\nhttp://sizzlejs.com/\n\nCopyright 2005, 2012 jQuery Foundation, Inc. and other contributors\nReleased under the MIT license\nhttp://jquery.org/license\nDate: 2013-2-4</pre>",
+            "line": " ../lib.js:1"
+        },
+        {
             "message": "Missing item type\n声明主要命名空间, 方便迁移",
-            "line": " ../lib.js:24"
+            "line": " ../lib.js:21"
         },
         {
             "message": "Missing item type\n判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量",
-            "line": " ../lib.js:80"
+            "line": " ../lib.js:77"
         },
         {
             "message": "Missing item type\njquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
-            "line": " ../lib.js:102"
+            "line": " ../lib.js:99"
         },
         {
             "message": "Missing item type\n如果 console 不可用, 则生成一个模拟的 console 对象",
-            "line": " ../lib.js:106"
+            "line": " ../lib.js:103"
         },
         {
             "message": "Missing item type\n联动下拉框",
-            "line": " ../lib.js:735"
+            "line": " ../lib.js:732"
         },
         {
             "message": "Missing item type\n日历组件",
-            "line": " ../lib.js:739"
+            "line": " ../lib.js:736"
         },
         {
             "message": "Missing item type\n全选反选",
-            "line": " ../lib.js:743"
+            "line": " ../lib.js:740"
         },
         {
             "message": "Missing item type\nAjax 上传",
-            "line": " ../lib.js:747"
+            "line": " ../lib.js:744"
         },
         {
             "message": "Missing item type\nPlaceholder 占位符",
-            "line": " ../lib.js:751"
+            "line": " ../lib.js:748"
         },
         {
             "message": "Missing item type\ndisable / enable",
-            "line": " ../lib.js:757"
+            "line": " ../lib.js:754"
         },
         {
             "message": "Missing item type\n表单提交逻辑",
-            "line": " ../lib.js:761"
+            "line": " ../lib.js:758"
         },
         {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../lib.js:864"
+            "line": " ../lib.js:861"
         },
         {
             "message": "Missing item type\n自动识别组件库所在路径",
-            "line": " ../lib.js:1193"
+            "line": " ../lib.js:1190"
         }
     ]
 }

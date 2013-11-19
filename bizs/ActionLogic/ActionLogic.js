@@ -40,10 +40,10 @@
  *      <dt>balCallback = function</dt>
  *      <dd>
  *          显示模板后的回调
-<xmp>function balPanelInitCb( _panelIns ){
+<pre>function balPanelInitCb( _panelIns ){
     var _trigger = $(this);
     //return true; //如果返回真的话, 表单提交后会关闭弹框
-}</xmp>
+}</pre>
  *      </dd>
  * </dl>
  * <h2>balType = link 可用的 HTML 属性</h2>
@@ -77,7 +77,7 @@
  *      <dt>balCallback = function</dt>
  *      <dd>
  *          操作完成后的回调
-<xmp>function ajaxDelCallback( _d, _ins ){
+<pre>function ajaxDelCallback( _d, _ins ){
     var _trigger = $(this);
     if( _d && !_d.errorno ){
         JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){
@@ -87,7 +87,7 @@
         JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );
     }
 }
-</xmp>
+</pre>
  *      </dd>
  * </dl>
  *

@@ -59,25 +59,25 @@
      *      <dt>cauUploadDoneCallback = function, optional</dt>
      *      <dd>
      *          文件上传完毕时, 触发的回调
-<xmp>function cauUploadDoneCallback( _json, _selector, _frame ){
+<pre>function cauUploadDoneCallback( _json, _selector, _frame ){
     var _ins = this;
     //alert( _json ); //object object
-}</xmp>
+}</pre>
      *      </dd>
      *
      *      <dt>cauUploadErrorCallback = function, optional</dt>
      *      <dd>
      *          文件上传完毕时, 发生错误触发的回调
-<xmp>function cauUploadErrorCallback( _json, _selector, _frame ){
+<pre>function cauUploadErrorCallback( _json, _selector, _frame ){
     var _ins = this;
     //alert( _json ); //object object
-}</xmp>
+}</pre>
      *      </dd>
      *
      *      <dt>cauDisplayLabelCallback = function, optional, return = string</dt>
      *      <dd>
      *          自定义上传完毕后显示的内容 模板
-<xmp>function cauDisplayLabelCallback( _json, _label, _value ){
+<pre>function cauDisplayLabelCallback( _json, _label, _value ){
     var _selector = this
         , _label = printf( '<a href="{0}" class="green js_auLink" target="_blank">{1}</a>{2}'
                         , _value, _label
@@ -85,7 +85,7 @@
                     )
         ;
     return _label;
-}</xmp>
+}</pre>
      *      </dd>
      * </dl>
      * @namespace JC

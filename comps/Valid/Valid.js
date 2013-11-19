@@ -8,7 +8,7 @@
      * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Valid/0.2/_demo/' target='_blank'>demo link</a></p>
+     * | <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>
      * <h2>Form 的可用 html attribute</h2>
      * <dl>
      *      <dt>errorabort = bool, default = true</dt>
@@ -81,8 +81,8 @@
      *      <dt>validitemcallback = function</dt>
      *      <dd>
      *          对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>
-<xmp>function validItemCallback( _selector, _isValid ){
-}</xmp>
+<pre>function validItemCallback( _selector, _isValid ){
+}</pre>
      *      </dd>
      *
      *      <dt>datatype: 常用数据类型</dt>
@@ -240,22 +240,22 @@
      *              </dd>
      *              <dd>
      *                  <b>datavalidCallback:</b> 请求 datavalidUrl 后调用的回调
-<xmp>function datavalidCallback( _json ){
+<pre>function datavalidCallback( _json ){
     var _selector = $(this);
-});</xmp>
+});</pre>
      *              </dd>
      *                  <b>datavalidKeyupCallback:</b> 每次 keyup 的回调
-<xmp>function datavalidKeyupCallback( _evt ){
+<pre>function datavalidKeyupCallback( _evt ){
     var _selector = $(this);
-});</xmp>
+});</pre>
      *              </dd>
      *              <dd>
      *                  <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调
-<xmp>function datavalidUrlFilter( _url ){
+<pre>function datavalidUrlFilter( _url ){
     var _selector = $(this);
     _url = JC.f.addUrlParams( _url, { 'xtest': 'customData' } );
     return _url;
-});</xmp>
+});</pre>
      *              </dd>
      *          </dl>
      *      </dd>

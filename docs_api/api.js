@@ -29,7 +29,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.confirm",
         "JC.hideAllPanel",
         "JC.hideAllPopup",
-        "JC.jQuery",
         "JC.msgbox",
         "window.Bizs.ActionLogic",
         "window.Bizs.CommonModify",

@@ -13,9 +13,10 @@ sh -c "cd $dir/comps/LunarCalendar && node nodejs_merge.js";
 
 sleep 1s;
 
-sh -c "cd $dir && tar -cvpzf tmp.tgz common.js JC.js comps/BaseMVC/BaseMVC.js"
+sh -c "cd $dir && tar -cvpzf tmp.tgz common.js JC.js jquery.js comps/BaseMVC/BaseMVC.js"
 rm $dir/common.js
 rm $dir/JC.js
+rm $dir/jquery.js
 rm $dir/comps/BaseMVC/BaseMVC.js
 
 sleep 1s;

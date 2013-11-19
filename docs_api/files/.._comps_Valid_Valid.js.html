@@ -79,8 +79,6 @@
             
                 <li><a href="../classes/JC.hideAllPopup.html">JC.hideAllPopup</a></li>
             
-                <li><a href="../classes/JC.jQuery.html">JC.jQuery</a></li>
-            
                 <li><a href="../classes/JC.LunarCalendar.html">JC.LunarCalendar</a></li>
             
                 <li><a href="../classes/JC.LunarCalendar.Model.html">JC.LunarCalendar.Model</a></li>
@@ -190,7 +188,7 @@
      * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
-     * | &lt;a href=&#x27;../../modules/JC.Valid/0.2/_demo/&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     * | &lt;a href=&#x27;../../comps/Valid/_demo/&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * &lt;h2&gt;Form 的可用 html attribute&lt;/h2&gt;
      * &lt;dl&gt;
      *      &lt;dt&gt;errorabort = bool, default = true&lt;/dt&gt;
@@ -263,8 +261,8 @@
      *      &lt;dt&gt;validitemcallback = function&lt;/dt&gt;
      *      &lt;dd&gt;
      *          对一个 control 作检查后的回调, 无论正确与否都会触发, &lt;b&gt;window 变量域&lt;/b&gt;
-&lt;xmp&gt;function validItemCallback( _selector, _isValid ){
-}&lt;/xmp&gt;
+&lt;pre&gt;function validItemCallback( _selector, _isValid ){
+}&lt;/pre&gt;
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;datatype: 常用数据类型&lt;/dt&gt;
@@ -405,6 +403,7 @@
      *              &lt;dd&gt;&lt;b&gt;uniquemsg:&lt;/b&gt; 值有重复的提示信息&lt;/dd&gt;
      *              &lt;dd&gt;&lt;b&gt;uniqueIgnoreCase:&lt;/b&gt; 是否忽略大小写&lt;/dd&gt;
      *              &lt;dd&gt;&lt;b&gt;uniqueIgnoreEmpty:&lt;/b&gt; 是否忽略空的值, 如果组中有空值也会被忽略&lt;/dd&gt;
+     *              &lt;dd&gt;&lt;b&gt;processDisabled:&lt;/b&gt; 是否处理 disabled 但 visible 的node&lt;/dd&gt;
      *              &lt;dd&gt;unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组&lt;/dd&gt;
      *          &lt;/dl&gt;
      *      &lt;/dd&gt;
@@ -421,22 +420,22 @@
      *              &lt;/dd&gt;
      *              &lt;dd&gt;
      *                  &lt;b&gt;datavalidCallback:&lt;/b&gt; 请求 datavalidUrl 后调用的回调
-&lt;xmp&gt;function datavalidCallback( _json ){
+&lt;pre&gt;function datavalidCallback( _json ){
     var _selector = $(this);
-});&lt;/xmp&gt;
+});&lt;/pre&gt;
      *              &lt;/dd&gt;
      *                  &lt;b&gt;datavalidKeyupCallback:&lt;/b&gt; 每次 keyup 的回调
-&lt;xmp&gt;function datavalidKeyupCallback( _evt ){
+&lt;pre&gt;function datavalidKeyupCallback( _evt ){
     var _selector = $(this);
-});&lt;/xmp&gt;
+});&lt;/pre&gt;
      *              &lt;/dd&gt;
      *              &lt;dd&gt;
      *                  &lt;b&gt;datavalidUrlFilter:&lt;/b&gt; 请求数据前对 url 进行操作的回调
-&lt;xmp&gt;function datavalidUrlFilter( _url ){
+&lt;pre&gt;function datavalidUrlFilter( _url ){
     var _selector = $(this);
     _url = JC.f.addUrlParams( _url, { &#x27;xtest&#x27;: &#x27;customData&#x27; } );
     return _url;
-});&lt;/xmp&gt;
+});&lt;/pre&gt;
      *              &lt;/dd&gt;
      *          &lt;/dl&gt;
      *      &lt;/dd&gt;
@@ -711,54 +710,69 @@
     /**
      * 把一个表单项的状态设为正确状态
      * @method  setValid
-     * @param   {selector}  _item
+     * @param   {selector}  _items
      * @param   {int}       _tm     延时 _tm 毫秒显示处理结果, 默认=150
      * @static
      */
-    Valid.setValid = function(_item, _tm, _noStyle, _isUserSet){ 
-        $( Valid.getInstance()._view ).trigger( &#x27;setValid&#x27;, [_item, _tm, _noStyle, _isUserSet] ); 
+    Valid.setValid = function(_items, _tm, _noStyle, _isUserSet){ 
+        _items = $( _items );
+        _items.each( function( _ix, _item ){
+            _item = $(this);
+            $( Valid.getInstance()._view ).trigger( &#x27;setValid&#x27;, [_item, _tm, _noStyle, _isUserSet] ); 
+        });
+
         return Valid.getInstance();
     };
     /**
      * 把一个表单项的状态设为错误状态
      * @method  setError
-     * @param   {selector}  _item
+     * @param   {selector}  _items
      * @param   {string}    _msgAttr    - 显示指定需要读取的错误信息属性名, 默认为 reqmsg, errmsg, 通过该属性可以指定别的属性名
      *                                    &lt;br /&gt; 如果 _msgAttr 的第一个字符为空格, 将视为提示信息, 并自动生成属性 autoGenerateErrorMsg
      * @param   {bool}      _fullMsg    - 显示指定错误信息为属性的值, 而不是自动添加的 请上传/选择/填写
      * @static
      */
     Valid.setError = 
-        function(_item, _msgAttr, _fullMsg){ 
-            if( _msgAttr &amp;&amp; _msgAttr.trim() &amp;&amp; /^[\s]/.test( _msgAttr ) ){
-                var _autoKey = &#x27;autoGenerateErrorMsg&#x27;;
-                _item.attr( _autoKey, _msgAttr );
-                _msgAttr = _autoKey;
-            }
-            $( Valid.getInstance()._view ).trigger( &#x27;setError&#x27;, [ _item, _msgAttr, _fullMsg ] );
+        function(_items, _msgAttr, _fullMsg){ 
+            _items = $(_items);
+
+            _items.each( function( _ix, _item ){
+                _item = $(this);
+                if( _msgAttr &amp;&amp; _msgAttr.trim() &amp;&amp; /^[\s]/.test( _msgAttr ) ){
+                    var _autoKey = &#x27;autoGenerateErrorMsg&#x27;;
+                    _item.attr( _autoKey, _msgAttr );
+                    _msgAttr = _autoKey;
+                }
+                $( Valid.getInstance()._view ).trigger( &#x27;setError&#x27;, [ _item, _msgAttr, _fullMsg ] );
+            });
             return Valid.getInstance();
         };
     /**
      * 显示 focusmsg 属性的提示信息( 如果有的话 )
      * @method  setFocusMsg
-     * @param   {selector}  _item
+     * @param   {selector}  _items
      * @param   {bool}      _setHide
      * @param   {string}    _msgAttr    - 显示指定需要读取的focusmsg信息属性名, 默认为 focusmsg, 通过该属性可以指定别的属性名
      *                                    &lt;br /&gt; 如果 _msgAttr 的第一个字符为空格, 将视为提示信息, 并自动生成属性 autoGenerateFocusMsg
      * @static
      */
     Valid.focusmsg = Valid.setFocusMsg =
-        function( _item, _setHide, _msgAttr ){ 
-            if( typeof _setHide == &#x27;string&#x27; ){
-                _msgAttr = _setHide;
-                _setHide = false;
-            }
-            if( _msgAttr &amp;&amp; _msgAttr.trim() &amp;&amp; /^[\s]/.test( _msgAttr ) ){
-                var _autoKey = &#x27;autoGenerateFocusMsg&#x27;;
-                _item.attr( _autoKey, _msgAttr );
-                _msgAttr = _autoKey;
-            }
-            return Valid.getInstance().trigger( Model.FOCUS_MSG, [ _item, _setHide, _msgAttr ] ); 
+        function( _items, _setHide, _msgAttr ){ 
+            _items = $( _items );
+            _items.each( function( _ix, _item ){
+                _item = $( this );
+                if( typeof _setHide == &#x27;string&#x27; ){
+                    _msgAttr = _setHide;
+                    _setHide = false;
+                }
+                if( _msgAttr &amp;&amp; _msgAttr.trim() &amp;&amp; /^[\s]/.test( _msgAttr ) ){
+                    var _autoKey = &#x27;autoGenerateFocusMsg&#x27;;
+                    _item.attr( _autoKey, _msgAttr );
+                    _msgAttr = _autoKey;
+                }
+                Valid.getInstance().trigger( Model.FOCUS_MSG, [ _item, _setHide, _msgAttr ] ); 
+            });
+            return Valid.getInstance();
         };
     /**
      * focus 时,是否总是显示 focusmsg 提示信息
@@ -2235,7 +2249,15 @@
                     _tmp = {};
                     _target.each( function( _ix ){
                         var _sp = $(this);
-                        if( ! _p.isAvalible( _sp ) ) return;
+                        if( _sp.is(&#x27;[processDisabled]&#x27;) 
+                            &amp;&amp; ( !_sp.attr(&#x27;processDisabled&#x27;) 
+                                || JC.f.parseBool( _sp.attr(&#x27;processDisabled&#x27; ) ) 
+                                )
+                        ){
+                            if( !_sp.is(&#x27;:visible&#x27;) ) return;
+                        }else{
+                            if( ! _p.isAvalible( _sp ) ) return;
+                        }
 
                         if( _p.checkRepeatProcess( _sp, _KEY, true ) ) {
                             _isReturn = true;
@@ -2304,7 +2326,7 @@
                     var _sv = _sitem.val().trim();
                     if( _isReturn ) return false;
                     if( ! _sv ) return;
-                    JC.log(&#x27;yyyyyyyyyyyyy&#x27;, _sitem.data(&#x27;JCValidStatus&#x27;) );
+                    JC.log(&#x27;yyyyyyyyyyyyy&#x27;, _sitem.data(&#x27;JCValidStatus&#x27;), new Date().getTime() );
                     _sv 
                         &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _sitem, &#x27;uniquemsg&#x27;, true ] );
                 } );
@@ -2316,6 +2338,9 @@
             function( _item ){
                 var _r = true, _p = this;
                 if( !Valid.isFormValid ) return _r;
+                if( !_item.is( &#x27;[datavalid]&#x27;) ) return _r;
+
+                JC.log( &#x27;datavalid&#x27;, new Date().getTime() ); 
 
                 _r = JC.f.parseBool( _item.attr(&#x27;datavalid&#x27;) );
 
