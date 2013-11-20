@@ -293,9 +293,7 @@
                 "JC.common": 1
             },
             "fors": {},
-            "namespaces": {
-                "JC": 1
-            }
+            "namespaces": {}
         },
         "../modules/JC.plugins/rate/spec/lib/jasmine.js": {
             "name": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -328,9 +326,13 @@
         "../jquery.js": {
             "name": "../jquery.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "window.jQuery": 1
+            },
             "fors": {},
-            "namespaces": {}
+            "namespaces": {
+                "window": 1
+            }
         },
         "../lib.js": {
             "name": "../lib.js",
@@ -478,7 +480,7 @@
             "namespace": "JC",
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
             "line": 3,
-            "description": "Ajax 文件上传\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.AjaxUpload/0.1/_demo' target='_blank'>demo link</a>\n</p>\n<p>\n     <b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>\n     <dd>\n         上传完成后是否隐藏上传按钮\n     </dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<xmp>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '<a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}</a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;<a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\"></a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</xmp>\n     </dd>\n</dl>",
+            "description": "Ajax 文件上传\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.AjaxUpload/0.1/_demo' target='_blank'>demo link</a>\n</p>\n<p>\n     <b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/0.1/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>\n     <dd>\n         上传完成后是否隐藏上传按钮\n     </dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<pre>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '&lt;a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}&lt;/a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;&lt;a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\">&lt;/a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</pre>\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -605,7 +607,7 @@
             "namespace": "JC",
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
             "line": 4,
-            "description": "日期选择组件\n<br />全局访问请使用 JC.Calendar 或 Calendar\n<br />DOM 加载完毕后\n, Calendar会自动初始化页面所有日历组件, input[type=text][datatype=date]标签\n<br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动使用Calendar.init( _selector )\n<br />_selector 可以是 新加载的容器, 也可以是新加载的所有input\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.cloneDate'>window.JC.f.cloneDate</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.parseISODate'>window.JC.f.parseISODate</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.formatISODate'>window.JC.f.formatISODate</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.maxDayOfMonth'>window.JC.f.maxDayOfMonth</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.isSameDay'>window.JC.f.isSameDay</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.isSameMonth'>window.JC.f.isSameMonth</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Calendar.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Calendar/0.2/_demo/' target='_blank'>demo link</a></p>\n<h2> 可用的html attribute, (input|button):(datatype|multidate)=(date|week|month|season) </h2> \n<dl>\n     <dt>defaultdate = ISO Date</dt>\n     <dd>默认显示日期, 如果 value 为空, 则尝试读取 defaultdate 属性</dd>\n\n     <dt>datatype = string</dt>\n     <dd>\n         声明日历控件的类型:\n         <p><b>date:</b> 日期日历</p>\n         <p><b>week:</b> 周日历</p>\n         <p><b>month:</b> 月日历</p>\n         <p><b>season:</b> 季日历</p>\n         <p><b>monthday:</b> 多选日期日历</p>\n     </dd>\n\n     <dt>multidate = string</dt>\n     <dd>\n         与 datatype 一样, 这个是扩展属性, 避免表单验证带来的逻辑冲突\n     </dd>\n\n     <dt>calendarshow = function</dt>\n     <dd>显示日历时的回调</dd>\n\n     <dt>calendarhide = function</dt>\n     <dd>隐藏日历时的回调</dd>\n\n     <dt>calendarlayoutchange = function</dt>\n     <dd>用户点击日历控件操作按钮后, 外观产生变化时触发的回调</dd>\n\n     <dt>calendarupdate = function</dt>\n     <dd>\n         赋值后触发的回调\n         <dl>\n             <dt>参数:</dt>\n             <dd><b>_startDate:</b> 开始日期</dd>\n             <dd><b>_endDate:</b> 结束日期</dd>\n         </dl>\n     </dd>\n\n     <dt>calendarclear = function</dt>\n     <dd>清空日期触发的回调</dd>\n\n     <dt>minvalue = ISO Date</dt>\n     <dd>日期的最小时间, YYYY-MM-DD</dd>\n\n     <dt>maxvalue = ISO Date</dt>\n     <dd>日期的最大时间, YYYY-MM-DD</dd>\n\n     <dt>currentcanselect = bool, default = true</dt>\n     <dd>当前日期是否能选择</dd>\n\n     <dt>multiselect = bool (目前支持 month: default=false, monthday: default = treu)</dt>\n     <dd>是否为多选日历</dd>\n\n     <dt>calendarupdatemultiselect = function</dt>\n     <dd>\n         多选日历赋值后触发的回调\n         <dl>\n             <dt>参数: _data:</dt>\n             <dd>\n                 [{\"start\": Date,\"end\": Date}[, {\"start\": Date,\"end\": Date}... ] ]\n             </dd>\n         </dl>\n     </dd>\n</dl>",
+            "description": "日期选择组件\n<br />全局访问请使用 JC.Calendar 或 Calendar\n<br />DOM 加载完毕后\n, Calendar会自动初始化页面所有日历组件, input[type=text][datatype=date]标签\n<br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动使用Calendar.init( _selector )\n<br />_selector 可以是 新加载的容器, 也可以是新加载的所有input\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Calendar.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Calendar/0.2/_demo/' target='_blank'>demo link</a></p>\n\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.cloneDate'>window.JC.f.cloneDate</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.parseISODate'>window.JC.f.parseISODate</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.formatISODate'>window.JC.f.formatISODate</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.maxDayOfMonth'>window.JC.f.maxDayOfMonth</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.isSameDay'>window.JC.f.isSameDay</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.isSameMonth'>window.JC.f.isSameMonth</a>\n</p>\n\n<h2> 可用的html attribute, (input|button):(datatype|multidate)=(date|week|month|season) </h2> \n<dl>\n     <dt>defaultdate = ISO Date</dt>\n     <dd>默认显示日期, 如果 value 为空, 则尝试读取 defaultdate 属性</dd>\n\n     <dt>datatype = string</dt>\n     <dd>\n         声明日历控件的类型:\n         <p><b>date:</b> 日期日历</p>\n         <p><b>week:</b> 周日历</p>\n         <p><b>month:</b> 月日历</p>\n         <p><b>season:</b> 季日历</p>\n         <p><b>monthday:</b> 多选日期日历</p>\n     </dd>\n\n     <dt>multidate = string</dt>\n     <dd>\n         与 datatype 一样, 这个是扩展属性, 避免表单验证带来的逻辑冲突\n     </dd>\n\n     <dt>calendarshow = function</dt>\n     <dd>显示日历时的回调</dd>\n\n     <dt>calendarhide = function</dt>\n     <dd>隐藏日历时的回调</dd>\n\n     <dt>calendarlayoutchange = function</dt>\n     <dd>用户点击日历控件操作按钮后, 外观产生变化时触发的回调</dd>\n\n     <dt>calendarupdate = function</dt>\n     <dd>\n         赋值后触发的回调\n         <dl>\n             <dt>参数:</dt>\n             <dd><b>_startDate:</b> 开始日期</dd>\n             <dd><b>_endDate:</b> 结束日期</dd>\n         </dl>\n     </dd>\n\n     <dt>calendarclear = function</dt>\n     <dd>清空日期触发的回调</dd>\n\n     <dt>minvalue = ISO Date</dt>\n     <dd>日期的最小时间, YYYY-MM-DD</dd>\n\n     <dt>maxvalue = ISO Date</dt>\n     <dd>日期的最大时间, YYYY-MM-DD</dd>\n\n     <dt>currentcanselect = bool, default = true</dt>\n     <dd>当前日期是否能选择</dd>\n\n     <dt>multiselect = bool (目前支持 month: default=false, monthday: default = treu)</dt>\n     <dd>是否为多选日历</dd>\n\n     <dt>calendarupdatemultiselect = function</dt>\n     <dd>\n         多选日历赋值后触发的回调\n         <dl>\n             <dt>参数: _data:</dt>\n             <dd>\n                 [{\"start\": Date,\"end\": Date}[, {\"start\": Date,\"end\": Date}... ] ]\n             </dd>\n         </dl>\n     </dd>\n</dl>",
             "version": "dev 0.1, 2013-06-04",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
         },
@@ -664,7 +666,7 @@
             "namespace": "JC.LunarCalendar",
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
             "line": 8,
-            "description": "农历日历组件\n<br />全局访问请使用 JC.LunarCalendar 或 LunarCalendar\n<br />DOM 加载完毕后\n, LunarCalendar会自动初始化页面所有具备识别符的日历, 目前可识别: div.js_LunarCalendar, td.js_LunarCalendar, li.js_LunarCalendar\n<br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动初始化 var ins = new JC.LunarCalendar( _selector );\n<p>\n     初始化时, 如果日历是添加到某个selector里, 那么selector可以指定一些设置属性\n     <br /><b>hidecontrol</b>: 如果设置该属性, 那么日历将隐藏操作控件\n     <br /><b>minvalue</b>: 设置日历的有效最小选择范围, 格式YYYY-mm-dd\n     <br /><b>maxvalue</b>: 设置日历的有效最大选择范围, 格式YYYY-mm-dd\n     <br /><b>nopreviousfestivals</b>: 不显示上个月的节日\n     <br /><b>nonextfestivals</b>: 不显示下个月的节日\n</p>\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.cloneDate'>window.JC.f.cloneDate</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.parseISODate'>window.JC.f.parseISODate</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.maxDayOfMonth'>window.JC.f.maxDayOfMonth</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.isSameDay'>window.JC.f.isSameDay</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.isSameMonth'>window.JC.f.isSameMonth</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.LunarCalendar.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.LunarCalendar/0.1/_demo/' target='_blank'>demo link</a></p>",
+            "description": "农历日历组件\n<br />全局访问请使用 JC.LunarCalendar 或 LunarCalendar\n<br />DOM 加载完毕后\n, LunarCalendar会自动初始化页面所有具备识别符的日历, 目前可识别: div.js_LunarCalendar, td.js_LunarCalendar, li.js_LunarCalendar\n<br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动初始化 var ins = new JC.LunarCalendar( _selector );\n<p>\n     初始化时, 如果日历是添加到某个selector里, 那么selector可以指定一些设置属性\n     <br /><b>hidecontrol</b>: 如果设置该属性, 那么日历将隐藏操作控件\n     <br /><b>minvalue</b>: 设置日历的有效最小选择范围, 格式YYYY-mm-dd\n     <br /><b>maxvalue</b>: 设置日历的有效最大选择范围, 格式YYYY-mm-dd\n     <br /><b>nopreviousfestivals</b>: 不显示上个月的节日\n     <br /><b>nonextfestivals</b>: 不显示下个月的节日\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.LunarCalendar.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.LunarCalendar/0.1/_demo/' target='_blank'>demo link</a></p>\n\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.cloneDate'>window.JC.f.cloneDate</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.parseISODate'>window.JC.f.parseISODate</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.maxDayOfMonth'>window.JC.f.maxDayOfMonth</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.isSameDay'>window.JC.f.isSameDay</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.isSameMonth'>window.JC.f.isSameMonth</a>\n</p>",
             "is_constructor": 1,
             "params": [
                 {
@@ -692,7 +694,7 @@
             "extension_for": [],
             "namespace": "JC.LunarCalendar",
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 500,
+            "line": 502,
             "description": "LunarCalendar 视图类",
             "is_constructor": 1,
             "params": [
@@ -713,7 +715,7 @@
             "extension_for": [],
             "namespace": "JC.LunarCalendar",
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 694,
+            "line": 696,
             "description": "LunarCalendar 数据模型类",
             "is_constructor": 1,
             "params": [
@@ -740,7 +742,7 @@
             "namespace": "JC",
             "file": "../modules/JC.Panel/0.1/Panel.js",
             "line": 6,
-            "description": "弹出层基础类 JC.Panel\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<h2>Panel Layout 可用的 html attribute</h2>\n<dl>\n     <dt>panelclickclose = bool</dt>\n     <dd>点击 Panel 外时, 是否关闭 panel</dd>\n\n     <dt>panelautoclose = bool</dt>\n     <dd>Panel 是否自动关闭, 默认关闭时间间隔 = 2000 ms</dd>\n\n     <dt>panelautoclosems = int, default = 2000 ms</dt>\n     <dd>自动关闭 Panel 的时间间隔</dd>\n</dl>\n<h2>a, button 可用的 html attribute( 自动生成弹框)</h2>\n<dl>\n     <dt>paneltype = string, require</dt>\n     <dd>\n         弹框类型: alert, confirm, msgbox, panel \n         <br />dialog.alert, dialog.confirm, dialog.msgbox, dialog\n     </dd>\n\n     <dt>panelmsg = string</dt>\n     <dd>要显示的内容</dd>\n\n     <dt>panelmsgBox = script selector</dt>\n     <dd>要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性</dd>\n\n     <dt>panelstatus = int, default = 0</dt>\n     <dd>\n         弹框状态: 0: 成功, 1: 失败, 2: 警告 \n         <br /><b>类型不为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelcallback = function</dt>\n     <dd>\n         点击确定按钮的回调, <b>window 变量域</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>\n     </dd>\n\n     <dt>panelcancelcallback = function</dt>\n     <dd>\n         点击取消按钮的回调, <b>window 变量域</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>\n     </dd>\n\n     <dt>panelclosecallback = function</dt>\n     <dd>\n         弹框关闭时的回调, <b>window 变量域</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>\n     </dd>\n\n     <dt>panelbutton = int, default = 0</dt>\n     <dd>\n         要显示的按钮, 0: 无, 1: 确定, 2: 确定, 取消\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelheader = string</dt>\n     <dd>\n         panel header 的显示内容\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelheaderBox = script selector</dt>\n     <dd>\n         panel header 的显示内容\n         <br />要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelfooterbox = script selector</dt>\n     <dd>\n         panel footer 的显示内容\n         <br />要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelhideclose = bool, default = false</dt>\n     <dd>\n         是否隐藏关闭按钮\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n</dl>",
+            "description": "弹出层基础类 JC.Panel\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>\n\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n\n<h2>Panel Layout 可用的 html attribute</h2>\n<dl>\n     <dt>panelclickclose = bool</dt>\n     <dd>点击 Panel 外时, 是否关闭 panel</dd>\n\n     <dt>panelautoclose = bool</dt>\n     <dd>Panel 是否自动关闭, 默认关闭时间间隔 = 2000 ms</dd>\n\n     <dt>panelautoclosems = int, default = 2000 ms</dt>\n     <dd>自动关闭 Panel 的时间间隔</dd>\n</dl>\n<h2>a, button 可用的 html attribute( 自动生成弹框)</h2>\n<dl>\n     <dt>paneltype = string, require</dt>\n     <dd>\n         弹框类型: alert, confirm, msgbox, panel \n         <br />dialog.alert, dialog.confirm, dialog.msgbox, dialog\n     </dd>\n\n     <dt>panelmsg = string</dt>\n     <dd>要显示的内容</dd>\n\n     <dt>panelmsgBox = script selector</dt>\n     <dd>要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性</dd>\n\n     <dt>panelstatus = int, default = 0</dt>\n     <dd>\n         弹框状态: 0: 成功, 1: 失败, 2: 警告 \n         <br /><b>类型不为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelcallback = function</dt>\n     <dd>\n         点击确定按钮的回调, <b>window 变量域</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>\n     </dd>\n\n     <dt>panelcancelcallback = function</dt>\n     <dd>\n         点击取消按钮的回调, <b>window 变量域</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>\n     </dd>\n\n     <dt>panelclosecallback = function</dt>\n     <dd>\n         弹框关闭时的回调, <b>window 变量域</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>\n     </dd>\n\n     <dt>panelbutton = int, default = 0</dt>\n     <dd>\n         要显示的按钮, 0: 无, 1: 确定, 2: 确定, 取消\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelheader = string</dt>\n     <dd>\n         panel header 的显示内容\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelheaderBox = script selector</dt>\n     <dd>\n         panel header 的显示内容\n         <br />要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelfooterbox = script selector</dt>\n     <dd>\n         panel footer 的显示内容\n         <br />要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelhideclose = bool, default = false</dt>\n     <dd>\n         是否隐藏关闭按钮\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n</dl>",
             "is_constructor": 1,
             "params": [
                 {
@@ -781,7 +783,7 @@
             "extension_for": [],
             "namespace": "JC.Panel",
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 678,
+            "line": 680,
             "description": "存储 Panel 的基础数据类\n<br /><b>这个类为 Panel 的私有类</b>",
             "is_constructor": 1,
             "params": [
@@ -827,7 +829,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1067,
+            "line": 1069,
             "description": "隐藏或者清除所有 Panel\n<h2>使用这个方法应当谨慎, 容易为DOM造成垃圾Panel</h2>\n<br /><b>注意</b>: 这是个方法, 写成class是为了方便生成文档",
             "is_constructor": 1,
             "static": 1,
@@ -852,7 +854,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1090,
+            "line": 1092,
             "description": "隐藏 或 从DOM清除所有 JC.alert/JC.confirm\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>",
             "static": 1,
             "is_constructor": 1,
@@ -877,7 +879,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1288,
+            "line": 1290,
             "description": "msgbox 提示 popup\n<br /> 这个是不带蒙板 不带按钮的 popup 弹框\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.msgbox.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>",
             "extends": "JC.Panel",
             "static": 1,
@@ -923,7 +925,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1335,
+            "line": 1337,
             "description": "alert 提示 popup\n<br /> 这个是不带 蒙板的 popup 弹框\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.alert.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>",
             "extends": "JC.Panel",
             "static": 1,
@@ -964,7 +966,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1373,
+            "line": 1375,
             "description": "confirm 提示 popup\n<br /> 这个是不带 蒙板的 popup 弹框\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p>private property see: <a href='JC.alert.html'>JC.alert</a>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.confirm.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>",
             "extends": "JC.Panel",
             "static": 1,
@@ -1010,7 +1012,7 @@
             "extension_for": [],
             "namespace": "JC.Dialog",
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1871,
+            "line": 1873,
             "description": "带蒙板的会话弹框\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>",
             "extends": "JC.Panel",
             "static": 1,
@@ -1051,7 +1053,7 @@
             "extension_for": [],
             "namespace": "JC.Dialog",
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1932,
+            "line": 1934,
             "description": "会话框 msgbox 提示 (不带按钮)\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p>private property see: <a href='JC.Dialog.html'>JC.Dialog</a>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.msgbox.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>",
             "extends": "JC.Panel",
             "static": 1,
@@ -1092,7 +1094,7 @@
             "extension_for": [],
             "namespace": "JC.Dialog",
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1976,
+            "line": 1978,
             "description": "会话框 alert 提示\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p>private property see: <a href='JC.Dialog.html'>JC.Dialog</a>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.alert.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>",
             "extends": "JC.Panel",
             "static": 1,
@@ -1128,7 +1130,7 @@
             "extension_for": [],
             "namespace": "JC.Dialog",
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2017,
+            "line": 2019,
             "description": "会话框 confirm 提示\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>\n<p>private property see: <a href='JC.Dialog.html'>JC.Dialog</a>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.confirm.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>",
             "extends": "JC.Panel",
             "static": 1,
@@ -1169,7 +1171,7 @@
             "extension_for": [],
             "namespace": "JC.Dialog",
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2063,
+            "line": 2065,
             "description": "显示或隐藏 蒙板\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>",
             "static": 1,
             "is_constructor": 1,
@@ -1506,6 +1508,20 @@
             "static": 1,
             "version": "dev 0.1 2013-07-04",
             "author": "qiushaowei   <suches@btbtd.org> | 360 75 Team"
+        },
+        "window.jQuery": {
+            "name": "window.jQuery",
+            "shortname": "window.jQuery",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window",
+            "file": "../jquery.js",
+            "line": 1,
+            "description": "jQuery JavaScript Library v1.9.1\n<pre>http://jquery.com/\n\nIncludes Sizzle.js\nhttp://sizzlejs.com/\n\nCopyright 2005, 2012 jQuery Foundation, Inc. and other contributors\nReleased under the MIT license\nhttp://jquery.org/license\nDate: 2013-2-4</pre>",
+            "global": ""
         },
         "window.requirejs": {
             "name": "window.requirejs",
@@ -2227,7 +2243,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 209,
+            "line": 210,
             "description": "初始化 frame 时递增的统计变量",
             "itemtype": "property",
             "name": "_INS_COUNT",
@@ -2241,42 +2257,42 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 229,
+            "line": 230,
             "description": "iframe 加载完毕后触发的事件, 执行初始化操作",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 263,
+            "line": 264,
             "description": "文件扩展名错误",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 270,
+            "line": 271,
             "description": "上传前触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 276,
+            "line": 277,
             "description": "上传完毕触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 313,
+            "line": 314,
             "description": "frame 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 330,
+            "line": 331,
             "description": "手动更新数据",
             "itemtype": "method",
             "name": "update",
@@ -2298,7 +2314,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 452,
+            "line": 453,
             "description": "恢复默认状态",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
@@ -3328,7 +3344,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 141,
+            "line": 144,
             "description": "内部初始化函数",
             "itemtype": "method",
             "name": "_init",
@@ -3339,7 +3355,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 166,
+            "line": 169,
             "description": "初始化相关操作事件",
             "itemtype": "method",
             "name": "_initHanlderEvent",
@@ -3350,7 +3366,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 248,
+            "line": 251,
             "description": "显示 Calendar",
             "itemtype": "method",
             "name": "show",
@@ -3362,7 +3378,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 261,
+            "line": 264,
             "description": "隐藏 Calendar",
             "itemtype": "method",
             "name": "hide",
@@ -3374,7 +3390,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 272,
+            "line": 275,
             "description": "获取 显示 Calendar 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -3386,7 +3402,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 278,
+            "line": 281,
             "description": "获取 Calendar 外观的 选择器",
             "itemtype": "method",
             "name": "layout",
@@ -3398,7 +3414,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 284,
+            "line": 287,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -3423,7 +3439,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 292,
+            "line": 295,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -3443,7 +3459,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 299,
+            "line": 302,
             "description": "用户操作日期控件时响应改变",
             "itemtype": "method",
             "name": "updateLayout",
@@ -3452,7 +3468,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 308,
+            "line": 311,
             "description": "切换到不同日期控件源时, 更新对应的控件源",
             "itemtype": "method",
             "name": "updateSelector",
@@ -3468,7 +3484,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 319,
+            "line": 322,
             "description": "用户改变年份时, 更新到对应的年份",
             "itemtype": "method",
             "name": "updateYear",
@@ -3484,7 +3500,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 330,
+            "line": 333,
             "description": "用户改变月份时, 更新到对应的月份",
             "itemtype": "method",
             "name": "updateMonth",
@@ -3500,7 +3516,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 341,
+            "line": 344,
             "description": "把选中的值赋给控件源\n<br />用户点击日期/确定按钮",
             "itemtype": "method",
             "name": "updateSelected",
@@ -3516,7 +3532,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 353,
+            "line": 356,
             "description": "显示日历外观到对应的控件源",
             "itemtype": "method",
             "name": "updatePosition",
@@ -3525,7 +3541,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 362,
+            "line": 365,
             "description": "清除控件源内容",
             "itemtype": "method",
             "name": "clear",
@@ -3534,7 +3550,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 373,
+            "line": 376,
             "description": "用户点击取消按钮时隐藏日历外观",
             "itemtype": "method",
             "name": "cancel",
@@ -3543,7 +3559,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 383,
+            "line": 386,
             "description": "返回日历外观是否可见",
             "itemtype": "method",
             "name": "visible",
@@ -3555,7 +3571,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 397,
+            "line": 400,
             "description": "获取控件源的初始日期对象",
             "itemtype": "method",
             "name": "defaultDate",
@@ -3571,7 +3587,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 407,
+            "line": 410,
             "description": "获取或设置 Calendar 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -3592,7 +3608,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 423,
+            "line": 426,
             "description": "保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",
             "prototype": "_ins",
             "type": "object",
@@ -3605,7 +3621,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 434,
+            "line": 437,
             "description": "获取控件源的实例类型\n<br />目前有 date, week, month, season 四种类型的实例",
             "itemtype": "method",
             "name": "type",
@@ -3625,7 +3641,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 460,
+            "line": 463,
             "description": "判断选择器是否为日历组件的对象",
             "itemtype": "method",
             "name": "isCalendar",
@@ -3642,14 +3658,14 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 494,
+            "line": 497,
             "description": "请使用 isCalendar, 这个方法是为了向后兼容",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 498,
+            "line": 501,
             "description": "弹出日期选择框",
             "itemtype": "method",
             "name": "pickDate",
@@ -3669,7 +3685,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 536,
+            "line": 539,
             "description": "设置是否在 DOM 加载完毕后, 自动初始化所有日期控件",
             "itemtype": "property",
             "name": "autoInit",
@@ -3681,7 +3697,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 545,
+            "line": 548,
             "description": "设置默认显示的年份数, 该数为前后各多少年 默认为前后各10年",
             "itemtype": "property",
             "name": "defaultDateSpan",
@@ -3693,7 +3709,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 554,
+            "line": 557,
             "description": "最后一个显示日历组件的文本框",
             "itemtype": "property",
             "name": "lastIpt",
@@ -3704,7 +3720,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 561,
+            "line": 564,
             "description": "自定义日历组件模板\n<p>默认模板为_logic.tpl</p>\n<p>如果用户显示定义JC.Calendar.tpl的话, 将采用用户的模板</p>",
             "itemtype": "property",
             "name": "tpl",
@@ -3716,7 +3732,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 571,
+            "line": 574,
             "description": "初始化外观后的回调函数",
             "itemtype": "property",
             "name": "layoutInitedCallback",
@@ -3728,7 +3744,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 579,
+            "line": 582,
             "description": "显示为可见时的回调",
             "itemtype": "property",
             "name": "layoutShowCallback",
@@ -3740,7 +3756,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 587,
+            "line": 590,
             "description": "日历隐藏后的回调函数",
             "itemtype": "property",
             "name": "layoutHideCallback",
@@ -3752,7 +3768,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 595,
+            "line": 598,
             "description": "DOM 点击的过滤函数\n<br />默认 dom 点击时, 判断事件源不为 input[datatype=date|daterange] 会隐藏 Calendar\n<br /> 通过该回调可自定义过滤, 返回 false 不执行隐藏操作",
             "itemtype": "property",
             "name": "domClickFilter",
@@ -3764,7 +3780,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 605,
+            "line": 608,
             "description": "隐藏日历组件",
             "itemtype": "method",
             "name": "hide",
@@ -3777,7 +3793,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 622,
+            "line": 625,
             "description": "获取初始日期对象\n<p style=\"bold\">这个方法将要废除, 请使用 instance.defaultDate()</p>",
             "itemtype": "method",
             "name": "getDate",
@@ -3794,7 +3810,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 634,
+            "line": 637,
             "description": "每周的中文对应数字",
             "itemtype": "property",
             "name": "cnWeek",
@@ -3806,7 +3822,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 642,
+            "line": 645,
             "description": "100以内的中文对应数字",
             "itemtype": "property",
             "name": "cnUnit",
@@ -3818,7 +3834,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 650,
+            "line": 653,
             "description": "转换 100 以内的数字为中文数字",
             "itemtype": "method",
             "name": "getCnNum",
@@ -3838,7 +3854,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 664,
+            "line": 667,
             "description": "设置日历组件的显示位置",
             "itemtype": "method",
             "name": "position",
@@ -3855,14 +3871,14 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 675,
+            "line": 678,
             "description": "这个方法后续版本不再使用, 请使用 Calendar.position",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 679,
+            "line": 682,
             "description": "初始化日历组件的触发按钮",
             "itemtype": "method",
             "name": "_logic.initTrigger",
@@ -3880,7 +3896,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 761,
+            "line": 764,
             "description": "克隆 Calendar 默认 Model, View 的原型属性",
             "itemtype": "method",
             "name": "clone",
@@ -3901,7 +3917,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1384,
+            "line": 1387,
             "description": "捕获用户更改年份 \n<p>监听 年份下拉框</p>",
             "itemtype": "event",
             "name": "year change",
@@ -3912,7 +3928,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1394,
+            "line": 1397,
             "description": "捕获用户更改年份 \n<p>监听 下一年按钮</p>",
             "itemtype": "event",
             "name": "next year",
@@ -3923,7 +3939,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1404,
+            "line": 1407,
             "description": "捕获用户更改年份 \n<p>监听 上一年按钮</p>",
             "itemtype": "event",
             "name": "previous year",
@@ -3934,7 +3950,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1414,
+            "line": 1417,
             "description": "增加或者减少一年\n<p>监听 年份map</p>",
             "itemtype": "event",
             "name": "year map click",
@@ -3945,7 +3961,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1428,
+            "line": 1431,
             "description": "增加或者减少一个月\n<p>监听 月份map</p>",
             "itemtype": "event",
             "name": "month map click",
@@ -3956,7 +3972,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1442,
+            "line": 1445,
             "description": "捕获用户更改月份 \n<p>监听 下一月按钮</p>",
             "itemtype": "event",
             "name": "next year",
@@ -3967,7 +3983,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1452,
+            "line": 1455,
             "description": "捕获用户更改月份\n<p>监听 上一月按钮</p>",
             "itemtype": "event",
             "name": "previous year",
@@ -3978,7 +3994,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1463,
+            "line": 1466,
             "description": "日期点击事件",
             "itemtype": "event",
             "name": "date click",
@@ -3989,7 +4005,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1476,
+            "line": 1479,
             "description": "选择当前日期\n<p>监听确定按钮</p>",
             "itemtype": "event",
             "name": "confirm click",
@@ -4000,7 +4016,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1486,
+            "line": 1489,
             "description": "清除文本框内容\n<p>监听 清空按钮</p>",
             "itemtype": "event",
             "name": "clear click",
@@ -4011,7 +4027,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1496,
+            "line": 1499,
             "description": "取消日历组件, 相当于隐藏\n<p>监听 取消按钮</p>",
             "itemtype": "event",
             "name": "cancel click",
@@ -4022,7 +4038,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1506,
+            "line": 1509,
             "description": "日历组件按钮点击事件",
             "itemtype": "event",
             "name": "calendar button click",
@@ -4033,7 +4049,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1521,
+            "line": 1524,
             "description": "日历组件点击事件, 阻止冒泡, 防止被 document click事件隐藏",
             "itemtype": "event",
             "name": "UXCCalendar click",
@@ -4044,7 +4060,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1530,
+            "line": 1533,
             "description": "DOM 加载完毕后, 初始化日历组件相关事件",
             "itemtype": "event",
             "name": "dom ready",
@@ -4055,14 +4071,14 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1536,
+            "line": 1539,
             "description": "延迟200毫秒初始化页面的所有日历控件\n之所以要延迟是可以让用户自己设置是否需要自动初始化",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1544,
+            "line": 1547,
             "description": "监听窗口滚动和改变大小, 实时变更日历组件显示位置",
             "itemtype": "event",
             "name": "window scroll, window resize",
@@ -4073,7 +4089,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1553,
+            "line": 1556,
             "description": "dom 点击时, 检查事件源是否为日历组件对象, 如果不是则会隐藏日历组件",
             "itemtype": "event",
             "name": "dom click",
@@ -4084,7 +4100,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1582,
+            "line": 1585,
             "description": "日历组件文本框获得焦点",
             "itemtype": "event",
             "name": "input focus",
@@ -4095,7 +4111,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1603,
+            "line": 1606,
             "description": "自定义周弹框的模板HTML",
             "itemtype": "property",
             "name": "weekTpl",
@@ -4107,7 +4123,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1612,
+            "line": 1615,
             "description": "自定义周日历每周的起始日期 \n<br /> 0 - 6, 0=周日, 1=周一",
             "itemtype": "property",
             "name": "weekDayOffset",
@@ -4119,7 +4135,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1811,
+            "line": 1814,
             "description": "取一年中所有的星期, 及其开始结束日期",
             "itemtype": "method",
             "name": "weekOfYear",
@@ -4144,14 +4160,14 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1823,
+            "line": 1826,
             "description": "元旦开始的第一个星期一开始的一周为政治经济上的第一周",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 1850,
+            "line": 1853,
             "description": "自定义月份弹框的模板HTML",
             "itemtype": "property",
             "name": "monthTpl",
@@ -4163,7 +4179,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 2069,
+            "line": 2072,
             "description": "自定义周弹框的模板HTML",
             "itemtype": "property",
             "name": "seasonTpl",
@@ -4175,7 +4191,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 2245,
+            "line": 2248,
             "description": "多选日期弹框的模板HTML",
             "itemtype": "property",
             "name": "monthdayTpl",
@@ -4187,7 +4203,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 2254,
+            "line": 2257,
             "description": "多先日期弹框标题末尾的附加字样",
             "itemtype": "property",
             "name": "monthdayHeadAppendText",
@@ -4199,7 +4215,7 @@
         },
         {
             "file": "../modules/JC.Calendar/0.2/Calendar.js",
-            "line": 2292,
+            "line": 2295,
             "description": "如果 atd 为空, 那么是 全选按钮触发的事件",
             "class": "JC.Calendar",
             "namespace": "JC"
@@ -4501,7 +4517,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 48,
+            "line": 50,
             "description": "LunarCalendar 的数据模型对象",
             "itemtype": "property",
             "name": "_model",
@@ -4513,7 +4529,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 55,
+            "line": 57,
             "description": "LunarCalendar 的视图对像",
             "itemtype": "property",
             "name": "_view",
@@ -4525,7 +4541,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 65,
+            "line": 67,
             "description": "自定义日历组件模板\n<p>默认模板为JC.LunarCalendar.Model#tpl</p>\n<p>如果用户显示定义JC.LunarCalendar.tpl的话, 将采用用户的模板</p>",
             "itemtype": "property",
             "name": "tpl",
@@ -4537,7 +4553,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 75,
+            "line": 77,
             "description": "设置是否在 dom 加载完毕后, 自动初始化所有日期控件",
             "itemtype": "property",
             "name": "autoinit",
@@ -4549,7 +4565,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 84,
+            "line": 86,
             "description": "设置默认显示的年份数, 该数为前后各多少年 默认为前后各10年",
             "itemtype": "property",
             "name": "defaultYearSpan",
@@ -4561,7 +4577,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 93,
+            "line": 95,
             "description": "从所有的LunarCalendar取得当前选中的日期\n<br /> 如果用户没有显式选中某个日期, 将尝试获取当前日期, 如果两者都没有返回undefined",
             "itemtype": "method",
             "name": "getSelectedItemGlobal",
@@ -4575,7 +4591,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 117,
+            "line": 119,
             "description": "从所有的LunarCalendar取得当前选中日期的日期对象\n<br /> 如果用户没有显式选中某个日期, 将尝试获取当前日期, 如果两者都没有返回undefined",
             "itemtype": "method",
             "name": "getSelectedDateGlobal",
@@ -4589,7 +4605,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 130,
+            "line": 132,
             "description": "从时间截获取选择器对象",
             "itemtype": "method",
             "name": "getItemByTimestamp",
@@ -4610,7 +4626,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 153,
+            "line": 155,
             "description": "添加或者清除工作日样式",
             "itemtype": "method",
             "name": "workday",
@@ -4632,7 +4648,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 169,
+            "line": 171,
             "description": "判断 td 是否为工作日状态",
             "itemtype": "method",
             "name": "isWorkday",
@@ -4653,7 +4669,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 181,
+            "line": 183,
             "description": "添加或者清除假日样式",
             "itemtype": "method",
             "name": "holiday",
@@ -4675,7 +4691,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 197,
+            "line": 199,
             "description": "判断 td 是否为假日状态",
             "itemtype": "method",
             "name": "isHoliday",
@@ -4696,7 +4712,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 209,
+            "line": 211,
             "description": "添加或者清除注释",
             "itemtype": "method",
             "name": "comment",
@@ -4718,7 +4734,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 236,
+            "line": 238,
             "description": "判断 td 是否为注释状态",
             "itemtype": "method",
             "name": "isComment",
@@ -4739,7 +4755,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 248,
+            "line": 250,
             "description": "返回 td 的注释",
             "itemtype": "method",
             "name": "getComment",
@@ -4760,7 +4776,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 263,
+            "line": 265,
             "description": "用于分隔默认title和注释的分隔符",
             "itemtype": "property",
             "name": "commentSeparator",
@@ -4772,7 +4788,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 271,
+            "line": 273,
             "description": "把注释添加到 a title 里",
             "itemtype": "method",
             "name": "commentTitle",
@@ -4794,7 +4810,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 297,
+            "line": 299,
             "description": "从JSON数据更新日历状态( 工作日, 休息日, 注释 )\n<br /> 注意, 该方法更新页面上所有的 LunarCalendar",
             "itemtype": "method",
             "name": "updateStatus",
@@ -4814,7 +4830,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 384,
+            "line": 386,
             "description": "LunarCalendar 内部初始化",
             "itemtype": "method",
             "name": "_init",
@@ -4825,7 +4841,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 395,
+            "line": 397,
             "description": "更新日历视图为自定义的日期",
             "itemtype": "method",
             "name": "update",
@@ -4841,7 +4857,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 405,
+            "line": 407,
             "description": "显示下一个月的日期",
             "itemtype": "method",
             "name": "nextMonth",
@@ -4850,7 +4866,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 415,
+            "line": 417,
             "description": "显示上一个月的日期",
             "itemtype": "method",
             "name": "preMonth",
@@ -4859,7 +4875,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 425,
+            "line": 427,
             "description": "显示下一年的日期",
             "itemtype": "method",
             "name": "nextYear",
@@ -4868,7 +4884,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 435,
+            "line": 437,
             "description": "显示上一年的日期",
             "itemtype": "method",
             "name": "preYear",
@@ -4877,7 +4893,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 445,
+            "line": 447,
             "description": "获取默认时间对象",
             "itemtype": "method",
             "name": "getDate",
@@ -4890,7 +4906,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 451,
+            "line": 453,
             "description": "获取所有的默认时间对象",
             "itemtype": "method",
             "name": "getAllDate",
@@ -4903,7 +4919,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 458,
+            "line": 460,
             "description": "获取当前选中的日期, 如果用户没有显式选择, 将查找当前日期, 如果两者都没有的话返回undefined",
             "itemtype": "method",
             "name": "getSelectedDate",
@@ -4916,7 +4932,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 481,
+            "line": 483,
             "description": "获取初始化日历的选择器对象",
             "itemtype": "method",
             "name": "getContainer",
@@ -4928,7 +4944,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 487,
+            "line": 489,
             "description": "获取日历的主选择器对象",
             "itemtype": "method",
             "name": "getLayout",
@@ -4940,7 +4956,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 493,
+            "line": 495,
             "description": "判断日历是否隐藏操作控件",
             "itemtype": "method",
             "name": "isHideControl",
@@ -4952,7 +4968,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 508,
+            "line": 510,
             "description": "LunarCalendar model 对象",
             "itemtype": "property",
             "name": "_model",
@@ -4964,7 +4980,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 515,
+            "line": 517,
             "description": "LunarCalendar 的主容器",
             "itemtype": "property",
             "name": "layout",
@@ -4974,7 +4990,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 526,
+            "line": 528,
             "description": "初始化 View",
             "itemtype": "method",
             "name": "_init",
@@ -4985,7 +5001,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 538,
+            "line": 540,
             "description": "初始化日历外观",
             "itemtype": "method",
             "name": "initLayout",
@@ -5001,7 +5017,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 553,
+            "line": 555,
             "description": "初始化年份",
             "itemtype": "method",
             "name": "initYear",
@@ -5017,7 +5033,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 562,
+            "line": 564,
             "description": "初始化月份",
             "itemtype": "method",
             "name": "initMonth",
@@ -5033,7 +5049,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 571,
+            "line": 573,
             "description": "初始化月份的所有日期",
             "itemtype": "method",
             "name": "_logic.initMonthDate",
@@ -5049,7 +5065,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 672,
+            "line": 674,
             "description": "把具体的公历和农历日期写进a标签的title里",
             "itemtype": "method",
             "name": "addTitle",
@@ -5065,7 +5081,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 682,
+            "line": 684,
             "description": "检查是否要隐藏操作控件",
             "itemtype": "method",
             "name": "hideControl",
@@ -5074,7 +5090,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 703,
+            "line": 705,
             "description": "LunarCalendar 所要显示的selector",
             "itemtype": "property",
             "name": "container",
@@ -5085,7 +5101,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 710,
+            "line": 712,
             "description": "初始化时的时期",
             "itemtype": "property",
             "name": "date",
@@ -5096,7 +5112,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 717,
+            "line": 719,
             "description": "日历默认模板",
             "itemtype": "property",
             "name": "tpl",
@@ -5107,7 +5123,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 724,
+            "line": 726,
             "description": "显示日历时所需要的所有日期对象",
             "itemtype": "property",
             "name": "dateObj",
@@ -5117,7 +5133,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 730,
+            "line": 732,
             "description": "a 标签 title 的临时存储对象",
             "itemtype": "property",
             "name": "_titleObj",
@@ -5130,7 +5146,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 760,
+            "line": 762,
             "description": "获取初始日期对象",
             "itemtype": "method",
             "name": "getDate",
@@ -5148,7 +5164,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 781,
+            "line": 783,
             "description": "把日期赋值给文本框",
             "itemtype": "method",
             "name": "setDate",
@@ -5166,7 +5182,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 791,
+            "line": 793,
             "description": "给文本框赋值, 日期为控件的当前日期",
             "itemtype": "method",
             "name": "setSelectedDate",
@@ -5181,77 +5197,77 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 807,
+            "line": 809,
             "description": "监听上一年按钮",
             "class": "JC.LunarCalendar.Model",
             "namespace": "JC.LunarCalendar"
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 816,
+            "line": 818,
             "description": "监听上一月按钮",
             "class": "JC.LunarCalendar.Model",
             "namespace": "JC.LunarCalendar"
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 825,
+            "line": 827,
             "description": "监听下一月按钮",
             "class": "JC.LunarCalendar.Model",
             "namespace": "JC.LunarCalendar"
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 834,
+            "line": 836,
             "description": "监听下一年按钮",
             "class": "JC.LunarCalendar.Model",
             "namespace": "JC.LunarCalendar"
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 843,
+            "line": 845,
             "description": "监听年份按钮, 是否要显示年份列表",
             "class": "JC.LunarCalendar.Model",
             "namespace": "JC.LunarCalendar"
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 865,
+            "line": 867,
             "description": "监听月份按钮, 是否要显示月份列表",
             "class": "JC.LunarCalendar.Model",
             "namespace": "JC.LunarCalendar"
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 879,
+            "line": 881,
             "description": "监听年份列表选择状态",
             "class": "JC.LunarCalendar.Model",
             "namespace": "JC.LunarCalendar"
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 889,
+            "line": 891,
             "description": "监听月份列表选择状态",
             "class": "JC.LunarCalendar.Model",
             "namespace": "JC.LunarCalendar"
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 899,
+            "line": 901,
             "description": "监听日期单元格点击事件",
             "class": "JC.LunarCalendar.Model",
             "namespace": "JC.LunarCalendar"
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 921,
+            "line": 923,
             "description": "监听body点击事件, 点击时隐藏日历控件的年份和月份列表",
             "class": "JC.LunarCalendar.Model",
             "namespace": "JC.LunarCalendar"
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 927,
+            "line": 929,
             "description": "DOM 加载完毕后, 初始化日历组件",
             "itemtype": "event",
             "name": "dom ready",
@@ -5262,7 +5278,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 941,
+            "line": 943,
             "description": "LunarCalendar 日历默认模板",
             "itemtype": "property",
             "name": "_deftpl",
@@ -5275,7 +5291,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 1022,
+            "line": 1024,
             "description": "返回农历和国历的所在日期的所有节日\n<br /> 假日条目数据样例: { 'name': '春节', 'fullname': '春节', 'priority': 8 }\n<br /> 返回数据格式: { 'dayName': 农历日期/节日名, 'festivals': 节日数组, 'isHoliday': 是否为假日 }",
             "itemtype": "method",
             "name": "getFestivals",
@@ -5300,7 +5316,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 1214,
+            "line": 1216,
             "description": "为数字添加前置0",
             "itemtype": "method",
             "name": "JC.LunarCalendar.getFestival.intPad",
@@ -5328,7 +5344,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.js",
-            "line": 1233,
+            "line": 1235,
             "description": "从公历日期获得农历日期\n<br /> 返回的数据格式\n<pre>\n       {\n           shengxiao: ''   //生肖\n           , ganzhi: ''    //干支\n           , yue: ''       //月份\n           , ri: ''        //日\n           , shi: ''       //时\n           , year: ''      //农历数字年\n           , month: ''     //农历数字月\n           , day: ''       //农历数字天\n           , hour: ''      //农历数字时\n       };\n</pre>",
             "itemtype": "method",
             "name": "gregorianToLunar",
@@ -5348,7 +5364,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 135,
+            "line": 137,
             "description": "存放数据的model层, see <a href='JC.Panel.Model.html'>Panel.Model</a>",
             "itemtype": "property",
             "name": "_model",
@@ -5359,7 +5375,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 141,
+            "line": 143,
             "description": "控制视图的view层, see <a href='JC.Panel.View.html'>Panel.View</a>",
             "itemtype": "property",
             "name": "_view",
@@ -5370,7 +5386,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 150,
+            "line": 152,
             "description": "从 selector 获取 Panel 的实例\n<br /><b>如果从DOM初始化, 不进行判断的话, 会重复初始化多次</b>",
             "itemtype": "method",
             "name": "getInstance",
@@ -5391,7 +5407,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 165,
+            "line": 167,
             "description": "显示Panel时, 是否 focus 到 按钮上\nfocusButton",
             "itemtype": "property",
             "name": "focusButton",
@@ -5403,7 +5419,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 174,
+            "line": 176,
             "description": "页面点击时, 是否自动关闭 Panel",
             "itemtype": "property",
             "name": "clickClose",
@@ -5415,7 +5431,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 182,
+            "line": 184,
             "description": "自动关闭的时间间隔, 单位毫秒\n<br />调用 ins.autoClose() 时生效",
             "itemtype": "property",
             "name": "autoCloseMs",
@@ -5427,7 +5443,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 191,
+            "line": 193,
             "description": "修正弹框的默认显示宽度",
             "itemtype": "method",
             "name": "_fixWidth",
@@ -5461,7 +5477,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 214,
+            "line": 216,
             "description": "获取 显示的 BUTTON",
             "itemtype": "method",
             "name": "_getButton",
@@ -5480,7 +5496,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 238,
+            "line": 240,
             "description": "初始化Panel",
             "itemtype": "method",
             "name": "_init",
@@ -5491,7 +5507,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 248,
+            "line": 250,
             "description": "初始化Panel 默认事件",
             "access": "private",
             "tagname": "",
@@ -5500,7 +5516,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 271,
+            "line": 273,
             "description": "为Panel绑定事件\n<br /> 内置事件类型有 show, hide, close, center, confirm, cancel\n, beforeshow, beforehide, beforeclose, beforecenter\n<br /> 用户可通过 HTML eventtype 属性自定义事件类型",
             "itemtype": "method",
             "name": "on",
@@ -5524,7 +5540,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 297,
+            "line": 299,
             "description": "显示 Panel\n<br /> Panel初始后, 默认是隐藏状态, 显示 Panel 需要显式调用 show 方法",
             "itemtype": "method",
             "name": "show",
@@ -5543,7 +5559,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 349,
+            "line": 351,
             "description": "设置Panel的显示位置基于 _src 的左右上下",
             "itemtype": "method",
             "name": "positionWith",
@@ -5564,7 +5580,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 361,
+            "line": 363,
             "description": "隐藏 Panel\n<br /> 隐藏 Panel 设置 css display:none, 不会从DOM 删除 Panel",
             "itemtype": "method",
             "name": "hide",
@@ -5573,7 +5589,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 372,
+            "line": 374,
             "description": "关闭 Panel\n<br /> <b>关闭 Panel 是直接从 DOM 中删除 Panel</b>",
             "itemtype": "method",
             "name": "close",
@@ -5582,7 +5598,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 384,
+            "line": 386,
             "description": "判断点击页面时, 是否自动关闭 Panel",
             "itemtype": "method",
             "name": "isClickClose",
@@ -5594,7 +5610,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 393,
+            "line": 395,
             "description": "点击页面时, 添加自动隐藏功能",
             "itemtype": "method",
             "name": "clickClose",
@@ -5610,14 +5626,14 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 404,
+            "line": 406,
             "description": "clickClose 的别名\n<br />这个方法的存在是为了向后兼容, 请使用 clickClose",
             "class": "JC.Panel",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 413,
+            "line": 415,
             "description": "添加自动关闭功能",
             "itemtype": "method",
             "name": "autoClose",
@@ -5633,7 +5649,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 439,
+            "line": 441,
             "description": "focus 到 button\n<br />优先查找 input[eventtype=confirm], input[type=submit], button[eventtype=confirm], button[type=submit]\n<br />input[eventtype=cancel], input[type=buton], button[eventtype=cancel], button[type=button]",
             "itemtype": "method",
             "name": "focusButton",
@@ -5642,7 +5658,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 446,
+            "line": 448,
             "description": "从DOM清除Panel\n<br /> <b>close 方法清除 Panel可以被用户阻止, 该方法不会被用户阻止</b>",
             "itemtype": "method",
             "name": "dispose",
@@ -5651,7 +5667,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 457,
+            "line": 459,
             "description": "把 Panel 位置设为屏幕居中",
             "itemtype": "method",
             "name": "center",
@@ -5660,7 +5676,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 468,
+            "line": 470,
             "description": "返回 Panel 的 jquery dom选择器对象\n<br />这个方法以后将会清除, 请使用 layout 方法",
             "itemtype": "method",
             "name": "selector",
@@ -5673,7 +5689,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 475,
+            "line": 477,
             "description": "返回 Panel 的 jquery dom选择器对象",
             "itemtype": "method",
             "name": "layout",
@@ -5686,7 +5702,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 481,
+            "line": 483,
             "description": "从 Panel 选择器中查找内容\n<br />添加这个方法是为了方便jquery 使用者的习惯",
             "itemtype": "method",
             "name": "find",
@@ -5705,7 +5721,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 489,
+            "line": 491,
             "description": "触发 Panel 已绑定的事件\n<br />用户可以使用该方法主动触发绑定的事件",
             "itemtype": "method",
             "name": "trigger",
@@ -5729,7 +5745,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 525,
+            "line": 527,
             "description": "获取或者设置 Panel Header 的HTML内容\n<br />如果 Panel默认没有 Header的话, 使用该方法 _html 非空可动态创建一个Header",
             "itemtype": "method",
             "name": "header",
@@ -5749,7 +5765,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 539,
+            "line": 541,
             "description": "获取或者设置 Panel body 的HTML内容",
             "itemtype": "method",
             "name": "body",
@@ -5769,7 +5785,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 552,
+            "line": 554,
             "description": "获取或者设置 Panel footer 的HTML内容\n<br />如果 Panel默认没有 footer的话, 使用该方法 _html 非空可动态创建一个footer",
             "itemtype": "method",
             "name": "footer",
@@ -5789,7 +5805,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 566,
+            "line": 568,
             "description": "获取或者设置 Panel 的HTML内容",
             "itemtype": "method",
             "name": "panel",
@@ -5809,7 +5825,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 579,
+            "line": 581,
             "description": "获取 html popup/dialog 的触发 node",
             "itemtype": "method",
             "name": "triggerSelector",
@@ -5829,7 +5845,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 590,
+            "line": 592,
             "description": "Panel 显示前会触发的事件<br/>\n这个事件在用户调用 _panelInstance.show() 时触发",
             "itemtype": "event",
             "name": "beforeshow",
@@ -5842,7 +5858,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 598,
+            "line": 600,
             "description": "显示Panel时会触发的事件",
             "itemtype": "event",
             "name": "show",
@@ -5855,7 +5871,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 605,
+            "line": 607,
             "description": "Panel 隐藏前会触发的事件<br/>\n<br />这个事件在用户调用 _panelInstance.hide() 时触发",
             "itemtype": "event",
             "name": "beforehide",
@@ -5868,7 +5884,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 613,
+            "line": 615,
             "description": "Panel 隐藏时会触发的事件<br/>\n<br />这个事件在用户调用 _panelInstance.hide() 时触发",
             "itemtype": "event",
             "name": "hide",
@@ -5881,7 +5897,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 621,
+            "line": 623,
             "description": "Panel 关闭前会触发的事件<br/>\n这个事件在用户调用 _panelInstance.close() 时触发",
             "itemtype": "event",
             "name": "beforeclose",
@@ -5894,7 +5910,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 632,
+            "line": 634,
             "description": "关闭事件",
             "itemtype": "event",
             "name": "close",
@@ -5907,7 +5923,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 642,
+            "line": 644,
             "description": "Panel 居中显示前会触发的事件<br/>\n这个事件在用户调用 _panelInstance.center() 时触发",
             "itemtype": "event",
             "name": "beforecenter",
@@ -5920,7 +5936,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 650,
+            "line": 652,
             "description": "Panel 居中后会触发的事件",
             "itemtype": "event",
             "name": "center",
@@ -5933,7 +5949,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 657,
+            "line": 659,
             "description": "Panel 点击确认按钮触发的事件",
             "itemtype": "event",
             "name": "confirm",
@@ -5946,7 +5962,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 667,
+            "line": 669,
             "description": "Panel 点击确取消按钮触发的事件",
             "itemtype": "event",
             "name": "cancel",
@@ -5959,7 +5975,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 690,
+            "line": 692,
             "description": "panel 的 HTML 对象或者字符串\n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "selector",
@@ -5969,7 +5985,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 697,
+            "line": 699,
             "description": "header 内容 \n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "headers",
@@ -5979,7 +5995,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 704,
+            "line": 706,
             "description": "body 内容\n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "bodys",
@@ -5989,7 +6005,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 711,
+            "line": 713,
             "description": "footers 内容\n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "footers",
@@ -5999,7 +6015,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 718,
+            "line": 720,
             "description": "panel 初始化后的 selector 对象",
             "itemtype": "property",
             "name": "panel",
@@ -6009,7 +6025,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 724,
+            "line": 726,
             "description": "存储用户事件和默认事件的对象",
             "itemtype": "property",
             "name": "_events",
@@ -6021,7 +6037,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 735,
+            "line": 737,
             "description": "Model 初始化方法",
             "itemtype": "method",
             "name": "_init",
@@ -6036,7 +6052,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 768,
+            "line": 770,
             "description": "添加事件方法",
             "itemtype": "method",
             "name": "addEvent",
@@ -6057,7 +6073,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 784,
+            "line": 786,
             "description": "获取事件方法",
             "itemtype": "method",
             "name": "getEvent",
@@ -6077,7 +6093,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 837,
+            "line": 839,
             "description": "Panel的基础数据类, see <a href='JC.Panel.Model.html'>Panel.Model</a>",
             "itemtype": "property",
             "name": "_model",
@@ -6089,7 +6105,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 844,
+            "line": 846,
             "description": "默认模板",
             "prototype": "_tpl",
             "type": "string",
@@ -6100,7 +6116,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 856,
+            "line": 858,
             "description": "View 的初始方法",
             "itemtype": "method",
             "name": "_init",
@@ -6110,7 +6126,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 880,
+            "line": 882,
             "description": "设置Panel的显示位置基于 _src 的左右上下",
             "itemtype": "method",
             "name": "positionWith",
@@ -6125,7 +6141,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 917,
+            "line": 919,
             "description": "显示 Panel",
             "itemtype": "method",
             "name": "show",
@@ -6133,7 +6149,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 926,
+            "line": 928,
             "description": "focus button",
             "itemtype": "method",
             "name": "focus button",
@@ -6141,7 +6157,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 937,
+            "line": 939,
             "description": "隐藏 Panel",
             "itemtype": "method",
             "name": "hide",
@@ -6149,7 +6165,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 945,
+            "line": 947,
             "description": "关闭 Panel",
             "itemtype": "method",
             "name": "close",
@@ -6157,7 +6173,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 954,
+            "line": 956,
             "description": "获取 Panel 的 selector 对象",
             "itemtype": "method",
             "name": "getPanel",
@@ -6168,7 +6184,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 966,
+            "line": 968,
             "description": "获取或设置Panel的 header 内容, see <a href='JC.Panel.html#method_header'>Panel.header</a>",
             "itemtype": "method",
             "name": "getHeader",
@@ -6186,7 +6202,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 986,
+            "line": 988,
             "description": "获取或设置Panel的 body 内容, see <a href='JC.Panel.html#method_body'>Panel.body</a>",
             "itemtype": "method",
             "name": "getBody",
@@ -6204,7 +6220,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1002,
+            "line": 1004,
             "description": "获取或设置Panel的 footer 内容, see <a href='JC.Panel.html#method_footer'>Panel.footer</a>",
             "itemtype": "method",
             "name": "getFooter",
@@ -6222,7 +6238,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1022,
+            "line": 1024,
             "description": "居中显示 Panel",
             "itemtype": "method",
             "name": "center",
@@ -6230,7 +6246,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1054,
+            "line": 1056,
             "description": "Panel 的默认模板",
             "access": "private",
             "tagname": "",
@@ -6238,7 +6254,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1112,
+            "line": 1114,
             "description": "监听Panel的所有点击事件\n<br />如果事件源有 eventtype 属性, 则会触发eventtype的事件类型",
             "itemtype": "event",
             "name": "Panel click",
@@ -6249,7 +6265,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1165,
+            "line": 1167,
             "description": "从 HTML 属性 自动执行 popup",
             "attr": "{function}  panelcancelcallback cancel  回调",
             "class": "JC.hideAllPopup",
@@ -6257,14 +6273,14 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1207,
+            "line": 1209,
             "description": "隐藏关闭按钮",
             "class": "JC.hideAllPopup",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1327,
+            "line": 1329,
             "description": "自定义 JC.msgbox 的显示模板",
             "itemtype": "property",
             "name": "tpl",
@@ -6276,7 +6292,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1365,
+            "line": 1367,
             "description": "自定义 JC.alert 的显示模板",
             "itemtype": "property",
             "name": "tpl",
@@ -6288,7 +6304,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1410,
+            "line": 1412,
             "description": "自定义 JC.confirm 的显示模板",
             "itemtype": "property",
             "name": "tpl",
@@ -6300,7 +6316,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1418,
+            "line": 1420,
             "description": "弹框逻辑处理方法集",
             "itemtype": "property",
             "name": "_logic",
@@ -6311,7 +6327,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1425,
+            "line": 1427,
             "description": "弹框最小宽度",
             "itemtype": "property",
             "name": "_logic.minWidth",
@@ -6324,7 +6340,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1434,
+            "line": 1436,
             "description": "弹框最大宽度",
             "itemtype": "property",
             "name": "_logic.maxWidth",
@@ -6337,7 +6353,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1443,
+            "line": 1445,
             "description": "显示时 X轴的偏移值",
             "itemtype": "property",
             "name": "_logic.xoffset",
@@ -6350,7 +6366,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1452,
+            "line": 1454,
             "description": "显示时 Y轴的偏移值",
             "itemtype": "property",
             "name": "_logic.yoffset",
@@ -6363,7 +6379,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1461,
+            "line": 1463,
             "description": "设置弹框的唯一性",
             "itemtype": "method",
             "name": "_logic.popupIdentifier",
@@ -6381,7 +6397,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1485,
+            "line": 1487,
             "description": "弹框通用处理方法",
             "itemtype": "method",
             "name": "_logic.popup",
@@ -6422,7 +6438,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1557,
+            "line": 1559,
             "description": "隐藏弹框缓动效果",
             "itemtype": "method",
             "name": "_logic.hideEffect",
@@ -6450,7 +6466,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1610,
+            "line": 1612,
             "description": "隐藏弹框缓动效果",
             "itemtype": "method",
             "name": "_logic.showEffect",
@@ -6473,7 +6489,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1665,
+            "line": 1667,
             "description": "设置 Panel 的默认X,Y轴",
             "itemtype": "method",
             "name": "_logic.onresize",
@@ -6491,7 +6507,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1701,
+            "line": 1703,
             "description": "取得弹框最要显示的 y 轴",
             "itemtype": "method",
             "name": "_logic.getTop",
@@ -6528,7 +6544,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1722,
+            "line": 1724,
             "description": "取得弹框最要显示的 x 轴",
             "itemtype": "method",
             "name": "_logic.getLeft",
@@ -6565,7 +6581,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1745,
+            "line": 1747,
             "description": "修正弹框的默认显示宽度",
             "itemtype": "method",
             "name": "_logic.fixWidth",
@@ -6588,7 +6604,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1762,
+            "line": 1764,
             "description": "获取弹框的显示状态, 默认为0(成功)",
             "itemtype": "method",
             "name": "_logic.fixWidth",
@@ -6610,7 +6626,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1780,
+            "line": 1782,
             "description": "保存弹框的所有默认模板",
             "itemtype": "property",
             "name": "_logic.tpls",
@@ -6622,7 +6638,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1788,
+            "line": 1790,
             "description": "msgbox 弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.msgbox",
@@ -6634,7 +6650,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1808,
+            "line": 1810,
             "description": "alert 弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.alert",
@@ -6646,7 +6662,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1831,
+            "line": 1833,
             "description": "confirm 弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.confirm",
@@ -6658,14 +6674,14 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1857,
+            "line": 1859,
             "description": "响应窗口改变大小",
             "class": "JC.alert",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 1968,
+            "line": 1970,
             "description": "自定义 JC.Dialog.alert 的显示模板",
             "itemtype": "property",
             "name": "tpl",
@@ -6677,7 +6693,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2009,
+            "line": 2011,
             "description": "自定义 JC.Dialog.alert 的显示模板",
             "itemtype": "property",
             "name": "tpl",
@@ -6689,7 +6705,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2055,
+            "line": 2057,
             "description": "自定义 JC.Dialog.confirm 的显示模板",
             "itemtype": "property",
             "name": "tpl",
@@ -6701,7 +6717,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2077,
+            "line": 2079,
             "description": "会话弹框逻辑处理方法集",
             "itemtype": "property",
             "name": "_logic",
@@ -6712,7 +6728,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2084,
+            "line": 2086,
             "description": "延时处理的指针属性",
             "itemtype": "property",
             "name": "_logic.timeout",
@@ -6724,7 +6740,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2092,
+            "line": 2094,
             "description": "延时显示弹框\n<br />延时是为了使用户绑定的 show 事件能够被执行",
             "itemtype": "property",
             "name": "_logic.showMs",
@@ -6736,7 +6752,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2101,
+            "line": 2103,
             "description": "弹框最小宽度",
             "itemtype": "property",
             "name": "_logic.minWidth",
@@ -6749,7 +6765,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2110,
+            "line": 2112,
             "description": "弹框最大宽度",
             "itemtype": "property",
             "name": "_logic.maxWidth",
@@ -6762,7 +6778,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2119,
+            "line": 2121,
             "description": "设置会话弹框的唯一性",
             "itemtype": "method",
             "name": "_logic.dialogIdentifier",
@@ -6780,7 +6796,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2142,
+            "line": 2144,
             "description": "显示蒙板",
             "itemtype": "method",
             "name": "_logic.showMask",
@@ -6791,7 +6807,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2162,
+            "line": 2164,
             "description": "隐藏蒙板",
             "itemtype": "method",
             "name": "_logic.hideMask",
@@ -6802,7 +6818,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2174,
+            "line": 2176,
             "description": "窗口改变大小时, 改变蒙板的大小,\n<br />这个方法主要为了兼容 IE6",
             "itemtype": "method",
             "name": "_logic.setMaskSizeForIe6",
@@ -6813,7 +6829,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2197,
+            "line": 2199,
             "description": "获取弹框的显示状态, 默认为0(成功)",
             "itemtype": "method",
             "name": "_logic.fixWidth",
@@ -6835,7 +6851,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2215,
+            "line": 2217,
             "description": "修正弹框的默认显示宽度",
             "itemtype": "method",
             "name": "_logic.fixWidth",
@@ -6858,7 +6874,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2231,
+            "line": 2233,
             "description": "保存会话弹框的所有默认模板",
             "itemtype": "property",
             "name": "_logic.tpls",
@@ -6870,7 +6886,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2239,
+            "line": 2241,
             "description": "msgbox 会话弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.msgbox",
@@ -6882,7 +6898,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2259,
+            "line": 2261,
             "description": "alert 会话弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.alert",
@@ -6894,7 +6910,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2282,
+            "line": 2284,
             "description": "confirm 会话弹框的默认模板",
             "itemtype": "property",
             "name": "_logic.tpls.confirm",
@@ -6906,7 +6922,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2306,
+            "line": 2308,
             "description": "会话弹框的蒙板模板",
             "itemtype": "property",
             "name": "_logic.tpls.mask",
@@ -6918,7 +6934,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.1/Panel.js",
-            "line": 2320,
+            "line": 2322,
             "description": "响应窗口改变大小和滚动",
             "class": "JC.Dialog",
             "namespace": "JC.Dialog"
@@ -11490,28 +11506,28 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 60,
+            "line": 59,
             "description": "判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 82,
+            "line": 81,
             "description": "jquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 86,
+            "line": 85,
             "description": "如果 console 不可用, 则生成一个模拟的 console 对象",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 92,
+            "line": 91,
             "description": "全局 css z-index 控制属性\n<br /> <b>注意</b>: 这个变量是 window.ZINDEX_COUNT",
             "itemtype": "property",
             "name": "ZINDEX_COUNT",
@@ -11523,7 +11539,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 101,
+            "line": 100,
             "description": "把函数的参数转为数组",
             "itemtype": "method",
             "name": "sliceArgs",
@@ -11543,7 +11559,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 115,
+            "line": 114,
             "description": "按格式输出字符串",
             "itemtype": "method",
             "name": "printf",
@@ -11566,7 +11582,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 131,
+            "line": 130,
             "description": "判断URL中是否有某个get参数",
             "itemtype": "method",
             "name": "hasUrlParam",
@@ -11594,7 +11610,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 153,
+            "line": 152,
             "description": "添加URL参数\n<br /><b>require:</b> delUrlParam",
             "itemtype": "method",
             "name": "addUrlParams",
@@ -11622,7 +11638,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 179,
+            "line": 178,
             "description": "取URL参数的值",
             "itemtype": "method",
             "name": "getUrlParam",
@@ -11650,7 +11666,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 206,
+            "line": 205,
             "description": "取URL参数的值, 这个方法返回数组\n<br />与 getUrlParam 的区别是可以获取 checkbox 的所有值",
             "itemtype": "method",
             "name": "getUrlParams",
@@ -11678,7 +11694,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 235,
+            "line": 234,
             "description": "删除URL参数",
             "itemtype": "method",
             "name": "delUrlParam",
@@ -11706,7 +11722,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 263,
+            "line": 262,
             "description": "提示需要 HTTP 环境",
             "itemtype": "method",
             "name": "httpRequire",
@@ -11726,7 +11742,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 278,
+            "line": 277,
             "description": "删除 URL 的锚点\n<br /><b>require:</b> addUrlParams",
             "itemtype": "method",
             "name": "removeUrlSharp",
@@ -11751,7 +11767,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 292,
+            "line": 291,
             "description": "重载页面\n<br /><b>require:</b> removeUrlSharp\n<br /><b>require:</b> addUrlParams",
             "itemtype": "method",
             "name": "reloadPage",
@@ -11778,7 +11794,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 310,
+            "line": 309,
             "description": "取小数点的N位\n<br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题",
             "itemtype": "method",
             "name": "parseFinance",
@@ -11803,7 +11819,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 327,
+            "line": 326,
             "description": "js 附加字串函数",
             "itemtype": "method",
             "name": "padChar",
@@ -11833,7 +11849,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 343,
+            "line": 342,
             "description": "格式化日期为 YYYY-mm-dd 格式\n<br /><b>require</b>: pad\\_char\\_f",
             "itemtype": "method",
             "name": "formatISODate",
@@ -11858,7 +11874,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 357,
+            "line": 356,
             "description": "从 ISODate 字符串解析日期对象",
             "itemtype": "method",
             "name": "parseISODate",
@@ -11878,7 +11894,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 375,
+            "line": 374,
             "description": "获取不带 时分秒的 日期对象",
             "itemtype": "method",
             "name": "pureDate",
@@ -11897,7 +11913,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 387,
+            "line": 386,
             "description": "克隆日期对象",
             "itemtype": "method",
             "name": "cloneDate",
@@ -11918,7 +11934,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 395,
+            "line": 394,
             "description": "判断两个日期是否为同一天",
             "itemtype": "method",
             "name": "isSameDay",
@@ -11944,7 +11960,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 407,
+            "line": 406,
             "description": "判断两个日期是否为同一月份",
             "itemtype": "method",
             "name": "isSameMonth",
@@ -11970,7 +11986,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 419,
+            "line": 418,
             "description": "取得一个月份中最大的一天",
             "itemtype": "method",
             "name": "maxDayOfMonth",
@@ -11991,7 +12007,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 432,
+            "line": 431,
             "description": "取当前脚本标签的 src路径",
             "itemtype": "method",
             "name": "scriptPath",
@@ -12005,7 +12021,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 444,
+            "line": 443,
             "description": "缓动函数, 动画效果为按时间缓动 \n<br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval",
             "itemtype": "method",
             "name": "easyEffect",
@@ -12048,7 +12064,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 497,
+            "line": 496,
             "description": "把输入值转换为布尔值",
             "itemtype": "method",
             "name": "parseBool",
@@ -12068,7 +12084,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 516,
+            "line": 515,
             "description": "判断是否支持 CSS position: fixed",
             "itemtype": "property",
             "name": "$.support.isFixed",
@@ -12080,7 +12096,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 545,
+            "line": 544,
             "description": "绑定或清除 mousewheel 事件",
             "itemtype": "method",
             "name": "mousewheelEvent",
@@ -12102,7 +12118,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 567,
+            "line": 566,
             "description": "获取 selector 的指定父级标签",
             "itemtype": "method",
             "name": "getJqParent",
@@ -12128,7 +12144,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 593,
+            "line": 592,
             "description": "扩展 jquery 选择器\n<br />扩展起始字符的 '/' 符号为 jquery 父节点选择器\n<br />扩展起始字符的 '|' 符号为 jquery 子节点选择器\n<br />扩展起始字符的 '(' 符号为 jquery 父节点查找识别符( getJqParent )",
             "itemtype": "method",
             "name": "parentSelector",
@@ -12159,7 +12175,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 661,
+            "line": 660,
             "description": "获取脚本模板的内容",
             "itemtype": "method",
             "name": "scriptContent",
@@ -12179,7 +12195,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 676,
+            "line": 675,
             "description": "取函数名 ( 匿名函数返回空 )",
             "itemtype": "method",
             "name": "funcName",
@@ -12199,7 +12215,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 691,
+            "line": 690,
             "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件,  </dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder\n         <br />Bizs.DisableLogic, Bizs.FormLogic\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
@@ -12216,56 +12232,56 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 715,
+            "line": 714,
             "description": "联动下拉框",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 719,
+            "line": 718,
             "description": "日历组件",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 723,
+            "line": 722,
             "description": "全选反选",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 727,
+            "line": 726,
             "description": "Ajax 上传",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 731,
+            "line": 730,
             "description": "Placeholder 占位符",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 737,
+            "line": 736,
             "description": "disable / enable",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 741,
+            "line": 740,
             "description": "表单提交逻辑",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 746,
+            "line": 745,
             "description": "URL 占位符识别功能",
             "itemtype": "method",
             "name": "urlDetect",
@@ -12288,7 +12304,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 785,
+            "line": 784,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -12312,7 +12328,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 844,
+            "line": 843,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common",
             "namespace": "JC"
@@ -12321,14 +12337,14 @@
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 3,
             "description": "Top level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 10,
             "access": "private",
             "tagname": "",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12336,25 +12352,25 @@
             "description": "Use <code>jasmine.undefined</code> instead of <code>undefined</code>, since <code>undefined</code> is just\na plain old variable and may be redefined by somebody else.",
             "access": "private",
             "tagname": "",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 25,
             "description": "Show diagnostic messages in the console if set to true",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 31,
             "description": "Default interval in milliseconds for event loop yields (e.g. to allow network activity or to refresh the screen with the HTML-based runner). Small values here may result in slow test running. Zero means no updates until all tests have completed.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 37,
             "description": "Default timeout interval in milliseconds for waitsFor() blocks.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12375,13 +12391,13 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 114,
             "description": "Getter for the Jasmine environment. Ensures one gets created",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12399,7 +12415,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12417,7 +12433,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12435,7 +12451,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12458,7 +12474,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12475,7 +12491,7 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12492,7 +12508,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12511,7 +12527,7 @@
             "return": {
                 "description": "matchable object of the type clazz"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12530,7 +12546,7 @@
             "return": {
                 "description": "matchable object for the sample"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12552,25 +12568,25 @@
                     "type": "String"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 259,
             "description": "The name of the spy, if provided.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 263,
             "description": "Is this Object a spy?",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 267,
             "description": "The actual function this spy stubs.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12579,7 +12595,7 @@
             "example": [
                 "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy.mostRecentCall.args = [1, 2];"
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12588,7 +12604,7 @@
             "example": [
                 "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy(7, 8);\nmySpy.mostRecentCall.args = [7, 8];\nmySpy.argsForCall[0] = [1, 2];\nmySpy.argsForCall[1] = [7, 8];"
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12597,7 +12613,7 @@
             "example": [
                 "\nvar foo = {\n  bar: function() { // do some stuff }\n}\n\n// defining a spy on an existing property: foo.bar\nspyOn(foo, 'bar').andCallThrough();"
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12613,7 +12629,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12629,7 +12645,7 @@
                     "type": "String"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12645,7 +12661,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12654,7 +12670,7 @@
             "example": [
                 "\nspyOn(foo, 'bar');\n\nfoo.bar();\n\nexpect(foo.bar.callCount).toEqual(1);\n\nfoo.bar.reset();\n\nexpect(foo.bar.callCount).toEqual(0);"
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12671,7 +12687,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12689,13 +12705,13 @@
                     "type": "Array"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 443,
             "description": "All parameters are pretty-printed and concatenated together, then written to the current spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12720,7 +12736,7 @@
             "return": {
                 "description": "a Jasmine spy that can be chained with all spy methods"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12741,7 +12757,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12759,7 +12775,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12772,7 +12788,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12785,7 +12801,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12800,7 +12816,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12823,7 +12839,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12836,7 +12852,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12849,7 +12865,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12870,7 +12886,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12888,12 +12904,12 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 633,
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12913,21 +12929,21 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 646,
             "access": "private",
             "tagname": "",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 700,
             "description": "Environment for Jasmine",
             "is_constructor": 1,
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12935,7 +12951,7 @@
             "return": {
                 "description": "an object containing jasmine version build info, if set."
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12943,7 +12959,7 @@
             "return": {
                 "description": "string containing jasmine version build info, if set."
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12951,7 +12967,7 @@
             "return": {
                 "description": "a sequential integer starting at 0"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12959,7 +12975,7 @@
             "return": {
                 "description": "a sequential integer starting at 0"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12972,13 +12988,13 @@
                     "type": "jasmine.Reporter"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 977,
             "is_constructor": 1,
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13002,13 +13018,13 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1030,
             "is_constructor": 1,
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13030,7 +13046,7 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13042,7 +13058,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13056,7 +13072,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toBe() instead.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13068,7 +13084,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13082,7 +13098,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toEqual() instead.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13094,7 +13110,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13108,48 +13124,48 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toMatch() instead.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1263,
             "description": "Matcher that compares the actual to jasmine.undefined.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1270,
             "description": "Matcher that compares the actual to jasmine.undefined.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1277,
             "description": "Matcher that compares the actual to null.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1284,
             "description": "Matcher that boolean not-nots the actual.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1292,
             "description": "Matcher that boolean nots the actual.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1300,
             "description": "Matcher that checks to see if the actual, a Jasmine spy, was called.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1322,
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13157,7 +13173,7 @@
             "description": "Matcher that checks to see if the actual, a Jasmine spy, was not called.",
             "deprecated": true,
             "deprecationMessage": "Use expect(xxx).not.toHaveBeenCalled() instead",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13166,17 +13182,17 @@
             "example": [
                 "\n"
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1378,
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1381,
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13189,7 +13205,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13204,7 +13220,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toContain() instead.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13222,7 +13238,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13235,55 +13251,55 @@
                     "type": "String"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1619,
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1715,
             "is_constructor": 1,
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1750,
             "description": "Holds results for a set of Jasmine spec. Allows for the results array to hold another jasmine.NestedResults",
             "is_constructor": 1,
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1756,
             "description": "The total count of results",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1760,
             "description": "Number of passed results",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1764,
             "description": "Number of failed results",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1768,
             "description": "Was this suite/spec skipped?",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1772,
             "ignore": "",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13295,7 +13311,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13307,13 +13323,13 @@
                     "description": "Array of message parts which will be concatenated later."
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1797,
             "description": "Getter for the results: message & results.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13326,7 +13342,7 @@
                     "type": "jasmine.ExpectationResult|jasmine.NestedResults"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13335,13 +13351,13 @@
                 "description": "True if <b>everything</b> below passed",
                 "type": "Boolean"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1830,
             "description": "Base class for pretty printing for expectation results.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13353,7 +13369,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13367,7 +13383,7 @@
                     "type": "jasmine.Env"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13391,13 +13407,13 @@
                     "type": "String"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 2168,
             "description": "All parameters are pretty-printed and concatenated together, then written to the spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13409,7 +13425,7 @@
                     "type": "jasmine.ExpectationResult"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13424,7 +13440,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13447,7 +13463,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13476,7 +13492,7 @@
                     "type": "jasmine.Suite"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13511,7 +13527,7 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13533,7 +13549,7 @@
                 "description": "Encrypted output state array",
                 "type": "Number[]"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13550,7 +13566,7 @@
                 "description": "Expanded key schedule as 2D byte-array (Nr+1 x Nb bytes)",
                 "type": "Number[][]"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13577,7 +13593,7 @@
                 "description": "Encrypted text",
                 "type": "String"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13604,7 +13620,7 @@
                 "description": "Decrypted text",
                 "type": "String"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13628,7 +13644,7 @@
                 "description": "Base64-encoded string",
                 "type": "String"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13652,7 +13668,7 @@
                 "description": "decoded string",
                 "type": "String"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13669,7 +13685,7 @@
                 "description": "encoded string",
                 "type": "String"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13686,24 +13702,24 @@
                 "description": "decoded string",
                 "type": "String"
             },
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/domReady.js",
             "line": 1,
             "license": "RequireJS domReady 2.0.1 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.\nAvailable via the MIT or new BSD license.\nsee: http://github.com/requirejs/domReady for details",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/domReady.js",
             "line": 40,
             "description": "Sets the page as loaded.",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/domReady.js",
             "line": 97,
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/domReady.js",
@@ -13716,24 +13732,24 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/domReady.js",
             "line": 115,
             "description": "Loader Plugin API method",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../modules/JC.plugins/domReady.js",
             "line": 126,
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../config.js",
             "line": 3,
             "description": "requirejs config.js for JC Project",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../config.js",
@@ -13744,13 +13760,7 @@
                 "description": "脚本所在目录的完整路径",
                 "type": "String"
             },
-            "class": "window.requirejs"
-        },
-        {
-            "file": "../jquery.js",
-            "line": 1,
-            "description": "jQuery JavaScript Library v1.9.1\n<pre>http://jquery.com/\n\nIncludes Sizzle.js\nhttp://sizzlejs.com/\n\nCopyright 2005, 2012 jQuery Foundation, Inc. and other contributors\nReleased under the MIT license\nhttp://jquery.org/license\nDate: 2013-2-4</pre>",
-            "class": "window.requirejs"
+            "class": "window.jQuery"
         },
         {
             "file": "../lib.js",
@@ -13761,7 +13771,8 @@
                 "description": "脚本所在目录的完整路径",
                 "type": "String"
             },
-            "class": "window.requirejs"
+            "class": "window.requirejs",
+            "namespace": "window"
         },
         {
             "file": "../require.js",
@@ -14179,7 +14190,7 @@
         },
         {
             "message": "unknown tag: prototype",
-            "line": " ../modules/JC.Calendar/0.2/Calendar.js:423"
+            "line": " ../modules/JC.Calendar/0.2/Calendar.js:426"
         },
         {
             "message": "unknown tag: version",
@@ -14231,27 +14242,27 @@
         },
         {
             "message": "unknown tag: prototype",
-            "line": " ../modules/JC.Panel/0.1/Panel.js:844"
+            "line": " ../modules/JC.Panel/0.1/Panel.js:846"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Panel/0.1/Panel.js:1165"
+            "line": " ../modules/JC.Panel/0.1/Panel.js:1167"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Panel/0.1/Panel.js:1165"
+            "line": " ../modules/JC.Panel/0.1/Panel.js:1167"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Panel/0.1/Panel.js:1165"
+            "line": " ../modules/JC.Panel/0.1/Panel.js:1167"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Panel/0.1/Panel.js:1165"
+            "line": " ../modules/JC.Panel/0.1/Panel.js:1167"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Panel/0.1/Panel.js:1165"
+            "line": " ../modules/JC.Panel/0.1/Panel.js:1167"
         },
         {
             "message": "unknown tag: version",
@@ -14415,15 +14426,15 @@
         },
         {
             "message": "unknown tag: require",
-            "line": " ../modules/JC.common/0.2/common.js:516"
+            "line": " ../modules/JC.common/0.2/common.js:515"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../modules/JC.common/0.2/common.js:567"
+            "line": " ../modules/JC.common/0.2/common.js:566"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../modules/JC.common/0.2/common.js:593"
+            "line": " ../modules/JC.common/0.2/common.js:592"
         },
         {
             "message": "unknown tag: ignore",
@@ -14619,27 +14630,27 @@
         },
         {
             "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:229"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:230"
         },
         {
             "message": "Missing item type\n文件扩展名错误",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:263"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:264"
         },
         {
             "message": "Missing item type\n上传前触发的事件",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:270"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:271"
         },
         {
             "message": "Missing item type\n上传完毕触发的事件",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:276"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:277"
         },
         {
             "message": "Missing item type\nframe 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:313"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:314"
         },
         {
             "message": "Missing item type\n恢复默认状态",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:452"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:453"
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",
@@ -14651,99 +14662,99 @@
         },
         {
             "message": "Missing item type\n保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",
-            "line": " ../modules/JC.Calendar/0.2/Calendar.js:423"
+            "line": " ../modules/JC.Calendar/0.2/Calendar.js:426"
         },
         {
             "message": "Missing item type\n请使用 isCalendar, 这个方法是为了向后兼容",
-            "line": " ../modules/JC.Calendar/0.2/Calendar.js:494"
+            "line": " ../modules/JC.Calendar/0.2/Calendar.js:497"
         },
         {
             "message": "Missing item type\n这个方法后续版本不再使用, 请使用 Calendar.position",
-            "line": " ../modules/JC.Calendar/0.2/Calendar.js:675"
+            "line": " ../modules/JC.Calendar/0.2/Calendar.js:678"
         },
         {
             "message": "Missing item type\n延迟200毫秒初始化页面的所有日历控件\n之所以要延迟是可以让用户自己设置是否需要自动初始化",
-            "line": " ../modules/JC.Calendar/0.2/Calendar.js:1536"
+            "line": " ../modules/JC.Calendar/0.2/Calendar.js:1539"
         },
         {
             "message": "Missing item type\n元旦开始的第一个星期一开始的一周为政治经济上的第一周",
-            "line": " ../modules/JC.Calendar/0.2/Calendar.js:1823"
+            "line": " ../modules/JC.Calendar/0.2/Calendar.js:1826"
         },
         {
             "message": "Missing item type\n如果 atd 为空, 那么是 全选按钮触发的事件",
-            "line": " ../modules/JC.Calendar/0.2/Calendar.js:2292"
+            "line": " ../modules/JC.Calendar/0.2/Calendar.js:2295"
         },
         {
             "message": "Missing item type\n监听上一年按钮",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:807"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:809"
         },
         {
             "message": "Missing item type\n监听上一月按钮",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:816"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:818"
         },
         {
             "message": "Missing item type\n监听下一月按钮",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:825"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:827"
         },
         {
             "message": "Missing item type\n监听下一年按钮",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:834"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:836"
         },
         {
             "message": "Missing item type\n监听年份按钮, 是否要显示年份列表",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:843"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:845"
         },
         {
             "message": "Missing item type\n监听月份按钮, 是否要显示月份列表",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:865"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:867"
         },
         {
             "message": "Missing item type\n监听年份列表选择状态",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:879"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:881"
         },
         {
             "message": "Missing item type\n监听月份列表选择状态",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:889"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:891"
         },
         {
             "message": "Missing item type\n监听日期单元格点击事件",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:899"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:901"
         },
         {
             "message": "Missing item type\n监听body点击事件, 点击时隐藏日历控件的年份和月份列表",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:921"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.js:923"
         },
         {
             "message": "Missing item type\n初始化Panel 默认事件",
-            "line": " ../modules/JC.Panel/0.1/Panel.js:248"
+            "line": " ../modules/JC.Panel/0.1/Panel.js:250"
         },
         {
             "message": "Missing item type\nclickClose 的别名\n<br />这个方法的存在是为了向后兼容, 请使用 clickClose",
-            "line": " ../modules/JC.Panel/0.1/Panel.js:404"
+            "line": " ../modules/JC.Panel/0.1/Panel.js:406"
         },
         {
             "message": "Missing item type\n默认模板",
-            "line": " ../modules/JC.Panel/0.1/Panel.js:844"
+            "line": " ../modules/JC.Panel/0.1/Panel.js:846"
         },
         {
             "message": "Missing item type\nPanel 的默认模板",
-            "line": " ../modules/JC.Panel/0.1/Panel.js:1054"
+            "line": " ../modules/JC.Panel/0.1/Panel.js:1056"
         },
         {
             "message": "Missing item type\n从 HTML 属性 自动执行 popup",
-            "line": " ../modules/JC.Panel/0.1/Panel.js:1165"
+            "line": " ../modules/JC.Panel/0.1/Panel.js:1167"
         },
         {
             "message": "Missing item type\n隐藏关闭按钮",
-            "line": " ../modules/JC.Panel/0.1/Panel.js:1207"
+            "line": " ../modules/JC.Panel/0.1/Panel.js:1209"
         },
         {
             "message": "Missing item type\n响应窗口改变大小",
-            "line": " ../modules/JC.Panel/0.1/Panel.js:1857"
+            "line": " ../modules/JC.Panel/0.1/Panel.js:1859"
         },
         {
             "message": "Missing item type\n响应窗口改变大小和滚动",
-            "line": " ../modules/JC.Panel/0.1/Panel.js:2320"
+            "line": " ../modules/JC.Panel/0.1/Panel.js:2322"
         },
         {
             "message": "Missing item type\n设置 控件 光标位置\nx@btbtd.org  2012-3-1",
@@ -14839,47 +14850,47 @@
         },
         {
             "message": "Missing item type\n判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量",
-            "line": " ../modules/JC.common/0.2/common.js:60"
+            "line": " ../modules/JC.common/0.2/common.js:59"
         },
         {
             "message": "Missing item type\njquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
-            "line": " ../modules/JC.common/0.2/common.js:82"
+            "line": " ../modules/JC.common/0.2/common.js:81"
         },
         {
             "message": "Missing item type\n如果 console 不可用, 则生成一个模拟的 console 对象",
-            "line": " ../modules/JC.common/0.2/common.js:86"
+            "line": " ../modules/JC.common/0.2/common.js:85"
         },
         {
             "message": "Missing item type\n联动下拉框",
-            "line": " ../modules/JC.common/0.2/common.js:715"
+            "line": " ../modules/JC.common/0.2/common.js:714"
         },
         {
             "message": "Missing item type\n日历组件",
-            "line": " ../modules/JC.common/0.2/common.js:719"
+            "line": " ../modules/JC.common/0.2/common.js:718"
         },
         {
             "message": "Missing item type\n全选反选",
-            "line": " ../modules/JC.common/0.2/common.js:723"
+            "line": " ../modules/JC.common/0.2/common.js:722"
         },
         {
             "message": "Missing item type\nAjax 上传",
-            "line": " ../modules/JC.common/0.2/common.js:727"
+            "line": " ../modules/JC.common/0.2/common.js:726"
         },
         {
             "message": "Missing item type\nPlaceholder 占位符",
-            "line": " ../modules/JC.common/0.2/common.js:731"
+            "line": " ../modules/JC.common/0.2/common.js:730"
         },
         {
             "message": "Missing item type\ndisable / enable",
-            "line": " ../modules/JC.common/0.2/common.js:737"
+            "line": " ../modules/JC.common/0.2/common.js:736"
         },
         {
             "message": "Missing item type\n表单提交逻辑",
-            "line": " ../modules/JC.common/0.2/common.js:741"
+            "line": " ../modules/JC.common/0.2/common.js:740"
         },
         {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../modules/JC.common/0.2/common.js:844"
+            "line": " ../modules/JC.common/0.2/common.js:843"
         },
         {
             "message": "Missing item type\nTop level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
@@ -15336,10 +15347,6 @@
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
             "line": " ../config.js:48"
-        },
-        {
-            "message": "Missing item type\njQuery JavaScript Library v1.9.1\n<pre>http://jquery.com/\n\nIncludes Sizzle.js\nhttp://sizzlejs.com/\n\nCopyright 2005, 2012 jQuery Foundation, Inc. and other contributors\nReleased under the MIT license\nhttp://jquery.org/license\nDate: 2013-2-4</pre>",
-            "line": " ../jquery.js:1"
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",

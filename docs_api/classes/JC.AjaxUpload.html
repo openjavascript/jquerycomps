@@ -68,6 +68,7 @@
                 <li><a href="../classes/window.Bizs.FormLogic.html">window.Bizs.FormLogic</a></li>
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
+                <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
                 <li><a href="../classes/window.requirejs.html">window.requirejs</a></li>
             </ul>
             <ul id="api-modules" class="apis modules">
@@ -111,19 +112,19 @@
 </div>
 <div class="box intro">
     <p>Ajax 文件上传</p>
-<p>
+<p><p>
      <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>
      | <a href='../../modules/JC.AjaxUpload/0.1/_demo' target='_blank'>demo link</a>
-</p>
-<p>
+</p></p>
+<p><p>
      <b>require</b>: <a href='window.jQuery.html'>jQuery</a>
-</p>
-<h2>可用的 html attribute</h2>
+</p></p>
+<p><h2>可用的 html attribute</h2></p>
 <dl>
      <dt>cauStyle = string, default = g1</dt>
      <dd>
-         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/res/default/style.html' target='_blank'>可选样式</a>:
+         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/0.1/res/default/style.html' target='_blank'>可选样式</a>:
          <dl>
              <dt>绿色按钮</dt>
              <dd>g1, g2, g3</dd>
@@ -140,7 +141,7 @@
      <dt>cauUrl = url, require</dt>
      <dd>上传文件的接口地址</dd>
      <dt>cauFileExt = file ext, optional</dt>
-     <dd>允许上传的文件扩展名, 例: ".jpg, .jpeg, .png, .gif"</dd>
+     <dd>允许上传的文件扩展名, 例: &quot;.jpg, .jpeg, .png, .gif&quot;</dd>
      <dt>cauFileName = string, default = file</dt>
      <dd>上传文件的 name 属性</dd>
      <dt>cauValueKey = string, default = url</dt>
@@ -172,15 +173,15 @@
      <dt>cauDisplayLabelCallback = function, optional, return = string</dt>
      <dd>
          自定义上传完毕后显示的内容 模板
-<xmp>function cauDisplayLabelCallback( _json, _label, _value ){
+<pre>function cauDisplayLabelCallback( _json, _label, _value ){
    var _selector = this
-       , _label = JC.f.printf( '<a href="{0}" class="green js_auLink" target="_blank">{1}</a>{2}'
+       , _label = JC.f.printf( &#39;&lt;a href=&quot;{0}&quot; class=&quot;green js_auLink&quot; target=&quot;_blank&quot;&gt;{1}&lt;/a&gt;{2}&#39;
                        , _value, _label
-                       ,  '&nbsp;<a href="javascript:" class="btn btn-cls2 js_cleanCauData"></a>&nbsp;&nbsp;'
+                       ,  &#39;&nbsp;&lt;a href=&quot;javascript:&quot; class=&quot;btn btn-cls2 js_cleanCauData&quot;&gt;&lt;/a&gt;&nbsp;&nbsp;&#39;
                    )
        ;
    return _label;
-}</xmp>
+}</pre>
      </dd>
 </dl>
 </div>
@@ -218,35 +219,34 @@
             <h4>Example:</h4>
             <div class="example-content">
                 <pre class="code prettyprint"><code>       &lt;div&gt;
-           &lt;input type="hidden" class="js_compAjaxUpload" value=""
-               cauStyle="w1"
-               cauButtonText="上传资质文件"
-               cauUrl="/ignore/JQueryComps_dev/comps/AjaxUpload/_demo/data/handler.php"
-               cauFileExt=".jpg, .jpeg, .png, .gif"
-               cauFileName="file"
-               cauLabelKey="name"
-               cauValueKey="url"
-               cauStatusLabel="/label.js_statusLabel"
-               cauDisplayLabel="/label.js_fileLabel"
+           &lt;input type=&quot;hidden&quot; class=&quot;js_compAjaxUpload&quot; value=&quot;&quot;
+               cauStyle=&quot;w1&quot;
+               cauButtonText=&quot;上传资质文件&quot;
+               cauUrl=&quot;/ignore/JQueryComps_dev/comps/AjaxUpload/_demo/data/handler.php&quot;
+               cauFileExt=&quot;.jpg, .jpeg, .png, .gif&quot;
+               cauFileName=&quot;file&quot;
+               cauLabelKey=&quot;name&quot;
+               cauValueKey=&quot;url&quot;
+               cauStatusLabel=&quot;/label.js_statusLabel&quot;
+               cauDisplayLabel=&quot;/label.js_fileLabel&quot;
                /&gt;
-           &lt;label class="js_fileLabel" style="display:none"&gt;&lt;/label&gt;
-           &lt;label class="js_statusLabel" style="display:none"&gt;文件上传中, 请稍候...&lt;/label&gt;
+           &lt;label class=&quot;js_fileLabel&quot; style=&quot;display:none&quot;&gt;&lt;/label&gt;
+           &lt;label class=&quot;js_statusLabel&quot; style=&quot;display:none&quot;&gt;文件上传中, 请稍候...&lt;/label&gt;
        &lt;/div&gt;
        POST 数据:
            ------WebKitFormBoundaryb1Xd1FMBhVgBoEKD
-           Content-Disposition: form-data; name="file"; filename="disk.jpg"
+           Content-Disposition: form-data; name=&quot;file&quot;; filename=&quot;disk.jpg&quot;
            Content-Type: image/jpeg
        返回数据:
            {
-               "errorno": 0, 
-               "data":
+               &quot;errorno&quot;: 0, 
+               &quot;data&quot;:
                {
-                   "url": "/ignore/JQueryComps_dev/comps/AjaxUpload/_demo/data/images/test.jpg", 
-                   "name": "test.jpg"
+                   &quot;url&quot;: &quot;/ignore/JQueryComps_dev/comps/AjaxUpload/_demo/data/images/test.jpg&quot;, 
+                   &quot;name&quot;: &quot;test.jpg&quot;
                }, 
-               "errmsg": ""
-           }
-</code></pre>
+               &quot;errmsg&quot;: &quot;&quot;
+           }</code></pre>
             </div>
         </div>
 </div>
@@ -471,7 +471,7 @@
             <h4>Returns:</h4>
             <div class="returns-description">
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>:
-                    instance array
+                    <p>instance array</p>
             </div>
         </div>
 </div>
@@ -519,7 +519,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    BaseMVCInstance
+                    <p>BaseMVCInstance</p>
             </div>
         </div>
 </div>
@@ -541,7 +541,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    selector
+                    <p>selector</p>
             </div>
         </div>
 </div>
@@ -580,7 +580,7 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    BaseMVCInstance
+                    <p>BaseMVCInstance</p>
             </div>
         </div>
 </div>
@@ -599,7 +599,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l330"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:330</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l331"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:331</code></a>
         </p>
     </div>
     <div class="description">
@@ -619,22 +619,21 @@
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                    AjaxUploadInstance
+                    <p>AjaxUploadInstance</p>
             </div>
         </div>
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
                 <pre class="code prettyprint"><code>           JC.AjaxUpload.getInstance( _selector ).update( {
-               "errorno": 0, 
-               "data":
+               &quot;errorno&quot;: 0, 
+               &quot;data&quot;:
                {
-                   "url": "/ignore/JQueryComps_dev/comps/AjaxUpload/_demo/data/images/test.jpg", 
-                   "name": "test.jpg"
+                   &quot;url&quot;: &quot;/ignore/JQueryComps_dev/comps/AjaxUpload/_demo/data/images/test.jpg&quot;, 
+                   &quot;name&quot;: &quot;test.jpg&quot;
                }, 
-               "errmsg": ""
-           });
-</code></pre>
+               &quot;errmsg&quot;: &quot;&quot;
+           });</code></pre>
             </div>
         </div>
 </div>
@@ -665,7 +664,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l209"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:209</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l210"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:210</code></a>
         </p>
     </div>
     <div class="description">

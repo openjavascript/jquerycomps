@@ -8,7 +8,9 @@
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>
      * | <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
+     *
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
+     *
      * <h2>Panel Layout 可用的 html attribute</h2>
      * <dl>
      *      <dt>panelclickclose = bool</dt>

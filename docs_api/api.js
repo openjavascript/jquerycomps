@@ -35,6 +35,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.FormLogic",
         "window.Bizs.KillISPCache",
         "window.Bizs.MultiDate",
+        "window.jQuery",
         "window.requirejs"
     ],
     "modules": [],
