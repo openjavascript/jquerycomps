@@ -34,13 +34,14 @@
         </div>
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
+                <li><a href="../classes/Bizs.html">Bizs</a></li>
+                <li><a href="../classes/JC.html">JC</a></li>
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
                 <li><a href="../classes/JC.AutoChecked.html">JC.AutoChecked</a></li>
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
-                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
                 <li><a href="../classes/JC.common.html">JC.common</a></li>
                 <li><a href="../classes/JC.confirm.html">JC.confirm</a></li>
@@ -63,14 +64,13 @@
                 <li><a href="../classes/JC.Tips.html">JC.Tips</a></li>
                 <li><a href="../classes/JC.Tree.html">JC.Tree</a></li>
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
+                <li><a href="../classes/jQuery.html">jQuery</a></li>
                 <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
                 <li><a href="../classes/window.Bizs.FormLogic.html">window.Bizs.FormLogic</a></li>
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
-                <li><a href="../classes/window.JC.html">window.JC</a></li>
-                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
             </ul>
             <ul id="api-modules" class="apis modules">
             </ul>
@@ -105,7 +105,7 @@
                         <h1>JC.Tab Class</h1>
 <div class="box meta">
         <div class="foundat">
-            Defined in: <a href="../files/.._comps_Tab_Tab.js.html#l3"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:3</code></a>
+            Defined in: <a href="../files/.._comps_Tab_Tab.js.html#l5"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:5</code></a>
         </div>
 </div>
 <div class="box intro">
@@ -116,7 +116,7 @@
 <p><p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
 | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tab.html' target='_blank'>API docs</a>
 | <a href='../../comps/Tab/_demo/' target='_blank'>demo link</a></p></p>
-<p><p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p></p>
+<p><p><b>require</b>: <a href='jQuery.html'>jQuery</a></p></p>
 <p><h2>Tab 容器的HTML属性</h2></p>
 <dl>
      <dt>tablabels</dt>
@@ -161,7 +161,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l3"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:3</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l5"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:5</code></a>
         </p>
     </div>
     <div class="description">
@@ -188,12 +188,24 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>       &lt;link href=&#39;../../../comps/Tab/res/default/style.css&#39; rel=&#39;stylesheet&#39; /&gt;
+                <pre class="code prettyprint"><code>       &lt;link href=&#39;../../../modules/JC.Tab/res/default/style.css&#39; rel=&#39;stylesheet&#39; /&gt;
        &lt;script src=&quot;../../../lib.js&quot;&gt;&lt;/script&gt;
+       &lt;script src=&quot;../../../config.js&quot;&gt;&lt;/script&gt;
        &lt;script&gt;
            JC.debug = 1;
-           JC.use( &#39;Tab&#39; );
-           httpRequire();
+           requirejs( [ &#39;JC.Tab&#39; ], function(){
+               JC.f.httpRequire();
+               JC.Tab.ajaxCallback =
+                   function( _data, _label, _container ){
+                       _data &amp;&amp; ( _data = $.parseJSON( _data ) );
+                       if( _data &amp;&amp; _data.errorno === 0 ){
+                           _container.html( JC.f.printf( &#39;&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}&#39;, _data.data ) );
+                       }else{
+                           Tab.isAjaxInited( _label, 0 );
+                           _container.html( &#39;&lt;h2&gt;内容加载失败!&lt;/h2&gt;&#39; );
+                       }
+                   };
+           });
            function tabactive( _evt, _container, _tabIns ){
                var _label = $(this);
                JC.log( &#39;tab &#39;, _evt.type, _label.html(), new Date().getTime() );
@@ -205,22 +217,10 @@
                var _label = $(this);
                JC.log( &#39;tab change: &#39;, _label.html(), new Date().getTime() );
            }
-           $(document).ready( function(){
-               JC.Tab.ajaxCallback =
-                   function( _data, _label, _container ){
-                       _data &amp;&amp; ( _data = $.parseJSON( _data ) );
-                       if( _data &amp;&amp; _data.errorno === 0 ){
-                           _container.html( printf( &#39;&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}&#39;, _data.data ) );
-                       }else{
-                           Tab.isAjaxInited( _label, 0 );
-                           _container.html( &#39;&lt;h2&gt;内容加载失败!&lt;/h2&gt;&#39; );
-                       }
-                   };
-           });
            function ajaxcallback( _data, _label, _container ){
                _data &amp;&amp; ( _data = $.parseJSON( _data ) );
                if( _data &amp;&amp; _data.errorno === 0 ){
-                   _container.html( printf( &#39;&lt;h2&gt;label attr ajaxcallback&lt;/h2&gt;{0}&#39;, _data.data ) );
+                   _container.html( JC.f.printf( &#39;&lt;h2&gt;label attr ajaxcallback&lt;/h2&gt;{0}&#39;, _data.data ) );
                }else{
                    Tab.isAjaxInited( _label, 0 );
                    _container.html( &#39;&lt;h2&gt;内容加载失败!&lt;/h2&gt;&#39; );
@@ -346,7 +346,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l270"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:270</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l272"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:272</code></a>
         </p>
     </div>
     <div class="description">
@@ -365,7 +365,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l287"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:287</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l289"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:289</code></a>
         </p>
     </div>
     <div class="description">
@@ -399,7 +399,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l191"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:191</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l193"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:193</code></a>
         </p>
     </div>
     <div class="description">
@@ -440,7 +440,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l236"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:236</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l238"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:238</code></a>
         </p>
     </div>
     <div class="description">
@@ -480,7 +480,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l247"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:247</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l249"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:249</code></a>
         </p>
     </div>
     <div class="description">
@@ -527,7 +527,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l151"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:151</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l153"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:153</code></a>
         </p>
     </div>
     <div class="description">
@@ -541,7 +541,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l175"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:175</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l177"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:177</code></a>
         </p>
     </div>
     <div class="description">
@@ -556,7 +556,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l183"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:183</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l185"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:185</code></a>
         </p>
     </div>
     <div class="description">
@@ -571,7 +571,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l207"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:207</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l209"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:209</code></a>
         </p>
     </div>
     <div class="description">
@@ -586,7 +586,7 @@
                function( _data, _label, _container, _textStatus, _jqXHR ){
                    _data &amp;&amp; ( _data = $.parseJSON( _data ) );
                    if( _data &amp;&amp; _data.errorno === 0 ){
-                       _container.html( printf( &#39;&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}&#39;, _data.data ) );
+                       _container.html( JC.f.printf( &#39;&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}&#39;, _data.data ) );
                    }else{
                        Tab.isAjaxInited( _label, 0 );
                        _container.html( &#39;&lt;h2&gt;内容加载失败!&lt;/h2&gt;&#39; );
@@ -603,7 +603,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l228"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:228</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l230"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:230</code></a>
         </p>
     </div>
     <div class="description">
@@ -618,7 +618,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l166"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:166</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l168"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:168</code></a>
         </p>
     </div>
     <div class="description">

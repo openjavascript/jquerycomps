@@ -1,4 +1,6 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 ;(function($){
+    window.Bizs = window.Bizs || {};
     window.Bizs.MultiDate = MultiDate;
     /**
      * MultiDate 复合日历业务逻辑
@@ -40,7 +42,7 @@
                 });
 
                 $([ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
+                    var _data = JC.f.sliceArgs( arguments ); _data.shift(); _data.shift();
                     _p.trigger( _evtName, _data );
                 });
                 _p._initDefaultValue();
@@ -64,11 +66,11 @@
                 if( !_p._model.mddate().attr('name') ){
                     if( _qs && _qe ){
                         if( _qs == _qe ){
-                            _p._model.mddate( formatISODate(parseISODate(_qs)) );
+                            _p._model.mddate( JC.f.formatISODate(JC.f.parseISODate(_qs)) );
                         }else{
-                            _p._model.mddate( printf( '{0} 至 {1}'
-                                        , formatISODate(parseISODate(_qs))
-                                        , formatISODate(parseISODate(_qe))
+                            _p._model.mddate( JC.f.printf( '{0} 至 {1}'
+                                        , JC.f.formatISODate(JC.f.parseISODate(_qs))
+                                        , JC.f.formatISODate(JC.f.parseISODate(_qe))
                                         ) );
                         }
                     }
@@ -76,8 +78,8 @@
                     _p._model.mddate( _p._model.qdate() );
                 }
 
-                _mdcusStart && _mdcusStart.length && _mdcusStart.val( _qs ? formatISODate( parseISODate( _qs ) ) : _qs );
-                _mdcusEnd&& _mdcusEnd.length && _mdcusEnd.val( _qe ? formatISODate( parseISODate( _qe ) ) : _qe );
+                _mdcusStart && _mdcusStart.length && _mdcusStart.val( _qs ? JC.f.formatISODate( JC.f.parseISODate( _qs ) ) : _qs );
+                _mdcusEnd&& _mdcusEnd.length && _mdcusEnd.val( _qe ? JC.f.formatISODate( JC.f.parseISODate( _qe ) ) : _qe );
 
             }
         , _initHandlerEvent:
@@ -172,8 +174,8 @@
 
                 window[ _updatecb ] = 
                     function( _type, _startDate, _endDate ){
-                        _p.mdstartdate( formatISODate( _startDate, '' ) );
-                        _p.mdenddate( formatISODate( _endDate, '' ) );
+                        _p.mdstartdate( JC.f.formatISODate( _startDate, '' ) );
+                        _p.mdenddate( JC.f.formatISODate( _endDate, '' ) );
                     };
                 _p.mddate().attr('calendarupdate', _updatecb);
 
@@ -220,37 +222,37 @@
 
         , mddate: 
             function( _setter ){ 
-                var _r = parentSelector( this.selector(), this.selector().attr('mddate') );
+                var _r = JC.f.parentSelector( this.selector(), this.selector().attr('mddate') );
                 typeof _setter != 'undefined' && _r.val( _setter );
                 return _r; 
             }
         , mdstartdate: 
             function( _setter ){ 
-                var _r = parentSelector( this.selector(), this.selector().attr('mdstartdate') );
+                var _r = JC.f.parentSelector( this.selector(), this.selector().attr('mdstartdate') );
                 typeof _setter != 'undefined' && _r.val( _setter.replace(/[^\d]/g, '') );
                 return _r;
             }
         , mdenddate: 
             function( _setter ){ 
-                var _r = parentSelector( this.selector(), this.selector().attr('mdenddate') );
+                var _r = JC.f.parentSelector( this.selector(), this.selector().attr('mdenddate') );
                 typeof _setter != 'undefined' && _r.val( _setter.replace(/[^\d]/g, '') );
                 return _r;
             }
 
         , qtype: function(){
-            return this.decodedata( getUrlParam( this.selector().attr('name') || '' ) || '' ).toLowerCase();
+            return this.decodedata( JC.f.getUrlParam( this.selector().attr('name') || '' ) || '' ).toLowerCase();
         }
 
         , qdate: function(){
-            return this.decodedata( getUrlParam( this.mddate().attr('name') || '' ) || '' ).toLowerCase();
+            return this.decodedata( JC.f.getUrlParam( this.mddate().attr('name') || '' ) || '' ).toLowerCase();
         }
 
         , qstartdate: function(){
-            return this.decodedata( getUrlParam( this.mdstartdate().attr('name') || '' ) || '' ).toLowerCase();
+            return this.decodedata( JC.f.getUrlParam( this.mdstartdate().attr('name') || '' ) || '' ).toLowerCase();
         }
 
         , qenddate: function(){
-            return this.decodedata( getUrlParam( this.mdenddate().attr('name') || '' ) || '' ).toLowerCase();
+            return this.decodedata( JC.f.getUrlParam( this.mdenddate().attr('name') || '' ) || '' ).toLowerCase();
         }
 
         , hastype:
@@ -321,3 +323,5 @@
     });
 
 }(jQuery));
+    return Bizs.MultiDate;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

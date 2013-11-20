@@ -1,12 +1,16 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: html popup add trigger ref
 ;(function($){
+    window.JC = window.JC || {log:function(){}};
     window.Panel = JC.Panel = Panel;
     /**
      * 弹出层基础类 JC.Panel
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
-     * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
+     *
+     * <p><b>require</b>: <a href='jQuery.html'>jQuery</a></p>
+     *
      * <h2>Panel Layout 可用的 html attribute</h2>
      * <dl>
      *      <dt>panelclickclose = bool</dt>
@@ -106,7 +110,7 @@
      * @date    2013-06-04
      * @example
             <script src="../../../lib.js"></script>
-            <script>JC.use( 'Panel' ); </script>
+            <script src="../../../config.js"></script>
             <script>
                 var btnstr = [
                     '<div style="text-align:center" class="UButton">'
@@ -114,7 +118,8 @@
                     , '<button type="button" eventtype="cancel">取消</button>\n'
                     , '</div>'
                 ].join('');
-                $(document).ready( function(_evt){
+		
+                requirejs( [ 'JC.Panel' ], function(){
                     tmpPanel = new JC.Panel( '默认panel', '<h2>test content</h2>' + btnstr, 'test footer');
                     tmpPanel.on('close', function(_evt, _panel){
                         JC.log('user close evnet');
@@ -323,16 +328,15 @@
 
                                     if( !_p._model.bindedPositionWithEvent ){
                                         _p._model.bindedPositionWithEvent = true;
-
+                                        var changePosition = function(){
+                                            _p.positionWith( _position, _selectorDiretion );
+                                        }
+					
                                         $(window).on('resize', changePosition );
                                         _p.on('close', function(){
                                             _p._model.bindedPositionWithEvent = false;
                                             $(window).unbind('resize', changePosition);
                                         });
-
-                                        function changePosition(){
-                                            _p.positionWith( _position, _selectorDiretion );
-                                        }
                                     }
 
                                     break;
@@ -405,7 +409,7 @@
          */
         , addAutoClose:
             function(){
-                this.clickClose.apply( this, sliceArgs( arguments ) );
+                this.clickClose.apply( this, JC.f.sliceArgs( arguments ) );
                 return this;
             }
         /**
@@ -745,7 +749,7 @@
                     JC.log( 'user tpl', this.selector.parent().length );
                     if( !this.selector.parent().length ){
                         _p.selector.appendTo( $(document.body ) );
-                        window.jcAutoInitComps && jcAutoInitComps( _p.selector );
+                        window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( _p.selector );
                     }
                 }else if( !_selector || _selector.length === 0 ){
                     this.footers = this.bodys;
@@ -793,7 +797,7 @@
             function(){
                 var _r = Panel.focusButton;
                 if( this.panel.is( '[panelfocusbutton]' ) ){
-                    _r = parseBool( this.panel.attr('panelfocusbutton') );
+                    _r = JC.f.parseBool( this.panel.attr('panelfocusbutton') );
                 }
                 return _r;
             }
@@ -801,7 +805,7 @@
             function(){
                 var _r = Panel.clickClose;
                 if( this.panel.is( '[panelclickclose]' ) ){
-                    _r = parseBool( this.panel.attr('panelclickclose') );
+                    _r = JC.f.parseBool( this.panel.attr('panelclickclose') );
                 }
                 return _r;
             }
@@ -809,7 +813,7 @@
             function(){
                 var _r;
                 if( this.panel.is( '[panelautoclose]' ) ){
-                    _r = parseBool( this.panel.attr('panelautoclose') );
+                    _r = JC.f.parseBool( this.panel.attr('panelautoclose') );
                 }
                 return _r;
             }
@@ -865,7 +869,7 @@
                     }else{
                         this._model.panel = $(this._tpl);
                         this._model.panel.appendTo(document.body);
-                        window.jcAutoInitComps && jcAutoInitComps( this._model.panel );
+                        window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( this._model.panel );
                     }
                 }
 
@@ -1174,7 +1178,7 @@
 
             , _panelmsg = _p.attr('panelmsg')
             , _panelmsgBox = _p.is('[panelmsgbox]') 
-                ? parentSelector( _p, _p.attr('panelmsgbox') ) 
+                ? JC.f.parentSelector( _p, _p.attr('panelmsgbox') ) 
                 : null
             ;
 
@@ -1195,26 +1199,26 @@
 
             , _panelheader = _p.attr('panelheader') || ''
             , _panelheaderBox = _p.is('[panelheaderbox]') 
-                ? parentSelector( _p, _p.attr('panelheaderbox') ) 
+                ? JC.f.parentSelector( _p, _p.attr('panelheaderbox') ) 
                 : null
 
             , _panelfooter = _p.attr('panelfooter') || ''
             , _panelfooterBox = _p.is('[panelfooterbox]') 
-                ? parentSelector( _p, _p.attr('panelfooterbox') ) 
+                ? JC.f.parentSelector( _p, _p.attr('panelfooterbox') ) 
                 : null
             /**
              * 隐藏关闭按钮
              */
             , _hideclose = _p.is('[panelhideclose]') 
-                ? parseBool( _p.attr('panelhideclose') )
+                ? JC.f.parseBool( _p.attr('panelhideclose') )
                 : false
             ;
 
-        _panelmsgBox && ( _panelmsg = scriptContent( _panelmsgBox ) || _panelmsg );
+        _panelmsgBox && ( _panelmsg = JC.f.scriptContent( _panelmsgBox ) || _panelmsg );
         _panelheaderBox && _panelheaderBox.length 
-            && ( _panelheader = scriptContent( _panelheaderBox ) || _panelfooter );
+            && ( _panelheader = JC.f.scriptContent( _panelheaderBox ) || _panelfooter );
         _panelfooterBox && _panelfooterBox.length 
-            && ( _panelfooter = scriptContent( _panelfooterBox ) || _panelfooter );
+            && ( _panelfooter = JC.f.scriptContent( _panelfooterBox ) || _panelfooter );
 
         _p.prop('nodeName') && _p.prop('nodeName').toLowerCase() == 'a' && _evt.preventDefault();
 
@@ -1287,7 +1291,7 @@
      * msgbox 提示 popup
      * <br /> 这个是不带蒙板 不带按钮的 popup 弹框
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
+     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.msgbox.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
@@ -1334,7 +1338,7 @@
      * alert 提示 popup
      * <br /> 这个是不带 蒙板的 popup 弹框
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
+     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.alert.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
@@ -1373,7 +1377,7 @@
      * <br /> 这个是不带 蒙板的 popup 弹框
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
      * <p>private property see: <a href='JC.alert.html'>JC.alert</a>
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
+     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.confirm.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
@@ -1589,7 +1593,7 @@
                 _selector.css( { 'left': _left  + 'px' } );
 
                 _dom.interval = 
-                    easyEffect( function( _curVal, _done ){
+                    JC.f.easyEffect( function( _curVal, _done ){
                         _selector.css( {
                             'top': _top + _curVal + 'px'
                             , 'height': _sh - _curVal + 'px'
@@ -1640,7 +1644,7 @@
 
                 if( _top > _poffset.top ){
                     _dom.interval = 
-                        easyEffect( function( _curVal, _done ){
+                        JC.f.easyEffect( function( _curVal, _done ){
                             _selector.css( {
                                 'top': _top - _sh - _logic.yoffset + 'px'
                                 , 'height': _curVal + 'px'
@@ -1650,7 +1654,7 @@
 
                 }else{
                     _dom.interval = 
-                        easyEffect( function( _curVal, _done ){
+                        JC.f.easyEffect( function( _curVal, _done ){
                             _selector.css( {
                                 'top': _top - _curVal - _logic.yoffset + 'px'
                                 , 'height': _curVal + 'px'
@@ -1869,7 +1873,7 @@
     /**
      * 带蒙板的会话弹框
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
+     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Dialog.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
@@ -1931,7 +1935,7 @@
      * 会话框 msgbox 提示 (不带按钮)
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
      * <p>private property see: <a href='JC.Dialog.html'>JC.Dialog</a>
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>
+     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Dialog.msgbox.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
@@ -1975,7 +1979,7 @@
      * 会话框 alert 提示
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
      * <p>private property see: <a href='JC.Dialog.html'>JC.Dialog</a>
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>
+     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Dialog.alert.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
@@ -2016,7 +2020,7 @@
      * 会话框 confirm 提示
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
      * <p>private property see: <a href='JC.Dialog.html'>JC.Dialog</a>
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>
+     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a>, <a href='JC.Panel.html'>Panel</a>, <a href='JC.Dialog.html'>Dialog</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Dialog.confirm.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Panel/_demo' target='_blank'>demo link</a></p>
@@ -2330,3 +2334,5 @@
     });
 
 }(jQuery));
+    return JC.Panel;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

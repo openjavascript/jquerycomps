@@ -41,6 +41,10 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/Bizs.html">Bizs</a></li>
+            
+                <li><a href="../classes/JC.html">JC</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -52,8 +56,6 @@
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
-            
-                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -119,6 +121,8 @@
             
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
             
+                <li><a href="../classes/jQuery.html">jQuery</a></li>
+            
                 <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
             
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
@@ -130,10 +134,6 @@
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
-            
-                <li><a href="../classes/window.JC.html">window.JC</a></li>
-            
-                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
             
             </ul>
 
@@ -178,6 +178,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27;, &#x27;JC.BaseMVC&#x27;, &#x27;JC.Panel&#x27; ], function(){
 /**
  * &lt;h2&gt;node 点击操作逻辑&lt;/h2&gt;
  * 应用场景
@@ -189,7 +190,7 @@
  * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
  * | &lt;a href=&#x27;../../bizs/ActionLogic/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
  *
- * require: &lt;a href=&#x27;../classes/window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
+ * require: &lt;a href=&#x27;../classes/jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
  * &lt;br/&gt;require: &lt;a href=&#x27;../classes/JC.Panel.html&#x27;&gt;JC.Panel&lt;/a&gt;
  *
  * a|button 需要 添加 class=&quot;js_bizsActionLogic&quot;
@@ -261,7 +262,7 @@
     var _trigger = $(this);
     if( _d &amp;&amp; !_d.errorno ){
         JC.msgbox( _d.errmsg || &#x27;操作成功&#x27;, _trigger, 0, function(){
-            reloadPage( &#x27;?usercallback=ajaxaction&#x27; );
+            JC.f.reloadPage( &#x27;?usercallback=ajaxaction&#x27; );
         });
     }else{
         JC.Dialog.alert( _d &amp;&amp; _d.errmsg ? _d.errmsg : &#x27;操作失败, 请重试!&#x27; , 1 );
@@ -279,6 +280,7 @@
  * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 Team
  */
 ;(function($){
+    window.Bizs = window.Bizs || {};
     window.Bizs.ActionLogic = ActionLogic;
 
     function ActionLogic( _selector ){
@@ -292,7 +294,7 @@
         this._init();
     }
 
-    !JC.Panel &amp;&amp; JC.use( &#x27;Panel&#x27; );
+    !define.amd &amp;&amp; JC.use &amp;&amp; !JC.Panel &amp;&amp; JC.use( &#x27;Panel&#x27; );
 
     /**
      * 获取或设置 ActionLogic 的实例
@@ -376,7 +378,7 @@
                  * 脚本模板 Panel
                  */
                 _p.on(&#x27;StaticPanel&#x27;, function( _evt, _item ){
-                    _p.trigger( &#x27;ShowPanel&#x27;, [ scriptContent( _item ) ] );
+                    _p.trigger( &#x27;ShowPanel&#x27;, [ JC.f.scriptContent( _item ) ] );
                 });
                 /**
                  * 显示 Panel
@@ -396,7 +398,7 @@
                 _p.on(&#x27;AjaxPanel&#x27;, function( _evt, _type, _url ){
                     if( !( _type &amp;&amp; _url ) ) return;
                     _p._model.balRandom() 
-                        &amp;&amp; ( _url = addUrlParams( _url, { &#x27;rnd&#x27;: new Date().getTime() } ) );
+                        &amp;&amp; ( _url = JC.f.addUrlParams( _url, { &#x27;rnd&#x27;: new Date().getTime() } ) );
 
                     $.get( _url ).done( function( _d ){
                         switch( _type ){
@@ -426,8 +428,8 @@
                 _p.on( &#x27;Go&#x27;, function( _evt, _url ){
                     if( !_url ) return;
                     _p._model.balRandom() 
-                        &amp;&amp; ( _url = addUrlParams( _url, { &#x27;rnd&#x27;: new Date().getTime() } ) );
-                    reloadPage( _url );
+                        &amp;&amp; ( _url = JC.f.addUrlParams( _url, { &#x27;rnd&#x27;: new Date().getTime() } ) );
+                    JC.f.reloadPage( _url );
                 });
                 /**
                  * ajax 执行操作
@@ -435,7 +437,7 @@
                 _p.on( &#x27;AjaxAction&#x27;, function( _evt, _url ){
                     if( !_url ) return;
                     _p._model.balRandom() 
-                        &amp;&amp; ( _url = addUrlParams( _url, { &#x27;rnd&#x27;: new Date().getTime() } ) );
+                        &amp;&amp; ( _url = JC.f.addUrlParams( _url, { &#x27;rnd&#x27;: new Date().getTime() } ) );
                     $.get( _url ).done( function( _d ){
                         try{ _d = $.parseJSON( _d ); }catch(ex){}
 
@@ -451,7 +453,7 @@
                                                     _d.errmsg || &#x27;操作完成&#x27;
                                                     , function(){
                                                             _p._model.balDoneUrl() 
-                                                            &amp;&amp; reloadPage( _p._model.balDoneUrl() || location.href )
+                                                            &amp;&amp; JC.f.reloadPage( _p._model.balDoneUrl() || location.href )
                                                             ;
                                                         }
                                                 ]
@@ -630,7 +632,7 @@
         , balRandom: 
             function(){
                 var _r = ActionLogic.random, _p = this;
-                _p.is(&#x27;[balRandom]&#x27;) &amp;&amp; ( _r = parseBool( _p.stringProp( &#x27;balRandom&#x27; ) ) );
+                _p.is(&#x27;[balRandom]&#x27;) &amp;&amp; ( _r = JC.f.parseBool( _p.stringProp( &#x27;balRandom&#x27; ) ) );
                 return _r;
             }
         , balUrl:
@@ -639,12 +641,12 @@
                 _p.selector().prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;a&#x27;
                     &amp;&amp; ( _r = _p.selector().attr(&#x27;href&#x27;) );
                 _p.is( &#x27;[balUrl]&#x27; ) &amp;&amp; ( _r = _p.selector().attr(&#x27;balUrl&#x27;) );
-                return urlDetect( _r );
+                return JC.f.urlDetect( _r );
             }
         , balDoneUrl:
             function(){
                 var _r = this.attrProp( &#x27;balDoneUrl&#x27; );
-                return urlDetect( _r );
+                return JC.f.urlDetect( _r );
             }
         , balConfirmMsg:
             function(){
@@ -689,6 +691,8 @@
     });
 
 }(jQuery));
+    return Bizs.ActionLogic;
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>
 </div>

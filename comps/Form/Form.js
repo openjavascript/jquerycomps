@@ -1,7 +1,8 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.AutoSelect', 'JC.AutoChecked' ], function(){
 ;(function($){
     /**
      * 表单常用功能类 JC.Form
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
+     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Form/_demo' target='_blank'>demo link</a></p>
@@ -12,6 +13,7 @@
      * @author  qiushaowei   <suches@btbtd.org> | 75 team
      * @date    2013-06-11
      */
+    window.JC = window.JC || {log:function(){}};
     window.JCForm = JC.Form = {
         /**
          * 禁用按钮一定时间, 默认为1秒
@@ -56,7 +58,7 @@
     /**
      * 表单自动填充 URL GET 参数
      * <br />只要引用本脚本, DOM 加载完毕后, 页面上所有带 class js_autoFillUrlForm 的 form 都会自动初始化默认值
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
+     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>
      * @method  initAutoFill
@@ -99,17 +101,17 @@
         
         _selector.find( 'input[type=text][name],input[type=password][name],textarea[name]' ).each( function(){
             var _sp = $(this);
-            if( hasUrlParam( _url, _sp.attr('name') ) ){
-                _sp.val( decode( getUrlParam( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) );
+            if( JC.f.hasUrlParam( _url, _sp.attr('name') ) ){
+                _sp.val( decode( JC.f.getUrlParam( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) );
             }
         });
 
         _selector.find( 'select[name]' ).each( function(){
-            var _sp = $(this), _uval = decode( getUrlParam( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) ;
-            if( hasUrlParam( _url, _sp.attr('name') ) ){
+            var _sp = $(this), _uval = decode( JC.f.getUrlParam( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) ;
+            if( JC.f.hasUrlParam( _url, _sp.attr('name') ) ){
                 if( selectHasVal( _sp, _uval ) ){
                     _sp.removeAttr('selectignoreinitrequest');
-                    _sp.val( getUrlParam( _url, _sp.attr('name') ) );
+                    _sp.val( JC.f.getUrlParam( _url, _sp.attr('name') ) );
                 }else{
                     _sp.attr( 'selectvalue', _uval );
                 }
@@ -121,7 +123,7 @@
             var _sp = $(this), _key = _sp.attr('name').trim(), _keys, _v = _sp.val();
             //alert( _sp.attr('name') );
             if( !( _key in _keyObj ) ){
-                _keys = getUrlParams( _url, _key );
+                _keys = JC.f.getUrlParams( _url, _key );
                 _keyObj[ _key ] = _keys;
             }else{
                 _keys = _keyObj[ _key ];
@@ -137,7 +139,7 @@
             }
         });
 
-        window.jcAutoInitComps && jcAutoInitComps( _selector );
+        window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( _selector );
     }
 
     function fillForm( _selector, _url ){
@@ -301,3 +303,5 @@
         JC.Form.initNumericStepper( $(document) );
     });
 }(jQuery));
+    return JC.Form;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

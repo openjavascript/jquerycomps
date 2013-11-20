@@ -1,9 +1,11 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 ;( function( $ ){
+    window.JC = window.JC || {log:function(){}};
     window.Tree = JC.Tree = Tree;
     /**
      * 树菜单类 JC.Tree
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, 
-     * <a href='.window.html#method_printf'>window.printf</a></p>
+     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a>, 
+     * <a href='.window.html#method_JC.f.printf'>window.JC.f.printf</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tree.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Tree/_demo' target='_blank'>demo link</a></p>
@@ -16,26 +18,27 @@
      * @author  qiushaowei   <suches@btbtd.org> | 75 Team
      * @date    2013-06-29
      * @example
-            <link href='../../../comps/Tree/res/default/style.css' rel='stylesheet' />
+            <link href='../../../modules/JC.Tree/res/default/style.css' rel='stylesheet' />
             <script src="../../../lib.js"></script>
+            <script src="../../../config.js"></script>
             <script>
-                JC.use( 'Tree' );
-                $(document).ready( function(){
-                    var treeData = {
-                        data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["28","\u9500\u552e\u4e8c\u7ec4"],["24","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
-                        root: ["23",'客户发展部']
-                    };
-                    var _tree = new JC.Tree( $('#tree_box2'), treeData );
-                        _tree.on('RenderLabel', function( _data ){
-                            var _node = $(this);
-                            _node.html( printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
-                        });
-                        _tree.on('click', function( _evt ){
-                            var _p = $(this);
-                            JC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
-                        });
-                        _tree.init();
-                        //_queryNode && _tree.open( _queryNode );
+                requirejs( [ 'JC.Tree' ], function(){
+                     var treeData = {
+                            data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["28","\u9500\u552e\u4e8c\u7ec4"],["24","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
+                            root: ["23",'客户发展部']
+                        };
+                        var _tree = new JC.Tree( $('#tree_box2'), treeData );
+                            _tree.on('RenderLabel', function( _data ){
+                                var _node = $(this);
+                                _node.html( JC.f.printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
+                            });
+                            _tree.on('click', function( _evt ){
+                                var _p = $(this);
+                                JC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
+                            });
+                            _tree.init();
+                            //_queryNode && _tree.open( _queryNode );
+
                 });
             </script>
             <div id="tree_box2" class="tree_container"></div>
@@ -220,7 +223,7 @@
      * @example
             _tree.on('RenderLabel', function( _data ){
                 var _node = $(this);
-                _node.html( printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
+                _node.html( JC.f.printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
             });
      */
 
@@ -481,8 +484,8 @@
 
                 var _label = this._initLabel( _data );
 
-                var _node = $( printf( '<li><span class="folder_img_closed folder {1}">&nbsp;</span></li>', _data[1], _last ) );
-                    _node.addClass( printf( 'folder_closed {0} folder', _last1 ));
+                var _node = $( JC.f.printf( '<li><span class="folder_img_closed folder {1}">&nbsp;</span></li>', _data[1], _last ) );
+                    _node.addClass( JC.f.printf( 'folder_closed {0} folder', _last1 ));
                     _label.appendTo( _node );
 
                 var _r =  $( '<ul style="display:none;" class="folder_ul_lst" ></ul>' )
@@ -506,7 +509,7 @@
 
                 var _label = this._initLabel( _data );
 
-                var _node = $( printf( '<li><span class="{1}file">&nbsp;</span></li>', _data[1], _last ) );
+                var _node = $( JC.f.printf( '<li><span class="{1}file">&nbsp;</span></li>', _data[1], _last ) );
                     _node.addClass( 'folder_closed file');
                     _label.appendTo( _node );
 
@@ -678,3 +681,5 @@
     });
 
 }(jQuery));
+    return JC.Tree;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

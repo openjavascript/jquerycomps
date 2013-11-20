@@ -41,6 +41,10 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/Bizs.html">Bizs</a></li>
+            
+                <li><a href="../classes/JC.html">JC</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -52,8 +56,6 @@
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
-            
-                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -119,6 +121,8 @@
             
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
             
+                <li><a href="../classes/jQuery.html">jQuery</a></li>
+            
                 <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
             
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
@@ -130,10 +134,6 @@
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
-            
-                <li><a href="../classes/window.JC.html">window.JC</a></li>
-            
-                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
             
             </ul>
 
@@ -178,12 +178,14 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
 ;(function($){
+    window.JC = window.JC || {log:function(){}};
     window.Slider = JC.Slider = Slider;
     /**
      * Slider 划动菜单类
      * &lt;br /&gt;页面加载完毕后, Slider 会查找那些有 class = js_autoSlider 的标签进行自动初始化
-     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Slider.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Slider/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
@@ -254,9 +256,10 @@
             &lt;/style&gt;
             &lt;link href=&#x27;../../Slider/res/hslider/style.css&#x27; rel=&#x27;stylesheet&#x27; /&gt;
             &lt;script src=&quot;../../../lib.js&quot;&gt;&lt;/script&gt;
+            &lt;script src=&quot;../../../config.js&quot;&gt;&lt;/script&gt;
             &lt;script&gt;
                 JC.debug = true;
-                JC.use( &#x27;Slider&#x27; );
+                requirejs( [ &#x27;JC.Slider&#x27; ] );
 
                 function sliderinitedcb(){
                     var _sliderIns = this;
@@ -654,7 +657,7 @@
                 this.subitems();
                 this.totalpage();
 
-                JC.log( printf(&#x27;w:{0}, h:{1}, iw:{2}, ih:{3}, dr:{4}, si:{6}, hi:{5}, totalpage:{7}&#x27;
+                JC.log( JC.f.printf(&#x27;w:{0}, h:{1}, iw:{2}, ih:{3}, dr:{4}, si:{6}, hi:{5}, totalpage:{7}&#x27;
                             , this.width(), this.height()
                             , this.itemwidth(), this.itemheight()
                             , this.direction(), this.howmanyitem()
@@ -743,7 +746,7 @@
          * @default false
          * @return bool
          */
-        , loop: function(){ return parseBool( this._layout.attr(&#x27;sliderloop&#x27;) ); }
+        , loop: function(){ return JC.f.parseBool( this._layout.attr(&#x27;sliderloop&#x27;) ); }
         /**
          * 获取每次移动间隔的毫秒数
          * @method stepms
@@ -771,7 +774,7 @@
          * @default false
          * @return bool
          */
-        , automove: function(){ return parseBool( this._layout.attr(&#x27;sliderautomove&#x27;) ); }
+        , automove: function(){ return JC.f.parseBool( this._layout.attr(&#x27;sliderautomove&#x27;) ); }
         /**
          * 获取默认显示的索引
          * @method  defaultpage
@@ -999,7 +1002,7 @@
                 JC.log( &#x27;HorizontalView move, is backwrad&#x27;, _backwrad, this._model.pointer() );
 
                 var _newpointer = this._model.newpointer( _backwrad );
-                JC.log( printf( &#x27;is backwrad: {0}, pointer:{1}, new pointer:{2}&#x27;
+                JC.log( JC.f.printf( &#x27;is backwrad: {0}, pointer:{1}, new pointer:{2}&#x27;
                             , _backwrad, this._model.pointer(), _newpointer
                             ));
 
@@ -1068,7 +1071,7 @@
                 });
 
                 JC.log( &#x27;zzzzzzzzzz&#x27;, _begin, this._itemspace, this._model.moveDirection() );
-                _p._model.interval( easyEffect( function( _step, _done ){
+                _p._model.interval( JC.f.easyEffect( function( _step, _done ){
                     //JC.log( _step );
                     $( _concat ).each(function( _ix, _item ){
                         _item.css( {&#x27;left&#x27;: _item.data(&#x27;TMP_LEFT&#x27;) +  (_isPlus? _step : -_step ) + &#x27;px&#x27; } );
@@ -1150,6 +1153,8 @@
     });
 
 }(jQuery));
+    return JC.Slider;
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>
 </div>

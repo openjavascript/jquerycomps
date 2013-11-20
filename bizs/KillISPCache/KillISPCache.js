@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 ;(function($){
     /**
      * 应用场景
@@ -8,7 +9,7 @@
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.KillISPCache.html' target='_blank'>API docs</a>
      * | <a href='../../bizs/KillISPCache/_demo' target='_blank'>demo link</a></p>
-     * require: <a href='../classes/window.jQuery.html'>jQuery</a>
+     * require: <a href='../classes/jQuery.html'>jQuery</a>
      *
      * <h2>页面只要引用本文件, 默认会自动初始化 KillISPCache 逻辑</h2>
      * <dl>
@@ -33,6 +34,7 @@
      *      });
      *      </script>
      */
+    window.Bizs = window.Bizs || {};
     Bizs.KillISPCache = KillISPCache;
 
     function KillISPCache( _selector ){
@@ -132,7 +134,7 @@
     KillISPCache.Model.prototype = {
         init:
             function(){
-                this._postfix = printf( '{0}_{1}_'
+                this._postfix = JC.f.printf( '{0}_{1}_'
                                         , new Date().getTime().toString()
                                         , Math.round( Math.random() * 100000 )
                                     );
@@ -191,7 +193,7 @@
 
                     if( _ignore ) return;
 
-                    _url = addUrlParams( _url, _p.keyVal() );
+                    _url = JC.f.addUrlParams( _url, _p.keyVal() );
                     _sp.attr( 'href', _url );
                     _sp.html( _text );
                 });
@@ -233,7 +235,7 @@
                             _ignore = true;
                         }
                     });
-                    !_ignore && ( _settings.url = addUrlParams( _settings.url, _p.keyVal() ) );
+                    !_ignore && ( _settings.url = JC.f.addUrlParams( _settings.url, _p.keyVal() ) );
                 });
             }
         , ignoreSameLinkText:
@@ -264,3 +266,5 @@
     });
 
 }(jQuery));
+    return Bizs.KillISPCache;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

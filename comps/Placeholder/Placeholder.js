@@ -1,9 +1,10 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 /**
  * Placeholder 占位符提示功能
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Placeholder.html' target='_blank'>API docs</a>
  * | <a href='../../comps/Placeholder/_demo' target='_blank'>demo link</a></p>
- * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
+ * <p><b>require</b>: <a href='jQuery.html'>jQuery</a></p>
  * @namespace JC
  * @class Placeholder
  * @extends JC.BaseMVC
@@ -14,7 +15,7 @@
  * @date    2013-10-19
  */
 ;(function($){
-
+    window.JC = window.JC || {log:function(){}};
     JC.Placeholder = Placeholder;
 
     function Placeholder( _selector ){
@@ -104,7 +105,7 @@
      */
     Placeholder.update =
         function(){
-            var _items = $( printf( '#{0} > div', Placeholder.Model._boxId ) );
+            var _items = $( JC.f.printf( '#{0} > div', Placeholder.Model._boxId ) );
             if( !_items.length ) return;
             _items.each( function(){
                 var _p = $(this), _ins = _p.data( 'CPHIns' );
@@ -210,7 +211,7 @@
         , placeholder:
             function(){
                 if( !this._placeholder ){
-                    this._placeholder = $( printf( '<div class="{0}"></div>'
+                    this._placeholder = $( JC.f.printf( '<div class="{0}"></div>'
                                 , this.className() 
                             ) )
                             .appendTo( this.placeholderBox() );
@@ -225,7 +226,7 @@
             function(){
                 var _r = $( '#' + Placeholder.Model._boxId );
                 if( !( _r && _r.length ) ){
-                    _r = $( printf( '<div id="{0}"></div>', Placeholder.Model._boxId ) ).appendTo( document.body );
+                    _r = $( JC.f.printf( '<div id="{0}"></div>', Placeholder.Model._boxId ) ).appendTo( document.body );
                 }
                 return _r;
             }
@@ -356,14 +357,11 @@
         };
 
     EVENT_BINDER.on( 'show hide', function(){
-
         EVENT_BINDER.data('timer') && clearTimeout( EVENT_BINDER.data( 'timer' ) );
-
         EVENT_BINDER.data( 'timer', setTimeout( function(){
             Placeholder.update();
         }, 100 ) );
     });
-
  
     $(document).ready( function(){
         var _insAr = 0;
@@ -373,3 +371,5 @@
     });
 
 }(jQuery));
+    return JC.Placeholder;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

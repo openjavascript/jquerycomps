@@ -1,12 +1,14 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: 添加回调处理
 //TODO: 添加值运动 
 //TODO: 完善注释
 ;(function($){
+    window.JC = window.JC || {log:function(){}};
     window.Fixed = JC.Fixed = Fixed;
     /**
      * 内容固定于屏幕某个位置显示
      * <dl>
-     *      <dd><b>require</b>: <a href='window.jQuery.html'>jQuery</a></dd>
+     *      <dd><b>require</b>: <a href='jQuery.html'>jQuery</a></dd>
      *      <dd><b>require</b>: <a href='.window.html#property_$.support.isFixed'>$.support.isFixed</a></dd>
      * </dl>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -39,7 +41,7 @@
                 });
 
                 $([ this._view, this._model ] ).on('TriggerEvent', function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
+                    var _data = JC.f.sliceArgs( arguments ); _data.shift(); _data.shift();
                     _p.trigger( _evtName, _data );
                 });
 
@@ -224,8 +226,8 @@
         , fixedeffect: 
             function( _item ){ 
                 var _r = true, _p = this;
-                _p.layout().is('[fixedeffect]') && ( _r = parseBool( _p.layout().attr( 'fixedeffect' ) ) );
-                _item && _item.is('[fixedeffect]') && ( _r = parseBool( _item.attr( 'fixedeffect' ) ) );
+                _p.layout().is('[fixedeffect]') && ( _r = JC.f.parseBool( _p.layout().attr( 'fixedeffect' ) ) );
+                _item && _item.is('[fixedeffect]') && ( _r = JC.f.parseBool( _item.attr( 'fixedeffect' ) ) );
                 return _r;
             }
     };
@@ -263,7 +265,7 @@
                     Fixed.interval();
                 });
 
-                mousewheelEvent( function mousewheel( _evt ){ Fixed.interval(); });
+                JC.f.mousewheelEvent( function mousewheel( _evt ){ Fixed.interval(); });
             }
 
         , _processMoveto:
@@ -327,7 +329,7 @@
                 */
 
                 Fixed.interval(
-                    easyEffect( 
+                    JC.f.easyEffect( 
                         function( _cur, _done ){
                             _isUp && ( _cur = _endVal - _cur + _beginVal );
                             //console.log( 'Fixed scrollTo:', _cur, _tmpCount++ );
@@ -447,3 +449,5 @@
     });
 
 }(jQuery));
+    return JC.Fixed;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

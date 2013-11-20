@@ -41,6 +41,10 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/Bizs.html">Bizs</a></li>
+            
+                <li><a href="../classes/JC.html">JC</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -52,8 +56,6 @@
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
-            
-                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -119,6 +121,8 @@
             
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
             
+                <li><a href="../classes/jQuery.html">jQuery</a></li>
+            
                 <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
             
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
@@ -130,10 +134,6 @@
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
-            
-                <li><a href="../classes/window.JC.html">window.JC</a></li>
-            
-                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
             
             </ul>
 
@@ -178,6 +178,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27;, &#x27;JC.BaseMVC&#x27;, &#x27;JC.Valid&#x27;, &#x27;JC.Form&#x27;, &#x27;JC.Panel&#x27; ], function(){
 //TODO: 添加 disabled bind hidden 操作
 ;(function($){
     /**
@@ -189,7 +190,8 @@
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../bizs/FormLogic/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
-     * require: &lt;a href=&#x27;../classes/window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
+     *
+     * require: &lt;a href=&#x27;../classes/jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
      * &lt;br/&gt;require: &lt;a href=&#x27;../classes/JC.Valid.html&#x27;&gt;JC.Valid&lt;/a&gt;
      * &lt;br/&gt;require: &lt;a href=&#x27;../classes/JC.Form.html&#x27;&gt;JC.Form&lt;/a&gt;
      * &lt;br/&gt;require: &lt;a href=&#x27;../classes/JC.Panel.html&#x27;&gt;JC.Panel&lt;/a&gt;
@@ -272,7 +274,7 @@
         _panel = JC.Dialog.alert( _json.errmsg || &#x27;操作失败, 请重新尝试!&#x27;, 1 );
     }else{
         _panel = JC.msgbox( _json.errmsg || &#x27;操作成功&#x27;, _submitButton, 0, function(){
-            reloadPage( &quot;?donetype=custom&quot; );
+            JC.f.reloadPage( &quot;?donetype=custom&quot; );
         });
     }
 };&lt;/pre&gt;
@@ -367,7 +369,7 @@
                         _panel = JC.Dialog.alert( _json.errmsg || &#x27;操作失败, 请重新尝试!&#x27;, 1 );
                     }else{
                         _panel = JC.msgbox( _json.errmsg || &#x27;操作成功&#x27;, _submitButton, 0, function(){
-                            reloadPage( &quot;?donetype=custom&quot; );
+                            JC.f.reloadPage( &quot;?donetype=custom&quot; );
                         });
                     }
                 };
@@ -419,6 +421,7 @@
                 &lt;/dd&gt;
             &lt;/dl&gt;     
     */
+    window.Bizs = window.Bizs || {};
     Bizs.FormLogic = FormLogic;
     function FormLogic( _selector ){
         _selector &amp;&amp; ( _selector = $( _selector ) );
@@ -447,10 +450,11 @@
             return _selector.data(&#x27;FormLogicIns&#x27;);
         };
 
-    !JC.Valid &amp;&amp; JC.use( &#x27;Valid&#x27; );
-    !JC.Form &amp;&amp; JC.use( &#x27;Form&#x27; );
-    !JC.Panel &amp;&amp; JC.use( &#x27;Panel&#x27; );
-    !$(document).ajaxForm &amp;&amp; JC.use( &#x27;plugins.jquery.form&#x27; );
+    if( !define.amd &amp;&amp; JC.use ){
+        !JC.Valid &amp;&amp; JC.use( &#x27;Valid&#x27; );
+        !JC.Form &amp;&amp; JC.use( &#x27;Form&#x27; );
+        !JC.Panel &amp;&amp; JC.use( &#x27;Panel&#x27; );
+    }
 
     /**
      * 处理 form 或者 _selector 的所有form.js_bizsFormLogic
@@ -608,7 +612,7 @@
                     }
 
                     if( _fatalError ){
-                        var _msg = printf( &#x27;服务端错误, 无法解析返回数据: &lt;p class=&quot;auExtErr&quot; style=&quot;color:red&quot;&gt;{0}&lt;/p&gt;&#x27;
+                        var _msg = JC.f.printf( &#x27;服务端错误, 无法解析返回数据: &lt;p class=&quot;auExtErr&quot; style=&quot;color:red&quot;&gt;{0}&lt;/p&gt;&#x27;
                                             , _data );
                         JC.Dialog.alert( _msg, 1 )
                         return;
@@ -782,12 +786,12 @@
                 if( !( _p._frame &amp;&amp; _p._frame.length &amp;&amp; _p._frame.parent() ) ){
 
                     if( _p.selector().is(&#x27;[target]&#x27;) ){
-                        _p._frame = $( printf( &#x27;iframe[name={0}]&#x27;, _p.selector().attr(&#x27;target&#x27;) ) );
+                        _p._frame = $( JC.f.printf( &#x27;iframe[name={0}]&#x27;, _p.selector().attr(&#x27;target&#x27;) ) );
                     }
                     
                     if( !( _p._frame &amp;&amp; _p._frame.length ) ) {
                         _p.selector().prop( &#x27;target&#x27;, _p.frameId() );
-                        _p._frame = $( printf( FormLogic.frameTpl, _p.frameId() ) );
+                        _p._frame = $( JC.f.printf( FormLogic.frameTpl, _p.frameId() ) );
                         _p.selector().after( _p._frame );
                     }
 
@@ -820,7 +824,7 @@
         , formAjaxAction:
             function(){
                 var _r = this.attrProp( &#x27;formAjaxAction&#x27; ) || this.attrProp( &#x27;action&#x27; ) || &#x27;?&#x27;;
-                return urlDetect( _r );
+                return JC.f.urlDetect( _r );
             }
         , formSubmitDisable:
             function(){
@@ -829,11 +833,11 @@
                     ;
 
                 _p.selector().is(&#x27;[formSubmitDisable]&#x27;)
-                    &amp;&amp; ( _r = parseBool( _p.selector().attr(&#x27;formSubmitDisable&#x27;) ) );
+                    &amp;&amp; ( _r = JC.f.parseBool( _p.selector().attr(&#x27;formSubmitDisable&#x27;) ) );
 
                 _btn 
                     &amp;&amp; _btn.is(&#x27;[formSubmitDisable]&#x27;)
-                    &amp;&amp; ( _r = parseBool( _btn.attr(&#x27;formSubmitDisable&#x27;) ) );
+                    &amp;&amp; ( _r = JC.f.parseBool( _btn.attr(&#x27;formSubmitDisable&#x27;) ) );
 
                 return _r;
             }
@@ -842,7 +846,7 @@
                 var _p = this, _r = FormLogic.resetAfterSubmit;
 
                 _p.selector().is(&#x27;[formResetAfterSubmit]&#x27;)
-                    &amp;&amp; ( _r = parseBool( _p.selector().attr(&#x27;formResetAfterSubmit&#x27;) ) );
+                    &amp;&amp; ( _r = JC.f.parseBool( _p.selector().attr(&#x27;formResetAfterSubmit&#x27;) ) );
                 return _r;
             }
         , formAjaxDone:
@@ -890,8 +894,8 @@
                         _url = _url || _p._model.formAjaxDoneAction();
                         if( _url ){
                             try{_url = decodeURIComponent( _url ); } catch(ex){}
-                            /^URL/.test( _url) &amp;&amp; ( _url = urlDetect( _url ) );
-                            reloadPage( _url );
+                            /^URL/.test( _url) &amp;&amp; ( _url = JC.f.urlDetect( _url ) );
+                            JC.f.reloadPage( _url );
                         }
                     }, _p._model.formPopupCloseMs() );
                 }
@@ -925,7 +929,7 @@
                     &amp;&amp; ( _r = _p.attrProp( _btn, &#x27;formAjaxDoneAction&#x27; ) || _r )
                     ;
 
-                return urlDetect( _r );
+                return JC.f.urlDetect( _r );
             }
 
 
@@ -959,7 +963,7 @@
                     &amp;&amp; ( _r = _p.attrProp( _btn, &#x27;formResetUrl&#x27; ) || _r )
                     ;
 
-                return urlDetect( _r );
+                return JC.f.urlDetect( _r );
             }
         , formSubmitConfirm:
             function( _btn ){
@@ -997,7 +1001,7 @@
             function( _btn ){
                 var _p = this, _resetUrl = _p._model.formResetUrl();
 
-                _resetUrl &amp;&amp; reloadPage( _resetUrl );
+                _resetUrl &amp;&amp; JC.f.reloadPage( _resetUrl );
 
                 _p._model.resetTimeout &amp;&amp; clearTimeout( _p._model.resetTimeout );
                 _p._model.resetTimeout =
@@ -1031,7 +1035,7 @@
 
     $(document).delegate( &#x27;input[formSubmitConfirm], button[formSubmitConfirm]&#x27;, &#x27;click&#x27;, function( _evt ){
         var _p = $(this)
-            , _fm = getJqParent( _p, &#x27;form&#x27; )
+            , _fm = JC.f.getJqParent( _p, &#x27;form&#x27; )
             , _ins = FormLogic.getInstance( _fm )
             , _tmp 
             ;
@@ -1039,7 +1043,7 @@
             if( _ins ){
                 _fm.data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON, null )
                 if( _p.is(&#x27;[formConfirmCheckSelector]&#x27;) ){
-                    _tmp = parentSelector( _p, _p.attr(&#x27;formConfirmCheckSelector&#x27;) );
+                    _tmp = JC.f.parentSelector( _p, _p.attr(&#x27;formConfirmCheckSelector&#x27;) );
                     if( !( _tmp &amp;&amp; _tmp.length ) ) return;
                 }
                 else if( _p.is( &#x27;[formConfirmCheckCallback]&#x27;) ){
@@ -1054,21 +1058,21 @@
     });
 
     $(document).delegate( &#x27;input[formResetConfirm], button[formResetConfirm]&#x27;, &#x27;click&#x27;, function( _evt ){
-        var _p = $(this), _fm = getJqParent( _p, &#x27;form&#x27; );
+        var _p = $(this), _fm = JC.f.getJqParent( _p, &#x27;form&#x27; );
         _fm &amp;&amp; _fm.length 
             &amp;&amp; _fm.data( FormLogic.Model.RESET_CONFIRM_BUTTON, _p )
             ;
     });
 
     $(document).delegate( &#x27;input[type=reset], button[type=reset]&#x27;, &#x27;click&#x27;, function( _evt ){
-        var _p = $(this), _fm = getJqParent( _p, &#x27;form&#x27; );
+        var _p = $(this), _fm = JC.f.getJqParent( _p, &#x27;form&#x27; );
         _fm &amp;&amp; _fm.length 
             &amp;&amp; _fm.data( FormLogic.Model.GENERIC_RESET_BUTTON , _p )
             ;
     });
 
     $(document).delegate( &#x27;input[type=submit], button[type=submit]&#x27;, &#x27;click&#x27;, function( _evt ){
-        var _p = $(this), _fm = getJqParent( _p, &#x27;form&#x27; );
+        var _p = $(this), _fm = JC.f.getJqParent( _p, &#x27;form&#x27; );
         _fm &amp;&amp; _fm.length 
             &amp;&amp; _fm.data( FormLogic.Model.GENERIC_SUBMIT_BUTTON , _p )
             ;
@@ -1084,7 +1088,7 @@
             ;
 
         if( !_url ) return;
-        _url = urlDetect( _url );
+        _url = JC.f.urlDetect( _url );
 
         _p.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;a&#x27; &amp;&amp; _evt.preventDefault();
 
@@ -1102,10 +1106,10 @@
                     }
             }
             _panel.on(&#x27;confirm&#x27;, function(){
-                reloadPage( _url );
+                JC.f.reloadPage( _url );
             });
         }else{
-            reloadPage( _url );
+            JC.f.reloadPage( _url );
         }
     });
 
@@ -1118,6 +1122,8 @@
     });
 
 }(jQuery));
+    return Bizs.FormLogic;
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>
 </div>

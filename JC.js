@@ -1,5 +1,23 @@
 //TODO: use 方法 nginx 模式添加 url 最大长度判断
 //TODO: use add custom type
+/**
+ * <h2>业务逻辑命名空间</h2>
+ * <br />这个命名空间的组件主要为满足业务需求, 不是通用组件~
+ * <br />但在某个项目中应该是常用组件~
+ * <dl>
+ *      <dt>业务组件的存放位置:</dt>
+ *      <dd>libpath/bizs/</dd>
+ *
+ *      <dt>使用业务组件</dt>
+ *      <dd> JC.use( 'Bizs.BizComps' ); //  libpath/bizs/BizComps/BizComps.js </dd>
+ *
+ *      <dt>使用业务文件</dt>
+ *      <dd> JC.use( 'bizs.BizFile' ); //   libpath/bizs/BizFile.js </dd>
+ * </dl>
+ * @class       Bizs
+ * @static
+ */
+window.Bizs = window.Bizs || {};
 ;(function( $ ){
     if( window.JC && typeof JC.compsDir != 'undefined' ) return;
     window.JC && JC.f && JC.f.backward( 1 ); //这里启用 JC.common 的向后兼容, 为 window 注入全局静态函数变量
@@ -11,7 +29,6 @@
      * | <a href='http://jc.openjavascript.org/docs_api/classes/window.JC.html' target='_blank'>API docs</a>
      * | <a href='../../_demo' target='_blank'>demo link</a></p>
      * @class JC
-     * @namespace   window
      * @static
      * @example 
      *      JC.use( 组件名[,组件名] );
@@ -297,9 +314,6 @@
      * <br />存在这个变量是为了向后兼容
      * <br />20130804 之前的命名空间是 UXC, 这个命名空间在一段时间后将会清除, 请使用 JC 命名空间
      * <p><b>see</b>: <a href='window.JC.html'>JC</a></p>
-     * @class UXC
-     * @namespace   window
-     * @static
      * @date    2013-05-22
      */
     window.UXC = JC;
@@ -311,24 +325,5 @@
     /\/JQueryComps_dev\//i.test( location.href ) 
         && !( /file\:/.test( location.href ) || /\\/.test( location.href ) )
         && ( JC.PATH = '/ignore/JQueryComps_dev/' );
-    /**
-     * <h2>业务逻辑命名空间</h2>
-     * <br />这个命名空间的组件主要为满足业务需求, 不是通用组件~
-     * <br />但在某个项目中应该是常用组件~
-     * <dl>
-     *      <dt>业务组件的存放位置:</dt>
-     *      <dd>libpath/bizs/</dd>
-     *
-     *      <dt>使用业务组件</dt>
-     *      <dd> JC.use( 'Bizs.BizComps' ); //  libpath/bizs/BizComps/BizComps.js </dd>
-     *
-     *      <dt>使用业务文件</dt>
-     *      <dd> JC.use( 'bizs.BizFile' ); //   libpath/bizs/BizFile.js </dd>
-     * </dl>
-     * @namespace   window
-     * @class       Bizs
-     * @static
-     */
-    window.Bizs = window.Bizs || {};
 }(jQuery));
 

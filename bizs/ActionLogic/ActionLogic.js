@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC', 'JC.Panel' ], function(){
 /**
  * <h2>node 点击操作逻辑</h2>
  * 应用场景
@@ -9,7 +10,7 @@
  * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>
  * | <a href='../../bizs/ActionLogic/_demo' target='_blank'>demo link</a></p>
  *
- * require: <a href='../classes/window.jQuery.html'>jQuery</a>
+ * require: <a href='../classes/jQuery.html'>jQuery</a>
  * <br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>
  *
  * a|button 需要 添加 class="js_bizsActionLogic"
@@ -81,7 +82,7 @@
     var _trigger = $(this);
     if( _d && !_d.errorno ){
         JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){
-            reloadPage( '?usercallback=ajaxaction' );
+            JC.f.reloadPage( '?usercallback=ajaxaction' );
         });
     }else{
         JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );
@@ -99,6 +100,7 @@
  * @author  qiushaowei   <suches@btbtd.org> | 75 Team
  */
 ;(function($){
+    window.Bizs = window.Bizs || {};
     window.Bizs.ActionLogic = ActionLogic;
 
     function ActionLogic( _selector ){
@@ -112,7 +114,7 @@
         this._init();
     }
 
-    !JC.Panel && JC.use( 'Panel' );
+    !define.amd && JC.use && !JC.Panel && JC.use( 'Panel' );
 
     /**
      * 获取或设置 ActionLogic 的实例
@@ -196,7 +198,7 @@
                  * 脚本模板 Panel
                  */
                 _p.on('StaticPanel', function( _evt, _item ){
-                    _p.trigger( 'ShowPanel', [ scriptContent( _item ) ] );
+                    _p.trigger( 'ShowPanel', [ JC.f.scriptContent( _item ) ] );
                 });
                 /**
                  * 显示 Panel
@@ -216,7 +218,7 @@
                 _p.on('AjaxPanel', function( _evt, _type, _url ){
                     if( !( _type && _url ) ) return;
                     _p._model.balRandom() 
-                        && ( _url = addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
+                        && ( _url = JC.f.addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
 
                     $.get( _url ).done( function( _d ){
                         switch( _type ){
@@ -246,8 +248,8 @@
                 _p.on( 'Go', function( _evt, _url ){
                     if( !_url ) return;
                     _p._model.balRandom() 
-                        && ( _url = addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
-                    reloadPage( _url );
+                        && ( _url = JC.f.addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
+                    JC.f.reloadPage( _url );
                 });
                 /**
                  * ajax 执行操作
@@ -255,7 +257,7 @@
                 _p.on( 'AjaxAction', function( _evt, _url ){
                     if( !_url ) return;
                     _p._model.balRandom() 
-                        && ( _url = addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
+                        && ( _url = JC.f.addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
                     $.get( _url ).done( function( _d ){
                         try{ _d = $.parseJSON( _d ); }catch(ex){}
 
@@ -271,7 +273,7 @@
                                                     _d.errmsg || '操作完成'
                                                     , function(){
                                                             _p._model.balDoneUrl() 
-                                                            && reloadPage( _p._model.balDoneUrl() || location.href )
+                                                            && JC.f.reloadPage( _p._model.balDoneUrl() || location.href )
                                                             ;
                                                         }
                                                 ]
@@ -450,7 +452,7 @@
         , balRandom: 
             function(){
                 var _r = ActionLogic.random, _p = this;
-                _p.is('[balRandom]') && ( _r = parseBool( _p.stringProp( 'balRandom' ) ) );
+                _p.is('[balRandom]') && ( _r = JC.f.parseBool( _p.stringProp( 'balRandom' ) ) );
                 return _r;
             }
         , balUrl:
@@ -459,12 +461,12 @@
                 _p.selector().prop('nodeName').toLowerCase() == 'a'
                     && ( _r = _p.selector().attr('href') );
                 _p.is( '[balUrl]' ) && ( _r = _p.selector().attr('balUrl') );
-                return urlDetect( _r );
+                return JC.f.urlDetect( _r );
             }
         , balDoneUrl:
             function(){
                 var _r = this.attrProp( 'balDoneUrl' );
-                return urlDetect( _r );
+                return JC.f.urlDetect( _r );
             }
         , balConfirmMsg:
             function(){
@@ -509,3 +511,5 @@
     });
 
 }(jQuery));
+    return Bizs.ActionLogic;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

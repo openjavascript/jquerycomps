@@ -41,6 +41,10 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/Bizs.html">Bizs</a></li>
+            
+                <li><a href="../classes/JC.html">JC</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -52,8 +56,6 @@
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
-            
-                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -119,6 +121,8 @@
             
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
             
+                <li><a href="../classes/jQuery.html">jQuery</a></li>
+            
                 <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
             
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
@@ -130,10 +134,6 @@
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
-            
-                <li><a href="../classes/window.JC.html">window.JC</a></li>
-            
-                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
             
             </ul>
 
@@ -178,15 +178,17 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
 //TODO: 添加回调处理
 //TODO: 添加值运动 
 //TODO: 完善注释
 ;(function($){
+    window.JC = window.JC || {log:function(){}};
     window.Fixed = JC.Fixed = Fixed;
     /**
      * 内容固定于屏幕某个位置显示
      * &lt;dl&gt;
-     *      &lt;dd&gt;&lt;b&gt;require&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/dd&gt;
+     *      &lt;dd&gt;&lt;b&gt;require&lt;/b&gt;: &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/dd&gt;
      *      &lt;dd&gt;&lt;b&gt;require&lt;/b&gt;: &lt;a href=&#x27;.window.html#property_$.support.isFixed&#x27;&gt;$.support.isFixed&lt;/a&gt;&lt;/dd&gt;
      * &lt;/dl&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
@@ -219,7 +221,7 @@
                 });
 
                 $([ this._view, this._model ] ).on(&#x27;TriggerEvent&#x27;, function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
+                    var _data = JC.f.sliceArgs( arguments ); _data.shift(); _data.shift();
                     _p.trigger( _evtName, _data );
                 });
 
@@ -404,8 +406,8 @@
         , fixedeffect: 
             function( _item ){ 
                 var _r = true, _p = this;
-                _p.layout().is(&#x27;[fixedeffect]&#x27;) &amp;&amp; ( _r = parseBool( _p.layout().attr( &#x27;fixedeffect&#x27; ) ) );
-                _item &amp;&amp; _item.is(&#x27;[fixedeffect]&#x27;) &amp;&amp; ( _r = parseBool( _item.attr( &#x27;fixedeffect&#x27; ) ) );
+                _p.layout().is(&#x27;[fixedeffect]&#x27;) &amp;&amp; ( _r = JC.f.parseBool( _p.layout().attr( &#x27;fixedeffect&#x27; ) ) );
+                _item &amp;&amp; _item.is(&#x27;[fixedeffect]&#x27;) &amp;&amp; ( _r = JC.f.parseBool( _item.attr( &#x27;fixedeffect&#x27; ) ) );
                 return _r;
             }
     };
@@ -443,7 +445,7 @@
                     Fixed.interval();
                 });
 
-                mousewheelEvent( function mousewheel( _evt ){ Fixed.interval(); });
+                JC.f.mousewheelEvent( function mousewheel( _evt ){ Fixed.interval(); });
             }
 
         , _processMoveto:
@@ -507,7 +509,7 @@
                 */
 
                 Fixed.interval(
-                    easyEffect( 
+                    JC.f.easyEffect( 
                         function( _cur, _done ){
                             _isUp &amp;&amp; ( _cur = _endVal - _cur + _beginVal );
                             //console.log( &#x27;Fixed scrollTo:&#x27;, _cur, _tmpCount++ );
@@ -627,6 +629,8 @@
     });
 
 }(jQuery));
+    return JC.Fixed;
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>
 </div>

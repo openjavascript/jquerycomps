@@ -41,6 +41,10 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/Bizs.html">Bizs</a></li>
+            
+                <li><a href="../classes/JC.html">JC</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -52,8 +56,6 @@
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
-            
-                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -119,6 +121,8 @@
             
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
             
+                <li><a href="../classes/jQuery.html">jQuery</a></li>
+            
                 <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
             
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
@@ -130,10 +134,6 @@
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
-            
-                <li><a href="../classes/window.JC.html">window.JC</a></li>
-            
-                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
             
             </ul>
 
@@ -178,10 +178,11 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27;, &#x27;JC.AutoSelect&#x27;, &#x27;JC.AutoChecked&#x27; ], function(){
 ;(function($){
     /**
      * 表单常用功能类 JC.Form
-     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Form.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Form/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
@@ -192,6 +193,7 @@
      * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 team
      * @date    2013-06-11
      */
+    window.JC = window.JC || {log:function(){}};
     window.JCForm = JC.Form = {
         /**
          * 禁用按钮一定时间, 默认为1秒
@@ -236,7 +238,7 @@
     /**
      * 表单自动填充 URL GET 参数
      * &lt;br /&gt;只要引用本脚本, DOM 加载完毕后, 页面上所有带 class js_autoFillUrlForm 的 form 都会自动初始化默认值
-     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs/docs_api/classes/JC.Form.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * @method  initAutoFill
@@ -279,17 +281,17 @@
         
         _selector.find( &#x27;input[type=text][name],input[type=password][name],textarea[name]&#x27; ).each( function(){
             var _sp = $(this);
-            if( hasUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) ){
-                _sp.val( decode( getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) );
+            if( JC.f.hasUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) ){
+                _sp.val( decode( JC.f.getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) );
             }
         });
 
         _selector.find( &#x27;select[name]&#x27; ).each( function(){
-            var _sp = $(this), _uval = decode( getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) ;
-            if( hasUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) ){
+            var _sp = $(this), _uval = decode( JC.f.getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) ;
+            if( JC.f.hasUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) ){
                 if( selectHasVal( _sp, _uval ) ){
                     _sp.removeAttr(&#x27;selectignoreinitrequest&#x27;);
-                    _sp.val( getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) );
+                    _sp.val( JC.f.getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) );
                 }else{
                     _sp.attr( &#x27;selectvalue&#x27;, _uval );
                 }
@@ -301,7 +303,7 @@
             var _sp = $(this), _key = _sp.attr(&#x27;name&#x27;).trim(), _keys, _v = _sp.val();
             //alert( _sp.attr(&#x27;name&#x27;) );
             if( !( _key in _keyObj ) ){
-                _keys = getUrlParams( _url, _key );
+                _keys = JC.f.getUrlParams( _url, _key );
                 _keyObj[ _key ] = _keys;
             }else{
                 _keys = _keyObj[ _key ];
@@ -317,7 +319,7 @@
             }
         });
 
-        window.jcAutoInitComps &amp;&amp; jcAutoInitComps( _selector );
+        window.JC.f.jcAutoInitComps &amp;&amp; JC.f.jcAutoInitComps( _selector );
     }
 
     function fillForm( _selector, _url ){
@@ -481,6 +483,8 @@
         JC.Form.initNumericStepper( $(document) );
     });
 }(jQuery));
+    return JC.Form;
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>
 </div>

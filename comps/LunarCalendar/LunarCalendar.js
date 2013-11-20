@@ -1,7 +1,9 @@
+;(function(define, _win) { define( [ 'JC.common' ], function(){
 ;(function($){
     ///
     /// TODO: 添加事件响应机制
     ///
+    window.JC = window.JC || {log:function(){}};
     JC.LunarCalendar = window.LunarCalendar = LunarCalendar;
     /**
      * 农历日历组件
@@ -17,16 +19,18 @@
      *      <br /><b>nopreviousfestivals</b>: 不显示上个月的节日
      *      <br /><b>nonextfestivals</b>: 不显示下个月的节日
      * </p>
-     * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a>
-     * <br /><b>require</b>: <a href='.window.html#method_cloneDate'>window.cloneDate</a>
-     * <br /><b>require</b>: <a href='.window.html#method_parseISODate'>window.parseISODate</a>
-     * <br /><b>require</b>: <a href='.window.html#method_maxDayOfMonth'>window.maxDayOfMonth</a>
-     * <br /><b>require</b>: <a href='.window.html#method_isSameDay'>window.isSameDay</a>
-     * <br /><b>require</b>: <a href='.window.html#method_isSameMonth'>window.isSameMonth</a>
-     * </p>
+     *
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.LunarCalendar.html' target='_blank'>API docs</a>
      * | <a href='../../comps/LunarCalendar/_demo/' target='_blank'>demo link</a></p>
+     *
+     * <p><b>require</b>: <a href='jQuery.html'>jQuery</a>
+     * <br /><b>require</b>: <a href='.window.html#method_JC.f.cloneDate'>window.JC.f.cloneDate</a>
+     * <br /><b>require</b>: <a href='.window.html#method_JC.f.parseISODate'>window.JC.f.parseISODate</a>
+     * <br /><b>require</b>: <a href='.window.html#method_JC.f.maxDayOfMonth'>window.JC.f.maxDayOfMonth</a>
+     * <br /><b>require</b>: <a href='.window.html#method_JC.f.isSameDay'>window.JC.f.isSameDay</a>
+     * <br /><b>require</b>: <a href='.window.html#method_JC.f.isSameMonth'>window.JC.f.isSameMonth</a>
+     * </p>
      * @namespace JC
      * @class LunarCalendar
      * @constructor
@@ -574,11 +578,11 @@
         , initMonthDate:
             function( _dateObj ){
                 var _p = this, _layout = this.layout;
-                var _maxday = maxDayOfMonth( _dateObj.date ), _weekday = _dateObj.date.getDay() || 7
+                var _maxday = JC.f.maxDayOfMonth( _dateObj.date ), _weekday = _dateObj.date.getDay() || 7
                     , _sumday = _weekday + _maxday, _row = 6, _ls = [], _premaxday, _prebegin
                     , _tmp, i, _class;
 
-                var _beginDate = cloneDate( _dateObj.date );
+                var _beginDate = JC.f.cloneDate( _dateObj.date );
                     _beginDate.setDate( 1 );
                 var _beginWeekday = _beginDate.getDay() || 7;
                 if( _beginWeekday < 2 ){
@@ -587,7 +591,7 @@
                     _beginDate.setDate( -(_beginWeekday-2) );
                 }
 
-                _dateObj.beginDate = cloneDate( _beginDate );
+                _dateObj.beginDate = JC.f.cloneDate( _beginDate );
 
                 var today = new Date();
 
@@ -597,7 +601,7 @@
                 for( i = 1; i <= 42; i++ ){
                     _class = [];
                     if( _beginDate.getDay() === 0 || _beginDate.getDay() == 6 ) _class.push('weekend');
-                    if( !isSameMonth( _dateObj.date, _beginDate ) ) _class.push( 'other' );
+                    if( !JC.f.isSameMonth( _dateObj.date, _beginDate ) ) _class.push( 'other' );
                     if( _dateObj.minvalue && _beginDate.getTime() < _dateObj.minvalue.getTime() ) 
                         _class.push( 'unable' );
                     if( _dateObj.maxvalue && _beginDate.getTime() > _dateObj.maxvalue.getTime() ) 
@@ -646,7 +650,7 @@
 
                     this._model.title( _beginDate.getTime(), _title.join('') );
 
-                    if( isSameDay( today, _beginDate ) ) _class.push( 'today' );
+                    if( JC.f.isSameDay( today, _beginDate ) ) _class.push( 'today' );
                     _ls.push( '<td class="', _class.join(' '),'">'
                             ,'<a href="javascript:" date="', _beginDate.getTime(),'">'
                             ,'<b>', _beginDate.getDate(), '</b>'
@@ -656,7 +660,7 @@
                 }
                 _ls.push('</tr>');
                 _beginDate.setDate( _beginDate.getDate() - 1 );
-                _dateObj.endDate = cloneDate( _beginDate );
+                _dateObj.endDate = JC.f.cloneDate( _beginDate );
 
                 _layout.find('table.UTableBorder tbody' ).html( $( _ls.join('') ) )
                     .find('td').each( function(){
@@ -767,12 +771,12 @@
                 var _selector = this.container;
                 var _r = { date: 0, minvalue: 0, maxvalue: 0 }, _tmp;
 
-                if( _tmp = parseISODate( _selector.attr('defaultdate') )) _r.date = _tmp;
+                if( _tmp = JC.f.parseISODate( _selector.attr('defaultdate') )) _r.date = _tmp;
                 else _r.date = new Date();
 
 
-                _r.minvalue = parseISODate( _selector.attr('minvalue') );
-                _r.maxvalue = parseISODate( _selector.attr('maxvalue') );
+                _r.minvalue = JC.f.parseISODate( _selector.attr('minvalue') );
+                _r.maxvalue = JC.f.parseISODate( _selector.attr('maxvalue') );
                 
                 return this.dateObj = _r;
             }
@@ -1415,3 +1419,5 @@
     o['20141007'] = { 'isHoliday': true };
     o['20141011'] = { 'isWorkday': true };
 }(jQuery));
+    return JC.LunarCalendar;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

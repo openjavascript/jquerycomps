@@ -34,13 +34,14 @@
         </div>
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
+                <li><a href="../classes/Bizs.html">Bizs</a></li>
+                <li><a href="../classes/JC.html">JC</a></li>
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
                 <li><a href="../classes/JC.AutoChecked.html">JC.AutoChecked</a></li>
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
-                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
                 <li><a href="../classes/JC.common.html">JC.common</a></li>
                 <li><a href="../classes/JC.confirm.html">JC.confirm</a></li>
@@ -63,14 +64,13 @@
                 <li><a href="../classes/JC.Tips.html">JC.Tips</a></li>
                 <li><a href="../classes/JC.Tree.html">JC.Tree</a></li>
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
+                <li><a href="../classes/jQuery.html">jQuery</a></li>
                 <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
                 <li><a href="../classes/window.Bizs.FormLogic.html">window.Bizs.FormLogic</a></li>
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
-                <li><a href="../classes/window.JC.html">window.JC</a></li>
-                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
             </ul>
             <ul id="api-modules" class="apis modules">
             </ul>
@@ -105,13 +105,13 @@
                         <h1>JC.Tree Class</h1>
 <div class="box meta">
         <div class="foundat">
-            Defined in: <a href="../files/.._comps_Tree_Tree.js.html#l3"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:3</code></a>
+            Defined in: <a href="../files/.._comps_Tree_Tree.js.html#l5"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:5</code></a>
         </div>
 </div>
 <div class="box intro">
     <p>树菜单类 JC.Tree</p>
-<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a>, 
-<a href='.window.html#method_printf'>window.printf</a></p>
+<p><b>requires</b>: <a href='jQuery.html'>jQuery</a>, 
+<a href='.window.html#method_JC.f.printf'>window.JC.f.printf</a></p>
 <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
 | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tree.html' target='_blank'>API docs</a>
 | <a href='../../comps/Tree/_demo' target='_blank'>demo link</a></p>
@@ -133,7 +133,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l3"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:3</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l5"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:5</code></a>
         </p>
     </div>
     <div class="description">
@@ -160,26 +160,26 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>       &lt;link href=&#39;../../../comps/Tree/res/default/style.css&#39; rel=&#39;stylesheet&#39; /&gt;
+                <pre class="code prettyprint"><code>       &lt;link href=&#39;../../../modules/JC.Tree/res/default/style.css&#39; rel=&#39;stylesheet&#39; /&gt;
        &lt;script src=&quot;../../../lib.js&quot;&gt;&lt;/script&gt;
+       &lt;script src=&quot;../../../config.js&quot;&gt;&lt;/script&gt;
        &lt;script&gt;
-           JC.use( &#39;Tree&#39; );
-           $(document).ready( function(){
-               var treeData = {
-                   data: {&quot;24&quot;:[[&quot;25&quot;,&quot;\u4e8c\u7ec4\u4e00\u961f&quot;],[&quot;26&quot;,&quot;\u4e8c\u7ec4\u4e8c\u961f&quot;],[&quot;27&quot;,&quot;\u4e8c\u7ec4\u4e09\u961f&quot;]],&quot;23&quot;:[[&quot;28&quot;,&quot;\u9500\u552e\u4e8c\u7ec4&quot;],[&quot;24&quot;,&quot;\u552e\u524d\u5ba1\u6838\u7ec4&quot;]]},
-                   root: [&quot;23&quot;,&#39;客户发展部&#39;]
-               };
-               var _tree = new JC.Tree( $(&#39;#tree_box2&#39;), treeData );
-                   _tree.on(&#39;RenderLabel&#39;, function( _data ){
-                       var _node = $(this);
-                       _node.html( printf( &#39;&lt;a href=&quot;javascript:&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#39;, _data[0], _data[1] ) );
-                   });
-                   _tree.on(&#39;click&#39;, function( _evt ){
-                       var _p = $(this);
-                       JC.log( &#39;tree click:&#39;, _p.html(), _p.attr(&#39;dataid&#39;), _p.attr(&#39;dataname&#39;) );
-                   });
-                   _tree.init();
-                   //_queryNode &amp;&amp; _tree.open( _queryNode );
+           requirejs( [ &#39;JC.Tree&#39; ], function(){
+                var treeData = {
+                       data: {&quot;24&quot;:[[&quot;25&quot;,&quot;\u4e8c\u7ec4\u4e00\u961f&quot;],[&quot;26&quot;,&quot;\u4e8c\u7ec4\u4e8c\u961f&quot;],[&quot;27&quot;,&quot;\u4e8c\u7ec4\u4e09\u961f&quot;]],&quot;23&quot;:[[&quot;28&quot;,&quot;\u9500\u552e\u4e8c\u7ec4&quot;],[&quot;24&quot;,&quot;\u552e\u524d\u5ba1\u6838\u7ec4&quot;]]},
+                       root: [&quot;23&quot;,&#39;客户发展部&#39;]
+                   };
+                   var _tree = new JC.Tree( $(&#39;#tree_box2&#39;), treeData );
+                       _tree.on(&#39;RenderLabel&#39;, function( _data ){
+                           var _node = $(this);
+                           _node.html( JC.f.printf( &#39;&lt;a href=&quot;javascript:&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#39;, _data[0], _data[1] ) );
+                       });
+                       _tree.on(&#39;click&#39;, function( _evt ){
+                           var _p = $(this);
+                           JC.log( &#39;tree click:&#39;, _p.html(), _p.attr(&#39;dataid&#39;), _p.attr(&#39;dataname&#39;) );
+                       });
+                       _tree.init();
+                       //_queryNode &amp;&amp; _tree.open( _queryNode );
            });
        &lt;/script&gt;
        &lt;div id=&quot;tree_box2&quot; class=&quot;tree_container&quot;&gt;&lt;/div&gt;</code></pre>
@@ -274,7 +274,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l139"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:139</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l142"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:142</code></a>
         </p>
     </div>
     <div class="description">
@@ -309,7 +309,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l185"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:185</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l188"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:188</code></a>
         </p>
     </div>
     <div class="description">
@@ -349,7 +349,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l65"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:65</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l68"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:68</code></a>
         </p>
     </div>
     <div class="description">
@@ -385,7 +385,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l161"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:161</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l164"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:164</code></a>
         </p>
     </div>
     <div class="description">
@@ -418,7 +418,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l192"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:192</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l195"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:195</code></a>
         </p>
     </div>
     <div class="description">
@@ -452,7 +452,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l154"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:154</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l157"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:157</code></a>
         </p>
     </div>
     <div class="description">
@@ -473,7 +473,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l110"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:110</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l113"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:113</code></a>
         </p>
     </div>
     <div class="description">
@@ -503,7 +503,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l172"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:172</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l175"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:175</code></a>
         </p>
     </div>
     <div class="description">
@@ -540,7 +540,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l124"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:124</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l127"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:127</code></a>
         </p>
     </div>
     <div class="description">
@@ -569,7 +569,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l50"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:50</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l53"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:53</code></a>
         </p>
     </div>
     <div class="description">
@@ -582,7 +582,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l57"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:57</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l60"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:60</code></a>
         </p>
     </div>
     <div class="description">
@@ -596,7 +596,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l77"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:77</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l80"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:80</code></a>
         </p>
     </div>
     <div class="description">
@@ -639,7 +639,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l204"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:204</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l207"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:207</code></a>
         </p>
     </div>
     <div class="description">
@@ -672,7 +672,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l227"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:227</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l230"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:230</code></a>
         </p>
     </div>
     <div class="description">
@@ -705,7 +705,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tree_Tree.js.html#l215"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:215</code></a>
+        <a href="../files/.._comps_Tree_Tree.js.html#l218"><code>..&#x2F;comps&#x2F;Tree&#x2F;Tree.js:218</code></a>
         </p>
     </div>
     <div class="description">
@@ -733,7 +733,7 @@
             <div class="example-content">
                 <pre class="code prettyprint"><code>       _tree.on(&#39;RenderLabel&#39;, function( _data ){
            var _node = $(this);
-           _node.html( printf( &#39;&lt;a href=&quot;javascript:&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#39;, _data[0], _data[1] ) );
+           _node.html( JC.f.printf( &#39;&lt;a href=&quot;javascript:&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#39;, _data[0], _data[1] ) );
        });</code></pre>
             </div>
         </div>

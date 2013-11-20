@@ -41,6 +41,10 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/Bizs.html">Bizs</a></li>
+            
+                <li><a href="../classes/JC.html">JC</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -52,8 +56,6 @@
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
-            
-                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -119,6 +121,8 @@
             
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
             
+                <li><a href="../classes/jQuery.html">jQuery</a></li>
+            
                 <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
             
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
@@ -130,10 +134,6 @@
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
-            
-                <li><a href="../classes/window.JC.html">window.JC</a></li>
-            
-                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
             
             </ul>
 
@@ -178,12 +178,14 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
 ;( function( $ ){
+    window.JC = window.JC || {log:function(){}};
     window.Tree = JC.Tree = Tree;
     /**
      * 树菜单类 JC.Tree
-     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, 
-     * &lt;a href=&#x27;.window.html#method_printf&#x27;&gt;window.printf&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, 
+     * &lt;a href=&#x27;.window.html#method_JC.f.printf&#x27;&gt;window.JC.f.printf&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Tree.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Tree/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
@@ -196,26 +198,27 @@
      * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 Team
      * @date    2013-06-29
      * @example
-            &lt;link href=&#x27;../../../comps/Tree/res/default/style.css&#x27; rel=&#x27;stylesheet&#x27; /&gt;
+            &lt;link href=&#x27;../../../modules/JC.Tree/res/default/style.css&#x27; rel=&#x27;stylesheet&#x27; /&gt;
             &lt;script src=&quot;../../../lib.js&quot;&gt;&lt;/script&gt;
+            &lt;script src=&quot;../../../config.js&quot;&gt;&lt;/script&gt;
             &lt;script&gt;
-                JC.use( &#x27;Tree&#x27; );
-                $(document).ready( function(){
-                    var treeData = {
-                        data: {&quot;24&quot;:[[&quot;25&quot;,&quot;\u4e8c\u7ec4\u4e00\u961f&quot;],[&quot;26&quot;,&quot;\u4e8c\u7ec4\u4e8c\u961f&quot;],[&quot;27&quot;,&quot;\u4e8c\u7ec4\u4e09\u961f&quot;]],&quot;23&quot;:[[&quot;28&quot;,&quot;\u9500\u552e\u4e8c\u7ec4&quot;],[&quot;24&quot;,&quot;\u552e\u524d\u5ba1\u6838\u7ec4&quot;]]},
-                        root: [&quot;23&quot;,&#x27;客户发展部&#x27;]
-                    };
-                    var _tree = new JC.Tree( $(&#x27;#tree_box2&#x27;), treeData );
-                        _tree.on(&#x27;RenderLabel&#x27;, function( _data ){
-                            var _node = $(this);
-                            _node.html( printf( &#x27;&lt;a href=&quot;javascript:&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#x27;, _data[0], _data[1] ) );
-                        });
-                        _tree.on(&#x27;click&#x27;, function( _evt ){
-                            var _p = $(this);
-                            JC.log( &#x27;tree click:&#x27;, _p.html(), _p.attr(&#x27;dataid&#x27;), _p.attr(&#x27;dataname&#x27;) );
-                        });
-                        _tree.init();
-                        //_queryNode &amp;&amp; _tree.open( _queryNode );
+                requirejs( [ &#x27;JC.Tree&#x27; ], function(){
+                     var treeData = {
+                            data: {&quot;24&quot;:[[&quot;25&quot;,&quot;\u4e8c\u7ec4\u4e00\u961f&quot;],[&quot;26&quot;,&quot;\u4e8c\u7ec4\u4e8c\u961f&quot;],[&quot;27&quot;,&quot;\u4e8c\u7ec4\u4e09\u961f&quot;]],&quot;23&quot;:[[&quot;28&quot;,&quot;\u9500\u552e\u4e8c\u7ec4&quot;],[&quot;24&quot;,&quot;\u552e\u524d\u5ba1\u6838\u7ec4&quot;]]},
+                            root: [&quot;23&quot;,&#x27;客户发展部&#x27;]
+                        };
+                        var _tree = new JC.Tree( $(&#x27;#tree_box2&#x27;), treeData );
+                            _tree.on(&#x27;RenderLabel&#x27;, function( _data ){
+                                var _node = $(this);
+                                _node.html( JC.f.printf( &#x27;&lt;a href=&quot;javascript:&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#x27;, _data[0], _data[1] ) );
+                            });
+                            _tree.on(&#x27;click&#x27;, function( _evt ){
+                                var _p = $(this);
+                                JC.log( &#x27;tree click:&#x27;, _p.html(), _p.attr(&#x27;dataid&#x27;), _p.attr(&#x27;dataname&#x27;) );
+                            });
+                            _tree.init();
+                            //_queryNode &amp;&amp; _tree.open( _queryNode );
+
                 });
             &lt;/script&gt;
             &lt;div id=&quot;tree_box2&quot; class=&quot;tree_container&quot;&gt;&lt;/div&gt;
@@ -400,7 +403,7 @@
      * @example
             _tree.on(&#x27;RenderLabel&#x27;, function( _data ){
                 var _node = $(this);
-                _node.html( printf( &#x27;&lt;a href=&quot;javascript:&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#x27;, _data[0], _data[1] ) );
+                _node.html( JC.f.printf( &#x27;&lt;a href=&quot;javascript:&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#x27;, _data[0], _data[1] ) );
             });
      */
 
@@ -661,8 +664,8 @@
 
                 var _label = this._initLabel( _data );
 
-                var _node = $( printf( &#x27;&lt;li&gt;&lt;span class=&quot;folder_img_closed folder {1}&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/li&gt;&#x27;, _data[1], _last ) );
-                    _node.addClass( printf( &#x27;folder_closed {0} folder&#x27;, _last1 ));
+                var _node = $( JC.f.printf( &#x27;&lt;li&gt;&lt;span class=&quot;folder_img_closed folder {1}&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/li&gt;&#x27;, _data[1], _last ) );
+                    _node.addClass( JC.f.printf( &#x27;folder_closed {0} folder&#x27;, _last1 ));
                     _label.appendTo( _node );
 
                 var _r =  $( &#x27;&lt;ul style=&quot;display:none;&quot; class=&quot;folder_ul_lst&quot; &gt;&lt;/ul&gt;&#x27; )
@@ -686,7 +689,7 @@
 
                 var _label = this._initLabel( _data );
 
-                var _node = $( printf( &#x27;&lt;li&gt;&lt;span class=&quot;{1}file&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/li&gt;&#x27;, _data[1], _last ) );
+                var _node = $( JC.f.printf( &#x27;&lt;li&gt;&lt;span class=&quot;{1}file&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/li&gt;&#x27;, _data[1], _last ) );
                     _node.addClass( &#x27;folder_closed file&#x27;);
                     _label.appendTo( _node );
 
@@ -858,6 +861,8 @@
     });
 
 }(jQuery));
+    return JC.Tree;
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>
 </div>

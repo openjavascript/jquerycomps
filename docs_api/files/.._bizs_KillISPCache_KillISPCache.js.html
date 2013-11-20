@@ -41,6 +41,10 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/Bizs.html">Bizs</a></li>
+            
+                <li><a href="../classes/JC.html">JC</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -52,8 +56,6 @@
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
-            
-                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -119,6 +121,8 @@
             
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
             
+                <li><a href="../classes/jQuery.html">jQuery</a></li>
+            
                 <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
             
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
@@ -130,10 +134,6 @@
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
-            
-                <li><a href="../classes/window.JC.html">window.JC</a></li>
-            
-                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
             
             </ul>
 
@@ -178,6 +178,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27;, &#x27;JC.BaseMVC&#x27; ], function(){
 ;(function($){
     /**
      * 应用场景
@@ -188,7 +189,7 @@
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/window.Bizs.KillISPCache.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../bizs/KillISPCache/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
-     * require: &lt;a href=&#x27;../classes/window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
+     * require: &lt;a href=&#x27;../classes/jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
      *
      * &lt;h2&gt;页面只要引用本文件, 默认会自动初始化 KillISPCache 逻辑&lt;/h2&gt;
      * &lt;dl&gt;
@@ -213,6 +214,7 @@
      *      });
      *      &lt;/script&gt;
      */
+    window.Bizs = window.Bizs || {};
     Bizs.KillISPCache = KillISPCache;
 
     function KillISPCache( _selector ){
@@ -312,7 +314,7 @@
     KillISPCache.Model.prototype = {
         init:
             function(){
-                this._postfix = printf( &#x27;{0}_{1}_&#x27;
+                this._postfix = JC.f.printf( &#x27;{0}_{1}_&#x27;
                                         , new Date().getTime().toString()
                                         , Math.round( Math.random() * 100000 )
                                     );
@@ -371,7 +373,7 @@
 
                     if( _ignore ) return;
 
-                    _url = addUrlParams( _url, _p.keyVal() );
+                    _url = JC.f.addUrlParams( _url, _p.keyVal() );
                     _sp.attr( &#x27;href&#x27;, _url );
                     _sp.html( _text );
                 });
@@ -413,7 +415,7 @@
                             _ignore = true;
                         }
                     });
-                    !_ignore &amp;&amp; ( _settings.url = addUrlParams( _settings.url, _p.keyVal() ) );
+                    !_ignore &amp;&amp; ( _settings.url = JC.f.addUrlParams( _settings.url, _p.keyVal() ) );
                 });
             }
         , ignoreSameLinkText:
@@ -444,6 +446,8 @@
     });
 
 }(jQuery));
+    return Bizs.KillISPCache;
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>
 </div>

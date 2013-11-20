@@ -41,6 +41,10 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/Bizs.html">Bizs</a></li>
+            
+                <li><a href="../classes/JC.html">JC</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -52,8 +56,6 @@
                 <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
             
                 <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
-            
-                <li><a href="../classes/JC.Bizs.html">JC.Bizs</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -119,6 +121,8 @@
             
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
             
+                <li><a href="../classes/jQuery.html">jQuery</a></li>
+            
                 <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
             
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
@@ -130,10 +134,6 @@
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
-            
-                <li><a href="../classes/window.JC.html">window.JC</a></li>
-            
-                <li><a href="../classes/window.UXC.html">window.UXC</a></li>
             
             </ul>
 
@@ -178,15 +178,19 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
 //TODO: html popup add trigger ref
 ;(function($){
+    window.JC = window.JC || {log:function(){}};
     window.Panel = JC.Panel = Panel;
     /**
      * 弹出层基础类 JC.Panel
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Panel.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
-     * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
+     *
+     * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
+     *
      * &lt;h2&gt;Panel Layout 可用的 html attribute&lt;/h2&gt;
      * &lt;dl&gt;
      *      &lt;dt&gt;panelclickclose = bool&lt;/dt&gt;
@@ -286,7 +290,7 @@
      * @date    2013-06-04
      * @example
             &lt;script src=&quot;../../../lib.js&quot;&gt;&lt;/script&gt;
-            &lt;script&gt;JC.use( &#x27;Panel&#x27; ); &lt;/script&gt;
+            &lt;script src=&quot;../../../config.js&quot;&gt;&lt;/script&gt;
             &lt;script&gt;
                 var btnstr = [
                     &#x27;&lt;div style=&quot;text-align:center&quot; class=&quot;UButton&quot;&gt;&#x27;
@@ -294,7 +298,8 @@
                     , &#x27;&lt;button type=&quot;button&quot; eventtype=&quot;cancel&quot;&gt;取消&lt;/button&gt;\n&#x27;
                     , &#x27;&lt;/div&gt;&#x27;
                 ].join(&#x27;&#x27;);
-                $(document).ready( function(_evt){
+		
+                requirejs( [ &#x27;JC.Panel&#x27; ], function(){
                     tmpPanel = new JC.Panel( &#x27;默认panel&#x27;, &#x27;&lt;h2&gt;test content&lt;/h2&gt;&#x27; + btnstr, &#x27;test footer&#x27;);
                     tmpPanel.on(&#x27;close&#x27;, function(_evt, _panel){
                         JC.log(&#x27;user close evnet&#x27;);
@@ -503,16 +508,15 @@
 
                                     if( !_p._model.bindedPositionWithEvent ){
                                         _p._model.bindedPositionWithEvent = true;
-
+                                        var changePosition = function(){
+                                            _p.positionWith( _position, _selectorDiretion );
+                                        }
+					
                                         $(window).on(&#x27;resize&#x27;, changePosition );
                                         _p.on(&#x27;close&#x27;, function(){
                                             _p._model.bindedPositionWithEvent = false;
                                             $(window).unbind(&#x27;resize&#x27;, changePosition);
                                         });
-
-                                        function changePosition(){
-                                            _p.positionWith( _position, _selectorDiretion );
-                                        }
                                     }
 
                                     break;
@@ -585,7 +589,7 @@
          */
         , addAutoClose:
             function(){
-                this.clickClose.apply( this, sliceArgs( arguments ) );
+                this.clickClose.apply( this, JC.f.sliceArgs( arguments ) );
                 return this;
             }
         /**
@@ -925,7 +929,7 @@
                     JC.log( &#x27;user tpl&#x27;, this.selector.parent().length );
                     if( !this.selector.parent().length ){
                         _p.selector.appendTo( $(document.body ) );
-                        window.jcAutoInitComps &amp;&amp; jcAutoInitComps( _p.selector );
+                        window.JC.f.jcAutoInitComps &amp;&amp; JC.f.jcAutoInitComps( _p.selector );
                     }
                 }else if( !_selector || _selector.length === 0 ){
                     this.footers = this.bodys;
@@ -973,7 +977,7 @@
             function(){
                 var _r = Panel.focusButton;
                 if( this.panel.is( &#x27;[panelfocusbutton]&#x27; ) ){
-                    _r = parseBool( this.panel.attr(&#x27;panelfocusbutton&#x27;) );
+                    _r = JC.f.parseBool( this.panel.attr(&#x27;panelfocusbutton&#x27;) );
                 }
                 return _r;
             }
@@ -981,7 +985,7 @@
             function(){
                 var _r = Panel.clickClose;
                 if( this.panel.is( &#x27;[panelclickclose]&#x27; ) ){
-                    _r = parseBool( this.panel.attr(&#x27;panelclickclose&#x27;) );
+                    _r = JC.f.parseBool( this.panel.attr(&#x27;panelclickclose&#x27;) );
                 }
                 return _r;
             }
@@ -989,7 +993,7 @@
             function(){
                 var _r;
                 if( this.panel.is( &#x27;[panelautoclose]&#x27; ) ){
-                    _r = parseBool( this.panel.attr(&#x27;panelautoclose&#x27;) );
+                    _r = JC.f.parseBool( this.panel.attr(&#x27;panelautoclose&#x27;) );
                 }
                 return _r;
             }
@@ -1045,7 +1049,7 @@
                     }else{
                         this._model.panel = $(this._tpl);
                         this._model.panel.appendTo(document.body);
-                        window.jcAutoInitComps &amp;&amp; jcAutoInitComps( this._model.panel );
+                        window.JC.f.jcAutoInitComps &amp;&amp; JC.f.jcAutoInitComps( this._model.panel );
                     }
                 }
 
@@ -1354,7 +1358,7 @@
 
             , _panelmsg = _p.attr(&#x27;panelmsg&#x27;)
             , _panelmsgBox = _p.is(&#x27;[panelmsgbox]&#x27;) 
-                ? parentSelector( _p, _p.attr(&#x27;panelmsgbox&#x27;) ) 
+                ? JC.f.parentSelector( _p, _p.attr(&#x27;panelmsgbox&#x27;) ) 
                 : null
             ;
 
@@ -1375,26 +1379,26 @@
 
             , _panelheader = _p.attr(&#x27;panelheader&#x27;) || &#x27;&#x27;
             , _panelheaderBox = _p.is(&#x27;[panelheaderbox]&#x27;) 
-                ? parentSelector( _p, _p.attr(&#x27;panelheaderbox&#x27;) ) 
+                ? JC.f.parentSelector( _p, _p.attr(&#x27;panelheaderbox&#x27;) ) 
                 : null
 
             , _panelfooter = _p.attr(&#x27;panelfooter&#x27;) || &#x27;&#x27;
             , _panelfooterBox = _p.is(&#x27;[panelfooterbox]&#x27;) 
-                ? parentSelector( _p, _p.attr(&#x27;panelfooterbox&#x27;) ) 
+                ? JC.f.parentSelector( _p, _p.attr(&#x27;panelfooterbox&#x27;) ) 
                 : null
             /**
              * 隐藏关闭按钮
              */
             , _hideclose = _p.is(&#x27;[panelhideclose]&#x27;) 
-                ? parseBool( _p.attr(&#x27;panelhideclose&#x27;) )
+                ? JC.f.parseBool( _p.attr(&#x27;panelhideclose&#x27;) )
                 : false
             ;
 
-        _panelmsgBox &amp;&amp; ( _panelmsg = scriptContent( _panelmsgBox ) || _panelmsg );
+        _panelmsgBox &amp;&amp; ( _panelmsg = JC.f.scriptContent( _panelmsgBox ) || _panelmsg );
         _panelheaderBox &amp;&amp; _panelheaderBox.length 
-            &amp;&amp; ( _panelheader = scriptContent( _panelheaderBox ) || _panelfooter );
+            &amp;&amp; ( _panelheader = JC.f.scriptContent( _panelheaderBox ) || _panelfooter );
         _panelfooterBox &amp;&amp; _panelfooterBox.length 
-            &amp;&amp; ( _panelfooter = scriptContent( _panelfooterBox ) || _panelfooter );
+            &amp;&amp; ( _panelfooter = JC.f.scriptContent( _panelfooterBox ) || _panelfooter );
 
         _p.prop(&#x27;nodeName&#x27;) &amp;&amp; _p.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;a&#x27; &amp;&amp; _evt.preventDefault();
 
@@ -1467,7 +1471,7 @@
      * msgbox 提示 popup
      * &lt;br /&gt; 这个是不带蒙板 不带按钮的 popup 弹框
      * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
-     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.msgbox.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
@@ -1514,7 +1518,7 @@
      * alert 提示 popup
      * &lt;br /&gt; 这个是不带 蒙板的 popup 弹框
      * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
-     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.alert.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
@@ -1553,7 +1557,7 @@
      * &lt;br /&gt; 这个是不带 蒙板的 popup 弹框
      * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
      * &lt;p&gt;private property see: &lt;a href=&#x27;JC.alert.html&#x27;&gt;JC.alert&lt;/a&gt;
-     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.confirm.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
@@ -1769,7 +1773,7 @@
                 _selector.css( { &#x27;left&#x27;: _left  + &#x27;px&#x27; } );
 
                 _dom.interval = 
-                    easyEffect( function( _curVal, _done ){
+                    JC.f.easyEffect( function( _curVal, _done ){
                         _selector.css( {
                             &#x27;top&#x27;: _top + _curVal + &#x27;px&#x27;
                             , &#x27;height&#x27;: _sh - _curVal + &#x27;px&#x27;
@@ -1820,7 +1824,7 @@
 
                 if( _top &gt; _poffset.top ){
                     _dom.interval = 
-                        easyEffect( function( _curVal, _done ){
+                        JC.f.easyEffect( function( _curVal, _done ){
                             _selector.css( {
                                 &#x27;top&#x27;: _top - _sh - _logic.yoffset + &#x27;px&#x27;
                                 , &#x27;height&#x27;: _curVal + &#x27;px&#x27;
@@ -1830,7 +1834,7 @@
 
                 }else{
                     _dom.interval = 
-                        easyEffect( function( _curVal, _done ){
+                        JC.f.easyEffect( function( _curVal, _done ){
                             _selector.css( {
                                 &#x27;top&#x27;: _top - _curVal - _logic.yoffset + &#x27;px&#x27;
                                 , &#x27;height&#x27;: _curVal + &#x27;px&#x27;
@@ -2049,7 +2053,7 @@
     /**
      * 带蒙板的会话弹框
      * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
-     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Dialog.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
@@ -2111,7 +2115,7 @@
      * 会话框 msgbox 提示 (不带按钮)
      * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
      * &lt;p&gt;private property see: &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;JC.Dialog&lt;/a&gt;
-     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;, &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;Dialog&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;, &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;Dialog&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Dialog.msgbox.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
@@ -2155,7 +2159,7 @@
      * 会话框 alert 提示
      * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
      * &lt;p&gt;private property see: &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;JC.Dialog&lt;/a&gt;
-     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;, &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;Dialog&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;, &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;Dialog&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Dialog.alert.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
@@ -2196,7 +2200,7 @@
      * 会话框 confirm 提示
      * &lt;br /&gt;&lt;b&gt;注意, 这是个方法, 写 @class 属性是为了生成文档&lt;/b&gt;
      * &lt;p&gt;private property see: &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;JC.Dialog&lt;/a&gt;
-     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;, &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;Dialog&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;, &lt;a href=&#x27;JC.Panel.html&#x27;&gt;Panel&lt;/a&gt;, &lt;a href=&#x27;JC.Dialog.html&#x27;&gt;Dialog&lt;/a&gt;&lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Dialog.confirm.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/Panel/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
@@ -2510,6 +2514,8 @@
     });
 
 }(jQuery));
+    return JC.Panel;
+});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
 
     </pre>
 </div>

@@ -1,10 +1,11 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
  ;(function($){
     /**
      * 全选/反选
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoChecked.html' target='_blank'>API docs</a>
      * | <a href='../../comps/AutoChecked/_demo' target='_blank'>demo link</a></p>
-     * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
+     * <p><b>require</b>: <a href='jQuery.html'>jQuery</a></p>
      * <h2>input[type=checkbox] 可用的 HTML 属性</h2>
      * <dl>
      *      <dt>checktype = string</dt>
@@ -79,6 +80,7 @@
             });
             </script>
      */
+    window.JC = window.JC || {log:function(){}};
     JC.Form && ( JC.Form.initCheckAll = AutoChecked );
     JC.AutoChecked = AutoChecked;
 
@@ -132,7 +134,7 @@
                 });
 
                 $([ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName ){
-                    var _data = sliceArgs( arguments ); _data.shift(); _data.shift();
+                    var _data = JC.f.sliceArgs( arguments ); _data.shift(); _data.shift();
                     _p.trigger( _evtName, _data );
                 });
 
@@ -293,11 +295,11 @@
                 if( this.isParentSelector() ){
                     if( Model.parentNodeRe.test( this.checkfor() ) ){
                         this.checkfor().replace( /^([^\s]+)/, function( $0, $1 ){
-                            _r = parentSelector( _p.selector(), $1 );
+                            _r = JC.f.parentSelector( _p.selector(), $1 );
                         });
                     }else{
                         _tmp = this.checkfor().replace( Model.parentSelectorRe, '' );
-                        _r = parentSelector( _p.selector(), _tmp );
+                        _r = JC.f.parentSelector( _p.selector(), _tmp );
                     }
                 }
                 return _r;
@@ -316,7 +318,7 @@
                 var _r;
                 if( this.checktype() == 'inverse' ){
                     this.checkall() 
-                        && ( _r = parentSelector( this.selector(), this.checkall() ) )
+                        && ( _r = JC.f.parentSelector( this.selector(), this.checkall() ) )
                         ;
                 }else{
                     _r = this.selector();
@@ -395,4 +397,5 @@
     });
 
 }(jQuery));
-
+    return JC.AutoChecked;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

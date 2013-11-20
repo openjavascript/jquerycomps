@@ -1,3 +1,4 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 /**
  * <h2>Dom 通用 添加删除 逻辑</h2>
  * <br/>应用场景
@@ -39,7 +40,7 @@
 function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
     var _trigger = $(this);
     JC.log( 'cmtplfiltercallback', new Date().getTime() );
-    _tpl = printf( _tpl, COUNT++ );
+    _tpl = JC.f.printf( _tpl, COUNT++ );
 
     return _tpl;
 }</pre>
@@ -149,6 +150,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
         </script>
  */
 ;(function($){
+    window.Bizs = window.Bizs || {};
     window.Bizs.CommonModify = CommonModify;
 
     function CommonModify( _selector ){
@@ -300,12 +302,12 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
         , cmtemplate:
             function(){
                 var _r = '', _tmp;
-                _tmp = parentSelector( this.selector(), this.selector().attr('cmtemplate') );
-                !( _tmp && _tmp.length ) && ( _tmp = parentSelector( this.selector(), this.selector().attr('cmtpl') ) );
+                _tmp = JC.f.parentSelector( this.selector(), this.selector().attr('cmtemplate') );
+                !( _tmp && _tmp.length ) && ( _tmp = JC.f.parentSelector( this.selector(), this.selector().attr('cmtpl') ) );
 
                 this.selector() 
                     && ( _tmp && _tmp.length )
-                    && ( _r = scriptContent( _tmp ) )
+                    && ( _r = JC.f.scriptContent( _tmp ) )
                     ;
                 return _r;
             }
@@ -351,7 +353,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
 
         , cmOutRangeMsg:
             function(){
-                var _r = printf( this.attrProp( 'cmOutRangeMsg' ) ||'最多只能上传 {0}个文件!', this.cmMaxItems() );
+                var _r = JC.f.printf( this.attrProp( 'cmOutRangeMsg' ) ||'最多只能上传 {0}个文件!', this.cmMaxItems() );
                 return _r;
             }
 
@@ -412,7 +414,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                 var _r, _tmp;
                 this.selector()
                     && ( _tmp = this.selector().attr('cmitem') )
-                    && ( _r = parentSelector( this.selector(), _tmp ) )
+                    && ( _r = JC.f.parentSelector( this.selector(), _tmp ) )
                     ;
                 return _r;
             }
@@ -476,7 +478,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                     default: _item.after( _newItem ); break;
                 }
                 
-                window.jcAutoInitComps && jcAutoInitComps( _newItem );
+                window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( _newItem );
 
                 $( _p ).trigger( 'TriggerEvent', [ 'add', _newItem, _boxParent ] );
                 $( _p ).trigger( 'TriggerEvent', [ 'done', _newItem, _boxParent ] );
@@ -509,3 +511,5 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
     });
 
 }(jQuery));
+    return Bizs.CommonModify;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

@@ -1,4 +1,6 @@
+;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 ;(function($){
+    window.JC = window.JC || {log:function(){}};
     window.Tab = JC.Tab = Tab;
     /**
      * Tab 菜单类
@@ -8,7 +10,7 @@
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tab.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Tab/_demo/' target='_blank'>demo link</a></p>
-     * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
+     * <p><b>require</b>: <a href='jQuery.html'>jQuery</a></p>
      * <h2>Tab 容器的HTML属性</h2>
      * <dl>
      *      <dt>tablabels</dt>
@@ -52,13 +54,26 @@
      * @author  qiushaowei   <suches@btbtd.org> | 360 75 Team
      * @date    2013-07-04
      * @example
-            <link href='../../../comps/Tab/res/default/style.css' rel='stylesheet' />
+            <link href='../../../modules/JC.Tab/res/default/style.css' rel='stylesheet' />
             <script src="../../../lib.js"></script>
+            <script src="../../../config.js"></script>
             <script>
                 JC.debug = 1;
-                JC.use( 'Tab' );
 
-                httpRequire();
+                requirejs( [ 'JC.Tab' ], function(){
+                    JC.f.httpRequire();
+
+                    JC.Tab.ajaxCallback =
+                        function( _data, _label, _container ){
+                            _data && ( _data = $.parseJSON( _data ) );
+                            if( _data && _data.errorno === 0 ){
+                                _container.html( JC.f.printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
+                            }else{
+                                Tab.isAjaxInited( _label, 0 );
+                                _container.html( '<h2>内容加载失败!</h2>' );
+                            }
+                        };
+                });
 
                 function tabactive( _evt, _container, _tabIns ){
                     var _label = $(this);
@@ -73,23 +88,10 @@
                     JC.log( 'tab change: ', _label.html(), new Date().getTime() );
                 }
 
-                $(document).ready( function(){
-                    JC.Tab.ajaxCallback =
-                        function( _data, _label, _container ){
-                            _data && ( _data = $.parseJSON( _data ) );
-                            if( _data && _data.errorno === 0 ){
-                                _container.html( printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
-                            }else{
-                                Tab.isAjaxInited( _label, 0 );
-                                _container.html( '<h2>内容加载失败!</h2>' );
-                            }
-                        };
-                });
-
                 function ajaxcallback( _data, _label, _container ){
                     _data && ( _data = $.parseJSON( _data ) );
                     if( _data && _data.errorno === 0 ){
-                        _container.html( printf( '<h2>label attr ajaxcallback</h2>{0}', _data.data ) );
+                        _container.html( JC.f.printf( '<h2>label attr ajaxcallback</h2>{0}', _data.data ) );
                     }else{
                         Tab.isAjaxInited( _label, 0 );
                         _container.html( '<h2>内容加载失败!</h2>' );
@@ -216,7 +218,7 @@
                     function( _data, _label, _container, _textStatus, _jqXHR ){
                         _data && ( _data = $.parseJSON( _data ) );
                         if( _data && _data.errorno === 0 ){
-                            _container.html( printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
+                            _container.html( JC.f.printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );
                         }else{
                             Tab.isAjaxInited( _label, 0 );
                             _container.html( '<h2>内容加载失败!</h2>' );
@@ -362,13 +364,13 @@
                 if( _p.isFromChild( _p.layout().attr('tablabels') ) ){
                     this._tablabels = _p.layout().find( _p.layout().attr('tablabels').replace( _re, '' ) );
                 }else{
-                    this._tablabels = parentSelector( _p.layout(), _p.layout().attr('tablabels') );
+                    this._tablabels = JC.f.parentSelector( _p.layout(), _p.layout().attr('tablabels') );
                 }
 
                 if( _p.isFromChild( _p.layout().attr('tabcontainers') ) ){
                     this._tabcontainers = _p.layout().find( _p.layout().attr('tabcontainers').replace( _re, '' ) );
                 }else{
-                    this._tabcontainers = parentSelector( _p.layout(), _p.layout().attr('tabcontainers') );
+                    this._tabcontainers = JC.f.parentSelector( _p.layout(), _p.layout().attr('tabcontainers') );
                 }
 
                 this._tablabels.each( function(){ _p.tablabel( this, 1 ); } );
@@ -658,3 +660,5 @@
     });
 
 }(jQuery));
+    return JC.Tab;
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));
