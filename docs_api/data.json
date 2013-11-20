@@ -328,13 +328,9 @@
         "../jquery.js": {
             "name": "../jquery.js",
             "modules": {},
-            "classes": {
-                "window.jQuery": 1
-            },
+            "classes": {},
             "fors": {},
-            "namespaces": {
-                "window": 1
-            }
+            "namespaces": {}
         },
         "../lib.js": {
             "name": "../lib.js",
@@ -368,7 +364,7 @@
             "namespace": "window.Bizs",
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
             "line": 2,
-            "description": "<h2>node 点击操作逻辑</h2>\n应用场景\n<br/>点击后弹框( 脚本模板 )\n<br/>点击后弹框( AJAX )\n<br/>点击后弹框( Dom 模板 )\n<br/>点击后执行 AJAX 操作\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.ActionLogic/0.1/_demo' target='_blank'>demo link</a></p>\n\nrequire: <a href='../classes/window.jQuery.html'>jQuery</a>\n<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>\n\na|button 需要 添加 class=\"js_bizsActionLogic\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>balType = string, 操作类型 </dt>\n     <dd>\n         <dl>\n             <dt>类型:</dt>\n             <dd>panel: 弹框</dd>\n             <dd>link: 链接跳转</dd>\n             <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>\n         </dl>\n     </dd>\n</dl>\n<h2>balType = panel 可用的 HTML 属性</h2>\n<dl>\n     <dt>balPanelTpl = script selector</dt>\n     <dd>脚本模板选择器</dd>\n\n     <dt>balAjaxHtml = url</dt>\n     <dd>返回 HTML 的 AJAX 模板</dd>\n\n     <dt>balAjaxData = url</dt>\n     <dd>返回 json 的 AJAX 模板, { errorno: int, data: html } </dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         显示模板后的回调\n<xmp>function balPanelInitCb( _panelIns ){\n   var _trigger = $(this);\n   //return true; //如果返回真的话, 表单提交后会关闭弹框\n}</xmp>\n     </dd>\n</dl>\n<h2>balType = link 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>要跳转的目标 URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>跳转前的二次确认提示信息</dd>\n\n     <dt>balConfirmPopupType = string, default = confirm</dt>\n     <dd>二次确认的弹框类型: confirm, dialog.confirm</dd>\n</dl>\n<h2>balType = ajaxaction 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>AJAX 操作的接口</dd>\n\n     <dt>balDoneUrl = url</dt>\n     <dd>AJAX 操作完成后跳转的URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>操作前的二次确认提示信息</dd>\n\n     <dt>balErrorPopupType = string, default = dialog.alert</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balSuccessPopupType = string, default = msgbox</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         操作完成后的回调\n<xmp>function ajaxDelCallback( _d, _ins ){\n   var _trigger = $(this);\n   if( _d && !_d.errorno ){\n       JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){\n           JC.f.reloadPage( '?usercallback=ajaxaction' );\n       });\n   }else{\n       JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );\n   }\n}\n</xmp>\n     </dd>\n</dl>",
+            "description": "<h2>node 点击操作逻辑</h2>\n应用场景\n<br/>点击后弹框( 脚本模板 )\n<br/>点击后弹框( AJAX )\n<br/>点击后弹框( Dom 模板 )\n<br/>点击后执行 AJAX 操作\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.ActionLogic/0.1/_demo' target='_blank'>demo link</a></p>\n\nrequire: <a href='../classes/window.jQuery.html'>jQuery</a>\n<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>\n\na|button 需要 添加 class=\"js_bizsActionLogic\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>balType = string, 操作类型 </dt>\n     <dd>\n         <dl>\n             <dt>类型:</dt>\n             <dd>panel: 弹框</dd>\n             <dd>link: 链接跳转</dd>\n             <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>\n         </dl>\n     </dd>\n</dl>\n<h2>balType = panel 可用的 HTML 属性</h2>\n<dl>\n     <dt>balPanelTpl = script selector</dt>\n     <dd>脚本模板选择器</dd>\n\n     <dt>balAjaxHtml = url</dt>\n     <dd>返回 HTML 的 AJAX 模板</dd>\n\n     <dt>balAjaxData = url</dt>\n     <dd>返回 json 的 AJAX 模板, { errorno: int, data: html } </dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         显示模板后的回调\n<pre>function balPanelInitCb( _panelIns ){\n   var _trigger = $(this);\n   //return true; //如果返回真的话, 表单提交后会关闭弹框\n}</pre>\n     </dd>\n</dl>\n<h2>balType = link 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>要跳转的目标 URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>跳转前的二次确认提示信息</dd>\n\n     <dt>balConfirmPopupType = string, default = confirm</dt>\n     <dd>二次确认的弹框类型: confirm, dialog.confirm</dd>\n</dl>\n<h2>balType = ajaxaction 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>AJAX 操作的接口</dd>\n\n     <dt>balDoneUrl = url</dt>\n     <dd>AJAX 操作完成后跳转的URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>操作前的二次确认提示信息</dd>\n\n     <dt>balErrorPopupType = string, default = dialog.alert</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balSuccessPopupType = string, default = msgbox</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         操作完成后的回调\n<pre>function ajaxDelCallback( _d, _ins ){\n   var _trigger = $(this);\n   if( _d && !_d.errorno ){\n       JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){\n           JC.f.reloadPage( '?usercallback=ajaxaction' );\n       });\n   }else{\n       JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );\n   }\n}\n</pre>\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-17",
@@ -385,7 +381,7 @@
             "namespace": "window.Bizs",
             "file": "../modules/Bizs.CommonModify/0.1/CommonModify.js",
             "line": 2,
-            "description": "<h2>Dom 通用 添加删除 逻辑</h2>\n<br/>应用场景\n<br/>需要动态添加删除内容的地方可以使用这个类\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.CommonModify/0.1/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_autoCommonModify\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>[cmtpl | cmtemplate] = script selector</dt>\n     <dd>指定保存模板的 script 标签</dd>\n\n     <dt>cmitem = selector</dt>\n     <dd>添加时, 目标位置的 父节点/兄弟节点</dd>\n\n     <dt>cmaction = string, [add, del], default = add</dt>\n     <dd>操作类型</dd>\n\n     <dt>cmappendtype = string, default = after</dt>\n     <dd>指定 node 添加 dom 的方法, 可选类型: before, after, appendTo</dd>\n\n     <dt>cmdonecallback = function</dt>\n     <dd>\n     添加或删除完后会触发的回调, <b>window 变量域</b>\n<xmp>function cmdonecallback( _ins, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmdonecallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmtplfiltercallback = function</dt>\n     <dd>\n     模板内容过滤回调, <b>window 变量域</b>\n<xmp>window.COUNT = 1;\nfunction cmtplfiltercallback( _tpl, _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmtplfiltercallback', new Date().getTime() );\n   _tpl = JC.f.printf( _tpl, COUNT++ );\n\n   return _tpl;\n}</xmp>\n     </dd>\n\n     <dt>cmbeforeaddcallabck = function</dt>\n     <dd>\n     添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b>\n<xmp>function cmbeforeaddcallabck( _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforeaddcallabck', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>cmaddcallback = function</dt>\n     <dd>\n     添加完成的回调, <b>window 变量域</b>\n<xmp>function cmaddcallback( _ins, _newItem, _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmaddcallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmbeforedelcallback = function</dt>\n     <dd>\n     删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b>\n<xmp>function cmbeforedelcallback( _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforedelcallback', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>cmdelcallback = function</dt>\n     <dd>\n     删除完成的回调, <b>window 变量域</b>\n<xmp>function cmdelcallback( _ins, _boxParent ){\n   JC.log( 'cmdelcallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>cmMaxItems = int</dt>\n     <dd>\n         指定最多可添加数量\n         <br /><b>要使 cmMaxItems 生效, 必须声明 cmAddedItemsSelector</b>\n     </dd>\n\n     <dt>cmAddedItemsSelector = selector</dt>\n     <dd>\n         指定查找所有上传项的选择器语法\n     </dd>\n\n     <dt>cmOutRangeMsg = string, default = \"最多只能上传 {0}个文件!\"</dt>\n     <dd>\n         添加数量超出 cmMaxItems 时的提示信息\n     </dd>\n</dl>",
+            "description": "<h2>Dom 通用 添加删除 逻辑</h2>\n<br/>应用场景\n<br/>需要动态添加删除内容的地方可以使用这个类\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.CommonModify/0.1/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_autoCommonModify\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>[cmtpl | cmtemplate] = script selector</dt>\n     <dd>指定保存模板的 script 标签</dd>\n\n     <dt>cmitem = selector</dt>\n     <dd>添加时, 目标位置的 父节点/兄弟节点</dd>\n\n     <dt>cmaction = string, [add, del], default = add</dt>\n     <dd>操作类型</dd>\n\n     <dt>cmappendtype = string, default = after</dt>\n     <dd>指定 node 添加 dom 的方法, 可选类型: before, after, appendTo</dd>\n\n     <dt>cmdonecallback = function</dt>\n     <dd>\n     添加或删除完后会触发的回调, <b>window 变量域</b>\n<pre>function cmdonecallback( _ins, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmdonecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>cmtplfiltercallback = function</dt>\n     <dd>\n     模板内容过滤回调, <b>window 变量域</b>\n<pre>window.COUNT = 1;\nfunction cmtplfiltercallback( _tpl, _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmtplfiltercallback', new Date().getTime() );\n   _tpl = JC.f.printf( _tpl, COUNT++ );\n\n   return _tpl;\n}</pre>\n     </dd>\n\n     <dt>cmbeforeaddcallabck = function</dt>\n     <dd>\n     添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b>\n<pre>function cmbeforeaddcallabck( _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforeaddcallabck', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>cmaddcallback = function</dt>\n     <dd>\n     添加完成的回调, <b>window 变量域</b>\n<pre>function cmaddcallback( _ins, _newItem, _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmaddcallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>cmbeforedelcallback = function</dt>\n     <dd>\n     删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b>\n<pre>function cmbeforedelcallback( _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforedelcallback', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>cmdelcallback = function</dt>\n     <dd>\n     删除完成的回调, <b>window 变量域</b>\n<pre>function cmdelcallback( _ins, _boxParent ){\n   JC.log( 'cmdelcallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>cmMaxItems = int</dt>\n     <dd>\n         指定最多可添加数量\n         <br /><b>要使 cmMaxItems 生效, 必须声明 cmAddedItemsSelector</b>\n     </dd>\n\n     <dt>cmAddedItemsSelector = selector</dt>\n     <dd>\n         指定查找所有上传项的选择器语法\n     </dd>\n\n     <dt>cmOutRangeMsg = string, default = \"最多只能上传 {0}个文件!\"</dt>\n     <dd>\n         添加数量超出 cmMaxItems 时的提示信息\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-04",
@@ -405,7 +401,7 @@
             "namespace": "window.Bizs",
             "file": "../modules/Bizs.DisableLogic/0.1/DisableLogic.js",
             "line": 2,
-            "description": "<h2>Form Control禁用启用逻辑</h2>\n<br/>应用场景</br>\n<br/>表单操作时, 选择某个 radio 时, 对应的 内容有效,\n<br/>但选择其他 radio 时, 其他的内容无效\n<br/>checkbox / select 也可使用( 带change事件的标签 )\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.DisableLogic/0.1/_demo' target='_blank'>demo link</a></p>\n\ndiv 需要 添加 class=\"js_bizsDisableLogic\"\n\n<h2>box 的 HTML 属性</h2>\n<dl>\n     <dt>dltrigger</dt>\n     <dd>触发禁用/起用的control</dd>\n\n     <dt>dltarget</dt>\n     <dd>需要禁用/起用的control</dd>\n\n     <dt>dlhidetarget</dt>\n     <dd>需要根据禁用起用隐藏/可见的标签</dd>\n\n     <dt>dldonecallback = function</dt>\n     <dd>\n     启用/禁用后会触发的回调, <b>window 变量域</b>\n<xmp>function dldonecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldonecallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>dlenablecallback = function</dt>\n     <dd>\n     启用后的回调, <b>window 变量域</b>\n<xmp>function dlenablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dlenablecallback', new Date().getTime() );\n}</xmp>\n     </dd>\n\n     <dt>dldisablecallback = function</dt>\n     <dd>\n     禁用后的回调, <b>window 变量域</b>\n<xmp>function dldisablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldisablecallback', new Date().getTime() );\n}</xmp>\n     </dd>\n</dl>\n\n<h2>trigger 的 HTML 属性</h2>\n<dl>\n     <dt>dldisable = bool, default = false</dt>\n     <dd>\n         指定 dltarget 是否置为无效\n         <br />还可以根据这个属性 指定 dlhidetarget 是否显示\n     </dd>\n\n     <dt>dldisplay = bool</dt>\n     <dd>指定 dlhidetarget 是否显示</dd>\n\n     <dt>dlhidetargetsub = selector</dt>\n     <dd>根据 trigger 的 checked 状态 显示或者隐藏 dlhidetargetsub node</dd>\n</dl>\n\n<h2>hide target 的 HTML 属性</h2>\n<dl>\n     <dt>dlhidetoggle = bool</dt>\n     <dd>显示或显示的时候, 是否与他项相反</dd>\n</dl>",
+            "description": "<h2>Form Control禁用启用逻辑</h2>\n<br/>应用场景</br>\n<br/>表单操作时, 选择某个 radio 时, 对应的 内容有效,\n<br/>但选择其他 radio 时, 其他的内容无效\n<br/>checkbox / select 也可使用( 带change事件的标签 )\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.DisableLogic/0.1/_demo' target='_blank'>demo link</a></p>\n\ndiv 需要 添加 class=\"js_bizsDisableLogic\"\n\n<h2>box 的 HTML 属性</h2>\n<dl>\n     <dt>dltrigger</dt>\n     <dd>触发禁用/起用的control</dd>\n\n     <dt>dltarget</dt>\n     <dd>需要禁用/起用的control</dd>\n\n     <dt>dlhidetarget</dt>\n     <dd>需要根据禁用起用隐藏/可见的标签</dd>\n\n     <dt>dldonecallback = function</dt>\n     <dd>\n     启用/禁用后会触发的回调, <b>window 变量域</b>\n<pre>function dldonecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldonecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>dlenablecallback = function</dt>\n     <dd>\n     启用后的回调, <b>window 变量域</b>\n<pre>function dlenablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dlenablecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>dldisablecallback = function</dt>\n     <dd>\n     禁用后的回调, <b>window 变量域</b>\n<pre>function dldisablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldisablecallback', new Date().getTime() );\n}</pre>\n     </dd>\n</dl>\n\n<h2>trigger 的 HTML 属性</h2>\n<dl>\n     <dt>dldisable = bool, default = false</dt>\n     <dd>\n         指定 dltarget 是否置为无效\n         <br />还可以根据这个属性 指定 dlhidetarget 是否显示\n     </dd>\n\n     <dt>dldisplay = bool</dt>\n     <dd>指定 dlhidetarget 是否显示</dd>\n\n     <dt>dlhidetargetsub = selector</dt>\n     <dd>根据 trigger 的 checked 状态 显示或者隐藏 dlhidetargetsub node</dd>\n</dl>\n\n<h2>hide target 的 HTML 属性</h2>\n<dl>\n     <dt>dlhidetoggle = bool</dt>\n     <dd>显示或显示的时候, 是否与他项相反</dd>\n</dl>",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-04",
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
@@ -424,7 +420,7 @@
             "namespace": "window.Bizs",
             "file": "../modules/Bizs.FormLogic/0.1/FormLogic.js",
             "line": 4,
-            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.FormLogic/0.1/_demo' target='_blank'>demo link</a></p>\nrequire: <a href='../classes/window.jQuery.html'>jQuery</a>\n<br/>require: <a href='../classes/JC.Valid.html'>JC.Valid</a>\n<br/>require: <a href='../classes/JC.Form.html'>JC.Form</a>\n<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>\n<xmp>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>formProcessError = function</dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>\n<xmp>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>\n<xmp>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</xmp>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<xmp>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</xmp>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<xmp>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</xmp>\n     </dt>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n</dl>",
+            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.FormLogic/0.1/_demo' target='_blank'>demo link</a></p>\nrequire: <a href='../classes/window.jQuery.html'>jQuery</a>\n<br/>require: <a href='../classes/JC.Valid.html'>JC.Valid</a>\n<br/>require: <a href='../classes/JC.Form.html'>JC.Form</a>\n<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function</dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dt>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-08",
@@ -482,7 +478,7 @@
             "namespace": "JC",
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
             "line": 3,
-            "description": "Ajax 文件上传\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.AjaxUpload/0.1/_demo' target='_blank'>demo link</a>\n</p>\n<p>\n     <b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>\n     <dd>\n         上传完成后是否隐藏上传按钮\n     </dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<xmp>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</xmp>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<xmp>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</xmp>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<xmp>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '<a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}</a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;<a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\"></a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</xmp>\n     </dd>\n</dl>",
+            "description": "Ajax 文件上传\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.AjaxUpload/0.1/_demo' target='_blank'>demo link</a>\n</p>\n<p>\n     <b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>\n     <dd>\n         上传完成后是否隐藏上传按钮\n     </dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<xmp>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '<a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}</a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;<a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\"></a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</xmp>\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -536,7 +532,7 @@
             "namespace": "JC",
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
             "line": 4,
-            "description": "<h2>select 级联下拉框无限联动</h2>\n<br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能\n<br /><br />动态添加的 DOM 需要显式调用 JC.AutoSelect( domSelector ) 进行初始化\n<br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoSelect.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.AutoSelect/0.2/_demo' target='_blank'>demo link</a></p>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<h2>select 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultselect, 这个属性不需要赋值</dt>\n     <dd>该属性声明这是级联下拉框的第一个下拉框, <b>这是必填项,初始化时以这个为入口</b></dd>\n\n     <dt>selectvalue = string</dt>\n     <dd>下拉框的默认选中值</dd>\n\n     <dt>selecturl = AJAX 数据请求的URL</dt>\n     <dd>下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符</dd>\n\n     <dt>selectignoreinitrequest = bool, default = false</dt>\n     <dd>\n         首次初始化时, 是否需要请求新数据\n         <br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多\n     </dd>\n\n     <dt>selecttarget = selector</dt>\n     <dd>下一级下拉框的选择器语法</dd>\n\n     <dt>selectdatacb = 静态数据请求回调</dt>\n     <dd>如果数据不需要 AJAX 请求, 可使用这个属性, 自行定义数据处理方式</dd>\n\n     <dt>selectrandomurl = bool, default = false</dt>\n     <dd>AJAX 请求时, 添加随机参数, 防止数据缓存</dd>\n\n     <dt>selecttriggerinitchange = bool, default = true</dt>\n     <dd>首次初始化时, 是否触发 change 事件</dd>\n\n     <dt>selecthideempty = bool, default = false</dt>\n     <dd>是否隐藏没有数据的 selecct</dd>\n\n     <dt>selectdatafilter = 请求数据后的处理回调</dt>\n     <dd>如果接口的数据不符合 select 的要求, 可通过这个属性定义数据过滤函数</dd>\n\n     <dt>selectbeforeinited = 初始化之前的回调</dt>\n\n     <dt>selectinited = 初始化后的回调</dt>\n<dd><xmp>function selectinited( _items ){\n   var _ins = this;\n}</xmp>\n</dd>\n\n     <dt>selectallchanged = 所有select请求完数据之后的回调, <b>window 变量域</b></dt>\n     <dd><xmp>function selectallchanged( _items ){\n   var _ins = this;\n}</xmp>\n     </dd>\n</dl>\n<h2>option 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultoption, 这个属性不需要赋值</dt>\n     <dd>声明默认 option 选项, 更新option时, 有该属性的项不会被清除</dd>\n</dl>\n<h2>数据格式</h2>\n<p>\n     [ [id, name], [id, name] ... ]\n     <br /> 如果获取到的数据格式不是默认格式,\n     可以通过 <a href='JC.AutoSelect.html#property_dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤\n</p>",
+            "description": "<h2>select 级联下拉框无限联动</h2>\n<br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能\n<br /><br />动态添加的 DOM 需要显式调用 JC.AutoSelect( domSelector ) 进行初始化\n<br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoSelect.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.AutoSelect/0.2/_demo' target='_blank'>demo link</a></p>\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<h2>select 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultselect, 这个属性不需要赋值</dt>\n     <dd>该属性声明这是级联下拉框的第一个下拉框, <b>这是必填项,初始化时以这个为入口</b></dd>\n\n     <dt>selectvalue = string</dt>\n     <dd>下拉框的默认选中值</dd>\n\n     <dt>selecturl = AJAX 数据请求的URL</dt>\n     <dd>下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符</dd>\n\n     <dt>selectignoreinitrequest = bool, default = false</dt>\n     <dd>\n         首次初始化时, 是否需要请求新数据\n         <br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多\n     </dd>\n\n     <dt>selecttarget = selector</dt>\n     <dd>下一级下拉框的选择器语法</dd>\n\n     <dt>selectdatacb = 静态数据请求回调</dt>\n     <dd>如果数据不需要 AJAX 请求, 可使用这个属性, 自行定义数据处理方式</dd>\n\n     <dt>selectrandomurl = bool, default = false</dt>\n     <dd>AJAX 请求时, 添加随机参数, 防止数据缓存</dd>\n\n     <dt>selecttriggerinitchange = bool, default = true</dt>\n     <dd>首次初始化时, 是否触发 change 事件</dd>\n\n     <dt>selecthideempty = bool, default = false</dt>\n     <dd>是否隐藏没有数据的 selecct</dd>\n\n     <dt>selectdatafilter = 请求数据后的处理回调</dt>\n     <dd>如果接口的数据不符合 select 的要求, 可通过这个属性定义数据过滤函数</dd>\n\n     <dt>selectbeforeinited = 初始化之前的回调</dt>\n\n     <dt>selectinited = 初始化后的回调</dt>\n<dd><pre>function selectinited( _items ){\n   var _ins = this;\n}</pre>\n</dd>\n\n     <dt>selectallchanged = 所有select请求完数据之后的回调, <b>window 变量域</b></dt>\n     <dd><pre>function selectallchanged( _items ){\n   var _ins = this;\n}</pre>\n     </dd>\n</dl>\n<h2>option 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultoption, 这个属性不需要赋值</dt>\n     <dd>声明默认 option 选项, 更新option时, 有该属性的项不会被清除</dd>\n</dl>\n<h2>数据格式</h2>\n<p>\n     [ [id, name], [id, name] ... ]\n     <br /> 如果获取到的数据格式不是默认格式,\n     可以通过 <a href='JC.AutoSelect.html#property_dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤\n</p>",
             "static": 1,
             "version": "dev 0.2",
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
@@ -744,7 +740,7 @@
             "namespace": "JC",
             "file": "../modules/JC.Panel/0.1/Panel.js",
             "line": 6,
-            "description": "弹出层基础类 JC.Panel\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<h2>Panel Layout 可用的 html attribute</h2>\n<dl>\n     <dt>panelclickclose = bool</dt>\n     <dd>点击 Panel 外时, 是否关闭 panel</dd>\n\n     <dt>panelautoclose = bool</dt>\n     <dd>Panel 是否自动关闭, 默认关闭时间间隔 = 2000 ms</dd>\n\n     <dt>panelautoclosems = int, default = 2000 ms</dt>\n     <dd>自动关闭 Panel 的时间间隔</dd>\n</dl>\n<h2>a, button 可用的 html attribute( 自动生成弹框)</h2>\n<dl>\n     <dt>paneltype = string, require</dt>\n     <dd>\n         弹框类型: alert, confirm, msgbox, panel \n         <br />dialog.alert, dialog.confirm, dialog.msgbox, dialog\n     </dd>\n\n     <dt>panelmsg = string</dt>\n     <dd>要显示的内容</dd>\n\n     <dt>panelmsgBox = script selector</dt>\n     <dd>要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性</dd>\n\n     <dt>panelstatus = int, default = 0</dt>\n     <dd>\n         弹框状态: 0: 成功, 1: 失败, 2: 警告 \n         <br /><b>类型不为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelcallback = function</dt>\n     <dd>\n         点击确定按钮的回调, <b>window 变量域</b>\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>\n     </dd>\n\n     <dt>panelcancelcallback = function</dt>\n     <dd>\n         点击取消按钮的回调, <b>window 变量域</b>\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>\n     </dd>\n\n     <dt>panelclosecallback = function</dt>\n     <dd>\n         弹框关闭时的回调, <b>window 变量域</b>\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>\n     </dd>\n\n     <dt>panelbutton = int, default = 0</dt>\n     <dd>\n         要显示的按钮, 0: 无, 1: 确定, 2: 确定, 取消\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelheader = string</dt>\n     <dd>\n         panel header 的显示内容\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelheaderBox = script selector</dt>\n     <dd>\n         panel header 的显示内容\n         <br />要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelfooterbox = script selector</dt>\n     <dd>\n         panel footer 的显示内容\n         <br />要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelhideclose = bool, default = false</dt>\n     <dd>\n         是否隐藏关闭按钮\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n</dl>",
+            "description": "弹出层基础类 JC.Panel\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<h2>Panel Layout 可用的 html attribute</h2>\n<dl>\n     <dt>panelclickclose = bool</dt>\n     <dd>点击 Panel 外时, 是否关闭 panel</dd>\n\n     <dt>panelautoclose = bool</dt>\n     <dd>Panel 是否自动关闭, 默认关闭时间间隔 = 2000 ms</dd>\n\n     <dt>panelautoclosems = int, default = 2000 ms</dt>\n     <dd>自动关闭 Panel 的时间间隔</dd>\n</dl>\n<h2>a, button 可用的 html attribute( 自动生成弹框)</h2>\n<dl>\n     <dt>paneltype = string, require</dt>\n     <dd>\n         弹框类型: alert, confirm, msgbox, panel \n         <br />dialog.alert, dialog.confirm, dialog.msgbox, dialog\n     </dd>\n\n     <dt>panelmsg = string</dt>\n     <dd>要显示的内容</dd>\n\n     <dt>panelmsgBox = script selector</dt>\n     <dd>要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性</dd>\n\n     <dt>panelstatus = int, default = 0</dt>\n     <dd>\n         弹框状态: 0: 成功, 1: 失败, 2: 警告 \n         <br /><b>类型不为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelcallback = function</dt>\n     <dd>\n         点击确定按钮的回调, <b>window 变量域</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>\n     </dd>\n\n     <dt>panelcancelcallback = function</dt>\n     <dd>\n         点击取消按钮的回调, <b>window 变量域</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>\n     </dd>\n\n     <dt>panelclosecallback = function</dt>\n     <dd>\n         弹框关闭时的回调, <b>window 变量域</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>\n     </dd>\n\n     <dt>panelbutton = int, default = 0</dt>\n     <dd>\n         要显示的按钮, 0: 无, 1: 确定, 2: 确定, 取消\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelheader = string</dt>\n     <dd>\n         panel header 的显示内容\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelheaderBox = script selector</dt>\n     <dd>\n         panel header 的显示内容\n         <br />要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelfooterbox = script selector</dt>\n     <dd>\n         panel footer 的显示内容\n         <br />要显示的脚本模板, 如果需要显示大量 HTML, 应该使用这个属性\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n\n     <dt>panelhideclose = bool, default = false</dt>\n     <dd>\n         是否隐藏关闭按钮\n         <br /><b>类型为 panel, dialog 时生效</b>\n     </dd>\n</dl>",
             "is_constructor": 1,
             "params": [
                 {
@@ -904,7 +900,7 @@
                 },
                 {
                     "name": "_cb",
-                    "description": "弹框自动关闭后的的回调, <b>如果 _cb 为 int 值, 将视为 _closeMs</b>\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "弹框自动关闭后的的回调, <b>如果 _cb 为 int 值, 将视为 _closeMs</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 },
                 {
@@ -950,7 +946,7 @@
                 },
                 {
                     "name": "_cb",
-                    "description": "点击弹框确定按钮的回调\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "点击弹框确定按钮的回调\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 }
             ],
@@ -991,12 +987,12 @@
                 },
                 {
                     "name": "_cb",
-                    "description": "点击弹框确定按钮的回调\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "点击弹框确定按钮的回调\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 },
                 {
                     "name": "_cancelCb",
-                    "description": "点击弹框取消按钮的回调\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "点击弹框取消按钮的回调\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 }
             ],
@@ -1073,7 +1069,7 @@
                 },
                 {
                     "name": "_cb",
-                    "description": "弹框自动关闭后的的回调, <b>如果 _cb 为 int 值, 将视为 _closeMs</b>\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "弹框自动关闭后的的回调, <b>如果 _cb 为 int 值, 将视为 _closeMs</b>\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 },
                 {
@@ -1114,7 +1110,7 @@
                 },
                 {
                     "name": "_cb",
-                    "description": "点击弹框确定按钮的回调\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "点击弹框确定按钮的回调\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 }
             ],
@@ -1150,12 +1146,12 @@
                 },
                 {
                     "name": "_cb",
-                    "description": "点击弹框确定按钮的回调\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "点击弹框确定按钮的回调\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 },
                 {
                     "name": "_cancelCb",
-                    "description": "点击弹框取消按钮的回调\n<xmp>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</xmp>",
+                    "description": "点击弹框取消按钮的回调\n<pre>function( _evtName, _panelIns ){\n   var _btn = $(this);\n}</pre>",
                     "type": "Function"
                 }
             ],
@@ -1490,7 +1486,7 @@
             "namespace": "JC",
             "file": "../modules/JC.Valid/0.2/Valid.js",
             "line": 5,
-            "description": "<b>表单验证</b> (单例模式)\n<br />全局访问请使用 JC.Valid 或 Valid\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Valid/0.2/_demo/' target='_blank'>demo link</a></p>\n<h2>Form 的可用 html attribute</h2>\n<dl>\n     <dt>errorabort = bool, default = true</dt>\n     <dd>\n         查检Form Control时, 如果发生错误是否继续检查下一个\n         <br />true: 继续检查, false, 停止检查下一个\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 表单所有控件的 em  CSS display 显示类型\n     </dd>\n</dl>\n<h2>Form Control的可用 html attribute</h2>\n<dl>\n     <dt>reqmsg = 错误提示</dt>\n     <dd>值不能为空, class=error errormsg</dd>\n\n     <dt>errmsg = 错误提示</dt>\n     <dd>格式错误, 但不验证为空的值, class=error errormsg</dd>\n\n     <dt>focusmsg = 控件获得焦点的提示信息</dt>\n     <dd>\n         这个只作提示用, class=focusmsg\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>emel = selector</dt>\n     <dd>显示错误信息的selector</dd>\n\n     <dt>validel = selector</dt>\n     <dd>显示正确信息的selector</dd>\n\n     <dt>focusel = selector</dt>\n     <dd>显示提示信息的selector</dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 em 的 CSS display 显示类型\n     </dd>\n\n     <dt>ignoreprocess = bool, default = false</dt>\n     <dd>验证表单控件时, 是否忽略</dd>\n\n     <dt>minlength = int(最小长度)</dt>\n     <dd>验证内容的最小长度, 但不验证为空的值</dd>\n\n     <dt>maxlength = int(最大长度)</dt>\n     <dd>验证内容的最大长度, 但不验证为空的值</dd>\n\n     <dt>minvalue = [number|ISO date](最小值)</dt>\n     <dd>验证内容的最小值, 但不验证为空的值</dd>\n\n     <dt>maxvalue = [number|ISO date](最大值)</dt>\n     <dd>验证内容的最大值, 但不验证为空的值</dd>\n\n     <dt>validitemcallback = function</dt>\n     <dd>\n         对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>\n<xmp>function validItemCallback( _selector, _isValid ){\n}</xmp>\n     </dd>\n\n     <dt>datatype: 常用数据类型</dt>\n     <dd><b>n:</b> 检查是否为正确的数字</dd>\n     <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>\n     <dd>\n         <b>nrange:</b> 检查两个control的数值范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>d:</b> 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD</dd>\n     <dd>\n         <b>daterange:</b> 检查两个control的日期范围\n         <dl>\n             <dd>html attr <b>fromDateEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toDateEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 daterange, 按顺序定为 fromDateEl, toDateEl</dd>\n         </dl>\n     </dd>\n     <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>\n     <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>\n     <dd>\n         <b>bankcard:</b> 是否为正确的银行卡\n         <br />格式为: d{15}, d{16}, d{17}, d{19}\n     </dd>\n     <dd>\n         <b>cnname:</b> 中文姓名\n         <br>格式: 汉字和大小写字母\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>username:</b> 注册用户名\n         <br>格式: a-zA-Z0-9_-\n         <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30\n     </dd>\n     <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>\n     <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\\d]{9}</dd>\n     <dd><b>mobile:</b> mobilecode 的别名</dd>\n     <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>\n     <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>\n     <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>\n     <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>\n     <dd><b>phonezone:</b> 电话区号, 3~4位数字. phonezone-n,m 可指定位数长度</dd>\n     <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>\n     <dd><b>countrycode:</b> 地区代码, [+]1~6位数字</dd>\n     <dd><b>mobilephone:</b> mobilecode | phone</dd>\n     <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>\n     <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>\n     <dd>\n         <b>vcode:</b> 验证码, 0-9a-zA-Z, 长度 默认为4\n         <br />可通过 vcode-[\\d], 指定验证码长度\n     </dd>\n     <dd>\n         <b>text:</b> 显示声明检查的内容为文本类型\n         <br />默认就是 text, 没有特殊原因其实不用显示声明\n     </dd>\n     <dd>\n         <b>bytetext:</b> 声明按字节检查文本长度\n         <br /> ASCII 算一个字符, 非 ASCII 算两个字符\n     </dd>\n     <dd><b>url:</b> URL 格式, ftp, http, https</dd>\n     <dd><b>domain:</b> 匹配域名, 宽松模式, 允许匹配 http(s), 且结尾允许匹配反斜扛(/)</dd>\n     <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>\n     <dd><b>email:</b> 电子邮件</dd>\n     <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>\n     <dd><b>taxcode:</b> 纳税人识别号, 长度: 15, 18, 20 </dd>\n\n     <dd>\n         <dl>\n             <dt>checkbox: 默认需要至少选中N 个 checkbox</dt>\n             <dd>\n                 默认必须选中一个 checkbox\n                 <br > 如果需要选中N个, 用这种格式 checkbox-n, checkbox-3 = 必须选中三个\n                 <br > datatarget: 声明所有 checkbox 的选择器\n             </dd>\n         </dl>\n     </dd>\n\n     <dd>\n         <dl>\n             <dt>file: 判断文件扩展名</dt>\n             <dd>属性名(文件扩展名列表): fileext</dd>\n             <dd>格式: .ext[, .ext]</dd>\n             <dd>\n<xmp>   <input type=\"file\" \n   reqmsg=\"文件\" \n   errmsg=\"允许上传的文件类型: .gif, .jpg, .jpeg, .png\"\n   datatype=\"file\" \n   fileext=\".gif, .jpg, .jpeg, .png\" \n   />\n   <label>.gif, .jpg, .jpeg, .png</label>\n   <em class=\"error\"></em>\n   <em class=\"validmsg\"></em>\n</xmp>\n                   </dd>\n         </dl>\n     </dd>\n\n     <dt>subdatatype: 特殊数据类型, 以逗号分隔多个属性</dt>\n     <dd>\n         <dl>\n             <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>\n             <dd><b>alternativedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>alternativemsg:</b> N 选一的错误提示</dd>\n\n             <dd>\n                 <b>alternativeReqTarget:</b> 为 alternative node 指定一个不能为空的 node\n                 <br /><b>请使用 subdatatype = reqtarget</b>, 这个附加属性将弃除\n             </dd>\n             <dd><b>alternativeReqmsg:</b> alternativeReqTarget 目标 node 的html属性, 错误时显示的提示信息</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reqtarget: 如果 selector 的值非空, 那么 datatarget 的值也不能为空</dt>\n             <dd><b>datatarget:</b> 显式指定 目标 target</dd>\n             <dd><b>reqTargetDatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reqtargetmsg:</b> target node 用于显示错误提示的 html 属性</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reconfirm: N 个 Control 的值必须保持一致</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>\n             <dd><b>reconfirmdatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>unique: N 个 Control 的值必须保持唯一性, 不能有重复</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=unique]</dd>\n             <dd><b>uniquedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>\n             <dd><b>uniqueIgnoreCase:</b> 是否忽略大小写</dd>\n             <dd><b>uniqueIgnoreEmpty:</b> 是否忽略空的值, 如果组中有空值也会被忽略</dd>\n             <dd><b>processDisabled:</b> 是否处理 disabled 但 visible 的node</dd>\n             <dd>unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )</dt>\n             <dd><b>datavalidMsg:</b> 值不合法时的提示信息</dd>\n             <dd>\n                 <b>datavalidUrl:</b> 验证内容正确与否的 url api\n                 <p>{\"errorno\":0,\"errmsg\":\"\"}</p>\n                 errorno: 0( 正确 ), 非0( 错误 )\n                 <p>datavalidurl=\"./data/handler.php?key={0}\"</p>\n                 {0} 代表 value\n             </dd>\n             <dd>\n                 <b>datavalidCallback:</b> 请求 datavalidUrl 后调用的回调\n<xmp>function datavalidCallback( _json ){\n   var _selector = $(this);\n});</xmp>\n             </dd>\n                 <b>datavalidKeyupCallback:</b> 每次 keyup 的回调\n<xmp>function datavalidKeyupCallback( _evt ){\n   var _selector = $(this);\n});</xmp>\n             </dd>\n             <dd>\n                 <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调\n<xmp>function datavalidUrlFilter( _url ){\n   var _selector = $(this);\n   _url = JC.f.addUrlParams( _url, { 'xtest': 'customData' } );\n   return _url;\n});</xmp>\n             </dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>hidden: 验证隐藏域的值</dt>\n             <dd>\n                 有些特殊情况需要验证隐藏域的值, 请使用 subdatatype=\"hidden\"\n             </dd>\n         </dl>\n     </dd>\n</dl>",
+            "description": "<b>表单验证</b> (单例模式)\n<br />全局访问请使用 JC.Valid 或 Valid\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Valid/0.2/_demo/' target='_blank'>demo link</a></p>\n<h2>Form 的可用 html attribute</h2>\n<dl>\n     <dt>errorabort = bool, default = true</dt>\n     <dd>\n         查检Form Control时, 如果发生错误是否继续检查下一个\n         <br />true: 继续检查, false, 停止检查下一个\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 表单所有控件的 em  CSS display 显示类型\n     </dd>\n</dl>\n<h2>Form Control的可用 html attribute</h2>\n<dl>\n     <dt>reqmsg = 错误提示</dt>\n     <dd>值不能为空, class=error errormsg</dd>\n\n     <dt>errmsg = 错误提示</dt>\n     <dd>格式错误, 但不验证为空的值, class=error errormsg</dd>\n\n     <dt>focusmsg = 控件获得焦点的提示信息</dt>\n     <dd>\n         这个只作提示用, class=focusmsg\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>emel = selector</dt>\n     <dd>显示错误信息的selector</dd>\n\n     <dt>validel = selector</dt>\n     <dd>显示正确信息的selector</dd>\n\n     <dt>focusel = selector</dt>\n     <dd>显示提示信息的selector</dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 em 的 CSS display 显示类型\n     </dd>\n\n     <dt>ignoreprocess = bool, default = false</dt>\n     <dd>验证表单控件时, 是否忽略</dd>\n\n     <dt>minlength = int(最小长度)</dt>\n     <dd>验证内容的最小长度, 但不验证为空的值</dd>\n\n     <dt>maxlength = int(最大长度)</dt>\n     <dd>验证内容的最大长度, 但不验证为空的值</dd>\n\n     <dt>minvalue = [number|ISO date](最小值)</dt>\n     <dd>验证内容的最小值, 但不验证为空的值</dd>\n\n     <dt>maxvalue = [number|ISO date](最大值)</dt>\n     <dd>验证内容的最大值, 但不验证为空的值</dd>\n\n     <dt>validitemcallback = function</dt>\n     <dd>\n         对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>\n<pre>function validItemCallback( _selector, _isValid ){\n}</pre>\n     </dd>\n\n     <dt>datatype: 常用数据类型</dt>\n     <dd><b>n:</b> 检查是否为正确的数字</dd>\n     <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>\n     <dd>\n         <b>nrange:</b> 检查两个control的数值范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>d:</b> 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD</dd>\n     <dd>\n         <b>daterange:</b> 检查两个control的日期范围\n         <dl>\n             <dd>html attr <b>fromDateEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toDateEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 daterange, 按顺序定为 fromDateEl, toDateEl</dd>\n         </dl>\n     </dd>\n     <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>\n     <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>\n     <dd>\n         <b>bankcard:</b> 是否为正确的银行卡\n         <br />格式为: d{15}, d{16}, d{17}, d{19}\n     </dd>\n     <dd>\n         <b>cnname:</b> 中文姓名\n         <br>格式: 汉字和大小写字母\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>username:</b> 注册用户名\n         <br>格式: a-zA-Z0-9_-\n         <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30\n     </dd>\n     <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>\n     <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\\d]{9}</dd>\n     <dd><b>mobile:</b> mobilecode 的别名</dd>\n     <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>\n     <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>\n     <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>\n     <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>\n     <dd><b>phonezone:</b> 电话区号, 3~4位数字. phonezone-n,m 可指定位数长度</dd>\n     <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>\n     <dd><b>countrycode:</b> 地区代码, [+]1~6位数字</dd>\n     <dd><b>mobilephone:</b> mobilecode | phone</dd>\n     <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>\n     <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>\n     <dd>\n         <b>vcode:</b> 验证码, 0-9a-zA-Z, 长度 默认为4\n         <br />可通过 vcode-[\\d], 指定验证码长度\n     </dd>\n     <dd>\n         <b>text:</b> 显示声明检查的内容为文本类型\n         <br />默认就是 text, 没有特殊原因其实不用显示声明\n     </dd>\n     <dd>\n         <b>bytetext:</b> 声明按字节检查文本长度\n         <br /> ASCII 算一个字符, 非 ASCII 算两个字符\n     </dd>\n     <dd><b>url:</b> URL 格式, ftp, http, https</dd>\n     <dd><b>domain:</b> 匹配域名, 宽松模式, 允许匹配 http(s), 且结尾允许匹配反斜扛(/)</dd>\n     <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>\n     <dd><b>email:</b> 电子邮件</dd>\n     <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>\n     <dd><b>taxcode:</b> 纳税人识别号, 长度: 15, 18, 20 </dd>\n\n     <dd>\n         <dl>\n             <dt>checkbox: 默认需要至少选中N 个 checkbox</dt>\n             <dd>\n                 默认必须选中一个 checkbox\n                 <br > 如果需要选中N个, 用这种格式 checkbox-n, checkbox-3 = 必须选中三个\n                 <br > datatarget: 声明所有 checkbox 的选择器\n             </dd>\n         </dl>\n     </dd>\n\n     <dd>\n         <dl>\n             <dt>file: 判断文件扩展名</dt>\n             <dd>属性名(文件扩展名列表): fileext</dd>\n             <dd>格式: .ext[, .ext]</dd>\n             <dd>\n<xmp>   <input type=\"file\" \n   reqmsg=\"文件\" \n   errmsg=\"允许上传的文件类型: .gif, .jpg, .jpeg, .png\"\n   datatype=\"file\" \n   fileext=\".gif, .jpg, .jpeg, .png\" \n   />\n   <label>.gif, .jpg, .jpeg, .png</label>\n   <em class=\"error\"></em>\n   <em class=\"validmsg\"></em>\n</xmp>\n                   </dd>\n         </dl>\n     </dd>\n\n     <dt>subdatatype: 特殊数据类型, 以逗号分隔多个属性</dt>\n     <dd>\n         <dl>\n             <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>\n             <dd><b>alternativedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>alternativemsg:</b> N 选一的错误提示</dd>\n\n             <dd>\n                 <b>alternativeReqTarget:</b> 为 alternative node 指定一个不能为空的 node\n                 <br /><b>请使用 subdatatype = reqtarget</b>, 这个附加属性将弃除\n             </dd>\n             <dd><b>alternativeReqmsg:</b> alternativeReqTarget 目标 node 的html属性, 错误时显示的提示信息</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reqtarget: 如果 selector 的值非空, 那么 datatarget 的值也不能为空</dt>\n             <dd><b>datatarget:</b> 显式指定 目标 target</dd>\n             <dd><b>reqTargetDatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reqtargetmsg:</b> target node 用于显示错误提示的 html 属性</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reconfirm: N 个 Control 的值必须保持一致</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>\n             <dd><b>reconfirmdatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>unique: N 个 Control 的值必须保持唯一性, 不能有重复</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=unique]</dd>\n             <dd><b>uniquedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>\n             <dd><b>uniqueIgnoreCase:</b> 是否忽略大小写</dd>\n             <dd><b>uniqueIgnoreEmpty:</b> 是否忽略空的值, 如果组中有空值也会被忽略</dd>\n             <dd><b>processDisabled:</b> 是否处理 disabled 但 visible 的node</dd>\n             <dd>unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )</dt>\n             <dd><b>datavalidMsg:</b> 值不合法时的提示信息</dd>\n             <dd>\n                 <b>datavalidUrl:</b> 验证内容正确与否的 url api\n                 <p>{\"errorno\":0,\"errmsg\":\"\"}</p>\n                 errorno: 0( 正确 ), 非0( 错误 )\n                 <p>datavalidurl=\"./data/handler.php?key={0}\"</p>\n                 {0} 代表 value\n             </dd>\n             <dd>\n                 <b>datavalidCallback:</b> 请求 datavalidUrl 后调用的回调\n<pre>function datavalidCallback( _json ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n                 <b>datavalidKeyupCallback:</b> 每次 keyup 的回调\n<pre>function datavalidKeyupCallback( _evt ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n             <dd>\n                 <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调\n<pre>function datavalidUrlFilter( _url ){\n   var _selector = $(this);\n   _url = JC.f.addUrlParams( _url, { 'xtest': 'customData' } );\n   return _url;\n});</pre>\n             </dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>hidden: 验证隐藏域的值</dt>\n             <dd>\n                 有些特殊情况需要验证隐藏域的值, 请使用 subdatatype=\"hidden\"\n             </dd>\n         </dl>\n     </dd>\n</dl>",
             "static": 1,
             "version": "0.1,  2013-05-22",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
@@ -1510,20 +1506,6 @@
             "static": 1,
             "version": "dev 0.1 2013-07-04",
             "author": "qiushaowei   <suches@btbtd.org> | 360 75 Team"
-        },
-        "window.jQuery": {
-            "name": "window.jQuery",
-            "shortname": "window.jQuery",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "namespace": "window",
-            "file": "../jquery.js",
-            "line": 1,
-            "description": "jQuery JavaScript Library v1.9.1\n<pre>http://jquery.com/\n\nIncludes Sizzle.js\nhttp://sizzlejs.com/\n\nCopyright 2005, 2012 jQuery Foundation, Inc. and other contributors\nReleased under the MIT license\nhttp://jquery.org/license\nDate: 2013-2-4</pre>",
-            "global": ""
         },
         "window.requirejs": {
             "name": "window.requirejs",
@@ -12339,14 +12321,14 @@
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 3,
             "description": "Top level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 10,
             "access": "private",
             "tagname": "",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12354,25 +12336,25 @@
             "description": "Use <code>jasmine.undefined</code> instead of <code>undefined</code>, since <code>undefined</code> is just\na plain old variable and may be redefined by somebody else.",
             "access": "private",
             "tagname": "",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 25,
             "description": "Show diagnostic messages in the console if set to true",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 31,
             "description": "Default interval in milliseconds for event loop yields (e.g. to allow network activity or to refresh the screen with the HTML-based runner). Small values here may result in slow test running. Zero means no updates until all tests have completed.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 37,
             "description": "Default timeout interval in milliseconds for waitsFor() blocks.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12393,13 +12375,13 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 114,
             "description": "Getter for the Jasmine environment. Ensures one gets created",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12417,7 +12399,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12435,7 +12417,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12453,7 +12435,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12476,7 +12458,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12493,7 +12475,7 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12510,7 +12492,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12529,7 +12511,7 @@
             "return": {
                 "description": "matchable object of the type clazz"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12548,7 +12530,7 @@
             "return": {
                 "description": "matchable object for the sample"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12570,25 +12552,25 @@
                     "type": "String"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 259,
             "description": "The name of the spy, if provided.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 263,
             "description": "Is this Object a spy?",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 267,
             "description": "The actual function this spy stubs.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12597,7 +12579,7 @@
             "example": [
                 "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy.mostRecentCall.args = [1, 2];"
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12606,7 +12588,7 @@
             "example": [
                 "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy(7, 8);\nmySpy.mostRecentCall.args = [7, 8];\nmySpy.argsForCall[0] = [1, 2];\nmySpy.argsForCall[1] = [7, 8];"
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12615,7 +12597,7 @@
             "example": [
                 "\nvar foo = {\n  bar: function() { // do some stuff }\n}\n\n// defining a spy on an existing property: foo.bar\nspyOn(foo, 'bar').andCallThrough();"
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12631,7 +12613,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12647,7 +12629,7 @@
                     "type": "String"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12663,7 +12645,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12672,7 +12654,7 @@
             "example": [
                 "\nspyOn(foo, 'bar');\n\nfoo.bar();\n\nexpect(foo.bar.callCount).toEqual(1);\n\nfoo.bar.reset();\n\nexpect(foo.bar.callCount).toEqual(0);"
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12689,7 +12671,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12707,13 +12689,13 @@
                     "type": "Array"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 443,
             "description": "All parameters are pretty-printed and concatenated together, then written to the current spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12738,7 +12720,7 @@
             "return": {
                 "description": "a Jasmine spy that can be chained with all spy methods"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12759,7 +12741,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12777,7 +12759,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12790,7 +12772,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12803,7 +12785,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12818,7 +12800,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12841,7 +12823,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12854,7 +12836,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12867,7 +12849,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12888,7 +12870,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12906,12 +12888,12 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 633,
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12931,21 +12913,21 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 646,
             "access": "private",
             "tagname": "",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 700,
             "description": "Environment for Jasmine",
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12953,7 +12935,7 @@
             "return": {
                 "description": "an object containing jasmine version build info, if set."
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12961,7 +12943,7 @@
             "return": {
                 "description": "string containing jasmine version build info, if set."
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12969,7 +12951,7 @@
             "return": {
                 "description": "a sequential integer starting at 0"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12977,7 +12959,7 @@
             "return": {
                 "description": "a sequential integer starting at 0"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -12990,13 +12972,13 @@
                     "type": "jasmine.Reporter"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 977,
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13020,13 +13002,13 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1030,
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13048,7 +13030,7 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13060,7 +13042,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13074,7 +13056,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toBe() instead.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13086,7 +13068,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13100,7 +13082,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toEqual() instead.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13112,7 +13094,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13126,48 +13108,48 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toMatch() instead.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1263,
             "description": "Matcher that compares the actual to jasmine.undefined.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1270,
             "description": "Matcher that compares the actual to jasmine.undefined.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1277,
             "description": "Matcher that compares the actual to null.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1284,
             "description": "Matcher that boolean not-nots the actual.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1292,
             "description": "Matcher that boolean nots the actual.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1300,
             "description": "Matcher that checks to see if the actual, a Jasmine spy, was called.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1322,
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13175,7 +13157,7 @@
             "description": "Matcher that checks to see if the actual, a Jasmine spy, was not called.",
             "deprecated": true,
             "deprecationMessage": "Use expect(xxx).not.toHaveBeenCalled() instead",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13184,17 +13166,17 @@
             "example": [
                 "\n"
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1378,
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1381,
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13207,7 +13189,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13222,7 +13204,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toContain() instead.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13240,7 +13222,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13253,55 +13235,55 @@
                     "type": "String"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1619,
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1715,
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1750,
             "description": "Holds results for a set of Jasmine spec. Allows for the results array to hold another jasmine.NestedResults",
             "is_constructor": 1,
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1756,
             "description": "The total count of results",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1760,
             "description": "Number of passed results",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1764,
             "description": "Number of failed results",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1768,
             "description": "Was this suite/spec skipped?",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1772,
             "ignore": "",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13313,7 +13295,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13325,13 +13307,13 @@
                     "description": "Array of message parts which will be concatenated later."
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1797,
             "description": "Getter for the results: message & results.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13344,7 +13326,7 @@
                     "type": "jasmine.ExpectationResult|jasmine.NestedResults"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13353,13 +13335,13 @@
                 "description": "True if <b>everything</b> below passed",
                 "type": "Boolean"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 1830,
             "description": "Base class for pretty printing for expectation results.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13371,7 +13353,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13385,7 +13367,7 @@
                     "type": "jasmine.Env"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13409,13 +13391,13 @@
                     "type": "String"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
             "line": 2168,
             "description": "All parameters are pretty-printed and concatenated together, then written to the spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13427,7 +13409,7 @@
                     "type": "jasmine.ExpectationResult"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13442,7 +13424,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13465,7 +13447,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13494,7 +13476,7 @@
                     "type": "jasmine.Suite"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/rate/spec/lib/jasmine.js",
@@ -13529,7 +13511,7 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13551,7 +13533,7 @@
                 "description": "Encrypted output state array",
                 "type": "Number[]"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13568,7 +13550,7 @@
                 "description": "Expanded key schedule as 2D byte-array (Nr+1 x Nb bytes)",
                 "type": "Number[][]"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13595,7 +13577,7 @@
                 "description": "Encrypted text",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13622,7 +13604,7 @@
                 "description": "Decrypted text",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13646,7 +13628,7 @@
                 "description": "Base64-encoded string",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13670,7 +13652,7 @@
                 "description": "decoded string",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13687,7 +13669,7 @@
                 "description": "encoded string",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/aes.js",
@@ -13704,24 +13686,24 @@
                 "description": "decoded string",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/domReady.js",
             "line": 1,
             "license": "RequireJS domReady 2.0.1 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.\nAvailable via the MIT or new BSD license.\nsee: http://github.com/requirejs/domReady for details",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/domReady.js",
             "line": 40,
             "description": "Sets the page as loaded.",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/domReady.js",
             "line": 97,
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/domReady.js",
@@ -13734,24 +13716,24 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/domReady.js",
             "line": 115,
             "description": "Loader Plugin API method",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../modules/JC.plugins/domReady.js",
             "line": 126,
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../config.js",
             "line": 3,
             "description": "requirejs config.js for JC Project",
-            "class": "window.jQuery"
+            "class": "window.requirejs"
         },
         {
             "file": "../config.js",
@@ -13762,7 +13744,13 @@
                 "description": "脚本所在目录的完整路径",
                 "type": "String"
             },
-            "class": "window.jQuery"
+            "class": "window.requirejs"
+        },
+        {
+            "file": "../jquery.js",
+            "line": 1,
+            "description": "jQuery JavaScript Library v1.9.1\n<pre>http://jquery.com/\n\nIncludes Sizzle.js\nhttp://sizzlejs.com/\n\nCopyright 2005, 2012 jQuery Foundation, Inc. and other contributors\nReleased under the MIT license\nhttp://jquery.org/license\nDate: 2013-2-4</pre>",
+            "class": "window.requirejs"
         },
         {
             "file": "../lib.js",
@@ -13773,8 +13761,7 @@
                 "description": "脚本所在目录的完整路径",
                 "type": "String"
             },
-            "class": "window.requirejs",
-            "namespace": "window"
+            "class": "window.requirejs"
         },
         {
             "file": "../require.js",
@@ -15349,6 +15336,10 @@
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
             "line": " ../config.js:48"
+        },
+        {
+            "message": "Missing item type\njQuery JavaScript Library v1.9.1\n<pre>http://jquery.com/\n\nIncludes Sizzle.js\nhttp://sizzlejs.com/\n\nCopyright 2005, 2012 jQuery Foundation, Inc. and other contributors\nReleased under the MIT license\nhttp://jquery.org/license\nDate: 2013-2-4</pre>",
+            "line": " ../jquery.js:1"
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",

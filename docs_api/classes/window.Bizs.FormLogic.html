@@ -68,7 +68,6 @@
                 <li><a href="../classes/window.Bizs.FormLogic.html">window.Bizs.FormLogic</a></li>
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
-                <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
                 <li><a href="../classes/window.requirejs.html">window.requirejs</a></li>
             </ul>
             <ul id="api-modules" class="apis modules">
@@ -138,29 +137,29 @@
      <dt>formBeforeProcess = function</dt>
      <dd>
          表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>
-<xmp>function formBeforeProcess( _evt, _ins ){
+<pre>function formBeforeProcess( _evt, _ins ){
    var _form = $(this);
    JC.log( 'formBeforeProcess', new Date().getTime() );
    //return false;
-}</xmp>
+}</pre>
      </dd>
      <dt>formProcessError = function</dt>
      <dd>
          提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>
-<xmp>function formProcessError( _evt, _ins ){
+<pre>function formProcessError( _evt, _ins ){
    var _form = $(this);
    JC.log( 'formProcessError', new Date().getTime() );
    //return false;
-}</xmp>
+}</pre>
      </dd>
      <dt>formAfterProcess = function</dt>
      <dd>
          表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>
-<xmp>function formAfterProcess( _evt, _ins ){
+<pre>function formAfterProcess( _evt, _ins ){
    var _form = $(this);
    JC.log( 'formAfterProcess', new Date().getTime() );
    //return false;
-}</xmp>
+}</pre>
      </dd>
      <dt>formConfirmPopupType = string, default = dialog</dt>
      <dd>定义提示框的类型: dialog, popup</dd>
@@ -181,7 +180,7 @@
      <dd>
          AJAX 提交完成后的回调, <b>window 变量域</b>
          <br />如果没有显式声明, FormLogic将自行处理
-<xmp>function formAjaxDone( _json, _submitButton, _ins ){
+<pre>function formAjaxDone( _json, _submitButton, _ins ){
    var _form = $(this);
    JC.log( 'custom formAjaxDone', new Date().getTime() );
    if( _json.errorno ){
@@ -191,7 +190,7 @@
            JC.f.reloadPage( "?donetype=custom" );
        });
    }
-};</xmp>
+};</pre>
      </dd>
      <dt>formAjaxDoneAction = url</dt>
      <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>
@@ -208,11 +207,11 @@
      <dt>formConfirmCheckCallback = function</dt>
      <dd>
          提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>
-<xmp>function formConfirmCheckCallback( _trigger, _evt, _ins ){
+<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){
    var _form = $(this);
    JC.log( 'formConfirmCheckCallback', new Date().getTime() );
    return _form.find('td.js_confirmCheck input[value=0]:checked').length;
-}</xmp>
+}</pre>
      </dt>
 </dl>
 <h2>reset button 可用的 html 属性</h2>

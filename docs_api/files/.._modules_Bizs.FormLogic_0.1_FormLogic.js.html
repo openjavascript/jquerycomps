@@ -129,8 +129,6 @@
             
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
             
-                <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
-            
                 <li><a href="../classes/window.requirejs.html">window.requirejs</a></li>
             
             </ul>
@@ -211,31 +209,31 @@
      *      &lt;dt&gt;formBeforeProcess = function&lt;/dt&gt;
      *      &lt;dd&gt;
      *          表单开始提交时且没开始验证时, 触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;
-&lt;xmp&gt;function formBeforeProcess( _evt, _ins ){
+&lt;pre&gt;function formBeforeProcess( _evt, _ins ){
     var _form = $(this);
     JC.log( &#x27;formBeforeProcess&#x27;, new Date().getTime() );
     //return false;
-}&lt;/xmp&gt;
+}&lt;/pre&gt;
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;formProcessError = function&lt;/dt&gt;
      *      &lt;dd&gt;
      *          提交时, 验证未通过时, 触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;
-&lt;xmp&gt;function formProcessError( _evt, _ins ){
+&lt;pre&gt;function formProcessError( _evt, _ins ){
     var _form = $(this);
     JC.log( &#x27;formProcessError&#x27;, new Date().getTime() );
     //return false;
-}&lt;/xmp&gt;
+}&lt;/pre&gt;
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;formAfterProcess = function&lt;/dt&gt;
      *      &lt;dd&gt;
      *          表单开始提交时且验证通过后, 触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;
-&lt;xmp&gt;function formAfterProcess( _evt, _ins ){
+&lt;pre&gt;function formAfterProcess( _evt, _ins ){
     var _form = $(this);
     JC.log( &#x27;formAfterProcess&#x27;, new Date().getTime() );
     //return false;
-}&lt;/xmp&gt;
+}&lt;/pre&gt;
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;formConfirmPopupType = string, default = dialog&lt;/dt&gt;
@@ -263,7 +261,7 @@
      *      &lt;dd&gt;
      *          AJAX 提交完成后的回调, &lt;b&gt;window 变量域&lt;/b&gt;
      *          &lt;br /&gt;如果没有显式声明, FormLogic将自行处理
-&lt;xmp&gt;function formAjaxDone( _json, _submitButton, _ins ){
+&lt;pre&gt;function formAjaxDone( _json, _submitButton, _ins ){
     var _form = $(this);
     JC.log( &#x27;custom formAjaxDone&#x27;, new Date().getTime() );
 
@@ -274,7 +272,7 @@
             JC.f.reloadPage( &quot;?donetype=custom&quot; );
         });
     }
-};&lt;/xmp&gt;
+};&lt;/pre&gt;
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;formAjaxDoneAction = url&lt;/dt&gt;
@@ -296,11 +294,11 @@
      *      &lt;dt&gt;formConfirmCheckCallback = function&lt;/dt&gt;
      *      &lt;dd&gt;
      *          提交表单时, 进行二次确认的条件判断, &lt;b&gt;window 变量域&lt;/b&gt;
-&lt;xmp&gt;function formConfirmCheckCallback( _trigger, _evt, _ins ){
+&lt;pre&gt;function formConfirmCheckCallback( _trigger, _evt, _ins ){
     var _form = $(this);
     JC.log( &#x27;formConfirmCheckCallback&#x27;, new Date().getTime() );
     return _form.find(&#x27;td.js_confirmCheck input[value=0]:checked&#x27;).length;
-}&lt;/xmp&gt;
+}&lt;/pre&gt;
      *      &lt;/dt&gt;
      * &lt;/dl&gt;
      *
