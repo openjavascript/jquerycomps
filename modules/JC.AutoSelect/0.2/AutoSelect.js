@@ -48,15 +48,15 @@
      *      <dt>selectbeforeinited = 初始化之前的回调</dt>
      *
      *      <dt>selectinited = 初始化后的回调</dt>
-<dd><xmp>function selectinited( _items ){
+<dd><pre>function selectinited( _items ){
     var _ins = this;
-}</xmp>
+}</pre>
 </dd>
      *
      *      <dt>selectallchanged = 所有select请求完数据之后的回调, <b>window 变量域</b></dt>
-     *      <dd><xmp>function selectallchanged( _items ){
+     *      <dd><pre>function selectallchanged( _items ){
     var _ins = this;
-}</xmp>
+}</pre>
      *      </dd>
      * </dl>
      * <h2>option 标签可用的 HTML 属性</h2>

@@ -14,7 +14,7 @@
      * <dl>
      *      <dt>cauStyle = string, default = g1</dt>
      *      <dd>
-     *          按钮显示的样式, <a href='../../modules/JC.AjaxUpload/res/default/style.html' target='_blank'>可选样式</a>:
+     *          按钮显示的样式, <a href='../../modules/JC.AjaxUpload/0.1/res/default/style.html' target='_blank'>可选样式</a>:
      *          <dl>
      *              <dt>绿色按钮</dt>
      *              <dd>g1, g2, g3</dd>
@@ -59,33 +59,33 @@
      *      <dt>cauUploadDoneCallback = function, optional</dt>
      *      <dd>
      *          文件上传完毕时, 触发的回调
-<xmp>function cauUploadDoneCallback( _json, _selector, _frame ){
+<pre>function cauUploadDoneCallback( _json, _selector, _frame ){
     var _ins = this;
     //alert( _json ); //object object
-}</xmp>
+}</pre>
      *      </dd>
      *
      *      <dt>cauUploadErrorCallback = function, optional</dt>
      *      <dd>
      *          文件上传完毕时, 发生错误触发的回调
-<xmp>function cauUploadErrorCallback( _json, _selector, _frame ){
+<pre>function cauUploadErrorCallback( _json, _selector, _frame ){
     var _ins = this;
     //alert( _json ); //object object
-}</xmp>
+}</pre>
      *      </dd>
      *
      *      <dt>cauDisplayLabelCallback = function, optional, return = string</dt>
      *      <dd>
      *          自定义上传完毕后显示的内容 模板
-<xmp>function cauDisplayLabelCallback( _json, _label, _value ){
+<pre>function cauDisplayLabelCallback( _json, _label, _value ){
     var _selector = this
-        , _label = JC.f.printf( '<a href="{0}" class="green js_auLink" target="_blank">{1}</a>{2}'
+        , _label = JC.f.printf( '&lt;a href="{0}" class="green js_auLink" target="_blank">{1}&lt;/a>{2}'
                         , _value, _label
-                        ,  '&nbsp;<a href="javascript:" class="btn btn-cls2 js_cleanCauData"></a>&nbsp;&nbsp;'
+                        ,  '&nbsp;&lt;a href="javascript:" class="btn btn-cls2 js_cleanCauData">&lt;/a>&nbsp;&nbsp;'
                     )
         ;
     return _label;
-}</xmp>
+}</pre>
      *      </dd>
      * </dl>
      * @namespace JC
@@ -206,6 +206,7 @@
      * @private
      */
     AjaxUpload._FRAME_DIR = "modules/JC.AjaxUpload/0.1/frame/";
+    define && !define.amd && ( AjaxUpload._FRAME_DIR = 'comps/AjaxUpload/frame/' );
     /**
      * 初始化 frame 时递增的统计变量
      * @property    _INS_COUNT

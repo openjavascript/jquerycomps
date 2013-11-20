@@ -8,7 +8,9 @@
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>
      * | <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
+     *
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
+     *
      * <h2>Panel Layout 可用的 html attribute</h2>
      * <dl>
      *      <dt>panelclickclose = bool</dt>
@@ -43,25 +45,25 @@
      *      <dt>panelcallback = function</dt>
      *      <dd>
      *          点击确定按钮的回调, <b>window 变量域</b>
-<xmp>function( _evtName, _panelIns ){
+<pre>function( _evtName, _panelIns ){
     var _btn = $(this);
-}</xmp>
+}</pre>
      *      </dd>
      *
      *      <dt>panelcancelcallback = function</dt>
      *      <dd>
      *          点击取消按钮的回调, <b>window 变量域</b>
-<xmp>function( _evtName, _panelIns ){
+<pre>function( _evtName, _panelIns ){
     var _btn = $(this);
-}</xmp>
+}</pre>
      *      </dd>
      *
      *      <dt>panelclosecallback = function</dt>
      *      <dd>
      *          弹框关闭时的回调, <b>window 变量域</b>
-<xmp>function( _evtName, _panelIns ){
+<pre>function( _evtName, _panelIns ){
     var _btn = $(this);
-}</xmp>
+}</pre>
      *      </dd>
      *
      *      <dt>panelbutton = int, default = 0</dt>
@@ -1302,9 +1304,9 @@
      * @param   {selector}  _popupSrc   触发弹框的事件源 selector, 不为空显示 缓动效果, 为空居中显示
      * @param   {int}       _status     显示弹框的状态, 0: 成功, 1: 错误, 2: 警告
      * @param   {function}  _cb         弹框自动关闭后的的回调, <b>如果 _cb 为 int 值, 将视为 _closeMs</b>
-<xmp>function( _evtName, _panelIns ){
+<pre>function( _evtName, _panelIns ){
     var _btn = $(this);
-}</xmp>
+}</pre>
      * @param   {int}       _closeMs    自动关闭的间隔, 单位毫秒, 默认 2000
      * @return  <a href='JC.Panel.html'>JC.Panel</a>
      */
@@ -1349,9 +1351,9 @@
      * @param   {selector}  _popupSrc   触发弹框的事件源 selector, 不为空显示 缓动效果, 为空居中显示
      * @param   {int}       _status     显示弹框的状态, 0: 成功, 1: 错误, 2: 警告
      * @param   {function}  _cb         点击弹框确定按钮的回调
-<xmp>function( _evtName, _panelIns ){
+<pre>function( _evtName, _panelIns ){
     var _btn = $(this);
-}</xmp>
+}</pre>
      * @return  <a href='JC.Panel.html'>JC.Panel</a>
      */
     JC.alert = 
@@ -1388,13 +1390,13 @@
      * @param   {selector}  _popupSrc   触发弹框的事件源 selector, 不为空显示 缓动效果, 为空居中显示
      * @param   {int}       _status     显示弹框的状态, 0: 成功, 1: 错误, 2: 警告
      * @param   {function}  _cb         点击弹框确定按钮的回调
-<xmp>function( _evtName, _panelIns ){
+<pre>function( _evtName, _panelIns ){
     var _btn = $(this);
-}</xmp>
+}</pre>
      * @param   {function}  _cancelCb   点击弹框取消按钮的回调
-<xmp>function( _evtName, _panelIns ){
+<pre>function( _evtName, _panelIns ){
     var _btn = $(this);
-}</xmp>
+}</pre>
      * @return  <a href='JC.Panel.html'>JC.Panel</a>
      */
     JC.confirm = 
@@ -1945,9 +1947,9 @@
      * @param   {string}    _msg        提示内容
      * @param   {int}       _status     显示弹框的状态, 0: 成功, 1: 错误, 2: 警告
      * @param   {function}  _cb         弹框自动关闭后的的回调, <b>如果 _cb 为 int 值, 将视为 _closeMs</b>
-<xmp>function( _evtName, _panelIns ){
+<pre>function( _evtName, _panelIns ){
     var _btn = $(this);
-}</xmp>
+}</pre>
      * @param   {int}       _closeMs    自动关闭的间隔, 单位毫秒, 默认 2000
      * @return  <a href='JC.Panel.html'>JC.Panel</a>
      */
@@ -1989,9 +1991,9 @@
      * @param   {string}    _msg        提示内容
      * @param   {int}       _status     显示弹框的状态, 0: 成功, 1: 错误, 2: 警告
      * @param   {function}  _cb         点击弹框确定按钮的回调
-<xmp>function( _evtName, _panelIns ){
+<pre>function( _evtName, _panelIns ){
     var _btn = $(this);
-}</xmp>
+}</pre>
      * @return  <a href='JC.Panel.html'>JC.Panel</a>
      */
     JC.Dialog.alert = 
@@ -2030,13 +2032,13 @@
      * @param   {string}    _msg        提示内容
      * @param   {int}       _status     显示弹框的状态, 0: 成功, 1: 错误, 2: 警告
      * @param   {function}  _cb         点击弹框确定按钮的回调
-<xmp>function( _evtName, _panelIns ){
+<pre>function( _evtName, _panelIns ){
     var _btn = $(this);
-}</xmp>
+}</pre>
      * @param   {function}  _cancelCb   点击弹框取消按钮的回调
-<xmp>function( _evtName, _panelIns ){
+<pre>function( _evtName, _panelIns ){
     var _btn = $(this);
-}</xmp>
+}</pre>
      * @return  <a href='JC.Panel.html'>JC.Panel</a>
      */
     JC.Dialog.confirm = 

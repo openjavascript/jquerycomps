@@ -26,28 +26,28 @@
  *      <dt>dldonecallback = function</dt>
  *      <dd>
  *      启用/禁用后会触发的回调, <b>window 变量域</b>
-<xmp>function dldonecallback( _triggerItem, _boxItem ){
+<pre>function dldonecallback( _triggerItem, _boxItem ){
     var _ins = this;
     JC.log( 'dldonecallback', new Date().getTime() );
-}</xmp>
+}</pre>
  *      </dd>
  *
  *      <dt>dlenablecallback = function</dt>
  *      <dd>
  *      启用后的回调, <b>window 变量域</b>
-<xmp>function dlenablecallback( _triggerItem, _boxItem ){
+<pre>function dlenablecallback( _triggerItem, _boxItem ){
     var _ins = this;
     JC.log( 'dlenablecallback', new Date().getTime() );
-}</xmp>
+}</pre>
  *      </dd>
  *
  *      <dt>dldisablecallback = function</dt>
  *      <dd>
  *      禁用后的回调, <b>window 变量域</b>
-<xmp>function dldisablecallback( _triggerItem, _boxItem ){
+<pre>function dldisablecallback( _triggerItem, _boxItem ){
     var _ins = this;
     JC.log( 'dldisablecallback', new Date().getTime() );
-}</xmp>
+}</pre>
  *      </dd>
  * </dl>
  *

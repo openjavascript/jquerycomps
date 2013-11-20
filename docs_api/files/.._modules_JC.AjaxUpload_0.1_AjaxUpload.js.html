@@ -192,7 +192,7 @@
      * &lt;dl&gt;
      *      &lt;dt&gt;cauStyle = string, default = g1&lt;/dt&gt;
      *      &lt;dd&gt;
-     *          按钮显示的样式, &lt;a href=&#x27;../../modules/JC.AjaxUpload/res/default/style.html&#x27; target=&#x27;_blank&#x27;&gt;可选样式&lt;/a&gt;:
+     *          按钮显示的样式, &lt;a href=&#x27;../../modules/JC.AjaxUpload/0.1/res/default/style.html&#x27; target=&#x27;_blank&#x27;&gt;可选样式&lt;/a&gt;:
      *          &lt;dl&gt;
      *              &lt;dt&gt;绿色按钮&lt;/dt&gt;
      *              &lt;dd&gt;g1, g2, g3&lt;/dd&gt;
@@ -237,33 +237,33 @@
      *      &lt;dt&gt;cauUploadDoneCallback = function, optional&lt;/dt&gt;
      *      &lt;dd&gt;
      *          文件上传完毕时, 触发的回调
-&lt;xmp&gt;function cauUploadDoneCallback( _json, _selector, _frame ){
+&lt;pre&gt;function cauUploadDoneCallback( _json, _selector, _frame ){
     var _ins = this;
     //alert( _json ); //object object
-}&lt;/xmp&gt;
+}&lt;/pre&gt;
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;cauUploadErrorCallback = function, optional&lt;/dt&gt;
      *      &lt;dd&gt;
      *          文件上传完毕时, 发生错误触发的回调
-&lt;xmp&gt;function cauUploadErrorCallback( _json, _selector, _frame ){
+&lt;pre&gt;function cauUploadErrorCallback( _json, _selector, _frame ){
     var _ins = this;
     //alert( _json ); //object object
-}&lt;/xmp&gt;
+}&lt;/pre&gt;
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;cauDisplayLabelCallback = function, optional, return = string&lt;/dt&gt;
      *      &lt;dd&gt;
      *          自定义上传完毕后显示的内容 模板
-&lt;xmp&gt;function cauDisplayLabelCallback( _json, _label, _value ){
+&lt;pre&gt;function cauDisplayLabelCallback( _json, _label, _value ){
     var _selector = this
-        , _label = JC.f.printf( &#x27;&lt;a href=&quot;{0}&quot; class=&quot;green js_auLink&quot; target=&quot;_blank&quot;&gt;{1}&lt;/a&gt;{2}&#x27;
+        , _label = JC.f.printf( &#x27;&amp;lt;a href=&quot;{0}&quot; class=&quot;green js_auLink&quot; target=&quot;_blank&quot;&gt;{1}&amp;lt;/a&gt;{2}&#x27;
                         , _value, _label
-                        ,  &#x27;&amp;nbsp;&lt;a href=&quot;javascript:&quot; class=&quot;btn btn-cls2 js_cleanCauData&quot;&gt;&lt;/a&gt;&amp;nbsp;&amp;nbsp;&#x27;
+                        ,  &#x27;&amp;nbsp;&amp;lt;a href=&quot;javascript:&quot; class=&quot;btn btn-cls2 js_cleanCauData&quot;&gt;&amp;lt;/a&gt;&amp;nbsp;&amp;nbsp;&#x27;
                     )
         ;
     return _label;
-}&lt;/xmp&gt;
+}&lt;/pre&gt;
      *      &lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
@@ -384,6 +384,7 @@
      * @private
      */
     AjaxUpload._FRAME_DIR = &quot;modules/JC.AjaxUpload/0.1/frame/&quot;;
+    define &amp;&amp; !define.amd &amp;&amp; ( AjaxUpload._FRAME_DIR = &#x27;comps/AjaxUpload/frame/&#x27; );
     /**
      * 初始化 frame 时递增的统计变量
      * @property    _INS_COUNT

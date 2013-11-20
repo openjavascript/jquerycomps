@@ -15,7 +15,6 @@
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.common.html' target='_blank'>API docs</a>
      * | <a href='../../modules/JC.common/0.2/_demo/' target='_blank'>demo link</a></p>
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
-     * @namespace JC
      * @class JC.common
      * @static
      * @version dev 0.2 2013-11-06 
