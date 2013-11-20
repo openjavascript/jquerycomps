@@ -4,29 +4,30 @@
     <meta charset="UTF-8">
     <title>AutoComplete</title>
     <style>
-        .ui-sug-mod{width: 500px; margin: 200px auto;}
+        body{
+            margin: 20px 40px;
+        }
         .ui-sug-mod input{  height: 26px;  outline: 0; text-indent: 3px;}
-        a { text-decoration: none; color: #333;}
-        .ui-sug-ipt,
-        .ui-sug-list{width: 400px; max-height: 300px; overflow-y: auto;}
     </style>
-    <style>
-    
-        .ui-sug-ipt,
-        .ui-sug-list{  border: 1px solid #ccc;  padding: 0;  }
-        .ui-sug-list{ margin: -1px 0 0; list-style: none; background: #fff; display: none; position: relative; }
-        .ui-sug-list li{line-height: 24px; text-indent: 3px;}
-        
-        .ui-sug-list li.active{background: #eee;}
-        .fakebox{border-color: #4d90fe;}
-    </style>
+    <link href='../../../../modules/JC.AutoComplete/0.1/res/default/style.css' rel='stylesheet' />
 </head>
 <body>
-<form action="www.baidu.com" method="post">
-    <div class="ui-sug-mod js_compAutoComplete">
-        <input type="text" class="ui-sug-ipt" value="" autocomplete="off" preventEnter="true" />
+<h2>JC.AutoComplete 示例</h2>
+<form action="?" method="get">
+    <div class="ui-sug-mod">
+        <input name="ac" type="text" class="ui-sug-ipt js_compAutoComplete" value="" 
+            autocomplete="off" 
+
+            cacPanel="(div ul.js_compAutoCompleteBox"
+            cacLabelKey="data-value"
+            cacValueKey="data-id"
+            cacBindItem="(div input.js_bindItem"
+
+            cacPreventEnter="true" 
+            />
+        <input type="text" class="js_bindItem" value="" />
         <div>
-            <ul class="ui-sug-list">
+            <ul class="ui-sug-list js_compAutoCompleteBox">
                 <li data-id="0" data-value="真心英雄联盟" data-py="z">真心英雄联盟</li>
                 <li data-id="1" data-value="英雄联盟" data-py="yi">英雄联盟</li>
                 <li data-id="2" data-value="移动网上营业厅" data-py="yi">移动网上营业厅</li>
@@ -48,9 +49,12 @@
     </div>
 </form>
 
-    <script src="../../../lib.js"></script>
+    <script src="../../../../lib.js"></script>
+    <script src="../../../../config.js"></script>
     <script>
-        JC.use('AutoComplete');
+        JC.debug = true;
+        requirejs( [ 'JC.AutoComplete' ], function( AutoComplete ){
+        });
     </script>
 </body>
 </html>

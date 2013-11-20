@@ -95,6 +95,17 @@
                 "JC": 1
             }
         },
+        "../modules/JC.AutoComplete/0.1/AutoComplete.js": {
+            "name": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "modules": {},
+            "classes": {
+                "JC.AutoComplete": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../modules/JC.AutoSelect/0.2/AutoSelect.js": {
             "name": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
             "modules": {},
@@ -521,6 +532,32 @@
             ],
             "example": [
                 "\n           <h2>AJAX data:</h2>\n           <dl class=\"def example24\">\n               <dt>checkall example 24</dt>\n               <dd>\n                   <label>\n                       <input type=\"checkbox\" checktype=\"all\" checkfor=\"dl.example24 input[type=checkbox]\">\n                       全选\n                   </label>\n                   <label>\n                       <input type=\"checkbox\" checktype=\"inverse\" checkfor=\"dl.example24 input[type=checkbox]\" checkall=\"dl.example24 input[checktype=all]\">\n                       反选\n                   </label>\n               </dd>\n               <dd>\n                   <label>\n                       <input type='checkbox' value='' name='' checked />\n                       checkall24_1\n                   </label>\n                   <label>\n                       <input type='checkbox' value='' name='' checked />\n                       checkall24_2\n                   </label>\n                   <label>\n                       <input type='checkbox' value='' name='' checked />\n                       checkall24_3\n                   </label>\n                   <label>\n                       <input type='checkbox' value='' name='' checked />\n                       checkall24_4\n                   </label>\n                   <label>\n                       <input type='checkbox' value='' name='' checked />\n                       checkall24_5\n                   </label>\n               </dd>\n           </dl>\n\n           <script>\n           $(document).delegate( 'button.js_ajaxTest', 'click', function(){\n               var _p = $(this);\n               _p.prop('disabled', true);\n               setTimeout( function(){ _p.prop('disabled', false); }, 1000 );\n\n               $.get( './data/initCheckAll.php?rnd='+new Date().getTime(), function( _r ){\n                   var _selector = $(_r);\n                   $( $( 'body' ).children().first() ).before( _selector );\n                   JC.AutoChecked( _selector );\n               });\n           });\n           </script>"
+            ]
+        },
+        "JC.AutoComplete": {
+            "name": "JC.AutoComplete",
+            "shortname": "JC.AutoComplete",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 3,
+            "description": "AutoComplete 文本框输入内容提示\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.AutoComplete/0.1/_demo' target='_blank'>demo link</a></p>\n<h2>可用的 HTML attribute</h2>\n<dl>\n</dl>",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-11-01",
+            "author": "zuojing<zuojing1013@gmail.com>, qiushaowei<suches@btbtd.org> | 75 Team",
+            "example": [
+                ""
             ]
         },
         "JC.AutoSelect": {
@@ -2441,6 +2478,48 @@
                 "description": "bool"
             },
             "class": "JC.AutoChecked",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 34,
+            "description": "获取或设置 AutoComplete 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "AutoCompleteInstance"
+            },
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 50,
+            "description": "初始化可识别的 AutoComplete 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of AutoCompleteInstance"
+            },
+            "class": "JC.AutoComplete",
             "namespace": "JC"
         },
         {
@@ -13753,7 +13832,7 @@
         },
         {
             "file": "../config.js",
-            "line": 48,
+            "line": 49,
             "description": "取当前脚本标签的 src路径",
             "static": 1,
             "return": {
@@ -14163,6 +14242,10 @@
         {
             "message": "unknown tag: version",
             "line": " ../modules/JC.AutoChecked/0.1/AutoChecked.js:3"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:3"
         },
         {
             "message": "unknown tag: version",
@@ -15346,7 +15429,7 @@
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
-            "line": " ../config.js:48"
+            "line": " ../config.js:49"
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",

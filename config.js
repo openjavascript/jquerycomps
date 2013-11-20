@@ -13,7 +13,7 @@ requirejs.config( {
         , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload'
         , 'JC.AutoChecked': 'modules/JC.AutoChecked/0.1/AutoChecked'
         , 'JC.AutoSelect': 'modules/JC.AutoSelect/0.2/AutoSelect'
-        , 'JC.AutoComplete': 'modules/JC.AutoSelect/0.2/AutoSelect'
+        , 'JC.AutoComplete': 'modules/JC.AutoComplete/0.1/AutoComplete'
 
         , 'JC.Calendar': 'modules/JC.Calendar/0.2/Calendar'
 

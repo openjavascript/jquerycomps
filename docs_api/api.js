@@ -3,6 +3,7 @@ YUI.add("yuidoc-meta", function(Y) {
     "classes": [
         "JC.AjaxUpload",
         "JC.AutoChecked",
+        "JC.AutoComplete",
         "JC.AutoSelect",
         "JC.BaseMVC",
         "JC.BaseMVC.Model",
