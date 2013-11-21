@@ -74,6 +74,7 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
         , "scriptPath": scriptPath
         , "sliceArgs": sliceArgs
         , "urlDetect": urlDetect
+        , "moneyFormat": moneyFormat
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量
@@ -877,6 +878,49 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
                 return _r;
             };
     }());
+    /**
+     * 逗号格式化金额
+     * @method  moneyFormat
+     * @param   {int|string}    _number
+     * @param   {int}           _len
+     * @param   {int}           _floatLen
+     * @param   {int}           _splitSymbol
+     * @return  string
+     * @static
+     */
+    function moneyFormat(_number, _len, _floatLen, _splitSymbol){
+        !_len && ( _len = 3 );
+        typeof _floatLen == 'undefined' && ( _floatLen = 2 );
+        !_splitSymbol && ( _splitSymbol = ',' );
+        _number = parseFinance( _number, _floatLen );
+
+        if( !_number ) return '0';
+        _number += ''; 
+
+        _number = _number.replace( /[^\d\.]/g, '' );
+
+        var _parts = _number.split('.'), _sparts = [];
+
+        while( _parts[0].length > _len ){
+            var _tmp = _parts[0].slice( _parts[0].length - _len, _parts[0].length );
+            console.log( _tmp );
+            _sparts.push( _tmp );
+            _parts[0] = _parts[0].slice( 0, _parts[0].length - _len );
+        }
+        _sparts.push( _parts[0] );
+
+        _parts[0] = _sparts.reverse().join( _splitSymbol );
+
+        if( _floatLen ){
+            !_parts[1] && ( _parts[1] = '' );
+            _parts[1] += new Array( _floatLen + 1 ).join('0');
+            _parts[1] = _parts[1].slice( 0, _floatLen );
+        }else{
+            _parts.length > 1 && _parts.pop();
+        }
+
+        return _parts.join('.');
+    }
 
 }(jQuery));
     return JC.f;

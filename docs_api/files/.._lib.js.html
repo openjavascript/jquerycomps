@@ -254,6 +254,7 @@ return(!i||i!==r&amp;&amp;!b.contains(r,i))&amp;&amp;(e.type=o.origType,n=o.hand
         , &quot;scriptPath&quot;: scriptPath
         , &quot;sliceArgs&quot;: sliceArgs
         , &quot;urlDetect&quot;: urlDetect
+        , &quot;moneyFormat&quot;: moneyFormat
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量
@@ -1057,6 +1058,49 @@ return(!i||i!==r&amp;&amp;!b.contains(r,i))&amp;&amp;(e.type=o.origType,n=o.hand
                 return _r;
             };
     }());
+    /**
+     * 逗号格式化金额
+     * @method  moneyFormat
+     * @param   {int|string}    _number
+     * @param   {int}           _len
+     * @param   {int}           _floatLen
+     * @param   {int}           _splitSymbol
+     * @return  string
+     * @static
+     */
+    function moneyFormat(_number, _len, _floatLen, _splitSymbol){
+        !_len &amp;&amp; ( _len = 3 );
+        typeof _floatLen == &#x27;undefined&#x27; &amp;&amp; ( _floatLen = 2 );
+        !_splitSymbol &amp;&amp; ( _splitSymbol = &#x27;,&#x27; );
+        _number = parseFinance( _number, _floatLen );
+
+        if( !_number ) return &#x27;0&#x27;;
+        _number += &#x27;&#x27;; 
+
+        _number = _number.replace( /[^\d\.]/g, &#x27;&#x27; );
+
+        var _parts = _number.split(&#x27;.&#x27;), _sparts = [];
+
+        while( _parts[0].length &gt; _len ){
+            var _tmp = _parts[0].slice( _parts[0].length - _len, _parts[0].length );
+            console.log( _tmp );
+            _sparts.push( _tmp );
+            _parts[0] = _parts[0].slice( 0, _parts[0].length - _len );
+        }
+        _sparts.push( _parts[0] );
+
+        _parts[0] = _sparts.reverse().join( _splitSymbol );
+
+        if( _floatLen ){
+            !_parts[1] &amp;&amp; ( _parts[1] = &#x27;&#x27; );
+            _parts[1] += new Array( _floatLen + 1 ).join(&#x27;0&#x27;);
+            _parts[1] = _parts[1].slice( 0, _floatLen );
+        }else{
+            _parts.length &gt; 1 &amp;&amp; _parts.pop();
+        }
+
+        return _parts.join(&#x27;.&#x27;);
+    }
 
 }(jQuery));
     return JC.f;
