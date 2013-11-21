@@ -3,6 +3,7 @@ YUI.add("yuidoc-meta", function(Y) {
     "classes": [
         "JC.AjaxUpload",
         "JC.AutoChecked",
+        "JC.AutoComplete",
         "JC.AutoSelect",
         "JC.BaseMVC",
         "JC.BaseMVC.Model",
@@ -34,6 +35,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.DisableLogic",
         "window.Bizs.FormLogic",
         "window.Bizs.KillISPCache",
+        "window.Bizs.MoneyTips",
         "window.Bizs.MultiDate",
         "window.jQuery",
         "window.requirejs"

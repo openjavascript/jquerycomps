@@ -4,7 +4,7 @@
     Bizs.BizExampleMoreAdvance = BizExampleMoreAdvance;
 
     function BizExampleMoreAdvance( _selector ){
-
+        _selector && ( _selector = $( _selector ) );
         if( BizExampleMoreAdvance.getInstance( _selector ) ) return BizExampleMoreAdvance.getInstance( _selector );
         BizExampleMoreAdvance.getInstance( _selector, this );
 

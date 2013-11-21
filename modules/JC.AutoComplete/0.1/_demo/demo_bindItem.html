@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AutoComplete</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+        .ui-sug-mod input{ height: 26px;  outline: 0; text-indent: 3px; }
+
+        .ui-sug-ipt{ width: 400px; max-height: 300px; overflow-y: auto; }
+        .ui-sug-ipt{ border: 1px solid #ccc;  padding: 0; }
+    </style>
+    <link href='../../../../modules/JC.AutoComplete/0.1/res/default/style.css' rel='stylesheet' />
+</head>
+<body>
+<h2>JC.AutoComplete 示例</h2>
+<form action="?" method="get">
+    <div class="ui-sug-mod">
+        <input name="ac" type="text" class="ui-sug-ipt js_compAutoComplete" value="" 
+            autocomplete="off" 
+
+            cacPanel="(div ul.js_compAutoCompleteBox"
+            cacLabelKey="data-value"
+            cacValueKey="data-id"
+            cacBindItem="(div input.js_bindItem"
+
+            cacPreventEnter="true" 
+            />
+        <input type="text" class="js_bindItem" value="" />
+        <div>
+            <ul class="AC_compAutoCompleteBox js_compAutoCompleteBox">
+                <li data-id="0" data-value="真心英雄联盟">真心英雄联盟</li>
+                <li data-id="1" data-value="英雄联盟">英雄联盟</li>
+                <li data-id="2" data-value="移动网上营业厅">移动网上营业厅</li>
+                <li data-id="3" data-value="音悦台">音悦台</li>
+                <li data-id="4" data-value="英语在线翻译">英语在线翻译</li>
+                <li data-id="5" data-value="易迅网">易迅网</li>
+                <li data-id="6" data-value="一号店">一号店</li>
+                <li data-id="7" data-value="英雄联盟">英雄联盟一号店</li>
+                <li data-id="8" data-value="一朵晴天">一朵晴天</li>
+                <li data-id="9" data-value="yy语音">yy语音</li>
+                <li data-id="10" data-value="yy直播">yy直播</li>
+                <li data-id="11" data-value="yy频道设计">yy频道设计</li>
+                <li data-id="12" data-value="yy网页版">yy网页版</li>
+                <li data-id="13" data-value="youku">youku</li>
+                <li data-id="14" data-value="yeah">yeah</li>
+                <li data-id="15" data-value="yahoo">yahoo</li>
+            </ul>
+        </div>
+    </div>
+</form>
+
+    <script src="../../../../lib.js"></script>
+    <script src="../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+        requirejs( [ 'JC.AutoComplete' ], function( AutoComplete ){
+        });
+    </script>
+</body>
+</html>

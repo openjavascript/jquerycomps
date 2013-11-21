@@ -55,6 +55,7 @@
         , "scriptPath": scriptPath
         , "sliceArgs": sliceArgs
         , "urlDetect": urlDetect
+        , "moneyFormat": moneyFormat
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量
@@ -700,7 +701,7 @@
      *      <dt>可识别的组件</dt>
      *      <dd>
      *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder
-     *          <br />Bizs.DisableLogic, Bizs.FormLogic
+     *          <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips
      *      </dd>
      * </d>
      * @method  jcAutoInitComps
@@ -741,6 +742,10 @@
          * 表单提交逻辑
          */
         Bizs.FormLogic && Bizs.FormLogic.init( _selector );
+        /**
+         * 格式化金额
+         */
+        Bizs.MoneyTips && Bizs.MoneyTips.init( _selector );
     }
     /**
      * URL 占位符识别功能
@@ -858,6 +863,56 @@
                 return _r;
             };
     }());
+    /**
+     * 逗号格式化金额
+     * @method  moneyFormat
+     * @param   {int|string}    _number
+     * @param   {int}           _len
+     * @param   {int}           _floatLen
+     * @param   {int}           _splitSymbol
+     * @return  string
+     * @static
+     */
+    function moneyFormat(_number, _len, _floatLen, _splitSymbol){
+        var _def = '0.00';
+        !_len && ( _len = 3 );
+        typeof _floatLen == 'undefined' && ( _floatLen = 2 );
+        !_splitSymbol && ( _splitSymbol = ',' );
+
+        typeof _number == 'number' && ( _number = parseFinance( _number, _floatLen ) );
+        if( typeof _number == 'string' ){
+            _number = _number.replace( /[,]/g, '' );
+            if( !/^[\d\.]+$/.test( _number ) ) return _def;
+            if( _number.split('.').length > 2 ) return _def;
+        }
+
+        if( !_number ) return _def;
+        _number += ''; 
+
+        _number = _number.replace( /[^\d\.]/g, '' );
+
+        var _parts = _number.split('.'), _sparts = [];
+
+        while( _parts[0].length > _len ){
+            var _tmp = _parts[0].slice( _parts[0].length - _len, _parts[0].length );
+            console.log( _tmp );
+            _sparts.push( _tmp );
+            _parts[0] = _parts[0].slice( 0, _parts[0].length - _len );
+        }
+        _sparts.push( _parts[0] );
+
+        _parts[0] = _sparts.reverse().join( _splitSymbol );
+
+        if( _floatLen ){
+            !_parts[1] && ( _parts[1] = '' );
+            _parts[1] += new Array( _floatLen + 1 ).join('0');
+            _parts[1] = _parts[1].slice( 0, _floatLen );
+        }else{
+            _parts.length > 1 && _parts.pop();
+        }
+
+        return _parts.join('.');
+    }
 
 }(jQuery));
     return JC.f;
