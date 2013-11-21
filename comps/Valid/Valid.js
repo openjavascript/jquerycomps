@@ -109,7 +109,7 @@
      *      <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>
      *      <dd>
      *          <b>bankcard:</b> 是否为正确的银行卡
-     *          <br />格式为: d{15}, d{16}, d{17}, d{19}
+     *          <br />格式为: d{12}, d{15}, d{16}, d{17}, d{18}, d{19}, d{20}
      *      </dd>
      *      <dd>
      *          <b>cnname:</b> 中文姓名
@@ -1290,7 +1290,7 @@
                     ;
                      _item.val( _v );
                 var _dig = _v.replace( /[^\d]/g, '' )
-                    , _r = /^[1-9](?:[\d]{18}|[\d]{16}|[\d]{15}|[\d]{14})$/.test( _dig )
+                    , _r = /^[1-9](?:[\d]{19}|[\d]{18}|[\d]{17}|[\d]{16}|[\d]{15}|[\d]{14}|[\d]{11}|)$/.test( _dig )
                     ;
                     !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
