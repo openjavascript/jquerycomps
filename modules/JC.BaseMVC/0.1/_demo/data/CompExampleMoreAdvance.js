@@ -4,7 +4,7 @@
     JC.CompExampleMoreAdvance = CompExampleMoreAdvance;
 
     function CompExampleMoreAdvance( _selector ){
-
+        _selector && ( _selector = $( _selector ) );
         if( CompExampleMoreAdvance.getInstance( _selector ) ) return CompExampleMoreAdvance.getInstance( _selector );
         CompExampleMoreAdvance.getInstance( _selector, this );
         //JC.log( CompExampleMoreAdvance.Model._instanceName );

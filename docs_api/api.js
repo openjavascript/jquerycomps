@@ -35,6 +35,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.DisableLogic",
         "window.Bizs.FormLogic",
         "window.Bizs.KillISPCache",
+        "window.Bizs.MoneyTips",
         "window.Bizs.MultiDate",
         "window.jQuery",
         "window.requirejs"

@@ -129,6 +129,8 @@
             
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
             
+                <li><a href="../classes/window.Bizs.MoneyTips.html">window.Bizs.MoneyTips</a></li>
+            
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
             
                 <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
@@ -235,6 +237,7 @@
         , &quot;scriptPath&quot;: scriptPath
         , &quot;sliceArgs&quot;: sliceArgs
         , &quot;urlDetect&quot;: urlDetect
+        , &quot;moneyFormat&quot;: moneyFormat
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量
@@ -880,7 +883,7 @@
      *      &lt;dt&gt;可识别的组件&lt;/dt&gt;
      *      &lt;dd&gt;
      *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder
-     *          &lt;br /&gt;Bizs.DisableLogic, Bizs.FormLogic
+     *          &lt;br /&gt;Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips
      *      &lt;/dd&gt;
      * &lt;/d&gt;
      * @method  jcAutoInitComps
@@ -921,6 +924,10 @@
          * 表单提交逻辑
          */
         Bizs.FormLogic &amp;&amp; Bizs.FormLogic.init( _selector );
+        /**
+         * 格式化金额
+         */
+        Bizs.MoneyTips &amp;&amp; Bizs.MoneyTips.init( _selector );
     }
     /**
      * URL 占位符识别功能
@@ -1038,6 +1045,56 @@
                 return _r;
             };
     }());
+    /**
+     * 逗号格式化金额
+     * @method  moneyFormat
+     * @param   {int|string}    _number
+     * @param   {int}           _len
+     * @param   {int}           _floatLen
+     * @param   {int}           _splitSymbol
+     * @return  string
+     * @static
+     */
+    function moneyFormat(_number, _len, _floatLen, _splitSymbol){
+        var _def = &#x27;0.00&#x27;;
+        !_len &amp;&amp; ( _len = 3 );
+        typeof _floatLen == &#x27;undefined&#x27; &amp;&amp; ( _floatLen = 2 );
+        !_splitSymbol &amp;&amp; ( _splitSymbol = &#x27;,&#x27; );
+
+        typeof _number == &#x27;number&#x27; &amp;&amp; ( _number = parseFinance( _number, _floatLen ) );
+        if( typeof _number == &#x27;string&#x27; ){
+            _number = _number.replace( /[,]/g, &#x27;&#x27; );
+            if( !/^[\d\.]+$/.test( _number ) ) return _def;
+            if( _number.split(&#x27;.&#x27;).length &gt; 2 ) return _def;
+        }
+
+        if( !_number ) return _def;
+        _number += &#x27;&#x27;; 
+
+        _number = _number.replace( /[^\d\.]/g, &#x27;&#x27; );
+
+        var _parts = _number.split(&#x27;.&#x27;), _sparts = [];
+
+        while( _parts[0].length &gt; _len ){
+            var _tmp = _parts[0].slice( _parts[0].length - _len, _parts[0].length );
+            console.log( _tmp );
+            _sparts.push( _tmp );
+            _parts[0] = _parts[0].slice( 0, _parts[0].length - _len );
+        }
+        _sparts.push( _parts[0] );
+
+        _parts[0] = _sparts.reverse().join( _splitSymbol );
+
+        if( _floatLen ){
+            !_parts[1] &amp;&amp; ( _parts[1] = &#x27;&#x27; );
+            _parts[1] += new Array( _floatLen + 1 ).join(&#x27;0&#x27;);
+            _parts[1] = _parts[1].slice( 0, _floatLen );
+        }else{
+            _parts.length &gt; 1 &amp;&amp; _parts.pop();
+        }
+
+        return _parts.join(&#x27;.&#x27;);
+    }
 
 }(jQuery));
     return JC.f;

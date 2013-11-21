@@ -4,7 +4,7 @@
     JC.CompExample = CompExample;
 
     function CompExample( _selector ){
-
+        _selector && ( _selector = $( _selector ) );
         if( CompExample.getInstance( _selector ) ) return CompExample.getInstance( _selector );
         CompExample.getInstance( _selector, this );
         //JC.log( CompExample.Model._instanceName );

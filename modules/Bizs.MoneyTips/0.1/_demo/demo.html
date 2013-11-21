@@ -24,6 +24,17 @@
     <script>
         JC.debug = true;
         requirejs( [ 'Bizs.MoneyTips', 'JC.Valid' ], function( AutoComplete ){
+
+            $(document).delegate( 'button.js_updateBmt', 'click', function( _evt ){
+                var _p = $(this)
+                    , _pnt = _p.parent()
+                    , _bmtSelector = _pnt.find( 'input.js_bizMoneyTips' )
+                    , _ins = Bizs.MoneyTips.getInstance( _bmtSelector )
+                    ;
+                if( !_ins ) return;
+
+                _ins.update( _p.attr( 'data-value' ) );
+            });
         });
     </script>
 </head>
@@ -32,20 +43,50 @@
     <form>
         <dl>
             <dd>
-                金额: <input type="text" datatype="n-12.2" class="js_bizMoneyTips" bmtDisplayLabel="(dd span.js_bmtSpan" />
+                金额: <input type="text" value="6543.21" 
+                datatype="n-12.2" class="js_bizMoneyTips" bmtDisplayLabel="/span.js_bmtSpan" />
                 <em class="error"></em>
                 <span class="js_bmtSpan"></span>
+                <button type="button" class="js_updateBmt" data-value="">MoneyTips#update()</button>
             </dd>
 
             <dd>
                 金额: <input type="text" datatype="n-12.2" class="js_bizMoneyTips" />
+                <button type="button" class="js_updateBmt" data-value="12345678910.12">MoneyTips#update( 12345678910.12 )</button>
             </dd>
 
             <dd>
-                金额范围: 
-                <input type="text" datatype="nrange-12.2" class="js_bizMoneyTips" />
-                <input type="text" datatype="nrange-12.2" class="js_bizMoneyTips" />
+                金额: 
+                <input type="text" datatype="n-12.2" value="98765432.10"
+                class="js_bizMoneyTips" bmtDisplayLabel="/span.js_bmtSpan" />
                 <em class="error"></em>
+                <span class="js_bmtSpan"></span>
+                <button type="button" class="js_updateBmt" data-value="123456789123456789123456789123456789123456789.1234">MoneyTips#update(123456789123456789123456789123456789123456789.1234)</button>
+            </dd>
+
+            <dd>
+                金额: <input type="text" datatype="n-12.2" value="123456789.87"
+                class="js_bizMoneyTips" 
+                />
+                <button type="button" class="js_updateBmt" data-value="12345678910.12">MoneyTips#update( 12345678910.12 )</button>
+            </dd>
+
+
+            <dd>
+                金额范围: 
+                <input type="text" datatype="nrange-12.2" 
+                    class="js_bizMoneyTips" 
+                    bmtDisplayLabel="/span.js_bmtSpanStart" 
+                    bmtPattern="起始金额: {0}"
+                    />
+                <input type="text" datatype="nrange-12.2" 
+                    class="js_bizMoneyTips" 
+                    bmtDisplayLabel="/span.js_bmtSpanEnd" 
+                    bmtPattern="结束金额: {0}"
+                    />
+                <em class="error"></em>
+                <span class="js_bmtSpanStart"></span>
+                <span class="js_bmtSpanEnd"></span>
             </dd>
 
         </dl>

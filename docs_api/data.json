@@ -62,6 +62,17 @@
                 "window.Bizs": 1
             }
         },
+        "../modules/Bizs.MoneyTips/0.1/MoneyTips.js": {
+            "name": "../modules/Bizs.MoneyTips/0.1/MoneyTips.js",
+            "modules": {},
+            "classes": {
+                "window.Bizs.MoneyTips": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.Bizs": 1
+            }
+        },
         "../modules/Bizs.MultiDate/0.1/MultiDate.js": {
             "name": "../modules/Bizs.MultiDate/0.1/MultiDate.js",
             "modules": {},
@@ -462,6 +473,26 @@
                 "\n     <script>\n     //动态添加的内容需要显式调用 process 方法去处理相关逻辑\n     $.get( _url, function( _html ){\n         var _node = $(_html);\n         _node.appendTo( document.body );\n         JC.KillISPCache.getInstance().process( _node );\n     });\n     </script>"
             ]
         },
+        "window.Bizs.MoneyTips": {
+            "name": "window.Bizs.MoneyTips",
+            "shortname": "window.Bizs.MoneyTips",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.Bizs",
+            "file": "../modules/Bizs.MoneyTips/0.1/MoneyTips.js",
+            "line": 2,
+            "description": "<h2>金额格式化 业务逻辑</h2>\n<br/>应用场景\n<br/>用户在文本框输入金额时, 在指定的 node 显示以逗号分隔的金额\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.MoneyTips.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.MoneyTips/0.1/_demo' target='_blank'>demo link</a></p>\n\ninput[type=text] 需要 添加 class=\"js_bizMoneyTips\"\n<br />只要带有 class = js_bizMoneyTips 的文本框, 默认会自己初始化 MoneyTips 实例\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>bmtDisplayLabel = selector, default = span</dt>\n     <dd>\n         指定显示 格式化金额的 node, 如果没有显式指定 node, 那么将会动态生成一个用于显示的 span\n     </dd>\n\n     <dt>bmtPattern = string, default = {0}</dt>\n     <dd>\n         用于显示格式化金额的显示内容, {0} = 金额占位符\n         <br />example: &lt;input type=\"text\" class=\"js_bizMoneyTips\" bmtPattern=\"格式化金额: {0}\" />\n     </dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "version": "dev 0.1 2013-11-21",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n       <div>\n           金额: <input type=\"text\" value=\"6543.21\" \n           datatype=\"n-12.2\" class=\"js_bizMoneyTips\" bmtDisplayLabel=\"/span.js_bmtSpan\" />\n           <em class=\"error\"></em>\n           <span class=\"js_bmtSpan\"></span>\n           <button type=\"button\" class=\"js_updateBmt\" data-value=\"\">MoneyTips#update()</button>\n       </div>"
+            ]
+        },
         "window.Bizs.MultiDate": {
             "name": "window.Bizs.MultiDate",
             "shortname": "window.Bizs.MultiDate",
@@ -544,7 +575,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 3,
+            "line": 5,
             "description": "AutoComplete 文本框输入内容提示\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.AutoComplete/0.1/_demo' target='_blank'>demo link</a></p>\n<h2>可用的 HTML attribute</h2>\n<dl>\n</dl>",
             "is_constructor": 1,
             "params": [
@@ -2158,6 +2189,64 @@
             "namespace": "window.Bizs"
         },
         {
+            "file": "../modules/Bizs.MoneyTips/0.1/MoneyTips.js",
+            "line": 60,
+            "description": "获取或设置 MoneyTips 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "MoneyTipsInstance"
+            },
+            "class": "window.Bizs.MoneyTips",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.MoneyTips/0.1/MoneyTips.js",
+            "line": 76,
+            "description": "初始化可识别的 MoneyTips 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of MoneyTipsInstance"
+            },
+            "class": "window.Bizs.MoneyTips",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.MoneyTips/0.1/MoneyTips.js",
+            "line": 135,
+            "description": "更新 tips 的值",
+            "itemtype": "method",
+            "name": "update",
+            "params": [
+                {
+                    "name": "_val",
+                    "description": "",
+                    "type": "Int|string"
+                }
+            ],
+            "class": "window.Bizs.MoneyTips",
+            "namespace": "window.Bizs"
+        },
+        {
             "file": "../modules/Bizs.MultiDate/0.1/MultiDate.js",
             "line": 126,
             "description": "获取或设置 MultiDate 的实例",
@@ -2482,7 +2571,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 34,
+            "line": 36,
             "description": "获取或设置 AutoComplete 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -2503,7 +2592,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 50,
+            "line": 52,
             "description": "初始化可识别的 AutoComplete 实例",
             "itemtype": "method",
             "name": "init",
@@ -11585,28 +11674,28 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 59,
+            "line": 60,
             "description": "判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 81,
+            "line": 82,
             "description": "jquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 85,
+            "line": 86,
             "description": "如果 console 不可用, 则生成一个模拟的 console 对象",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 91,
+            "line": 92,
             "description": "全局 css z-index 控制属性\n<br /> <b>注意</b>: 这个变量是 window.ZINDEX_COUNT",
             "itemtype": "property",
             "name": "ZINDEX_COUNT",
@@ -11618,7 +11707,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 100,
+            "line": 101,
             "description": "把函数的参数转为数组",
             "itemtype": "method",
             "name": "sliceArgs",
@@ -11638,7 +11727,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 114,
+            "line": 115,
             "description": "按格式输出字符串",
             "itemtype": "method",
             "name": "printf",
@@ -11661,7 +11750,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 130,
+            "line": 131,
             "description": "判断URL中是否有某个get参数",
             "itemtype": "method",
             "name": "hasUrlParam",
@@ -11689,7 +11778,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 152,
+            "line": 153,
             "description": "添加URL参数\n<br /><b>require:</b> delUrlParam",
             "itemtype": "method",
             "name": "addUrlParams",
@@ -11717,7 +11806,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 178,
+            "line": 179,
             "description": "取URL参数的值",
             "itemtype": "method",
             "name": "getUrlParam",
@@ -11745,7 +11834,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 205,
+            "line": 206,
             "description": "取URL参数的值, 这个方法返回数组\n<br />与 getUrlParam 的区别是可以获取 checkbox 的所有值",
             "itemtype": "method",
             "name": "getUrlParams",
@@ -11773,7 +11862,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 234,
+            "line": 235,
             "description": "删除URL参数",
             "itemtype": "method",
             "name": "delUrlParam",
@@ -11801,7 +11890,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 262,
+            "line": 263,
             "description": "提示需要 HTTP 环境",
             "itemtype": "method",
             "name": "httpRequire",
@@ -11821,7 +11910,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 277,
+            "line": 278,
             "description": "删除 URL 的锚点\n<br /><b>require:</b> addUrlParams",
             "itemtype": "method",
             "name": "removeUrlSharp",
@@ -11846,7 +11935,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 291,
+            "line": 292,
             "description": "重载页面\n<br /><b>require:</b> removeUrlSharp\n<br /><b>require:</b> addUrlParams",
             "itemtype": "method",
             "name": "reloadPage",
@@ -11873,7 +11962,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 309,
+            "line": 310,
             "description": "取小数点的N位\n<br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题",
             "itemtype": "method",
             "name": "parseFinance",
@@ -11898,7 +11987,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 326,
+            "line": 327,
             "description": "js 附加字串函数",
             "itemtype": "method",
             "name": "padChar",
@@ -11928,7 +12017,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 342,
+            "line": 343,
             "description": "格式化日期为 YYYY-mm-dd 格式\n<br /><b>require</b>: pad\\_char\\_f",
             "itemtype": "method",
             "name": "formatISODate",
@@ -11953,7 +12042,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 356,
+            "line": 357,
             "description": "从 ISODate 字符串解析日期对象",
             "itemtype": "method",
             "name": "parseISODate",
@@ -11973,7 +12062,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 374,
+            "line": 375,
             "description": "获取不带 时分秒的 日期对象",
             "itemtype": "method",
             "name": "pureDate",
@@ -11992,7 +12081,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 386,
+            "line": 387,
             "description": "克隆日期对象",
             "itemtype": "method",
             "name": "cloneDate",
@@ -12013,7 +12102,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 394,
+            "line": 395,
             "description": "判断两个日期是否为同一天",
             "itemtype": "method",
             "name": "isSameDay",
@@ -12039,7 +12128,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 406,
+            "line": 407,
             "description": "判断两个日期是否为同一月份",
             "itemtype": "method",
             "name": "isSameMonth",
@@ -12065,7 +12154,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 418,
+            "line": 419,
             "description": "取得一个月份中最大的一天",
             "itemtype": "method",
             "name": "maxDayOfMonth",
@@ -12086,7 +12175,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 431,
+            "line": 432,
             "description": "取当前脚本标签的 src路径",
             "itemtype": "method",
             "name": "scriptPath",
@@ -12100,7 +12189,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 443,
+            "line": 444,
             "description": "缓动函数, 动画效果为按时间缓动 \n<br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval",
             "itemtype": "method",
             "name": "easyEffect",
@@ -12143,7 +12232,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 496,
+            "line": 497,
             "description": "把输入值转换为布尔值",
             "itemtype": "method",
             "name": "parseBool",
@@ -12163,7 +12252,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 515,
+            "line": 516,
             "description": "判断是否支持 CSS position: fixed",
             "itemtype": "property",
             "name": "$.support.isFixed",
@@ -12175,7 +12264,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 544,
+            "line": 545,
             "description": "绑定或清除 mousewheel 事件",
             "itemtype": "method",
             "name": "mousewheelEvent",
@@ -12197,7 +12286,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 566,
+            "line": 567,
             "description": "获取 selector 的指定父级标签",
             "itemtype": "method",
             "name": "getJqParent",
@@ -12223,7 +12312,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 592,
+            "line": 593,
             "description": "扩展 jquery 选择器\n<br />扩展起始字符的 '/' 符号为 jquery 父节点选择器\n<br />扩展起始字符的 '|' 符号为 jquery 子节点选择器\n<br />扩展起始字符的 '(' 符号为 jquery 父节点查找识别符( getJqParent )",
             "itemtype": "method",
             "name": "parentSelector",
@@ -12254,7 +12343,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 660,
+            "line": 661,
             "description": "获取脚本模板的内容",
             "itemtype": "method",
             "name": "scriptContent",
@@ -12274,7 +12363,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 675,
+            "line": 676,
             "description": "取函数名 ( 匿名函数返回空 )",
             "itemtype": "method",
             "name": "funcName",
@@ -12294,8 +12383,8 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 690,
-            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件,  </dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder\n         <br />Bizs.DisableLogic, Bizs.FormLogic\n     </dd>\n</d>",
+            "line": 691,
+            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件,  </dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
             "params": [
@@ -12311,49 +12400,49 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 714,
+            "line": 715,
             "description": "联动下拉框",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 718,
+            "line": 719,
             "description": "日历组件",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 722,
+            "line": 723,
             "description": "全选反选",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 726,
+            "line": 727,
             "description": "Ajax 上传",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 730,
+            "line": 731,
             "description": "Placeholder 占位符",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 736,
+            "line": 737,
             "description": "disable / enable",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 740,
+            "line": 741,
             "description": "表单提交逻辑",
             "class": "JC.common",
             "namespace": "JC"
@@ -12361,6 +12450,13 @@
         {
             "file": "../modules/JC.common/0.2/common.js",
             "line": 745,
+            "description": "格式化金额",
+            "class": "JC.common",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.common/0.2/common.js",
+            "line": 750,
             "description": "URL 占位符识别功能",
             "itemtype": "method",
             "name": "urlDetect",
@@ -12383,7 +12479,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 784,
+            "line": 789,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -12407,8 +12503,43 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 843,
+            "line": 848,
             "description": "inject jquery val func, for hidden change event",
+            "class": "JC.common",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.common/0.2/common.js",
+            "line": 866,
+            "description": "逗号格式化金额",
+            "itemtype": "method",
+            "name": "moneyFormat",
+            "params": [
+                {
+                    "name": "_number",
+                    "description": "",
+                    "type": "Int|string"
+                },
+                {
+                    "name": "_len",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "_floatLen",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "_splitSymbol",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "static": 1,
             "class": "JC.common",
             "namespace": "JC"
         },
@@ -13832,7 +13963,7 @@
         },
         {
             "file": "../config.js",
-            "line": 49,
+            "line": 50,
             "description": "取当前脚本标签的 src路径",
             "static": 1,
             "return": {
@@ -14229,6 +14360,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../modules/Bizs.MoneyTips/0.1/MoneyTips.js:2"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../modules/Bizs.MultiDate/0.1/MultiDate.js:5"
         },
         {
@@ -14245,7 +14380,7 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:3"
+            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:5"
         },
         {
             "message": "unknown tag: version",
@@ -14509,15 +14644,15 @@
         },
         {
             "message": "unknown tag: require",
-            "line": " ../modules/JC.common/0.2/common.js:515"
+            "line": " ../modules/JC.common/0.2/common.js:516"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../modules/JC.common/0.2/common.js:566"
+            "line": " ../modules/JC.common/0.2/common.js:567"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../modules/JC.common/0.2/common.js:592"
+            "line": " ../modules/JC.common/0.2/common.js:593"
         },
         {
             "message": "unknown tag: ignore",
@@ -14933,47 +15068,51 @@
         },
         {
             "message": "Missing item type\n判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量",
-            "line": " ../modules/JC.common/0.2/common.js:59"
+            "line": " ../modules/JC.common/0.2/common.js:60"
         },
         {
             "message": "Missing item type\njquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
-            "line": " ../modules/JC.common/0.2/common.js:81"
+            "line": " ../modules/JC.common/0.2/common.js:82"
         },
         {
             "message": "Missing item type\n如果 console 不可用, 则生成一个模拟的 console 对象",
-            "line": " ../modules/JC.common/0.2/common.js:85"
+            "line": " ../modules/JC.common/0.2/common.js:86"
         },
         {
             "message": "Missing item type\n联动下拉框",
-            "line": " ../modules/JC.common/0.2/common.js:714"
+            "line": " ../modules/JC.common/0.2/common.js:715"
         },
         {
             "message": "Missing item type\n日历组件",
-            "line": " ../modules/JC.common/0.2/common.js:718"
+            "line": " ../modules/JC.common/0.2/common.js:719"
         },
         {
             "message": "Missing item type\n全选反选",
-            "line": " ../modules/JC.common/0.2/common.js:722"
+            "line": " ../modules/JC.common/0.2/common.js:723"
         },
         {
             "message": "Missing item type\nAjax 上传",
-            "line": " ../modules/JC.common/0.2/common.js:726"
+            "line": " ../modules/JC.common/0.2/common.js:727"
         },
         {
             "message": "Missing item type\nPlaceholder 占位符",
-            "line": " ../modules/JC.common/0.2/common.js:730"
+            "line": " ../modules/JC.common/0.2/common.js:731"
         },
         {
             "message": "Missing item type\ndisable / enable",
-            "line": " ../modules/JC.common/0.2/common.js:736"
+            "line": " ../modules/JC.common/0.2/common.js:737"
         },
         {
             "message": "Missing item type\n表单提交逻辑",
-            "line": " ../modules/JC.common/0.2/common.js:740"
+            "line": " ../modules/JC.common/0.2/common.js:741"
+        },
+        {
+            "message": "Missing item type\n格式化金额",
+            "line": " ../modules/JC.common/0.2/common.js:745"
         },
         {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../modules/JC.common/0.2/common.js:843"
+            "line": " ../modules/JC.common/0.2/common.js:848"
         },
         {
             "message": "Missing item type\nTop level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
@@ -15429,7 +15568,7 @@
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
-            "line": " ../config.js:49"
+            "line": " ../config.js:50"
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
