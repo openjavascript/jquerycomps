@@ -275,27 +275,33 @@
                         _p.selector().removeClass(&#x27;AC_fakebox&#x27;);
                     });
 
+                    _p.on( &#x27;AC_UPDATE_LIST_INDEX&#x27;, function( _evt, _keyCode, _srcEvt ){
+                        _srcEvt.preventDefault();
+                        JC.log( &#x27;AC_UPDATE_LIST_INDEX&#x27;, _keyCode, new Date().getTime() );
+                        _p._view.updateListIndex( _keyCode == 40 ? true : false );
+                    });
 
                     _p._model.selector().on(&#x27;keyup&#x27;, function( _evt ) {
 
                         var _keyCode = _evt.keyCode,
                         _sp = $(this),
                         _val = _sp.val().trim(),
-                        _ignoretime = _sp.data(&#x27;ignoretime&#x27;);
+                        _ignoretime = _sp.data(&#x27;ignoretime&#x27;)
+                        ;
 
                         if ( _ignoretime &amp;&amp; ( _ignoretime - new Date().getTime() &lt; 50 ) ) {
                             return;
                         }
 
-                        JC.log(&#x27;keyup&#x27;, new Date().getTime() );
+                        JC.log(&#x27;keyup&#x27;, _keyCode, new Date().getTime() );
 
                         if ( _keyCode ) {
                             switch( _evt.keyCode ) {
                                 //上下方向键
-                                case 40:
-                                case 38:
-                                    _evt.preventDefault();
-                                    break;
+                                case 38://up
+                                case 40://down
+                                    _p.trigger( &#x27;AC_UPDATE_LIST_INDEX&#x27;, [ _keyCode, _evt ] );
+                                    return;
                                 //左右方向键
                                 case 37:
                                 case 39:
@@ -308,6 +314,7 @@
                             }
                         }
 
+                        /*
                         if ( !_val ) {
                             _p._view.build( _p._model.orginal );
                             return;
@@ -323,6 +330,7 @@
 
                             return;
                         }
+                        */
                     });
 
                     _p._model.selector().on(&#x27;keydown&#x27;, function( _evt ) {
@@ -331,38 +339,40 @@
                         _keyCode = _evt.keyCode,
                         _sp = $(this);
 
-                    JC.log(&#x27;keydown&#x27;, new Date().getTime() );
+                        JC.log(&#x27;keydown&#x27;, new Date().getTime() );
 
-                    if ( _keyCode ) {
-                        switch( _keyCode ) {
-                            case 40:
-                                //向下
-                            case 38:
-                                //向上
-                                _evt.preventDefault();
+                        if ( _keyCode ) {
+                            switch( _keyCode ) {
+                                case 40:
+                                    //向下
+                                case 38:
+                                    //向上
+                                    _evt.preventDefault();
 
-                                if ( _evt.keyCode == 38 ) {
-                                    _isdown = false;
-                                }
-                                _p._model.getKeyIndex( _isdown );
+                                    /*
+                                    if ( _evt.keyCode == 38 ) {
+                                        _isdown = false;
+                                    }
+                                    _p._model.getKeyIndex( _isdown );
+                                    */
 
-                            case 37:
-                            case 39:
-                                return;
-                            case 13:
-                                //enter
-                                _p._model.cacPreventEnter() &amp;&amp; _evt.preventDefault();
-                                _sp.data(&#x27;ignoretime&#x27;, new Date().getTime() );
+                                case 37:
+                                case 39:
+                                    return;
+                                case 13:
+                                    //enter
+                                    _p._model.cacPreventEnter() &amp;&amp; _evt.preventDefault();
+                                    _sp.data(&#x27;ignoretime&#x27;, new Date().getTime() );
 
-                            case 9:
-                                //tab
-                            case 27:
-                                //esc
-                                _p._view.hide();
-                                return; 
+                                case 9:
+                                    //tab
+                                case 27:
+                                    //esc
+                                    _p._view.hide();
+                                    return; 
+                            }
+
                         }
-
-                    }
                     });
 
                     _p._model.wordPanel().on(&#x27;click&#x27;, function( _evt ){
@@ -384,13 +394,9 @@
                     } );
 
                     _p._model.wordPanel().delegate( &#x27;&gt; li&#x27;, &#x27;mouseenter&#x27;, function( _evt ) {
-                        $(this).addClass(&#x27;active&#x27;);
+                        //JC.log( &#x27;xxxxxxx&#x27;, $(this).attr(&#x27;data-index&#x27;) );
+                        _p._view.updateIndex( $(this).attr(&#x27;data-index&#x27;), true );
                     });
-
-                    _p._model.wordPanel().delegate( &#x27;&gt; li&#x27;, &#x27;mouseleave&#x27;, function( _evt ) {
-                        $(this).removeClass(&#x27;active&#x27;);
-                    });
-
                 }, 
 
             _inited: 
@@ -403,6 +409,7 @@
 
         BaseMVC.buildModel( AutoComplete );
         AutoComplete.Model._instanceName = &#x27;AutoComplete&#x27;;
+        AutoComplete.Model.ACTIVE_CLASS = &#x27;AC_active&#x27;;
         AutoComplete.Model.prototype = {
             init: 
                 function() {
@@ -417,14 +424,20 @@
             keyIndex: -1,
 
             layoutTpl: function() {
-                var _tpl = &#x27;&lt;li data-id=&quot;{0}&quot; data-value=&quot;{1}&quot; data-type=&quot;{2}&quot; data-py=&quot;{3}&quot;&gt;{1}&lt;/li&gt;&#x27;;
+                var _tpl = &#x27;&lt;li data-id=&quot;{0}&quot; data-value=&quot;{1}&quot; data-type=&quot;{2}&quot; data-py=&quot;{3}&quot; data-index=&quot;{4}&quot;&gt;{1}&lt;/li&gt;&#x27;;
                 return _tpl;
             },
 
             wordPanel: 
                 function() {
-                    var _r = this.selector().data(&#x27;AC_panel&#x27;);
+                    var _p = this, _r = _p.selector().data(&#x27;AC_panel&#x27;);
                         !_r &amp;&amp; ( _r = this.selectorProp(&#x27;cacPanel&#x27;) );
+
+                        if( !this._inited ){
+                            this._inited = true;
+                            _r.css( { &#x27;width&#x27;: _p.cacBoxWidth() + &#x27;px&#x27; } );
+                        }
+
                     return _r;
                 },
 
@@ -537,7 +550,7 @@
 
             setSelect: 
                 function( keyIndex ) {
-                    var _el = this.list().eq(keyIndex),
+                    var _el = this.listItems().eq(keyIndex),
                     _h = _el.position().top + _el.height(),
                     _ph = this.wordPanel().innerHeight(),
                     _top = this.wordPanel().scrollTop();
@@ -547,13 +560,13 @@
                     if ( keyIndex == -1 ) {
 
                         this.selector().focus();
-                        this.list().removeClass(&#x27;active&#x27;);
+                        this.list().removeClass( AutoComplete.Model.ACTIVE_CLASS );
                         this.setKey( &#x27;&#x27; );
 
                     } else {
 
                         //if ( _el.is(&#x27;:visible&#x27;) ) {
-                        _el.addClass(&#x27;active&#x27;).siblings().removeClass(&#x27;active&#x27;);
+                        _el.addClass( AutoComplete.Model.ACTIVE_CLASS ).siblings().removeClass( AutoComplete.Model.ACTIVE_CLASS );
                         this.setKey( _el.data(&#x27;value&#x27;) );
                         //}
 
@@ -576,12 +589,41 @@
                           &amp;&amp; JC.f.parseBool( this.selector().attr(&#x27;cacPreventEnter&#x27;) );
                       return _r;
                 }
+
+            , cacBoxWidth:
+                function(){
+                    var _r = 0 || this.intProp( &#x27;cacWidth&#x27; );
+
+                    !_r &amp;&amp; ( _r = this.selector().width() );
+
+                    return _r;
+                }
+
+            , cacSubItemsSelector:
+                function(){
+                    var _r = this.attrProp( &#x27;cacSubItemsSelector&#x27; ) || &#x27;&gt; li&#x27;;
+                    return _r;
+                }
+
+            , listItems:
+                function(){
+                    var _r = $([]);
+
+                    this.wordPanel() 
+                        &amp;&amp; this.wordPanel().length
+                        &amp;&amp; ( _r = this.wordPanel().find( this.cacSubItemsSelector() ) )
+                        ;
+                    return _r;
+                }
         };
 
         BaseMVC.buildView( AutoComplete );
         AutoComplete.View.prototype = {
             init: 
                 function(){
+                    this._model.listItems().each( function( _ix ){
+                        $(this).attr( &#x27;data-index&#x27;, _ix );
+                    });
                     // JC.log( &#x27;AutoComplete.View.init:&#x27;, new Date().getTime() );
                 },
 
@@ -598,7 +640,7 @@
 
                     _p._model.wordPanel().show();
 
-                    !_p._model.key() &amp;&amp; _p._model.list().show().removeClass(&#x27;active&#x27;);
+                    !_p._model.key() &amp;&amp; _p._model.list().show().removeClass( AutoComplete.Model.ACTIVE_CLASS );
 
                 },
 
@@ -633,11 +675,16 @@
                         _p.hide();
 
                     } else {
+                        JC.log( _p._model.layoutTpl() );
 
                         for ( ; _i &lt; _data.length; _i++ ) {
-                            _view.push( JC.f.printf( _p._model.layoutTpl(), _data[_i].id,
-                                        _data[_i].word, _data[_i].tag,
-                                        _data[_i].py) );
+                            _view.push( JC.f.printf( _p._model.layoutTpl()
+                                        , _data[_i].id
+                                        , _data[_i].word
+                                        , _data[_i].tag
+                                        , _data[_i].py
+                                        , _i
+                                        ) );
                         }
 
                         _p._model.wordPanel().html( _view.join(&#x27;&#x27;) );
@@ -645,9 +692,57 @@
 
                     }
 
-                    _p._model.list().removeClass(&#x27;active&#x27;);
+                    _p._model.list().removeClass( AutoComplete.Model.ACTIVE_CLASS );
                     _p._model.keyIndex = -1;
 
+                }
+            , currentIndex:
+                function( _isDown ){
+                    var _p = this
+                        , _box = _p._model.wordPanel()
+                        , _listItems = _p._model.listItems()
+                        , _ix = -1
+                        ;
+                    if( !_listItems.length ) return;
+
+                    _listItems.each( function( _six ){
+                        var _sp = $(this);
+                        if( _sp.hasClass( AutoComplete.Model.ACTIVE_CLASS ) ){
+                            _ix = _six;
+                            return false;
+                        }
+                    });
+                    if( _ix &lt; 0 ){
+                        _ix = _isDown ? 0 : _listItems.length - 1;
+                    }else{
+                        _ix = _isDown ? _ix + 1 : _ix - 1;
+                        if( _ix &lt; 0 ){
+                            _ix = _listItems.length - 1;
+                        }else if( _ix &gt;= _listItems.length ){
+                            _ix = 0;
+                        }
+                    }
+                    return _ix;
+                }
+            , updateListIndex: 
+                function( _isDown ){
+                    var _p = this, _ix = _p.currentIndex( _isDown );
+                    _p.updateIndex( _ix );
+                    JC.log( &#x27;updateListIndex&#x27;, _ix, new Date().getTime() );
+                }
+
+            , updateIndex:
+                function( _ix, _ignoreScroll ){
+                    var _p = this, _listItems = _p._model.listItems();
+                    _p.removeActiveClass();
+
+                    $( _listItems[ _ix ] ).addClass( AutoComplete.Model.ACTIVE_CLASS );
+                    !_ignoreScroll &amp;&amp; _p._model.setSelect( _ix );
+                }
+
+            , removeActiveClass:
+                function(){
+                    this._model.listItems().removeClass( AutoComplete.Model.ACTIVE_CLASS );
                 }
         };
 
