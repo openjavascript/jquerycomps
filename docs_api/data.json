@@ -62,6 +62,17 @@
                 "window.Bizs": 1
             }
         },
+        "../bizs/MoneyTips/MoneyTips.js": {
+            "name": "../bizs/MoneyTips/MoneyTips.js",
+            "modules": {},
+            "classes": {
+                "window.Bizs.MoneyTips": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.Bizs": 1
+            }
+        },
         "../bizs/MultiDate/MultiDate.js": {
             "name": "../bizs/MultiDate/MultiDate.js",
             "modules": {},
@@ -401,6 +412,26 @@
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
             "example": [
                 "\n     <script>\n     //动态添加的内容需要显式调用 process 方法去处理相关逻辑\n     $.get( _url, function( _html ){\n         var _node = $(_html);\n         _node.appendTo( document.body );\n         JC.KillISPCache.getInstance().process( _node );\n     });\n     </script>"
+            ]
+        },
+        "window.Bizs.MoneyTips": {
+            "name": "window.Bizs.MoneyTips",
+            "shortname": "window.Bizs.MoneyTips",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.Bizs",
+            "file": "../bizs/MoneyTips/MoneyTips.js",
+            "line": 2,
+            "description": "<h2>金额格式化 业务逻辑</h2>\n<br/>应用场景\n<br/>用户在文本框输入金额时, 在指定的 node 显示以逗号分隔的金额\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.MoneyTips.html' target='_blank'>API docs</a>\n| <a href='../../bizs/MoneyTips/_demo' target='_blank'>demo link</a></p>\n\ninput[type=text] 需要 添加 class=\"js_bizMoneyTips\"\n<br />只要带有 class = js_bizMoneyTips 的文本框, 默认会自己初始化 MoneyTips 实例\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>bmtDisplayLabel = selector, default = span</dt>\n     <dd>\n         指定显示 格式化金额的 node, 如果没有显式指定 node, 那么将会动态生成一个用于显示的 span\n     </dd>\n\n     <dt>bmtPattern = string, default = {0}</dt>\n     <dd>\n         用于显示格式化金额的显示内容, {0} = 金额占位符\n         <br />example: &lt;input type=\"text\" class=\"js_bizMoneyTips\" bmtPattern=\"格式化金额: {0}\" />\n     </dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "version": "dev 0.1 2013-11-21",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n       <div>\n           金额: <input type=\"text\" value=\"6543.21\" \n           datatype=\"n-12.2\" class=\"js_bizMoneyTips\" bmtDisplayLabel=\"/span.js_bmtSpan\" />\n           <em class=\"error\"></em>\n           <span class=\"js_bmtSpan\"></span>\n           <button type=\"button\" class=\"js_updateBmt\" data-value=\"\">MoneyTips#update()</button>\n       </div>"
             ]
         },
         "window.Bizs.MultiDate": {
@@ -1438,7 +1469,7 @@
             "extension_for": [],
             "namespace": "",
             "file": "../lib.js",
-            "line": 932,
+            "line": 943,
             "description": "<h2>业务逻辑命名空间</h2>\n<br />这个命名空间的组件主要为满足业务需求, 不是通用组件~\n<br />但在某个项目中应该是常用组件~\n<dl>\n     <dt>业务组件的存放位置:</dt>\n     <dd>libpath/bizs/</dd>\n\n     <dt>使用业务组件</dt>\n     <dd> JC.use( 'Bizs.BizComps' ); //  libpath/bizs/BizComps/BizComps.js </dd>\n\n     <dt>使用业务文件</dt>\n     <dd> JC.use( 'bizs.BizFile' ); //   libpath/bizs/BizFile.js </dd>\n</dl>",
             "static": 1
         },
@@ -1452,7 +1483,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../lib.js",
-            "line": 953,
+            "line": 964,
             "description": "JC jquery 组件库 资源调用控制类\n<br />这是一个单例模式, 全局访问使用 JC 或 window.JC\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.JC.html' target='_blank'>API docs</a>\n| <a href='../../_demo' target='_blank'>demo link</a></p>",
             "static": 1,
             "example": [
@@ -1471,7 +1502,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../lib.js",
-            "line": 1265,
+            "line": 1276,
             "description": "MVC 抽象类 ( <b>仅供扩展用</b> )\n<p><b>require</b>: <a href='jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>",
             "is_constructor": 1,
             "params": [
@@ -1494,7 +1525,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../lib.js",
-            "line": 1470,
+            "line": 1481,
             "description": "MVC Model 类( <b>仅供扩展用</b> )\n<p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   \n<p><b>require</b>: <a href='jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.BaseMVC/_demo' target='_blank'>demo link</a></p>",
             "is_constructor": 1,
             "params": [
@@ -2088,6 +2119,64 @@
             ],
             "static": 1,
             "class": "window.Bizs.KillISPCache",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/MoneyTips/MoneyTips.js",
+            "line": 60,
+            "description": "获取或设置 MoneyTips 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "MoneyTipsInstance"
+            },
+            "class": "window.Bizs.MoneyTips",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/MoneyTips/MoneyTips.js",
+            "line": 76,
+            "description": "初始化可识别的 MoneyTips 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of MoneyTipsInstance"
+            },
+            "class": "window.Bizs.MoneyTips",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/MoneyTips/MoneyTips.js",
+            "line": 135,
+            "description": "更新 tips 的值",
+            "itemtype": "method",
+            "name": "update",
+            "params": [
+                {
+                    "name": "_val",
+                    "description": "",
+                    "type": "Int|string"
+                }
+            ],
+            "class": "window.Bizs.MoneyTips",
             "namespace": "window.Bizs"
         },
         {
@@ -13073,7 +13162,7 @@
         {
             "file": "../lib.js",
             "line": 710,
-            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件,  </dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder\n         <br />Bizs.DisableLogic, Bizs.FormLogic\n     </dd>\n</d>",
+            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件,  </dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
             "params": [
@@ -13130,7 +13219,13 @@
         },
         {
             "file": "../lib.js",
-            "line": 765,
+            "line": 764,
+            "description": "格式化金额",
+            "class": "JC.common"
+        },
+        {
+            "file": "../lib.js",
+            "line": 769,
             "description": "URL 占位符识别功能",
             "itemtype": "method",
             "name": "urlDetect",
@@ -13152,7 +13247,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 804,
+            "line": 808,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -13175,13 +13270,13 @@
         },
         {
             "file": "../lib.js",
-            "line": 863,
+            "line": 867,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common"
         },
         {
             "file": "../lib.js",
-            "line": 881,
+            "line": 885,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -13215,7 +13310,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 969,
+            "line": 980,
             "description": "JC组件库所在路径",
             "itemtype": "property",
             "name": "PATH",
@@ -13225,7 +13320,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 979,
+            "line": 990,
             "description": "是否显示调试信息",
             "itemtype": "property",
             "name": "debug",
@@ -13235,7 +13330,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 986,
+            "line": 997,
             "description": "导入JC组件",
             "itemtype": "method",
             "name": "use",
@@ -13264,7 +13359,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1093,
+            "line": 1104,
             "description": "调用依赖的类\n<br />这个方法的存在是因为有一些类调整了结构, 但是原有的引用因为向后兼容的需要, 暂时不能去掉",
             "itemtype": "method",
             "name": "_usePatch",
@@ -13292,7 +13387,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1115,
+            "line": 1126,
             "description": "输出调试信息, 可通过 JC.debug 指定是否显示调试信息",
             "params": [
                 {
@@ -13308,7 +13403,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1122,
+            "line": 1133,
             "description": "定义输出路径的 v 参数, 以便控制缓存",
             "itemtype": "property",
             "name": "pathPostfix",
@@ -13319,7 +13414,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1130,
+            "line": 1141,
             "description": "是否启用nginx concat 模块的路径格式",
             "itemtype": "property",
             "name": "enableNginxStyle",
@@ -13330,7 +13425,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1138,
+            "line": 1149,
             "description": "定义 nginx style 的基础路径\n<br /><b>注意:</b> 如果这个属性为空, 即使 enableNginxStyle = true, 也是直接输出默认路径",
             "itemtype": "property",
             "name": "nginxBasePath",
@@ -13341,7 +13436,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1147,
+            "line": 1158,
             "description": "资源路径映射对象\n<br />设置 JC.use 逗号(',') 分隔项的 对应URL路径",
             "itemtype": "property",
             "name": "FILE_MAP",
@@ -13355,7 +13450,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1185,
+            "line": 1196,
             "description": "输出 nginx concat 模块的脚本路径格式",
             "itemtype": "method",
             "name": "_writeNginxScript",
@@ -13373,7 +13468,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1213,
+            "line": 1224,
             "description": "输出的脚本路径格式",
             "itemtype": "method",
             "name": "_writeNormalScript",
@@ -13391,7 +13486,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1230,
+            "line": 1241,
             "description": "保存 use 过的资源路径, 以便进行唯一性判断, 避免重复加载",
             "itemtype": "property",
             "name": "_USE_CACHE",
@@ -13404,20 +13499,20 @@
         },
         {
             "file": "../lib.js",
-            "line": 1241,
+            "line": 1252,
             "description": "UXC 是 JC 的别名\n<br />存在这个变量是为了向后兼容\n<br />20130804 之前的命名空间是 UXC, 这个命名空间在一段时间后将会清除, 请使用 JC 命名空间\n<p><b>see</b>: <a href='window.JC.html'>JC</a></p>",
             "date": "2013-05-22",
             "class": "JC"
         },
         {
             "file": "../lib.js",
-            "line": 1249,
+            "line": 1260,
             "description": "自动识别组件库所在路径",
             "class": "JC"
         },
         {
             "file": "../lib.js",
-            "line": 1291,
+            "line": 1302,
             "description": "内部初始化方法",
             "itemtype": "method",
             "name": "_init",
@@ -13435,7 +13530,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1320,
+            "line": 1331,
             "description": "初始化之前调用的方法",
             "itemtype": "method",
             "name": "_beforeInit",
@@ -13446,7 +13541,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1328,
+            "line": 1339,
             "description": "内部事件初始化方法",
             "itemtype": "method",
             "name": "_initHanlderEvent",
@@ -13457,7 +13552,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1336,
+            "line": 1347,
             "description": "内部初始化完毕时, 调用的方法",
             "itemtype": "method",
             "name": "_inited",
@@ -13468,7 +13563,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1344,
+            "line": 1355,
             "description": "获取 显示 BaseMVC 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -13480,7 +13575,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1350,
+            "line": 1361,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -13505,7 +13600,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1358,
+            "line": 1369,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -13525,7 +13620,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1366,
+            "line": 1377,
             "description": "获取或设置 BaseMVC 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -13546,7 +13641,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1384,
+            "line": 1395,
             "description": "是否自动初始化",
             "itemtype": "property",
             "name": "autoInit",
@@ -13558,7 +13653,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1392,
+            "line": 1403,
             "description": "复制 BaseMVC 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "build",
@@ -13575,7 +13670,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1407,
+            "line": 1418,
             "description": "复制 _inClass 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "buildClass",
@@ -13602,7 +13697,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1447,
+            "line": 1458,
             "description": "为 _outClass 生成一个通用 Model 类",
             "itemtype": "method",
             "name": "buildModel",
@@ -13619,7 +13714,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1460,
+            "line": 1471,
             "description": "为 _outClass 生成一个通用 View 类",
             "itemtype": "method",
             "name": "buildView",
@@ -13636,7 +13731,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1485,
+            "line": 1496,
             "description": "设置 selector 实例引用的 data 属性名",
             "itemtype": "property",
             "name": "_instanceName",
@@ -13650,7 +13745,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1499,
+            "line": 1510,
             "description": "初始化的 jq 选择器",
             "itemtype": "method",
             "name": "selector",
@@ -13669,7 +13764,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1510,
+            "line": 1521,
             "description": "读取 int 属性的值",
             "itemtype": "method",
             "name": "intProp",
@@ -13693,7 +13788,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1531,
+            "line": 1542,
             "description": "读取 float 属性的值",
             "itemtype": "method",
             "name": "floatProp",
@@ -13717,7 +13812,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1552,
+            "line": 1563,
             "description": "读取 string 属性的值",
             "itemtype": "method",
             "name": "stringProp",
@@ -13741,7 +13836,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1570,
+            "line": 1581,
             "description": "读取 html 属性值\n<br />这个跟 stringProp 的区别是不会强制转换为小写",
             "itemtype": "method",
             "name": "attrProp",
@@ -13765,7 +13860,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1593,
+            "line": 1604,
             "description": "读取 boolean 属性的值",
             "itemtype": "method",
             "name": "boolProp",
@@ -13795,7 +13890,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1619,
+            "line": 1630,
             "description": "读取 callback 属性的值",
             "itemtype": "method",
             "name": "callbackProp",
@@ -13820,7 +13915,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1642,
+            "line": 1653,
             "description": "获取 selector 属性的 jquery 选择器",
             "itemtype": "method",
             "name": "selectorProp",
@@ -13844,7 +13939,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1665,
+            "line": 1676,
             "description": "判断 _selector 是否具体某种特征",
             "itemtype": "method",
             "name": "is",
@@ -13887,6 +13982,10 @@
         {
             "message": "unknown tag: version",
             "line": " ../bizs/KillISPCache/KillISPCache.js:3"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../bizs/MoneyTips/MoneyTips.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -14286,19 +14385,19 @@
         },
         {
             "message": "unknown tag: date",
-            "line": " ../lib.js:953"
+            "line": " ../lib.js:964"
         },
         {
             "message": "unknown tag: date",
-            "line": " ../lib.js:1241"
+            "line": " ../lib.js:1252"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../lib.js:1265"
+            "line": " ../lib.js:1276"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../lib.js:1470"
+            "line": " ../lib.js:1481"
         },
         {
             "message": "Missing item type\n脚本模板 Panel",
@@ -15037,16 +15136,20 @@
             "line": " ../lib.js:760"
         },
         {
+            "message": "Missing item type\n格式化金额",
+            "line": " ../lib.js:764"
+        },
+        {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../lib.js:863"
+            "line": " ../lib.js:867"
         },
         {
             "message": "Missing item type\nUXC 是 JC 的别名\n<br />存在这个变量是为了向后兼容\n<br />20130804 之前的命名空间是 UXC, 这个命名空间在一段时间后将会清除, 请使用 JC 命名空间\n<p><b>see</b>: <a href='window.JC.html'>JC</a></p>",
-            "line": " ../lib.js:1241"
+            "line": " ../lib.js:1252"
         },
         {
             "message": "Missing item type\n自动识别组件库所在路径",
-            "line": " ../lib.js:1249"
+            "line": " ../lib.js:1260"
         }
     ]
 }

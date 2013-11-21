@@ -720,7 +720,7 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
      *      <dt>可识别的组件</dt>
      *      <dd>
      *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder
-     *          <br />Bizs.DisableLogic, Bizs.FormLogic
+     *          <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips
      *      </dd>
      * </d>
      * @method  jcAutoInitComps
@@ -761,6 +761,10 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
          * 表单提交逻辑
          */
         Bizs.FormLogic && Bizs.FormLogic.init( _selector );
+        /**
+         * 格式化金额
+         */
+        Bizs.MoneyTips && Bizs.MoneyTips.init( _selector );
     }
     /**
      * URL 占位符识别功能
@@ -889,12 +893,19 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
      * @static
      */
     function moneyFormat(_number, _len, _floatLen, _splitSymbol){
+        var _def = '0.00';
         !_len && ( _len = 3 );
         typeof _floatLen == 'undefined' && ( _floatLen = 2 );
         !_splitSymbol && ( _splitSymbol = ',' );
-        _number = parseFinance( _number, _floatLen );
 
-        if( !_number ) return '0';
+        typeof _number == 'number' && ( _number = parseFinance( _number, _floatLen ) );
+        if( typeof _number == 'string' ){
+            _number = _number.replace( /[,]/g, '' );
+            if( !/^[\d\.]+$/.test( _number ) ) return _def;
+            if( _number.split('.').length > 2 ) return _def;
+        }
+
+        if( !_number ) return _def;
         _number += ''; 
 
         _number = _number.replace( /[^\d\.]/g, '' );
