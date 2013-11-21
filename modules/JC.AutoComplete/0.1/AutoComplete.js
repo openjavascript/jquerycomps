@@ -1,4 +1,5 @@
 //TODO: 添加 IE6 支持
+//TODO: 移动 左右 方向键时, 显示 首字符到光标的过滤条件
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
     ;(function($){
         /**
@@ -101,7 +102,6 @@
                         var _keyCode = _evt.keyCode
                             , _sp = $(this)
                             , _val = _sp.val().trim()
-                            , _ignoretime = _sp.data('ignoretime')
                             ;
 
                         if( _keyCode == 38 || _keyCode == 40 ){
@@ -111,21 +111,11 @@
 
                         if ( _keyCode ) {
                             switch( _evt.keyCode ) {
-                                //上下方向键
                                 case 38://up
                                 case 40://down
                                     return;
-                                //左右方向键
-                                case 37:
-                                case 39:
-                                    return;
-
-                                case 13:
-                                    return;
-
-                                case 9: 
-                                case 27:                       
-                                    _p._view.hide();
+                                case 37://left
+                                case 39://right
                                     return;
                             }
                         }
@@ -136,7 +126,6 @@
                         var _keyCode = _evt.keyCode
                             , _sp = $(this)
                             , _val = _sp.val().trim()
-                            , _ignoretime = _sp.data('ignoretime')
                             ;
 
                         if( _keyCode == 38 || _keyCode == 40 ){
@@ -155,15 +144,11 @@
                                 case 37:
                                 case 39:
                                     return;
-                                case 13:
-                                    //enter
-                                    _p._model.cacPreventEnter() && _evt.preventDefault();
-                                    _sp.data('ignoretime', new Date().getTime() );
+                                case 13: //enter
+                                    _p.trigger( 'AC_ENTER', [ _evt ] );
                                     return;
-                                case 9:
-                                    //tab
-                                case 27:
-                                    //esc
+                                case 9: //tab
+                                case 27: //esc
                                     _p._view.hide();
                                     return; 
                             }
@@ -213,6 +198,11 @@
                         if( AutoComplete.Model.isScroll ) return;
                         _p._view.updateIndex( $(this).attr('data-index'), true );
                     }
+
+                    _p.on( 'AC_ENTER', function( _evt, _srcEvt ){
+                        _p._model.cacPreventEnter() && _srcEvt.preventDefault();
+                        _p._view.hide();
+                    });
 
                     _p.on( 'AC_UPDATE_LIST_INDEX', function( _evt, _keyCode, _srcEvt ){
                         _srcEvt.preventDefault();
@@ -459,7 +449,9 @@
         AutoComplete.View.prototype = {
             init: 
                 function(){
-                    this._model.listItems().each( function( _ix ){
+                    var _p = this;
+
+                    _p._model.listItems().each( function( _ix ){
                         $(this).attr( 'data-index', _ix );
                     })
                     .removeClass( AutoComplete.Model.ACTIVE_CLASS )
@@ -482,7 +474,7 @@
 
                     _p._model.wordPanel().show();
 
-                    !_p._model.key() && _p._model.list().show().removeClass( AutoComplete.Model.ACTIVE_CLASS );
+                    !_p._model.key() && _p._model.list().show();
 
                 },
 
@@ -532,10 +524,6 @@
                         _p.show();
 
                     }
-
-                    _p._model.list().removeClass( AutoComplete.Model.ACTIVE_CLASS );
-                    _p._model.keyIndex = -1;
-
                 }
             , currentIndex:
                 function( _isDown ){

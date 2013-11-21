@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AutoComplete</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+        .ui-sug-mod input{ height: 26px;  outline: 0; text-indent: 3px; }
+
+        .ui-sug-ipt{ width: 400px; max-height: 300px; overflow-y: auto; }
+        .ui-sug-ipt{ border: 1px solid #ccc;  padding: 0; }
+
+        .js_bmtSpan{
+            color: black;
+        }
+    </style>
+    <link href='../../../../modules/Bizs.MoneyTips/0.1/res/default/style.css' rel='stylesheet' />
+    <link href='../../../../modules/JC.Valid/0.2/res/default/style.css' rel='stylesheet' />
+
+    <script src="../../../../lib.js"></script>
+    <script src="../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+        requirejs( [ 'Bizs.MoneyTips', 'JC.Valid' ], function( AutoComplete ){
+        });
+    </script>
+</head>
+<body>
+    <h2>Bizs.MoneyTips 示例</h2>
+    <form>
+        <dl>
+            <dd>
+                金额: <input type="text" datatype="n-12.2" class="js_bizMoneyTips" bmtDisplayLabel="(dd span.js_bmtSpan" />
+                <em class="error"></em>
+                <span class="js_bmtSpan"></span>
+            </dd>
+
+            <dd>
+                金额: <input type="text" datatype="n-12.2" class="js_bizMoneyTips" />
+            </dd>
+
+            <dd>
+                金额范围: 
+                <input type="text" datatype="nrange-12.2" class="js_bizMoneyTips" />
+                <input type="text" datatype="nrange-12.2" class="js_bizMoneyTips" />
+                <em class="error"></em>
+            </dd>
+
+        </dl>
+    </form>
+</body>
+</html>
