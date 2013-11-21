@@ -1,3 +1,4 @@
+//TODO: 添加 IE6 支持
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
     ;(function($){
         /**
@@ -97,20 +98,15 @@
 
                     _p._model.selector().on('keyup', function( _evt ) {
 
-                        var _keyCode = _evt.keyCode,
-                        _sp = $(this),
-                        _val = _sp.val().trim(),
-                        _ignoretime = _sp.data('ignoretime')
-                        ;
+                        var _keyCode = _evt.keyCode
+                            , _sp = $(this)
+                            , _val = _sp.val().trim()
+                            , _ignoretime = _sp.data('ignoretime')
+                            ;
 
                         if( _keyCode == 38 || _keyCode == 40 ){
                             AutoComplete.Model.isScroll = true;
                         }
-
-                        if ( _ignoretime && ( _ignoretime - new Date().getTime() < 50 ) ) {
-                            return;
-                        }
-
                         JC.log('keyup', _keyCode, new Date().getTime() );
 
                         if ( _keyCode ) {
@@ -118,11 +114,13 @@
                                 //上下方向键
                                 case 38://up
                                 case 40://down
-                                    _p.trigger( 'AC_UPDATE_LIST_INDEX', [ _keyCode, _evt ] );
                                     return;
                                 //左右方向键
                                 case 37:
                                 case 39:
+                                    return;
+
+                                case 13:
                                     return;
 
                                 case 9: 
@@ -131,31 +129,15 @@
                                     return;
                             }
                         }
-
-                        /*
-                        if ( !_val ) {
-                            _p._view.build( _p._model.orginal );
-                            return;
-                        }
-
-                        if ( !_p._model.cachData( _val ) ) {
-                            //_p._model.cachData( _val, );
-                            console.log('cachData');
-                            var _data = _p._model.update( _val );
-                            _p._view.update( _data );
-
-                            _p._model.cachData( _val, _data );
-
-                            return;
-                        }
-                        */
                     });
 
                     _p._model.selector().on('keydown', function( _evt ) {
 
-                        var _isdown = true,
-                        _keyCode = _evt.keyCode,
-                        _sp = $(this);
+                        var _keyCode = _evt.keyCode
+                            , _sp = $(this)
+                            , _val = _sp.val().trim()
+                            , _ignoretime = _sp.data('ignoretime')
+                            ;
 
                         if( _keyCode == 38 || _keyCode == 40 ){
                             AutoComplete.Model.isScroll = true;
@@ -166,17 +148,9 @@
                         if ( _keyCode ) {
                             switch( _keyCode ) {
                                 case 40:
-                                    //向下
                                 case 38:
-                                    //向上
-                                    _evt.preventDefault();
-
-                                    /*
-                                    if ( _evt.keyCode == 38 ) {
-                                        _isdown = false;
-                                    }
-                                    _p._model.getKeyIndex( _isdown );
-                                    */
+                                    _p.trigger( 'AC_UPDATE_LIST_INDEX', [ _keyCode, _evt ] );
+                                    return;
 
                                 case 37:
                                 case 39:
@@ -185,7 +159,7 @@
                                     //enter
                                     _p._model.cacPreventEnter() && _evt.preventDefault();
                                     _sp.data('ignoretime', new Date().getTime() );
-
+                                    return;
                                 case 9:
                                     //tab
                                 case 27:
@@ -193,8 +167,25 @@
                                     _p._view.hide();
                                     return; 
                             }
-
                         }
+
+                        _p._model.keydownTimeout( setTimeout( function(){
+                            _val = _sp.val().trim();
+
+                            if ( !_val ) {
+                                _p._view.build( _p._model.orginal );
+                                return;
+                            }
+
+                            var _data = _p._model.cachData( _val );
+
+                            if ( !_data ) {
+                                _data = _p._model.update( _val );
+                                _p._model.cachData( _val, _data );
+                            }
+                            _p._view.update( _data );
+                        }, 200 ));
+
                     });
 
                     _p._model.wordPanel().on('click', function( _evt ){
@@ -256,7 +247,7 @@
             keyIndex: -1,
 
             layoutTpl: function() {
-                var _tpl = '<li data-id="{0}" data-value="{1}" data-type="{2}" data-py="{3}" data-index="{4}">{1}</li>';
+                var _tpl = '<li data-id="{0}" data-value="{1}" data-index="{2}" class="AC_listItem {3}">{1}</li>';
                 return _tpl;
             },
 
@@ -310,13 +301,8 @@
                         _cach[ _key ] = _items;
                     }
 
-                    console.log("_cachs", _cach );
                     return _cach[_key];
                 },
-
-            // bestFilteredData: [],
-
-            // betterFilteredData: [],
 
             filteredData: [],
 
@@ -455,6 +441,18 @@
                         ;
                     return _r;
                 }
+
+            , keyupTimeout:
+                function( _tm ){
+                    this._keyupTimeout && clearTimeout( this._keyupTimeout );
+                    this._keyupTimeout = _tm;
+                }
+
+            , keydownTimeout:
+                function( _tm ){
+                    this._keydownTimeout && clearTimeout( this._keydownTimeout );
+                    this._keydownTimeout = _tm;
+                }
         };
 
         BaseMVC.buildView( AutoComplete );
@@ -463,7 +461,11 @@
                 function(){
                     this._model.listItems().each( function( _ix ){
                         $(this).attr( 'data-index', _ix );
-                    });
+                    })
+                    .removeClass( AutoComplete.Model.ACTIVE_CLASS )
+                    .first().addClass( AutoComplete.Model.ACTIVE_CLASS )
+                    ;
+
                     // JC.log( 'AutoComplete.View.init:', new Date().getTime() );
                 },
 
@@ -515,15 +517,14 @@
                         _p.hide();
 
                     } else {
-                        JC.log( _p._model.layoutTpl() );
+                        //JC.log( _p._model.layoutTpl() );
 
                         for ( ; _i < _data.length; _i++ ) {
                             _view.push( JC.f.printf( _p._model.layoutTpl()
                                         , _data[_i].id
                                         , _data[_i].word
-                                        , _data[_i].tag
-                                        , _data[_i].py
                                         , _i
+                                        , _i == 0 ? AutoComplete.Model.ACTIVE_CLASS : ''
                                         ) );
                         }
 
@@ -568,7 +569,7 @@
                 function( _isDown ){
                     var _p = this, _ix = _p.currentIndex( _isDown );
                     _p.updateIndex( _ix );
-                    JC.log( 'updateListIndex', _ix, new Date().getTime() );
+                    //JC.log( 'updateListIndex', _ix, new Date().getTime() );
                 }
 
             , updateIndex:
