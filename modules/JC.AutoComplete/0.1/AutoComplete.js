@@ -95,12 +95,6 @@
                         _p.selector().removeClass('AC_fakebox');
                     });
 
-                    _p.on( 'AC_UPDATE_LIST_INDEX', function( _evt, _keyCode, _srcEvt ){
-                        _srcEvt.preventDefault();
-                        JC.log( 'AC_UPDATE_LIST_INDEX', _keyCode, new Date().getTime() );
-                        _p._view.updateListIndex( _keyCode == 40 ? true : false );
-                    });
-
                     _p._model.selector().on('keyup', function( _evt ) {
 
                         var _keyCode = _evt.keyCode,
@@ -108,6 +102,10 @@
                         _val = _sp.val().trim(),
                         _ignoretime = _sp.data('ignoretime')
                         ;
+
+                        if( _keyCode == 38 || _keyCode == 40 ){
+                            AutoComplete.Model.isScroll = true;
+                        }
 
                         if ( _ignoretime && ( _ignoretime - new Date().getTime() < 50 ) ) {
                             return;
@@ -158,6 +156,10 @@
                         var _isdown = true,
                         _keyCode = _evt.keyCode,
                         _sp = $(this);
+
+                        if( _keyCode == 38 || _keyCode == 40 ){
+                            AutoComplete.Model.isScroll = true;
+                        }
 
                         JC.log('keydown', new Date().getTime() );
 
@@ -213,10 +215,20 @@
                         _p._view.hide();
                     } );
 
-                    _p._model.wordPanel().delegate( '> li', 'mouseenter', function( _evt ) {
+                    _p._model.wordPanel().delegate( '> li', 'mouseover', mouseHandler );
+
+                    function mouseHandler( _evt ) {
                         //JC.log( 'xxxxxxx', $(this).attr('data-index') );
+                        if( AutoComplete.Model.isScroll ) return;
                         _p._view.updateIndex( $(this).attr('data-index'), true );
+                    }
+
+                    _p.on( 'AC_UPDATE_LIST_INDEX', function( _evt, _keyCode, _srcEvt ){
+                        _srcEvt.preventDefault();
+                        JC.log( 'AC_UPDATE_LIST_INDEX', _keyCode, new Date().getTime() );
+                        _p._view.updateListIndex( _keyCode == 40 ? true : false );
                     });
+
                 }, 
 
             _inited: 
@@ -377,6 +389,7 @@
 
                     _h = _h + _top;
 
+
                     if ( keyIndex == -1 ) {
 
                         this.selector().focus();
@@ -399,6 +412,13 @@
                         }
 
                     }
+
+                    AutoComplete.Model.SCROLL_TIMEOUT && clearTimeout( AutoComplete.Model.SCROLL_TIMEOUT );
+
+                    AutoComplete.Model.SCROLL_TIMEOUT =
+                        setTimeout( function(){
+                            AutoComplete.Model.isScroll = false;
+                        }, 500 );
 
                 },
 
