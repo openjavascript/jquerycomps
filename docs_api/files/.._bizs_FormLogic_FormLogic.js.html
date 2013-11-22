@@ -588,7 +588,7 @@
                     _frame.on( &#x27;load&#x27;, function( _evt ){
                         var _w = _frame.prop(&#x27;contentWindow&#x27;)
                             , _wb = _w.document.body
-                            , _d = $.trim( _wb.innerHTML )
+                            , _d = $( &#x27;&lt;div&gt;&#x27; + ( $.trim( _wb.innerHTML ) || &#x27;&#x27; ) + &#x27;&lt;/div&gt;&#x27; ).text()
                             ;
                         if( !_p._model.isSubmited() ) return;
 
