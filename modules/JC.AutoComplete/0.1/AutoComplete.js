@@ -90,11 +90,11 @@
 
                     _p._model.selector().on('focus', function() {
                         _p._view.show();
-                        _p.selector().addClass('AC_fakebox');
+                        _p.selector().addClass( AutoComplete.Model.CLASS_FAKE );
                     } );
 
                     _p._model.selector().on('blur', function() {
-                        _p.selector().removeClass('AC_fakebox');
+                        _p.selector().removeClass( AutoComplete.Model.CLASS_FAKE );
                     });
 
                     _p._model.selector().on('keyup', function( _evt ) {
@@ -110,19 +110,27 @@
                         JC.log('keyup', _keyCode, new Date().getTime() );
 
                         if ( _keyCode ) {
-                            switch( _evt.keyCode ) {
+                            switch( _keyCode ){
                                 case 38://up
                                 case 40://down
-                                    return;
-                                case 37://left
-                                case 39://right
-                                    return;
+                                    {
+                                        _evt.preventDefault();
+                                    }
+                                case 37:
+                                case 39:
+                                    {
+                                        return;
+                                    }
+                                case 27://esc
+                                    {
+                                        _p._model.hide();
+                                        return;
+                                    }
                             }
                         }
                     });
 
                     _p._model.selector().on('keydown', function( _evt ) {
-
                         var _keyCode = _evt.keyCode
                             , _sp = $(this)
                             , _val = _sp.val().trim()
@@ -135,17 +143,25 @@
                         JC.log('keydown', new Date().getTime() );
 
                         if ( _keyCode ) {
+                            switch( _keyCode ){
+                                case 40:
+                                case 38:
+                                case 13:
+                                    if( !_p._model.wordPanel().is(':visible') ) return;
+                                    break;
+                            }
+
                             switch( _keyCode ) {
                                 case 40:
                                 case 38:
-                                    _p.trigger( 'AC_UPDATE_LIST_INDEX', [ _keyCode, _evt ] );
+                                    _p.trigger( AutoComplete.Model.UPDATE_LIST_INDEX, [ _keyCode, _evt ] );
                                     return;
 
                                 case 37:
                                 case 39:
                                     return;
                                 case 13: //enter
-                                    _p.trigger( 'AC_ENTER', [ _evt ] );
+                                    _p.trigger( AutoComplete.Model.ENTER, [ _evt ] );
                                     return;
                                 case 9: //tab
                                 case 27: //esc
@@ -178,38 +194,49 @@
                     });
 
                     _p._model.wordPanel().delegate( 'li', 'click', function( _evt ){
-
-                        _p.trigger('ACChange', [ $(this) ] );
-                        _p.trigger('ACHidden');
+                        _p.trigger( AutoComplete.Model.CHANGE, [ $(this) ] );
+                        _p.trigger( AutoComplete.Model.HIDDEN );
                     } );
 
-                    _p.on( 'ACChange', function( _evt, _srcSelector ){
+                    _p.on( AutoComplete.Model.HIDDEN, function () {
+                        _p._view.hide();
+                    } );
+
+                    _p._model.wordPanel().delegate( '> li', 'mouseenter'
+                        , function mouseHandler( _evt ) {
+                            if( AutoComplete.Model.isScroll ) return;
+                            _p._view.updateIndex( $(this).attr('data-index'), true );
+                        }
+                    );
+
+                    _p.on( AutoComplete.Model.ENTER, function( _evt, _srcEvt ){
+                        _p._model.cacPreventEnter() && _srcEvt.preventDefault();
+                        var _selectedItem = _p._model.selectedItem();
+                        _selectedItem 
+                            && _selectedItem.length
+                            && _p.trigger( AutoComplete.Model.CHANGE, [ _selectedItem ] )
+                            ;
+                        _p.trigger( AutoComplete.Model.HIDDEN );
+                    });
+
+                    _p.on( AutoComplete.Model.UPDATE_LIST_INDEX, function( _evt, _keyCode, _srcEvt ){
+                        _srcEvt.preventDefault();
+                        JC.log( AutoComplete.Model.UPDATE_LIST_INDEX, _keyCode, new Date().getTime() );
+                        _p._view.updateListIndex( _keyCode == 40 ? true : false );
+
+                        var _selectedItem = _p._model.selectedItem();
+                        _selectedItem 
+                            && _selectedItem.length
+                            && _p.trigger( AutoComplete.Model.CHANGE, [ _selectedItem ] )
+                            ;
+                    });
+
+                    /**
+                     * li 点击时, 更新对应的内容
+                     */
+                    _p.on( AutoComplete.Model.CHANGE, function( _evt, _srcSelector ){
                         _p._model.setKey( _srcSelector.data('value') );
                     });
-
-                    _p.on( 'ACHidden', function () {
-                        _p._view.hide();
-                    } );
-
-                    _p._model.wordPanel().delegate( '> li', 'mouseover', mouseHandler );
-
-                    function mouseHandler( _evt ) {
-                        //JC.log( 'xxxxxxx', $(this).attr('data-index') );
-                        if( AutoComplete.Model.isScroll ) return;
-                        _p._view.updateIndex( $(this).attr('data-index'), true );
-                    }
-
-                    _p.on( 'AC_ENTER', function( _evt, _srcEvt ){
-                        _p._model.cacPreventEnter() && _srcEvt.preventDefault();
-                        _p._view.hide();
-                    });
-
-                    _p.on( 'AC_UPDATE_LIST_INDEX', function( _evt, _keyCode, _srcEvt ){
-                        _srcEvt.preventDefault();
-                        JC.log( 'AC_UPDATE_LIST_INDEX', _keyCode, new Date().getTime() );
-                        _p._view.updateListIndex( _keyCode == 40 ? true : false );
-                    });
-
                 }, 
 
             _inited: 
@@ -221,8 +248,17 @@
         };
 
         BaseMVC.buildModel( AutoComplete );
+
         AutoComplete.Model._instanceName = 'AutoComplete';
-        AutoComplete.Model.ACTIVE_CLASS = 'AC_active';
+
+        AutoComplete.Model.ENTER = 'AC_ENTER';
+        AutoComplete.Model.CHANGE = 'AC_CHANGE';
+        AutoComplete.Model.HIDDEN = 'AC_HIDDEN';
+        AutoComplete.Model.UPDATE_LIST_INDEX = 'AC_UPDATE_LIST_INDEX';
+
+        AutoComplete.Model.CLASS_ACTIVE = 'AC_active';
+        AutoComplete.Model.CLASS_FAKE = 'AC_fakebox';
+
         AutoComplete.Model.prototype = {
             init: 
                 function() {
@@ -320,7 +356,6 @@
                     this.filteredData = bestFilteredData.concat( betterFilteredData );
 
                     return this.filteredData;
-
                 },
 
 
@@ -351,51 +386,7 @@
 
                         }
                     }
-
                     this.setSelect( this.keyIndex );
-
-                },
-
-            setSelect: 
-                function( keyIndex ) {
-                    var _el = this.listItems().eq(keyIndex),
-                    _h = _el.position().top + _el.height(),
-                    _ph = this.wordPanel().innerHeight(),
-                    _top = this.wordPanel().scrollTop();
-
-                    _h = _h + _top;
-
-
-                    if ( keyIndex == -1 ) {
-
-                        this.selector().focus();
-                        this.list().removeClass( AutoComplete.Model.ACTIVE_CLASS );
-                        this.setKey( '' );
-
-                    } else {
-
-                        //if ( _el.is(':visible') ) {
-                        _el.addClass( AutoComplete.Model.ACTIVE_CLASS ).siblings().removeClass( AutoComplete.Model.ACTIVE_CLASS );
-                        this.setKey( _el.data('value') );
-                        //}
-
-                        if ( _h > _ph ) {
-                            this.wordPanel().scrollTop( _h - _ph );
-                        }
-
-                        if ( _el.position().top < 0 ) {
-                            this.wordPanel().scrollTop( 0 );
-                        }
-
-                    }
-
-                    AutoComplete.Model.SCROLL_TIMEOUT && clearTimeout( AutoComplete.Model.SCROLL_TIMEOUT );
-
-                    AutoComplete.Model.SCROLL_TIMEOUT =
-                        setTimeout( function(){
-                            AutoComplete.Model.isScroll = false;
-                        }, 500 );
-
                 },
 
             cacPreventEnter: 
@@ -432,6 +423,19 @@
                     return _r;
                 }
 
+            , selectedItem:
+                function(){
+                    var _r;
+                    this.listItems().each( function(){
+                        var _sp = $(this);
+                        if( _sp.hasClass( AutoComplete.Model.CLASS_ACTIVE ) ){
+                            _r = _sp;
+                            return false;
+                        }
+                    });
+                    return _r;
+                }
+
             , keyupTimeout:
                 function( _tm ){
                     this._keyupTimeout && clearTimeout( this._keyupTimeout );
@@ -454,8 +458,8 @@
                     _p._model.listItems().each( function( _ix ){
                         $(this).attr( 'data-index', _ix );
                     })
-                    .removeClass( AutoComplete.Model.ACTIVE_CLASS )
-                    .first().addClass( AutoComplete.Model.ACTIVE_CLASS )
+                    .removeClass( AutoComplete.Model.CLASS_ACTIVE )
+                    .first().addClass( AutoComplete.Model.CLASS_ACTIVE )
                     ;
 
                     // JC.log( 'AutoComplete.View.init:', new Date().getTime() );
@@ -516,13 +520,12 @@
                                         , _data[_i].id
                                         , _data[_i].word
                                         , _i
-                                        , _i == 0 ? AutoComplete.Model.ACTIVE_CLASS : ''
+                                        , _i == 0 ? AutoComplete.Model.CLASS_ACTIVE : ''
                                         ) );
                         }
 
                         _p._model.wordPanel().html( _view.join('') );
                         _p.show();
-
                     }
                 }
             , currentIndex:
@@ -536,7 +539,7 @@
 
                     _listItems.each( function( _six ){
                         var _sp = $(this);
-                        if( _sp.hasClass( AutoComplete.Model.ACTIVE_CLASS ) ){
+                        if( _sp.hasClass( AutoComplete.Model.CLASS_ACTIVE ) ){
                             _ix = _six;
                             return false;
                         }
@@ -565,13 +568,50 @@
                     var _p = this, _listItems = _p._model.listItems();
                     _p.removeActiveClass();
 
-                    $( _listItems[ _ix ] ).addClass( AutoComplete.Model.ACTIVE_CLASS );
-                    !_ignoreScroll && _p._model.setSelect( _ix );
+                    $( _listItems[ _ix ] ).addClass( AutoComplete.Model.CLASS_ACTIVE );
+                    !_ignoreScroll && _p.setScroll( _ix );
+                }
+
+            , setScroll: 
+                function( keyIndex ) {
+                    var _p = this
+                        , _el = _p._model.listItems().eq(keyIndex)
+                        , _h = _el.position().top + _el.height()
+                        , _ph = _p._model.wordPanel().innerHeight()
+                        , _top = _p._model.wordPanel().scrollTop()
+                        ;
+
+                    _h = _h + _top;
+
+                    if ( keyIndex == -1 ) {
+
+                        _p._model.selector().focus();
+                        _p._model.listItems().removeClass( AutoComplete.Model.CLASS_ACTIVE );
+
+                    } else {
+                        _p._model.listItems().removeClass( AutoComplete.Model.CLASS_ACTIVE );
+                        _el.addClass( AutoComplete.Model.CLASS_ACTIVE );
+                        if ( _h > _ph ) {
+                            _p._model.wordPanel().scrollTop( _h - _ph );
+                        }
+                        if ( _el.position().top < 0 ) {
+                            _p._model.wordPanel().scrollTop( 0 );
+                        }
+
+                    }
+
+                    AutoComplete.Model.SCROLL_TIMEOUT && clearTimeout( AutoComplete.Model.SCROLL_TIMEOUT );
+
+                    AutoComplete.Model.SCROLL_TIMEOUT =
+                        setTimeout( function(){
+                            AutoComplete.Model.isScroll = false;
+                        }, 500 );
+
                 }
 
             , removeActiveClass:
                 function(){
-                    this._model.listItems().removeClass( AutoComplete.Model.ACTIVE_CLASS );
+                    this._model.listItems().removeClass( AutoComplete.Model.CLASS_ACTIVE );
                 }
         };
 
