@@ -107,7 +107,13 @@
             function(){
                 var _p = this; 
 
-                _p._model.selector().on( 'keyup focus blur', function( _evt ){
+                _p._model.selector().on( 'focus blur ', function( _evt ){
+                    JC.log( 'focus or blur', new Date().getTime() );
+                    _p.trigger( 'BMTUpdate', [ _p._model.selector().val().trim() ] );
+                });
+
+                _p._model.selector().bind( 'input propertychange', function( _evt ){
+                    JC.log( 'input or propertychange', new Date().getTime() );
                     _p.trigger( 'BMTUpdate', [ _p._model.selector().val().trim() ] );
                 });
 

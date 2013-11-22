@@ -289,7 +289,13 @@
             function(){
                 var _p = this; 
 
-                _p._model.selector().on( &#x27;keyup focus blur&#x27;, function( _evt ){
+                _p._model.selector().on( &#x27;focus blur &#x27;, function( _evt ){
+                    JC.log( &#x27;focus or blur&#x27;, new Date().getTime() );
+                    _p.trigger( &#x27;BMTUpdate&#x27;, [ _p._model.selector().val().trim() ] );
+                });
+
+                _p._model.selector().bind( &#x27;input propertychange&#x27;, function( _evt ){
+                    JC.log( &#x27;input or propertychange&#x27;, new Date().getTime() );
                     _p.trigger( &#x27;BMTUpdate&#x27;, [ _p._model.selector().val().trim() ] );
                 });
 
