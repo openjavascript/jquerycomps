@@ -212,8 +212,8 @@
      * <p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   
      * <p><b>require</b>: <a href='jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.BaseMVC/_demo' target='_blank'>demo link</a></p>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>
+     * | <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>
      * @namespace JC
      * @class BaseMVC.Model
      * @constructor
