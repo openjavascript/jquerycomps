@@ -38,7 +38,6 @@
             datatype="n-12.2" class="js_bizMoneyTips" bmtDisplayLabel="/span.js_bmtSpan" />
             <em class="error"></em>
             <span class="js_bmtSpan"></span>
-            <button type="button" class="js_updateBmt" data-value="">MoneyTips#update()</button>
         </div>
  */
 ;(function($){

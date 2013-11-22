@@ -405,7 +405,7 @@
                     _frame.on( 'load', function( _evt ){
                         var _w = _frame.prop('contentWindow')
                             , _wb = _w.document.body
-                            , _d = $.trim( _wb.innerHTML )
+                            , _d = $( '<div>' + ( $.trim( _wb.innerHTML ) || '' ) + '</div>' ).text()
                             ;
                         if( !_p._model.isSubmited() ) return;
 
