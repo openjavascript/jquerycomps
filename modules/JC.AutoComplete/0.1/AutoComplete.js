@@ -1,5 +1,6 @@
 //TODO: 添加 IE6 支持
 //TODO: 移动 左右 方向键时, 显示 首字符到光标的过滤条件
+//TODO: 添加 唯一 key 判断逻辑
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
     ;(function($){
         /**
@@ -171,20 +172,7 @@
                         }
 
                         _p._model.keydownTimeout( setTimeout( function(){
-                            _val = _sp.val().trim();
-
-                            if ( !_val ) {
-                                _p._view.build( _p._model.orginal );
-                                return;
-                            }
-
-                            var _data = _p._model.cachData( _val );
-
-                            if ( !_data ) {
-                                _data = _p._model.update( _val );
-                                _p._model.cachData( _val, _data );
-                            }
-                            _p._view.update( _data );
+                            _p._view.updateList( _sp );
                         }, 200 ));
 
                     });
@@ -243,7 +231,7 @@
                 function(){
                     var _p = this;
                     //JC.log( 'AutoComplete _inited', new Date().getTime() );
-                    _p._model.orginal =  _p._model.wordList();
+                    _p._model.initData =  _p._model.wordList();
                 }
         };
 
@@ -263,11 +251,7 @@
             init: 
                 function() {
                     // JC.log( 'AutoComplete.Model.init:', new Date().getTime() );
-                },
-
-            key: 
-                function() {
-                    return this.selector().val().trim();
+                    this._cache = {};
                 },
 
             keyIndex: -1,
@@ -318,28 +302,26 @@
 
                 },
 
-            cachData: 
-                function ( _key, _items ) {
+            cache: 
+                function ( _key ) {
 
-                    var _cach = _cach || {};
-
-                    if (  typeof _items != 'undefined' ) {
-                        _cach[ _key ] = _items;
+                    if( !( _key in this._cache ) ){
+                        this._cache[ _key ] = this.keyData( _key ) || this.initData; 
                     }
 
-                    return _cach[_key];
+                    return this._cache[ _key ];
                 },
 
             filteredData: [],
 
-            update: 
-                function ( _val ) {
-                    var _p = this,
-                    _key = _val,
-                    _wordList = this.orginal,
-                    _i = 0,
-                    bestFilteredData = [],
-                    betterFilteredData = [];
+            keyData: 
+                function ( _key ) {
+                    var _p = this
+                        , _wordList = this.initData
+                        , _i = 0
+                        , bestFilteredData = []
+                        , betterFilteredData = []
+                        ;
 
                     for (_i = 0; _i < _wordList.length; _i++) {
 
@@ -475,46 +457,36 @@
             show: 
                 function() {
                     var _p = this;
-
                     _p._model.wordPanel().show();
-
-                    !_p._model.key() && _p._model.list().show();
-
+                    //!_p._model.key() && _p._model.list().show();
                 },
 
-            update: 
-                function ( _val ) {
-                    var _p  = this,
-                    _wordList,
-                    _view = [];
+            updateList: 
+                function () {
+                    var _p  = this
+                        , _wordList
+                        , _view = []
+                        , _val = _p._model.selector().val().trim()
+                        ;
 
-                    if ( _p._model.key() ) {
-                        _p._model.update();
-                        _wordList = _p._model.filteredData;
+                    if ( !_val ) {
+                        _p.build( _p._model.initData );
+                        return;
+                    }
 
-                        //this.build( _wordList );
-                        this.build( _val )
-
-                            // this.trigger('AUUpdate', [ $( this ) ] );
-                    }  
-
+                    _p.build( _p._model.cache( _val ) )
                 },
 
             build: 
                 function( _data ) {
-
-                    //console.log('build', _data );
-
-                    var _p = this,
-                    _i = 0,
-                    _view = [];
+                    var _p = this
+                        , _i = 0
+                        , _view = []
+                        ;
 
                     if ( _data.length == 0 ) {
                         _p.hide();
-
                     } else {
-                        //JC.log( _p._model.layoutTpl() );
-
                         for ( ; _i < _data.length; _i++ ) {
                             _view.push( JC.f.printf( _p._model.layoutTpl()
                                         , _data[_i].id
