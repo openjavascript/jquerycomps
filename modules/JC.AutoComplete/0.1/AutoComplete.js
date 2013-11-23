@@ -471,17 +471,6 @@
                         _p.setIdSelectorData();
                     }
                 }
-            , cacIdVal:
-                function(){
-                    var _p = this, _r = _p.attrProp( 'cacIdVal' );
-
-                    _p.cacIdSelector()
-                        && _p.cacIdSelector().length
-                        && ( _r = _p.cacIdSelector().val() )
-                        ;
-                    _r = ( _r || '' ).trim();
-                    return _r;
-                }
 
             , cacStrictData:
                 function(){
@@ -518,6 +507,18 @@
             , cacIdKey:
                 function(){
                     var _r = this.attrProp( 'cacIdKey' ) || this.cacLabelKey();
+                    return _r;
+                }
+
+            , cacIdVal:
+                function(){
+                    var _p = this, _r = _p.attrProp( 'cacIdVal' );
+
+                    _p.cacIdSelector()
+                        && _p.cacIdSelector().length
+                        && ( _r = _p.cacIdSelector().val() )
+                        ;
+                    _r = ( _r || '' ).trim();
                     return _r;
                 }
 
@@ -687,6 +688,18 @@
                         'top': _offset.top + _h + 'px'
                         , 'left': _offset.left + 'px'
                     });
+
+                    var _selectedItem
+                        , _label = _p._model.selector().val().trim()
+                        , _id = _p._model.cacIdVal()
+                        , _idCompare = _p._model.cacLabelKey() != _p._model.cacIdKey() 
+                        ;
+
+                    _p._model.listItems().each( function(){
+                        var _sp = $(this);
+                            _sp.removeClass( AutoComplete.Model.CLASS_ACTIVE );
+                    });
+
                     _p._model.popup().show();
                     //!_p._model.key() && _p._model.list().show();
                 },
@@ -723,7 +736,7 @@
                                         , _data[_i].id
                                         , _data[_i].label
                                         , _i
-                                        , _i == 0 ? AutoComplete.Model.CLASS_ACTIVE : ''
+                                        , ''
                                         ) );
                         }
 
