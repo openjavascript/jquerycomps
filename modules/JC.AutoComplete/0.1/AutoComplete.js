@@ -82,6 +82,14 @@
                 return _ins;
             };
 
+        AutoComplete.ajaxUpdate =
+            function( _selector, _url, _cb ){
+                var _ins = AutoComplete.getInstance( _selector );
+                    !_ins && ( _ins = new AutoComplete( _selector ) );
+                    _ins && _ins.ajaxUpdate( _url, _cb );
+                return _ins;
+            };
+
         AutoComplete.dataFilter;
 
         AutoComplete.prototype = {
@@ -261,9 +269,10 @@
                         _p._model.setSelectorData( _srcSelector );
                     });
 
-                    _p.on( AutoComplete.Model.UPDATE, function( _evt, _json ){
+                    _p.on( AutoComplete.Model.UPDATE, function( _evt, _json, _cb ){
                         _p._model.initPopupData( _json );
                         _p._view.build( _json );
+                        _cb && _cb.call( _p, _json );
                     });
 
                     _p.on( AutoComplete.Model.CLEAR, function( _evt ){
@@ -279,7 +288,15 @@
                     _p._model.initData =  _p._model.dataItems();
                     //alert( _p._model.initData.length );
                     //window.JSON && JC.log( JSON.stringify( _p._model.initData ) );
-                    _p._model.ajaxData();
+                    _p.ajaxUpdate();
+                }
+
+            , idSelector: function(){ return this._model.cacIdSelector(); }
+            , idVal: function(){ return this._model.cacIdVal(); }
+
+            , ajaxUpdate:
+                function( _url, _cb ){
+                    this._model.ajaxData( _url, _cb );
                 }
 
             , show:
@@ -403,12 +420,14 @@
                 }
 
             , ajaxData:
-                function(){
-                    var _p = this, _url = _p.attrProp( 'cacAjaxDataUrl' );
+                function( _url, _cb ){
+                    var _p = this, _url = _url || _p.attrProp( 'cacAjaxDataUrl' );
                     if( !_url ) return;
 
                     if( _url in AutoComplete.Model.AJAX_CACHE ){
-                        $( _p ).trigger( 'TriggerEvent', [ AutoComplete.Model.UPDATE, AutoComplete.Model.AJAX_CACHE[ _url ] ] ); 
+                        $( _p ).trigger( 'TriggerEvent'
+                                , [ AutoComplete.Model.UPDATE, AutoComplete.Model.AJAX_CACHE[ _url ], _cb ] 
+                                ); 
                         return;
                     }
 
@@ -416,7 +435,10 @@
                         _d = $.parseJSON( _d );
                         _d = _p.cacDataFilter( _d );
                         AutoComplete.Model.AJAX_CACHE[ _url ] = _d;
-                        $( _p ).trigger( 'TriggerEvent', [ AutoComplete.Model.UPDATE, AutoComplete.Model.AJAX_CACHE[ _url ] ] ); 
+                        $( _p ).trigger( 'TriggerEvent', [ AutoComplete.Model.UPDATE
+                                                            , AutoComplete.Model.AJAX_CACHE[ _url ]
+                                                            , _cb
+                                                        ] ); 
                     });
                 }
             , cacDataFilter:
@@ -518,7 +540,8 @@
                 }
 
             , cacIdKey:
-                function(){
+                function( _setter ){
+                    typeof _setter != 'undefined' && ( this.selector().attr( 'cacIdKey', _setter ) );
                     var _r = this.attrProp( 'cacIdKey' ) || this.cacLabelKey();
                     return _r;
                 }

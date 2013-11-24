@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AutoComplete</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+        .ui-sug-mod input{ height: 26px;  outline: 0; text-indent: 3px; }
+
+        .ui-sug-ipt{ width: 400px; max-height: 300px; overflow-y: auto; }
+        .ui-sug-ipt{ border: 1px solid #ccc;  padding: 0; }
+    </style>
+    <link href='../../../../modules/JC.Valid/0.2/res/default/style.css' rel='stylesheet' />
+    <link href='../../../../modules/JC.AutoComplete/0.1/res/default/style.css' rel='stylesheet' />
+
+    <script src="../../../../lib.js"></script>
+    <script src="../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+
+        function cacDataFilter( _json ){
+            if( _json.data && _json.data.length ){
+                _json = _json.data;
+            }
+
+            $.each( _json, function( _ix, _item ){
+                _item.length &&
+                    ( _json[ _ix ] = { 'id': _item[0], 'label': _item[1] } )
+                    ;
+            });
+
+            return _json;
+        }
+
+        requirejs( [ 'JC.Valid', 'Bizs.FormLogic', './data/Bizs.AutoSelectComplete.js' ]
+        //requirejs( [ 'JC.AutoSelect' ]
+        , function(){
+
+            $(document).delegate( 'button.js_updateAutoCompelte', 'click', function( _evt ){
+                setCacData.call( this, _evt ).show();
+            });
+
+            //setCacData.call( $( 'button.js_updateAutoCompelte' ).first() );
+
+            JC.AutoSelect.dataFilter = 
+                function( _data, _select ){
+                    var _r = _data;
+                    if( _data && !_data.length && _data.data ){
+                        _r = _data.data;
+                    }
+                    return _r;
+                };
+
+           JC.AutoSelect.inited =
+                function(){
+                    JC.log( 'user inited' );
+                };
+
+           JC.AutoSelect.allChanged =
+                function(){
+                    JC.log( 'user allChanged' );
+                };
+
+        });
+
+        function setCacData(){
+            var _p = $(this)
+                , _data = JC.f.parentSelector( _p, '(td textarea' ).val().trim()
+                , _control = JC.f.parentSelector( _p, '(form input.js_compAutoComplete' )
+                ;
+
+            _data = $.parseJSON( _data );
+            return JC.AutoComplete.update( _control, _data );
+        }
+
+        function userAllChangeCallback( _items ){
+           var _ins = this;
+           JC.log( 'userAllChangeCallback', new Date().getTime() );
+        }
+    </script>
+</head>
+<body>
+<h2>JC.AutoComplete 示例</h2>
+<h3>自动生成列表弹框, JC.AutoComplete#update</h3>
+<form action="?" method="get" class="js_BizsFormLogic">
+    <div class="ui-sug-mod js_positionBox">
+        <label class="gray">可选位置：</label>
+        <select name='pos1[0][0]' class="sel sel-w110 js_fixedPosition" 
+            reqmsg="位置" 
+            validemdisplaytype="inline" 
+
+            subdatatype="unique-3"
+            uniquedatatarget="(div.js_positionBox select.js_fixedPosition, (div.js_positionBox input.js_fixedPosition" 
+            uniquemsg="不能选择相同的位置"  
+            uniqueIgnoreEmpty="true"
+
+            defaultselect="true" 
+            selecttriggerinitchange="false"
+            selecturl="../../../JC.AutoSelect/0.2/_demo/data/infinity_cat.php?id=0&hasData=1" 
+            selecttarget="/select:last"
+            selecthideempty="true"
+            selectallchanged="userAllChangeCallback"
+            >
+            <option value="" defaultoption>请选择广告位</option>
+        </select>
+        <select name='pos1[0][1]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+            reqmsg="位置" 
+            validemdisplaytype="inline" 
+
+            subdatatype="unique-3"
+            uniquedatatarget="(div.js_positionBox select.js_fixedPosition, (div.js_positionBox input.js_fixedPosition" 
+            uniquemsg="不能选择相同的位置" 
+            uniqueIgnoreEmpty="true"
+
+            selecturl="../../../JC.AutoSelect/0.2/_demo/data/infinity_cat.php?id={0}&hasData=1" 
+            >
+            <option value="" defaultoption>请选择广告位</option>
+        </select>
+        <div></div>
+        <input type="text" class="ui-sug-ipt js_compAutoComplete js_bizAutoSelectComplete" value="" style="display:none;"
+            autocomplete="off" 
+
+            cacPopup="/ul.js_compAutoCompleteBox"
+            cacLabelKey="data-label"
+            cacIdKey="data-id"
+            cacIdSelector="/input.js_bindItem"
+            cacStrictData="true"
+            cacDataFilter="cacDataFilter"
+            cacNoDataText="没有可用的数据!"
+
+            cacPreventEnter="true" 
+
+            bascAjaxUrl="../../../JC.AutoSelect/0.2/_demo/data/infinity_cat.php?id={0}&hasData=1"
+            bascDefaultLabel=""
+            bascDefaultId=""
+
+            bascDefaultSelect="/select:first"
+            />
+        &nbsp;cacIdSelector: <input type="text" name="pos1[0][2]" class="js_bindItem" value="" />
+    </div>
+    <div>
+        <input type="hidden" name="getform" value="1" />
+        <button type="submit">submit</button>
+        <button type="reset">reset</button>
+        <button type="button" buttonReturnUrl="?btntest=1" >cancel</button>
+        <a href="?">back</a>
+    </div>
+</form>
+</body>
+</html>
