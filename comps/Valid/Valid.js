@@ -2688,6 +2688,15 @@
         Valid.check( $(this) );
     });
     /**
+     * 响应没有 type 的 文本框
+     */
+    $(document).delegate( 'input', 'blur', function( _evt ){
+        var _p = $(this);
+        if( _p.attr( 'type' ) ) return;
+        Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
+        Valid.check( $(this) );
+    });
+    /**
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
      * @private
      */
