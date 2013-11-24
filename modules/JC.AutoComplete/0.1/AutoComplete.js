@@ -100,10 +100,13 @@
                     } );
 
                     _p._model.selector().on('focus', function() {
+                        /*
                         if( !_p._model.selector().val().trim() && _p._model.selector().val().trim() == _p._model.preVal ){
                         }else{
                             _p._view.updateList();
                         }
+                        */
+                        _p._view.updateList();
 
                         _p.trigger( AutoComplete.Model.SHOW );
                         _p.selector().addClass( AutoComplete.Model.CLASS_FAKE );
@@ -443,10 +446,18 @@
                     }
 
                     if( _label ){
+                        var _id = _p.cacIdVal(), _findId, _findLabel;
+
                         $.each( _p.initData, function( _ix, _item ){
                             //JC.log( _item.label, _item.id );
                             if( _definedIdKey ){
-                                var _id = _p.cacIdVal(), _slabel = _item.label.trim();
+                                var _slabel = _item.label.trim();
+
+                                if( _slabel === _label ){
+                                    _isCor = true;
+                                    !_findLabel && _p.setIdSelectorData( _item.id );
+                                    _findLabel = true;
+                                }
 
                                 if( _slabel === _label && !_id ){
                                     _p.setIdSelectorData( _id = _item.id );
@@ -454,6 +465,8 @@
 
                                 if( _slabel === _label && _item.id === _id ){
                                     _findLs.push( _item );
+                                    !_findId && ( _p.setIdSelectorData( _item.id ) );
+                                    _findId = true;
                                     _isCor = true;
                                     return false;
                                 }
@@ -525,6 +538,8 @@
             , cache: 
                 function ( _key ) {
 
+                    JC.log( '................cache', _key );
+
                     if( !( _key in this._cache ) ){
                         this._cache[ _key ] = this.keyData( _key ) || this.initData; 
                     }
@@ -537,7 +552,7 @@
             , keyData: 
                 function ( _key ) {
                     var _p = this
-                        , _dataItems = this.initData
+                        , _dataItems = _p.initData
                         , _i = 0
                         , bestFilteredData = []
                         , betterFilteredData = []
@@ -696,9 +711,28 @@
                         ;
 
                     _p._model.listItems().each( function(){
-                        var _sp = $(this);
-                            _sp.removeClass( AutoComplete.Model.CLASS_ACTIVE );
+                        var _sp = $(this)
+                            , _slabel = _sp.attr( _p._model.cacLabelKey() )
+                            , _sid = _sp.attr( _p._model.cacIdKey() )
+                            ;
+
+                        //JC.log( _slabel, _sid, _label, _id );
+
+                        _sp.removeClass( AutoComplete.Model.CLASS_ACTIVE );
+                        if( _label == _slabel ){
+                            if( _idCompare && _id ){
+                                _id == _sid && _sp.addClass( AutoComplete.Model.CLASS_ACTIVE );
+                                _selectedItem = _sp;
+                            }else{
+                                _sp.addClass( AutoComplete.Model.CLASS_ACTIVE );
+                                _selectedItem = _sp;
+                            }
+                        }
                     });
+
+                    if( !_selectedItem ){
+                        _p._model.listItems().first().addClass( AutoComplete.Model.CLASS_ACTIVE );
+                    }
 
                     _p._model.popup().show();
                     //!_p._model.key() && _p._model.list().show();
@@ -709,14 +743,15 @@
                     var _p  = this
                         , _dataItems
                         , _view = []
-                        , _val = _p._model.selector().val().trim()
+                        , _label = _p._model.selector().val().trim()
+                        , _id = _p._model.cacIdVal()
                         , _data
                         ;
 
-                    if ( !_val ) {
+                    if ( !_label ) {
                         _data = _p._model.initData;
                     }else{
-                        _data = _p._model.cache( _val );
+                        _data = _p._model.cache( _label, _id );
                     }
                     _data && _p.build( _data );
                 },
@@ -736,7 +771,7 @@
                                         , _data[_i].id
                                         , _data[_i].label
                                         , _i
-                                        , ''
+                                        , _i === 0 ? AutoComplete.Model.CLASS_ACTIVE : ''
                                         ) );
                         }
 

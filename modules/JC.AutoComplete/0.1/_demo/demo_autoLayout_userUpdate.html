@@ -34,17 +34,22 @@
         }
 
         requirejs( [ 'JC.AutoComplete' ], function( AutoComplete ){
-            $(document).delegate( 'button.js_updateAutoCompelte', 'click', function(){
-                var _p = $(this)
-                    , _data = JC.f.parentSelector( _p, '(td textarea' ).val().trim()
-                    , _control = JC.f.parentSelector( _p, '(form input.js_compAutoComplete' )
-                    ;
-
-                _data = $.parseJSON( _data );
-
-                JC.AutoComplete.update( _control, _data ).show();
+            $(document).delegate( 'button.js_updateAutoCompelte', 'click', function( _evt ){
+                setCacData.call( this, _evt ).show();
             });
+
+            setCacData.call( $( 'button.js_updateAutoCompelte' ).first() );
         });
+
+        function setCacData(){
+            var _p = $(this)
+                , _data = JC.f.parentSelector( _p, '(td textarea' ).val().trim()
+                , _control = JC.f.parentSelector( _p, '(form input.js_compAutoComplete' )
+                ;
+
+            _data = $.parseJSON( _data );
+            return JC.AutoComplete.update( _control, _data );
+        }
     </script>
 </head>
 <body>
@@ -79,7 +84,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <textarea style="width:300px;height:100px;">[{"id":"0","label":"真心英雄联盟"},{"id":"1","label":"英雄联盟"},{"id":"01","label":"英雄联盟"},{"id":"2","label":"移动网上营业厅"},{"id":"3","label":"音悦台"},{"id":"4","label":"英语在线翻译"},{"id":"5","label":"易迅网"},{"id":"6","label":"一号店"},{"id":"7","label":"英雄联盟"},{"id":"8","label":"一朵晴天"},{"id":"9","label":"yy语音"},{"id":"10","label":"yy直播"},{"id":"11","label":"yy频道设计"},{"id":"12","label":"yy网页版"},{"id":"13","label":"youku"},{"id":"14","label":"yeah"},{"id":"15","label":"yahoo"}]</textarea> 
+                        <textarea style="width:300px;height:100px;">[{"id":"0","label":"真心英雄联盟"},{"id":"1","label":"英雄联盟"},{"id":"01","label":"英雄联盟"},{"id":"2","label":"移动网上营业厅"},{"id":"3","label":"音悦台"},{"id":"03","label":"音悦台"},{"id":"4","label":"英语在线翻译"},{"id":"5","label":"易迅网"},{"id":"6","label":"一号店"},{"id":"7","label":"英雄联盟"},{"id":"8","label":"一朵晴天"},{"id":"09","label":"yy"},{"id":"9","label":"yy语音"},{"id":"10","label":"yy直播"},{"id":"11","label":"yy频道设计"},{"id":"12","label":"yy网页版"},{"id":"13","label":"youku"},{"id":"14","label":"yeah"},{"id":"15","label":"yahoo"}]</textarea> 
                         <div><button type="button" class="js_updateAutoCompelte">update</button></div>
                     </td>
                     <td>
