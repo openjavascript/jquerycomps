@@ -139,13 +139,18 @@
         , _inited:
             function(){
                 JC.log( 'AutoSelectComplete _inited', new Date().getTime() );
+                this._model.selector().attr( 'cacDataFilter', AutoSelectComplete.Model.DATA_FILTER_NAME );
                 this._model.injectDefaultSelectCallback();
             }
     };
 
     BaseMVC.buildModel( AutoSelectComplete );
+
     AutoSelectComplete.Model._instanceName = 'AutoSelectComplete';
     AutoSelectComplete.Model.INS_COUNT = 1;
+
+    AutoSelectComplete.Model.DATA_FILTER_NAME = 'BizsAutoSelectCompleteDataFilter';
+
     AutoSelectComplete.Model.prototype = {
         init:
             function(){
@@ -221,6 +226,21 @@
     };
 
     BaseMVC.build( AutoSelectComplete, 'Bizs' );
+
+    window[ AutoSelectComplete.Model.DATA_FILTER_NAME ] =
+        function ( _json ){
+            if( _json.data && _json.data.length ){
+                _json = _json.data;
+            }
+
+            $.each( _json, function( _ix, _item ){
+                _item.length &&
+                    ( _json[ _ix ] = { 'id': _item[0], 'label': _item[1] } )
+                    ;
+            });
+
+            return _json;
+        };
 
     $(document).ready( function(){
         var _insAr = 0;

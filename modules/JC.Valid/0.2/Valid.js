@@ -2062,6 +2062,8 @@
                 _p.isDatatarget( _item, _typeKey ) && (_target = _p.datatarget( _item, _typeKey ) );
                 !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item, _typeKey ) );
 
+                JC.log( _target && _target.length ? _target.length : 'null' );
+
                 _errLs = [];
                 _corLs = [];
 
@@ -2084,6 +2086,7 @@
                             _isReturn = true;
                             //return false;
                         }
+                        JC.log( _ix, _sp.val() );
 
                         if( _ix % _len === 0 ){
                             _group.push( [] );
@@ -2102,10 +2105,11 @@
                             _ignore && !_tmpV && _sitem.is(':visible') && ( _ignoreEmpty = true );
                             _tmpAr.push( _tmpV );
                         });
+                        var _pureVal = _tmpAr.join(''), _compareVal = _tmpAr.join('####');
                         if( _ignoreEmpty ) return;
-                        var _pureVal = _tmpAr.join(''), _compareVal = _tmpAr.join('IOU~IOU');
                         if( !_pureVal ) return;
                         _ignoreCase && ( _compareVal = _compareVal.toLowerCase() );
+                        JC.log( _compareVal );
 
                         if( _compareVal in _tmp ){
                             _tmp[ _compareVal ].push( _items );
