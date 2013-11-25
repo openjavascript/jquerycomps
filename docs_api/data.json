@@ -612,8 +612,8 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 6,
-            "description": "AutoComplete 文本框输入内容提示\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>\n| <a href='../../modules/AutoComplete/0.1/_demo' target='_blank'>demo link</a></p>\n<h2>可用的 HTML attribute</h2>\n<dl>\n</dl>",
+            "line": 5,
+            "description": "AutoComplete 文本框内容输入提示\n<br />响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 AutoComplete 实例\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.AutoComplete/0.1/_demo' target='_blank'>demo link</a></p>\n\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>cacPopup = selector, optional</dt>\n     <dd>显式指定用于显示数据列表的弹框, 如不指定, 载入数据时会自己生成 popup node</dd>\n\n     <dt>cacPreventEnter = bool, default = false</dt>\n     <dd>文本框按回车键时, 是否阻止默认行为, 防止提交表单</dd>\n\n     <dt>cacLabelKey = string, default = data-label</dt>\n     <dd>用于显示 label 的HTML属性</dd>\n\n     <dt>cacIdKey = string, default= data-id</dt>\n     <dd>用于显示 ID 的HTML属性</dd>\n\n     <dt>cacIdSelector = selector</dt>\n     <dd>用于保存 ID 值的 node</dd>\n\n     <dt>cacIdVal = string, optional</dt>\n     <dd>用于初始化的默认ID, 如果 cacIdVal 为空将尝试读取 cacIdSelector 的值</dd>\n\n     <dt>cacStrictData = bool, default = false</dt>\n     <dd>是否验证已填内容的合法性<br />仅在 cacIdSelector 和 cacIdKey 显式声明时有效</dd>\n\n     <dt>cacAjaxDataUrl = url</dt>\n     <dd>\n         获取 数据的 AJAX 接口\n         <dl>\n             <dt>数据格式</dt>\n             <dd>\n                 [ { \"id\": \"id value\", \"label\": \"label value\" }, ... ]\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>cacDataFilter = callback</dt>\n     <dd>\n         <dl>\n             <dt>如果 数据接口获取的数据不是默认格式, \n                 可以使用这个属性定义一个数据过滤函数, 把数据转换为合适的格式\n             </dt>\n             <dd>\n<pre>function cacDataFilter( _json ){\n   if( _json.data && _json.data.length ){\n       _json = _json.data;\n   }\n\n   $.each( _json, function( _ix, _item ){\n       _item.length &&\n           ( _json[ _ix ] = { 'id': _item[0], 'label': _item[1] } )\n           ;\n   });\n   return _json;\n}</pre>\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>cacBoxWidth = int</dt>\n     <dd>定义 popup 的宽度, 如果没有显式定义, 将使用 selector 的宽度</dd>\n\n     <dt>cacCasesensitive = bool, default = false</dt>\n     <dd>是否区分英文大小写</dd>\n\n     <dt>cacSubItemsSelector = selector string, default = \"&gt; li\"\n     <dd>popup 查找数据项的选择器语法</dd>\n\n     <dt>cacNoDataText = string, default = \"数据加载中, 请稍候...\"</dt>\n     <dd>加载数据时的默认提示文字</dd>\n\n     <dt>cacValidCheckTimeout = int, default = 1</dt>\n     <dd>定义 JC.Valid blur 时执行 check 的时间间隔, 主要为防止点击列表时已经 Valid.check 的问题</dd>\n\n</dl>",
             "is_constructor": 1,
             "params": [
                 {
@@ -625,7 +625,7 @@
             "version": "dev 0.1 2013-11-01",
             "author": "zuojing<zuojing1013@gmail.com>, qiushaowei<suches@btbtd.org> | 75 Team",
             "example": [
-                ""
+                "\n           <link href='../../../../modules/JC.AutoComplete/0.1/res/default/style.css' rel='stylesheet' />\n           <script src=\"../../../../lib.js\"></script>\n           <script src=\"../../../../config.js\"></script>\n           <script>\n               JC.debug = true;\n               requirejs( [ 'JC.AutoComplete' ], function( AutoComplete ){\n               });\n           </script>\n           <div class=\"ui-sug-mod\">\n               <input name=\"ac\" type=\"text\" class=\"ui-sug-ipt js_compAutoComplete\" value=\"\" \n                   autocomplete=\"off\" \n\n                   cacPopup=\"/ul.js_compAutoCompleteBox\"\n\n                   cacLabelKey=\"data-label\"\n                   cacIdKey=\"data-id\"\n\n                   cacPreventEnter=\"true\" \n                   />\n               <div style=\"height:200px\"></div>\n               <ul class=\"AC_box js_compAutoCompleteBox\" style=\"display:none;\">\n                   <li data-id=\"9\" data-label=\"yy语音\">yy语音</li>\n                   <li data-id=\"10\" data-label=\"yy直播\">yy直播</li>\n                   <li data-id=\"11\" data-label=\"yy频道设计\">yy频道设计</li>\n                   <li data-id=\"12\" data-label=\"yy网页版\">yy网页版</li>\n                   <li data-id=\"13\" data-label=\"youku\">youku</li>\n                   <li data-id=\"14\" data-label=\"yeah\">yeah</li>\n                   <li data-id=\"15\" data-label=\"yahoo\">yahoo</li>\n                   <li data-id=\"09\" data-label=\"YY语音\">YY语音</li>\n                   <li data-id=\"010\" data-label=\"YY直播\">YY直播</li>\n                   <li data-id=\"011\" data-label=\"YY频道设计\">YY频道设计</li>\n                   <li data-id=\"012\" data-label=\"YY网页版\">YY网页版</li>\n                   <li data-id=\"013\" data-label=\"YOUKU\">YOUKU</Li>\n                   <li data-id=\"014\" data-label=\"YEAH\">YEAH</LI>\n               </ul>\n           </div>"
             ]
         },
         "JC.AutoSelect": {
@@ -2657,7 +2657,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 37,
+            "line": 145,
             "description": "获取或设置 AutoComplete 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -2678,7 +2678,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 53,
+            "line": 161,
             "description": "初始化可识别的 AutoComplete 实例",
             "itemtype": "method",
             "name": "init",
@@ -2699,21 +2699,211 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 211,
+            "line": 184,
+            "description": "更新原始数据",
+            "itemtype": "method",
+            "name": "update",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_data",
+                    "description": "",
+                    "type": "Json"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "AutoCompleteInstance"
+            },
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 199,
+            "description": "使用 ajax 接口更新原始数据",
+            "itemtype": "method",
+            "name": "ajaxUpdate",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_url",
+                    "description": "",
+                    "type": "Url string"
+                },
+                {
+                    "name": "_cb",
+                    "description": "",
+                    "type": "Callback"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "AutoCompleteInstance"
+            },
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 215,
+            "description": "定义全局数据过滤函数",
+            "itemtype": "method",
+            "name": "dataFilter",
+            "params": [
+                {
+                    "name": "_json",
+                    "description": "",
+                    "type": "Json"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 339,
             "description": "点击列表时, 阻止冒泡",
             "class": "JC.AutoComplete",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 269,
+            "line": 397,
             "description": "响应 li 点击时, 更新对应的内容",
             "class": "JC.AutoComplete",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 471,
+            "line": 433,
+            "description": "获取 绑定的 id node",
+            "itemtype": "method",
+            "name": "idSelector",
+            "return": {
+                "description": "",
+                "type": "Selector"
+            },
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 439,
+            "description": "获取 id 值",
+            "itemtype": "method",
+            "name": "idVal",
+            "return": {
+                "description": "",
+                "type": "Id string"
+            },
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 445,
+            "description": "使用 ajax 接口更新原始数据",
+            "itemtype": "method",
+            "name": "ajaxUpdate",
+            "params": [
+                {
+                    "name": "_url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_cb",
+                    "description": "",
+                    "type": "Callback"
+                }
+            ],
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 456,
+            "description": "显示数据列表",
+            "itemtype": "method",
+            "name": "show",
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 468,
+            "description": "隐藏数据列表",
+            "itemtype": "method",
+            "name": "hide",
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 477,
+            "description": "获取数据列表 node",
+            "itemtype": "method",
+            "name": "popup",
+            "return": {
+                "description": "",
+                "type": "Selector"
+            },
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 486,
+            "description": "更新原始数据",
+            "itemtype": "method",
+            "name": "update",
+            "params": [
+                {
+                    "name": "_json",
+                    "description": "",
+                    "type": "Json"
+                }
+            ],
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 502,
+            "description": "清除 selector 和 idSelector 的默认值",
+            "itemtype": "method",
+            "name": "clear",
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 511,
+            "description": "校正数据列表的显示位置",
+            "itemtype": "method",
+            "name": "fixPosition",
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 591,
             "description": "验证 key && id 是否正确\n仅在 cacStrictData 为真的时候进行验证",
             "class": "JC.AutoComplete",
             "namespace": "JC"
@@ -14531,7 +14721,7 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:6"
+            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:5"
         },
         {
             "message": "unknown tag: version",
@@ -15027,15 +15217,15 @@
         },
         {
             "message": "Missing item type\n点击列表时, 阻止冒泡",
-            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:211"
+            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:339"
         },
         {
             "message": "Missing item type\n响应 li 点击时, 更新对应的内容",
-            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:269"
+            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:397"
         },
         {
             "message": "Missing item type\n验证 key && id 是否正确\n仅在 cacStrictData 为真的时候进行验证",
-            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:471"
+            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:591"
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",

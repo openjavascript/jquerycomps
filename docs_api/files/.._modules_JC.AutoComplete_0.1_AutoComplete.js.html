@@ -184,17 +184,89 @@
     <pre class="code prettyprint linenums">
 //TODO: 添加 IE6 支持
 //TODO: 移动 左右 方向键时, 显示 首字符到光标的过滤条件
-//TODO: 添加 唯一 key 判断逻辑
 ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27;, &#x27;JC.BaseMVC&#x27; ], function(){
     ;(function($){
         /**
-         * AutoComplete 文本框输入内容提示
-         * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
+         * AutoComplete 文本框内容输入提示
+         * &lt;br /&gt;响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 AutoComplete 实例
          * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
          * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.AutoComplete.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
-         * | &lt;a href=&#x27;../../modules/AutoComplete/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+         * | &lt;a href=&#x27;../../modules/JC.AutoComplete/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+         *
+         * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
+         *
          * &lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
          * &lt;dl&gt;
+         *      &lt;dt&gt;cacPopup = selector, optional&lt;/dt&gt;
+         *      &lt;dd&gt;显式指定用于显示数据列表的弹框, 如不指定, 载入数据时会自己生成 popup node&lt;/dd&gt;
+         *
+         *      &lt;dt&gt;cacPreventEnter = bool, default = false&lt;/dt&gt;
+         *      &lt;dd&gt;文本框按回车键时, 是否阻止默认行为, 防止提交表单&lt;/dd&gt;
+         *
+         *      &lt;dt&gt;cacLabelKey = string, default = data-label&lt;/dt&gt;
+         *      &lt;dd&gt;用于显示 label 的HTML属性&lt;/dd&gt;
+         *
+         *      &lt;dt&gt;cacIdKey = string, default= data-id&lt;/dt&gt;
+         *      &lt;dd&gt;用于显示 ID 的HTML属性&lt;/dd&gt;
+         *
+         *      &lt;dt&gt;cacIdSelector = selector&lt;/dt&gt;
+         *      &lt;dd&gt;用于保存 ID 值的 node&lt;/dd&gt;
+         *
+         *      &lt;dt&gt;cacIdVal = string, optional&lt;/dt&gt;
+         *      &lt;dd&gt;用于初始化的默认ID, 如果 cacIdVal 为空将尝试读取 cacIdSelector 的值&lt;/dd&gt;
+         *
+         *      &lt;dt&gt;cacStrictData = bool, default = false&lt;/dt&gt;
+         *      &lt;dd&gt;是否验证已填内容的合法性&lt;br /&gt;仅在 cacIdSelector 和 cacIdKey 显式声明时有效&lt;/dd&gt;
+         *
+         *      &lt;dt&gt;cacAjaxDataUrl = url&lt;/dt&gt;
+         *      &lt;dd&gt;
+         *          获取 数据的 AJAX 接口
+         *          &lt;dl&gt;
+         *              &lt;dt&gt;数据格式&lt;/dt&gt;
+         *              &lt;dd&gt;
+         *                  [ { &quot;id&quot;: &quot;id value&quot;, &quot;label&quot;: &quot;label value&quot; }, ... ]
+         *              &lt;/dd&gt;
+         *          &lt;/dl&gt;
+         *      &lt;/dd&gt;
+         *
+         *      &lt;dt&gt;cacDataFilter = callback&lt;/dt&gt;
+         *      &lt;dd&gt;
+         *          &lt;dl&gt;
+         *              &lt;dt&gt;如果 数据接口获取的数据不是默认格式, 
+         *                  可以使用这个属性定义一个数据过滤函数, 把数据转换为合适的格式
+         *              &lt;/dt&gt;
+         *              &lt;dd&gt;
+&lt;pre&gt;function cacDataFilter( _json ){
+    if( _json.data &amp;&amp; _json.data.length ){
+        _json = _json.data;
+    }
+
+    $.each( _json, function( _ix, _item ){
+        _item.length &amp;&amp;
+            ( _json[ _ix ] = { &#x27;id&#x27;: _item[0], &#x27;label&#x27;: _item[1] } )
+            ;
+    });
+    return _json;
+}&lt;/pre&gt;
+         *              &lt;/dd&gt;
+         *          &lt;/dl&gt;
+         *      &lt;/dd&gt;
+         *
+         *      &lt;dt&gt;cacBoxWidth = int&lt;/dt&gt;
+         *      &lt;dd&gt;定义 popup 的宽度, 如果没有显式定义, 将使用 selector 的宽度&lt;/dd&gt;
+         *
+         *      &lt;dt&gt;cacCasesensitive = bool, default = false&lt;/dt&gt;
+         *      &lt;dd&gt;是否区分英文大小写&lt;/dd&gt;
+         *
+         *      &lt;dt&gt;cacSubItemsSelector = selector string, default = &quot;&amp;gt; li&quot;
+         *      &lt;dd&gt;popup 查找数据项的选择器语法&lt;/dd&gt;
+         *
+         *      &lt;dt&gt;cacNoDataText = string, default = &quot;数据加载中, 请稍候...&quot;&lt;/dt&gt;
+         *      &lt;dd&gt;加载数据时的默认提示文字&lt;/dd&gt;
+         *
+         *      &lt;dt&gt;cacValidCheckTimeout = int, default = 1&lt;/dt&gt;
+         *      &lt;dd&gt;定义 JC.Valid blur 时执行 check 的时间间隔, 主要为防止点击列表时已经 Valid.check 的问题&lt;/dd&gt;
+         *
          * &lt;/dl&gt;
          * @namespace JC
          * @class AutoComplete
@@ -203,6 +275,42 @@
          * @version dev 0.1 2013-11-01
          * @author  zuojing&lt;zuojing1013@gmail.com&gt;, qiushaowei&lt;suches@btbtd.org&gt; | 75 Team
          * @example
+            &lt;link href=&#x27;../../../../modules/JC.AutoComplete/0.1/res/default/style.css&#x27; rel=&#x27;stylesheet&#x27; /&gt;
+            &lt;script src=&quot;../../../../lib.js&quot;&gt;&lt;/script&gt;
+            &lt;script src=&quot;../../../../config.js&quot;&gt;&lt;/script&gt;
+            &lt;script&gt;
+                JC.debug = true;
+                requirejs( [ &#x27;JC.AutoComplete&#x27; ], function( AutoComplete ){
+                });
+            &lt;/script&gt;
+            &lt;div class=&quot;ui-sug-mod&quot;&gt;
+                &lt;input name=&quot;ac&quot; type=&quot;text&quot; class=&quot;ui-sug-ipt js_compAutoComplete&quot; value=&quot;&quot; 
+                    autocomplete=&quot;off&quot; 
+
+                    cacPopup=&quot;/ul.js_compAutoCompleteBox&quot;
+
+                    cacLabelKey=&quot;data-label&quot;
+                    cacIdKey=&quot;data-id&quot;
+
+                    cacPreventEnter=&quot;true&quot; 
+                    /&gt;
+                &lt;div style=&quot;height:200px&quot;&gt;&lt;/div&gt;
+                &lt;ul class=&quot;AC_box js_compAutoCompleteBox&quot; style=&quot;display:none;&quot;&gt;
+                    &lt;li data-id=&quot;9&quot; data-label=&quot;yy语音&quot;&gt;yy语音&lt;/li&gt;
+                    &lt;li data-id=&quot;10&quot; data-label=&quot;yy直播&quot;&gt;yy直播&lt;/li&gt;
+                    &lt;li data-id=&quot;11&quot; data-label=&quot;yy频道设计&quot;&gt;yy频道设计&lt;/li&gt;
+                    &lt;li data-id=&quot;12&quot; data-label=&quot;yy网页版&quot;&gt;yy网页版&lt;/li&gt;
+                    &lt;li data-id=&quot;13&quot; data-label=&quot;youku&quot;&gt;youku&lt;/li&gt;
+                    &lt;li data-id=&quot;14&quot; data-label=&quot;yeah&quot;&gt;yeah&lt;/li&gt;
+                    &lt;li data-id=&quot;15&quot; data-label=&quot;yahoo&quot;&gt;yahoo&lt;/li&gt;
+                    &lt;li data-id=&quot;09&quot; data-label=&quot;YY语音&quot;&gt;YY语音&lt;/li&gt;
+                    &lt;li data-id=&quot;010&quot; data-label=&quot;YY直播&quot;&gt;YY直播&lt;/li&gt;
+                    &lt;li data-id=&quot;011&quot; data-label=&quot;YY频道设计&quot;&gt;YY频道设计&lt;/li&gt;
+                    &lt;li data-id=&quot;012&quot; data-label=&quot;YY网页版&quot;&gt;YY网页版&lt;/li&gt;
+                    &lt;li data-id=&quot;013&quot; data-label=&quot;YOUKU&quot;&gt;YOUKU&lt;/Li&gt;
+                    &lt;li data-id=&quot;014&quot; data-label=&quot;YEAH&quot;&gt;YEAH&lt;/LI&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
          */
         JC.AutoComplete = AutoComplete;
 
@@ -257,7 +365,14 @@
                 }
                 return _r;
             };
-
+        /**
+         * 更新原始数据
+         * @method  update
+         * @param   {selector}      _selector
+         * @param   {json}          _data
+         * @static
+         * @return  {AutoCompleteInstance}
+         */
         AutoComplete.update =
             function( _selector, _data ){
                 var _ins = AutoComplete.getInstance( _selector );
@@ -265,7 +380,15 @@
                     _ins &amp;&amp; _ins.update( _data );
                 return _ins;
             };
-
+        /**
+         * 使用 ajax 接口更新原始数据
+         * @method  ajaxUpdate
+         * @param   {selector}      _selector
+         * @param   {url string}    _url
+         * @param   {callback}      _cb
+         * @static
+         * @return  {AutoCompleteInstance}
+         */
         AutoComplete.ajaxUpdate =
             function( _selector, _url, _cb ){
                 var _ins = AutoComplete.getInstance( _selector );
@@ -273,7 +396,13 @@
                     _ins &amp;&amp; _ins.ajaxUpdate( _url, _cb );
                 return _ins;
             };
-
+        /**
+         * 定义全局数据过滤函数
+         * @method  dataFilter
+         * @param   {json}      _json
+         * @static
+         * @return  {json}
+         */
         AutoComplete.dataFilter;
 
         AutoComplete.prototype = {
@@ -305,7 +434,6 @@
                     } );
 
                     _p._model.selector().on(&#x27;blur&#x27;, function() {
-                        return;
                         _p._model.preVal = _p._model.selector().val().trim();
                         _p.selector().removeClass( AutoComplete.Model.CLASS_FAKE );
                         _p._model.verifyKey();
@@ -403,7 +531,7 @@
                         if( !$(this).is( &#x27;[&#x27; + _p._model.cacLabelKey() + &#x27;]&#x27; ) ) return;
                         _p.trigger( AutoComplete.Model.CHANGE, [ $(this) ] );
                         _p.trigger( AutoComplete.Model.HIDDEN );
-                        return;
+
                         _p._model.blurTimeout( setTimeout( function(){
                             _p._model.selector().trigger( &#x27;blur&#x27; );
                         }, 201 ) );
@@ -486,15 +614,33 @@
                     //alert( _p._model.initData.length );
                     //window.JSON &amp;&amp; JC.log( JSON.stringify( _p._model.initData ) );
                 }
-
+            /**
+             * 获取 绑定的 id node
+             * @method  idSelector
+             * @return  {selector}
+             */
             , idSelector: function(){ return this._model.cacIdSelector(); }
+            /**
+             * 获取 id 值
+             * @method  idVal
+             * @return  {id string}
+             */
             , idVal: function(){ return this._model.cacIdVal(); }
-
+            /**
+             * 使用 ajax 接口更新原始数据
+             * @method  ajaxUpdate
+             * @param   {string}    _url
+             * @param   {callback}   _cb
+             */
             , ajaxUpdate:
                 function( _url, _cb ){
                     this._model.ajaxData( _url, _cb );
+                    return this;
                 }
-
+            /**
+             * 显示数据列表
+             * @method  show
+             */
             , show:
                 function(){
                     var _p = this;
@@ -503,18 +649,29 @@
                     }, 1);
                     return _p;
                 }
-
+            /**
+             * 隐藏数据列表
+             * @method  hide
+             */
             , hide:
                 function(){
                     this.trigger( AutoComplete.Model.HIDDEN );
                     return this;
                 }
-
+            /**
+             * 获取数据列表 node
+             * @method  popup
+             * @return  {selector}
+             */
             , popup:
                 function(){
                     return this._model.popup();
                 }
-            
+            /**
+             * 更新原始数据
+             * @method  update
+             * @param   {json}  _json
+             */
             , update:
                 function( _json ){
                     var _p = this;
@@ -526,13 +683,19 @@
 
                     return _p;
                 }
-
+            /**
+             * 清除 selector 和 idSelector 的默认值
+             * @method  clear
+             */
             , clear:
                 function(){
                     this.trigger( AutoComplete.Model.CLEAR );
                     return this;
                 }
-
+            /**
+             * 校正数据列表的显示位置
+             * @method  fixPosition
+             */
             , fixPosition:
                 function(){
                     var _popup = this._model.popup();
@@ -573,14 +736,6 @@
                     this.firstUpdate = true;
                 }
 
-            , keyIndex: -1
-
-            , cacValidCheckTimeout:
-                function(){
-                    var _r = this.intProp( &#x27;cacValidCheckTimeout&#x27; ) || AutoComplete.validCheckTimeout || 1;
-                    return _r;
-                }
-
             , listItemTpl: function() {
                 var _tpl = JC.f.printf( &#x27;&lt;li &#x27; 
                                         + this.cacIdKey()+ &#x27;=&quot;{0}&quot; &#x27; 
@@ -613,44 +768,9 @@
                     return _r;
                 }
 
-            , cacNoDataText:
-                function(){
-                    var _r = this.attrProp( &#x27;cacNoDataText&#x27; ) || &#x27;数据加载中, 请稍候...&#x27;;
-                    return _r;
-                }
-
             , initPopupData:
                 function( _json ){
                     this.initData = _json;
-                }
-
-            , ajaxData:
-                function( _url, _cb ){
-                    var _p = this, _url = _url || _p.attrProp( &#x27;cacAjaxDataUrl&#x27; );
-                    if( !_url ) return;
-
-                    if( _url in AutoComplete.Model.AJAX_CACHE ){
-                        $( _p ).trigger( &#x27;TriggerEvent&#x27;
-                                , [ AutoComplete.Model.UPDATE, AutoComplete.Model.AJAX_CACHE[ _url ], _cb ] 
-                                ); 
-                        return;
-                    }
-
-                    $.get( _url ).done( function( _d ){
-                        _d = $.parseJSON( _d );
-                        _d = _p.cacDataFilter( _d );
-                        AutoComplete.Model.AJAX_CACHE[ _url ] = _d;
-                        $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ AutoComplete.Model.UPDATE
-                                                            , AutoComplete.Model.AJAX_CACHE[ _url ]
-                                                            , _cb
-                                                        ] ); 
-                    });
-                }
-            , cacDataFilter:
-                function( _d ){
-                    var _filter = this.callbackProp( &#x27;cacDataFilter&#x27; ) || AutoComplete.dataFilter;
-                    _filter &amp;&amp; ( _d = _filter( _d ) );
-                    return _d;
                 }
             /**
              * 验证 key &amp;&amp; id 是否正确
@@ -712,10 +832,16 @@
                     }
                 }
 
-            , cacStrictData:
-                function(){
-                    var _r = this.boolProp( &#x27;cacStrictData&#x27; );
-                    return _r;
+            , cache: 
+                function ( _key ) {
+
+                    JC.log( &#x27;................cache&#x27;, _key );
+
+                    if( !( _key in this._cache ) ){
+                        this._cache[ _key ] = this.keyData( _key ) || this.initData; 
+                    }
+
+                    return this._cache[ _key ];
                 }
 
             , dataItems: 
@@ -738,69 +864,59 @@
                     return _result;
                 }
 
-            , cacLabelKey:
-                function(){
-                    var _r = this.attrProp( &#x27;cacLabelKey&#x27; ) || &#x27;data-label&#x27;;
-                    return _r;
-                }
+            , ajaxData:
+                function( _url, _cb ){
+                    var _p = this, _url = _url || _p.attrProp( &#x27;cacAjaxDataUrl&#x27; );
+                    if( !_url ) return;
 
-            , cacIdKey:
-                function( _setter ){
-                    typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this.selector().attr( &#x27;cacIdKey&#x27;, _setter ) );
-                    var _r = this.attrProp( &#x27;cacIdKey&#x27; ) || this.cacLabelKey();
-                    return _r;
-                }
-
-            , cacIdVal:
-                function(){
-                    var _p = this, _r = _p.attrProp( &#x27;cacIdVal&#x27; );
-
-                    _p.cacIdSelector()
-                        &amp;&amp; _p.cacIdSelector().length
-                        &amp;&amp; ( _r = _p.cacIdSelector().val() )
-                        ;
-                    _r = ( _r || &#x27;&#x27; ).trim();
-                    return _r;
-                }
-
-            , cache: 
-                function ( _key ) {
-
-                    JC.log( &#x27;................cache&#x27;, _key );
-
-                    if( !( _key in this._cache ) ){
-                        this._cache[ _key ] = this.keyData( _key ) || this.initData; 
+                    if( _url in AutoComplete.Model.AJAX_CACHE ){
+                        $( _p ).trigger( &#x27;TriggerEvent&#x27;
+                                , [ AutoComplete.Model.UPDATE, AutoComplete.Model.AJAX_CACHE[ _url ], _cb ] 
+                                ); 
+                        return;
                     }
 
-                    return this._cache[ _key ];
+                    $.get( _url ).done( function( _d ){
+                        _d = $.parseJSON( _d );
+                        _d = _p.cacDataFilter( _d );
+                        AutoComplete.Model.AJAX_CACHE[ _url ] = _d;
+                        $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ AutoComplete.Model.UPDATE
+                                                            , AutoComplete.Model.AJAX_CACHE[ _url ]
+                                                            , _cb
+                                                        ] ); 
+                    });
                 }
-
-            , filteredData: []
 
             , keyData: 
                 function ( _key ) {
                     var _p = this
                         , _dataItems = _p.initData
                         , _i = 0
-                        , bestFilteredData = []
-                        , betterFilteredData = []
+                        , _caseSensitive = _p.cacCasesensitive()
+                        , _lv = _key.toLowerCase()
+                        , _sortData = [[], [], [], []]
+                        , _finalData = [];
                         ;
 
                     for (_i = 0; _i &lt; _dataItems.length; _i++) {
+                        var _slv = _dataItems[_i].label.toLowerCase();
 
                         if ( _dataItems[_i].label.indexOf( _key ) == 0 ) {
-                            _dataItems[_i].tag = 1;
-                            bestFilteredData.push( _dataItems[_i] );
+                            _sortData[ _dataItems[_i].tag = 0 ].push( _dataItems[_i] );
+                        } else if( !_caseSensitive &amp;&amp; _slv.indexOf( _lv ) == 0 ) {
+                            _sortData[ _dataItems[_i].tag = 1 ].push( _dataItems[_i] );
                         } else if ( _dataItems[_i].label.indexOf( _key ) &gt; 0 ) {
-                            _dataItems[_i].tag = 0;
-                            betterFilteredData.push( _dataItems[_i] );
+                            _sortData[ _dataItems[_i].tag = 2 ].push( _dataItems[_i] );
+                        } else if( !_caseSensitive &amp;&amp; _slv.indexOf( _lv ) &gt; 0 ) {
+                            _sortData[ _dataItems[_i].tag = 3 ].push( _dataItems[_i] );
                         } 
-
                     }
 
-                    this.filteredData = bestFilteredData.concat( betterFilteredData );
+                    $.each( _sortData, function( _ix, _item ){
+                        _finalData = _finalData.concat( _item );
+                    });
 
-                    return this.filteredData;
+                    return _finalData;
                 }
 
             , setSelectorData:
@@ -817,6 +933,7 @@
                     _p.selector().attr( &#x27;cacIdVal&#x27;, _id );
                     _p.setIdSelectorData( _id );
                 }
+
             , setIdSelectorData:
                 function( _val ){
                     var _p = this;
@@ -828,36 +945,6 @@
                         _p.cacIdSelector().val( &#x27;&#x27; );
                         _p.selector().attr( &#x27;cacIdVal&#x27;, &#x27;&#x27; );
                     }
-                }
-
-            , cacIdSelector:
-                function(){
-                    var _r = this.selectorProp( &#x27;cacIdSelector&#x27; );
-                    return _r;
-                }
-
-            , cacPreventEnter: 
-                function(){
-                      var _r;
-                      _r = this.selector().is( &#x27;[cacPreventEnter]&#x27; ) 
-                          &amp;&amp; JC.f.parseBool( this.selector().attr(&#x27;cacPreventEnter&#x27;) );
-                      return _r;
-                }
-
-            , cacBoxWidth:
-                function(){
-                    var _r = 0 || this.intProp( &#x27;cacWidth&#x27; );
-
-                    !_r &amp;&amp; ( _r = this.selector().width() );
-
-                    return _r;
-                }
-
-            , cacSubItemsSelector:
-                function(){
-                    var _r = this.attrProp( &#x27;cacSubItemsSelector&#x27; ) || &#x27;&gt; li&#x27;;
-                        _r += &#x27;[&#x27; + this.cacLabelKey() + &#x27;]&#x27;;
-                    return _r;
                 }
 
             , listItems:
@@ -900,6 +987,92 @@
                 function( _tm ){
                     this._blurTimeout &amp;&amp; clearTimeout( this._blurTimeout );
                     this._blurTimeout = _tm;
+                }
+
+
+            , cacDataFilter:
+                function( _d ){
+                    var _filter = this.callbackProp( &#x27;cacDataFilter&#x27; ) || AutoComplete.dataFilter;
+                    _filter &amp;&amp; ( _d = _filter( _d ) );
+                    return _d;
+                }
+
+            , cacNoDataText:
+                function(){
+                    var _r = this.attrProp( &#x27;cacNoDataText&#x27; ) || &#x27;数据加载中, 请稍候...&#x27;;
+                    return _r;
+                }
+
+            , cacValidCheckTimeout:
+                function(){
+                    var _r = this.intProp( &#x27;cacValidCheckTimeout&#x27; ) || AutoComplete.validCheckTimeout || 1;
+                    return _r;
+                }
+
+            , cacStrictData:
+                function(){
+                    var _r = this.boolProp( &#x27;cacStrictData&#x27; );
+                    return _r;
+                }
+
+            , cacLabelKey:
+                function(){
+                    var _r = this.attrProp( &#x27;cacLabelKey&#x27; ) || &#x27;data-label&#x27;;
+                    return _r;
+                }
+
+            , cacIdKey:
+                function( _setter ){
+                    typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this.selector().attr( &#x27;cacIdKey&#x27;, _setter ) );
+                    var _r = this.attrProp( &#x27;cacIdKey&#x27; ) || this.cacLabelKey();
+                    return _r;
+                }
+
+            , cacIdVal:
+                function(){
+                    var _p = this, _r = _p.attrProp( &#x27;cacIdVal&#x27; );
+
+                    _p.cacIdSelector()
+                        &amp;&amp; _p.cacIdSelector().length
+                        &amp;&amp; ( _r = _p.cacIdSelector().val() )
+                        ;
+                    _r = ( _r || &#x27;&#x27; ).trim();
+                    return _r;
+                }
+
+            , cacIdSelector:
+                function(){
+                    var _r = this.selectorProp( &#x27;cacIdSelector&#x27; );
+                    return _r;
+                }
+
+            , cacPreventEnter: 
+                function(){
+                      var _r;
+                      _r = this.selector().is( &#x27;[cacPreventEnter]&#x27; ) 
+                          &amp;&amp; JC.f.parseBool( this.selector().attr(&#x27;cacPreventEnter&#x27;) );
+                      return _r;
+                }
+
+            , cacBoxWidth:
+                function(){
+                    var _r = 0 || this.intProp( &#x27;cacBoxWidth&#x27; );
+
+                    !_r &amp;&amp; ( _r = this.selector().width() );
+
+                    return _r;
+                }
+
+            , cacCasesensitive:
+                function(){
+                    return this.boolProp( &#x27;cacCasesensitive&#x27; );
+                }
+
+            , cacSubItemsSelector:
+                function(){
+                    var _r = this.attrProp( &#x27;cacSubItemsSelector&#x27; ) || &#x27;&gt; li&#x27;;
+                        _r += &#x27;[&#x27; + this.cacLabelKey() + &#x27;]&#x27;;
+                    return _r;
                 }
         };
 
@@ -1057,9 +1230,9 @@
                 }
 
             , setScroll: 
-                function( keyIndex ) {
+                function( _keyIndex ) {
                     var _p = this
-                        , _el = _p._model.listItems().eq(keyIndex)
+                        , _el = _p._model.listItems().eq(_keyIndex)
                         , _h = _el.position().top + _el.height()
                         , _ph = _p._model.popup().innerHeight()
                         , _top = _p._model.popup().scrollTop()
@@ -1067,11 +1240,9 @@
 
                     _h = _h + _top;
 
-                    if ( keyIndex == -1 ) {
-
+                    if ( _keyIndex == -1 ) {
                         _p._model.selector().focus();
                         _p._model.listItems().removeClass( AutoComplete.Model.CLASS_ACTIVE );
-
                     } else {
                         _p._model.listItems().removeClass( AutoComplete.Model.CLASS_ACTIVE );
                         _el.addClass( AutoComplete.Model.CLASS_ACTIVE );
