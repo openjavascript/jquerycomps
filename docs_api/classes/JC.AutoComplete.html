@@ -108,17 +108,73 @@
                         <h1>JC.AutoComplete Class</h1>
 <div class="box meta">
         <div class="foundat">
-            Defined in: <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l6"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:6</code></a>
+            Defined in: <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l5"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:5</code></a>
         </div>
 </div>
 <div class="box intro">
-    <p>AutoComplete 文本框输入内容提示</p>
-<p><p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p></p>
-<p><p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+    <p>AutoComplete 文本框内容输入提示
+<br />响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 AutoComplete 实例</p>
+<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
 | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>
-| <a href='../../comps/AutoComplete/_demo' target='_blank'>demo link</a></p></p>
+| <a href='../../comps/AutoComplete/_demo' target='_blank'>demo link</a></p>
+<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
 <p><h2>可用的 HTML attribute</h2></p>
 <dl>
+     <dt>cacPopup = selector, optional</dt>
+     <dd>显式指定用于显示数据列表的弹框, 如不指定, 载入数据时会自己生成 popup node</dd>
+     <dt>cacPreventEnter = bool, default = false</dt>
+     <dd>文本框按回车键时, 是否阻止默认行为, 防止提交表单</dd>
+     <dt>cacLabelKey = string, default = data-label</dt>
+     <dd>用于显示 label 的HTML属性</dd>
+     <dt>cacIdKey = string, default= data-id</dt>
+     <dd>用于显示 ID 的HTML属性</dd>
+     <dt>cacIdSelector = selector</dt>
+     <dd>用于保存 ID 值的 node</dd>
+     <dt>cacIdVal = string, optional</dt>
+     <dd>用于初始化的默认ID, 如果 cacIdVal 为空将尝试读取 cacIdSelector 的值</dd>
+     <dt>cacStrictData = bool, default = false</dt>
+     <dd>是否验证已填内容的合法性<br />仅在 cacIdSelector 和 cacIdKey 显式声明时有效</dd>
+     <dt>cacAjaxDataUrl = url</dt>
+     <dd>
+         获取 数据的 AJAX 接口
+         <dl>
+             <dt>数据格式</dt>
+             <dd>
+                 [ { &quot;id&quot;: &quot;id value&quot;, &quot;label&quot;: &quot;label value&quot; }, ... ]
+             </dd>
+         </dl>
+     </dd>
+     <dt>cacDataFilter = callback</dt>
+     <dd>
+         <dl>
+             <dt>如果 数据接口获取的数据不是默认格式, 
+                 可以使用这个属性定义一个数据过滤函数, 把数据转换为合适的格式
+             </dt>
+             <dd>
+<pre>function cacDataFilter( _json ){
+   if( _json.data &amp;&amp; _json.data.length ){
+       _json = _json.data;
+   }
+   $.each( _json, function( _ix, _item ){
+       _item.length &amp;&amp;
+           ( _json[ _ix ] = { &#39;id&#39;: _item[0], &#39;label&#39;: _item[1] } )
+           ;
+   });
+   return _json;
+}</pre>
+             </dd>
+         </dl>
+     </dd>
+     <dt>cacBoxWidth = int</dt>
+     <dd>定义 popup 的宽度, 如果没有显式定义, 将使用 selector 的宽度</dd>
+     <dt>cacCasesensitive = bool, default = false</dt>
+     <dd>是否区分英文大小写</dd>
+     <dt>cacSubItemsSelector = selector string, default = &quot;&gt; li&quot;
+     <dd>popup 查找数据项的选择器语法</dd>
+     <dt>cacNoDataText = string, default = &quot;数据加载中, 请稍候...&quot;</dt>
+     <dd>加载数据时的默认提示文字</dd>
+     <dt>cacValidCheckTimeout = int, default = 1</dt>
+     <dd>定义 JC.Valid blur 时执行 check 的时间间隔, 主要为防止点击列表时已经 Valid.check 的问题</dd>
 </dl>
 </div>
     <div class="constructor">
@@ -135,7 +191,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l6"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:6</code></a>
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l5"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:5</code></a>
         </p>
     </div>
     <div class="description">
@@ -154,6 +210,39 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
+                <pre class="code prettyprint"><code>       &lt;link href=&#39;../../../comps/AutoComplete/res/default/style.css&#39; rel=&#39;stylesheet&#39; /&gt;
+       &lt;script src=&quot;../../../lib.js&quot;&gt;&lt;/script&gt;
+       &lt;script&gt;
+           JC.debug = true;
+           JC.use( &#39;AutoComplete&#39; );
+    $(document).ready( function(){
+           });
+       &lt;/script&gt;
+       &lt;div class=&quot;ui-sug-mod&quot;&gt;
+           &lt;input name=&quot;ac&quot; type=&quot;text&quot; class=&quot;ui-sug-ipt js_compAutoComplete&quot; value=&quot;&quot; 
+               autocomplete=&quot;off&quot; 
+               cacPopup=&quot;/ul.js_compAutoCompleteBox&quot;
+               cacLabelKey=&quot;data-label&quot;
+               cacIdKey=&quot;data-id&quot;
+               cacPreventEnter=&quot;true&quot; 
+               /&gt;
+           &lt;div style=&quot;height:200px&quot;&gt;&lt;/div&gt;
+           &lt;ul class=&quot;AC_box js_compAutoCompleteBox&quot; style=&quot;display:none;&quot;&gt;
+               &lt;li data-id=&quot;9&quot; data-label=&quot;yy语音&quot;&gt;yy语音&lt;/li&gt;
+               &lt;li data-id=&quot;10&quot; data-label=&quot;yy直播&quot;&gt;yy直播&lt;/li&gt;
+               &lt;li data-id=&quot;11&quot; data-label=&quot;yy频道设计&quot;&gt;yy频道设计&lt;/li&gt;
+               &lt;li data-id=&quot;12&quot; data-label=&quot;yy网页版&quot;&gt;yy网页版&lt;/li&gt;
+               &lt;li data-id=&quot;13&quot; data-label=&quot;youku&quot;&gt;youku&lt;/li&gt;
+               &lt;li data-id=&quot;14&quot; data-label=&quot;yeah&quot;&gt;yeah&lt;/li&gt;
+               &lt;li data-id=&quot;15&quot; data-label=&quot;yahoo&quot;&gt;yahoo&lt;/li&gt;
+               &lt;li data-id=&quot;09&quot; data-label=&quot;YY语音&quot;&gt;YY语音&lt;/li&gt;
+               &lt;li data-id=&quot;010&quot; data-label=&quot;YY直播&quot;&gt;YY直播&lt;/li&gt;
+               &lt;li data-id=&quot;011&quot; data-label=&quot;YY频道设计&quot;&gt;YY频道设计&lt;/li&gt;
+               &lt;li data-id=&quot;012&quot; data-label=&quot;YY网页版&quot;&gt;YY网页版&lt;/li&gt;
+               &lt;li data-id=&quot;013&quot; data-label=&quot;YOUKU&quot;&gt;YOUKU&lt;/Li&gt;
+               &lt;li data-id=&quot;014&quot; data-label=&quot;YEAH&quot;&gt;YEAH&lt;/LI&gt;
+           &lt;/ul&gt;
+       &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -170,11 +259,50 @@
                     <h3>Methods</h3>
                     <ul class="index-list methods">
                             <li class="index-item method">
+                                <a href="#method_ajaxUpdate">ajaxUpdate</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_ajaxUpdate">ajaxUpdate</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_clear">clear</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_dataFilter">dataFilter</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_fixPosition">fixPosition</a>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_getInstance">getInstance</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_hide">hide</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_idSelector">idSelector</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_idVal">idVal</a>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_init">init</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_popup">popup</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_show">show</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_update">update</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_update">update</a>
                                     <span class="flag static">static</span>
                             </li>
                     </ul>
@@ -182,6 +310,169 @@
         </div>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
+                    <div id="method_ajaxUpdate" class="method item">
+    <h3 class="name"><code>ajaxUpdate</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_url</code>
+                </li>
+                <li class="arg">
+                        <code>_cb</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l445"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:445</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>使用 ajax 接口更新原始数据</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_url</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_cb</code>
+                        <span class="type">Callback</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_ajaxUpdate" class="method item">
+    <h3 class="name"><code>ajaxUpdate</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_selector</code>
+                </li>
+                <li class="arg">
+                        <code>_url</code>
+                </li>
+                <li class="arg">
+                        <code>_cb</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">AutoCompleteInstance</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l199"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:199</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>使用 ajax 接口更新原始数据</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_selector</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_url</code>
+                        <span class="type">Url string</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_cb</code>
+                        <span class="type">Callback</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">AutoCompleteInstance</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_clear" class="method item">
+    <h3 class="name"><code>clear</code></h3>
+        <span class="paren">()</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l502"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:502</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>清除 selector 和 idSelector 的默认值</p>
+    </div>
+</div>
+                    <div id="method_dataFilter" class="method item">
+    <h3 class="name"><code>dataFilter</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_json</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">Json</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l215"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:215</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>定义全局数据过滤函数</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_json</code>
+                        <span class="type">Json</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Json</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_fixPosition" class="method item">
+    <h3 class="name"><code>fixPosition</code></h3>
+        <span class="paren">()</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l511"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:511</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>校正数据列表的显示位置</p>
+    </div>
+</div>
                     <div id="method_getInstance" class="method item">
     <h3 class="name"><code>getInstance</code></h3>
         <div class="args">
@@ -198,7 +489,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l37"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:37</code></a>
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l145"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:145</code></a>
         </p>
     </div>
     <div class="description">
@@ -222,6 +513,63 @@
             </div>
         </div>
 </div>
+                    <div id="method_hide" class="method item">
+    <h3 class="name"><code>hide</code></h3>
+        <span class="paren">()</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l468"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:468</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>隐藏数据列表</p>
+    </div>
+</div>
+                    <div id="method_idSelector" class="method item">
+    <h3 class="name"><code>idSelector</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type">Selector</span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l433"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:433</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取 绑定的 id node</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Selector</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_idVal" class="method item">
+    <h3 class="name"><code>idVal</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type">Id string</span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l439"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:439</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取 id 值</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Id string</span>:
+            </div>
+        </div>
+</div>
                     <div id="method_init" class="method item">
     <h3 class="name"><code>init</code></h3>
         <div class="args">
@@ -238,7 +586,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l53"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:53</code></a>
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l161"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:161</code></a>
         </p>
     </div>
     <div class="description">
@@ -259,6 +607,120 @@
             <h4>Returns:</h4>
             <div class="returns-description">
                         <span class="type">Array of AutoCompleteInstance</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_popup" class="method item">
+    <h3 class="name"><code>popup</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type">Selector</span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l477"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:477</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取数据列表 node</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Selector</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_show" class="method item">
+    <h3 class="name"><code>show</code></h3>
+        <span class="paren">()</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l456"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:456</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>显示数据列表</p>
+    </div>
+</div>
+                    <div id="method_update" class="method item">
+    <h3 class="name"><code>update</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_json</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l486"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:486</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>更新原始数据</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_json</code>
+                        <span class="type">Json</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_update" class="method item">
+    <h3 class="name"><code>update</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_selector</code>
+                </li>
+                <li class="arg">
+                        <code>_data</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">AutoCompleteInstance</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_AutoComplete_AutoComplete.js.html#l184"><code>..&#x2F;comps&#x2F;AutoComplete&#x2F;AutoComplete.js:184</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>更新原始数据</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_selector</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_data</code>
+                        <span class="type">Json</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">AutoCompleteInstance</span>:
             </div>
         </div>
 </div>

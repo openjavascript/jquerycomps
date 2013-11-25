@@ -670,6 +670,30 @@
      */
     Valid.getInstance = function(){ !Valid._instance &amp;&amp; new Valid(); return Valid._instance; };
     /**
+     * 检查是否需要延时 check
+     * &lt;br /&gt;以 html 属性 validCheckTimeout 定义, int 类型, type = ms
+     * @method checkTimeout
+     * @param   {selector}      _selector
+     * @param   {int}           _tm
+     * @static
+     * @return  {Valid instance}
+     */
+    Valid.checkTimeout =
+        function( _selector, _tm ){
+            _selector &amp;&amp; ( _selector = $( _selector ) );
+            if( !( _selector &amp;&amp; _selector.length ) ) return;
+            _tm = parseInt( _selector.attr( &#x27;validCheckTimeout&#x27;) ) || _tm;
+            var _dname = &#x27;VALID_CHECK_TIMEOUT&#x27;;
+            if( _tm ){
+                _selector.data( _dname ) &amp;&amp; clearTimeout( _selector.data( _dname ) );
+                _selector.data( _dname , function(){
+                    Valid.check( _selector );
+                }, _tm );
+            }else{
+                Valid.check( _selector );
+            }
+        };
+    /**
      * 判断/设置 selector 的数据是否合法
      * &lt;br /&gt; 通过 datavalid 属性判断
      * @method dataValid
@@ -2243,10 +2267,12 @@
                     , _errLs, _corLs
                     ;
 
-                JC.log( _typeKey, new Date().getTime() );
+                //JC.log( _typeKey, new Date().getTime() );
 
                 _p.isDatatarget( _item, _typeKey ) &amp;&amp; (_target = _p.datatarget( _item, _typeKey ) );
                 !( _target &amp;&amp; _target.length ) &amp;&amp; ( _target = _p.samesubtypeitems( _item, _typeKey ) );
+
+                //JC.log( _target &amp;&amp; _target.length ? _target.length : &#x27;null&#x27; );
 
                 _errLs = [];
                 _corLs = [];
@@ -2270,6 +2296,7 @@
                             _isReturn = true;
                             //return false;
                         }
+                        //JC.log( _ix, _sp.val() );
 
                         if( _ix % _len === 0 ){
                             _group.push( [] );
@@ -2288,10 +2315,11 @@
                             _ignore &amp;&amp; !_tmpV &amp;&amp; _sitem.is(&#x27;:visible&#x27;) &amp;&amp; ( _ignoreEmpty = true );
                             _tmpAr.push( _tmpV );
                         });
+                        var _pureVal = _tmpAr.join(&#x27;&#x27;), _compareVal = _tmpAr.join(&#x27;####&#x27;);
                         if( _ignoreEmpty ) return;
-                        var _pureVal = _tmpAr.join(&#x27;&#x27;), _compareVal = _tmpAr.join(&#x27;IOU~IOU&#x27;);
                         if( !_pureVal ) return;
                         _ignoreCase &amp;&amp; ( _compareVal = _compareVal.toLowerCase() );
+                        //JC.log( _compareVal );
 
                         if( _compareVal in _tmp ){
                             _tmp[ _compareVal ].push( _items );
@@ -2333,7 +2361,7 @@
                     var _sv = _sitem.val().trim();
                     if( _isReturn ) return false;
                     if( ! _sv ) return;
-                    JC.log(&#x27;yyyyyyyyyyyyy&#x27;, _sitem.data(&#x27;JCValidStatus&#x27;), new Date().getTime() );
+                    //JC.log(&#x27;yyyyyyyyyyyyy&#x27;, _sitem.data(&#x27;JCValidStatus&#x27;), new Date().getTime() );
                     _sv 
                         &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _sitem, &#x27;uniquemsg&#x27;, true ] );
                 } );
@@ -2871,7 +2899,7 @@
      */
     $(document).delegate( &#x27;input[type=text], input[type=password], textarea&#x27;, &#x27;blur&#x27;, function($evt){
         Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
-        Valid.check( $(this) );
+        Valid.checkTimeout( $(this) );
     });
     /**
      * 响应没有 type 的 文本框
@@ -2880,7 +2908,7 @@
         var _p = $(this);
         if( _p.attr( &#x27;type&#x27; ) ) return;
         Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
-        Valid.check( $(this) );
+        Valid.checkTimeout( $(this) );
     });
     /**
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
@@ -2888,7 +2916,7 @@
      */
     $(document).delegate( &#x27;select, input[type=file], input[type=checkbox], input[type=radio]&#x27;, &#x27;change&#x27;, function($evt, _ignore){
         if( _ignore ) return;
-        Valid.check( $(this) );
+        Valid.checkTimeout( $(this) );
     });
     /**
      * 响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
@@ -2923,7 +2951,7 @@
         }
         _sp.data(&#x27;HID_CHANGE_CHECK&#x27;, new Date().getTime() );
         JC.log( &#x27;hidden val&#x27;, new Date().getTime(), _sp.val() );
-        Valid.check( _sp );
+        Valid.checkTimeout( $(this) );
     });
     /**
      * 初始化 subdatatype = datavalid 相关事件
