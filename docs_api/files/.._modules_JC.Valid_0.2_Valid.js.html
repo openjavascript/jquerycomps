@@ -121,6 +121,8 @@
             
                 <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
             
+                <li><a href="../classes/window.Bizs.AutoSelectComplete.html">window.Bizs.AutoSelectComplete</a></li>
+            
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
             
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
@@ -2239,10 +2241,12 @@
                     , _errLs, _corLs
                     ;
 
-                JC.log( _typeKey, new Date().getTime() );
+                //JC.log( _typeKey, new Date().getTime() );
 
                 _p.isDatatarget( _item, _typeKey ) &amp;&amp; (_target = _p.datatarget( _item, _typeKey ) );
                 !( _target &amp;&amp; _target.length ) &amp;&amp; ( _target = _p.samesubtypeitems( _item, _typeKey ) );
+
+                //JC.log( _target &amp;&amp; _target.length ? _target.length : &#x27;null&#x27; );
 
                 _errLs = [];
                 _corLs = [];
@@ -2266,6 +2270,7 @@
                             _isReturn = true;
                             //return false;
                         }
+                        //JC.log( _ix, _sp.val() );
 
                         if( _ix % _len === 0 ){
                             _group.push( [] );
@@ -2284,10 +2289,11 @@
                             _ignore &amp;&amp; !_tmpV &amp;&amp; _sitem.is(&#x27;:visible&#x27;) &amp;&amp; ( _ignoreEmpty = true );
                             _tmpAr.push( _tmpV );
                         });
+                        var _pureVal = _tmpAr.join(&#x27;&#x27;), _compareVal = _tmpAr.join(&#x27;####&#x27;);
                         if( _ignoreEmpty ) return;
-                        var _pureVal = _tmpAr.join(&#x27;&#x27;), _compareVal = _tmpAr.join(&#x27;IOU~IOU&#x27;);
                         if( !_pureVal ) return;
                         _ignoreCase &amp;&amp; ( _compareVal = _compareVal.toLowerCase() );
+                        //JC.log( _compareVal );
 
                         if( _compareVal in _tmp ){
                             _tmp[ _compareVal ].push( _items );
@@ -2329,7 +2335,7 @@
                     var _sv = _sitem.val().trim();
                     if( _isReturn ) return false;
                     if( ! _sv ) return;
-                    JC.log(&#x27;yyyyyyyyyyyyy&#x27;, _sitem.data(&#x27;JCValidStatus&#x27;), new Date().getTime() );
+                    //JC.log(&#x27;yyyyyyyyyyyyy&#x27;, _sitem.data(&#x27;JCValidStatus&#x27;), new Date().getTime() );
                     _sv 
                         &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _sitem, &#x27;uniquemsg&#x27;, true ] );
                 } );
@@ -2866,6 +2872,15 @@
      * @private
      */
     $(document).delegate( &#x27;input[type=text], input[type=password], textarea&#x27;, &#x27;blur&#x27;, function($evt){
+        Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
+        Valid.check( $(this) );
+    });
+    /**
+     * 响应没有 type 的 文本框
+     */
+    $(document).delegate( &#x27;input&#x27;, &#x27;blur&#x27;, function( _evt ){
+        var _p = $(this);
+        if( _p.attr( &#x27;type&#x27; ) ) return;
         Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
         Valid.check( $(this) );
     });

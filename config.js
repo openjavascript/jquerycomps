@@ -31,6 +31,7 @@ requirejs.config( {
         , 'JC.Valid': 'modules/JC.Valid/0.2/Valid'
 
         , 'Bizs.ActionLogic': 'modules/Bizs.ActionLogic/0.1/ActionLogic'
+        , 'Bizs.AutoSelectComplete': 'modules/Bizs.AutoSelectComplete//0.1/AutoSelectComplete'
         , 'Bizs.DisableLogic': 'modules/Bizs.DisableLogic/0.1/DisableLogic'
         , 'Bizs.CommonModify': 'modules/Bizs.CommonModify/0.1/CommonModify'
         , 'Bizs.FormLogic': 'modules/Bizs.FormLogic/0.1/FormLogic'

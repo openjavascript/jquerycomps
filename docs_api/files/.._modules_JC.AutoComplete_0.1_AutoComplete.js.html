@@ -121,6 +121,8 @@
             
                 <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
             
+                <li><a href="../classes/window.Bizs.AutoSelectComplete.html">window.Bizs.AutoSelectComplete</a></li>
+            
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
             
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
@@ -182,6 +184,7 @@
     <pre class="code prettyprint linenums">
 //TODO: 添加 IE6 支持
 //TODO: 移动 左右 方向键时, 显示 首字符到光标的过滤条件
+//TODO: 添加 唯一 key 判断逻辑
 ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27;, &#x27;JC.BaseMVC&#x27; ], function(){
     ;(function($){
         /**
@@ -255,13 +258,31 @@
                 return _r;
             };
 
+        AutoComplete.update =
+            function( _selector, _data ){
+                var _ins = AutoComplete.getInstance( _selector );
+                    !_ins &amp;&amp; ( _ins = new AutoComplete( _selector ) );
+                    _ins &amp;&amp; _ins.update( _data );
+                return _ins;
+            };
+
+        AutoComplete.ajaxUpdate =
+            function( _selector, _url, _cb ){
+                var _ins = AutoComplete.getInstance( _selector );
+                    !_ins &amp;&amp; ( _ins = new AutoComplete( _selector ) );
+                    _ins &amp;&amp; _ins.ajaxUpdate( _url, _cb );
+                return _ins;
+            };
+
+        AutoComplete.dataFilter;
+
         AutoComplete.prototype = {
             _beforeInit: 
                 function(){
                      // JC.log( &#x27;AutoComplete _beforeInit&#x27;, new Date().getTime() );
-                 }, 
+                 } 
 
-            _initHanlderEvent: 
+            , _initHanlderEvent: 
                 function(){
                     //JC.log( &#x27;AutoComplete _initHanlderEvent&#x27;, new Date().getTime() );
                     var _p = this;
@@ -271,12 +292,22 @@
                     } );
 
                     _p._model.selector().on(&#x27;focus&#x27;, function() {
-                        _p._view.show();
-                        _p.selector().addClass(&#x27;AC_fakebox&#x27;);
+                        /*
+                        if( !_p._model.selector().val().trim() &amp;&amp; _p._model.selector().val().trim() == _p._model.preVal ){
+                        }else{
+                            _p._view.updateList();
+                        }
+                        */
+                        _p._view.updateList();
+
+                        _p.trigger( AutoComplete.Model.SHOW );
+                        _p.selector().addClass( AutoComplete.Model.CLASS_FAKE );
                     } );
 
                     _p._model.selector().on(&#x27;blur&#x27;, function() {
-                        _p.selector().removeClass(&#x27;AC_fakebox&#x27;);
+                        _p._model.preVal = _p._model.selector().val().trim();
+                        _p.selector().removeClass( AutoComplete.Model.CLASS_FAKE );
+                        _p._model.verifyKey();
                     });
 
                     _p._model.selector().on(&#x27;keyup&#x27;, function( _evt ) {
@@ -292,22 +323,29 @@
                         JC.log(&#x27;keyup&#x27;, _keyCode, new Date().getTime() );
 
                         if ( _keyCode ) {
-                            switch( _evt.keyCode ) {
+                            switch( _keyCode ){
                                 case 38://up
                                 case 40://down
-                                    return;
-                                case 37://left
-                                case 39://right
-                                    return;
+                                    {
+                                        _evt.preventDefault();
+                                    }
+                                case 37:
+                                case 39:
+                                    {
+                                        return;
+                                    }
+                                case 27://esc
+                                    {
+                                        _p.trigger( AutoComplete.Model.HIDDEN );
+                                        return;
+                                    }
                             }
                         }
                     });
 
                     _p._model.selector().on(&#x27;keydown&#x27;, function( _evt ) {
-
                         var _keyCode = _evt.keyCode
-                            , _sp = $(this)
-                            , _val = _sp.val().trim()
+                            , _val = _p._model.selector().val().trim()
                             ;
 
                         if( _keyCode == 38 || _keyCode == 40 ){
@@ -317,116 +355,234 @@
                         JC.log(&#x27;keydown&#x27;, new Date().getTime() );
 
                         if ( _keyCode ) {
+                            switch( _keyCode ){
+                                case 40:
+                                case 38:
+                                case 13:
+                                    if( !_p._model.popup().is(&#x27;:visible&#x27;) ) return;
+                                    break;
+                            }
+
+                            if( !_p._model.popup().is(&#x27;:visible&#x27;) ){
+                                _p.trigger( AutoComplete.Model.SHOW );
+                            }
+
                             switch( _keyCode ) {
                                 case 40:
                                 case 38:
-                                    _p.trigger( &#x27;AC_UPDATE_LIST_INDEX&#x27;, [ _keyCode, _evt ] );
+                                    _p.trigger( AutoComplete.Model.UPDATE_LIST_INDEX, [ _keyCode, _evt ] );
                                     return;
 
                                 case 37:
                                 case 39:
                                     return;
                                 case 13: //enter
-                                    _p.trigger( &#x27;AC_ENTER&#x27;, [ _evt ] );
+                                    _p.trigger( AutoComplete.Model.ENTER, [ _evt ] );
                                     return;
                                 case 9: //tab
                                 case 27: //esc
-                                    _p._view.hide();
+                                    _p.trigger( AutoComplete.Model.HIDDEN );
                                     return; 
                             }
                         }
 
                         _p._model.keydownTimeout( setTimeout( function(){
-                            _val = _sp.val().trim();
-
-                            if ( !_val ) {
-                                _p._view.build( _p._model.orginal );
-                                return;
-                            }
-
-                            var _data = _p._model.cachData( _val );
-
-                            if ( !_data ) {
-                                _data = _p._model.update( _val );
-                                _p._model.cachData( _val, _data );
-                            }
-                            _p._view.update( _data );
+                            _p.trigger( AutoComplete.Model.UPDATE_LIST );
                         }, 200 ));
 
                     });
-
-                    _p._model.wordPanel().on(&#x27;click&#x27;, function( _evt ){
+                    /**
+                     * 点击列表时, 阻止冒泡
+                     */
+                    _p._model.popup().on(&#x27;click&#x27;, function( _evt ){
                         _evt.stopPropagation();
                     });
 
-                    _p._model.wordPanel().delegate( &#x27;li&#x27;, &#x27;click&#x27;, function( _evt ){
-
-                        _p.trigger(&#x27;ACChange&#x27;, [ $(this) ] );
-                        _p.trigger(&#x27;ACHidden&#x27;);
-                    } );
-
-                    _p.on( &#x27;ACChange&#x27;, function( _evt, _srcSelector ){
-                        _p._model.setKey( _srcSelector.data(&#x27;value&#x27;) );
+                    _p._model.popup().delegate( &#x27;li&#x27;, &#x27;click&#x27;, function( _evt ){
+                        if( !$(this).is( &#x27;[&#x27; + _p._model.cacLabelKey() + &#x27;]&#x27; ) ) return;
+                        _p.trigger( AutoComplete.Model.CHANGE, [ $(this) ] );
+                        _p.trigger( AutoComplete.Model.HIDDEN );
+                        _p._model.selector().trigger( &#x27;blur&#x27; );
                     });
 
-                    _p.on( &#x27;ACHidden&#x27;, function () {
+                    _p.on( AutoComplete.Model.HIDDEN, function () {
                         _p._view.hide();
-                    } );
+                    });
 
-                    _p._model.wordPanel().delegate( &#x27;&gt; li&#x27;, &#x27;mouseover&#x27;, mouseHandler );
+                    _p.on( AutoComplete.Model.SHOW, function () {
+                        _p._view.show();
+                    });
 
-                    function mouseHandler( _evt ) {
-                        //JC.log( &#x27;xxxxxxx&#x27;, $(this).attr(&#x27;data-index&#x27;) );
-                        if( AutoComplete.Model.isScroll ) return;
-                        _p._view.updateIndex( $(this).attr(&#x27;data-index&#x27;), true );
-                    }
+                    _p._model.popup().delegate( &#x27;&gt; li&#x27;, &#x27;mouseenter&#x27;
+                        , function mouseHandler( _evt ) {
+                            if( AutoComplete.Model.isScroll ) return;
+                            _p._view.updateIndex( $(this).attr(&#x27;data-index&#x27;), true );
+                        }
+                    );
 
-                    _p.on( &#x27;AC_ENTER&#x27;, function( _evt, _srcEvt ){
+                    _p.on( AutoComplete.Model.ENTER, function( _evt, _srcEvt ){
                         _p._model.cacPreventEnter() &amp;&amp; _srcEvt.preventDefault();
-                        _p._view.hide();
+                        var _selectedItem = _p._model.selectedItem();
+                        _selectedItem 
+                            &amp;&amp; _selectedItem.length
+                            &amp;&amp; _p.trigger( AutoComplete.Model.CHANGE, [ _selectedItem ] )
+                            ;
+                        _p.trigger( AutoComplete.Model.HIDDEN );
                     });
 
-                    _p.on( &#x27;AC_UPDATE_LIST_INDEX&#x27;, function( _evt, _keyCode, _srcEvt ){
+                    _p.on( AutoComplete.Model.UPDATE_LIST_INDEX, function( _evt, _keyCode, _srcEvt ){
                         _srcEvt.preventDefault();
-                        JC.log( &#x27;AC_UPDATE_LIST_INDEX&#x27;, _keyCode, new Date().getTime() );
+                        JC.log( AutoComplete.Model.UPDATE_LIST_INDEX, _keyCode, new Date().getTime() );
                         _p._view.updateListIndex( _keyCode == 40 ? true : false );
+
+                        var _selectedItem = _p._model.selectedItem();
+                        _selectedItem 
+                            &amp;&amp; _selectedItem.length
+                            &amp;&amp; _p.trigger( AutoComplete.Model.CHANGE, [ _selectedItem ] )
+                            ;
                     });
 
-                }, 
+                    _p.on( AutoComplete.Model.UPDATE_LIST, function( _evt ){
+                        this._view.updateList( this._model.selector() );
+                    });
 
-            _inited: 
+                    /**
+                     * 响应 li 点击时, 更新对应的内容
+                     */
+                    _p.on( AutoComplete.Model.CHANGE, function( _evt, _srcSelector ){
+                        _p._model.setSelectorData( _srcSelector );
+                    });
+
+                    _p.on( AutoComplete.Model.UPDATE, function( _evt, _json, _cb ){
+                        _p._model.initPopupData( _json );
+                        _p._view.build( _json );
+                        _cb &amp;&amp; _cb.call( _p, _json );
+                    });
+
+                    _p.on( AutoComplete.Model.CLEAR, function( _evt ){
+                        _p._model.selector().val( &#x27;&#x27; );
+                        _p._model.setIdSelectorData();
+                    });
+                } 
+
+            , _inited: 
                 function(){
                     var _p = this;
                     //JC.log( &#x27;AutoComplete _inited&#x27;, new Date().getTime() );
-                    _p._model.orginal =  _p._model.wordList();
+                    _p._model.initData =  _p._model.dataItems();
+                    //alert( _p._model.initData.length );
+                    //window.JSON &amp;&amp; JC.log( JSON.stringify( _p._model.initData ) );
+                    _p.ajaxUpdate();
+                }
+
+            , idSelector: function(){ return this._model.cacIdSelector(); }
+            , idVal: function(){ return this._model.cacIdVal(); }
+
+            , ajaxUpdate:
+                function( _url, _cb ){
+                    this._model.ajaxData( _url, _cb );
+                }
+
+            , show:
+                function(){
+                    var _p = this;
+                    setTimeout( function(){
+                        _p.trigger( AutoComplete.Model.SHOW );
+                    }, 1);
+                    return _p;
+                }
+
+            , hide:
+                function(){
+                    this.trigger( AutoComplete.Model.HIDDEN );
+                    return this;
+                }
+
+            , popup:
+                function(){
+                    return this._model.popup();
+                }
+            
+            , update:
+                function( _json ){
+                    var _p = this;
+                    !_p._model.firstUpdate &amp;&amp; _p.clear();
+                    _p._model.firstUpdate = false;
+                    _json = _p._model.cacDataFilter( _json );
+                    _p.trigger( AutoComplete.Model.UPDATE, [ _json ] );
+                    _p.trigger( AutoComplete.Model.UPDATE_LIST );
+
+                    return _p;
+                }
+
+            , clear:
+                function(){
+                    this.trigger( AutoComplete.Model.CLEAR );
+                    return this;
+                }
+
+            , fixPosition:
+                function(){
+                    var _popup = this._model.popup();
+                    _popup 
+                        &amp;&amp; _popup.length 
+                        &amp;&amp; _popup.is( &#x27;:visible&#x27; )
+                        &amp;&amp; this._view.show()
+                        ;
+                    return this;
                 }
         };
 
         BaseMVC.buildModel( AutoComplete );
+
         AutoComplete.Model._instanceName = &#x27;AutoComplete&#x27;;
-        AutoComplete.Model.ACTIVE_CLASS = &#x27;AC_active&#x27;;
+
+        AutoComplete.Model.UPDATE = &#x27;AC_UPDATE&#x27;;
+        AutoComplete.Model.CLEAR = &#x27;AC_CLEAR&#x27;;
+        AutoComplete.Model.ENTER = &#x27;AC_ENTER&#x27;;
+        AutoComplete.Model.CHANGE = &#x27;AC_CHANGE&#x27;;
+        AutoComplete.Model.HIDDEN = &#x27;AC_HIDDEN&#x27;;
+        AutoComplete.Model.SHOW = &#x27;AC_SHOW&#x27;;
+        AutoComplete.Model.UPDATE_LIST= &#x27;AC_UPDATE_LIST&#x27;;
+        AutoComplete.Model.UPDATE_LIST_INDEX = &#x27;AC_UPDATE_LIST_INDEX&#x27;;
+
+        AutoComplete.Model.CLASS_ACTIVE = &#x27;AC_active&#x27;;
+        AutoComplete.Model.CLASS_FAKE = &#x27;AC_fakebox&#x27;;
+
+        AutoComplete.Model.AJAX_CACHE = {};
+
         AutoComplete.Model.prototype = {
             init: 
                 function() {
                     // JC.log( &#x27;AutoComplete.Model.init:&#x27;, new Date().getTime() );
-                },
+                    this.initData;      //保存初始化的数据
+                    this._cache = {};
+                    this.firstUpdate = true;
+                }
 
-            key: 
-                function() {
-                    return this.selector().val().trim();
-                },
+            , keyIndex: -1
 
-            keyIndex: -1,
-
-            layoutTpl: function() {
-                var _tpl = &#x27;&lt;li data-id=&quot;{0}&quot; data-value=&quot;{1}&quot; data-index=&quot;{2}&quot; class=&quot;AC_listItem {3}&quot;&gt;{1}&lt;/li&gt;&#x27;;
+            , listItemTpl: function() {
+                var _tpl = JC.f.printf( &#x27;&lt;li &#x27; 
+                                        + this.cacIdKey()+ &#x27;=&quot;{0}&quot; &#x27; 
+                                        + this.cacLabelKey() + &#x27;=&quot;{1}&quot;&#x27;
+                                        + &#x27; data-index=&quot;{2}&quot; class=&quot;AC_listItem {3}&quot;&gt;{1}&lt;/li&gt;&#x27; 
+                                );
                 return _tpl;
-            },
+            }
 
-            wordPanel: 
+            , popup: 
                 function() {
                     var _p = this, _r = _p.selector().data(&#x27;AC_panel&#x27;);
-                        !_r &amp;&amp; ( _r = this.selectorProp(&#x27;cacPanel&#x27;) );
+                        !_r &amp;&amp; ( _r = this.selectorProp(&#x27;cacPopup&#x27;) );
+
+                        if( !( _r &amp;&amp; _r.length ) ){
+                            _r = $( JC.f.printf( &#x27;&lt;ul class=&quot;AC_box js_compAutoCompleteBox&quot;{0}&gt;{1}&lt;/ul&gt;&#x27;
+                                                , &#x27; style=&quot;display:none;position:absolute;&quot;&#x27;
+                                                , &#x27;&lt;li style=&quot;text-align:center;&quot;&gt;&#x27; + _p.cacNoDataText() + &#x27;&lt;/li&gt;&#x27;
+                                                ));
+                            _p.selector().after( _r );
+                        }
 
                         if( !this._inited ){
                             this._inited = true;
@@ -434,67 +590,189 @@
                         }
 
                     return _r;
-                },
+                }
 
-            list: 
-                function () {
-                    return this.wordPanel().find(&#x27;li&#x27;);
-                },
+            , cacNoDataText:
+                function(){
+                    var _r = this.attrProp( &#x27;cacNoDataText&#x27; ) || &#x27;数据加载中, 请稍候...&#x27;;
+                    return _r;
+                }
 
-            wordList: 
+            , initPopupData:
+                function( _json ){
+                    this.initData = _json;
+                }
+
+            , ajaxData:
+                function( _url, _cb ){
+                    var _p = this, _url = _url || _p.attrProp( &#x27;cacAjaxDataUrl&#x27; );
+                    if( !_url ) return;
+
+                    if( _url in AutoComplete.Model.AJAX_CACHE ){
+                        $( _p ).trigger( &#x27;TriggerEvent&#x27;
+                                , [ AutoComplete.Model.UPDATE, AutoComplete.Model.AJAX_CACHE[ _url ], _cb ] 
+                                ); 
+                        return;
+                    }
+
+                    $.get( _url ).done( function( _d ){
+                        _d = $.parseJSON( _d );
+                        _d = _p.cacDataFilter( _d );
+                        AutoComplete.Model.AJAX_CACHE[ _url ] = _d;
+                        $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ AutoComplete.Model.UPDATE
+                                                            , AutoComplete.Model.AJAX_CACHE[ _url ]
+                                                            , _cb
+                                                        ] ); 
+                    });
+                }
+            , cacDataFilter:
+                function( _d ){
+                    var _filter = this.callbackProp( &#x27;cacDataFilter&#x27; ) || AutoComplete.dataFilter;
+                    _filter &amp;&amp; ( _d = _filter( _d ) );
+                    return _d;
+                }
+            /**
+             * 验证 key &amp;&amp; id 是否正确
+             * 仅在 cacStrictData 为真的时候进行验证
+             */
+            , verifyKey:
+                function(){
+                    if( !this.cacStrictData() ) return;
+                    var _p = this
+                        , _label = this.selector().val().trim()
+                        , _findLs = []
+                        , _definedIdKey = _p.selector().is( &#x27;[cacIdKey]&#x27; )
+                        , _isCor
+                        ;
+
+                    if( !_label ){
+                        _p.selector().val( &#x27;&#x27; );
+                        _p.setIdSelectorData();
+                        return;
+                    }
+
+                    if( _label ){
+                        var _id = _p.cacIdVal(), _findId, _findLabel;
+
+                        $.each( _p.initData, function( _ix, _item ){
+                            //JC.log( _item.label, _item.id );
+                            if( _definedIdKey ){
+                                var _slabel = _item.label.trim();
+
+                                if( _slabel === _label ){
+                                    _isCor = true;
+                                    !_findLabel &amp;&amp; _p.setIdSelectorData( _item.id );
+                                    _findLabel = true;
+                                }
+
+                                if( _slabel === _label &amp;&amp; !_id ){
+                                    _p.setIdSelectorData( _id = _item.id );
+                                }
+
+                                if( _slabel === _label &amp;&amp; _item.id === _id ){
+                                    _findLs.push( _item );
+                                    !_findId &amp;&amp; ( _p.setIdSelectorData( _item.id ) );
+                                    _findId = true;
+                                    _isCor = true;
+                                    return false;
+                                }
+                            }else{
+                                if( _item.label.trim() == _label ){
+                                    _findLs.push( _item );
+                                    _isCor = true;
+                                }
+                            }
+                        });
+                    }
+
+                    if( !_isCor ){
+                        _p.selector().val( &#x27;&#x27; );
+                        _p.setIdSelectorData();
+                    }
+                }
+
+            , cacStrictData:
+                function(){
+                    var _r = this.boolProp( &#x27;cacStrictData&#x27; );
+                    return _r;
+                }
+
+            , dataItems: 
                 function() {
-                    var _el = this.list(),
-                    _result = [];
+                    var _p = this
+                        , _el = _p.listItems()
+                        , _result = []
+                        ;
 
                     _el.each(function( _ix, _item ) {
                         var _sp = $(this);
 
                         _result.push({
-                            el: _item,                   
-                            id: _sp.data(&#x27;id&#x27;),
-                            word: _sp.data(&#x27;value&#x27;),
-                            py: _sp.data(&#x27;py&#x27;),
-                            tag: -1
-
+                            //&#x27;el&#x27;: _item                   
+                            &#x27;id&#x27;: _sp.attr( _p.cacIdKey() ) || &#x27;&#x27;
+                            , &#x27;label&#x27;: _sp.attr( _p.cacLabelKey() )
                         });
 
                     });
-
                     return _result;
+                }
 
-                },
+            , cacLabelKey:
+                function(){
+                    var _r = this.attrProp( &#x27;cacLabelKey&#x27; ) || &#x27;data-label&#x27;;
+                    return _r;
+                }
 
-            cachData: 
-                function ( _key, _items ) {
+            , cacIdKey:
+                function( _setter ){
+                    typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this.selector().attr( &#x27;cacIdKey&#x27;, _setter ) );
+                    var _r = this.attrProp( &#x27;cacIdKey&#x27; ) || this.cacLabelKey();
+                    return _r;
+                }
 
-                    var _cach = _cach || {};
+            , cacIdVal:
+                function(){
+                    var _p = this, _r = _p.attrProp( &#x27;cacIdVal&#x27; );
 
-                    if (  typeof _items != &#x27;undefined&#x27; ) {
-                        _cach[ _key ] = _items;
+                    _p.cacIdSelector()
+                        &amp;&amp; _p.cacIdSelector().length
+                        &amp;&amp; ( _r = _p.cacIdSelector().val() )
+                        ;
+                    _r = ( _r || &#x27;&#x27; ).trim();
+                    return _r;
+                }
+
+            , cache: 
+                function ( _key ) {
+
+                    JC.log( &#x27;................cache&#x27;, _key );
+
+                    if( !( _key in this._cache ) ){
+                        this._cache[ _key ] = this.keyData( _key ) || this.initData; 
                     }
 
-                    return _cach[_key];
-                },
+                    return this._cache[ _key ];
+                }
 
-            filteredData: [],
+            , filteredData: []
 
-            update: 
-                function ( _val ) {
-                    var _p = this,
-                    _key = _val,
-                    _wordList = this.orginal,
-                    _i = 0,
-                    bestFilteredData = [],
-                    betterFilteredData = [];
+            , keyData: 
+                function ( _key ) {
+                    var _p = this
+                        , _dataItems = _p.initData
+                        , _i = 0
+                        , bestFilteredData = []
+                        , betterFilteredData = []
+                        ;
 
-                    for (_i = 0; _i &lt; _wordList.length; _i++) {
+                    for (_i = 0; _i &lt; _dataItems.length; _i++) {
 
-                        if ( _wordList[_i].word.indexOf( _key ) == 0 ) {
-                            _wordList[_i].tag = 1;
-                            bestFilteredData.push( _wordList[_i] );
-                        } else if ( _wordList[_i].word.indexOf( _key ) &gt; 0 ) {
-                            _wordList[_i].tag = 0;
-                            betterFilteredData.push( _wordList[_i] );
+                        if ( _dataItems[_i].label.indexOf( _key ) == 0 ) {
+                            _dataItems[_i].tag = 1;
+                            bestFilteredData.push( _dataItems[_i] );
+                        } else if ( _dataItems[_i].label.indexOf( _key ) &gt; 0 ) {
+                            _dataItems[_i].tag = 0;
+                            betterFilteredData.push( _dataItems[_i] );
                         } 
 
                     }
@@ -502,85 +780,42 @@
                     this.filteredData = bestFilteredData.concat( betterFilteredData );
 
                     return this.filteredData;
+                }
 
-                },
+            , setSelectorData:
+                function( _selector ){
+                    _selector &amp;&amp; ( _selector = $( _selector ) );
+                    if( !( _selector &amp;&amp; _selector.length ) ) return;
+                    var _p = this
+                        , _label = _selector.attr( _p.cacLabelKey() ).trim()
+                        , _id = _selector.attr( _p.cacIdKey() ).trim()
+                        ;
 
+                    _p.selector().val( _label );
 
-            setKey: 
-                function ( key ) {
-                    this.selector().val( key );
-                },
-
-            getKeyIndex: 
-                function ( isdown ) {
-                    var len  =  this.list().length - 1;
-
-                    if ( isdown ) {
-                        if ( this.keyIndex &lt; len ) {
-                            this.keyIndex++;
-                        } else {
-                            //this.selector().focus();
-                            this.keyIndex = -1;
-
-                        }
-
-                    } else {
-                        if ( this.keyIndex &gt; 0 ) {
-                            this.keyIndex--;
-                        } else {
-                            //this.selector().focus();
-                            this.keyIndex = -1;
-
-                        }
+                    _p.selector().attr( &#x27;cacIdVal&#x27;, _id );
+                    _p.setIdSelectorData( _id );
+                }
+            , setIdSelectorData:
+                function( _val ){
+                    var _p = this;
+                    if( !( _p.cacIdSelector() &amp;&amp; _p.cacIdSelector().length ) ) return;
+                    if( typeof _val != &#x27;undefined&#x27; ){
+                        _p.cacIdSelector().val( _val );
+                        _p.selector().attr( &#x27;cacIdVal&#x27;, _val );
+                    }else{
+                        _p.cacIdSelector().val( &#x27;&#x27; );
+                        _p.selector().attr( &#x27;cacIdVal&#x27;, &#x27;&#x27; );
                     }
+                }
 
-                    this.setSelect( this.keyIndex );
+            , cacIdSelector:
+                function(){
+                    var _r = this.selectorProp( &#x27;cacIdSelector&#x27; );
+                    return _r;
+                }
 
-                },
-
-            setSelect: 
-                function( keyIndex ) {
-                    var _el = this.listItems().eq(keyIndex),
-                    _h = _el.position().top + _el.height(),
-                    _ph = this.wordPanel().innerHeight(),
-                    _top = this.wordPanel().scrollTop();
-
-                    _h = _h + _top;
-
-
-                    if ( keyIndex == -1 ) {
-
-                        this.selector().focus();
-                        this.list().removeClass( AutoComplete.Model.ACTIVE_CLASS );
-                        this.setKey( &#x27;&#x27; );
-
-                    } else {
-
-                        //if ( _el.is(&#x27;:visible&#x27;) ) {
-                        _el.addClass( AutoComplete.Model.ACTIVE_CLASS ).siblings().removeClass( AutoComplete.Model.ACTIVE_CLASS );
-                        this.setKey( _el.data(&#x27;value&#x27;) );
-                        //}
-
-                        if ( _h &gt; _ph ) {
-                            this.wordPanel().scrollTop( _h - _ph );
-                        }
-
-                        if ( _el.position().top &lt; 0 ) {
-                            this.wordPanel().scrollTop( 0 );
-                        }
-
-                    }
-
-                    AutoComplete.Model.SCROLL_TIMEOUT &amp;&amp; clearTimeout( AutoComplete.Model.SCROLL_TIMEOUT );
-
-                    AutoComplete.Model.SCROLL_TIMEOUT =
-                        setTimeout( function(){
-                            AutoComplete.Model.isScroll = false;
-                        }, 500 );
-
-                },
-
-            cacPreventEnter: 
+            , cacPreventEnter: 
                 function(){
                       var _r;
                       _r = this.selector().is( &#x27;[cacPreventEnter]&#x27; ) 
@@ -600,17 +835,31 @@
             , cacSubItemsSelector:
                 function(){
                     var _r = this.attrProp( &#x27;cacSubItemsSelector&#x27; ) || &#x27;&gt; li&#x27;;
+                        _r += &#x27;[&#x27; + this.cacLabelKey() + &#x27;]&#x27;;
                     return _r;
                 }
 
             , listItems:
                 function(){
-                    var _r = $([]);
+                    var _r;
 
-                    this.wordPanel() 
-                        &amp;&amp; this.wordPanel().length
-                        &amp;&amp; ( _r = this.wordPanel().find( this.cacSubItemsSelector() ) )
+                    this.popup() 
+                        &amp;&amp; this.popup().length
+                        &amp;&amp; ( _r = this.popup().find( this.cacSubItemsSelector() ) )
                         ;
+                    return _r;
+                }
+
+            , selectedItem:
+                function(){
+                    var _r;
+                    this.listItems().each( function(){
+                        var _sp = $(this);
+                        if( _sp.hasClass( AutoComplete.Model.CLASS_ACTIVE ) ){
+                            _r = _sp;
+                            return false;
+                        }
+                    });
                     return _r;
                 }
 
@@ -636,8 +885,8 @@
                     _p._model.listItems().each( function( _ix ){
                         $(this).attr( &#x27;data-index&#x27;, _ix );
                     })
-                    .removeClass( AutoComplete.Model.ACTIVE_CLASS )
-                    .first().addClass( AutoComplete.Model.ACTIVE_CLASS )
+                    .removeClass( AutoComplete.Model.CLASS_ACTIVE )
+                    .first().addClass( AutoComplete.Model.CLASS_ACTIVE )
                     ;
 
                     // JC.log( &#x27;AutoComplete.View.init:&#x27;, new Date().getTime() );
@@ -647,70 +896,99 @@
                 function() {
                     var _p = this;
 
-                    _p._model.wordPanel().hide();
+                    _p._model.popup().hide();
                 },
 
             show: 
                 function() {
-                    var _p = this;
+                    var _p = this
+                        , _offset = _p._model.selector().offset()
+                        , _h = _p._model.selector().prop( &#x27;offsetHeight&#x27; )
+                        , _w = _p._model.selector().prop( &#x27;offsetWidth&#x27; )
+                        ;
+                    _p._model.popup().css( {
+                        &#x27;top&#x27;: _offset.top + _h + &#x27;px&#x27;
+                        , &#x27;left&#x27;: _offset.left + &#x27;px&#x27;
+                    });
 
-                    _p._model.wordPanel().show();
+                    var _selectedItem
+                        , _label = _p._model.selector().val().trim()
+                        , _id = _p._model.cacIdVal()
+                        , _idCompare = _p._model.cacLabelKey() != _p._model.cacIdKey() 
+                        ;
 
-                    !_p._model.key() &amp;&amp; _p._model.list().show();
+                    _p._model.listItems().each( function(){
+                        var _sp = $(this)
+                            , _slabel = _sp.attr( _p._model.cacLabelKey() )
+                            , _sid = _sp.attr( _p._model.cacIdKey() )
+                            ;
 
+                        //JC.log( _slabel, _sid, _label, _id );
+
+                        _sp.removeClass( AutoComplete.Model.CLASS_ACTIVE );
+                        if( _label == _slabel ){
+                            if( _idCompare &amp;&amp; _id ){
+                                _id == _sid &amp;&amp; _sp.addClass( AutoComplete.Model.CLASS_ACTIVE );
+                                _selectedItem = _sp;
+                            }else{
+                                _sp.addClass( AutoComplete.Model.CLASS_ACTIVE );
+                                _selectedItem = _sp;
+                            }
+                        }
+                    });
+
+                    if( !_selectedItem ){
+                        _p._model.listItems().first().addClass( AutoComplete.Model.CLASS_ACTIVE );
+                    }
+
+                    _p._model.popup().show();
+                    //!_p._model.key() &amp;&amp; _p._model.list().show();
                 },
 
-            update: 
-                function ( _val ) {
-                    var _p  = this,
-                    _wordList,
-                    _view = [];
+            updateList: 
+                function () {
+                    var _p  = this
+                        , _dataItems
+                        , _view = []
+                        , _label = _p._model.selector().val().trim()
+                        , _id = _p._model.cacIdVal()
+                        , _data
+                        ;
 
-                    if ( _p._model.key() ) {
-                        _p._model.update();
-                        _wordList = _p._model.filteredData;
-
-                        //this.build( _wordList );
-                        this.build( _val )
-
-                            // this.trigger(&#x27;AUUpdate&#x27;, [ $( this ) ] );
-                    }  
-
+                    if ( !_label ) {
+                        _data = _p._model.initData;
+                    }else{
+                        _data = _p._model.cache( _label, _id );
+                    }
+                    _data &amp;&amp; _p.build( _data );
                 },
 
             build: 
                 function( _data ) {
-
-                    //console.log(&#x27;build&#x27;, _data );
-
-                    var _p = this,
-                    _i = 0,
-                    _view = [];
+                    var _p = this
+                        , _i = 0
+                        , _view = []
+                        ;
 
                     if ( _data.length == 0 ) {
                         _p.hide();
-
                     } else {
-                        //JC.log( _p._model.layoutTpl() );
-
                         for ( ; _i &lt; _data.length; _i++ ) {
-                            _view.push( JC.f.printf( _p._model.layoutTpl()
+                            _view.push( JC.f.printf( _p._model.listItemTpl()
                                         , _data[_i].id
-                                        , _data[_i].word
+                                        , _data[_i].label
                                         , _i
-                                        , _i == 0 ? AutoComplete.Model.ACTIVE_CLASS : &#x27;&#x27;
+                                        , _i === 0 ? AutoComplete.Model.CLASS_ACTIVE : &#x27;&#x27;
                                         ) );
                         }
 
-                        _p._model.wordPanel().html( _view.join(&#x27;&#x27;) );
-                        _p.show();
-
+                        _p._model.popup().html( _view.join(&#x27;&#x27;) );
                     }
                 }
             , currentIndex:
                 function( _isDown ){
                     var _p = this
-                        , _box = _p._model.wordPanel()
+                        , _box = _p._model.popup()
                         , _listItems = _p._model.listItems()
                         , _ix = -1
                         ;
@@ -718,7 +996,7 @@
 
                     _listItems.each( function( _six ){
                         var _sp = $(this);
-                        if( _sp.hasClass( AutoComplete.Model.ACTIVE_CLASS ) ){
+                        if( _sp.hasClass( AutoComplete.Model.CLASS_ACTIVE ) ){
                             _ix = _six;
                             return false;
                         }
@@ -747,17 +1025,60 @@
                     var _p = this, _listItems = _p._model.listItems();
                     _p.removeActiveClass();
 
-                    $( _listItems[ _ix ] ).addClass( AutoComplete.Model.ACTIVE_CLASS );
-                    !_ignoreScroll &amp;&amp; _p._model.setSelect( _ix );
+                    $( _listItems[ _ix ] ).addClass( AutoComplete.Model.CLASS_ACTIVE );
+                    !_ignoreScroll &amp;&amp; _p.setScroll( _ix );
+                }
+
+            , setScroll: 
+                function( keyIndex ) {
+                    var _p = this
+                        , _el = _p._model.listItems().eq(keyIndex)
+                        , _h = _el.position().top + _el.height()
+                        , _ph = _p._model.popup().innerHeight()
+                        , _top = _p._model.popup().scrollTop()
+                        ;
+
+                    _h = _h + _top;
+
+                    if ( keyIndex == -1 ) {
+
+                        _p._model.selector().focus();
+                        _p._model.listItems().removeClass( AutoComplete.Model.CLASS_ACTIVE );
+
+                    } else {
+                        _p._model.listItems().removeClass( AutoComplete.Model.CLASS_ACTIVE );
+                        _el.addClass( AutoComplete.Model.CLASS_ACTIVE );
+                        if ( _h &gt; _ph ) {
+                            _p._model.popup().scrollTop( _h - _ph );
+                        }
+                        if ( _el.position().top &lt; 0 ) {
+                            _p._model.popup().scrollTop( 0 );
+                        }
+                    }
+
+                    AutoComplete.Model.SCROLL_TIMEOUT &amp;&amp; clearTimeout( AutoComplete.Model.SCROLL_TIMEOUT );
+
+                    AutoComplete.Model.SCROLL_TIMEOUT =
+                        setTimeout( function(){
+                            AutoComplete.Model.isScroll = false;
+                        }, 500 );
+
                 }
 
             , removeActiveClass:
                 function(){
-                    this._model.listItems().removeClass( AutoComplete.Model.ACTIVE_CLASS );
+                    this._model.listItems().removeClass( AutoComplete.Model.CLASS_ACTIVE );
                 }
         };
 
         BaseMVC.build( AutoComplete );
+
+        $( window ).on( &#x27;resize&#x27;, function( _evt ){
+            $( &#x27;input.js_compAutoComplete&#x27; ).each( function(){
+                var _ins = AutoComplete.getInstance( $( this ) );
+                    _ins &amp;&amp; _ins.fixPosition();
+            });
+        });
 
         $(document).on( &#x27;click&#x27;, function(){
             $(&#x27;ul.js_compAutoCompleteBox, div.js_compAutoCompleteBox&#x27;).hide();
