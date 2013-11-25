@@ -7,8 +7,8 @@
          * AutoComplete 文本框输入内容提示
          * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
          * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-         * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>
-         * | <a href='../../modules/JC.AutoComplete/0.1/_demo' target='_blank'>demo link</a></p>
+         * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>
+         * | <a href='../../comps/AutoComplete/_demo' target='_blank'>demo link</a></p>
          * <h2>可用的 HTML attribute</h2>
          * <dl>
          * </dl>
@@ -279,6 +279,10 @@
                         _p._model.selector().val( '' );
                         _p._model.setIdSelectorData();
                     });
+
+                    _p._model.selector().on( AutoComplete.Model.REMOVE, function(){
+                        try{ _p._model.popup().remove(); } catch( _ex ){}
+                    });
                 } 
 
             , _inited: 
@@ -361,6 +365,7 @@
         AutoComplete.Model.SHOW = 'AC_SHOW';
         AutoComplete.Model.UPDATE_LIST= 'AC_UPDATE_LIST';
         AutoComplete.Model.UPDATE_LIST_INDEX = 'AC_UPDATE_LIST_INDEX';
+        AutoComplete.Model.REMOVE = 'AC_AUTOCOMPLETE_REMOVE';
 
         AutoComplete.Model.CLASS_ACTIVE = 'AC_active';
         AutoComplete.Model.CLASS_FAKE = 'AC_fakebox';
@@ -397,7 +402,9 @@
                                                 , ' style="display:none;position:absolute;"'
                                                 , '<li style="text-align:center;">' + _p.cacNoDataText() + '</li>'
                                                 ));
-                            _p.selector().after( _r );
+                            //_p.selector().after( _r );
+                            _p.selector().data( 'AC_panel', _r );
+                            _r.appendTo( document.body );
                         }
 
                         if( !this._inited ){
@@ -888,6 +895,15 @@
         };
 
         BaseMVC.build( AutoComplete );
+
+        $.event.special[ AutoComplete.Model.REMOVE ] = {
+            remove: 
+                function(o) {
+                    if (o.handler) {
+                        o.handler()
+                    }
+                }
+        };
 
         $( window ).on( 'resize', function( _evt ){
             $( 'input.js_compAutoComplete' ).each( function(){
