@@ -765,6 +765,10 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
          * 格式化金额
          */
         Bizs.MoneyTips && Bizs.MoneyTips.init( _selector );
+        /**
+         * 自动完成
+         */
+        Bizs.AutoSelectComplete && Bizs.AutoSelectComplete.init( _selector );
     }
     /**
      * URL 占位符识别功能

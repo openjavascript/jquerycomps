@@ -218,7 +218,9 @@
                         if( !$(this).is( '[' + _p._model.cacLabelKey() + ']' ) ) return;
                         _p.trigger( AutoComplete.Model.CHANGE, [ $(this) ] );
                         _p.trigger( AutoComplete.Model.HIDDEN );
-                        _p._model.selector().trigger( 'blur' );
+                        _p._model.blurTimeout( setTimeout( function(){
+                            _p._model.selector().trigger( 'blur' );
+                        }, 201 ) );
                     });
 
                     _p.on( AutoComplete.Model.HIDDEN, function () {
@@ -278,6 +280,10 @@
                     _p.on( AutoComplete.Model.CLEAR, function( _evt ){
                         _p._model.selector().val( '' );
                         _p._model.setIdSelectorData();
+                    });
+
+                    _p._model.selector().on( AutoComplete.Model.REMOVE, function(){
+                        try{ _p._model.popup().remove(); } catch( _ex ){}
                     });
                 } 
 
@@ -361,6 +367,7 @@
         AutoComplete.Model.SHOW = 'AC_SHOW';
         AutoComplete.Model.UPDATE_LIST= 'AC_UPDATE_LIST';
         AutoComplete.Model.UPDATE_LIST_INDEX = 'AC_UPDATE_LIST_INDEX';
+        AutoComplete.Model.REMOVE = 'AC_AUTOCOMPLETE_REMOVE';
 
         AutoComplete.Model.CLASS_ACTIVE = 'AC_active';
         AutoComplete.Model.CLASS_FAKE = 'AC_fakebox';
@@ -397,7 +404,9 @@
                                                 , ' style="display:none;position:absolute;"'
                                                 , '<li style="text-align:center;">' + _p.cacNoDataText() + '</li>'
                                                 ));
-                            _p.selector().after( _r );
+                            //_p.selector().after( _r );
+                            _p.selector().data( 'AC_panel', _r );
+                            _r.appendTo( document.body );
                         }
 
                         if( !this._inited ){
@@ -690,6 +699,12 @@
                     this._keydownTimeout && clearTimeout( this._keydownTimeout );
                     this._keydownTimeout = _tm;
                 }
+
+            , blurTimeout:
+                function( _tm ){
+                    this._blurTimeout && clearTimeout( this._blurTimeout );
+                    this._blurTimeout = _tm;
+                }
         };
 
         BaseMVC.buildView( AutoComplete );
@@ -888,6 +903,15 @@
         };
 
         BaseMVC.build( AutoComplete );
+
+        $.event.special[ AutoComplete.Model.REMOVE ] = {
+            remove: 
+                function(o) {
+                    if (o.handler) {
+                        o.handler()
+                    }
+                }
+        };
 
         $( window ).on( 'resize', function( _evt ){
             $( 'input.js_compAutoComplete' ).each( function(){
