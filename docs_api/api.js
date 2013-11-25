@@ -31,6 +31,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.hideAllPopup",
         "JC.msgbox",
         "window.Bizs.ActionLogic",
+        "window.Bizs.AutoSelectComplete",
         "window.Bizs.CommonModify",
         "window.Bizs.DisableLogic",
         "window.Bizs.FormLogic",

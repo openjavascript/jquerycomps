@@ -1,5 +1,6 @@
 //TODO: 添加 IE6 支持
 //TODO: 移动 左右 方向键时, 显示 首字符到光标的过滤条件
+//TODO: 添加 唯一 key 判断逻辑
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
     ;(function($){
         /**
@@ -73,13 +74,31 @@
                 return _r;
             };
 
+        AutoComplete.update =
+            function( _selector, _data ){
+                var _ins = AutoComplete.getInstance( _selector );
+                    !_ins && ( _ins = new AutoComplete( _selector ) );
+                    _ins && _ins.update( _data );
+                return _ins;
+            };
+
+        AutoComplete.ajaxUpdate =
+            function( _selector, _url, _cb ){
+                var _ins = AutoComplete.getInstance( _selector );
+                    !_ins && ( _ins = new AutoComplete( _selector ) );
+                    _ins && _ins.ajaxUpdate( _url, _cb );
+                return _ins;
+            };
+
+        AutoComplete.dataFilter;
+
         AutoComplete.prototype = {
             _beforeInit: 
                 function(){
                      // JC.log( 'AutoComplete _beforeInit', new Date().getTime() );
-                 }, 
+                 } 
 
-            _initHanlderEvent: 
+            , _initHanlderEvent: 
                 function(){
                     //JC.log( 'AutoComplete _initHanlderEvent', new Date().getTime() );
                     var _p = this;
@@ -89,12 +108,22 @@
                     } );
 
                     _p._model.selector().on('focus', function() {
-                        _p._view.show();
-                        _p.selector().addClass('AC_fakebox');
+                        /*
+                        if( !_p._model.selector().val().trim() && _p._model.selector().val().trim() == _p._model.preVal ){
+                        }else{
+                            _p._view.updateList();
+                        }
+                        */
+                        _p._view.updateList();
+
+                        _p.trigger( AutoComplete.Model.SHOW );
+                        _p.selector().addClass( AutoComplete.Model.CLASS_FAKE );
                     } );
 
                     _p._model.selector().on('blur', function() {
-                        _p.selector().removeClass('AC_fakebox');
+                        _p._model.preVal = _p._model.selector().val().trim();
+                        _p.selector().removeClass( AutoComplete.Model.CLASS_FAKE );
+                        _p._model.verifyKey();
                     });
 
                     _p._model.selector().on('keyup', function( _evt ) {
@@ -110,22 +139,29 @@
                         JC.log('keyup', _keyCode, new Date().getTime() );
 
                         if ( _keyCode ) {
-                            switch( _evt.keyCode ) {
+                            switch( _keyCode ){
                                 case 38://up
                                 case 40://down
-                                    return;
-                                case 37://left
-                                case 39://right
-                                    return;
+                                    {
+                                        _evt.preventDefault();
+                                    }
+                                case 37:
+                                case 39:
+                                    {
+                                        return;
+                                    }
+                                case 27://esc
+                                    {
+                                        _p.trigger( AutoComplete.Model.HIDDEN );
+                                        return;
+                                    }
                             }
                         }
                     });
 
                     _p._model.selector().on('keydown', function( _evt ) {
-
                         var _keyCode = _evt.keyCode
-                            , _sp = $(this)
-                            , _val = _sp.val().trim()
+                            , _val = _p._model.selector().val().trim()
                             ;
 
                         if( _keyCode == 38 || _keyCode == 40 ){
@@ -135,116 +171,234 @@
                         JC.log('keydown', new Date().getTime() );
 
                         if ( _keyCode ) {
+                            switch( _keyCode ){
+                                case 40:
+                                case 38:
+                                case 13:
+                                    if( !_p._model.popup().is(':visible') ) return;
+                                    break;
+                            }
+
+                            if( !_p._model.popup().is(':visible') ){
+                                _p.trigger( AutoComplete.Model.SHOW );
+                            }
+
                             switch( _keyCode ) {
                                 case 40:
                                 case 38:
-                                    _p.trigger( 'AC_UPDATE_LIST_INDEX', [ _keyCode, _evt ] );
+                                    _p.trigger( AutoComplete.Model.UPDATE_LIST_INDEX, [ _keyCode, _evt ] );
                                     return;
 
                                 case 37:
                                 case 39:
                                     return;
                                 case 13: //enter
-                                    _p.trigger( 'AC_ENTER', [ _evt ] );
+                                    _p.trigger( AutoComplete.Model.ENTER, [ _evt ] );
                                     return;
                                 case 9: //tab
                                 case 27: //esc
-                                    _p._view.hide();
+                                    _p.trigger( AutoComplete.Model.HIDDEN );
                                     return; 
                             }
                         }
 
                         _p._model.keydownTimeout( setTimeout( function(){
-                            _val = _sp.val().trim();
-
-                            if ( !_val ) {
-                                _p._view.build( _p._model.orginal );
-                                return;
-                            }
-
-                            var _data = _p._model.cachData( _val );
-
-                            if ( !_data ) {
-                                _data = _p._model.update( _val );
-                                _p._model.cachData( _val, _data );
-                            }
-                            _p._view.update( _data );
+                            _p.trigger( AutoComplete.Model.UPDATE_LIST );
                         }, 200 ));
 
                     });
-
-                    _p._model.wordPanel().on('click', function( _evt ){
+                    /**
+                     * 点击列表时, 阻止冒泡
+                     */
+                    _p._model.popup().on('click', function( _evt ){
                         _evt.stopPropagation();
                     });
 
-                    _p._model.wordPanel().delegate( 'li', 'click', function( _evt ){
-
-                        _p.trigger('ACChange', [ $(this) ] );
-                        _p.trigger('ACHidden');
-                    } );
-
-                    _p.on( 'ACChange', function( _evt, _srcSelector ){
-                        _p._model.setKey( _srcSelector.data('value') );
+                    _p._model.popup().delegate( 'li', 'click', function( _evt ){
+                        if( !$(this).is( '[' + _p._model.cacLabelKey() + ']' ) ) return;
+                        _p.trigger( AutoComplete.Model.CHANGE, [ $(this) ] );
+                        _p.trigger( AutoComplete.Model.HIDDEN );
+                        _p._model.selector().trigger( 'blur' );
                     });
 
-                    _p.on( 'ACHidden', function () {
+                    _p.on( AutoComplete.Model.HIDDEN, function () {
                         _p._view.hide();
-                    } );
+                    });
 
-                    _p._model.wordPanel().delegate( '> li', 'mouseover', mouseHandler );
+                    _p.on( AutoComplete.Model.SHOW, function () {
+                        _p._view.show();
+                    });
 
-                    function mouseHandler( _evt ) {
-                        //JC.log( 'xxxxxxx', $(this).attr('data-index') );
-                        if( AutoComplete.Model.isScroll ) return;
-                        _p._view.updateIndex( $(this).attr('data-index'), true );
-                    }
+                    _p._model.popup().delegate( '> li', 'mouseenter'
+                        , function mouseHandler( _evt ) {
+                            if( AutoComplete.Model.isScroll ) return;
+                            _p._view.updateIndex( $(this).attr('data-index'), true );
+                        }
+                    );
 
-                    _p.on( 'AC_ENTER', function( _evt, _srcEvt ){
+                    _p.on( AutoComplete.Model.ENTER, function( _evt, _srcEvt ){
                         _p._model.cacPreventEnter() && _srcEvt.preventDefault();
-                        _p._view.hide();
+                        var _selectedItem = _p._model.selectedItem();
+                        _selectedItem 
+                            && _selectedItem.length
+                            && _p.trigger( AutoComplete.Model.CHANGE, [ _selectedItem ] )
+                            ;
+                        _p.trigger( AutoComplete.Model.HIDDEN );
                     });
 
-                    _p.on( 'AC_UPDATE_LIST_INDEX', function( _evt, _keyCode, _srcEvt ){
+                    _p.on( AutoComplete.Model.UPDATE_LIST_INDEX, function( _evt, _keyCode, _srcEvt ){
                         _srcEvt.preventDefault();
-                        JC.log( 'AC_UPDATE_LIST_INDEX', _keyCode, new Date().getTime() );
+                        JC.log( AutoComplete.Model.UPDATE_LIST_INDEX, _keyCode, new Date().getTime() );
                         _p._view.updateListIndex( _keyCode == 40 ? true : false );
+
+                        var _selectedItem = _p._model.selectedItem();
+                        _selectedItem 
+                            && _selectedItem.length
+                            && _p.trigger( AutoComplete.Model.CHANGE, [ _selectedItem ] )
+                            ;
                     });
 
-                }, 
+                    _p.on( AutoComplete.Model.UPDATE_LIST, function( _evt ){
+                        this._view.updateList( this._model.selector() );
+                    });
 
-            _inited: 
+                    /**
+                     * 响应 li 点击时, 更新对应的内容
+                     */
+                    _p.on( AutoComplete.Model.CHANGE, function( _evt, _srcSelector ){
+                        _p._model.setSelectorData( _srcSelector );
+                    });
+
+                    _p.on( AutoComplete.Model.UPDATE, function( _evt, _json, _cb ){
+                        _p._model.initPopupData( _json );
+                        _p._view.build( _json );
+                        _cb && _cb.call( _p, _json );
+                    });
+
+                    _p.on( AutoComplete.Model.CLEAR, function( _evt ){
+                        _p._model.selector().val( '' );
+                        _p._model.setIdSelectorData();
+                    });
+                } 
+
+            , _inited: 
                 function(){
                     var _p = this;
                     //JC.log( 'AutoComplete _inited', new Date().getTime() );
-                    _p._model.orginal =  _p._model.wordList();
+                    _p._model.initData =  _p._model.dataItems();
+                    //alert( _p._model.initData.length );
+                    //window.JSON && JC.log( JSON.stringify( _p._model.initData ) );
+                    _p.ajaxUpdate();
+                }
+
+            , idSelector: function(){ return this._model.cacIdSelector(); }
+            , idVal: function(){ return this._model.cacIdVal(); }
+
+            , ajaxUpdate:
+                function( _url, _cb ){
+                    this._model.ajaxData( _url, _cb );
+                }
+
+            , show:
+                function(){
+                    var _p = this;
+                    setTimeout( function(){
+                        _p.trigger( AutoComplete.Model.SHOW );
+                    }, 1);
+                    return _p;
+                }
+
+            , hide:
+                function(){
+                    this.trigger( AutoComplete.Model.HIDDEN );
+                    return this;
+                }
+
+            , popup:
+                function(){
+                    return this._model.popup();
+                }
+            
+            , update:
+                function( _json ){
+                    var _p = this;
+                    !_p._model.firstUpdate && _p.clear();
+                    _p._model.firstUpdate = false;
+                    _json = _p._model.cacDataFilter( _json );
+                    _p.trigger( AutoComplete.Model.UPDATE, [ _json ] );
+                    _p.trigger( AutoComplete.Model.UPDATE_LIST );
+
+                    return _p;
+                }
+
+            , clear:
+                function(){
+                    this.trigger( AutoComplete.Model.CLEAR );
+                    return this;
+                }
+
+            , fixPosition:
+                function(){
+                    var _popup = this._model.popup();
+                    _popup 
+                        && _popup.length 
+                        && _popup.is( ':visible' )
+                        && this._view.show()
+                        ;
+                    return this;
                 }
         };
 
         BaseMVC.buildModel( AutoComplete );
+
         AutoComplete.Model._instanceName = 'AutoComplete';
-        AutoComplete.Model.ACTIVE_CLASS = 'AC_active';
+
+        AutoComplete.Model.UPDATE = 'AC_UPDATE';
+        AutoComplete.Model.CLEAR = 'AC_CLEAR';
+        AutoComplete.Model.ENTER = 'AC_ENTER';
+        AutoComplete.Model.CHANGE = 'AC_CHANGE';
+        AutoComplete.Model.HIDDEN = 'AC_HIDDEN';
+        AutoComplete.Model.SHOW = 'AC_SHOW';
+        AutoComplete.Model.UPDATE_LIST= 'AC_UPDATE_LIST';
+        AutoComplete.Model.UPDATE_LIST_INDEX = 'AC_UPDATE_LIST_INDEX';
+
+        AutoComplete.Model.CLASS_ACTIVE = 'AC_active';
+        AutoComplete.Model.CLASS_FAKE = 'AC_fakebox';
+
+        AutoComplete.Model.AJAX_CACHE = {};
+
         AutoComplete.Model.prototype = {
             init: 
                 function() {
                     // JC.log( 'AutoComplete.Model.init:', new Date().getTime() );
-                },
+                    this.initData;      //保存初始化的数据
+                    this._cache = {};
+                    this.firstUpdate = true;
+                }
 
-            key: 
-                function() {
-                    return this.selector().val().trim();
-                },
+            , keyIndex: -1
 
-            keyIndex: -1,
-
-            layoutTpl: function() {
-                var _tpl = '<li data-id="{0}" data-value="{1}" data-index="{2}" class="AC_listItem {3}">{1}</li>';
+            , listItemTpl: function() {
+                var _tpl = JC.f.printf( '<li ' 
+                                        + this.cacIdKey()+ '="{0}" ' 
+                                        + this.cacLabelKey() + '="{1}"'
+                                        + ' data-index="{2}" class="AC_listItem {3}">{1}</li>' 
+                                );
                 return _tpl;
-            },
+            }
 
-            wordPanel: 
+            , popup: 
                 function() {
                     var _p = this, _r = _p.selector().data('AC_panel');
-                        !_r && ( _r = this.selectorProp('cacPanel') );
+                        !_r && ( _r = this.selectorProp('cacPopup') );
+
+                        if( !( _r && _r.length ) ){
+                            _r = $( JC.f.printf( '<ul class="AC_box js_compAutoCompleteBox"{0}>{1}</ul>'
+                                                , ' style="display:none;position:absolute;"'
+                                                , '<li style="text-align:center;">' + _p.cacNoDataText() + '</li>'
+                                                ));
+                            _p.selector().after( _r );
+                        }
 
                         if( !this._inited ){
                             this._inited = true;
@@ -252,67 +406,189 @@
                         }
 
                     return _r;
-                },
+                }
 
-            list: 
-                function () {
-                    return this.wordPanel().find('li');
-                },
+            , cacNoDataText:
+                function(){
+                    var _r = this.attrProp( 'cacNoDataText' ) || '数据加载中, 请稍候...';
+                    return _r;
+                }
 
-            wordList: 
+            , initPopupData:
+                function( _json ){
+                    this.initData = _json;
+                }
+
+            , ajaxData:
+                function( _url, _cb ){
+                    var _p = this, _url = _url || _p.attrProp( 'cacAjaxDataUrl' );
+                    if( !_url ) return;
+
+                    if( _url in AutoComplete.Model.AJAX_CACHE ){
+                        $( _p ).trigger( 'TriggerEvent'
+                                , [ AutoComplete.Model.UPDATE, AutoComplete.Model.AJAX_CACHE[ _url ], _cb ] 
+                                ); 
+                        return;
+                    }
+
+                    $.get( _url ).done( function( _d ){
+                        _d = $.parseJSON( _d );
+                        _d = _p.cacDataFilter( _d );
+                        AutoComplete.Model.AJAX_CACHE[ _url ] = _d;
+                        $( _p ).trigger( 'TriggerEvent', [ AutoComplete.Model.UPDATE
+                                                            , AutoComplete.Model.AJAX_CACHE[ _url ]
+                                                            , _cb
+                                                        ] ); 
+                    });
+                }
+            , cacDataFilter:
+                function( _d ){
+                    var _filter = this.callbackProp( 'cacDataFilter' ) || AutoComplete.dataFilter;
+                    _filter && ( _d = _filter( _d ) );
+                    return _d;
+                }
+            /**
+             * 验证 key && id 是否正确
+             * 仅在 cacStrictData 为真的时候进行验证
+             */
+            , verifyKey:
+                function(){
+                    if( !this.cacStrictData() ) return;
+                    var _p = this
+                        , _label = this.selector().val().trim()
+                        , _findLs = []
+                        , _definedIdKey = _p.selector().is( '[cacIdKey]' )
+                        , _isCor
+                        ;
+
+                    if( !_label ){
+                        _p.selector().val( '' );
+                        _p.setIdSelectorData();
+                        return;
+                    }
+
+                    if( _label ){
+                        var _id = _p.cacIdVal(), _findId, _findLabel;
+
+                        $.each( _p.initData, function( _ix, _item ){
+                            //JC.log( _item.label, _item.id );
+                            if( _definedIdKey ){
+                                var _slabel = _item.label.trim();
+
+                                if( _slabel === _label ){
+                                    _isCor = true;
+                                    !_findLabel && _p.setIdSelectorData( _item.id );
+                                    _findLabel = true;
+                                }
+
+                                if( _slabel === _label && !_id ){
+                                    _p.setIdSelectorData( _id = _item.id );
+                                }
+
+                                if( _slabel === _label && _item.id === _id ){
+                                    _findLs.push( _item );
+                                    !_findId && ( _p.setIdSelectorData( _item.id ) );
+                                    _findId = true;
+                                    _isCor = true;
+                                    return false;
+                                }
+                            }else{
+                                if( _item.label.trim() == _label ){
+                                    _findLs.push( _item );
+                                    _isCor = true;
+                                }
+                            }
+                        });
+                    }
+
+                    if( !_isCor ){
+                        _p.selector().val( '' );
+                        _p.setIdSelectorData();
+                    }
+                }
+
+            , cacStrictData:
+                function(){
+                    var _r = this.boolProp( 'cacStrictData' );
+                    return _r;
+                }
+
+            , dataItems: 
                 function() {
-                    var _el = this.list(),
-                    _result = [];
+                    var _p = this
+                        , _el = _p.listItems()
+                        , _result = []
+                        ;
 
                     _el.each(function( _ix, _item ) {
                         var _sp = $(this);
 
                         _result.push({
-                            el: _item,                   
-                            id: _sp.data('id'),
-                            word: _sp.data('value'),
-                            py: _sp.data('py'),
-                            tag: -1
-
+                            //'el': _item                   
+                            'id': _sp.attr( _p.cacIdKey() ) || ''
+                            , 'label': _sp.attr( _p.cacLabelKey() )
                         });
 
                     });
-
                     return _result;
+                }
 
-                },
+            , cacLabelKey:
+                function(){
+                    var _r = this.attrProp( 'cacLabelKey' ) || 'data-label';
+                    return _r;
+                }
 
-            cachData: 
-                function ( _key, _items ) {
+            , cacIdKey:
+                function( _setter ){
+                    typeof _setter != 'undefined' && ( this.selector().attr( 'cacIdKey', _setter ) );
+                    var _r = this.attrProp( 'cacIdKey' ) || this.cacLabelKey();
+                    return _r;
+                }
 
-                    var _cach = _cach || {};
+            , cacIdVal:
+                function(){
+                    var _p = this, _r = _p.attrProp( 'cacIdVal' );
 
-                    if (  typeof _items != 'undefined' ) {
-                        _cach[ _key ] = _items;
+                    _p.cacIdSelector()
+                        && _p.cacIdSelector().length
+                        && ( _r = _p.cacIdSelector().val() )
+                        ;
+                    _r = ( _r || '' ).trim();
+                    return _r;
+                }
+
+            , cache: 
+                function ( _key ) {
+
+                    JC.log( '................cache', _key );
+
+                    if( !( _key in this._cache ) ){
+                        this._cache[ _key ] = this.keyData( _key ) || this.initData; 
                     }
 
-                    return _cach[_key];
-                },
+                    return this._cache[ _key ];
+                }
 
-            filteredData: [],
+            , filteredData: []
 
-            update: 
-                function ( _val ) {
-                    var _p = this,
-                    _key = _val,
-                    _wordList = this.orginal,
-                    _i = 0,
-                    bestFilteredData = [],
-                    betterFilteredData = [];
+            , keyData: 
+                function ( _key ) {
+                    var _p = this
+                        , _dataItems = _p.initData
+                        , _i = 0
+                        , bestFilteredData = []
+                        , betterFilteredData = []
+                        ;
 
-                    for (_i = 0; _i < _wordList.length; _i++) {
+                    for (_i = 0; _i < _dataItems.length; _i++) {
 
-                        if ( _wordList[_i].word.indexOf( _key ) == 0 ) {
-                            _wordList[_i].tag = 1;
-                            bestFilteredData.push( _wordList[_i] );
-                        } else if ( _wordList[_i].word.indexOf( _key ) > 0 ) {
-                            _wordList[_i].tag = 0;
-                            betterFilteredData.push( _wordList[_i] );
+                        if ( _dataItems[_i].label.indexOf( _key ) == 0 ) {
+                            _dataItems[_i].tag = 1;
+                            bestFilteredData.push( _dataItems[_i] );
+                        } else if ( _dataItems[_i].label.indexOf( _key ) > 0 ) {
+                            _dataItems[_i].tag = 0;
+                            betterFilteredData.push( _dataItems[_i] );
                         } 
 
                     }
@@ -320,85 +596,42 @@
                     this.filteredData = bestFilteredData.concat( betterFilteredData );
 
                     return this.filteredData;
+                }
 
-                },
+            , setSelectorData:
+                function( _selector ){
+                    _selector && ( _selector = $( _selector ) );
+                    if( !( _selector && _selector.length ) ) return;
+                    var _p = this
+                        , _label = _selector.attr( _p.cacLabelKey() ).trim()
+                        , _id = _selector.attr( _p.cacIdKey() ).trim()
+                        ;
 
+                    _p.selector().val( _label );
 
-            setKey: 
-                function ( key ) {
-                    this.selector().val( key );
-                },
-
-            getKeyIndex: 
-                function ( isdown ) {
-                    var len  =  this.list().length - 1;
-
-                    if ( isdown ) {
-                        if ( this.keyIndex < len ) {
-                            this.keyIndex++;
-                        } else {
-                            //this.selector().focus();
-                            this.keyIndex = -1;
-
-                        }
-
-                    } else {
-                        if ( this.keyIndex > 0 ) {
-                            this.keyIndex--;
-                        } else {
-                            //this.selector().focus();
-                            this.keyIndex = -1;
-
-                        }
+                    _p.selector().attr( 'cacIdVal', _id );
+                    _p.setIdSelectorData( _id );
+                }
+            , setIdSelectorData:
+                function( _val ){
+                    var _p = this;
+                    if( !( _p.cacIdSelector() && _p.cacIdSelector().length ) ) return;
+                    if( typeof _val != 'undefined' ){
+                        _p.cacIdSelector().val( _val );
+                        _p.selector().attr( 'cacIdVal', _val );
+                    }else{
+                        _p.cacIdSelector().val( '' );
+                        _p.selector().attr( 'cacIdVal', '' );
                     }
+                }
 
-                    this.setSelect( this.keyIndex );
+            , cacIdSelector:
+                function(){
+                    var _r = this.selectorProp( 'cacIdSelector' );
+                    return _r;
+                }
 
-                },
-
-            setSelect: 
-                function( keyIndex ) {
-                    var _el = this.listItems().eq(keyIndex),
-                    _h = _el.position().top + _el.height(),
-                    _ph = this.wordPanel().innerHeight(),
-                    _top = this.wordPanel().scrollTop();
-
-                    _h = _h + _top;
-
-
-                    if ( keyIndex == -1 ) {
-
-                        this.selector().focus();
-                        this.list().removeClass( AutoComplete.Model.ACTIVE_CLASS );
-                        this.setKey( '' );
-
-                    } else {
-
-                        //if ( _el.is(':visible') ) {
-                        _el.addClass( AutoComplete.Model.ACTIVE_CLASS ).siblings().removeClass( AutoComplete.Model.ACTIVE_CLASS );
-                        this.setKey( _el.data('value') );
-                        //}
-
-                        if ( _h > _ph ) {
-                            this.wordPanel().scrollTop( _h - _ph );
-                        }
-
-                        if ( _el.position().top < 0 ) {
-                            this.wordPanel().scrollTop( 0 );
-                        }
-
-                    }
-
-                    AutoComplete.Model.SCROLL_TIMEOUT && clearTimeout( AutoComplete.Model.SCROLL_TIMEOUT );
-
-                    AutoComplete.Model.SCROLL_TIMEOUT =
-                        setTimeout( function(){
-                            AutoComplete.Model.isScroll = false;
-                        }, 500 );
-
-                },
-
-            cacPreventEnter: 
+            , cacPreventEnter: 
                 function(){
                       var _r;
                       _r = this.selector().is( '[cacPreventEnter]' ) 
@@ -418,17 +651,31 @@
             , cacSubItemsSelector:
                 function(){
                     var _r = this.attrProp( 'cacSubItemsSelector' ) || '> li';
+                        _r += '[' + this.cacLabelKey() + ']';
                     return _r;
                 }
 
             , listItems:
                 function(){
-                    var _r = $([]);
+                    var _r;
 
-                    this.wordPanel() 
-                        && this.wordPanel().length
-                        && ( _r = this.wordPanel().find( this.cacSubItemsSelector() ) )
+                    this.popup() 
+                        && this.popup().length
+                        && ( _r = this.popup().find( this.cacSubItemsSelector() ) )
                         ;
+                    return _r;
+                }
+
+            , selectedItem:
+                function(){
+                    var _r;
+                    this.listItems().each( function(){
+                        var _sp = $(this);
+                        if( _sp.hasClass( AutoComplete.Model.CLASS_ACTIVE ) ){
+                            _r = _sp;
+                            return false;
+                        }
+                    });
                     return _r;
                 }
 
@@ -454,8 +701,8 @@
                     _p._model.listItems().each( function( _ix ){
                         $(this).attr( 'data-index', _ix );
                     })
-                    .removeClass( AutoComplete.Model.ACTIVE_CLASS )
-                    .first().addClass( AutoComplete.Model.ACTIVE_CLASS )
+                    .removeClass( AutoComplete.Model.CLASS_ACTIVE )
+                    .first().addClass( AutoComplete.Model.CLASS_ACTIVE )
                     ;
 
                     // JC.log( 'AutoComplete.View.init:', new Date().getTime() );
@@ -465,70 +712,99 @@
                 function() {
                     var _p = this;
 
-                    _p._model.wordPanel().hide();
+                    _p._model.popup().hide();
                 },
 
             show: 
                 function() {
-                    var _p = this;
+                    var _p = this
+                        , _offset = _p._model.selector().offset()
+                        , _h = _p._model.selector().prop( 'offsetHeight' )
+                        , _w = _p._model.selector().prop( 'offsetWidth' )
+                        ;
+                    _p._model.popup().css( {
+                        'top': _offset.top + _h + 'px'
+                        , 'left': _offset.left + 'px'
+                    });
 
-                    _p._model.wordPanel().show();
+                    var _selectedItem
+                        , _label = _p._model.selector().val().trim()
+                        , _id = _p._model.cacIdVal()
+                        , _idCompare = _p._model.cacLabelKey() != _p._model.cacIdKey() 
+                        ;
 
-                    !_p._model.key() && _p._model.list().show();
+                    _p._model.listItems().each( function(){
+                        var _sp = $(this)
+                            , _slabel = _sp.attr( _p._model.cacLabelKey() )
+                            , _sid = _sp.attr( _p._model.cacIdKey() )
+                            ;
 
+                        //JC.log( _slabel, _sid, _label, _id );
+
+                        _sp.removeClass( AutoComplete.Model.CLASS_ACTIVE );
+                        if( _label == _slabel ){
+                            if( _idCompare && _id ){
+                                _id == _sid && _sp.addClass( AutoComplete.Model.CLASS_ACTIVE );
+                                _selectedItem = _sp;
+                            }else{
+                                _sp.addClass( AutoComplete.Model.CLASS_ACTIVE );
+                                _selectedItem = _sp;
+                            }
+                        }
+                    });
+
+                    if( !_selectedItem ){
+                        _p._model.listItems().first().addClass( AutoComplete.Model.CLASS_ACTIVE );
+                    }
+
+                    _p._model.popup().show();
+                    //!_p._model.key() && _p._model.list().show();
                 },
 
-            update: 
-                function ( _val ) {
-                    var _p  = this,
-                    _wordList,
-                    _view = [];
+            updateList: 
+                function () {
+                    var _p  = this
+                        , _dataItems
+                        , _view = []
+                        , _label = _p._model.selector().val().trim()
+                        , _id = _p._model.cacIdVal()
+                        , _data
+                        ;
 
-                    if ( _p._model.key() ) {
-                        _p._model.update();
-                        _wordList = _p._model.filteredData;
-
-                        //this.build( _wordList );
-                        this.build( _val )
-
-                            // this.trigger('AUUpdate', [ $( this ) ] );
-                    }  
-
+                    if ( !_label ) {
+                        _data = _p._model.initData;
+                    }else{
+                        _data = _p._model.cache( _label, _id );
+                    }
+                    _data && _p.build( _data );
                 },
 
             build: 
                 function( _data ) {
-
-                    //console.log('build', _data );
-
-                    var _p = this,
-                    _i = 0,
-                    _view = [];
+                    var _p = this
+                        , _i = 0
+                        , _view = []
+                        ;
 
                     if ( _data.length == 0 ) {
                         _p.hide();
-
                     } else {
-                        //JC.log( _p._model.layoutTpl() );
-
                         for ( ; _i < _data.length; _i++ ) {
-                            _view.push( JC.f.printf( _p._model.layoutTpl()
+                            _view.push( JC.f.printf( _p._model.listItemTpl()
                                         , _data[_i].id
-                                        , _data[_i].word
+                                        , _data[_i].label
                                         , _i
-                                        , _i == 0 ? AutoComplete.Model.ACTIVE_CLASS : ''
+                                        , _i === 0 ? AutoComplete.Model.CLASS_ACTIVE : ''
                                         ) );
                         }
 
-                        _p._model.wordPanel().html( _view.join('') );
-                        _p.show();
-
+                        _p._model.popup().html( _view.join('') );
                     }
                 }
             , currentIndex:
                 function( _isDown ){
                     var _p = this
-                        , _box = _p._model.wordPanel()
+                        , _box = _p._model.popup()
                         , _listItems = _p._model.listItems()
                         , _ix = -1
                         ;
@@ -536,7 +812,7 @@
 
                     _listItems.each( function( _six ){
                         var _sp = $(this);
-                        if( _sp.hasClass( AutoComplete.Model.ACTIVE_CLASS ) ){
+                        if( _sp.hasClass( AutoComplete.Model.CLASS_ACTIVE ) ){
                             _ix = _six;
                             return false;
                         }
@@ -565,17 +841,60 @@
                     var _p = this, _listItems = _p._model.listItems();
                     _p.removeActiveClass();
 
-                    $( _listItems[ _ix ] ).addClass( AutoComplete.Model.ACTIVE_CLASS );
-                    !_ignoreScroll && _p._model.setSelect( _ix );
+                    $( _listItems[ _ix ] ).addClass( AutoComplete.Model.CLASS_ACTIVE );
+                    !_ignoreScroll && _p.setScroll( _ix );
+                }
+
+            , setScroll: 
+                function( keyIndex ) {
+                    var _p = this
+                        , _el = _p._model.listItems().eq(keyIndex)
+                        , _h = _el.position().top + _el.height()
+                        , _ph = _p._model.popup().innerHeight()
+                        , _top = _p._model.popup().scrollTop()
+                        ;
+
+                    _h = _h + _top;
+
+                    if ( keyIndex == -1 ) {
+
+                        _p._model.selector().focus();
+                        _p._model.listItems().removeClass( AutoComplete.Model.CLASS_ACTIVE );
+
+                    } else {
+                        _p._model.listItems().removeClass( AutoComplete.Model.CLASS_ACTIVE );
+                        _el.addClass( AutoComplete.Model.CLASS_ACTIVE );
+                        if ( _h > _ph ) {
+                            _p._model.popup().scrollTop( _h - _ph );
+                        }
+                        if ( _el.position().top < 0 ) {
+                            _p._model.popup().scrollTop( 0 );
+                        }
+                    }
+
+                    AutoComplete.Model.SCROLL_TIMEOUT && clearTimeout( AutoComplete.Model.SCROLL_TIMEOUT );
+
+                    AutoComplete.Model.SCROLL_TIMEOUT =
+                        setTimeout( function(){
+                            AutoComplete.Model.isScroll = false;
+                        }, 500 );
+
                 }
 
             , removeActiveClass:
                 function(){
-                    this._model.listItems().removeClass( AutoComplete.Model.ACTIVE_CLASS );
+                    this._model.listItems().removeClass( AutoComplete.Model.CLASS_ACTIVE );
                 }
         };
 
         BaseMVC.build( AutoComplete );
+
+        $( window ).on( 'resize', function( _evt ){
+            $( 'input.js_compAutoComplete' ).each( function(){
+                var _ins = AutoComplete.getInstance( $( this ) );
+                    _ins && _ins.fixPosition();
+            });
+        });
 
         $(document).on( 'click', function(){
             $('ul.js_compAutoCompleteBox, div.js_compAutoCompleteBox').hide();

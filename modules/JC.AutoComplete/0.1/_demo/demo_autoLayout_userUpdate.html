@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AutoComplete</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+        .ui-sug-mod input{ height: 26px;  outline: 0; text-indent: 3px; }
+
+        .ui-sug-ipt{ width: 400px; max-height: 300px; overflow-y: auto; }
+        .ui-sug-ipt{ border: 1px solid #ccc;  padding: 0; }
+    </style>
+    <link href='../../../../modules/JC.AutoComplete/0.1/res/default/style.css' rel='stylesheet' />
+
+    <script src="../../../../lib.js"></script>
+    <script src="../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+
+        function cacDataFilter( _json ){
+            if( _json.data && _json.data.length ){
+                _json = _json.data;
+            }
+
+            $.each( _json, function( _ix, _item ){
+                _item.length &&
+                    ( _json[ _ix ] = { 'id': _item[0], 'label': _item[1] } )
+                    ;
+            });
+
+            return _json;
+        }
+
+        requirejs( [ 'JC.AutoComplete' ], function( AutoComplete ){
+            $(document).delegate( 'button.js_updateAutoCompelte', 'click', function( _evt ){
+                setCacData.call( this, _evt ).show();
+            });
+
+            setCacData.call( $( 'button.js_updateAutoCompelte' ).first() );
+        });
+
+        function setCacData(){
+            var _p = $(this)
+                , _data = JC.f.parentSelector( _p, '(td textarea' ).val().trim()
+                , _control = JC.f.parentSelector( _p, '(form input.js_compAutoComplete' )
+                ;
+
+            _data = $.parseJSON( _data );
+            return JC.AutoComplete.update( _control, _data );
+        }
+    </script>
+</head>
+<body>
+<h2>JC.AutoComplete 示例</h2>
+<h3>自动生成列表弹框, JC.AutoComplete#update</h3>
+<form action="?" method="get">
+    <div class="ui-sug-mod">
+        <input name="ac" type="text" class="ui-sug-ipt js_compAutoComplete" value="英雄联盟" 
+            autocomplete="off" 
+
+            cacPopup="/ul.js_compAutoCompleteBox"
+            cacLabelKey="data-label"
+            cacIdKey="data-id"
+            cacIdSelector="/input.js_bindItem"
+            cacStrictData="true"
+            cacDataFilter="cacDataFilter"
+            cacNoDataText="没有可用的数据!"
+
+            cacPreventEnter="true" 
+            />
+        &nbsp;cacIdSelector: <input type="text" class="js_bindItem" value="7" />
+        <div style="height:200px"></div>
+        <table>
+            <thead>
+                <th>
+                    正确的数据
+                </th>
+                <th>
+                    需要 cacDataFilter 进行转换的数据
+                </th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <textarea style="width:300px;height:100px;">[{"id":"0","label":"真心英雄联盟"},{"id":"1","label":"英雄联盟"},{"id":"01","label":"英雄联盟"},{"id":"2","label":"移动网上营业厅"},{"id":"3","label":"音悦台"},{"id":"03","label":"音悦台"},{"id":"4","label":"英语在线翻译"},{"id":"5","label":"易迅网"},{"id":"6","label":"一号店"},{"id":"7","label":"英雄联盟"},{"id":"8","label":"一朵晴天"},{"id":"09","label":"yy"},{"id":"9","label":"yy语音"},{"id":"10","label":"yy直播"},{"id":"11","label":"yy频道设计"},{"id":"12","label":"yy网页版"},{"id":"13","label":"youku"},{"id":"14","label":"yeah"},{"id":"15","label":"yahoo"}]</textarea> 
+                        <div><button type="button" class="js_updateAutoCompelte">update</button></div>
+                    </td>
+                    <td>
+                        <textarea style="width:300px;height:100px;">[["28","\u5317\u4eac ","0"],["3705","\u4e1c\u57ce\u533a ","28"],["3706","\u897f\u57ce\u533a ","28"],["3708","\u5d07\u6587\u533a ","28"],["3709","\u5ba3\u6b66\u533a ","28"],["3710","\u671d\u9633\u533a ","28"],["3711","\u4e30\u53f0\u533a ","28"],["3712","\u77f3\u666f\u5c71\u533a ","28"],["3713","\u6d77\u6dc0\u533a ","28"],["3714","\u95e8\u5934\u6c9f\u533a ","28"],["3715","\u623f\u5c71\u533a ","28"],["3716","\u901a\u5dde\u533a ","28"],["3718","\u987a\u4e49\u533a ","28"],["3719","\u660c\u5e73\u533a ","28"],["3720","\u5927\u5174\u533a ","28"],["3721","\u6000\u67d4\u533a ","28"],["3722","\u5e73\u8c37\u533a ","28"],["3723","\u5bc6\u4e91\u53bf ","28"],["3724","\u5ef6\u5e86\u53bf ","28"],["29","\u5929\u6d25 ","0"],["3726","\u548c\u5e73\u533a ","29"],["3727","\u6cb3\u4e1c\u533a ","29"],["3728","\u6cb3\u897f\u533a ","29"],["3729","\u5357\u5f00\u533a ","29"],["3730","\u6cb3\u5317\u533a ","29"],["3731","\u7ea2\u6865\u533a ","29"],["3732","\u5858\u6cbd\u533a ","29"],["3733","\u6c49\u6cbd\u533a ","29"],["3734","\u5927\u6e2f\u533a ","29"],["3735","\u4e1c\u4e3d\u533a ","29"],["3736","\u897f\u9752\u533a ","29"],["35","\u6d25\u5357\u533a ","29"],["36","\u5317\u8fb0\u533a ","29"],["37","\u6b66\u6e05\u533a ","29"],["38","\u5b9d\u577b\u533a ","29"],["39","\u5b81\u6cb3\u53bf ","29"],["40","\u9759\u6d77\u53bf ","29"],["41","\u84df\u53bf ","29"],["34","\u6cb3\u5317\u7701 ","0"],["44","\u77f3\u5bb6\u5e84\u5e02 ","34"],["45","\u957f\u5b89\u533a ","44"],["46","\u6865\u4e1c\u533a ","44"],["47","\u6865\u897f\u533a ","44"],["48","\u65b0\u534e\u533a ","44"],["49","\u4e95\u9649\u77ff\u533a ","44"],["50","\u88d5\u534e\u533a ","44"],["51","\u4e95\u9649\u53bf ","44"],["52","\u6b63\u5b9a\u53bf ","44"],["53","\u683e\u57ce\u53bf ","44"],["54","\u884c\u5510\u53bf ","44"]]</textarea>
+                        <div><button type="button" class="js_updateAutoCompelte">update</button></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+</body>
+</html>

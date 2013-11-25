@@ -18,12 +18,13 @@
     </style>
     <link href='../../../../modules/Bizs.MoneyTips/0.1/res/default/style.css' rel='stylesheet' />
     <link href='../../../../modules/JC.Valid/0.2/res/default/style.css' rel='stylesheet' />
+    <link href='../../../../modules/JC.Panel/0.1/res/default/style.css' rel='stylesheet' />
 
     <script src="../../../../lib.js"></script>
     <script src="../../../../config.js"></script>
     <script>
         JC.debug = true;
-        requirejs( [ 'Bizs.MoneyTips', 'JC.Valid' ], function( AutoComplete ){
+        requirejs( [ 'Bizs.MoneyTips', 'Bizs.FormLogic', 'JC.Valid' ], function( AutoComplete ){
 
             $(document).delegate( 'button.js_updateBmt', 'click', function( _evt ){
                 var _p = $(this)
@@ -40,10 +41,11 @@
 </head>
 <body>
     <h2>Bizs.MoneyTips 示例</h2>
-    <form>
+    <!--<form action="./data/handler.php" method="get" class="js_bizsFormLogic" formType="ajax">-->
+    <form action="?" method="get" class="js_bizsFormLogic">
         <dl>
             <dd>
-                金额: <input type="text" value="6543.21" 
+                金额: <input type="text" name="m1" value="6543.21" 
                 datatype="n-12.2" class="js_bizMoneyTips" bmtDisplayLabel="/span.js_bmtSpan" />
                 <em class="error"></em>
                 <span class="js_bmtSpan"></span>
@@ -51,13 +53,13 @@
             </dd>
 
             <dd>
-                金额: <input type="text" datatype="n-12.2" class="js_bizMoneyTips" />
+                金额: <input type="text" name="m2" datatype="n-12.2" class="js_bizMoneyTips" />
                 <button type="button" class="js_updateBmt" data-value="12345678910.12">MoneyTips#update( 12345678910.12 )</button>
             </dd>
 
             <dd>
                 金额: 
-                <input type="text" datatype="n-12.2" value="98765432.10"
+                <input type="text" name="m3" datatype="n-12.2" value="98765432.10"
                 class="js_bizMoneyTips" bmtDisplayLabel="/span.js_bmtSpan" />
                 <em class="error"></em>
                 <span class="js_bmtSpan"></span>
@@ -65,7 +67,7 @@
             </dd>
 
             <dd>
-                金额: <input type="text" datatype="n-12.2" value="123456789.87"
+                金额: <input type="text" name="m4" datatype="n-12.2" value="123456789.87"
                 class="js_bizMoneyTips" 
                 />
                 <button type="button" class="js_updateBmt" data-value="12345678910.12">MoneyTips#update( 12345678910.12 )</button>
@@ -74,12 +76,12 @@
 
             <dd>
                 金额范围: 
-                <input type="text" datatype="nrange-12.2" 
+                <input type="text" name="m5_1" datatype="nrange-12.2" 
                     class="js_bizMoneyTips" 
                     bmtDisplayLabel="/span.js_bmtSpanStart" 
                     bmtPattern="起始金额: {0}"
                     />
-                <input type="text" datatype="nrange-12.2" 
+                <input type="text" name="m5_2" datatype="nrange-12.2" 
                     class="js_bizMoneyTips" 
                     bmtDisplayLabel="/span.js_bmtSpanEnd" 
                     bmtPattern="结束金额: {0}"
@@ -89,6 +91,11 @@
                 <span class="js_bmtSpanEnd"></span>
             </dd>
 
+            <dd>
+                <button type="submit">提交</button>
+                <button type="reset">重置</button>
+                <a href="?">返回</a>
+            </dd>
         </dl>
     </form>
 </body>
