@@ -192,7 +192,7 @@
          * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
          * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
          * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.AutoComplete.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
-         * | &lt;a href=&#x27;../../modules/JC.AutoComplete/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+         * | &lt;a href=&#x27;../../modules/AutoComplete/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
          * &lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
          * &lt;dl&gt;
          * &lt;/dl&gt;
@@ -305,6 +305,7 @@
                     } );
 
                     _p._model.selector().on(&#x27;blur&#x27;, function() {
+                        return;
                         _p._model.preVal = _p._model.selector().val().trim();
                         _p.selector().removeClass( AutoComplete.Model.CLASS_FAKE );
                         _p._model.verifyKey();
@@ -402,7 +403,10 @@
                         if( !$(this).is( &#x27;[&#x27; + _p._model.cacLabelKey() + &#x27;]&#x27; ) ) return;
                         _p.trigger( AutoComplete.Model.CHANGE, [ $(this) ] );
                         _p.trigger( AutoComplete.Model.HIDDEN );
-                        _p._model.selector().trigger( &#x27;blur&#x27; );
+                        return;
+                        _p._model.blurTimeout( setTimeout( function(){
+                            _p._model.selector().trigger( &#x27;blur&#x27; );
+                        }, 201 ) );
                     });
 
                     _p.on( AutoComplete.Model.HIDDEN, function () {
@@ -463,6 +467,10 @@
                         _p._model.selector().val( &#x27;&#x27; );
                         _p._model.setIdSelectorData();
                     });
+
+                    _p._model.selector().on( AutoComplete.Model.REMOVE, function(){
+                        try{ _p._model.popup().remove(); } catch( _ex ){}
+                    });
                 } 
 
             , _inited: 
@@ -470,9 +478,13 @@
                     var _p = this;
                     //JC.log( &#x27;AutoComplete _inited&#x27;, new Date().getTime() );
                     _p._model.initData =  _p._model.dataItems();
+                    _p.ajaxUpdate();
+
+                    if( !_p._model.selector().is( &#x27;[validCheckTimeout]&#x27; ) ){
+                        _p._model.selector().attr( &#x27;validCheckTimeout&#x27;, _p._model.cacValidCheckTimeout() );
+                    }
                     //alert( _p._model.initData.length );
                     //window.JSON &amp;&amp; JC.log( JSON.stringify( _p._model.initData ) );
-                    _p.ajaxUpdate();
                 }
 
             , idSelector: function(){ return this._model.cacIdSelector(); }
@@ -545,6 +557,7 @@
         AutoComplete.Model.SHOW = &#x27;AC_SHOW&#x27;;
         AutoComplete.Model.UPDATE_LIST= &#x27;AC_UPDATE_LIST&#x27;;
         AutoComplete.Model.UPDATE_LIST_INDEX = &#x27;AC_UPDATE_LIST_INDEX&#x27;;
+        AutoComplete.Model.REMOVE = &#x27;AC_AUTOCOMPLETE_REMOVE&#x27;;
 
         AutoComplete.Model.CLASS_ACTIVE = &#x27;AC_active&#x27;;
         AutoComplete.Model.CLASS_FAKE = &#x27;AC_fakebox&#x27;;
@@ -561,6 +574,12 @@
                 }
 
             , keyIndex: -1
+
+            , cacValidCheckTimeout:
+                function(){
+                    var _r = this.intProp( &#x27;cacValidCheckTimeout&#x27; ) || AutoComplete.validCheckTimeout || 1;
+                    return _r;
+                }
 
             , listItemTpl: function() {
                 var _tpl = JC.f.printf( &#x27;&lt;li &#x27; 
@@ -581,7 +600,9 @@
                                                 , &#x27; style=&quot;display:none;position:absolute;&quot;&#x27;
                                                 , &#x27;&lt;li style=&quot;text-align:center;&quot;&gt;&#x27; + _p.cacNoDataText() + &#x27;&lt;/li&gt;&#x27;
                                                 ));
-                            _p.selector().after( _r );
+                            //_p.selector().after( _r );
+                            _p.selector().data( &#x27;AC_panel&#x27;, _r );
+                            _r.appendTo( document.body );
                         }
 
                         if( !this._inited ){
@@ -874,6 +895,12 @@
                     this._keydownTimeout &amp;&amp; clearTimeout( this._keydownTimeout );
                     this._keydownTimeout = _tm;
                 }
+
+            , blurTimeout:
+                function( _tm ){
+                    this._blurTimeout &amp;&amp; clearTimeout( this._blurTimeout );
+                    this._blurTimeout = _tm;
+                }
         };
 
         BaseMVC.buildView( AutoComplete );
@@ -1072,6 +1099,15 @@
         };
 
         BaseMVC.build( AutoComplete );
+
+        $.event.special[ AutoComplete.Model.REMOVE ] = {
+            remove: 
+                function(o) {
+                    if (o.handler) {
+                        o.handler()
+                    }
+                }
+        };
 
         $( window ).on( &#x27;resize&#x27;, function( _evt ){
             $( &#x27;input.js_compAutoComplete&#x27; ).each( function(){

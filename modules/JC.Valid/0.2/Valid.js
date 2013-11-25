@@ -484,6 +484,30 @@
      */
     Valid.getInstance = function(){ !Valid._instance && new Valid(); return Valid._instance; };
     /**
+     * 检查是否需要延时 check
+     * <br />以 html 属性 validCheckTimeout 定义, int 类型, type = ms
+     * @method checkTimeout
+     * @param   {selector}      _selector
+     * @param   {int}           _tm
+     * @static
+     * @return  {Valid instance}
+     */
+    Valid.checkTimeout =
+        function( _selector, _tm ){
+            _selector && ( _selector = $( _selector ) );
+            if( !( _selector && _selector.length ) ) return;
+            _tm = parseInt( _selector.attr( 'validCheckTimeout') ) || _tm;
+            var _dname = 'VALID_CHECK_TIMEOUT';
+            if( _tm ){
+                _selector.data( _dname ) && clearTimeout( _selector.data( _dname ) );
+                _selector.data( _dname , function(){
+                    Valid.check( _selector );
+                }, _tm );
+            }else{
+                Valid.check( _selector );
+            }
+        };
+    /**
      * 判断/设置 selector 的数据是否合法
      * <br /> 通过 datavalid 属性判断
      * @method dataValid
@@ -2689,7 +2713,7 @@
      */
     $(document).delegate( 'input[type=text], input[type=password], textarea', 'blur', function($evt){
         Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
-        Valid.check( $(this) );
+        Valid.checkTimeout( $(this) );
     });
     /**
      * 响应没有 type 的 文本框
@@ -2698,7 +2722,7 @@
         var _p = $(this);
         if( _p.attr( 'type' ) ) return;
         Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
-        Valid.check( $(this) );
+        Valid.checkTimeout( $(this) );
     });
     /**
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
@@ -2706,7 +2730,7 @@
      */
     $(document).delegate( 'select, input[type=file], input[type=checkbox], input[type=radio]', 'change', function($evt, _ignore){
         if( _ignore ) return;
-        Valid.check( $(this) );
+        Valid.checkTimeout( $(this) );
     });
     /**
      * 响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
@@ -2741,7 +2765,7 @@
         }
         _sp.data('HID_CHANGE_CHECK', new Date().getTime() );
         JC.log( 'hidden val', new Date().getTime(), _sp.val() );
-        Valid.check( _sp );
+        Valid.checkTimeout( $(this) );
     });
     /**
      * 初始化 subdatatype = datavalid 相关事件

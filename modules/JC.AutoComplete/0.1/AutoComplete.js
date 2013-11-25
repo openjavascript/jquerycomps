@@ -121,6 +121,7 @@
                     } );
 
                     _p._model.selector().on('blur', function() {
+                        return;
                         _p._model.preVal = _p._model.selector().val().trim();
                         _p.selector().removeClass( AutoComplete.Model.CLASS_FAKE );
                         _p._model.verifyKey();
@@ -218,6 +219,7 @@
                         if( !$(this).is( '[' + _p._model.cacLabelKey() + ']' ) ) return;
                         _p.trigger( AutoComplete.Model.CHANGE, [ $(this) ] );
                         _p.trigger( AutoComplete.Model.HIDDEN );
+                        return;
                         _p._model.blurTimeout( setTimeout( function(){
                             _p._model.selector().trigger( 'blur' );
                         }, 201 ) );
@@ -292,9 +294,13 @@
                     var _p = this;
                     //JC.log( 'AutoComplete _inited', new Date().getTime() );
                     _p._model.initData =  _p._model.dataItems();
+                    _p.ajaxUpdate();
+
+                    if( !_p._model.selector().is( '[validCheckTimeout]' ) ){
+                        _p._model.selector().attr( 'validCheckTimeout', _p._model.cacValidCheckTimeout() );
+                    }
                     //alert( _p._model.initData.length );
                     //window.JSON && JC.log( JSON.stringify( _p._model.initData ) );
-                    _p.ajaxUpdate();
                 }
 
             , idSelector: function(){ return this._model.cacIdSelector(); }
@@ -384,6 +390,12 @@
                 }
 
             , keyIndex: -1
+
+            , cacValidCheckTimeout:
+                function(){
+                    var _r = this.intProp( 'cacValidCheckTimeout' ) || AutoComplete.validCheckTimeout || 1;
+                    return _r;
+                }
 
             , listItemTpl: function() {
                 var _tpl = JC.f.printf( '<li ' 
