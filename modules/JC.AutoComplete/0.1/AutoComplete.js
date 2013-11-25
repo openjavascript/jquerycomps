@@ -7,8 +7,8 @@
          * AutoComplete 文本框输入内容提示
          * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
          * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-         * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>
-         * | <a href='../../comps/AutoComplete/_demo' target='_blank'>demo link</a></p>
+         * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>
+         * | <a href='../../modules/AutoComplete/0.1/_demo' target='_blank'>demo link</a></p>
          * <h2>可用的 HTML attribute</h2>
          * <dl>
          * </dl>
@@ -218,7 +218,9 @@
                         if( !$(this).is( '[' + _p._model.cacLabelKey() + ']' ) ) return;
                         _p.trigger( AutoComplete.Model.CHANGE, [ $(this) ] );
                         _p.trigger( AutoComplete.Model.HIDDEN );
-                        _p._model.selector().trigger( 'blur' );
+                        _p._model.blurTimeout( setTimeout( function(){
+                            _p._model.selector().trigger( 'blur' );
+                        }, 201 ) );
                     });
 
                     _p.on( AutoComplete.Model.HIDDEN, function () {
@@ -696,6 +698,12 @@
                 function( _tm ){
                     this._keydownTimeout && clearTimeout( this._keydownTimeout );
                     this._keydownTimeout = _tm;
+                }
+
+            , blurTimeout:
+                function( _tm ){
+                    this._blurTimeout && clearTimeout( this._blurTimeout );
+                    this._blurTimeout = _tm;
                 }
         };
 
