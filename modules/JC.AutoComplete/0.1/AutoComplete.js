@@ -91,14 +91,6 @@
          * @version dev 0.1 2013-11-01
          * @author  zuojing<zuojing1013@gmail.com>, qiushaowei<suches@btbtd.org> | 75 Team
          * @example
-            <link href='../../../../modules/JC.AutoComplete/0.1/res/default/style.css' rel='stylesheet' />
-            <script src="../../../../lib.js"></script>
-            <script src="../../../../config.js"></script>
-            <script>
-                JC.debug = true;
-                requirejs( [ 'JC.AutoComplete' ], function( AutoComplete ){
-                });
-            </script>
             <div class="ui-sug-mod">
                 <input name="ac" type="text" class="ui-sug-ipt js_compAutoComplete" value="" 
                     autocomplete="off" 
