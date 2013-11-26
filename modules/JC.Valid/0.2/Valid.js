@@ -561,6 +561,53 @@
      */
     Valid.isValid = function( _selector ){ return Valid.getInstance().isValid( _selector ); };
     /**
+     * 提供对各种显示状态 setTimeout 执行的正确性 控制逻辑
+     */
+    Valid.statusTimeout = {
+        valid:
+            function( _selector, _tm ){
+                _selector && ( _selector = $( _selector ) );
+                if( !( _selector && _selector.length ) ) return;
+                _selector.data( Model.TIMEOUT_VALID ) && clearTimeout( _selector.data( Model.TIMEOUT_VALID ) );
+                _tm && Valid.statusTimeout.clear();
+                _tm && _selector.data( Model.TIMEOUT_VALID, _tm );
+            }
+
+        , error:
+            function( _selector, _tm ){
+                _selector && ( _selector = $( _selector ) );
+                if( !( _selector && _selector.length ) ) return;
+                _selector.data( Model.TIMEOUT_ERROR ) && clearTimeout( _selector.data( Model.TIMEOUT_ERROR ) );
+                _tm && Valid.statusTimeout.clear();
+                _tm && _selector.data( Model.TIMEOUT_ERROR, _tm );
+            }
+
+        , focus:
+            function( _selector, _tm ){
+                _selector && ( _selector = $( _selector ) );
+                if( !( _selector && _selector.length ) ) return;
+                _selector.data( Model.TIMEOUT_FOCUS ) && clearTimeout( _selector.data( Model.TIMEOUT_FOCUS ) );
+                _tm && Valid.statusTimeout.clear();
+                _tm && _selector.data( Model.TIMEOUT_FOCUS, _tm );
+            }
+
+        , success:
+            function( _selector, _tm ){
+                _selector && ( _selector = $( _selector ) );
+                if( !( _selector && _selector.length ) ) return;
+                _selector.data( Model.TIMEOUT_SUCCESS ) && clearTimeout( _selector.data( Model.TIMEOUT_SUCCESS ) );
+                _tm && Valid.statusTimeout.clear();
+                _tm && _selector.data( Model.TIMEOUT_SUCCESS, _tm );
+            }
+        , clear:
+            function( _selector ){
+                for( var k in Valid.statusTimeout ){
+                    if( k == 'clear' ) continue;
+                    Valid.statusTimeout[ k ]( _selector );
+                }
+            }
+    };
+    /**
      * 把一个表单项的状态设为正确状态
      * @method  setValid
      * @param   {selector}  _items
@@ -571,6 +618,7 @@
         _items = $( _items );
         _items.each( function( _ix, _item ){
             _item = $(this);
+            Valid.statusTimeout.clear( _item );
             $( Valid.getInstance()._view ).trigger( 'setValid', [_item, _tm, _noStyle, _isUserSet] ); 
         });
 
@@ -591,6 +639,7 @@
 
             _items.each( function( _ix, _item ){
                 _item = $(this);
+                Valid.statusTimeout.clear( _item );
                 if( _msgAttr && _msgAttr.trim() && /^[\s]/.test( _msgAttr ) ){
                     var _autoKey = 'autoGenerateErrorMsg';
                     _item.attr( _autoKey, _msgAttr );
@@ -614,6 +663,7 @@
             _items = $( _items );
             _items.each( function( _ix, _item ){
                 _item = $( this );
+                Valid.statusTimeout.clear( _item );
                 if( typeof _setHide == 'string' ){
                     _msgAttr = _setHide;
                     _setHide = false;
@@ -770,6 +820,11 @@
     Model.ERROR = 'ValidError';
     Model.CORRECT = 'ValidCorrect';
     Model.FOCUS_MSG = 'ValidFocusMsg';
+
+    Model.TIMEOUT_VALID = 'Valid_ValidTimeout';
+    Model.TIMEOUT_ERROR = 'Valid_ErrorTimeout';
+    Model.TIMEOUT_FOCUS = 'Valid_FocusTimeout';
+    Model.TIMEOUT_SUCCESS = 'Valid_SuccessTimeout';
 
     Model.SELECTOR_ERROR = '~ em.error, ~ em.errormsg';
 
@@ -2246,9 +2301,13 @@
 
                 _r = JC.f.parseBool( _item.attr('datavalid') );
 
-                setTimeout( function(){
-                    !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'datavalidmsg', true ] );
-                }, 1 );
+                if( !_r ){
+                    Valid.statusTimeout.error( _item, 
+                        setTimeout( function(){
+                            $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'datavalidmsg', true ] );
+                        }, 1 )
+                    );
+                }
 
                 return _r;
             }
@@ -2642,10 +2701,13 @@
                 _item.data( 'JCValidStatus', true );
                 //if( !_p._model.isValid( _item ) ) return false;
                 var _hideFocusMsg = !JC.f.parseBool( _item.attr('validnoerror' ) );
-                setTimeout(function(){
-                    $(_p).trigger( 'setValid', [ _item, _tm, _noStyle, _hideFocusMsg ] );
-                    ( _tmp = _p._model.validitemcallback( _item ) ) && _tmp( _item, true );
-                }, _tm || 150);
+
+                Valid.statusTimeout.valid( _item,
+                    setTimeout(function(){
+                        $(_p).trigger( 'setValid', [ _item, _tm, _noStyle, _hideFocusMsg ] );
+                        ( _tmp = _p._model.validitemcallback( _item ) ) && _tmp( _item, true );
+                    }, _tm || 150)
+                );
             }
         , validMsg:
             function( _item, _noStyle, _hideFocusMsg ){
@@ -2698,11 +2760,13 @@
                 if( _item.is( '[validnoerror]' ) ) return true;
                 _item.data( 'JCValidStatus', false );
 
-                setTimeout(function(){
-                    $(_p).trigger( 'setError', [ _item, _msgAttr, _fullMsg ] );
-                    ( _tmp = _p._model.validitemcallback( _item ) ) && _tmp( _item, false);
+                Valid.statusTimeout.error( _item, 
+                    setTimeout(function(){
+                        $(_p).trigger( 'setError', [ _item, _msgAttr, _fullMsg ] );
+                        ( _tmp = _p._model.validitemcallback( _item ) ) && _tmp( _item, false);
 
-                }, 150);
+                    }, 150)
+                );
 
                 return false;
             }

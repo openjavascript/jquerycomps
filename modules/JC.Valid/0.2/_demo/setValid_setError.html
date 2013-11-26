@@ -108,7 +108,31 @@
                     _target && _target.each( function(){
                         JC.Valid.setValid( $(this) );
                     });
+                });
 
+                $(document).delegate( 'button.js_statusChain', 'click', function( _evt ){
+                    var _p = $(this)
+                        , _target = JC.f.parentSelector( _p, _p.attr('target') )
+                        , _data = $.parseJSON( _p.html() );
+                        ;
+
+                    Valid.check( _target );
+
+                    $.each( _data, function( _ix, _item ){
+                        switch( _item.type.toLowerCase() ){
+                            case 'setvalid': {
+                                Valid.setValid( _target, 300 );
+                                JC.log( 'setvalid' );
+                                break;
+                            }
+
+                            case 'seterror': {
+                                JC.log( 'seterror' );
+                                Valid.setError( _target, ' ' + _item.msg );
+                                break;
+                            }
+                        }
+                    });
                 });
             });
         </script>
@@ -162,16 +186,17 @@
             <dl class="fm-items">
                 <dt>JC.Valid 示例, setValid</dt>
                 <dd>
-                    内容: <input type="text" reqmsg="内容" />
+                    内容: <input type="text" reqmsg="内容" value="test" />
                     <button type="button" class="js_setError" target="/input" msgkey=" test msg" >set error</button>
                     <button type="button" class="js_setValid" target="/input" >set valid</button>
                     <button type="button" class="js_setFocusMsg" target="/input" >setFocusMsg</button>
+                    <button type="button" class="js_statusChain" target="/input" >[{"type":"setValid", "msg": "valid test"},{"type":"setError", "msg": "error test"}]</button>
                     <em class="error"></em>
                     <em class="validmsg"></em>
                     <em class="focusmsg"></em>
                 </dd>
                 <dd>
-                    内容: <input type="text" reqmsg="内容" disabled />
+                    内容: <input type="text" reqmsg="内容" disabled value="test" />
                     <button type="button" class="js_setError" target="/input" msgkey=" test msg" >set error</button>
                     <button type="button" class="js_setValid" target="/input" >set valid</button>
                     <button type="button" class="js_setFocusMsg" target="/input" >setFocusMsg</button>
