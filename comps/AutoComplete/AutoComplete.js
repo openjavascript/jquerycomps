@@ -9,7 +9,7 @@
          * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>
          * | <a href='../../comps/AutoComplete/_demo' target='_blank'>demo link</a></p>
          *
-         * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
+         * <p><b>require</b>: <a href='jQuery.html'>jQuery</a></p>
          *
          * <h2>可用的 HTML attribute</h2>
          * <dl>
@@ -91,14 +91,6 @@
          * @version dev 0.1 2013-11-01
          * @author  zuojing<zuojing1013@gmail.com>, qiushaowei<suches@btbtd.org> | 75 Team
          * @example
-            <link href='../../../comps/AutoComplete/res/default/style.css' rel='stylesheet' />
-            <script src="../../../lib.js"></script>
-            <script>
-                JC.debug = true;
-                JC.use( 'AutoComplete' );
-		$(document).ready( function(){
-                });
-            </script>
             <div class="ui-sug-mod">
                 <input name="ac" type="text" class="ui-sug-ipt js_compAutoComplete" value="" 
                     autocomplete="off" 
