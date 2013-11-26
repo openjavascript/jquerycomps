@@ -175,7 +175,7 @@
      <dt>validitemcallback = function</dt>
      <dd>
          对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>
-<pre>function validItemCallback( <em>selector, _isValid ){
+<pre>function validItemCallback( &#95;selector, &#95;isValid ){
 }</pre>
      </dd>
      <dt>datatype: 常用数据类型</dt>
@@ -210,8 +210,17 @@
          <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节
      </dd>
      <dd>
+         <b>enname:</b> 英文姓名
+         <br>格式: 大小写字母 + 空格
+         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节
+     </dd>
+     <dd>
+         <b>allname:</b> cnname | enname
+         <br />中文姓名和英文姓名的复合验证
+     </dd>
+     <dd>
          <b>username:</b> 注册用户名
-         <br>格式: a-zA-Z0-9</em>-
+         <br>格式: a-zA-Z0-9_-
          <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30
      </dd>
      <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>
@@ -372,6 +381,10 @@
                     <h3>Methods</h3>
                     <ul class="index-list methods">
                             <li class="index-item method private">
+                                <a href="#method_allname">allname</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
                                 <a href="#method_alternative">alternative</a>
                                     <span class="flag static">static</span>
                             </li>
@@ -429,6 +442,10 @@
                             </li>
                             <li class="index-item method private">
                                 <a href="#method_email">email</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method_enname">enname</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method private">
@@ -657,6 +674,49 @@
         </div>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
+                    <div id="method_allname" class="method item private">
+    <h3 class="name"><code>allname</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1374"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1374</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查 英文名称/中文名称
+<br>allname = cnname + enname
+<br>规则: 长度 2-32个字节, 非 ASCII 算2个字节</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_allname&quot; 
+                   datatype=&quot;allname&quot; reqmsg=&quot;姓名&quot; errmsg=&quot;请填写正确的姓名&quot;&gt;
+           &lt;/div&gt;</code></pre>
+            </div>
+        </div>
+</div>
                     <div id="method_alternative" class="method item private">
     <h3 class="name"><code>alternative</code></h3>
         <div class="args">
@@ -671,7 +731,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1893"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1893</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1946"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1946</code></a>
         </p>
     </div>
     <div class="description">
@@ -734,7 +794,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1297"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1297</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1306"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1306</code></a>
         </p>
     </div>
     <div class="description">
@@ -776,7 +836,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1667"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1667</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1720"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1720</code></a>
         </p>
     </div>
     <div class="description">
@@ -802,7 +862,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1648"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1648</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1701"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1701</code></a>
         </p>
     </div>
     <div class="description">
@@ -825,7 +885,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l453"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:453</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l462"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:462</code></a>
         </p>
     </div>
     <div class="description">
@@ -875,7 +935,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l471"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:471</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l480"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:480</code></a>
         </p>
     </div>
     <div class="description">
@@ -915,7 +975,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l486"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:486</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l495"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:495</code></a>
         </p>
     </div>
     <div class="description">
@@ -959,7 +1019,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l646"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:646</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l655"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:655</code></a>
         </p>
     </div>
     <div class="description">
@@ -1001,7 +1061,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1323"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1323</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1332"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1332</code></a>
         </p>
     </div>
     <div class="description">
@@ -1044,7 +1104,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1750"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1750</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1803"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1803</code></a>
         </p>
     </div>
     <div class="description">
@@ -1084,7 +1144,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1157"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1157</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1166"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1166</code></a>
         </p>
     </div>
     <div class="description">
@@ -1136,7 +1196,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l510"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:510</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l519"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:519</code></a>
         </p>
     </div>
     <div class="description">
@@ -1193,7 +1253,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1192"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1192</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1201"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1201</code></a>
         </p>
     </div>
     <div class="description">
@@ -1240,7 +1300,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1698"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1698</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1751"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1751</code></a>
         </p>
     </div>
     <div class="description">
@@ -1275,7 +1335,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1733"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1733</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1786"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1786</code></a>
         </p>
     </div>
     <div class="description">
@@ -1301,6 +1361,49 @@
             </div>
         </div>
 </div>
+                    <div id="method_enname" class="method item private">
+    <h3 class="name"><code>enname</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_item</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag private">private</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Valid_Valid.js.html#l1353"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1353</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>检查英文
+<br>格式: 大小写字母 + 空格
+<br>规则: 长度 2-32个字节, 非 ASCII 算2个字节</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_item</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>           &lt;div class=&quot;f-l&quot;&gt;
+               &lt;input type=&quot;TEXT&quot; name=&quot;company_enname&quot; 
+                   datatype=&quot;enname&quot; reqmsg=&quot;姓名&quot; errmsg=&quot;请填写正确的姓名&quot;&gt;
+           &lt;/div&gt;</code></pre>
+            </div>
+        </div>
+</div>
                     <div id="method_error" class="method item private">
     <h3 class="name"><code>error</code></h3>
         <div class="args">
@@ -1321,7 +1424,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l2631"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2631</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l2684"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2684</code></a>
         </p>
     </div>
     <div class="description">
@@ -1377,7 +1480,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l2261"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2261</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l2314"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2314</code></a>
         </p>
     </div>
     <div class="description">
@@ -1428,7 +1531,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l2238"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2238</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l2291"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2291</code></a>
         </p>
     </div>
     <div class="description">
@@ -1463,7 +1566,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l478"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:478</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l487"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:487</code></a>
         </p>
     </div>
     <div class="description">
@@ -1501,7 +1604,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1364"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1364</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1417"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1417</code></a>
         </p>
     </div>
     <div class="description">
@@ -1548,7 +1651,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l697"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:697</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l706"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:706</code></a>
         </p>
     </div>
     <div class="description">
@@ -1595,7 +1698,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l738"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:738</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l747"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:747</code></a>
         </p>
     </div>
     <div class="description">
@@ -1635,7 +1738,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l546"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:546</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l555"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:555</code></a>
         </p>
     </div>
     <div class="description">
@@ -1673,7 +1776,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l956"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:956</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l965"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:965</code></a>
         </p>
     </div>
     <div class="description">
@@ -1713,7 +1816,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1280"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1280</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1289"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1289</code></a>
         </p>
     </div>
     <div class="description">
@@ -1756,7 +1859,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1403"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1403</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1456"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1456</code></a>
         </p>
     </div>
     <div class="description">
@@ -1798,7 +1901,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1383"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1383</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1436"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1436</code></a>
         </p>
     </div>
     <div class="description">
@@ -1846,7 +1949,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1540"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1540</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1593"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1593</code></a>
         </p>
     </div>
     <div class="description">
@@ -1892,7 +1995,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1564"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1564</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1617"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1617</code></a>
         </p>
     </div>
     <div class="description">
@@ -1941,7 +2044,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1416"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1416</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1469"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1469</code></a>
         </p>
     </div>
     <div class="description">
@@ -1990,7 +2093,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1009"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1009</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1018"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1018</code></a>
         </p>
     </div>
     <div class="description">
@@ -2037,7 +2140,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1083"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1083</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1092"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1092</code></a>
         </p>
     </div>
     <div class="description">
@@ -2091,7 +2194,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l331"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:331</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l340"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:340</code></a>
         </p>
     </div>
     <div class="description">
@@ -2134,7 +2237,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l348"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:348</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l357"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:357</code></a>
         </p>
     </div>
     <div class="description">
@@ -2166,7 +2269,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l776"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:776</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l785"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:785</code></a>
         </p>
     </div>
     <div class="description">
@@ -2198,7 +2301,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l793"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:793</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l802"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:802</code></a>
         </p>
     </div>
     <div class="description">
@@ -2233,7 +2336,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1456"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1456</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1509"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1509</code></a>
         </p>
     </div>
     <div class="description">
@@ -2285,7 +2388,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1477"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1477</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1530"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1530</code></a>
         </p>
     </div>
     <div class="description">
@@ -2334,7 +2437,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1437"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1437</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1490"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1490</code></a>
         </p>
     </div>
     <div class="description">
@@ -2376,7 +2479,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1522"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1522</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1575"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1575</code></a>
         </p>
     </div>
     <div class="description">
@@ -2417,7 +2520,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1499"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1499</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1552"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1552</code></a>
         </p>
     </div>
     <div class="description">
@@ -2458,7 +2561,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1805"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1805</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1858"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1858</code></a>
         </p>
     </div>
     <div class="description">
@@ -2516,7 +2619,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1587"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1587</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1640"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1640</code></a>
         </p>
     </div>
     <div class="description">
@@ -2555,7 +2658,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l2296"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2296</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l2349"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2349</code></a>
         </p>
     </div>
     <div class="description">
@@ -2596,7 +2699,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l2042"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2042</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l2095"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2095</code></a>
         </p>
     </div>
     <div class="description">
@@ -2622,7 +2725,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1657"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1657</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1710"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1710</code></a>
         </p>
     </div>
     <div class="description">
@@ -2649,7 +2752,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l570"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:570</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l579"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:579</code></a>
         </p>
     </div>
     <div class="description">
@@ -2705,7 +2808,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l594"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:594</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l603"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:603</code></a>
         </p>
     </div>
     <div class="description">
@@ -2755,7 +2858,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l554"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:554</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l563"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:563</code></a>
         </p>
     </div>
     <div class="description">
@@ -2794,7 +2897,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1716"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1716</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1769"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1769</code></a>
         </p>
     </div>
     <div class="description">
@@ -2829,7 +2932,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1784"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1784</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1837"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1837</code></a>
         </p>
     </div>
     <div class="description">
@@ -2863,7 +2966,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1639"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1639</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1692"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1692</code></a>
         </p>
     </div>
     <div class="description">
@@ -2884,7 +2987,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1263"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1263</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1272"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1272</code></a>
         </p>
     </div>
     <div class="description">
@@ -2926,7 +3029,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l340"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:340</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l349"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:349</code></a>
         </p>
     </div>
     <div class="description">
@@ -2964,7 +3067,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l2066"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2066</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l2119"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2119</code></a>
         </p>
     </div>
     <div class="description">
@@ -2996,7 +3099,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1678"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1678</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1731"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1731</code></a>
         </p>
     </div>
     <div class="description">
@@ -3036,7 +3139,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1344"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1344</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1397"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1397</code></a>
         </p>
     </div>
     <div class="description">
@@ -3085,7 +3188,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l2576"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2576</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l2629"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2629</code></a>
         </p>
     </div>
     <div class="description">
@@ -3129,7 +3232,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1613"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1613</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1666"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1666</code></a>
         </p>
     </div>
     <div class="description">
@@ -3175,7 +3278,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l1767"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1767</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l1820"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:1820</code></a>
         </p>
     </div>
     <div class="description">
@@ -3212,7 +3315,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l729"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:729</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l738"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:738</code></a>
         </p>
     </div>
     <div class="description">
@@ -3235,7 +3338,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l670"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:670</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l679"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:679</code></a>
         </p>
     </div>
     <div class="description">
@@ -3258,7 +3361,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l629"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:629</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l638"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:638</code></a>
         </p>
     </div>
     <div class="description">
@@ -3273,7 +3376,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l657"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:657</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l666"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:666</code></a>
         </p>
     </div>
     <div class="description">
@@ -3297,7 +3400,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l621"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:621</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l630"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:630</code></a>
         </p>
     </div>
     <div class="description">
@@ -3312,7 +3415,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l682"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:682</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l691"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:691</code></a>
         </p>
     </div>
     <div class="description">
@@ -3338,7 +3441,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l638"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:638</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l647"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:647</code></a>
         </p>
     </div>
     <div class="description">
@@ -3355,7 +3458,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l2706"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2706</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l2759"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2759</code></a>
         </p>
     </div>
     <div class="description">
@@ -3368,7 +3471,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Valid_Valid.js.html#l2702"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2702</code></a>
+        <a href="../files/.._comps_Valid_Valid.js.html#l2755"><code>..&#x2F;comps&#x2F;Valid&#x2F;Valid.js:2755</code></a>
         </p>
     </div>
     <div class="description">
