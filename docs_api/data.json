@@ -1604,7 +1604,7 @@
             "namespace": "JC",
             "file": "../modules/JC.Valid/0.2/Valid.js",
             "line": 5,
-            "description": "<b>表单验证</b> (单例模式)\n<br />全局访问请使用 JC.Valid 或 Valid\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Valid/0.2/_demo/' target='_blank'>demo link</a></p>\n<h2>Form 的可用 html attribute</h2>\n<dl>\n     <dt>errorabort = bool, default = true</dt>\n     <dd>\n         查检Form Control时, 如果发生错误是否继续检查下一个\n         <br />true: 继续检查, false, 停止检查下一个\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 表单所有控件的 em  CSS display 显示类型\n     </dd>\n</dl>\n<h2>Form Control的可用 html attribute</h2>\n<dl>\n     <dt>reqmsg = 错误提示</dt>\n     <dd>值不能为空, class=error errormsg</dd>\n\n     <dt>errmsg = 错误提示</dt>\n     <dd>格式错误, 但不验证为空的值, class=error errormsg</dd>\n\n     <dt>focusmsg = 控件获得焦点的提示信息</dt>\n     <dd>\n         这个只作提示用, class=focusmsg\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>emel = selector</dt>\n     <dd>显示错误信息的selector</dd>\n\n     <dt>validel = selector</dt>\n     <dd>显示正确信息的selector</dd>\n\n     <dt>focusel = selector</dt>\n     <dd>显示提示信息的selector</dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 em 的 CSS display 显示类型\n     </dd>\n\n     <dt>ignoreprocess = bool, default = false</dt>\n     <dd>验证表单控件时, 是否忽略</dd>\n\n     <dt>minlength = int(最小长度)</dt>\n     <dd>验证内容的最小长度, 但不验证为空的值</dd>\n\n     <dt>maxlength = int(最大长度)</dt>\n     <dd>验证内容的最大长度, 但不验证为空的值</dd>\n\n     <dt>minvalue = [number|ISO date](最小值)</dt>\n     <dd>验证内容的最小值, 但不验证为空的值</dd>\n\n     <dt>maxvalue = [number|ISO date](最大值)</dt>\n     <dd>验证内容的最大值, 但不验证为空的值</dd>\n\n     <dt>validitemcallback = function</dt>\n     <dd>\n         对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>\n<pre>function validItemCallback( _selector, _isValid ){\n}</pre>\n     </dd>\n\n     <dt>datatype: 常用数据类型</dt>\n     <dd><b>n:</b> 检查是否为正确的数字</dd>\n     <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>\n     <dd>\n         <b>nrange:</b> 检查两个control的数值范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>d:</b> 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD</dd>\n     <dd>\n         <b>daterange:</b> 检查两个control的日期范围\n         <dl>\n             <dd>html attr <b>fromDateEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toDateEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 daterange, 按顺序定为 fromDateEl, toDateEl</dd>\n         </dl>\n     </dd>\n     <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>\n     <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>\n     <dd>\n         <b>bankcard:</b> 是否为正确的银行卡\n         <br />格式为: 12 ~ 22 位数字\n     </dd>\n     <dd>\n         <b>cnname:</b> 中文姓名\n         <br>格式: 汉字和大小写字母\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>username:</b> 注册用户名\n         <br>格式: a-zA-Z0-9_-\n         <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30\n     </dd>\n     <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>\n     <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\\d]{9}</dd>\n     <dd><b>mobile:</b> mobilecode 的别名</dd>\n     <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>\n     <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>\n     <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>\n     <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>\n     <dd><b>phonezone:</b> 电话区号, 3~4位数字. phonezone-n,m 可指定位数长度</dd>\n     <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>\n     <dd><b>countrycode:</b> 地区代码, [+]1~6位数字</dd>\n     <dd><b>mobilephone:</b> mobilecode | phone</dd>\n     <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>\n     <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>\n     <dd>\n         <b>vcode:</b> 验证码, 0-9a-zA-Z, 长度 默认为4\n         <br />可通过 vcode-[\\d], 指定验证码长度\n     </dd>\n     <dd>\n         <b>text:</b> 显示声明检查的内容为文本类型\n         <br />默认就是 text, 没有特殊原因其实不用显示声明\n     </dd>\n     <dd>\n         <b>bytetext:</b> 声明按字节检查文本长度\n         <br /> ASCII 算一个字符, 非 ASCII 算两个字符\n     </dd>\n     <dd><b>url:</b> URL 格式, ftp, http, https</dd>\n     <dd><b>domain:</b> 匹配域名, 宽松模式, 允许匹配 http(s), 且结尾允许匹配反斜扛(/)</dd>\n     <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>\n     <dd><b>email:</b> 电子邮件</dd>\n     <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>\n     <dd><b>taxcode:</b> 纳税人识别号, 长度: 15, 18, 20 </dd>\n\n     <dd>\n         <dl>\n             <dt>checkbox: 默认需要至少选中N 个 checkbox</dt>\n             <dd>\n                 默认必须选中一个 checkbox\n                 <br > 如果需要选中N个, 用这种格式 checkbox-n, checkbox-3 = 必须选中三个\n                 <br > datatarget: 声明所有 checkbox 的选择器\n             </dd>\n         </dl>\n     </dd>\n\n     <dd>\n         <dl>\n             <dt>file: 判断文件扩展名</dt>\n             <dd>属性名(文件扩展名列表): fileext</dd>\n             <dd>格式: .ext[, .ext]</dd>\n             <dd>\n<xmp>   <input type=\"file\" \n   reqmsg=\"文件\" \n   errmsg=\"允许上传的文件类型: .gif, .jpg, .jpeg, .png\"\n   datatype=\"file\" \n   fileext=\".gif, .jpg, .jpeg, .png\" \n   />\n   <label>.gif, .jpg, .jpeg, .png</label>\n   <em class=\"error\"></em>\n   <em class=\"validmsg\"></em>\n</xmp>\n                   </dd>\n         </dl>\n     </dd>\n\n     <dt>subdatatype: 特殊数据类型, 以逗号分隔多个属性</dt>\n     <dd>\n         <dl>\n             <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>\n             <dd><b>alternativedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>alternativemsg:</b> N 选一的错误提示</dd>\n\n             <dd>\n                 <b>alternativeReqTarget:</b> 为 alternative node 指定一个不能为空的 node\n                 <br /><b>请使用 subdatatype = reqtarget</b>, 这个附加属性将弃除\n             </dd>\n             <dd><b>alternativeReqmsg:</b> alternativeReqTarget 目标 node 的html属性, 错误时显示的提示信息</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reqtarget: 如果 selector 的值非空, 那么 datatarget 的值也不能为空</dt>\n             <dd><b>datatarget:</b> 显式指定 目标 target</dd>\n             <dd><b>reqTargetDatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reqtargetmsg:</b> target node 用于显示错误提示的 html 属性</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reconfirm: N 个 Control 的值必须保持一致</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>\n             <dd><b>reconfirmdatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>unique: N 个 Control 的值必须保持唯一性, 不能有重复</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=unique]</dd>\n             <dd><b>uniquedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>\n             <dd><b>uniqueIgnoreCase:</b> 是否忽略大小写</dd>\n             <dd><b>uniqueIgnoreEmpty:</b> 是否忽略空的值, 如果组中有空值也会被忽略</dd>\n             <dd><b>processDisabled:</b> 是否处理 disabled 但 visible 的node</dd>\n             <dd>unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )</dt>\n             <dd><b>datavalidMsg:</b> 值不合法时的提示信息</dd>\n             <dd>\n                 <b>datavalidUrl:</b> 验证内容正确与否的 url api\n                 <p>{\"errorno\":0,\"errmsg\":\"\"}</p>\n                 errorno: 0( 正确 ), 非0( 错误 )\n                 <p>datavalidurl=\"./data/handler.php?key={0}\"</p>\n                 {0} 代表 value\n             </dd>\n             <dd>\n                 <b>datavalidCallback:</b> 请求 datavalidUrl 后调用的回调\n<pre>function datavalidCallback( _json ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n                 <b>datavalidKeyupCallback:</b> 每次 keyup 的回调\n<pre>function datavalidKeyupCallback( _evt ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n             <dd>\n                 <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调\n<pre>function datavalidUrlFilter( _url ){\n   var _selector = $(this);\n   _url = JC.f.addUrlParams( _url, { 'xtest': 'customData' } );\n   return _url;\n});</pre>\n             </dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>hidden: 验证隐藏域的值</dt>\n             <dd>\n                 有些特殊情况需要验证隐藏域的值, 请使用 subdatatype=\"hidden\"\n             </dd>\n         </dl>\n     </dd>\n</dl>",
+            "description": "<b>表单验证</b> (单例模式)\n<br />全局访问请使用 JC.Valid 或 Valid\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Valid/0.2/_demo/' target='_blank'>demo link</a></p>\n<h2>Form 的可用 html attribute</h2>\n<dl>\n     <dt>errorabort = bool, default = true</dt>\n     <dd>\n         查检Form Control时, 如果发生错误是否继续检查下一个\n         <br />true: 继续检查, false, 停止检查下一个\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 表单所有控件的 em  CSS display 显示类型\n     </dd>\n</dl>\n<h2>Form Control的可用 html attribute</h2>\n<dl>\n     <dt>reqmsg = 错误提示</dt>\n     <dd>值不能为空, class=error errormsg</dd>\n\n     <dt>errmsg = 错误提示</dt>\n     <dd>格式错误, 但不验证为空的值, class=error errormsg</dd>\n\n     <dt>focusmsg = 控件获得焦点的提示信息</dt>\n     <dd>\n         这个只作提示用, class=focusmsg\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>emel = selector</dt>\n     <dd>显示错误信息的selector</dd>\n\n     <dt>validel = selector</dt>\n     <dd>显示正确信息的selector</dd>\n\n     <dt>focusel = selector</dt>\n     <dd>显示提示信息的selector</dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 em 的 CSS display 显示类型\n     </dd>\n\n     <dt>ignoreprocess = bool, default = false</dt>\n     <dd>验证表单控件时, 是否忽略</dd>\n\n     <dt>minlength = int(最小长度)</dt>\n     <dd>验证内容的最小长度, 但不验证为空的值</dd>\n\n     <dt>maxlength = int(最大长度)</dt>\n     <dd>验证内容的最大长度, 但不验证为空的值</dd>\n\n     <dt>minvalue = [number|ISO date](最小值)</dt>\n     <dd>验证内容的最小值, 但不验证为空的值</dd>\n\n     <dt>maxvalue = [number|ISO date](最大值)</dt>\n     <dd>验证内容的最大值, 但不验证为空的值</dd>\n\n     <dt>validitemcallback = function</dt>\n     <dd>\n         对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>\n<pre>function validItemCallback( &#95;selector, &#95;isValid ){\n}</pre>\n     </dd>\n\n     <dt>datatype: 常用数据类型</dt>\n     <dd><b>n:</b> 检查是否为正确的数字</dd>\n     <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>\n     <dd>\n         <b>nrange:</b> 检查两个control的数值范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>d:</b> 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD</dd>\n     <dd>\n         <b>daterange:</b> 检查两个control的日期范围\n         <dl>\n             <dd>html attr <b>fromDateEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toDateEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 daterange, 按顺序定为 fromDateEl, toDateEl</dd>\n         </dl>\n     </dd>\n     <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>\n     <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>\n     <dd>\n         <b>bankcard:</b> 是否为正确的银行卡\n         <br />格式为: 12 ~ 22 位数字\n     </dd>\n     <dd>\n         <b>cnname:</b> 中文姓名\n         <br>格式: 汉字和大小写字母\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>enname:</b> 英文姓名\n         <br>格式: 大小写字母 + 空格\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>allname:</b> cnname | enname\n         <br />中文姓名和英文姓名的复合验证\n     </dd>\n     <dd>\n         <b>username:</b> 注册用户名\n         <br>格式: a-zA-Z0-9_-\n         <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30\n     </dd>\n     <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>\n     <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\\d]{9}</dd>\n     <dd><b>mobile:</b> mobilecode 的别名</dd>\n     <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>\n     <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>\n     <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>\n     <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>\n     <dd><b>phonezone:</b> 电话区号, 3~4位数字. phonezone-n,m 可指定位数长度</dd>\n     <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>\n     <dd><b>countrycode:</b> 地区代码, [+]1~6位数字</dd>\n     <dd><b>mobilephone:</b> mobilecode | phone</dd>\n     <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>\n     <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>\n     <dd>\n         <b>vcode:</b> 验证码, 0-9a-zA-Z, 长度 默认为4\n         <br />可通过 vcode-[\\d], 指定验证码长度\n     </dd>\n     <dd>\n         <b>text:</b> 显示声明检查的内容为文本类型\n         <br />默认就是 text, 没有特殊原因其实不用显示声明\n     </dd>\n     <dd>\n         <b>bytetext:</b> 声明按字节检查文本长度\n         <br /> ASCII 算一个字符, 非 ASCII 算两个字符\n     </dd>\n     <dd><b>url:</b> URL 格式, ftp, http, https</dd>\n     <dd><b>domain:</b> 匹配域名, 宽松模式, 允许匹配 http(s), 且结尾允许匹配反斜扛(/)</dd>\n     <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>\n     <dd><b>email:</b> 电子邮件</dd>\n     <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>\n     <dd><b>taxcode:</b> 纳税人识别号, 长度: 15, 18, 20 </dd>\n\n     <dd>\n         <dl>\n             <dt>checkbox: 默认需要至少选中N 个 checkbox</dt>\n             <dd>\n                 默认必须选中一个 checkbox\n                 <br > 如果需要选中N个, 用这种格式 checkbox-n, checkbox-3 = 必须选中三个\n                 <br > datatarget: 声明所有 checkbox 的选择器\n             </dd>\n         </dl>\n     </dd>\n\n     <dd>\n         <dl>\n             <dt>file: 判断文件扩展名</dt>\n             <dd>属性名(文件扩展名列表): fileext</dd>\n             <dd>格式: .ext[, .ext]</dd>\n             <dd>\n<xmp>   <input type=\"file\" \n   reqmsg=\"文件\" \n   errmsg=\"允许上传的文件类型: .gif, .jpg, .jpeg, .png\"\n   datatype=\"file\" \n   fileext=\".gif, .jpg, .jpeg, .png\" \n   />\n   <label>.gif, .jpg, .jpeg, .png</label>\n   <em class=\"error\"></em>\n   <em class=\"validmsg\"></em>\n</xmp>\n                   </dd>\n         </dl>\n     </dd>\n\n     <dt>subdatatype: 特殊数据类型, 以逗号分隔多个属性</dt>\n     <dd>\n         <dl>\n             <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>\n             <dd><b>alternativedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>alternativemsg:</b> N 选一的错误提示</dd>\n\n             <dd>\n                 <b>alternativeReqTarget:</b> 为 alternative node 指定一个不能为空的 node\n                 <br /><b>请使用 subdatatype = reqtarget</b>, 这个附加属性将弃除\n             </dd>\n             <dd><b>alternativeReqmsg:</b> alternativeReqTarget 目标 node 的html属性, 错误时显示的提示信息</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reqtarget: 如果 selector 的值非空, 那么 datatarget 的值也不能为空</dt>\n             <dd><b>datatarget:</b> 显式指定 目标 target</dd>\n             <dd><b>reqTargetDatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reqtargetmsg:</b> target node 用于显示错误提示的 html 属性</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reconfirm: N 个 Control 的值必须保持一致</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>\n             <dd><b>reconfirmdatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>unique: N 个 Control 的值必须保持唯一性, 不能有重复</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=unique]</dd>\n             <dd><b>uniquedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>\n             <dd><b>uniqueIgnoreCase:</b> 是否忽略大小写</dd>\n             <dd><b>uniqueIgnoreEmpty:</b> 是否忽略空的值, 如果组中有空值也会被忽略</dd>\n             <dd><b>processDisabled:</b> 是否处理 disabled 但 visible 的node</dd>\n             <dd>unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )</dt>\n             <dd><b>datavalidMsg:</b> 值不合法时的提示信息</dd>\n             <dd>\n                 <b>datavalidUrl:</b> 验证内容正确与否的 url api\n                 <p>{\"errorno\":0,\"errmsg\":\"\"}</p>\n                 errorno: 0( 正确 ), 非0( 错误 )\n                 <p>datavalidurl=\"./data/handler.php?key={0}\"</p>\n                 {0} 代表 value\n             </dd>\n             <dd>\n                 <b>datavalidCallback:</b> 请求 datavalidUrl 后调用的回调\n<pre>function datavalidCallback( _json ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n                 <b>datavalidKeyupCallback:</b> 每次 keyup 的回调\n<pre>function datavalidKeyupCallback( _evt ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n             <dd>\n                 <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调\n<pre>function datavalidUrlFilter( _url ){\n   var _selector = $(this);\n   _url = JC.f.addUrlParams( _url, { 'xtest': 'customData' } );\n   return _url;\n});</pre>\n             </dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>hidden: 验证隐藏域的值</dt>\n             <dd>\n                 有些特殊情况需要验证隐藏域的值, 请使用 subdatatype=\"hidden\"\n             </dd>\n         </dl>\n     </dd>\n</dl>",
             "static": 1,
             "version": "0.1,  2013-05-22",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
@@ -10625,14 +10625,14 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 282,
+            "line": 291,
             "description": "兼容函数式使用",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 331,
+            "line": 340,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -10659,7 +10659,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 340,
+            "line": 349,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -10681,7 +10681,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 348,
+            "line": 357,
             "description": "分析_item是否附合规则要求",
             "itemtype": "method",
             "name": "parse",
@@ -10699,7 +10699,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 453,
+            "line": 462,
             "description": "验证一个表单项, 如 文本框, 下拉框, 复选框, 单选框, 文本域, 隐藏域",
             "itemtype": "method",
             "name": "check",
@@ -10723,7 +10723,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 471,
+            "line": 480,
             "description": "这个方法是 <a href='JC.Valid.html#method_check'>Valid.check</a> 的别名",
             "itemtype": "method",
             "name": "checkAll",
@@ -10743,7 +10743,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 478,
+            "line": 487,
             "description": "获取 Valid 的实例 ( <b>Valid 是单例模式</b> )",
             "itemtype": "method",
             "name": "getInstance",
@@ -10764,7 +10764,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 486,
+            "line": 495,
             "description": "检查是否需要延时 check\n<br />以 html 属性 validCheckTimeout 定义, int 类型, type = ms",
             "itemtype": "method",
             "name": "checkTimeout",
@@ -10790,7 +10790,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 510,
+            "line": 519,
             "description": "判断/设置 selector 的数据是否合法\n<br /> 通过 datavalid 属性判断",
             "itemtype": "method",
             "name": "dataValid",
@@ -10825,7 +10825,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 546,
+            "line": 555,
             "description": "判断 selector 是否 Valid 的处理对象",
             "itemtype": "method",
             "name": "isValid",
@@ -10845,7 +10845,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 554,
+            "line": 563,
             "description": "把一个表单项的状态设为正确状态",
             "itemtype": "method",
             "name": "setValid",
@@ -10867,7 +10867,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 570,
+            "line": 579,
             "description": "把一个表单项的状态设为错误状态",
             "itemtype": "method",
             "name": "setError",
@@ -10894,7 +10894,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 594,
+            "line": 603,
             "description": "显示 focusmsg 属性的提示信息( 如果有的话 )",
             "itemtype": "method",
             "name": "setFocusMsg",
@@ -10921,7 +10921,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 621,
+            "line": 630,
             "description": "focus 时,是否总是显示 focusmsg 提示信息",
             "itemtype": "property",
             "name": "focusmsgEverytime",
@@ -10933,7 +10933,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 629,
+            "line": 638,
             "description": "设置 em 的 css display 属性",
             "itemtype": "property",
             "name": "emDisplayType",
@@ -10945,7 +10945,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 638,
+            "line": 647,
             "description": "验证正确时, 是否显示正确的样式",
             "itemtype": "property",
             "name": "showValidStatus",
@@ -10957,7 +10957,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 646,
+            "line": 655,
             "description": "清除Valid生成的错误样式",
             "itemtype": "method",
             "name": "clearError",
@@ -10977,7 +10977,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 657,
+            "line": 666,
             "description": "验证发生错误时, 是否终止继续验证\n<br /> 为真终止继续验证, 为假将验证表单的所有项, 默认为 false",
             "itemtype": "property",
             "name": "errorAbort",
@@ -10992,7 +10992,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 670,
+            "line": 679,
             "description": "是否自动清除两边的空格",
             "itemtype": "property",
             "name": "autoTrim",
@@ -11007,7 +11007,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 682,
+            "line": 691,
             "description": "对一个 control 作检查后的回调, 无论正确与否都会触发",
             "itemtype": "property",
             "name": "itemCallback",
@@ -11022,7 +11022,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 697,
+            "line": 706,
             "description": "判断 表单控件是否为忽略检查 或者 设置 表单控件是否为忽略检查",
             "itemtype": "method",
             "name": "ignore",
@@ -11047,7 +11047,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 729,
+            "line": 738,
             "description": "定义 form control",
             "itemtype": "property",
             "name": "_formControls",
@@ -11069,7 +11069,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 738,
+            "line": 747,
             "description": "判断 _selector 是否为 form control",
             "itemtype": "method",
             "name": "isFormControl",
@@ -11089,7 +11089,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 776,
+            "line": 785,
             "description": "获取 _item 的检查类型",
             "itemtype": "method",
             "name": "parseDatatype",
@@ -11108,7 +11108,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 793,
+            "line": 802,
             "description": "获取 _item 的检查子类型, 所有可用的检查子类型位于 _logic.subdatatype 对象",
             "itemtype": "method",
             "name": "parseSubdatatype",
@@ -11127,7 +11127,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 956,
+            "line": 965,
             "description": "检查内容的长度",
             "itemtype": "method",
             "name": "lengthValid",
@@ -11150,14 +11150,14 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 983,
+            "line": 992,
             "description": "根据特殊的 datatype 实现不同的计算方法",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1009,
+            "line": 1018,
             "description": "检查是否为正确的数字<br />\n<br>默认范围 0 - Math.pow(10, 10)",
             "itemtype": "method",
             "name": "n",
@@ -11180,7 +11180,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1083,
+            "line": 1092,
             "description": "检查两个输入框的数值\n<br /> 数字格式为 0-pow(10,10)\n<br /> 带小数点使用 nrange-int.float, 例: nrange-1.2  nrange-2.2\n<br /> <b>注意:</b> 如果不显示指定 fromNEl, toNEl, \n             将会从父级查找 datatype=nrange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略",
             "itemtype": "method",
             "name": "nrange",
@@ -11203,7 +11203,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1157,
+            "line": 1166,
             "description": "检查是否为合法的日期,\n<br />日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD",
             "itemtype": "method",
             "name": "d",
@@ -11226,7 +11226,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1192,
+            "line": 1201,
             "description": "检查两个输入框的日期\n<br />日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD\n<br /> <b>注意:</b> 如果不显示指定 fromDateEl, toDateEl, \n             将会从父级查找 datatype=daterange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略",
             "itemtype": "method",
             "name": "daterange",
@@ -11249,7 +11249,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1263,
+            "line": 1272,
             "description": "检查时间格式, 格式为 hh:mm:ss",
             "itemtype": "method",
             "name": "time",
@@ -11271,7 +11271,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1280,
+            "line": 1289,
             "description": "检查时间格式, 格式为 hh:mm",
             "itemtype": "method",
             "name": "minute",
@@ -11293,7 +11293,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1297,
+            "line": 1306,
             "description": "检查银行卡号码\n<br />格式为: d{15}, d{16}, d{17}, d{19}",
             "itemtype": "method",
             "name": "bankcard",
@@ -11315,7 +11315,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1323,
+            "line": 1332,
             "description": "检查中文姓名\n<br>格式: 汉字和大小写字母\n<br>规则: 长度 2-32个字节, 非 ASCII 算2个字节",
             "itemtype": "method",
             "name": "cnname",
@@ -11337,7 +11337,51 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1344,
+            "line": 1353,
+            "description": "检查英文\n<br>格式: 大小写字母 + 空格\n<br>规则: 长度 2-32个字节, 非 ASCII 算2个字节",
+            "itemtype": "method",
+            "name": "enname",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_item",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "example": [
+                "\n               <div class=\"f-l\">\n                   <input type=\"TEXT\" name=\"company_enname\" \n                       datatype=\"enname\" reqmsg=\"姓名\" errmsg=\"请填写正确的姓名\">\n               </div>"
+            ],
+            "class": "JC.Valid",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Valid/0.2/Valid.js",
+            "line": 1374,
+            "description": "检查 英文名称/中文名称\n<br>allname = cnname + enname\n<br>规则: 长度 2-32个字节, 非 ASCII 算2个字节",
+            "itemtype": "method",
+            "name": "allname",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_item",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "example": [
+                "\n               <div class=\"f-l\">\n                   <input type=\"TEXT\" name=\"company_allname\" \n                       datatype=\"allname\" reqmsg=\"姓名\" errmsg=\"请填写正确的姓名\">\n               </div>"
+            ],
+            "class": "JC.Valid",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Valid/0.2/Valid.js",
+            "line": 1397,
             "description": "检查注册用户名\n<br>格式: a-zA-Z0-9_-\n<br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30",
             "itemtype": "method",
             "name": "username",
@@ -11359,7 +11403,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1364,
+            "line": 1417,
             "description": "检查身份证号码<br />\n目前只使用最简单的位数判断~ 有待完善",
             "itemtype": "method",
             "name": "idnumber",
@@ -11381,7 +11425,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1383,
+            "line": 1436,
             "description": "检查手机号码<br />",
             "itemtype": "method",
             "name": "mobilecode",
@@ -11408,7 +11452,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1403,
+            "line": 1456,
             "description": "检查手机号码\n<br />这个方法是 mobilecode 的别名",
             "itemtype": "method",
             "name": "mobile",
@@ -11432,7 +11476,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1416,
+            "line": 1469,
             "description": "检查手机号码加强方法\n<br>格式: [+国家代码] [零]11位数字",
             "itemtype": "method",
             "name": "mobilezonecode",
@@ -11459,7 +11503,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1437,
+            "line": 1490,
             "description": "检查电话号码\n<br>格式: 7/8位数字",
             "itemtype": "method",
             "name": "phonecode",
@@ -11481,7 +11525,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1456,
+            "line": 1509,
             "description": "检查电话号码\n<br>格式: [区号]7/8位电话号码",
             "itemtype": "method",
             "name": "phone",
@@ -11508,7 +11552,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1477,
+            "line": 1530,
             "description": "检查电话号码\n<br>格式: [+国家代码][ ][电话区号][ ]7/8位电话号码[#分机号]",
             "itemtype": "method",
             "name": "phoneall",
@@ -11535,7 +11579,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1499,
+            "line": 1552,
             "description": "检查电话区号",
             "itemtype": "method",
             "name": "phonezone",
@@ -11557,7 +11601,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1522,
+            "line": 1575,
             "description": "检查电话分机号码",
             "itemtype": "method",
             "name": "phoneext",
@@ -11579,7 +11623,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1540,
+            "line": 1593,
             "description": "检查手机号码/电话号码\n<br />这个方法是原有方法的混合验证 mobilecode + phone",
             "itemtype": "method",
             "name": "mobilephone",
@@ -11601,7 +11645,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1564,
+            "line": 1617,
             "description": "检查手机号码/电话号码, 泛匹配\n<br />这个方法是原有方法的混合验证 mobilezonecode + phoneall",
             "itemtype": "method",
             "name": "mobilephoneall",
@@ -11623,7 +11667,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1587,
+            "line": 1640,
             "description": "自定义正则校验",
             "itemtype": "method",
             "name": "reg",
@@ -11646,7 +11690,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1613,
+            "line": 1666,
             "description": "检查验证码<br />\n格式: 为 0-9a-zA-Z, 长度 默认为4",
             "itemtype": "method",
             "name": "vcode",
@@ -11669,7 +11713,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1639,
+            "line": 1692,
             "description": "检查文本长度",
             "itemtype": "method",
             "name": "text",
@@ -11685,7 +11729,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1648,
+            "line": 1701,
             "description": "检查文本的字节长度",
             "itemtype": "method",
             "name": "bytetext",
@@ -11701,7 +11745,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1657,
+            "line": 1710,
             "description": "检查富文本的字节\n<br />TODO: 完成富文本长度检查",
             "itemtype": "method",
             "name": "richtext",
@@ -11717,7 +11761,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1667,
+            "line": 1720,
             "description": "计算字符串的字节长度, 非 ASCII 0-255的字符视为两个字节",
             "itemtype": "method",
             "name": "bytelen",
@@ -11736,7 +11780,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1678,
+            "line": 1731,
             "description": "检查URL",
             "itemtype": "method",
             "name": "url",
@@ -11758,7 +11802,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1698,
+            "line": 1751,
             "description": "检查域名",
             "itemtype": "method",
             "name": "domain",
@@ -11777,7 +11821,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1716,
+            "line": 1769,
             "description": "检查域名",
             "itemtype": "method",
             "name": "stricdomain",
@@ -11796,7 +11840,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1733,
+            "line": 1786,
             "description": "检查电子邮件",
             "itemtype": "method",
             "name": "email",
@@ -11818,7 +11862,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1750,
+            "line": 1803,
             "description": "检查地区代码",
             "itemtype": "method",
             "name": "countrycode",
@@ -11840,7 +11884,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1767,
+            "line": 1820,
             "description": "检查邮政编码",
             "itemtype": "method",
             "name": "zipcode",
@@ -11862,7 +11906,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1784,
+            "line": 1837,
             "description": "纳税人识别号, 15, 18, 20位字符",
             "itemtype": "method",
             "name": "taxcode",
@@ -11884,7 +11928,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1805,
+            "line": 1858,
             "description": "此类型检查 2|N 个对象填写的值必须一致\n常用于注意时密码验证/重置密码",
             "itemtype": "method",
             "name": "reconfirm",
@@ -11906,7 +11950,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 1893,
+            "line": 1946,
             "description": "此类型检查 2|N个对象必须至少有一个是有输入内容的, \n<br> 常用于 手机/电话 二填一",
             "itemtype": "method",
             "name": "alternative",
@@ -11928,7 +11972,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2042,
+            "line": 2095,
             "description": "如果 _item 的值非空, 那么 reqtarget 的值也不能为空",
             "itemtype": "method",
             "name": "reqtarget",
@@ -11947,7 +11991,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2066,
+            "line": 2119,
             "description": "N 个值必须保持唯一性, 不能有重复",
             "itemtype": "method",
             "name": "unique",
@@ -11966,7 +12010,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2238,
+            "line": 2291,
             "description": "获取 _selector 对象\n<br />这个方法的存在是为了向后兼容qwrap, qwrap DOM参数都为ID",
             "itemtype": "method",
             "name": "getElement",
@@ -11985,7 +12029,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2261,
+            "line": 2314,
             "description": "获取对应的错误信息, 默认的错误信息有 reqmsg, errmsg, <br />\n注意: 错误信息第一个字符如果为空格的话, 将完全使用用户定义的错误信息, 将不会动态添加 请上传/选择/填写",
             "itemtype": "method",
             "name": "errorMsg",
@@ -12014,7 +12058,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2296,
+            "line": 2349,
             "description": "检查内容是否为空,\n<br>如果声明了该属性, 那么 value 须不为空",
             "itemtype": "method",
             "name": "reqmsg",
@@ -12036,21 +12080,21 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2383,
+            "line": 2436,
             "description": "这里需要优化检查, 目前会重复检查",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2473,
+            "line": 2526,
             "description": "验证文件扩展名",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2576,
+            "line": 2629,
             "description": "显示正确的视觉效果",
             "itemtype": "method",
             "name": "valid",
@@ -12079,7 +12123,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2631,
+            "line": 2684,
             "description": "显示错误的视觉效果",
             "itemtype": "method",
             "name": "error",
@@ -12108,7 +12152,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2702,
+            "line": 2755,
             "description": "解析错误时触发的时件",
             "itemtype": "event",
             "name": "ValidError",
@@ -12117,7 +12161,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2706,
+            "line": 2759,
             "description": "解析正确时触发的时件",
             "itemtype": "event",
             "name": "ValidCorrect",
@@ -12126,7 +12170,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2710,
+            "line": 2763,
             "description": "响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果",
             "access": "private",
             "tagname": "",
@@ -12135,14 +12179,14 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2718,
+            "line": 2771,
             "description": "响应没有 type 的 文本框",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2727,
+            "line": 2780,
             "description": "响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果",
             "access": "private",
             "tagname": "",
@@ -12151,7 +12195,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2735,
+            "line": 2788,
             "description": "响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
             "access": "private",
             "tagname": "",
@@ -12160,7 +12204,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2745,
+            "line": 2798,
             "description": "响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
             "access": "private",
             "tagname": "",
@@ -12169,7 +12213,7 @@
         },
         {
             "file": "../modules/JC.Valid/0.2/Valid.js",
-            "line": 2770,
+            "line": 2823,
             "description": "初始化 subdatatype = datavalid 相关事件",
             "class": "JC.Valid",
             "namespace": "JC"
@@ -15048,99 +15092,99 @@
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:956"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:965"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:956"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:965"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:956"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:965"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1009"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1018"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1009"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1018"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1009"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1018"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1083"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1092"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1083"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1092"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1083"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1092"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1083"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1092"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1083"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1092"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1157"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1166"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1157"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1166"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1157"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1166"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1192"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1201"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1192"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1201"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1192"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1201"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1192"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1201"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1192"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1201"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1587"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1640"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1613"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1666"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1639"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1692"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1648"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1701"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:1657"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:1710"
         },
         {
             "message": "unknown tag: version",
@@ -15552,43 +15596,43 @@
         },
         {
             "message": "Missing item type\n兼容函数式使用",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:282"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:291"
         },
         {
             "message": "Missing item type\n根据特殊的 datatype 实现不同的计算方法",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:983"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:992"
         },
         {
             "message": "Missing item type\n这里需要优化检查, 目前会重复检查",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:2383"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:2436"
         },
         {
             "message": "Missing item type\n验证文件扩展名",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:2473"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:2526"
         },
         {
             "message": "Missing item type\n响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:2710"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:2763"
         },
         {
             "message": "Missing item type\n响应没有 type 的 文本框",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:2718"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:2771"
         },
         {
             "message": "Missing item type\n响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:2727"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:2780"
         },
         {
             "message": "Missing item type\n响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:2735"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:2788"
         },
         {
             "message": "Missing item type\n响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:2745"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:2798"
         },
         {
             "message": "Missing item type\n初始化 subdatatype = datavalid 相关事件",
-            "line": " ../modules/JC.Valid/0.2/Valid.js:2770"
+            "line": " ../modules/JC.Valid/0.2/Valid.js:2823"
         },
         {
             "message": "Missing item type\n声明主要命名空间, 方便迁移",
