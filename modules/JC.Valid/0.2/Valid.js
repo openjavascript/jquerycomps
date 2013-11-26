@@ -81,7 +81,7 @@
      *      <dt>validitemcallback = function</dt>
      *      <dd>
      *          对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>
-<pre>function validItemCallback( _selector, _isValid ){
+<pre>function validItemCallback( &#95;selector, &#95;isValid ){
 }</pre>
      *      </dd>
      *
@@ -115,6 +115,15 @@
      *          <b>cnname:</b> 中文姓名
      *          <br>格式: 汉字和大小写字母
      *          <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节
+     *      </dd>
+     *      <dd>
+     *          <b>enname:</b> 英文姓名
+     *          <br>格式: 大小写字母 + 空格
+     *          <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节
+     *      </dd>
+     *      <dd>
+     *          <b>allname:</b> cnname | enname
+     *          <br />中文姓名和英文姓名的复合验证
      *      </dd>
      *      <dd>
      *          <b>username:</b> 注册用户名
@@ -1335,9 +1344,53 @@
                 </div>
          */
         , cnname:
+            function( _item, _noStatus ){
+                var _p = this
+                    , _r = _p.bytelen( _item.val() ) <= 32 && /^[\u4e00-\u9fa5a-zA-Z.\u3002\u2022]{2,32}$/.test( _item.val() );
+                !_noStatus && !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查英文
+         * <br>格式: 大小写字母 + 空格
+         * <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节
+         * @method  enname
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                <div class="f-l">
+                    <input type="TEXT" name="company_enname" 
+                        datatype="enname" reqmsg="姓名" errmsg="请填写正确的姓名">
+                </div>
+         */
+        , enname:
+            function( _item, _noStatus ){
+                var _p = this
+                    , _r = _p.bytelen( _item.val() ) <= 32 && /^[a-zA-Z ]{2,32}$/.test( _item.val() );
+                !_noStatus && !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查 英文名称/中文名称
+         * <br>allname = cnname + enname
+         * <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节
+         * @method  allname
+         * @private
+         * @static
+         * @param   {selector}  _item
+         * @example
+                <div class="f-l">
+                    <input type="TEXT" name="company_allname" 
+                        datatype="allname" reqmsg="姓名" errmsg="请填写正确的姓名">
+                </div>
+         */
+        , allname:
             function( _item ){
                 var _p = this
-                    , _r = _p.bytelen( _item.val() ) < 32 && /^[\u4e00-\u9fa5a-zA-Z.\u3002\u2022]{2,32}$/.test( _item.val() );
+                    , _r = _p.bytelen( _item.val() ) <= 32 
+                        && ( _p.cnname( _item, true ) || _p.enname( _item, true ) )
+                    ;
                 !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
             }
