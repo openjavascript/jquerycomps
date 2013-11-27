@@ -24,12 +24,6 @@
         //requirejs( [ 'JC.AutoSelect' ]
         , function(){
 
-            $(document).delegate( 'button.js_updateAutoCompelte', 'click', function( _evt ){
-                setCacData.call( this, _evt ).show();
-            });
-
-            //setCacData.call( $( 'button.js_updateAutoCompelte' ).first() );
-
             JC.AutoSelect.dataFilter = 
                 function( _data, _select ){
                     var _r = _data;
@@ -50,16 +44,6 @@
                 };
 
         });
-
-        function setCacData(){
-            var _p = $(this)
-                , _data = JC.f.parentSelector( _p, '(td textarea' ).val().trim()
-                , _control = JC.f.parentSelector( _p, '(form input.js_compAutoComplete' )
-                ;
-
-            _data = $.parseJSON( _data );
-            return JC.AutoComplete.update( _control, _data );
-        }
 
         function userAllChangeCallback( _items ){
            var _ins = this;
@@ -165,8 +149,6 @@
                 cacPreventEnter="true" 
 
                 bascAjaxUrl="../../../JC.AutoSelect/0.2/_demo/data/infinity_cat.php?id={0}&hasData=1&items=10"
-                bascDefaultLabel=""
-                bascDefaultId=""
 
                 bascDefaultSelect="/select:first"
                 />
@@ -243,8 +225,6 @@
                 cacPreventEnter="true" 
 
                 bascAjaxUrl="../../../JC.AutoSelect/0.2/_demo/data/infinity_cat.php?id=<0>&hasData=1&items=10"
-                bascDefaultLabel=""
-                bascDefaultId=""
 
                 bascDefaultSelect="/select:first"
                 />
