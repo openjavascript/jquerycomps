@@ -8,7 +8,11 @@
      *      | <a href='../../modules/JC.AjaxUpload/0.1/_demo' target='_blank'>demo link</a>
      * </p>
      * <p>
-     *      <b>require</b>: <a href='window.jQuery.html'>jQuery</a>
+     *      <b>require</b>: 
+     *          <a href='window.jQuery.html'>jQuery</a>
+     *          , <a href='JC.common.html'>JC.common</a>
+     *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *          , <a href='JC.Panel.html'>JC.Panel</a>
      * </p>
      * <h2>可用的 html attribute</h2>
      * <dl>

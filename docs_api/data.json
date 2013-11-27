@@ -416,7 +416,7 @@
             "namespace": "window.Bizs",
             "file": "../modules/Bizs.AutoSelectComplete/0.1/AutoSelectComplete.js",
             "line": 3,
-            "description": "<h2>结合 JC.AutoSelect 与 JC.AutoComplete 综合使用的一个业务逻辑</h2>\n<br />应用场景: CRM 多级广告位最后一级因为内容较多, 用户使用传统的下拉框选择比较不便\n<br />这个业务组件结合 JC.AutoSelect 和 JC.AutoComplete 提供一种简便的可输入解决方案\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.AutoSelectComplete.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.AutoSelectComplete/0.1/_demo' target='_blank'>demo link</a></p>\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>bascAjaxUrl = url</dt>\n     <dd>\n         获取 数据的 AJAX 接口\n         <dl>\n             <dt>数据格式</dt>\n             <dd>\n                 [ { \"id\": \"id value\", \"label\": \"label value\" }, ... ]\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>bascDefaultSelect = selector</dt>\n     <dd>声明 JC.AutoSelect 的围住 select</dd>\n</dl>",
+            "description": "<h2>结合 JC.AutoSelect 与 JC.AutoComplete 综合使用的一个业务逻辑</h2>\n<br />应用场景: CRM 多级广告位最后一级因为内容较多, 用户使用传统的下拉框选择比较不便\n<br />这个业务组件结合 JC.AutoSelect 和 JC.AutoComplete 提供一种简便的可输入解决方案\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.AutoSelectComplete.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.AutoSelectComplete/0.1/_demo' target='_blank'>demo link</a></p>\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>bascAjaxUrl = url</dt>\n     <dd>\n         获取 JC.AutoComplete 数据的 AJAX 接口\n         <dl>\n             <dt>数据格式</dt>\n             <dd>\n                 [ { \"id\": \"id value\", \"label\": \"label value\" }, ... ]\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>bascDefaultSelect = selector</dt>\n     <dd>声明 JC.AutoSelect 的围住 select</dd>\n</dl>",
             "is_constructor": 1,
             "params": [
                 {
@@ -559,7 +559,7 @@
             "namespace": "JC",
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
             "line": 3,
-            "description": "Ajax 文件上传\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.AjaxUpload/0.1/_demo' target='_blank'>demo link</a>\n</p>\n<p>\n     <b>require</b>: <a href='window.jQuery.html'>jQuery</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/0.1/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>\n     <dd>\n         上传完成后是否隐藏上传按钮\n     </dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<pre>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '&lt;a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}&lt;/a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;&lt;a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\">&lt;/a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</pre>\n     </dd>\n</dl>",
+            "description": "Ajax 文件上传\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.AjaxUpload/0.1/_demo' target='_blank'>demo link</a>\n</p>\n<p>\n     <b>require</b>: \n         <a href='window.jQuery.html'>jQuery</a>\n         , <a href='JC.common.html'>JC.common</a>\n         , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n         , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/0.1/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>\n     <dd>\n         上传完成后是否隐藏上传按钮\n     </dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<pre>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '&lt;a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}&lt;/a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;&lt;a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\">&lt;/a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</pre>\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -2375,7 +2375,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 148,
+            "line": 152,
             "description": "获取或设置 AjaxUpload 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -2396,7 +2396,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 164,
+            "line": 168,
             "description": "初始化可识别的组件",
             "itemtype": "method",
             "name": "init",
@@ -2417,7 +2417,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 184,
+            "line": 188,
             "description": "frame 文件名",
             "itemtype": "property",
             "name": "frameFileName",
@@ -2429,7 +2429,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 192,
+            "line": 196,
             "description": "载入 frame 文件时, 是否添加随机数防止缓存",
             "itemtype": "property",
             "name": "randomFrame",
@@ -2441,7 +2441,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 200,
+            "line": 204,
             "description": "frame 文件夹位于库的位置",
             "itemtype": "property",
             "name": "_FRAME_DIR",
@@ -2455,7 +2455,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 210,
+            "line": 214,
             "description": "初始化 frame 时递增的统计变量",
             "itemtype": "property",
             "name": "_INS_COUNT",
@@ -2469,42 +2469,42 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 230,
+            "line": 234,
             "description": "iframe 加载完毕后触发的事件, 执行初始化操作",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 264,
+            "line": 268,
             "description": "文件扩展名错误",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 271,
+            "line": 275,
             "description": "上传前触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 277,
+            "line": 281,
             "description": "上传完毕触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 314,
+            "line": 318,
             "description": "frame 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 331,
+            "line": 335,
             "description": "手动更新数据",
             "itemtype": "method",
             "name": "update",
@@ -2526,7 +2526,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 453,
+            "line": 457,
             "description": "恢复默认状态",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
@@ -15244,27 +15244,27 @@
         },
         {
             "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:230"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:234"
         },
         {
             "message": "Missing item type\n文件扩展名错误",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:264"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:268"
         },
         {
             "message": "Missing item type\n上传前触发的事件",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:271"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:275"
         },
         {
             "message": "Missing item type\n上传完毕触发的事件",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:277"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:281"
         },
         {
             "message": "Missing item type\nframe 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:314"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:318"
         },
         {
             "message": "Missing item type\n恢复默认状态",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:453"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:457"
         },
         {
             "message": "Missing item type\n点击列表时, 阻止冒泡",
