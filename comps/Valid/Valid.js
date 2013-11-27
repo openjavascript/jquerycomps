@@ -509,9 +509,9 @@
             var _dname = 'VALID_CHECK_TIMEOUT';
             if( _tm ){
                 _selector.data( _dname ) && clearTimeout( _selector.data( _dname ) );
-                _selector.data( _dname , function(){
+                _selector.data( _dname , setTimeout( function(){
                     Valid.check( _selector );
-                }, _tm );
+                }, _tm ));
             }else{
                 Valid.check( _selector );
             }
