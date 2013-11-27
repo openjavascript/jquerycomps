@@ -1,4 +1,5 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC', 'JC.AutoComplete', 'JC.AutoSelect' ], function(){
+//TODO: 文本框 自动添加 autocomplete="off", 防止表单的默认提示
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.AutoComplete', 'JC.AutoSelect' ], function(){
 ;(function($){
     /**
      * <h2>结合 JC.AutoSelect 与 JC.AutoComplete 综合使用的一个业务逻辑</h2>

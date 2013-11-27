@@ -1,11 +1,10 @@
-(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC', 'JC.Panel' ], function(){
+(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
  ;(function($){
     /**
      * Ajax 文件上传
      * <p>
      *      <b>require</b>: 
      *          <a href='window.jQuery.html'>jQuery</a>
-     *          , <a href='JC.common.html'>JC.common</a>
      *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *          , <a href='JC.Panel.html'>JC.Panel</a>
      * </p>
