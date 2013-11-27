@@ -184,16 +184,19 @@
     <pre class="code prettyprint linenums">
 //TODO: 添加 IE6 支持
 //TODO: 移动 左右 方向键时, 显示 首字符到光标的过滤条件
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27;, &#x27;JC.BaseMVC&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
     ;(function($){
         /**
          * AutoComplete 文本框内容输入提示
          * &lt;br /&gt;响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 AutoComplete 实例
+         * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
+         *      &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
+         *      , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+         * &lt;/p&gt;
+         *
          * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
          * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.AutoComplete.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
          * | &lt;a href=&#x27;../../modules/JC.AutoComplete/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
-         *
-         * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
          *
          * &lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
          * &lt;dl&gt;
@@ -526,7 +529,7 @@
 
                         _p._model.blurTimeout( setTimeout( function(){
                             _p._model.selector().trigger( &#x27;blur&#x27; );
-                        }, 201 ) );
+                        }, 50 ) );
                     });
 
                     _p.on( AutoComplete.Model.HIDDEN, function () {

@@ -693,9 +693,9 @@
             var _dname = &#x27;VALID_CHECK_TIMEOUT&#x27;;
             if( _tm ){
                 _selector.data( _dname ) &amp;&amp; clearTimeout( _selector.data( _dname ) );
-                _selector.data( _dname , function(){
+                _selector.data( _dname , setTimeout( function(){
                     Valid.check( _selector );
-                }, _tm );
+                }, _tm ));
             }else{
                 Valid.check( _selector );
             }

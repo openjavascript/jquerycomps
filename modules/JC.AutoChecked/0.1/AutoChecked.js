@@ -2,10 +2,14 @@
  ;(function($){
     /**
      * 全选/反选
+     * <p>
+     *      <b>require</b>: 
+     *          <a href='window.jQuery.html'>jQuery</a>
+     *          , <a href='JC.common.html'>JC.common</a>
+     * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoChecked.html' target='_blank'>API docs</a>
      * | <a href='../../modules/JC.AutoChecked/0.1/_demo' target='_blank'>demo link</a></p>
-     * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <h2>input[type=checkbox] 可用的 HTML 属性</h2>
      * <dl>
      *      <dt>checktype = string</dt>
