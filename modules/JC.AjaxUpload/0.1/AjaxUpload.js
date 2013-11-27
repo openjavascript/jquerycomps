@@ -3,16 +3,16 @@
     /**
      * Ajax 文件上传
      * <p>
-     *      <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     *      | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>
-     *      | <a href='../../modules/JC.AjaxUpload/0.1/_demo' target='_blank'>demo link</a>
-     * </p>
-     * <p>
      *      <b>require</b>: 
      *          <a href='window.jQuery.html'>jQuery</a>
      *          , <a href='JC.common.html'>JC.common</a>
      *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *          , <a href='JC.Panel.html'>JC.Panel</a>
+     * </p>
+     * <p>
+     *      <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+     *      | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>
+     *      | <a href='../../modules/JC.AjaxUpload/0.1/_demo' target='_blank'>demo link</a>
      * </p>
      * <h2>可用的 html attribute</h2>
      * <dl>
