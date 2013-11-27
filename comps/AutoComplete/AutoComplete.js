@@ -1,15 +1,18 @@
 //TODO: 添加 IE6 支持
 //TODO: 移动 左右 方向键时, 显示 首字符到光标的过滤条件
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
     ;(function($){
         /**
          * AutoComplete 文本框内容输入提示
          * <br />响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 AutoComplete 实例
+         * <p><b>require</b>: 
+         *      <a href='jQuery.html'>jQuery</a>
+         *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+         * </p>
+         *
          * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
          * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>
          * | <a href='../../comps/AutoComplete/_demo' target='_blank'>demo link</a></p>
-         *
-         * <p><b>require</b>: <a href='jQuery.html'>jQuery</a></p>
          *
          * <h2>可用的 HTML attribute</h2>
          * <dl>
