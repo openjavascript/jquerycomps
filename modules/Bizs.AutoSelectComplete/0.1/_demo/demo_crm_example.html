@@ -80,12 +80,19 @@
            return _tpl;
         }
 
+function formAfterProcess( _evt, _ins ){
+   var _form = $(this);
+   JC.log( 'formAfterProcess', new Date().getTime() );
+   alert(2);
+   return false;
+}
+
     </script>
 </head>
 <body>
 <h2>JC.AutoComplete 示例</h2>
 <h3>自动生成列表弹框, JC.AutoComplete#update</h3>
-<form action="?" method="get" class="js_BizsFormLogic">
+<form action="?" method="get" class="js_bizsFormLogic" formAfterProcess="formAfterProcess"  >
     <div class="js_positionBox">
         <div class="ui-sug-mod js_scheduleItem">
             <label class="gray">可选位置：</label>
