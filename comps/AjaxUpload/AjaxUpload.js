@@ -3,18 +3,22 @@
     /**
      * Ajax 文件上传
      * <p>
+     *      <b>require</b>: 
+     *          <a href='jQuery.html'>jQuery</a>
+     *          , <a href='JC.common.html'>JC.common</a>
+     *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *          , <a href='JC.Panel.html'>JC.Panel</a>
+     * </p>
+     * <p>
      *      <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      *      | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>
      *      | <a href='../../comps/AjaxUpload/_demo' target='_blank'>demo link</a>
-     * </p>
-     * <p>
-     *      <b>require</b>: <a href='jQuery.html'>jQuery</a>
      * </p>
      * <h2>可用的 html attribute</h2>
      * <dl>
      *      <dt>cauStyle = string, default = g1</dt>
      *      <dd>
-     *          按钮显示的样式, <a href='../../comps/AjaxUpload/res/default/style.html' target='_blank'>可选样式</a>:
+     *          按钮显示的样式, <a href='../../comps/AjaxUpload//res/default/style.html' target='_blank'>可选样式</a>:
      *          <dl>
      *              <dt>绿色按钮</dt>
      *              <dd>g1, g2, g3</dd>

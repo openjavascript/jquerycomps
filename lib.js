@@ -32,7 +32,6 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
      * <br />所有 JC 组件都会依赖这个静态类
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.common.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/common/_demo/' target='_blank'>demo link</a></p>
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * @class JC.common
      * @static
