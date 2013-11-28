@@ -163,6 +163,75 @@ function formAfterProcess( _evt, _ins ){
             <em class="error"></em>
             <hr />
         </div>
+        <div class="ui-sug-mod js_scheduleItem">
+            <label class="gray">可选位置：</label>
+            <select name='pos1[0][0]' class="sel sel-w110 js_fixedPosition" 
+                reqmsg="位置" 
+                validemdisplaytype="inline" 
+
+                subdatatype="unique-3"
+                uniquedatatarget="(div.js_positionBox .js_fixedPosition" 
+                uniquemsg="不能选择相同的位置"  
+                uniqueIgnoreEmpty="true"
+
+                defaultselect="true" 
+                selecttriggerinitchange="false"
+                selecturl="../../../JC.AutoSelect/0.2/_demo/data/infinity_cat.php?id=0&hasData=1&items=30" 
+                selectvalue="0_0"
+                selecttarget="/select:last"
+                selecthideempty="true"
+                selectallchanged="userAllChangeCallback"
+                >
+                <option value="" defaultoption>请选择广告位</option>
+            </select>
+            <select name='pos1[0][1]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                reqmsg="位置" 
+                validemdisplaytype="inline" 
+
+                subdatatype="unique-3"
+                uniquedatatarget="(div.js_positionBox .js_fixedPosition" 
+                uniquemsg="不能选择相同的位置" 
+                uniqueIgnoreEmpty="true"
+
+                selecturl="../../../JC.AutoSelect/0.2/_demo/data/infinity_cat.php?id={0}&hasData=1&items=10" 
+                selectvalue="0_0_0"
+                >
+                <option value="" defaultoption>请选择广告位</option>
+            </select>
+            <a href="javascript:" 
+               class="red js_autoCommonModify" 
+               cmitem="(div.js_scheduleItem"
+               cmaction="del"
+            >- 删除</a>
+            <div></div>
+            <input type="text" class="ui-sug-ipt js_compAutoComplete js_bizAutoSelectComplete js_fixedPosition" value="" 
+                style="display:none;"
+                autocomplete="off" 
+                reqmsg="广告位"
+
+                subdatatype="unique-3"
+                uniquedatatarget="(div.js_positionBox .js_fixedPosition" 
+                uniquemsg="不能选择相同的位置" 
+                uniqueIgnoreEmpty="true"
+
+                cacPopup="/ul.js_compAutoCompleteBox"
+                cacLabelKey="data-label"
+                cacIdKey="data-id"
+                cacIdSelector="/input.js_bindItem"
+                cacStrictData="true"
+                cacNoDataText="没有可用的数据!"
+
+                cacPreventEnter="true" 
+
+                bascAjaxUrl="../../../JC.AutoSelect/0.2/_demo/data/infinity_cat.php?id={0}&hasData=1&items=10"
+
+                bascDefaultSelect="/select:first"
+                />
+            &nbsp;cacIdSelector: <input type="text" name="pos1[0][2]" class="js_bindItem" value="0_0_0_0" />
+            <em class="error"></em>
+            <hr />
+        </div>
+
     </div>
     <div>
         <input type="hidden" name="getform" value="1" />
