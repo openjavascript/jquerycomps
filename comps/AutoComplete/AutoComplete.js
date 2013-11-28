@@ -345,7 +345,7 @@
 
                         _p._model.blurTimeout( setTimeout( function(){
                             _p._model.selector().trigger( 'blur' );
-                        }, 201 ) );
+                        }, 50 ) );
                     });
 
                     _p.on( AutoComplete.Model.HIDDEN, function () {
