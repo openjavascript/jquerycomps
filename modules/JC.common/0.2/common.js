@@ -27,6 +27,7 @@
         , "dateDetect": dateDetect
         , "delUrlParam": delUrlParam
         , "easyEffect": easyEffect
+        , "filterXSS": filterXSS
         , "formatISODate": formatISODate
         , "funcName": funcName
         , "getJqParent": getJqParent
@@ -131,10 +132,10 @@
     /**
      * 判断URL中是否有某个get参数
      * @method  hasUrlParam
-     * @static
      * @param   {string}    _url
      * @param   {string}    _key
      * @return  bool
+     * @static
      * @example
      *      var bool = hasUrlParam( 'getkey' );
      */
@@ -152,12 +153,12 @@
     }
     /**
      * 添加URL参数
-     * <br /><b>require:</b> delUrlParam
+     * <br /><b>require:</b> delUrlParam, filterXSS
      * @method  addUrlParams
-     * @static
      * @param   {string}    _url
      * @param   {object}    _params
      * @return  string
+     * @static
      * @example
             var url = addUrlParams( location.href, {'key1': 'key1value', 'key2': 'key2value' } );
      */ 
@@ -172,45 +173,62 @@
                 : _url += '?' + k +'=' + _params[k];
         }
         sharp && ( _url += '#' + sharp );
-        _url = _url.replace(/\?\&/g, '?' );
+        _url = filterXSS( _url.replace(/\?\&/g, '?' ) );
         return _url;   
 
     }
     /**
-     * 取URL参数的值
-     * @method  getUrlParam
+     * xss 过滤函数
+     * @method filterXSS
+     * @param   {string}    _s
+     * @return string
      * @static
+     */
+    function filterXSS( _s ){
+        _s && (
+            _s = _s
+                    .replace( /</g, '&lt;' )
+                    .replace( />/g, '&gt;' )
+        );
+        return _s;
+    }
+    /**
+     * 取URL参数的值
+     * <br /><b>require:</b> filterXSS
+     * @method  getUrlParam
      * @param   {string}    _url
      * @param   {string}    _key
      * @return  string
+     * @static
      * @example
             var defaultTag = getUrlParam(location.href, 'tag');  
      */ 
     function getUrlParam( _url, _key ){
-        var result = '', paramAr, i, items;
+        var _r = '', _ar, i, _items;
         !_key && ( _key = _url, _url = location.href );
         _url.indexOf('#') > -1 && ( _url = _url.split('#')[0] );
         if( _url.indexOf('?') > -1 ){
-            paramAr = _url.split('?')[1].split('&');
-            for( i = 0; i < paramAr.length; i++ ){
-                items = paramAr[i].split('=');
-                items[0] = items[0].replace(/^\s+|\s+$/g, '');
-                if( items[0].toLowerCase() == _key.toLowerCase() ){
-                    result = items[1];
+            _ar = _url.split('?')[1].split('&');
+            for( i = 0; i < _ar.length; i++ ){
+                _items = _ar[i].split('=');
+                _items[0] = _items[0].replace(/^\s+|\s+$/g, '');
+                if( _items[0].toLowerCase() == _key.toLowerCase() ){
+                    _r = filterXSS( _items[1] || '' );
                     break;
                 } 
             }
         }
-        return result;
+        return _r;
     }
     /**
      * 取URL参数的值, 这个方法返回数组
      * <br />与 getUrlParam 的区别是可以获取 checkbox 的所有值
+     * <br /><b>require:</b> filterXSS
      * @method  getUrlParams
-     * @static
      * @param   {string}    _url
      * @param   {string}    _key
      * @return  Array
+     * @static
      * @example
             var params = getUrlParams(location.href, 'tag');  
      */ 
@@ -225,7 +243,7 @@
                 for( i = 0, j = _params.length; i < j; i++ ){
                     _items = _params[i].split('=');
                     if( _items[0].trim() == _key ){
-                        _r.push( _items[1] || '' );
+                        _r.push( filterXSS( _items[1] || '' ) );
                     }
                 }
             }
@@ -234,11 +252,12 @@
     }
     /**
      * 删除URL参数
+     * <br /><b>require:</b> filterXSS
      * @method  delUrlParam
-     * @static
      * @param  {string}    _url
      * @param  {string}    _key
      * @return  string
+     * @static
      * @example
             var url = delUrlParam( location.href, 'tag' );
      */ 
@@ -258,6 +277,7 @@
             _url += '?' + tmpParams.join('&');
         }
         sharp && ( _url += '#' + sharp );
+       _url = filterXSS( _url );
         return _url;
     }
     /**
@@ -277,35 +297,46 @@
     }
     /**
      * 删除 URL 的锚点
-     * <br /><b>require:</b> addUrlParams
+     * <br /><b>require:</b> addUrlParams, filterXSS
      * @method removeUrlSharp
      * @static
-     * @param   {string}    $url
-     * @param   {bool}      $nornd      是否不添加随机参数
+     * @param   {string}    _url
+     * @param   {bool}      _nornd      是否不添加随机参数
+     * @param   {string}    _rndName
      * @return  string
      */
-    function removeUrlSharp($url, $nornd){   
-        var url = $url.replace(/\#[\s\S]*/, '');
-        !$nornd && (url = addUrlParams( url, { "rnd": new Date().getTime() } ) );
-        return url;
+    function removeUrlSharp( _url, _nornd, _rndName ){   
+        !_url && ( _url = location.href );
+        _url = _url.replace(/\#[\s\S]*/, '');
+        _rndName = _rndName || 'rnd';
+        var _rndO;
+        !_nornd && ( _rndO = {}
+                        , _rndO[ _rndName ] = new Date().getTime()
+                        , _url = addUrlParams( _url, _rndO ) 
+        );
+        _url = filterXSS( _url );
+        return _url;
     }
     /**
      * 重载页面
-     * <br /><b>require:</b> removeUrlSharp
-     * <br /><b>require:</b> addUrlParams
+     * <br /><b>require:</b> removeUrlSharp, addUrlParams, filterXSS
      * @method reloadPage
      * @static
-     * @param   {string}    $url
-     * @param   {bool}      $nornd
-     * @param   {int}       $delayms
+     * @param   {string}    _url
+     * @param   {bool}      _nornd
+     * @param   {int}       _delayms
      */ 
     function reloadPage( _url, _nornd, _delayMs  ){
         _delayMs = _delayMs || 0;
+
+        _url = removeUrlSharp( _url || location.href, _nornd );
+        !_nornd && ( _url = addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
+        _url = filterXSS( _url );
+
         setTimeout( function(){
-            _url = removeUrlSharp( _url || location.href, _nornd );
-            !_nornd && ( _url = addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
             location.href = _url;
         }, _delayMs);
+        return _url;
     }
     /**
      * 取小数点的N位
@@ -753,6 +784,7 @@
     }
     /**
      * URL 占位符识别功能
+     * <br /><b>require:</b> addUrlParams, filterXSS
      * @method  urlDetect
      * @param   {String}    _url    如果 起始字符为 URL, 那么 URL 将祝为本页的URL
      * @return  string
@@ -788,6 +820,7 @@
             _url = addUrlParams( _url, _d );
             _r = _url;
         }
+        _r = filterXSS( _url );
         return _r;
     }
     /**
