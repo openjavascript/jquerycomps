@@ -3,8 +3,11 @@
     window.JC = window.JC || {log:function(){}};
     window.BaseMVC = JC.BaseMVC = BaseMVC;
     /**
-     * MVC 抽象类 ( <b>仅供扩展用</b> )
-     * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
+     * MVC 抽象类 ( <b>仅供扩展用, 这个类不能实例化</b>)
+     * <p><b>require</b>: 
+     *      <a href='window.jQuery.html'>jQuery</a>
+     *      , <a href='JC.common.html'>JC.common</a>
+     * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>
      * | <a href='../../modules/JC.BaseMVC/0.1/_demo' target='_blank'>demo link</a></p>
@@ -209,11 +212,11 @@
         }
     /**
      * MVC Model 类( <b>仅供扩展用</b> )
-     * <p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   
-     * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
+     * <br />这个类默认已经包含在lib.js里面, 不需要显式引用
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>
      * | <a href='../../modules/JC.BaseMVC/0.1/_demo' target='_blank'>demo link</a></p>
+     * <p><b>see also</b>: <a href='JC.BaseMVC.html'>JC.BaseMVC</a></p>
      * @namespace JC
      * @class BaseMVC.Model
      * @constructor

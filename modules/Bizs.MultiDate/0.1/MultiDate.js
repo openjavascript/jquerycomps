@@ -1,12 +1,13 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Calendar' ], function(){
 ;(function($){
     window.Bizs = window.Bizs || {};
     window.Bizs.MultiDate = MultiDate;
     /**
      * MultiDate 复合日历业务逻辑
-     * <p>
-     *      <b>require</b>: <a href='JC.Calendar.html'>JC.Calendar</a>
-     *      <br /><b>require</b>: <a href='window.jQuery.html'>jQuery</a>
+     * <p><b>require</b>: 
+     *      <a href='window.jQuery.html'>jQuery</a>
+     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      , <a href='JC.Calendar.html'>JC.Calendar</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.MultiDate.html' target='_blank'>API docs</a>

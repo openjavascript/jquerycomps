@@ -2,11 +2,10 @@
  ;(function($){
     /**
      * Ajax 文件上传
-     * <p>
-     *      <b>require</b>: 
-     *          <a href='window.jQuery.html'>jQuery</a>
-     *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
-     *          , <a href='JC.Panel.html'>JC.Panel</a>
+     * <p><b>require</b>: 
+     *      <a href='window.jQuery.html'>jQuery</a>
+     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      , <a href='JC.Panel.html'>JC.Panel</a>
      * </p>
      * <p>
      *      <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>

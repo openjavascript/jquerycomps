@@ -1,15 +1,17 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 ;(function($){
     /**
      * 应用场景
      * <br /><b>ISP 缓存问题 引起的用户串号</b>
      * <br />ajax 或者动态添加的内容, 请显式调用  JC.KillISPCache.getInstance().process( newNodeContainer )
      * <br /><b>这是个单例类</b>
-     
+     * <p><b>require</b>: 
+     *      <a href='window.jQuery.html'>jQuery</a>
+     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.KillISPCache.html' target='_blank'>API docs</a>
      * | <a href='../../modules/Bizs.KillISPCache/0.1/_demo' target='_blank'>demo link</a></p>
-     * require: <a href='../classes/window.jQuery.html'>jQuery</a>
      *
      * <h2>页面只要引用本文件, 默认会自动初始化 KillISPCache 逻辑</h2>
      * <dl>

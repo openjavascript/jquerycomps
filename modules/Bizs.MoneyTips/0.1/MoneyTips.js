@@ -1,11 +1,14 @@
 //TODO: 提供静态格式化方法
 //TODO: 提供 页面载入时, 指定 class 进行格式化支持
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
  * <h2>金额格式化 业务逻辑</h2>
  * <br/>应用场景
  * <br/>用户在文本框输入金额时, 在指定的 node 显示以逗号分隔的金额
- *
+ * <p><b>require</b>: 
+ *      <a href='window.jQuery.html'>jQuery</a>
+ *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.MoneyTips.html' target='_blank'>API docs</a>
  * | <a href='../../modules/Bizs.MoneyTips/0.1/_demo' target='_blank'>demo link</a></p>

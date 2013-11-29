@@ -5,10 +5,15 @@
      * <h2>结合 JC.AutoSelect 与 JC.AutoComplete 综合使用的一个业务逻辑</h2>
      * <br />应用场景: CRM 多级广告位最后一级因为内容较多, 用户使用传统的下拉框选择比较不便
      * <br />这个业务组件结合 JC.AutoSelect 和 JC.AutoComplete 提供一种简便的可输入解决方案
+     * <p><b>require</b>: 
+     *      <a href='window.jQuery.html'>jQuery</a>
+     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      , <a href='JC.AutoComplete.html'>JC.AutoComplete</a>
+     *      , <a href='JC.AutoSelect.html'>JC.AutoSelect</a>
+     * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.AutoSelectComplete.html' target='_blank'>API docs</a>
      * | <a href='../../modules/Bizs.AutoSelectComplete/0.1/_demo' target='_blank'>demo link</a></p>
-     * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * <h2>可用的 HTML attribute</h2>
      * <dl>
      *      <dt>bascAjaxUrl = url</dt>

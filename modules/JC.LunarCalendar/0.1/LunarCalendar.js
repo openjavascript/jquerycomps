@@ -19,18 +19,13 @@
      *      <br /><b>nopreviousfestivals</b>: 不显示上个月的节日
      *      <br /><b>nonextfestivals</b>: 不显示下个月的节日
      * </p>
-     *
+     * <p><b>require</b>: 
+     *      <a href='window.jQuery.html'>jQuery</a>
+     *      , <a href='JC.common.html'>JC.common</a>
+     * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.LunarCalendar.html' target='_blank'>API docs</a>
      * | <a href='../../modules/JC.LunarCalendar/0.1/_demo/' target='_blank'>demo link</a></p>
-     *
-     * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a>
-     * <br /><b>require</b>: <a href='.window.html#method_JC.f.cloneDate'>window.JC.f.cloneDate</a>
-     * <br /><b>require</b>: <a href='.window.html#method_JC.f.parseISODate'>window.JC.f.parseISODate</a>
-     * <br /><b>require</b>: <a href='.window.html#method_JC.f.maxDayOfMonth'>window.JC.f.maxDayOfMonth</a>
-     * <br /><b>require</b>: <a href='.window.html#method_JC.f.isSameDay'>window.JC.f.isSameDay</a>
-     * <br /><b>require</b>: <a href='.window.html#method_JC.f.isSameMonth'>window.JC.f.isSameMonth</a>
-     * </p>
      * @namespace JC
      * @class LunarCalendar
      * @constructor
