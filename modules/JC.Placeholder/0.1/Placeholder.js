@@ -1,10 +1,14 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 /**
  * Placeholder 占位符提示功能
+ * <p>
+ *      <b>require</b>: 
+ *          <a href='window.jQuery.html'>jQuery</a>
+ *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Placeholder.html' target='_blank'>API docs</a>
  * | <a href='../../modules/JC.Placeholder/0.1/_demo' target='_blank'>demo link</a></p>
- * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
  * @namespace JC
  * @class Placeholder
  * @extends JC.BaseMVC
