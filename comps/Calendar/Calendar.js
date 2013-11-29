@@ -8,18 +8,13 @@
      * , Calendar会自动初始化页面所有日历组件, input[type=text][datatype=date]标签
      * <br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动使用Calendar.init( _selector )
      * <br />_selector 可以是 新加载的容器, 也可以是新加载的所有input
+     * <p><b>require</b>: 
+     *      <a href='jQuery.html'>jQuery</a>
+     *      , <a href='JC.common.html'>JC.common</a>
+     * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Calendar.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Calendar/_demo/' target='_blank'>demo link</a></p>
-     *
-     * <p><b>require</b>: <a href='jQuery.html'>jQuery</a>
-     * <br /><b>require</b>: <a href='.window.html#method_JC.f.cloneDate'>window.JC.f.cloneDate</a>
-     * <br /><b>require</b>: <a href='.window.html#method_JC.f.parseISODate'>window.JC.f.parseISODate</a>
-     * <br /><b>require</b>: <a href='.window.html#method_JC.f.formatISODate'>window.JC.f.formatISODate</a>
-     * <br /><b>require</b>: <a href='.window.html#method_JC.f.maxDayOfMonth'>window.JC.f.maxDayOfMonth</a>
-     * <br /><b>require</b>: <a href='.window.html#method_JC.f.isSameDay'>window.JC.f.isSameDay</a>
-     * <br /><b>require</b>: <a href='.window.html#method_JC.f.isSameMonth'>window.JC.f.isSameMonth</a>
-     * </p>
      * <h2> 可用的html attribute, (input|button):(datatype|multidate)=(date|week|month|season) </h2> 
      * <dl>
      *      <dt>defaultdate = ISO Date</dt>

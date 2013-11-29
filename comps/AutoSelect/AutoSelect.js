@@ -6,10 +6,13 @@
      * <br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能
      * <br /><br />动态添加的 DOM 需要显式调用 JC.AutoSelect( domSelector ) 进行初始化
      * <br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性
+     * <p><b>require</b>: 
+     *      <a href='jQuery.html'>jQuery</a>
+     *      , <a href='JC.common.html'>JC.common</a>
+     * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoSelect.html' target='_blank'>API docs</a>
      * | <a href='../../comps/AutoSelect/_demo' target='_blank'>demo link</a></p>
-     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a></p>
      * <h2>select 标签可用的 HTML 属性</h2>
      * <dl>
      *      <dt>defaultselect, 这个属性不需要赋值</dt>

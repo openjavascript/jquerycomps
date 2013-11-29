@@ -591,7 +591,7 @@
             "namespace": "JC",
             "file": "../comps/AutoSelect/AutoSelect.js",
             "line": 4,
-            "description": "<h2>select 级联下拉框无限联动</h2>\n<br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能\n<br /><br />动态添加的 DOM 需要显式调用 JC.AutoSelect( domSelector ) 进行初始化\n<br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoSelect.html' target='_blank'>API docs</a>\n| <a href='../../comps/AutoSelect/_demo' target='_blank'>demo link</a></p>\n<p><b>requires</b>: <a href='jQuery.html'>jQuery</a></p>\n<h2>select 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultselect, 这个属性不需要赋值</dt>\n     <dd>该属性声明这是级联下拉框的第一个下拉框, <b>这是必填项,初始化时以这个为入口</b></dd>\n\n     <dt>selectvalue = string</dt>\n     <dd>下拉框的默认选中值</dd>\n\n     <dt>selecturl = AJAX 数据请求的URL</dt>\n     <dd>下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符</dd>\n\n     <dt>selectignoreinitrequest = bool, default = false</dt>\n     <dd>\n         首次初始化时, 是否需要请求新数据\n         <br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多\n     </dd>\n\n     <dt>selecttarget = selector</dt>\n     <dd>下一级下拉框的选择器语法</dd>\n\n     <dt>selectdatacb = 静态数据请求回调</dt>\n     <dd>如果数据不需要 AJAX 请求, 可使用这个属性, 自行定义数据处理方式</dd>\n\n     <dt>selectrandomurl = bool, default = false</dt>\n     <dd>AJAX 请求时, 添加随机参数, 防止数据缓存</dd>\n\n     <dt>selecttriggerinitchange = bool, default = true</dt>\n     <dd>首次初始化时, 是否触发 change 事件</dd>\n\n     <dt>selecthideempty = bool, default = false</dt>\n     <dd>是否隐藏没有数据的 selecct</dd>\n\n     <dt>selectdatafilter = 请求数据后的处理回调</dt>\n     <dd>如果接口的数据不符合 select 的要求, 可通过这个属性定义数据过滤函数</dd>\n\n     <dt>selectbeforeinited = 初始化之前的回调</dt>\n\n     <dt>selectinited = 初始化后的回调</dt>\n<dd><pre>function selectinited( _items ){\n   var _ins = this;\n}</pre>\n</dd>\n\n     <dt>selectallchanged = 所有select请求完数据之后的回调, <b>window 变量域</b></dt>\n     <dd><pre>function selectallchanged( _items ){\n   var _ins = this;\n}</pre>\n     </dd>\n</dl>\n<h2>option 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultoption, 这个属性不需要赋值</dt>\n     <dd>声明默认 option 选项, 更新option时, 有该属性的项不会被清除</dd>\n</dl>\n<h2>数据格式</h2>\n<p>\n     [ [id, name], [id, name] ... ]\n     <br /> 如果获取到的数据格式不是默认格式,\n     可以通过 <a href='JC.AutoSelect.html#property_dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤\n</p>",
+            "description": "<h2>select 级联下拉框无限联动</h2>\n<br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能\n<br /><br />动态添加的 DOM 需要显式调用 JC.AutoSelect( domSelector ) 进行初始化\n<br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性\n<p><b>require</b>: \n     <a href='jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoSelect.html' target='_blank'>API docs</a>\n| <a href='../../comps/AutoSelect/_demo' target='_blank'>demo link</a></p>\n<h2>select 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultselect, 这个属性不需要赋值</dt>\n     <dd>该属性声明这是级联下拉框的第一个下拉框, <b>这是必填项,初始化时以这个为入口</b></dd>\n\n     <dt>selectvalue = string</dt>\n     <dd>下拉框的默认选中值</dd>\n\n     <dt>selecturl = AJAX 数据请求的URL</dt>\n     <dd>下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符</dd>\n\n     <dt>selectignoreinitrequest = bool, default = false</dt>\n     <dd>\n         首次初始化时, 是否需要请求新数据\n         <br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多\n     </dd>\n\n     <dt>selecttarget = selector</dt>\n     <dd>下一级下拉框的选择器语法</dd>\n\n     <dt>selectdatacb = 静态数据请求回调</dt>\n     <dd>如果数据不需要 AJAX 请求, 可使用这个属性, 自行定义数据处理方式</dd>\n\n     <dt>selectrandomurl = bool, default = false</dt>\n     <dd>AJAX 请求时, 添加随机参数, 防止数据缓存</dd>\n\n     <dt>selecttriggerinitchange = bool, default = true</dt>\n     <dd>首次初始化时, 是否触发 change 事件</dd>\n\n     <dt>selecthideempty = bool, default = false</dt>\n     <dd>是否隐藏没有数据的 selecct</dd>\n\n     <dt>selectdatafilter = 请求数据后的处理回调</dt>\n     <dd>如果接口的数据不符合 select 的要求, 可通过这个属性定义数据过滤函数</dd>\n\n     <dt>selectbeforeinited = 初始化之前的回调</dt>\n\n     <dt>selectinited = 初始化后的回调</dt>\n<dd><pre>function selectinited( _items ){\n   var _ins = this;\n}</pre>\n</dd>\n\n     <dt>selectallchanged = 所有select请求完数据之后的回调, <b>window 变量域</b></dt>\n     <dd><pre>function selectallchanged( _items ){\n   var _ins = this;\n}</pre>\n     </dd>\n</dl>\n<h2>option 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultoption, 这个属性不需要赋值</dt>\n     <dd>声明默认 option 选项, 更新option时, 有该属性的项不会被清除</dd>\n</dl>\n<h2>数据格式</h2>\n<p>\n     [ [id, name], [id, name] ... ]\n     <br /> 如果获取到的数据格式不是默认格式,\n     可以通过 <a href='JC.AutoSelect.html#property_dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤\n</p>",
             "static": 1,
             "version": "dev 0.2",
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
@@ -618,7 +618,7 @@
             "namespace": "JC",
             "file": "../comps/Calendar/Calendar.js",
             "line": 4,
-            "description": "日期选择组件\n<br />全局访问请使用 JC.Calendar 或 Calendar\n<br />DOM 加载完毕后\n, Calendar会自动初始化页面所有日历组件, input[type=text][datatype=date]标签\n<br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动使用Calendar.init( _selector )\n<br />_selector 可以是 新加载的容器, 也可以是新加载的所有input\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Calendar.html' target='_blank'>API docs</a>\n| <a href='../../comps/Calendar/_demo/' target='_blank'>demo link</a></p>\n\n<p><b>require</b>: <a href='jQuery.html'>jQuery</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.cloneDate'>window.JC.f.cloneDate</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.parseISODate'>window.JC.f.parseISODate</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.formatISODate'>window.JC.f.formatISODate</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.maxDayOfMonth'>window.JC.f.maxDayOfMonth</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.isSameDay'>window.JC.f.isSameDay</a>\n<br /><b>require</b>: <a href='.window.html#method_JC.f.isSameMonth'>window.JC.f.isSameMonth</a>\n</p>\n<h2> 可用的html attribute, (input|button):(datatype|multidate)=(date|week|month|season) </h2> \n<dl>\n     <dt>defaultdate = ISO Date</dt>\n     <dd>默认显示日期, 如果 value 为空, 则尝试读取 defaultdate 属性</dd>\n\n     <dt>datatype = string</dt>\n     <dd>\n         声明日历控件的类型:\n         <p><b>date:</b> 日期日历</p>\n         <p><b>week:</b> 周日历</p>\n         <p><b>month:</b> 月日历</p>\n         <p><b>season:</b> 季日历</p>\n         <p><b>monthday:</b> 多选日期日历</p>\n     </dd>\n\n     <dt>multidate = string</dt>\n     <dd>\n         与 datatype 一样, 这个是扩展属性, 避免表单验证带来的逻辑冲突\n     </dd>\n\n     <dt>calendarshow = function</dt>\n     <dd>显示日历时的回调</dd>\n\n     <dt>calendarhide = function</dt>\n     <dd>隐藏日历时的回调</dd>\n\n     <dt>calendarlayoutchange = function</dt>\n     <dd>用户点击日历控件操作按钮后, 外观产生变化时触发的回调</dd>\n\n     <dt>calendarupdate = function</dt>\n     <dd>\n         赋值后触发的回调\n         <dl>\n             <dt>参数:</dt>\n             <dd><b>_startDate:</b> 开始日期</dd>\n             <dd><b>_endDate:</b> 结束日期</dd>\n         </dl>\n     </dd>\n\n     <dt>calendarclear = function</dt>\n     <dd>清空日期触发的回调</dd>\n\n     <dt>minvalue = ISO Date</dt>\n     <dd>日期的最小时间, YYYY-MM-DD</dd>\n\n     <dt>maxvalue = ISO Date</dt>\n     <dd>日期的最大时间, YYYY-MM-DD</dd>\n\n     <dt>currentcanselect = bool, default = true</dt>\n     <dd>当前日期是否能选择</dd>\n\n     <dt>multiselect = bool (目前支持 month: default=false, monthday: default = treu)</dt>\n     <dd>是否为多选日历</dd>\n\n     <dt>calendarupdatemultiselect = function</dt>\n     <dd>\n         多选日历赋值后触发的回调\n         <dl>\n             <dt>参数: _data:</dt>\n             <dd>\n                 [{\"start\": Date,\"end\": Date}[, {\"start\": Date,\"end\": Date}... ] ]\n             </dd>\n         </dl>\n     </dd>\n</dl>",
+            "description": "日期选择组件\n<br />全局访问请使用 JC.Calendar 或 Calendar\n<br />DOM 加载完毕后\n, Calendar会自动初始化页面所有日历组件, input[type=text][datatype=date]标签\n<br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动使用Calendar.init( _selector )\n<br />_selector 可以是 新加载的容器, 也可以是新加载的所有input\n<p><b>require</b>: \n     <a href='jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Calendar.html' target='_blank'>API docs</a>\n| <a href='../../comps/Calendar/_demo/' target='_blank'>demo link</a></p>\n<h2> 可用的html attribute, (input|button):(datatype|multidate)=(date|week|month|season) </h2> \n<dl>\n     <dt>defaultdate = ISO Date</dt>\n     <dd>默认显示日期, 如果 value 为空, 则尝试读取 defaultdate 属性</dd>\n\n     <dt>datatype = string</dt>\n     <dd>\n         声明日历控件的类型:\n         <p><b>date:</b> 日期日历</p>\n         <p><b>week:</b> 周日历</p>\n         <p><b>month:</b> 月日历</p>\n         <p><b>season:</b> 季日历</p>\n         <p><b>monthday:</b> 多选日期日历</p>\n     </dd>\n\n     <dt>multidate = string</dt>\n     <dd>\n         与 datatype 一样, 这个是扩展属性, 避免表单验证带来的逻辑冲突\n     </dd>\n\n     <dt>calendarshow = function</dt>\n     <dd>显示日历时的回调</dd>\n\n     <dt>calendarhide = function</dt>\n     <dd>隐藏日历时的回调</dd>\n\n     <dt>calendarlayoutchange = function</dt>\n     <dd>用户点击日历控件操作按钮后, 外观产生变化时触发的回调</dd>\n\n     <dt>calendarupdate = function</dt>\n     <dd>\n         赋值后触发的回调\n         <dl>\n             <dt>参数:</dt>\n             <dd><b>_startDate:</b> 开始日期</dd>\n             <dd><b>_endDate:</b> 结束日期</dd>\n         </dl>\n     </dd>\n\n     <dt>calendarclear = function</dt>\n     <dd>清空日期触发的回调</dd>\n\n     <dt>minvalue = ISO Date</dt>\n     <dd>日期的最小时间, YYYY-MM-DD</dd>\n\n     <dt>maxvalue = ISO Date</dt>\n     <dd>日期的最大时间, YYYY-MM-DD</dd>\n\n     <dt>currentcanselect = bool, default = true</dt>\n     <dd>当前日期是否能选择</dd>\n\n     <dt>multiselect = bool (目前支持 month: default=false, monthday: default = treu)</dt>\n     <dd>是否为多选日历</dd>\n\n     <dt>calendarupdatemultiselect = function</dt>\n     <dd>\n         多选日历赋值后触发的回调\n         <dl>\n             <dt>参数: _data:</dt>\n             <dd>\n                 [{\"start\": Date,\"end\": Date}[, {\"start\": Date,\"end\": Date}... ] ]\n             </dd>\n         </dl>\n     </dd>\n</dl>",
             "version": "dev 0.1, 2013-06-04",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
         },
@@ -1577,7 +1577,7 @@
             "namespace": "JC",
             "file": "../lib.js",
             "line": 1312,
-            "description": "MVC 抽象类 ( <b>仅供扩展用</b> )\n<p><b>require</b>: <a href='jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>",
+            "description": "MVC 抽象类 ( <b>仅供扩展用, 这个类不能实例化</b>)\n<p><b>require</b>: \n     <a href='jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>",
             "is_constructor": 1,
             "params": [
                 {
@@ -1599,8 +1599,8 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../lib.js",
-            "line": 1517,
-            "description": "MVC Model 类( <b>仅供扩展用</b> )\n<p>这个类默认已经包含在lib.js里面, 不需要显式引用</p>   \n<p><b>require</b>: <a href='jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>",
+            "line": 1520,
+            "description": "MVC Model 类( <b>仅供扩展用</b> )\n<br />这个类默认已经包含在lib.js里面, 不需要显式引用\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>\n| <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>\n<p><b>see also</b>: <a href='JC.BaseMVC.html'>JC.BaseMVC</a></p>",
             "is_constructor": 1,
             "params": [
                 {
@@ -2880,7 +2880,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 130,
+            "line": 133,
             "description": "判断 selector 是否为符合自动初始化联动框的要求",
             "itemtype": "method",
             "name": "isSelect",
@@ -2900,7 +2900,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 147,
+            "line": 150,
             "description": "是否自动隐藏空值的级联下拉框, 起始下拉框不会被隐藏\n<br />这个是全局设置, 如果需要对具体某个select进行处理, 对应的 HTML 属性 selecthideempty",
             "itemtype": "property",
             "name": "hideEmpty",
@@ -2915,7 +2915,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 158,
+            "line": 161,
             "description": "级联下拉框的数据过滤函数\n<br />默认数据格式: [ [id, name], [id, name] ... ]\n<br />如果获取到的数据格式非默认格式, 可通过本函数进行数据过滤\n<p>\n <b>注意, 这个是全局过滤, 如果要使用该函数进行数据过滤, 判断逻辑需要比较具体</b>\n <br />如果要对具体 select 进行数据过滤, 可以使用HTML属性 selectdatafilter 指定过滤函数\n</p>",
             "itemtype": "property",
             "name": "dataFilter",
@@ -2930,7 +2930,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 181,
+            "line": 184,
             "description": "下拉框初始化功能都是未初始化 数据之前的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectbeforeInited",
             "itemtype": "property",
             "name": "beforeInited",
@@ -2942,7 +2942,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 190,
+            "line": 193,
             "description": "下拉框第一次初始完所有数据的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectinited",
             "itemtype": "property",
             "name": "inited",
@@ -2954,7 +2954,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 199,
+            "line": 202,
             "description": "下拉框每个项数据变更后的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectchange",
             "itemtype": "property",
             "name": "change",
@@ -2966,7 +2966,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 208,
+            "line": 211,
             "description": "下拉框所有项数据变更后的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectallchanged",
             "itemtype": "property",
             "name": "allChanged",
@@ -2978,7 +2978,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 217,
+            "line": 220,
             "description": "第一次初始化所有联动框时, 是否触发 change 事件\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selecttriggerinitchange",
             "itemtype": "property",
             "name": "triggerInitChange",
@@ -2990,7 +2990,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 226,
+            "line": 229,
             "description": "ajax 请求数据时, 是否添加随机参数防止缓存\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectrandomurl",
             "itemtype": "property",
             "name": "randomurl",
@@ -3002,7 +3002,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 235,
+            "line": 238,
             "description": "处理 ajax url 的回调处理函数\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectprocessurl",
             "itemtype": "property",
             "name": "processUrl",
@@ -3014,7 +3014,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 244,
+            "line": 247,
             "description": "首次初始化时, 是否需要请求新数据\n<br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多",
             "itemtype": "property",
             "name": "ignoreInitRequest",
@@ -3026,7 +3026,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 253,
+            "line": 256,
             "description": "获取或设置 selector 的实例引用",
             "itemtype": "method",
             "name": "getInstance",
@@ -3051,7 +3051,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 270,
+            "line": 273,
             "description": "清除 select 的 所有 option, 带有属性 defaultoption 例外",
             "itemtype": "method",
             "name": "removeItems",
@@ -3072,7 +3072,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 351,
+            "line": 354,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -3097,7 +3097,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 359,
+            "line": 362,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -3117,7 +3117,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 366,
+            "line": 369,
             "description": "获取第一个 select",
             "itemtype": "method",
             "name": "first",
@@ -3129,7 +3129,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 372,
+            "line": 375,
             "description": "获取最后一个 select",
             "itemtype": "method",
             "name": "last",
@@ -3141,7 +3141,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 378,
+            "line": 381,
             "description": "获取所有 select",
             "itemtype": "method",
             "name": "items",
@@ -3153,7 +3153,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 384,
+            "line": 387,
             "description": "是否为第一个 select",
             "itemtype": "method",
             "name": "isFirst",
@@ -3172,7 +3172,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 391,
+            "line": 394,
             "description": "是否为最后一个 select",
             "itemtype": "method",
             "name": "isLast",
@@ -3191,7 +3191,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 398,
+            "line": 401,
             "description": "是否已经初始化过",
             "itemtype": "method",
             "name": "isInited",
@@ -3210,7 +3210,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 405,
+            "line": 408,
             "description": "获取 select 的数据",
             "itemtype": "method",
             "name": "data",
@@ -3229,7 +3229,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 412,
+            "line": 415,
             "description": "更新默认选中列表",
             "itemtype": "method",
             "name": "update",
@@ -3248,7 +3248,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 854,
+            "line": 857,
             "description": "判断下拉框的option里是否有给定的值",
             "params": [
                 {
@@ -3267,7 +3267,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 927,
+            "line": 930,
             "description": "初始化之事的事件",
             "itemtype": "event",
             "name": "SelectBeforeInited",
@@ -3276,7 +3276,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 931,
+            "line": 934,
             "description": "初始化后的事件",
             "itemtype": "event",
             "name": "SelectInited",
@@ -3285,7 +3285,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 935,
+            "line": 938,
             "description": "响应每个 select 的 change 事件",
             "itemtype": "event",
             "name": "SelectChange",
@@ -3294,7 +3294,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 939,
+            "line": 942,
             "description": "最后一个 select change 后的事件",
             "itemtype": "event",
             "name": "SelectAllChanged",
@@ -3303,7 +3303,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 943,
+            "line": 946,
             "description": "select 更新数据之前触发的事件",
             "itemtype": "event",
             "name": "SelectItemBeforeUpdate",
@@ -3312,7 +3312,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 947,
+            "line": 950,
             "description": "select 更新数据之后触发的事件",
             "itemtype": "event",
             "name": "SelectItemUpdated",
@@ -3321,14 +3321,14 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 951,
+            "line": 954,
             "description": "页面加载完毕时, 延时进行自动化, 延时可以避免来自其他逻辑的干扰",
             "class": "JC.AutoSelect",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 142,
+            "line": 137,
             "description": "内部初始化函数",
             "itemtype": "method",
             "name": "_init",
@@ -3339,7 +3339,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 167,
+            "line": 162,
             "description": "初始化相关操作事件",
             "itemtype": "method",
             "name": "_initHanlderEvent",
@@ -3350,7 +3350,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 249,
+            "line": 244,
             "description": "显示 Calendar",
             "itemtype": "method",
             "name": "show",
@@ -3362,7 +3362,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 262,
+            "line": 257,
             "description": "隐藏 Calendar",
             "itemtype": "method",
             "name": "hide",
@@ -3374,7 +3374,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 273,
+            "line": 268,
             "description": "获取 显示 Calendar 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -3386,7 +3386,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 279,
+            "line": 274,
             "description": "获取 Calendar 外观的 选择器",
             "itemtype": "method",
             "name": "layout",
@@ -3398,7 +3398,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 285,
+            "line": 280,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -3423,7 +3423,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 293,
+            "line": 288,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -3443,7 +3443,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 300,
+            "line": 295,
             "description": "用户操作日期控件时响应改变",
             "itemtype": "method",
             "name": "updateLayout",
@@ -3452,7 +3452,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 309,
+            "line": 304,
             "description": "切换到不同日期控件源时, 更新对应的控件源",
             "itemtype": "method",
             "name": "updateSelector",
@@ -3468,7 +3468,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 320,
+            "line": 315,
             "description": "用户改变年份时, 更新到对应的年份",
             "itemtype": "method",
             "name": "updateYear",
@@ -3484,7 +3484,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 331,
+            "line": 326,
             "description": "用户改变月份时, 更新到对应的月份",
             "itemtype": "method",
             "name": "updateMonth",
@@ -3500,7 +3500,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 342,
+            "line": 337,
             "description": "把选中的值赋给控件源\n<br />用户点击日期/确定按钮",
             "itemtype": "method",
             "name": "updateSelected",
@@ -3516,7 +3516,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 354,
+            "line": 349,
             "description": "显示日历外观到对应的控件源",
             "itemtype": "method",
             "name": "updatePosition",
@@ -3525,7 +3525,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 363,
+            "line": 358,
             "description": "清除控件源内容",
             "itemtype": "method",
             "name": "clear",
@@ -3534,7 +3534,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 374,
+            "line": 369,
             "description": "用户点击取消按钮时隐藏日历外观",
             "itemtype": "method",
             "name": "cancel",
@@ -3543,7 +3543,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 384,
+            "line": 379,
             "description": "返回日历外观是否可见",
             "itemtype": "method",
             "name": "visible",
@@ -3555,7 +3555,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 398,
+            "line": 393,
             "description": "获取控件源的初始日期对象",
             "itemtype": "method",
             "name": "defaultDate",
@@ -3571,7 +3571,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 408,
+            "line": 403,
             "description": "获取或设置 Calendar 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -3592,7 +3592,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 424,
+            "line": 419,
             "description": "保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",
             "prototype": "_ins",
             "type": "object",
@@ -3605,7 +3605,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 435,
+            "line": 430,
             "description": "获取控件源的实例类型\n<br />目前有 date, week, month, season 四种类型的实例",
             "itemtype": "method",
             "name": "type",
@@ -3625,7 +3625,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 461,
+            "line": 456,
             "description": "判断选择器是否为日历组件的对象",
             "itemtype": "method",
             "name": "isCalendar",
@@ -3642,14 +3642,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 495,
+            "line": 490,
             "description": "请使用 isCalendar, 这个方法是为了向后兼容",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 499,
+            "line": 494,
             "description": "弹出日期选择框",
             "itemtype": "method",
             "name": "pickDate",
@@ -3669,7 +3669,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 537,
+            "line": 532,
             "description": "设置是否在 DOM 加载完毕后, 自动初始化所有日期控件",
             "itemtype": "property",
             "name": "autoInit",
@@ -3681,7 +3681,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 546,
+            "line": 541,
             "description": "设置默认显示的年份数, 该数为前后各多少年 默认为前后各10年",
             "itemtype": "property",
             "name": "defaultDateSpan",
@@ -3693,7 +3693,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 555,
+            "line": 550,
             "description": "最后一个显示日历组件的文本框",
             "itemtype": "property",
             "name": "lastIpt",
@@ -3704,7 +3704,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 562,
+            "line": 557,
             "description": "自定义日历组件模板\n<p>默认模板为_logic.tpl</p>\n<p>如果用户显示定义JC.Calendar.tpl的话, 将采用用户的模板</p>",
             "itemtype": "property",
             "name": "tpl",
@@ -3716,7 +3716,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 572,
+            "line": 567,
             "description": "初始化外观后的回调函数",
             "itemtype": "property",
             "name": "layoutInitedCallback",
@@ -3728,7 +3728,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 580,
+            "line": 575,
             "description": "显示为可见时的回调",
             "itemtype": "property",
             "name": "layoutShowCallback",
@@ -3740,7 +3740,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 588,
+            "line": 583,
             "description": "日历隐藏后的回调函数",
             "itemtype": "property",
             "name": "layoutHideCallback",
@@ -3752,7 +3752,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 596,
+            "line": 591,
             "description": "DOM 点击的过滤函数\n<br />默认 dom 点击时, 判断事件源不为 input[datatype=date|daterange] 会隐藏 Calendar\n<br /> 通过该回调可自定义过滤, 返回 false 不执行隐藏操作",
             "itemtype": "property",
             "name": "domClickFilter",
@@ -3764,7 +3764,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 606,
+            "line": 601,
             "description": "隐藏日历组件",
             "itemtype": "method",
             "name": "hide",
@@ -3777,7 +3777,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 623,
+            "line": 618,
             "description": "获取初始日期对象\n<p style=\"bold\">这个方法将要废除, 请使用 instance.defaultDate()</p>",
             "itemtype": "method",
             "name": "getDate",
@@ -3794,7 +3794,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 635,
+            "line": 630,
             "description": "每周的中文对应数字",
             "itemtype": "property",
             "name": "cnWeek",
@@ -3806,7 +3806,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 643,
+            "line": 638,
             "description": "100以内的中文对应数字",
             "itemtype": "property",
             "name": "cnUnit",
@@ -3818,7 +3818,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 651,
+            "line": 646,
             "description": "转换 100 以内的数字为中文数字",
             "itemtype": "method",
             "name": "getCnNum",
@@ -3838,7 +3838,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 665,
+            "line": 660,
             "description": "设置日历组件的显示位置",
             "itemtype": "method",
             "name": "position",
@@ -3855,14 +3855,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 676,
+            "line": 671,
             "description": "这个方法后续版本不再使用, 请使用 Calendar.position",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 680,
+            "line": 675,
             "description": "初始化日历组件的触发按钮",
             "itemtype": "method",
             "name": "_logic.initTrigger",
@@ -3880,7 +3880,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 762,
+            "line": 757,
             "description": "克隆 Calendar 默认 Model, View 的原型属性",
             "itemtype": "method",
             "name": "clone",
@@ -3901,7 +3901,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1385,
+            "line": 1380,
             "description": "捕获用户更改年份 \n<p>监听 年份下拉框</p>",
             "itemtype": "event",
             "name": "year change",
@@ -3912,7 +3912,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1395,
+            "line": 1390,
             "description": "捕获用户更改年份 \n<p>监听 下一年按钮</p>",
             "itemtype": "event",
             "name": "next year",
@@ -3923,7 +3923,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1405,
+            "line": 1400,
             "description": "捕获用户更改年份 \n<p>监听 上一年按钮</p>",
             "itemtype": "event",
             "name": "previous year",
@@ -3934,7 +3934,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1415,
+            "line": 1410,
             "description": "增加或者减少一年\n<p>监听 年份map</p>",
             "itemtype": "event",
             "name": "year map click",
@@ -3945,7 +3945,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1429,
+            "line": 1424,
             "description": "增加或者减少一个月\n<p>监听 月份map</p>",
             "itemtype": "event",
             "name": "month map click",
@@ -3956,7 +3956,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1443,
+            "line": 1438,
             "description": "捕获用户更改月份 \n<p>监听 下一月按钮</p>",
             "itemtype": "event",
             "name": "next year",
@@ -3967,7 +3967,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1453,
+            "line": 1448,
             "description": "捕获用户更改月份\n<p>监听 上一月按钮</p>",
             "itemtype": "event",
             "name": "previous year",
@@ -3978,7 +3978,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1464,
+            "line": 1459,
             "description": "日期点击事件",
             "itemtype": "event",
             "name": "date click",
@@ -3989,7 +3989,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1477,
+            "line": 1472,
             "description": "选择当前日期\n<p>监听确定按钮</p>",
             "itemtype": "event",
             "name": "confirm click",
@@ -4000,7 +4000,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1487,
+            "line": 1482,
             "description": "清除文本框内容\n<p>监听 清空按钮</p>",
             "itemtype": "event",
             "name": "clear click",
@@ -4011,7 +4011,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1497,
+            "line": 1492,
             "description": "取消日历组件, 相当于隐藏\n<p>监听 取消按钮</p>",
             "itemtype": "event",
             "name": "cancel click",
@@ -4022,7 +4022,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1507,
+            "line": 1502,
             "description": "日历组件按钮点击事件",
             "itemtype": "event",
             "name": "calendar button click",
@@ -4033,7 +4033,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1522,
+            "line": 1517,
             "description": "日历组件点击事件, 阻止冒泡, 防止被 document click事件隐藏",
             "itemtype": "event",
             "name": "UXCCalendar click",
@@ -4044,7 +4044,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1531,
+            "line": 1526,
             "description": "DOM 加载完毕后, 初始化日历组件相关事件",
             "itemtype": "event",
             "name": "dom ready",
@@ -4055,14 +4055,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1537,
+            "line": 1532,
             "description": "延迟200毫秒初始化页面的所有日历控件\n之所以要延迟是可以让用户自己设置是否需要自动初始化",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1545,
+            "line": 1540,
             "description": "监听窗口滚动和改变大小, 实时变更日历组件显示位置",
             "itemtype": "event",
             "name": "window scroll, window resize",
@@ -4073,7 +4073,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1554,
+            "line": 1549,
             "description": "dom 点击时, 检查事件源是否为日历组件对象, 如果不是则会隐藏日历组件",
             "itemtype": "event",
             "name": "dom click",
@@ -4084,7 +4084,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1583,
+            "line": 1578,
             "description": "日历组件文本框获得焦点",
             "itemtype": "event",
             "name": "input focus",
@@ -4095,7 +4095,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1604,
+            "line": 1599,
             "description": "自定义周弹框的模板HTML",
             "itemtype": "property",
             "name": "weekTpl",
@@ -4107,7 +4107,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1613,
+            "line": 1608,
             "description": "自定义周日历每周的起始日期 \n<br /> 0 - 6, 0=周日, 1=周一",
             "itemtype": "property",
             "name": "weekDayOffset",
@@ -4119,7 +4119,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1812,
+            "line": 1807,
             "description": "取一年中所有的星期, 及其开始结束日期",
             "itemtype": "method",
             "name": "weekOfYear",
@@ -4144,14 +4144,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1824,
+            "line": 1819,
             "description": "元旦开始的第一个星期一开始的一周为政治经济上的第一周",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 1851,
+            "line": 1846,
             "description": "自定义月份弹框的模板HTML",
             "itemtype": "property",
             "name": "monthTpl",
@@ -4163,7 +4163,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 2070,
+            "line": 2065,
             "description": "自定义周弹框的模板HTML",
             "itemtype": "property",
             "name": "seasonTpl",
@@ -4175,7 +4175,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 2246,
+            "line": 2241,
             "description": "多选日期弹框的模板HTML",
             "itemtype": "property",
             "name": "monthdayTpl",
@@ -4187,7 +4187,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 2255,
+            "line": 2250,
             "description": "多先日期弹框标题末尾的附加字样",
             "itemtype": "property",
             "name": "monthdayHeadAppendText",
@@ -4199,7 +4199,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.js",
-            "line": 2293,
+            "line": 2288,
             "description": "如果 atd 为空, 那么是 全选按钮触发的事件",
             "class": "JC.Calendar",
             "namespace": "JC"
@@ -14002,7 +14002,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1338,
+            "line": 1341,
             "description": "内部初始化方法",
             "itemtype": "method",
             "name": "_init",
@@ -14020,7 +14020,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1367,
+            "line": 1370,
             "description": "初始化之前调用的方法",
             "itemtype": "method",
             "name": "_beforeInit",
@@ -14031,7 +14031,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1375,
+            "line": 1378,
             "description": "内部事件初始化方法",
             "itemtype": "method",
             "name": "_initHanlderEvent",
@@ -14042,7 +14042,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1383,
+            "line": 1386,
             "description": "内部初始化完毕时, 调用的方法",
             "itemtype": "method",
             "name": "_inited",
@@ -14053,7 +14053,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1391,
+            "line": 1394,
             "description": "获取 显示 BaseMVC 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -14065,7 +14065,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1397,
+            "line": 1400,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -14090,7 +14090,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1405,
+            "line": 1408,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -14110,7 +14110,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1413,
+            "line": 1416,
             "description": "获取或设置 BaseMVC 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -14131,7 +14131,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1431,
+            "line": 1434,
             "description": "是否自动初始化",
             "itemtype": "property",
             "name": "autoInit",
@@ -14143,7 +14143,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1439,
+            "line": 1442,
             "description": "复制 BaseMVC 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "build",
@@ -14160,7 +14160,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1454,
+            "line": 1457,
             "description": "复制 _inClass 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "buildClass",
@@ -14187,7 +14187,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1494,
+            "line": 1497,
             "description": "为 _outClass 生成一个通用 Model 类",
             "itemtype": "method",
             "name": "buildModel",
@@ -14204,7 +14204,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1507,
+            "line": 1510,
             "description": "为 _outClass 生成一个通用 View 类",
             "itemtype": "method",
             "name": "buildView",
@@ -14221,7 +14221,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1532,
+            "line": 1535,
             "description": "设置 selector 实例引用的 data 属性名",
             "itemtype": "property",
             "name": "_instanceName",
@@ -14235,7 +14235,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1546,
+            "line": 1549,
             "description": "初始化的 jq 选择器",
             "itemtype": "method",
             "name": "selector",
@@ -14254,7 +14254,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1557,
+            "line": 1560,
             "description": "读取 int 属性的值",
             "itemtype": "method",
             "name": "intProp",
@@ -14278,7 +14278,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1578,
+            "line": 1581,
             "description": "读取 float 属性的值",
             "itemtype": "method",
             "name": "floatProp",
@@ -14302,7 +14302,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1599,
+            "line": 1602,
             "description": "读取 string 属性的值",
             "itemtype": "method",
             "name": "stringProp",
@@ -14326,7 +14326,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1617,
+            "line": 1620,
             "description": "读取 html 属性值\n<br />这个跟 stringProp 的区别是不会强制转换为小写",
             "itemtype": "method",
             "name": "attrProp",
@@ -14350,7 +14350,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1640,
+            "line": 1643,
             "description": "读取 boolean 属性的值",
             "itemtype": "method",
             "name": "boolProp",
@@ -14380,7 +14380,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1666,
+            "line": 1669,
             "description": "读取 callback 属性的值",
             "itemtype": "method",
             "name": "callbackProp",
@@ -14405,7 +14405,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1689,
+            "line": 1692,
             "description": "获取 selector 属性的 jquery 选择器",
             "itemtype": "method",
             "name": "selectorProp",
@@ -14429,7 +14429,7 @@
         },
         {
             "file": "../lib.js",
-            "line": 1712,
+            "line": 1715,
             "description": "判断 _selector 是否具体某种特征",
             "itemtype": "method",
             "name": "is",
@@ -14519,7 +14519,7 @@
         },
         {
             "message": "unknown tag: prototype",
-            "line": " ../comps/Calendar/Calendar.js:424"
+            "line": " ../comps/Calendar/Calendar.js:419"
         },
         {
             "message": "unknown tag: version",
@@ -14895,7 +14895,7 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../lib.js:1517"
+            "line": " ../lib.js:1520"
         },
         {
             "message": "Missing item type\n脚本模板 Panel",
@@ -14991,35 +14991,35 @@
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",
-            "line": " ../comps/AutoSelect/AutoSelect.js:854"
+            "line": " ../comps/AutoSelect/AutoSelect.js:857"
         },
         {
             "message": "Missing item type\n页面加载完毕时, 延时进行自动化, 延时可以避免来自其他逻辑的干扰",
-            "line": " ../comps/AutoSelect/AutoSelect.js:951"
+            "line": " ../comps/AutoSelect/AutoSelect.js:954"
         },
         {
             "message": "Missing item type\n保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",
-            "line": " ../comps/Calendar/Calendar.js:424"
+            "line": " ../comps/Calendar/Calendar.js:419"
         },
         {
             "message": "Missing item type\n请使用 isCalendar, 这个方法是为了向后兼容",
-            "line": " ../comps/Calendar/Calendar.js:495"
+            "line": " ../comps/Calendar/Calendar.js:490"
         },
         {
             "message": "Missing item type\n这个方法后续版本不再使用, 请使用 Calendar.position",
-            "line": " ../comps/Calendar/Calendar.js:676"
+            "line": " ../comps/Calendar/Calendar.js:671"
         },
         {
             "message": "Missing item type\n延迟200毫秒初始化页面的所有日历控件\n之所以要延迟是可以让用户自己设置是否需要自动初始化",
-            "line": " ../comps/Calendar/Calendar.js:1537"
+            "line": " ../comps/Calendar/Calendar.js:1532"
         },
         {
             "message": "Missing item type\n元旦开始的第一个星期一开始的一周为政治经济上的第一周",
-            "line": " ../comps/Calendar/Calendar.js:1824"
+            "line": " ../comps/Calendar/Calendar.js:1819"
         },
         {
             "message": "Missing item type\n如果 atd 为空, 那么是 全选按钮触发的事件",
-            "line": " ../comps/Calendar/Calendar.js:2293"
+            "line": " ../comps/Calendar/Calendar.js:2288"
         },
         {
             "message": "Missing item type\n监听上一年按钮",
