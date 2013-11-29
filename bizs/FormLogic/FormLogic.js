@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC', 'JC.Valid', 'JC.Form', 'JC.Panel' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Valid', 'JC.Form', 'JC.Panel' ], function(){
 //TODO: 添加 disabled bind hidden 操作
 ;(function($){
     /**
@@ -7,14 +7,16 @@
      * <br />get 查询表单
      * <br />post 提交表单
      * <br />ajax 提交表单
+     * <p><b>require</b>: 
+     *      <a href='jQuery.html'>jQuery</a>
+     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      , <a href='JC.Valid.html'>JC.Valid</a>
+     *      , <a href='JC.Form.html'>JC.Form</a>
+     *      , <a href='JC.Panel.html'>JC.Panel</a>
+     * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>
      * | <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>
-     *
-     * require: <a href='../classes/jQuery.html'>jQuery</a>
-     * <br/>require: <a href='../classes/JC.Valid.html'>JC.Valid</a>
-     * <br/>require: <a href='../classes/JC.Form.html'>JC.Form</a>
-     * <br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>
      *
      * <h2>页面只要引用本文件, 默认会自动初始化 from class="js_bizsFormLogic" 的表单</h2>
      * <h2>Form 可用的 HTML 属性</h2>

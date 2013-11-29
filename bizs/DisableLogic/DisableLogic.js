@@ -1,11 +1,14 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
  * <h2>Form Control禁用启用逻辑</h2>
  * <br/>应用场景</br>
  * <br/>表单操作时, 选择某个 radio 时, 对应的 内容有效,
  * <br/>但选择其他 radio 时, 其他的内容无效
  * <br/>checkbox / select 也可使用( 带change事件的标签 )
- *
+ * <p><b>require</b>: 
+ *      <a href='jQuery.html'>jQuery</a>
+ *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html' target='_blank'>API docs</a>
  * | <a href='../../bizs/DisableLogic/_demo' target='_blank'>demo link</a></p>

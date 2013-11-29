@@ -77,7 +77,7 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
         , "moneyFormat": moneyFormat
 
         /**
-         * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量
+         * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
          */
         , "backward":
             function( _setter ){
@@ -1000,7 +1000,10 @@ window.Bizs = window.Bizs || {};
     /**
      * JC jquery 组件库 资源调用控制类
      * <br />这是一个单例模式, 全局访问使用 JC 或 window.JC
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
+     * <p><b>require</b>: 
+     *      <a href='jQuery.html'>jQuery</a>
+     *      , <a href='JC.common.html'>JC.common</a>
+     * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/window.JC.html' target='_blank'>API docs</a>
      * | <a href='../../_demo' target='_blank'>demo link</a></p>
