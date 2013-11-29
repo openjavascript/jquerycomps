@@ -7,10 +7,10 @@
     window.Fixed = JC.Fixed = Fixed;
     /**
      * 内容固定于屏幕某个位置显示
-     * <dl>
-     *      <dd><b>require</b>: <a href='jQuery.html'>jQuery</a></dd>
-     *      <dd><b>require</b>: <a href='.window.html#property_$.support.isFixed'>$.support.isFixed</a></dd>
-     * </dl>
+     * <p><b>require</b>: 
+     *      <a href='jQuery.html'>jQuery</a>
+     *      , <a href='JC.common.html'>JC.common</a>
+     * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Fixed.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Fixed/_demo' target='_blank'>demo link</a></p>

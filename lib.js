@@ -30,9 +30,9 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
     /**
      * JC 组件通用静态方法和属性 ( JC.common, <b>别名: JC.f</b> )
      * <br />所有 JC 组件都会依赖这个静态类
+     * <p><b>require</b>: <a href='jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.common.html' target='_blank'>API docs</a>
-     * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
      * @class JC.common
      * @static
      * @version dev 0.2 2013-11-06 

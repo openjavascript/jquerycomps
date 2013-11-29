@@ -2,10 +2,9 @@
  ;(function($){
     /**
      * 全选/反选
-     * <p>
-     *      <b>require</b>: 
-     *          <a href='jQuery.html'>jQuery</a>
-     *          , <a href='JC.common.html'>JC.common</a>
+     * <p><b>require</b>: 
+     *      <a href='jQuery.html'>jQuery</a>
+     *      , <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoChecked.html' target='_blank'>API docs</a>
