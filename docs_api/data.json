@@ -399,7 +399,7 @@
             "namespace": "window.Bizs",
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
             "line": 3,
-            "description": "<h2>node 点击操作逻辑</h2>\n应用场景\n<br/>点击后弹框( 脚本模板 )\n<br/>点击后弹框( AJAX )\n<br/>点击后弹框( Dom 模板 )\n<br/>点击后执行 AJAX 操作\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.ActionLogic/0.1/_demo' target='_blank'>demo link</a></p>\n\nrequire: <a href='../classes/window.jQuery.html'>jQuery</a>\n<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>\n\na|button 需要 添加 class=\"js_bizsActionLogic\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>balType = string, 操作类型 </dt>\n     <dd>\n         <dl>\n             <dt>类型:</dt>\n             <dd>panel: 弹框</dd>\n             <dd>link: 链接跳转</dd>\n             <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>\n         </dl>\n     </dd>\n</dl>\n<h2>balType = panel 可用的 HTML 属性</h2>\n<dl>\n     <dt>balPanelTpl = script selector</dt>\n     <dd>脚本模板选择器</dd>\n\n     <dt>balAjaxHtml = url</dt>\n     <dd>返回 HTML 的 AJAX 模板</dd>\n\n     <dt>balAjaxData = url</dt>\n     <dd>返回 json 的 AJAX 模板, { errorno: int, data: html } </dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         显示模板后的回调\n<pre>function balPanelInitCb( _panelIns ){\n   var _trigger = $(this);\n   //return true; //如果返回真的话, 表单提交后会关闭弹框\n}</pre>\n     </dd>\n</dl>\n<h2>balType = link 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>要跳转的目标 URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>跳转前的二次确认提示信息</dd>\n\n     <dt>balConfirmPopupType = string, default = confirm</dt>\n     <dd>二次确认的弹框类型: confirm, dialog.confirm</dd>\n</dl>\n<h2>balType = ajaxaction 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>AJAX 操作的接口</dd>\n\n     <dt>balDoneUrl = url</dt>\n     <dd>AJAX 操作完成后跳转的URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>操作前的二次确认提示信息</dd>\n\n     <dt>balErrorPopupType = string, default = dialog.alert</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balSuccessPopupType = string, default = msgbox</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         操作完成后的回调\n<pre>function ajaxDelCallback( _d, _ins ){\n   var _trigger = $(this);\n   if( _d && !_d.errorno ){\n       JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){\n           JC.f.reloadPage( '?usercallback=ajaxaction' );\n       });\n   }else{\n       JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );\n   }\n}\n</pre>\n     </dd>\n</dl>",
+            "description": "<h2>node 点击操作逻辑</h2>\n应用场景\n<br/>点击后弹框( 脚本模板 )\n<br/>点击后弹框( AJAX )\n<br/>点击后弹框( Dom 模板 )\n<br/>点击后执行 AJAX 操作\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.ActionLogic/0.1/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_bizsActionLogic\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>balType = string, 操作类型 </dt>\n     <dd>\n         <dl>\n             <dt>类型:</dt>\n             <dd>panel: 弹框</dd>\n             <dd>link: 链接跳转</dd>\n             <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>\n         </dl>\n     </dd>\n</dl>\n<h2>balType = panel 可用的 HTML 属性</h2>\n<dl>\n     <dt>balPanelTpl = script selector</dt>\n     <dd>脚本模板选择器</dd>\n\n     <dt>balAjaxHtml = url</dt>\n     <dd>返回 HTML 的 AJAX 模板</dd>\n\n     <dt>balAjaxData = url</dt>\n     <dd>返回 json 的 AJAX 模板, { errorno: int, data: html } </dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         显示模板后的回调\n<pre>function balPanelInitCb( _panelIns ){\n   var _trigger = $(this);\n   //return true; //如果返回真的话, 表单提交后会关闭弹框\n}</pre>\n     </dd>\n</dl>\n<h2>balType = link 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>要跳转的目标 URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>跳转前的二次确认提示信息</dd>\n\n     <dt>balConfirmPopupType = string, default = confirm</dt>\n     <dd>二次确认的弹框类型: confirm, dialog.confirm</dd>\n</dl>\n<h2>balType = ajaxaction 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>AJAX 操作的接口</dd>\n\n     <dt>balDoneUrl = url</dt>\n     <dd>AJAX 操作完成后跳转的URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>操作前的二次确认提示信息</dd>\n\n     <dt>balErrorPopupType = string, default = dialog.alert</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balSuccessPopupType = string, default = msgbox</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         操作完成后的回调\n<pre>function ajaxDelCallback( _d, _ins ){\n   var _trigger = $(this);\n   if( _d && !_d.errorno ){\n       JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){\n           JC.f.reloadPage( '?usercallback=ajaxaction' );\n       });\n   }else{\n       JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );\n   }\n}\n</pre>\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-17",
@@ -416,7 +416,7 @@
             "namespace": "window.Bizs",
             "file": "../modules/Bizs.AutoSelectComplete/0.1/AutoSelectComplete.js",
             "line": 4,
-            "description": "<h2>结合 JC.AutoSelect 与 JC.AutoComplete 综合使用的一个业务逻辑</h2>\n<br />应用场景: CRM 多级广告位最后一级因为内容较多, 用户使用传统的下拉框选择比较不便\n<br />这个业务组件结合 JC.AutoSelect 和 JC.AutoComplete 提供一种简便的可输入解决方案\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.AutoSelectComplete.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.AutoSelectComplete/0.1/_demo' target='_blank'>demo link</a></p>\n<p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>bascAjaxUrl = url</dt>\n     <dd>\n         获取 JC.AutoComplete 数据的 AJAX 接口\n         <dl>\n             <dt>数据格式</dt>\n             <dd>\n                 [ { \"id\": \"id value\", \"label\": \"label value\" }, ... ]\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>bascDefaultSelect = selector</dt>\n     <dd>声明 JC.AutoSelect 的围住 select</dd>\n</dl>",
+            "description": "<h2>结合 JC.AutoSelect 与 JC.AutoComplete 综合使用的一个业务逻辑</h2>\n<br />应用场景: CRM 多级广告位最后一级因为内容较多, 用户使用传统的下拉框选择比较不便\n<br />这个业务组件结合 JC.AutoSelect 和 JC.AutoComplete 提供一种简便的可输入解决方案\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.AutoComplete.html'>JC.AutoComplete</a>\n     , <a href='JC.AutoSelect.html'>JC.AutoSelect</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.AutoSelectComplete.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.AutoSelectComplete/0.1/_demo' target='_blank'>demo link</a></p>\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>bascAjaxUrl = url</dt>\n     <dd>\n         获取 JC.AutoComplete 数据的 AJAX 接口\n         <dl>\n             <dt>数据格式</dt>\n             <dd>\n                 [ { \"id\": \"id value\", \"label\": \"label value\" }, ... ]\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>bascDefaultSelect = selector</dt>\n     <dd>声明 JC.AutoSelect 的围住 select</dd>\n</dl>",
             "is_constructor": 1,
             "params": [
                 {
@@ -559,7 +559,7 @@
             "namespace": "JC",
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
             "line": 3,
-            "description": "Ajax 文件上传\n<p>\n     <b>require</b>: \n         <a href='window.jQuery.html'>jQuery</a>\n         , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n         , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.AjaxUpload/0.1/_demo' target='_blank'>demo link</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/0.1/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>\n     <dd>\n         上传完成后是否隐藏上传按钮\n     </dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<pre>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '&lt;a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}&lt;/a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;&lt;a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\">&lt;/a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</pre>\n     </dd>\n</dl>",
+            "description": "Ajax 文件上传\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.AjaxUpload/0.1/_demo' target='_blank'>demo link</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/0.1/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>\n     <dd>\n         上传完成后是否隐藏上传按钮\n     </dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<pre>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '&lt;a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}&lt;/a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;&lt;a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\">&lt;/a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</pre>\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -1646,7 +1646,7 @@
     "classitems": [
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 120,
+            "line": 122,
             "description": "获取或设置 ActionLogic 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -1667,7 +1667,7 @@
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 136,
+            "line": 138,
             "description": "判断 selector 是否可以初始化 ActionLogic",
             "itemtype": "method",
             "name": "isActionLogic",
@@ -1687,7 +1687,7 @@
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 151,
+            "line": 153,
             "description": "批量初始化 ActionLogic\n<br />页面加载完毕时, 已使用 事件代理 初始化\n<br />如果是弹框中的 ActionLogic, 由于事件冒泡被阻止了, 需要显示调用  init 方法",
             "itemtype": "method",
             "name": "init",
@@ -1703,7 +1703,7 @@
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 170,
+            "line": 172,
             "description": "初始化 ActionLogic, 并执行",
             "itemtype": "method",
             "name": "process",
@@ -1724,63 +1724,63 @@
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 198,
+            "line": 200,
             "description": "脚本模板 Panel",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 204,
+            "line": 206,
             "description": "显示 Panel",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 216,
+            "line": 218,
             "description": "ajax Panel",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 246,
+            "line": 248,
             "description": "跳转到 URL",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 255,
+            "line": 257,
             "description": "ajax 执行操作",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 289,
+            "line": 291,
             "description": "处理错误提示",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 321,
+            "line": 323,
             "description": "处理二次确认",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 341,
+            "line": 343,
             "description": "处理成功提示",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 374,
+            "line": 376,
             "description": "执行操作",
             "itemtype": "method",
             "name": "process",
@@ -1793,7 +1793,7 @@
         },
         {
             "file": "../modules/Bizs.AutoSelectComplete/0.1/AutoSelectComplete.js",
-            "line": 51,
+            "line": 56,
             "description": "获取或设置 AutoSelectComplete 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -1814,7 +1814,7 @@
         },
         {
             "file": "../modules/Bizs.AutoSelectComplete/0.1/AutoSelectComplete.js",
-            "line": 67,
+            "line": 72,
             "description": "初始化可识别的 AutoSelectComplete 实例",
             "itemtype": "method",
             "name": "init",
@@ -1835,7 +1835,7 @@
         },
         {
             "file": "../modules/Bizs.AutoSelectComplete/0.1/AutoSelectComplete.js",
-            "line": 210,
+            "line": 215,
             "description": "selectallchanged",
             "class": "window.Bizs.AutoSelectComplete",
             "namespace": "window.Bizs"
@@ -2375,7 +2375,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 151,
+            "line": 150,
             "description": "获取或设置 AjaxUpload 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -2396,7 +2396,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 167,
+            "line": 166,
             "description": "初始化可识别的组件",
             "itemtype": "method",
             "name": "init",
@@ -2417,7 +2417,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 187,
+            "line": 186,
             "description": "frame 文件名",
             "itemtype": "property",
             "name": "frameFileName",
@@ -2429,7 +2429,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 195,
+            "line": 194,
             "description": "载入 frame 文件时, 是否添加随机数防止缓存",
             "itemtype": "property",
             "name": "randomFrame",
@@ -2441,7 +2441,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 203,
+            "line": 202,
             "description": "frame 文件夹位于库的位置",
             "itemtype": "property",
             "name": "_FRAME_DIR",
@@ -2455,7 +2455,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 213,
+            "line": 212,
             "description": "初始化 frame 时递增的统计变量",
             "itemtype": "property",
             "name": "_INS_COUNT",
@@ -2469,42 +2469,42 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 233,
+            "line": 232,
             "description": "iframe 加载完毕后触发的事件, 执行初始化操作",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 267,
+            "line": 266,
             "description": "文件扩展名错误",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 274,
+            "line": 273,
             "description": "上传前触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 280,
+            "line": 279,
             "description": "上传完毕触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 317,
+            "line": 316,
             "description": "frame 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 334,
+            "line": 333,
             "description": "手动更新数据",
             "itemtype": "method",
             "name": "update",
@@ -2526,7 +2526,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
-            "line": 456,
+            "line": 455,
             "description": "恢复默认状态",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
@@ -15213,39 +15213,39 @@
         },
         {
             "message": "Missing item type\n脚本模板 Panel",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:198"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:200"
         },
         {
             "message": "Missing item type\n显示 Panel",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:204"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:206"
         },
         {
             "message": "Missing item type\najax Panel",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:216"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:218"
         },
         {
             "message": "Missing item type\n跳转到 URL",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:246"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:248"
         },
         {
             "message": "Missing item type\najax 执行操作",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:255"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:257"
         },
         {
             "message": "Missing item type\n处理错误提示",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:289"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:291"
         },
         {
             "message": "Missing item type\n处理二次确认",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:321"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:323"
         },
         {
             "message": "Missing item type\n处理成功提示",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:341"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:343"
         },
         {
             "message": "Missing item type\nselectallchanged",
-            "line": " ../modules/Bizs.AutoSelectComplete/0.1/AutoSelectComplete.js:210"
+            "line": " ../modules/Bizs.AutoSelectComplete/0.1/AutoSelectComplete.js:215"
         },
         {
             "message": "Missing item type\nupdate current selector",
@@ -15269,27 +15269,27 @@
         },
         {
             "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:233"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:232"
         },
         {
             "message": "Missing item type\n文件扩展名错误",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:267"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:266"
         },
         {
             "message": "Missing item type\n上传前触发的事件",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:274"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:273"
         },
         {
             "message": "Missing item type\n上传完毕触发的事件",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:280"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:279"
         },
         {
             "message": "Missing item type\nframe 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:317"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:316"
         },
         {
             "message": "Missing item type\n恢复默认状态",
-            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:456"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:455"
         },
         {
             "message": "Missing item type\n点击列表时, 阻止冒泡",

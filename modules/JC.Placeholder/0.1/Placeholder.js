@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
  * Placeholder 占位符提示功能
  * <p>
