@@ -29,7 +29,7 @@ window.Bizs = window.Bizs || {};
      *      , <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/window.JC.html' target='_blank'>API docs</a>
+     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.html' target='_blank'>API docs</a>
      * | <a href='../../_demo' target='_blank'>demo link</a></p>
      * @class JC
      * @static
