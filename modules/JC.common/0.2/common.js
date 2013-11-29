@@ -59,7 +59,7 @@
         , "moneyFormat": moneyFormat
 
         /**
-         * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数变量
+         * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
          */
         , "backward":
             function( _setter ){
