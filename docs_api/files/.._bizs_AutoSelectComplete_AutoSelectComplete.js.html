@@ -184,18 +184,36 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27;, &#x27;JC.BaseMVC&#x27;, &#x27;JC.AutoComplete&#x27;, &#x27;JC.AutoSelect&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.AutoComplete&#x27;, &#x27;JC.AutoSelect&#x27; ], function(){
 ;(function($){
     /**
-     * Bizs.AutoSelectComplete 
+     * &lt;h2&gt;结合 JC.AutoSelect 与 JC.AutoComplete 综合使用的一个业务逻辑&lt;/h2&gt;
      * &lt;br /&gt;应用场景: CRM 多级广告位最后一级因为内容较多, 用户使用传统的下拉框选择比较不便
-     * &lt;br /&gt;这个业务组件结合 JC.AutoSelect 和 JC.AutoComplete 提供一种简单的可输入解决方案
-     * &lt;p&gt;&lt;b&gt;requires&lt;/b&gt;: &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
+     * &lt;br /&gt;这个业务组件结合 JC.AutoSelect 和 JC.AutoComplete 提供一种简便的可输入解决方案
+     * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
+     *      &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
+     *      , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+     *      , &lt;a href=&#x27;JC.AutoComplete.html&#x27;&gt;JC.AutoComplete&lt;/a&gt;
+     *      , &lt;a href=&#x27;JC.AutoSelect.html&#x27;&gt;JC.AutoSelect&lt;/a&gt;
+     * &lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/Bizs.AutoSelectComplete.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../bizs/AutoSelectComplete/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * &lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
      * &lt;dl&gt;
+     *      &lt;dt&gt;bascAjaxUrl = url&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          获取 JC.AutoComplete 数据的 AJAX 接口
+     *          &lt;dl&gt;
+     *              &lt;dt&gt;数据格式&lt;/dt&gt;
+     *              &lt;dd&gt;
+     *                  [ { &quot;id&quot;: &quot;id value&quot;, &quot;label&quot;: &quot;label value&quot; }, ... ]
+     *              &lt;/dd&gt;
+     *          &lt;/dl&gt;
+     *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;bascDefaultSelect = selector&lt;/dt&gt;
+     *      &lt;dd&gt;声明 JC.AutoSelect 的围住 select&lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace window.Bizs
      * @class AutoSelectComplete

@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC', 'JC.Panel' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
 /**
  * <h2>node 点击操作逻辑</h2>
  * 应用场景
@@ -6,12 +6,14 @@
  * <br/>点击后弹框( AJAX )
  * <br/>点击后弹框( Dom 模板 )
  * <br/>点击后执行 AJAX 操作
+ * <p><b>require</b>: 
+ *      <a href='jQuery.html'>jQuery</a>
+ *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      , <a href='JC.Panel.html'>JC.Panel</a>
+ * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>
  * | <a href='../../bizs/ActionLogic/_demo' target='_blank'>demo link</a></p>
- *
- * require: <a href='../classes/jQuery.html'>jQuery</a>
- * <br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>
  *
  * a|button 需要 添加 class="js_bizsActionLogic"
  *

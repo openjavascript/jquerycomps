@@ -351,7 +351,7 @@
             "namespace": "window.Bizs",
             "file": "../bizs/ActionLogic/ActionLogic.js",
             "line": 2,
-            "description": "<h2>node 点击操作逻辑</h2>\n应用场景\n<br/>点击后弹框( 脚本模板 )\n<br/>点击后弹框( AJAX )\n<br/>点击后弹框( Dom 模板 )\n<br/>点击后执行 AJAX 操作\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/ActionLogic/_demo' target='_blank'>demo link</a></p>\n\nrequire: <a href='../classes/jQuery.html'>jQuery</a>\n<br/>require: <a href='../classes/JC.Panel.html'>JC.Panel</a>\n\na|button 需要 添加 class=\"js_bizsActionLogic\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>balType = string, 操作类型 </dt>\n     <dd>\n         <dl>\n             <dt>类型:</dt>\n             <dd>panel: 弹框</dd>\n             <dd>link: 链接跳转</dd>\n             <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>\n         </dl>\n     </dd>\n</dl>\n<h2>balType = panel 可用的 HTML 属性</h2>\n<dl>\n     <dt>balPanelTpl = script selector</dt>\n     <dd>脚本模板选择器</dd>\n\n     <dt>balAjaxHtml = url</dt>\n     <dd>返回 HTML 的 AJAX 模板</dd>\n\n     <dt>balAjaxData = url</dt>\n     <dd>返回 json 的 AJAX 模板, { errorno: int, data: html } </dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         显示模板后的回调\n<pre>function balPanelInitCb( _panelIns ){\n   var _trigger = $(this);\n   //return true; //如果返回真的话, 表单提交后会关闭弹框\n}</pre>\n     </dd>\n</dl>\n<h2>balType = link 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>要跳转的目标 URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>跳转前的二次确认提示信息</dd>\n\n     <dt>balConfirmPopupType = string, default = confirm</dt>\n     <dd>二次确认的弹框类型: confirm, dialog.confirm</dd>\n</dl>\n<h2>balType = ajaxaction 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>AJAX 操作的接口</dd>\n\n     <dt>balDoneUrl = url</dt>\n     <dd>AJAX 操作完成后跳转的URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>操作前的二次确认提示信息</dd>\n\n     <dt>balErrorPopupType = string, default = dialog.alert</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balSuccessPopupType = string, default = msgbox</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         操作完成后的回调\n<pre>function ajaxDelCallback( _d, _ins ){\n   var _trigger = $(this);\n   if( _d && !_d.errorno ){\n       JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){\n           JC.f.reloadPage( '?usercallback=ajaxaction' );\n       });\n   }else{\n       JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );\n   }\n}\n</pre>\n     </dd>\n</dl>",
+            "description": "<h2>node 点击操作逻辑</h2>\n应用场景\n<br/>点击后弹框( 脚本模板 )\n<br/>点击后弹框( AJAX )\n<br/>点击后弹框( Dom 模板 )\n<br/>点击后执行 AJAX 操作\n<p><b>require</b>: \n     <a href='jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/ActionLogic/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_bizsActionLogic\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>balType = string, 操作类型 </dt>\n     <dd>\n         <dl>\n             <dt>类型:</dt>\n             <dd>panel: 弹框</dd>\n             <dd>link: 链接跳转</dd>\n             <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>\n         </dl>\n     </dd>\n</dl>\n<h2>balType = panel 可用的 HTML 属性</h2>\n<dl>\n     <dt>balPanelTpl = script selector</dt>\n     <dd>脚本模板选择器</dd>\n\n     <dt>balAjaxHtml = url</dt>\n     <dd>返回 HTML 的 AJAX 模板</dd>\n\n     <dt>balAjaxData = url</dt>\n     <dd>返回 json 的 AJAX 模板, { errorno: int, data: html } </dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         显示模板后的回调\n<pre>function balPanelInitCb( _panelIns ){\n   var _trigger = $(this);\n   //return true; //如果返回真的话, 表单提交后会关闭弹框\n}</pre>\n     </dd>\n</dl>\n<h2>balType = link 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>要跳转的目标 URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>跳转前的二次确认提示信息</dd>\n\n     <dt>balConfirmPopupType = string, default = confirm</dt>\n     <dd>二次确认的弹框类型: confirm, dialog.confirm</dd>\n</dl>\n<h2>balType = ajaxaction 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>AJAX 操作的接口</dd>\n\n     <dt>balDoneUrl = url</dt>\n     <dd>AJAX 操作完成后跳转的URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>操作前的二次确认提示信息</dd>\n\n     <dt>balErrorPopupType = string, default = dialog.alert</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balSuccessPopupType = string, default = msgbox</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         操作完成后的回调\n<pre>function ajaxDelCallback( _d, _ins ){\n   var _trigger = $(this);\n   if( _d && !_d.errorno ){\n       JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){\n           JC.f.reloadPage( '?usercallback=ajaxaction' );\n       });\n   }else{\n       JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );\n   }\n}\n</pre>\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-17",
@@ -368,7 +368,7 @@
             "namespace": "window.Bizs",
             "file": "../bizs/AutoSelectComplete/AutoSelectComplete.js",
             "line": 3,
-            "description": "Bizs.AutoSelectComplete \n<br />应用场景: CRM 多级广告位最后一级因为内容较多, 用户使用传统的下拉框选择比较不便\n<br />这个业务组件结合 JC.AutoSelect 和 JC.AutoComplete 提供一种简单的可输入解决方案\n<p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/Bizs.AutoSelectComplete.html' target='_blank'>API docs</a>\n| <a href='../../bizs/AutoSelectComplete/_demo' target='_blank'>demo link</a></p>\n<h2>可用的 HTML attribute</h2>\n<dl>\n</dl>",
+            "description": "<h2>结合 JC.AutoSelect 与 JC.AutoComplete 综合使用的一个业务逻辑</h2>\n<br />应用场景: CRM 多级广告位最后一级因为内容较多, 用户使用传统的下拉框选择比较不便\n<br />这个业务组件结合 JC.AutoSelect 和 JC.AutoComplete 提供一种简便的可输入解决方案\n<p><b>require</b>: \n     <a href='jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.AutoComplete.html'>JC.AutoComplete</a>\n     , <a href='JC.AutoSelect.html'>JC.AutoSelect</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/Bizs.AutoSelectComplete.html' target='_blank'>API docs</a>\n| <a href='../../bizs/AutoSelectComplete/_demo' target='_blank'>demo link</a></p>\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>bascAjaxUrl = url</dt>\n     <dd>\n         获取 JC.AutoComplete 数据的 AJAX 接口\n         <dl>\n             <dt>数据格式</dt>\n             <dd>\n                 [ { \"id\": \"id value\", \"label\": \"label value\" }, ... ]\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>bascDefaultSelect = selector</dt>\n     <dd>声明 JC.AutoSelect 的围住 select</dd>\n</dl>",
             "is_constructor": 1,
             "params": [
                 {
@@ -1616,7 +1616,7 @@
     "classitems": [
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 119,
+            "line": 121,
             "description": "获取或设置 ActionLogic 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -1637,7 +1637,7 @@
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 135,
+            "line": 137,
             "description": "判断 selector 是否可以初始化 ActionLogic",
             "itemtype": "method",
             "name": "isActionLogic",
@@ -1657,7 +1657,7 @@
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 150,
+            "line": 152,
             "description": "批量初始化 ActionLogic\n<br />页面加载完毕时, 已使用 事件代理 初始化\n<br />如果是弹框中的 ActionLogic, 由于事件冒泡被阻止了, 需要显示调用  init 方法",
             "itemtype": "method",
             "name": "init",
@@ -1673,7 +1673,7 @@
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 169,
+            "line": 171,
             "description": "初始化 ActionLogic, 并执行",
             "itemtype": "method",
             "name": "process",
@@ -1694,63 +1694,63 @@
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 197,
+            "line": 199,
             "description": "脚本模板 Panel",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 203,
+            "line": 205,
             "description": "显示 Panel",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 215,
+            "line": 217,
             "description": "ajax Panel",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 245,
+            "line": 247,
             "description": "跳转到 URL",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 254,
+            "line": 256,
             "description": "ajax 执行操作",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 288,
+            "line": 290,
             "description": "处理错误提示",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 320,
+            "line": 322,
             "description": "处理二次确认",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 340,
+            "line": 342,
             "description": "处理成功提示",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 373,
+            "line": 375,
             "description": "执行操作",
             "itemtype": "method",
             "name": "process",
@@ -1763,7 +1763,7 @@
         },
         {
             "file": "../bizs/AutoSelectComplete/AutoSelectComplete.js",
-            "line": 37,
+            "line": 55,
             "description": "获取或设置 AutoSelectComplete 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -1784,7 +1784,7 @@
         },
         {
             "file": "../bizs/AutoSelectComplete/AutoSelectComplete.js",
-            "line": 53,
+            "line": 71,
             "description": "初始化可识别的 AutoSelectComplete 实例",
             "itemtype": "method",
             "name": "init",
@@ -1805,7 +1805,7 @@
         },
         {
             "file": "../bizs/AutoSelectComplete/AutoSelectComplete.js",
-            "line": 196,
+            "line": 214,
             "description": "selectallchanged",
             "class": "window.Bizs.AutoSelectComplete",
             "namespace": "window.Bizs"
@@ -14899,39 +14899,39 @@
         },
         {
             "message": "Missing item type\n脚本模板 Panel",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:197"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:199"
         },
         {
             "message": "Missing item type\n显示 Panel",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:203"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:205"
         },
         {
             "message": "Missing item type\najax Panel",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:215"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:217"
         },
         {
             "message": "Missing item type\n跳转到 URL",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:245"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:247"
         },
         {
             "message": "Missing item type\najax 执行操作",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:254"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:256"
         },
         {
             "message": "Missing item type\n处理错误提示",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:288"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:290"
         },
         {
             "message": "Missing item type\n处理二次确认",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:320"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:322"
         },
         {
             "message": "Missing item type\n处理成功提示",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:340"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:342"
         },
         {
             "message": "Missing item type\nselectallchanged",
-            "line": " ../bizs/AutoSelectComplete/AutoSelectComplete.js:196"
+            "line": " ../bizs/AutoSelectComplete/AutoSelectComplete.js:214"
         },
         {
             "message": "Missing item type\nupdate current selector",
