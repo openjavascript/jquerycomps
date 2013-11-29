@@ -9,7 +9,10 @@
      * <br />如果要禁用自动初始化, 请把静态属性  Tips.autoInit 置为 false</p>
      * <p><b>注意:</b> Tips 默认构造函数只处理单一标签
      * <br />, 如果需要处理多个标签, 请使用静态方法 Tips.init( _selector )</p>
-     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a></p>
+     * <p><b>require</b>: 
+     *      <a href='jQuery.html'>jQuery</a>
+     *      , <a href='JC.common.html'>JC.common</a>
+     * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tips.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Tips/_demo' target='_blank'>demo link</a></p>

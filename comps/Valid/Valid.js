@@ -5,7 +5,10 @@
     /**
      * <b>表单验证</b> (单例模式)
      * <br />全局访问请使用 JC.Valid 或 Valid
-     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a></p>
+     * <p><b>require</b>: 
+     *      <a href='jQuery.html'>jQuery</a>
+     *      , <a href='JC.common.html'>JC.common</a>
+     * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>

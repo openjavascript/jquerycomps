@@ -4,8 +4,10 @@
     window.Tree = JC.Tree = Tree;
     /**
      * 树菜单类 JC.Tree
-     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a>, 
-     * <a href='.window.html#method_JC.f.printf'>window.JC.f.printf</a></p>
+     * <p><b>require</b>: 
+     *      <a href='jQuery.html'>jQuery</a>
+     *      , <a href='JC.common.html'>JC.common</a>
+     * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tree.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Tree/_demo' target='_blank'>demo link</a></p>

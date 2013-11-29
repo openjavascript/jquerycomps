@@ -4,7 +4,10 @@
     window.Suggest = JC.Suggest = Suggest;
     /**
      * Suggest 关键词补全提示类
-     * <p><b>requires</b>: <a href='jQuery.html'>jQuery</a></p>
+     * <p><b>require</b>: 
+     *      <a href='jQuery.html'>jQuery</a>
+     *      , <a href='JC.common.html'>JC.common</a>
+     * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Suggest.html' target='_blank'>API docs</a>
      * | <a href='../../comps/Suggest/_demo' target='_blank'>demo link</a></p>
