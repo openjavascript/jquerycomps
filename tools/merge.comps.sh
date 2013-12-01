@@ -22,6 +22,8 @@ sleep 1s;
 
 sh -c "cd $cur_dir && sh generate_api_docs.sh";
 
+sh -c "cd $cur_dir/build && sh build.sh";
+
 #sh -c "cd $dir && tar -xvpzf tmp.tgz -C .";
 #mv $dir/BaseMVC.js comps/BaseMVC/BaseMVC.js
 #rm $dir/tmp.tgz

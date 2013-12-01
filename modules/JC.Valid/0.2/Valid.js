@@ -1,6 +1,7 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
 //TODO: checkbox, radio 错误时, input 添加高亮显示
+//TODO: daterange 支持一对多关系
 ;(function($){
     /**
      * <b>表单验证</b> (单例模式)

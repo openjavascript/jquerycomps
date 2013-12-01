@@ -1,4 +1,5 @@
 //TODO: 文本框 自动添加 autocomplete="off", 防止表单的默认提示
+//列表项 添加 title 属性
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.AutoComplete', 'JC.AutoSelect' ], function(){
 ;(function($){
     /**
