@@ -46,17 +46,24 @@
                                                 , 'JC.BaseMVC/0.1/BaseMVC.js' 
                                                 , 'JC.Valid/0.2/Valid.js'
                                                 , 'JC.Panel/0.1/Panel.js'
-                                                , 'JC.Placeholder/0.1/Placeholder.js'
                                                 , 'JC.AutoChecked/0.1/AutoChecked.js'
                                                 , 'JC.AutoSelect/0.2/AutoSelect.js'
-                                                , 'JC.AutoComplete/0.1/AutoComplete.js'
                                                 , 'JC.Form/0.1/Form.js'
                                                 , 'JC.Calendar/0.2/Calendar.js'
+                                                , 'JC.AjaxUpload/0.1/AjaxUpload.js'
                                             ].join() 
-                                            + '?v=20131201';
+                                            + '?p=c';
+
+            var _additionPath = 'modules/??' + [ 
+                                                'JC.AutoComplete/0.1/AutoComplete.js'
+                                                , 'JC.Placeholder/0.1/Placeholder.js'
+                                            ].join() 
+                                            + '?p=c';
 
             requirejs.config( {
                 baseUrl: JC.PATH
+                , urlArgs: 'v=20131201'
+                , waitSeconds: 1
                 , paths: {
                     'JC.common': _mainPath
                     , 'JC.BaseMVC': _mainPath
@@ -64,13 +71,14 @@
                     , 'JC.Calendar': _mainPath
                     , 'JC.Panel': _mainPath
                     , 'JC.Valid': _mainPath
-                    , 'JC.Placeholder': _mainPath
                     , 'JC.AutoChecked': _mainPath
                     , 'JC.AutoSelect': _mainPath
                     , 'JC.AutoComplete': _mainPath
                     , 'JC.Form': _mainPath
 
-                    , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload'
+                    , 'JC.AjaxUpload': _additionPath
+                    , 'JC.Placeholder': _additionPath
+
                     , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
                     , 'JC.LunarCalendar': 'modules/JC.LunarCalendar/0.1/LunarCalendar'
                     , 'JC.Slider': 'modules/JC.Slider/0.1/Slider'
@@ -88,18 +96,20 @@
                     , 'Bizs.MoneyTips': 'modules/Bizs.MoneyTips/0.1/MoneyTips'
                     , 'Bizs.MultiDate': 'modules/Bizs.MultiDate/0.1/MultiDate'
 
-                    , 'plugins.jquery.form': 'plugins/jquery.form/3.36.0/jquery.form'
-                    , 'plugins.jquery.rate': 'plugins/jquery.rate/2.5.2/jquery.rate'
-                    , 'plugins.requirejs.domReady': 'plugins/requirejs.domReady/2.0.1/domReady'
                     , 'plugins.JSON2': 'plugins/JSON/2/JSON'
                     , 'plugins.Aes': 'plugins/Aes/0.1/Aes'
                     , 'plugins.Base64': 'plugins/Base64/0.1/Base64'
                     , 'plugins.md5': 'plugins/md5/0.1/md5'
+
+                    , 'plugins.jquery.form': 'plugins/jquery.form/3.36.0/jquery.form'
+                    , 'plugins.jquery.rate': 'plugins/jquery.rate/2.5.2/jquery.rate'
+
+                    , 'plugins.requirejs.domReady': 'plugins/requirejs.domReady/2.0.1/domReady'
                 }
             });
         })());
 
-        requirejs( [ 'JC.Valid' ], function(){
+        requirejs( [ 'JC.Valid', 'JC.Form' ], function(){
         });
 
         requirejs( [ 'plugins.jquery.form' ], function(){} );
