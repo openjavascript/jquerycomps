@@ -6,6 +6,7 @@ JC.PATH = JC.PATH || scriptPath();
 window.requirejs && 
 requirejs.config( {
     baseUrl: JC.PATH
+    , urlArgs: 'v=20131201'
     , paths: {
         'JC.common': 'modules/JC.common/0.2/common'
         , 'JC.BaseMVC': 'modules/JC.BaseMVC/0.1/BaseMVC'
@@ -39,13 +40,13 @@ requirejs.config( {
         , 'Bizs.MoneyTips': 'modules/Bizs.MoneyTips/0.1/MoneyTips'
         , 'Bizs.MultiDate': 'modules/Bizs.MultiDate/0.1/MultiDate'
 
-        , 'plugins.domReady': 'modules/JC.plugins/domReady'
-        , 'plugins.aes': 'modules/JC.plugins/aes'
-        , 'plugins.base64': 'modules/JC.plugins/base64'
-        , 'plugins.json2': 'modules/JC.plugins/json2'
-        , 'plugins.jquery.form': 'modules/JC.plugins/jquery.form'
-        , 'plugins.md5': 'modules/JC.plugins/md5'
-        , 'plugins.rate': 'modules/JC.plugins/rate/rate'
+        , 'plugins.jquery.form': 'plugins/jquery.form/3.36.0/jquery.form'
+        , 'plugins.jquery.rate': 'plugins/jquery.rate/2.5.2/jquery.rate'
+        , 'plugins.requirejs.domReady': 'plugins/requirejs.domReady/2.0.1/domReady'
+        , 'plugins.JSON2': 'plugins/JSON/2/JSON'
+        , 'plugins.Aes': 'plugins/Aes/0.1/Aes'
+        , 'plugins.Base64': 'plugins/Base64/0.1/Base64'
+        , 'plugins.md5': 'plugins/md5/0.1/md5'
     }
 });
 /**
