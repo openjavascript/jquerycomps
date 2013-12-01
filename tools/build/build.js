@@ -3,7 +3,7 @@
     baseUrl: '../../'
     , dir: '../../deploy/normal'
     , fileExclusionRegExp: /^(((r|build)\.js)|document.html|index.php|[\s\S]+?\.md|(_demo|docs|docs_api|tools|deploy|dist|node_modules|\.git|\.gitignore))$/
-    //, optimizeCss: 'standard'
+    , optimizeCss: 'standard'
     , removeCombined: false
     , paths: {
         'JC.common': 'modules/JC.common/0.2/common'
