@@ -1,9 +1,12 @@
  ({
-    //appDir: './'
-    baseUrl: '../../'
-    , dir: '../../deploy/normal'
+    baseUrl: '../../../../'
+    , dir: '../../../../deploy/JC.Valid'
     , fileExclusionRegExp: /^(((r|build)\.js)|document.html|index.php|[\s\S]+?\.md|(_demo|docs|docs_api|tools|deploy|dist|node_modules|\.git|\.gitignore))$/
     //, optimizeCss: 'standard'
+    , modules: [
+         { 'name': 'modules/JC.Valid/0.2/_build/module1' }
+         , { 'name': 'modules/JC.Valid/0.2/_build/module2' }
+    ]
     , removeCombined: false
     , paths: {
         'JC.common': 'modules/JC.common/0.2/common'
