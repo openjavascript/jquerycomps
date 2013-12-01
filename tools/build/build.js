@@ -1,8 +1,8 @@
  ({
     //appDir: './'
     baseUrl: '../../'
-    , dir: '../../dist'
-    , fileExclusionRegExp: /^(((r|build)\.js)|document.html|index.php|[\s\S]+?\.md|(_demo|docs|docs_api|tools|dist|node_modules))$/
+    , dir: '../../deploy'
+    , fileExclusionRegExp: /^(((r|build)\.js)|document.html|index.php|[\s\S]+?\.md|(_demo|docs|docs_api|tools|deploy|dist|node_modules))$/
     //, optimizeCss: 'standard'
     //, name: 'pub'
     , modules: [
