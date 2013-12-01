@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            dt { font-weight: bold; margin: 10px auto; }
+            dd { line-height: 24px; }
+        </style>
+        <script src="../../../lib.js"></script>
+        <script>
+            JC.debug = true;
+            JC.use( 'Bizs.KillISPCache, plugins.json2' );
+
+            $(document).ready( function(){
+                //Bizs.KillISPCache.ignoreSameLinkText = false;
+                //Bizs.KillISPCache.randName = 'rnd';
+            });
+
+            $(document).delegate( 'button.js_ajax', 'click', function(){
+                var _p = $(this), _data = { 'test': new Date().getTime() }, _method = 'get';
+                _p.is('[ajaxtype]') && _p.attr('ajaxtype').toLowerCase() == 'post' && ( _method = 'post' );
+                _data.type = _method;
+                $[_method]( 'data/handler.php', _data, function( _d ){
+                    JC.log( _d );
+                    $('textarea.js_txa').val( _d );
+                });
+            });
+        </script>
+        <base target="_blank" />
+    </head>    
+    <body>
+        <h2>注意: 默认忽略 url与文本相同的节点, JC.KillISPCache.ignoreSameLinkText 可以设置是否要忽略</h2>
+
+        <dl class="defdl">
+            <dt> Bizs.KillISPCache 示例 1, 链接</dt>
+            <dd>
+                <dl>
+                    <dd><a href="http://google.com">google.com ex</a></dd>
+                    <dd><a href="http://bing.com">bing.com ex</a></dd>
+                    <dd><a href="http://so.com">http://so.com</a></dd>
+                    <dd><a href="?test=1">?test=1</a></dd>
+                    <dd><a href="?test">?test</a></dd>
+                </dl>
+            </dd>
+        </dl>
+
+        <dl class="defdl">
+            <dt> Bizs.KillISPCache 示例 2, ajax</dt>
+            <dd>
+                <dl>
+                    <dd><button type="button" class="js_ajax" ajaxtype="get">$.get test</button></dd>
+                    <dd><button type="button" class="js_ajax" ajaxtype="post">$.post test</button></dd>
+                    <dd>
+                        <textarea class="js_txa" cols="40" rows="8"></textarea>
+                </dl>
+            </dd>
+        </dl>
+
+        <dl class="defdl">
+            <dt> Bizs.KillISPCache 示例 3, 表单</dt>
+            <dd>
+                <form action="data/handler.php" method="GET" target="postIframe" >
+                    <input type="hidden" name="getform" value="1" />
+                    <button type="submit">get form</button>
+                </form>
+                <form action="data/handler.php" method="POST" target="postIframe" >
+                    <input type="hidden" name="postform" value="2" />
+                    <button type="submit">post form</button>
+                </form>
+                <iframe src="about:blank" name="postIframe"></iframe>
+            </dd>
+        </dl>
+
+    </body>
+</html>
+

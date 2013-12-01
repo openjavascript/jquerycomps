@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Iframe UPload - suches template</title>
+<style type='text/css'>
+    body{ width: 680px; margin: 20px auto; }
+</style>
+</head>    
+<body>
+    <dl>
+        <dt>Iframe Upload Example</dt>
+        <dd>
+            <iframe src="../upload_ui.html?url=_demo%2Fdata%2Fhandler.php&name=file1&info=myid1&cb=cb1" frameborder="0" style="width:88px; height:24px; cursor: pointer; vertical-align: middle;"></iframe>
+        </dd>
+        <dd>
+            <iframe src="../upload_ui.html?url=_demo%2Fdata%2Fhandler.php&name=file2&info=myid2&style=2&btntext=导入&cb=cb2&filetype=jpg,jpeg,gif,png" frameborder="0" style="width:73px; height:30px; cursor: pointer; vertical-align: middle;"></iframe>
+            filetype: jpg,jpeg,gif,png
+        </dd>
+    </dl>
+    <script>
+        httpRequire();
+
+        function cb1( _data ){
+            alert( 'cb1' );
+        }
+
+        function cb2( _data, _errmsg ){
+            if( _errmsg ){
+                alert( _errmsg );
+                return;
+            }
+            alert( 'cb2' );
+        }
+
+        /**
+         * 提示需要 HTTP 环境
+         * @method  httpRequire
+         * @static
+         * @param  {string}  _msg   要提示的文字, 默认 "本示例需要HTTP环境'
+         */
+        function httpRequire( _msg ){
+            _msg = _msg || '本示例需要HTTP环境';
+            if( /file\:|\\/.test( location.href ) ){
+                alert( _msg );
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+</body>
+</html>
+

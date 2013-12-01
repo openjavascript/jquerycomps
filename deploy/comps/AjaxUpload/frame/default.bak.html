@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style type='text/css'>
+            *{ margin: 0; padding: 0; }
+
+            html{ 
+                overflow: hidden; 
+            }
+
+            body{
+                width 200px;
+            }
+
+            .file {
+                top: 0; left: 0;
+                position: absolute;
+                z-index: 100;
+                margin-left:-155px;
+                height: 40px;
+                opacity: 0;
+                filter: alpha( opacity = 0 );
+            }
+
+            .btn {
+                white-space: nowrap;
+                word-break: keep-all;
+            }
+        </style>
+        <link href='../res/default/style.css' rel='stylesheet' />
+        <script type='text/javascript' src="../../../lib.js"></script>
+        <script>
+            JC.debug = true;
+            
+            var _pw = window.parent
+                , _fm
+                , _flBtn
+                , _disBtn
+                , _auIns
+                ;
+
+            if( _pw && _pw != this ){
+                JC.PATH = _pw.JC.PATH;
+                window.name = 'AJAX_UPLOAD_WIN_' + ( _pw.JC.AjaxUpload._INS_COUNT++ )
+
+                JC.use( 'plugins.jquery.form' );
+
+                $(document).ready( function(){
+                    _fm = $('form');
+                    _flBtn = _fm.find('input.js_file');
+                    _disBtn = _fm.find('button.js_btn');
+
+                    $( [ _flBtn, _disBtn ] ).on( 'focus', function(){
+                        $(this).blur();
+                    });
+
+                    _fm.ajaxForm({
+                        beforeSubmit:
+                            function(){
+                                var _flPath = _flBtn.val().trim();
+                                if( !_flPath ) return false;
+
+                                if( !validFileExt( _flPath, _flBtn.attr('fileExt') ) ) {
+                                    _auIns.trigger( 'ERR_FILE_EXT', [ _flPath ] );
+                                    return false;
+                                }
+
+                                setTimeout( function(){ _flBtn.prop('disabled', true); }, 2 );
+
+                                _auIns.trigger( 'BeforeUpload' );
+                                //return false;
+                            }
+                        , success:
+                            function( _d ){
+                                //JC.log( _d );
+                                alert( _d );
+                                return;
+                                _flBtn.prop('disabled', false);
+                                _auIns.trigger( 'UploadDone', [ _d ] );
+                            }
+                    });
+
+                    _disBtn.on('click', function( _evt ){
+                        _evt.stopPropagation();
+                        _flBtn.trigger('click');
+                    });
+
+                    _flBtn.on('click', function( _evt ){
+                        _evt.stopPropagation();
+                    });
+
+                    _flBtn.on('change', function( _evt ){
+                        var _p = $(this);
+                        _fm.trigger('submit');
+                    });
+                });
+
+            }else{
+                JC.log( "can't get parent window!" );
+            }
+            /**
+             * iframe 加载完毕时, 初始化页面
+             */
+            function initPage( _ins, _model ){
+                //alert( [ 'initPage', _model.cauUrl() ] );
+                _auIns = _ins; 
+                _fm.attr( 'action', _model.cauUrl() );
+                _model.cauFileExt() && _flBtn.attr( 'fileExt', _model.cauFileExt() );
+
+                _model.cauFileName() && _flBtn.attr( 'name', _model.cauFileName() );
+
+                var _updateLayout = false;
+
+                _model.cauStyle() 
+                    && _disBtn
+                        .removeClass('AUBtn-g1')
+                        .addClass( 'AUBtn-' + _model.cauStyle() )
+                    && ( _updateLayout = true )
+                    ;
+                _model.cauButtonText()
+                    && _disBtn.html( _model.cauButtonText() )
+                    && ( _updateLayout = true )
+                    ;
+
+                _updateLayout
+                    && _disBtn.css( 'line-height', _disBtn.prop('offsetHeight') + 'px' )
+                    && setTimeout( function(){ 
+                        JC.log(  );
+                        _ins.trigger( 'AUUpdateLayout'
+                                        , [ 
+                                                _disBtn.prop('offsetWidth')
+                                                , _disBtn.prop('offsetHeight')
+                                                , _disBtn 
+                                          ] 
+                                    ); 
+                    }, 1 );
+
+                //alert( _updateLayout + ', ' + _disBtn.html() );
+            }
+            /**
+             * 验证文件扩展名是否可用
+             */
+            function validFileExt( _flPath, _flExt ){
+                var _r = true;
+
+                if( _flPath && _flExt ){
+                    _flExt = _flExt
+                                .replace(/[\s]/g, '')
+                                .replace(/[\.]+/g, '\\.')
+                                .split(',')
+                                ;
+                    _r = false;
+                    for( var i = 0, j = _flExt.length; i < j; i++ ){
+                        var _re = new RegExp( _flExt[i] + '$', 'i' );
+                        if( _re.test( _flPath ) ){
+                            _r = true;
+                            break;
+                        }
+                    }
+                }
+
+                return _r;
+            }
+        </script>
+    </head>    
+    <body>
+        <form action="?test" method="POST" enctype="multipart/form-data" style="display:inline">
+            <button type="button" class="btn AUBtn AUBtn-g1 js_btn">上传文件</button>
+            <input type="file" name="file" class="file js_file" style="cursor:pointer!important;" />
+            <input type="submit" class="js_submit" value="submit" style="display:none" />
+        </form>
+    </body>
+</html>
+

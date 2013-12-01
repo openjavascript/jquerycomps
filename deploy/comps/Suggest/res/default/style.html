@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>JC Project - JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            #search-button {
+                display: inline-block;
+                width: 100px;
+                height: 38px;
+                _height: 40px;
+                margin-left: 5px;
+                outline: 0;
+                border: 1px solid #3eaf0e;
+                box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+                -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+                -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+                background: url('http://p1.qhimg.com/d/_onebox/btn-98-114.png') no-repeat #3eaf0e;
+                color: white;
+                font: bold 16px arial,sans-serif;
+                vertical-align: top;
+                cursor: pointer;
+            }
+            #search-button.hover {
+                border: 1px solid #4bbe11;
+                background-position: 0 -38px;
+            }
+            #search-button.mousedown {
+                border: 1px solid #4bbe11;
+                background-position: 0 -76px;
+            }
+        </style>
+        <link href='style.css' rel='stylesheet' />
+    </head>    
+    <body>
+
+        <form action="http://www.so.com/s" target="_blank">
+            <div class="sug_container">
+                <input type="hidden" name="ie" value="utf-8">
+                <input type="hidden" name="src" id="from" value="360sou_home">
+                <div class="sug_wrapper" >
+                    <input type="text" name="q" 
+                        class="sug_input" 
+                        autocomplete="off" 
+                        x-webkit-speech=""
+                        sugwidth="495" sugtopoffset="0" sugleftoffset="0" sugsidepadding="8"
+                        suglayout="dl.sug_layout"
+                        sugplaceholder="em.sug_placeHolder"
+                        sugurl="http://sug.so.360.cn/suggest/word?callback={1}&encodein=utf-8&encodeout=utf-8&word={0}"
+                        sugcallback="suggest_so"
+                        sugneedscripttag="true"
+                        />
+                </div>
+                <input type="submit" id="search-button" value="搜索一下" onmouseover="this.className='hover'" onmousedown="this.className='mousedown'" onmouseout="this.className=''" class="">
+                <dl class="sug_layout" style="display:block!important;">
+                    <dd>s<b>o.com</b></dd>
+                    <dd>s<b>o.com</b></dd>
+                    <dd>s<b>o.com</b></dd>
+                    <dd class="active">s<b>so.com</b></dd>
+                    <dd>s<b>sso.com</b></dd>
+                    <dd class="active">s<b>sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssso.com</b></dd>
+                </dl>
+            </div>
+        </form>
+
+    </body>
+</html>
+

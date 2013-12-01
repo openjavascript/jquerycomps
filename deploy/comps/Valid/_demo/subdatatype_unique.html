@@ -1,0 +1,592 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            body{ margin: 20px 20px; }
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #F0DC82;!important;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+
+            dd.odd {
+                background: #ececec;
+            }
+
+            dt{
+                font-weight: bold;
+                display: block;
+            }
+
+            dl.fm-items > dt {
+                margin: 10px auto;
+            }
+
+            dd{
+                margin: 5px 40px;
+            }
+
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
+
+            input[type=checkbox], input[type=radio], input.UXC{
+                height: auto;
+                line-height: auto;
+            }
+
+            select[multiple]{
+                height: 80px;
+            }
+
+            div, li{
+                margin: 2px auto;
+            }
+
+            button.js_isIgnore{ display: none; }
+        </style>
+        <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../lib.js"></script>
+        <script src="../../../comps/AutoSelect/_demo/data/SHENGSHI.js"></script>
+        <script>
+            JC.debug = true; JC.use( 'Valid, Calendar, Form, Bizs.FormLogic, Bizs.CommonModify' );
+
+            $(document).ready( function($evt){
+
+                JC.AutoSelect.dataFilter = 
+                    function( _data, _select ){
+                        var _r = _data;
+                        if( _data && !_data.length && _data.data ){
+                            _r = _data.data;
+                        }
+                        return _r;
+                    };
+
+            });
+
+            $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
+                window.console && console.clear && console.clear();
+                JC.Valid.clearError( 'form.js_valid' );
+            });
+
+            $(document).delegate( 'form.js_valid', 'submit', function( _evt ){
+                if( ! JC.Valid( this ) ){
+                    _evt.preventDefault();
+                    return false;
+                }
+            });
+
+           function selectdata( _id ){
+               var _d = [];
+               for( var i = 0, j = SHENGSHI.length; i < j; i++ ){
+                   SHENGSHI[i][2] == _id && _d.push( SHENGSHI[i] );
+               }
+               //JC.log( _d + ', ' + _id );
+               return _d;
+           }
+
+           function DATA_cb(){
+               var _d = [];
+               for( var i = 0, j = DATA.length; i < j; i++ ){
+                   _d.push( DATA[i] );
+               }
+               return _d;
+           }
+
+           function DATA_EXT_cb( _id ){
+               var _d = [];
+               for( var i = 0, j = DATA_EXT.length; i < j; i++ ){
+                   if( _id ){
+                       _id == DATA_EXT[i][2] && _d.push( DATA_EXT[i] );
+                   }else{
+                       _d.push( DATA_EXT[i] );
+                   }
+               }
+               return _d;
+           }
+
+           function cmdonecallback(){
+               var _trigger = $(this);
+               getJqParent( _trigger, 'dl' ) 
+                && JC.Valid.check( getJqParent( _trigger, 'dl' ).find('select:last') );
+           }
+
+        </script>
+    </head>    
+    <body>
+
+        <form action='' method='get' class="js_valid " >
+            <div style="position:fixed; top: 10px; right:10px;">
+                <button type="submit">save</button>
+                <button type="reset">reset</button>
+            </div>
+
+            <dl class="fm-items">
+                <dt>JC.Valid 示例, subdatatype = unique, N 个 Control 的值必须保持唯一性, 不能有重复</dt>
+                <dd>
+                    <dl>
+                        <dt>subdatatype = unique</dt>
+                        <dd>
+                            <div>
+                                url: 
+                                <input type="text" placeholder="url" 
+                                datatype="url" 
+                                subdatatype="unique"  
+                                errmsg="请输入正确的URL"
+                                uniquemsg="URL不能重复"
+                                />
+                                <em class="error"></em>
+                                <div></div>
+                                url: 
+                                <input type="text" placeholder="url" 
+                                datatype="url" 
+                                subdatatype="unique"  
+                                errmsg="请输入正确的URL"
+                                uniquemsg="URL不能重复"
+                                />
+                                <em class="error"></em>
+                            </div>
+                        </dd>
+
+                        <dd>
+                            <hr />
+                            <h3>uniqueIgnoreCase="true"</h3>
+                            <div>
+                                url: 
+                                <input type="text" placeholder="url" 
+                                datatype="url" 
+                                subdatatype="unique"  
+                                errmsg="请输入正确的URL"
+                                uniquemsg="URL不能重复"
+                                uniqueIgnoreCase="true"
+                                />
+                                <em class="error"></em>
+                                <div></div>
+                                url: 
+                                <input type="text" placeholder="url" 
+                                datatype="url" 
+                                subdatatype="unique"  
+                                errmsg="请输入正确的URL"
+                                uniquemsg="URL不能重复"
+                                uniqueIgnoreCase="true"
+                                />
+                                <em class="error"></em>
+                            </div>
+                        </dd>
+
+
+                        <dd>
+                            <hr />
+                            <div>
+                                url: 
+                                <input type="text" placeholder="url" value="a.com" 
+                                datatype="url" 
+                                subdatatype="unique"  
+                                datatarget="<dd input"
+                                reqmsg="URL"
+                                errmsg="请输入正确的URL"
+                                uniquemsg="URL不能重复"
+                                />
+                            </div>
+                            <div>
+                                url: 
+                                <input type="text" placeholder="url" value="b.com" 
+                                datatype="url" 
+                                subdatatype="unique"  
+                                datatarget="<dd input"
+                                reqmsg="URL"
+                                errmsg="请输入正确的URL"
+                                uniquemsg="URL不能重复"
+                                />
+                            </div>
+                            <div>
+                                url: 
+                                <input type="text" placeholder="url" value="c.com"  
+                                datatype="url" 
+                                subdatatype="unique"  
+                                datatarget="<dd input"
+                                reqmsg="URL"
+                                errmsg="请输入正确的URL"
+                                uniquemsg="URL不能重复"
+                                />
+                            </div>
+                        </dd>
+
+                        <dd>
+                            <hr />
+                            <div>
+                                日期: 
+                                <input type="text" placeholder="日期" value="20130520" 
+                                datatype="daterange" 
+                                subdatatype="unique"  
+                                reqmsg="日期"
+                                errmsg="请输入正确的日期范围"
+                                uniquemsg="日期不能重复"
+                                />
+                                <input type="text" placeholder="日期" value="20140520"  
+                                datatype="daterange" 
+                                subdatatype="unique"  
+                                reqmsg="日期"
+                                errmsg="请输入正确的日期范围"
+                                uniquemsg="日期不能重复"
+                                />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                        </dd>
+
+                        <dd>
+                            <hr />
+                            <div>
+                                日期: 
+                                <input type="text" placeholder="日期" value="20130520"  
+                                datatype="date" 
+                                subdatatype="unique"  
+                                datatarget="<dd input"
+                                reqmsg="日期"
+                                errmsg="请输入正确的日期"
+                                uniquemsg="日期不能重复"
+                                />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                            <div>
+                                日期: 
+                                <input type="text" placeholder="日期" value="20140520"  
+                                datatype="date" 
+                                subdatatype="unique"  
+                                datatarget="<dd input"
+                                reqmsg="日期"
+                                errmsg="请输入正确的日期"
+                                uniquemsg="日期不能重复"
+                                />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                            <div>
+                                日期: 
+                                <input type="text" placeholder="日期" value="20150520"  
+                                datatype="date" 
+                                subdatatype="unique"  
+                                datatarget="<dd input"
+                                reqmsg="日期"
+                                errmsg="请输入正确的日期"
+                                uniquemsg="日期不能重复"
+                                />
+                                <em class="error"></em>
+                                <em class="validmsg"></em>
+                            </div>
+                        </dd>
+
+                        <dd>
+                            <select reqmsg="url" subdatatype="unique" uniquemsg="不能选择相同的URL" >
+                                <option value="">请选择</option>
+                                <option value="1" selected>www.qq.com</option>
+                                <option value="2">www.baidu.com</option>
+                                <option value="3">www.google.com</option>
+                            </select>
+
+                            <select reqmsg="url" subdatatype="unique" uniquemsg="不能选择相同的URL" >
+                                <option value="">请选择</option>
+                                <option value="1">www.qq.com</option>
+                                <option value="2" selected>www.baidu.com</option>
+                                <option value="3">www.google.com</option>
+                            </select>
+                            <em class="error"></em>
+                            <em class="validmsg"></em>
+                        </dd>
+                        <dd>
+                            <select reqmsg="url" subdatatype="unique" uniquemsg="不能选择相同的URL" >
+                                <option value="">请选择</option>
+                                <option value="1" selected>www.qq.com</option>
+                                <option value="2">www.baidu.com</option>
+                                <option value="3">www.google.com</option>
+                                <option value="4">www.taobao.com</option>
+                            </select>
+
+                            <select reqmsg="url" subdatatype="unique" uniquemsg="不能选择相同的URL" >
+                                <option value="">请选择</option>
+                                <option value="1">www.qq.com</option>
+                                <option value="2" selected>www.baidu.com</option>
+                                <option value="3">www.google.com</option>
+                                <option value="4">www.taobao.com</option>
+                            </select>
+
+                            <select reqmsg="url" subdatatype="unique" uniquemsg="不能选择相同的URL" >
+                                <option value="">请选择</option>
+                                <option value="1">www.qq.com</option>
+                                <option value="2">www.baidu.com</option>
+                                <option value="3" selected>www.google.com</option>
+                                <option value="4">www.taobao.com</option>
+                            </select>
+
+                            <select reqmsg="url" subdatatype="unique" uniquemsg="不能选择相同的URL" >
+                                <option value="">请选择</option>
+                                <option value="1">www.qq.com</option>
+                                <option value="2">www.baidu.com</option>
+                                <option value="3">www.google.com</option>
+                                <option value="4" selected>www.taobao.com</option>
+                            </select>
+
+                            <em class="error"></em>
+                            <em class="validmsg"></em>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd class="unique2_1">
+                    <dl>
+                        <dt>subdatatype = unique-2</dt>
+                        <dd>
+                            <div>
+                                <select name='' 
+                                    defaultselect 
+                                    selectdatacb="selectdata" 
+                                    selectparentid="0" 
+                                    selectvalue="14" 
+                                    selecttarget="/select:last"
+
+                                    subdatatype="unique-2"
+                                    datatarget="<dd select"
+                                    uniquemsg="不能选择相同的地理信息"
+                                    >
+                                    <option value="" defaultoption>请选择</option>
+                                </select>
+                                <select name='' 
+                                    selectdatacb="selectdata" 
+                                    selectvalue="2341" 
+
+                                    subdatatype="unique-2"
+                                    datatarget="<dd select"
+                                    uniquemsg="不能选择相同的地理信息"
+                                    >
+                                    <option value="" defaultoption>请选择</option>
+                                </select>
+                                <em class="error"></em>
+                            </div>
+                            <div>
+                                <select name='' 
+                                    defaultselect 
+                                    selectdatacb="selectdata" 
+                                    selectparentid="0" 
+                                    selectvalue="14" 
+                                    selecttarget="/select:last"
+
+                                    subdatatype="unique-2"
+                                    datatarget="<dd select"
+                                    uniquemsg="不能选择相同的地理信息"
+                                    >
+                                    <option value="" defaultoption>请选择</option>
+                                </select>
+                                <select name='' 
+                                    selectdatacb="selectdata" 
+
+                                    subdatatype="unique-2"
+                                    datatarget="<dd select"
+                                    uniquemsg="不能选择相同的地理信息"
+                                    >
+                                    <option value="" defaultoption>请选择</option>
+                                </select>
+                                <em class="error"></em>
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+                <dd class="unique3_1">
+                    <dl>
+                        <dt>subdatatype = unique-3</dt>
+                        <dd>
+                            <div>
+                                <select name='' 
+                                    reqmsg="类别"
+                                    
+                                    defaultselect 
+                                    selectdatacb="selectdata" 
+                                    selectparentid="0" 
+                                    selectvalue="14" 
+                                    selecttarget="/select:eq(1)"
+                                    selecttriggerinitchange="false"
+
+                                    subdatatype="unique-3"
+                                    datatarget="<dd select"
+                                    uniquemsg="不能选择相同的地理信息"
+                                    >
+                                    <option value="" defaultoption>请选择</option>
+                                </select>
+                                <select name='' 
+                                    reqmsg="类别"
+
+                                    selectdatacb="selectdata" 
+                                    selectvalue="2341" 
+                                    selecttarget="/select:last"
+
+                                    subdatatype="unique-3"
+                                    datatarget="<dd select"
+                                    uniquemsg="不能选择相同的地理信息"
+                                    >
+                                    <option value="" defaultoption>请选择</option>
+                                </select>
+                                <select name='select13_3' 
+                                    reqmsg="类别"
+                                    
+                                    selectdatacb="selectdata" 
+                                    selectvalue="2343" 
+
+                                    subdatatype="unique-3"
+                                    datatarget="<dd select"
+                                    uniquemsg="不能选择相同的地理信息"
+                                    >
+                                    <option value="" defaultoption>请选择</option>
+                                </select>
+                                <a href="javascript:" 
+                                class="green js_autoCommonModify" 
+                                cmtemplate="#areaTpl"
+                                cmitem="<div"
+                                cmaction="add"
+                                cmdonecallback="cmdonecallback"
+                                >+ 添加</a>  
+                                <em class="error"></em>
+                            </div>
+                            <div>
+                                <select name='' 
+                                    reqmsg="类别"
+                                    
+                                    defaultselect 
+                                    selectdatacb="selectdata" 
+                                    selectparentid="0" 
+                                    selectvalue="14" 
+                                    selecttarget="/select:eq(1)"
+                                    selecttriggerinitchange="false"
+
+                                    subdatatype="unique-3"
+                                    datatarget="<dd select"
+                                    uniquemsg="不能选择相同的地理信息"
+                                    >
+                                    <option value="" defaultoption>请选择</option>
+                                </select>
+                                <select name='' 
+                                    reqmsg="类别"
+                                    
+                                    selectdatacb="selectdata" 
+                                    selectvalue="2341" 
+                                    selecttarget="/select:last"
+
+                                    subdatatype="unique-3"
+                                    datatarget="<dd select"
+                                    uniquemsg="不能选择相同的地理信息"
+                                    >
+                                    <option value="" defaultoption>请选择</option>
+                                </select>
+                                <select name='select13_3' 
+                                    reqmsg="类别"
+                                    
+                                    selectdatacb="selectdata" 
+                                    selectvalue="2343" 
+
+                                    subdatatype="unique-3"
+                                    datatarget="<dd select"
+                                    uniquemsg="不能选择相同的地理信息"
+                                    >
+                                    <option value="" defaultoption>请选择</option>
+                                </select>
+                                <em class="error"></em>
+                            </div>
+                        </dd>
+                    </dl>
+                </dd>
+
+
+                <dd style="margin-top:20px; padding-left: 400px;">
+                    <button type="submit">save</button>
+                    <button type="reset">reset</button>
+                    <button type="button" class="js_clear_error">clear error</button>
+                    <a href="?">back</a>
+                </dd>
+             </dl>
+             <!--
+                <div style="position:fixed; bottom: 10px; right:10px;">
+                    <button type="submit">save</button>
+                    <button type="reset">reset</button>
+                    <button type="button" class="js_clear_error">clear error</button>
+                </div>
+            -->
+        </form>
+
+        <script type='text/template' id="areaTpl" >
+            <div>
+                <select name='' 
+                    reqmsg="类别"
+                                    
+                    defaultselect 
+                    selectdatacb="selectdata" 
+                    selectparentid="0" 
+                    selectvalue="14" 
+                    selecttarget="/select:eq(1)"
+
+                    subdatatype="unique-3"
+                    datatarget="<dd select"
+                    uniquemsg="不能选择相同的地理信息"
+                    selecttriggerinitchange="false"
+                    >
+                    <option value="" defaultoption>请选择</option>
+                </select>
+                <select name='' 
+                    reqmsg="类别"
+                                    
+                    selectdatacb="selectdata" 
+                    selectvalue="2341" 
+                    selecttarget="/select:last"
+
+                    subdatatype="unique-3"
+                    datatarget="<dd select"
+                    uniquemsg="不能选择相同的地理信息"
+                    >
+                    <option value="" defaultoption>请选择</option>
+                </select>
+                <select name='select13_3' 
+                    reqmsg="类别"
+                                    
+                    selectdatacb="selectdata" 
+                    selectvalue="2343" 
+
+                    subdatatype="unique-3"
+                    datatarget="<dd select"
+                    uniquemsg="不能选择相同的地理信息"
+                    >
+                    <option value="" defaultoption>请选择</option>
+                </select>
+                <a href="javascript:" 
+                class="green js_autoCommonModify" 
+                cmtemplate="#areaTpl"
+                cmitem="<div"
+                cmaction="add"
+                cmdonecallback="cmdonecallback"
+                >+ 添加</a>  
+                <a href="javascript:" 
+                class="green js_autoCommonModify" 
+                cmitem="<div"
+                cmaction="del"
+                cmdonecallback="cmdonecallback"
+                >- 删除</a>  
+                <em class="error"></em>
+            </div>
+        </script>
+
+    </body>
+</html>
+

@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            body{ margin: 20px 20px; }
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #F0DC82;!important;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+
+            dd.odd {
+                background: #ececec;
+            }
+
+            dt{
+                font-weight: bold;
+                display: block;
+            }
+
+            dl.fm-items > dt {
+                margin: 10px auto;
+            }
+
+            dd{
+                margin: 5px 40px;
+            }
+
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
+
+            input[type=checkbox], input[type=radio], input.UXC{
+                height: auto;
+                line-height: auto;
+            }
+
+            select[multiple]{
+                height: 80px;
+            }
+
+            div, li{
+                margin: 2px auto;
+            }
+
+            button.js_isIgnore{ display: none; }
+        </style>
+        <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../lib.js"></script>
+        <script src="../../../comps/AutoSelect/_demo/data/SHENGSHI.js"></script>
+        <script>
+            JC.debug = true; JC.use( 'Valid, Calendar, Form, Bizs.FormLogic, Bizs.CommonModify' );
+
+            $(document).ready( function($evt){
+            });
+
+            $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
+                window.console && console.clear && console.clear();
+                JC.Valid.clearError( 'form.js_valid' );
+            });
+
+            $(document).delegate( 'form.js_valid', 'submit', function( _evt ){
+                if( ! JC.Valid( this ) ){
+                    _evt.preventDefault();
+                    return false;
+                }
+            });
+
+        </script>
+    </head>    
+    <body>
+
+        <form action='' method='get' class="js_valid " >
+            <div style="position:fixed; top: 10px; right:10px;">
+                <button type="submit">save</button>
+                <button type="reset">reset</button>
+            </div>
+
+            <dl class="fm-items">
+
+                <dt>JC.Valid 示例, subdatatype = reqtarget, 如果 selector 的值非空, 那么 datatarget 的值也不能为空</dt>
+                <dd>
+                    <ul>
+                        <li>
+                            <label>电话号码:</label>
+                            <input type='text' name='countrycode3_1' style="width:60px;" value='' size="7" 
+                            datatype="countrycode" 
+                            errmsg="请填写正确的地区代码" 
+                            validmsg="false" 
+                            placeholder="地区代码"
+                            />
+                            - 
+                            <input type='text' name='countrycode3_2' style="width:40px;" value='' size="4" 
+                            class="js_phonezone"
+                            datatype="phonezone-2,4" 
+                            errmsg="请填写正确的电话区号" 
+                            validmsg="false" 
+                            placeholder="区号"
+                            reqtargetmsg="请填写区号"
+                            emel="/span.js_reqtargetEm em.error"
+                            />
+                            - 
+                            <input type='text' name='phone3_3' style="width:80px;" value='20121110' size="8" 
+                            datatype="phonecode"
+                            subdatatype="reqtarget"
+                            datatarget="/input.js_phonezone"
+                            errmsg="请检查电话号码格式" 
+                            placeholder="电话号码"
+                            />
+                            - 
+                            <input type='text' name='countrycode3_4' style="width:40px;" value='' size="4" 
+                            datatype="phoneext" 
+                            errmsg="请填写正确的分机号" 
+                            validmsg="false" 
+                            placeholder="分机号"
+                            />
+                            <em class="error"></em>
+                            <span class="js_reqtargetEm"><em class="error"></em></span>
+                            <em class="validmsg"></em>
+                        </li>
+                    </ul>
+                </dd>
+
+                <dt>JC.Valid 示例, subdatatype = alternative && reqtarget, 2填1/N填1</dt>
+                <dd>
+                    <ul>
+                        <li>
+                            <label>电话号码:</label>
+                            <input type='text' name='countrycode1_1' style="width:60px;" value='' size="7" 
+                            datatype="countrycode" 
+                            errmsg="请填写正确的地区代码" 
+                            validmsg="false" 
+                            placeholder="地区代码"
+                            />
+                            - 
+                            <input type='text' name='countrycode1_2' style="width:40px;" value='' size="4" 
+                            class="js_phonezone"
+                            datatype="phonezone-2,4" 
+                            errmsg="请填写正确的电话区号" 
+                            validmsg="false" 
+                            placeholder="区号"
+
+                            reqtargetmsg="请填写区号"
+                            emel="/span.js_reqtargetEm em.error"
+                            />
+                            - 
+                            <input type='text' name='phone1_3' style="width:80px;" value='10111220' size="8" 
+                            datatype="phonecode"
+                            subdatatype="alternative, reqtarget" 
+                            datatarget="(ul input[datatype=mobilecode]" 
+                            alternativemsg="电话号码和手机号码至少填写一个" 
+                            errmsg="请检查电话号码格式" 
+                            placeholder="电话号码"
+
+                            reqtargetdatatarget="/input.js_phonezone"
+                            />
+                            - 
+                            <input type='text' name='countrycode1_4' style="width:40px;" value='' size="4" 
+                            datatype="phoneext" 
+                            errmsg="请填写正确的分机号" 
+                            validmsg="false" 
+                            placeholder="分机号"
+                            />
+                            <em class="error"></em>
+                            <em class="validmsg"></em>
+                            <span class="js_reqtargetEm"><em class="error"></em></span>
+                        </li>
+                        <li>
+                            <label>手机号码:</label>
+                            <input type="text" name="mobile1_5" 
+                            datatype="mobilecode" 
+                            subdatatype="alternative" 
+                            datatarget="(ul input[datatype=phonecode]" 
+                            alternativemsg="电话号码和手机号码至少填写一个" 
+                            errmsg="请填写正确的手机号码"
+                            placeholder="手机号码"
+                            />
+                        </li>
+                    </ul>
+                </dd>
+
+
+                <dd style="margin-top:20px; padding-left: 400px;">
+                    <button type="submit">save</button>
+                    <button type="reset">reset</button>
+                    <button type="button" class="js_clear_error">clear error</button>
+                    <a href="?">back</a>
+                </dd>
+             </dl>
+             <!--
+                <div style="position:fixed; bottom: 10px; right:10px;">
+                    <button type="submit">save</button>
+                    <button type="reset">reset</button>
+                    <button type="button" class="js_clear_error">clear error</button>
+                </div>
+            -->
+        </form>
+
+    </body>
+</html>
+

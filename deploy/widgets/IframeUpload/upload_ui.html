@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>iframe upload - suches template</title>
+<style>
+    html{ overflow: hidden; }
+    *{ margin: 0; padding: 0; cursor: pointer!important; }
+    body{ width: 100%; margin: 0 auto; visibility: hidden; }
+</style>
+</head>    
+<body>
+ <form name="upload_form" method="POST"  action="" 
+ target="UPLOAD_IFRAME"
+ enctype="multipart/form-data"
+ id="upload_form" >
+    <button type="button" id="btn" class="btn btn-2">上传文件</button>
+    <input type="file" name="file" id="flBtn" class="upbtn" style="cursor:pointer!important;" />
+    <input type="text" name="info" id="infoBtn" class="info" value="" style="display:none" />
+    <input type="submit" value="submit" style="display:none" />
+</form>
+<iframe name="UPLOAD_IFRAME" style="display:none"></iframe>
+<!--
+iframe 提交返回数据
+<script>
+    if( window.parent ){ 
+        window.parent.IFRAME_UPLOAD( {"errorno":0,"data":{"newname":"5174fda3dd367.jpg","size":240521,"infoBtn":"up_1366621587036"}} );
+    }
+</script>
+-->
+<script>
+onload = function(){
+    document.body.style.visibility = 'visible';
+};
+var fm = document.getElementById( 'upload_form' )
+, flBtn = document.getElementById( 'flBtn' )
+, infoBtn = document.getElementById( 'infoBtn' )
+, btn = document.getElementById('btn');
+;
+
+var infoBtnval = (getUrlParam( 'infoBtn' ) || getUrlParam( 'info' ) )
+, uploadurl = getUrlParam( 'url' )
+, uploadname = getUrlParam( 'name' )
+, btntext = getUrlParam( 'btntext' )
+, styles = getUrlParam( 'style' )
+, callback = getUrlParam( 'cb' ) || 'IFRAME_UPLOAD'
+, filetype = getUrlParam('filetype')
+;
+
+filetype = filetype.replace(/[\s]+/g, '').toLowerCase();
+filetype = filetype.length ? filetype.split(',') : [];
+
+callback != 'IFRAME_UPLOAD' && ( window[ callback ] = IFRAME_UPLOAD );
+
+styles = styles || "1";
+
+addCssByLink( [ './res/style', styles, '/style.css' ].join('') );
+
+if( infoBtnval ){ try{ infoBtnval = decodeURIComponent( infoBtnval ); }catch(ex){} }
+if( uploadurl ){ try{ uploadurl = decodeURIComponent( uploadurl ); }catch(ex){} }
+if( uploadname ){ try{ uploadname = decodeURIComponent( uploadname ); }catch(ex){} }
+if( btntext ){ try{ btntext = decodeURIComponent( btntext ); }catch(ex){} }
+
+uploadurl && ( uploadurl = addUrlParams( uploadurl, { 'cb': callback, 'info': infoBtnval } ) );
+
+uploadurl && fm.setAttribute( 'action', uploadurl );
+uploadname && flBtn.setAttribute( 'name', uploadname );
+infoBtnval && ( infoBtn.value = infoBtnval );
+
+if( btntext ) btn.innerHTML = btntext;
+
+flBtn.onchange = function(){
+    if( this.value  ){
+        if( filetype.length ){
+            var _isAllow, _ext = this.value.split('.');
+                _ext = _ext[ _ext.length - 1 ].toLowerCase();
+            
+            for( var i = 0, j = filetype.length; i < j; i++ ){
+                if( filetype[ i ] == _ext ){
+                    _isAllow = true;
+                    break;
+                }
+            }
+
+            if( ! _isAllow ){
+                this.value = '';
+                IFRAME_UPLOAD( null, '请上传正确的文件类型: ' + filetype.join(', ') );
+                return;
+            }
+        }
+
+        this.form.submit();
+        document.getElementById('btn').disabled = true;
+        document.getElementById('flBtn').disabled = true;
+    }
+};
+
+function IFRAME_UPLOAD(){
+    document.getElementById('btn').disabled = false;
+    document.getElementById('flBtn').disabled = false;
+
+    if( window.parent && window.parent[ callback ] ){
+        window.parent[ callback ].apply( null, [].slice.apply( arguments ) );
+    }
+}
+/**
+ * 添加URL参数
+ * x@btbtd.org  2013-06-12
+ * @example
+        var url = addUrlParams( location.href, {'key1': 'key1value', 'key2': 'key2value' } );
+ */ 
+function addUrlParams( $url, $params ){
+    var sharp = '';
+    !$params && ( $params = $url, $url = location.href );
+    $url.indexOf('#') > -1 && ( sharp = $url.split('#')[1], $url = $url.split('#')[0] );
+    for( var k in $params ){
+        $url = delUrlParam($url, k);
+        $url.indexOf('?') > -1 
+            ? $url += '&' + k +'=' + $params[k]
+            : $url += '?' + k +'=' + $params[k];
+    }
+    sharp && ( $url += '#' + sharp );
+    $url = $url.replace(/\?\&/g, '?' );
+    return $url;   
+}
+ 
+/**
+ * 取URL参数的值
+ * x@btbtd.org  2012/4/24 
+ * @method  getUrlParam
+ * @param   {string}    $url
+ * @param   {string}    $key
+ * @require delUrlParam 
+ * @example
+        var defaultTag = getUrlParam(location.href, 'tag');  
+ */ 
+function getUrlParam( $url, $key ){
+    var result = '', paramAr, i, items;
+    !$key && ( $key = $url, $url = location.href );
+    $url.indexOf('#') > -1 && ( $url = $url.split('#')[0] );
+    if( $url.indexOf('?') > -1 ){
+        paramAr = $url.split('?')[1].split('&');
+        for( i = 0; i < paramAr.length; i++ ){
+            items = paramAr[i].split('=');
+            items[0] = items[0].replace(/^\s+|\s+$/g, '');
+            if( items[0].toLowerCase() == $key.toLowerCase() ){
+                result = items[1];
+                break;
+            } 
+        }
+    }
+    return result;
+}
+/**
+ * 删除URL参数
+ * x@btbtd.org  2012/4/24  
+ * @method  delUrlParam
+ * @params  {string}    $url
+ * @params  {string}    $key
+ * @example
+        var url = delUrlParam( location.href, 'tag' );
+ */ 
+function delUrlParam( $url, $key ){
+    var sharp = '', params, tmpParams = [], i, item;
+    !$key && ( $key = $url, $url = location.href );
+    $url.indexOf('#') > -1 && ( sharp = $url.split('#')[1], $url = $url.split('#')[0] );
+    if( $url.indexOf('?') > -1 ){
+        params = $url.split('?')[1].split('&');
+        $url = $url.split('?')[0];
+        for( i = 0; i < params.length; i++ ){
+            items = params[i].split('=');
+            items[0] = items[0].replace(/^\s+|\s+$/g, '');
+            if( items[0].toLowerCase() == $key.toLowerCase() ) continue;
+            tmpParams.push( items.join('=') )
+        }
+        $url += '?' + tmpParams.join('&');
+    }
+    sharp && ( $url += '#' + sharp );
+    return $url;
+}
+/**
+ * 从URL 添加CSS
+ * @method  addCssByLink
+ * @param   {string}    url     要添加到页面的CSS链接
+ */
+function addCssByLink(url){
+	var doc=document;
+	var link=doc.createElement("link");
+	link.setAttribute("rel", "stylesheet");
+    link.setAttribute("type", "text/css");
+    link.setAttribute("href", url);
+
+	var heads = doc.getElementsByTagName("head");
+	if(heads.length)
+		heads[0].appendChild(link);
+	else
+		doc.documentElement.appendChild(link);
+}
+
+</script>
+   
+</body>
+</html>
+

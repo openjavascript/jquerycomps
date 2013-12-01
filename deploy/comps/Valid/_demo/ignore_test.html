@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            body{ margin: 20px 20px; }
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #F0DC82;!important;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+
+            dd.odd {
+                background: #ececec;
+            }
+
+            dt{
+                font-weight: bold;
+            }
+
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
+
+            input[type=checkbox], input[type=radio], input.UXC{
+                height: auto;
+                line-height: auto;
+            }
+
+            select[multiple]{
+                height: 80px;
+            }
+
+            div, li{
+                margin: 2px auto;
+            }
+
+            button.js_isIgnore{ display: none; }
+        </style>
+        <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../lib.js"></script>
+        <script>
+            JC.debug = true; JC.use( 'Valid, Calendar, Form' );
+
+            $(document).ready( function($evt){
+
+                $('form.js-valid').on('submit', function( $evt ){
+                    window.console && console.clear && console.clear();
+                        $evt.preventDefault();
+
+                    if( !JC.Valid.check( 'form.js-valid' ) ){
+                        $evt.preventDefault();
+                        return false;
+                    }
+                });
+
+                $('button.js_isIgnore').trigger('click');
+            });
+
+            $(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
+                window.console && console.clear && console.clear();
+                JC.Valid.clearError( 'form.js-valid' );
+            });
+
+            $(document).delegate( 'button.js_ignore', 'click', function( _evt ){
+                var _p = $(this)
+                    , _target = parentSelector( _p, _p.attr('target') )
+                    , _ignore = parseBool( _p.attr('ignore') )
+                    ;
+
+                _target && _target.each( function(){
+                    JC.Valid.ignore( $(this), !_ignore );
+                    JC.Valid.setValid( $(this) );
+                });
+                getJqParent( _p, 'dd' ).find('button.js_isIgnore').trigger('click');
+            });
+
+            $(document).delegate( 'button.js_isIgnore', 'click', function( _evt ){
+                var _p = $(this)
+                    , _target = parentSelector( _p, _p.attr('target') )
+                    ;
+
+                 var _r = [];
+
+                _target && _target.each( function(){
+                    _r.push( JC.Valid.ignore( $(this) ) );
+                });
+
+                getJqParent( _p, 'dd' ).find('em.js_isIgnoreEm').html( _r.join() ).show();
+
+            });
+
+        </script>
+    </head>    
+    <body>
+
+        <form action='' method='get' class="js-valid" >
+            <div style="position:fixed; top: 10px; right:10px;">
+                <button type="submit">Save</button>
+                <button type="button" class="js-clear-error">清空错误信息</button>
+            </div>
+
+            <dl class="fm-items">
+                <dt>JC.Valid 示例, Valid.ignore</dt>
+                <dd>
+                    文件: <input  type="file" reqmsg="文件" />
+                    <button type="button" class="js_ignore" target="/input" ignore="true">add ignore</button>
+                    <button type="button" class="js_ignore" target="/input" ignore="false">remove ignore</button>
+                    <button type="button" class="js_isIgnore" target="/input" >is ignore</button>
+                    <em class="error"></em>
+                    <em class="js_isIgnoreEm"></em>
+                </dd>
+                <dd>
+                    文件: <input  type="file" reqmsg="文件" ignoreprocess />
+                    <button type="button" class="js_ignore" target="/input" ignore="true">add ignore</button>
+                    <button type="button" class="js_ignore" target="/input" ignore="false">remove ignore</button>
+                    <button type="button" class="js_isIgnore" target="/input" >is ignore</button>
+                    <em class="error"></em>
+                    <em class="js_isIgnoreEm"></em>
+                </dd>
+
+                <dd style="margin-top:20px; padding-left: 400px;">
+                    <button type="submit">Save</button>
+                    <button type="button" class="js-clear-error">清空错误信息</button>
+                </dd>
+             </dl>
+
+
+            <div style="position:fixed; bottom: 10px; right:10px;">
+                <button type="submit">Save</button>
+                <button type="button" class="js-clear-error">清空错误信息</button>
+            </div>
+        </form>
+
+    </body>
+</html>
+

@@ -1,0 +1,238 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            body{
+                width: 600px;
+                margin: 20px auto 20px;
+            }
+
+            dl.def > dd{
+                margin: 10px 0;
+            }
+        </style>
+        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+        <script src="../../../lib.js"></script>
+        <script>
+            httpRequire();
+
+            JC.debug = true; 
+            JC.use( 'AutoSelect, Valid, Bizs.CommonModify, Bizs.FormLogic' );
+
+            $(document).ready(function(){
+
+                //JC.AutoSelect.hideEmpty = true;
+
+                $(document).delegate( 'button.js_ajaxTest', 'click', function(){
+                    var _p = $(this);
+                    _p.prop('disabled', true);
+                    setTimeout( function(){ _p.prop('disabled', false); }, 1000 );
+
+                    $.get( './data/shengshi_html.php?rnd='+new Date().getTime(), function( _r ){
+                        var _selector = $(_r);
+                        $( 'dl.def > dt' ).after( _selector );
+                        JC.AutoSelect( _selector );
+                    });
+                });
+
+                JC.AutoSelect.dataFilter = 
+                    function( _data, _select ){
+                        var _r = _data;
+                        if( _data && !_data.length && _data.data ){
+                            _r = _data.data;
+                        }
+                        return _r;
+                    };
+
+               JC.AutoSelect.inited =
+                    function(){
+                        JC.log( 'user inited' );
+                    };
+
+               JC.AutoSelect.allChanged =
+                    function(){
+                        JC.log( 'user allChanged' );
+                    };
+            });
+
+            /**
+             * 动态设置 选中值, 使用 update 方法
+             */
+             $(document).delegate( 'button.js_dynamicSettingUpdateMethod', 'click', function( _evt ){
+                 var _p = $(this)
+                 , _data = _p.attr('testdata')
+                 , _ls
+                 , _selLs
+                 ;
+                 if( !_data ) return;
+                 _selLs = _p.parent().find('select');
+                 if( !_selLs.length ) return;
+
+                 var _ins = JC.AutoSelect.getInstance( _selLs[0] );
+                    _ins && _ins.update( _data );
+             });
+        </script>
+    </head>    
+    <body>
+
+        <div style="position:fixed; top: 20px; right: 20px">
+            <button type="button" class="js_ajaxTest">ajax test</button>
+        </div>
+        <div class="js_positionBox">
+            <dl class='def'>
+                <dt>auto select example</dt>
+
+                <dd>
+                    <label class="gray">可选位置：</label>
+                    <select name='pos1[0]' class="sel sel-w110 js_fixedPosition" 
+                        reqmsg="位置" subdatatype="unique-6"
+                        uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                        uniqueIgnoreEmpty="true"
+
+                        defaultselect 
+                        selecttriggerinitchange="false"
+                        selecturl="./data/infinity_cat.php?id=0&hasData=1" 
+                        selecttarget="/select:eq(1)"
+                        selecthideempty="true"
+                        >
+                        <option value="" defaultoption>请选择广告位</option>
+                    </select>
+                    <select name='pos2[0]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                        reqmsg="位置" subdatatype="unique-6"
+                        uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                        uniqueIgnoreEmpty="true"
+
+                        selecturl="./data/infinity_cat.php?id={0}&hasData=1" 
+                        selecttarget="/select:eq(2)"
+                        >
+                        <option value="" defaultoption>请选择广告位</option>
+                    </select>
+                    <select name='pos3[0]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                        reqmsg="位置" subdatatype="unique-6"
+                        uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                        uniqueIgnoreEmpty="true"
+
+                        selecturl="./data/infinity_cat.php?id={0}&hasData=1" 
+                        selecttarget="/select:eq(3)"
+                        >
+                        <option value="" defaultoption>请选择广告位</option>
+                    </select>
+                    <select name='pos4[0]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                        reqmsg="位置" subdatatype="unique-6"
+                        uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                        uniqueIgnoreEmpty="true"
+
+                        selecturl="./data/infinity_cat.php?id={0}&hasData=1" 
+                        selecttarget="/select:eq(4)"
+                        >
+                        <option value="" defaultoption>请选择广告位</option>
+                    </select>
+                    <select name='pos5[0]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                        reqmsg="位置" subdatatype="unique-6"
+                        uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                        uniqueIgnoreEmpty="true"
+
+                        selecturl="./data/infinity_cat.php?id={0}&hasData=1" 
+                        selecttarget="/select:eq(5)"
+                        >
+                        <option value="" defaultoption>请选择广告位</option>
+                    </select>
+                    <select name='pos6[0]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                        reqmsg="位置" subdatatype="unique-6"
+                        uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                        uniqueIgnoreEmpty="true"
+
+                        selecturl="./data/infinity_cat.php?id={0}&hasData=0" 
+                        >
+                        <option value="" defaultoption>请选择广告位</option>
+                    </select>
+                    <a href="javascript:" 
+                    class="green js_autoCommonModify" 
+                    cmtemplate="#testPosTpl"
+                    cmitem="(dd"
+                    cmaction="add"
+                    >+ 添加</a>
+                    <em class="error"></em>
+                </dd>
+            </dl>
+        </div>
+
+        <script type="text/template" id="testPosTpl">
+            <dd>
+                <label class="gray">可选位置：</label>
+                <select name='pos1[{0}]' class="sel sel-w110 js_fixedPosition" 
+                    reqmsg="位置" subdatatype="unique-6"
+                    uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                    uniqueIgnoreEmpty="true"
+
+                    defaultselect 
+                    selecttriggerinitchange="false"
+                    selecturl="./data/infinity_cat.php?id=0&hasData=1" 
+                    selecttarget="/select:eq(1)"
+                    selecthideempty="true"
+                    >
+                    <option value="" defaultoption>请选择广告位</option>
+                </select>
+                <select name='pos2[{0}]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                    reqmsg="位置" subdatatype="unique-6"
+                    uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                    uniqueIgnoreEmpty="true"
+
+                    selecturl="./data/infinity_cat.php?id=<0>&hasData=1" 
+                    selecttarget="/select:eq(2)"
+                    >
+                    <option value="" defaultoption>请选择广告位</option>
+                </select>
+                <select name='pos3[{0}]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                    reqmsg="位置" subdatatype="unique-6"
+                    uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                    uniqueIgnoreEmpty="true"
+
+                    selecturl="./data/infinity_cat.php?id=<0>&hasData=1" 
+                    selecttarget="/select:eq(3)"
+                    >
+                    <option value="" defaultoption>请选择广告位</option>
+                </select>
+                <select name='pos4[{0}]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                    reqmsg="位置" subdatatype="unique-6"
+                    uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                    uniqueIgnoreEmpty="true"
+
+                    selecturl="./data/infinity_cat.php?id=<0>&hasData=1" 
+                    selecttarget="/select:eq(4)"
+                    >
+                    <option value="" defaultoption>请选择广告位</option>
+                </select>
+                <select name='pos5[{0}]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                    reqmsg="位置" subdatatype="unique-6"
+                    uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                    uniqueIgnoreEmpty="true"
+
+                    selecturl="./data/infinity_cat.php?id=<0>&hasData=1" 
+                    selecttarget="/select:eq(5)"
+                    >
+                    <option value="" defaultoption>请选择广告位</option>
+                </select>
+                <select name='pos6[{0}]' class="sel sel-w110 js_fixedPosition" style="display:none"  
+                    reqmsg="位置" subdatatype="unique-6"
+                    uniquedatatarget="(div.js_positionBox select.js_fixedPosition" uniquemsg="不能选择相同的位置"  validemdisplaytype="inline" 
+                    uniqueIgnoreEmpty="true"
+
+                    selecturl="./data/infinity_cat.php?id=<0>&hasData=0" 
+                    >
+                    <option value="" defaultoption>请选择广告位</option>
+                </select>
+                <a href="javascript:" 
+                class="red js_autoCommonModify" 
+                cmitem="(dd"
+                cmaction="del"
+                >- 删除</a>
+                <em class="error"></em>
+            </dd>
+
+        </script>
+    </body>
+</html>
+
