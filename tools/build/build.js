@@ -2,7 +2,7 @@
     //appDir: './'
     baseUrl: '../../'
     , dir: '../../deploy'
-    , fileExclusionRegExp: /^(((r|build)\.js)|document.html|index.php|[\s\S]+?\.md|(_demo|docs|docs_api|tools|deploy|dist|node_modules))$/
+    , fileExclusionRegExp: /^(((r|build)\.js)|document.html|index.php|[\s\S]+?\.md|(_demo|docs|docs_api|tools|deploy|dist|node_modules|\.git|\.gitignore))$/
     //, optimizeCss: 'standard'
     //, name: 'pub'
     , modules: [
