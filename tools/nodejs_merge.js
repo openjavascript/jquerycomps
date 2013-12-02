@@ -32,5 +32,6 @@ fs.unlinkSync( dir + 'jquery.js' );
 fs.unlinkSync( dir + 'common.js' );
 fs.unlinkSync( dir + 'JC.js' );
 */
+console.log( 'merge done' );
 
 

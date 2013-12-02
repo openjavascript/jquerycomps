@@ -159,7 +159,7 @@ window.Bizs = window.Bizs || {};
                     _paths.push( _path );
                 });
 
-                JC.log( _paths );
+                //JC.log( _paths );
 
                 !JC.enableNginxStyle && JC._writeNormalScript( _paths );
                 JC.enableNginxStyle && JC._writeNginxScript( _paths );
@@ -210,6 +210,14 @@ window.Bizs = window.Bizs || {};
         */
        , enableNginxStyle: false
        /**
+        * 定义 nginx 合并文件时, URL 的最大长度
+        * @property     nginxUrlLen
+        * @type int
+        * @default  200
+        * @static
+        */
+       , nginxUrlLen: 280
+       /**
         * 定义 nginx style 的基础路径
         * <br /><b>注意:</b> 如果这个属性为空, 即使 enableNginxStyle = true, 也是直接输出默认路径 
         * @property     nginxBasePath
@@ -256,18 +264,11 @@ window.Bizs = window.Bizs || {};
                     http://jc.openjavascript.org/plugins/jquery.form.js
         */
        , FILE_MAP: null
-       /**
-        * 输出 nginx concat 模块的脚本路径格式
-        * @method   _writeNginxScript
-        * @param    {array} _paths
-        * @private
-        * @static
-        */
        , _writeNginxScript:
             function( _paths ){
                 if( !JC.enableNginxStyle ) return;
                 for( var i = 0, j = _paths.length, _ngpath = [], _npath = []; i < j; i++ ){
-                    JC.log( _paths[i].slice( 0, JC.nginxBasePath.length ).toLowerCase(), JC.nginxBasePath.toLowerCase() );
+                    //JC.log( _paths[i].slice( 0, JC.nginxBasePath.length ).toLowerCase(), JC.nginxBasePath.toLowerCase() );
                     if(  
                          _paths[i].slice( 0, JC.nginxBasePath.length ).toLowerCase() 
                         == JC.nginxBasePath.toLowerCase() )
@@ -278,12 +279,48 @@ window.Bizs = window.Bizs || {};
                     }
                 }
 
-                var _postfix = JC.pathPostfix ? '?v=' + JC.pathPostfix : '';
 
+                var _postfix = JC.pathPostfix ? '?v=' + JC.pathPostfix : '';
+                /*
                 _ngpath.length && document.write( printf( '<script src="{0}??{1}{2}"><\/script>'
                                                     , JC.nginxBasePath, _ngpath.join(','), _postfix ) );
+                */
+                JC._autoSplitNginxScript( _ngpath, _postfix );
+
                 _npath.length && JC._writeNormalScript( _npath );
             }
+       , _autoSplitNginxScript:
+           function( _paths, _postfix ){
+               if( !( _paths&& _paths.length ) ) return;
+               var _maxLen = JC.nginxUrlLen || 200
+                   , _finalPaths = [ [] ]
+                   , _prefix = JC.nginxBasePath
+                   , _pattern = _prefix + '??{0}' + _postfix
+                   , _hostLen = JC.f.urlHostName().length + 9
+                   ;
+               if( /(^\.\/|^\.\.\/)/.test( JC.nginxBasePath ) ){
+                   _hostLen += JC.f.relativePath( JC.nginxBasePath ).length;
+               }
+               for( var i = 0, j = _paths.length; i < j; i++ ){
+                   var _beforeLen = _hostLen + JC.f.printf( _pattern, _finalPaths[ _finalPaths.length - 1 ].join(',') ).length
+                       , _afterLen = _beforeLen + _paths[i].length + 1
+                       ;
+
+                   //JC.log( [ _beforeLen, _afterLen ] );
+
+                   if( _afterLen > _maxLen ){
+                       _finalPaths.push( [] );
+                   }
+
+                   _finalPaths[ _finalPaths.length - 1 ].push( _paths[ i ] );
+               }
+
+               $.each( _finalPaths, function( _ix, _item ){
+                    if( !_item.length ) return;
+                    document.write( printf( '<script src="{0}??{1}{2}"><\/script>'
+                    , JC.nginxBasePath, _item.join(','), _postfix ) );
+               });
+           }
        /**
         * 输出的脚本路径格式
         * @method   _writeNormalScript
