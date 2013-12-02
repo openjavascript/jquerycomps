@@ -900,6 +900,12 @@
             ;
     });
 
+    $(document).delegate( 'input[buttonClickBindSelector], button[buttonClickBindSelector]', 'click', function( _evt ){
+        var _p = $(this), _target = JC.f.parentSelector( _p, _p.attr('buttonClickBindSelector') );
+        if( !( _target && _target.length ) ) return;
+        _target.val( _p.val() || '' );
+    });
+
     $(document).delegate( 'a[buttonReturnUrl], input[buttonReturnUrl], button[buttonReturnUrl]', 'click', function( _evt ){
         var _p = $(this)
             , _url = _p.attr('buttonReturnUrl').trim()
