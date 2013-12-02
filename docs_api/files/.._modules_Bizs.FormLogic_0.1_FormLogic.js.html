@@ -310,7 +310,14 @@
     JC.log( &#x27;formConfirmCheckCallback&#x27;, new Date().getTime() );
     return _form.find(&#x27;td.js_confirmCheck input[value=0]:checked&#x27;).length;
 }&lt;/pre&gt;
-     *      &lt;/dt&gt;
+     *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;formSubmitIgnoreCheck = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          表单提交时, 是否忽略 JC.Valid 的验证
+     *          &lt;br /&gt;&lt;b&gt;注意:&lt;/b&gt; 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配
+     *          &lt;br /&gt;&lt;b&gt;注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证&lt;/b&gt;
+     *      &lt;/dd&gt;
      * &lt;/dl&gt;
      *
      * &lt;h2&gt;reset button 可用的 html 属性&lt;/h2&gt;
@@ -344,6 +351,12 @@
      *
      *      &lt;dt&gt;popupstatus = int, default = 2&lt;/dt&gt;
      *      &lt;dd&gt;提示状态: 0: 成功, 1: 失败, 2: 警告&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;buttonClickBindSelector = selector&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          点击按钮时, 把按钮的值赋值给 绑定的 控件
+     *          &lt;br /&gt;&lt;b&gt;注意:&lt;/b&gt; 这个属性仅支持 [input|button] 标签
+     *      &lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace       window.Bizs
      * @class           FormLogic
@@ -546,6 +559,15 @@
                 _p.selector().on(&#x27;submit&#x27;, function( _evt ){
                     //_evt.preventDefault();
                     _p._model.isSubmited( true );
+
+                    var _ignoreCheck, _btn = _p.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON );
+                        _btn &amp;&amp; ( _btn = $( _btn ) );
+                    if( _btn &amp;&amp; _btn.length ){
+                        _ignoreCheck = JC.f.parseBool( _btn.attr(&#x27;formSubmitIgnoreCheck&#x27;) );
+                        JC.Valid.ignore( _p.selector(), !_ignoreCheck ); 
+                    }else{
+                        JC.Valid.ignore( _p.selector(), true );
+                    }
 
                     if( _p._model.formBeforeProcess() ){
                         if( _p._model.formBeforeProcess().call( _p.selector(), _evt, _p ) === false ){
@@ -1082,6 +1104,12 @@
         _fm &amp;&amp; _fm.length 
             &amp;&amp; _fm.data( FormLogic.Model.GENERIC_SUBMIT_BUTTON , _p )
             ;
+    });
+
+    $(document).delegate( &#x27;input[buttonClickBindSelector], button[buttonClickBindSelector]&#x27;, &#x27;click&#x27;, function( _evt ){
+        var _p = $(this), _target = JC.f.parentSelector( _p, _p.attr(&#x27;buttonClickBindSelector&#x27;) );
+        if( !( _target &amp;&amp; _target.length ) ) return;
+        _target.val( _p.val() || &#x27;&#x27; );
     });
 
     $(document).delegate( &#x27;a[buttonReturnUrl], input[buttonReturnUrl], button[buttonReturnUrl]&#x27;, &#x27;click&#x27;, function( _evt ){

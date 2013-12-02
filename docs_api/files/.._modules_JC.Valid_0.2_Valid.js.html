@@ -605,10 +605,14 @@
                     Valid.isFormValid = false;
                     if( _p._model.isForm( _item ) ){
                         Valid.isFormValid = true;
-                        var _errorabort = _p._model.isErrorAbort( _item ), tmp;
+                        var _errorabort = _p._model.isErrorAbort( _item )
+                            , _isIgnoreForm = Valid.ignore( _item )
+                            , tmp
+                            ;
                         for( i = 0, j = _item[0].length; i &lt; j; i++ ){
-                            var _sitem = $( $(_item[0][i]) );
+                            var _sitem = $(_item[0][i]);
                             if( !_p._model.isValid( _sitem ) ) continue;
+                            if( _isIgnoreForm &amp;&amp; !_sitem.val().trim() ) continue;
                             !_p.parse( _sitem ) &amp;&amp; ( _r = false );
                             if( _errorabort &amp;&amp; !_r ) break;
                         }
@@ -960,7 +964,7 @@
                     ? _item.removeAttr(&#x27;ignoreprocess&#x27;)
                     : _item.attr(&#x27;ignoreprocess&#x27;, true)
                     ;
-                _r = _delIgnore;
+                _r = !_delIgnore;
             }else{
                 
                 _item.is( &#x27;[ignoreprocess]&#x27; ) 
