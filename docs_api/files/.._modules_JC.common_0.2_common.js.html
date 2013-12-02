@@ -219,6 +219,7 @@
         , &quot;getUrlParam&quot;: getUrlParam
         , &quot;getUrlParams&quot;: getUrlParams
         , &quot;hasUrlParam&quot;: hasUrlParam
+        , &#x27;urlHostName&#x27;: urlHostName
         , &quot;httpRequire&quot;: httpRequire
         , &quot;isSameDay&quot;: isSameDay
         , &quot;isSameMonth&quot;: isSameMonth
@@ -236,6 +237,7 @@
         , &quot;pureDate&quot;: pureDate
         , &quot;reloadPage&quot;: reloadPage
         , &quot;removeUrlSharp&quot;: removeUrlSharp
+        , &quot;relativePath&quot;: relativePath
         , &quot;scriptContent&quot;: scriptContent
         , &quot;scriptPath&quot;: scriptPath
         , &quot;sliceArgs&quot;: sliceArgs
@@ -296,6 +298,50 @@
             _r.push( _arg[_i] );
         }
         return _r;
+    }
+    /**
+     * 取 URL 的 host name
+     * @method  urlHostName
+     * @param   {string}    _url
+     * @return  string
+     * @static
+     */
+    function urlHostName( _url ){
+        var _r = &#x27;&#x27;, _url = _url || location.href;
+        if( /\:\/\//.test( _url ) ){
+            _url.replace( /^.*?\:\/\/([^\/]+)/, function( $0, $1 ){
+                _r = $1;
+            });
+        }
+        return _r;
+    }
+    /**
+     * 把 URL 相对路径 转换为 绝对路径
+     * @method  relativePath
+     * @param   {string}    _path
+     * @param   {string}    _url
+     * @return  string
+     * @static
+     */
+    function relativePath( _path, _url ){
+        _url = _url || document.URL;
+        _url = _url.replace(/^.*?\:\/\/[^\/]+/, &quot;&quot;).replace(/[^\/]+$/, &quot;&quot;);
+        if(!_path){return _url;}  
+        if(!/\/$/.test(_url)){_url += &quot;/&quot;;}
+
+        if(/(^\.\.\/|^\.\/)/.test(_path)){
+            var Re = new RegExp(&quot;^\\.\\.\\/&quot;), iCount = 0;    
+            while(Re.exec(_path)!=null){
+                _path = _path.replace(Re, &quot;&quot;);
+                iCount++;
+            }       
+            for(var i=0; i&lt;iCount; i++){_url = _url.replace(/[^\/]+\/$/, &quot;&quot;);}    
+            if(_url==&quot;&quot;) return &quot;/&quot;;  
+            _path = _path.replace(/^\.\//, &quot;&quot;); 
+            _path.replace( /\/\/$/, &#x27;/&#x27; );
+            return _url+_path;
+        }   
+        return _path;
     }
      /**
      * 按格式输出字符串

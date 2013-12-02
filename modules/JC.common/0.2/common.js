@@ -35,6 +35,7 @@
         , "getUrlParam": getUrlParam
         , "getUrlParams": getUrlParams
         , "hasUrlParam": hasUrlParam
+        , 'urlHostName': urlHostName
         , "httpRequire": httpRequire
         , "isSameDay": isSameDay
         , "isSameMonth": isSameMonth
@@ -52,6 +53,7 @@
         , "pureDate": pureDate
         , "reloadPage": reloadPage
         , "removeUrlSharp": removeUrlSharp
+        , "relativePath": relativePath
         , "scriptContent": scriptContent
         , "scriptPath": scriptPath
         , "sliceArgs": sliceArgs
@@ -112,6 +114,50 @@
             _r.push( _arg[_i] );
         }
         return _r;
+    }
+    /**
+     * 取 URL 的 host name
+     * @method  urlHostName
+     * @param   {string}    _url
+     * @return  string
+     * @static
+     */
+    function urlHostName( _url ){
+        var _r = '', _url = _url || location.href;
+        if( /\:\/\//.test( _url ) ){
+            _url.replace( /^.*?\:\/\/([^\/]+)/, function( $0, $1 ){
+                _r = $1;
+            });
+        }
+        return _r;
+    }
+    /**
+     * 把 URL 相对路径 转换为 绝对路径
+     * @method  relativePath
+     * @param   {string}    _path
+     * @param   {string}    _url
+     * @return  string
+     * @static
+     */
+    function relativePath( _path, _url ){
+        _url = _url || document.URL;
+        _url = _url.replace(/^.*?\:\/\/[^\/]+/, "").replace(/[^\/]+$/, "");
+        if(!_path){return _url;}  
+        if(!/\/$/.test(_url)){_url += "/";}
+
+        if(/(^\.\.\/|^\.\/)/.test(_path)){
+            var Re = new RegExp("^\\.\\.\\/"), iCount = 0;    
+            while(Re.exec(_path)!=null){
+                _path = _path.replace(Re, "");
+                iCount++;
+            }       
+            for(var i=0; i<iCount; i++){_url = _url.replace(/[^\/]+\/$/, "");}    
+            if(_url=="") return "/";  
+            _path = _path.replace(/^\.\//, ""); 
+            _path.replace( /\/\/$/, '/' );
+            return _url+_path;
+        }   
+        return _path;
     }
      /**
      * 按格式输出字符串
