@@ -182,8 +182,9 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Valid&#x27;, &#x27;JC.Form&#x27;, &#x27;JC.Panel&#x27; ], function(){
 //TODO: 添加 disabled bind hidden 操作
+//TODO: formSubmitIgnoreCheck 时, 如果在控件里回车提交的话, 控制逻辑可能会有问题, 需要仔细检查
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Valid&#x27;, &#x27;JC.Form&#x27;, &#x27;JC.Panel&#x27; ], function(){
 ;(function($){
     /**
      * &lt;h2&gt;提交表单控制逻辑&lt;/h2&gt;
@@ -1157,7 +1158,15 @@
 
 }(jQuery));
     return Bizs.FormLogic;
-});}(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
+});}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
+        function ( _name, _require, _cb) { 
+            typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );
+            typeof _require == &#x27;function&#x27; &amp;&amp; ( _cb = _require ); 
+            _cb &amp;&amp; _cb(); 
+        }
+        , window
+    )
+);
 
     </pre>
 </div>
