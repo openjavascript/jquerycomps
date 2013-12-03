@@ -44,6 +44,7 @@ requirejs.config( {
         , 'plugins.jquery.rate': 'plugins/jquery.rate/2.5.2/jquery.rate'
         , 'plugins.requirejs.domReady': 'plugins/requirejs.domReady/2.0.1/domReady'
         , 'plugins.JSON2': 'plugins/JSON/2/JSON'
+        , 'plugins.json2': 'plugins/JSON/2/JSON'
         , 'plugins.Aes': 'plugins/Aes/0.1/Aes'
         , 'plugins.Base64': 'plugins/Base64/0.1/Base64'
         , 'plugins.md5': 'plugins/md5/0.1/md5'
