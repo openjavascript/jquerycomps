@@ -10602,6 +10602,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
 //TODO: use 方法 nginx 模式添加 url 最大长度判断
 //TODO: use add custom type
+//TODO: 支持解析带 JC. 命名空间
 /**
  * <h2>业务逻辑命名空间</h2>
  * <br />这个命名空间的组件主要为满足业务需求, 不是通用组件~

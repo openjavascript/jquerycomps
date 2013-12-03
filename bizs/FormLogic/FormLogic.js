@@ -126,7 +126,14 @@
     JC.log( 'formConfirmCheckCallback', new Date().getTime() );
     return _form.find('td.js_confirmCheck input[value=0]:checked').length;
 }</pre>
-     *      </dt>
+     *      </dd>
+     *
+     *      <dt>formSubmitIgnoreCheck = bool, default = false</dt>
+     *      <dd>
+     *          表单提交时, 是否忽略 JC.Valid 的验证
+     *          <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配
+     *          <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>
+     *      </dd>
      * </dl>
      *
      * <h2>reset button 可用的 html 属性</h2>
@@ -160,6 +167,12 @@
      *
      *      <dt>popupstatus = int, default = 2</dt>
      *      <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>
+     *
+     *      <dt>buttonClickBindSelector = selector</dt>
+     *      <dd>
+     *          点击按钮时, 把按钮的值赋值给 绑定的 控件
+     *          <br /><b>注意:</b> 这个属性仅支持 [input|button] 标签
+     *      </dd>
      * </dl>
      * @namespace       window.Bizs
      * @class           FormLogic
@@ -362,6 +375,15 @@
                 _p.selector().on('submit', function( _evt ){
                     //_evt.preventDefault();
                     _p._model.isSubmited( true );
+
+                    var _ignoreCheck, _btn = _p.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON );
+                        _btn && ( _btn = $( _btn ) );
+                    if( _btn && _btn.length ){
+                        _ignoreCheck = JC.f.parseBool( _btn.attr('formSubmitIgnoreCheck') );
+                        JC.Valid.ignore( _p.selector(), !_ignoreCheck ); 
+                    }else{
+                        JC.Valid.ignore( _p.selector(), true );
+                    }
 
                     if( _p._model.formBeforeProcess() ){
                         if( _p._model.formBeforeProcess().call( _p.selector(), _evt, _p ) === false ){
@@ -898,6 +920,12 @@
         _fm && _fm.length 
             && _fm.data( FormLogic.Model.GENERIC_SUBMIT_BUTTON , _p )
             ;
+    });
+
+    $(document).delegate( 'input[buttonClickBindSelector], button[buttonClickBindSelector]', 'click', function( _evt ){
+        var _p = $(this), _target = JC.f.parentSelector( _p, _p.attr('buttonClickBindSelector') );
+        if( !( _target && _target.length ) ) return;
+        _target.val( _p.val() || '' );
     });
 
     $(document).delegate( 'a[buttonReturnUrl], input[buttonReturnUrl], button[buttonReturnUrl]', 'click', function( _evt ){

@@ -1,6 +1,7 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
 //TODO: checkbox, radio 错误时, input 添加高亮显示
+//TODO: daterange 支持一对多关系
 ;(function($){
     /**
      * <b>表单验证</b> (单例模式)
@@ -420,10 +421,14 @@
                     Valid.isFormValid = false;
                     if( _p._model.isForm( _item ) ){
                         Valid.isFormValid = true;
-                        var _errorabort = _p._model.isErrorAbort( _item ), tmp;
+                        var _errorabort = _p._model.isErrorAbort( _item )
+                            , _isIgnoreForm = Valid.ignore( _item )
+                            , tmp
+                            ;
                         for( i = 0, j = _item[0].length; i < j; i++ ){
-                            var _sitem = $( $(_item[0][i]) );
+                            var _sitem = $(_item[0][i]);
                             if( !_p._model.isValid( _sitem ) ) continue;
+                            if( _isIgnoreForm && !_sitem.val().trim() ) continue;
                             !_p.parse( _sitem ) && ( _r = false );
                             if( _errorabort && !_r ) break;
                         }
@@ -775,7 +780,7 @@
                     ? _item.removeAttr('ignoreprocess')
                     : _item.attr('ignoreprocess', true)
                     ;
-                _r = _delIgnore;
+                _r = !_delIgnore;
             }else{
                 
                 _item.is( '[ignoreprocess]' ) 
