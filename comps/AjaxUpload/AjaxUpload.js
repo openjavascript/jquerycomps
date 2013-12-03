@@ -2,8 +2,7 @@
  ;(function($){
     /**
      * Ajax 文件上传
-     * <p>
-     *      <b>require</b>: 
+     * <p><b>require</b>: 
      *          <a href='jQuery.html'>jQuery</a>
      *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *          , <a href='JC.Panel.html'>JC.Panel</a>
@@ -655,4 +654,12 @@
 
 }(jQuery));
     return JC.AjaxUpload;
-}); }(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));
+});}( typeof define === 'function' && define.amd ? define : 
+        function ( _name, _require, _cb) { 
+            typeof _name == 'function' && ( _cb = _name );
+            typeof _require == 'function' && ( _cb = _require ); 
+            _cb && _cb(); 
+        }
+        , window
+    )
+);

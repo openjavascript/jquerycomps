@@ -188,8 +188,7 @@
  ;(function($){
     /**
      * Ajax 文件上传
-     * &lt;p&gt;
-     *      &lt;b&gt;require&lt;/b&gt;: 
+     * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
      *          &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
      *          , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
      *          , &lt;a href=&#x27;JC.Panel.html&#x27;&gt;JC.Panel&lt;/a&gt;
@@ -841,7 +840,15 @@
 
 }(jQuery));
     return JC.AjaxUpload;
-}); }(typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : function (_require, _cb) { _cb &amp;&amp; _cb(); }, this));
+});}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
+        function ( _name, _require, _cb) { 
+            typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );
+            typeof _require == &#x27;function&#x27; &amp;&amp; ( _cb = _require ); 
+            _cb &amp;&amp; _cb(); 
+        }
+        , window
+    )
+);
 
     </pre>
 </div>
