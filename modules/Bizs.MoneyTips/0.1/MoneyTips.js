@@ -89,7 +89,7 @@
      * @return  {Array of MoneyTipsInstance}
      */
     MoneyTips.init =
-        function( _selector, _outget ){
+        function( _selector ){
             var _r = [];
             _selector = $( _selector || document );
 
