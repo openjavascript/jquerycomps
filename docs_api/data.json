@@ -506,7 +506,7 @@
             "namespace": "window.Bizs",
             "file": "../bizs/MoneyTips/MoneyTips.js",
             "line": 2,
-            "description": "<h2>金额格式化 业务逻辑</h2>\n<br/>应用场景\n<br/>用户在文本框输入金额时, 在指定的 node 显示以逗号分隔的金额\n<p><b>require</b>: \n     <a href='jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.MoneyTips.html' target='_blank'>API docs</a>\n| <a href='../../bizs/MoneyTips/_demo' target='_blank'>demo link</a></p>\n\ninput[type=text] 需要 添加 class=\"js_bizMoneyTips\"\n<br />只要带有 class = js_bizMoneyTips 的文本框, 默认会自己初始化 MoneyTips 实例\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>bmtDisplayLabel = selector, default = span</dt>\n     <dd>\n         指定显示 格式化金额的 node, 如果没有显式指定 node, 那么将会动态生成一个用于显示的 span\n     </dd>\n\n     <dt>bmtPattern = string, default = {0}</dt>\n     <dd>\n         用于显示格式化金额的显示内容, {0} = 金额占位符\n         <br />example: &lt;input type=\"text\" class=\"js_bizMoneyTips\" bmtPattern=\"格式化金额: {0}\" />\n     </dd>\n</dl>",
+            "description": "<h2>金额格式化 业务逻辑</h2>\n<br/>应用场景\n<br/>用户在文本框输入金额时, 在指定的 node 显示以逗号分隔的金额\n<p><b>require</b>: \n     <a href='jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.MoneyTips.html' target='_blank'>API docs</a>\n| <a href='../../bizs/MoneyTips/_demo' target='_blank'>demo link</a></p>\n\ninput[type=text] 需要 添加 class=\"js_bizMoneyTips\"\n<br />只要带有 class = js_bizMoneyTips 的文本框, 默认会自动初始化 MoneyTips 实例\n\n<p>\n     页面载入时, Bizs.MoneyTips 会对 span.js_bmtLabel, label.js_bmtLabel 进行自动格式化\n</p>\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>bmtDisplayLabel = selector, default = span</dt>\n     <dd>\n         指定显示 格式化金额的 node, 如果没有显式指定 node, 那么将会动态生成一个用于显示的 span\n     </dd>\n\n     <dt>bmtPattern = string, default = {0}</dt>\n     <dd>\n         用于显示格式化金额的显示内容, {0} = 金额占位符\n         <br />example: &lt;input type=\"text\" class=\"js_bizMoneyTips\" bmtPattern=\"格式化金额: {0}\" />\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-11-21",
@@ -2279,7 +2279,7 @@
         },
         {
             "file": "../bizs/MoneyTips/MoneyTips.js",
-            "line": 62,
+            "line": 66,
             "description": "获取或设置 MoneyTips 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -2300,7 +2300,7 @@
         },
         {
             "file": "../bizs/MoneyTips/MoneyTips.js",
-            "line": 78,
+            "line": 82,
             "description": "初始化可识别的 MoneyTips 实例",
             "itemtype": "method",
             "name": "init",
@@ -2321,7 +2321,32 @@
         },
         {
             "file": "../bizs/MoneyTips/MoneyTips.js",
-            "line": 143,
+            "line": 105,
+            "description": "格式化 node 的 value/html",
+            "itemtype": "method",
+            "name": "format",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_outputSelector",
+                    "description": "指定显示格式化内容的 node, 默认为 selector 本身\n                                             <br />, 还可以通过 html 属性 bmtFormatOutput 指定单独的 _outputSelector",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "_selector"
+            },
+            "class": "window.Bizs.MoneyTips",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/MoneyTips/MoneyTips.js",
+            "line": 184,
             "description": "更新 tips 的值",
             "itemtype": "method",
             "name": "update",

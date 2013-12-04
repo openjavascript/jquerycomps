@@ -12,7 +12,11 @@
  * | <a href='../../bizs/MoneyTips/_demo' target='_blank'>demo link</a></p>
  *
  * input[type=text] 需要 添加 class="js_bizMoneyTips"
- * <br />只要带有 class = js_bizMoneyTips 的文本框, 默认会自己初始化 MoneyTips 实例
+ * <br />只要带有 class = js_bizMoneyTips 的文本框, 默认会自动初始化 MoneyTips 实例
+ *
+ * <p>
+ *      页面载入时, Bizs.MoneyTips 会对 span.js_bmtLabel, label.js_bmtLabel 进行自动格式化
+ * </p>
  *
  * <h2>可用的 HTML 属性</h2>
  * <dl>
@@ -98,7 +102,44 @@
             }
             return _r;
         };
+    /**
+     * 格式化 node 的 value/html
+     * @method  format
+     * @param   {selector}      _selector
+     * @param   {selector}      _outputSelector     指定显示格式化内容的 node, 默认为 selector 本身
+     *                                              <br />, 还可以通过 html 属性 bmtFormatOutput 指定单独的 _outputSelector
+     * @static
+     * @return  _selector
+     */
+    MoneyTips.format = 
+        function( _selector, _outputSelector ){
+            _selector && ( _selector = $( _selector ) );
+            _outputSelector && ( _outputSelector = $( _outputSelector ) );
+            if( !( _selector && _selector.length ) ) return;
+            _selector.each( function(){
+                var _item = $(this)
+                    , _v
+                    , _subOutputSelector = JC.f.parentSelector( _item, _item.attr( 'bmtFormatOutput' ) )
+                    ;
+                !( _subOutputSelector && _subOutputSelector.length ) && ( _subOutputSelector = _item );
+                _outputSelector && _outputSelector.length && ( _subOutputSelector = _outputSelector );
+                !( _subOutputSelector && _subOutputSelector.length ) && ( _subOutputSelector = _item );
 
+                if( 'value' in this ){
+                    _v = _item.val().trim();
+                }else{
+                    _v = _item.html().trim();
+                }
+
+                if( 'value' in _subOutputSelector[0] ){
+                    _subOutputSelector.val( JC.f.moneyFormat( _v ) );
+                }else{
+                    _subOutputSelector.html( JC.f.moneyFormat( _v ) );
+                }
+            });
+
+            return _selector;
+        };
 
     MoneyTips.prototype = {
         _beforeInit:
@@ -214,6 +255,7 @@
         var _insAr = 0;
         MoneyTips.autoInit
             && ( _insAr = MoneyTips.init() )
+            && MoneyTips.format( $( 'span.js_bmtLabel, label.js_bmtLabel' ) )
             ;
     });
 
