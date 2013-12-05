@@ -2435,6 +2435,37 @@
             return _r;
         };
 
+
+    MonthDayModel.prototype.ccPreserveDisabled =
+        function(){
+            var _r = true;
+            this.selector().is( '[ccPreserveDisabled]' )
+                && ( _r = JC.f.parseBool( this.selector().attr( 'ccPreserveDisabled' ) ) );
+            return _r;
+        };
+
+    MonthDayModel.prototype.calendarclear = 
+        function(){
+            var _p = this, _ipt = this.selector(), _cb, _tmp;
+            _ipt && _ipt.attr('calendarclear') 
+                && ( _tmp = window[ _ipt.attr('calendarclear') ] )
+                && ( _cb = _tmp );
+
+            if( _p.ccPreserveDisabled() ){
+                var _items = _p.layout().find( 'input[date]' ), _disabled = [];
+                    _items.each( function(){
+                        var _sp = $(this), _d;
+                        if( !( _sp.is( ':disabled' ) && _sp.is( ':checked' ) ) ) return;
+                        _d = new Date();
+                        _d.setTime( _sp.attr( 'date' ) );
+                        _disabled.push( JC.f.formatISODate( _d ) );
+                    });
+                _ipt.val( _disabled.join(',') );
+            }
+
+            return _cb;
+        };
+
     MonthDayView.prototype.updateSelected = 
         function( _userSelectedItem ){
             var _p = this

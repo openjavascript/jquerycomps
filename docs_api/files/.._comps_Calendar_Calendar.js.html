@@ -2621,6 +2621,37 @@
             return _r;
         };
 
+
+    MonthDayModel.prototype.ccPreserveDisabled =
+        function(){
+            var _r = true;
+            this.selector().is( &#x27;[ccPreserveDisabled]&#x27; )
+                &amp;&amp; ( _r = JC.f.parseBool( this.selector().attr( &#x27;ccPreserveDisabled&#x27; ) ) );
+            return _r;
+        };
+
+    MonthDayModel.prototype.calendarclear = 
+        function(){
+            var _p = this, _ipt = this.selector(), _cb, _tmp;
+            _ipt &amp;&amp; _ipt.attr(&#x27;calendarclear&#x27;) 
+                &amp;&amp; ( _tmp = window[ _ipt.attr(&#x27;calendarclear&#x27;) ] )
+                &amp;&amp; ( _cb = _tmp );
+
+            if( _p.ccPreserveDisabled() ){
+                var _items = _p.layout().find( &#x27;input[date]&#x27; ), _disabled = [];
+                    _items.each( function(){
+                        var _sp = $(this), _d;
+                        if( !( _sp.is( &#x27;:disabled&#x27; ) &amp;&amp; _sp.is( &#x27;:checked&#x27; ) ) ) return;
+                        _d = new Date();
+                        _d.setTime( _sp.attr( &#x27;date&#x27; ) );
+                        _disabled.push( JC.f.formatISODate( _d ) );
+                    });
+                _ipt.val( _disabled.join(&#x27;,&#x27;) );
+            }
+
+            return _cb;
+        };
+
     MonthDayView.prototype.updateSelected = 
         function( _userSelectedItem ){
             var _p = this
