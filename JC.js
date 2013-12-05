@@ -142,7 +142,7 @@ window.Bizs = window.Bizs || {};
                         }else if( _compFileRe.test( _path ) ){//组件文件
                             _path = printf( '{0}{1}{2}.js', JC.PATH, JC.compsDir, _part.replace( _compFileRe, '' ) );
                         }else{//组件
-                            _path = printf( '{0}{1}{2}/{2}.js', JC.PATH, JC.compsDir, _part );
+                            _path = printf( '{0}{1}{2}/{2}.js', JC.PATH, JC.compsDir, _part.replace( /^JC\./, '' ) );
                         }
                     }
                     !_isComps && !_isFullpath && ( _path = printf( '{0}/{1}', JC.PATH, _part ) );
