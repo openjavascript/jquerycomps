@@ -2595,7 +2595,7 @@
                         , ''
                         , _tempDate.getTime()
                         , JC.f.formatISODate(_tempDate)
-                        , /\bcur\b/.test( _dayClass ) ? 'checked' : ''
+                        , ( !/\bunable\b/.test( _dayClass ) && ( /\bcur\b/.test( _dayClass ) ) ) ? 'checked' : ''
                         , /\bunable\b/.test( _dayClass ) ? 'disabled' : ''
                      ));
 
