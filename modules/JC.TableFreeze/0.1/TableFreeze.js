@@ -47,9 +47,8 @@
  * @extends JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
- * @version dev 0.1
+ * @version dev 0.1 2013-11-25
  * @author  zuojing   <zuojing1013@gmail.com> | 75 Team
- * @date    2013-11-25
  * @example
         <script>
             JC.debug = true;
