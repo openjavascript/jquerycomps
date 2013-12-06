@@ -309,8 +309,8 @@
                     {
                         _fcols = parseInt( _p.freezeCols(), 10 ); 
 
-                        _tpl = printf(_baseTpl, 'js-fixed-table') 
-                             + printf(_baseTpl, 'js-roll-table');
+                        _tpl = JC.f.printf(_baseTpl, 'js-fixed-table') 
+                             + JC.f.printf(_baseTpl, 'js-roll-table');
 
                         _p.selector().append( _tpl );
 
@@ -343,8 +343,8 @@
                     {
                         _fcols = parseInt( _p.freezeCols(), 10 );
 
-                        _tpl = printf(_baseTpl, 'js-roll-table') 
-                             + printf(_baseTpl, 'js-fixed-table');
+                        _tpl = JC.f.printf(_baseTpl, 'js-roll-table') 
+                             + JC.f.printf(_baseTpl, 'js-fixed-table');
 
                         _p.selector().append( _tpl );
                         
@@ -380,9 +380,9 @@
                         _fcols = parseInt( _p.freezeCols()[0], 10 );
                         _fcols2 = parseInt( _p.freezeCols()[1], 10 );
 
-                        _tpl = printf(_baseTpl, 'js-fixed-table') 
-                             + printf(_baseTpl, 'js-roll-table')
-                             + printf(_baseTpl, 'js-fixed-table');
+                        _tpl = JC.f.printf(_baseTpl, 'js-fixed-table') 
+                             + JC.f.printf(_baseTpl, 'js-roll-table')
+                             + JC.f.printf(_baseTpl, 'js-fixed-table');
 
                         _p.selector().append( _tpl );
 
