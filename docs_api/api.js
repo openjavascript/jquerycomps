@@ -21,6 +21,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Slider",
         "JC.Suggest",
         "JC.Tab",
+        "JC.TableFreeze",
         "JC.Tips",
         "JC.Tree",
         "JC.Valid",
