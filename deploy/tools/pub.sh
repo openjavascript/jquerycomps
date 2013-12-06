@@ -19,6 +19,10 @@ rm -rf $dir/deploy/docs_api
 rm -rf $dir/deploy/document.html
 rm -rf $dir/deploy/README.md
 rm -rf $dir/deploy/*.php
+rm -rf $dir/deploy/*.7z
+rm -rf $dir/deploy/bizs/*.7z
+rm -rf $dir/deploy/*.tar
+rm -rf $dir/deploy/*.zip
 
 cd $cur_dir
 

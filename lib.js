@@ -10734,6 +10734,10 @@ window.Bizs = window.Bizs || {};
                     _path = _part;
                     if( _isComps ){
                         if( _bizCompRe.test( _path ) ){//业务组件
+                            /**
+                             * 这个判断是为了向后兼容, 以前的 Bizs.DisableLogic 更名为 Bizs.ChangeLogic 
+                             */
+                            _part == "Bizs.DisableLogic" && ( _part = "Bizs.ChangeLogic" );
                             _path = printf( '{0}{1}{2}/{2}.js', JC.PATH, JC.bizsDir, _part.replace( _bizCompRe, '' ) );
                         }else if( _bizFileRe.test( _path ) ){//业务文件
                             _path = printf( '{0}{1}{2}.js', JC.PATH, JC.bizsDir, _part.replace( _bizFileRe, '' ) );

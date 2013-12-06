@@ -6,14 +6,14 @@
  * <br/>但选择其他 radio 时, 其他的内容无效
  * <br/>checkbox / select 也可使用( 带change事件的标签 )
  * <p><b>require</b>: 
- *      <a href='jQuery.html'>jQuery</a>
+ *      <a href='window.jQuery.html'>jQuery</a>
  *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
- * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html' target='_blank'>API docs</a>
- * | <a href='../../bizs/DisableLogic/_demo' target='_blank'>demo link</a></p>
+ * | <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ChangeLogic.html' target='_blank'>API docs</a>
+ * | <a href='../../bizs/ChangeLogic/_demo' target='_blank'>demo link</a></p>
  *
- * div 需要 添加 class="js_bizsDisableLogic"
+ * div 需要 添加 class="js_bizChangeLogic"
  *
  * <h2>box 的 HTML 属性</h2>
  * <dl>
@@ -76,13 +76,13 @@
  * </dl>
  *
  * @namespace   window.Bizs
- * @class       DisableLogic
+ * @class       ChangeLogic
  * @constructor
  * @version dev 0.1 2013-09-04
  * @author  qiushaowei   <suches@btbtd.org> | 75 Team
  *
  * @example
-        <div class="js_bizsDisableLogic"
+        <div class="js_bizChangeLogic"
             dltrigger="/input[type=radio]"
             dltarget="/input.js_disableItem"
             >
@@ -103,13 +103,13 @@
 ;(function($){
 
     window.Bizs = window.Bizs || {};
-    window.Bizs.DisableLogic = DisableLogic;
+    window.Bizs.ChangeLogic = ChangeLogic;
 
-    function DisableLogic( _selector ){
-        if( DisableLogic.getInstance( _selector ) ) return DisableLogic.getInstance( _selector );
-        DisableLogic.getInstance( _selector, this );
+    function ChangeLogic( _selector ){
+        if( ChangeLogic.getInstance( _selector ) ) return ChangeLogic.getInstance( _selector );
+        ChangeLogic.getInstance( _selector, this );
 
-        JC.log( 'Bizs.DisableLogic:', new Date().getTime() );
+        JC.log( 'Bizs.ChangeLogic:', new Date().getTime() );
 
         this._model = new Model( _selector );
         this._view = new View( this._model );
@@ -117,7 +117,7 @@
         this._init();
     }
     
-    DisableLogic.prototype = {
+    ChangeLogic.prototype = {
         _init:
             function(){
                 var _p = this, _tmp;
@@ -165,7 +165,7 @@
                 });
             }
         /**
-         * 获取 显示 DisableLogic 的触发源选择器, 比如 a 标签
+         * 获取 显示 ChangeLogic 的触发源选择器, 比如 a 标签
          * @method  selector
          * @return  selector
          */ 
@@ -175,55 +175,65 @@
          * @method  {string}    on
          * @param   {string}    _evtName
          * @param   {function}  _cb
-         * @return  DisableLogicInstance
+         * @return  ChangeLogicInstance
          */
         , on: function( _evtName, _cb ){ $(this).on(_evtName, _cb ); return this;}
         /**
          * 使用 jquery trigger 绑定事件
          * @method  {string}    trigger
          * @param   {string}    _evtName
-         * @return  DisableLogicInstance
+         * @return  ChangeLogicInstance
          */
         , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
     }
     /**
-     * 获取或设置 DisableLogic 的实例
+     * 获取或设置 ChangeLogic 的实例
      * @method getInstance
      * @param   {selector}      _selector
      * @static
-     * @return  {DisableLogic instance}
+     * @return  {ChangeLogic instance}
      */
-    DisableLogic.getInstance =
+    ChangeLogic.getInstance =
         function( _selector, _setter ){
             if( typeof _selector == 'string' && !/</.test( _selector ) ) 
                     _selector = $(_selector);
             if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
-            typeof _setter != 'undefined' && _selector.data( 'DisableLogicIns', _setter );
+            typeof _setter != 'undefined' && _selector.data( 'ChangeLogicIns', _setter );
 
-            return _selector.data('DisableLogicIns');
+            return _selector.data('ChangeLogicIns');
         };
 
-    DisableLogic.doneCallback = null;
-    DisableLogic.enableCallback = null;
-    DisableLogic.disableCallback = null;
+    ChangeLogic.doneCallback = null;
+    ChangeLogic.enableCallback = null;
+    ChangeLogic.disableCallback = null;
     /**
-     * 初始化 _selector | document 可识别的 DisableLogic HTML属性
+     * 初始化 _selector | document 可识别的 ChangeLogic HTML属性
      * @method  init
      * @param   {selector}  _selector, default = document
      * @static
      */
-    DisableLogic.init =
+    ChangeLogic.init =
         function( _selector ){
             _selector = $( _selector || document );
-            _selector.find(
-                    [ 
-                        'div.js_bizsDisableLogic'
-                        , 'dl.js_bizsDisableLogic'
-                        , 'table.js_bizsDisableLogic'
-                    ].join() 
-            ).each( function(){
-                new DisableLogic( $(this) );
-            });
+            if( !( _selector && _selector.length ) ) return;
+
+            if( _selector.hasClass( 'js_bizChangeLogic' ) || _selector.hasClass( 'js_bizsDisableLogic' ) ){
+                new ChangeLogic( _selector );
+            }else{
+                _selector.find(
+                        [ 
+                            'div.js_bizChangeLogic'
+                            , 'dl.js_bizChangeLogic'
+                            , 'table.js_bizChangeLogic'
+
+                            , 'div.js_bizsDisableLogic'
+                            , 'dl.js_bizsDisableLogic'
+                            , 'table.js_bizsDisableLogic'
+                        ].join() 
+                ).each( function(){
+                    new ChangeLogic( $(this) );
+                });
+            }
         };
     
     function Model( _selector ){
@@ -332,7 +342,7 @@
 
         , dldonecallback:
             function(){
-                var _r = DisableLogic.doneCallback, _tmp;
+                var _r = ChangeLogic.doneCallback, _tmp;
 
                 this.selector() 
                     && ( _tmp = this.selector().attr('dldonecallback') )
@@ -345,7 +355,7 @@
 
         , dlenablecallback:
             function(){
-                var _r = DisableLogic.enableCallback, _tmp;
+                var _r = ChangeLogic.enableCallback, _tmp;
 
                 this.selector() 
                     && ( _tmp = this.selector().attr('dlenablecallback') )
@@ -358,7 +368,7 @@
 
         , dldisablecallback:
             function(){
-                var _r = DisableLogic.disableCallback, _tmp;
+                var _r = ChangeLogic.disableCallback, _tmp;
 
                 this.selector() 
                     && ( _tmp = this.selector().attr('dldisablecallback') )
@@ -442,18 +452,18 @@
 
                 $( _p ).trigger( 'TriggerEvent', [ 'ChangeDone', _triggerItem ] );
 
-                JC.log( 'DisableLogic view change', new Date().getTime(), _isDisable );
+                JC.log( 'ChangeLogic view change', new Date().getTime(), _isDisable );
             }
     };
 
     $(document).ready( function(){
         setTimeout( function(){
-            DisableLogic.init();
+            ChangeLogic.init();
         }, 10);
     });
     
 }(jQuery));
-    return Bizs.DisableLogic;
+    return Bizs.ChangeLogic;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 
             typeof _name == 'function' && ( _cb = _name );

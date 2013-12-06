@@ -129,9 +129,9 @@
             
                 <li><a href="../classes/window.Bizs.AutoSelectComplete.html">window.Bizs.AutoSelectComplete</a></li>
             
-                <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
+                <li><a href="../classes/window.Bizs.ChangeLogic.html">window.Bizs.ChangeLogic</a></li>
             
-                <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
+                <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
             
                 <li><a href="../classes/window.Bizs.FormLogic.html">window.Bizs.FormLogic</a></li>
             
@@ -318,6 +318,10 @@ window.Bizs = window.Bizs || {};
                     _path = _part;
                     if( _isComps ){
                         if( _bizCompRe.test( _path ) ){//业务组件
+                            /**
+                             * 这个判断是为了向后兼容, 以前的 Bizs.DisableLogic 更名为 Bizs.ChangeLogic 
+                             */
+                            _part == &quot;Bizs.DisableLogic&quot; &amp;&amp; ( _part = &quot;Bizs.ChangeLogic&quot; );
                             _path = printf( &#x27;{0}{1}{2}/{2}.js&#x27;, JC.PATH, JC.bizsDir, _part.replace( _bizCompRe, &#x27;&#x27; ) );
                         }else if( _bizFileRe.test( _path ) ){//业务文件
                             _path = printf( &#x27;{0}{1}{2}.js&#x27;, JC.PATH, JC.bizsDir, _part.replace( _bizFileRe, &#x27;&#x27; ) );
