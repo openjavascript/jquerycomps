@@ -29,22 +29,22 @@
                 "window.Bizs": 1
             }
         },
-        "../modules/Bizs.CommonModify/0.1/CommonModify.js": {
-            "name": "../modules/Bizs.CommonModify/0.1/CommonModify.js",
+        "../modules/Bizs.ChangeLogic/0.1/ChangeLogic.js": {
+            "name": "../modules/Bizs.ChangeLogic/0.1/ChangeLogic.js",
             "modules": {},
             "classes": {
-                "window.Bizs.CommonModify": 1
+                "window.Bizs.ChangeLogic": 1
             },
             "fors": {},
             "namespaces": {
                 "window.Bizs": 1
             }
         },
-        "../modules/Bizs.DisableLogic/0.1/DisableLogic.js": {
-            "name": "../modules/Bizs.DisableLogic/0.1/DisableLogic.js",
+        "../modules/Bizs.CommonModify/0.1/CommonModify.js": {
+            "name": "../modules/Bizs.CommonModify/0.1/CommonModify.js",
             "modules": {},
             "classes": {
-                "window.Bizs.DisableLogic": 1
+                "window.Bizs.CommonModify": 1
             },
             "fors": {},
             "namespaces": {
@@ -477,6 +477,25 @@
                 ""
             ]
         },
+        "window.Bizs.ChangeLogic": {
+            "name": "window.Bizs.ChangeLogic",
+            "shortname": "window.Bizs.ChangeLogic",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.Bizs",
+            "file": "../modules/Bizs.ChangeLogic/0.1/ChangeLogic.js",
+            "line": 2,
+            "description": "<h2>Form Control禁用启用逻辑</h2>\n<br/>应用场景</br>\n<br/>表单操作时, 选择某个 radio 时, 对应的 内容有效,\n<br/>但选择其他 radio 时, 其他的内容无效\n<br/>checkbox / select 也可使用( 带change事件的标签 )\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.ChangeLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.ChangeLogic/0.1/_demo' target='_blank'>demo link</a></p>\n\ndiv 需要 添加 class=\"js_bizChangeLogic\"\n\n<h2>box 的 HTML 属性</h2>\n<dl>\n     <dt>dltrigger</dt>\n     <dd>触发禁用/起用的control</dd>\n\n     <dt>dltarget</dt>\n     <dd>需要禁用/起用的control</dd>\n\n     <dt>dlhidetarget</dt>\n     <dd>需要根据禁用起用隐藏/可见的标签</dd>\n\n     <dt>dldonecallback = function</dt>\n     <dd>\n     启用/禁用后会触发的回调, <b>window 变量域</b>\n<pre>function dldonecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldonecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>dlenablecallback = function</dt>\n     <dd>\n     启用后的回调, <b>window 变量域</b>\n<pre>function dlenablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dlenablecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>dldisablecallback = function</dt>\n     <dd>\n     禁用后的回调, <b>window 变量域</b>\n<pre>function dldisablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldisablecallback', new Date().getTime() );\n}</pre>\n     </dd>\n</dl>\n\n<h2>trigger 的 HTML 属性</h2>\n<dl>\n     <dt>dldisable = bool, default = false</dt>\n     <dd>\n         指定 dltarget 是否置为无效\n         <br />还可以根据这个属性 指定 dlhidetarget 是否显示\n     </dd>\n\n     <dt>dldisplay = bool</dt>\n     <dd>指定 dlhidetarget 是否显示</dd>\n\n     <dt>dlhidetargetsub = selector</dt>\n     <dd>根据 trigger 的 checked 状态 显示或者隐藏 dlhidetargetsub node</dd>\n</dl>\n\n<h2>hide target 的 HTML 属性</h2>\n<dl>\n     <dt>dlhidetoggle = bool</dt>\n     <dd>显示或显示的时候, 是否与他项相反</dd>\n</dl>",
+            "is_constructor": 1,
+            "version": "dev 0.1 2013-09-04",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n       <div class=\"js_bizChangeLogic\"\n           dltrigger=\"/input[type=radio]\"\n           dltarget=\"/input.js_disableItem\"\n           >\n           <label>\n               <input type=\"radio\" name=\"discount\" checked  \n               dldisable=\"true\"\n               />自本协议签订之日起10日内生效\n           </label> <br>\n           <label>\n               <input type=\"radio\" name=\"discount\" \n               dldisable=\"false\"\n               />生效时间点\n           </label>\n           <input type=\"text\" class=\"ipt js_disableItem\" datatype=\"date\" value=\"\"\n           /><input type=\"button\" class=\"UXCCalendar_btn\">\n       </div>"
+            ]
+        },
         "window.Bizs.CommonModify": {
             "name": "window.Bizs.CommonModify",
             "shortname": "window.Bizs.CommonModify",
@@ -495,25 +514,6 @@
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
             "example": [
                 "\n      <table>\n            <tr>\n               <td>\n                   <label class=\"gray\">甲方主体：</label>\n               </td>\n               <td>\n                   <input type=\"text\" name=\"\" class=\"ipt ipt-w320\" />&nbsp;\n                       <a href=\"javascript:\" \n                       class=\"green js_autoCommonModify\" \n                       cmtemplate=\"#addMainFirstPartyTpl\"\n                       cmitem=\"(tr\"\n                       cmaction=\"add\"\n                   >+ 添加</a>\n                   <em class=\"error\"></em>\n               </td>\n           </tr>\n       </table>\n\n       <script type=\"text/template\" id=\"addMainFirstPartyTpl\" >\n        <tr>\n           <td>\n               <label class=\"gray\">甲方主体：</label>\n           </td>\n           <td>\n               <input type=\"text\" name=\"\" class=\"ipt ipt-w320\" />\n               <a href=\"javascript:\" \n                   class=\"green js_autoCommonModify\" \n                   cmtemplate=\"#addMainFirstPartyTpl\"\n                   cmitem=\"(tr\"\n                   cmaction=\"add\"\n               >+ 添加</a>\n               <a href=\"javascript:\" class=\"red js_autoCommonModify\"\n                   cmtemplate=\"#addMainFirstPartyTpl\"\n                   cmitem=\"(tr\"\n                   cmaction=\"del\"\n               >+ 删除</a>\n               <em class=\"error\"></em>\n           </td>\n       </tr>\n       </script>"
-            ]
-        },
-        "window.Bizs.DisableLogic": {
-            "name": "window.Bizs.DisableLogic",
-            "shortname": "window.Bizs.DisableLogic",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "namespace": "window.Bizs",
-            "file": "../modules/Bizs.DisableLogic/0.1/DisableLogic.js",
-            "line": 2,
-            "description": "<h2>Form Control禁用启用逻辑</h2>\n<br/>应用场景</br>\n<br/>表单操作时, 选择某个 radio 时, 对应的 内容有效,\n<br/>但选择其他 radio 时, 其他的内容无效\n<br/>checkbox / select 也可使用( 带change事件的标签 )\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.DisableLogic/0.1/_demo' target='_blank'>demo link</a></p>\n\ndiv 需要 添加 class=\"js_bizsDisableLogic\"\n\n<h2>box 的 HTML 属性</h2>\n<dl>\n     <dt>dltrigger</dt>\n     <dd>触发禁用/起用的control</dd>\n\n     <dt>dltarget</dt>\n     <dd>需要禁用/起用的control</dd>\n\n     <dt>dlhidetarget</dt>\n     <dd>需要根据禁用起用隐藏/可见的标签</dd>\n\n     <dt>dldonecallback = function</dt>\n     <dd>\n     启用/禁用后会触发的回调, <b>window 变量域</b>\n<pre>function dldonecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldonecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>dlenablecallback = function</dt>\n     <dd>\n     启用后的回调, <b>window 变量域</b>\n<pre>function dlenablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dlenablecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>dldisablecallback = function</dt>\n     <dd>\n     禁用后的回调, <b>window 变量域</b>\n<pre>function dldisablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldisablecallback', new Date().getTime() );\n}</pre>\n     </dd>\n</dl>\n\n<h2>trigger 的 HTML 属性</h2>\n<dl>\n     <dt>dldisable = bool, default = false</dt>\n     <dd>\n         指定 dltarget 是否置为无效\n         <br />还可以根据这个属性 指定 dlhidetarget 是否显示\n     </dd>\n\n     <dt>dldisplay = bool</dt>\n     <dd>指定 dlhidetarget 是否显示</dd>\n\n     <dt>dlhidetargetsub = selector</dt>\n     <dd>根据 trigger 的 checked 状态 显示或者隐藏 dlhidetargetsub node</dd>\n</dl>\n\n<h2>hide target 的 HTML 属性</h2>\n<dl>\n     <dt>dlhidetoggle = bool</dt>\n     <dd>显示或显示的时候, 是否与他项相反</dd>\n</dl>",
-            "is_constructor": 1,
-            "version": "dev 0.1 2013-09-04",
-            "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
-            "example": [
-                "\n       <div class=\"js_bizsDisableLogic\"\n           dltrigger=\"/input[type=radio]\"\n           dltarget=\"/input.js_disableItem\"\n           >\n           <label>\n               <input type=\"radio\" name=\"discount\" checked  \n               dldisable=\"true\"\n               />自本协议签订之日起10日内生效\n           </label> <br>\n           <label>\n               <input type=\"radio\" name=\"discount\" \n               dldisable=\"false\"\n               />生效时间点\n           </label>\n           <input type=\"text\" class=\"ipt js_disableItem\" datatype=\"date\" value=\"\"\n           /><input type=\"button\" class=\"UXCCalendar_btn\">\n       </div>"
             ]
         },
         "window.Bizs.FormLogic": {
@@ -1914,6 +1914,101 @@
             "namespace": "window.Bizs"
         },
         {
+            "file": "../modules/Bizs.ChangeLogic/0.1/ChangeLogic.js",
+            "line": 167,
+            "description": "获取 显示 ChangeLogic 的触发源选择器, 比如 a 标签",
+            "itemtype": "method",
+            "name": "selector",
+            "return": {
+                "description": "selector"
+            },
+            "class": "window.Bizs.ChangeLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.ChangeLogic/0.1/ChangeLogic.js",
+            "line": 173,
+            "description": "使用 jquery on 绑定事件",
+            "itemtype": "method",
+            "name": "on",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_cb",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "ChangeLogicInstance"
+            },
+            "class": "window.Bizs.ChangeLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.ChangeLogic/0.1/ChangeLogic.js",
+            "line": 181,
+            "description": "使用 jquery trigger 绑定事件",
+            "itemtype": "method",
+            "name": "trigger",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "ChangeLogicInstance"
+            },
+            "class": "window.Bizs.ChangeLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.ChangeLogic/0.1/ChangeLogic.js",
+            "line": 189,
+            "description": "获取或设置 ChangeLogic 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "ChangeLogic instance"
+            },
+            "class": "window.Bizs.ChangeLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.ChangeLogic/0.1/ChangeLogic.js",
+            "line": 209,
+            "description": "初始化 _selector | document 可识别的 ChangeLogic HTML属性",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector,",
+                    "description": "default = document",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "class": "window.Bizs.ChangeLogic",
+            "namespace": "window.Bizs"
+        },
+        {
             "file": "../modules/Bizs.CommonModify/0.1/CommonModify.js",
             "line": 209,
             "description": "获取 显示 CommonModify 的触发源选择器, 比如 a 标签",
@@ -2016,101 +2111,6 @@
                 "description": "bool"
             },
             "class": "window.Bizs.CommonModify",
-            "namespace": "window.Bizs"
-        },
-        {
-            "file": "../modules/Bizs.DisableLogic/0.1/DisableLogic.js",
-            "line": 167,
-            "description": "获取 显示 DisableLogic 的触发源选择器, 比如 a 标签",
-            "itemtype": "method",
-            "name": "selector",
-            "return": {
-                "description": "selector"
-            },
-            "class": "window.Bizs.DisableLogic",
-            "namespace": "window.Bizs"
-        },
-        {
-            "file": "../modules/Bizs.DisableLogic/0.1/DisableLogic.js",
-            "line": 173,
-            "description": "使用 jquery on 绑定事件",
-            "itemtype": "method",
-            "name": "on",
-            "type": "String",
-            "params": [
-                {
-                    "name": "_evtName",
-                    "description": "",
-                    "type": "String"
-                },
-                {
-                    "name": "_cb",
-                    "description": "",
-                    "type": "Function"
-                }
-            ],
-            "return": {
-                "description": "DisableLogicInstance"
-            },
-            "class": "window.Bizs.DisableLogic",
-            "namespace": "window.Bizs"
-        },
-        {
-            "file": "../modules/Bizs.DisableLogic/0.1/DisableLogic.js",
-            "line": 181,
-            "description": "使用 jquery trigger 绑定事件",
-            "itemtype": "method",
-            "name": "trigger",
-            "type": "String",
-            "params": [
-                {
-                    "name": "_evtName",
-                    "description": "",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "DisableLogicInstance"
-            },
-            "class": "window.Bizs.DisableLogic",
-            "namespace": "window.Bizs"
-        },
-        {
-            "file": "../modules/Bizs.DisableLogic/0.1/DisableLogic.js",
-            "line": 189,
-            "description": "获取或设置 DisableLogic 的实例",
-            "itemtype": "method",
-            "name": "getInstance",
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "",
-                    "type": "Selector"
-                }
-            ],
-            "static": 1,
-            "return": {
-                "description": "",
-                "type": "DisableLogic instance"
-            },
-            "class": "window.Bizs.DisableLogic",
-            "namespace": "window.Bizs"
-        },
-        {
-            "file": "../modules/Bizs.DisableLogic/0.1/DisableLogic.js",
-            "line": 209,
-            "description": "初始化 _selector | document 可识别的 DisableLogic HTML属性",
-            "itemtype": "method",
-            "name": "init",
-            "params": [
-                {
-                    "name": "_selector,",
-                    "description": "default = document",
-                    "type": "Selector"
-                }
-            ],
-            "static": 1,
-            "class": "window.Bizs.DisableLogic",
             "namespace": "window.Bizs"
         },
         {
@@ -17737,7 +17737,7 @@
         },
         {
             "file": "../config.js",
-            "line": 54,
+            "line": 57,
             "description": "取当前脚本标签的 src路径",
             "static": 1,
             "return": {
@@ -18122,11 +18122,11 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../modules/Bizs.CommonModify/0.1/CommonModify.js:2"
+            "line": " ../modules/Bizs.ChangeLogic/0.1/ChangeLogic.js:2"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../modules/Bizs.DisableLogic/0.1/DisableLogic.js:2"
+            "line": " ../modules/Bizs.CommonModify/0.1/CommonModify.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -20766,7 +20766,7 @@
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
-            "line": " ../config.js:54"
+            "line": " ../config.js:57"
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
