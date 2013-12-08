@@ -789,15 +789,26 @@
         TableFreeze.autoInit
             && ( _insAr = TableFreeze.init() )
             ;
-    });
 
-    $(window).on( 'resize', function(){
-        $( 'div.js_compTableFreeze' ).each( function () {
-            var _ins = TableFreeze.getInstance( $( this ) );
-            
-            _ins && _ins.fixHeight();
-           
-        });
+        var _win= $( window );
+        _win.on( 'resize', CTFResize );
+
+        function CTFResize(){
+            _win.off( 'resize', CTFResize );
+
+                $( 'div.js_compTableFreeze' ).each( function () {
+                    var _ins = TableFreeze.getInstance( $( this ) );
+                    _ins && _ins.fixHeight();
+                });
+
+                _win.data( 'CTFResizeTimeout' ) && clearTimeout( _win.data( 'CTFResizeTimeout' ) );
+                _win.data( 'CTFResizeTimeout', setTimeout( function(){
+                    _win.off( 'resize', CTFResize );
+                    _win.on( 'resize', CTFResize );
+                }, 500 ) );
+
+            //console.log( 'resize', new Date().getTime() );
+        };
     });
 
     function getMaxNum( _r ) {

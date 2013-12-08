@@ -979,15 +979,26 @@
         TableFreeze.autoInit
             &amp;&amp; ( _insAr = TableFreeze.init() )
             ;
-    });
 
-    $(window).on( &#x27;resize&#x27;, function(){
-        $( &#x27;div.js_compTableFreeze&#x27; ).each( function () {
-            var _ins = TableFreeze.getInstance( $( this ) );
-            
-            _ins &amp;&amp; _ins.fixHeight();
-           
-        });
+        var _win= $( window );
+        _win.on( &#x27;resize&#x27;, CTFResize );
+
+        function CTFResize(){
+            _win.off( &#x27;resize&#x27;, CTFResize );
+
+                $( &#x27;div.js_compTableFreeze&#x27; ).each( function () {
+                    var _ins = TableFreeze.getInstance( $( this ) );
+                    _ins &amp;&amp; _ins.fixHeight();
+                });
+
+                _win.data( &#x27;CTFResizeTimeout&#x27; ) &amp;&amp; clearTimeout( _win.data( &#x27;CTFResizeTimeout&#x27; ) );
+                _win.data( &#x27;CTFResizeTimeout&#x27;, setTimeout( function(){
+                    _win.off( &#x27;resize&#x27;, CTFResize );
+                    _win.on( &#x27;resize&#x27;, CTFResize );
+                }, 500 ) );
+
+            //console.log( &#x27;resize&#x27;, new Date().getTime() );
+        };
     });
 
     function getMaxNum( _r ) {
