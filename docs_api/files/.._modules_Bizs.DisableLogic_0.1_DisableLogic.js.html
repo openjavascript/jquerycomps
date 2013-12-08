@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../modules/Bizs.ChangeLogic/0.1/ChangeLogic.js - jquery components</title>
+    <title>../modules/Bizs.DisableLogic/0.1/DisableLogic.js - jquery components</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -182,14 +182,14 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../modules/Bizs.ChangeLogic/0.1/ChangeLogic.js</h1>
+                        <h1 class="file-heading">File: ../modules/Bizs.DisableLogic/0.1/DisableLogic.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//TODO: 完善 select 的相关判断逻辑
 ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
 /**
- * &lt;h2&gt;input[type=radio|type=checkbox], select change 事件的响应逻辑&lt;/h2&gt;
+ * &lt;h2 style=&quot;color:red&quot;&gt;这个应用将不再维护, 请使用 &lt;a href=&#x27;window.Bizs.ChangeLogic.html&#x27; style=&quot;color:red&quot;&gt;Bizs.ChangeLogic&lt;/a&gt; &lt;/h2&gt;
+ * &lt;h2&gt;Form Control禁用启用逻辑&lt;/h2&gt;
  * &lt;br/&gt;应用场景&lt;/br&gt;
  * &lt;br/&gt;表单操作时, 选择某个 radio 时, 对应的 内容有效,
  * &lt;br/&gt;但选择其他 radio 时, 其他的内容无效
@@ -199,90 +199,90 @@
  *      , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
  * &lt;/p&gt;
  * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
- * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/window.Bizs.ChangeLogic.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
- * | &lt;a href=&#x27;../../modules/Bizs.ChangeLogic/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+ * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+ * | &lt;a href=&#x27;../../modules/Bizs.DisableLogic/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
  *
- * div 需要 添加 class=&quot;js_bizChangeLogic&quot;
+ * div 需要 添加 class=&quot;js_bizsDisableLogic&quot;
  *
  * &lt;h2&gt;box 的 HTML 属性&lt;/h2&gt;
  * &lt;dl&gt;
- *      &lt;dt&gt;bclTrigger&lt;/dt&gt;
+ *      &lt;dt&gt;dltrigger&lt;/dt&gt;
  *      &lt;dd&gt;触发禁用/起用的control&lt;/dd&gt;
  *
- *      &lt;dt&gt;bclDisableTarget&lt;/dt&gt;
+ *      &lt;dt&gt;dltarget&lt;/dt&gt;
  *      &lt;dd&gt;需要禁用/起用的control&lt;/dd&gt;
  *
- *      &lt;dt&gt;bclHideTarget&lt;/dt&gt;
+ *      &lt;dt&gt;dlhidetarget&lt;/dt&gt;
  *      &lt;dd&gt;需要根据禁用起用隐藏/可见的标签&lt;/dd&gt;
  *
- *      &lt;dt&gt;bclDoneCallback = function&lt;/dt&gt;
+ *      &lt;dt&gt;dldonecallback = function&lt;/dt&gt;
  *      &lt;dd&gt;
  *      启用/禁用后会触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;
-&lt;pre&gt;function bclDoneCallback( _triggerItem, _boxItem ){
+&lt;pre&gt;function dldonecallback( _triggerItem, _boxItem ){
     var _ins = this;
-    JC.log( &#x27;bclDoneCallback&#x27;, new Date().getTime() );
+    JC.log( &#x27;dldonecallback&#x27;, new Date().getTime() );
 }&lt;/pre&gt;
  *      &lt;/dd&gt;
  *
- *      &lt;dt&gt;bclEnableCallback = function&lt;/dt&gt;
+ *      &lt;dt&gt;dlenablecallback = function&lt;/dt&gt;
  *      &lt;dd&gt;
  *      启用后的回调, &lt;b&gt;window 变量域&lt;/b&gt;
-&lt;pre&gt;function bclEnableCallback( _triggerItem, _boxItem ){
+&lt;pre&gt;function dlenablecallback( _triggerItem, _boxItem ){
     var _ins = this;
-    JC.log( &#x27;bclEnableCallback&#x27;, new Date().getTime() );
+    JC.log( &#x27;dlenablecallback&#x27;, new Date().getTime() );
 }&lt;/pre&gt;
  *      &lt;/dd&gt;
  *
- *      &lt;dt&gt;bclDisableCallback = function&lt;/dt&gt;
+ *      &lt;dt&gt;dldisablecallback = function&lt;/dt&gt;
  *      &lt;dd&gt;
  *      禁用后的回调, &lt;b&gt;window 变量域&lt;/b&gt;
-&lt;pre&gt;function bclDisableCallback( _triggerItem, _boxItem ){
+&lt;pre&gt;function dldisablecallback( _triggerItem, _boxItem ){
     var _ins = this;
-    JC.log( &#x27;bclDisableCallback&#x27;, new Date().getTime() );
+    JC.log( &#x27;dldisablecallback&#x27;, new Date().getTime() );
 }&lt;/pre&gt;
  *      &lt;/dd&gt;
  * &lt;/dl&gt;
  *
  * &lt;h2&gt;trigger 的 HTML 属性&lt;/h2&gt;
  * &lt;dl&gt;
- *      &lt;dt&gt;bclDisable = bool, default = false&lt;/dt&gt;
+ *      &lt;dt&gt;dldisable = bool, default = false&lt;/dt&gt;
  *      &lt;dd&gt;
- *          指定 bclDisableTarget 是否置为无效
- *          &lt;br /&gt;还可以根据这个属性 指定 bclHideTarget 是否显示
+ *          指定 dltarget 是否置为无效
+ *          &lt;br /&gt;还可以根据这个属性 指定 dlhidetarget 是否显示
  *      &lt;/dd&gt;
  *
- *      &lt;dt&gt;bclDisplay = bool&lt;/dt&gt;
- *      &lt;dd&gt;指定 bclHideTarget 是否显示&lt;/dd&gt;
+ *      &lt;dt&gt;dldisplay = bool&lt;/dt&gt;
+ *      &lt;dd&gt;指定 dlhidetarget 是否显示&lt;/dd&gt;
  *
- *      &lt;dt&gt;bclHideTargetSub = selector&lt;/dt&gt;
- *      &lt;dd&gt;根据 trigger 的 checked 状态 显示或者隐藏 bclHideTargetSub node&lt;/dd&gt;
+ *      &lt;dt&gt;dlhidetargetsub = selector&lt;/dt&gt;
+ *      &lt;dd&gt;根据 trigger 的 checked 状态 显示或者隐藏 dlhidetargetsub node&lt;/dd&gt;
  * &lt;/dl&gt;
  *
  * &lt;h2&gt;hide target 的 HTML 属性&lt;/h2&gt;
  * &lt;dl&gt;
- *      &lt;dt&gt;bclHideToggle = bool&lt;/dt&gt;
+ *      &lt;dt&gt;dlhidetoggle = bool&lt;/dt&gt;
  *      &lt;dd&gt;显示或显示的时候, 是否与他项相反&lt;/dd&gt;
  * &lt;/dl&gt;
  *
  * @namespace   window.Bizs
- * @class       ChangeLogic
+ * @class       DisableLogic
  * @constructor
  * @version dev 0.1 2013-09-04
  * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 Team
  *
  * @example
-        &lt;div class=&quot;js_bizChangeLogic&quot;
-            bclTrigger=&quot;/input[type=radio]&quot;
-            bclDisableTarget=&quot;/input.js_disableItem&quot;
+        &lt;div class=&quot;js_bizsDisableLogic&quot;
+            dltrigger=&quot;/input[type=radio]&quot;
+            dltarget=&quot;/input.js_disableItem&quot;
             &gt;
             &lt;label&gt;
                 &lt;input type=&quot;radio&quot; name=&quot;discount&quot; checked  
-                bclDisable=&quot;true&quot;
+                dldisable=&quot;true&quot;
                 /&gt;自本协议签订之日起10日内生效
             &lt;/label&gt; &lt;br&gt;
             &lt;label&gt;
                 &lt;input type=&quot;radio&quot; name=&quot;discount&quot; 
-                bclDisable=&quot;false&quot;
+                dldisable=&quot;false&quot;
                 /&gt;生效时间点
             &lt;/label&gt;
             &lt;input type=&quot;text&quot; class=&quot;ipt js_disableItem&quot; datatype=&quot;date&quot; value=&quot;&quot;
@@ -292,13 +292,13 @@
 ;(function($){
 
     window.Bizs = window.Bizs || {};
-    window.Bizs.ChangeLogic = ChangeLogic;
+    window.Bizs.DisableLogic = DisableLogic;
 
-    function ChangeLogic( _selector ){
-        if( ChangeLogic.getInstance( _selector ) ) return ChangeLogic.getInstance( _selector );
-        ChangeLogic.getInstance( _selector, this );
+    function DisableLogic( _selector ){
+        if( DisableLogic.getInstance( _selector ) ) return DisableLogic.getInstance( _selector );
+        DisableLogic.getInstance( _selector, this );
 
-        JC.log( &#x27;Bizs.ChangeLogic:&#x27;, new Date().getTime() );
+        JC.log( &#x27;Bizs.DisableLogic:&#x27;, new Date().getTime() );
 
         this._model = new Model( _selector );
         this._view = new View( this._model );
@@ -306,7 +306,7 @@
         this._init();
     }
     
-    ChangeLogic.prototype = {
+    DisableLogic.prototype = {
         _init:
             function(){
                 var _p = this, _tmp;
@@ -325,12 +325,12 @@
                 _p._model.init();
                 _p._view.init();
 
-                _p._model.bclTrigger().on(&#x27;change&#x27;, function(_evt){
-                    JC.log( &#x27;bclTrigger change&#x27;, new Date().getTime() );
+                _p._model.dltrigger().on(&#x27;change&#x27;, function(_evt){
+                    JC.log( &#x27;dltrigger change&#x27;, new Date().getTime() );
                     _p._view.change( this );
                 });
 
-                ( _tmp = _p._model.bclTrigger( true ) ) &amp;&amp; _tmp.trigger( &#x27;change&#x27;);
+                ( _tmp = _p._model.dltrigger( true ) ) &amp;&amp; _tmp.trigger( &#x27;change&#x27;);
 
                 return _p;
             }    
@@ -339,22 +339,22 @@
                 var _p = this;
 
                 _p.on( &#x27;DisableItem&#x27;, function( _evt, _triggerItem ){
-                    _p._model.bclDisableCallback()
-                        &amp;&amp; _p._model.bclDisableCallback().call( _p, _triggerItem, _p._model.selector() );
+                    _p._model.dldisablecallback()
+                        &amp;&amp; _p._model.dldisablecallback().call( _p, _triggerItem, _p._model.selector() );
                 });
 
                 _p.on( &#x27;EnableItem&#x27;, function( _evt, _triggerItem ){
-                    _p._model.bclEnableCallback()
-                        &amp;&amp; _p._model.bclEnableCallback().call( _p, _triggerItem, _p._model.selector() );
+                    _p._model.dlenablecallback()
+                        &amp;&amp; _p._model.dlenablecallback().call( _p, _triggerItem, _p._model.selector() );
                 });
 
                 _p.on( &#x27;ChangeDone&#x27;, function( _evt, _triggerItem ){
-                    _p._model.bclDoneCallback()
-                        &amp;&amp; _p._model.bclDoneCallback().call( _p, _triggerItem, _p._model.selector() );
+                    _p._model.dldonecallback()
+                        &amp;&amp; _p._model.dldonecallback().call( _p, _triggerItem, _p._model.selector() );
                 });
             }
         /**
-         * 获取 显示 ChangeLogic 的触发源选择器, 比如 a 标签
+         * 获取 显示 DisableLogic 的触发源选择器, 比如 a 标签
          * @method  selector
          * @return  selector
          */ 
@@ -364,61 +364,55 @@
          * @method  {string}    on
          * @param   {string}    _evtName
          * @param   {function}  _cb
-         * @return  ChangeLogicInstance
+         * @return  DisableLogicInstance
          */
         , on: function( _evtName, _cb ){ $(this).on(_evtName, _cb ); return this;}
         /**
          * 使用 jquery trigger 绑定事件
          * @method  {string}    trigger
          * @param   {string}    _evtName
-         * @return  ChangeLogicInstance
+         * @return  DisableLogicInstance
          */
         , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
     }
     /**
-     * 获取或设置 ChangeLogic 的实例
+     * 获取或设置 DisableLogic 的实例
      * @method getInstance
      * @param   {selector}      _selector
      * @static
-     * @return  {ChangeLogic instance}
+     * @return  {DisableLogic instance}
      */
-    ChangeLogic.getInstance =
+    DisableLogic.getInstance =
         function( _selector, _setter ){
             if( typeof _selector == &#x27;string&#x27; &amp;&amp; !/&lt;/.test( _selector ) ) 
                     _selector = $(_selector);
             if( !(_selector &amp;&amp; _selector.length ) || ( typeof _selector == &#x27;string&#x27; ) ) return;
-            typeof _setter != &#x27;undefined&#x27; &amp;&amp; _selector.data( &#x27;ChangeLogicIns&#x27;, _setter );
+            typeof _setter != &#x27;undefined&#x27; &amp;&amp; _selector.data( &#x27;DisableLogicIns&#x27;, _setter );
 
-            return _selector.data(&#x27;ChangeLogicIns&#x27;);
+            return _selector.data(&#x27;DisableLogicIns&#x27;);
         };
 
-    ChangeLogic.doneCallback = null;
-    ChangeLogic.enableCallback = null;
-    ChangeLogic.disableCallback = null;
+    DisableLogic.doneCallback = null;
+    DisableLogic.enableCallback = null;
+    DisableLogic.disableCallback = null;
     /**
-     * 初始化 _selector | document 可识别的 ChangeLogic HTML属性
+     * 初始化 _selector | document 可识别的 DisableLogic HTML属性
      * @method  init
      * @param   {selector}  _selector, default = document
      * @static
      */
-    ChangeLogic.init =
+    DisableLogic.init =
         function( _selector ){
             _selector = $( _selector || document );
-            if( !( _selector &amp;&amp; _selector.length ) ) return;
-
-            if( _selector.hasClass( &#x27;js_bizChangeLogic&#x27; ) ){
-                new ChangeLogic( _selector );
-            }else{
-                _selector.find(
-                        [ 
-                            &#x27;div.js_bizChangeLogic&#x27;
-                            , &#x27;dl.js_bizChangeLogic&#x27;
-                            , &#x27;table.js_bizChangeLogic&#x27;
-                        ].join() 
-                ).each( function(){
-                    new ChangeLogic( $(this) );
-                });
-            }
+            _selector.find(
+                    [ 
+                        &#x27;div.js_bizsDisableLogic&#x27;
+                        , &#x27;dl.js_bizsDisableLogic&#x27;
+                        , &#x27;table.js_bizsDisableLogic&#x27;
+                    ].join() 
+            ).each( function(){
+                new DisableLogic( $(this) );
+            });
         };
     
     function Model( _selector ){
@@ -433,9 +427,9 @@
 
         , selector: function(){ return this._selector; }
 
-        , bclTrigger:
+        , dltrigger:
             function( _curItem ){
-                var _p = this, _r = JC.f.parentSelector( this.selector(), this.selector().attr(&#x27;bclTrigger&#x27;) ), _tmp;
+                var _p = this, _r = JC.f.parentSelector( this.selector(), this.selector().attr(&#x27;dltrigger&#x27;) ), _tmp;
                 if( _curItem ){
                     _r.each( function(){
                         _tmp = $(this);
@@ -448,128 +442,89 @@
                 return _r;
             }
 
-        , bclDisableTarget:
+        , dltarget:
             function( _triggerItem ){
                 var _p = this, _r, _tmp;
 
-                _p.selector().attr(&#x27;bclDisableTarget&#x27;) 
-                    &amp;&amp; ( _r = JC.f.parentSelector( _p.selector(), _p.selector().attr(&#x27;bclDisableTarget&#x27;) ) )
+                _p.selector().attr(&#x27;dltarget&#x27;) 
+                    &amp;&amp; ( _r = JC.f.parentSelector( _p.selector(), _p.selector().attr(&#x27;dltarget&#x27;) ) )
                     ;
 
                 _triggerItem 
                     &amp;&amp; ( _triggerItem = $(_triggerItem) ).length 
-                    &amp;&amp; _triggerItem.attr(&#x27;bclTrigger&#x27;) 
-                    &amp;&amp; ( _r = JC.f.parentSelector( _triggerItem, _triggerItem.attr(&#x27;bclDisableTarget&#x27;) ) )
+                    &amp;&amp; _triggerItem.attr(&#x27;dltrigger&#x27;) 
+                    &amp;&amp; ( _r = JC.f.parentSelector( _triggerItem, _triggerItem.attr(&#x27;dltarget&#x27;) ) )
                     ;
                 return _r;
             }
 
-        , bclDisable:
+        , dldisable:
             function( _triggerItem ){
-                var _r = false, _selectedItem;
-                _triggerItem &amp;&amp; ( _triggerItem = $( _triggerItem ) );
-                if( !( _triggerItem &amp;&amp; _triggerItem.length ) ) return _r;
-
-                if( _triggerItem.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;select&#x27; ){
-                    _selectedItem = _triggerItem.find( &#x27;:selected&#x27; );
-                    if( !_selectedItem.length ) return _r;
-
-                    if( _triggerItem.is(&#x27;[bclDisable]&#x27;) || _selectedItem.is( &#x27;[bclDisable]&#x27; ) ){
-                        if( _triggerItem.is( &#x27;[bclDisable]&#x27; ) ){
-                            _r = _triggerItem.attr(&#x27;bclDisable&#x27;) == _triggerItem.val();
-                        }
-                        if( _selectedItem.is( &#x27;[bclDisable]&#x27; ) ){
-                            _r = JC.f.parseBool( _selectedItem.attr( &#x27;bclDisable&#x27; ) );
-                        }
-                    }
-                }else{
-                    _triggerItem.is( &#x27;[bclDisable]&#x27; )
-                    &amp;&amp; ( _r = JC.f.parseBool( _triggerItem.attr(&#x27;bclDisable&#x27;) ) )
+                var _r = false;
+                _triggerItem 
+                    &amp;&amp; ( _triggerItem = $( _triggerItem ) ).length
+                    &amp;&amp; _triggerItem.is( &#x27;[dldisable]&#x27; )
+                    &amp;&amp; ( _r = JC.f.parseBool( _triggerItem.attr(&#x27;dldisable&#x27;) ) )
                     ;
-                }
 
-                if( _triggerItem.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;input&#x27; 
-                        &amp;&amp; _triggerItem.attr(&#x27;type&#x27;).toLowerCase() == &#x27;checkbox&#x27; ){
+                if( _triggerItem.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;input&#x27; &amp;&amp;  _triggerItem.attr(&#x27;type&#x27;).toLowerCase() == &#x27;checkbox&#x27; ){
                     _r = !_triggerItem.prop(&#x27;checked&#x27;);
                 }
                 return _r;
             }
 
-        , bclDisplay:
+        , dldisplay:
             function( _triggerItem ){
-                var _r = false, _selectedItem;
-                _triggerItem &amp;&amp; ( _triggerItem = $( _triggerItem ) );
-                if( !( _triggerItem &amp;&amp; _triggerItem.length ) ) return _r;
-
-                if( _triggerItem.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;select&#x27; ){
-                    _selectedItem = _triggerItem.find( &#x27;:selected&#x27; );
-                    if( !_selectedItem.length ) return _r;
-                    if( !( _triggerItem.is(&#x27;[bclDisplay]&#x27;) || _selectedItem.is( &#x27;[bclDisplay]&#x27; ) ) ){
-                        if( _triggerItem.is( &#x27;[bclDisable]&#x27; ) ){
-                            _r = _triggerItem.attr(&#x27;bclDisable&#x27;) == _triggerItem.val();
-                        }
-                        if( _selectedItem.is( &#x27;[bclDisable]&#x27; ) ){
-                            _r = JC.f.parseBool( _selectedItem.attr( &#x27;bclDisable&#x27; ) );
-                        }
-
-                    }else{
-                        if( _triggerItem.is( &#x27;[bclDisplay]&#x27; ) ){
-                            _r = _triggerItem.attr(&#x27;bclDisplay&#x27;) == _triggerItem.val();
-                        }
-                        if( _selectedItem.is( &#x27;[bclDisplay]&#x27; ) ){
-                            _r = JC.f.parseBool( _selectedItem.attr( &#x27;bclDisplay&#x27; ) );
-                        }
-                    }
+                var _r = false;
+                if( !_triggerItem.is(&#x27;[dldisplay]&#x27;) ){
+                    ( _triggerItem = $( _triggerItem ) ).length
+                    &amp;&amp; _triggerItem.is( &#x27;[dldisable]&#x27; )
+                    &amp;&amp; ( _r = !JC.f.parseBool( _triggerItem.attr(&#x27;dldisable&#x27;) ) )
+                    ;
                 }else{
-                    if( !_triggerItem.is(&#x27;[bclDisplay]&#x27;) ){
-                        _triggerItem.is( &#x27;[bclDisable]&#x27; )
-                        &amp;&amp; ( _r = !JC.f.parseBool( _triggerItem.attr(&#x27;bclDisable&#x27;) ) )
-                        ;
-                    }else{
-                        _triggerItem.is( &#x27;[bclDisplay]&#x27; )
-                        &amp;&amp; ( _r = JC.f.parseBool( _triggerItem.attr(&#x27;bclDisplay&#x27;) ) )
-                        ;
-                    }
+                    ( _triggerItem = $( _triggerItem ) ).length
+                    &amp;&amp; _triggerItem.is( &#x27;[dldisplay]&#x27; )
+                    &amp;&amp; ( _r = JC.f.parseBool( _triggerItem.attr(&#x27;dldisplay&#x27;) ) )
+                    ;
                 }
 
-                if( _triggerItem.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;input&#x27; 
-                      &amp;&amp; _triggerItem.attr(&#x27;type&#x27;).toLowerCase() == &#x27;checkbox&#x27; ){
+                if( _triggerItem.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;input&#x27; &amp;&amp;  _triggerItem.attr(&#x27;type&#x27;).toLowerCase() == &#x27;checkbox&#x27; ){
                     _r = _triggerItem.prop(&#x27;checked&#x27;);
                 }
 
                 return _r;
             }
 
-        , bclHideTarget:
+        , dlhidetarget:
             function( _triggerItem ){
                 var _p = this, _r, _tmp;
 
-                _p.selector().attr(&#x27;bclHideTarget&#x27;) 
-                    &amp;&amp; ( _r = JC.f.parentSelector( _p.selector(), _p.selector().attr(&#x27;bclHideTarget&#x27;) ) )
+                _p.selector().attr(&#x27;dlhidetarget&#x27;) 
+                    &amp;&amp; ( _r = JC.f.parentSelector( _p.selector(), _p.selector().attr(&#x27;dlhidetarget&#x27;) ) )
                     ;
 
                 _triggerItem 
                     &amp;&amp; ( _triggerItem = $(_triggerItem) ).length 
-                    &amp;&amp; _triggerItem.attr(&#x27;bclHideTarget&#x27;) 
-                    &amp;&amp; ( _r = JC.f.parentSelector( _triggerItem, _triggerItem.attr(&#x27;bclHideTarget&#x27;) ) )
+                    &amp;&amp; _triggerItem.attr(&#x27;dlhidetarget&#x27;) 
+                    &amp;&amp; ( _r = JC.f.parentSelector( _triggerItem, _triggerItem.attr(&#x27;dlhidetarget&#x27;) ) )
                     ;
                 return _r;
             }
 
-        , bclHideToggle:
+        , dlhidetoggle:
             function( _hideTarget ){
                 var _r;
-                _hideTarget &amp;&amp; _hideTarget.is( &#x27;[bclHideToggle]&#x27; ) 
-                    &amp;&amp; ( _r = JC.f.parseBool( _hideTarget.attr(&#x27;bclHideToggle&#x27;) ) );
+                _hideTarget &amp;&amp; _hideTarget.is( &#x27;[dlhidetoggle]&#x27; ) 
+                    &amp;&amp; ( _r = JC.f.parseBool( _hideTarget.attr(&#x27;dlhidetoggle&#x27;) ) );
                 return _r;
             }
 
-        , bclDoneCallback:
+        , dldonecallback:
             function(){
-                var _r = ChangeLogic.doneCallback, _tmp;
+                var _r = DisableLogic.doneCallback, _tmp;
 
                 this.selector() 
-                    &amp;&amp; ( _tmp = this.selector().attr(&#x27;bclDoneCallback&#x27;) )
+                    &amp;&amp; ( _tmp = this.selector().attr(&#x27;dldonecallback&#x27;) )
                     &amp;&amp; ( _tmp = window[ _tmp ] )
                     &amp;&amp; ( _r = _tmp )
                     ;
@@ -577,12 +532,12 @@
                 return _r;
             }
 
-        , bclEnableCallback:
+        , dlenablecallback:
             function(){
-                var _r = ChangeLogic.enableCallback, _tmp;
+                var _r = DisableLogic.enableCallback, _tmp;
 
                 this.selector() 
-                    &amp;&amp; ( _tmp = this.selector().attr(&#x27;bclEnableCallback&#x27;) )
+                    &amp;&amp; ( _tmp = this.selector().attr(&#x27;dlenablecallback&#x27;) )
                     &amp;&amp; ( _tmp = window[ _tmp ] )
                     &amp;&amp; ( _r = _tmp )
                     ;
@@ -590,12 +545,12 @@
                 return _r;
             }
 
-        , bclDisableCallback:
+        , dldisablecallback:
             function(){
-                var _r = ChangeLogic.disableCallback, _tmp;
+                var _r = DisableLogic.disableCallback, _tmp;
 
                 this.selector() 
-                    &amp;&amp; ( _tmp = this.selector().attr(&#x27;bclDisableCallback&#x27;) )
+                    &amp;&amp; ( _tmp = this.selector().attr(&#x27;dldisablecallback&#x27;) )
                     &amp;&amp; ( _tmp = window[ _tmp ] )
                     &amp;&amp; ( _r = _tmp )
                     ;
@@ -620,14 +575,14 @@
                 _triggerItem &amp;&amp; ( _triggerItem = $( _triggerItem ) );
                 if( !( _triggerItem &amp;&amp; _triggerItem.length &amp;&amp; _triggerItem.is(&#x27;:visible&#x27;) ) ) return;
                 var _p = this
-                    , _isDisable = _p._model.bclDisable( _triggerItem )
-                    , _bclDisableTarget = _p._model.bclDisableTarget( _triggerItem )
-                    , _bclDisplay = _p._model.bclDisplay( _triggerItem )
-                    , _bclHideTarget = _p._model.bclHideTarget( _triggerItem )
+                    , _isDisable = _p._model.dldisable( _triggerItem )
+                    , _dlTarget = _p._model.dltarget( _triggerItem )
+                    , _dlDisplay = _p._model.dldisplay( _triggerItem )
+                    , _dlHideTarget = _p._model.dlhidetarget( _triggerItem )
                     ;
 
-                if( _triggerItem.is( &#x27;[bclHideTargetSub]&#x27; ) ){
-                    var _starget = JC.f.parentSelector( _triggerItem, _triggerItem.attr( &#x27;bclHideTargetSub&#x27; ) );
+                if( _triggerItem.is( &#x27;[dlhidetargetsub]&#x27; ) ){
+                    var _starget = JC.f.parentSelector( _triggerItem, _triggerItem.attr( &#x27;dlhidetargetsub&#x27; ) );
                     if( _starget &amp;&amp; _starget.length ){
                         if( _triggerItem.prop(&#x27;checked&#x27;) ){
                             _starget.show();
@@ -637,14 +592,14 @@
                     }
                 }
 
-                if( _bclDisableTarget &amp;&amp; _bclDisableTarget.length ){
-                    _bclDisableTarget.each( function(){ 
+                if( _dlTarget &amp;&amp; _dlTarget.length ){
+                    _dlTarget.each( function(){ 
                         var _sp = $( this );
                         _sp.attr(&#x27;disabled&#x27;, _isDisable);
                         JC.Valid &amp;&amp; JC.Valid.setValid( _sp );
 
-                        if( _sp.is( &#x27;[bclHideTargetSub]&#x27; ) ){
-                            var _starget = JC.f.parentSelector( _sp, _sp.attr( &#x27;bclHideTargetSub&#x27; ) );
+                        if( _sp.is( &#x27;[dlhidetargetsub]&#x27; ) ){
+                            var _starget = JC.f.parentSelector( _sp, _sp.attr( &#x27;dlhidetargetsub&#x27; ) );
                             if( !( _starget &amp;&amp; _starget.length ) ) return;
                             if( _isDisable ){
                                 _starget.hide();
@@ -659,33 +614,35 @@
                     });
                 }
 
-                if( _bclHideTarget &amp;&amp;  _bclHideTarget.length  ){
-                    _bclHideTarget.each( function(){
-                        var _display = _p._model.bclHideToggle( $(this) ) ? !_bclDisplay : _bclDisplay;
+                if( _dlHideTarget &amp;&amp;  _dlHideTarget.length  ){
+                    _dlHideTarget.each( function(){
+                        var _display = _p._model.dlhidetoggle( $(this) ) ? !_dlDisplay : _dlDisplay;
                         _display ? $(this).show() : $(this).hide();
                         //JC.log( _display, new Date().getTime() );
                     });
                 }
 
                 _isDisable 
-                    ? $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ &#x27;DisableItem&#x27;, _triggerItem ] )
-                    : $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ &#x27;EnableItem&#x27;, _triggerItem ] )
+                    ? 
+                        $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ &#x27;DisableItem&#x27;, _triggerItem ] )
+                    :
+                        $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ &#x27;EnableItem&#x27;, _triggerItem ] )
                     ;
 
                 $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ &#x27;ChangeDone&#x27;, _triggerItem ] );
 
-                JC.log( &#x27;ChangeLogic view change&#x27;, new Date().getTime(), _isDisable );
+                JC.log( &#x27;DisableLogic view change&#x27;, new Date().getTime(), _isDisable );
             }
     };
 
     $(document).ready( function(){
         setTimeout( function(){
-            ChangeLogic.init();
+            DisableLogic.init();
         }, 10);
     });
     
 }(jQuery));
-    return Bizs.ChangeLogic;
+    return Bizs.DisableLogic;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb) { 
             typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );

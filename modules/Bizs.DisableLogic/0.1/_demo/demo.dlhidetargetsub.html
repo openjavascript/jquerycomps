@@ -19,29 +19,29 @@
         <script>
             JC.debug = true;
 
-            requirejs( [ 'JC.Calendar', 'JC.Valid', 'Bizs.ChangeLogic' ]
-            , function( Calendar, Valid, ChangeLogic ){
+            requirejs( [ 'JC.Calendar', 'JC.Valid', 'Bizs.DisableLogic' ]
+            , function( Calendar, Valid, DisableLogic ){
             });
 
-            function bclDoneCallback( _triggerItem, _boxItem ){
+            function dldonecallback( _triggerItem, _boxItem ){
                 var _ins = this;
-                JC.log( 'bclDoneCallback', new Date().getTime() );
+                JC.log( 'dldonecallback', new Date().getTime() );
             }
 
-            function bclEnableCallback( _triggerItem, _boxItem ){
+            function dlenablecallback( _triggerItem, _boxItem ){
                 var _ins = this;
-                JC.log( 'bclEnableCallback', new Date().getTime() );
+                JC.log( 'dlenablecallback', new Date().getTime() );
             }
 
-            function bclDisableCallback( _triggerItem, _boxItem ){
+            function dldisablecallback( _triggerItem, _boxItem ){
                 var _ins = this;
-                JC.log( 'bclDisableCallback', new Date().getTime() );
+                JC.log( 'dldisablecallback', new Date().getTime() );
             }
         </script>
     </head>    
     <body>
         <dl class="defdl">
-            <dt> ChangeLogic,  trigger 隐藏对应的 node ( bclHideTargetSub ) </dt>
+            <dt> DisableLogic,  trigger 隐藏对应的 node ( dlhidetargetsub ) </dt>
             <dd>
                 <table>
                     <tr>
@@ -49,10 +49,10 @@
                             <label for="" class="gray">选择代理业务：</label>
                         </td>
                         <td>
-                            <div class="clearfix js_bizChangeLogic" 
-                                bclTrigger="|input.js_searchAndDirect" 
-                                bclDisableTarget="|input.js_searchAndDirectOption" 
-                                bclHideTarget="|div.js_searchAndDirectType"
+                            <div class="clearfix js_bizsDisableLogic" 
+                                dltrigger="|input.js_searchAndDirect" 
+                                dltarget="|input.js_searchAndDirectOption" 
+                                dlhidetarget="|div.js_searchAndDirectType"
                                 >
                                 <label class="fl" style="margin-right:50px;">
                                     <input type="checkbox" name="" checked="" id="" 
@@ -63,14 +63,14 @@
                                     datatarget="input.js_superType" 
                                     emel="#superTypeEm"
 
-                                    bclDisable="true"
-                                    bclHideTargetSub="dl.js_interval, dl.js_external"
+                                    dldisable="true"
+                                    dlhidetargetsub="dl.js_interval, dl.js_external"
 
                                     >
                                     搜索及品牌直达
                                 </label>
-                                <div class="fl js_searchAndDirectType js_bizChangeLogic" style="display:inline"
-                                    bclTrigger="|input" 
+                                <div class="fl js_searchAndDirectType js_bizsDisableLogic" style="display:inline"
+                                    dltrigger="|input" 
                                     >
                                     <label>
                                         <input type="checkbox" name="service[]" value="1" checked="" 
@@ -80,7 +80,7 @@
                                         datatarget="//input[type=checkbox]" 
                                         emel="//em.error"
 
-                                        bclHideTargetSub="dl.js_interval"
+                                        dlhidetargetsub="dl.js_interval"
                                         > 国内
                                     </label>&nbsp;&nbsp;&nbsp;&nbsp;
                                     <label>
@@ -91,15 +91,15 @@
                                         datatarget="//input[type=checkbox]" 
                                         emel="//em.error"
 
-                                        bclHideTargetSub="dl.js_external"
+                                        dlhidetargetsub="dl.js_external"
                                         > 国外
                                     </label>
                                     <em class="error" style="display: none;"></em>
                                 </div>
                             </div> 
                             <div>
-                                <div class="clearfix js_bizChangeLogic" 
-                                    bclTrigger="|input" 
+                                <div class="clearfix js_bizsDisableLogic" 
+                                    dltrigger="|input" 
                                     >
                                     <label>
                                         <input type="checkbox" name="service[]" value="3" 
@@ -110,7 +110,7 @@
                                         datatarget="input.js_superType" 
                                         emel="#superTypeEm"
 
-                                        bclHideTargetSub="dl.js_navDetail" 
+                                        dlhidetargetsub="dl.js_navDetail" 
                                         />
                                         导航资源
                                     </label>
