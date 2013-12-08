@@ -279,6 +279,17 @@
                 "JC.Tab": 1
             }
         },
+        "../comps/TableFreeze/TableFreeze.js": {
+            "name": "../comps/TableFreeze/TableFreeze.js",
+            "modules": {},
+            "classes": {
+                "JC.TableFreeze": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../comps/Tips/Tips.js": {
             "name": "../comps/Tips/Tips.js",
             "modules": {},
@@ -1450,6 +1461,33 @@
                     "description": "",
                     "type": "JC.Tab.Model"
                 }
+            ]
+        },
+        "JC.TableFreeze": {
+            "name": "JC.TableFreeze",
+            "shortname": "JC.TableFreeze",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../comps/TableFreeze/TableFreeze.js",
+            "line": 2,
+            "description": "TableFreeze 表格固定指定列功能\n\n<p><b>require</b>:\n  <a href=\"jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>\n  | <a href='../../comps/TableFreeze/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化div为class=\"js_compTableFreeze\"下的表格</h2>\n<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>freezeType = string</dt>\n   <dd>\n      声明表格列冻结的类型：\n      <p><b>prev：</b>左边的列固定，其他滚动</p>\n      <p><b>next：</b>右边的列固定，其他滚动</p>\n      <p><b>both：</b>两边的列固定，其他滚动</p>\n   </dd>\n\n   <dt>freezeCol = string</dt>\n   <dd>\n       声明表格要冻结的列数:\n       <p>为<b>0：</b>全部滚动，不冻结</p>\n       <p>为<b>列表数目：</b>全部冻结， 不滚动</p>\n       <p>为<b>num,num：</b>freezeType为<b>both</b>时，第一个数字表示前面冻结的列数<br/>\n         第二个数字表示后面冻结的列数。<br/>\n          当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。\n       </p>\n\n   </dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-11-25",
+            "author": "zuojing   <zuojing1013@gmail.com> | 75 Team",
+            "example": [
+                "\n       <script>\n           JC.debug = true;\n           JC.use('TableFreeze');\n       </script>\n       <dl class=\"defdl\">\n           <dt>TableFreeze example</dt>\n           <dd>\n               <dl>\n                   <dd>\n                       <div class=\"js_compTableFreeze\" freezeType=\"prev\" freezeCols=\"2\"/>\n                           <dl>\n                               <dd>\n                                   <table >\n                                       <thead>\n                                           <tr>\n                                               <th > \n                                                   item0\n                                               </th>\n                                               <th >\n                                                   item1\n                                               </th>\n                                               <th >\n                                                   item2\n                                               </th>\n                                               <th >\n                                                   item3\n                                               </th>\n                                               <th >\n                                                   item4\n                                               </th>\n                                           </tr>\n                                       </thead>\n                                       <tbody>\n                                           <tr>\n                                               <td rowspan=\"3\">\n                                                   col01\n                                               </td>\n                                               <td class=\"breaklw\" >\n                                                   我的我的我的我的我的我的我的我的我的\n                                               </td>\n                                               <td rowspan=\"2\" colspan=\"2\">\n                                                   col02\n                                               </td>\n                                               \n                                               <td>\n                                                   col04\n                                               </td>\n\n                                           </tr>\n                                           <tr>\n                                               <td >\n                                                   col11\n                                               </td>\n                                               \n                                               <td >\n                                                   col14\n                                               </td>\n                                           </tr>\n                                             <tr>\n                                              \n                                               <td>\n                                                   col21\n                                               </td>\n                                                <td colspan=\"3\">\n                                                   col22\n                                               </td>\n                                           </tr>\n                                           <tr>\n                                               <td>\n                                                   col30\n                                               </td>\n                                               <td rowspan=\"2\">\n                                                   col31\n                                               </td>\n                                                <td>\n                                                   col32\n                                               </td>\n                                                <td>\n                                                   col33\n                                               </td>\n                                               <td rowspan=\"2\">\n                                                   col34\n                                               </td>\n                                           </tr>\n                                           <tr>\n                                               <td>\n                                                   col40\n                                               </td>\n                                               \n                                                <td>\n                                                   col42\n                                               </td>\n                                                <td>\n                                                   col43\n                                               </td>\n                                           </tr>\n                                           \n                                       </tbody>\n                                   </table>\n                               </dd>\n                           </dl>\n                       </div>\n                   <dd>\n               </dl>\n           </dd>\n       </dl>"
             ]
         },
         "JC.Tips": {
@@ -9193,6 +9231,66 @@
             "namespace": "JC.Tab"
         },
         {
+            "file": "../comps/TableFreeze/TableFreeze.js",
+            "line": 178,
+            "description": "获取或设置 TableFreeze 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "TableFreezeInstance"
+            },
+            "class": "JC.TableFreeze",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/TableFreeze/TableFreeze.js",
+            "line": 193,
+            "description": "初始化可识别的 TableFreeze 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of TableFreezeInstance"
+            },
+            "class": "JC.TableFreeze",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/TableFreeze/TableFreeze.js",
+            "line": 240,
+            "description": "更新 TableFreeze 状态",
+            "itemtype": "method",
+            "name": "update",
+            "class": "JC.TableFreeze",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/TableFreeze/TableFreeze.js",
+            "line": 251,
+            "description": "resize时更新 TableFreeze 状态",
+            "itemtype": "method",
+            "name": "fixHeight",
+            "class": "JC.TableFreeze",
+            "namespace": "JC"
+        },
+        {
             "file": "../comps/Tips/Tips.js",
             "line": 64,
             "description": "数据模型类实例引用",
@@ -14930,6 +15028,10 @@
         {
             "message": "unknown tag: date",
             "line": " ../comps/Tab/Tab.js:5"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../comps/TableFreeze/TableFreeze.js:2"
         },
         {
             "message": "unknown tag: version",
