@@ -1,8 +1,9 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "Bizs",
-        "JC",
+        ".Bizs",
+        ".JC",
+        ".jQuery",
         "JC.AjaxUpload",
         "JC.AutoChecked",
         "JC.AutoComplete",
@@ -33,11 +34,11 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.hideAllPanel",
         "JC.hideAllPopup",
         "JC.msgbox",
-        "jQuery",
         "window.Bizs.ActionLogic",
         "window.Bizs.AutoSelectComplete",
         "window.Bizs.ChangeLogic",
         "window.Bizs.CommonModify",
+        "window.Bizs.DisableLogic",
         "window.Bizs.FormLogic",
         "window.Bizs.KillISPCache",
         "window.Bizs.MoneyTips",

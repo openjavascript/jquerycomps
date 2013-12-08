@@ -11,50 +11,51 @@
             dt { font-weight: bold; margin: 10px auto; }
             dd { line-height: 24px; }
         </style>
-        <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Calendar//res/default/style.css' rel='stylesheet' />
         <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
         <script src="../../../lib.js"></script>
         <script>
             JC.debug = true;
-            JC.use( 'Bizs.DisableLogic, Calendar, Valid' );
 
-            function dldonecallback( _triggerItem, _boxItem ){
+            JC.use( [ 'JC.Calendar', 'JC.Valid', 'Bizs.ChangeLogic' ].join() );
+
+            function bclDoneCallback( _triggerItem, _boxItem ){
                 var _ins = this;
-                JC.log( 'dldonecallback', new Date().getTime() );
+                JC.log( 'bclDoneCallback', new Date().getTime() );
             }
 
-            function dlenablecallback( _triggerItem, _boxItem ){
+            function bclEnableCallback( _triggerItem, _boxItem ){
                 var _ins = this;
-                JC.log( 'dlenablecallback', new Date().getTime() );
+                JC.log( 'bclEnableCallback', new Date().getTime() );
             }
 
-            function dldisablecallback( _triggerItem, _boxItem ){
+            function bclDisableCallback( _triggerItem, _boxItem ){
                 var _ins = this;
-                JC.log( 'dldisablecallback', new Date().getTime() );
+                JC.log( 'bclDisableCallback', new Date().getTime() );
             }
         </script>
     </head>    
     <body>
 
         <dl class="defdl">
-            <dt> DisableLogic 禁用逻辑演示 1 </dt>
+            <dt> ChangeLogic 禁用逻辑演示 1 </dt>
             <dd>
-                <div class="js_bizsDisableLogic"
-                    dltrigger="|input[type=radio]"
-                    dltarget="|input.js_disableItem"
+                <div class="js_bizChangeLogic"
+                    bclTrigger="|input[type=radio]"
+                    bclDisableTarget="|input.js_disableItem"
 
-                    dldonecallback="dldonecallback"
-                    dldisablecallback="dldisablecallback"
-                    dlenablecallback="dlenablecallback"
+                    bclDoneCallback="bclDoneCallback"
+                    bclDisableCallback="bclDisableCallback"
+                    bclEnableCallback="bclEnableCallback"
                     >
                     <label>
                         <input type="radio" name="discount" checked  
-                        dldisable="true"
+                        bclDisable="true"
                         />自本协议签订之日起10日内生效
                     </label> <br>
                     <label>
                         <input type="radio" name="discount" 
-                        dldisable="false"
+                        bclDisable="false"
                         />生效时间点
                     </label>
                     <input type="text" class="ipt js_disableItem" value=""
@@ -67,25 +68,25 @@
         </dl>
 
         <dl class="defdl">
-            <dt> DisableLogic 禁用逻辑演示 2 ( disable one more item ) </dt>
+            <dt> ChangeLogic 禁用逻辑演示 2 ( disable one more item ) </dt>
             <dd>
-                <div class="js_bizsDisableLogic"
-                    dltrigger="|input[type=radio]"
-                    dltarget="|input.js_disableItem,|select.testSelect"
-                    dlhidetarget="|span.targetBox"
+                <div class="js_bizChangeLogic"
+                    bclTrigger="|input[type=radio]"
+                    bclDisableTarget="|input.js_disableItem,|select.testSelect"
+                    bclHideTarget="|span.targetBox"
 
-                    dldonecallback="dldonecallback"
-                    dldisablecallback="dldisablecallback"
-                    dlenablecallback="dlenablecallback"
+                    bclDoneCallback="bclDoneCallback"
+                    bclDisableCallback="bclDisableCallback"
+                    bclEnableCallback="bclEnableCallback"
                     >
                     <label>
                         <input type="radio" name="discount1" checked  
-                        dldisable="true"
+                        bclDisable="true"
                         />自本协议签订之日起10日内生效
                     </label> <br>
                     <label>
                         <input type="radio" name="discount1" 
-                        dldisable="false"
+                        bclDisable="false"
                         />生效时间点
                     </label>
                     <span class="targetBox">
@@ -100,25 +101,25 @@
         </dl>
 
         <dl class="defdl">
-            <dt> DisableLogic 禁用逻辑演示 3 ( dlhidetarget ) </dt>
+            <dt> ChangeLogic 禁用逻辑演示 3 ( bclHideTarget ) </dt>
             <dd>
-                <div class="js_bizsDisableLogic"
-                    dltrigger="|input[type=radio]"
-                    dltarget="|input.js_disableItem"
-                    dlhidetarget="|span.targetBox,|span.hidetargetEx"
+                <div class="js_bizChangeLogic"
+                    bclTrigger="|input[type=radio]"
+                    bclDisableTarget="|input.js_disableItem"
+                    bclHideTarget="|span.targetBox,|span.hidetargetEx"
 
-                    dldonecallback="dldonecallback"
-                    dldisablecallback="dldisablecallback"
-                    dlenablecallback="dlenablecallback"
+                    bclDoneCallback="bclDoneCallback"
+                    bclDisableCallback="bclDisableCallback"
+                    bclEnableCallback="bclEnableCallback"
                     >
                     <label>
                         <input type="radio" name="discount2" checked  
-                        dldisable="true"
+                        bclDisable="true"
                         />自本协议签订之日起10日内生效
                     </label> <br>
                     <label>
                         <input type="radio" name="discount2" 
-                        dldisable="false"
+                        bclDisable="false"
                         />生效时间点
                     </label>
                     <span class="targetBox">
@@ -133,32 +134,32 @@
         </dl>
 
         <dl class="defdl">
-            <dt> DisableLogic 禁用逻辑演示 4 ( dlhidetoggle ) </dt>
+            <dt> ChangeLogic 禁用逻辑演示 4 ( bclHideToggle ) </dt>
             <dd>
-                <div class="js_bizsDisableLogic"
-                    dltrigger="|input[type=radio]"
-                    dltarget="|input.js_disableItem"
-                    dlhidetarget="|span.targetBox,|span.hidetargetEx"
+                <div class="js_bizChangeLogic"
+                    bclTrigger="|input[type=radio]"
+                    bclDisableTarget="|input.js_disableItem"
+                    bclHideTarget="|span.targetBox,|span.hidetargetEx"
 
-                    dldonecallback="dldonecallback"
-                    dldisablecallback="dldisablecallback"
-                    dlenablecallback="dlenablecallback"
+                    bclDoneCallback="bclDoneCallback"
+                    bclDisableCallback="bclDisableCallback"
+                    bclEnableCallback="bclEnableCallback"
                     >
                     <label>
                         <input type="radio" name="discount3" checked  
-                        dldisable="true"
+                        bclDisable="true"
                         />自本协议签订之日起10日内生效
                     </label> <br>
                     <label>
                         <input type="radio" name="discount3" 
-                        dldisable="false"
+                        bclDisable="false"
                         />生效时间点
                     </label>
                     <span class="targetBox">
                         <input type="text" class="ipt js_disableItem" datatype="date" value=""
                         /><input type="button" class="UXCCalendar_btn">
                     </span>
-                    <span class="hidetargetEx" dlhidetoggle="true" >
+                    <span class="hidetargetEx" bclHideToggle="true" >
                         <h2>测试用</h2>
                     </span>
                 </div>

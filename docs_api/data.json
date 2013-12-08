@@ -43,7 +43,20 @@
         "../bizs/CommonModify/CommonModify.js": {
             "name": "../bizs/CommonModify/CommonModify.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "window.Bizs.CommonModify": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.Bizs": 1
+            }
+        },
+        "../bizs/DisableLogic/DisableLogic.js": {
+            "name": "../bizs/DisableLogic/DisableLogic.js",
+            "modules": {},
+            "classes": {
+                "window.Bizs.DisableLogic": 1
+            },
             "fors": {},
             "namespaces": {
                 "window.Bizs": 1
@@ -328,37 +341,12 @@
                 "JC": 1
             }
         },
-        "../deploy/bizs/CommonModify/CommonModify.js": {
-            "name": "../deploy/bizs/CommonModify/CommonModify.js",
-            "modules": {},
-            "classes": {
-                "window.Bizs.CommonModify": 1
-            },
-            "fors": {},
-            "namespaces": {
-                "window.Bizs": 1
-            }
-        },
-        "../plugins/rate/spec/lib/jasmine.js": {
-            "name": "../plugins/rate/spec/lib/jasmine.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
-        "../plugins/aes.js": {
-            "name": "../plugins/aes.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
         "../JC.js": {
             "name": "../JC.js",
             "modules": {},
             "classes": {
-                "Bizs": 1,
-                "JC": 1
+                ".Bizs": 1,
+                ".JC": 1
             },
             "fors": {},
             "namespaces": {}
@@ -376,7 +364,7 @@
             "name": "../jquery.js",
             "modules": {},
             "classes": {
-                "jQuery": 1
+                ".jQuery": 1
             },
             "fors": {},
             "namespaces": {}
@@ -437,13 +425,13 @@
             "extension_for": [],
             "namespace": "window.Bizs",
             "file": "../bizs/ChangeLogic/ChangeLogic.js",
-            "line": 2,
-            "description": "<h2>Form Control禁用启用逻辑</h2>\n<br/>应用场景</br>\n<br/>表单操作时, 选择某个 radio 时, 对应的 内容有效,\n<br/>但选择其他 radio 时, 其他的内容无效\n<br/>checkbox / select 也可使用( 带change事件的标签 )\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ChangeLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/ChangeLogic/_demo' target='_blank'>demo link</a></p>\n\ndiv 需要 添加 class=\"js_bizChangeLogic\"\n\n<h2>box 的 HTML 属性</h2>\n<dl>\n     <dt>dltrigger</dt>\n     <dd>触发禁用/起用的control</dd>\n\n     <dt>dltarget</dt>\n     <dd>需要禁用/起用的control</dd>\n\n     <dt>dlhidetarget</dt>\n     <dd>需要根据禁用起用隐藏/可见的标签</dd>\n\n     <dt>dldonecallback = function</dt>\n     <dd>\n     启用/禁用后会触发的回调, <b>window 变量域</b>\n<pre>function dldonecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldonecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>dlenablecallback = function</dt>\n     <dd>\n     启用后的回调, <b>window 变量域</b>\n<pre>function dlenablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dlenablecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>dldisablecallback = function</dt>\n     <dd>\n     禁用后的回调, <b>window 变量域</b>\n<pre>function dldisablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldisablecallback', new Date().getTime() );\n}</pre>\n     </dd>\n</dl>\n\n<h2>trigger 的 HTML 属性</h2>\n<dl>\n     <dt>dldisable = bool, default = false</dt>\n     <dd>\n         指定 dltarget 是否置为无效\n         <br />还可以根据这个属性 指定 dlhidetarget 是否显示\n     </dd>\n\n     <dt>dldisplay = bool</dt>\n     <dd>指定 dlhidetarget 是否显示</dd>\n\n     <dt>dlhidetargetsub = selector</dt>\n     <dd>根据 trigger 的 checked 状态 显示或者隐藏 dlhidetargetsub node</dd>\n</dl>\n\n<h2>hide target 的 HTML 属性</h2>\n<dl>\n     <dt>dlhidetoggle = bool</dt>\n     <dd>显示或显示的时候, 是否与他项相反</dd>\n</dl>",
+            "line": 3,
+            "description": "<h2>input[type=radio|type=checkbox], select change 事件的响应逻辑</h2>\n<br/>应用场景</br>\n<br/>表单操作时, 选择某个 radio 时, 对应的 内容有效,\n<br/>但选择其他 radio 时, 其他的内容无效\n<br/>checkbox / select 也可使用( 带change事件的标签 )\n<p><b>require</b>: \n     <a href='jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.ChangeLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/ChangeLogic/_demo' target='_blank'>demo link</a></p>\n\ndiv 需要 添加 class=\"js_bizChangeLogic\"\n\n<h2>box 的 HTML 属性</h2>\n<dl>\n     <dt>bclTrigger</dt>\n     <dd>触发禁用/起用的control</dd>\n\n     <dt>bclDisableTarget</dt>\n     <dd>需要禁用/起用的control</dd>\n\n     <dt>bclHideTarget</dt>\n     <dd>需要根据禁用起用隐藏/可见的标签</dd>\n\n     <dt>bclDoneCallback = function</dt>\n     <dd>\n     启用/禁用后会触发的回调, <b>window 变量域</b>\n<pre>function bclDoneCallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'bclDoneCallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>bclEnableCallback = function</dt>\n     <dd>\n     启用后的回调, <b>window 变量域</b>\n<pre>function bclEnableCallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'bclEnableCallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>bclDisableCallback = function</dt>\n     <dd>\n     禁用后的回调, <b>window 变量域</b>\n<pre>function bclDisableCallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'bclDisableCallback', new Date().getTime() );\n}</pre>\n     </dd>\n</dl>\n\n<h2>trigger 的 HTML 属性</h2>\n<dl>\n     <dt>bclDisable = bool, default = false</dt>\n     <dd>\n         指定 bclDisableTarget 是否置为无效\n         <br />还可以根据这个属性 指定 bclHideTarget 是否显示\n     </dd>\n\n     <dt>bclDisplay = bool</dt>\n     <dd>指定 bclHideTarget 是否显示</dd>\n\n     <dt>bclHideTargetSub = selector</dt>\n     <dd>根据 trigger 的 checked 状态 显示或者隐藏 bclHideTargetSub node</dd>\n</dl>\n\n<h2>hide target 的 HTML 属性</h2>\n<dl>\n     <dt>bclHideToggle = bool</dt>\n     <dd>显示或显示的时候, 是否与他项相反</dd>\n</dl>",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-04",
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
             "example": [
-                "\n       <div class=\"js_bizChangeLogic\"\n           dltrigger=\"/input[type=radio]\"\n           dltarget=\"/input.js_disableItem\"\n           >\n           <label>\n               <input type=\"radio\" name=\"discount\" checked  \n               dldisable=\"true\"\n               />自本协议签订之日起10日内生效\n           </label> <br>\n           <label>\n               <input type=\"radio\" name=\"discount\" \n               dldisable=\"false\"\n               />生效时间点\n           </label>\n           <input type=\"text\" class=\"ipt js_disableItem\" datatype=\"date\" value=\"\"\n           /><input type=\"button\" class=\"UXCCalendar_btn\">\n       </div>"
+                "\n       <div class=\"js_bizChangeLogic\"\n           bclTrigger=\"/input[type=radio]\"\n           bclDisableTarget=\"/input.js_disableItem\"\n           >\n           <label>\n               <input type=\"radio\" name=\"discount\" checked  \n               bclDisable=\"true\"\n               />自本协议签订之日起10日内生效\n           </label> <br>\n           <label>\n               <input type=\"radio\" name=\"discount\" \n               bclDisable=\"false\"\n               />生效时间点\n           </label>\n           <input type=\"text\" class=\"ipt js_disableItem\" datatype=\"date\" value=\"\"\n           /><input type=\"button\" class=\"UXCCalendar_btn\">\n       </div>"
             ]
         },
         "window.Bizs.CommonModify": {
@@ -455,7 +443,7 @@
             "plugin_for": [],
             "extension_for": [],
             "namespace": "window.Bizs",
-            "file": "../deploy/bizs/CommonModify/CommonModify.js",
+            "file": "../bizs/CommonModify/CommonModify.js",
             "line": 2,
             "description": "<h2>Dom 通用 添加删除 逻辑</h2>\n<br/>应用场景\n<br/>需要动态添加删除内容的地方可以使用这个类\n<p><b>require</b>: \n     <a href='jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.CommonModify.html' target='_blank'>API docs</a>\n| <a href='../../bizs/CommonModify/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_autoCommonModify\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>[cmtpl | cmtemplate] = script selector</dt>\n     <dd>指定保存模板的 script 标签</dd>\n\n     <dt>cmitem = selector</dt>\n     <dd>添加时, 目标位置的 父节点/兄弟节点</dd>\n\n     <dt>cmaction = string, [add, del], default = add</dt>\n     <dd>操作类型</dd>\n\n     <dt>cmappendtype = string, default = after</dt>\n     <dd>指定 node 添加 dom 的方法, 可选类型: before, after, appendTo</dd>\n\n     <dt>cmdonecallback = function</dt>\n     <dd>\n     添加或删除完后会触发的回调, <b>window 变量域</b>\n<pre>function cmdonecallback( _ins, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmdonecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>cmtplfiltercallback = function</dt>\n     <dd>\n     模板内容过滤回调, <b>window 变量域</b>\n<pre>window.COUNT = 1;\nfunction cmtplfiltercallback( _tpl, _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmtplfiltercallback', new Date().getTime() );\n   _tpl = JC.f.printf( _tpl, COUNT++ );\n\n   return _tpl;\n}</pre>\n     </dd>\n\n     <dt>cmbeforeaddcallabck = function</dt>\n     <dd>\n     添加之前的回调, 如果返回 false, 将不执行添加操作, <b>window 变量域</b>\n<pre>function cmbeforeaddcallabck( _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforeaddcallabck', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>cmaddcallback = function</dt>\n     <dd>\n     添加完成的回调, <b>window 变量域</b>\n<pre>function cmaddcallback( _ins, _newItem, _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmaddcallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>cmbeforedelcallback = function</dt>\n     <dd>\n     删除之前的回调, 如果返回 false, 将不执行删除操作, <b>window 变量域</b>\n<pre>function cmbeforedelcallback( _cmitem, _boxParent ){\n   var _trigger = $(this);\n   JC.log( 'cmbeforedelcallback', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>cmdelcallback = function</dt>\n     <dd>\n     删除完成的回调, <b>window 变量域</b>\n<pre>function cmdelcallback( _ins, _boxParent ){\n   JC.log( 'cmdelcallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>cmMaxItems = int</dt>\n     <dd>\n         指定最多可添加数量\n         <br /><b>要使 cmMaxItems 生效, 必须声明 cmAddedItemsSelector</b>\n     </dd>\n\n     <dt>cmAddedItemsSelector = selector</dt>\n     <dd>\n         指定查找所有上传项的选择器语法\n     </dd>\n\n     <dt>cmOutRangeMsg = string, default = \"最多只能上传 {0}个文件!\"</dt>\n     <dd>\n         添加数量超出 cmMaxItems 时的提示信息\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
@@ -464,6 +452,25 @@
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
             "example": [
                 "\n      <table>\n            <tr>\n               <td>\n                   <label class=\"gray\">甲方主体：</label>\n               </td>\n               <td>\n                   <input type=\"text\" name=\"\" class=\"ipt ipt-w320\" />&nbsp;\n                       <a href=\"javascript:\" \n                       class=\"green js_autoCommonModify\" \n                       cmtemplate=\"#addMainFirstPartyTpl\"\n                       cmitem=\"(tr\"\n                       cmaction=\"add\"\n                   >+ 添加</a>\n                   <em class=\"error\"></em>\n               </td>\n           </tr>\n       </table>\n\n       <script type=\"text/template\" id=\"addMainFirstPartyTpl\" >\n        <tr>\n           <td>\n               <label class=\"gray\">甲方主体：</label>\n           </td>\n           <td>\n               <input type=\"text\" name=\"\" class=\"ipt ipt-w320\" />\n               <a href=\"javascript:\" \n                   class=\"green js_autoCommonModify\" \n                   cmtemplate=\"#addMainFirstPartyTpl\"\n                   cmitem=\"(tr\"\n                   cmaction=\"add\"\n               >+ 添加</a>\n               <a href=\"javascript:\" class=\"red js_autoCommonModify\"\n                   cmtemplate=\"#addMainFirstPartyTpl\"\n                   cmitem=\"(tr\"\n                   cmaction=\"del\"\n               >+ 删除</a>\n               <em class=\"error\"></em>\n           </td>\n       </tr>\n       </script>"
+            ]
+        },
+        "window.Bizs.DisableLogic": {
+            "name": "window.Bizs.DisableLogic",
+            "shortname": "window.Bizs.DisableLogic",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.Bizs",
+            "file": "../bizs/DisableLogic/DisableLogic.js",
+            "line": 2,
+            "description": "<h2 style=\"color:red\">这个应用将不再维护, 请使用 <a href='window.Bizs.ChangeLogic.html' style=\"color:red\">Bizs.ChangeLogic</a> </h2>\n<h2>Form Control禁用启用逻辑</h2>\n<br/>应用场景</br>\n<br/>表单操作时, 选择某个 radio 时, 对应的 内容有效,\n<br/>但选择其他 radio 时, 其他的内容无效\n<br/>checkbox / select 也可使用( 带change事件的标签 )\n<p><b>require</b>: \n     <a href='jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/DisableLogic/_demo' target='_blank'>demo link</a></p>\n\ndiv 需要 添加 class=\"js_bizsDisableLogic\"\n\n<h2>box 的 HTML 属性</h2>\n<dl>\n     <dt>dltrigger</dt>\n     <dd>触发禁用/起用的control</dd>\n\n     <dt>dltarget</dt>\n     <dd>需要禁用/起用的control</dd>\n\n     <dt>dlhidetarget</dt>\n     <dd>需要根据禁用起用隐藏/可见的标签</dd>\n\n     <dt>dldonecallback = function</dt>\n     <dd>\n     启用/禁用后会触发的回调, <b>window 变量域</b>\n<pre>function dldonecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldonecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>dlenablecallback = function</dt>\n     <dd>\n     启用后的回调, <b>window 变量域</b>\n<pre>function dlenablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dlenablecallback', new Date().getTime() );\n}</pre>\n     </dd>\n\n     <dt>dldisablecallback = function</dt>\n     <dd>\n     禁用后的回调, <b>window 变量域</b>\n<pre>function dldisablecallback( _triggerItem, _boxItem ){\n   var _ins = this;\n   JC.log( 'dldisablecallback', new Date().getTime() );\n}</pre>\n     </dd>\n</dl>\n\n<h2>trigger 的 HTML 属性</h2>\n<dl>\n     <dt>dldisable = bool, default = false</dt>\n     <dd>\n         指定 dltarget 是否置为无效\n         <br />还可以根据这个属性 指定 dlhidetarget 是否显示\n     </dd>\n\n     <dt>dldisplay = bool</dt>\n     <dd>指定 dlhidetarget 是否显示</dd>\n\n     <dt>dlhidetargetsub = selector</dt>\n     <dd>根据 trigger 的 checked 状态 显示或者隐藏 dlhidetargetsub node</dd>\n</dl>\n\n<h2>hide target 的 HTML 属性</h2>\n<dl>\n     <dt>dlhidetoggle = bool</dt>\n     <dd>显示或显示的时候, 是否与他项相反</dd>\n</dl>",
+            "is_constructor": 1,
+            "version": "dev 0.1 2013-09-04",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n       <div class=\"js_bizsDisableLogic\"\n           dltrigger=\"/input[type=radio]\"\n           dltarget=\"/input.js_disableItem\"\n           >\n           <label>\n               <input type=\"radio\" name=\"discount\" checked  \n               dldisable=\"true\"\n               />自本协议签订之日起10日内生效\n           </label> <br>\n           <label>\n               <input type=\"radio\" name=\"discount\" \n               dldisable=\"false\"\n               />生效时间点\n           </label>\n           <input type=\"text\" class=\"ipt js_disableItem\" datatype=\"date\" value=\"\"\n           /><input type=\"button\" class=\"UXCCalendar_btn\">\n       </div>"
             ]
         },
         "window.Bizs.FormLogic": {
@@ -1621,9 +1628,9 @@
             "version": "0.1,  2013-05-22",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
         },
-        "Bizs": {
-            "name": "Bizs",
-            "shortname": "Bizs",
+        ".Bizs": {
+            "name": ".Bizs",
+            "shortname": ".Bizs",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -1635,9 +1642,9 @@
             "description": "<h2>业务逻辑命名空间</h2>\n<br />这个命名空间的组件主要为满足业务需求, 不是通用组件~\n<br />但在某个项目中应该是常用组件~\n<dl>\n     <dt>业务组件的存放位置:</dt>\n     <dd>libpath/bizs/</dd>\n\n     <dt>使用业务组件</dt>\n     <dd> JC.use( 'Bizs.BizComps' ); //  libpath/bizs/BizComps/BizComps.js </dd>\n\n     <dt>使用业务文件</dt>\n     <dd> JC.use( 'bizs.BizFile' ); //   libpath/bizs/BizFile.js </dd>\n</dl>",
             "static": 1
         },
-        "JC": {
-            "name": "JC",
-            "shortname": "JC",
+        ".JC": {
+            "name": ".JC",
+            "shortname": ".JC",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -1645,7 +1652,7 @@
             "extension_for": [],
             "namespace": "",
             "file": "../JC.js",
-            "line": 25,
+            "line": 26,
             "description": "JC jquery 组件库 资源调用控制类\n<br />这是一个单例模式, 全局访问使用 JC 或 window.JC\n<p><b>require</b>: \n     <a href='jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.html' target='_blank'>API docs</a>\n| <a href='../../_demo' target='_blank'>demo link</a></p>",
             "static": 1,
             "example": [
@@ -1670,9 +1677,9 @@
             "version": "dev 0.1 2013-07-04",
             "author": "qiushaowei   <suches@btbtd.org> | 360 75 Team"
         },
-        "jQuery": {
-            "name": "jQuery",
-            "shortname": "jQuery",
+        ".jQuery": {
+            "name": ".jQuery",
+            "shortname": ".jQuery",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -1883,7 +1890,7 @@
         },
         {
             "file": "../bizs/ChangeLogic/ChangeLogic.js",
-            "line": 167,
+            "line": 168,
             "description": "获取 显示 ChangeLogic 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -1895,7 +1902,7 @@
         },
         {
             "file": "../bizs/ChangeLogic/ChangeLogic.js",
-            "line": 173,
+            "line": 174,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -1920,7 +1927,7 @@
         },
         {
             "file": "../bizs/ChangeLogic/ChangeLogic.js",
-            "line": 181,
+            "line": 182,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -1940,7 +1947,7 @@
         },
         {
             "file": "../bizs/ChangeLogic/ChangeLogic.js",
-            "line": 189,
+            "line": 190,
             "description": "获取或设置 ChangeLogic 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -1961,7 +1968,7 @@
         },
         {
             "file": "../bizs/ChangeLogic/ChangeLogic.js",
-            "line": 209,
+            "line": 210,
             "description": "初始化 _selector | document 可识别的 ChangeLogic HTML属性",
             "itemtype": "method",
             "name": "init",
@@ -2079,6 +2086,101 @@
                 "description": "bool"
             },
             "class": "window.Bizs.CommonModify",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/DisableLogic/DisableLogic.js",
+            "line": 168,
+            "description": "获取 显示 DisableLogic 的触发源选择器, 比如 a 标签",
+            "itemtype": "method",
+            "name": "selector",
+            "return": {
+                "description": "selector"
+            },
+            "class": "window.Bizs.DisableLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/DisableLogic/DisableLogic.js",
+            "line": 174,
+            "description": "使用 jquery on 绑定事件",
+            "itemtype": "method",
+            "name": "on",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_cb",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "DisableLogicInstance"
+            },
+            "class": "window.Bizs.DisableLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/DisableLogic/DisableLogic.js",
+            "line": 182,
+            "description": "使用 jquery trigger 绑定事件",
+            "itemtype": "method",
+            "name": "trigger",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "DisableLogicInstance"
+            },
+            "class": "window.Bizs.DisableLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/DisableLogic/DisableLogic.js",
+            "line": 190,
+            "description": "获取或设置 DisableLogic 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "DisableLogic instance"
+            },
+            "class": "window.Bizs.DisableLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/DisableLogic/DisableLogic.js",
+            "line": 210,
+            "description": "初始化 _selector | document 可识别的 DisableLogic HTML属性",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector,",
+                    "description": "default = document",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "class": "window.Bizs.DisableLogic",
             "namespace": "window.Bizs"
         },
         {
@@ -12173,1504 +12275,28 @@
             "namespace": "JC"
         },
         {
-            "file": "../deploy/bizs/CommonModify/CommonModify.js",
-            "line": 209,
-            "description": "获取 显示 CommonModify 的触发源选择器, 比如 a 标签",
-            "itemtype": "method",
-            "name": "selector",
-            "return": {
-                "description": "selector"
-            },
-            "class": "window.Bizs.CommonModify",
-            "namespace": "window.Bizs"
-        },
-        {
-            "file": "../deploy/bizs/CommonModify/CommonModify.js",
-            "line": 215,
-            "description": "使用 jquery on 绑定事件",
-            "itemtype": "method",
-            "name": "on",
-            "type": "String",
-            "params": [
-                {
-                    "name": "_evtName",
-                    "description": "",
-                    "type": "String"
-                },
-                {
-                    "name": "_cb",
-                    "description": "",
-                    "type": "Function"
-                }
-            ],
-            "return": {
-                "description": "CommonModifyInstance"
-            },
-            "class": "window.Bizs.CommonModify",
-            "namespace": "window.Bizs"
-        },
-        {
-            "file": "../deploy/bizs/CommonModify/CommonModify.js",
-            "line": 223,
-            "description": "使用 jquery trigger 绑定事件",
-            "itemtype": "method",
-            "name": "trigger",
-            "type": "String",
-            "params": [
-                {
-                    "name": "_evtName",
-                    "description": "",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "CommonModifyInstance"
-            },
-            "class": "window.Bizs.CommonModify",
-            "namespace": "window.Bizs"
-        },
-        {
-            "file": "../deploy/bizs/CommonModify/CommonModify.js",
-            "line": 234,
-            "description": "update current selector",
-            "class": "window.Bizs.CommonModify",
-            "namespace": "window.Bizs"
-        },
-        {
-            "file": "../deploy/bizs/CommonModify/CommonModify.js",
-            "line": 246,
-            "description": "获取或设置 CommonModify 的实例",
-            "itemtype": "method",
-            "name": "getInstance",
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "",
-                    "type": "Selector"
-                }
-            ],
-            "static": 1,
-            "return": {
-                "description": "",
-                "type": "CommonModify instance"
-            },
-            "class": "window.Bizs.CommonModify",
-            "namespace": "window.Bizs"
-        },
-        {
-            "file": "../deploy/bizs/CommonModify/CommonModify.js",
-            "line": 260,
-            "description": "判断 selector 是否可以初始化 CommonModify",
-            "itemtype": "method",
-            "name": "isCommonModify",
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "",
-                    "type": "Selector"
-                }
-            ],
-            "static": 1,
-            "return": {
-                "description": "bool"
-            },
-            "class": "window.Bizs.CommonModify",
-            "namespace": "window.Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 3,
-            "description": "Top level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 10,
-            "access": "private",
-            "tagname": "",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 17,
-            "description": "Use <code>jasmine.undefined</code> instead of <code>undefined</code>, since <code>undefined</code> is just\na plain old variable and may be redefined by somebody else.",
-            "access": "private",
-            "tagname": "",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 25,
-            "description": "Show diagnostic messages in the console if set to true",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 31,
-            "description": "Default interval in milliseconds for event loop yields (e.g. to allow network activity or to refresh the screen with the HTML-based runner). Small values here may result in slow test running. Zero means no updates until all tests have completed.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 37,
-            "description": "Default timeout interval in milliseconds for waitsFor() blocks.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 50,
-            "description": "Allows for bound functions to be compared.  Internal use only.",
-            "ignore": "",
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "base",
-                    "description": "bound 'this' for the function",
-                    "type": "Object"
-                },
-                {
-                    "name": "name",
-                    "description": "function to find",
-                    "type": "Function"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 114,
-            "description": "Getter for the Jasmine environment. Ensures one gets created",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 122,
-            "ignore": "",
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "value",
-                    "description": ""
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Boolean"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 132,
-            "ignore": "",
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "value",
-                    "description": ""
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Boolean"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 142,
-            "ignore": "",
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "value",
-                    "description": ""
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Boolean"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 152,
-            "ignore": "",
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "typeName",
-                    "description": "",
-                    "type": "String"
-                },
-                {
-                    "name": "value",
-                    "description": ""
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Boolean"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 163,
-            "description": "Pretty printer for expecations.  Takes any object and turns it into a human-readable string.",
-            "params": [
-                {
-                    "name": "value",
-                    "description": "an object to be outputted",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "String"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 175,
-            "description": "Returns true if the object is a DOM Node.",
-            "params": [
-                {
-                    "name": "obj",
-                    "description": "object to check",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Boolean"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 185,
-            "description": "Returns a matchable 'generic' object of the class type.  For use in expecations of type when values don't matter.",
-            "example": [
-                "\n// don't care about which function is passed in, as long as it's a function\nexpect(mySpy).toHaveBeenCalledWith(jasmine.any(Function));"
-            ],
-            "params": [
-                {
-                    "name": "clazz",
-                    "description": "",
-                    "type": "Class"
-                }
-            ],
-            "return": {
-                "description": "matchable object of the type clazz"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 199,
-            "description": "Returns a matchable subset of a JSON object. For use in expectations when you don't care about all of the\nattributes on the object.",
-            "example": [
-                "\n// don't care about any other attributes than foo.\nexpect(mySpy).toHaveBeenCalledWith(jasmine.objectContaining({foo: \"bar\"});"
-            ],
-            "params": [
-                {
-                    "name": "sample",
-                    "description": "sample",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "matchable object for the sample"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 214,
-            "description": "Jasmine Spies are test doubles that can act as stubs, spies, fakes or when used in an expecation, mocks.\n\nSpies should be created in test setup, before expectations.  They can then be checked, using the standard Jasmine\nexpectation syntax. Spies can be checked if they were called or not and what the calling params were.\n\nA Spy has the following fields: wasCalled, callCount, mostRecentCall, and argsForCall (see docs).\n\nSpies are torn down at the end of every spec.\n\nNote: Do <b>not</b> call new jasmine.Spy() directly - a spy must be created using spyOn, jasmine.createSpy or jasmine.createSpyObj.",
-            "example": [
-                "\n// a stub\nvar myStub = jasmine.createSpy('myStub');  // can be used anywhere\n\n// spy example\nvar foo = {\n  not: function(bool) { return !bool; }\n}\n\n// actual foo.not will not be called, execution stops\nspyOn(foo, 'not');\n\n// foo.not spied upon, execution will continue to implementation\nspyOn(foo, 'not').andCallThrough();\n\n// fake example\nvar foo = {\n  not: function(bool) { return !bool; }\n}\n\n// foo.not(val) will return val\nspyOn(foo, 'not').andCallFake(function(value) {return value;});\n\n// mock example\nfoo.not(7 == 7);\nexpect(foo.not).toHaveBeenCalled();\nexpect(foo.not).toHaveBeenCalledWith(true);"
-            ],
-            "is_constructor": 1,
-            "see": [
-                "spyOn",
-                "jasmine.createSpy",
-                "jasmine.createSpyObj"
-            ],
-            "params": [
-                {
-                    "name": "name",
-                    "description": "",
-                    "type": "String"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 259,
-            "description": "The name of the spy, if provided.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 263,
-            "description": "Is this Object a spy?",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 267,
-            "description": "The actual function this spy stubs.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 272,
-            "description": "Tracking of the most recent call to the spy.",
-            "example": [
-                "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy.mostRecentCall.args = [1, 2];"
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 281,
-            "description": "Holds arguments for each call to the spy, indexed by call count",
-            "example": [
-                "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy(7, 8);\nmySpy.mostRecentCall.args = [7, 8];\nmySpy.argsForCall[0] = [1, 2];\nmySpy.argsForCall[1] = [7, 8];"
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 295,
-            "description": "Tells a spy to call through to the actual implemenatation.",
-            "example": [
-                "\nvar foo = {\n  bar: function() { // do some stuff }\n}\n\n// defining a spy on an existing property: foo.bar\nspyOn(foo, 'bar').andCallThrough();"
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 311,
-            "description": "For setting the return value of a spy.",
-            "example": [
-                "\n// defining a spy from scratch: foo() returns 'baz'\nvar foo = jasmine.createSpy('spy on foo').andReturn('baz');\n\n// defining a spy on an existing property: foo.bar() returns 'baz'\nspyOn(foo, 'bar').andReturn('baz');"
-            ],
-            "params": [
-                {
-                    "name": "value",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 330,
-            "description": "For throwing an exception when a spy is called.",
-            "example": [
-                "\n// defining a spy from scratch: foo() throws an exception w/ message 'ouch'\nvar foo = jasmine.createSpy('spy on foo').andThrow('baz');\n\n// defining a spy on an existing property: foo.bar() throws an exception w/ message 'ouch'\nspyOn(foo, 'bar').andThrow('baz');"
-            ],
-            "params": [
-                {
-                    "name": "exceptionMsg",
-                    "description": "",
-                    "type": "String"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 349,
-            "description": "Calls an alternate implementation when a spy is called.",
-            "example": [
-                "\nvar baz = function() {\n  // do some stuff, return something\n}\n// defining a spy from scratch: foo() calls the function baz\nvar foo = jasmine.createSpy('spy on foo').andCall(baz);\n\n// defining a spy on an existing property: foo.bar() calls an anonymnous function\nspyOn(foo, 'bar').andCall(function() { return 'baz';} );"
-            ],
-            "params": [
-                {
-                    "name": "fakeFunc",
-                    "description": "",
-                    "type": "Function"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 369,
-            "description": "Resets all of a spy's the tracking variables so that it can be used again.",
-            "example": [
-                "\nspyOn(foo, 'bar');\n\nfoo.bar();\n\nexpect(foo.bar.callCount).toEqual(1);\n\nfoo.bar.reset();\n\nexpect(foo.bar.callCount).toEqual(0);"
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 415,
-            "description": "Determines whether an object is a spy.",
-            "params": [
-                {
-                    "name": "putativeSpy",
-                    "description": "",
-                    "type": "jasmine.Spy|Object"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Boolean"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 425,
-            "description": "Creates a more complicated spy: an Object that has every property a function that is a spy.  Used for stubbing something\nlarge in one call.",
-            "params": [
-                {
-                    "name": "baseName",
-                    "description": "name of spy class",
-                    "type": "String"
-                },
-                {
-                    "name": "methodNames",
-                    "description": "array of names of methods to make spies",
-                    "type": "Array"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 443,
-            "description": "All parameters are pretty-printed and concatenated together, then written to the current spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 453,
-            "description": "Function that installs a spy on an existing object's method name.  Used within a Spec to create a spy.",
-            "example": [
-                "\n// spy example\nvar foo = {\n  not: function(bool) { return !bool; }\n}\nspyOn(foo, 'not'); // actual foo.not will not be called, execution stops"
-            ],
-            "see": [
-                "jasmine.createSpy"
-            ],
-            "params": [
-                {
-                    "name": "obj",
-                    "description": ""
-                },
-                {
-                    "name": "methodName",
-                    "description": ""
-                }
-            ],
-            "return": {
-                "description": "a Jasmine spy that can be chained with all spy methods"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 473,
-            "description": "Creates a Jasmine spec that will be added to the current suite.\n\n// TODO: pending tests",
-            "example": [
-                "\nit('should be true', function() {\n  expect(true).toEqual(true);\n});"
-            ],
-            "params": [
-                {
-                    "name": "desc",
-                    "description": "description of this specification",
-                    "type": "String"
-                },
-                {
-                    "name": "func",
-                    "description": "defines the preconditions and expectations of the spec",
-                    "type": "Function"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 491,
-            "description": "Creates a <em>disabled</em> Jasmine spec.\n\nA convenience method that allows existing specs to be disabled temporarily during development.",
-            "params": [
-                {
-                    "name": "desc",
-                    "description": "description of this specification",
-                    "type": "String"
-                },
-                {
-                    "name": "func",
-                    "description": "defines the preconditions and expectations of the spec",
-                    "type": "Function"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 504,
-            "description": "Starts a chain for a Jasmine expectation.\n\nIt is passed an Object that is the actual value and should chain to one of the many\njasmine.Matchers functions.",
-            "params": [
-                {
-                    "name": "actual",
-                    "description": "Actual value to test against and expected value",
-                    "type": "Object"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 517,
-            "description": "Defines part of a jasmine spec.  Used in cominbination with waits or waitsFor in asynchrnous specs.",
-            "params": [
-                {
-                    "name": "func",
-                    "description": "Function that defines part of a jasmine spec.",
-                    "type": "Function"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 527,
-            "description": "Waits a fixed time period before moving to the next block.",
-            "deprecated": true,
-            "deprecationMessage": "Use waitsFor() instead",
-            "params": [
-                {
-                    "name": "timeout",
-                    "description": "milliseconds to wait",
-                    "type": "Number"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 538,
-            "description": "Waits for the latchFunction to return true before proceeding to the next block.",
-            "params": [
-                {
-                    "name": "latchFunction",
-                    "description": "",
-                    "type": "Function"
-                },
-                {
-                    "name": "optional_timeoutMessage",
-                    "description": "",
-                    "type": "String"
-                },
-                {
-                    "name": "optional_timeout",
-                    "description": "",
-                    "type": "Number"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 550,
-            "description": "A function that is called before each spec in a suite.\n\nUsed for spec setup, including validating assumptions.",
-            "params": [
-                {
-                    "name": "beforeEachFunction",
-                    "description": "",
-                    "type": "Function"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 562,
-            "description": "A function that is called after each spec in a suite.\n\nUsed for restoring any state that is hijacked during spec execution.",
-            "params": [
-                {
-                    "name": "afterEachFunction",
-                    "description": "",
-                    "type": "Function"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 574,
-            "description": "Defines a suite of specifications.\n\nStores the description and all defined specs in the Jasmine environment as one suite of specs. Variables declared\nare accessible by calls to beforeEach, it, and afterEach. Describe blocks can be nested, allowing for specialization\nof setup in some tests.",
-            "example": [
-                "\n// TODO: a simple suite\n\n// TODO: a simple suite with a nested describe block"
-            ],
-            "params": [
-                {
-                    "name": "description",
-                    "description": "A string, usually the class under test.",
-                    "type": "String"
-                },
-                {
-                    "name": "specDefinitions",
-                    "description": "function that defines several specs.",
-                    "type": "Function"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 594,
-            "description": "Disables a suite of specifications.  Used to disable some suites in a file, or files, temporarily during development.",
-            "params": [
-                {
-                    "name": "description",
-                    "description": "A string, usually the class under test.",
-                    "type": "String"
-                },
-                {
-                    "name": "specDefinitions",
-                    "description": "function that defines several specs.",
-                    "type": "Function"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 633,
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 638,
-            "description": "Declare that a child class inherit it's prototype from the parent class.",
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "childClass",
-                    "description": "",
-                    "type": "Function"
-                },
-                {
-                    "name": "parentClass",
-                    "description": "",
-                    "type": "Function"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 646,
-            "access": "private",
-            "tagname": "",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 700,
-            "description": "Environment for Jasmine",
-            "is_constructor": 1,
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 738,
-            "return": {
-                "description": "an object containing jasmine version build info, if set."
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 749,
-            "return": {
-                "description": "string containing jasmine version build info, if set."
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 766,
-            "return": {
-                "description": "a sequential integer starting at 0"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 773,
-            "return": {
-                "description": "a sequential integer starting at 0"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 780,
-            "description": "Register a reporter to receive status updates from Jasmine.",
-            "params": [
-                {
-                    "name": "reporter",
-                    "description": "An object which will receive status updates.",
-                    "type": "jasmine.Reporter"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 977,
-            "is_constructor": 1,
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1008,
-            "description": "Blocks are functions with executable code that make up a spec.",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "env",
-                    "description": "",
-                    "type": "jasmine.Env"
-                },
-                {
-                    "name": "func",
-                    "description": "",
-                    "type": "Function"
-                },
-                {
-                    "name": "spec",
-                    "description": "",
-                    "type": "jasmine.Spec"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1030,
-            "is_constructor": 1,
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1132,
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "env",
-                    "description": "",
-                    "type": "jasmine.Env"
-                },
-                {
-                    "name": "actual",
-                    "description": ""
-                },
-                {
-                    "name": "spec",
-                    "description": "",
-                    "type": "jasmine.Spec"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1209,
-            "description": "toBe: compares the actual to the expected using ===",
-            "params": [
-                {
-                    "name": "expected",
-                    "description": ""
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1217,
-            "description": "toNotBe: compares the actual to the expected using !==",
-            "params": [
-                {
-                    "name": "expected",
-                    "description": ""
-                }
-            ],
-            "deprecated": true,
-            "deprecationMessage": "as of 1.0. Use not.toBe() instead.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1226,
-            "description": "toEqual: compares the actual to the expected using common sense equality. Handles Objects, Arrays, etc.",
-            "params": [
-                {
-                    "name": "expected",
-                    "description": ""
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1235,
-            "description": "toNotEqual: compares the actual to the expected using the ! of jasmine.Matchers.toEqual",
-            "params": [
-                {
-                    "name": "expected",
-                    "description": ""
-                }
-            ],
-            "deprecated": true,
-            "deprecationMessage": "as of 1.0. Use not.toEqual() instead.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1244,
-            "description": "Matcher that compares the actual to the expected using a regular expression.  Constructs a RegExp, so takes\na pattern or a String.",
-            "params": [
-                {
-                    "name": "expected",
-                    "description": ""
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1254,
-            "description": "Matcher that compares the actual to the expected using the boolean inverse of jasmine.Matchers.toMatch",
-            "params": [
-                {
-                    "name": "expected",
-                    "description": ""
-                }
-            ],
-            "deprecated": true,
-            "deprecationMessage": "as of 1.0. Use not.toMatch() instead.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1263,
-            "description": "Matcher that compares the actual to jasmine.undefined.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1270,
-            "description": "Matcher that compares the actual to jasmine.undefined.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1277,
-            "description": "Matcher that compares the actual to null.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1284,
-            "description": "Matcher that boolean not-nots the actual.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1292,
-            "description": "Matcher that boolean nots the actual.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1300,
-            "description": "Matcher that checks to see if the actual, a Jasmine spy, was called.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1322,
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1325,
-            "description": "Matcher that checks to see if the actual, a Jasmine spy, was not called.",
-            "deprecated": true,
-            "deprecationMessage": "Use expect(xxx).not.toHaveBeenCalled() instead",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1349,
-            "description": "Matcher that checks to see if the actual, a Jasmine spy, was called with a set of parameters.",
-            "example": [
-                "\n"
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1378,
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1381,
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1398,
-            "description": "Matcher that checks that the expected item is an element in the actual Array.",
-            "params": [
-                {
-                    "name": "expected",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1407,
-            "description": "Matcher that checks that the expected item is NOT an element in the actual Array.",
-            "params": [
-                {
-                    "name": "expected",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "deprecated": true,
-            "deprecationMessage": "as of 1.0. Use not.toContain() instead.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1425,
-            "description": "Matcher that checks that the expected item is equal to the actual item\nup to a given level of decimal precision (default 2).",
-            "params": [
-                {
-                    "name": "expected",
-                    "description": "",
-                    "type": "Number"
-                },
-                {
-                    "name": "precision",
-                    "description": "",
-                    "type": "Number"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1442,
-            "description": "Matcher that checks that the expected exception was thrown by the actual.",
-            "params": [
-                {
-                    "name": "expected",
-                    "description": "",
-                    "type": "String"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1619,
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1715,
-            "is_constructor": 1,
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1750,
-            "description": "Holds results for a set of Jasmine spec. Allows for the results array to hold another jasmine.NestedResults",
-            "is_constructor": 1,
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1756,
-            "description": "The total count of results",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1760,
-            "description": "Number of passed results",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1764,
-            "description": "Number of failed results",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1768,
-            "description": "Was this suite/spec skipped?",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1772,
-            "ignore": "",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1778,
-            "description": "Roll up the result counts.",
-            "params": [
-                {
-                    "name": "result",
-                    "description": ""
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1789,
-            "description": "Adds a log message.",
-            "params": [
-                {
-                    "name": "values",
-                    "description": "Array of message parts which will be concatenated later."
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1797,
-            "description": "Getter for the results: message & results.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1804,
-            "description": "Adds a result, tracking counts (total, passed, & failed)",
-            "params": [
-                {
-                    "name": "result",
-                    "description": "",
-                    "type": "jasmine.ExpectationResult|jasmine.NestedResults"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1824,
-            "return": {
-                "description": "True if <b>everything</b> below passed",
-                "type": "Boolean"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1830,
-            "description": "Base class for pretty printing for expectation results.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 1837,
-            "description": "Formats a value in a nice, human-readable string.",
-            "params": [
-                {
-                    "name": "value",
-                    "description": ""
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 2052,
-            "description": "Runner",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "env",
-                    "description": "",
-                    "type": "jasmine.Env"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 2129,
-            "description": "Internal representation of a Jasmine specification, or test.",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "env",
-                    "description": "",
-                    "type": "jasmine.Env"
-                },
-                {
-                    "name": "suite",
-                    "description": "",
-                    "type": "jasmine.Suite"
-                },
-                {
-                    "name": "description",
-                    "description": "",
-                    "type": "String"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 2168,
-            "description": "All parameters are pretty-printed and concatenated together, then written to the spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 2191,
-            "params": [
-                {
-                    "name": "result",
-                    "description": "",
-                    "type": "jasmine.ExpectationResult"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 2204,
-            "description": "Waits a fixed time period before moving to the next block.",
-            "deprecated": true,
-            "deprecationMessage": "Use waitsFor() instead",
-            "params": [
-                {
-                    "name": "timeout",
-                    "description": "milliseconds to wait",
-                    "type": "Number"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 2216,
-            "description": "Waits for the latchFunction to return true before proceeding to the next block.",
-            "params": [
-                {
-                    "name": "latchFunction",
-                    "description": "",
-                    "type": "Function"
-                },
-                {
-                    "name": "optional_timeoutMessage",
-                    "description": "",
-                    "type": "String"
-                },
-                {
-                    "name": "optional_timeout",
-                    "description": "",
-                    "type": "Number"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 2372,
-            "description": "Internal representation of a Jasmine suite.",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "env",
-                    "description": "",
-                    "type": "jasmine.Env"
-                },
-                {
-                    "name": "description",
-                    "description": "",
-                    "type": "String"
-                },
-                {
-                    "name": "specDefinitions",
-                    "description": "",
-                    "type": "Function"
-                },
-                {
-                    "name": "parentSuite",
-                    "description": "",
-                    "type": "jasmine.Suite"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/rate/spec/lib/jasmine.js",
-            "line": 2469,
-            "description": "A block which waits for some condition to become true, with timeout.",
-            "is_constructor": 1,
-            "extends": "jasmine.Block",
-            "params": [
-                {
-                    "name": "env",
-                    "description": "The Jasmine environment.",
-                    "type": "jasmine.Env"
-                },
-                {
-                    "name": "timeout",
-                    "description": "The maximum time in milliseconds to wait for the condition to become true.",
-                    "type": "Number"
-                },
-                {
-                    "name": "latchFunction",
-                    "description": "A function which returns true when the desired condition has been met.",
-                    "type": "Function"
-                },
-                {
-                    "name": "message",
-                    "description": "The message to display if the desired condition hasn't been met within the given time period.",
-                    "type": "String"
-                },
-                {
-                    "name": "spec",
-                    "description": "The Jasmine spec.",
-                    "type": "jasmine.Spec"
-                }
-            ],
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/aes.js",
-            "line": 8,
-            "description": "AES Cipher function: encrypt 'input' state with Rijndael algorithm\n  applies Nr rounds (10/12/14) using key schedule w for 'add round key' stage",
-            "params": [
-                {
-                    "name": "input",
-                    "description": "16-byte (128-bit) input state array",
-                    "type": "Number[]"
-                },
-                {
-                    "name": "w",
-                    "description": "Key schedule as 2D byte-array (Nr+1 x Nb bytes)",
-                    "type": "Number[][]"
-                }
-            ],
-            "return": {
-                "description": "Encrypted output state array",
-                "type": "Number[]"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/aes.js",
-            "line": 41,
-            "description": "Perform Key Expansion to generate a Key Schedule",
-            "params": [
-                {
-                    "name": "key",
-                    "description": "Key as 16/24/32-byte array",
-                    "type": "Number[]"
-                }
-            ],
-            "return": {
-                "description": "Expanded key schedule as 2D byte-array (Nr+1 x Nb bytes)",
-                "type": "Number[][]"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/aes.js",
-            "line": 171,
-            "description": "Encrypt a text using AES encryption in Counter mode of operation\n\nUnicode multi-byte character safe",
-            "params": [
-                {
-                    "name": "plaintext",
-                    "description": "Source text to be encrypted",
-                    "type": "String"
-                },
-                {
-                    "name": "password",
-                    "description": "The password to use to generate a key",
-                    "type": "String"
-                },
-                {
-                    "name": "nBits",
-                    "description": "Number of bits to be used in the key (128, 192, or 256)",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "Encrypted text",
-                "type": "String"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/aes.js",
-            "line": 248,
-            "description": "Decrypt a text encrypted by AES in counter mode of operation",
-            "params": [
-                {
-                    "name": "ciphertext",
-                    "description": "Source text to be encrypted",
-                    "type": "String"
-                },
-                {
-                    "name": "password",
-                    "description": "The password to use to generate a key",
-                    "type": "String"
-                },
-                {
-                    "name": "nBits",
-                    "description": "Number of bits to be used in the key (128, 192, or 256)",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "Decrypted text",
-                "type": "String"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/aes.js",
-            "line": 323,
-            "description": "Encode string into Base64, as defined by RFC 4648 [http://tools.ietf.org/html/rfc4648]\n(instance method extending String object). As per RFC 4648, no newlines are added.",
-            "params": [
-                {
-                    "name": "str",
-                    "description": "The string to be encoded as base-64",
-                    "type": "String"
-                },
-                {
-                    "name": "utf8encode",
-                    "description": "Flag to indicate whether str is Unicode string to be encoded \n  to UTF8 before conversion to base64; otherwise string is assumed to be 8-bit characters",
-                    "type": "Boolean",
-                    "optional": true,
-                    "optdefault": "false"
-                }
-            ],
-            "return": {
-                "description": "Base64-encoded string",
-                "type": "String"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/aes.js",
-            "line": 366,
-            "description": "Decode string from Base64, as defined by RFC 4648 [http://tools.ietf.org/html/rfc4648]\n(instance method extending String object). As per RFC 4648, newlines are not catered for.",
-            "params": [
-                {
-                    "name": "str",
-                    "description": "The string to be decoded from base-64",
-                    "type": "String"
-                },
-                {
-                    "name": "utf8decode",
-                    "description": "Flag to indicate whether str is Unicode string to be decoded \n  from UTF8 after conversion from base64",
-                    "type": "Boolean",
-                    "optional": true,
-                    "optdefault": "false"
-                }
-            ],
-            "return": {
-                "description": "decoded string",
-                "type": "String"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/aes.js",
-            "line": 413,
-            "description": "Encode multi-byte Unicode string into utf-8 multiple single-byte characters \n(BMP / basic multilingual plane only)\n\nChars in range U+0080 - U+07FF are encoded in 2 chars, U+0800 - U+FFFF in 3 chars",
-            "params": [
-                {
-                    "name": "strUni",
-                    "description": "Unicode string to be encoded as UTF-8",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "encoded string",
-                "type": "String"
-            },
-            "class": "Bizs"
-        },
-        {
-            "file": "../plugins/aes.js",
-            "line": 440,
-            "description": "Decode utf-8 encoded string back into multi-byte Unicode characters",
-            "params": [
-                {
-                    "name": "strUtf",
-                    "description": "UTF-8 string to be decoded back to Unicode",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "decoded string",
-                "type": "String"
-            },
-            "class": "Bizs"
-        },
-        {
             "file": "../JC.js",
-            "line": 44,
+            "line": 46,
             "description": "JC组件库所在路径",
             "itemtype": "property",
             "name": "PATH",
             "static": 1,
             "type": "{string}",
-            "class": "JC"
+            "class": ".JC"
         },
         {
             "file": "../JC.js",
-            "line": 54,
+            "line": 56,
             "description": "是否显示调试信息",
             "itemtype": "property",
             "name": "debug",
             "static": 1,
             "type": "{bool}",
-            "class": "JC"
+            "class": ".JC"
         },
         {
             "file": "../JC.js",
-            "line": 61,
+            "line": 63,
             "description": "导入JC组件",
             "itemtype": "method",
             "name": "use",
@@ -13695,17 +12321,11 @@
             "example": [
                 "\n               JC.use( 'SomeClass' );                              //导入类 SomeClass\n               JC.use( 'SomeClass, AnotherClass' );                //导入类 SomeClass, AnotherClass\n               //\n               ///  导入类 SomeClass, SomeClass目录下的file1.js, \n               ///  AnotherClass, AnotherClass 下的file2.js\n               //\n               JC.use( 'SomeClass, comps/SomeClass/file1.js, comps/AnotherClass/file2.js' );   \n               JC.use( 'SomeClass, plugins/swfobject.js., plugins/json2.js' );   \n               JC.use( '/js/Test/Test1.js' );     //导入文件  /js/Test/Test1.js, 如果起始处为 \"/\", 将视为文件的绝对路径\n               //\n               /// 导入 URL 资源 // JC.use( 'http://test.com/file1.js', 'https://another.com/file2.js' ); \n               //\n               /// in libpath/_demo/\n               //\n               JC.use(\n                   [\n                       'Panel'                     //  ../comps/Panel/Panel.js\n                       , 'Tips'                    //  ../comps/Tips/Tips.js\n                       , 'Valid'                   //  ../comps/Valid/Valid.js\n                       , 'Bizs.KillISPCache'       //  ../bizs/KillISPCache/KillISPCache.js\n                       , 'bizs.TestBizFile'        //  ../bizs/TestBizFile.js\n                       , 'comps.TestCompFile'      //  ../comps/TestCompFile.js \n                       , 'Plugins.rate'            //  ../plugins/rate/rate.js\n                       , 'plugins.json2'           //  ../plugins/json2.js\n                       , '/js/fullpathtest.js'     //  /js/fullpathtest.js\n                   ].join()\n               );"
             ],
-            "class": "JC"
+            "class": ".JC"
         },
         {
             "file": "../JC.js",
-            "line": 135,
-            "description": "这个判断是为了向后兼容, 以前的 Bizs.DisableLogic 更名为 Bizs.ChangeLogic",
-            "class": "JC"
-        },
-        {
-            "file": "../JC.js",
-            "line": 172,
+            "line": 170,
             "description": "调用依赖的类\n<br />这个方法的存在是因为有一些类调整了结构, 但是原有的引用因为向后兼容的需要, 暂时不能去掉",
             "itemtype": "method",
             "name": "_usePatch",
@@ -13729,11 +12349,11 @@
             "access": "private",
             "tagname": "",
             "static": 1,
-            "class": "JC"
+            "class": ".JC"
         },
         {
             "file": "../JC.js",
-            "line": 194,
+            "line": 192,
             "description": "输出调试信息, 可通过 JC.debug 指定是否显示调试信息",
             "params": [
                 {
@@ -13745,55 +12365,55 @@
             "itemtype": "method",
             "name": "log",
             "static": 1,
-            "class": "JC"
+            "class": ".JC"
         },
         {
             "file": "../JC.js",
-            "line": 201,
+            "line": 199,
             "description": "定义输出路径的 v 参数, 以便控制缓存",
             "itemtype": "property",
             "name": "pathPostfix",
             "type": "string",
             "default": "empty",
             "static": 1,
-            "class": "JC"
+            "class": ".JC"
         },
         {
             "file": "../JC.js",
-            "line": 209,
+            "line": 207,
             "description": "是否启用nginx concat 模块的路径格式",
             "itemtype": "property",
             "name": "enableNginxStyle",
             "type": "bool",
             "default": "false",
             "static": 1,
-            "class": "JC"
+            "class": ".JC"
         },
         {
             "file": "../JC.js",
-            "line": 217,
+            "line": 215,
             "description": "定义 nginx 合并文件时, URL 的最大长度",
             "itemtype": "property",
             "name": "nginxUrlLen",
             "type": "int",
             "default": "200",
             "static": 1,
-            "class": "JC"
+            "class": ".JC"
         },
         {
             "file": "../JC.js",
-            "line": 225,
+            "line": 223,
             "description": "定义 nginx style 的基础路径\n<br /><b>注意:</b> 如果这个属性为空, 即使 enableNginxStyle = true, 也是直接输出默认路径",
             "itemtype": "property",
             "name": "nginxBasePath",
             "type": "string",
             "default": "empty",
             "static": 1,
-            "class": "JC"
+            "class": ".JC"
         },
         {
             "file": "../JC.js",
-            "line": 234,
+            "line": 232,
             "description": "资源路径映射对象\n<br />设置 JC.use 逗号(',') 分隔项的 对应URL路径",
             "itemtype": "property",
             "name": "FILE_MAP",
@@ -13803,11 +12423,11 @@
             "example": [
                 "\n               以下例子假定 libpath = http://git.me.btbtd.org/ignore/JQueryComps_dev/\n               <script>\n                   JC.FILE_MAP = {\n                       'Calendar': 'http://jc.openjavascript.org/comps/Calendar/Calendar.js'\n                       , 'Form': 'http://jc.openjavascript.org/comps/Form/Form.js'\n                       , 'LunarCalendar': 'http://jc.openjavascript.org/comps/LunarCalendar/LunarCalendar.js'\n                       , 'Panel': 'http://jc.openjavascript.org/comps/Panel/Panel.js' \n                       , 'Tab': 'http://jc.openjavascript.org/comps/Tab/Tab.js'\n                       , 'Tips': 'http://jc.openjavascript.org/comps/Tips/Tips.js' \n                       , 'Tree': 'http://jc.openjavascript.org/comps/Tree/Tree.js'\n                       , 'Valid': 'http://jc.openjavascript.org/comps/Valid/Valid.js'\n                       , 'plugins/jquery.form.js': 'http://jc.openjavascript.org/plugins/jquery.form.js'\n                       , 'plugins/json2.js': 'http://jc.openjavascript.org/plugins/json2.js'\n                   };\n\n                   JC.use( 'Panel, Tips, Valid, plugins/jquery.form.js' );\n\n                   $(document).ready(function(){\n                       //JC.Dialog( 'JC.use example', 'test issue' );\n                   });\n               </script>\n\n               output should be:\n                   http://git.me.btbtd.org/ignore/JQueryComps_dev/lib.js\n                   http://jc.openjavascript.org/comps/Panel/Panel.js\n                   http://jc.openjavascript.org/comps/Tips/Tips.js\n                   http://jc.openjavascript.org/comps/Valid/Valid.js\n                   http://jc.openjavascript.org/plugins/jquery.form.js"
             ],
-            "class": "JC"
+            "class": ".JC"
         },
         {
             "file": "../JC.js",
-            "line": 329,
+            "line": 327,
             "description": "输出的脚本路径格式",
             "itemtype": "method",
             "name": "_writeNormalScript",
@@ -13821,11 +12441,11 @@
             "access": "private",
             "tagname": "",
             "static": 1,
-            "class": "JC"
+            "class": ".JC"
         },
         {
             "file": "../JC.js",
-            "line": 346,
+            "line": 344,
             "description": "保存 use 过的资源路径, 以便进行唯一性判断, 避免重复加载",
             "itemtype": "property",
             "name": "_USE_CACHE",
@@ -13834,20 +12454,20 @@
             "access": "private",
             "tagname": "",
             "static": 1,
-            "class": "JC"
+            "class": ".JC"
         },
         {
             "file": "../JC.js",
-            "line": 357,
+            "line": 355,
             "description": "UXC 是 JC 的别名\n<br />存在这个变量是为了向后兼容\n<br />20130804 之前的命名空间是 UXC, 这个命名空间在一段时间后将会清除, 请使用 JC 命名空间\n<p><b>see</b>: <a href='window.JC.html'>JC</a></p>",
             "date": "2013-05-22",
-            "class": "JC"
+            "class": ".JC"
         },
         {
             "file": "../JC.js",
-            "line": 365,
+            "line": 363,
             "description": "自动识别组件库所在路径",
-            "class": "JC"
+            "class": ".JC"
         },
         {
             "file": "../common.js",
@@ -14756,7 +13376,7 @@
         },
         {
             "file": "../jquery.js",
-            "line": 3837,
+            "line": 3838,
             "description": "For feature detection",
             "params": [
                 {
@@ -14765,21 +13385,21 @@
                     "type": "Function"
                 }
             ],
-            "class": "jQuery"
+            "class": ".jQuery"
         },
         {
             "file": "../jquery.js",
-            "line": 3845,
+            "line": 3846,
             "description": "Create key-value caches of limited size",
             "return": {
                 "description": "Returns the Object data after storing it on itself with\n\tproperty name the (space-suffixed) string and (if the cache is larger than Expr.cacheLength)\n\tdeleting the oldest entry",
                 "type": "Function(string, Object)"
             },
-            "class": "jQuery"
+            "class": ".jQuery"
         },
         {
             "file": "../jquery.js",
-            "line": 3865,
+            "line": 3866,
             "description": "Mark a function for special use by Sizzle",
             "params": [
                 {
@@ -14788,11 +13408,11 @@
                     "type": "Function"
                 }
             ],
-            "class": "jQuery"
+            "class": ".jQuery"
         },
         {
             "file": "../jquery.js",
-            "line": 3874,
+            "line": 3875,
             "description": "Support testing using an element",
             "params": [
                 {
@@ -14801,11 +13421,11 @@
                     "type": "Function"
                 }
             ],
-            "class": "jQuery"
+            "class": ".jQuery"
         },
         {
             "file": "../jquery.js",
-            "line": 4001,
+            "line": 4002,
             "description": "Detect xml",
             "params": [
                 {
@@ -14814,11 +13434,11 @@
                     "type": "Element|Object"
                 }
             ],
-            "class": "jQuery"
+            "class": ".jQuery"
         },
         {
             "file": "../jquery.js",
-            "line": 4012,
+            "line": 4013,
             "description": "Sets document-related variables once based on the current document",
             "params": [
                 {
@@ -14832,11 +13452,11 @@
                 "description": "Returns the current document",
                 "type": "Object"
             },
-            "class": "jQuery"
+            "class": ".jQuery"
         },
         {
             "file": "../jquery.js",
-            "line": 4505,
+            "line": 4506,
             "description": "Utility function for retrieving the text value of an array of DOM nodes",
             "params": [
                 {
@@ -14845,7 +13465,7 @@
                     "type": "Array|Element"
                 }
             ],
-            "class": "jQuery"
+            "class": ".jQuery"
         }
     ],
     "warnings": [
@@ -14859,11 +13479,15 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../bizs/ChangeLogic/ChangeLogic.js:2"
+            "line": " ../bizs/ChangeLogic/ChangeLogic.js:3"
         },
         {
             "message": "unknown tag: version",
             "line": " ../bizs/CommonModify/CommonModify.js:2"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../bizs/DisableLogic/DisableLogic.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -15154,132 +13778,12 @@
             "line": " ../comps/Valid/Valid.js:1773"
         },
         {
-            "message": "unknown tag: version",
-            "line": " ../deploy/bizs/CommonModify/CommonModify.js:2"
-        },
-        {
-            "message": "unknown tag: ignore",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:50"
-        },
-        {
-            "message": "unknown tag: ignore",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:122"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:122"
-        },
-        {
-            "message": "unknown tag: ignore",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:132"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:132"
-        },
-        {
-            "message": "unknown tag: ignore",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:142"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:142"
-        },
-        {
-            "message": "unknown tag: ignore",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:152"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:152"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:163"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:175"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:185"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:199"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:415"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:453"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:738"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:749"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:766"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:773"
-        },
-        {
-            "message": "unknown tag: ignore",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1772"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1824"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/aes.js:8"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/aes.js:41"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/aes.js:171"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/aes.js:248"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/aes.js:323"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/aes.js:366"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/aes.js:413"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " ../plugins/aes.js:440"
+            "message": "unknown tag: date",
+            "line": " ../JC.js:26"
         },
         {
             "message": "unknown tag: date",
-            "line": " ../JC.js:25"
-        },
-        {
-            "message": "unknown tag: date",
-            "line": " ../JC.js:357"
+            "line": " ../JC.js:355"
         },
         {
             "message": "unknown tag: version",
@@ -15303,11 +13807,11 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " ../jquery.js:3845"
+            "line": " ../jquery.js:3846"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " ../jquery.js:4012"
+            "line": " ../jquery.js:4013"
         },
         {
             "message": "Missing item type\n脚本模板 Panel",
@@ -15602,444 +14106,12 @@
             "line": " ../comps/Valid/Valid.js:2895"
         },
         {
-            "message": "Missing item type\nupdate current selector",
-            "line": " ../deploy/bizs/CommonModify/CommonModify.js:234"
-        },
-        {
-            "message": "Missing item type\nTop level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:3"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:10"
-        },
-        {
-            "message": "Missing item type\nUse <code>jasmine.undefined</code> instead of <code>undefined</code>, since <code>undefined</code> is just\na plain old variable and may be redefined by somebody else.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:17"
-        },
-        {
-            "message": "Missing item type\nShow diagnostic messages in the console if set to true",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:25"
-        },
-        {
-            "message": "Missing item type\nDefault interval in milliseconds for event loop yields (e.g. to allow network activity or to refresh the screen with the HTML-based runner). Small values here may result in slow test running. Zero means no updates until all tests have completed.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:31"
-        },
-        {
-            "message": "Missing item type\nDefault timeout interval in milliseconds for waitsFor() blocks.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:37"
-        },
-        {
-            "message": "Missing item type\nAllows for bound functions to be compared.  Internal use only.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:50"
-        },
-        {
-            "message": "Missing item type\nGetter for the Jasmine environment. Ensures one gets created",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:114"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:122"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:132"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:142"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:152"
-        },
-        {
-            "message": "Missing item type\nPretty printer for expecations.  Takes any object and turns it into a human-readable string.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:163"
-        },
-        {
-            "message": "Missing item type\nReturns true if the object is a DOM Node.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:175"
-        },
-        {
-            "message": "Missing item type\nReturns a matchable 'generic' object of the class type.  For use in expecations of type when values don't matter.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:185"
-        },
-        {
-            "message": "Missing item type\nReturns a matchable subset of a JSON object. For use in expectations when you don't care about all of the\nattributes on the object.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:199"
-        },
-        {
-            "message": "Missing item type\nJasmine Spies are test doubles that can act as stubs, spies, fakes or when used in an expecation, mocks.\n\nSpies should be created in test setup, before expectations.  They can then be checked, using the standard Jasmine\nexpectation syntax. Spies can be checked if they were called or not and what the calling params were.\n\nA Spy has the following fields: wasCalled, callCount, mostRecentCall, and argsForCall (see docs).\n\nSpies are torn down at the end of every spec.\n\nNote: Do <b>not</b> call new jasmine.Spy() directly - a spy must be created using spyOn, jasmine.createSpy or jasmine.createSpyObj.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:214"
-        },
-        {
-            "message": "Missing item type\nThe name of the spy, if provided.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:259"
-        },
-        {
-            "message": "Missing item type\nIs this Object a spy?",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:263"
-        },
-        {
-            "message": "Missing item type\nThe actual function this spy stubs.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:267"
-        },
-        {
-            "message": "Missing item type\nTracking of the most recent call to the spy.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:272"
-        },
-        {
-            "message": "Missing item type\nHolds arguments for each call to the spy, indexed by call count",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:281"
-        },
-        {
-            "message": "Missing item type\nTells a spy to call through to the actual implemenatation.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:295"
-        },
-        {
-            "message": "Missing item type\nFor setting the return value of a spy.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:311"
-        },
-        {
-            "message": "Missing item type\nFor throwing an exception when a spy is called.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:330"
-        },
-        {
-            "message": "Missing item type\nCalls an alternate implementation when a spy is called.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:349"
-        },
-        {
-            "message": "Missing item type\nResets all of a spy's the tracking variables so that it can be used again.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:369"
-        },
-        {
-            "message": "Missing item type\nDetermines whether an object is a spy.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:415"
-        },
-        {
-            "message": "Missing item type\nCreates a more complicated spy: an Object that has every property a function that is a spy.  Used for stubbing something\nlarge in one call.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:425"
-        },
-        {
-            "message": "Missing item type\nAll parameters are pretty-printed and concatenated together, then written to the current spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:443"
-        },
-        {
-            "message": "Missing item type\nFunction that installs a spy on an existing object's method name.  Used within a Spec to create a spy.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:453"
-        },
-        {
-            "message": "Missing item type\nCreates a Jasmine spec that will be added to the current suite.\n\n// TODO: pending tests",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:473"
-        },
-        {
-            "message": "Missing item type\nCreates a <em>disabled</em> Jasmine spec.\n\nA convenience method that allows existing specs to be disabled temporarily during development.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:491"
-        },
-        {
-            "message": "Missing item type\nStarts a chain for a Jasmine expectation.\n\nIt is passed an Object that is the actual value and should chain to one of the many\njasmine.Matchers functions.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:504"
-        },
-        {
-            "message": "Missing item type\nDefines part of a jasmine spec.  Used in cominbination with waits or waitsFor in asynchrnous specs.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:517"
-        },
-        {
-            "message": "Missing item type\nWaits a fixed time period before moving to the next block.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:527"
-        },
-        {
-            "message": "Missing item type\nWaits for the latchFunction to return true before proceeding to the next block.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:538"
-        },
-        {
-            "message": "Missing item type\nA function that is called before each spec in a suite.\n\nUsed for spec setup, including validating assumptions.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:550"
-        },
-        {
-            "message": "Missing item type\nA function that is called after each spec in a suite.\n\nUsed for restoring any state that is hijacked during spec execution.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:562"
-        },
-        {
-            "message": "Missing item type\nDefines a suite of specifications.\n\nStores the description and all defined specs in the Jasmine environment as one suite of specs. Variables declared\nare accessible by calls to beforeEach, it, and afterEach. Describe blocks can be nested, allowing for specialization\nof setup in some tests.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:574"
-        },
-        {
-            "message": "Missing item type\nDisables a suite of specifications.  Used to disable some suites in a file, or files, temporarily during development.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:594"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:633"
-        },
-        {
-            "message": "Missing item type\nDeclare that a child class inherit it's prototype from the parent class.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:638"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:646"
-        },
-        {
-            "message": "Missing item type\nEnvironment for Jasmine",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:700"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:738"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:749"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:766"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:773"
-        },
-        {
-            "message": "Missing item type\nRegister a reporter to receive status updates from Jasmine.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:780"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:977"
-        },
-        {
-            "message": "Missing item type\nBlocks are functions with executable code that make up a spec.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1008"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1030"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1132"
-        },
-        {
-            "message": "Missing item type\ntoBe: compares the actual to the expected using ===",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1209"
-        },
-        {
-            "message": "Missing item type\ntoNotBe: compares the actual to the expected using !==",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1217"
-        },
-        {
-            "message": "Missing item type\ntoEqual: compares the actual to the expected using common sense equality. Handles Objects, Arrays, etc.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1226"
-        },
-        {
-            "message": "Missing item type\ntoNotEqual: compares the actual to the expected using the ! of jasmine.Matchers.toEqual",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1235"
-        },
-        {
-            "message": "Missing item type\nMatcher that compares the actual to the expected using a regular expression.  Constructs a RegExp, so takes\na pattern or a String.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1244"
-        },
-        {
-            "message": "Missing item type\nMatcher that compares the actual to the expected using the boolean inverse of jasmine.Matchers.toMatch",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1254"
-        },
-        {
-            "message": "Missing item type\nMatcher that compares the actual to jasmine.undefined.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1263"
-        },
-        {
-            "message": "Missing item type\nMatcher that compares the actual to jasmine.undefined.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1270"
-        },
-        {
-            "message": "Missing item type\nMatcher that compares the actual to null.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1277"
-        },
-        {
-            "message": "Missing item type\nMatcher that boolean not-nots the actual.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1284"
-        },
-        {
-            "message": "Missing item type\nMatcher that boolean nots the actual.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1292"
-        },
-        {
-            "message": "Missing item type\nMatcher that checks to see if the actual, a Jasmine spy, was called.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1300"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1322"
-        },
-        {
-            "message": "Missing item type\nMatcher that checks to see if the actual, a Jasmine spy, was not called.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1325"
-        },
-        {
-            "message": "Missing item type\nMatcher that checks to see if the actual, a Jasmine spy, was called with a set of parameters.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1349"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1378"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1381"
-        },
-        {
-            "message": "Missing item type\nMatcher that checks that the expected item is an element in the actual Array.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1398"
-        },
-        {
-            "message": "Missing item type\nMatcher that checks that the expected item is NOT an element in the actual Array.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1407"
-        },
-        {
-            "message": "Missing item type\nMatcher that checks that the expected item is equal to the actual item\nup to a given level of decimal precision (default 2).",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1425"
-        },
-        {
-            "message": "Missing item type\nMatcher that checks that the expected exception was thrown by the actual.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1442"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1619"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1715"
-        },
-        {
-            "message": "Missing item type\nHolds results for a set of Jasmine spec. Allows for the results array to hold another jasmine.NestedResults",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1750"
-        },
-        {
-            "message": "Missing item type\nThe total count of results",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1756"
-        },
-        {
-            "message": "Missing item type\nNumber of passed results",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1760"
-        },
-        {
-            "message": "Missing item type\nNumber of failed results",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1764"
-        },
-        {
-            "message": "Missing item type\nWas this suite/spec skipped?",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1768"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1772"
-        },
-        {
-            "message": "Missing item type\nRoll up the result counts.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1778"
-        },
-        {
-            "message": "Missing item type\nAdds a log message.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1789"
-        },
-        {
-            "message": "Missing item type\nGetter for the results: message & results.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1797"
-        },
-        {
-            "message": "Missing item type\nAdds a result, tracking counts (total, passed, & failed)",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1804"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1824"
-        },
-        {
-            "message": "Missing item type\nBase class for pretty printing for expectation results.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1830"
-        },
-        {
-            "message": "Missing item type\nFormats a value in a nice, human-readable string.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:1837"
-        },
-        {
-            "message": "Missing item type\nRunner",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:2052"
-        },
-        {
-            "message": "Missing item type\nInternal representation of a Jasmine specification, or test.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:2129"
-        },
-        {
-            "message": "Missing item type\nAll parameters are pretty-printed and concatenated together, then written to the spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:2168"
-        },
-        {
-            "message": "Missing item type",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:2191"
-        },
-        {
-            "message": "Missing item type\nWaits a fixed time period before moving to the next block.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:2204"
-        },
-        {
-            "message": "Missing item type\nWaits for the latchFunction to return true before proceeding to the next block.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:2216"
-        },
-        {
-            "message": "Missing item type\nInternal representation of a Jasmine suite.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:2372"
-        },
-        {
-            "message": "Missing item type\nA block which waits for some condition to become true, with timeout.",
-            "line": " ../plugins/rate/spec/lib/jasmine.js:2469"
-        },
-        {
-            "message": "Missing item type\nAES Cipher function: encrypt 'input' state with Rijndael algorithm\n  applies Nr rounds (10/12/14) using key schedule w for 'add round key' stage",
-            "line": " ../plugins/aes.js:8"
-        },
-        {
-            "message": "Missing item type\nPerform Key Expansion to generate a Key Schedule",
-            "line": " ../plugins/aes.js:41"
-        },
-        {
-            "message": "Missing item type\nEncrypt a text using AES encryption in Counter mode of operation\n\nUnicode multi-byte character safe",
-            "line": " ../plugins/aes.js:171"
-        },
-        {
-            "message": "Missing item type\nDecrypt a text encrypted by AES in counter mode of operation",
-            "line": " ../plugins/aes.js:248"
-        },
-        {
-            "message": "Missing item type\nEncode string into Base64, as defined by RFC 4648 [http://tools.ietf.org/html/rfc4648]\n(instance method extending String object). As per RFC 4648, no newlines are added.",
-            "line": " ../plugins/aes.js:323"
-        },
-        {
-            "message": "Missing item type\nDecode string from Base64, as defined by RFC 4648 [http://tools.ietf.org/html/rfc4648]\n(instance method extending String object). As per RFC 4648, newlines are not catered for.",
-            "line": " ../plugins/aes.js:366"
-        },
-        {
-            "message": "Missing item type\nEncode multi-byte Unicode string into utf-8 multiple single-byte characters \n(BMP / basic multilingual plane only)\n\nChars in range U+0080 - U+07FF are encoded in 2 chars, U+0800 - U+FFFF in 3 chars",
-            "line": " ../plugins/aes.js:413"
-        },
-        {
-            "message": "Missing item type\nDecode utf-8 encoded string back into multi-byte Unicode characters",
-            "line": " ../plugins/aes.js:440"
-        },
-        {
-            "message": "Missing item type\n这个判断是为了向后兼容, 以前的 Bizs.DisableLogic 更名为 Bizs.ChangeLogic",
-            "line": " ../JC.js:135"
-        },
-        {
             "message": "Missing item type\nUXC 是 JC 的别名\n<br />存在这个变量是为了向后兼容\n<br />20130804 之前的命名空间是 UXC, 这个命名空间在一段时间后将会清除, 请使用 JC 命名空间\n<p><b>see</b>: <a href='window.JC.html'>JC</a></p>",
-            "line": " ../JC.js:357"
+            "line": " ../JC.js:355"
         },
         {
             "message": "Missing item type\n自动识别组件库所在路径",
-            "line": " ../JC.js:365"
+            "line": " ../JC.js:363"
         },
         {
             "message": "Missing item type\n声明主要命名空间, 方便迁移",
@@ -16099,31 +14171,31 @@
         },
         {
             "message": "Missing item type\nFor feature detection",
-            "line": " ../jquery.js:3837"
+            "line": " ../jquery.js:3838"
         },
         {
             "message": "Missing item type\nCreate key-value caches of limited size",
-            "line": " ../jquery.js:3845"
+            "line": " ../jquery.js:3846"
         },
         {
             "message": "Missing item type\nMark a function for special use by Sizzle",
-            "line": " ../jquery.js:3865"
+            "line": " ../jquery.js:3866"
         },
         {
             "message": "Missing item type\nSupport testing using an element",
-            "line": " ../jquery.js:3874"
+            "line": " ../jquery.js:3875"
         },
         {
             "message": "Missing item type\nDetect xml",
-            "line": " ../jquery.js:4001"
+            "line": " ../jquery.js:4002"
         },
         {
             "message": "Missing item type\nSets document-related variables once based on the current document",
-            "line": " ../jquery.js:4012"
+            "line": " ../jquery.js:4013"
         },
         {
             "message": "Missing item type\nUtility function for retrieving the text value of an array of DOM nodes",
-            "line": " ../jquery.js:4505"
+            "line": " ../jquery.js:4506"
         }
     ]
 }

@@ -9,6 +9,7 @@
  * Released under the MIT license
  * http://jquery.org/license
  * Date: 2013-2-4</pre>
+ * @namespace 
  * @class jQuery
  */
 (function( window, undefined ) {

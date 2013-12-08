@@ -41,9 +41,11 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/Bizs.html">Bizs</a></li>
+                <li><a href="../classes/.Bizs.html">.Bizs</a></li>
             
-                <li><a href="../classes/JC.html">JC</a></li>
+                <li><a href="../classes/.JC.html">.JC</a></li>
+            
+                <li><a href="../classes/.jQuery.html">.jQuery</a></li>
             
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
@@ -125,8 +127,6 @@
             
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
             
-                <li><a href="../classes/jQuery.html">jQuery</a></li>
-            
                 <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
             
                 <li><a href="../classes/window.Bizs.AutoSelectComplete.html">window.Bizs.AutoSelectComplete</a></li>
@@ -134,6 +134,8 @@
                 <li><a href="../classes/window.Bizs.ChangeLogic.html">window.Bizs.ChangeLogic</a></li>
             
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
+            
+                <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
             
                 <li><a href="../classes/window.Bizs.FormLogic.html">window.Bizs.FormLogic</a></li>
             
@@ -203,6 +205,7 @@
  *      &lt;dt&gt;使用业务文件&lt;/dt&gt;
  *      &lt;dd&gt; JC.use( &#x27;bizs.BizFile&#x27; ); //   libpath/bizs/BizFile.js &lt;/dd&gt;
  * &lt;/dl&gt;
+ * @namespace 
  * @class       Bizs
  * @static
  */
@@ -220,6 +223,7 @@ window.Bizs = window.Bizs || {};
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     * @namespace 
      * @class JC
      * @static
      * @example 
@@ -320,10 +324,6 @@ window.Bizs = window.Bizs || {};
                     _path = _part;
                     if( _isComps ){
                         if( _bizCompRe.test( _path ) ){//业务组件
-                            /**
-                             * 这个判断是为了向后兼容, 以前的 Bizs.DisableLogic 更名为 Bizs.ChangeLogic 
-                             */
-                            _part == &quot;Bizs.DisableLogic&quot; &amp;&amp; ( _part = &quot;Bizs.ChangeLogic&quot; );
                             _path = printf( &#x27;{0}{1}{2}/{2}.js&#x27;, JC.PATH, JC.bizsDir, _part.replace( _bizCompRe, &#x27;&#x27; ) );
                         }else if( _bizFileRe.test( _path ) ){//业务文件
                             _path = printf( &#x27;{0}{1}{2}.js&#x27;, JC.PATH, JC.bizsDir, _part.replace( _bizFileRe, &#x27;&#x27; ) );

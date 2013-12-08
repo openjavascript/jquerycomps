@@ -34,8 +34,9 @@
         </div>
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
-                <li><a href="../classes/Bizs.html">Bizs</a></li>
-                <li><a href="../classes/JC.html">JC</a></li>
+                <li><a href="../classes/.Bizs.html">.Bizs</a></li>
+                <li><a href="../classes/.JC.html">.JC</a></li>
+                <li><a href="../classes/.jQuery.html">.jQuery</a></li>
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
                 <li><a href="../classes/JC.AutoChecked.html">JC.AutoChecked</a></li>
@@ -66,11 +67,11 @@
                 <li><a href="../classes/JC.Tips.html">JC.Tips</a></li>
                 <li><a href="../classes/JC.Tree.html">JC.Tree</a></li>
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
-                <li><a href="../classes/jQuery.html">jQuery</a></li>
                 <li><a href="../classes/window.Bizs.ActionLogic.html">window.Bizs.ActionLogic</a></li>
                 <li><a href="../classes/window.Bizs.AutoSelectComplete.html">window.Bizs.AutoSelectComplete</a></li>
                 <li><a href="../classes/window.Bizs.ChangeLogic.html">window.Bizs.ChangeLogic</a></li>
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
+                <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
                 <li><a href="../classes/window.Bizs.FormLogic.html">window.Bizs.FormLogic</a></li>
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
                 <li><a href="../classes/window.Bizs.MoneyTips.html">window.Bizs.MoneyTips</a></li>
@@ -109,17 +110,17 @@
                         <h1>window.Bizs.ChangeLogic Class</h1>
 <div class="box meta">
         <div class="foundat">
-            Defined in: <a href="../files/.._bizs_ChangeLogic_ChangeLogic.js.html#l2"><code>..&#x2F;bizs&#x2F;ChangeLogic&#x2F;ChangeLogic.js:2</code></a>
+            Defined in: <a href="../files/.._bizs_ChangeLogic_ChangeLogic.js.html#l3"><code>..&#x2F;bizs&#x2F;ChangeLogic&#x2F;ChangeLogic.js:3</code></a>
         </div>
 </div>
 <div class="box intro">
-    <p><h2>Form Control禁用启用逻辑</h2>
+    <p><h2>input[type=radio|type=checkbox], select change 事件的响应逻辑</h2>
 <br/>应用场景</br>
 <br/>表单操作时, 选择某个 radio 时, 对应的 内容有效,
 <br/>但选择其他 radio 时, 其他的内容无效
 <br/>checkbox / select 也可使用( 带change事件的标签 )</p>
 <p><b>require</b>: 
-     <a href='window.jQuery.html'>jQuery</a>
+     <a href='jQuery.html'>jQuery</a>
      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
 </p>
 <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -128,52 +129,52 @@
 <p>div 需要 添加 class=&quot;js_bizChangeLogic&quot;</p>
 <p><h2>box 的 HTML 属性</h2></p>
 <dl>
-     <dt>dltrigger</dt>
+     <dt>bclTrigger</dt>
      <dd>触发禁用/起用的control</dd>
-     <dt>dltarget</dt>
+     <dt>bclDisableTarget</dt>
      <dd>需要禁用/起用的control</dd>
-     <dt>dlhidetarget</dt>
+     <dt>bclHideTarget</dt>
      <dd>需要根据禁用起用隐藏/可见的标签</dd>
-     <dt>dldonecallback = function</dt>
+     <dt>bclDoneCallback = function</dt>
      <dd>
      启用/禁用后会触发的回调, <b>window 变量域</b>
-<pre>function dldonecallback( _triggerItem, _boxItem ){
+<pre>function bclDoneCallback( _triggerItem, _boxItem ){
    var _ins = this;
-   JC.log( &#39;dldonecallback&#39;, new Date().getTime() );
+   JC.log( &#39;bclDoneCallback&#39;, new Date().getTime() );
 }</pre>
      </dd>
-     <dt>dlenablecallback = function</dt>
+     <dt>bclEnableCallback = function</dt>
      <dd>
      启用后的回调, <b>window 变量域</b>
-<pre>function dlenablecallback( _triggerItem, _boxItem ){
+<pre>function bclEnableCallback( _triggerItem, _boxItem ){
    var _ins = this;
-   JC.log( &#39;dlenablecallback&#39;, new Date().getTime() );
+   JC.log( &#39;bclEnableCallback&#39;, new Date().getTime() );
 }</pre>
      </dd>
-     <dt>dldisablecallback = function</dt>
+     <dt>bclDisableCallback = function</dt>
      <dd>
      禁用后的回调, <b>window 变量域</b>
-<pre>function dldisablecallback( _triggerItem, _boxItem ){
+<pre>function bclDisableCallback( _triggerItem, _boxItem ){
    var _ins = this;
-   JC.log( &#39;dldisablecallback&#39;, new Date().getTime() );
+   JC.log( &#39;bclDisableCallback&#39;, new Date().getTime() );
 }</pre>
      </dd>
 </dl>
 <p><h2>trigger 的 HTML 属性</h2></p>
 <dl>
-     <dt>dldisable = bool, default = false</dt>
+     <dt>bclDisable = bool, default = false</dt>
      <dd>
-         指定 dltarget 是否置为无效
-         <br />还可以根据这个属性 指定 dlhidetarget 是否显示
+         指定 bclDisableTarget 是否置为无效
+         <br />还可以根据这个属性 指定 bclHideTarget 是否显示
      </dd>
-     <dt>dldisplay = bool</dt>
-     <dd>指定 dlhidetarget 是否显示</dd>
-     <dt>dlhidetargetsub = selector</dt>
-     <dd>根据 trigger 的 checked 状态 显示或者隐藏 dlhidetargetsub node</dd>
+     <dt>bclDisplay = bool</dt>
+     <dd>指定 bclHideTarget 是否显示</dd>
+     <dt>bclHideTargetSub = selector</dt>
+     <dd>根据 trigger 的 checked 状态 显示或者隐藏 bclHideTargetSub node</dd>
 </dl>
 <p><h2>hide target 的 HTML 属性</h2></p>
 <dl>
-     <dt>dlhidetoggle = bool</dt>
+     <dt>bclHideToggle = bool</dt>
      <dd>显示或显示的时候, 是否与他项相反</dd>
 </dl>
 </div>
@@ -185,7 +186,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_ChangeLogic_ChangeLogic.js.html#l2"><code>..&#x2F;bizs&#x2F;ChangeLogic&#x2F;ChangeLogic.js:2</code></a>
+        <a href="../files/.._bizs_ChangeLogic_ChangeLogic.js.html#l3"><code>..&#x2F;bizs&#x2F;ChangeLogic&#x2F;ChangeLogic.js:3</code></a>
         </p>
     </div>
     <div class="description">
@@ -194,17 +195,17 @@
             <h4>Example:</h4>
             <div class="example-content">
                 <pre class="code prettyprint"><code>   &lt;div class=&quot;js_bizChangeLogic&quot;
-       dltrigger=&quot;/input[type=radio]&quot;
-       dltarget=&quot;/input.js_disableItem&quot;
+       bclTrigger=&quot;/input[type=radio]&quot;
+       bclDisableTarget=&quot;/input.js_disableItem&quot;
        &gt;
        &lt;label&gt;
            &lt;input type=&quot;radio&quot; name=&quot;discount&quot; checked  
-           dldisable=&quot;true&quot;
+           bclDisable=&quot;true&quot;
            /&gt;自本协议签订之日起10日内生效
        &lt;/label&gt; &lt;br&gt;
        &lt;label&gt;
            &lt;input type=&quot;radio&quot; name=&quot;discount&quot; 
-           dldisable=&quot;false&quot;
+           bclDisable=&quot;false&quot;
            /&gt;生效时间点
        &lt;/label&gt;
        &lt;input type=&quot;text&quot; class=&quot;ipt js_disableItem&quot; datatype=&quot;date&quot; value=&quot;&quot;
@@ -263,7 +264,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_ChangeLogic_ChangeLogic.js.html#l189"><code>..&#x2F;bizs&#x2F;ChangeLogic&#x2F;ChangeLogic.js:189</code></a>
+        <a href="../files/.._bizs_ChangeLogic_ChangeLogic.js.html#l190"><code>..&#x2F;bizs&#x2F;ChangeLogic&#x2F;ChangeLogic.js:190</code></a>
         </p>
     </div>
     <div class="description">
@@ -300,7 +301,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_ChangeLogic_ChangeLogic.js.html#l209"><code>..&#x2F;bizs&#x2F;ChangeLogic&#x2F;ChangeLogic.js:209</code></a>
+        <a href="../files/.._bizs_ChangeLogic_ChangeLogic.js.html#l210"><code>..&#x2F;bizs&#x2F;ChangeLogic&#x2F;ChangeLogic.js:210</code></a>
         </p>
     </div>
     <div class="description">
@@ -337,7 +338,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_ChangeLogic_ChangeLogic.js.html#l173"><code>..&#x2F;bizs&#x2F;ChangeLogic&#x2F;ChangeLogic.js:173</code></a>
+        <a href="../files/.._bizs_ChangeLogic_ChangeLogic.js.html#l174"><code>..&#x2F;bizs&#x2F;ChangeLogic&#x2F;ChangeLogic.js:174</code></a>
         </p>
     </div>
     <div class="description">
@@ -376,7 +377,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_ChangeLogic_ChangeLogic.js.html#l167"><code>..&#x2F;bizs&#x2F;ChangeLogic&#x2F;ChangeLogic.js:167</code></a>
+        <a href="../files/.._bizs_ChangeLogic_ChangeLogic.js.html#l168"><code>..&#x2F;bizs&#x2F;ChangeLogic&#x2F;ChangeLogic.js:168</code></a>
         </p>
     </div>
     <div class="description">
@@ -404,7 +405,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_ChangeLogic_ChangeLogic.js.html#l181"><code>..&#x2F;bizs&#x2F;ChangeLogic&#x2F;ChangeLogic.js:181</code></a>
+        <a href="../files/.._bizs_ChangeLogic_ChangeLogic.js.html#l182"><code>..&#x2F;bizs&#x2F;ChangeLogic&#x2F;ChangeLogic.js:182</code></a>
         </p>
     </div>
     <div class="description">

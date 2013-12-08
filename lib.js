@@ -9,6 +9,7 @@
  * Released under the MIT license
  * http://jquery.org/license
  * Date: 2013-2-4</pre>
+ * @namespace 
  * @class jQuery
  */
 (function( window, undefined ) {
@@ -10617,6 +10618,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
  *      <dt>使用业务文件</dt>
  *      <dd> JC.use( 'bizs.BizFile' ); //   libpath/bizs/BizFile.js </dd>
  * </dl>
+ * @namespace 
  * @class       Bizs
  * @static
  */
@@ -10634,6 +10636,7 @@ window.Bizs = window.Bizs || {};
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.html' target='_blank'>API docs</a>
      * | <a href='../../_demo' target='_blank'>demo link</a></p>
+     * @namespace 
      * @class JC
      * @static
      * @example 
@@ -10734,10 +10737,6 @@ window.Bizs = window.Bizs || {};
                     _path = _part;
                     if( _isComps ){
                         if( _bizCompRe.test( _path ) ){//业务组件
-                            /**
-                             * 这个判断是为了向后兼容, 以前的 Bizs.DisableLogic 更名为 Bizs.ChangeLogic 
-                             */
-                            _part == "Bizs.DisableLogic" && ( _part = "Bizs.ChangeLogic" );
                             _path = printf( '{0}{1}{2}/{2}.js', JC.PATH, JC.bizsDir, _part.replace( _bizCompRe, '' ) );
                         }else if( _bizFileRe.test( _path ) ){//业务文件
                             _path = printf( '{0}{1}{2}.js', JC.PATH, JC.bizsDir, _part.replace( _bizFileRe, '' ) );
