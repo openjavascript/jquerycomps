@@ -332,9 +332,7 @@
                                                     col43
                                                 &lt;/td&gt;
                                             &lt;/tr&gt;
-                                            &lt;tr&gt;
-                                                &lt;td colspan=&quot;5&quot;&gt;跨五&lt;/td&gt;
-                                            &lt;/tr&gt;
+                                            
                                         &lt;/tbody&gt;
                                     &lt;/table&gt;
                                 &lt;/dd&gt;
@@ -465,8 +463,6 @@
  
     TableFreeze.Model.prototype = {
         init: function () {
-            //JC.log( &#x27;TableFreeze.Model.init:&#x27;, new Date().getTime() );
-            //this.initWidth = this.selector().find(&#x27;thead&gt;tr&gt;th&#x27;).first().prop(&#x27;offsetWidth&#x27;);
             var _p = this;
 
             this.sourceTable = this.selector().find(&#x27;table&#x27;).eq(0);
@@ -494,8 +490,8 @@
                     {
                         _fcols = parseInt( _p.freezeCols(), 10 ); 
 
-                        _tpl = JC.f.printf(_baseTpl, &#x27;js-fixed-table&#x27;) 
-                             + JC.f.printf(_baseTpl, &#x27;js-roll-table&#x27;);
+                        _tpl = JC.f.printf(_baseTpl, &#x27;js-fixed-table compTFPrevFixed&#x27;) 
+                             + JC.f.printf(_baseTpl, &#x27;js-roll-table compTFPrevRoll&#x27;);
 
                         _p.selector().append( _tpl );
 
@@ -528,8 +524,8 @@
                     {
                         _fcols = parseInt( _p.freezeCols(), 10 );
 
-                        _tpl = JC.f.printf(_baseTpl, &#x27;js-roll-table&#x27;) 
-                             + JC.f.printf(_baseTpl, &#x27;js-fixed-table&#x27;);
+                        _tpl = JC.f.printf(_baseTpl, &#x27;js-roll-table compTFLastRoll&#x27;) 
+                             + JC.f.printf(_baseTpl, &#x27;js-fixed-table compTFLastFixed&#x27;);
 
                         _p.selector().append( _tpl );
                         
@@ -565,9 +561,9 @@
                         _fcols = parseInt( _p.freezeCols()[0], 10 );
                         _fcols2 = parseInt( _p.freezeCols()[1], 10 );
 
-                        _tpl = JC.f.printf(_baseTpl, &#x27;js-fixed-table&#x27;) 
-                             + JC.f.printf(_baseTpl, &#x27;js-roll-table&#x27;)
-                             + JC.f.printf(_baseTpl, &#x27;js-fixed-table&#x27;);
+                        _tpl = JC.f.printf(_baseTpl, &#x27;js-fixed-table compTFBothFixed&#x27;) 
+                             + JC.f.printf(_baseTpl, &#x27;js-roll-table compTFBothRoll&#x27;)
+                             + JC.f.printf(_baseTpl, &#x27;js-fixed-table compTFBothFixed&#x27;);
 
                         _p.selector().append( _tpl );
 
@@ -806,7 +802,7 @@
             var _p = this,
                 _num = 0;
 
-            _num = _p.selector().find(&#x27;thead&gt;tr&gt;th&#x27;).length;
+            _num = _p.selector().find(&#x27;thead&gt;tr&gt;th&#x27;).length ;
 
             return _num;
         },  
@@ -934,9 +930,6 @@
     TableFreeze.View.prototype = {
         init: function () {
             var _p = this;
-            //_p._model.createTplBox();
-           
-            
         },
 
         update: function () {
@@ -949,7 +942,8 @@
             } 
 
             if ( !_p._model.supportFreeze() ) {
-                _p._model.selector().css(&#x27;overflow-x&#x27;,&#x27;scroll&#x27;);
+                _p._model.selector().css({&#x27;overflow-x&#x27;: &#x27;scroll&#x27;})
+                    .addClass(&#x27;compTFAllRoll&#x27;);
                 _p._model.selector().children(&#x27;table&#x27;).css(&#x27;width&#x27;,&#x27;110%&#x27;);
                 return;
             }
