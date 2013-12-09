@@ -777,7 +777,7 @@
     /**
      * 动态添加内容时, 初始化可识别的组件
      * <dl>
-     *      <dt>目前会自动识别的组件,  </dt>
+     *      <dt>目前会自动识别的组件</dt>
      *      <dd>
      *          Bizs.CommonModify, JC.Panel, JC.Dialog
      *          <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>
@@ -786,8 +786,8 @@
      * <dl>
      *      <dt>可识别的组件</dt>
      *      <dd>
-     *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder
-     *          <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips
+     *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder, JC.TableFreeze
+     *          <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete
      *      </dd>
      * </d>
      * @method  jcAutoInitComps
