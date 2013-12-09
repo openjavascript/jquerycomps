@@ -363,7 +363,7 @@
  
         this._init();
  
-        JC.log( &#x27;TableFreeze:&#x27;, new Date().getTime() );
+        //JC.log( &#x27;TableFreeze:&#x27;, new Date().getTime() );
     }
     /**
      * 获取或设置 TableFreeze 的实例
@@ -499,12 +499,12 @@
 
                         _p.selector().append( _tpl );
 
-                        if ( !_p.hasFixedPXWidth() ) {
+                        //if ( !_p.hasFixedPXWidth() ) {
                             
                             _p.setWidth(0, _p.selector().find(&#x27;div.js-fixed-table&#x27;), _fcols );
                             _p.setWidth(_fcols, _p.selector().find(&#x27;div.js-roll-table&#x27;), _p.colNum()  );
                         
-                        }
+                        //}
                        
                         //_p.saveWidth = [_p.selector().find(&#x27;div.js-fixed-table&#x27;).prop(&#x27;offsetWidth&#x27;),
                         //    _p.selector().find(&#x27;div.js-roll-table&#x27;).prop(&#x27;offsetWidth&#x27;)];
@@ -533,12 +533,12 @@
 
                         _p.selector().append( _tpl );
                         
-                        if ( !_p.hasFixedPXWidth() ) {
+                        //if ( !_p.hasFixedPXWidth() ) {
 
                             _p.setWidth(0, _p.selector().find(&#x27;div.js-roll-table&#x27;), _p.colNum() - _fcols  );
                             _p.setWidth(_p.colNum() - _fcols, _p.selector().find(&#x27;div.js-fixed-table&#x27;), _p.colNum() );
 
-                        }
+                       // }
                         // _p.saveWidth = [_p.selector().find(&#x27;div.js-roll-table&#x27;).prop(&#x27;offsetWidth&#x27;),
                         //     _p.selector().find(&#x27;div.js-fixed-table&#x27;).prop(&#x27;offsetWidth&#x27;)];
 
@@ -571,13 +571,13 @@
 
                         _p.selector().append( _tpl );
 
-                        if ( !_p.hasFixedPXWidth() ) {
+                        //if ( !_p.hasFixedPXWidth() ) {
                             
                             _p.setWidth(0, _p.selector().find(&#x27;div.js-fixed-table&#x27;).eq(0), _fcols  );
                             _p.setWidth(_fcols, _p.selector().find(&#x27;div.js-roll-table&#x27;),  _fcols + _p.colNum() - _fcols - _fcols2 );
                             _p.setWidth(_fcols + _p.colNum() - _fcols - _fcols2, _p.selector().find(&#x27;div.js-fixed-table&#x27;).eq(1), _p.colNum() );
 
-                        }
+                        //}
 
                         _thead = _p.selector().find(&#x27;div.js-fixed-table thead&#x27;).eq(0);
                         _tbody = _p.selector().find(&#x27;div.js-fixed-table tbody&#x27;).eq(0);
@@ -605,9 +605,11 @@
 
  
 
-        createHdTpl: function ( _thead, _fc, _type, _thead2 ) {
+        createHdTpl: function ( _thead, _fc ) {
             var _p = this,
-                _stpl = _p.sourceTable;
+                _stpl = _p.sourceTable,
+                _fragment = document.createDocumentFragment(),
+                _$fragment = $(_fragment);
 
             _stpl.find(&#x27;thead&#x27;).eq(0).children(&#x27;tr&#x27;).each( function ( _ix, _item ) {
 
@@ -615,8 +617,8 @@
                     _tr,
                     _cloneTr = $(_item).get(0).cloneNode(false);
 
-                _thead.append(_cloneTr);
-                _tr = _thead.children(&#x27;tr:last&#x27;);
+                _$fragment.append(_cloneTr);
+                _tr = _$fragment.children(&#x27;tr:last&#x27;);
 
                 $( _item ).children(&#x27;td,th&#x27;).each( function ( _six, _sitem ) {
                     
@@ -631,67 +633,76 @@
                     if ( typeof _colspan === &#x27;undefined&#x27; ) {
                         _cix = _cix + 1;
                     } else {
-                        _cix = _colspan;
+                        _cix += parseInt(_colspan, 10);
                     }
 
                 });
             
-            });   
+            });
+
+            _$fragment.appendTo( _thead );   
         },
 
-        createBdTpl: function ( _tbody, _fc, _type, _tbody2 ) {
+        createBdTpl: function ( _tbody, _fc ) {
 
             var _p = this,
                 _stpl = _p.sourceTable,
-                _row = {};
+                _row = {},
+                _fragment = document.createDocumentFragment(),
+                _$fragment = $(_fragment);
 
             _stpl.find(&#x27;tbody&#x27;).eq(0).children(&#x27;tr&#x27;).each( function ( _ix, _item ) {
                 var _cloneTr = $(_item).get(0).cloneNode(false), 
                     _cix = 0,
                     _tr;
 
-                _tbody.append( _cloneTr );
-
-                _tr = _tbody.children(&#x27;tr:last&#x27;)
+                _$fragment.append( _cloneTr );
+                _tr = _$fragment.children(&#x27;tr:last&#x27;);
 
                 $( _item ).children(&#x27;td,th&#x27;).each( function ( _six, _sitem ) {
                     
                     var _colspan = $(this).attr(&#x27;colspan&#x27;),
                         _rowspan = $(this).attr(&#x27;rowspan&#x27;),
-                        _obj = {};
-
+                        _obj = {},
+                        _key;
+                    
                     if ( _cix &gt;= _fc ) {
                       return false;
                     }
 
                     if ( typeof _rowspan != &#x27;undefined&#x27; ) {
+                        _rowspan = parseInt(_rowspan, 10);
+
                         _obj = {
                             six: _six,
                             rowspan: _rowspan
                         };
-                    }
 
-                    for ( var i = 1; i &lt; _rowspan; i++ ) {
-                        _row[(_ix + i) + &#x27;0&#x27;] = _obj;
+                        for ( var i = 1; i &lt; _rowspan; i++ ) {
+                            _row[(_ix + i) + &#x27;0&#x27;] = _obj;
+                        }
+
                     }
                     
                     if ( typeof _colspan === &#x27;undefined&#x27; ) {
                         _cix = _cix + 1;
                     } else {
-                        _cix = _colspan;
+                        _cix += parseInt(_colspan, 10);
                     }
 
-                    var _key = _ix + &#x27;0&#x27;;
+                    _key = _ix + &#x27;0&#x27;;
 
                     if ( _key in _row  ) {
                         _cix = _cix + 1;
                     }
-
+                   
                     $(this).appendTo( _tr );
 
                 });
-            
-            });   
+               
+            }); 
+
+            _$fragment.appendTo( _tbody );  
             
         },
 
@@ -828,7 +839,7 @@
                 _r = false;
             }
 
-            JC.log(&quot;supportFreeze&quot;, _r);
+            //JC.log(&quot;supportFreeze&quot;, _r);
 
             return _r;
         },
@@ -846,7 +857,7 @@
                 _r = false;
             }
 
-            JC.log(&quot;supportScroll&quot;, _r, _c);
+            //JC.log(&quot;supportScroll&quot;, _r, _c);
 
             return _r;
         },
@@ -937,7 +948,7 @@
         },
 
         update: function () {
-            JC.log(&quot;View update here&quot;);
+            //JC.log(&quot;View update here&quot;);
             var _p = this;
 
             
@@ -973,11 +984,9 @@
     $(window).on( &#x27;resize&#x27;, function(){
         $( &#x27;div.js_compTableFreeze&#x27; ).each( function () {
             var _ins = TableFreeze.getInstance( $( this ) );
-            var _timer = null;
-            clearTimeout(_timer);
-            _timer = window.setTimeout( function () {
-                _ins &amp;&amp; _ins.fixHeight();
-            } , 30);
+            
+            _ins &amp;&amp; _ins.fixHeight();
+           
         });
     });
 
