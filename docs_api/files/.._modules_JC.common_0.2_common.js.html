@@ -247,6 +247,8 @@
         , &quot;sliceArgs&quot;: sliceArgs
         , &quot;urlDetect&quot;: urlDetect
         , &quot;moneyFormat&quot;: moneyFormat
+        , &quot;dateFormat&quot;: dateFormat
+        , &quot;mergeObject&quot;: mergeObject
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -994,9 +996,13 @@
          */
         JC.AjaxUpload &amp;&amp; JC.AjaxUpload.init( _selector );
         /**
-         * Placeholder 占位符
+         * 占位符
          */
         JC.Placeholder &amp;&amp; JC.Placeholder.init( _selector );
+        /**
+         * 表格冻结
+         */
+        JC.TableFreeze &amp;&amp; JC.TableFreeze.init( _selector );
 
         if( !window.Bizs ) return;
         /**
@@ -1183,6 +1189,73 @@
         }
 
         return _parts.join(&#x27;.&#x27;);
+    }
+    /**
+     * 日期格式化 (具体格式请查看 PHP Date Formats)
+     * @method  dateFormat
+     * @param   {date}    _date     default = now
+     * @param   {string}  _format   default = &quot;YY-MM-DD&quot;
+     * @return  string
+     * @static
+     */
+    function dateFormat( _date, _format ){
+        typeof _date == &#x27;string&#x27; &amp;&amp; ( _format = _date, _date = new Date() );
+        !_date &amp;&amp; ( _date = new Date() );
+        !_format &amp;&amp; ( _format = &#x27;YY-MM-DD&#x27; );
+        var _r = _format, _tmp
+            , _monthName = [ &#x27;january&#x27;, &#x27;february&#x27;, &#x27;march&#x27;, &#x27;april&#x27;, &#x27;may&#x27;, &#x27;june&#x27;
+                            , &#x27;july&#x27;, &#x27;august&#x27;, &#x27;september&#x27;, &#x27;october&#x27;, &#x27;november&#x27;, &#x27;december&#x27; ] 
+            , _monthShortName = [&#x27;jan&#x27;, &#x27;feb&#x27;, &#x27;mar&#x27;, &#x27;apr&#x27;, &#x27;may&#x27;, &#x27;jun&#x27;, &#x27;jul&#x27;, &#x27;aug&#x27;, &#x27;sep&#x27;, &#x27;oct&#x27;, &#x27;nov&#x27;, &#x27;dec&#x27; ]
+            ;
+
+        _r = _r
+            .replace( /YY/g, _date.getFullYear() )
+            .replace( /MM/g, padChar( _date.getMonth() + 1 ) )
+            .replace( /DD/g, padChar( _date.getDate() ) )
+
+            .replace( /yy/g, function( $0 ){
+                _tmp = padChar( _date.getYear() );
+                //JC.log( _date.getYear(), _tmp.slice( _tmp.length - 2 ) );
+                return _tmp.slice( _tmp.length - 2 );
+            })
+            .replace( /mm/g, _date.getMonth() + 1 )
+            .replace( /dd/g, _date.getDate() )
+            .replace( /d/g, _date.getDate() )
+
+            .replace( /y/g, _date.getFullYear() )
+
+            .replace( /m/g, function( $0 ){
+                return _monthName[ _date.getMonth() ];          
+            })
+
+            .replace( /M/g, function( $0 ){
+                return _monthShortName[ _date.getMonth() ];          
+            })
+            ;
+
+        return _r;
+    }
+    /**
+     * 合并对象
+     * @method  mergeObject
+     * @param   {object}    _source
+     * @param   {object}    _new
+     * @param   {bool}      _overwrite      default = true
+     * @return  object
+     * @static
+     */
+    function mergeObject( _source, _new, _overwrite ){
+        typeof _overwrite == &#x27;undefined&#x27; &amp;&amp; ( _overwrite = true );
+        if( _source &amp;&amp; _new ){
+            for( var k in _new ){
+                if( _overwrite ){
+                    _source[ k ] = _new[ k ];
+                }else if( !( k in _source ) ){
+                    _source[ k ] = _new[ k ];
+                }
+            }
+        }
+        return _source;
     }
 
 }(jQuery));
