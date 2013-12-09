@@ -61,6 +61,7 @@
         , "moneyFormat": moneyFormat
         , "dateFormat": dateFormat
         , "mergeObject": mergeObject
+        , "safeTimeout": safeTimeout
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -1068,6 +1069,23 @@
             }
         }
         return _source;
+    }
+    /**
+     * timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行
+     * @method  safeTimeout
+     * @param   {timeout}   _timeout
+     * @param   {object}    _obj    default = window.TIMEOUT_HOST || {}
+     * @param   {string}    _name   default = 'NORMAL'
+     * @return  object
+     * @static
+     */
+    function safeTimeout( _timeout, _obj, _name ){
+        if( typeof _timeout == 'undefined' ) return;
+        _obj = $( _obj || ( window.TIMEOUT_HOST = window.TIMEOUT_HOST || {} ) );
+        _name = _name || 'NORMAL';
+
+        _obj.data( _name ) && clearTimeout( _obj.data( _name ) );
+        _obj.data( _name, _timeout );
     }
 
 }(jQuery));
