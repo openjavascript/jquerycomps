@@ -1481,7 +1481,7 @@
             "namespace": "JC",
             "file": "../comps/TableFreeze/TableFreeze.js",
             "line": 2,
-            "description": "TableFreeze 表格固定指定列功能\n\n<p><b>require</b>:\n  <a href=\"jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>\n  | <a href='../../comps/TableFreeze/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化div为class=\"js_compTableFreeze\"下的表格</h2>\n<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>freezeType = string</dt>\n   <dd>\n      声明表格列冻结的类型：\n      <p><b>prev：</b>左边的列固定，其他滚动</p>\n      <p><b>next：</b>右边的列固定，其他滚动</p>\n      <p><b>both：</b>两边的列固定，其他滚动</p>\n   </dd>\n\n   <dt>freezeCol = string</dt>\n   <dd>\n       声明表格要冻结的列数:\n       <p>为<b>0：</b>全部滚动，不冻结</p>\n       <p>为<b>列表数目：</b>全部冻结， 不滚动</p>\n       <p>为<b>num,num：</b>freezeType为<b>both</b>时，第一个数字表示前面冻结的列数<br/>\n         第二个数字表示后面冻结的列数。<br/>\n          当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。\n       </p>\n\n   </dd>\n</dl>",
+            "description": "TableFreeze 表格固定指定列功能\n\n<p><b>require</b>:\n  <a href=\"jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>\n  | <a href='../../comps/TableFreeze/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化div为class=\"js_compTableFreeze\"下的表格</h2>\n<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>freezeType = string</dt>\n   <dd>\n      声明表格列冻结的类型：\n      <p><b>prev：</b>左边的列固定，其他滚动</p>\n      <p><b>next：</b>右边的列固定，其他滚动</p>\n      <p><b>both：</b>两边的列固定，其他滚动</p>\n   </dd>\n\n   <dt>freezeCol = string</dt>\n   <dd>\n       声明表格要冻结的列数:\n       <p>为<b>0：</b>全部滚动，不冻结</p>\n       <p>为<b>列表数目：</b>全部冻结， 不滚动</p>\n       <p>为<b>num,num：</b>freezeType为<b>both</b>时，第一个数字表示前面冻结的列数<br/>\n         第二个数字表示后面冻结的列数。<br/>\n          当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。\n       </p>\n\n   </dd>\n\n   <dt>beforeCreateTableCallback = function</dt>\n   <dd>\n       表格创建前, 触发的回调, <b>window 变量域</b>\n<pre>function beforeCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'beforeCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>afterCreateTableCallback = function</dt>\n   <dd>\n       表格创建后, 触发的回调, <b>window 变量域</b>\n<pre>function afterCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'afterCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -9334,7 +9334,7 @@
         },
         {
             "file": "../comps/TableFreeze/TableFreeze.js",
-            "line": 178,
+            "line": 198,
             "description": "获取或设置 TableFreeze 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -9355,7 +9355,7 @@
         },
         {
             "file": "../comps/TableFreeze/TableFreeze.js",
-            "line": 193,
+            "line": 213,
             "description": "初始化可识别的 TableFreeze 实例",
             "itemtype": "method",
             "name": "init",
@@ -9376,7 +9376,7 @@
         },
         {
             "file": "../comps/TableFreeze/TableFreeze.js",
-            "line": 240,
+            "line": 266,
             "description": "更新 TableFreeze 状态",
             "itemtype": "method",
             "name": "update",
@@ -9385,10 +9385,24 @@
         },
         {
             "file": "../comps/TableFreeze/TableFreeze.js",
-            "line": 251,
+            "line": 277,
             "description": "resize时更新 TableFreeze 状态",
             "itemtype": "method",
             "name": "fixHeight",
+            "class": "JC.TableFreeze",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/TableFreeze/TableFreeze.js",
+            "line": 791,
+            "description": "TableFreeze调用前的回调",
+            "class": "JC.TableFreeze",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/TableFreeze/TableFreeze.js",
+            "line": 802,
+            "description": "TableFreeze调用后的回调",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
@@ -12477,25 +12491,25 @@
         },
         {
             "file": "../common.js",
-            "line": 62,
+            "line": 64,
             "description": "判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 84,
+            "line": 86,
             "description": "jquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 88,
+            "line": 90,
             "description": "如果 console 不可用, 则生成一个模拟的 console 对象",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 94,
+            "line": 96,
             "description": "全局 css z-index 控制属性\n<br /> <b>注意</b>: 这个变量是 window.ZINDEX_COUNT",
             "itemtype": "property",
             "name": "ZINDEX_COUNT",
@@ -12506,7 +12520,7 @@
         },
         {
             "file": "../common.js",
-            "line": 103,
+            "line": 105,
             "description": "把函数的参数转为数组",
             "itemtype": "method",
             "name": "sliceArgs",
@@ -12525,7 +12539,7 @@
         },
         {
             "file": "../common.js",
-            "line": 117,
+            "line": 119,
             "description": "取 URL 的 host name",
             "itemtype": "method",
             "name": "urlHostName",
@@ -12544,7 +12558,7 @@
         },
         {
             "file": "../common.js",
-            "line": 133,
+            "line": 135,
             "description": "把 URL 相对路径 转换为 绝对路径",
             "itemtype": "method",
             "name": "relativePath",
@@ -12568,7 +12582,7 @@
         },
         {
             "file": "../common.js",
-            "line": 161,
+            "line": 163,
             "description": "按格式输出字符串",
             "itemtype": "method",
             "name": "printf",
@@ -12590,7 +12604,7 @@
         },
         {
             "file": "../common.js",
-            "line": 177,
+            "line": 179,
             "description": "判断URL中是否有某个get参数",
             "itemtype": "method",
             "name": "hasUrlParam",
@@ -12617,7 +12631,7 @@
         },
         {
             "file": "../common.js",
-            "line": 199,
+            "line": 201,
             "description": "添加URL参数\n<br /><b>require:</b> delUrlParam, filterXSS",
             "itemtype": "method",
             "name": "addUrlParams",
@@ -12644,7 +12658,7 @@
         },
         {
             "file": "../common.js",
-            "line": 225,
+            "line": 227,
             "description": "xss 过滤函数",
             "itemtype": "method",
             "name": "filterXSS",
@@ -12663,7 +12677,7 @@
         },
         {
             "file": "../common.js",
-            "line": 240,
+            "line": 242,
             "description": "取URL参数的值\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "getUrlParam",
@@ -12690,7 +12704,7 @@
         },
         {
             "file": "../common.js",
-            "line": 268,
+            "line": 270,
             "description": "取URL参数的值, 这个方法返回数组\n<br />与 getUrlParam 的区别是可以获取 checkbox 的所有值\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "getUrlParams",
@@ -12717,7 +12731,7 @@
         },
         {
             "file": "../common.js",
-            "line": 298,
+            "line": 300,
             "description": "删除URL参数\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "delUrlParam",
@@ -12744,7 +12758,7 @@
         },
         {
             "file": "../common.js",
-            "line": 328,
+            "line": 330,
             "description": "提示需要 HTTP 环境",
             "itemtype": "method",
             "name": "httpRequire",
@@ -12763,7 +12777,7 @@
         },
         {
             "file": "../common.js",
-            "line": 343,
+            "line": 345,
             "description": "删除 URL 的锚点\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "removeUrlSharp",
@@ -12792,7 +12806,7 @@
         },
         {
             "file": "../common.js",
-            "line": 365,
+            "line": 367,
             "description": "重载页面\n<br /><b>require:</b> removeUrlSharp, addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "reloadPage",
@@ -12818,7 +12832,7 @@
         },
         {
             "file": "../common.js",
-            "line": 386,
+            "line": 388,
             "description": "取小数点的N位\n<br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题",
             "itemtype": "method",
             "name": "parseFinance",
@@ -12842,7 +12856,7 @@
         },
         {
             "file": "../common.js",
-            "line": 403,
+            "line": 405,
             "description": "js 附加字串函数",
             "itemtype": "method",
             "name": "padChar",
@@ -12871,7 +12885,7 @@
         },
         {
             "file": "../common.js",
-            "line": 419,
+            "line": 421,
             "description": "格式化日期为 YYYY-mm-dd 格式\n<br /><b>require</b>: pad\\_char\\_f",
             "itemtype": "method",
             "name": "formatISODate",
@@ -12895,7 +12909,7 @@
         },
         {
             "file": "../common.js",
-            "line": 433,
+            "line": 435,
             "description": "从 ISODate 字符串解析日期对象",
             "itemtype": "method",
             "name": "parseISODate",
@@ -12914,7 +12928,7 @@
         },
         {
             "file": "../common.js",
-            "line": 451,
+            "line": 453,
             "description": "获取不带 时分秒的 日期对象",
             "itemtype": "method",
             "name": "pureDate",
@@ -12932,7 +12946,7 @@
         },
         {
             "file": "../common.js",
-            "line": 463,
+            "line": 465,
             "description": "克隆日期对象",
             "itemtype": "method",
             "name": "cloneDate",
@@ -12952,7 +12966,7 @@
         },
         {
             "file": "../common.js",
-            "line": 471,
+            "line": 473,
             "description": "判断两个日期是否为同一天",
             "itemtype": "method",
             "name": "isSameDay",
@@ -12977,7 +12991,7 @@
         },
         {
             "file": "../common.js",
-            "line": 483,
+            "line": 485,
             "description": "判断两个日期是否为同一月份",
             "itemtype": "method",
             "name": "isSameMonth",
@@ -13002,7 +13016,7 @@
         },
         {
             "file": "../common.js",
-            "line": 495,
+            "line": 497,
             "description": "取得一个月份中最大的一天",
             "itemtype": "method",
             "name": "maxDayOfMonth",
@@ -13022,7 +13036,7 @@
         },
         {
             "file": "../common.js",
-            "line": 508,
+            "line": 510,
             "description": "取当前脚本标签的 src路径",
             "itemtype": "method",
             "name": "scriptPath",
@@ -13035,7 +13049,7 @@
         },
         {
             "file": "../common.js",
-            "line": 520,
+            "line": 522,
             "description": "缓动函数, 动画效果为按时间缓动 \n<br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval",
             "itemtype": "method",
             "name": "easyEffect",
@@ -13077,7 +13091,7 @@
         },
         {
             "file": "../common.js",
-            "line": 573,
+            "line": 575,
             "description": "把输入值转换为布尔值",
             "itemtype": "method",
             "name": "parseBool",
@@ -13096,7 +13110,7 @@
         },
         {
             "file": "../common.js",
-            "line": 592,
+            "line": 594,
             "description": "判断是否支持 CSS position: fixed",
             "itemtype": "property",
             "name": "$.support.isFixed",
@@ -13107,7 +13121,7 @@
         },
         {
             "file": "../common.js",
-            "line": 621,
+            "line": 623,
             "description": "绑定或清除 mousewheel 事件",
             "itemtype": "method",
             "name": "mousewheelEvent",
@@ -13128,7 +13142,7 @@
         },
         {
             "file": "../common.js",
-            "line": 643,
+            "line": 645,
             "description": "获取 selector 的指定父级标签",
             "itemtype": "method",
             "name": "getJqParent",
@@ -13153,7 +13167,7 @@
         },
         {
             "file": "../common.js",
-            "line": 669,
+            "line": 671,
             "description": "扩展 jquery 选择器\n<br />扩展起始字符的 '/' 符号为 jquery 父节点选择器\n<br />扩展起始字符的 '|' 符号为 jquery 子节点选择器\n<br />扩展起始字符的 '(' 符号为 jquery 父节点查找识别符( getJqParent )",
             "itemtype": "method",
             "name": "parentSelector",
@@ -13183,7 +13197,7 @@
         },
         {
             "file": "../common.js",
-            "line": 737,
+            "line": 739,
             "description": "获取脚本模板的内容",
             "itemtype": "method",
             "name": "scriptContent",
@@ -13202,7 +13216,7 @@
         },
         {
             "file": "../common.js",
-            "line": 752,
+            "line": 754,
             "description": "取函数名 ( 匿名函数返回空 )",
             "itemtype": "method",
             "name": "funcName",
@@ -13221,7 +13235,7 @@
         },
         {
             "file": "../common.js",
-            "line": 767,
+            "line": 769,
             "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件,  </dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
@@ -13237,61 +13251,67 @@
         },
         {
             "file": "../common.js",
-            "line": 791,
+            "line": 793,
             "description": "联动下拉框",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 795,
+            "line": 797,
             "description": "日历组件",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 799,
+            "line": 801,
             "description": "全选反选",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 803,
+            "line": 805,
             "description": "Ajax 上传",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 807,
-            "description": "Placeholder 占位符",
+            "line": 809,
+            "description": "占位符",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
             "line": 813,
+            "description": "表格冻结",
+            "class": "JC.common"
+        },
+        {
+            "file": "../common.js",
+            "line": 819,
             "description": "disable / enable",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 817,
+            "line": 823,
             "description": "表单提交逻辑",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 821,
+            "line": 827,
             "description": "格式化金额",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 825,
+            "line": 831,
             "description": "自动完成",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 830,
+            "line": 836,
             "description": "URL 占位符识别功能\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "urlDetect",
@@ -13313,7 +13333,7 @@
         },
         {
             "file": "../common.js",
-            "line": 871,
+            "line": 877,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -13336,13 +13356,13 @@
         },
         {
             "file": "../common.js",
-            "line": 930,
+            "line": 936,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 948,
+            "line": 954,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -13370,6 +13390,59 @@
             ],
             "return": {
                 "description": "string"
+            },
+            "static": 1,
+            "class": "JC.common"
+        },
+        {
+            "file": "../common.js",
+            "line": 1004,
+            "description": "日期格式化 (具体格式请查看 PHP Date Formats)",
+            "itemtype": "method",
+            "name": "dateFormat",
+            "params": [
+                {
+                    "name": "_date",
+                    "description": "default = now",
+                    "type": "Date"
+                },
+                {
+                    "name": "_format",
+                    "description": "default = \"YY-MM-DD\"",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "static": 1,
+            "class": "JC.common"
+        },
+        {
+            "file": "../common.js",
+            "line": 1049,
+            "description": "合并对象",
+            "itemtype": "method",
+            "name": "mergeObject",
+            "params": [
+                {
+                    "name": "_source",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "_new",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "_overwrite",
+                    "description": "default = true",
+                    "type": "Bool"
+                }
+            ],
+            "return": {
+                "description": "object"
             },
             "static": 1,
             "class": "JC.common"
@@ -13795,15 +13868,15 @@
         },
         {
             "message": "unknown tag: require",
-            "line": " ../common.js:592"
+            "line": " ../common.js:594"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../common.js:643"
+            "line": " ../common.js:645"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../common.js:669"
+            "line": " ../common.js:671"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -14046,6 +14119,14 @@
             "line": " ../comps/Tab/Tab.js:652"
         },
         {
+            "message": "Missing item type\nTableFreeze调用前的回调",
+            "line": " ../comps/TableFreeze/TableFreeze.js:791"
+        },
+        {
+            "message": "Missing item type\nTableFreeze调用后的回调",
+            "line": " ../comps/TableFreeze/TableFreeze.js:802"
+        },
+        {
             "message": "Missing item type\n页面加载完毕后, 是否自动初始化 Tips",
             "line": " ../comps/Tips/Tips.js:600"
         },
@@ -14119,55 +14200,59 @@
         },
         {
             "message": "Missing item type\n判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数",
-            "line": " ../common.js:62"
+            "line": " ../common.js:64"
         },
         {
             "message": "Missing item type\njquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
-            "line": " ../common.js:84"
+            "line": " ../common.js:86"
         },
         {
             "message": "Missing item type\n如果 console 不可用, 则生成一个模拟的 console 对象",
-            "line": " ../common.js:88"
+            "line": " ../common.js:90"
         },
         {
             "message": "Missing item type\n联动下拉框",
-            "line": " ../common.js:791"
+            "line": " ../common.js:793"
         },
         {
             "message": "Missing item type\n日历组件",
-            "line": " ../common.js:795"
+            "line": " ../common.js:797"
         },
         {
             "message": "Missing item type\n全选反选",
-            "line": " ../common.js:799"
+            "line": " ../common.js:801"
         },
         {
             "message": "Missing item type\nAjax 上传",
-            "line": " ../common.js:803"
+            "line": " ../common.js:805"
         },
         {
-            "message": "Missing item type\nPlaceholder 占位符",
-            "line": " ../common.js:807"
+            "message": "Missing item type\n占位符",
+            "line": " ../common.js:809"
         },
         {
-            "message": "Missing item type\ndisable / enable",
+            "message": "Missing item type\n表格冻结",
             "line": " ../common.js:813"
         },
         {
+            "message": "Missing item type\ndisable / enable",
+            "line": " ../common.js:819"
+        },
+        {
             "message": "Missing item type\n表单提交逻辑",
-            "line": " ../common.js:817"
+            "line": " ../common.js:823"
         },
         {
             "message": "Missing item type\n格式化金额",
-            "line": " ../common.js:821"
+            "line": " ../common.js:827"
         },
         {
             "message": "Missing item type\n自动完成",
-            "line": " ../common.js:825"
+            "line": " ../common.js:831"
         },
         {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../common.js:930"
+            "line": " ../common.js:936"
         },
         {
             "message": "Missing item type\nFor feature detection",

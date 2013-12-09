@@ -58,6 +58,8 @@
         , "sliceArgs": sliceArgs
         , "urlDetect": urlDetect
         , "moneyFormat": moneyFormat
+        , "dateFormat": dateFormat
+        , "mergeObject": mergeObject
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -805,9 +807,13 @@
          */
         JC.AjaxUpload && JC.AjaxUpload.init( _selector );
         /**
-         * Placeholder 占位符
+         * 占位符
          */
         JC.Placeholder && JC.Placeholder.init( _selector );
+        /**
+         * 表格冻结
+         */
+        JC.TableFreeze && JC.TableFreeze.init( _selector );
 
         if( !window.Bizs ) return;
         /**
@@ -995,7 +1001,82 @@
 
         return _parts.join('.');
     }
+    /**
+     * 日期格式化 (具体格式请查看 PHP Date Formats)
+     * @method  dateFormat
+     * @param   {date}    _date     default = now
+     * @param   {string}  _format   default = "YY-MM-DD"
+     * @return  string
+     * @static
+     */
+    function dateFormat( _date, _format ){
+        typeof _date == 'string' && ( _format = _date, _date = new Date() );
+        !_date && ( _date = new Date() );
+        !_format && ( _format = 'YY-MM-DD' );
+        var _r = _format, _tmp
+            , _monthName = [ 'january', 'february', 'march', 'april', 'may', 'june'
+                            , 'july', 'august', 'september', 'october', 'november', 'december' ] 
+            , _monthShortName = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec' ]
+            ;
+
+        _r = _r
+            .replace( /YY/g, _date.getFullYear() )
+            .replace( /MM/g, padChar( _date.getMonth() + 1 ) )
+            .replace( /DD/g, padChar( _date.getDate() ) )
+
+            .replace( /yy/g, function( $0 ){
+                _tmp = padChar( _date.getYear() );
+                //JC.log( _date.getYear(), _tmp.slice( _tmp.length - 2 ) );
+                return _tmp.slice( _tmp.length - 2 );
+            })
+            .replace( /mm/g, _date.getMonth() + 1 )
+            .replace( /dd/g, _date.getDate() )
+            .replace( /d/g, _date.getDate() )
+
+            .replace( /y/g, _date.getFullYear() )
+
+            .replace( /m/g, function( $0 ){
+                return _monthName[ _date.getMonth() ];          
+            })
+
+            .replace( /M/g, function( $0 ){
+                return _monthShortName[ _date.getMonth() ];          
+            })
+            ;
+
+        return _r;
+    }
+    /**
+     * 合并对象
+     * @method  mergeObject
+     * @param   {object}    _source
+     * @param   {object}    _new
+     * @param   {bool}      _overwrite      default = true
+     * @return  object
+     * @static
+     */
+    function mergeObject( _source, _new, _overwrite ){
+        typeof _overwrite == 'undefined' && ( _overwrite = true );
+        if( _source && _new ){
+            for( var k in _new ){
+                if( _overwrite ){
+                    _source[ k ] = _new[ k ];
+                }else if( !( k in _source ) ){
+                    _source[ k ] = _new[ k ];
+                }
+            }
+        }
+        return _source;
+    }
 
 }(jQuery));
     return JC.f;
-});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));
+});}( typeof define === 'function' && define.amd ? define : 
+        function ( _name, _require, _cb) { 
+            typeof _name == 'function' && ( _cb = _name );
+            typeof _require == 'function' && ( _cb = _require ); 
+            _cb && _cb(); 
+        }
+        , window
+    )
+);
