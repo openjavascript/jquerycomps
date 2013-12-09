@@ -9,6 +9,12 @@
 
     window.Bizs = window.Bizs || {};
     /**
+     * JC.f 是 JC.common 的别名
+     * <br />具体使用请见 <a href='JC.common.html'>JC.common</a></p>
+     * @class JC.f
+     * @static
+     */
+    /**
      * JC 组件通用静态方法和属性 ( JC.common, <b>别名: JC.f</b> )
      * <br />所有 JC 组件都会依赖这个静态类
      * <p><b>require</b>: <a href='window.jQuery.html'>jQuery</a></p>
