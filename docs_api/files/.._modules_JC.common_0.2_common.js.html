@@ -248,6 +248,7 @@
         , &quot;urlDetect&quot;: urlDetect
         , &quot;moneyFormat&quot;: moneyFormat
         , &quot;dateFormat&quot;: dateFormat
+        , &quot;mergeObject&quot;: mergeObject
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -1233,6 +1234,28 @@
             ;
 
         return _r;
+    }
+    /**
+     * 合并对象
+     * @method  mergeObject
+     * @param   {object}    _source
+     * @param   {object}    _new
+     * @param   {bool}      _overwrite      default = true
+     * @return  object
+     * @static
+     */
+    function mergeObject( _source, _new, _overwrite ){
+        typeof _overwrite == &#x27;undefined&#x27; &amp;&amp; ( _overwrite = true );
+        if( _source &amp;&amp; _new ){
+            for( var k in _new ){
+                if( _overwrite ){
+                    _source[ k ] = _new[ k ];
+                }else if( !( k in _source ) ){
+                    _source[ k ] = _new[ k ];
+                }
+            }
+        }
+        return _source;
     }
 
 }(jQuery));

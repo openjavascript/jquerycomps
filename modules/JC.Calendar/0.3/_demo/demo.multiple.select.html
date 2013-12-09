@@ -9,14 +9,14 @@
     dl dd{ margin: 10px 0; }
 </style>
 <link href='../../../../modules/JC.Tips/0.1/res/default/style.css' rel='stylesheet' />
-<link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+<link href='../../../../modules/JC.Calendar/0.3/res/default/style.css' rel='stylesheet' />
 <script src="../../../../lib.js"></script>
 <script src="../../../../config.js"></script>
 <script>
     JC.debug = true; 
-
-    requirejs( [ 'JC.Tips', 'JC.Calendar', 'plugins.json2' ], function( Tips, Calendar ){
-
+    
+    requirejs( [ 'JC.Tips', 'JC.Calendar', 'plugins.json2' ]
+    , function( Tips, Calendar ){
         JC.Tips.autoInit = false;
 
         JC.Calendar.layoutInitedCallback = 
@@ -38,27 +38,43 @@
 
     function calendarshow(){
         var _p = $(this);
-        UXC.log( 'calendarshow', _p.val() );
+        JC.log( 'calendarshow', _p.val() );
     }
 
     function calendarhide(){
         var _p = $(this);
-        UXC.log( 'calendarhide', _p.val() );
+        JC.log( 'calendarhide', _p.val() );
     }
     
     function calendarlayoutchange(){
         var _p = $(this);
-        UXC.log( 'calendarlayoutchange', _p.val() );
+        JC.log( 'calendarlayoutchange', _p.val() );
     }
 
-    function calendarupdate( _type, _start, _end ){
+    function calendarclear(){
         var _p = $(this);
-        UXC.log( 'calendarupdate', _p.val(), _type, _start, _end );
+        JC.log( 'calendarclear', _p.val() );
+    }
+
+    function calendarclear(){
+        var _p = $(this);
+        JC.log( 'calendarclear', _p.val() );
+    }
+
+    function calendarcancel(){
+        var _p = $(this);
+        JC.log( 'calendarcancel', _p.val() );
     }
 
     function calendarupdate( _start, _end ){
         var _p = $(this);
-        UXC.log( 'calendarupdate', _p.val(), _start, _end );
+        JC.log( 'calendarupdate', JC.f.printf( 'val:{0}, start:{1}, end:{2}', _p.val(), _start, _end ) );
+    }
+
+    function calendarupdatemultiselect( _data ){
+        var _p = $(this);
+        JC.log( 'calendarupdatemultiselect:'
+            , JC.f.printf( 'val:{0}, data:{1}', _p.val(), JSON.stringify( _data ) ) );
     }
 </script>
 </head>    
@@ -67,53 +83,57 @@
     <form action='' method='get'>
         <dl>
             <dt>JC.Calendar 示例, 如果没有特别声明, 默认type 都为 date</dt>
-            <dd><input type="text" name="date1" multidate="date" currentcanselect="true" class="testitem" /> date</dd>
-            <dd><input type="text" name="date1" multidate="week" value="" currentcanselect="true" class="testitem" /> week</dd>
-            <dd><input type="text" name="date3" multidate="month" value="" currentcanselect="true" class="testitem" /> month</dd>
             <dd>
-                <input type="text" name="date2" multidate="season" value="" currentcanselect="true" class="testitem" />
-                <input type="button" class="UXCCalendar_btn" /> season
-            </dd>
-            <dd><input type="text" name="notdate" />not date</dd>
-            <dd>
-                <input type="text" name="date4" multidate="date" value="2012.04.02" /><input type="button" class="UXCCalendar_btn" />
-            </dd>
-            <dd>
-                <input type="text" name="date5" multidate="week" value="20110201" /><input type="button" class="UXCCalendar_btn" />week
-            </dd>
-            <dd>
-                <input type="text" name="date2" multidate="season" value="2013-06-03" minvalue="2013-06-03" />season minvalue="2013-06-03"
-            </dd>
-            <dd>
-                <input type="text" name="date2" multidate="season" value="2013-06-03" maxvalue="2013-06-30" />season maxvalue="2013-06-30"
-            </dd>
-            <dd>
-            <input type="text" name="date2" multidate="season" value="2013-06-03" minvalue="2013-06-01" maxvalue="2013-06-30" />season minvalue="2013-06-01" maxvalue="2013-06-30"
-            </dd>
-            <dd>
-                date range:
-                <input type="text" name="date2" multidate="daterange" value="2013-06-03" maxvalue="2013-06-30" />
-                <input type="text" name="date2" multidate="daterange" value="2013-06-03" maxvalue="2013-06-30" />
+            <input type="text" name="date4" value="" size="60"
+                multidate="month" 
+                multiselect="true" 
+
+                calendarshow="calendarshow"
+                calendarhide="calendarhide"
+                calendarlayoutchange="calendarlayoutchange"
+                calendarclear="calendarclear"
+                calendarcancel="calendarcancel"
+                calendarupdate="calendarupdate"
+                calendarupdatemultiselect="calendarupdatemultiselect"
+                /> month, multiselect=true
             </dd>
             <dd>
                 <button type="button" value="" 
                     datatype="date" 
-
                     calendarshow="calendarshow"
                     calendarhide="calendarhide"
                     calendarlayoutchange="calendarlayoutchange"
                     calendarclear="calendarclear"
+                    calendarcancel="calendarcancel"
                     calendarupdate="calendarupdate"
-
                     >pick date button</button>
                 <button type="button" value="2013-01-11" 
                     datatype="week"
+                    calendarshow="calendarshow"
+                    calendarhide="calendarhide"
+                    calendarlayoutchange="calendarlayoutchange"
+                    calendarclear="calendarclear"
+                    calendarcancel="calendarcancel"
+                    calendarupdate="calendarupdate"
                     >pick week button</button>
                 <button type="button" value="2013-02-02" 
                     datatype="month"
+                    multiselect="true" 
+                    calendarshow="calendarshow"
+                    calendarhide="calendarhide"
+                    calendarlayoutchange="calendarlayoutchange"
+                    calendarclear="calendarclear"
+                    calendarcancel="calendarcancel"
+                    calendarupdate="calendarupdate"
                     >pick month button</button>
                 <button type="button" value="2013-03-03" 
                     datatype="season"
+                    calendarshow="calendarshow"
+                    calendarhide="calendarhide"
+                    calendarlayoutchange="calendarlayoutchange"
+                    calendarclear="calendarclear"
+                    calendarcancel="calendarcancel"
+                    calendarupdate="calendarupdate"
                     >pick season button</button>
             </dd>
         </dl>

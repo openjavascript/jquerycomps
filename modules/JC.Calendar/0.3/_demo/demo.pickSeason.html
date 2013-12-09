@@ -7,17 +7,9 @@
     *{ margin: 0; padding: 0; }
     body{ width: 600px; margin: 20px auto 20px; background:#ececec; }
     dl dd{ margin: 10px 0; }
-
-    dl{
-        margin: 20px 0;
-    }
-
-    dt{
-        font-weight: bold;
-    }
 </style>
 <link href='../../../../modules/JC.Tips/0.1/res/default/style.css' rel='stylesheet' />
-<link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+<link href='../../../../modules/JC.Calendar/0.3/res/default/style.css' rel='stylesheet' />
 <script src="../../../../lib.js"></script>
 <script src="../../../../config.js"></script>
 <script>
@@ -74,7 +66,7 @@
     <br /><br /><br /><br /><br /><br />
     <form action='' method='get'>
         <dl>
-            <dt>normal format</dt>
+            <dt>JC.Calendar 示例, 如果没有特别声明, 默认type 都为 date</dt>
             <dd><input type="text" name="date1" multidate="date" currentcanselect="true" class="testitem" /> date</dd>
             <dd><input type="text" name="date1" multidate="week" value="" currentcanselect="true" class="testitem" /> week</dd>
             <dd><input type="text" name="date3" multidate="month" value="" currentcanselect="true" class="testitem" /> month</dd>
@@ -82,37 +74,53 @@
                 <input type="text" name="date2" multidate="season" value="" currentcanselect="true" class="testitem" />
                 <input type="button" class="UXCCalendar_btn" /> season
             </dd>
+            <dd><input type="text" name="notdate" />not date</dd>
+            <dd>
+                <input type="text" name="date4" multidate="date" value="2012.04.02" /><input type="button" class="UXCCalendar_btn" />
+            </dd>
+            <dd>
+                <input type="text" name="date5" multidate="week" value="20110201" /><input type="button" class="UXCCalendar_btn" />week
+            </dd>
+            <dd>
+                <input type="text" name="date2" multidate="season" value="2013-06-03" minvalue="2013-06-03" />season minvalue="2013-06-03"
+            </dd>
+            <dd>
+                <input type="text" name="date2" multidate="season" value="2013-06-03" maxvalue="2013-06-30" />season maxvalue="2013-06-30"
+            </dd>
+            <dd>
+            <input type="text" name="date2" multidate="season" value="2013-06-03" minvalue="2013-06-01" maxvalue="2013-06-30" />season minvalue="2013-06-01" maxvalue="2013-06-30"
+            </dd>
             <dd>
                 date range:
                 <input type="text" name="date2" multidate="daterange" value="2013-06-03" maxvalue="2013-06-30" />
                 <input type="text" name="date2" multidate="daterange" value="2013-06-03" maxvalue="2013-06-30" />
             </dd>
-        </dl>
+            <dd>
+                <button type="button" value="" 
+                    datatype="date" 
 
-        <dl>
-            <dt>special format</dt>
-            <dd>
-                <input type="text" name="date1" class="testitem" 
-                multidate="date" 
-                currentcanselect="true" 
-                dateformat="%Y-%m-%d"
-                /> date
-            </dd>
-            <dd><input type="text" name="date1" multidate="week" value="" currentcanselect="true" class="testitem" /> week</dd>
-            <dd><input type="text" name="date3" multidate="month" value="" currentcanselect="true" class="testitem" /> month</dd>
-            <dd>
-                <input type="text" name="date2" multidate="season" value="" currentcanselect="true" class="testitem" />
-                <input type="button" class="UXCCalendar_btn" /> season
-            </dd>
-            <dd>
-                date range:
-                <input type="text" name="date2" multidate="daterange" value="2013-06-03" maxvalue="2013-06-30" />
-                <input type="text" name="date2" multidate="daterange" value="2013-06-03" maxvalue="2013-06-30" />
+                    calendarshow="calendarshow"
+                    calendarhide="calendarhide"
+                    calendarlayoutchange="calendarlayoutchange"
+                    calendarclear="calendarclear"
+                    calendarupdate="calendarupdate"
+
+                    >pick date button</button>
+                <button type="button" value="2013-01-11" 
+                    datatype="week"
+                    >pick week button</button>
+                <button type="button" value="2013-02-02" 
+                    datatype="month"
+                    >pick month button</button>
+                <button type="button" value="2013-03-03" 
+                    datatype="season"
+                    >pick season button</button>
             </dd>
         </dl>
     </form>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
-    <div style="height:3000px;"></div>
 </body>
 </html>
 
