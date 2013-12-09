@@ -343,6 +343,7 @@
 
                         _p.selector().append( _tpl );
                         
+
                         //if ( !_p.hasFixedPXWidth() ) {
 
                             _p.setWidth(0, _p.selector().find('div.js-roll-table'), _p.colNum() - _fcols  );
@@ -399,7 +400,7 @@
                         _p.createHdTpl( _thead, _fcols );
                         _p.createBdTpl( _tbody, _fcols );
                         _p.createHdTpl( _thead2, _p.colNum() - _fcols - _fcols2 );
-                        _p.createBdTpl( _tbody2, _fcols2 );
+                        _p.createBdTpl( _tbody2, _p.colNum() - _fcols - _fcols2 );
                         _p.createHdTpl( _thead3, _fcols2 );
                         _p.createBdTpl( _tbody3, _fcols2 );
 
