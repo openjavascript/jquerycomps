@@ -1202,9 +1202,9 @@
         !_date &amp;&amp; ( _date = new Date() );
         !_format &amp;&amp; ( _format = &#x27;YY-MM-DD&#x27; );
         var _r = _format, _tmp
-            , _monthName = [ &#x27;january&#x27;, &#x27;february&#x27;, &#x27;march&#x27;, &#x27;april&#x27;, &#x27;may&#x27;
-                            , &#x27;june&#x27;, &#x27;july&#x27;, &#x27;august&#x27;, &#x27;september&#x27;, &#x27;october&#x27;, &#x27;november&#x27;, &#x27;december&#x27; ] 
-            , _monthShortName = [&#x27;jan&#x27;, &#x27;feb&#x27;, &#x27;mar&#x27;, &#x27;apr&#x27;, &#x27;may&#x27;, &#x27;jun&#x27;, &#x27;jul&#x27;, &#x27;aug&#x27;, &#x27;sep&#x27;, &#x27;sept&#x27;, &#x27;oct&#x27;, &#x27;nov&#x27;, &#x27;dec&#x27; ]
+            , _monthName = [ &#x27;january&#x27;, &#x27;february&#x27;, &#x27;march&#x27;, &#x27;april&#x27;, &#x27;may&#x27;, &#x27;june&#x27;
+                            , &#x27;july&#x27;, &#x27;august&#x27;, &#x27;september&#x27;, &#x27;october&#x27;, &#x27;november&#x27;, &#x27;december&#x27; ] 
+            , _monthShortName = [&#x27;jan&#x27;, &#x27;feb&#x27;, &#x27;mar&#x27;, &#x27;apr&#x27;, &#x27;may&#x27;, &#x27;jun&#x27;, &#x27;jul&#x27;, &#x27;aug&#x27;, &#x27;sep&#x27;, &#x27;oct&#x27;, &#x27;nov&#x27;, &#x27;dec&#x27; ]
             ;
 
         _r = _r
@@ -1219,6 +1219,7 @@
             })
             .replace( /mm/g, _date.getMonth() + 1 )
             .replace( /dd/g, _date.getDate() )
+            .replace( /d/g, _date.getDate() )
 
             .replace( /y/g, _date.getFullYear() )
 

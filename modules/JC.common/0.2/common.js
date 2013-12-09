@@ -1014,9 +1014,9 @@
         !_date && ( _date = new Date() );
         !_format && ( _format = 'YY-MM-DD' );
         var _r = _format, _tmp
-            , _monthName = [ 'january', 'february', 'march', 'april', 'may'
-                            , 'june', 'july', 'august', 'september', 'october', 'november', 'december' ] 
-            , _monthShortName = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'sept', 'oct', 'nov', 'dec' ]
+            , _monthName = [ 'january', 'february', 'march', 'april', 'may', 'june'
+                            , 'july', 'august', 'september', 'october', 'november', 'december' ] 
+            , _monthShortName = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec' ]
             ;
 
         _r = _r
@@ -1031,6 +1031,7 @@
             })
             .replace( /mm/g, _date.getMonth() + 1 )
             .replace( /dd/g, _date.getDate() )
+            .replace( /d/g, _date.getDate() )
 
             .replace( /y/g, _date.getFullYear() )
 
