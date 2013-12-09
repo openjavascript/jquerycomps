@@ -1519,7 +1519,7 @@
             "namespace": "JC",
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
             "line": 2,
-            "description": "TableFreeze 表格固定指定列功能\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.TableFreeze/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化div为class=\"js_compTableFreeze\"下的表格</h2>\n<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>freezeType = string</dt>\n   <dd>\n      声明表格列冻结的类型：\n      <p><b>prev：</b>左边的列固定，其他滚动</p>\n      <p><b>next：</b>右边的列固定，其他滚动</p>\n      <p><b>both：</b>两边的列固定，其他滚动</p>\n   </dd>\n\n   <dt>freezeCol = string</dt>\n   <dd>\n       声明表格要冻结的列数:\n       <p>为<b>0：</b>全部滚动，不冻结</p>\n       <p>为<b>列表数目：</b>全部冻结， 不滚动</p>\n       <p>为<b>num,num：</b>freezeType为<b>both</b>时，第一个数字表示前面冻结的列数<br/>\n         第二个数字表示后面冻结的列数。<br/>\n          当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。\n       </p>\n\n   </dd>\n</dl>",
+            "description": "TableFreeze 表格固定指定列功能\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.TableFreeze/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化div为class=\"js_compTableFreeze\"下的表格</h2>\n<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>freezeType = string</dt>\n   <dd>\n      声明表格列冻结的类型：\n      <p><b>prev：</b>左边的列固定，其他滚动</p>\n      <p><b>next：</b>右边的列固定，其他滚动</p>\n      <p><b>both：</b>两边的列固定，其他滚动</p>\n   </dd>\n\n   <dt>freezeCol = string</dt>\n   <dd>\n       声明表格要冻结的列数:\n       <p>为<b>0：</b>全部滚动，不冻结</p>\n       <p>为<b>列表数目：</b>全部冻结， 不滚动</p>\n       <p>为<b>num,num：</b>freezeType为<b>both</b>时，第一个数字表示前面冻结的列数<br/>\n         第二个数字表示后面冻结的列数。<br/>\n          当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。\n       </p>\n\n   </dd>\n\n   <dt>beforeCreateTableCallback = function</dt>\n   <dd>\n       表格创建前, 触发的回调, <b>window 变量域</b>\n<pre>function beforeCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'beforeCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>afterCreateTableCallback = function</dt>\n   <dd>\n       表格创建后, 触发的回调, <b>window 变量域</b>\n<pre>function afterCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'afterCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -9354,7 +9354,7 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 178,
+            "line": 198,
             "description": "获取或设置 TableFreeze 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -9375,7 +9375,7 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 193,
+            "line": 213,
             "description": "初始化可识别的 TableFreeze 实例",
             "itemtype": "method",
             "name": "init",
@@ -9396,7 +9396,7 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 240,
+            "line": 266,
             "description": "更新 TableFreeze 状态",
             "itemtype": "method",
             "name": "update",
@@ -9405,10 +9405,24 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 251,
+            "line": 277,
             "description": "resize时更新 TableFreeze 状态",
             "itemtype": "method",
             "name": "fixHeight",
+            "class": "JC.TableFreeze",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
+            "line": 791,
+            "description": "TableFreeze调用前的回调",
+            "class": "JC.TableFreeze",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
+            "line": 802,
+            "description": "TableFreeze调用后的回调",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
@@ -15813,6 +15827,14 @@
         {
             "message": "Missing item type\n自动化初始 Tab 实例\n如果 Tab.autoInit = true, 鼠标移至 Tab 后会自动初始化 Tab",
             "line": " ../modules/JC.Tab/0.1/Tab.js:652"
+        },
+        {
+            "message": "Missing item type\nTableFreeze调用前的回调",
+            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:791"
+        },
+        {
+            "message": "Missing item type\nTableFreeze调用后的回调",
+            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:802"
         },
         {
             "message": "Missing item type\n页面加载完毕后, 是否自动初始化 Tips",

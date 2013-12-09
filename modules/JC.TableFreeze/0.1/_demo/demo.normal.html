@@ -290,7 +290,7 @@
         </table>
    </div>
 
-    <div class="table js_compTableFreeze" freezeType="prev" freezeCols="2">
+     <div class="table js_compTableFreeze" freezeType="prev" freezeCols="2">
         <table>
             <thead>
                 <tr>
@@ -343,17 +343,8 @@
                     <td >
                         col11
                     </td>
-                    <td >
+                    <td colspan="4">
                         col12
-                    </td>
-                    <td >
-                        col13
-                    </td>
-                    <td >
-                        col14
-                    </td>
-                    <td >
-                        col15
                     </td>
                 </tr>
                   <tr>
@@ -416,7 +407,7 @@
         </table>
    </div>
 
-    <div class="table js_compTableFreeze" freezeType="prev" freezeCols="3">
+ <div class="table js_compTableFreeze" freezeType="prev" freezeCols="3">
         <table>
             <thead>
                 <tr>
@@ -1010,7 +1001,7 @@
         </table>
    </div>
   
-    <div class="table js_compTableFreeze" freezeType="both" freezeCols="1, 1">
+    <div class="table js_compTableFreeze" freezeType="both" freezeCols="1,1">
         <table>
             <thead>
                 <tr>
@@ -1030,19 +1021,19 @@
                         item4
                     </th>
                     <th> 
-                        item0
+                        item5
                     </th>
                     <th>
-                        item1
+                        item6
                     </th>
                     <th>
-                        item2
+                        item7
                     </th>
                     <th>
-                        item3
+                        item8
                     </th>
                     <th>
-                        item4
+                        item9
                     </th>
                 </tr>
             </thead>
@@ -1064,53 +1055,52 @@
                         col04
                     </td>
                     <td >
-                        col00
+                        col05
                     </td>
                     <td>
-                        col01
+                        col06
                     </td>
                     <td >
-                        col02
+                        col07
                     </td>
                      <td>
-                        col03
+                        col08
                     </td>
                      <td>
-                        col04
+                        col09
                     </td>
                 </tr>
                 <tr>
                     <td >
-                        col00
-                    </td>
-                    <td>
-                        col01
-                    </td>
-                    <td >
-                        col02
-                    </td>
-                     <td>
-                        col03
-                    </td>
-                     <td>
-                        col04
-                    </td>
-                    <td>
                         col10
                     </td>
-                     <td>
+                    <td>
                         col11
                     </td>
-                     <td>
+                    <td >
                         col12
                     </td>
                      <td>
                         col13
                     </td>
-                      <td>
+                     <td>
                         col14
                     </td>
-
+                    <td >
+                        col15
+                    </td>
+                    <td>
+                        col16
+                    </td>
+                    <td >
+                        col17
+                    </td>
+                     <td>
+                        col18
+                    </td>
+                     <td>
+                        col19
+                    </td>
                 </tr>
                   <tr>
                     <td>
@@ -1129,19 +1119,19 @@
                         col24
                     </td>
                      <td >
-                        col00
+                        col25
                     </td>
                     <td>
-                        col01
+                        col26
                     </td>
                     <td >
-                        col02
+                        col27
                     </td>
                      <td>
-                        col03
+                        col28
                     </td>
                      <td>
-                        col04
+                        col29
                     </td>
                 </tr>
                 <tr>
@@ -1161,58 +1151,27 @@
                         col34
                     </td>
                      <td >
-                        col00
+                        col35
                     </td>
                     <td>
-                        col01
+                        col36
                     </td>
                     <td >
-                        col02
+                        col37
                     </td>
                      <td>
-                        col03
+                        col38
                     </td>
                      <td>
-                        col04
+                        col39
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        col40
-                    </td>
-                     <td>
-                        col41
-                    </td>
-                     <td>
-                        col42
-                    </td>
-                     <td>
-                        col43
-                    </td>
-                     <td>
-                        col44
-                    </td>
-                     <td >
-                        col00
-                    </td>
-                    <td>
-                        col01
-                    </td>
-                    <td >
-                        col02
-                    </td>
-                     <td>
-                        col03
-                    </td>
-                     <td>
-                        col04
-                    </td>
-                </tr>
+               
             </tbody>
         </table>
     </div> 
 
-   <div class="table js_compTableFreeze" freezeType="both" freezeCols="2, 2" >
+   <div class="table js_compTableFreeze" freezeType="both" freezeCols="2,4" >
         <table>
             <thead>
                 <tr>
@@ -1336,8 +1295,18 @@
     <script src="../../../../config.js"></script>
     <script>
         JC.debug = true;
-        requirejs( [ 'JC.TableFreeze' ], function(){
-        });
+        requirejs( [ 'JC.TableFreeze' ], function(){});
+    </script>
+    <script>
+        function beforeCreateTableCallback ( _selector ) {
+            var _ins = this;
+            JC.log( 'beforeCreateTableCallback', new Date().getTime() );
+        }
+
+        function afterCreateTableCallback ( _selector ) {
+            var _ins = this;
+            JC.log( 'afterCreateTableCallback', new Date().getTime() );
+        }
     </script>
 </body>
 </html>
