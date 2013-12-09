@@ -173,7 +173,7 @@
  
         this._init();
  
-        JC.log( 'TableFreeze:', new Date().getTime() );
+        //JC.log( 'TableFreeze:', new Date().getTime() );
     }
     /**
      * 获取或设置 TableFreeze 的实例
@@ -309,12 +309,12 @@
 
                         _p.selector().append( _tpl );
 
-                        if ( !_p.hasFixedPXWidth() ) {
+                        //if ( !_p.hasFixedPXWidth() ) {
                             
                             _p.setWidth(0, _p.selector().find('div.js-fixed-table'), _fcols );
                             _p.setWidth(_fcols, _p.selector().find('div.js-roll-table'), _p.colNum()  );
                         
-                        }
+                        //}
                        
                         //_p.saveWidth = [_p.selector().find('div.js-fixed-table').prop('offsetWidth'),
                         //    _p.selector().find('div.js-roll-table').prop('offsetWidth')];
@@ -343,12 +343,12 @@
 
                         _p.selector().append( _tpl );
                         
-                        if ( !_p.hasFixedPXWidth() ) {
+                        //if ( !_p.hasFixedPXWidth() ) {
 
                             _p.setWidth(0, _p.selector().find('div.js-roll-table'), _p.colNum() - _fcols  );
                             _p.setWidth(_p.colNum() - _fcols, _p.selector().find('div.js-fixed-table'), _p.colNum() );
 
-                        }
+                       // }
                         // _p.saveWidth = [_p.selector().find('div.js-roll-table').prop('offsetWidth'),
                         //     _p.selector().find('div.js-fixed-table').prop('offsetWidth')];
 
@@ -381,13 +381,13 @@
 
                         _p.selector().append( _tpl );
 
-                        if ( !_p.hasFixedPXWidth() ) {
+                        //if ( !_p.hasFixedPXWidth() ) {
                             
                             _p.setWidth(0, _p.selector().find('div.js-fixed-table').eq(0), _fcols  );
                             _p.setWidth(_fcols, _p.selector().find('div.js-roll-table'),  _fcols + _p.colNum() - _fcols - _fcols2 );
                             _p.setWidth(_fcols + _p.colNum() - _fcols - _fcols2, _p.selector().find('div.js-fixed-table').eq(1), _p.colNum() );
 
-                        }
+                        //}
 
                         _thead = _p.selector().find('div.js-fixed-table thead').eq(0);
                         _tbody = _p.selector().find('div.js-fixed-table tbody').eq(0);
@@ -415,9 +415,11 @@
 
  
 
-        createHdTpl: function ( _thead, _fc, _type, _thead2 ) {
+        createHdTpl: function ( _thead, _fc ) {
             var _p = this,
-                _stpl = _p.sourceTable;
+                _stpl = _p.sourceTable,
+                _fragment = document.createDocumentFragment(),
+                _$fragment = $(_fragment);
 
             _stpl.find('thead').eq(0).children('tr').each( function ( _ix, _item ) {
 
@@ -425,8 +427,8 @@
                     _tr,
                     _cloneTr = $(_item).get(0).cloneNode(false);
 
-                _thead.append(_cloneTr);
-                _tr = _thead.children('tr:last');
+                _$fragment.append(_cloneTr);
+                _tr = _$fragment.children('tr:last');
 
                 $( _item ).children('td,th').each( function ( _six, _sitem ) {
                     
@@ -441,67 +443,76 @@
                     if ( typeof _colspan === 'undefined' ) {
                         _cix = _cix + 1;
                     } else {
-                        _cix = _colspan;
+                        _cix += parseInt(_colspan, 10);
                     }
 
                 });
             
-            });   
+            });
+
+            _$fragment.appendTo( _thead );   
         },
 
-        createBdTpl: function ( _tbody, _fc, _type, _tbody2 ) {
+        createBdTpl: function ( _tbody, _fc ) {
 
             var _p = this,
                 _stpl = _p.sourceTable,
-                _row = {};
+                _row = {},
+                _fragment = document.createDocumentFragment(),
+                _$fragment = $(_fragment);
 
             _stpl.find('tbody').eq(0).children('tr').each( function ( _ix, _item ) {
                 var _cloneTr = $(_item).get(0).cloneNode(false), 
                     _cix = 0,
                     _tr;
 
-                _tbody.append( _cloneTr );
-
-                _tr = _tbody.children('tr:last')
+                _$fragment.append( _cloneTr );
+                _tr = _$fragment.children('tr:last');
 
                 $( _item ).children('td,th').each( function ( _six, _sitem ) {
                     
                     var _colspan = $(this).attr('colspan'),
                         _rowspan = $(this).attr('rowspan'),
-                        _obj = {};
-
+                        _obj = {},
+                        _key;
+                    
                     if ( _cix >= _fc ) {
                       return false;
                     }
 
                     if ( typeof _rowspan != 'undefined' ) {
+                        _rowspan = parseInt(_rowspan, 10);
+
                         _obj = {
                             six: _six,
                             rowspan: _rowspan
                         };
-                    }
 
-                    for ( var i = 1; i < _rowspan; i++ ) {
-                        _row[(_ix + i) + '0'] = _obj;
+                        for ( var i = 1; i < _rowspan; i++ ) {
+                            _row[(_ix + i) + '0'] = _obj;
+                        }
+
                     }
                     
                     if ( typeof _colspan === 'undefined' ) {
                         _cix = _cix + 1;
                     } else {
-                        _cix = _colspan;
+                        _cix += parseInt(_colspan, 10);
                     }
 
-                    var _key = _ix + '0';
+                    _key = _ix + '0';
 
                     if ( _key in _row  ) {
                         _cix = _cix + 1;
                     }
-
+                   
                     $(this).appendTo( _tr );
 
                 });
-            
-            });   
+               
+            }); 
+
+            _$fragment.appendTo( _tbody );  
             
         },
 
@@ -638,7 +649,7 @@
                 _r = false;
             }
 
-            JC.log("supportFreeze", _r);
+            //JC.log("supportFreeze", _r);
 
             return _r;
         },
@@ -656,7 +667,7 @@
                 _r = false;
             }
 
-            JC.log("supportScroll", _r, _c);
+            //JC.log("supportScroll", _r, _c);
 
             return _r;
         },
@@ -747,7 +758,7 @@
         },
 
         update: function () {
-            JC.log("View update here");
+            //JC.log("View update here");
             var _p = this;
 
             
@@ -783,11 +794,9 @@
     $(window).on( 'resize', function(){
         $( 'div.js_compTableFreeze' ).each( function () {
             var _ins = TableFreeze.getInstance( $( this ) );
-            var _timer = null;
-            clearTimeout(_timer);
-            _timer = window.setTimeout( function () {
-                _ins && _ins.fixHeight();
-            } , 30);
+            
+            _ins && _ins.fixHeight();
+           
         });
     });
 
