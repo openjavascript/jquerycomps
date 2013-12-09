@@ -2395,35 +2395,35 @@
 
         , tpl:
             [
-            '<div id="UXCCalendar_year" class="UXCCalendar UXCCalendar_week UXCCalendar_year" >'
-            ,'    <div class="UHeader">'
-            ,'        <button type="button" class="UButton UNextYear">&nbsp;&gt;&gt;&nbsp;</button>'
-            ,'        <button type="button" class="UButton UPreYear">&nbsp;&lt;&lt;&nbsp;</button>'
-            ,'        <select class="UYear" style=""></select>'
-            ,'    </div>'
-            ,'    <table class="UTable UTableBorder">'
-            ,'        <tbody></tbody>'
-            ,'    </table>'
-            ,'    <div class="UFooter">'
-            ,'        <button type="button" class="UConfirm">确定</button>'
-            ,'        <button type="button" class="UClear">清空</button>'
-            ,'        <button type="button" class="UCancel">取消</button>'
-            ,'    </div>'
-            ,'</div>'
+            '<div id="UXCCalendar_year" class="UXCCalendar UXCCalendar_week UXCCalendar_year">\n'
+            ,'    <table class="UTable UTableBorder">\n'
+            ,'        <tbody>\n'
+            ,'            <tr>\n'
+            ,'                <td class="UYearBox">\n'
+            ,'                    <button type="button" class="UButton UPreYear">&nbsp;&lt;&lt;&nbsp;</button>\n'
+            ,'                </td>\n'
+            ,'                <td></td><td></td><td></td><td></td>\n'
+            ,'            </tr>\n'
+            ,'            <tr><td></td><td></td><td></td><td></td><td></td></tr>\n'
+            ,'            <tr><td></td><td></td><td></td><td></td><td></td></tr>\n'
+            ,'            <tr><td></td><td></td><td></td><td></td><td></td></tr>\n'
+            ,'            <tr><td></td><td></td><td></td><td></td><td></td></tr>\n'
+            ,'            <tr><td></td><td></td><td></td><td></td><td></td></tr>\n'
+            ,'            <tr>\n'
+            ,'                <td></td><td></td><td></td><td></td>\n'
+            ,'                <td class="UYearBox">\n'
+            ,'                    <button type="button" class="UButton UNextYear">&nbsp;&gt;&gt;&nbsp;</button>\n'
+            ,'                </td>\n'
+            ,'            </tr>\n'
+            ,'        </tbody>\n'
+            ,'    </table>\n'
+            ,'    <div class="UFooter">\n'
+            ,'        <button type="button" class="UConfirm">确定</button>\n'
+            ,'        <button type="button" class="UClear">清空</button>\n'
+            ,'        <button type="button" class="UCancel">取消</button>\n'
+            ,'    </div>\n'
+            ,'</div>\n'
             ].join('')
-
-        , month: 
-            function(){
-                var _r = 0, _tmp, _date;
-                ( _tmp = this.layout().find('td.cur a[dstart]') ).length
-                    && ( _date = new Date() )
-                    && (
-                            _date.setTime( _tmp.attr('dstart') )
-                            , _r = _date.getMonth()
-                       )
-                    ;
-                return _r;
-            }
 
         , selectedDate:
             function(){
@@ -2447,70 +2447,69 @@
         _buildBody:
             function( _dateo ){
                 var _p = this
-                    , _date = _dateo.date
+                    , _selector = _p._model.selector()
+                    , _v = _selector.val().trim()
+                    , _selectedYear = _v.replace( /[^\d]+/g, '' )
+                    , _d = _dateo.date
+                    , today = new Date().getFullYear()
                     , _layout = _p._model.layout()
-                    , today = new Date( new Date().getFullYear(), new Date().getMonth(), new Date().getDate() ).getTime()
-                    , nextCount = 0
-                    , _ls = [], _class, _data, _title, _sdate, _edate, _year = _date.getFullYear()
-                    , _rows = 4
-                    , ipt = JC.Calendar.lastIpt
-                    , currentcanselect = JC.f.parseBool( ipt.attr('currentcanselect') )
+                    , _tds = _layout.find( 'tbody > tr > td' )
+                    , _len = _tds.length - 1
+                    , _yearCount 
+                    , _yearEnd
+                    , _year
+                    , currentcanselect = JC.f.parseBool( _selector.attr('currentcanselect') )
+                    , _title, _class, _dstart, _dend
                     ;
 
-                    if( _dateo.maxvalue && currentcanselect ){
-                        var _m = _dateo.maxvalue.getMonth() + 1, _md;
+                _selectedYear && ( _selectedYear = _selectedYear.slice( 0, 4 ) );
+                !_selectedYear && ( _selectedYear = today );
 
-                        if( _m % 3 !== 0 ){
-                            _dateo.maxvalue.setDate( 1 );
-                            _dateo.maxvalue.setMonth( _m + ( 3 - ( _m % 3 ) - 1 ) );
-                        }
-                        _dateo.maxvalue.setDate( JC.f.maxDayOfMonth( _dateo.maxvalue ) );
-                    }
+                _year = _d.getFullYear();
+                _yearCount = _year - Math.floor( _len / 2 );
+                
+                if( _dateo.minvalue && currentcanselect ){
+                    _dateo.minvalue.setFullYear( _dateo.minvalue.getFullYear() - 1 );
+                }
 
-                    _ls.push('<tr>');
-                    for( var i = 1, j = 4; i <= j; i++ ){
-                        _sdate = new Date( _year, i * 3 - 3, 1 ); 
-                        _edate = new Date( _year, i * 3 - 1, 1 );
-                        _edate.setDate( JC.f.maxDayOfMonth( _edate ) );
+                if( _dateo.maxvalue && currentcanselect ){
+                    _dateo.maxvalue.setFullYear( _dateo.maxvalue.getFullYear() + 1 );
+                }
+                
+                //alert( _tds.length );
+                _tds.each( function( _ix, _item ){
+                    _item = $( _item );
+                    if( _ix == 0 || _ix == _len ){
+                    }else{
+                        //_item.html( JC.f.printf( '<a href="javascript:">{0}</a>', _yearCount ) );
 
-                        var _cnUnit = JC.Calendar.cnUnit.charAt( i % 10 );
-                        i > 10 && ( _cnUnit = "十" + _cnUnit );
-
-                        _title = JC.f.printf( "{0}年 第{1}季度\n开始日期: {2} (周{4})\n结束日期: {3} (周{5})"
-                                    , _year
-                                    , JC.Calendar.getCnNum( i )
-                                    , JC.f.formatISODate( _sdate )
-                                    , JC.f.formatISODate( _edate )
-                                    , JC.Calendar.cnWeek.charAt( _sdate.getDay() % 7 )
-                                    , JC.Calendar.cnWeek.charAt( _edate.getDay() % 7 )
-                                    );
-
+                        _title = JC.f.printf( "{0}年", _yearCount );
                         _class = [];
 
-                        if( _dateo.minvalue && _sdate.getTime() < _dateo.minvalue.getTime() ) 
+                        _dstart = new Date( _yearCount, 0, 1 );
+                        _dend = new Date( _yearCount, 11, 31 );
+
+                        if( _dateo.minvalue && _dstart.getTime() < _dateo.minvalue.getTime() ) 
                             _class.push( 'unable' );
-                        if( _dateo.maxvalue && _edate.getTime() > _dateo.maxvalue.getTime() ){
+                        if( _dateo.maxvalue && _dend.getTime() > _dateo.maxvalue.getTime() ){
                             _class.push( 'unable' );
                         }
 
-                        if( _date.getTime() >= _sdate.getTime() && _date.getTime() <= _edate.getTime() ) _class.push( 'cur' );
-                        if( today >= _sdate.getTime() && today <= _edate.getTime() ) _class.push( 'today' );
+                        _selectedYear && _selectedYear == _yearCount && _class.push( 'cur' );
 
+                        today == _yearCount && _class.push( 'today' );
 
-                        _ls.push( JC.f.printf( '<td class="{0}"><a href="javascript:" title="{1}"'+
-                                        ' dstart="{3}" dend="{4}" month="{5}" >{2}季度</a></td>'
-                                    , _class.join(' ')
+                        _item.html( JC.f.printf( '<a href="javascript:" title="{0}"'+
+                                        ' dstart="{1}" dend="{2}" " >{3}</a></td>'
                                     , _title
-                                    , _cnUnit
-                                    , _sdate.getTime()
-                                    , _edate.getTime()
-                                    , i
+                                    , _dstart.getTime()
+                                    , _dend.getTime()
+                                    , _yearCount
                                 ));
-                        if( i % 2 === 0 && i != j ) _ls.push( '</tr><tr>' );
+                        _item.prop( 'className', _class.join( ' ' ) );
                     }
-                    _ls.push('</tr>'); 
-     
-                    _layout.find('table.UTableBorder tbody' ).html( $( _ls.join('') ) );
+                    _yearCount++;
+                });
             }
 
         , updateSelected: 
@@ -2529,13 +2528,42 @@
                 }
                 if( !( _dstart && _dend ) ) return;
 
-                /*
-                _p._model.selector().val( JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) );
-                */
                 _p._model.selector().val( _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) );
                 $(_p).trigger( 'TriggerEvent', [ JC.Calendar.Model.UPDATE, 'year', _dstart, _dend ] );
 
                 JC.Calendar.hide();
+            }
+
+        , updateSingleYear:
+            function( _offset ){
+                var _dateo = this._model.layoutDate()
+                    , _a = this._model.layout().find( 'a[dstart]' )
+                    , _firstA = _a.first()
+                    , _lastA = _a.last()
+                    , _dstart = new Date(), _dend = new Date()
+                    , _offsetYear = 17;
+                    ;
+
+                if( _offset > 0 ){
+                    _dstart.setTime( _lastA.attr( 'dstart' ) );
+                    _dend.setTime( _lastA.attr( 'dend' ) );
+                    _dateo.date = _dstart;
+                    _dateo.enddate = _dend;
+
+                    _dateo.date.setFullYear( _dateo.date.getFullYear() + _offsetYear );
+                    _dateo.enddate.setFullYear( _dateo.enddate.getFullYear() + _offsetYear );
+                }else{
+                    _dstart.setTime( _firstA.attr( 'dstart' ) );
+                    _dend.setTime( _firstA.attr( 'dend' ) );
+                    _dateo.date = _dstart;
+                    _dateo.enddate = _dend;
+
+                    _dateo.date.setFullYear( _dateo.date.getFullYear() - _offsetYear );
+                    _dateo.enddate.setFullYear( _dateo.enddate.getFullYear() - _offsetYear );
+                }
+
+                this._buildLayout( _dateo );
+                this._buildDone();
             }
     });
 
@@ -2656,12 +2684,6 @@
             ,'        {0}'
             ,'        <button type="button" class="UButton UNextYear">&nbsp;&gt;&gt;&nbsp;</button>'
             ,'        <button type="button" class="UButton UNextMonth">&nbsp;&nbsp;&gt;&nbsp;&nbsp;</button>'
-            /*
-            ,'       <span class="UYear">'
-            ,'       </span>年'
-            ,'       <span class="UMonth">'
-            ,'       </span>月{0}'
-            */
             ,'    </div>'
             ,'    <table class="UTable UTableBorder">'
             ,'        <tbody></tbody>'
