@@ -9665,7 +9665,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         , "urlDetect": urlDetect
         , "moneyFormat": moneyFormat
         , "dateFormat": dateFormat
-        , "mergeObject": mergeObject
+        , "extendObject": extendObject
         , "safeTimeout": safeTimeout
         , "encoder": encoder
 
@@ -10655,15 +10655,15 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         return _r;
     }
     /**
-     * 合并对象
-     * @method  mergeObject
+     * 扩展对象属性
+     * @method  extendObject
      * @param   {object}    _source
      * @param   {object}    _new
-     * @param   {bool}      _overwrite      default = true
+     * @param   {bool}      _overwrite      是否覆盖已有属性, default = true  
      * @return  object
      * @static
      */
-    function mergeObject( _source, _new, _overwrite ){
+    function extendObject( _source, _new, _overwrite ){
         typeof _overwrite == 'undefined' && ( _overwrite = true );
         if( _source && _new ){
             for( var k in _new ){

@@ -174,7 +174,7 @@
                 MultiDate.Model._inscount++;
 
                 window[ _updatecb ] = 
-                    function( _type, _startDate, _endDate ){
+                    function( _startDate, _endDate, _calendarIns ){
                         _p.mdstartdate( JC.f.formatISODate( _startDate, '' ) );
                         _p.mdenddate( JC.f.formatISODate( _endDate, '' ) );
                     };
