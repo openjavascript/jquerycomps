@@ -189,22 +189,35 @@
                     _p._model.selector().blur();
                     _p._model.selector().trigger('change');
 
-                    var _data = [], _v = _p._model.selector().val().trim(), _startDate, _endDate, _tmp, _item, _tmpStart, _tmpEnd;
+                    var _data = []
+                        , _v = _p._model.selector().val().trim()
+                        , _startDate, _endDate
+                        , _tmp, _item
+                        , _tmpStart, _tmpEnd
+                        ;
 
                     if( _v ){
                         _tmp = _v.split( ',' );
                         for( var i = 0, j = _tmp.length; i < j; i++ ){
-                            _item = _tmp[i].replace( /[^\d]/g, '' );
-                            if( _item.length == 16 ){
-                                _tmpStart = JC.f.parseISODate( _item.slice( 0, 8 ) );
-                                _tmpEnd = JC.f.parseISODate( _item.slice( 8 ) );
-                            }else if( _item.length == 8 ){
-                                _tmpStart = JC.f.parseISODate( _item.slice( 0, 8 ) );
-                                _tmpEnd = JC.f.cloneDate( _tmpStart );
-                            }
-                            if( i === 0 ){
-                                _startDate = JC.f.cloneDate( _tmpStart );
-                                _endDate = JC.f.cloneDate( _tmpEnd );
+
+                            if( _p._model.dateParse( _p._model.selector() ) ){
+                                var _tmpDataObj = _p._model.dateParse( _p._model.selector() )( _tmp[i] );
+                                    _startDate = _tmpDataObj.start;
+                                    _endDate = _tmpDataObj.end;
+                                    !_endDate && ( _endDate = _startDate );
+                            }else{
+                                _item = _tmp[i].replace( /[^\d]/g, '' );
+                                if( _item.length == 16 ){
+                                    _tmpStart = JC.f.parseISODate( _item.slice( 0, 8 ) );
+                                    _tmpEnd = JC.f.parseISODate( _item.slice( 8 ) );
+                                }else if( _item.length == 8 ){
+                                    _tmpStart = JC.f.parseISODate( _item.slice( 0, 8 ) );
+                                    _tmpEnd = JC.f.cloneDate( _tmpStart );
+                                }
+                                if( i === 0 ){
+                                    _startDate = JC.f.cloneDate( _tmpStart );
+                                    _endDate = JC.f.cloneDate( _tmpEnd );
+                                }
                             }
                             _data.push( {'start': _tmpStart, 'end': _tmpEnd } );
                         }
@@ -876,6 +889,7 @@
                             : _p.defaultSingleSelectDate( _r )
                     );
 
+
                 _r.minvalue = JC.f.parseISODate( _p.selector().attr('minvalue') );
                 _r.maxvalue = JC.f.parseISODate( _p.selector().attr('maxvalue') );
 
@@ -886,21 +900,38 @@
                 var _p = this
                     , _selector = _p.selector()
                     , _tmp
+                    , _v = _selector.val().trim()
                     ;
 
-                if( _tmp = JC.f.parseISODate( _selector.val() ) ) _r.date = _tmp;
-                else{
-                    if( _selector.val() && (_tmp = _selector.val().replace( /[^\d]/g, '' ) ).length == 16 ){
-                        _r.date = JC.f.parseISODate( _tmp.slice( 0, 8 ) );
-                        _r.enddate = JC.f.parseISODate( _tmp.slice( 8 ) );
-                    }else{
-                        _tmp = new Date();
-                        if( Calendar.lastIpt && Calendar.lastIpt.is('[defaultdate]') ){
-                            _tmp = JC.f.parseISODate( Calendar.lastIpt.attr('defaultdate') ) || _tmp;
-                        }
-                        _r.date = new Date( _tmp.getFullYear(), _tmp.getMonth(), _tmp.getDate() );
-                    }
+                if( !_v ){
+                    _r.date = new Date();
+                    _r.enddate = JC.f.cloneDate( _r.date );
+                    return _r;
                 }
+
+                if( _p.dateParse( _p.selector() ) ){
+                    var _tmpDataObj = _p.dateParse( _p.selector() )( _p.selector().val().trim() );
+                        _r.date = _tmpDataObj.start;
+                        _r.enddate = _tmpDataObj.end;
+                        !_r.enddate && ( _r.enddate = _r.date );
+                }else{
+                    if( _tmp = JC.f.parseISODate( _selector.val() ) ) _r.date = _tmp;
+                    else{
+                        if( _selector.val() && (_tmp = _selector.val().replace( /[^\d]/g, '' ) ).length == 16 ){
+                            _r.date = JC.f.parseISODate( _tmp.slice( 0, 8 ) );
+                            _r.enddate = JC.f.parseISODate( _tmp.slice( 8 ) );
+                        }else{
+                            _tmp = new Date();
+                            if( Calendar.lastIpt && Calendar.lastIpt.is('[defaultdate]') ){
+                                _tmp = JC.f.parseISODate( Calendar.lastIpt.attr('defaultdate') ) || _tmp;
+                            }
+                            _r.date = new Date( _tmp.getFullYear(), _tmp.getMonth(), _tmp.getDate() );
+                        }
+                    }
+
+                }
+
+
                 return _r;
             }
         , defaultMultiselectDate:
@@ -917,25 +948,36 @@
                         _tmp = _selector.val().trim().replace(/[^\d,]/g, '').split(',');
                         _multidatear = [];
 
+
                         $.each( _tmp, function( _ix, _item ){
-                            if( _item.length == 16 ){
-                                _dstart = JC.f.parseISODate( _item.slice( 0, 8 ) );
-                                _dend = JC.f.parseISODate( _item.slice( 8 ) );
 
-                                if( !_ix ){
-                                    _r.date = JC.f.cloneDate( _dstart );
-                                    _r.enddate = JC.f.cloneDate( _dend );
-                                }
-                                _multidatear.push( { 'start': _dstart, 'end': _dend } );
-                            }else if( _item.length == 8 ){
-                                _dstart = JC.f.parseISODate( _item.slice( 0, 8 ) );
-                                _dend = JC.f.cloneDate( _dstart );
+                            if( _p.dateParse( _selector ) ){
+                                var _tmpDataObj = _p.dateParse( _selector )( _item );
+                                    _dstart = _tmpDataObj.start;
+                                    _dend = _tmpDataObj.end;
+                                    !_dend && ( _dend = _dstart );
+                                    _multidatear.push( { 'start': _dstart, 'end': _dend } );
+                            }else{
 
-                                if( !_ix ){
-                                    _r.date = JC.f.cloneDate( _dstart );
-                                    _r.enddate = JC.f.cloneDate( _dend );
+                                if( _item.length == 16 ){
+                                    _dstart = JC.f.parseISODate( _item.slice( 0, 8 ) );
+                                    _dend = JC.f.parseISODate( _item.slice( 8 ) );
+
+                                    if( !_ix ){
+                                        _r.date = JC.f.cloneDate( _dstart );
+                                        _r.enddate = JC.f.cloneDate( _dend );
+                                    }
+                                    _multidatear.push( { 'start': _dstart, 'end': _dend } );
+                                }else if( _item.length == 8 ){
+                                    _dstart = JC.f.parseISODate( _item.slice( 0, 8 ) );
+                                    _dend = JC.f.cloneDate( _dstart );
+
+                                    if( !_ix ){
+                                        _r.date = JC.f.cloneDate( _dstart );
+                                        _r.enddate = JC.f.cloneDate( _dend );
+                                    }
+                                    _multidatear.push( { 'start': _dstart, 'end': _dend } );
                                 }
-                                _multidatear.push( { 'start': _dstart, 'end': _dend } );
                             }
                         });
                         //alert( _multidatear + ', ' + _selector.val() );
@@ -1107,6 +1149,32 @@
                 _date && ( _r = JC.f.dateFormat( _date, _format ) );
                 return _r;
             }
+
+        , fullFormat:
+            function( _date, _endDate ){
+                var _r = '', _fullFormat = this.selector().attr( 'fullDateFormat' ) || '{0} 至 {1}';
+                if( _date && _endDate ){
+                    _r = JC.f.printf( _fullFormat, this.dateFormat( _date ), this.dateFormat( _endDate ) );
+                }else if( _date ){
+                    _r = JC.f.printf( _fullFormat, this.dateFormat( _date ) );
+                }else if( _endDate ){
+                    _r = JC.f.printf( _fullFormat, this.dateFormat( _endDate ) );
+                }
+                return _r;
+            }
+
+        , dateParse:
+            function( _selector ){
+                var _r;
+
+                _selector
+                    && _selector.attr( 'dateParse' )
+                    && ( _r = window[ _selector.attr( 'dateParse' ) ] )
+                    ;
+
+                return _r;
+            }
+
         , tpl:
             [
             '<div id="UXCCalendar" class="UXCCalendar">'
@@ -1810,7 +1878,12 @@
                 }
                 if( !( _dstart && _dend ) ) return;
 
-                _p._model.selector().val( JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) );
+                /*
+                _p._model.selector().val( 
+                        JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) 
+                );
+                */
+                _p._model.selector().val( _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) ); 
                 $(_p).trigger( 'TriggerEvent', [ JC.Calendar.Model.UPDATE, 'week', _dstart, _dend ] );
 
                 JC.Calendar.hide();
@@ -2039,15 +2112,22 @@
                         if( !_tmp.length ) return;
                         _ar = [];
                         $.each( _tmp, function( _ix, _item ){
-                            _ar.push( JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _item.start ), JC.f.formatISODate( _item.end ) ) );
+                            //_ar.push( JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _item.start ), JC.f.formatISODate( _item.end ) ) );
+                            _ar.push( _text = _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) );
                         });
                         _text = _ar.join(',');
                     }else{
                         _tmp = this._model.selectedDate();
                         _tmp && ( _dstart = _tmp.start, _dend = _tmp.end );
 
+                        /*
                         _dstart && _dend 
                             && ( _text = JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) );
+                        */
+                        _dstart 
+                            && _dend 
+                            && _text = _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) )
+                            ; 
                     }
                 }else{
                     _userSelectedItem = $( _userSelectedItem );
@@ -2062,7 +2142,10 @@
                     _dstart.setTime( _userSelectedItem.attr('dstart') );
                     _dend.setTime( _userSelectedItem.attr('dend') );
 
+                    /*
                     _text = JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) );
+                    */
+                    _text = _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) )
                 }
 
                 if( !_text ) return;
@@ -2246,7 +2329,10 @@
                 }
                 if( !( _dstart && _dend ) ) return;
 
+                /*
                 _p._model.selector().val( JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) );
+                */
+                _p._model.selector().val( _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) );
                 $(_p).trigger( 'TriggerEvent', [ JC.Calendar.Model.UPDATE, 'season', _dstart, _dend ] );
 
                 JC.Calendar.hide();

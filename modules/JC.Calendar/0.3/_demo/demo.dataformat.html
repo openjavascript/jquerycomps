@@ -5,16 +5,53 @@
 <title>360 75 team</title>
 <style type='text/css'>
     *{ margin: 0; padding: 0; }
-    body{ width: 600px; margin: 20px auto 20px; background:#ececec; }
-    dl dd{ margin: 10px 0; }
+    body{  margin: 20px auto 20px; background:#ececec; }
 
     dl{
-        margin: 20px 0;
+        margin: 20px 40px;
     }
 
     dt{
         font-weight: bold;
     }
+
+    dd.odd {
+        background: #ececec;
+    }
+
+    dl dd{ margin: 10px 0; }
+
+    .error{ color: red; }
+    input.error, select.error, textarea.error{ 
+        background-color: #F0DC82;!important;
+        box-shadow: 0 none;
+    }
+    input[type=text], input[type=password]{ width: 200px; }
+
+    input, select, textarea {
+        border: 1px solid #b9b9b9
+    }
+
+    input, select {
+        height: 23px;
+        line-height: 23px;
+    }
+
+    input[type=checkbox], input[type=radio], input.UXC{
+        height: auto;
+        line-height: auto;
+    }
+
+    select[multiple]{
+        height: 80px;
+    }
+
+    div, li{
+        margin: 2px auto;
+    }
+
+    .UXCCalendar_btn{ vertical-align: middle; }
+
 </style>
 <link href='../../../../modules/JC.Tips/0.1/res/default/style.css' rel='stylesheet' />
 <link href='../../../../modules/JC.Calendar/0.3/res/default/style.css' rel='stylesheet' />
@@ -40,7 +77,7 @@
         var today = new Date();
         var maxDate = today;
 
-        $( 'input.testitem' ).val( JC.f.formatISODate( today ) ).attr('maxvalue', JC.f.formatISODate( maxDate ) );
+        //$( 'input.testitem' ).val( JC.f.formatISODate( today ) );//.attr('maxvalue', JC.f.formatISODate( maxDate ) );
 
     });
 
@@ -68,6 +105,19 @@
         var _p = $(this);
         UXC.log( 'calendarupdate', _p.val(), _start, _end );
     }
+
+    function parseYearMonthDate( _dateStr ){
+        _dateStr = _dateStr || '';
+        var _r = { start: null, end: null };
+        if( !_dateStr ) return _r;
+
+        _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+        var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4 ), 10 ) - 1;
+
+        _r.start = new Date( _year, _month, 1 );
+        return _r;
+    }
+
 </script>
 </head>    
 <body>
@@ -95,22 +145,84 @@
                 <input type="text" name="date1" class="testitem" 
                 multidate="date" 
                 currentcanselect="true" 
-                dateformat="YYMMDD"
-                /> date
+                dateFormat="YYMMDD"
+                /> date ( dateformat="YYMMDD" )
             </dd>
             <dd>
                 <input type="text" name="date1" class="testitem" 
                 multidate="date" 
                 currentcanselect="true" 
-                dateformat="YY/MM/DD"
-                /> date
+                dateFormat="YY/MM/DD"
+                /> date ( dateformat="YY/MM/DD" )
             </dd>
-            <dd><input type="text" name="date1" multidate="week" value="" currentcanselect="true" class="testitem" /> week</dd>
-            <dd><input type="text" name="date3" multidate="month" value="" currentcanselect="true" class="testitem" /> month</dd>
+
+            <dd>
+                <input type="text" name="date1" value="" class="testitem"  
+                multidate="week" currentcanselect="true" 
+                /> week
+            </dd>
+            <dd>
+                <input type="text" name="date1" value="" class="testitem"  
+                multidate="week" currentcanselect="true" 
+                fullDateFormat="{0} ~ {1}"
+                /> week ( fullDateFormat="{0} ~ {1}" )
+            </dd>
+            <dd>
+                <input type="text" name="date1" value="" class="testitem"  
+                multidate="week" currentcanselect="true" 
+                dateFormat="YY/MM/DD"
+                fullDateFormat="{0} ~ {1}"
+                /> week ( dateFormat="YY/MM/DD", fullDateFormat="{0} ~ {1}" )
+            </dd>
+
+            <dd>
+                <input type="text" name="date3" value="" class="testitem" 
+                multidate="month" 
+                currentcanselect="true" 
+                /> month
+            </dd>
+
+            <dd>
+                <input type="text" name="date3" value="" class="testitem" 
+                multidate="month" 
+                currentcanselect="true" 
+                dateFormat="YY/MM/DD"
+                fullDateFormat="{0} ~ {1}"
+                /> month ( dateFormat="YY/MM/DD", fullDateFormat="{0} ~ {1}" )
+            </dd>
+
+            <dd>
+                <input type="text" name="date3" value="" class="testitem" 
+                multidate="month" 
+                currentcanselect="true" 
+
+                fullDateFormat="{0}"
+                dateFormat="YY-MM"
+                dateParse="parseYearMonthDate"
+                /> month ( dateFormat="YY-MM", fullDateFormat="{0}", dateParse="parseYearMonthDate" )
+            </dd>
+
+
             <dd>
                 <input type="text" name="date2" multidate="season" value="" currentcanselect="true" class="testitem" />
                 <input type="button" class="UXCCalendar_btn" /> season
             </dd>
+
+            <dd>
+                <input type="text" name="date1" value="" class="testitem"  
+                multidate="season" currentcanselect="true" 
+                fullDateFormat="{0} ~ {1}"
+                /> season ( fullDateFormat="{0} ~ {1}" )
+            </dd>
+
+            <dd>
+                <input type="text" name="date1" value="" class="testitem"  
+                multidate="season" currentcanselect="true" 
+                dateFormat="YY/MM/DD"
+                fullDateFormat="{0} ~ {1}"
+                /> season ( dateFormat="YY/MM/DD", fullDateFormat="{0} ~ {1}" )
+            </dd>
+
             <dd>
                 date range:
                 <input type="text" name="date2" multidate="daterange" value="2013-06-03" maxvalue="2013-06-30" />
