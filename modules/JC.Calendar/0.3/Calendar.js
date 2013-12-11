@@ -1818,7 +1818,7 @@ function parseYearDate( _dateStr ){
 
     JC.Calendar.clone( WeekModel, WeekView );
 
-    JC.f.mergeObject( WeekModel.prototype, {
+    JC.f.extendObject( WeekModel.prototype, {
         layout: 
             function(){
                 var _r = $('#UXCCalendar_week');
@@ -1899,7 +1899,7 @@ function parseYearDate( _dateStr ){
             }
     });
 
-    JC.f.mergeObject( WeekView.prototype, {
+    JC.f.extendObject( WeekView.prototype, {
         _buildBody:
             function( _dateo ){
                 var _p = this
@@ -2063,7 +2063,7 @@ function parseYearDate( _dateStr ){
 
     JC.Calendar.clone( MonthModel, MonthView );
 
-    JC.f.mergeObject( MonthModel.prototype, {
+    JC.f.extendObject( MonthModel.prototype, {
         layout:
             function(){
                 var _r = $('#UXCCalendar_month');
@@ -2138,7 +2138,7 @@ function parseYearDate( _dateStr ){
             }
     });
 
-    JC.f.mergeObject( MonthView.prototype, {
+    JC.f.extendObject( MonthView.prototype, {
         _buildBody: 
             function( _dateo ){
                 var _p = this
@@ -2295,7 +2295,7 @@ function parseYearDate( _dateStr ){
     JC.Calendar.clone( SeasonModel, SeasonView );
 
 
-    JC.f.mergeObject( SeasonModel.prototype, {
+    JC.f.extendObject( SeasonModel.prototype, {
         layout: 
             function(){
                 var _r = $('#UXCCalendar_season');
@@ -2356,7 +2356,7 @@ function parseYearDate( _dateStr ){
             }
     });
 
-    JC.f.mergeObject( SeasonView.prototype, {
+    JC.f.extendObject( SeasonView.prototype, {
 
         _buildBody:
             function( _dateo ){
@@ -2477,7 +2477,7 @@ function parseYearDate( _dateStr ){
 
     JC.Calendar.clone( YearModel, YearView );
 
-    JC.f.mergeObject( YearModel.prototype, {
+    JC.f.extendObject( YearModel.prototype, {
         layout: 
             function(){
                 var _r = $('#UXCCalendar_year');
@@ -2538,7 +2538,7 @@ function parseYearDate( _dateStr ){
             }
     });
 
-    JC.f.mergeObject( YearView.prototype, {
+    JC.f.extendObject( YearView.prototype, {
 
         _buildBody:
             function( _dateo ){
@@ -2700,7 +2700,7 @@ function parseYearDate( _dateStr ){
 
     JC.Calendar.clone( MonthDayModel, MonthDayView );
 
-    JC.f.mergeObject( MonthDayModel.prototype, {
+    JC.f.extendObject( MonthDayModel.prototype, {
         fixCheckall: 
             function(){
                 var _p = this, _cks, _ckAll, _isAll = true, _sp;
@@ -2863,7 +2863,7 @@ function parseYearDate( _dateStr ){
             }
     });
 
-    JC.f.mergeObject( MonthDayView.prototype, {
+    JC.f.extendObject( MonthDayView.prototype, {
         init:
             function(){
                 var _p = this;
