@@ -791,7 +791,7 @@
             switch ( _p.freezeType() ) {
                 case 'prev':
                 case 'last':
-                    _tpl = '<table><tr><td class="compTFEextraTd"><div class="{0}" style="width:100%;">'
+                    _tpl = '<table class="compTFEextraTable"><tr><td class="compTFEextraTd"><div class="{0}" style="width:100%;">'
                         + _table.outerHTML
                         + '</div></td><td class="compTFEextraTd"><div class="{1}" style="width:100%;">'
                         + _table.outerHTML
@@ -799,7 +799,7 @@
                         + '</tr></table>';
                     break;
                 case 'both':
-                    _tpl = '<table><tr><td class="compTFEextraTd"><div class="{0}" style="width:100%;">'
+                    _tpl = '<table class="compTFEextraTable"><tr><td class="compTFEextraTd"><div class="{0}" style="width:100%;">'
                         + _table.outerHTML
                         + '</div></td><td class="compTFEextraTd"><div class="{1}" style="width:100%;">'
                         + _table.outerHTML
@@ -875,11 +875,6 @@
     };
  
     BaseMVC.build( TableFreeze );
-    
-    $.support.mozilla = /firefox/.test(navigator.userAgent.toLowerCase());
-    $.support.webkit = /webkit/.test(navigator.userAgent.toLowerCase());
-    $.support.opera = /opera/.test(navigator.userAgent.toLowerCase());
-    $.support.msie = /msie/.test(navigator.userAgent.toLowerCase());
 
     $(document).ready( function () {
         var _insAr = 0;
@@ -914,7 +909,7 @@
 }(jQuery));
     return JC.TableFreeze;
 });}( typeof define === 'function' && define.amd ? define : 
-        function ( _name, _require, _cb) { 
+        function ( _name, _require, _cb ) { 
             typeof _name == 'function' && ( _cb = _name );
             typeof _require == 'function' && ( _cb = _require ); 
             _cb && _cb(); 
