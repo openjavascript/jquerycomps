@@ -1282,6 +1282,7 @@
                 var _lw = _layout.width(), _lh = _layout.height()
                     , _iw = _ipt.width(), _ih = _ipt.height(), _ioset = _ipt.offset()
                     , _x, _y, _winw = $(window).width(), _winh = $(window).height()
+                    , _scrleft = $(document).scrollLeft()
                     , _scrtop = $(document).scrollTop()
                     ;
 
@@ -1290,9 +1291,13 @@
                 if( ( _y + _lh - _scrtop ) > _winh ){
                     JC.log('y overflow');
                     _y = _ioset.top - _lh - 3;
-
-                    if( _y < _scrtop ) _y = _scrtop;
+                    _y < _scrtop && ( _y = _scrtop );
                 }
+
+                if( ( _x + _lw -_scrleft ) > _winw ){
+                    _x = _winw - _lw + _scrleft - 5;
+                }
+                _x < _scrleft && ( _x = _scrleft + 0 );
 
                 _layout.css( {left: _x+'px', top: _y+'px'} );
 
@@ -1597,10 +1602,9 @@
             , 'textarea[datatype=date]', 'textarea[datatype=daterange]', 'textarea[multidate], textarea[datatype=monthday]' ].join(), 'click' , function($evt){
             Calendar.pickDate( this );
     });
-}(jQuery));
-;
-
-;(function($){
+    //
+    /// WEEK CODE 
+    //
     /**
      * 自定义周弹框的模板HTML
      * @for         JC.Calendar
@@ -1848,10 +1852,9 @@
         }
         return _r;
     }
-}(jQuery));
-;
-
-;(function($){
+    //
+    /// MONTH CODE
+    //
     /**
      * 自定义月份弹框的模板HTML
      * @for         JC.Calendar
@@ -2070,9 +2073,9 @@
                 JC.Calendar.hide();
             }
     });
-}(jQuery));
-
-;(function($){
+    //
+    /// SEASON CODE
+    //
     /**
      * 自定义周弹框的模板HTML
      * @for         JC.Calendar
@@ -2249,10 +2252,9 @@
                 JC.Calendar.hide();
             }
     });
-
-}(jQuery));
-
-;(function($){
+    //
+    /// MONTHDAY CODE
+    //
     /**
      * 多选日期弹框的模板HTML
      * @for         JC.Calendar
@@ -2286,349 +2288,337 @@
 
     JC.Calendar.clone( MonthDayModel, MonthDayView );
 
-    MonthDayView.prototype.init =
-        function(){
-            var _p = this;
+    JC.f.mergeObject( MonthDayModel.prototype, {
+        fixCheckall: 
+            function(){
+                var _p = this, _cks, _ckAll, _isAll = true, _sp;
+                _p._fixCheckAllTm && clearTimeout( _p._fixCheckAllTm );
+                _p._fixCheckAllTm =
+                    setTimeout( function(){
+                        _ckAll = _p.layout().find('input.js_JCCalendarCheckbox[action=all]');
+                        _cks = _p.layout().find('input.js_JCCalendarCheckbox[dstart]');
 
-            $(_p).on('MonthDayToggle', function( _evt, _item ){
-                var _data = _p._model.findItemByTimestamp( _item.attr('dstart')  );
-                if( _data.atd.hasClass('unable') ) return;
-                //JC.log( 'MonthDayView: MonthDayToggle', _item.attr('dstart'), _data.atd.hasClass( 'cur' ) );
-                _data.input.prop( 'checked', _data.atd.hasClass( 'cur' )  );
-                _p._model.fixCheckall();
-            });
+                        _cks.each( function(){
+                            _sp = $(this);
+                            var _data = _p.findItemByTimestamp( _sp.attr('dstart')  );
+                            if( _data.atd.hasClass( 'unable' ) ) return;
+                            if( !_sp.prop('checked') ) return _isAll = false;
+                        });
+                        _ckAll.prop('checked', _isAll );
+                    }, 100);
+            }
 
-            $(_p).on('MonthDayInputToggle', function( _evt, _item ){
-                var _data = _p._model.findItemByTimestamp( _item.attr('dstart')  );
-                /**
-                 * 如果 atd 为空, 那么是 全选按钮触发的事件
-                 */
-                if( !_data.atd ){
-                    //alert( _item.attr('action') );
-                    $(_p).trigger( 'MonthDayToggleAll', [ _item ] );
-                    return;
+        , findItemByTimestamp:
+            function( _tm ){
+                var _p = this, _r = { 
+                                        'a': null
+                                        , 'atd': null
+                                        , 'atr': null
+                                        , 'input': null
+                                        , 'inputtr': null
+                                        , 'tm': _tm 
+                                    };
+
+                if( _tm ){
+                    _r.a = _p.layout().find( JC.f.printf( 'a[dstart={0}]', _tm ) );
+                    _r.atd = JC.f.getJqParent( _r.a, 'td' );
+                    _r.atr = JC.f.getJqParent( _r.a, 'tr' );
+
+                    _r.input = _p.layout().find( JC.f.printf( 'input[dstart={0}]', _tm ) );
+                    _r.inputtr = JC.f.getJqParent( _r.input, 'tr' );
                 }
 
-                if( _data.atd.hasClass('unable') ) return;
-                //JC.log( 'MonthDayView: MonthDayInputToggle', _item.attr('dstart'), _data.input.prop('checked') );
-                _data.atd[ _data.input.prop('checked') ? 'addClass' : 'removeClass' ]( 'cur' );
-                _p._model.fixCheckall();
-            });
+                return _r;
+            }
+        
+        , layout: 
+            function(){
+                var _r = $('#UXCCalendar_monthday');
 
-            $(_p).on('MonthDayToggleAll', function( _evt, _input ){
-                var _all = _p._model.layout().find( 'a[dstart]' ), _checked = _input.prop('checked');
-                //JC.log( 'MonthDayView: MonthDayToggleAll', _input.attr('action'), _input.prop('checked'), _all.length );
-                if( !_all.length ) return;
-                _all.each( function(){
-                    var _sp = $(this), _td = JC.f.getJqParent( _sp, 'td' );
-                    if( _td.hasClass('unable') ) return;
-                    _td[ _checked ? 'addClass' : 'removeClass' ]( 'cur' );
-                    $( _p ).trigger( 'MonthDayToggle', [ _sp ] );
+                if( !_r.length ){
+                    _r = $( JC.f.printf( JC.Calendar.monthdayTpl || this.tpl, JC.Calendar.monthdayHeadAppendText ) ).hide();
+                    _r.attr('id', 'UXCCalendar_monthday').hide().appendTo( document.body );
+
+                    var _month = $( [
+                                '<option value="0">一月</option>'
+                                , '<option value="1">二月</option>'
+                                , '<option value="2">三月</option>'
+                                , '<option value="3">四月</option>'
+                                , '<option value="4">五月</option>'
+                                , '<option value="5">六月</option>'
+                                , '<option value="6">七月</option>'
+                                , '<option value="7">八月</option>'
+                                , '<option value="8">九月</option>'
+                                , '<option value="9">十月</option>'
+                                , '<option value="10">十一月</option>'
+                                , '<option value="11">十二月</option>'
+                            ].join('') ).appendTo( _r.find('select.UMonth' ) );
+
+                 }
+                return _r;
+            }
+            
+        , tpl:
+            [
+            '<div id="UXCCalendar_monthday" class="UXCCalendar UXCCalendar_week UXCCalendar_monthday" >'
+            ,'    <div class="UHeader">'
+            ,'        <button type="button" class="UButton UPreYear">&nbsp;&lt;&lt;&nbsp;</button>'
+            ,'        <button type="button" class="UButton UPreMonth">&nbsp;&nbsp;&lt;&nbsp;&nbsp;</button>'
+            ,'        <select class="UYear" style=""></select>'
+            ,'        <select class="UMonth"></select>'
+            ,'        {0}'
+            ,'        <button type="button" class="UButton UNextYear">&nbsp;&gt;&gt;&nbsp;</button>'
+            ,'        <button type="button" class="UButton UNextMonth">&nbsp;&nbsp;&gt;&nbsp;&nbsp;</button>'
+            /*
+            ,'       <span class="UYear">'
+            ,'       </span>年'
+            ,'       <span class="UMonth">'
+            ,'       </span>月{0}'
+            */
+            ,'    </div>'
+            ,'    <table class="UTable UTableBorder">'
+            ,'        <tbody></tbody>'
+            ,'    </table>'
+            ,'    <div class="UFooter">'
+            ,'        <button type="button" class="UConfirm">确定</button>'
+            ,'        <button type="button" class="UClear">清空</button>'
+            ,'        <button type="button" class="UCancel">取消</button>'
+            ,'    </div>'
+            ,'</div>'
+            ].join('')
+
+        , multiselect: function(){ return true; }
+
+        , multiselectDate:
+            function(){
+                var _p = this
+                    , _r = []
+                    , _sp
+                    , _item
+                    , _date
+                    ;
+
+                _p.layout().find('input.js_JCCalendarCheckbox[dstart]').each( function () {
+                    _sp = $(this);
+                    if( !_sp.prop('checked') ) return;
+                    _date = new Date();
+                    _date.setTime( _sp.attr("dstart") );
+                    _r.push( _date );
                 });
-            });
-
-            return this;
-        };
-
-    MonthDayModel.prototype.fixCheckall = 
-        function(){
-            var _p = this, _cks, _ckAll, _isAll = true, _sp;
-            _p._fixCheckAllTm && clearTimeout( _p._fixCheckAllTm );
-            _p._fixCheckAllTm =
-                setTimeout( function(){
-                    _ckAll = _p.layout().find('input.js_JCCalendarCheckbox[action=all]');
-                    _cks = _p.layout().find('input.js_JCCalendarCheckbox[dstart]');
-
-                    _cks.each( function(){
-                        _sp = $(this);
-                        var _data = _p.findItemByTimestamp( _sp.attr('dstart')  );
-                        if( _data.atd.hasClass( 'unable' ) ) return;
-                        if( !_sp.prop('checked') ) return _isAll = false;
-                    });
-                    _ckAll.prop('checked', _isAll );
-                }, 100);
-        };
-
-    MonthDayModel.prototype.findItemByTimestamp =
-        function( _tm ){
-            var _p = this, _r = { 
-                                    'a': null
-                                    , 'atd': null
-                                    , 'atr': null
-                                    , 'input': null
-                                    , 'inputtr': null
-                                    , 'tm': _tm 
-                                };
-
-            if( _tm ){
-                _r.a = _p.layout().find( JC.f.printf( 'a[dstart={0}]', _tm ) );
-                _r.atd = JC.f.getJqParent( _r.a, 'td' );
-                _r.atr = JC.f.getJqParent( _r.a, 'tr' );
-
-                _r.input = _p.layout().find( JC.f.printf( 'input[dstart={0}]', _tm ) );
-                _r.inputtr = JC.f.getJqParent( _r.input, 'tr' );
+               
+                return _r;
             }
 
-            return _r;
-        };
-	
-    MonthDayModel.prototype.layout = 
-        function(){
-            var _r = $('#UXCCalendar_monthday');
-
-            if( !_r.length ){
-                _r = $( JC.f.printf( JC.Calendar.monthdayTpl || this.tpl, JC.Calendar.monthdayHeadAppendText ) ).hide();
-                _r.attr('id', 'UXCCalendar_monthday').hide().appendTo( document.body );
-
-                var _month = $( [
-                            '<option value="0">一月</option>'
-                            , '<option value="1">二月</option>'
-                            , '<option value="2">三月</option>'
-                            , '<option value="3">四月</option>'
-                            , '<option value="4">五月</option>'
-                            , '<option value="5">六月</option>'
-                            , '<option value="6">七月</option>'
-                            , '<option value="7">八月</option>'
-                            , '<option value="8">九月</option>'
-                            , '<option value="9">十月</option>'
-                            , '<option value="10">十一月</option>'
-                            , '<option value="11">十二月</option>'
-                        ].join('') ).appendTo( _r.find('select.UMonth' ) );
-
-             }
-            return _r;
-        };
-		
-	MonthDayModel.prototype.tpl =
-        [
-        '<div id="UXCCalendar_monthday" class="UXCCalendar UXCCalendar_week UXCCalendar_monthday" >'
-        ,'    <div class="UHeader">'
-        ,'        <button type="button" class="UButton UPreYear">&nbsp;&lt;&lt;&nbsp;</button>'
-        ,'        <button type="button" class="UButton UPreMonth">&nbsp;&nbsp;&lt;&nbsp;&nbsp;</button>'
-        ,'        <select class="UYear" style=""></select>'
-        ,'        <select class="UMonth"></select>'
-        ,'        {0}'
-        ,'        <button type="button" class="UButton UNextYear">&nbsp;&gt;&gt;&nbsp;</button>'
-        ,'        <button type="button" class="UButton UNextMonth">&nbsp;&nbsp;&gt;&nbsp;&nbsp;</button>'
-        /*
-        ,'       <span class="UYear">'
-        ,'       </span>年'
-        ,'       <span class="UMonth">'
-        ,'       </span>月{0}'
-        */
-        ,'    </div>'
-        ,'    <table class="UTable UTableBorder">'
-        ,'        <tbody></tbody>'
-        ,'    </table>'
-        ,'    <div class="UFooter">'
-        ,'        <button type="button" class="UConfirm">确定</button>'
-        ,'        <button type="button" class="UClear">清空</button>'
-        ,'        <button type="button" class="UCancel">取消</button>'
-        ,'    </div>'
-        ,'</div>'
-        ].join('');
-
-    MonthDayModel.prototype.multiselect = function(){ return true; };
-
-    MonthDayModel.prototype.multiselectDate =
-        function(){
-            var _p = this
-            	, _r = []
-            	, _sp
-            	, _item
-            	, _date
-            	;
-
-            _p.layout().find('input.js_JCCalendarCheckbox[dstart]').each( function () {
-                _sp = $(this);
-                if( !_sp.prop('checked') ) return;
-                _date = new Date();
-                _date.setTime( _sp.attr("dstart") );
-                _r.push( _date );
-            });
-           
-            return _r;
-        };
-
-
-    MonthDayModel.prototype.ccPreserveDisabled =
-        function(){
-            var _r = true;
-            this.selector().is( '[ccPreserveDisabled]' )
-                && ( _r = JC.f.parseBool( this.selector().attr( 'ccPreserveDisabled' ) ) );
-            return _r;
-        };
-
-    MonthDayModel.prototype.calendarclear = 
-        function(){
-            var _p = this, _ipt = this.selector(), _cb, _tmp;
-            _ipt && _ipt.attr('calendarclear') 
-                && ( _tmp = window[ _ipt.attr('calendarclear') ] )
-                && ( _cb = _tmp );
-
-            if( _p.ccPreserveDisabled() ){
-                var _items = _p.layout().find( 'input[date]' ), _disabled = [];
-                    _items.each( function(){
-                        var _sp = $(this), _d;
-                        if( !( _sp.is( ':disabled' ) && _sp.is( ':checked' ) ) ) return;
-                        _d = new Date();
-                        _d.setTime( _sp.attr( 'date' ) );
-                        _disabled.push( JC.f.formatISODate( _d ) );
-                    });
-                _ipt.val( _disabled.join(',') );
+        , ccPreserveDisabled:
+            function(){
+                var _r = true;
+                this.selector().is( '[ccPreserveDisabled]' )
+                    && ( _r = JC.f.parseBool( this.selector().attr( 'ccPreserveDisabled' ) ) );
+                return _r;
             }
 
-            return _cb;
-        };
+        , calendarclear: 
+            function(){
+                var _p = this, _ipt = this.selector(), _cb, _tmp;
+                _ipt && _ipt.attr('calendarclear') 
+                    && ( _tmp = window[ _ipt.attr('calendarclear') ] )
+                    && ( _cb = _tmp );
 
-    MonthDayView.prototype.updateSelected = 
-        function( _userSelectedItem ){
-            var _p = this
-            	, _dstart
-            	, _dend
-            	, _tmp
-            	, _text
-            	, _ar
-            	;
-
-            if( !_userSelectedItem ) {
-                _tmp = this._model.multiselectDate();
-                if( !_tmp.length ) return;
-                _ar = [];
-                
-                for (var i = 0; i < _tmp.length; i++) {
-                    _ar.push(JC.f.formatISODate(_tmp[i]));
+                if( _p.ccPreserveDisabled() ){
+                    var _items = _p.layout().find( 'input[date]' ), _disabled = [];
+                        _items.each( function(){
+                            var _sp = $(this), _d;
+                            if( !( _sp.is( ':disabled' ) && _sp.is( ':checked' ) ) ) return;
+                            _d = new Date();
+                            _d.setTime( _sp.attr( 'date' ) );
+                            _disabled.push( JC.f.formatISODate( _d ) );
+                        });
+                    _ipt.val( _disabled.join(',') );
                 }
-                _text = _ar.join(',');
-            } else {
-                _userSelectedItem = $( _userSelectedItem );
-                _tmp = JC.f.getJqParent( _userSelectedItem, 'td' );
-                if( _tmp && _tmp.hasClass('unable') ) return;
 
-                if( _p._model.multiselect() ){
-                    _tmp.toggleClass('cur');
-                    //$(_p).trigger( 'MonthDayToggle', [ _tmp ] );
-                    return;
+                return _cb;
+            }
+
+        , fixedDate:
+            function( _dateo ){
+                var _p = this, _lastIpt = JC.Calendar.lastIpt, _tmpDate;
+                _lastIpt
+                    && !_lastIpt.is('[defaultdate]')
+                    && (
+                            _tmpDate = JC.f.cloneDate( _dateo.multidate[0].start )
+                            //, _tmpDate.setDate( 1 )
+                            , _lastIpt.attr('defaultdate', JC.f.formatISODate( _tmpDate ) )
+                            /*
+                            , !_lastIpt.is( '[placeholder]' ) 
+                                && _lastIpt.attr('placeholder', JC.f.printf( '{0}年 {1}月', _tmpDate.getFullYear(), _tmpDate.getMonth() + 1 ) )
+                           */
+                        )
+                    ;
+            }
+    });
+
+    JC.f.mergeObject( MonthDayView.prototype, {
+        init:
+            function(){
+                var _p = this;
+
+                $(_p).on('MonthDayToggle', function( _evt, _item ){
+                    var _data = _p._model.findItemByTimestamp( _item.attr('dstart')  );
+                    if( _data.atd.hasClass('unable') ) return;
+                    //JC.log( 'MonthDayView: MonthDayToggle', _item.attr('dstart'), _data.atd.hasClass( 'cur' ) );
+                    _data.input.prop( 'checked', _data.atd.hasClass( 'cur' )  );
+                    _p._model.fixCheckall();
+                });
+
+                $(_p).on('MonthDayInputToggle', function( _evt, _item ){
+                    var _data = _p._model.findItemByTimestamp( _item.attr('dstart')  );
+                    /**
+                     * 如果 atd 为空, 那么是 全选按钮触发的事件
+                     */
+                    if( !_data.atd ){
+                        //alert( _item.attr('action') );
+                        $(_p).trigger( 'MonthDayToggleAll', [ _item ] );
+                        return;
+                    }
+
+                    if( _data.atd.hasClass('unable') ) return;
+                    //JC.log( 'MonthDayView: MonthDayInputToggle', _item.attr('dstart'), _data.input.prop('checked') );
+                    _data.atd[ _data.input.prop('checked') ? 'addClass' : 'removeClass' ]( 'cur' );
+                    _p._model.fixCheckall();
+                });
+
+                $(_p).on('MonthDayToggleAll', function( _evt, _input ){
+                    var _all = _p._model.layout().find( 'a[dstart]' ), _checked = _input.prop('checked');
+                    //JC.log( 'MonthDayView: MonthDayToggleAll', _input.attr('action'), _input.prop('checked'), _all.length );
+                    if( !_all.length ) return;
+                    _all.each( function(){
+                        var _sp = $(this), _td = JC.f.getJqParent( _sp, 'td' );
+                        if( _td.hasClass('unable') ) return;
+                        _td[ _checked ? 'addClass' : 'removeClass' ]( 'cur' );
+                        $( _p ).trigger( 'MonthDayToggle', [ _sp ] );
+                    });
+                });
+
+                return this;
+            }
+
+        , updateSelected: 
+            function( _userSelectedItem ){
+                var _p = this
+                    , _dstart
+                    , _dend
+                    , _tmp
+                    , _text
+                    , _ar
+                    ;
+
+                if( !_userSelectedItem ) {
+                    _tmp = this._model.multiselectDate();
+                    if( !_tmp.length ) return;
+                    _ar = [];
+                    
+                    for (var i = 0; i < _tmp.length; i++) {
+                        _ar.push(JC.f.formatISODate(_tmp[i]));
+                    }
+                    _text = _ar.join(',');
+                } else {
+                    _userSelectedItem = $( _userSelectedItem );
+                    _tmp = JC.f.getJqParent( _userSelectedItem, 'td' );
+                    if( _tmp && _tmp.hasClass('unable') ) return;
+
+                    if( _p._model.multiselect() ){
+                        _tmp.toggleClass('cur');
+                        //$(_p).trigger( 'MonthDayToggle', [ _tmp ] );
+                        return;
+                    }
+                    _date = new Date(); 
+                    _date.setTime( _userSelectedItem.attr('date') );
+                    _text = _userSelectedItem.attr("date");
+                    _text = JC.f.printf( '{0}', JC.f.formatISODate( _date ) );
                 }
-                _date = new Date(); 
-                _date.setTime( _userSelectedItem.attr('date') );
-                _text = _userSelectedItem.attr("date");
-                _text = JC.f.printf( '{0}', JC.f.formatISODate( _date ) );
+
+                if( !_text ) return;
+                if( _tmp.length ){
+                    _p._model.selector().attr('placeholder', JC.f.printf( '{0}年 {1}', _tmp[0].getFullYear(), _tmp[0].getMonth() + 1 ) );
+                    _p._model.selector().attr('defaultdate', JC.f.formatISODate( _tmp[0] ) );
+                }
+
+                _p._model.selector().val( _text );
+                $(_p).trigger( 'TriggerEvent', [ JC.Calendar.Model.UPDATE, 'monthday', _tmp ] );
+
+                JC.Calendar.hide();
             }
+        
+        , _buildBody:
+            function( _dateo ){
+                    var _p = this, _layout = _p._model.layout();
+                    var _maxday = JC.f.maxDayOfMonth( _dateo.date ), 
+                        _ls = [],
+                        i, 
+                        _class, 
+                        _tempDate, 
+                        _tempDay,
+                        _today = new Date();
 
-            if( !_text ) return;
-            if( _tmp.length ){
-                _p._model.selector().attr('placeholder', JC.f.printf( '{0}年 {1}', _tmp[0].getFullYear(), _tmp[0].getMonth() + 1 ) );
-                _p._model.selector().attr('defaultdate', JC.f.formatISODate( _tmp[0] ) );
+                    _p._model.fixedDate( _dateo );
+                    JC.log( _dateo.date );
+
+                    var _headLs = [], _dayLs = [], _ckLs = [];
+                    var _headClass = [], _dayClass = [];
+
+                    _headLs.push('<tr><td><span class="bold">星期</span></td>');
+                    _dayLs.push('<tr><td><span class="bold">日期</span></td>'); 
+                    _ckLs.push('<tr class="Uchkdate"><td><label><span class="bold">全选</span>&nbsp;'
+                                + '<input type="checkbox" class="js_JCCalendarCheckbox" action="all"  /></lable></td>');
+
+                    for ( i = 0; i < _maxday; i++ ) {
+                        
+                        _tempDate = new Date(_dateo.date.getFullYear(), _dateo.date.getMonth(), i+1);
+                        _tempDay = _tempDate.getDay();
+
+                        _headClass  = [];
+                        _dayClass = getClass(_dateo, _tempDate, _today).join(' ');
+                        
+                        if (_tempDay == 0 || _tempDay == 6) _headClass.push("red");
+                        _headLs.push( JC.f.printf( 
+                                    '<td class="{0}">{1}</td>'
+                                    , _headClass.join(" ") 
+                                    , Calendar.cnWeek.charAt( _tempDay )
+                                ));
+
+                        _dayLs.push( JC.f.printf(
+                            '<td class="{0}"><a href="javascript:;" dstart="{1}" dend="{1}" title="{3}" >{2}</a></td>'
+                            , _dayClass
+                            , _tempDate.getTime()
+                            , i + 1
+                            , JC.f.formatISODate(_tempDate)
+                         ));
+
+                       _ckLs.push( JC.f.printf(
+                            '<td><input type="checkbox" date="{1}" dstart="{1}" dend="{1}" class="js_JCCalendarCheckbox" action="item" {3} {4} title="{2}" /></td>'
+                            , ''
+                            , _tempDate.getTime()
+                            , JC.f.formatISODate(_tempDate)
+                            , ( !/\bunable\b/.test( _dayClass ) && ( /\bcur\b/.test( _dayClass ) ) ) ? 'checked' : ''
+                            , /\bunable\b/.test( _dayClass ) ? 'disabled' : ''
+                         ));
+
+                        _tempDate.setDate(_tempDate.getDate() + 1);
+                        _tempDay = _tempDate.getDay();
+                        
+                    }
+
+                    _headLs.push('</tr>');
+                    _dayLs.push('</tr>');
+                    _ckLs.push('</tr>');
+
+                    _ls = _ls.concat( _headLs, _dayLs, _ckLs );
+                    
+                    _layout.find('table.UTableBorder tbody' ).html( $( _ls.join('') ) );
+
+                    _p._model.fixCheckall();
             }
-
-            _p._model.selector().val( _text );
-            $(_p).trigger( 'TriggerEvent', [ JC.Calendar.Model.UPDATE, 'monthday', _tmp ] );
-
-            JC.Calendar.hide();
-        };
-	
-    /*
-	MonthDayView.prototype._buildHeader = 
-		function( _dateo ){
-			var _p = this, 
-				_layout = _p._model.layout();
-			
-			var year = _dateo.date.getFullYear(),
-				month = _dateo.date.getMonth() + 1;
-			
-			//_layout.find('div.UHeader span.UYear').html(year);
-			//_layout.find('div.UHeader span.UMonth').html(month);
-				
-		};
-   */
-
-    MonthDayModel.prototype.fixedDate =
-        function( _dateo ){
-            var _p = this, _lastIpt = JC.Calendar.lastIpt, _tmpDate;
-            _lastIpt
-                && !_lastIpt.is('[defaultdate]')
-                && (
-                        _tmpDate = JC.f.cloneDate( _dateo.multidate[0].start )
-                        //, _tmpDate.setDate( 1 )
-                        , _lastIpt.attr('defaultdate', JC.f.formatISODate( _tmpDate ) )
-                        /*
-                        , !_lastIpt.is( '[placeholder]' ) 
-                            && _lastIpt.attr('placeholder', JC.f.printf( '{0}年 {1}月', _tmpDate.getFullYear(), _tmpDate.getMonth() + 1 ) )
-                       */
-                    )
-                ;
-        };
-	
-	MonthDayView.prototype._buildBody =
-        function( _dateo ){
-				var _p = this, _layout = _p._model.layout();
-                var _maxday = JC.f.maxDayOfMonth( _dateo.date ), 
-                    _ls = [],
-                    i, 
-					_class, 
-					_tempDate, 
-					_tempDay,
-					_today = new Date();
-
-                _p._model.fixedDate( _dateo );
-				JC.log( _dateo.date );
-
-                var _headLs = [], _dayLs = [], _ckLs = [];
-                var _headClass = [], _dayClass = [];
-
-				_headLs.push('<tr><td><span class="bold">星期</span></td>');
-                _dayLs.push('<tr><td><span class="bold">日期</span></td>'); 
-				_ckLs.push('<tr class="Uchkdate"><td><label><span class="bold">全选</span>&nbsp;'
-                            + '<input type="checkbox" class="js_JCCalendarCheckbox" action="all"  /></lable></td>');
-
-				for ( i = 0; i < _maxday; i++ ) {
-					
-                    _tempDate = new Date(_dateo.date.getFullYear(), _dateo.date.getMonth(), i+1);
-                    _tempDay = _tempDate.getDay();
-
-                    _headClass  = [];
-					_dayClass = getClass(_dateo, _tempDate, _today).join(' ');
-					
-					if (_tempDay == 0 || _tempDay == 6) _headClass.push("red");
-                    _headLs.push( JC.f.printf( 
-                                '<td class="{0}">{1}</td>'
-                                , _headClass.join(" ") 
-                                , Calendar.cnWeek.charAt( _tempDay )
-                            ));
-
-                    _dayLs.push( JC.f.printf(
-                        '<td class="{0}"><a href="javascript:;" dstart="{1}" dend="{1}" title="{3}" >{2}</a></td>'
-                        , _dayClass
-                        , _tempDate.getTime()
-                        , i + 1
-                        , JC.f.formatISODate(_tempDate)
-                     ));
-
-                   _ckLs.push( JC.f.printf(
-                        '<td><input type="checkbox" date="{1}" dstart="{1}" dend="{1}" class="js_JCCalendarCheckbox" action="item" {3} {4} title="{2}" /></td>'
-                        , ''
-                        , _tempDate.getTime()
-                        , JC.f.formatISODate(_tempDate)
-                        , ( !/\bunable\b/.test( _dayClass ) && ( /\bcur\b/.test( _dayClass ) ) ) ? 'checked' : ''
-                        , /\bunable\b/.test( _dayClass ) ? 'disabled' : ''
-                     ));
-
-					_tempDate.setDate(_tempDate.getDate() + 1);
-					_tempDay = _tempDate.getDay();
-					
-				}
-
-				_headLs.push('</tr>');
-                _dayLs.push('</tr>');
-				_ckLs.push('</tr>');
-
-                _ls = _ls.concat( _headLs, _dayLs, _ckLs );
-				
-                _layout.find('table.UTableBorder tbody' ).html( $( _ls.join('') ) );
-
-                _p._model.fixCheckall();
-        };
+    });
 	
 	function getClass(_dateo, _tempDate, _today) {
 		var _class = [];
@@ -2679,6 +2669,7 @@
     });
 
 }(jQuery));
+
     return JC.Calendar;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

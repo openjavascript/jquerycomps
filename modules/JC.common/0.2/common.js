@@ -68,6 +68,7 @@
         , "dateFormat": dateFormat
         , "mergeObject": mergeObject
         , "safeTimeout": safeTimeout
+        , "encoder": encoder
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -1092,6 +1093,24 @@
 
         _obj.data( _name ) && clearTimeout( _obj.data( _name ) );
         _obj.data( _name, _timeout );
+    }
+    /**
+     * URL 请求时, 获取对URL参数进行编码的函数
+     * @method  encoder
+     * @param   {selector}  _selector
+     * @return  {encode function}   default encodeURIComponent
+     * @static
+     */
+    function encoder( _selector ){
+        _selector && ( _selector = $( _selector ) );
+        var _r;
+        if( _selector && _selector.length ){
+            _r =_selector.attr( 'validEncoder' ) || 'encodeURIComponent';
+            _r = window[ _r ] || encodeURIComponent;
+        }else{
+            _r = encodeURIComponent;
+        }
+        return _r;
     }
 
 }(jQuery));
