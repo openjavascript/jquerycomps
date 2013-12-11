@@ -36,30 +36,31 @@
 
     });
 
-    function calendarshow(){
-        var _p = $(this);
-        UXC.log( 'calendarshow', _p.val() );
+    function calendarshow( _selector, _ins ){
+        var _selector = $(this);
+        JC.log( 'calendarshow', _selector.val() );
     }
 
-    function calendarhide(){
-        var _p = $(this);
-        UXC.log( 'calendarhide', _p.val() );
+    function calendarhide( _selector, _ins ){
+        var _selector = $(this);
+        JC.log( 'calendarhide', _selector.val() );
     }
     
-    function calendarlayoutchange(){
-        var _p = $(this);
-        UXC.log( 'calendarlayoutchange', _p.val() );
+    function calendarlayoutchange( _selector, _ins ){
+        var _selector = $(this);
+        JC.log( 'calendarlayoutchange', _selector.val() );
     }
 
-    function calendarupdate( _type, _start, _end ){
-        var _p = $(this);
-        UXC.log( 'calendarupdate', _p.val(), _type, _start, _end );
+    function calendarupdate( _start, _end, _ins ){
+        var _selector = $(this);
+        JC.log( 'calendarupdate', _selector.val(), _start, _end );
     }
 
-    function calendarupdate( _start, _end ){
-        var _p = $(this);
-        UXC.log( 'calendarupdate', _p.val(), _start, _end );
+    function calendarclear( _selector, _ins ){
+        var _selector = $(this);
+        JC.log( 'calendarclear', _selector.attr( 'calendarclear' ), new Date().getTime() );
     }
+
 </script>
 </head>    
 <body>
@@ -88,7 +89,11 @@
                 <input type="text" name="date2" multidate="season" value="2013-06-03" maxvalue="2013-06-30" />season maxvalue="2013-06-30"
             </dd>
             <dd>
-            <input type="text" name="date2" multidate="season" value="2013-06-03" minvalue="2013-06-01" maxvalue="2013-06-30" />season minvalue="2013-06-01" maxvalue="2013-06-30"
+                <input type="text" name="date2" value="2013-06-03" 
+                multidate="season"
+                minvalue="2013-07-01" 
+                maxvalue="2013-09-30" 
+                />season minvalue="2013-07-01" maxvalue="2013-09-30"
             </dd>
             <dd>
                 date range:

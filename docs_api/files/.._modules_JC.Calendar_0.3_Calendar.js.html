@@ -213,11 +213,12 @@
      *      &lt;dt&gt;datatype = string&lt;/dt&gt;
      *      &lt;dd&gt;
      *          声明日历控件的类型:
-     *          &lt;p&gt;&lt;b&gt;date:&lt;/b&gt; 日期日历&lt;/p&gt;
-     *          &lt;p&gt;&lt;b&gt;week:&lt;/b&gt; 周日历&lt;/p&gt;
-     *          &lt;p&gt;&lt;b&gt;month:&lt;/b&gt; 月日历&lt;/p&gt;
-     *          &lt;p&gt;&lt;b&gt;season:&lt;/b&gt; 季日历&lt;/p&gt;
-     *          &lt;p&gt;&lt;b&gt;monthday:&lt;/b&gt; 多选日期日历&lt;/p&gt;
+     *          &lt;br /&gt;&lt;b&gt;date:&lt;/b&gt; 日期日历
+     *          &lt;br /&gt;&lt;b&gt;week:&lt;/b&gt; 周日历
+     *          &lt;br /&gt;&lt;b&gt;month:&lt;/b&gt; 月日历
+     *          &lt;br /&gt;&lt;b&gt;season:&lt;/b&gt; 季日历
+     *          &lt;br /&gt;&lt;b&gt;year:&lt;/b&gt; 年日历
+     *          &lt;br /&gt;&lt;b&gt;monthday:&lt;/b&gt; 多选日期日历
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;multidate = string&lt;/dt&gt;
@@ -226,26 +227,42 @@
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;calendarshow = function&lt;/dt&gt;
-     *      &lt;dd&gt;显示日历时的回调&lt;/dd&gt;
+     *      &lt;dd&gt;显示日历时的回调
+&lt;pre&gt;function calendarshow( _selector, _ins ){
+    var _selector = $(this);
+    UXC.log( &#x27;calendarshow&#x27;, _selector.val() );
+}
+&lt;/pre&gt;&lt;/dd&gt;
      *
      *      &lt;dt&gt;calendarhide = function&lt;/dt&gt;
-     *      &lt;dd&gt;隐藏日历时的回调&lt;/dd&gt;
+     *      &lt;dd&gt;隐藏日历时的回调
+&lt;pre&gt;function calendarhide( _selector, _ins ){
+    var _selector = $(this);
+    UXC.log( &#x27;calendarhide&#x27;, _selector.val() );
+}&lt;/pre&gt;&lt;/dd&gt;
      *
      *      &lt;dt&gt;calendarlayoutchange = function&lt;/dt&gt;
-     *      &lt;dd&gt;用户点击日历控件操作按钮后, 外观产生变化时触发的回调&lt;/dd&gt;
+     *      &lt;dd&gt;用户点击日历控件操作按钮后, 外观产生变化时触发的回调
+&lt;pre&gt;function calendarlayoutchange( _selector, _ins ){
+    var _selector = $(this);
+    JC.log( &#x27;calendarlayoutchange&#x27;, _selector.val() );
+}
+&lt;/pre&gt;&lt;/dd&gt;
      *
      *      &lt;dt&gt;calendarupdate = function&lt;/dt&gt;
      *      &lt;dd&gt;
      *          赋值后触发的回调
-     *          &lt;dl&gt;
-     *              &lt;dt&gt;参数:&lt;/dt&gt;
-     *              &lt;dd&gt;&lt;b&gt;_startDate:&lt;/b&gt; 开始日期&lt;/dd&gt;
-     *              &lt;dd&gt;&lt;b&gt;_endDate:&lt;/b&gt; 结束日期&lt;/dd&gt;
-     *          &lt;/dl&gt;
-     *      &lt;/dd&gt;
+&lt;pre&gt;function calendarupdate( _startDate, _endDate, _ins ){
+    var _selector = $(this);
+    JC.log( &#x27;calendarupdate&#x27;, _selector.val(), _startDate, _endDate );
+}
+&lt;/pre&gt;&lt;/dd&gt;
      *
      *      &lt;dt&gt;calendarclear = function&lt;/dt&gt;
-     *      &lt;dd&gt;清空日期触发的回调&lt;/dd&gt;
+     *      &lt;dd&gt;清空日期触发的回调
+&lt;pre&gt;function calendarclear( _selector, _ins ){
+    var _selector = $(this);
+}&lt;/pre&gt;&lt;/dd&gt;
      *
      *      &lt;dt&gt;minvalue = ISO Date&lt;/dt&gt;
      *      &lt;dd&gt;日期的最小时间, YYYY-MM-DD&lt;/dd&gt;
@@ -268,10 +285,77 @@
      *                  [{&quot;start&quot;: Date,&quot;end&quot;: Date}[, {&quot;start&quot;: Date,&quot;end&quot;: Date}... ] ]
      *              &lt;/dd&gt;
      *          &lt;/dl&gt;
+&lt;pre&gt;function calendarupdatemultiselect( _data, _ins ){
+    var _selector = $(this);
+    window.JSON &amp;&amp; ( _data = JSON.stringify( _data ) );
+    JC.log( &#x27;calendarupdatemultiselect:&#x27;
+        , JC.f.printf( &#x27;val:{0}, data:{1}&#x27;, _selector.val(), _data ) );
+}&lt;/pre&gt;&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;dateFormat = string&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          自定义日期格式化显示, 使用 JC.f.dateFormat 函数进行格式化
+     *          &lt;br /&gt;如果日期去除非数字后不是 8/16 位数字的话, 需要 显式声明 dateParse 属性, 自定义日期解析函数
+     *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;fullDateFormat = string&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          针对 日期类型: 月/季/年 定义显示格式, default: &quot;{0} 至 {1}&quot;
+     *          &lt;br /&gt;{0}代表开始日期, {1}代表结束日期
+     *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;dateParse = function &lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          自定义日期格式函数, 针对日期不能解析为 8 位数字的特殊日期
+     *          &lt;br /&gt;例子:
+&lt;pre&gt;//
+/// 针对月份日期格式化 YY-MM
+//
+function parseYearMonthDate( _dateStr ){
+    _dateStr = $.trim( _dateStr || &#x27;&#x27; );
+    var _r = { start: null, end: null };
+    if( !_dateStr ) return _r;
+
+    _dateStr = _dateStr.replace( /[^\d]+/g, &#x27;&#x27; );
+    var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4 ), 10 ) - 1;
+
+    _r.start = new Date( _year, _month, 1 );
+    return _r;
+}
+//
+/// 针对季度日期格式化 YY-MM ~ YY-MM
+//
+function parseSeasonDate( _dateStr ){
+    _dateStr = $.trim( _dateStr || &#x27;&#x27; );
+    var _r = { start: null, end: null };
+    if( !_dateStr ) return _r;
+
+    _dateStr = _dateStr.replace( /[^\d]+/g, &#x27;&#x27; );
+
+    _r.start = JC.f.parseISODate( _dateStr.slice( 0, 6 ) + &#x27;01&#x27; );
+    _r.end = JC.f.parseISODate( _dateStr.slice( 6 ) + &#x27;01&#x27; );
+
+    return _r;
+}
+//
+/// 针对年份日期格式化 YY
+//
+function parseYearDate( _dateStr ){
+    _dateStr = $.trim( _dateStr || &#x27;&#x27; );
+    var _r = { start: null, end: null };
+    if( !_dateStr ) return _r;
+
+    _dateStr = _dateStr.replace( /[^\d]+/g, &#x27;&#x27; );
+    var _year = _dateStr.slice( 0, 4 );
+
+    _r.start = new Date( _year, 0, 1 );
+    return _r;
+}&lt;/pre&gt;
      *      &lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
      * @class Calendar
+     * @version dev 0.3, 2013-12-09 添加 年日历, 优化继承代码块
      * @version dev 0.2, 2013-09-01 过程式转单例模式
      * @version dev 0.1, 2013-06-04
      * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 team
@@ -303,6 +387,12 @@
                 {
                     this._model = new Calendar.SeasonModel( _selector );
                     this._view = new Calendar.SeasonView( this._model );
+                    break;
+                }
+            case &#x27;year&#x27;: 
+                {
+                    this._model = new Calendar.YearModel( _selector );
+                    this._view = new Calendar.YearView( this._model );
                     break;
                 }
             case &#x27;monthday&#x27;:
@@ -379,29 +469,42 @@
                     _p._model.selector().blur();
                     _p._model.selector().trigger(&#x27;change&#x27;);
 
-                    var _data = [], _v = _p._model.selector().val().trim(), _startDate, _endDate, _tmp, _item, _tmpStart, _tmpEnd;
+                    var _data = []
+                        , _v = _p._model.selector().val().trim()
+                        , _startDate, _endDate
+                        , _tmp, _item
+                        , _tmpStart, _tmpEnd
+                        ;
 
                     if( _v ){
                         _tmp = _v.split( &#x27;,&#x27; );
                         for( var i = 0, j = _tmp.length; i &lt; j; i++ ){
-                            _item = _tmp[i].replace( /[^\d]/g, &#x27;&#x27; );
-                            if( _item.length == 16 ){
-                                _tmpStart = JC.f.parseISODate( _item.slice( 0, 8 ) );
-                                _tmpEnd = JC.f.parseISODate( _item.slice( 8 ) );
-                            }else if( _item.length == 8 ){
-                                _tmpStart = JC.f.parseISODate( _item.slice( 0, 8 ) );
-                                _tmpEnd = JC.f.cloneDate( _tmpStart );
-                            }
-                            if( i === 0 ){
-                                _startDate = JC.f.cloneDate( _tmpStart );
-                                _endDate = JC.f.cloneDate( _tmpEnd );
+
+                            if( _p._model.dateParse( _p._model.selector() ) ){
+                                var _tmpDataObj = _p._model.dateParse( _p._model.selector() )( _tmp[i] );
+                                    _startDate = _tmpDataObj.start;
+                                    _endDate = _tmpDataObj.end;
+                                    !_endDate &amp;&amp; ( _endDate = _startDate );
+                            }else{
+                                _item = _tmp[i].replace( /[^\d]/g, &#x27;&#x27; );
+                                if( _item.length == 16 ){
+                                    _tmpStart = JC.f.parseISODate( _item.slice( 0, 8 ) );
+                                    _tmpEnd = JC.f.parseISODate( _item.slice( 8 ) );
+                                }else if( _item.length == 8 ){
+                                    _tmpStart = JC.f.parseISODate( _item.slice( 0, 8 ) );
+                                    _tmpEnd = JC.f.cloneDate( _tmpStart );
+                                }
+                                if( i === 0 ){
+                                    _startDate = JC.f.cloneDate( _tmpStart );
+                                    _endDate = JC.f.cloneDate( _tmpEnd );
+                                }
                             }
                             _data.push( {&#x27;start&#x27;: _tmpStart, &#x27;end&#x27;: _tmpEnd } );
                         }
                     }
 
                     _p._model.calendarupdate()
-                        &amp;&amp; _p._model.calendarupdate().apply( _p._model.selector(), [ _startDate, _endDate ] );
+                        &amp;&amp; _p._model.calendarupdate().apply( _p._model.selector(), [ _startDate, _endDate, _p ] );
 
                     _p._model.multiselect()
                         &amp;&amp; _p._model.calendarupdatemultiselect()
@@ -634,6 +737,7 @@
                 case &#x27;week&#x27;: 
                 case &#x27;month&#x27;: 
                 case &#x27;season&#x27;: 
+                case &#x27;year&#x27;: 
                 case &#x27;monthday&#x27;: 
                     {
                         _r = _type;
@@ -871,18 +975,26 @@
     Calendar.initTrigger = 
         function( _selector ){
            _selector.each( function(){
-                var _p = $(this), _nodeName = (_p.prop(&#x27;nodeName&#x27;)||&#x27;&#x27;).toLowerCase(), _tmp;
+                var _p = $(this)
+                    , _nodeName = (_p.prop(&#x27;nodeName&#x27;)||&#x27;&#x27;).toLowerCase()
+                    , _tmp, _dt
+                    ;
 
                 if( _nodeName != &#x27;input&#x27; &amp;&amp; _nodeName != &#x27;textarea&#x27; ){ 
                     Calendar.initTrigger( _selector.find( &#x27;input[type=text], textarea&#x27; ) ); 
                     return; 
                 }
+                _dt = $.trim( _p.attr(&#x27;datatype&#x27;) || &#x27;&#x27;).toLowerCase()
 
                 if( !(  
-                        $.trim( _p.attr(&#x27;datatype&#x27;) || &#x27;&#x27;).toLowerCase() == &#x27;date&#x27; 
+                        _dt == &#x27;date&#x27; 
+                        || _dt == &#x27;week&#x27; 
+                        || _dt == &#x27;month&#x27; 
+                        || _dt == &#x27;season&#x27; 
+                        || _dt == &#x27;year&#x27; 
+                        || _dt == &#x27;daterange&#x27;
+                        || _dt == &#x27;monthday&#x27; 
                         || $.trim( _p.attr(&#x27;multidate&#x27;) || &#x27;&#x27;)
-                        || $.trim( _p.attr(&#x27;datatype&#x27;) || &#x27;&#x27;).toLowerCase() == &#x27;daterange&#x27;
-                        || $.trim( _p.attr(&#x27;datatype&#x27;) || &#x27;&#x27;).toLowerCase() == &#x27;monthday&#x27; 
                         ) ) return;
 
                 var _btn = _p.find( &#x27;+ input.UXCCalendar_btn&#x27; );
@@ -890,7 +1002,8 @@
                     _p.after( _btn = $(&#x27;&lt;input type=&quot;button&quot; class=&quot;UXCCalendar_btn&quot;  /&gt;&#x27;) );
                 }
 
-                ( _tmp = _p.val().trim() )
+                !_p.is( &#x27;[dateFormat]&#x27; )
+                    &amp;&amp; ( _tmp = _p.val().trim() )
                     &amp;&amp; ( _tmp = JC.f.dateDetect( _tmp ) )
                     &amp;&amp; _p.val( JC.f.formatISODate( _tmp ) )
                     ; 
@@ -1066,8 +1179,21 @@
                             : _p.defaultSingleSelectDate( _r )
                     );
 
-                _r.minvalue = JC.f.parseISODate( _p.selector().attr(&#x27;minvalue&#x27;) );
-                _r.maxvalue = JC.f.parseISODate( _p.selector().attr(&#x27;maxvalue&#x27;) );
+
+                if(  _p.dateParse( _p.selector() ) ){
+                    //var _d = _p.dateParse();
+                    _p.selector().is(&#x27;[minvalue]&#x27;)
+                        &amp;&amp; ( _r.minvalue = ( _p.dateParse( _p.selector() )( _p.selector().attr(&#x27;minvalue&#x27;) ) ).start );
+
+                    _p.selector().is(&#x27;[maxvalue]&#x27;)
+                        &amp;&amp; ( _r.maxvalue = ( _p.dateParse( _p.selector() )( _p.selector().attr(&#x27;maxvalue&#x27;) ) ).start );
+                }else{
+                    _p.selector().is(&#x27;[minvalue]&#x27;)
+                        &amp;&amp; ( _r.minvalue = JC.f.parseISODate( _p.selector().attr(&#x27;minvalue&#x27;) ) );
+
+                    _p.selector().is(&#x27;[maxvalue]&#x27;)
+                        &amp;&amp; ( _r.maxvalue = JC.f.parseISODate( _p.selector().attr(&#x27;maxvalue&#x27;) ) );
+                }
 
                 return _r;
             }
@@ -1076,21 +1202,38 @@
                 var _p = this
                     , _selector = _p.selector()
                     , _tmp
+                    , _v = _selector.val().trim()
                     ;
 
-                if( _tmp = JC.f.parseISODate( _selector.val() ) ) _r.date = _tmp;
-                else{
-                    if( _selector.val() &amp;&amp; (_tmp = _selector.val().replace( /[^\d]/g, &#x27;&#x27; ) ).length == 16 ){
-                        _r.date = JC.f.parseISODate( _tmp.slice( 0, 8 ) );
-                        _r.enddate = JC.f.parseISODate( _tmp.slice( 8 ) );
-                    }else{
-                        _tmp = new Date();
-                        if( Calendar.lastIpt &amp;&amp; Calendar.lastIpt.is(&#x27;[defaultdate]&#x27;) ){
-                            _tmp = JC.f.parseISODate( Calendar.lastIpt.attr(&#x27;defaultdate&#x27;) ) || _tmp;
-                        }
-                        _r.date = new Date( _tmp.getFullYear(), _tmp.getMonth(), _tmp.getDate() );
-                    }
+                if( !_v ){
+                    _r.date = new Date();
+                    _r.enddate = JC.f.cloneDate( _r.date );
+                    return _r;
                 }
+
+                if( _p.dateParse( _p.selector() ) ){
+                    var _tmpDataObj = _p.dateParse( _p.selector() )( _p.selector().val().trim() );
+                        _r.date = _tmpDataObj.start;
+                        _r.enddate = _tmpDataObj.end;
+                        !_r.enddate &amp;&amp; ( _r.enddate = _r.date );
+                }else{
+                    if( _tmp = JC.f.parseISODate( _selector.val() ) ) _r.date = _tmp;
+                    else{
+                        if( _selector.val() &amp;&amp; (_tmp = _selector.val().replace( /[^\d]/g, &#x27;&#x27; ) ).length == 16 ){
+                            _r.date = JC.f.parseISODate( _tmp.slice( 0, 8 ) );
+                            _r.enddate = JC.f.parseISODate( _tmp.slice( 8 ) );
+                        }else{
+                            _tmp = new Date();
+                            if( Calendar.lastIpt &amp;&amp; Calendar.lastIpt.is(&#x27;[defaultdate]&#x27;) ){
+                                _tmp = JC.f.parseISODate( Calendar.lastIpt.attr(&#x27;defaultdate&#x27;) ) || _tmp;
+                            }
+                            _r.date = new Date( _tmp.getFullYear(), _tmp.getMonth(), _tmp.getDate() );
+                        }
+                    }
+
+                }
+
+
                 return _r;
             }
         , defaultMultiselectDate:
@@ -1107,25 +1250,36 @@
                         _tmp = _selector.val().trim().replace(/[^\d,]/g, &#x27;&#x27;).split(&#x27;,&#x27;);
                         _multidatear = [];
 
+
                         $.each( _tmp, function( _ix, _item ){
-                            if( _item.length == 16 ){
-                                _dstart = JC.f.parseISODate( _item.slice( 0, 8 ) );
-                                _dend = JC.f.parseISODate( _item.slice( 8 ) );
 
-                                if( !_ix ){
-                                    _r.date = JC.f.cloneDate( _dstart );
-                                    _r.enddate = JC.f.cloneDate( _dend );
-                                }
-                                _multidatear.push( { &#x27;start&#x27;: _dstart, &#x27;end&#x27;: _dend } );
-                            }else if( _item.length == 8 ){
-                                _dstart = JC.f.parseISODate( _item.slice( 0, 8 ) );
-                                _dend = JC.f.cloneDate( _dstart );
+                            if( _p.dateParse( _selector ) ){
+                                var _tmpDataObj = _p.dateParse( _selector )( _item );
+                                    _dstart = _tmpDataObj.start;
+                                    _dend = _tmpDataObj.end;
+                                    !_dend &amp;&amp; ( _dend = _dstart );
+                                    _multidatear.push( { &#x27;start&#x27;: _dstart, &#x27;end&#x27;: _dend } );
+                            }else{
 
-                                if( !_ix ){
-                                    _r.date = JC.f.cloneDate( _dstart );
-                                    _r.enddate = JC.f.cloneDate( _dend );
+                                if( _item.length == 16 ){
+                                    _dstart = JC.f.parseISODate( _item.slice( 0, 8 ) );
+                                    _dend = JC.f.parseISODate( _item.slice( 8 ) );
+
+                                    if( !_ix ){
+                                        _r.date = JC.f.cloneDate( _dstart );
+                                        _r.enddate = JC.f.cloneDate( _dend );
+                                    }
+                                    _multidatear.push( { &#x27;start&#x27;: _dstart, &#x27;end&#x27;: _dend } );
+                                }else if( _item.length == 8 ){
+                                    _dstart = JC.f.parseISODate( _item.slice( 0, 8 ) );
+                                    _dend = JC.f.cloneDate( _dstart );
+
+                                    if( !_ix ){
+                                        _r.date = JC.f.cloneDate( _dstart );
+                                        _r.enddate = JC.f.cloneDate( _dend );
+                                    }
+                                    _multidatear.push( { &#x27;start&#x27;: _dstart, &#x27;end&#x27;: _dend } );
                                 }
-                                _multidatear.push( { &#x27;start&#x27;: _dstart, &#x27;end&#x27;: _dend } );
                             }
                         });
                         //alert( _multidatear + &#x27;, &#x27; + _selector.val() );
@@ -1297,6 +1451,32 @@
                 _date &amp;&amp; ( _r = JC.f.dateFormat( _date, _format ) );
                 return _r;
             }
+
+        , fullFormat:
+            function( _date, _endDate ){
+                var _r = &#x27;&#x27;, _fullFormat = this.selector().attr( &#x27;fullDateFormat&#x27; ) || &#x27;{0} 至 {1}&#x27;;
+                if( _date &amp;&amp; _endDate ){
+                    _r = JC.f.printf( _fullFormat, this.dateFormat( _date ), this.dateFormat( _endDate ) );
+                }else if( _date ){
+                    _r = JC.f.printf( _fullFormat, this.dateFormat( _date ) );
+                }else if( _endDate ){
+                    _r = JC.f.printf( _fullFormat, this.dateFormat( _endDate ) );
+                }
+                return _r;
+            }
+
+        , dateParse:
+            function( _selector ){
+                var _r;
+
+                _selector
+                    &amp;&amp; _selector.attr( &#x27;dateParse&#x27; )
+                    &amp;&amp; ( _r = window[ _selector.attr( &#x27;dateParse&#x27; ) ] )
+                    ;
+
+                return _r;
+            }
+
         , tpl:
             [
             &#x27;&lt;div id=&quot;UXCCalendar&quot; class=&quot;UXCCalendar&quot;&gt;&#x27;
@@ -1780,15 +1960,16 @@
      * @event input focus
      * @private
      */
-    $(document).delegate( [ &#x27;input[datatype=season]&#x27;, &#x27;input[datatype=month]&#x27;, &#x27;input[datatype=week]&#x27;
-            , &#x27;input[datatype=date]&#x27;, &#x27;input[datatype=daterange]&#x27;, &#x27;input[multidate], input[datatype=monthday]&#x27; ].join(), &#x27;focus&#x27; , function($evt){
+    $(document).delegate( [ &#x27;input[datatype=year]&#x27;, &#x27;input[datatype=season]&#x27;, &#x27;input[datatype=month]&#x27;, &#x27;input[datatype=week]&#x27;
+            , &#x27;input[datatype=date]&#x27;, &#x27;input[datatype=daterange]&#x27;, &#x27;input[multidate], input[datatype=monthday]&#x27; ].join(), &#x27;focus&#x27; 
+    , function($evt){
             Calendar.pickDate( this );
     });
-    $(document).delegate( [ &#x27;button[datatype=season]&#x27;, &#x27;button[datatype=month]&#x27;, &#x27;button[datatype=week]&#x27;
+    $(document).delegate( [ &#x27;button[datatype=year]&#x27;, &#x27;button[datatype=season]&#x27;, &#x27;button[datatype=month]&#x27;, &#x27;button[datatype=week]&#x27;
             , &#x27;button[datatype=date]&#x27;, &#x27;button[datatype=daterange]&#x27;, &#x27;button[multidate], button[datatype=monthday]&#x27; ].join(), &#x27;click&#x27; , function($evt){
             Calendar.pickDate( this );
     });
-    $(document).delegate( [ &#x27;textarea[datatype=season]&#x27;, &#x27;textarea[datatype=month]&#x27;, &#x27;textarea[datatype=week]&#x27;
+    $(document).delegate( [ &#x27;textarea[datatype=year]&#x27;, &#x27;textarea[datatype=season]&#x27;, &#x27;textarea[datatype=month]&#x27;, &#x27;textarea[datatype=week]&#x27;
             , &#x27;textarea[datatype=date]&#x27;, &#x27;textarea[datatype=daterange]&#x27;, &#x27;textarea[multidate], textarea[datatype=monthday]&#x27; ].join(), &#x27;click&#x27; , function($evt){
             Calendar.pickDate( this );
     });
@@ -2000,7 +2181,12 @@
                 }
                 if( !( _dstart &amp;&amp; _dend ) ) return;
 
-                _p._model.selector().val( JC.f.printf( &#x27;{0} 至 {1}&#x27;, JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) );
+                /*
+                _p._model.selector().val( 
+                        JC.f.printf( &#x27;{0} 至 {1}&#x27;, JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) 
+                );
+                */
+                _p._model.selector().val( _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) ); 
                 $(_p).trigger( &#x27;TriggerEvent&#x27;, [ JC.Calendar.Model.UPDATE, &#x27;week&#x27;, _dstart, _dend ] );
 
                 JC.Calendar.hide();
@@ -2229,15 +2415,22 @@
                         if( !_tmp.length ) return;
                         _ar = [];
                         $.each( _tmp, function( _ix, _item ){
-                            _ar.push( JC.f.printf( &#x27;{0} 至 {1}&#x27;, JC.f.formatISODate( _item.start ), JC.f.formatISODate( _item.end ) ) );
+                            //_ar.push( JC.f.printf( &#x27;{0} 至 {1}&#x27;, JC.f.formatISODate( _item.start ), JC.f.formatISODate( _item.end ) ) );
+                            _ar.push( _text = _p._model.fullFormat( _p._model.dateFormat( _item.start ), _p._model.dateFormat( _item.end ) ) );
                         });
                         _text = _ar.join(&#x27;,&#x27;);
                     }else{
                         _tmp = this._model.selectedDate();
                         _tmp &amp;&amp; ( _dstart = _tmp.start, _dend = _tmp.end );
 
+                        /*
                         _dstart &amp;&amp; _dend 
                             &amp;&amp; ( _text = JC.f.printf( &#x27;{0} 至 {1}&#x27;, JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) );
+                        */
+                        _dstart 
+                            &amp;&amp; _dend 
+                            &amp;&amp; _text = _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) )
+                            ; 
                     }
                 }else{
                     _userSelectedItem = $( _userSelectedItem );
@@ -2252,7 +2445,10 @@
                     _dstart.setTime( _userSelectedItem.attr(&#x27;dstart&#x27;) );
                     _dend.setTime( _userSelectedItem.attr(&#x27;dend&#x27;) );
 
+                    /*
                     _text = JC.f.printf( &#x27;{0} 至 {1}&#x27;, JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) );
+                    */
+                    _text = _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) )
                 }
 
                 if( !_text ) return;
@@ -2288,38 +2484,39 @@
 
     JC.Calendar.clone( SeasonModel, SeasonView );
 
-    SeasonModel.prototype.layout = 
-        function(){
-            var _r = $(&#x27;#UXCCalendar_season&#x27;);
-
-            if( !_r.length ){
-                _r = $( JC.Calendar.seasonTpl || this.tpl ).hide();
-                _r.attr(&#x27;id&#x27;, &#x27;UXCCalendar_season&#x27;).hide().appendTo( document.body );
-             }
-            return _r;
-        };
-
-    SeasonModel.prototype.tpl =
-        [
-        &#x27;&lt;div id=&quot;UXCCalendar_season&quot; class=&quot;UXCCalendar UXCCalendar_week UXCCalendar_season&quot; &gt;&#x27;
-        ,&#x27;    &lt;div class=&quot;UHeader&quot;&gt;&#x27;
-        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UNextYear&quot;&gt;&amp;nbsp;&amp;gt;&amp;gt;&amp;nbsp;&lt;/button&gt;&#x27;
-        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UPreYear&quot;&gt;&amp;nbsp;&amp;lt;&amp;lt;&amp;nbsp;&lt;/button&gt;&#x27;
-        ,&#x27;        &lt;select class=&quot;UYear&quot; style=&quot;&quot;&gt;&lt;/select&gt;&#x27;
-        ,&#x27;    &lt;/div&gt;&#x27;
-        ,&#x27;    &lt;table class=&quot;UTable UTableBorder&quot;&gt;&#x27;
-        ,&#x27;        &lt;tbody&gt;&lt;/tbody&gt;&#x27;
-        ,&#x27;    &lt;/table&gt;&#x27;
-        ,&#x27;    &lt;div class=&quot;UFooter&quot;&gt;&#x27;
-        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UConfirm&quot;&gt;确定&lt;/button&gt;&#x27;
-        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UClear&quot;&gt;清空&lt;/button&gt;&#x27;
-        ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UCancel&quot;&gt;取消&lt;/button&gt;&#x27;
-        ,&#x27;    &lt;/div&gt;&#x27;
-        ,&#x27;&lt;/div&gt;&#x27;
-        ].join(&#x27;&#x27;);
 
     JC.f.mergeObject( SeasonModel.prototype, {
-        month: 
+        layout: 
+            function(){
+                var _r = $(&#x27;#UXCCalendar_season&#x27;);
+
+                if( !_r.length ){
+                    _r = $( JC.Calendar.seasonTpl || this.tpl ).hide();
+                    _r.attr(&#x27;id&#x27;, &#x27;UXCCalendar_season&#x27;).hide().appendTo( document.body );
+                 }
+                return _r;
+            }
+
+        , tpl:
+            [
+            &#x27;&lt;div id=&quot;UXCCalendar_season&quot; class=&quot;UXCCalendar UXCCalendar_week UXCCalendar_season&quot; &gt;&#x27;
+            ,&#x27;    &lt;div class=&quot;UHeader&quot;&gt;&#x27;
+            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UNextYear&quot;&gt;&amp;nbsp;&amp;gt;&amp;gt;&amp;nbsp;&lt;/button&gt;&#x27;
+            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UPreYear&quot;&gt;&amp;nbsp;&amp;lt;&amp;lt;&amp;nbsp;&lt;/button&gt;&#x27;
+            ,&#x27;        &lt;select class=&quot;UYear&quot; style=&quot;&quot;&gt;&lt;/select&gt;&#x27;
+            ,&#x27;    &lt;/div&gt;&#x27;
+            ,&#x27;    &lt;table class=&quot;UTable UTableBorder&quot;&gt;&#x27;
+            ,&#x27;        &lt;tbody&gt;&lt;/tbody&gt;&#x27;
+            ,&#x27;    &lt;/table&gt;&#x27;
+            ,&#x27;    &lt;div class=&quot;UFooter&quot;&gt;&#x27;
+            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UConfirm&quot;&gt;确定&lt;/button&gt;&#x27;
+            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UClear&quot;&gt;清空&lt;/button&gt;&#x27;
+            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UCancel&quot;&gt;取消&lt;/button&gt;&#x27;
+            ,&#x27;    &lt;/div&gt;&#x27;
+            ,&#x27;&lt;/div&gt;&#x27;
+            ].join(&#x27;&#x27;)
+
+        , month: 
             function(){
                 var _r = 0, _tmp, _date;
                 ( _tmp = this.layout().find(&#x27;td.cur a[dstart]&#x27;) ).length
@@ -2436,12 +2633,227 @@
                 }
                 if( !( _dstart &amp;&amp; _dend ) ) return;
 
+                /*
                 _p._model.selector().val( JC.f.printf( &#x27;{0} 至 {1}&#x27;, JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) );
+                */
+                _p._model.selector().val( _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) );
                 $(_p).trigger( &#x27;TriggerEvent&#x27;, [ JC.Calendar.Model.UPDATE, &#x27;season&#x27;, _dstart, _dend ] );
 
                 JC.Calendar.hide();
             }
     });
+    //
+    /// YEAR CODE
+    //
+    /**
+     * 自定义周弹框的模板HTML
+     * @for         JC.Calendar
+     * @property    yearTpl
+     * @type        string
+     * @default     empty
+     * @static
+     */
+    JC.Calendar.yearTpl = &#x27;&#x27;;
+
+    function YearModel( _selector ){
+        this._selector = _selector;
+    }
+    JC.Calendar.YearModel = YearModel;
+    
+    function YearView( _model ){
+        this._model = _model;
+    }
+    JC.Calendar.YearView = YearView;
+
+    JC.Calendar.clone( YearModel, YearView );
+
+    JC.f.mergeObject( YearModel.prototype, {
+        layout: 
+            function(){
+                var _r = $(&#x27;#UXCCalendar_year&#x27;);
+
+                if( !_r.length ){
+                    _r = $( JC.Calendar.yearTpl || this.tpl ).hide();
+                    _r.attr(&#x27;id&#x27;, &#x27;UXCCalendar_year&#x27;).hide().appendTo( document.body );
+                 }
+                return _r;
+            }
+
+        , tpl:
+            [
+            &#x27;&lt;div id=&quot;UXCCalendar_year&quot; class=&quot;UXCCalendar UXCCalendar_week UXCCalendar_year&quot;&gt;\n&#x27;
+            ,&#x27;    &lt;table class=&quot;UTable UTableBorder&quot;&gt;\n&#x27;
+            ,&#x27;        &lt;tbody&gt;\n&#x27;
+            ,&#x27;            &lt;tr&gt;\n&#x27;
+            ,&#x27;                &lt;td class=&quot;UYearBox&quot;&gt;\n&#x27;
+            ,&#x27;                    &lt;button type=&quot;button&quot; class=&quot;UButton UPreYear&quot;&gt;&amp;nbsp;&amp;lt;&amp;lt;&amp;nbsp;&lt;/button&gt;\n&#x27;
+            ,&#x27;                &lt;/td&gt;\n&#x27;
+            ,&#x27;                &lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;\n&#x27;
+            ,&#x27;            &lt;/tr&gt;\n&#x27;
+            ,&#x27;            &lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;\n&#x27;
+            ,&#x27;            &lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;\n&#x27;
+            ,&#x27;            &lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;\n&#x27;
+            ,&#x27;            &lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;\n&#x27;
+            ,&#x27;            &lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;\n&#x27;
+            ,&#x27;            &lt;tr&gt;\n&#x27;
+            ,&#x27;                &lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;\n&#x27;
+            ,&#x27;                &lt;td class=&quot;UYearBox&quot;&gt;\n&#x27;
+            ,&#x27;                    &lt;button type=&quot;button&quot; class=&quot;UButton UNextYear&quot;&gt;&amp;nbsp;&amp;gt;&amp;gt;&amp;nbsp;&lt;/button&gt;\n&#x27;
+            ,&#x27;                &lt;/td&gt;\n&#x27;
+            ,&#x27;            &lt;/tr&gt;\n&#x27;
+            ,&#x27;        &lt;/tbody&gt;\n&#x27;
+            ,&#x27;    &lt;/table&gt;\n&#x27;
+            ,&#x27;    &lt;div class=&quot;UFooter&quot;&gt;\n&#x27;
+            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UConfirm&quot;&gt;确定&lt;/button&gt;\n&#x27;
+            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UClear&quot;&gt;清空&lt;/button&gt;\n&#x27;
+            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UCancel&quot;&gt;取消&lt;/button&gt;\n&#x27;
+            ,&#x27;    &lt;/div&gt;\n&#x27;
+            ,&#x27;&lt;/div&gt;\n&#x27;
+            ].join(&#x27;&#x27;)
+
+        , selectedDate:
+            function(){
+                var _r, _tmp, _item;
+                _tmp = this.layout().find(&#x27;td.cur&#x27;);
+                _tmp.length 
+                    &amp;&amp; !_tmp.hasClass( &#x27;unable&#x27; )
+                    &amp;&amp; ( _item = _tmp.find(&#x27;a[dstart]&#x27;) )
+                    &amp;&amp; ( 
+                            _r = { &#x27;start&#x27;: new Date(), &#x27;end&#x27;: new Date() }
+                            , _r.start.setTime( _item.attr(&#x27;dstart&#x27;) ) 
+                            , _r.end.setTime( _item.attr(&#x27;dend&#x27;) ) 
+                        )
+                    ;
+                return _r;
+            }
+    });
+
+    JC.f.mergeObject( YearView.prototype, {
+
+        _buildBody:
+            function( _dateo ){
+                var _p = this
+                    , _selector = _p._model.selector()
+                    , _v = _selector.val().trim()
+                    , _selectedYear = _v.replace( /[^\d]+/g, &#x27;&#x27; )
+                    , _d = _dateo.date
+                    , today = new Date().getFullYear()
+                    , _layout = _p._model.layout()
+                    , _tds = _layout.find( &#x27;tbody &gt; tr &gt; td&#x27; )
+                    , _len = _tds.length - 1
+                    , _yearCount 
+                    , _yearEnd
+                    , _year
+                    , currentcanselect = JC.f.parseBool( _selector.attr(&#x27;currentcanselect&#x27;) )
+                    , _title, _class, _dstart, _dend
+                    ;
+
+                _selectedYear &amp;&amp; ( _selectedYear = _selectedYear.slice( 0, 4 ) );
+                !_selectedYear &amp;&amp; ( _selectedYear = today );
+
+                _year = _d.getFullYear();
+                _yearCount = _year - Math.floor( _len / 2 );
+                
+                if( _dateo.minvalue &amp;&amp; currentcanselect ){
+                    _dateo.minvalue.setFullYear( _dateo.minvalue.getFullYear() - 1 );
+                }
+
+                if( _dateo.maxvalue &amp;&amp; currentcanselect ){
+                    _dateo.maxvalue.setFullYear( _dateo.maxvalue.getFullYear() + 1 );
+                }
+                
+                //alert( _tds.length );
+                _tds.each( function( _ix, _item ){
+                    _item = $( _item );
+                    if( _ix == 0 || _ix == _len ){
+                    }else{
+                        //_item.html( JC.f.printf( &#x27;&lt;a href=&quot;javascript:&quot;&gt;{0}&lt;/a&gt;&#x27;, _yearCount ) );
+
+                        _title = JC.f.printf( &quot;{0}年&quot;, _yearCount );
+                        _class = [];
+
+                        _dstart = new Date( _yearCount, 0, 1 );
+                        _dend = new Date( _yearCount, 11, 31 );
+
+                        if( _dateo.minvalue &amp;&amp; _dstart.getFullYear() &lt;= _dateo.minvalue.getFullYear() ){ 
+                            _class.push( &#x27;unable&#x27; );
+                        }
+                        if( _dateo.maxvalue &amp;&amp; _dend.getFullYear() &gt;= _dateo.maxvalue.getFullYear() ){
+                            _class.push( &#x27;unable&#x27; );
+                        }
+
+                        _selectedYear &amp;&amp; _selectedYear == _yearCount &amp;&amp; _class.push( &#x27;cur&#x27; );
+
+                        today == _yearCount &amp;&amp; _class.push( &#x27;today&#x27; );
+
+                        _item.html( JC.f.printf( &#x27;&lt;a href=&quot;javascript:&quot; title=&quot;{0}&quot;&#x27;+
+                                        &#x27; dstart=&quot;{1}&quot; dend=&quot;{2}&quot; &quot; &gt;{3}&lt;/a&gt;&lt;/td&gt;&#x27;
+                                    , _title
+                                    , _dstart.getTime()
+                                    , _dend.getTime()
+                                    , _yearCount
+                                ));
+                        _item.prop( &#x27;className&#x27;, _class.join( &#x27; &#x27; ) );
+                    }
+                    _yearCount++;
+                });
+            }
+
+        , updateSelected: 
+            function( _userSelectedItem ){
+                var _p = this, _dstart, _dend, _tmp;
+                if( !_userSelectedItem ){
+                    _tmp = this._model.selectedDate();
+                    _tmp &amp;&amp; ( _dstart = _tmp.start, _dend = _tmp.end );
+                }else{
+                    _userSelectedItem = $( _userSelectedItem );
+                    _tmp = JC.f.getJqParent( _userSelectedItem, &#x27;td&#x27; );
+                    if( _tmp &amp;&amp; _tmp.hasClass(&#x27;unable&#x27;) ) return;
+                    _dstart = new Date(); _dend = new Date();
+                    _dstart.setTime( _userSelectedItem.attr(&#x27;dstart&#x27;) );
+                    _dend.setTime( _userSelectedItem.attr(&#x27;dend&#x27;) );
+                }
+                if( !( _dstart &amp;&amp; _dend ) ) return;
+
+                _p._model.selector().val( _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) );
+                $(_p).trigger( &#x27;TriggerEvent&#x27;, [ JC.Calendar.Model.UPDATE, &#x27;year&#x27;, _dstart, _dend ] );
+
+                JC.Calendar.hide();
+            }
+
+        , updateSingleYear:
+            function( _offset ){
+                var _dateo = this._model.layoutDate()
+                    , _a = this._model.layout().find( &#x27;a[dstart]&#x27; )
+                    , _firstA = _a.first()
+                    , _lastA = _a.last()
+                    , _dstart = new Date(), _dend = new Date()
+                    , _offsetYear = 17;
+                    ;
+
+                if( _offset &gt; 0 ){
+                    _dstart.setTime( _lastA.attr( &#x27;dstart&#x27; ) );
+                    _dend.setTime( _lastA.attr( &#x27;dend&#x27; ) );
+                    _dateo.date = _dstart;
+                    _dateo.enddate = _dend;
+
+                    _dateo.date.setFullYear( _dateo.date.getFullYear() + _offsetYear );
+                    _dateo.enddate.setFullYear( _dateo.enddate.getFullYear() + _offsetYear );
+                }else{
+                    _dstart.setTime( _firstA.attr( &#x27;dstart&#x27; ) );
+                    _dend.setTime( _firstA.attr( &#x27;dend&#x27; ) );
+                    _dateo.date = _dstart;
+                    _dateo.enddate = _dend;
+
+                    _dateo.date.setFullYear( _dateo.date.getFullYear() - _offsetYear );
+                    _dateo.enddate.setFullYear( _dateo.enddate.getFullYear() - _offsetYear );
+                }
+
+                this._buildLayout( _dateo );
+                this._buildDone();
+            }
+    });
+
     //
     /// MONTHDAY CODE
     //
@@ -2559,12 +2971,6 @@
             ,&#x27;        {0}&#x27;
             ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UNextYear&quot;&gt;&amp;nbsp;&amp;gt;&amp;gt;&amp;nbsp;&lt;/button&gt;&#x27;
             ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UNextMonth&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;gt;&amp;nbsp;&amp;nbsp;&lt;/button&gt;&#x27;
-            /*
-            ,&#x27;       &lt;span class=&quot;UYear&quot;&gt;&#x27;
-            ,&#x27;       &lt;/span&gt;年&#x27;
-            ,&#x27;       &lt;span class=&quot;UMonth&quot;&gt;&#x27;
-            ,&#x27;       &lt;/span&gt;月{0}&#x27;
-            */
             ,&#x27;    &lt;/div&gt;&#x27;
             ,&#x27;    &lt;table class=&quot;UTable UTableBorder&quot;&gt;&#x27;
             ,&#x27;        &lt;tbody&gt;&lt;/tbody&gt;&#x27;

@@ -23,12 +23,12 @@
      *      <dt>datatype = string</dt>
      *      <dd>
      *          声明日历控件的类型:
-     *          <p><b>date:</b> 日期日历</p>
-     *          <p><b>week:</b> 周日历</p>
-     *          <p><b>month:</b> 月日历</p>
-     *          <p><b>season:</b> 季日历</p>
-     *          <p><b>year:</b> 年日历</p>
-     *          <p><b>monthday:</b> 多选日期日历</p>
+     *          <br /><b>date:</b> 日期日历
+     *          <br /><b>week:</b> 周日历
+     *          <br /><b>month:</b> 月日历
+     *          <br /><b>season:</b> 季日历
+     *          <br /><b>year:</b> 年日历
+     *          <br /><b>monthday:</b> 多选日期日历
      *      </dd>
      *
      *      <dt>multidate = string</dt>
@@ -37,26 +37,42 @@
      *      </dd>
      *
      *      <dt>calendarshow = function</dt>
-     *      <dd>显示日历时的回调</dd>
+     *      <dd>显示日历时的回调
+<pre>function calendarshow( _selector, _ins ){
+    var _selector = $(this);
+    UXC.log( 'calendarshow', _selector.val() );
+}
+</pre></dd>
      *
      *      <dt>calendarhide = function</dt>
-     *      <dd>隐藏日历时的回调</dd>
+     *      <dd>隐藏日历时的回调
+<pre>function calendarhide( _selector, _ins ){
+    var _selector = $(this);
+    UXC.log( 'calendarhide', _selector.val() );
+}</pre></dd>
      *
      *      <dt>calendarlayoutchange = function</dt>
-     *      <dd>用户点击日历控件操作按钮后, 外观产生变化时触发的回调</dd>
+     *      <dd>用户点击日历控件操作按钮后, 外观产生变化时触发的回调
+<pre>function calendarlayoutchange( _selector, _ins ){
+    var _selector = $(this);
+    JC.log( 'calendarlayoutchange', _selector.val() );
+}
+</pre></dd>
      *
      *      <dt>calendarupdate = function</dt>
      *      <dd>
      *          赋值后触发的回调
-     *          <dl>
-     *              <dt>参数:</dt>
-     *              <dd><b>_startDate:</b> 开始日期</dd>
-     *              <dd><b>_endDate:</b> 结束日期</dd>
-     *          </dl>
-     *      </dd>
+<pre>function calendarupdate( _startDate, _endDate, _ins ){
+    var _selector = $(this);
+    JC.log( 'calendarupdate', _selector.val(), _startDate, _endDate );
+}
+</pre></dd>
      *
      *      <dt>calendarclear = function</dt>
-     *      <dd>清空日期触发的回调</dd>
+     *      <dd>清空日期触发的回调
+<pre>function calendarclear( _selector, _ins ){
+    var _selector = $(this);
+}</pre></dd>
      *
      *      <dt>minvalue = ISO Date</dt>
      *      <dd>日期的最小时间, YYYY-MM-DD</dd>
@@ -79,10 +95,77 @@
      *                  [{"start": Date,"end": Date}[, {"start": Date,"end": Date}... ] ]
      *              </dd>
      *          </dl>
+<pre>function calendarupdatemultiselect( _data, _ins ){
+    var _selector = $(this);
+    window.JSON && ( _data = JSON.stringify( _data ) );
+    JC.log( 'calendarupdatemultiselect:'
+        , JC.f.printf( 'val:{0}, data:{1}', _selector.val(), _data ) );
+}</pre></dd>
+     *
+     *      <dt>dateFormat = string</dt>
+     *      <dd>
+     *          自定义日期格式化显示, 使用 JC.f.dateFormat 函数进行格式化
+     *          <br />如果日期去除非数字后不是 8/16 位数字的话, 需要 显式声明 dateParse 属性, 自定义日期解析函数
+     *      </dd>
+     *
+     *      <dt>fullDateFormat = string</dt>
+     *      <dd>
+     *          针对 日期类型: 月/季/年 定义显示格式, default: "{0} 至 {1}"
+     *          <br />{0}代表开始日期, {1}代表结束日期
+     *      </dd>
+     *
+     *      <dt>dateParse = function </dt>
+     *      <dd>
+     *          自定义日期格式函数, 针对日期不能解析为 8 位数字的特殊日期
+     *          <br />例子:
+<pre>//
+/// 针对月份日期格式化 YY-MM
+//
+function parseYearMonthDate( _dateStr ){
+    _dateStr = $.trim( _dateStr || '' );
+    var _r = { start: null, end: null };
+    if( !_dateStr ) return _r;
+
+    _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+    var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4 ), 10 ) - 1;
+
+    _r.start = new Date( _year, _month, 1 );
+    return _r;
+}
+//
+/// 针对季度日期格式化 YY-MM ~ YY-MM
+//
+function parseSeasonDate( _dateStr ){
+    _dateStr = $.trim( _dateStr || '' );
+    var _r = { start: null, end: null };
+    if( !_dateStr ) return _r;
+
+    _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+
+    _r.start = JC.f.parseISODate( _dateStr.slice( 0, 6 ) + '01' );
+    _r.end = JC.f.parseISODate( _dateStr.slice( 6 ) + '01' );
+
+    return _r;
+}
+//
+/// 针对年份日期格式化 YY
+//
+function parseYearDate( _dateStr ){
+    _dateStr = $.trim( _dateStr || '' );
+    var _r = { start: null, end: null };
+    if( !_dateStr ) return _r;
+
+    _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+    var _year = _dateStr.slice( 0, 4 );
+
+    _r.start = new Date( _year, 0, 1 );
+    return _r;
+}</pre>
      *      </dd>
      * </dl>
      * @namespace JC
      * @class Calendar
+     * @version dev 0.3, 2013-12-09 添加 年日历, 优化继承代码块
      * @version dev 0.2, 2013-09-01 过程式转单例模式
      * @version dev 0.1, 2013-06-04
      * @author  qiushaowei   <suches@btbtd.org> | 75 team
@@ -231,7 +314,7 @@
                     }
 
                     _p._model.calendarupdate()
-                        && _p._model.calendarupdate().apply( _p._model.selector(), [ _startDate, _endDate ] );
+                        && _p._model.calendarupdate().apply( _p._model.selector(), [ _startDate, _endDate, _p ] );
 
                     _p._model.multiselect()
                         && _p._model.calendarupdatemultiselect()

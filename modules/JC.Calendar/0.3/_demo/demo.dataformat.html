@@ -94,16 +94,18 @@
         UXC.log( 'calendarlayoutchange', _p.val() );
     }
 
-    function calendarupdate( _type, _start, _end ){
+    function calendarupdate( _start, _end ){
         var _p = $(this);
-        UXC.log( 'calendarupdate', _p.val(), _type, _start, _end );
+        UXC.log( 'calendarupdate', _p.val(), _start, _end );
     }
 
     function calendarupdate( _start, _end ){
         var _p = $(this);
         UXC.log( 'calendarupdate', _p.val(), _start, _end );
     }
-
+    //
+    /// 针对月份日期格式化 YY-MM
+    //
     function parseYearMonthDate( _dateStr ){
         _dateStr = $.trim( _dateStr || '' );
         var _r = { start: null, end: null };
@@ -115,7 +117,9 @@
         _r.start = new Date( _year, _month, 1 );
         return _r;
     }
-
+    //
+    /// 针对季度日期格式化 YY-MM ~ YY-MM
+    //
     function parseSeasonDate( _dateStr ){
         _dateStr = $.trim( _dateStr || '' );
         var _r = { start: null, end: null };
