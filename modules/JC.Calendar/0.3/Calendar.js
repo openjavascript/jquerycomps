@@ -464,6 +464,7 @@
                 case 'week': 
                 case 'month': 
                 case 'season': 
+                case 'year': 
                 case 'monthday': 
                     {
                         _r = _type;
@@ -701,18 +702,26 @@
     Calendar.initTrigger = 
         function( _selector ){
            _selector.each( function(){
-                var _p = $(this), _nodeName = (_p.prop('nodeName')||'').toLowerCase(), _tmp;
+                var _p = $(this)
+                    , _nodeName = (_p.prop('nodeName')||'').toLowerCase()
+                    , _tmp, _dt
+                    ;
 
                 if( _nodeName != 'input' && _nodeName != 'textarea' ){ 
                     Calendar.initTrigger( _selector.find( 'input[type=text], textarea' ) ); 
                     return; 
                 }
+                _dt = $.trim( _p.attr('datatype') || '').toLowerCase()
 
                 if( !(  
-                        $.trim( _p.attr('datatype') || '').toLowerCase() == 'date' 
+                        _dt == 'date' 
+                        || _dt == 'week' 
+                        || _dt == 'month' 
+                        || _dt == 'season' 
+                        || _dt == 'year' 
+                        || _dt == 'daterange'
+                        || _dt == 'monthday' 
                         || $.trim( _p.attr('multidate') || '')
-                        || $.trim( _p.attr('datatype') || '').toLowerCase() == 'daterange'
-                        || $.trim( _p.attr('datatype') || '').toLowerCase() == 'monthday' 
                         ) ) return;
 
                 var _btn = _p.find( '+ input.UXCCalendar_btn' );
@@ -1665,15 +1674,16 @@
      * @event input focus
      * @private
      */
-    $(document).delegate( [ 'input[datatype=season]', 'input[datatype=month]', 'input[datatype=week]'
-            , 'input[datatype=date]', 'input[datatype=daterange]', 'input[multidate], input[datatype=monthday]' ].join(), 'focus' , function($evt){
+    $(document).delegate( [ 'input[datatype=year]', 'input[datatype=season]', 'input[datatype=month]', 'input[datatype=week]'
+            , 'input[datatype=date]', 'input[datatype=daterange]', 'input[multidate], input[datatype=monthday]' ].join(), 'focus' 
+    , function($evt){
             Calendar.pickDate( this );
     });
-    $(document).delegate( [ 'button[datatype=season]', 'button[datatype=month]', 'button[datatype=week]'
+    $(document).delegate( [ 'button[datatype=year]', 'button[datatype=season]', 'button[datatype=month]', 'button[datatype=week]'
             , 'button[datatype=date]', 'button[datatype=daterange]', 'button[multidate], button[datatype=monthday]' ].join(), 'click' , function($evt){
             Calendar.pickDate( this );
     });
-    $(document).delegate( [ 'textarea[datatype=season]', 'textarea[datatype=month]', 'textarea[datatype=week]'
+    $(document).delegate( [ 'textarea[datatype=year]', 'textarea[datatype=season]', 'textarea[datatype=month]', 'textarea[datatype=week]'
             , 'textarea[datatype=date]', 'textarea[datatype=daterange]', 'textarea[multidate], textarea[datatype=monthday]' ].join(), 'click' , function($evt){
             Calendar.pickDate( this );
     });
