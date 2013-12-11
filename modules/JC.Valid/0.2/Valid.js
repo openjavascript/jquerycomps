@@ -2939,6 +2939,7 @@
                 , setTimeout( function(){
                     _v = _sp.val().trim();
                     if( !_v ) return;
+                    _v = JC.f.encoder( _sp )( _v );
                     if( !_sp.data('JCValidStatus') ) return;
                     _url = JC.f.printf( _url, _v );
                     _sp.attr('datavalidUrlFilter')
