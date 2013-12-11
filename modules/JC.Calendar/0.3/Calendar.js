@@ -2113,7 +2113,7 @@
                         _ar = [];
                         $.each( _tmp, function( _ix, _item ){
                             //_ar.push( JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _item.start ), JC.f.formatISODate( _item.end ) ) );
-                            _ar.push( _text = _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) );
+                            _ar.push( _text = _p._model.fullFormat( _p._model.dateFormat( _item.start ), _p._model.dateFormat( _item.end ) ) );
                         });
                         _text = _ar.join(',');
                     }else{
@@ -2181,38 +2181,39 @@
 
     JC.Calendar.clone( SeasonModel, SeasonView );
 
-    SeasonModel.prototype.layout = 
-        function(){
-            var _r = $('#UXCCalendar_season');
-
-            if( !_r.length ){
-                _r = $( JC.Calendar.seasonTpl || this.tpl ).hide();
-                _r.attr('id', 'UXCCalendar_season').hide().appendTo( document.body );
-             }
-            return _r;
-        };
-
-    SeasonModel.prototype.tpl =
-        [
-        '<div id="UXCCalendar_season" class="UXCCalendar UXCCalendar_week UXCCalendar_season" >'
-        ,'    <div class="UHeader">'
-        ,'        <button type="button" class="UButton UNextYear">&nbsp;&gt;&gt;&nbsp;</button>'
-        ,'        <button type="button" class="UButton UPreYear">&nbsp;&lt;&lt;&nbsp;</button>'
-        ,'        <select class="UYear" style=""></select>'
-        ,'    </div>'
-        ,'    <table class="UTable UTableBorder">'
-        ,'        <tbody></tbody>'
-        ,'    </table>'
-        ,'    <div class="UFooter">'
-        ,'        <button type="button" class="UConfirm">确定</button>'
-        ,'        <button type="button" class="UClear">清空</button>'
-        ,'        <button type="button" class="UCancel">取消</button>'
-        ,'    </div>'
-        ,'</div>'
-        ].join('');
 
     JC.f.mergeObject( SeasonModel.prototype, {
-        month: 
+        layout: 
+            function(){
+                var _r = $('#UXCCalendar_season');
+
+                if( !_r.length ){
+                    _r = $( JC.Calendar.seasonTpl || this.tpl ).hide();
+                    _r.attr('id', 'UXCCalendar_season').hide().appendTo( document.body );
+                 }
+                return _r;
+            }
+
+        , tpl:
+            [
+            '<div id="UXCCalendar_season" class="UXCCalendar UXCCalendar_week UXCCalendar_season" >'
+            ,'    <div class="UHeader">'
+            ,'        <button type="button" class="UButton UNextYear">&nbsp;&gt;&gt;&nbsp;</button>'
+            ,'        <button type="button" class="UButton UPreYear">&nbsp;&lt;&lt;&nbsp;</button>'
+            ,'        <select class="UYear" style=""></select>'
+            ,'    </div>'
+            ,'    <table class="UTable UTableBorder">'
+            ,'        <tbody></tbody>'
+            ,'    </table>'
+            ,'    <div class="UFooter">'
+            ,'        <button type="button" class="UConfirm">确定</button>'
+            ,'        <button type="button" class="UClear">清空</button>'
+            ,'        <button type="button" class="UCancel">取消</button>'
+            ,'    </div>'
+            ,'</div>'
+            ].join('')
+
+        , month: 
             function(){
                 var _r = 0, _tmp, _date;
                 ( _tmp = this.layout().find('td.cur a[dstart]') ).length
