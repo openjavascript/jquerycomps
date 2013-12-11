@@ -285,11 +285,9 @@
                 _els = _p._model.selector().find('div.js-roll-table,div.js-fixed-table');
 
             _p._model.setHeight();
-
-            //JC.log("_wArr", _wArr, "_newWArr", _newWArr, new Date().getTime() );
-
+            
             if ( _wArr <= _newWArr ) {
-                //JC.log("_wArr", _wArr, "_newWArr", _newWArr);
+                
                 _els.each( function () {
                     $(this).find('tr').height('auto');
                 } );
@@ -325,34 +323,36 @@
         createTplBox: function () {
             var _p = this,
                 _ftype = _p.freezeType(),
-                _baseTpl = _p.baseTpl,
-                _tpl,
+                _baseTpl = _p.tTpl(),
+                _tpl ,
                 _fcols,
                 _thead,
                 _tbody,
                 _thead2,
                 _tbody2;
 
+            var _pnt1,
+                _pnt2,
+                _pnt3,
+                _forePnt;
+
             switch( _ftype ) {
                 case 'prev':
                     {
                         _fcols = parseInt( _p.freezeCols(), 10 ); 
 
-                        _tpl = JC.f.printf(_baseTpl, 'js-fixed-table compTFPrevFixed') 
-                             + JC.f.printf(_baseTpl, 'js-roll-table compTFPrevRoll');
-
+                        _tpl = JC.f.printf(_baseTpl, 
+                            'js-fixed-table compTFPrevFixed', 
+                            'js-roll-table compTFPrevRoll' );
                         _p.selector().append( _tpl );
 
-                        //if ( !_p.hasFixedPXWidth() ) {
-                            
-                            _p.setWidth(0, _p.selector().find('div.js-fixed-table'), _fcols );
-                            _p.setWidth(_fcols, _p.selector().find('div.js-roll-table'), _p.colNum()  );
+                        _pnt1 = JC.f.getJqParent(_p.selector().find('div.js-fixed-table'), 'td');
+                        _pnt2 = JC.f.getJqParent(_p.selector().find('div.js-roll-table'), 'td');
                         
+                        //if ( !_p.hasFixedPXWidth() ) {
+                            _p.setWidth(0, _pnt1, _fcols );
+                            _p.setWidth(_fcols, _pnt2, _p.colNum()  ); 
                         //}
-                       
-                        //_p.saveWidth = [_p.selector().find('div.js-fixed-table').prop('offsetWidth'),
-                        //    _p.selector().find('div.js-roll-table').prop('offsetWidth')];
-
 
                         _thead = _p.selector().find('div.js-fixed-table thead').eq(0);
                         _tbody = _p.selector().find('div.js-fixed-table tbody').eq(0);
@@ -372,20 +372,18 @@
                     {
                         _fcols = parseInt( _p.freezeCols(), 10 );
 
-                        _tpl = JC.f.printf(_baseTpl, 'js-roll-table compTFLastRoll') 
-                             + JC.f.printf(_baseTpl, 'js-fixed-table compTFLastFixed');
-
+                        _tpl = JC.f.printf(_baseTpl, 
+                            'js-roll-table compTFLastRoll', 
+                            'js-fixed-table compTFLastFixed')
                         _p.selector().append( _tpl );
-                        
+
+                        _pnt1 = JC.f.getJqParent(_p.selector().find('div.js-roll-table'), 'td');
+                        _pnt2 = JC.f.getJqParent(_p.selector().find('div.js-fixed-table'), 'td');
 
                         //if ( !_p.hasFixedPXWidth() ) {
-
-                            _p.setWidth(0, _p.selector().find('div.js-roll-table'), _p.colNum() - _fcols  );
-                            _p.setWidth(_p.colNum() - _fcols, _p.selector().find('div.js-fixed-table'), _p.colNum() );
-
-                       // }
-                        // _p.saveWidth = [_p.selector().find('div.js-roll-table').prop('offsetWidth'),
-                        //     _p.selector().find('div.js-fixed-table').prop('offsetWidth')];
+                            _p.setWidth(0, _pnt1, _p.colNum() - _fcols  );
+                            _p.setWidth(_p.colNum() - _fcols, _pnt2, _p.colNum() );
+                        //}
 
                         _thead = _p.selector().find('div.js-roll-table thead').eq(0);
                         _tbody = _p.selector().find('div.js-roll-table tbody').eq(0);
@@ -410,18 +408,20 @@
                         _fcols = parseInt( _p.freezeCols()[0], 10 );
                         _fcols2 = parseInt( _p.freezeCols()[1], 10 );
 
-                        _tpl = JC.f.printf(_baseTpl, 'js-fixed-table compTFBothFixed') 
-                             + JC.f.printf(_baseTpl, 'js-roll-table compTFBothRoll')
-                             + JC.f.printf(_baseTpl, 'js-fixed-table compTFBothFixed');
-
+                        _tpl = JC.f.printf(_baseTpl, 
+                                'js-fixed-table compTFBothFixed',
+                                'js-roll-table compTFBothRoll',
+                                'js-fixed-table compTFBothFixed');
                         _p.selector().append( _tpl );
 
-                        //if ( !_p.hasFixedPXWidth() ) {
-                            
-                            _p.setWidth(0, _p.selector().find('div.js-fixed-table').eq(0), _fcols  );
-                            _p.setWidth(_fcols, _p.selector().find('div.js-roll-table'),  _fcols + _p.colNum() - _fcols - _fcols2 );
-                            _p.setWidth(_fcols + _p.colNum() - _fcols - _fcols2, _p.selector().find('div.js-fixed-table').eq(1), _p.colNum() );
+                        _pnt1 = JC.f.getJqParent(_p.selector().find('div.js-fixed-table').eq(0), 'td');
+                        _pnt2 = JC.f.getJqParent(_p.selector().find('div.js-roll-table'), 'td');
+                        _pnt3 = JC.f.getJqParent(_p.selector().find('div.js-fixed-table').eq(1), 'td');
 
+                        //if ( !_p.hasFixedPXWidth() ) {
+                            _p.setWidth(0, _pnt1, _fcols  );
+                            _p.setWidth(_fcols, _pnt2,  _fcols + _p.colNum() - _fcols - _fcols2 );
+                            _p.setWidth(_fcols + _p.colNum() - _fcols - _fcols2, _pnt3, _p.colNum() );
                         //}
 
                         _thead = _p.selector().find('div.js-fixed-table thead').eq(0);
@@ -441,9 +441,14 @@
                         break;
                     }
                    
-            };
+            }
 
-            //_p.saveWidth = _p.selector().prop('offsetWidth');
+            _forePnt = JC.f.getJqParent(_pnt1, 'table');
+            if ( _p.hasFixedPXWidth() ) {
+                _forePnt.css('width', _p.selector().find('table').prop('offsetWidth') );
+                JC.log(1);
+            }
+            _p.selector().find('div.js-roll-table>table').width('120%');
             _p.setHeight();
            
         },
@@ -503,7 +508,6 @@
                 _tr = _$fragment.children('tr:last');
 
                 $( _item ).children('td,th').each( function ( _six, _sitem ) {
-                    //JC.log("_cix", _cix, $(this).text() );
                     
                     var _colspan = $(this).attr('colspan'),
                         _rowspan = $(this).attr('rowspan'),
@@ -543,7 +547,7 @@
                     if ( _key in _row  ) {
                         _cix = _cix + 1;
                     }
-                    //console.log("_key", _key);
+
                     $(this).appendTo( _tr );
 
                 });
@@ -562,11 +566,11 @@
             for (i = _i; i < _cols; i++ ) {
                 _w = _w + _wArr[i];
             }
-
-            _w = _w * 100 - 0.6;
+           
+            _w = _w * 100;
 
             $(_box).css('width', _w + '%' );
-
+    
         },
 
         setHeight: function () {
@@ -588,8 +592,6 @@
                     _maxH = Math.max( _maxH, _midTrx.prop('offsetHeight') );
                 }   
 
-                //console.log("_ix", _ix, "_maxH", _maxH, "leftH", _sp.prop('offsetHeight'), "rightH", _rightTrx.prop('offsetHeight') );
-                
                 _sp.height(_maxH);
                 _rightTrx.height(_maxH);
                 
@@ -598,8 +600,6 @@
                 }
                 
             } );
-
-            //JC.log( "setHeight", new Date().getTime() );
 
         },
 
@@ -661,6 +661,7 @@
 
             _ths.each( function () {
                 _w.push( $(this).prop('offsetWidth') / _p.tableWidth() );
+                //_w.push( $(this).prop('offsetWidth') );
             } );
 
             return _w;
@@ -776,15 +777,39 @@
                 _table,
                 _thead,
                 _tbody,
-                _fragment = document.createDocumentFragment(),
-                _$fragment = $(_fragment);
+                _tpl;
 
-            $('<div></div>').appendTo(_$fragment);
             _table = _p.selector().find('table').get(0).cloneNode(false);
             _thead = _p.selector().find('thead').get(0).cloneNode(false);
             _tbody = _p.selector().find('tbody').get(0).cloneNode(false);
-            
-            $('div#t2').append(_$fragment);
+
+            $(_thead).appendTo($(_table));
+            $(_tbody).appendTo($(_table));
+
+            $(_table).width('100%');
+
+            switch ( _p.freezeType() ) {
+                case 'prev':
+                case 'last':
+                    _tpl = '<table class="compTFEextraTable"><tr><td class="compTFEextraTd"><div class="{0}" style="width:100%;">'
+                        + _table.outerHTML
+                        + '</div></td><td class="compTFEextraTd"><div class="{1}" style="width:100%;">'
+                        + _table.outerHTML
+                        + '</div></td>'
+                        + '</tr></table>';
+                    break;
+                case 'both':
+                    _tpl = '<table class="compTFEextraTable"><tr><td class="compTFEextraTd"><div class="{0}" style="width:100%;">'
+                        + _table.outerHTML
+                        + '</div></td><td class="compTFEextraTd"><div class="{1}" style="width:100%;">'
+                        + _table.outerHTML
+                        + '</div></td><td class="compTFEextraTd"><div class="{2}" style="width:100%;">'
+                        + _table.outerHTML
+                        + '</div></td></tr></table>'
+                    break;
+            }
+
+            return _tpl;
         },
 
 
@@ -810,8 +835,8 @@
             return _p.callbackProp(_selector, _key);
         },
 
-        baseTpl: '<div class="{0}">'
-                +       '<table>'
+        baseTpl: '<div class="{0}" style="width:100%;">'
+                +       '<table style="padding:0;margin:0;">'
                 +           '<thead>'
                 +           '</thead>'
                 +            '<tbody>'
@@ -850,7 +875,6 @@
     };
  
     BaseMVC.build( TableFreeze );
-    
 
     $(document).ready( function () {
         var _insAr = 0;
@@ -885,7 +909,7 @@
 }(jQuery));
     return JC.TableFreeze;
 });}( typeof define === 'function' && define.amd ? define : 
-        function ( _name, _require, _cb) { 
+        function ( _name, _require, _cb ) { 
             typeof _name == 'function' && ( _cb = _name );
             typeof _require == 'function' && ( _cb = _require ); 
             _cb && _cb(); 

@@ -1,0 +1,303 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>360 75 team</title>
+<style type='text/css'>
+    *{ margin: 0; padding: 0; }
+    body{  margin: 20px auto 20px; background:#ececec; }
+
+    dl{
+        margin: 20px 40px;
+    }
+
+    dt{
+        font-weight: bold;
+    }
+
+    dd.odd {
+        background: #ececec;
+    }
+
+    dl dd{ margin: 10px 0; }
+
+    .error{ color: red; }
+    input.error, select.error, textarea.error{ 
+        background-color: #F0DC82;!important;
+        box-shadow: 0 none;
+    }
+    input[type=text], input[type=password]{ width: 200px; }
+
+    input, select, textarea {
+        border: 1px solid #b9b9b9
+    }
+
+    input, select {
+        height: 23px;
+        line-height: 23px;
+    }
+
+    input[type=checkbox], input[type=radio], input.UXC{
+        height: auto;
+        line-height: auto;
+    }
+
+    select[multiple]{
+        height: 80px;
+    }
+
+    div, li{
+        margin: 2px auto;
+    }
+</style>
+<link href='../../../../modules/JC.Calendar/0.3/res/default/style.css' rel='stylesheet' />
+<link href='../../../../modules/JC.Valid/0.2/res/default/style.css' rel='stylesheet' />
+<script src="../../../../lib.js"></script>
+<script src="../../../../config.js"></script>
+<script>
+    JC.debug = true; 
+    
+    requirejs( [ 'JC.Calendar', 'JC.Valid' ], function( Calendar, Valid ){
+    });
+    //
+    /// 针对年份日期格式化 YY
+    //
+    function parseYearDate( _dateStr ){
+        _dateStr = $.trim( _dateStr || '' );
+        var _r = { start: null, end: null };
+        if( !_dateStr ) return _r;
+
+        _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+        var _year = _dateStr.slice( 0, 4 );
+
+        _r.start = new Date( _year, 0, 1 );
+        return _r;
+    }
+
+</script>
+</head>    
+<body>
+    <div style="height:200px"></div>
+    <form action='' method='get'>
+        <dl>
+            <dt>JC.Calendar 示例</dt>
+            <dd><input type="text" name="date1" datatype="year" /></dd>
+            <dd>
+                <input type="text" name="date1" value="2014-06-02" 
+                    multidate="year"
+                    dateFormat="YY-MM-DD"
+                    fullDateFormat="{0}"
+                />
+                dateFormat="YY-MM-DD"
+                , fullDateFormat="{0}"
+            </dd>
+            <dd>
+                <input type="text" name="date1" value="2014-06-02" 
+                    multidate="year"
+                    dateFormat="YY"
+                    fullDateFormat="{0}"
+                    dateParse="parseYearDate"
+                />
+                dateFormat="YY"
+                , fullDateFormat="{0}"
+                , dateParse="parseYearDate"
+            </dd>
+            <dd>
+                <input type="text" name="date2" value="2015-06-03" datatype="year" />
+                <input type="button" class="UXCCalendar_btn" />
+            </dd>
+            <dd>
+                <input type="text" name="date2" value="2016-06-03"
+                datatype="year" 
+                minvalue="2016-06-03" 
+                /> minvalue="2016-06-03"
+            </dd>
+            <dd>
+                <input type="text" name="date2" value="2017-06-03"
+                datatype="year" 
+                minvalue="2017-06-03" 
+                currentcanselect="true"
+                /> minvalue="2017-06-03", currentcanselect="true"
+            </dd>
+            <dd>
+                <input type="text" name="date2" value="2018-06-03" 
+                datatype="year" 
+                maxvalue="2018-06-30" 
+                /> maxvalue="2018-06-30"
+            </dd>
+            <dd>
+                <input type="text" name="date2" value="2019-06-03" 
+                datatype="year" 
+                maxvalue="2019-06-30" 
+                currentcanselect="true"
+                /> maxvalue="2019-06-30", currentcanselect="true"
+            </dd>
+            <dd>
+                <input type="text" name="date2" value="2020-06-03" 
+                datatype="year"
+                minvalue="2010-06-01" 
+                maxvalue="2030-06-30" 
+                />  minvalue="2010-06-01" maxvalue="2030-06-30"
+            </dd>
+            <dd>
+                <input type="text" name="date2" value="2020-06-03" 
+                datatype="year"
+                minvalue="2010-06-01" 
+                maxvalue="2030-06-30" 
+                currentcanselect="true"
+                />  minvalue="2010-06-01" maxvalue="2030-06-30", currentcanselect="true"
+            </dd>
+
+            <dd>
+                date range:
+                <input type="text" name="date2" value="2023-01-01" 
+                datatype="daterange"
+
+                multidate="year"
+                dateFormat="YY-MM-DD"
+                fullDateFormat="{0}"
+                />
+                <input type="text" name="date2" value="2023-01-01" 
+                datatype="daterange"
+
+                multidate="year"
+                dateFormat="YY-MM-DD"
+                fullDateFormat="{0}"
+                />
+                <em class="error"></em>
+                dateFormat="YY-MM-DD"
+                , fullDateFormat="{0}"
+            </dd>
+
+
+            <dd>
+                date range:
+                <input type="text" name="date2" value="2023-01-01" 
+                datatype="daterange"
+
+                multidate="year"
+                dateFormat="YY-MM-DD"
+                fullDateFormat="{0}"
+                minvalue="2013-01-01" 
+                />
+                <input type="text" name="date2" value="2023-01-01" 
+                datatype="daterange"
+
+                multidate="year"
+                dateFormat="YY-MM-DD"
+                fullDateFormat="{0}"
+                maxvalue="2033-01-01" 
+                />
+                <em class="error"></em>
+                <p>
+                    dateFormat="YY-MM-DD"
+                    , fullDateFormat="{0}"
+                    , minvalue="2013-01-01" ( first )
+                    , maxvalue="2033-01-01" ( last )
+                </p>
+            </dd>
+
+            <dd>
+                date range:
+                <input type="text" name="date2" value="2023-01-01" 
+                datatype="daterange"
+
+                multidate="year"
+                dateFormat="YY-MM-DD"
+                fullDateFormat="{0}"
+                minvalue="2013-01-01" 
+                maxvalue="2033-01-01" 
+                />
+                <input type="text" name="date2" value="2023-01-01" 
+                datatype="daterange"
+
+                multidate="year"
+                dateFormat="YY-MM-DD"
+                fullDateFormat="{0}"
+                minvalue="2013-01-01" 
+                maxvalue="2033-01-01" 
+                />
+                <em class="error"></em>
+                <p>
+                    dateFormat="YY-MM-DD"
+                    , fullDateFormat="{0}"
+                    , minvalue="2013-01-01" 
+                    , maxvalue="2033-01-01" 
+                </p>
+            </dd>
+
+            <dd>
+                date range:
+                <input type="text" name="date2" value="2023-01-01" 
+                datatype="daterange"
+
+                multidate="year"
+                dateFormat="YY-MM-DD"
+                fullDateFormat="{0}"
+                minvalue="2013-01-01" 
+                maxvalue="2033-01-01" 
+                currentcanselect="true"
+                />
+                <input type="text" name="date2" value="2023-01-01" 
+                datatype="daterange"
+
+                multidate="year"
+                dateFormat="YY-MM-DD"
+                fullDateFormat="{0}"
+                minvalue="2013-01-01" 
+                maxvalue="2033-01-01" 
+                currentcanselect="true"
+                />
+                <em class="error"></em>
+                <p>
+                    dateFormat="YY-MM-DD"
+                    , fullDateFormat="{0}"
+                    , minvalue="2013-01-01" 
+                    , maxvalue="2033-01-01" 
+                    , currentcanselect="true"
+                </p>
+            </dd>
+
+            <dd>
+                nrange:
+                <input type="text" name="date2" value="2023" 
+                datatype="nrange"
+
+                multidate="year"
+                dateFormat="YY"
+                dateParse="parseYearDate"
+                fullDateFormat="{0}"
+                minvalue="2013" 
+                maxvalue="2033" 
+                currentcanselect="true"
+                />
+                <input type="text" name="date2" value="2023" 
+                datatype="nrange"
+
+                multidate="year"
+                dateFormat="YY"
+                dateParse="parseYearDate"
+                fullDateFormat="{0}"
+                minvalue="2013" 
+                maxvalue="2033" 
+                currentcanselect="true"
+                />
+                <em class="error"></em>
+                <p>
+                    dateFormat="YY-MM-DD"
+                    , fullDateFormat="{0}"
+                    , minvalue="2013" 
+                    , maxvalue="2033" 
+                    , currentcanselect="true"
+                    , dateParse="parseYearDate"
+                </p>
+            </dd>
+
+
+        </dl>
+    </form>
+    <div style="height:3000px"></div>
+    <div style="height:20px;width: 3000px;"></div>
+</body>
+</html>
+

@@ -256,7 +256,7 @@
         , &quot;urlDetect&quot;: urlDetect
         , &quot;moneyFormat&quot;: moneyFormat
         , &quot;dateFormat&quot;: dateFormat
-        , &quot;mergeObject&quot;: mergeObject
+        , &quot;extendObject&quot;: extendObject
         , &quot;safeTimeout&quot;: safeTimeout
         , &quot;encoder&quot;: encoder
 
@@ -1246,15 +1246,15 @@
         return _r;
     }
     /**
-     * 合并对象
-     * @method  mergeObject
+     * 扩展对象属性
+     * @method  extendObject
      * @param   {object}    _source
      * @param   {object}    _new
-     * @param   {bool}      _overwrite      default = true
+     * @param   {bool}      _overwrite      是否覆盖已有属性, default = true  
      * @return  object
      * @static
      */
-    function mergeObject( _source, _new, _overwrite ){
+    function extendObject( _source, _new, _overwrite ){
         typeof _overwrite == &#x27;undefined&#x27; &amp;&amp; ( _overwrite = true );
         if( _source &amp;&amp; _new ){
             for( var k in _new ){

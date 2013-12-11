@@ -9,7 +9,7 @@
     dl dd{ margin: 10px 0; }
 </style>
 <link href='../../../../modules/JC.Tips/0.1/res/default/style.css' rel='stylesheet' />
-<link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+<link href='../../../../modules/JC.Calendar/0.3/res/default/style.css' rel='stylesheet' />
 <script src="../../../../lib.js"></script>
 <script src="../../../../config.js"></script>
 <script>
@@ -66,15 +66,16 @@
         JC.log( 'calendarcancel', _p.val() );
     }
 
-    function calendarupdate( _start, _end ){
+    function calendarupdate( _start, _end, _ins ){
         var _p = $(this);
         JC.log( 'calendarupdate', JC.f.printf( 'val:{0}, start:{1}, end:{2}', _p.val(), _start, _end ) );
     }
 
-    function calendarupdatemultiselect( _data ){
-        var _p = $(this);
+    function calendarupdatemultiselect( _data, _ins ){
+        var _selector = $(this);
+        window.JSON && ( _data = JSON.stringify( _data ) );
         JC.log( 'calendarupdatemultiselect:'
-            , JC.f.printf( 'val:{0}, data:{1}', _p.val(), JSON.stringify( _data ) ) );
+            , JC.f.printf( 'val:{0}, data:{1}', _selector.val(), _data ) );
     }
 </script>
 </head>    

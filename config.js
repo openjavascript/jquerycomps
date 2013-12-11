@@ -16,7 +16,8 @@ requirejs.config( {
         , 'JC.AutoSelect': 'modules/JC.AutoSelect/0.2/AutoSelect'
         , 'JC.AutoComplete': 'modules/JC.AutoComplete/0.1/AutoComplete'
 
-        , 'JC.Calendar': 'modules/JC.Calendar/0.2/Calendar'
+        //, 'JC.Calendar': 'modules/JC.Calendar/0.2/Calendar'
+        , 'JC.Calendar': 'modules/JC.Calendar/0.3/Calendar'
 
         , 'JC.Form': 'modules/JC.Form/0.1/Form'
         , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
