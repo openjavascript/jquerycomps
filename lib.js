@@ -9609,6 +9609,12 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
     window.Bizs = window.Bizs || {};
     /**
+     * JC.f 是 JC.common 的别名
+     * <br />具体使用请见 <a href='JC.common.html'>JC.common</a></p>
+     * @class JC.f
+     * @static
+     */
+    /**
      * JC 组件通用静态方法和属性 ( JC.common, <b>别名: JC.f</b> )
      * <br />所有 JC 组件都会依赖这个静态类
      * <p><b>require</b>: <a href='jQuery.html'>jQuery</a></p>
@@ -9660,6 +9666,8 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         , "moneyFormat": moneyFormat
         , "dateFormat": dateFormat
         , "mergeObject": mergeObject
+        , "safeTimeout": safeTimeout
+        , "encoder": encoder
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -10369,7 +10377,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
     /**
      * 动态添加内容时, 初始化可识别的组件
      * <dl>
-     *      <dt>目前会自动识别的组件,  </dt>
+     *      <dt>目前会自动识别的组件</dt>
      *      <dd>
      *          Bizs.CommonModify, JC.Panel, JC.Dialog
      *          <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>
@@ -10378,8 +10386,8 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
      * <dl>
      *      <dt>可识别的组件</dt>
      *      <dd>
-     *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder
-     *          <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips
+     *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder, JC.TableFreeze
+     *          <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete
      *      </dd>
      * </d>
      * @method  jcAutoInitComps
@@ -10667,6 +10675,41 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
             }
         }
         return _source;
+    }
+    /**
+     * timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行
+     * @method  safeTimeout
+     * @param   {timeout}   _timeout
+     * @param   {object}    _obj    default = window.TIMEOUT_HOST || {}
+     * @param   {string}    _name   default = 'NORMAL'
+     * @return  object
+     * @static
+     */
+    function safeTimeout( _timeout, _obj, _name ){
+        if( typeof _timeout == 'undefined' ) return;
+        _obj = $( _obj || ( window.TIMEOUT_HOST = window.TIMEOUT_HOST || {} ) );
+        _name = _name || 'NORMAL';
+
+        _obj.data( _name ) && clearTimeout( _obj.data( _name ) );
+        _obj.data( _name, _timeout );
+    }
+    /**
+     * URL 请求时, 获取对URL参数进行编码的函数
+     * @method  encoder
+     * @param   {selector}  _selector
+     * @return  {encode function}   default encodeURIComponent
+     * @static
+     */
+    function encoder( _selector ){
+        _selector && ( _selector = $( _selector ) );
+        var _r;
+        if( _selector && _selector.length ){
+            _r =_selector.attr( 'validEncoder' ) || 'encodeURIComponent';
+            _r = window[ _r ] || encodeURIComponent;
+        }else{
+            _r = encodeURIComponent;
+        }
+        return _r;
     }
 
 }(jQuery));

@@ -31,6 +31,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.alert",
         "JC.common",
         "JC.confirm",
+        "JC.f",
         "JC.hideAllPanel",
         "JC.hideAllPopup",
         "JC.msgbox",

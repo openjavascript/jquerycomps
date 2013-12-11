@@ -77,6 +77,8 @@
             
                 <li><a href="../classes/JC.Dialog.msgbox.html">JC.Dialog.msgbox</a></li>
             
+                <li><a href="../classes/JC.f.html">JC.f</a></li>
+            
                 <li><a href="../classes/JC.Fixed.html">JC.Fixed</a></li>
             
                 <li><a href="../classes/JC.Form.html">JC.Form</a></li>
@@ -199,6 +201,12 @@
 
     window.Bizs = window.Bizs || {};
     /**
+     * JC.f 是 JC.common 的别名
+     * &lt;br /&gt;具体使用请见 &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;&lt;/p&gt;
+     * @class JC.f
+     * @static
+     */
+    /**
      * JC 组件通用静态方法和属性 ( JC.common, &lt;b&gt;别名: JC.f&lt;/b&gt; )
      * &lt;br /&gt;所有 JC 组件都会依赖这个静态类
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: &lt;a href=&#x27;jQuery.html&#x27;&gt;jQuery&lt;/a&gt;&lt;/p&gt;
@@ -250,6 +258,8 @@
         , &quot;moneyFormat&quot;: moneyFormat
         , &quot;dateFormat&quot;: dateFormat
         , &quot;mergeObject&quot;: mergeObject
+        , &quot;safeTimeout&quot;: safeTimeout
+        , &quot;encoder&quot;: encoder
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -959,7 +969,7 @@
     /**
      * 动态添加内容时, 初始化可识别的组件
      * &lt;dl&gt;
-     *      &lt;dt&gt;目前会自动识别的组件,  &lt;/dt&gt;
+     *      &lt;dt&gt;目前会自动识别的组件&lt;/dt&gt;
      *      &lt;dd&gt;
      *          Bizs.CommonModify, JC.Panel, JC.Dialog
      *          &lt;br /&gt;&lt;b&gt;自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件&lt;/b&gt;
@@ -968,8 +978,8 @@
      * &lt;dl&gt;
      *      &lt;dt&gt;可识别的组件&lt;/dt&gt;
      *      &lt;dd&gt;
-     *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder
-     *          &lt;br /&gt;Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips
+     *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder, JC.TableFreeze
+     *          &lt;br /&gt;Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete
      *      &lt;/dd&gt;
      * &lt;/d&gt;
      * @method  jcAutoInitComps
@@ -1257,6 +1267,41 @@
             }
         }
         return _source;
+    }
+    /**
+     * timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行
+     * @method  safeTimeout
+     * @param   {timeout}   _timeout
+     * @param   {object}    _obj    default = window.TIMEOUT_HOST || {}
+     * @param   {string}    _name   default = &#x27;NORMAL&#x27;
+     * @return  object
+     * @static
+     */
+    function safeTimeout( _timeout, _obj, _name ){
+        if( typeof _timeout == &#x27;undefined&#x27; ) return;
+        _obj = $( _obj || ( window.TIMEOUT_HOST = window.TIMEOUT_HOST || {} ) );
+        _name = _name || &#x27;NORMAL&#x27;;
+
+        _obj.data( _name ) &amp;&amp; clearTimeout( _obj.data( _name ) );
+        _obj.data( _name, _timeout );
+    }
+    /**
+     * URL 请求时, 获取对URL参数进行编码的函数
+     * @method  encoder
+     * @param   {selector}  _selector
+     * @return  {encode function}   default encodeURIComponent
+     * @static
+     */
+    function encoder( _selector ){
+        _selector &amp;&amp; ( _selector = $( _selector ) );
+        var _r;
+        if( _selector &amp;&amp; _selector.length ){
+            _r =_selector.attr( &#x27;validEncoder&#x27; ) || &#x27;encodeURIComponent&#x27;;
+            _r = window[ _r ] || encodeURIComponent;
+        }else{
+            _r = encodeURIComponent;
+        }
+        return _r;
     }
 
 }(jQuery));
