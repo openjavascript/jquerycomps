@@ -443,7 +443,7 @@
                    
             }
 
-            _forePnt = getJqParent(_pnt1, 'table');
+            _forePnt = JC.f.getJqParent(_pnt1, 'table');
             if ( _p.hasFixedPXWidth() ) {
                 _forePnt.css('width', _p.selector().find('table').prop('offsetWidth') );
                 JC.log(1);

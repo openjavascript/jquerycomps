@@ -729,7 +729,8 @@
                     _p.after( _btn = $('<input type="button" class="UXCCalendar_btn"  />') );
                 }
 
-                ( _tmp = _p.val().trim() )
+                !_p.is( '[dateFormat]' )
+                    && ( _tmp = _p.val().trim() )
                     && ( _tmp = JC.f.dateDetect( _tmp ) )
                     && _p.val( JC.f.formatISODate( _tmp ) )
                     ; 
@@ -906,8 +907,20 @@
                     );
 
 
-                _r.minvalue = JC.f.parseISODate( _p.selector().attr('minvalue') );
-                _r.maxvalue = JC.f.parseISODate( _p.selector().attr('maxvalue') );
+                if(  _p.dateParse( _p.selector() ) ){
+                    //var _d = _p.dateParse();
+                    _p.selector().is('[minvalue]')
+                        && ( _r.minvalue = ( _p.dateParse( _p.selector() )( _p.selector().attr('minvalue') ) ).start );
+
+                    _p.selector().is('[maxvalue]')
+                        && ( _r.maxvalue = ( _p.dateParse( _p.selector() )( _p.selector().attr('maxvalue') ) ).start );
+                }else{
+                    _p.selector().is('[minvalue]')
+                        && ( _r.minvalue = JC.f.parseISODate( _p.selector().attr('minvalue') ) );
+
+                    _p.selector().is('[maxvalue]')
+                        && ( _r.maxvalue = JC.f.parseISODate( _p.selector().attr('maxvalue') ) );
+                }
 
                 return _r;
             }
@@ -2489,9 +2502,10 @@
                         _dstart = new Date( _yearCount, 0, 1 );
                         _dend = new Date( _yearCount, 11, 31 );
 
-                        if( _dateo.minvalue && _dstart.getTime() < _dateo.minvalue.getTime() ) 
+                        if( _dateo.minvalue && _dstart.getFullYear() <= _dateo.minvalue.getFullYear() ){ 
                             _class.push( 'unable' );
-                        if( _dateo.maxvalue && _dend.getTime() > _dateo.maxvalue.getTime() ){
+                        }
+                        if( _dateo.maxvalue && _dend.getFullYear() >= _dateo.maxvalue.getFullYear() ){
                             _class.push( 'unable' );
                         }
 
