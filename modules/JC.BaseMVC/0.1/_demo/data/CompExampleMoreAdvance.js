@@ -43,7 +43,7 @@
             _selector = $( _selector || document );
 
             if( _selector && _selector.length ){
-                if( _selector.hasClass( '.js_compCompExampleMoreAdvance' )  ){
+                if( _selector.hasClass( 'js_compCompExampleMoreAdvance' )  ){
                     _r.push( new CompExampleMoreAdvance( _selector ) );
                 }else{
                     _selector.find( 'div.js_compCompExampleMoreAdvance' ).each( function(){
@@ -54,8 +54,9 @@
             return _r;
         };
 
+    BaseMVC.build( CompExampleMoreAdvance );
 
-    CompExampleMoreAdvance.prototype = {
+    JC.f.extendObject( CompExampleMoreAdvance.prototype, {
         _beforeInit:
             function(){
                 JC.log( 'CompExampleMoreAdvance _beforeInit', new Date().getTime() );
@@ -67,35 +68,40 @@
             function(){
                 JC.log( 'CompExampleMoreAdvance _inited', new Date().getTime() );
             }
-    };
+    });
 
-    BaseMVC.buildModel( CompExampleMoreAdvance );
     CompExampleMoreAdvance.Model._instanceName = 'CompExampleMoreAdvance';
-    CompExampleMoreAdvance.Model.prototype = {
+    JC.f.extendObject( CompExampleMoreAdvance.Model.prototype, {
         init:
             function(){
                 JC.log( 'CompExampleMoreAdvance.Model.init:', new Date().getTime() );
             }
-    };
+    });
 
-    BaseMVC.buildView( CompExampleMoreAdvance );
-    CompExampleMoreAdvance.View.prototype = {
+    JC.f.extendObject( CompExampleMoreAdvance.View.prototype, {
         init:
             function(){
                 JC.log( 'CompExampleMoreAdvance.View.init:', new Date().getTime() );
             }
-    };
-
-    BaseMVC.build( CompExampleMoreAdvance );
+    });
 
     $(document).ready( function(){
         var _insAr = 0;
         CompExampleMoreAdvance.autoInit
             && ( _insAr = CompExampleMoreAdvance.init() )
-            && $( '<h2>CompExampleMoreAdvance total ins: ' + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
+            && $( '<h2>CompExampleMoreAdvance total ins: ' 
+                + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
             ;
     });
 
 }(jQuery));
     return JC.CompExampleMoreAdvance;
-});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));
+});}( typeof define === 'function' && define.amd ? define : 
+        function ( _name, _require, _cb ) { 
+            typeof _name == 'function' && ( _cb = _name );
+            typeof _require == 'function' && ( _cb = _require ); 
+            _cb && _cb(); 
+        }
+        , window
+    )
+);

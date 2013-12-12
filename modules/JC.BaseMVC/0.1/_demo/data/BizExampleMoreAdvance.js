@@ -42,7 +42,7 @@
             _selector = $( _selector || document );
 
             if( _selector && _selector.length ){
-                if( _selector.hasClass( '.js_bizBizExampleMoreAdvance' )  ){
+                if( _selector.hasClass( 'js_bizBizExampleMoreAdvance' )  ){
                     _r.push( new BizExampleMoreAdvance( _selector ) );
                 }else{
                     _selector.find( 'div.js_bizBizExampleMoreAdvance' ).each( function(){
@@ -53,8 +53,9 @@
             return _r;
         };
 
+    BaseMVC.build( BizExampleMoreAdvance );
 
-    BizExampleMoreAdvance.prototype = {
+    JC.f.extendObject( BizExampleMoreAdvance.prototype, {
         _beforeInit:
             function(){
                 JC.log( 'BizExampleMoreAdvance _beforeInit', new Date().getTime() );
@@ -66,36 +67,40 @@
             function(){
                 JC.log( 'BizExampleMoreAdvance _inited', new Date().getTime() );
             }
-    };
+    });
 
-    BaseMVC.buildModel( BizExampleMoreAdvance );
     BizExampleMoreAdvance.Model._instanceName = 'BizExampleMoreAdvance';
-    BizExampleMoreAdvance.Model.prototype = {
+    JC.f.extendObject( BizExampleMoreAdvance.Model.prototype, {
         init:
             function(){
                 JC.log( 'BizExampleMoreAdvance.Model.init:', new Date().getTime() );
             }
-    };
+    });
 
-    BaseMVC.buildView( BizExampleMoreAdvance );
-    BizExampleMoreAdvance.View.prototype = {
+    JC.f.extendObject( BizExampleMoreAdvance.View.prototype, {
         init:
             function(){
                 JC.log( 'BizExampleMoreAdvance.View.init:', new Date().getTime() );
             }
-    };
-
-    BaseMVC.build( BizExampleMoreAdvance, 'Bizs' );
+    });
 
     $(document).ready( function(){
         var _insAr = 0;
         BizExampleMoreAdvance.autoInit
             && ( _insAr = BizExampleMoreAdvance.init() )
-            && $( '<h2>BizExampleMoreAdvance total ins: ' + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
+            && $( '<h2>BizExampleMoreAdvance total ins: ' 
+                + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
             ;
     });
 
 }(jQuery));
     return Bizs.BizExampleMoreAdvance;
-});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));
-
+});}( typeof define === 'function' && define.amd ? define : 
+        function ( _name, _require, _cb ) { 
+            typeof _name == 'function' && ( _cb = _name );
+            typeof _require == 'function' && ( _cb = _require ); 
+            _cb && _cb(); 
+        }
+        , window
+    )
+);

@@ -43,7 +43,7 @@
             _selector = $( _selector || document );
 
             if( _selector && _selector.length ){
-                if( _selector.hasClass( '.js_compCompExample' )  ){
+                if( _selector.hasClass( 'js_compCompExample' )  ){
                     _r.push( new CompExample( _selector ) );
                 }else{
                     _selector.find( 'div.js_compCompExample' ).each( function(){
@@ -61,10 +61,19 @@
         var _insAr = 0;
         CompExample.autoInit
             && ( _insAr = CompExample.init() )
-            && $( '<h2>CompExample total ins: ' + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
+            && $( '<h2>CompExample total ins: ' 
+                + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
             ;
     });
 
 }(jQuery));
     return JC.CompExample;
-});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));
+});}( typeof define === 'function' && define.amd ? define : 
+        function ( _name, _require, _cb ) { 
+            typeof _name == 'function' && ( _cb = _name );
+            typeof _require == 'function' && ( _cb = _require ); 
+            _cb && _cb(); 
+        }
+        , window
+    )
+);
