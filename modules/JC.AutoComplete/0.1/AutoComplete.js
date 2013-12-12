@@ -216,7 +216,9 @@
          */
         AutoComplete.dataFilter;
 
-        AutoComplete.prototype = {
+        BaseMVC.build( AutoComplete );
+
+        JC.f.extendObject( AutoComplete.prototype, {
             _beforeInit: 
                 function(){
                      // JC.log( 'AutoComplete _beforeInit', new Date().getTime() );
@@ -517,9 +519,7 @@
                         ;
                     return this;
                 }
-        };
-
-        BaseMVC.buildModel( AutoComplete );
+        });
 
         AutoComplete.Model._instanceName = 'AutoComplete';
 
@@ -538,7 +538,7 @@
 
         AutoComplete.Model.AJAX_CACHE = {};
 
-        AutoComplete.Model.prototype = {
+        JC.f.extendObject( AutoComplete.Model.prototype, {
             init: 
                 function() {
                     // JC.log( 'AutoComplete.Model.init:', new Date().getTime() );
@@ -885,10 +885,9 @@
                         _r += '[' + this.cacLabelKey() + ']';
                     return _r;
                 }
-        };
+        });
 
-        BaseMVC.buildView( AutoComplete );
-        AutoComplete.View.prototype = {
+        JC.f.extendObject( AutoComplete.View.prototype, {
             init: 
                 function(){
                     var _p = this;
@@ -1078,9 +1077,7 @@
                 function(){
                     this._model.listItems().removeClass( AutoComplete.Model.CLASS_ACTIVE );
                 }
-        };
-
-        BaseMVC.build( AutoComplete );
+        });
 
         $.event.special[ AutoComplete.Model.REMOVE ] = {
             remove: 

@@ -409,7 +409,9 @@
      */
     AjaxUpload._INS_COUNT = 1;
 
-    AjaxUpload.prototype = {
+    BaseMVC.build( AjaxUpload );
+
+    JC.f.extendObject( AjaxUpload.prototype, {
         _beforeInit:
             function(){
                 var _p = this;
@@ -543,11 +545,10 @@
                 _d &amp;&amp; _p.trigger(&#x27;UploadDone&#x27;, [ _d ] );
                 return this;
             }
-    };
+    });
 
-    BaseMVC.buildModel( AjaxUpload );
     AjaxUpload.Model._instanceName = &#x27;AjaxUpload&#x27;;
-    AjaxUpload.Model.prototype = {
+    JC.f.extendObject( AjaxUpload.Model.prototype, {
         init:
             function(){
                 JC.log( &#x27;AjaxUpload.Model.init:&#x27;, new Date().getTime() );
@@ -634,10 +635,9 @@
                 }
                 return this._iframe;
             }
-    };
+    });
 
-    BaseMVC.buildView( AjaxUpload );
-    AjaxUpload.View.prototype = {
+    JC.f.extendObject( AjaxUpload.View.prototype, {
         init:
             function(){
                 JC.log( &#x27;AjaxUpload.View.init:&#x27;, new Date().getTime() );
@@ -818,9 +818,7 @@
                 }
             }
 
-    };
-
-    BaseMVC.build( AjaxUpload );
+    });
 
     $.event.special.AjaxUploadShowEvent = {
         show: 
