@@ -42,7 +42,7 @@
             _selector = $( _selector || document );
 
             if( _selector && _selector.length ){
-                if( _selector.hasClass( '.js_bizBizExample' )  ){
+                if( _selector.hasClass( 'js_bizBizExample' )  ){
                     _r.push( new BizExample( _selector ) );
                 }else{
                     _selector.find( 'div.js_bizBizExample' ).each( function(){
@@ -60,11 +60,19 @@
         var _insAr = 0;
         BizExample.autoInit
             && ( _insAr = BizExample.init() )
-            && $( '<h2>BizExample total ins: ' + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
+            && $( '<h2>BizExample total ins: ' 
+                + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
             ;
     });
 
 }(jQuery));
     return Bizs.BizExample;
-});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));
-
+});}( typeof define === 'function' && define.amd ? define : 
+        function ( _name, _require, _cb ) { 
+            typeof _name == 'function' && ( _cb = _name );
+            typeof _require == 'function' && ( _cb = _require ); 
+            _cb && _cb(); 
+        }
+        , window
+    )
+);
