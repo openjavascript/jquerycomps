@@ -139,11 +139,11 @@
      * @static
      */
     BaseMVC.build =
-        function( _outClass, _namespace ){
+        function( _outClass ){
             BaseMVC.buildModel( _outClass );
             BaseMVC.buildView( _outClass );
 
-            BaseMVC.buildClass( BaseMVC, _outClass, _namespace );
+            BaseMVC.buildClass( BaseMVC, _outClass );
             BaseMVC.buildClass( BaseMVC.Model, _outClass.Model );
             BaseMVC.buildClass( BaseMVC.View, _outClass.View );
         };
@@ -152,31 +152,19 @@
      * @method  buildClass
      * @param   {Class}     _inClass
      * @param   {Class}     _outClass
-     * @param   {string}    _namespace  default='JC', 如果是业务组件, 请显式指明为 'Bizs'
      * @static
      */
     BaseMVC.buildClass = 
-        function( _inClass, _outClass, _namespace ){
+        function( _inClass, _outClass ){
             if( !( _inClass && _outClass ) ) return;
             var _k
                 , _fStr, _tmp
-                //, _inName = JC.f.funcName( _inClass )
-                //, _outName = JC.f.funcName( _outClass )
-                //, _inRe = _inName && _outName ? new RegExp( _inName, 'g' ) : null
-                //, _namespace = _namespace ? _namespace + '.' : 'JC.'
                 ;
 
-            //_inName && _outName && JC.log( 'BaseMVC.buildClass:', _inName, 'to', _outName );
             if( _outClass ){
                 for( _k in _inClass ){ 
                     if( !_outClass[_k] ){//clone static function
                         if( _inClass[_k].constructor == Function ){
-                            /*
-                            _fStr = _inClass[ _k ].toString();
-                            _fStr = _fStr.replace( _inRe, _namespace + _outName );
-                            _tmp = JC.f.printf( '( {0}{1}.{2} = {3})', _namespace, _outName, _k, _fStr );
-                            eval( _tmp  );
-                            */
                         }else{//clone static property
                             _outClass[_k] = _inClass[_k];
                         }
@@ -214,8 +202,8 @@
      * MVC Model 类( <b>仅供扩展用</b> )
      * <br />这个类默认已经包含在lib.js里面, 不需要显式引用
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>
+     * | <a href='../../modules/JC.BaseMVC/0.1/_demo' target='_blank'>demo link</a></p>
      * <p><b>see also</b>: <a href='JC.BaseMVC.html'>JC.BaseMVC</a></p>
      * @namespace JC
      * @class BaseMVC.Model
@@ -432,16 +420,10 @@
                 return this;
             }
     };
-    /*
-    $(document).ready( function(){
-        setTimeout( function(){
-        }, 1 );
-    });
-    */
 }(jQuery));
     return JC.BaseMVC;
 });}( typeof define === 'function' && define.amd ? define : 
-        function ( _name, _require, _cb) { 
+        function ( _name, _require, _cb ) { 
             typeof _name == 'function' && ( _cb = _name );
             typeof _require == 'function' && ( _cb = _require ); 
             _cb && _cb(); 

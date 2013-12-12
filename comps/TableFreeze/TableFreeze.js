@@ -235,7 +235,9 @@
         return _r;
     };
 
-    TableFreeze.prototype = {
+    BaseMVC.build( TableFreeze );
+
+    JC.f.extendObject( TableFreeze.prototype, {
         _beforeInit: function () {
             //JC.log( 'TableFreeze _beforeInit', new Date().getTime() );
         },
@@ -301,12 +303,11 @@
 
         }
 
-    };
+    });
  
-    BaseMVC.buildModel( TableFreeze );
+    TableFreeze.Model._instanceName = "TableFreeze";
    
- 
-    TableFreeze.Model.prototype = {
+    JC.f.extendObject( TableFreeze.Model.prototype, {
         init: function () {
             var _p = this;
 
@@ -843,10 +844,9 @@
                 +            '</tbody>'
                 +         '</table>'
                 +   '</div>'
-    };
+    });
  
-    BaseMVC.buildView( TableFreeze );
-    TableFreeze.View.prototype = {
+    JC.f.extendObject( TableFreeze.View.prototype, {
         init: function () {
             var _p = this;
         },
@@ -872,9 +872,7 @@
 
         }
 
-    };
- 
-    BaseMVC.build( TableFreeze );
+    });
 
     $(document).ready( function () {
         var _insAr = 0;
