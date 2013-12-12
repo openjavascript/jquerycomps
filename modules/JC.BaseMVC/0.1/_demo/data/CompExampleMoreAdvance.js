@@ -1,35 +1,22 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 ;(function($){
-    window.JC = window.JC || {log:function(){}};
     JC.CompExampleMoreAdvance = CompExampleMoreAdvance;
 
     function CompExampleMoreAdvance( _selector ){
         _selector && ( _selector = $( _selector ) );
-        if( CompExampleMoreAdvance.getInstance( _selector ) ) return CompExampleMoreAdvance.getInstance( _selector );
-        CompExampleMoreAdvance.getInstance( _selector, this );
-        //JC.log( CompExampleMoreAdvance.Model._instanceName );
+
+        if( JC.BaseMVC.getInstance( _selector, CompExampleMoreAdvance ) ) 
+            return JC.BaseMVC.getInstance( _selector, CompExampleMoreAdvance );
+
+        JC.BaseMVC.getInstance( _selector, CompExampleMoreAdvance, this );
 
         this._model = new CompExampleMoreAdvance.Model( _selector );
         this._view = new CompExampleMoreAdvance.View( this._model );
 
         this._init();
-    }
-    /**
-     * 获取或设置 CompExampleMoreAdvance 的实例
-     * @method  getInstance
-     * @param   {selector}      _selector
-     * @static
-     * @return  {CompExampleMoreAdvanceInstance}
-     */
-    CompExampleMoreAdvance.getInstance =
-        function( _selector, _setter ){
-            if( typeof _selector == 'string' && !/</.test( _selector ) ) 
-                    _selector = $(_selector);
-            if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
-            typeof _setter != 'undefined' && _selector.data( CompExampleMoreAdvance.Model._instanceName, _setter );
 
-            return _selector.data( CompExampleMoreAdvance.Model._instanceName );
-        };
+        JC.log( CompExampleMoreAdvance.Model._instanceName, 'all inited', new Date().getTime() );
+    }
     /**
      * 初始化可识别的 CompExampleMoreAdvance 实例
      * @method  init

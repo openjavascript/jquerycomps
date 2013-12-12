@@ -707,7 +707,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 5,
+            "line": 4,
             "description": "MVC 抽象类 ( <b>仅供扩展用, 这个类不能实例化</b>)\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.BaseMVC/0.1/_demo' target='_blank'>demo link</a></p>",
             "is_constructor": 1,
             "params": [
@@ -730,7 +730,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 201,
+            "line": 213,
             "description": "MVC Model 类( <b>仅供扩展用</b> )\n<br />这个类默认已经包含在lib.js里面, 不需要显式引用\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.BaseMVC/0.1/_demo' target='_blank'>demo link</a></p>\n<p><b>see also</b>: <a href='JC.BaseMVC.html'>JC.BaseMVC</a></p>",
             "is_constructor": 1,
             "params": [
@@ -3561,7 +3561,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 34,
+            "line": 33,
             "description": "内部初始化方法",
             "itemtype": "method",
             "name": "_init",
@@ -3579,7 +3579,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 63,
+            "line": 62,
             "description": "初始化之前调用的方法",
             "itemtype": "method",
             "name": "_beforeInit",
@@ -3590,7 +3590,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 71,
+            "line": 70,
             "description": "内部事件初始化方法",
             "itemtype": "method",
             "name": "_initHanlderEvent",
@@ -3601,7 +3601,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 79,
+            "line": 78,
             "description": "内部初始化完毕时, 调用的方法",
             "itemtype": "method",
             "name": "_inited",
@@ -3612,7 +3612,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 87,
+            "line": 86,
             "description": "获取 显示 BaseMVC 的触发源选择器, 比如 a 标签",
             "itemtype": "method",
             "name": "selector",
@@ -3624,7 +3624,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 93,
+            "line": 92,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -3649,7 +3649,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 101,
+            "line": 100,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -3669,8 +3669,8 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 109,
-            "description": "获取或设置 BaseMVC 的实例",
+            "line": 108,
+            "description": "获取或设置组件实例",
             "itemtype": "method",
             "name": "getInstance",
             "params": [
@@ -3678,19 +3678,29 @@
                     "name": "_selector",
                     "description": "",
                     "type": "Selector"
+                },
+                {
+                    "name": "_staticClass",
+                    "description": "",
+                    "type": "Class"
+                },
+                {
+                    "name": "_classInstance",
+                    "description": "",
+                    "type": "ClassInstance"
                 }
             ],
             "static": 1,
             "return": {
                 "description": "",
-                "type": "BaseMVCInstance"
+                "type": "ClassInstance | null"
             },
             "class": "JC.BaseMVC",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 127,
+            "line": 133,
             "description": "是否自动初始化",
             "itemtype": "property",
             "name": "autoInit",
@@ -3702,7 +3712,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 135,
+            "line": 141,
             "description": "复制 BaseMVC 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "build",
@@ -3719,7 +3729,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 150,
+            "line": 156,
             "description": "复制 _inClass 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "buildClass",
@@ -3741,7 +3751,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 178,
+            "line": 185,
             "description": "为 _outClass 生成一个通用 Model 类",
             "itemtype": "method",
             "name": "buildModel",
@@ -3758,7 +3768,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 191,
+            "line": 198,
             "description": "为 _outClass 生成一个通用 View 类",
             "itemtype": "method",
             "name": "buildView",
@@ -3775,7 +3785,14 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 216,
+            "line": 208,
+            "description": "初始化 BaseMVC Model 类 和 View 类",
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
+            "line": 228,
             "description": "设置 selector 实例引用的 data 属性名",
             "itemtype": "property",
             "name": "_instanceName",
@@ -3789,7 +3806,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 230,
+            "line": 242,
             "description": "初始化的 jq 选择器",
             "itemtype": "method",
             "name": "selector",
@@ -3808,7 +3825,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 241,
+            "line": 253,
             "description": "读取 int 属性的值",
             "itemtype": "method",
             "name": "intProp",
@@ -3832,7 +3849,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 262,
+            "line": 274,
             "description": "读取 float 属性的值",
             "itemtype": "method",
             "name": "floatProp",
@@ -3856,7 +3873,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 283,
+            "line": 295,
             "description": "读取 string 属性的值",
             "itemtype": "method",
             "name": "stringProp",
@@ -3880,7 +3897,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 301,
+            "line": 313,
             "description": "读取 html 属性值\n<br />这个跟 stringProp 的区别是不会强制转换为小写",
             "itemtype": "method",
             "name": "attrProp",
@@ -3904,7 +3921,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 324,
+            "line": 336,
             "description": "读取 boolean 属性的值",
             "itemtype": "method",
             "name": "boolProp",
@@ -3934,7 +3951,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 350,
+            "line": 362,
             "description": "读取 callback 属性的值",
             "itemtype": "method",
             "name": "callbackProp",
@@ -3959,7 +3976,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 373,
+            "line": 385,
             "description": "获取 selector 属性的 jquery 选择器",
             "itemtype": "method",
             "name": "selectorProp",
@@ -3983,7 +4000,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 396,
+            "line": 408,
             "description": "判断 _selector 是否具体某种特征",
             "itemtype": "method",
             "name": "is",
@@ -15263,11 +15280,11 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:5"
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:4"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:201"
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:213"
         },
         {
             "message": "unknown tag: version",
@@ -15772,6 +15789,10 @@
         {
             "message": "Missing item type\n页面加载完毕时, 延时进行自动化, 延时可以避免来自其他逻辑的干扰",
             "line": " ../modules/JC.AutoSelect/0.2/AutoSelect.js:954"
+        },
+        {
+            "message": "Missing item type\n初始化 BaseMVC Model 类 和 View 类",
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:208"
         },
         {
             "message": "Missing item type\n保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",

@@ -1,34 +1,22 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 ;(function($){
-    window.Bizs = window.Bizs || {};
     Bizs.BizExampleMoreAdvance = BizExampleMoreAdvance;
 
     function BizExampleMoreAdvance( _selector ){
         _selector && ( _selector = $( _selector ) );
-        if( BizExampleMoreAdvance.getInstance( _selector ) ) return BizExampleMoreAdvance.getInstance( _selector );
-        BizExampleMoreAdvance.getInstance( _selector, this );
+
+        if( JC.BaseMVC.getInstance( _selector, BizExampleMoreAdvance ) ) 
+            return JC.BaseMVC.getInstance( _selector, BizExampleMoreAdvance );
+
+        JC.BaseMVC.getInstance( _selector, BizExampleMoreAdvance, this );
 
         this._model = new BizExampleMoreAdvance.Model( _selector );
         this._view = new BizExampleMoreAdvance.View( this._model );
 
         this._init();
-    }
-    /**
-     * 获取或设置 BizExampleMoreAdvance 的实例
-     * @method  getInstance
-     * @param   {selector}      _selector
-     * @static
-     * @return  {BizExampleMoreAdvanceInstance}
-     */
-    BizExampleMoreAdvance.getInstance =
-        function( _selector, _setter ){
-            if( typeof _selector == 'string' && !/</.test( _selector ) ) 
-                    _selector = $(_selector);
-            if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
-            typeof _setter != 'undefined' && _selector.data( BizExampleMoreAdvance.Model._instanceName, _setter );
 
-            return _selector.data( BizExampleMoreAdvance.Model._instanceName );
-        };
+        JC.log( BizExampleMoreAdvance.Model._instanceName, 'all inited', new Date().getTime() );
+    }
     /**
      * 初始化可识别的 BizExampleMoreAdvance 实例
      * @method  init
