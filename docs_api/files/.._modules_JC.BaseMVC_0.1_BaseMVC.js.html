@@ -190,7 +190,6 @@
     <pre class="code prettyprint linenums">
 ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
 ;(function($){
-    window.JC = window.JC || {log:function(){}};
     window.BaseMVC = JC.BaseMVC = BaseMVC;
     /**
      * MVC 抽象类 ( &lt;b&gt;仅供扩展用, 这个类不能实例化&lt;/b&gt;)
@@ -297,23 +296,30 @@
         , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
     }
     /**
-     * 获取或设置 BaseMVC 的实例
+     * 获取或设置组件实例
      * @method  getInstance
      * @param   {selector}      _selector
+     * @param   {Class}         _staticClass
+     * @param   {ClassInstance} _classInstance
      * @static
-     * @return  {BaseMVCInstance}
+     * @return  {ClassInstance | null}
      */
-    /*
     BaseMVC.getInstance =
-        function( _selector, _setter ){
-            if( typeof _selector == &#x27;string&#x27; &amp;&amp; !/&lt;/.test( _selector ) ) 
-                    _selector = $(_selector);
-            if( !(_selector &amp;&amp; _selector.length ) || ( typeof _selector == &#x27;string&#x27; ) ) return;
-            typeof _setter != &#x27;undefined&#x27; &amp;&amp; _selector.data( BaseMVC.Model._instanceName, _setter );
+        function( _selector, _staticClass, _classInstance ){
+            typeof _selector == &#x27;string&#x27; 
+                &amp;&amp; !/&lt;/.test( _selector ) 
+                &amp;&amp; ( _selector = $(_selector) )
+                ;
 
-            return _selector.data( BaseMVC.Model._instanceName );
+            if( !(_selector &amp;&amp; _selector.length ) || ( typeof _selector == &#x27;string&#x27; ) ) return null;
+
+            _staticClass.Model._instanceName = _staticClass.Model._instanceName || &#x27;CommonIns&#x27;;
+
+            typeof _classInstance != &#x27;undefined&#x27; 
+                &amp;&amp; _selector.data( _staticClass.Model._instanceName, _classInstance );
+
+            return _selector.data( _staticClass.Model._instanceName);
         };
-    */
     /**
      * 是否自动初始化
      * @property    autoInit
@@ -353,7 +359,8 @@
 
             if( _outClass ){
                 for( _k in _inClass ){ 
-                    if( !_outClass[_k] ){//clone static function
+                    if( !_outClass[_k] ){
+                        //ignore static function
                         if( _inClass[_k].constructor == Function ){
                         }else{//clone static property
                             _outClass[_k] = _inClass[_k];
@@ -389,6 +396,11 @@
             !_outClass.View &amp;&amp; ( _outClass.View = function( _model ){ this._model = _model; } );
         }
     /**
+     * 初始化 BaseMVC Model 类 和 View 类
+     */
+    BaseMVC.buildModel( BaseMVC );
+    BaseMVC.buildView( BaseMVC );
+    /**
      * MVC Model 类( &lt;b&gt;仅供扩展用&lt;/b&gt; )
      * &lt;br /&gt;这个类默认已经包含在lib.js里面, 不需要显式引用
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
@@ -402,7 +414,7 @@
      * @version dev 0.1 2013-09-11
      * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 Team
      */
-    BaseMVC.buildModel( BaseMVC );
+    //BaseMVC.buildModel( BaseMVC );
     /**
      * 设置 selector 实例引用的 data 属性名
      * @property    _instanceName
@@ -412,7 +424,7 @@
      * @static
      */
     BaseMVC.Model._instanceName = &#x27;BaseMVCIns&#x27;;
-    BaseMVC.Model.prototype = {
+    JC.f.extendObject( BaseMVC.Model.prototype, {
         init:
             function(){
                 return this;
@@ -601,15 +613,14 @@
 
                 return _selector &amp;&amp; _selector.is( _key );
             }
-    };
+    });
     
-    BaseMVC.buildView( BaseMVC );
-    BaseMVC.View.prototype = {
+    JC.f.extendObject( BaseMVC.View.prototype, {
         init:
             function() {
                 return this;
             }
-    };
+    });
 }(jQuery));
     return JC.BaseMVC;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
