@@ -2239,7 +2239,7 @@ function parseYearDate( _dateStr ){
                         */
                         _dstart 
                             && _dend 
-                            && _text = _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) )
+                            && ( _text = _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) )
                             ; 
                     }
                 }else{
