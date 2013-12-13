@@ -36,8 +36,9 @@ requirejs.config( {
         , 'Bizs.ActionLogic': 'modules/Bizs.ActionLogic/0.1/ActionLogic'
         , 'Bizs.AutoSelectComplete': 'modules/Bizs.AutoSelectComplete//0.1/AutoSelectComplete'
 
-        , 'Bizs.DisableLogic': 'modules/Bizs.DisableLogic/0.1/DisableLogic'
         , 'Bizs.ChangeLogic': 'modules/Bizs.ChangeLogic/0.1/ChangeLogic'
+        , 'Bizs.DisableLogic': 'modules/Bizs.DisableLogic/0.1/DisableLogic'
+        , 'Bizs.DropdownTree': 'modules/Bizs.DropdownTree/0.1/DropdownTree'
 
         , 'Bizs.CommonModify': 'modules/Bizs.CommonModify/0.1/CommonModify'
         , 'Bizs.FormLogic': 'modules/Bizs.FormLogic/0.1/FormLogic'

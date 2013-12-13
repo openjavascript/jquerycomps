@@ -98,7 +98,7 @@
          */
         , on: function( _evtName, _cb ){ $(this).on(_evtName, _cb ); return this;}
         /**
-         * 使用 jquery trigger 绑定事件
+         * 使用 jquery trigger 触发绑定事件
          * @method  {string}    trigger
          * @param   {string}    _evtName
          * @return  BaseMVCInstance

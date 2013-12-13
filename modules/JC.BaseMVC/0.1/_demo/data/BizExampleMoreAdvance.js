@@ -1,5 +1,37 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 ;(function($){
+/**
+ * 组件用途简述
+ *
+ *<p><b>require</b>:
+ *   <a href="widnow.jQuery.html">jQuery</a>
+ *   , <a href="JC.common.html">JC.common</a>
+ *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *</p>
+ *
+ *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+ *   | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.BizExampleMoreAdvance.html' target='_blank'>API docs</a>
+ *   | <a href='../../modules/Bizs.BizExampleMoreAdvance/0.1/_demo' target='_blank'>demo link</a></p>
+ *  
+ *<h2>页面只要引用本脚本, 默认会自动处理 div class="js_bizBizExampleMoreAdvance" </h2>
+ *
+ *<h2>可用的 HTML attribute</h2>
+ *
+ *<dl>
+ *    <dt></dt>
+ *    <dd><dd>
+ *</dl> 
+ *
+ * @namespace window.Bizs
+ * @class BizExampleMoreAdvance
+ * @extends JC.BaseMVC
+ * @constructor
+ * @param   {selector|string}   _selector   
+ * @version dev 0.1 2013-12-13
+ * @author  qiushaowei <suches@btbtd.org> | 75 Team
+ * @example
+        <h2>Bizs.BizExampleMoreAdvance 示例</h2>
+ */
     Bizs.BizExampleMoreAdvance = BizExampleMoreAdvance;
 
     function BizExampleMoreAdvance( _selector ){

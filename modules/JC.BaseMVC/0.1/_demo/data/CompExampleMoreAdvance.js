@@ -1,5 +1,37 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 ;(function($){
+/**
+ * 组件用途简述
+ *
+ *<p><b>require</b>:
+ *   <a href="widnow.jQuery.html">jQuery</a>
+ *   , <a href="JC.common.html">JC.common</a>
+ *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *</p>
+ *
+ *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+ *   | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.CompExampleMoreAdvance.html' target='_blank'>API docs</a>
+ *   | <a href='../../modules/JC.CompExampleMoreAdvance/0.1/_demo' target='_blank'>demo link</a></p>
+ *  
+ *<h2>页面只要引用本脚本, 默认会处理 div class="js_compCompExampleMoreAdvance"</h2>
+ *
+ *<h2>可用的 HTML attribute</h2>
+ *
+ *<dl>
+ *    <dt></dt>
+ *    <dd><dd>
+ *</dl> 
+ *
+ * @namespace JC
+ * @class CompExampleMoreAdvance
+ * @extends JC.BaseMVC
+ * @constructor
+ * @param   {selector|string}   _selector   
+ * @version dev 0.1 2013-12-13
+ * @author  qiushaowei <suches@btbtd.org> | 75 Team
+ * @example
+        <h2>JC.CompExampleMoreAdvance 示例</h2>
+ */
     JC.CompExampleMoreAdvance = CompExampleMoreAdvance;
 
     function CompExampleMoreAdvance( _selector ){
