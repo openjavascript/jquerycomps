@@ -18,6 +18,12 @@ requirejs.config( {
 
         //, 'JC.Calendar': 'modules/JC.Calendar/0.2/Calendar'
         , 'JC.Calendar': 'modules/JC.Calendar/0.3/Calendar'
+        , 'JC.Calendar.date': 'modules/JC.Calendar/0.3/Calendar.date'
+        , 'JC.Calendar.week': 'modules/JC.Calendar/0.3/Calendar.week'
+        , 'JC.Calendar.month': 'modules/JC.Calendar/0.3/Calendar.month'
+        , 'JC.Calendar.season': 'modules/JC.Calendar/0.3/Calendar.season'
+        , 'JC.Calendar.year': 'modules/JC.Calendar/0.3/Calendar.year'
+        , 'JC.Calendar.monthday': 'modules/JC.Calendar/0.3/Calendar.monthday'
 
         , 'JC.Form': 'modules/JC.Form/0.1/Form'
         , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'

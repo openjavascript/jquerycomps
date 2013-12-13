@@ -1,5 +1,4 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
-;(function($){
 /**
  * 组件用途简述
  *
@@ -115,7 +114,6 @@
             ;
     });
 
-}(jQuery));
     return JC.CompExampleMoreAdvance;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 

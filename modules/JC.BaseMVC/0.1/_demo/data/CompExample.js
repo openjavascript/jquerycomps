@@ -1,5 +1,4 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
-;(function($){
     JC.CompExample = CompExample;
 
     function CompExample( _selector ){
@@ -52,8 +51,6 @@
                 + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
             ;
     });
-
-}(jQuery));
     return JC.CompExample;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 
