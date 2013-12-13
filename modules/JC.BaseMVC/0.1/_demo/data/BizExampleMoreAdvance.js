@@ -80,9 +80,11 @@
             function(){
                 JC.log( 'BizExampleMoreAdvance _beforeInit', new Date().getTime() );
             }
+
         , _initHanlderEvent:
             function(){
             }
+
         , _inited:
             function(){
                 JC.log( 'BizExampleMoreAdvance _inited', new Date().getTime() );

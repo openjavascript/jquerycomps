@@ -80,9 +80,11 @@
             function(){
                 JC.log( 'CompExampleMoreAdvance _beforeInit', new Date().getTime() );
             }
+
         , _initHanlderEvent:
             function(){
             }
+
         , _inited:
             function(){
                 JC.log( 'CompExampleMoreAdvance _inited', new Date().getTime() );

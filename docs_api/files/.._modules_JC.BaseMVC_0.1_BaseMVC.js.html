@@ -575,6 +575,17 @@
                 return _r;
             }
         /**
+         * 获取与属性名匹配的 window 变量 
+         * @method  windowProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  {window variable}
+         */
+        , windowProp:
+            function(){
+                return this.callbackProp.apply( this, JC.f.sliceArgs( arguments ) );
+            }
+        /**
          * 获取 selector 属性的 jquery 选择器
          * @method  selectorProp
          * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
