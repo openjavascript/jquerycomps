@@ -13,18 +13,17 @@ mkdir jc_master_deploy/
 cp -rf $dir/* jc_master_deploy
 mv jc_master_deploy $dir/deploy/
 
-rm -rf $dir/deploy/_demo
 rm -rf $dir/deploy/docs
 rm -rf $dir/deploy/docs_api
 rm -rf $dir/deploy/tools
 rm -rf $dir/deploy/document.html
 rm -rf $dir/deploy/README.md
-rm -rf $dir/deploy/*.php
 rm -rf $dir/deploy/*.7z
 rm -rf $dir/deploy/bizs/*.7z
 rm -rf $dir/deploy/*.tar
 rm -rf $dir/deploy/*.zip
 find $dir/deploy/ -name _demo | xargs rm -rf
+find $dir/deploy/ -name *.php | xargs rm -rf
 
 cd $cur_dir
 
