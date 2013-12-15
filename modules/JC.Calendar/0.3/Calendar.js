@@ -502,6 +502,8 @@ function parseYearDate( _dateStr ){
             function( _selector ){
                 return this._model.defaultDate( _selector );
             }
+
+        , updateFormat: function( _selector ){ this._model.updateFormat( _selector ); }
     }
     /**
      * 获取或设置 Calendar 的实例
@@ -812,8 +814,8 @@ function parseYearDate( _dateStr ){
                     _p.after( _btn = $('<input type="button" class="UXCCalendar_btn"  />') );
                 }
 
-                !_p.is( '[dateFormat]' )
-                    && ( _tmp = _p.val().trim() )
+                //!_p.is( '[dateFormat]' )
+                ( _tmp = _p.val().trim() )
                     && ( _tmp = JC.f.dateDetect( _tmp ) )
                     && _p.val( JC.f.formatISODate( _tmp ) )
                     ; 
@@ -827,6 +829,12 @@ function parseYearDate( _dateStr ){
                     && ( _tmp = JC.f.dateDetect( _tmp ) )
                     && _p.attr( 'maxvalue', JC.f.formatISODate( _tmp ) )
                     ; 
+
+                if( _p.is( '[dateFormat]' ) || _p.is( '[fullDateFormat]' ) ){
+                    var _ins = Calendar.getInstance( _selector );
+                    !_ins && ( _ins = new Calendar( _selector ) );
+                    _ins.updateFormat( _p );
+                }
 
                 if( ( _p.attr('datatype') || '' ).toLowerCase() == 'monthday'
                     || ( _p.attr('multidate') || '' ).toLowerCase() == 'monthday' ){
@@ -1255,6 +1263,19 @@ function parseYearDate( _dateStr ){
                     && ( _cb = _tmp );
                 return _cb;
             }
+        
+        , updateFormat:
+            function( _selector ){
+                _selector && ( _selector = $( _selector ) );
+                if( !( _selector && _selector.length ) ) return;
+                var _p = this
+                    , _type = ( _selector.attr('datetype') || _selector.attr('multidate') || '' ).toLowerCase().trim() 
+                    ;
+                if( _type == 'date' && !_selector.attr( 'fullDateFormat' ) ){
+                    _selector.attr( 'fullDateFormat', '{0}' );
+                }
+            }
+
         , dateFormat:
             function( _date ){
                 var _r = '', _format = this.selector().attr( 'dateFormat' ) || 'YY-MM-DD';
