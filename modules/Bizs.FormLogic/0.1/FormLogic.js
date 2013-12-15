@@ -355,6 +355,16 @@
      * @static
      */
     FormLogic.processErrorCb;
+    /**
+     * 全局返回数据处理回调
+     * <br />所有提交结果都会调用
+     * <br />arg: _data[string of result]
+     * @property    GLOBAL_AJAX_CHECK
+     * @type        function  
+     * @default     null
+     * @static
+     */
+    FormLogic.GLOBAL_AJAX_CHECK;
 
     FormLogic.prototype = {
         _beforeInit:
@@ -443,6 +453,8 @@
                  * 全局 AJAX 提交完成后的处理事件
                  */
                 _p.on('AjaxDone', function( _evt, _data ){
+                    FormLogic.GLOBAL_AJAX_CHECK
+                        && FormLogic.GLOBAL_AJAX_CHECK( _data );
                     /**
                      * 这是个神奇的BUG
                      * chrome 如果没有 reset button, 触发 reset 会导致页面刷新

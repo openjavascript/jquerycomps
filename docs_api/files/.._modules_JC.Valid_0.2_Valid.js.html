@@ -222,6 +222,9 @@
      *      &lt;dd&gt;
      *          设置 表单所有控件的 em  CSS display 显示类型
      *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;ignoreAutoCheckEvent = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;是否禁用 自动 check 事件( focus, blur, change )&lt;/dd&gt;
      * &lt;/dl&gt;
      * &lt;h2&gt;Form Control的可用 html attribute&lt;/h2&gt;
      * &lt;dl&gt;
@@ -1008,6 +1011,14 @@
                 ;
             return _r;
         };
+    /**
+     * 是否禁用 自动 check 事件( focus, blur, change )
+     * @property    ignoreAutoCheckEvent
+     * @type        bool
+     * @default     false
+     * @static
+     */
+    Valid.ignoreAutoCheckEvent = false;
     
     function Model(){
         this._init();
@@ -2818,6 +2829,23 @@
                     ;
                 return _r;
             }
+
+        , ignoreAutoCheckEvent:
+            function( _item ){
+                var _r = Valid.ignoreAutoCheckEvent, _form;
+                _item &amp;&amp; ( _item = $( _item ) );
+                if( _item &amp;&amp; _item.length ){
+                    _form = JC.f.getJqParent( _item, &#x27;form&#x27; );
+                    _form 
+                        &amp;&amp; _form.length 
+                        &amp;&amp; _form.is( &#x27;[ignoreAutoCheckEvent]&#x27; )
+                        &amp;&amp; ( _r = JC.f.parseBool( _form.attr( &#x27;ignoreAutoCheckEvent&#x27; ) ) );
+                            
+                    _item.is( &#x27;[ignoreAutoCheckEvent]&#x27; )
+                        &amp;&amp; ( _r = JC.f.parseBool( _item.attr( &#x27;ignoreAutoCheckEvent&#x27; ) ) );
+                }
+                return _r;
+            }
     };
     
     function View( _model ){
@@ -3027,17 +3055,20 @@
      * @private
      */
     $(document).delegate( &#x27;input[type=text], input[type=password], textarea&#x27;, &#x27;blur&#x27;, function($evt){
-        Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
-        Valid.checkTimeout( $(this) );
+        var _p = $(this), _ins = Valid.getInstance();
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        _ins.trigger( Model.FOCUS_MSG,  [ _p, true ] );
+        Valid.checkTimeout( _p );
     });
     /**
      * 响应没有 type 的 文本框
      */
     $(document).delegate( &#x27;input&#x27;, &#x27;blur&#x27;, function( _evt ){
-        var _p = $(this);
+        var _p = $(this), _ins = Valid.getInstance();
         if( _p.attr( &#x27;type&#x27; ) ) return;
-        Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
-        Valid.checkTimeout( $(this) );
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        _ins.trigger( Model.FOCUS_MSG,  [ _p, true ] );
+        Valid.checkTimeout( _p );
     });
     /**
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
@@ -3045,7 +3076,9 @@
      */
     $(document).delegate( &#x27;select, input[type=file], input[type=checkbox], input[type=radio]&#x27;, &#x27;change&#x27;, function($evt, _ignore){
         if( _ignore ) return;
-        Valid.checkTimeout( $(this) );
+        var _p = $(this), _ins = Valid.getInstance();
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        Valid.checkTimeout( _p );
     });
     /**
      * 响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
@@ -3053,33 +3086,37 @@
      */
     $(document).delegate( &#x27;input[type=text], input[type=password], textarea&#x27;
                             +&#x27;, select, input[type=file], input[type=checkbox], input[type=radio]&#x27;, &#x27;focus&#x27;, function($evt){
-        var _sp = $(this), _v = _sp.val().trim();
-        Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this) ] );
-        !_v &amp;&amp; Valid.setValid( _sp );
+        var _p = $(this), _ins = Valid.getInstance(), _v = _p.val().trim();
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        _ins.trigger( Model.FOCUS_MSG,  [ _p ] );
+        !_v &amp;&amp; Valid.setValid( _p );
     });
     /**
      * 响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
      * @private
      */
     $(document).delegate( &#x27;select, input[type=file], input[type=checkbox], input[type=radio]&#x27;, &#x27;blur&#x27;, function($evt){
-        Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
+        var _p = $(this), _ins = Valid.getInstance();
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        _ins.trigger( Model.FOCUS_MSG,  [ _p, true ] );
     });
 
     $(document).delegate( &#x27;input[type=hidden][subdatatype]&#x27;, &#x27;change&#x27;, function( _evt ){
-        var _sp = $(this), _isHidden = false, _tmp;
-        _sp.is( &#x27;[subdatatype]&#x27; ) &amp;&amp; ( _isHidden = /hidden/i.test( _sp.attr(&#x27;subdatatype&#x27;) ) );
-        if( _sp.data(&#x27;HID_CHANGE_CHECK&#x27;) ){
-            _tmp = new Date().getTime() - _sp.data(&#x27;HID_CHANGE_CHECK&#x27;) ;
+        var _p = $(this), _ins = Valid.getInstance(), _isHidden = false, _tmp;
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        _p.is( &#x27;[subdatatype]&#x27; ) &amp;&amp; ( _isHidden = /hidden/i.test( _p.attr(&#x27;subdatatype&#x27;) ) );
+        if( _p.data(&#x27;HID_CHANGE_CHECK&#x27;) ){
+            _tmp = new Date().getTime() - _p.data(&#x27;HID_CHANGE_CHECK&#x27;) ;
             if( _tmp &lt; 50 ){
                 return;
             }
         }
-        if( !_sp.val() ){
-            //Valid.setValid( _sp );
+        if( !_p.val() ){
+            //Valid.setValid( _p );
             return;
         }
-        _sp.data(&#x27;HID_CHANGE_CHECK&#x27;, new Date().getTime() );
-        JC.log( &#x27;hidden val&#x27;, new Date().getTime(), _sp.val() );
+        _p.data(&#x27;HID_CHANGE_CHECK&#x27;, new Date().getTime() );
+        JC.log( &#x27;hidden val&#x27;, new Date().getTime(), _p.val() );
         Valid.checkTimeout( $(this) );
     });
     /**

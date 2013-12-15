@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 ;(function($){
     JC.CompExample = CompExample;
 
