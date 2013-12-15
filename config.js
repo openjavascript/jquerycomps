@@ -31,6 +31,7 @@ requirejs.config( {
 
         , 'JC.Panel': 'modules/JC.Panel/0.1/Panel'
         , 'JC.Placeholder': 'modules/JC.Placeholder/0.1/Placeholder'
+        , 'JC.PopTips': 'modules/JC.PopTips/0.1/PopTips'
         , 'JC.Valid': 'modules/JC.Valid/0.2/Valid'
 
         , 'Bizs.ActionLogic': 'modules/Bizs.ActionLogic/0.1/ActionLogic'

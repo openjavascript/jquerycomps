@@ -445,8 +445,43 @@
 
                 _p._model.afterCreateTableCallback()
                     &amp;&amp; _p._model.afterCreateTableCallback().call( _p, _p.selector() );
+                
+                if ( _p._model.needHoverClass() ) {
+                    var _hover = _p._model.hoverClass();
+
+                    if ( !_p._model.supportFreeze() || !_p._model.supportScroll() ) {
+                        _p._model.selector().find(&#x27;tr&#x27;)
+                            .on(&#x27;mouseenter&#x27;, function () {
+                                $(this).addClass( _hover );
+                            })
+                            .on(&#x27;mouseleave&#x27;, function () {
+                                $(this).removeClass( _hover );
+                            });
+                    } else {
+
+                        var _trs = &#x27;td.compTFEextraTd&gt;div&gt;table&gt;tbody&gt;tr&#x27;,
+                            _brother = &#x27;td.compTFEextraTd&gt;div&gt;table&gt;tbody&gt;tr.&#x27;;
+
+                        $(document).undelegate(_trs, &#x27;mouseenter&#x27;)
+                            .delegate(_trs, &#x27;mouseenter&#x27;, function (e) {
+                                var _sp = $(this),
+                                    _pnt = JC.f.getJqParent(_sp, &#x27;table.compTFEextraTable&#x27;),
+                                    _el = _pnt.find( _brother + _sp.data(&#x27;linktr&#x27;) ).addClass(_hover);
+                              
+                            }).undelegate(_trs, &#x27;mouseleave&#x27;)
+                            .delegate(_trs, &#x27;mouseleave&#x27;, function (e) {
+                                var _sp = $(this),
+                                    _pnt = JC.f.getJqParent(_sp, &#x27;table.compTFEextraTable&#x27;),
+                                    _el = _pnt.find( _brother + _sp.data(&#x27;linktr&#x27;) ).filter(&#x27;.&#x27; + _hover).removeClass(_hover);
+                            });
+
+                    }
+
+                }
+
             });
 
+            
         }, 
 
         _inited: function () {
@@ -512,6 +547,22 @@
         },
 
         saveWidth: [],
+
+        linkTpl: function () {
+            var _p = this,
+                _trs;
+
+            if ( _p.selector().find(&#x27;table&gt;tbody&#x27;).length &gt; 0 ) {
+                _trs = _p.selector().find(&#x27;table&gt;tbody&gt;tr&#x27;);
+            } else {
+                _trs = _p.selector().find(&#x27;table&gt;tr&#x27;);
+            }
+
+            _trs.each( function ( _ix ) {
+                $(this).attr(&#x27;data-linktr&#x27;, &#x27;CTF&#x27; + _ix);
+            });
+            
+        },
 
         createTplBox: function () {
             var _p = this,
@@ -639,7 +690,6 @@
             _forePnt = JC.f.getJqParent(_pnt1, &#x27;table&#x27;);
             if ( _p.hasFixedPXWidth() ) {
                 _forePnt.css(&#x27;width&#x27;, _p.selector().find(&#x27;table&#x27;).prop(&#x27;offsetWidth&#x27;) );
-                JC.log(1);
             }
             _p.selector().find(&#x27;div.js-roll-table&gt;table&#x27;).width(&#x27;120%&#x27;);
             _p.setHeight();
@@ -652,7 +702,7 @@
                 _fragment = document.createDocumentFragment(),
                 _$fragment = $(_fragment);
 
-            _stpl.find(&#x27;thead&#x27;).eq(0).children(&#x27;tr&#x27;).each( function ( _ix, _item ) {
+            _stpl.find(&#x27;thead:eq(0)&gt;tr&#x27;).each( function ( _ix, _item ) {
 
                 var _cix = 0,
                     _tr,
@@ -692,11 +742,13 @@
                 _fragment = document.createDocumentFragment(),
                 _$fragment = $(_fragment);
 
-            _stpl.find(&#x27;tbody&#x27;).eq(0).children(&#x27;tr&#x27;).each( function ( _ix, _item ) {
+            _stpl.find(&#x27;tbody:eq(0)&gt;tr&#x27;).each( function ( _ix, _item ) {
                 var _cloneTr = $(_item).get(0).cloneNode(false), 
+                //var _cloneTr = $(&#x27;&lt;tr class=&quot;CTF CTF&#x27; + _ix + &#x27;&quot; data-linktr=&quot;CTF&#x27; + _ix +&#x27;&quot;&gt;&lt;/tr&gt;&#x27;),
                     _cix = 0,
                     _tr;
 
+                $(_cloneTr).addClass(&#x27;CTF CTF&#x27; + _ix);    
                 _$fragment.append( _cloneTr );
                 _tr = _$fragment.children(&#x27;tr:last&#x27;);
 
@@ -796,6 +848,21 @@
 
         },
 
+        // setHeight2: function () {
+        //     var _p = this;
+
+        //     _p.selector().find(&#x27;td.compTFEextraTd:eq(0)&gt;div&gt;table&gt;body&gt;tr&#x27;).each( function () {
+        //         var _sp = $(this),
+        //             _pnt = JC.f.getJqParent(_sp, &#x27;table.compTFEextraTable&#x27;),
+        //             _els = _pnt.find(&#x27;td.compTFEextraTd&gt;div&gt;table&gt;body&gt;tr.&#x27; + _sp.data(&#x27;linktr&#x27;) );
+
+        //         _els.each( function () {
+
+        //         });
+
+        //     });
+        // },
+
         freezeType: function () {
             var _p = this,
                 _r;
@@ -820,7 +887,23 @@
             return _r;
         },
 
-    
+        needHoverClass: function () {
+            var _r = this.boolProp( this.selector().find(&#x27;table&#x27;).eq(0), &#x27;needHoverClass&#x27; );
+
+            !_r &amp;&amp; ( _r = true );
+
+            return _r;
+        },
+
+        hoverClass: function () {
+            var _r = this.attrProp( this.selector().find(&#x27;table&#x27;).eq(0), &#x27;hoverClass&#x27; );
+
+            !_r &amp;&amp; ( _r = &#x27;compTFHover&#x27; );
+
+            return _r;
+
+        },
+
         tableWidth: function () {
             var _p = this,
                 _w = _p.selector().prop(&#x27;offsetWidth&#x27;);
@@ -1041,12 +1124,13 @@
     JC.f.extendObject( TableFreeze.View.prototype, {
         init: function () {
             var _p = this;
+
+            _p._model.linkTpl();
         },
 
         update: function () {
             //JC.log(&quot;View update here&quot;);
             var _p = this;
-
             
             if ( !_p._model.supportScroll() ) {
                 return;

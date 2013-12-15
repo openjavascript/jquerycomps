@@ -6,7 +6,6 @@
         <meta name="Description" content="CRM账户管理系统" />
         <title>CRM账户管理系统</title>
         <link rel="icon" type="image/vnd.microsoft.icon" href=" http://www.360.cn/favicon.ico"/>
-<link rel='stylesheet' type='text/css' href='/static/acc/css/??public.css,user.css,xremind.css?v=20130810' />    </head>
     <body>
         <div class="headbg">
             <div class="header">
@@ -34,7 +33,6 @@
                             <dd>
                             <span><label for="check_code">验&nbsp;&nbsp;证&nbsp;码：</label></span>
                             <input type="text" id="check_code" name="check_code" class="ipt-login1" reqmsg="验证码" datatype="text" minLength="5" maxLength="5" errMsg="长度范围5" intEl="check_code" />
-                            <img src="http://crm.360.cn/login/checkImage" class="js-ckcode" style="margin-left: 5px;" >
                             <em style="float:none!important;"><a href="#" class="replaceCode">看不清楚换一张</a></em>
                             <em class="error-tips" id="error-check-tops" style="float:none!important;"></em>
                             </dd>
@@ -55,18 +53,6 @@
         <div class="footer">
             Copyright &copy; 360安全网址. All Rights Reserved. 京ICP证080047号
         </div><!--end footer-->
-
-        <script src="http://s0.qhimg.com/lib/qwrap/1141.js"></script>
-<script src='/static/??acc/js/common.js,js/components/valid/valid.js,acc/js/low_ie_tips.js,js/crypt/md5.js,js/crypt/base64.js,acc/js/page/login.js?v=20130810'></script>        <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        
-          ga('create', 'UA-42636723-1', {'sampleRate':100, 'siteSpeedSampleRate':100});
-          ga('send', 'pageview');
-        
-        </script>
     </body>
 </html>
 
