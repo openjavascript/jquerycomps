@@ -1,5 +1,4 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
-;(function($){
     Bizs.BizExample = BizExample;
 
     function BizExample( _selector ){
@@ -53,8 +52,6 @@
                 + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
             ;
     });
-
-}(jQuery));
     return Bizs.BizExample;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 

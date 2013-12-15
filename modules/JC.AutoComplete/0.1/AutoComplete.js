@@ -86,6 +86,8 @@
          *      <dt>cacValidCheckTimeout = int, default = 1</dt>
          *      <dd>定义 JC.Valid blur 时执行 check 的时间间隔, 主要为防止点击列表时已经 Valid.check 的问题</dd>
          *
+         *      <dt>cacFixHtmlEntity = bool</dt>
+         *      <dd>是否将 HTML实体 转为 html</dd>
          * </dl>
          * @namespace JC
          * @class AutoComplete
@@ -215,6 +217,14 @@
          * @return  {json}
          */
         AutoComplete.dataFilter;
+        /**
+         * 是否将 HTML实体 转为 html
+         * @property    fixHtmlEntity
+         * @type        bool
+         * @default     true
+         * @static
+         */
+        AutoComplete.fixHtmlEntity = true;
 
         BaseMVC.build( AutoComplete );
 
@@ -610,6 +620,7 @@
                             //JC.log( _item.label, _item.id );
                             if( _definedIdKey ){
                                 var _slabel = _item.label.trim();
+                                //var _slabel = $( '<p>' + _item.label.trim() + '</p>' ).text();
 
                                 if( _slabel === _label ){
                                     _isCor = true;
@@ -800,11 +811,16 @@
                     this._blurTimeout = _tm;
                 }
 
-
             , cacDataFilter:
                 function( _d ){
-                    var _filter = this.callbackProp( 'cacDataFilter' ) || AutoComplete.dataFilter;
+                    var _p = this, _filter = _p.callbackProp( 'cacDataFilter' ) || AutoComplete.dataFilter;
                     _filter && ( _d = _filter( _d ) );
+
+                    if( _p.cacFixHtmlEntity() ){
+                        $.each( _d, function( _ix, _item ){
+                            _item.label && ( _item.label = $( '<p>' + _item.label + '</p>' ).text() );
+                        });
+                    }
                     return _d;
                 }
 
@@ -823,6 +839,14 @@
             , cacStrictData:
                 function(){
                     var _r = this.boolProp( 'cacStrictData' );
+                    return _r;
+                }
+
+            , cacFixHtmlEntity:
+                function(){
+                    var _r = AutoComplete.fixHtmlEntity;
+                    this.selector().is( '[cacFixHtmlEntity]' )
+                        && ( _r = this.boolProp( 'cacFixHtmlEntity' ) );
                     return _r;
                 }
 

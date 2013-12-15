@@ -276,6 +276,8 @@
          *      &lt;dt&gt;cacValidCheckTimeout = int, default = 1&lt;/dt&gt;
          *      &lt;dd&gt;定义 JC.Valid blur 时执行 check 的时间间隔, 主要为防止点击列表时已经 Valid.check 的问题&lt;/dd&gt;
          *
+         *      &lt;dt&gt;cacFixHtmlEntity = bool&lt;/dt&gt;
+         *      &lt;dd&gt;是否将 HTML实体 转为 html&lt;/dd&gt;
          * &lt;/dl&gt;
          * @namespace JC
          * @class AutoComplete
@@ -405,6 +407,14 @@
          * @return  {json}
          */
         AutoComplete.dataFilter;
+        /**
+         * 是否将 HTML实体 转为 html
+         * @property    fixHtmlEntity
+         * @type        bool
+         * @default     true
+         * @static
+         */
+        AutoComplete.fixHtmlEntity = true;
 
         BaseMVC.build( AutoComplete );
 
@@ -800,6 +810,7 @@
                             //JC.log( _item.label, _item.id );
                             if( _definedIdKey ){
                                 var _slabel = _item.label.trim();
+                                //var _slabel = $( &#x27;&lt;p&gt;&#x27; + _item.label.trim() + &#x27;&lt;/p&gt;&#x27; ).text();
 
                                 if( _slabel === _label ){
                                     _isCor = true;
@@ -990,11 +1001,16 @@
                     this._blurTimeout = _tm;
                 }
 
-
             , cacDataFilter:
                 function( _d ){
-                    var _filter = this.callbackProp( &#x27;cacDataFilter&#x27; ) || AutoComplete.dataFilter;
+                    var _p = this, _filter = _p.callbackProp( &#x27;cacDataFilter&#x27; ) || AutoComplete.dataFilter;
                     _filter &amp;&amp; ( _d = _filter( _d ) );
+
+                    if( _p.cacFixHtmlEntity() ){
+                        $.each( _d, function( _ix, _item ){
+                            _item.label &amp;&amp; ( _item.label = $( &#x27;&lt;p&gt;&#x27; + _item.label + &#x27;&lt;/p&gt;&#x27; ).text() );
+                        });
+                    }
                     return _d;
                 }
 
@@ -1013,6 +1029,14 @@
             , cacStrictData:
                 function(){
                     var _r = this.boolProp( &#x27;cacStrictData&#x27; );
+                    return _r;
+                }
+
+            , cacFixHtmlEntity:
+                function(){
+                    var _r = AutoComplete.fixHtmlEntity;
+                    this.selector().is( &#x27;[cacFixHtmlEntity]&#x27; )
+                        &amp;&amp; ( _r = this.boolProp( &#x27;cacFixHtmlEntity&#x27; ) );
                     return _r;
                 }
 
