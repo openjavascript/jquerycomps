@@ -253,8 +253,43 @@
 
                 _p._model.afterCreateTableCallback()
                     && _p._model.afterCreateTableCallback().call( _p, _p.selector() );
+                
+                if ( _p._model.needHoverClass() ) {
+                    var _hover = _p._model.hoverClass();
+
+                    if ( !_p._model.supportFreeze() || !_p._model.supportScroll() ) {
+                        _p._model.selector().find('tr')
+                            .on('mouseenter', function () {
+                                $(this).addClass( _hover );
+                            })
+                            .on('mouseleave', function () {
+                                $(this).removeClass( _hover );
+                            });
+                    } else {
+
+                        var _trs = 'td.compTFEextraTd>div>table>tbody>tr',
+                            _brother = 'td.compTFEextraTd>div>table>tbody>tr.';
+
+                        $(document).undelegate(_trs, 'mouseenter')
+                            .delegate(_trs, 'mouseenter', function (e) {
+                                var _sp = $(this),
+                                    _pnt = JC.f.getJqParent(_sp, 'table.compTFEextraTable'),
+                                    _el = _pnt.find( _brother + _sp.data('linktr') ).addClass(_hover);
+                              
+                            }).undelegate(_trs, 'mouseleave')
+                            .delegate(_trs, 'mouseleave', function (e) {
+                                var _sp = $(this),
+                                    _pnt = JC.f.getJqParent(_sp, 'table.compTFEextraTable'),
+                                    _el = _pnt.find( _brother + _sp.data('linktr') ).filter('.' + _hover).removeClass(_hover);
+                            });
+
+                    }
+
+                }
+
             });
 
+            
         }, 
 
         _inited: function () {
@@ -320,6 +355,22 @@
         },
 
         saveWidth: [],
+
+        linkTpl: function () {
+            var _p = this,
+                _trs;
+
+            if ( _p.selector().find('table>tbody').length > 0 ) {
+                _trs = _p.selector().find('table>tbody>tr');
+            } else {
+                _trs = _p.selector().find('table>tr');
+            }
+
+            _trs.each( function ( _ix ) {
+                $(this).attr('data-linktr', 'CTF' + _ix);
+            });
+            
+        },
 
         createTplBox: function () {
             var _p = this,
@@ -447,7 +498,6 @@
             _forePnt = JC.f.getJqParent(_pnt1, 'table');
             if ( _p.hasFixedPXWidth() ) {
                 _forePnt.css('width', _p.selector().find('table').prop('offsetWidth') );
-                JC.log(1);
             }
             _p.selector().find('div.js-roll-table>table').width('120%');
             _p.setHeight();
@@ -460,7 +510,7 @@
                 _fragment = document.createDocumentFragment(),
                 _$fragment = $(_fragment);
 
-            _stpl.find('thead').eq(0).children('tr').each( function ( _ix, _item ) {
+            _stpl.find('thead:eq(0)>tr').each( function ( _ix, _item ) {
 
                 var _cix = 0,
                     _tr,
@@ -500,11 +550,13 @@
                 _fragment = document.createDocumentFragment(),
                 _$fragment = $(_fragment);
 
-            _stpl.find('tbody').eq(0).children('tr').each( function ( _ix, _item ) {
+            _stpl.find('tbody:eq(0)>tr').each( function ( _ix, _item ) {
                 var _cloneTr = $(_item).get(0).cloneNode(false), 
+                //var _cloneTr = $('<tr class="CTF CTF' + _ix + '" data-linktr="CTF' + _ix +'"></tr>'),
                     _cix = 0,
                     _tr;
 
+                $(_cloneTr).addClass('CTF CTF' + _ix);    
                 _$fragment.append( _cloneTr );
                 _tr = _$fragment.children('tr:last');
 
@@ -604,6 +656,21 @@
 
         },
 
+        // setHeight2: function () {
+        //     var _p = this;
+
+        //     _p.selector().find('td.compTFEextraTd:eq(0)>div>table>body>tr').each( function () {
+        //         var _sp = $(this),
+        //             _pnt = JC.f.getJqParent(_sp, 'table.compTFEextraTable'),
+        //             _els = _pnt.find('td.compTFEextraTd>div>table>body>tr.' + _sp.data('linktr') );
+
+        //         _els.each( function () {
+
+        //         });
+
+        //     });
+        // },
+
         freezeType: function () {
             var _p = this,
                 _r;
@@ -628,7 +695,23 @@
             return _r;
         },
 
-    
+        needHoverClass: function () {
+            var _r = this.boolProp( this.selector().find('table').eq(0), 'needHoverClass' );
+
+            !_r && ( _r = true );
+
+            return _r;
+        },
+
+        hoverClass: function () {
+            var _r = this.attrProp( this.selector().find('table').eq(0), 'hoverClass' );
+
+            !_r && ( _r = 'compTFHover' );
+
+            return _r;
+
+        },
+
         tableWidth: function () {
             var _p = this,
                 _w = _p.selector().prop('offsetWidth');
@@ -849,12 +932,13 @@
     JC.f.extendObject( TableFreeze.View.prototype, {
         init: function () {
             var _p = this;
+
+            _p._model.linkTpl();
         },
 
         update: function () {
             //JC.log("View update here");
             var _p = this;
-
             
             if ( !_p._model.supportScroll() ) {
                 return;

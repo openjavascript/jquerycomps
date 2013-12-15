@@ -1079,16 +1079,20 @@
     /**
      * timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行
      * @method  safeTimeout
-     * @param   {timeout}   _timeout
-     * @param   {object}    _obj    default = window.TIMEOUT_HOST || {}
-     * @param   {string}    _name   default = 'NORMAL'
+     * @param   {timeout|function}  _timeout
+     * @param   {object}            _obj    default = window.TIMEOUT_HOST || {}
+     * @param   {string}            _name   default = 'NORMAL'
+     * @param   {int}               _ms     default = 50
      * @return  object
      * @static
      */
-    function safeTimeout( _timeout, _obj, _name ){
+    function safeTimeout( _timeout, _obj, _name, _ms ){
         if( typeof _timeout == 'undefined' ) return;
         _obj = $( _obj || ( window.TIMEOUT_HOST = window.TIMEOUT_HOST || {} ) );
         _name = _name || 'NORMAL';
+
+        typeof _timeout == 'function'
+            && ( _timeout = setTimeout( _timeout, _ms || 50 ) );
 
         _obj.data( _name ) && clearTimeout( _obj.data( _name ) );
         _obj.data( _name, _timeout );
