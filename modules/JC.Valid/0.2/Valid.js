@@ -32,6 +32,9 @@
      *      <dd>
      *          设置 表单所有控件的 em  CSS display 显示类型
      *      </dd>
+     *
+     *      <dt>ignoreAutoCheckEvent = bool, default = false</dt>
+     *      <dd>是否禁用 自动 check 事件( focus, blur, change )</dd>
      * </dl>
      * <h2>Form Control的可用 html attribute</h2>
      * <dl>
@@ -818,6 +821,14 @@
                 ;
             return _r;
         };
+    /**
+     * 是否禁用 自动 check 事件( focus, blur, change )
+     * @property    ignoreAutoCheckEvent
+     * @type        bool
+     * @default     false
+     * @static
+     */
+    Valid.ignoreAutoCheckEvent = false;
     
     function Model(){
         this._init();
@@ -2628,6 +2639,23 @@
                     ;
                 return _r;
             }
+
+        , ignoreAutoCheckEvent:
+            function( _item ){
+                var _r = Valid.ignoreAutoCheckEvent, _form;
+                _item && ( _item = $( _item ) );
+                if( _item && _item.length ){
+                    _form = JC.f.getJqParent( _item, 'form' );
+                    _form 
+                        && _form.length 
+                        && _form.is( '[ignoreAutoCheckEvent]' )
+                        && ( _r = JC.f.parseBool( _form.attr( 'ignoreAutoCheckEvent' ) ) );
+                            
+                    _item.is( '[ignoreAutoCheckEvent]' )
+                        && ( _r = JC.f.parseBool( _item.attr( 'ignoreAutoCheckEvent' ) ) );
+                }
+                return _r;
+            }
     };
     
     function View( _model ){
@@ -2837,17 +2865,20 @@
      * @private
      */
     $(document).delegate( 'input[type=text], input[type=password], textarea', 'blur', function($evt){
-        Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
-        Valid.checkTimeout( $(this) );
+        var _p = $(this), _ins = Valid.getInstance();
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        _ins.trigger( Model.FOCUS_MSG,  [ _p, true ] );
+        Valid.checkTimeout( _p );
     });
     /**
      * 响应没有 type 的 文本框
      */
     $(document).delegate( 'input', 'blur', function( _evt ){
-        var _p = $(this);
+        var _p = $(this), _ins = Valid.getInstance();
         if( _p.attr( 'type' ) ) return;
-        Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
-        Valid.checkTimeout( $(this) );
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        _ins.trigger( Model.FOCUS_MSG,  [ _p, true ] );
+        Valid.checkTimeout( _p );
     });
     /**
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
@@ -2855,7 +2886,9 @@
      */
     $(document).delegate( 'select, input[type=file], input[type=checkbox], input[type=radio]', 'change', function($evt, _ignore){
         if( _ignore ) return;
-        Valid.checkTimeout( $(this) );
+        var _p = $(this), _ins = Valid.getInstance();
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        Valid.checkTimeout( _p );
     });
     /**
      * 响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
@@ -2863,33 +2896,37 @@
      */
     $(document).delegate( 'input[type=text], input[type=password], textarea'
                             +', select, input[type=file], input[type=checkbox], input[type=radio]', 'focus', function($evt){
-        var _sp = $(this), _v = _sp.val().trim();
-        Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this) ] );
-        !_v && Valid.setValid( _sp );
+        var _p = $(this), _ins = Valid.getInstance(), _v = _p.val().trim();
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        _ins.trigger( Model.FOCUS_MSG,  [ _p ] );
+        !_v && Valid.setValid( _p );
     });
     /**
      * 响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息
      * @private
      */
     $(document).delegate( 'select, input[type=file], input[type=checkbox], input[type=radio]', 'blur', function($evt){
-        Valid.getInstance().trigger( Model.FOCUS_MSG,  [ $(this), true ] );
+        var _p = $(this), _ins = Valid.getInstance();
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        _ins.trigger( Model.FOCUS_MSG,  [ _p, true ] );
     });
 
     $(document).delegate( 'input[type=hidden][subdatatype]', 'change', function( _evt ){
-        var _sp = $(this), _isHidden = false, _tmp;
-        _sp.is( '[subdatatype]' ) && ( _isHidden = /hidden/i.test( _sp.attr('subdatatype') ) );
-        if( _sp.data('HID_CHANGE_CHECK') ){
-            _tmp = new Date().getTime() - _sp.data('HID_CHANGE_CHECK') ;
+        var _p = $(this), _ins = Valid.getInstance(), _isHidden = false, _tmp;
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        _p.is( '[subdatatype]' ) && ( _isHidden = /hidden/i.test( _p.attr('subdatatype') ) );
+        if( _p.data('HID_CHANGE_CHECK') ){
+            _tmp = new Date().getTime() - _p.data('HID_CHANGE_CHECK') ;
             if( _tmp < 50 ){
                 return;
             }
         }
-        if( !_sp.val() ){
-            //Valid.setValid( _sp );
+        if( !_p.val() ){
+            //Valid.setValid( _p );
             return;
         }
-        _sp.data('HID_CHANGE_CHECK', new Date().getTime() );
-        JC.log( 'hidden val', new Date().getTime(), _sp.val() );
+        _p.data('HID_CHANGE_CHECK', new Date().getTime() );
+        JC.log( 'hidden val', new Date().getTime(), _p.val() );
         Valid.checkTimeout( $(this) );
     });
     /**
