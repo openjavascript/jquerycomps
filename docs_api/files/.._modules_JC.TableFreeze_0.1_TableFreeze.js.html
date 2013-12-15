@@ -97,6 +97,8 @@
             
                 <li><a href="../classes/JC.Placeholder.html">JC.Placeholder</a></li>
             
+                <li><a href="../classes/JC.PopTips.html">JC.PopTips</a></li>
+            
                 <li><a href="../classes/JC.Slider.html">JC.Slider</a></li>
             
                 <li><a href="../classes/JC.Slider.Model.html">JC.Slider.Model</a></li>
@@ -230,6 +232,18 @@
  *           当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。
  *        &lt;/p&gt;
 
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;needHoverClass = true|false&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *        声明表格行是否需要鼠标hover高亮效果:
+ *        &lt;p&gt;默认值为true&lt;/p&gt;
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;hoverClass = string&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *        声明表格行高亮的className:
+ *        &lt;p&gt;默认值为compTFHover&lt;/p&gt;
  *    &lt;/dd&gt;
  *
  *    &lt;dt&gt;beforeCreateTableCallback = function&lt;/dt&gt;
@@ -460,21 +474,22 @@
                     } else {
 
                         var _trs = &#x27;td.compTFEextraTd&gt;div&gt;table&gt;tbody&gt;tr&#x27;,
-                            _brother = &#x27;td.compTFEextraTd&gt;div&gt;table&gt;tbody&gt;tr.&#x27;;
+                            _brother = &#x27;td.compTFEextraTd&gt;div&gt;table&gt;tbody&gt;tr.&#x27;,
+                            _el;
 
                         $(document).undelegate(_trs, &#x27;mouseenter&#x27;)
-                            .delegate(_trs, &#x27;mouseenter&#x27;, function (e) {
+                            .delegate(_trs, &#x27;mouseenter&#x27;, function () {
                                 var _sp = $(this),
-                                    _pnt = JC.f.getJqParent(_sp, &#x27;table.compTFEextraTable&#x27;),
-                                    _el = _pnt.find( _brother + _sp.data(&#x27;linktr&#x27;) ).addClass(_hover);
+                                    _pnt = JC.f.getJqParent(_sp, &#x27;table.compTFEextraTable&#x27;);
+                                
+                                _el = _pnt.find( _brother + _sp.data(&#x27;linktr&#x27;) ).addClass(_hover);
                               
                             }).undelegate(_trs, &#x27;mouseleave&#x27;)
-                            .delegate(_trs, &#x27;mouseleave&#x27;, function (e) {
-                                var _sp = $(this),
-                                    _pnt = JC.f.getJqParent(_sp, &#x27;table.compTFEextraTable&#x27;),
-                                    _el = _pnt.find( _brother + _sp.data(&#x27;linktr&#x27;) ).filter(&#x27;.&#x27; + _hover).removeClass(_hover);
+                            .delegate(_trs, &#x27;mouseleave&#x27;, function () {
+                                if ( _el.length &gt; 0 ) {
+                                    _el.removeClass(_hover);
+                                }
                             });
-
                     }
 
                 }
@@ -590,18 +605,18 @@
                             &#x27;js-roll-table compTFPrevRoll&#x27; );
                         _p.selector().append( _tpl );
 
-                        _pnt1 = JC.f.getJqParent(_p.selector().find(&#x27;div.js-fixed-table&#x27;), &#x27;td&#x27;);
-                        _pnt2 = JC.f.getJqParent(_p.selector().find(&#x27;div.js-roll-table&#x27;), &#x27;td&#x27;);
+                        _pnt1 = JC.f.getJqParent(_p.selector().find(&#x27;div.js-fixed-table&#x27;), &#x27;td.compTFEextraTd&#x27;);
+                        _pnt2 = JC.f.getJqParent(_p.selector().find(&#x27;div.js-roll-table&#x27;), &#x27;td.compTFEextraTd&#x27;);
                         
                         //if ( !_p.hasFixedPXWidth() ) {
                             _p.setWidth(0, _pnt1, _fcols );
                             _p.setWidth(_fcols, _pnt2, _p.colNum()  ); 
                         //}
 
-                        _thead = _p.selector().find(&#x27;div.js-fixed-table thead&#x27;).eq(0);
-                        _tbody = _p.selector().find(&#x27;div.js-fixed-table tbody&#x27;).eq(0);
-                        _thead2 = _p.selector().find(&#x27;div.js-roll-table thead&#x27;).eq(0);
-                        _tbody2 = _p.selector().find(&#x27;div.js-roll-table tbody&#x27;).eq(0);
+                        _thead = _p.selector().find(&#x27;div.js-fixed-table&gt;table&gt;thead&#x27;);
+                        _tbody = _p.selector().find(&#x27;div.js-fixed-table&gt;table&gt;tbody&#x27;);
+                        _thead2 = _p.selector().find(&#x27;div.js-roll-table&gt;table&gt;thead&#x27;);
+                        _tbody2 = _p.selector().find(&#x27;div.js-roll-table&gt;table&gt;tbody&#x27;);
 
                         _p.createHdTpl( _thead, _fcols );
                         _p.createBdTpl( _tbody, _fcols );
@@ -621,18 +636,18 @@
                             &#x27;js-fixed-table compTFLastFixed&#x27;)
                         _p.selector().append( _tpl );
 
-                        _pnt1 = JC.f.getJqParent(_p.selector().find(&#x27;div.js-roll-table&#x27;), &#x27;td&#x27;);
-                        _pnt2 = JC.f.getJqParent(_p.selector().find(&#x27;div.js-fixed-table&#x27;), &#x27;td&#x27;);
+                        _pnt1 = JC.f.getJqParent(_p.selector().find(&#x27;div.js-roll-table&#x27;), &#x27;td.compTFEextraTd&#x27;);
+                        _pnt2 = JC.f.getJqParent(_p.selector().find(&#x27;div.js-fixed-table&#x27;), &#x27;td.compTFEextraTd&#x27;);
 
                         //if ( !_p.hasFixedPXWidth() ) {
                             _p.setWidth(0, _pnt1, _p.colNum() - _fcols  );
                             _p.setWidth(_p.colNum() - _fcols, _pnt2, _p.colNum() );
                         //}
 
-                        _thead = _p.selector().find(&#x27;div.js-roll-table thead&#x27;).eq(0);
-                        _tbody = _p.selector().find(&#x27;div.js-roll-table tbody&#x27;).eq(0);
-                        _thead2 = _p.selector().find(&#x27;div.js-fixed-table thead&#x27;).eq(0);
-                        _tbody2 = _p.selector().find(&#x27;div.js-fixed-table tbody&#x27;).eq(0);
+                        _thead = _p.selector().find(&#x27;div.js-roll-table&gt;table&gt;thead&#x27;);
+                        _tbody = _p.selector().find(&#x27;div.js-roll-table&gt;table&gt;tbody&#x27;);
+                        _thead2 = _p.selector().find(&#x27;div.js-fixed-table&gt;table&gt;thead&#x27;);
+                        _tbody2 = _p.selector().find(&#x27;div.js-fixed-table&gt;table&gt;tbody&#x27;);
 
                         _p.createHdTpl( _thead, _p.colNum() - _fcols );
                         _p.createBdTpl( _tbody, _p.colNum() - _fcols );
@@ -658,9 +673,9 @@
                                 &#x27;js-fixed-table compTFBothFixed&#x27;);
                         _p.selector().append( _tpl );
 
-                        _pnt1 = JC.f.getJqParent(_p.selector().find(&#x27;div.js-fixed-table&#x27;).eq(0), &#x27;td&#x27;);
-                        _pnt2 = JC.f.getJqParent(_p.selector().find(&#x27;div.js-roll-table&#x27;), &#x27;td&#x27;);
-                        _pnt3 = JC.f.getJqParent(_p.selector().find(&#x27;div.js-fixed-table&#x27;).eq(1), &#x27;td&#x27;);
+                        _pnt1 = JC.f.getJqParent(_p.selector().find(&#x27;div.js-fixed-table:eq(0)&#x27;), &#x27;td.compTFEextraTd&#x27;);
+                        _pnt2 = JC.f.getJqParent(_p.selector().find(&#x27;div.js-roll-table&#x27;), &#x27;td.compTFEextraTd&#x27;);
+                        _pnt3 = JC.f.getJqParent(_p.selector().find(&#x27;div.js-fixed-table:eq(1)&#x27;), &#x27;td.compTFEextraTd&#x27;);
 
                         //if ( !_p.hasFixedPXWidth() ) {
                             _p.setWidth(0, _pnt1, _fcols  );
@@ -668,12 +683,12 @@
                             _p.setWidth(_fcols + _p.colNum() - _fcols - _fcols2, _pnt3, _p.colNum() );
                         //}
 
-                        _thead = _p.selector().find(&#x27;div.js-fixed-table thead&#x27;).eq(0);
-                        _tbody = _p.selector().find(&#x27;div.js-fixed-table tbody&#x27;).eq(0);
-                        _thead2 = _p.selector().find(&#x27;div.js-roll-table thead&#x27;).eq(0);
-                        _tbody2 = _p.selector().find(&#x27;div.js-roll-table tbody&#x27;).eq(0);
-                        _thead3 = _p.selector().find(&#x27;div.js-fixed-table thead&#x27;).eq(1);
-                        _tbody3 = _p.selector().find(&#x27;div.js-fixed-table tbody&#x27;).eq(1);
+                        _thead = _p.selector().find(&#x27;div.js-fixed-table:eq(0)&gt;table&gt;thead&#x27;);
+                        _tbody = _p.selector().find(&#x27;div.js-fixed-table:eq(0)&gt;table&gt;tbody&#x27;);
+                        _thead2 = _p.selector().find(&#x27;div.js-roll-table&gt;table&gt;thead&#x27;);
+                        _tbody2 = _p.selector().find(&#x27;div.js-roll-table&gt;table&gt;tbody&#x27;);
+                        _thead3 = _p.selector().find(&#x27;div.js-fixed-table:eq(1)&gt;table&gt;thead&#x27;);
+                        _tbody3 = _p.selector().find(&#x27;div.js-fixed-table:eq(1)&gt;table&gt;tbody&#x27;);
 
                         _p.createHdTpl( _thead, _fcols );
                         _p.createBdTpl( _tbody, _fcols );
@@ -738,24 +753,27 @@
 
             var _p = this,
                 _stpl = _p.sourceTable,
+                _strs = _stpl.find(&#x27;tbody:eq(0)&gt;tr&#x27;),
                 _row = {},
                 _fragment = document.createDocumentFragment(),
                 _$fragment = $(_fragment);
 
-            _stpl.find(&#x27;tbody:eq(0)&gt;tr&#x27;).each( function ( _ix, _item ) {
-                var _cloneTr = $(_item).get(0).cloneNode(false), 
-                //var _cloneTr = $(&#x27;&lt;tr class=&quot;CTF CTF&#x27; + _ix + &#x27;&quot; data-linktr=&quot;CTF&#x27; + _ix +&#x27;&quot;&gt;&lt;/tr&gt;&#x27;),
+            _strs.each( function ( _ix, _item ) {
+                var _sp = $(this),
+                    _cloneTr = _sp.get(0).cloneNode(false),
+                    _stds =  _sp.children(&#x27;td,th&#x27;),
                     _cix = 0,
                     _tr;
 
-                $(_cloneTr).addClass(&#x27;CTF CTF&#x27; + _ix);    
+                $(_cloneTr).addClass(&#x27;CTF CTF&#x27; + _ix).removeAttr(&#x27;id&#x27;);    
                 _$fragment.append( _cloneTr );
                 _tr = _$fragment.children(&#x27;tr:last&#x27;);
 
-                $( _item ).children(&#x27;td,th&#x27;).each( function ( _six, _sitem ) {
+                _stds.each( function ( _six, _sitem ) {
                     
-                    var _colspan = $(this).attr(&#x27;colspan&#x27;),
-                        _rowspan = $(this).attr(&#x27;rowspan&#x27;),
+                    var _sp = $(this), 
+                        _colspan = _sp.attr(&#x27;colspan&#x27;),
+                        _rowspan = _sp.attr(&#x27;rowspan&#x27;),
                         _obj = {},
                         _key;
                     
@@ -793,7 +811,7 @@
                         _cix = _cix + 1;
                     }
 
-                    $(this).appendTo( _tr );
+                    _sp.appendTo( _tr );
 
                 });
              
@@ -821,9 +839,9 @@
         setHeight: function () {
             var _p = this,
                 _ftype = _p.freezeType(),
-                _leftTr = _p.selector().find(&#x27;div.js-fixed-table&#x27;).eq(0).find(&#x27;tr&#x27;),
-                _rightTr = _p.selector().find(&#x27;div.js-roll-table&gt;table&#x27;).find(&#x27;tr&#x27;),
-                _midTr = _p.selector().find(&#x27;div.js-fixed-table&#x27;).eq(1).find(&#x27;table&#x27;).eq(0).find(&#x27;tr&#x27;);
+                _leftTr = _p.selector().find(&#x27;div.js-fixed-table:eq(0)&gt;table&gt;thead&gt;tr,div.js-fixed-table:eq(0)&gt;table&gt;tbody&gt;tr&#x27;),
+                _rightTr = _p.selector().find(&#x27;div.js-roll-table&gt;table&gt;thead&gt;tr,div.js-roll-table&gt;table&gt;tbody&gt;tr&#x27;),
+                _midTr = _p.selector().find(&#x27;div.js-fixed-table:eq(1)&gt;table&gt;thead&gt;tr,div.js-fixed-table:eq(1)&gt;table&gt;tbody&gt;tr&#x27;);
 
             _leftTr.each( function ( _ix, _item ) {
                 var _rightTrx = _rightTr.eq( _ix ),
@@ -847,21 +865,6 @@
             } );
 
         },
-
-        // setHeight2: function () {
-        //     var _p = this;
-
-        //     _p.selector().find(&#x27;td.compTFEextraTd:eq(0)&gt;div&gt;table&gt;body&gt;tr&#x27;).each( function () {
-        //         var _sp = $(this),
-        //             _pnt = JC.f.getJqParent(_sp, &#x27;table.compTFEextraTable&#x27;),
-        //             _els = _pnt.find(&#x27;td.compTFEextraTd&gt;div&gt;table&gt;body&gt;tr.&#x27; + _sp.data(&#x27;linktr&#x27;) );
-
-        //         _els.each( function () {
-
-        //         });
-
-        //     });
-        // },
 
         freezeType: function () {
             var _p = this,

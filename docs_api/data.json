@@ -308,6 +308,17 @@
                 "JC": 1
             }
         },
+        "../modules/JC.PopTips/0.1/PopTips.js": {
+            "name": "../modules/JC.PopTips/0.1/PopTips.js",
+            "modules": {},
+            "classes": {
+                "JC.PopTips": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../modules/JC.Slider/0.1/Slider.js": {
             "name": "../modules/JC.Slider/0.1/Slider.js",
             "modules": {},
@@ -736,7 +747,7 @@
             "namespace": "JC",
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
             "line": 5,
-            "description": "AutoComplete 文本框内容输入提示\n<br />响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 AutoComplete 实例\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.AutoComplete/0.1/_demo' target='_blank'>demo link</a></p>\n\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>cacPopup = selector, optional</dt>\n     <dd>显式指定用于显示数据列表的弹框, 如不指定, 载入数据时会自己生成 popup node</dd>\n\n     <dt>cacPreventEnter = bool, default = false</dt>\n     <dd>文本框按回车键时, 是否阻止默认行为, 防止提交表单</dd>\n\n     <dt>cacLabelKey = string, default = data-label</dt>\n     <dd>用于显示 label 的HTML属性</dd>\n\n     <dt>cacIdKey = string, default= data-id</dt>\n     <dd>用于显示 ID 的HTML属性</dd>\n\n     <dt>cacIdSelector = selector</dt>\n     <dd>用于保存 ID 值的 node</dd>\n\n     <dt>cacIdVal = string, optional</dt>\n     <dd>用于初始化的默认ID, 如果 cacIdVal 为空将尝试读取 cacIdSelector 的值</dd>\n\n     <dt>cacStrictData = bool, default = false</dt>\n     <dd>是否验证已填内容的合法性<br />仅在 cacIdSelector 和 cacIdKey 显式声明时有效</dd>\n\n     <dt>cacAjaxDataUrl = url</dt>\n     <dd>\n         获取 数据的 AJAX 接口\n         <dl>\n             <dt>数据格式</dt>\n             <dd>\n                 [ { \"id\": \"id value\", \"label\": \"label value\" }, ... ]\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>cacDataFilter = callback</dt>\n     <dd>\n         <dl>\n             <dt>如果 数据接口获取的数据不是默认格式, \n                 可以使用这个属性定义一个数据过滤函数, 把数据转换为合适的格式\n             </dt>\n             <dd>\n<pre>function cacDataFilter( _json ){\n   if( _json.data && _json.data.length ){\n       _json = _json.data;\n   }\n\n   $.each( _json, function( _ix, _item ){\n       _item.length &&\n           ( _json[ _ix ] = { 'id': _item[0], 'label': _item[1] } )\n           ;\n   });\n   return _json;\n}</pre>\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>cacBoxWidth = int</dt>\n     <dd>定义 popup 的宽度, 如果没有显式定义, 将使用 selector 的宽度</dd>\n\n     <dt>cacCasesensitive = bool, default = false</dt>\n     <dd>是否区分英文大小写</dd>\n\n     <dt>cacSubItemsSelector = selector string, default = \"&gt; li\"\n     <dd>popup 查找数据项的选择器语法</dd>\n\n     <dt>cacNoDataText = string, default = \"数据加载中, 请稍候...\"</dt>\n     <dd>加载数据时的默认提示文字</dd>\n\n     <dt>cacValidCheckTimeout = int, default = 1</dt>\n     <dd>定义 JC.Valid blur 时执行 check 的时间间隔, 主要为防止点击列表时已经 Valid.check 的问题</dd>\n\n</dl>",
+            "description": "AutoComplete 文本框内容输入提示\n<br />响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 AutoComplete 实例\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.AutoComplete/0.1/_demo' target='_blank'>demo link</a></p>\n\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>cacPopup = selector, optional</dt>\n     <dd>显式指定用于显示数据列表的弹框, 如不指定, 载入数据时会自己生成 popup node</dd>\n\n     <dt>cacPreventEnter = bool, default = false</dt>\n     <dd>文本框按回车键时, 是否阻止默认行为, 防止提交表单</dd>\n\n     <dt>cacLabelKey = string, default = data-label</dt>\n     <dd>用于显示 label 的HTML属性</dd>\n\n     <dt>cacIdKey = string, default= data-id</dt>\n     <dd>用于显示 ID 的HTML属性</dd>\n\n     <dt>cacIdSelector = selector</dt>\n     <dd>用于保存 ID 值的 node</dd>\n\n     <dt>cacIdVal = string, optional</dt>\n     <dd>用于初始化的默认ID, 如果 cacIdVal 为空将尝试读取 cacIdSelector 的值</dd>\n\n     <dt>cacStrictData = bool, default = false</dt>\n     <dd>是否验证已填内容的合法性<br />仅在 cacIdSelector 和 cacIdKey 显式声明时有效</dd>\n\n     <dt>cacAjaxDataUrl = url</dt>\n     <dd>\n         获取 数据的 AJAX 接口\n         <dl>\n             <dt>数据格式</dt>\n             <dd>\n                 [ { \"id\": \"id value\", \"label\": \"label value\" }, ... ]\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>cacDataFilter = callback</dt>\n     <dd>\n         <dl>\n             <dt>如果 数据接口获取的数据不是默认格式, \n                 可以使用这个属性定义一个数据过滤函数, 把数据转换为合适的格式\n             </dt>\n             <dd>\n<pre>function cacDataFilter( _json ){\n   if( _json.data && _json.data.length ){\n       _json = _json.data;\n   }\n\n   $.each( _json, function( _ix, _item ){\n       _item.length &&\n           ( _json[ _ix ] = { 'id': _item[0], 'label': _item[1] } )\n           ;\n   });\n   return _json;\n}</pre>\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>cacBoxWidth = int</dt>\n     <dd>定义 popup 的宽度, 如果没有显式定义, 将使用 selector 的宽度</dd>\n\n     <dt>cacCasesensitive = bool, default = false</dt>\n     <dd>是否区分英文大小写</dd>\n\n     <dt>cacSubItemsSelector = selector string, default = \"&gt; li\"\n     <dd>popup 查找数据项的选择器语法</dd>\n\n     <dt>cacNoDataText = string, default = \"数据加载中, 请稍候...\"</dt>\n     <dd>加载数据时的默认提示文字</dd>\n\n     <dt>cacValidCheckTimeout = int, default = 1</dt>\n     <dd>定义 JC.Valid blur 时执行 check 的时间间隔, 主要为防止点击列表时已经 Valid.check 的问题</dd>\n\n     <dt>cacFixHtmlEntity = bool</dt>\n     <dd>是否将 HTML实体 转为 html</dd>\n</dl>",
             "is_constructor": 1,
             "params": [
                 {
@@ -1436,6 +1447,29 @@
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
             "date": "2013-10-19"
         },
+        "JC.PopTips": {
+            "name": "JC.PopTips",
+            "shortname": "JC.PopTips",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../modules/JC.PopTips/0.1/PopTips.js",
+            "line": 2,
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-11-25",
+            "author": "zuojing   <zuojing1013@gmail.com> | 75 Team"
+        },
         "JC.Slider": {
             "name": "JC.Slider",
             "shortname": "JC.Slider",
@@ -1601,7 +1635,7 @@
             "namespace": "JC",
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
             "line": 2,
-            "description": "TableFreeze 表格固定指定列功能\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.TableFreeze/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化div为class=\"js_compTableFreeze\"下的表格</h2>\n<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>freezeType = string</dt>\n   <dd>\n      声明表格列冻结的类型：\n      <p><b>prev：</b>左边的列固定，其他滚动</p>\n      <p><b>next：</b>右边的列固定，其他滚动</p>\n      <p><b>both：</b>两边的列固定，其他滚动</p>\n   </dd>\n\n   <dt>freezeCol = string</dt>\n   <dd>\n       声明表格要冻结的列数:\n       <p>为<b>0：</b>全部滚动，不冻结</p>\n       <p>为<b>列表数目：</b>全部冻结， 不滚动</p>\n       <p>为<b>num,num：</b>freezeType为<b>both</b>时，第一个数字表示前面冻结的列数<br/>\n         第二个数字表示后面冻结的列数。<br/>\n          当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。\n       </p>\n\n   </dd>\n\n   <dt>beforeCreateTableCallback = function</dt>\n   <dd>\n       表格创建前, 触发的回调, <b>window 变量域</b>\n<pre>function beforeCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'beforeCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>afterCreateTableCallback = function</dt>\n   <dd>\n       表格创建后, 触发的回调, <b>window 变量域</b>\n<pre>function afterCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'afterCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
+            "description": "TableFreeze 表格固定指定列功能\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.TableFreeze/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化div为class=\"js_compTableFreeze\"下的表格</h2>\n<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>freezeType = string</dt>\n   <dd>\n      声明表格列冻结的类型：\n      <p><b>prev：</b>左边的列固定，其他滚动</p>\n      <p><b>next：</b>右边的列固定，其他滚动</p>\n      <p><b>both：</b>两边的列固定，其他滚动</p>\n   </dd>\n\n   <dt>freezeCol = string</dt>\n   <dd>\n       声明表格要冻结的列数:\n       <p>为<b>0：</b>全部滚动，不冻结</p>\n       <p>为<b>列表数目：</b>全部冻结， 不滚动</p>\n       <p>为<b>num,num：</b>freezeType为<b>both</b>时，第一个数字表示前面冻结的列数<br/>\n         第二个数字表示后面冻结的列数。<br/>\n          当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。\n       </p>\n\n   </dd>\n\n   <dt>needHoverClass = true|false</dt>\n   <dd>\n       声明表格行是否需要鼠标hover高亮效果:\n       <p>默认值为true</p>\n   </dd>\n\n   <dt>hoverClass = string</dt>\n   <dd>\n       声明表格行高亮的className:\n       <p>默认值为compTFHover</p>\n   </dd>\n\n   <dt>beforeCreateTableCallback = function</dt>\n   <dd>\n       表格创建前, 触发的回调, <b>window 变量域</b>\n<pre>function beforeCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'beforeCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>afterCreateTableCallback = function</dt>\n   <dd>\n       表格创建后, 触发的回调, <b>window 变量域</b>\n<pre>function afterCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'afterCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -2974,7 +3008,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 140,
+            "line": 142,
             "description": "获取或设置 AutoComplete 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -2995,7 +3029,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 156,
+            "line": 158,
             "description": "初始化可识别的 AutoComplete 实例",
             "itemtype": "method",
             "name": "init",
@@ -3016,7 +3050,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 179,
+            "line": 181,
             "description": "更新原始数据",
             "itemtype": "method",
             "name": "update",
@@ -3042,7 +3076,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 194,
+            "line": 196,
             "description": "使用 ajax 接口更新原始数据",
             "itemtype": "method",
             "name": "ajaxUpdate",
@@ -3073,7 +3107,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 210,
+            "line": 212,
             "description": "定义全局数据过滤函数",
             "itemtype": "method",
             "name": "dataFilter",
@@ -3094,21 +3128,33 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 336,
+            "line": 220,
+            "description": "是否将 HTML实体 转为 html",
+            "itemtype": "property",
+            "name": "fixHtmlEntity",
+            "type": "bool",
+            "default": "true",
+            "static": 1,
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
+            "line": 346,
             "description": "点击列表时, 阻止冒泡",
             "class": "JC.AutoComplete",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 394,
+            "line": 404,
             "description": "响应 li 点击时, 更新对应的内容",
             "class": "JC.AutoComplete",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 430,
+            "line": 440,
             "description": "获取 绑定的 id node",
             "itemtype": "method",
             "name": "idSelector",
@@ -3121,7 +3167,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 436,
+            "line": 446,
             "description": "获取 id 值",
             "itemtype": "method",
             "name": "idVal",
@@ -3134,7 +3180,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 442,
+            "line": 452,
             "description": "使用 ajax 接口更新原始数据",
             "itemtype": "method",
             "name": "ajaxUpdate",
@@ -3155,7 +3201,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 453,
+            "line": 463,
             "description": "显示数据列表",
             "itemtype": "method",
             "name": "show",
@@ -3164,7 +3210,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 465,
+            "line": 475,
             "description": "隐藏数据列表",
             "itemtype": "method",
             "name": "hide",
@@ -3173,7 +3219,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 474,
+            "line": 484,
             "description": "获取数据列表 node",
             "itemtype": "method",
             "name": "popup",
@@ -3186,7 +3232,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 483,
+            "line": 493,
             "description": "更新原始数据",
             "itemtype": "method",
             "name": "update",
@@ -3202,7 +3248,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 499,
+            "line": 509,
             "description": "清除 selector 和 idSelector 的默认值",
             "itemtype": "method",
             "name": "clear",
@@ -3211,7 +3257,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 508,
+            "line": 518,
             "description": "校正数据列表的显示位置",
             "itemtype": "method",
             "name": "fixPosition",
@@ -3220,7 +3266,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 586,
+            "line": 596,
             "description": "验证 key && id 是否正确\n仅在 cacStrictData 为真的时候进行验证",
             "class": "JC.AutoComplete",
             "namespace": "JC"
@@ -7858,6 +7904,71 @@
             "namespace": "JC"
         },
         {
+            "file": "../modules/JC.PopTips/0.1/PopTips.js",
+            "line": 29,
+            "description": "获取或设置 PopTips 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "PopTipsInstance"
+            },
+            "class": "JC.PopTips",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.PopTips/0.1/PopTips.js",
+            "line": 44,
+            "description": "初始化可识别的 PopTips 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of PopTipsInstance"
+            },
+            "class": "JC.PopTips",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.PopTips/0.1/PopTips.js",
+            "line": 140,
+            "description": "更新 PopTips 状态",
+            "itemtype": "method",
+            "name": "update",
+            "class": "JC.PopTips",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.PopTips/0.1/PopTips.js",
+            "line": 314,
+            "description": "PopTips显示前的回调",
+            "class": "JC.PopTips",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.PopTips/0.1/PopTips.js",
+            "line": 325,
+            "description": "PopTips隐藏后的回调",
+            "class": "JC.PopTips",
+            "namespace": "JC"
+        },
+        {
             "file": "../modules/JC.Slider/0.1/Slider.js",
             "line": 137,
             "description": "初始化数据模型",
@@ -9521,7 +9632,7 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 198,
+            "line": 210,
             "description": "获取或设置 TableFreeze 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -9542,7 +9653,7 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 213,
+            "line": 225,
             "description": "初始化可识别的 TableFreeze 实例",
             "itemtype": "method",
             "name": "init",
@@ -9563,7 +9674,7 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 303,
+            "line": 316,
             "description": "更新 TableFreeze 状态",
             "itemtype": "method",
             "name": "update",
@@ -9572,7 +9683,7 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 314,
+            "line": 327,
             "description": "resize时更新 TableFreeze 状态",
             "itemtype": "method",
             "name": "fixHeight",
@@ -9581,14 +9692,14 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 900,
+            "line": 901,
             "description": "TableFreeze调用前的回调",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 911,
+            "line": 912,
             "description": "TableFreeze调用后的回调",
             "class": "JC.TableFreeze",
             "namespace": "JC"
@@ -15533,6 +15644,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../modules/JC.PopTips/0.1/PopTips.js:2"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../modules/JC.Slider/0.1/Slider.js:5"
         },
         {
@@ -15921,15 +16036,15 @@
         },
         {
             "message": "Missing item type\n点击列表时, 阻止冒泡",
-            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:336"
+            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:346"
         },
         {
             "message": "Missing item type\n响应 li 点击时, 更新对应的内容",
-            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:394"
+            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:404"
         },
         {
             "message": "Missing item type\n验证 key && id 是否正确\n仅在 cacStrictData 为真的时候进行验证",
-            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:586"
+            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:596"
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",
@@ -16048,6 +16163,14 @@
             "line": " ../modules/JC.Placeholder/0.1/Placeholder.js:341"
         },
         {
+            "message": "Missing item type\nPopTips显示前的回调",
+            "line": " ../modules/JC.PopTips/0.1/PopTips.js:314"
+        },
+        {
+            "message": "Missing item type\nPopTips隐藏后的回调",
+            "line": " ../modules/JC.PopTips/0.1/PopTips.js:325"
+        },
+        {
             "message": "Missing item type\n初始化数据模型",
             "line": " ../modules/JC.Slider/0.1/Slider.js:137"
         },
@@ -16077,11 +16200,11 @@
         },
         {
             "message": "Missing item type\nTableFreeze调用前的回调",
-            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:900"
+            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:901"
         },
         {
             "message": "Missing item type\nTableFreeze调用后的回调",
-            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:911"
+            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:912"
         },
         {
             "message": "Missing item type\n页面加载完毕后, 是否自动初始化 Tips",
