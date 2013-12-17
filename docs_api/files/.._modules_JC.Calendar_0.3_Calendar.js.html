@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../config.js - jquery components</title>
+    <title>../modules/JC.Calendar/0.3/Calendar.js - jquery components</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -188,89 +188,38 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../config.js</h1>
+                        <h1 class="file-heading">File: ../modules/JC.Calendar/0.3/Calendar.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-window.JC = window.JC || {log:function(){}};
-JC.PATH = JC.PATH || scriptPath();
-/**
- * requirejs config.js for JC Project
- */
-window.requirejs &amp;&amp; 
-requirejs.config( {
-    baseUrl: JC.PATH
-    , urlArgs: &#x27;v=20131201&#x27;
-    , paths: {
-        &#x27;JC.common&#x27;: &#x27;modules/JC.common/0.2/common&#x27;
-        , &#x27;JC.BaseMVC&#x27;: &#x27;modules/JC.BaseMVC/0.1/BaseMVC&#x27;
-
-        , &#x27;JC.AjaxUpload&#x27;: &#x27;modules/JC.AjaxUpload/0.1/AjaxUpload&#x27;
-        , &#x27;JC.AutoChecked&#x27;: &#x27;modules/JC.AutoChecked/0.1/AutoChecked&#x27;
-        , &#x27;JC.AutoSelect&#x27;: &#x27;modules/JC.AutoSelect/0.2/AutoSelect&#x27;
-        , &#x27;JC.AutoComplete&#x27;: &#x27;modules/JC.AutoComplete/0.1/AutoComplete&#x27;
-
-        //, &#x27;JC.Calendar&#x27;: &#x27;modules/JC.Calendar/0.2/Calendar&#x27;
-        , &#x27;JC.Calendar&#x27;: &#x27;modules/JC.Calendar/0.3/Calendar&#x27;
-        , &#x27;JC.Calendar.date&#x27;: &#x27;modules/JC.Calendar/0.3/Calendar.date&#x27;
-        , &#x27;JC.Calendar.week&#x27;: &#x27;modules/JC.Calendar/0.3/Calendar.week&#x27;
-        , &#x27;JC.Calendar.month&#x27;: &#x27;modules/JC.Calendar/0.3/Calendar.month&#x27;
-        , &#x27;JC.Calendar.season&#x27;: &#x27;modules/JC.Calendar/0.3/Calendar.season&#x27;
-        , &#x27;JC.Calendar.year&#x27;: &#x27;modules/JC.Calendar/0.3/Calendar.year&#x27;
-        , &#x27;JC.Calendar.monthday&#x27;: &#x27;modules/JC.Calendar/0.3/Calendar.monthday&#x27;
-
-        , &#x27;JC.Form&#x27;: &#x27;modules/JC.Form/0.1/Form&#x27;
-        , &#x27;JC.Fixed&#x27;: &#x27;modules/JC.Fixed/0.1/Fixed&#x27;
-        , &#x27;JC.LunarCalendar&#x27;: &#x27;modules/JC.LunarCalendar/0.1/LunarCalendar&#x27;
-        , &#x27;JC.Slider&#x27;: &#x27;modules/JC.Slider/0.1/Slider&#x27;
-        , &#x27;JC.Suggest&#x27;: &#x27;modules/JC.Suggest/0.1/Suggest&#x27;
-        , &#x27;JC.Tab&#x27;: &#x27;modules/JC.Tab/0.1/Tab&#x27;
-        , &#x27;JC.TableFreeze&#x27;: &#x27;modules/JC.TableFreeze/0.1/TableFreeze&#x27;
-        , &#x27;JC.Tips&#x27;: &#x27;modules/JC.Tips/0.1/Tips&#x27;
-        , &#x27;JC.Tree&#x27;: &#x27;modules/JC.Tree/0.1/Tree&#x27;
-
-        //, &#x27;JC.Panel&#x27;: &#x27;modules/JC.Panel/0.1/Panel&#x27;
-        , &#x27;JC.Panel&#x27;: &#x27;modules/JC.Panel/0.2/Panel&#x27;
-
-        , &#x27;JC.Placeholder&#x27;: &#x27;modules/JC.Placeholder/0.1/Placeholder&#x27;
-        , &#x27;JC.PopTips&#x27;: &#x27;modules/JC.PopTips/0.1/PopTips&#x27;
-        , &#x27;JC.Valid&#x27;: &#x27;modules/JC.Valid/0.2/Valid&#x27;
-
-        , &#x27;Bizs.ActionLogic&#x27;: &#x27;modules/Bizs.ActionLogic/0.1/ActionLogic&#x27;
-        , &#x27;Bizs.AutoSelectComplete&#x27;: &#x27;modules/Bizs.AutoSelectComplete//0.1/AutoSelectComplete&#x27;
-
-        , &#x27;Bizs.ChangeLogic&#x27;: &#x27;modules/Bizs.ChangeLogic/0.1/ChangeLogic&#x27;
-        , &#x27;Bizs.DisableLogic&#x27;: &#x27;modules/Bizs.DisableLogic/0.1/DisableLogic&#x27;
-        , &#x27;Bizs.DropdownTree&#x27;: &#x27;modules/Bizs.DropdownTree/0.1/DropdownTree&#x27;
-
-        , &#x27;Bizs.CommonModify&#x27;: &#x27;modules/Bizs.CommonModify/0.1/CommonModify&#x27;
-        , &#x27;Bizs.FormLogic&#x27;: &#x27;modules/Bizs.FormLogic/0.1/FormLogic&#x27;
-        , &#x27;Bizs.KillISPCache&#x27;: &#x27;modules/Bizs.KillISPCache/0.1/KillISPCache&#x27;
-        , &#x27;Bizs.MoneyTips&#x27;: &#x27;modules/Bizs.MoneyTips/0.1/MoneyTips&#x27;
-        , &#x27;Bizs.MultiDate&#x27;: &#x27;modules/Bizs.MultiDate/0.1/MultiDate&#x27;
-
-        , &#x27;plugins.jquery.form&#x27;: &#x27;plugins/jquery.form/3.36.0/jquery.form&#x27;
-        , &#x27;plugins.jquery.rate&#x27;: &#x27;plugins/jquery.rate/2.5.2/jquery.rate&#x27;
-        , &#x27;plugins.requirejs.domReady&#x27;: &#x27;plugins/requirejs.domReady/2.0.1/domReady&#x27;
-        , &#x27;plugins.JSON2&#x27;: &#x27;plugins/JSON/2/JSON&#x27;
-        , &#x27;plugins.json2&#x27;: &#x27;plugins/JSON/2/JSON&#x27;
-        , &#x27;plugins.Aes&#x27;: &#x27;plugins/Aes/0.1/Aes&#x27;
-        , &#x27;plugins.Base64&#x27;: &#x27;plugins/Base64/0.1/Base64&#x27;
-        , &#x27;plugins.md5&#x27;: &#x27;plugins/md5/0.1/md5&#x27;
-    }
-});
-/**
- * 取当前脚本标签的 src路径 
- * @static
- * @return  {string} 脚本所在目录的完整路径
- */
-function scriptPath(){
-    var _sc = document.getElementsByTagName(&#x27;script&#x27;), _sc = _sc[ _sc.length - 1 ], _path = _sc.getAttribute(&#x27;src&#x27;);
-    if( /\//.test( _path ) ){ _path = _path.split(&#x27;/&#x27;); _path.pop(); _path = _path.join(&#x27;/&#x27;) + &#x27;/&#x27;; }
-    else if( /\\/.test( _path ) ){ _path = _path.split(&#x27;\\&#x27;); _path.pop(); _path = _path.join(&#x27;\\&#x27;) + &#x27;/&#x27;; }
-    return _path;
-}
-
+;(function(define, _win) { &#x27;use strict&#x27;; 
+    define( [ &#x27;JC.Calendar.date&#x27;, &#x27;JC.Calendar.week&#x27;, &#x27;JC.Calendar.month&#x27;
+                , &#x27;JC.Calendar.season&#x27;, &#x27;JC.Calendar.year&#x27;, &#x27;JC.Calendar.monthday&#x27;
+            ], function(){
+    /**
+     * 这个判断是为了向后兼容 JC 0.1
+     * 使用 requirejs 的项目可以移除这段判断代码
+     */
+    JC.use 
+        &amp;&amp; JC.PATH
+        &amp;&amp; JC.use([ 
+                JC.PATH + &#x27;comps/Calendar/Calendar.date.js&#x27;
+                , JC.PATH + &#x27;comps/Calendar/Calendar.week.js&#x27; 
+                , JC.PATH + &#x27;comps/Calendar/Calendar.month.js&#x27; 
+                , JC.PATH + &#x27;comps/Calendar/Calendar.season.js&#x27; 
+                , JC.PATH + &#x27;comps/Calendar/Calendar.year.js&#x27; 
+                , JC.PATH + &#x27;comps/Calendar/Calendar.monthday.js&#x27; 
+            ].join())
+        ;
+});}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
+        function ( _name, _require, _cb ) { 
+            typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );
+            typeof _require == &#x27;function&#x27; &amp;&amp; ( _cb = _require ); 
+            _cb &amp;&amp; _cb(); 
+        }
+        , window
+    )
+);
 
     </pre>
 </div>

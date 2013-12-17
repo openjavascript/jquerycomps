@@ -1,7 +1,6 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: html popup add trigger ref
 ;(function($){
-    window.JC = window.JC || {log:function(){}};
     window.Panel = JC.Panel = Panel;
     /**
      * 弹出层基础类 JC.Panel
@@ -11,7 +10,7 @@
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Panel.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/0.2/_demo' target='_blank'>demo link</a></p>
      *
      * <h2>Panel Layout 可用的 html attribute</h2>
      * <dl>

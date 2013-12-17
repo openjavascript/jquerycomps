@@ -35,7 +35,13 @@ requirejs.config( {
         , 'JC.Tips': 'modules/JC.Tips/0.1/Tips'
         , 'JC.Tree': 'modules/JC.Tree/0.1/Tree'
 
-        , 'JC.Panel': 'modules/JC.Panel/0.1/Panel'
+        //, 'JC.Panel': 'modules/JC.Panel/0.1/Panel'
+        , 'JC.Panel': 'modules/JC.Panel/0.2/Panel'
+        , 'JC.Panel.default': 'modules/JC.Panel/0.2/Panel.default'
+        , 'JC.Panel.popup': 'modules/JC.Panel/0.2/Panel.popup'
+        , 'JC.Dialog': 'modules/JC.Panel/0.2/Dialog'
+        , 'JC.Dialog.popup': 'modules/JC.Panel/0.2/Dialog.popup'
+
         , 'JC.Placeholder': 'modules/JC.Placeholder/0.1/Placeholder'
         , 'JC.PopTips': 'modules/JC.PopTips/0.1/PopTips'
         , 'JC.Valid': 'modules/JC.Valid/0.2/Valid'
