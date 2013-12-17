@@ -1,6 +1,5 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: minvalue, maxvalue 添加默认日期属性识别属性
-;(function($){
     /**
      * 日期选择组件
      * <br />全局访问请使用 JC.Calendar 或 Calendar
@@ -1834,8 +1833,6 @@ function parseYearDate( _dateStr ){
                             , 'textarea[multidate=date]', 'textarea[multidate=daterange]' ].join(), 'click' , function($evt){
             Calendar.pickDate( this );
     });
-
-}(jQuery));
     return JC.Calendar;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

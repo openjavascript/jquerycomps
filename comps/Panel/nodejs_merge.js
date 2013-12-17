@@ -1,22 +1,30 @@
-var fs = require('fs');
+var _fs = require('fs');
 
-var dir = __dirname + '/';
+var _dir = __dirname + '/'
+    , _paths = []
+    , _contents = []
+    , _outputName = 'Panel.js'
+    ;
 
-var path1 = dir + 'JC.Panel.js';
-var path2 = dir + 'JC.Popup.js';
-var path3 = dir + 'JC.Dialog.js';
+    _paths.push( _dir + 'Panel.default.js' );
+    _paths.push( _dir + 'Panel.popup.js' );
+    _paths.push( _dir + 'Dialog.js' );
+    _paths.push( _dir + 'Dialog.popup.js' );
 
-var outPath = dir + 'Panel.js';
+for( var i = 0, j = _paths.length; i < j; i++ ){
+    if( ! _fs.existsSync( _paths[i] )  ) return;
+}
 
-if( !( fs.existsSync( path1 ) && fs.existsSync( path2 ) && fs.existsSync( path3 ) ) ) return;
+for( var i = 0, j = _paths.length; i < j; i++ ){
+    _contents.push( _fs.readFileSync( _paths[i], 'utf8') );
+}
 
-var tmp = [];
-    tmp.push( fs.readFileSync( path1, 'utf8') );
-    tmp.push( fs.readFileSync( path2, 'utf8') );
-    tmp.push( fs.readFileSync( path3, 'utf8') );
+_fs.writeFileSync( _dir + _outputName, _contents.join(';\n') );
 
-fs.writeFileSync( outPath, tmp.join(';\n\n') );
+for( var i = 0, j = _paths.length; i < j; i++ ){
+    _fs.unlinkSync( _paths[i] );
+}
 
-fs.unlinkSync( path1 );
-fs.unlinkSync( path2 );
-fs.unlinkSync( path3 );
+console.log( 'merge done: ' + _outputName );
+
+

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../comps/Panel/Panel.js - jquery components</title>
+    <title>../comps/Calendar/Calendar.js - jquery components</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -186,27 +186,31 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../comps/Panel/Panel.js</h1>
+                        <h1 class="file-heading">File: ../comps/Calendar/Calendar.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 ;(function(define, _win) { &#x27;use strict&#x27;; 
-    define( [ &#x27;JC.Panel.default&#x27;, &#x27;JC.Panel.popup&#x27;, &#x27;JC.Dialog&#x27;, &#x27;JC.Dialog.popup&#x27; ], function(){
+    define( [ &#x27;JC.Calendar.date&#x27;, &#x27;JC.Calendar.week&#x27;, &#x27;JC.Calendar.month&#x27;
+                , &#x27;JC.Calendar.season&#x27;, &#x27;JC.Calendar.year&#x27;, &#x27;JC.Calendar.monthday&#x27;
+            ], function(){
     /**
-     * 这个判断是为了向后兼容 JC 0.1
-     * 使用 requirejs 的项目可以移除这段判断代码
+     * �����ж���Ϊ���������� JC 0.1
+     * ʹ�� requirejs ����Ŀ�����Ƴ������жϴ���
      */
     JC.use 
         &amp;&amp; JC.PATH
         &amp;&amp; JC.use([ 
-                JC.PATH + &#x27;comps/Panel/Panel.default.js&#x27;
-                , JC.PATH + &#x27;comps/Panel/Panel.popup.js&#x27; 
-                , JC.PATH + &#x27;comps/Panel/Dialog.js&#x27; 
-                , JC.PATH + &#x27;comps/Panel/Dialog.popup.js&#x27; 
+                JC.PATH + &#x27;comps/Calendar/Calendar.date.js&#x27;
+                , JC.PATH + &#x27;comps/Calendar/Calendar.week.js&#x27; 
+                , JC.PATH + &#x27;comps/Calendar/Calendar.month.js&#x27; 
+                , JC.PATH + &#x27;comps/Calendar/Calendar.season.js&#x27; 
+                , JC.PATH + &#x27;comps/Calendar/Calendar.year.js&#x27; 
+                , JC.PATH + &#x27;comps/Calendar/Calendar.monthday.js&#x27; 
             ].join())
         ;
 
-    return JC.Panel;
+    return JC.Calendar;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb ) { 
             typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );
