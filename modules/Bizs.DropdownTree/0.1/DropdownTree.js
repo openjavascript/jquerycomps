@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Tree' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Tree', 'plugins.json2' ], function(){
 ;(function($){
 /**
  * 组件用途简述
@@ -243,6 +243,7 @@
             var _r = {};
 
             if( _data ){
+                JSON && ( _data = $.parseJSON( JSON.stringify( _data ) ) );
                 if( _data.root.length > 2 ){
                     _data.root.shift();
                     _r.root = _data.root;
