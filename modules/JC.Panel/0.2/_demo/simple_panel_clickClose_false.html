@@ -26,12 +26,13 @@
     dt{ font-weight: bold; }
 
 </style>
-<link href='../../../../modules/JC.Panel/0.1/res/default/style.css' rel='stylesheet' />
+<link href='../res/default/style.css' rel='stylesheet' />
 <script src="../../../../lib.js"></script>
 <script src="../../../../config.js"></script>
 <script>
     JC.debug = true; 
     requirejs( [ 'JC.Panel' ], function( Panel ){
+        JC.Panel.clickClose = false;
     }); 
 
     var count = 1;
@@ -50,9 +51,8 @@
 
     $(document).delegate( 'button.js_panel_alert', 'click', function(_evt){
         tmpPanel = JC.alert( 'user manual JC.alert ' + count, this, 1 );
-        tmpPanel.on('confirm', function( _evt, _panelIns ){ 
-            var _btn = $(this);
-            JC.log( _btn.prop( 'nodeName' ), 'another uaer callback' ); 
+        tmpPanel.on('confirm', function( _evt, _panel ){ 
+            JC.log('another uaer callback'); 
         });
 
         count++;
@@ -60,8 +60,7 @@
 
     $(document).delegate( 'button.js_panel_confirm', 'click', function(_evt){
         tmpPanel = JC.confirm( 'user manual JC.confirm ' + count, this, 2 );
-        tmpPanel.on('confirm', function( _evt, _panelIns ){ 
-            var _btn = $(this);
+        tmpPanel.on('confirm', function( _evt, _panel ){ 
             JC.log('another uaer callback'); 
         });
 
@@ -70,8 +69,7 @@
 
     $(document).delegate( 'button.js_panel_msgbox', 'click', function(_evt){
         tmpPanel = JC.msgbox( 'user manual JC.msgbox ' + count, this, 0 );
-        tmpPanel.on('confirm', function( _evt, _panelIns ){ 
-            var _btn = $(this);
+        tmpPanel.on('confirm', function( _evt, _panel ){ 
             JC.log('another uaer callback'); 
         });
 
@@ -80,17 +78,14 @@
 
     function userCallback( _evt, _panel ){
         JC.log( 'userCallback ' + (count++) );
-        JC.log( '_panel.triggerSelector(): ' + (_panel.triggerSelector() ? _panel.triggerSelector().html() : '') );
     }
 
     function userCallback1( _evt, _panel ){
         JC.log( 'userCallback1 ' + (count++) );
-        JC.log( '_panel.triggerSelector(): ' + (_panel.triggerSelector() ? _panel.triggerSelector().html() : '') );
     }
 
     function userCallback2( _evt, _panel ){
         JC.log( 'userCallback2 ' + (count++) );
-        JC.log( '_panel.triggerSelector(): ' + (_panel.triggerSelector() ? _panel.triggerSelector().html() : '') );
     }
 
     function hideAllPanel(){
