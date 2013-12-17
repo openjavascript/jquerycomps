@@ -609,7 +609,8 @@
                         $.each( _p.initData, function( _ix, _item ){
                             //JC.log( _item.label, _item.id );
                             if( _definedIdKey ){
-                                var _slabel = _item.label.trim();
+                                //var _slabel = _item.label.trim();
+                                var _slabel = $( '<p>' + _item.label.trim() + '</p>' ).text();
 
                                 if( _slabel === _label ){
                                     _isCor = true;
