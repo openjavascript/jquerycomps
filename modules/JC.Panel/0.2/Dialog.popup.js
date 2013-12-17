@@ -4,7 +4,7 @@
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.msgbox.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/0.2/_demo' target='_blank'>demo link</a></p>
      * <p><b>see also</b>: <a href='JC.Dialog.html'>JC.Dialog</a></p>
      * @namespace JC.Dialog
      * @class   msgbox
@@ -47,7 +47,7 @@
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.alert.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/0.2/_demo' target='_blank'>demo link</a></p>
      * <p><b>see also</b>: <a href='JC.Dialog.html'>JC.Dialog</a></p>
      * @namespace JC.Dialog
      * @class   alert
@@ -87,7 +87,7 @@
      * <br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Dialog.confirm.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Panel/0.1/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Panel/0.2/_demo' target='_blank'>demo link</a></p>
      * <p><b>see also</b>: <a href='JC.Dialog.html'>JC.Dialog</a></p>
      * @namespace JC.Dialog
      * @class   confirm
@@ -258,7 +258,6 @@
                 ].join('')
         }
     };
-
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 
             typeof _name == 'function' && ( _cb = _name );
@@ -268,4 +267,3 @@
         , window
     )
 );
-
