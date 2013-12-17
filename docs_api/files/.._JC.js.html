@@ -556,6 +556,9 @@ window.Bizs = window.Bizs || {};
      * 自动识别组件库所在路径
      */
     JC.PATH = scriptPath();
+    if( /\:\/\//.test( location.href ) ){
+        JC.PATH = JC.f.relativePath( JC.PATH, location.href );
+    }
     //dev开发时因为脚本没合并, IE找不到库的正确路径, 这个判断仅针对dev开发分支
     /\/JQueryComps_dev\//i.test( location.href ) 
         &amp;&amp; !( /file\:/.test( location.href ) || /\\/.test( location.href ) )

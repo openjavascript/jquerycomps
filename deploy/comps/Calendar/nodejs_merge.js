@@ -1,31 +1,32 @@
-var fs = require('fs');
+var _fs = require('fs');
 
-var dir = __dirname + '/';
+var _dir = __dirname + '/'
+    , _paths = []
+    , _contents = []
+    , _outputName = 'Calendar.js'
+    ;
 
-var path1 = dir + 'JC.Calendar.js';
-var path2 = dir + 'JC.Calendar.pickWeek.js';
-var path3 = dir + 'JC.Calendar.pickMonth.js';
-var path4 = dir + 'JC.Calendar.pickSeason.js';
-var path5 = dir + 'JC.Calendar.monthday.js';
+    _paths.push( _dir + 'Calendar.date.js' );
+    _paths.push( _dir + 'Calendar.week.js' );
+    _paths.push( _dir + 'Calendar.month.js' );
+    _paths.push( _dir + 'Calendar.season.js' );
+    _paths.push( _dir + 'Calendar.year.js' );
+    _paths.push( _dir + 'Calendar.monthday.js' );
 
-var outPath = dir + 'Calendar.js';
+for( var i = 0, j = _paths.length; i < j; i++ ){
+    if( ! _fs.existsSync( _paths[i] )  ) return;
+}
 
-if( !( 
-        fs.existsSync( path1 ) && fs.existsSync( path2 )
-        && fs.existsSync( path3 ) && fs.existsSync( path4 )
-    )) return;
+for( var i = 0, j = _paths.length; i < j; i++ ){
+    _contents.push( _fs.readFileSync( _paths[i], 'utf8') );
+}
 
-var tmp = [];
-    tmp.push( fs.readFileSync( path1, 'utf8') );
-    tmp.push( fs.readFileSync( path2, 'utf8') );
-    tmp.push( fs.readFileSync( path3, 'utf8') );
-    tmp.push( fs.readFileSync( path4, 'utf8') );
-    tmp.push( fs.readFileSync( path5, 'utf8') );
+_fs.writeFileSync( _dir + _outputName, _contents.join(';\n') );
 
-fs.writeFileSync( outPath, tmp.join(';\n\n') );
+for( var i = 0, j = _paths.length; i < j; i++ ){
+    _fs.unlinkSync( _paths[i] );
+}
 
-fs.unlinkSync( path1 );
-fs.unlinkSync( path2 );
-fs.unlinkSync( path3 );
-fs.unlinkSync( path4 );
-fs.unlinkSync( path5 );
+console.log( 'merge done: ' + _outputName );
+
+

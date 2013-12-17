@@ -1,37 +1,35 @@
-var fs = require('fs');
+var _fs = require('fs');
 
-var dir = __dirname;
-dir = dir.split('/');
-dir.pop();
-
-dir = dir.join('/') + '/';
-
-var jqFile = dir + 'jquery.js'
-    , commonFile = dir + 'common.js'
-    , jcFile = dir + 'JC.js'
-    , baseMVCFile = dir + 'comps/BaseMVC/BaseMVC.js'
+var _dir = __dirname
+    , _paths = []
+    , _contents = []
+    , _outputName = "lib.js"
     ;
 
+    _dir = _dir.split('/');
+    _dir.pop();
+    _dir = _dir.join('/') + '/';
 
-if( !(  fs.existsSync( jqFile ) 
-        && fs.existsSync( jcFile ) 
-        && fs.existsSync( commonFile )  
-        && fs.existsSync( baseMVCFile )  
-)) return;
+    _paths.push( _dir + 'jquery.js' );
+    _paths.push( _dir + 'common.js' );
+    _paths.push( _dir + 'JC.js' );
+    _paths.push( _dir + 'comps/BaseMVC/BaseMVC.js' );
 
-var tmp = [];
-    tmp.push( fs.readFileSync( jqFile, 'utf8') );
-    tmp.push( fs.readFileSync( commonFile, 'utf8') );
-    tmp.push( fs.readFileSync( jcFile, 'utf8') );
-    tmp.push( fs.readFileSync( baseMVCFile, 'utf8') );
+for( var i = 0, j = _paths.length; i < j; i++ ){
+    if( ! _fs.existsSync( _paths[i] )  ) return;
+}
 
-fs.writeFileSync( dir + 'lib.js', tmp.join(';\n\n') );
+for( var i = 0, j = _paths.length; i < j; i++ ){
+    _contents.push( _fs.readFileSync( _paths[i], 'utf8') );
+}
+
+_fs.writeFileSync( _dir + _outputName, _contents.join(';\n') );
 
 /*
-fs.unlinkSync( dir + 'jquery.js' );
-fs.unlinkSync( dir + 'common.js' );
-fs.unlinkSync( dir + 'JC.js' );
+for( var i = 0, j = _paths.length; i < j; i++ ){
+    _fs.unlinkSync( _paths[i] );
+}
 */
-console.log( 'merge done' );
+console.log( 'merge done: ' + _outputName );
 
 

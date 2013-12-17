@@ -9597,7 +9597,6 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
 })( window );
 ;
-
 ;(function(define, _win) { 'use strict'; define( [], function(){
 ;(function($){
     /**
@@ -10728,7 +10727,6 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
     )
 );
 ;
-
 //TODO: use 方法 nginx 模式添加 url 最大长度判断
 //TODO: use add custom type
 //TODO: 支持解析带 JC. 命名空间
@@ -11105,7 +11103,6 @@ window.Bizs = window.Bizs || {};
 }(jQuery));
 
 ;
-
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 ;(function($){
     window.BaseMVC = JC.BaseMVC = BaseMVC;
