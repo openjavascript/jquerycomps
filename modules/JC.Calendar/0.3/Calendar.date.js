@@ -1271,28 +1271,67 @@ function parseYearDate( _dateStr ){
                 if( !( _selector && _selector.length ) ) return;
                 var _p = this
                     , _type = ( _selector.attr('datetype') || _selector.attr('multidate') || '' ).toLowerCase().trim() 
+                    , _v = _selector.val().trim()
+                    , _dp = _p.dateParse( _selector )
+                    , _dstart, _dend
+                    , _do
                     ;
+                if( !_v ) return;
+
                 if( _type == 'date' && !_selector.attr( 'fullDateFormat' ) ){
                     _selector.attr( 'fullDateFormat', '{0}' );
+                }
+
+                if( _dp ){
+                    switch( _type ){
+                        case 'date': 
+                            {
+                                break;
+                            }
+                        case 'week':
+                        case 'month':
+                        case 'season':
+                        case 'year':
+                            {
+                                _do = _dp( _v );
+                                _selector.val( _p.fullFormat( _p.dateFormat( _do.start, _selector )
+                                                                , _p.dateFormat( _do.end, _selector )
+                                                                , _selector 
+                                            ) );
+
+                                break;
+                            }
+                    }
+                }else{
+                    switch( _type ){
+                        case 'date': 
+                            {
+                                _dstart = JC.f.parseISODate( _v );
+                                _selector.val( _p.dateFormat( _dstart, _selector ) || _v );
+                                break;
+                            }
+                    }
                 }
             }
 
         , dateFormat:
-            function( _date ){
-                var _r = '', _format = this.selector().attr( 'dateFormat' ) || 'YY-MM-DD';
+            function( _date, _selector ){
+                _selector = _selector || this.selector();
+                var _r = '', _format = _selector.attr( 'dateFormat' ) || 'YY-MM-DD';
                 _date && ( _r = JC.f.dateFormat( _date, _format ) );
                 return _r;
             }
 
         , fullFormat:
-            function( _date, _endDate ){
-                var _r = '', _fullFormat = this.selector().attr( 'fullDateFormat' ) || '{0} 至 {1}';
+            function( _date, _endDate, _selector ){
+                _selector = _selector || this.selector();
+                var _r = '', _fullFormat = _selector.attr( 'fullDateFormat' ) || '{0} 至 {1}';
                 if( _date && _endDate ){
-                    _r = JC.f.printf( _fullFormat, this.dateFormat( _date ), this.dateFormat( _endDate ) );
+                    _r = JC.f.printf( _fullFormat, this.dateFormat( _date, _selector ), this.dateFormat( _endDate, _selector ) );
                 }else if( _date ){
-                    _r = JC.f.printf( _fullFormat, this.dateFormat( _date ) );
+                    _r = JC.f.printf( _fullFormat, this.dateFormat( _date, _selector ) );
                 }else if( _endDate ){
-                    _r = JC.f.printf( _fullFormat, this.dateFormat( _endDate ) );
+                    _r = JC.f.printf( _fullFormat, this.dateFormat( _endDate, _selector ) );
                 }
                 return _r;
             }
@@ -1358,7 +1397,6 @@ function parseYearDate( _dateStr ){
         this._model = _model;
     }
     Calendar.View = View;
-
     
     View.prototype = {
         init:
@@ -1745,10 +1783,10 @@ function parseYearDate( _dateStr ){
          * 延迟200毫秒初始化页面的所有日历控件
          * 之所以要延迟是可以让用户自己设置是否需要自动初始化
          */
-        setTimeout( function( $evt ){
+        JC.f.safeTimeout( function( $evt ){
             if( !Calendar.autoInit ) return;
             Calendar.initTrigger( $(document) );
-        }, 200 );
+        }, null, 'CalendarInitTrigger', 200 );
         /**
          * 监听窗口滚动和改变大小, 实时变更日历组件显示位置
          * @event  window scroll, window resize
@@ -1763,7 +1801,6 @@ function parseYearDate( _dateStr ){
          * @event dom click
          * @private
          */
-        var CLICK_HIDE_TIMEOUT = null;
         $(document).on('click', function($evt){
             var _src = $evt.target || $evt.srcElement;
 
@@ -1778,13 +1815,10 @@ function parseYearDate( _dateStr ){
                 Calendar.hide(); return;
             }
 
-            CLICK_HIDE_TIMEOUT && clearTimeout( CLICK_HIDE_TIMEOUT );
-
-            CLICK_HIDE_TIMEOUT =
-                setTimeout( function(){
-                    if( Calendar.lastIpt && Calendar.lastIpt.length && _src == Calendar.lastIpt[0] ) return;
-                    Calendar.hide();
-                }, 100);
+            JC.f.safeTimeout( function(){
+                if( Calendar.lastIpt && Calendar.lastIpt.length && _src == Calendar.lastIpt[0] ) return;
+                Calendar.hide();
+            }, null, 'CalendarClickHide', 100 );
         });
     });
     $(document).delegate( [ 'input[datatype=date]', 'input[datatype=daterange]'

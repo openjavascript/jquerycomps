@@ -29,7 +29,7 @@
         if( !_dateStr ) return _r;
 
         _dateStr = _dateStr.replace( /[^\d]+/g, '' );
-        var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4 ), 10 ) - 1;
+        var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4, 6 ), 10 ) - 1;
 
         _r.start = new Date( _year, _month, 1 );
         return _r;
@@ -66,25 +66,6 @@
 
         <dl>
             <dt>multidate = month</dt>
-            <dd>
-                <input type="text" name="date1" value="2013-06-02" multidate="month" maxvalue="2013-06-02" currentcanselect="true" />
-                nothing
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" value="now" multidate="month" maxvalue="now" currentcanselect="true"  />
-                now
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" value="now,2m" multidate="month" maxvalue="now, 4m" currentcanselect="true" />
-                now,2m
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" value="now,2y,-2m" multidate="month" maxvalue="now,2y,-1m"  />
-                now,2y,-2m
-            </dd>
 
             <dd>
             <input type="text" name="date1" 
@@ -95,40 +76,18 @@
                 dateParse="parseYearMonthDate" 
                 />
             </dd>
-
             <dd>
-                <input type="text" name="date1" multidate="month" value="now,-1y" />
-                now,-1y
+            <input type="text" name="date1" 
+                value="now" 
+                minvalue="now,-3m"
+                maxvalue="now,+3m"
+                multidate="month" 
+                dateFormat="YY-MM" 
+                fullDateFormat="{0}"
+                dateParse="parseYearMonthDate" 
+                />
             </dd>
 
-            <dd>
-                <input type="text" name="date1" multidate="month" value="now,-1w" />
-                now,-1w
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" multidate="month" value="now,-3d" />
-                now,-3d
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" multidate="month" value="now,3w" />
-                now,3w
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" multidate="month" value="now,-4m" />
-                now,-4m
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" datatype="daterange" value="now" minvalue="now" maxvalue="now,1w,-1d" />
-                <input type="text" name="date1" datatype="daterange" value="now,1w" minvalue="now" maxvalue="now,1w,-1d" />
-                <em class="error"></em>
-                <p>
-                value="now,1w" minvalue="now" maxvalue="now,1w,-1d"
-                </p>
-            </dd>
         </dl>
 
 

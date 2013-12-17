@@ -600,6 +600,20 @@
         if( !_ins )  return;
         $( _ins._view ).trigger( &#x27;MonthDayInputToggle&#x27;, [ _p ] );
     });
+
+
+    $(document).delegate( [ &#x27;input[datatype=monthday]&#x27;, &#x27;input[multidate=monthday]&#x27; ].join(), &#x27;focus&#x27; 
+    , function($evt){
+            Calendar.pickDate( this );
+    });
+
+    $(document).delegate( [ &#x27;button[datatype=monthday]&#x27;, &#x27;button[multidate=monthday]&#x27; ].join(), &#x27;click&#x27; , function($evt){
+            Calendar.pickDate( this );
+    });
+
+    $(document).delegate( [ &#x27;textarea[datatype=monthday]&#x27;, &#x27;textarea[multidate=monthday]&#x27; ].join(), &#x27;click&#x27; , function($evt){
+            Calendar.pickDate( this );
+    });
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb ) { 
             typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );

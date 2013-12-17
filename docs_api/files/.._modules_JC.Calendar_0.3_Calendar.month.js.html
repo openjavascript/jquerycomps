@@ -422,6 +422,18 @@
                 JC.Calendar.hide();
             }
     });
+
+    $(document).delegate( [ &#x27;input[datatype=month]&#x27;, &#x27;input[multidate=month]&#x27; ].join(), &#x27;focus&#x27; 
+    , function($evt){
+            Calendar.pickDate( this );
+    });
+    $(document).delegate( [ &#x27;button[datatype=month]&#x27;, &#x27;button[multidate=month]&#x27; ].join(), &#x27;click&#x27; , function($evt){
+            Calendar.pickDate( this );
+    });
+    $(document).delegate( [ &#x27;textarea[datatype=month]&#x27;, &#x27;textarea[multidate=month]&#x27; ].join(), &#x27;click&#x27; , function($evt){
+            Calendar.pickDate( this );
+    });
+
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb ) { 
             typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );
