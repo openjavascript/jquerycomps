@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Tree', 'plugins.json2' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Tree' ], function(){
 ;(function($){
 /**
  * 组件用途简述
@@ -151,7 +151,7 @@
 
                 if( !_p._model.treeIns ){
 
-                    console.dir && console.dir( _data );
+                    //console.dir && console.dir( _data );
 
                     _tins = _p._model.treeIns = new JC.Tree( _p._model.bdtTreeBox(), _data );
 
@@ -242,21 +242,23 @@
         function( _data ){
             var _r = {};
 
-            if( _data ){
-                JSON && ( _data = $.parseJSON( JSON.stringify( _data ) ) );
-                if( _data.root.length > 2 ){
-                    _data.root.shift();
-                    _r.root = _data.root;
-                 }
+            if( _data && _data.root && _data.root.length > 2 ){
+                _data.root.shift();
+                _r.root = _data.root;
                 _r.data = {};
                 for( var k in _data.data ){
                     _r.data[ k ] = [];
                     for( var i = 0, j = _data.data[k].length; i < j; i++ ){
-                        if( _data.data[k][i].length < 3 ) continue;
+                        if( _data.data[k][i].length < 3 ) {
+                            _r.data[k].push( _data.data[k][i] );
+                            continue;
+                        }
                         _data.data[k][i].shift();
                         _r.data[k].push( _data.data[k][i] );
                     }
                 }
+            }else{
+                _r = _data;
             }
             return _r;
         };
