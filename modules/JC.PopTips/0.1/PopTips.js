@@ -192,7 +192,10 @@
 
             if( !_ins ) return;
 
-            _ins.update();
+            if ( _ins._model.layout().is(':visible') ) {
+                _ins.update();
+            }
+
         });
       
     },
@@ -667,6 +670,7 @@
 
             _cal = _p._model.calcPosOffset(_arrowPosition, _pos );
             _p._model.setPosition( _cal, _arrowPosition );
+
             _p._model.layout().data('CPopTipsIns', _p);
         },
 
