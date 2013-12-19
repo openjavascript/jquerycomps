@@ -1506,6 +1506,7 @@
             "namespace": "JC",
             "file": "../modules/JC.PopTips/0.1/PopTips.js",
             "line": 2,
+            "description": "Poptips 带箭头的气泡提示框功能\n<p>\n     <b>require</b>: \n         <a href='window.jQuery.html'>jQuery</a>\n         , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.PopTips.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.PopTips/0.1/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化span|em|a|b为class=\"js_compPoptips\"的提示气泡</h2>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>content = string | html </dt>\n   <dd>\n      <p>声明气泡提示的内容<br>\n      如果没有设置则去查找title属性，如果title也没有设置，<br/>\n        则将触发元素的text作为提示内容。</p>\n   </dd>\n\n   <dt>theme = yellow | blue | white | green, <a href=\"../../modules/JC.PopTips/0.1/res/default/style.html\" target=\"_blank\">查看</a></dt>\n   <dd>\n      气泡主题，提供黄色、蓝色、白色、绿色四种样式，默认为 yellow.\n      <p><b>yellow：</b>黄色<br/>\n      <b>blue：</b>蓝色<br/>\n      <b>white：</b>白色<br/>\n      <b>green：</b>绿色</p>\n   </dd>\n\n   <dt>triggerType = hover | click</dt>\n   <dd>\n       触发方式: 支持hover和click\n       <p>默认为hover</p>\n   </dd>\n\n   <dt>arrowPosition = left | right | top | bottom</dt>\n   <dd>\n       声明箭头的方向，默认值为left\n       <p><b>left:</b>箭头向左（提示框在触发元素的右边）如果右边空间不够，提示框自动显示在左边，如果左边空间不够，提示框显示在上方，如果上方空间，提示框显示到下方<br/>\n       <b>right:</b>箭头向右（提示框在触发元素的左边）如果左边空间不够，提示框自动显示在右边，如果右边空间不够，提示框显示在上方，如果上方空间，提示框显示到下方<br/>\n       <b>top:</b>箭头向上（提示框在触发元素的下边）如果下边不够，提示框自动显示到上边<br/>\n       <b>bottom:</b>箭头向下（提示框在触发元素的上边）如果上边不够，提示框自动显示到下边</p>    \n   </dd>\n\n   <dt>arrowPositionOffset = left|right|top</dt>\n   <dd>\n       声明箭头在提示框的位置，默认居中\n       <p>如果arrowPosition = left || right, arrowPositionOffset可以设置为top</p>\n       <p>如果arrowPosition = top || bottom, arrowPositionOffset可以设置为left || right</p>\n   </dd>\n\n   <dt>popTipsWidth = num</dt>\n   <dd>\n       声明提示框的宽度，默认自适应\n   </dd>\n\n   <dt>popTipsHeight = num</dt>\n   <dd>\n       声明提示框的高度，默认自适应\n   </dd>\n\n   <dt>beforeShowCallback = function</dt>\n   <dd>\n       气泡显示前, 触发的回调, <b>window 变量域</b>\n<pre>function beforeShowCallback( _selector ){\n   var _ins = this;\n   JC.log( 'beforeShowCallback', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>afterHideCallback = function</dt>\n   <dd>\n       气泡隐藏后, 触发的回调, <b>window 变量域</b>\n<pre>function afterHideCallback( _selector ){\n   var _ins = this;\n   JC.log( 'afterHideCallback', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -1515,8 +1516,11 @@
                     "type": "Selector|string"
                 }
             ],
-            "version": "dev 0.1 2013-11-25",
-            "author": "zuojing   <zuojing1013@gmail.com> | 75 Team"
+            "version": "dev 0.1 2013-12-13",
+            "author": "zuojing   <zuojing1013@gmail.com> | 75 Team",
+            "example": [
+                "\n\t<span class=\"js_compPopTips\" style=\"margin-top:50px; margin-left:200px; display:inline-block;\"  \n\t\tcontent=\"1.这个tip显示在右边<br>2.古希腊学者亚里士多<br>3.古希腊学者亚里士多<br>4.古希腊学者亚里士多\"  \n\t\ttheme=\"yellow\" \n\t\tarrowposition=\"left\"\n\t\ttriggerType=\"click\"\n\t\t>\n\t\t<span>古希腊学者亚里士多德曾编<br>\n\t\t\t写过全面讲述当时学问的讲义，<br>\n\t\t\t被西方奉为“百科全书之父”，<br>\n\t\t\t中国汉朝初年的《尔雅》，<br>\n\t\t\t是中国百科全书性质著作的渊源。</span>\n\t</span>"
+            ]
         },
         "JC.Slider": {
             "name": "JC.Slider",
@@ -8063,7 +8067,7 @@
         },
         {
             "file": "../modules/JC.PopTips/0.1/PopTips.js",
-            "line": 29,
+            "line": 129,
             "description": "获取或设置 PopTips 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -8084,7 +8088,7 @@
         },
         {
             "file": "../modules/JC.PopTips/0.1/PopTips.js",
-            "line": 44,
+            "line": 144,
             "description": "初始化可识别的 PopTips 实例",
             "itemtype": "method",
             "name": "init",
@@ -8105,7 +8109,7 @@
         },
         {
             "file": "../modules/JC.PopTips/0.1/PopTips.js",
-            "line": 140,
+            "line": 275,
             "description": "更新 PopTips 状态",
             "itemtype": "method",
             "name": "update",
@@ -8114,14 +8118,14 @@
         },
         {
             "file": "../modules/JC.PopTips/0.1/PopTips.js",
-            "line": 314,
+            "line": 583,
             "description": "PopTips显示前的回调",
             "class": "JC.PopTips",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.PopTips/0.1/PopTips.js",
-            "line": 325,
+            "line": 594,
             "description": "PopTips隐藏后的回调",
             "class": "JC.PopTips",
             "namespace": "JC"
@@ -16330,11 +16334,11 @@
         },
         {
             "message": "Missing item type\nPopTips显示前的回调",
-            "line": " ../modules/JC.PopTips/0.1/PopTips.js:314"
+            "line": " ../modules/JC.PopTips/0.1/PopTips.js:583"
         },
         {
             "message": "Missing item type\nPopTips隐藏后的回调",
-            "line": " ../modules/JC.PopTips/0.1/PopTips.js:325"
+            "line": " ../modules/JC.PopTips/0.1/PopTips.js:594"
         },
         {
             "message": "Missing item type\n初始化数据模型",

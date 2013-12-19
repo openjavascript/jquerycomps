@@ -194,14 +194,114 @@
     <pre class="code prettyprint linenums">
  ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27;, &#x27;JC.BaseMVC&#x27; ], function(){
 /**
+ * Poptips 带箭头的气泡提示框功能
+ * &lt;p&gt;
+ *      &lt;b&gt;require&lt;/b&gt;: 
+ *          &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
+ *          , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+ * &lt;/p&gt;
+ * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
+ * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.PopTips.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+ * | &lt;a href=&#x27;../../modules/JC.PopTips/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+ *
+ * &lt;h2&gt;页面只要引用本文件, 默认会自动初始化span|em|a|b为class=&quot;js_compPoptips&quot;的提示气泡&lt;/h2&gt;
+ * &lt;p&gt;&lt;/p&gt;
+ *
+ *
+ * &lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
+ *
+ * &lt;dl&gt;
+ *    &lt;dt&gt;content = string | html &lt;/dt&gt;
+ *    &lt;dd&gt;
+ *       &lt;p&gt;声明气泡提示的内容&lt;br&gt;
+ *       如果没有设置则去查找title属性，如果title也没有设置，&lt;br/&gt;
+         则将触发元素的text作为提示内容。&lt;/p&gt;
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;theme = yellow | blue | white | green, &lt;a href=&quot;../../modules/JC.PopTips/0.1/res/default/style.html&quot; target=&quot;_blank&quot;&gt;查看&lt;/a&gt;&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *       气泡主题，提供黄色、蓝色、白色、绿色四种样式，默认为 yellow.
+ *       &lt;p&gt;&lt;b&gt;yellow：&lt;/b&gt;黄色&lt;br/&gt;
+ *       &lt;b&gt;blue：&lt;/b&gt;蓝色&lt;br/&gt;
+ *       &lt;b&gt;white：&lt;/b&gt;白色&lt;br/&gt;
+ *       &lt;b&gt;green：&lt;/b&gt;绿色&lt;/p&gt;
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;triggerType = hover | click&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *        触发方式: 支持hover和click
+ *        &lt;p&gt;默认为hover&lt;/p&gt;
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;arrowPosition = left | right | top | bottom&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *        声明箭头的方向，默认值为left
+ *        &lt;p&gt;&lt;b&gt;left:&lt;/b&gt;箭头向左（提示框在触发元素的右边）如果右边空间不够，提示框自动显示在左边，如果左边空间不够，提示框显示在上方，如果上方空间，提示框显示到下方&lt;br/&gt;
+ *        &lt;b&gt;right:&lt;/b&gt;箭头向右（提示框在触发元素的左边）如果左边空间不够，提示框自动显示在右边，如果右边空间不够，提示框显示在上方，如果上方空间，提示框显示到下方&lt;br/&gt;
+ *        &lt;b&gt;top:&lt;/b&gt;箭头向上（提示框在触发元素的下边）如果下边不够，提示框自动显示到上边&lt;br/&gt;
+ *        &lt;b&gt;bottom:&lt;/b&gt;箭头向下（提示框在触发元素的上边）如果上边不够，提示框自动显示到下边&lt;/p&gt;    
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;arrowPositionOffset = left|right|top&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *        声明箭头在提示框的位置，默认居中
+ *        &lt;p&gt;如果arrowPosition = left || right, arrowPositionOffset可以设置为top&lt;/p&gt;
+ *        &lt;p&gt;如果arrowPosition = top || bottom, arrowPositionOffset可以设置为left || right&lt;/p&gt;
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;popTipsWidth = num&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *        声明提示框的宽度，默认自适应
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;popTipsHeight = num&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *        声明提示框的高度，默认自适应
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;beforeShowCallback = function&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *        气泡显示前, 触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;pre&gt;function beforeShowCallback( _selector ){
+    var _ins = this;
+    JC.log( &#x27;beforeShowCallback&#x27;, new Date().getTime() );
+}&lt;/pre&gt;
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;afterHideCallback = function&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *        气泡隐藏后, 触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;pre&gt;function afterHideCallback( _selector ){
+    var _ins = this;
+    JC.log( &#x27;afterHideCallback&#x27;, new Date().getTime() );
+}&lt;/pre&gt;
+ *    &lt;/dd&gt;
+ *&lt;/dl&gt; 
+ *
+ *
+ *
+ *
  * @namespace JC
  * @class PopTips
  * @extends JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
- * @version dev 0.1 2013-11-25
+ * @version dev 0.1 2013-12-13
  * @author  zuojing   &lt;zuojing1013@gmail.com&gt; | 75 Team
- */
+ * @example
+	&lt;span class=&quot;js_compPopTips&quot; style=&quot;margin-top:50px; margin-left:200px; display:inline-block;&quot;  
+		content=&quot;1.这个tip显示在右边&lt;br&gt;2.古希腊学者亚里士多&lt;br&gt;3.古希腊学者亚里士多&lt;br&gt;4.古希腊学者亚里士多&quot;  
+		theme=&quot;yellow&quot; 
+		arrowposition=&quot;left&quot;
+		triggerType=&quot;click&quot;
+		&gt;
+		&lt;span&gt;古希腊学者亚里士多德曾编&lt;br&gt;
+			写过全面讲述当时学问的讲义，&lt;br&gt;
+			被西方奉为“百科全书之父”，&lt;br&gt;
+			中国汉朝初年的《尔雅》，&lt;br&gt;
+			是中国百科全书性质著作的渊源。&lt;/span&gt;
+	&lt;/span&gt;
+  */
 ;(function($){
     window.JC = window.JC || {log:function(){}};
     JC.PopTips = PopTips;
@@ -251,7 +351,7 @@
             if ( _selector.hasClass(&#x27;js_compPopTips&#x27;) ) {
                 _r.push( new PopTips(_selector) );
             } else {
-                _selector.find(&#x27;.js_compPopTips&#x27;).each( function() {
+                _selector.find(&#x27;span.js_compPopTips,a.js_compPopTips,b.js_compPopTips,em.js_compPopTips&#x27;).each( function() {
                     _r.push( new PopTips( this ) );
                 });
             }
@@ -289,24 +389,57 @@
             _p.on( &#x27;CPopTipsUpdate&#x27;, function( _evt ){
                 _p._model.beforeShowCallback()
                     &amp;&amp; _p._model.beforeShowCallback().call( _p, _p.selector() );
-                
-                _p._view.update();
-                _p._model.layout().data(&#x27;CPopTipsIns&#x27;, _p);
 
             });
 
+            var _timerIn = null,
+                _timerOut = null,
+                _tipsTimerIn = null,
+                _tipsTimerOut = null;
 
             if ( _p._model.triggerType() == &#x27;hover&#x27; ) {
-                _p._model.selector().on(&#x27;mouseenter&#x27;, function () {
-                    setTimeout( function () {
+                 _p._model.selector()
+                .on(&#x27;mouseenter&#x27;, function () {
+                    clearTimeout( _tipsTimerIn );
+                    clearTimeout( _tipsTimerOut );
+                    clearTimeout( _timerIn );
+                    clearTimeout( _timerOut );
+                    _timerIn = setTimeout( function () {
+                        _p._view.update();
                         _p._view.show();
-                    }, 20)
+                    }, 50);
+
+                })
+                .on(&#x27;mouseleave&#x27;, function () {
+                    clearTimeout( _tipsTimerIn );
+                    clearTimeout( _tipsTimerOut );
+                    clearTimeout( _timerIn );
+                    clearTimeout( _timerOut );
+                    _timerOut = setTimeout( function () {
+                         _p._view.hide();    
+                    }, 200)
                 });
 
-                _p._model.selector().on(&#x27;mouseleave&#x27;, function () {
-                    setTimeout( function () {
+                _p._model.layout()
+                .on(&#x27;mouseenter&#x27;, function () {
+                    clearTimeout( _tipsTimerIn );
+                    clearTimeout( _tipsTimerOut );
+                    clearTimeout( _timerIn );
+                    clearTimeout( _timerOut );
+                    _tipsTimerIn = setTimeout( function () {
+                        _p._view.update();
+                        _p._view.show();
+                       
+                    }, 50)
+                })
+                .on(&#x27;mouseleave&#x27;, function () {
+                    clearTimeout( _tipsTimerIn );
+                    clearTimeout( _tipsTimerOut );
+                    clearTimeout( _timerIn );
+                    clearTimeout( _timerOut );
+                    _tipsTimerOut = setTimeout( function () {
                         _p._view.hide();
-                    }, 20)
+                    }, 200)
                 });
 
             }
@@ -316,7 +449,9 @@
                     if ( _p._model.layout().is(&#x27;:visible&#x27;) ) {
                         _p._view.hide();
                     } else {
+                        _p._view.update();
                         _p._view.show();
+                        
                     }
                 });
             }
@@ -392,8 +527,21 @@
             return _r;
         },
 
-        offset: function () {
-            var _r = this.stringProp(&#x27;arrowPositionOffset&#x27;);
+        arrowPositionOffset: function () {
+            var _r = this.stringProp(&#x27;arrowPositionOffset&#x27;),
+                _arrowPosition = this.arrowPosition();
+
+            if ( _arrowPosition === &#x27;left&#x27; || _arrowPosition === &#x27;right&#x27; ) {
+                if ( _r != &#x27;top&#x27; ) {
+                    _r = &#x27;&#x27;;
+                }
+            }
+
+            if ( _arrowPosition === &#x27;top&#x27; || _arrowPosition === &#x27;bottom&#x27; ) {
+                if ( _r != &#x27;left&#x27; || _r != &#x27;right&#x27; ) {
+                    _r = &#x27;&#x27;;
+                }
+            }
 
             return _r;
         },
@@ -427,6 +575,7 @@
         layoutWidth: function () {
             var _r = this.intProp(&#x27;popTipsWidth&#x27;);
 
+            _r &amp;&amp; ( _r = _r + &#x27;px&#x27; );
             !_r &amp;&amp; ( _r = &#x27;auto&#x27; );
 
             return _r;
@@ -452,56 +601,176 @@
             return _r;
         },
 
-        changeArrow: function ( _removeClass, _addClass ) {
-            var _p = this;
-
-            _p.layout().find(&#x27;div.CPT_arrow&#x27;)
-                .removeClass(&#x27;CPT_arrow_&#x27; + _removeClass)
-                .addClass(&#x27;CPT_arrow_&#x27; + _addClass);
-
-        },
-
         calcPosOffset: function ( _arrowPosition, _pos, _lw, _lh ) {
-            var _r = {};
-
+            var _r = {},
+                _p = this,
+                _selector = _p.selector(),
+                _pos = {
+                    top: _selector.offset().top,
+                    left: _selector.offset().left,
+                    width: _selector.prop(&#x27;offsetWidth&#x27;),
+                    height: _selector.prop(&#x27;offsetHeight&#x27;)
+                },
+                _lw = _p.layout().outerWidth(),
+                _lh = _p.layout().outerHeight();
+            
             switch ( _arrowPosition ) {
                 case &#x27;top&#x27;:
                     _r = {
-                        top: _pos.top + _pos.height,
+                        top: _pos.top + _pos.height + 5,
                         left: _pos.left + _pos.width / 2 - _lw / 2
                     };
                     break;
                 case &#x27;right&#x27;:
                     _r = {
                         top: _pos.top + _pos.height / 2 - _lh / 2,
-                        left: _pos.left - _lw
+                        left: _pos.left - _lw - 5
                     };
                     break;
                 case &#x27;bottom&#x27;:
                     _r = {
-                        top: _pos.top - _lh,
+                        top: _pos.top - _lh - 5,
                         left: _pos.left + _pos.width / 2 - _lw / 2
                     };
+
                     break;
                 case &#x27;left&#x27;:
                     _r = {
                         top: _pos.top + _pos.height / 2 - _lh / 2,
-                        left: _pos.left + _pos.width
+                        left: _pos.left + _pos.width + 5
                     };
+
                     break;
             }
 
+            _r.width = _lw;
+            _r.height = _lh;
+  
             return _r;
+        },
+
+        offSet: function ( _offset ) {
+            this.layout().css({
+                top: _offset.top,
+                left: _offset.left
+            });
+        },
+
+        changePosition: function ( _newAP, _now ) {
+            var _p = this,
+                _offset;
+
+            _offset = _p.calcPosOffset( _newAP );
+            _p.changeArrow( _now );
+            
+            if ( ( _now === &#x27;top&#x27;  ) 
+                || ( _now === &#x27;bottom&#x27; ) ) {
+                _p.offSet( _offset );
+            }
+            
+            return _offset;
+        },
+
+        changeArrow: function ( _className ) {
+            var _p = this;
+            _p.layout().find(&#x27;div.CPT_arrow&#x27;)[0].className = &#x27;CPT_arrow CPT_arrow_&#x27; + _className;
+
         },
 
         setPosition: function ( _offset, _arrowPosition ) {
             var _p = this,
-                _tips = _p.layout();
+                _newAP,
+                _now,
+                _win = $(window),
+                _viewportHeight = _win.outerHeight(),
+                _viewportWidth = _win.outerWidth(),
+                _scrollTop = _win.scrollTop(),
+                _scrollLeft = _win.scrollLeft(),
+                _viewMaxX = _viewportWidth + _scrollLeft,
+                _viewMaxY = _viewportHeight + _scrollTop,
+                _tipsMaxPosX = _offset.width + _offset.left,
+                _tipsMaxPosY = _offset.top + _offset.height,
+                _baseP = _p.arrowPositionOffset(),
+                _afterChangePos ;
 
-            _tips.offset( _offset );
+            _p.offSet( _offset );
 
-            if ( _arrowPosition == &#x27;bottom&#x27; &amp;&amp; _offset.top &lt; 0 ) { 
+            _baseP &amp;&amp; ( _baseP = &#x27;_&#x27; + _baseP );
 
+            if ( _arrowPosition === &#x27;bottom&#x27;  ) { 
+                if ( _offset.top &lt; 0 ) {
+                    _newAP = &#x27;top&#x27;;
+                    _now = &#x27;top&#x27; + _baseP;
+                    _p.changePosition( _newAP, _now );
+                } else {
+                    _p.changeArrow( &quot;bottom&quot; + _baseP );
+                }
+            }
+
+
+            if ( _arrowPosition === &#x27;top&#x27;  ) {
+                if( _viewMaxY &lt; _tipsMaxPosY ) {
+                    _newAP = &#x27;bottom&#x27;;
+                    _now = &#x27;bottom&#x27; + _baseP;
+                    _afterChangePos = _p.changePosition( _newAP, _now );
+                } else  {
+                    _p.changeArrow( &#x27;top&#x27; + _baseP );
+                }
+                
+            }
+
+            if ( _arrowPosition === &#x27;right&#x27; ) {
+                if ( _offset.left &lt; 0 ) {
+                    _newAP = &#x27;left&#x27;;
+                    _now = &#x27;left&#x27; + _baseP;
+                    _afterChangePos = _p.changePosition(_newAP, _now);
+                    _tipsMaxPosX = _afterChangePos.width + _afterChangePos.left;
+
+                    if ( _viewMaxX &lt; _tipsMaxPosX ) {
+                        _newAP = &#x27;bottom&#x27;;
+                        _now = &#x27;bottom&#x27;;
+                        _afterChangePos = _p.changePosition(_newAP, _now);
+
+                        if ( _afterChangePos.top &lt; 0 ) {
+                            _newAP = &#x27;top&#x27;;
+                            _now = &#x27;top&#x27;;
+                            _afterChangePos = _p.changePosition(_newAP, _now);
+                        }
+
+                    } else {
+                        _p.offSet( _afterChangePos );
+                    }
+                } else {
+                    _p.changeArrow(&#x27;right&#x27; + _baseP);
+                }
+
+            }
+
+            if ( _arrowPosition === &#x27;left&#x27; ) {
+                JC.log(&quot;_viewMaxX&quot;, _viewMaxX, &quot;_tipsMaxPosX&quot;, _tipsMaxPosX);
+                if ( _viewMaxX &lt; _tipsMaxPosX ) {
+                    _newAP = &#x27;right&#x27;;
+                    _now = &#x27;right&#x27; + _baseP;
+                    _afterChangePos = _p.changePosition(_newAP, _now);
+
+                    if ( _afterChangePos.left &lt; 0 ) {
+                        _newAP = &#x27;bottom&#x27;;
+                        _now = &#x27;bottom&#x27;;
+                        _afterChangePos = _p.changePosition(_newAP, _now);
+
+                        if ( _afterChangePos.top &lt; 0 ) {
+                            _newAP = &#x27;top&#x27;;
+                            _now = &#x27;top&#x27;;
+                            _afterChangePos = _p.changePosition(_newAP, _now);
+                        }
+
+                    } else {
+                        _p.offSet( _afterChangePos );
+                    }
+
+                } else {
+                    _p.changeArrow(&#x27;left&#x27; + _baseP);
+                }
             }
         },
 
@@ -534,7 +803,6 @@
         },
 
         update: function () {
-            //JC.log(&quot;View update here&quot;);
             var _p = this,
                 _selector = _p._model.selector(),
                 _pos = {
@@ -543,123 +811,12 @@
                     width: _selector.prop(&#x27;offsetWidth&#x27;),
                     height: _selector.prop(&#x27;offsetHeight&#x27;)
                 },
-                _layout = _p._model.layout(),
-                _layoutWidth = _layout.outerWidth(),
-                _layoutHeight = _layout.outerHeight(),
-                _clientWidth = document.body.clientWidth || document.documentElement.clientWidth,
-                _viewPointerHeight = $(window).outerHeight(),
-                _scrollTop = $(window).scrollTop(),
-                _left,
-                _top,
-                _offset = _p._model.offset(),
-                _newClassName,
-                _arrowPosition = _p._model.arrowPosition();
+                _arrowPosition = _p._model.arrowPosition(),
+                _cal;
 
-
-            var _cal = _p._model.calcPosOffset(_arrowPosition, _pos, _layoutWidth, _layoutHeight );
-
+            _cal = _p._model.calcPosOffset(_arrowPosition, _pos );
             _p._model.setPosition( _cal, _arrowPosition );
-
-            // switch( _p._model.arrowPosition() ) {
-            //     case &#x27;top&#x27;:
-            //         _top = _pos.top + _pos.height + 5;
-            //         _newClassName = &#x27;top&#x27;;
-
-            //         if ( _offset == &#x27;left&#x27; ) {
-            //            _left = _pos.left;
-            //            _newClassName = &#x27;1&#x27;;
-            //            _p._model.changeArrow(&#x27;top&#x27;, &#x27;1&#x27;);
-            //         } else if ( _offset == &#x27;right&#x27; ) {
-            //             _left = _pos.left + _pos.width - _layoutWidth;
-            //             _p._model.changeArrow(&#x27;top&#x27;, &#x27;11&#x27;);
-            //             _newClassName = &#x27;11&#x27;
-            //         } else {
-            //             _left = ( _pos.left +  _pos.width - _layoutWidth ) / 2 ;
-            //         }
-                    
-            //         if ( _viewPointerHeight + _scrollTop &lt;= _top + _layoutHeight ) {
-            //             _top = _pos.top - (_layoutHeight + 5);
-            //             _p._model.changeArrow(_newClassName, &#x27;bottom&#x27;);
-            //         }
-
-            //         break;
-            //     case &#x27;right&#x27;:
-            //         _left = _pos.left - (_layoutWidth + 5);
-            //         _newClassName = &#x27;right&#x27;;
-
-            //         if ( _offset == &#x27;mid&#x27; ) {
-            //             _top =  _pos.top + ( _pos.height - _layoutHeight ) / 2 ;
-            //             _p._model.changeArrow(&#x27;right&#x27;, &#x27;2&#x27;);
-            //             _newClassName = &#x27;2&#x27;;
-            //         } else {
-            //             _top = _pos.top;
-            //         }
-                    
-            //         if ( _left &lt; 0 ) {
-            //             _left = _pos.left + _pos.width + 5;
-            //             _p._model.changeArrow(_newClassName, &#x27;left&#x27;);
-            //         }
-
-            //         break;
-            //     case &#x27;bottom&#x27;:
-            //         _top = _pos.top - (_layoutHeight + 5);
-            //         _newClassName = &#x27;bottom&#x27;;
-                    
-            //         if ( _offset == &#x27;left&#x27; ) {
-            //            _left = _pos.left;
-            //            _p._model.changeArrow(&#x27;bottom&#x27;, &#x27;5&#x27;);
-            //            _newClassName = &#x27;5&#x27;;
-            //         } else if ( _offset == &#x27;right&#x27; ) {
-            //             _p._model.changeArrow(&#x27;bottom&#x27;, &#x27;7&#x27;);
-            //             _newClassName = &#x27;7&#x27;;
-            //             _left = _pos.left + _pos.width - _layoutWidth;
-            //         } else {
-            //             _left = ( _pos.left +  _pos.width - _layoutWidth ) / 2 ;
-            //         }
-
-            //         if ( _top &lt; 0 ) {
-            //             _top = _pos.top + _pos.height + 5;
-            //             _p._model.changeArrow(_newClassName, &#x27;top&#x27;);
-                        
-            //         }
-
-            //         break;
-            //     case &#x27;left&#x27;:
-            //         _left = _pos.width + _pos.left + 5;
-            //         _newClassName = &#x27;left&#x27;;
-                    
-            //         if ( _offset == &#x27;mid&#x27; ) {
-            //             _top = _pos.top + ( _pos.height - _layoutHeight ) / 2 ;
-            //             _p._model.changeArrow(&#x27;left&#x27;, &#x27;10&#x27;);
-            //             _newClassName = &#x27;10&#x27;;
-            //         } else {
-            //             _top = _pos.top;
-            //         }
-
-            //         //JC.log(_left + _layoutWidth, _clientWidth );
-            //         if ( (_left + _layoutWidth ) &gt;= _clientWidth ) {
-                        
-            //             if ( _pos.left &gt;= _layoutWidth ) {
-            //                 _left = _pos.left - (_layoutWidth + 5);
-            //                 _p._model.changeArrow(_newClassName, &#x27;right&#x27;);
-            //                 _newClassName = &#x27;right&#x27;;
-            //             } else if ( _pos.top &gt;= _layoutHeight ) {
-            //                 _left = (_pos.top + _pos.width - _layoutWidth) / 2 ;
-            //                 _top = _pos.top - (_layoutHeight + 5);
-            //                 _p._model.changeArrow(_newClassName, &#x27;bottom&#x27;);
-            //                 _newClassName = &#x27;bottom&#x27;;
-            //             }
-                        
-            //         } 
-
-            //         break;
-            // }
-
-            // _p._model.layout().css({
-            //     &#x27;left&#x27;: _left,
-            //     &#x27;top&#x27;: _top
-            // });
-
+            _p._model.layout().data(&#x27;CPopTipsIns&#x27;, _p);
         },
 
         show: function () {
@@ -673,6 +830,7 @@
             var _p = this;
 
             _p._model.layout().hide();
+            
 
             _p._model.afterHideCallback() &amp;&amp; _p._model.afterHideCallback().call( _p, _p.selector() );
 
@@ -683,12 +841,15 @@
     $(document).ready( function () {
         var _insAr = 0;
         PopTips.autoInit
-            &amp;&amp; ( _insAr = PopTips.init() )
-            ;
+            &amp;&amp; ( _insAr = PopTips.init() );
+
     });
 
     $(window).on(&#x27;resize&#x27;, function () {
-        PopTips.update();
+        JC.f.safeTimeout( function(){
+            PopTips.update();
+        }, null, &#x27;PopTipsResize&#x27;, 20 );
+        //JC.log(&#x27;resize&#x27;);
     });
  
 }(jQuery));

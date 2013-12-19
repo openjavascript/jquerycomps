@@ -119,6 +119,76 @@
         </div>
 </div>
 <div class="box intro">
+    <p>Poptips 带箭头的气泡提示框功能</p>
+<p>
+     <b>require</b>: 
+         <a href='window.jQuery.html'>jQuery</a>
+         , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+</p>
+<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.PopTips.html' target='_blank'>API docs</a>
+| <a href='../../modules/JC.PopTips/0.1/_demo' target='_blank'>demo link</a></p>
+<h2>页面只要引用本文件, 默认会自动初始化span|em|a|b为class=&quot;js_compPoptips&quot;的提示气泡</h2>
+<p></p>
+<h2>可用的 HTML attribute</h2>
+<dl>
+   <dt>content = string | html </dt>
+   <dd>
+      <p>声明气泡提示的内容<br>
+      如果没有设置则去查找title属性，如果title也没有设置，<br/>
+        则将触发元素的text作为提示内容。</p>
+   </dd>
+   <dt>theme = yellow | blue | white | green, <a href="../../modules/JC.PopTips/0.1/res/default/style.html" target="_blank">查看</a></dt>
+   <dd>
+      气泡主题，提供黄色、蓝色、白色、绿色四种样式，默认为 yellow.
+      <p><b>yellow：</b>黄色<br/>
+      <b>blue：</b>蓝色<br/>
+      <b>white：</b>白色<br/>
+      <b>green：</b>绿色</p>
+   </dd>
+   <dt>triggerType = hover | click</dt>
+   <dd>
+       触发方式: 支持hover和click
+       <p>默认为hover</p>
+   </dd>
+   <dt>arrowPosition = left | right | top | bottom</dt>
+   <dd>
+       声明箭头的方向，默认值为left
+       <p><b>left:</b>箭头向左（提示框在触发元素的右边）如果右边空间不够，提示框自动显示在左边，如果左边空间不够，提示框显示在上方，如果上方空间，提示框显示到下方<br/>
+       <b>right:</b>箭头向右（提示框在触发元素的左边）如果左边空间不够，提示框自动显示在右边，如果右边空间不够，提示框显示在上方，如果上方空间，提示框显示到下方<br/>
+       <b>top:</b>箭头向上（提示框在触发元素的下边）如果下边不够，提示框自动显示到上边<br/>
+       <b>bottom:</b>箭头向下（提示框在触发元素的上边）如果上边不够，提示框自动显示到下边</p><br>   </dd>
+   <dt>arrowPositionOffset = left|right|top</dt>
+   <dd>
+       声明箭头在提示框的位置，默认居中
+       <p>如果arrowPosition = left || right, arrowPositionOffset可以设置为top</p>
+       <p>如果arrowPosition = top || bottom, arrowPositionOffset可以设置为left || right</p>
+   </dd>
+   <dt>popTipsWidth = num</dt>
+   <dd>
+       声明提示框的宽度，默认自适应
+   </dd>
+   <dt>popTipsHeight = num</dt>
+   <dd>
+       声明提示框的高度，默认自适应
+   </dd>
+   <dt>beforeShowCallback = function</dt>
+   <dd>
+       气泡显示前, 触发的回调, <b>window 变量域</b>
+<pre>function beforeShowCallback( _selector ){
+   var _ins = this;
+   JC.log( &#39;beforeShowCallback&#39;, new Date().getTime() );
+}</pre>
+   </dd>
+   <dt>afterHideCallback = function</dt>
+   <dd>
+       气泡隐藏后, 触发的回调, <b>window 变量域</b>
+<pre>function afterHideCallback( _selector ){
+   var _ins = this;
+   JC.log( &#39;afterHideCallback&#39;, new Date().getTime() );
+}</pre>
+   </dd>
+</dl>
 </div>
     <div class="constructor">
         <h2>Constructor</h2>
@@ -149,6 +219,23 @@
                     </div>
                 </li>
             </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>&lt;span class=&quot;js_compPopTips&quot; style=&quot;margin-top:50px; margin-left:200px; display:inline-block;&quot;  
+    content=&quot;1.这个tip显示在右边&lt;br&gt;2.古希腊学者亚里士多&lt;br&gt;3.古希腊学者亚里士多&lt;br&gt;4.古希腊学者亚里士多&quot;  
+    theme=&quot;yellow&quot; 
+    arrowposition=&quot;left&quot;
+    triggerType=&quot;click&quot;
+    &gt;
+    &lt;span&gt;古希腊学者亚里士多德曾编&lt;br&gt;
+        写过全面讲述当时学问的讲义，&lt;br&gt;
+        被西方奉为“百科全书之父”，&lt;br&gt;
+        中国汉朝初年的《尔雅》，&lt;br&gt;
+        是中国百科全书性质著作的渊源。&lt;/span&gt;
+&lt;/span&gt;</code></pre>
+            </div>
         </div>
 </div>
     </div>
@@ -289,7 +376,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.PopTips_0.1_PopTips.js.html#l29"><code>..&#x2F;modules&#x2F;JC.PopTips&#x2F;0.1&#x2F;PopTips.js:29</code></a>
+        <a href="../files/.._modules_JC.PopTips_0.1_PopTips.js.html#l129"><code>..&#x2F;modules&#x2F;JC.PopTips&#x2F;0.1&#x2F;PopTips.js:129</code></a>
         </p>
     </div>
     <div class="description">
@@ -329,7 +416,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.PopTips_0.1_PopTips.js.html#l44"><code>..&#x2F;modules&#x2F;JC.PopTips&#x2F;0.1&#x2F;PopTips.js:44</code></a>
+        <a href="../files/.._modules_JC.PopTips_0.1_PopTips.js.html#l144"><code>..&#x2F;modules&#x2F;JC.PopTips&#x2F;0.1&#x2F;PopTips.js:144</code></a>
         </p>
     </div>
     <div class="description">
@@ -468,7 +555,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.PopTips_0.1_PopTips.js.html#l140"><code>..&#x2F;modules&#x2F;JC.PopTips&#x2F;0.1&#x2F;PopTips.js:140</code></a>
+        <a href="../files/.._modules_JC.PopTips_0.1_PopTips.js.html#l275"><code>..&#x2F;modules&#x2F;JC.PopTips&#x2F;0.1&#x2F;PopTips.js:275</code></a>
         </p>
     </div>
     <div class="description">
