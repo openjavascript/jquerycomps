@@ -79,7 +79,7 @@
     JC.f.extendObject( DropdownTree.prototype, {
         _beforeInit:
             function(){
-                JC.log( 'DropdownTree _beforeInit', new Date().getTime() );
+                //JC.log( 'DropdownTree _beforeInit', new Date().getTime() );
             }
     
         , _initHanlderEvent:
@@ -94,8 +94,23 @@
 
         , _inited:
             function(){
-                JC.log( 'DropdownTree _inited', new Date().getTime() );
+                //JC.log( 'DropdownTree _inited', new Date().getTime() );
                 this.update();
+
+                var _p = this
+                    , _selectedId = _p._model.bdtInput().val().trim()
+                    ;
+
+                _p._model.bdtInput().is( '[name]' ) 
+                    && ( _selectedId = JC.f.getUrlParam( _p._model.bdtInput().attr('name') ) || _selectedId );
+
+                JC.log( _selectedId );
+                _selectedId 
+                    && _p._model.bdtLabel().html( _p._model.treeIns().getItem( _selectedId ).attr( 'dataname' ) )
+                    && ( _p._model.bdtInput().val( _selectedId )
+                        , _p._model.treeIns().selectedItem( _p._model.treeIns().getItem( _selectedId ) )
+                       )
+                    ;
             }
 
         , show: function(){ this._view.show(); }
@@ -114,7 +129,7 @@
     JC.f.extendObject( DropdownTree.Model.prototype, {
         init:
             function(){
-                JC.log( 'DropdownTree.Model.init:', new Date().getTime() );
+                //JC.log( 'DropdownTree.Model.init:', new Date().getTime() );
             }
 
         , bdtData: function(){ return this.windowProp( 'bdtData' ) || {}; }
@@ -136,26 +151,29 @@
                 var _r = this.selector().find( '> .bdtInput' );
                 return _r;
             }
+
+        , treeIns:
+            function( _setter ){
+                this._treeIns = _setter || JC.Tree.getInstance( this.bdtTreeBox() );
+                return this._treeIns;
+            }
     });
 
     JC.f.extendObject( DropdownTree.View.prototype, {
         init:
             function(){
-                JC.log( 'DropdownTree.View.init:', new Date().getTime() );
+                //JC.log( 'DropdownTree.View.init:', new Date().getTime() );
             }
 
         , update:
             function( _data ){
-                var _p = this, _tins = _p._model.treeIns;
+                var _p = this;
                 _data = _data || _p._model.bdtData();
 
-                if( !_p._model.treeIns ){
+                if( !_p._model.treeIns() ){
+                    _p._model.treeIns( new JC.Tree( _p._model.bdtTreeBox(), _data ) );
 
-                    //console.dir && console.dir( _data );
-
-                    _tins = _p._model.treeIns = new JC.Tree( _p._model.bdtTreeBox(), _data );
-
-                    _tins.on( 'click', function(){
+                    _p._model.treeIns().on( 'click', function(){
                         var _sp = $(this)
                             , _dataid = _sp.attr('dataid')
                             , _dataname = _sp.attr('dataname');
@@ -166,14 +184,15 @@
                         $( _p ).trigger( 'TriggerEvent', [ 'DropdownTreeSelected', _dataid, _dataname, _sp ] );
                      });
 
-                    _tins.on( 'RenderLabel', function( _data ){
+                    _p._model.treeIns().on( 'RenderLabel', function( _data ){
                         var _node = $(this);
                         _node.html( JC.f.printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
                     });
 
-                    _tins.init();
-                    _tins.open();
+                    _p._model.treeIns().init();
+                    _p._model.treeIns().open();
                 }
+                _p._model.bdtTreeBox().css( { 'z-index': ZINDEX_COUNT++ } );
 
                 /*
                 if( !_treeIns ){
@@ -263,25 +282,14 @@
             return _r;
         };
 
-    /*
     $(document).ready( function(){
         var _insAr = 0;
         DropdownTree.autoInit
             && ( _insAr = DropdownTree.init() )
             ;
     });
-    */
-    var _PRE_CLICK;
+
     $(document).delegate( 'div.js_bizDropdownTree', 'click', function( _evt ){
-        _evt.stopPropagation();
-
-        if( _PRE_CLICK ){
-            if( ( new Date().getTime() - _PRE_CLICK ) < 200 ){
-                return;
-            }
-        }
-        _PRE_CLICK = new Date().getTime();
-
         var _p = $(this), _ins;
 
         JC.f.safeTimeout( function(){
