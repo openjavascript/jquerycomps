@@ -17,14 +17,21 @@
  * <h2>可用的 HTML attribute</h2>
  *
  * <dl>
- *    <dt>content = string | html </dt>
+ *    <dt>content = string </dt>
  *    <dd>
- *       <p>声明气泡提示的内容<br>
+ *       <p>声明气泡提示的内容，如果需要提示html内容那么用<b>htmlContent</b>属性<br>
  *       如果没有设置则去查找title属性，如果title也没有设置，<br/>
          则将触发元素的text作为提示内容。</p>
  *    </dd>
  *
- *    <dt>theme = yellow | blue | white | green, <a href="../../modules/JC.PopTips/0.1/res/default/style.html" target="_blank">查看</a></dt>
+ *    <dt>htmlContent</dt>
+ *    <dd>
+ *       <p>声明气泡提示的内容支持脚本模板<br>
+ *        如果有设置该属性那么会优先选用htmlContent提供的内容
+ *       </p>
+ *    </dd>
+ *
+ *    <dt>theme = yellow | blue | white | green, <a href="../../modules/JC.PopTips/0.1/res/default/style.html" target="_blank">查看</a> </dt>
  *    <dd>
  *       气泡主题，提供黄色、蓝色、白色、绿色四种样式，默认为 yellow.
  *       <p><b>yellow：</b>黄色<br/>
@@ -48,11 +55,19 @@
  *        <b>bottom:</b>箭头向下（提示框在触发元素的上边）如果上边不够，提示框自动显示到下边</p>    
  *    </dd>
  *
- *    <dt>arrowPositionOffset = left|right|top</dt>
+ *    <dt>arrowPositionOffset = left | right | top , <a href="../../modules/JC.PopTips/0.1/res/default/style.html#pos" target="_blank">查看</a></dt>
  *    <dd>
  *        声明箭头在提示框的位置，默认居中
- *        <p>如果arrowPosition = left || right, arrowPositionOffset可以设置为top</p>
- *        <p>如果arrowPosition = top || bottom, arrowPositionOffset可以设置为left || right</p>
+ *        <p>如果arrowPosition = left | right, arrowPositionOffset可以设置为top</p>
+ *        <p>如果arrowPosition = top | bottom, arrowPositionOffset可以设置为left | right</p>
+ *    </dd>
+ *
+ *    <dt>offsetXY = num,num</dt>
+ *    <dd>
+ *        声明提示框相对于当前位置的偏移位置(x 坐标，y 坐标)，默认值为0
+ *        <p>x < 0，往左偏移，x > 0 往右偏移 <br/>
+ *         y < 0, 往上偏移，y > 0 往下偏移 <br/>
+ *         两个数值以<b>逗号</b>分隔，如果只写一个值表示 y 坐标为0。</p>
  *    </dd>
  *
  *    <dt>popTipsWidth = num</dt>
@@ -325,6 +340,15 @@
 
         },
 
+        htmlContents: function () {
+            var _r,
+                _s = JC.f.parentSelector( this.selector(), this.attrProp('htmlContent') );
+
+            _r = JC.f.scriptContent( _s );
+
+            return _r;
+        },
+
         arrowPosition: function () {
             var _r = this.stringProp('arrowPosition');
 
@@ -352,6 +376,17 @@
             return _r;
         },
 
+        offsetXY: function () {
+            var _r = this.attrProp('offsetXY').split(','),
+                _x = parseInt( _r[0], 10 ) || 0,
+                _y = parseInt( _r[1], 10 ) || 0;
+
+            return {
+                x: _x,
+                y: _y
+            };
+        },
+
         triggerType: function () {
             var _r = this.stringProp('triggerType');
 
@@ -366,12 +401,22 @@
                 _tpl = _p.baseTpl;
             
             if ( !this._layout ) {
-                this._layout = $( JC.f.printf( _tpl
-                    , _p.theme()
-                    , _p.arrowPosition()
-                    , _p.contents()
-                    , 'style="width:' + _p.layoutWidth() + ';height:' + _p.layoutHeight() + ';"' ) )
-                    .appendTo( this.layoutBox() );
+                if ( _p.htmlContents() ) {
+                    this._layout = $( JC.f.printf( _tpl
+                        , _p.theme()
+                        , _p.arrowPosition()
+                        , _p.htmlContents()
+                        , 'style="width:' + _p.layoutWidth() + ';height:' + _p.layoutHeight() + ';"' ) )
+                        .appendTo( this.layoutBox() );
+                } else {
+                    this._layout = $( JC.f.printf( _tpl
+                        , _p.theme()
+                        , _p.arrowPosition()
+                        , _p.contents()
+                        , 'style="width:' + _p.layoutWidth() + ';height:' + _p.layoutHeight() + ';"' ) )
+                        .appendTo( this.layoutBox() );
+                }
+                
             }
 
             return this._layout;
@@ -412,8 +457,8 @@
                 _p = this,
                 _selector = _p.selector(),
                 _pos = {
-                    top: _selector.offset().top,
-                    left: _selector.offset().left,
+                    top: _selector.offset().top + _p.offsetXY().y,
+                    left: _selector.offset().left + _p.offsetXY().x,
                     width: _selector.prop('offsetWidth'),
                     height: _selector.prop('offsetHeight')
                 },
@@ -423,8 +468,8 @@
             switch ( _arrowPosition ) {
                 case 'top':
                     _r = {
-                        top: _pos.top + _pos.height + 5,
-                        left: _pos.left + _pos.width / 2 - _lw / 2
+                        top: _pos.top + _pos.height + 5 ,
+                        left: _pos.left + _pos.width / 2 - _lw / 2 
                     };
                     break;
                 case 'right':
@@ -553,7 +598,7 @@
             }
 
             if ( _arrowPosition === 'left' ) {
-                JC.log("_viewMaxX", _viewMaxX, "_tipsMaxPosX", _tipsMaxPosX);
+                
                 if ( _viewMaxX < _tipsMaxPosX ) {
                     _newAP = 'right';
                     _now = 'right' + _baseP;
