@@ -1,6 +1,6 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Tree' ], function(){
 /**
- * 组件用途简述
+ * 树菜单 形式模拟下拉框
  *
  *<p><b>require</b>:
  *   <a href="widnow.jQuery.html">jQuery</a>
