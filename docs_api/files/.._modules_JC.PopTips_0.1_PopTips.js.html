@@ -386,7 +386,10 @@
 
             if( !_ins ) return;
 
-            _ins.update();
+            if ( _ins._model.layout().is(&#x27;:visible&#x27;) ) {
+                _ins.update();
+            }
+
         });
       
     },
@@ -861,6 +864,7 @@
 
             _cal = _p._model.calcPosOffset(_arrowPosition, _pos );
             _p._model.setPosition( _cal, _arrowPosition );
+
             _p._model.layout().data(&#x27;CPopTipsIns&#x27;, _p);
         },
 

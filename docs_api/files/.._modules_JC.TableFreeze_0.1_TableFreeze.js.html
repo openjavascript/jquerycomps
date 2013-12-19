@@ -285,7 +285,7 @@
             &lt;dd&gt;
                 &lt;dl&gt;
                     &lt;dd&gt;
-                        &lt;div class=&quot;js_compTableFreeze&quot; freezeType=&quot;prev&quot; freezeCols=&quot;2&quot;/&gt;
+                        &lt;div class=&quot;js_compTableFreeze&quot; freezeType=&quot;prev&quot; freezeCols=&quot;2&quot; /&gt;
                             &lt;dl&gt;
                                 &lt;dd&gt;
                                     &lt;table &gt;
@@ -464,7 +464,7 @@
                     var _hover = _p._model.hoverClass();
 
                     if ( !_p._model.supportFreeze() || !_p._model.supportScroll() ) {
-                        _p._model.selector().find(&#x27;tr&#x27;)
+                        _p._model.selector().find(&#x27;table&gt;tbody&gt;tr&#x27;)
                             .on(&#x27;mouseenter&#x27;, function () {
                                 $(this).addClass( _hover );
                             })
@@ -706,7 +706,7 @@
             if ( _p.hasFixedPXWidth() ) {
                 _forePnt.css(&#x27;width&#x27;, _p.selector().find(&#x27;table&#x27;).prop(&#x27;offsetWidth&#x27;) );
             }
-            _p.selector().find(&#x27;div.js-roll-table&gt;table&#x27;).width(&#x27;120%&#x27;);
+            _p.selector().find(&#x27;div.js-roll-table&gt;table&#x27;).width(_p.scrollwidth());
             _p.setHeight();
            
         },
@@ -886,6 +886,14 @@
             _r = _r.split(&#x27;,&#x27;);
 
            // JC.log(_r);
+
+            return _r;
+        },
+
+        scrollwidth: function () {
+            var _r = this.attrProp(&#x27;scrollwidth&#x27;);
+
+            !_r &amp;&amp; ( _r = &#x27;120%&#x27; );
 
             return _r;
         },
@@ -1141,8 +1149,9 @@
 
             if ( !_p._model.supportFreeze() ) {
                 _p._model.selector().css({&#x27;overflow-x&#x27;: &#x27;scroll&#x27;})
-                    .addClass(&#x27;compTFAllRoll&#x27;);
-                _p._model.selector().children(&#x27;table&#x27;).css(&#x27;width&#x27;,&#x27;110%&#x27;);
+                    .addClass(&#x27;compTFAllRoll&#x27;)
+                        .children(&#x27;table&#x27;).css(&#x27;width&#x27;, _p._model.scrollwidth() );
+                
                 return;
             }
 
