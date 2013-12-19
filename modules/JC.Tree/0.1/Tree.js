@@ -50,7 +50,7 @@
         if( _container && $(_container).length ){
             _container = $(_container);
             if( Tree.getInstance( _container ) ) return Tree.getInstance( _container );
-            _container.data( 'TreeIns', this );
+            _container.data( Tree.Model._instanceName , this );
         }
         /**
          * 树的数据模型引用
@@ -77,7 +77,7 @@
     Tree.getInstance = 
         function( _selector ){
             _selector = $(_selector);
-            return _selector.data('TreeIns');
+            return _selector.data( Tree.Model._instanceName );
         };
     /**
      * 树的数据过滤函数
@@ -123,7 +123,7 @@
         init:
             function(){
                 this._view.init();
-                this._view.treeRoot().data( 'TreeIns', this );
+                this._view.treeRoot().data( Tree.Model._instanceName, this );
                 return this;
             }    
         /**
@@ -196,16 +196,24 @@
         , event: function( _evtName ){ if( !_evtName ) return; return this._model.event( _evtName ); }
         /**
          * 获取或设置树的高亮节点
-         * <br /><b>注意:</b> 这个只是数据层面的设置, 不会影响视觉效果
-         * @method  highlight
-         * @param   {selector}  _item
+         * @method  selectedItem
+         * @param   {selector}  _selector
          * @return  selector
          */
-        , highlight:
-            function( _item ){
-                return this._model.highlight( _item );
+        , selectedItem:
+            function( _selector ){
+                return this._view.selectedItem( _selector );
             }
-    }
+        , highlight:
+            function(){
+                return this.selectedItem.apply( this, JC.f.sliceArgs( arguments ) );
+            }
+    };
+
+    Tree.Model = Model;
+    Tree.View = View;
+
+    Tree.Model._instanceName = 'TreeIns';
     /**
      * 树节点的点击事件
      * @event   click
@@ -374,7 +382,7 @@
          */
         , highlight:
             function( _highlight ){
-                _highlight && ( this._highlight = _highlight );
+                _highlight && ( this._highlight = $( _highlight ) );
                 return this._highlight;
             }
     };
@@ -577,9 +585,7 @@
 
                 var lis = _tgr.parents('li');
 
-                if( this._model.highlight() ) this._model.highlight().removeClass('highlight');
-                _tgr.addClass( 'highlight' );
-                this._model.highlight( _tgr );
+                this.selectedItem( _tgr );
 
                 lis.each( function(){
                     var _sp = $(this), _child = _sp.find( '> span.folderRoot, > span.folder' );
@@ -588,6 +594,19 @@
                         _child.trigger( 'click' );
                     }
                 });
+            }
+        , selectedItem:
+            function( _selector ){
+                _selector && ( _selector = $( _selector ) );
+                if( !( _selector && _selector.length ) ) return this._model.highlight();
+
+                if( this._model.highlight() ) {
+                    this._model.highlight().removeClass('highlight').removeClass( 'selectedTreeNode' );
+                }
+                _selector.addClass( 'highlight' ).addClass( 'selectedTreeNode' );
+
+                this._model.highlight( _selector );
+                return _selector;
             }
         /**
          * 关闭树的具体节点
@@ -630,7 +649,7 @@
     $(document).delegate( 'ul.tree_wrap div.node_ctn', 'click', function( _evt ){
         var _p = $(this)
             , _treeContainer = _p.parents( 'ul.tree_wrap' )
-            , _treeIns = _treeContainer.data('TreeIns');
+            , _treeIns = _treeContainer.data( Tree.Model._instanceName );
 
         if( !_treeIns ) return;
 
@@ -641,9 +660,7 @@
             });
         }
 
-        if( _treeIns.highlight() ) _treeIns.highlight().removeClass('highlight');
-        _p.addClass('highlight');
-        _treeIns.highlight( _p );
+        _treeIns.selectedItem( _p );
 
         var _events = _treeIns.event( 'change' );
         if( _events && _events.length ){
@@ -658,7 +675,7 @@
     $(document).delegate( 'ul.tree_wrap span.folder, ul.tree_wrap span.folderRoot', 'click', function( _evt ){
         var _p = $(this), _pntLi = _p.parent('li'), _childUl = _pntLi.find( '> ul');
         var _treeContainer = _p.parents( 'ul.tree_wrap' )
-        , _treeIns = _treeContainer.data('TreeIns');
+        , _treeIns = _treeContainer.data( Tree.Model._instanceName );
 
         var _events = _treeIns.event( 'FolderClick' );
         if( _events && _events.length ){

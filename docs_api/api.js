@@ -37,6 +37,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.ChangeLogic",
         "window.Bizs.CommonModify",
         "window.Bizs.DisableLogic",
+        "window.Bizs.DropdownTree",
         "window.Bizs.FormLogic",
         "window.Bizs.KillISPCache",
         "window.Bizs.MoneyTips",
