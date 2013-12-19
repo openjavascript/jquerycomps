@@ -211,8 +211,36 @@
  *&lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
  *
  *&lt;dl&gt;
- *    &lt;dt&gt;&lt;/dt&gt;
- *    &lt;dd&gt;&lt;dd&gt;
+ *    &lt;dt&gt;bdtData = json, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *        初始化的数据变量名
+ *        &lt;dl&gt;&lt;dt&gt;数据格式:&lt;/dt&gt;
+ *          &lt;dd&gt;
+ *&lt;pre&gt;            {
+ *                  root: [ id, label ]
+ *                  data: {
+ *                      id: [ [id, label], [id, label]... ] 
+ *                      , id: [ [id, label], [id, label]... ]...
+ *                  }
+ *              }&lt;/pre&gt;
+ *          &lt;/dd&gt;
+ *        &lt;/dl&gt;
+ *    &lt;dd&gt;
+ *
+ *    &lt;dt&gt;bdtDefaultLabel = string&lt;/dt&gt;
+ *    &lt;dd&gt;用于显示的 默认 label&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bdtDefaultValue = string&lt;/dt&gt;
+ *    &lt;dd&gt;默认选中 ID&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bdtLabel = selector, default = &quot;|.bdtLabel&quot;&lt;/dt&gt;
+ *    &lt;dd&gt;树的 label&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bdtInput = selector, default = &quot;|.bdtInput&quot;&lt;/dt&gt;
+ *    &lt;dd&gt;保存树 ID的 input&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bdtTreeBox = selector, default = &quot;|.bdtTreeBox&quot;&lt;/dt&gt;
+ *    &lt;dd&gt;树的 node&lt;/dd&gt;
  *&lt;/dl&gt; 
  *
  * @namespace window.Bizs
@@ -223,7 +251,12 @@
  * @version dev 0.1 2013-12-13
  * @author  qiushaowei &lt;suches@btbtd.org&gt; | 75 Team
  * @example
-        &lt;h2&gt;DropdownTree example&lt;/h2&gt;
+        &lt;div class=&quot;bdtBox js_bizDropdownTree&quot; bdtData=&quot;treeData1&quot; bdtDefaultLabel=&quot;请选择&quot; bdtDefaultValue=&quot;0&quot;&gt;
+            &lt;i class=&quot;bdtIcon&quot;&gt;&lt;/i&gt;
+            &lt;span class=&quot;bdtLabel&quot;&gt;&lt;/span&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;tree03&quot; value=&quot;&quot; class=&quot;bdtInput&quot; /&gt;                                            	
+            &lt;div class=&quot;bdtTreeBox&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
  */
     Bizs.DropdownTree = DropdownTree;
 

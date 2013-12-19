@@ -17,8 +17,36 @@
  *<h2>可用的 HTML attribute</h2>
  *
  *<dl>
- *    <dt></dt>
- *    <dd><dd>
+ *    <dt>bdtData = json, <b>window 变量域</b></dt>
+ *    <dd>
+ *        初始化的数据变量名
+ *        <dl><dt>数据格式:</dt>
+ *          <dd>
+ *<pre>            {
+ *                  root: [ id, label ]
+ *                  data: {
+ *                      id: [ [id, label], [id, label]... ] 
+ *                      , id: [ [id, label], [id, label]... ]...
+ *                  }
+ *              }</pre>
+ *          </dd>
+ *        </dl>
+ *    <dd>
+ *
+ *    <dt>bdtDefaultLabel = string</dt>
+ *    <dd>用于显示的 默认 label</dd>
+ *
+ *    <dt>bdtDefaultValue = string</dt>
+ *    <dd>默认选中 ID</dd>
+ *
+ *    <dt>bdtLabel = selector, default = "|.bdtLabel"</dt>
+ *    <dd>树的 label</dd>
+ *
+ *    <dt>bdtInput = selector, default = "|.bdtInput"</dt>
+ *    <dd>保存树 ID的 input</dd>
+ *
+ *    <dt>bdtTreeBox = selector, default = "|.bdtTreeBox"</dt>
+ *    <dd>树的 node</dd>
  *</dl> 
  *
  * @namespace window.Bizs
@@ -29,7 +57,12 @@
  * @version dev 0.1 2013-12-13
  * @author  qiushaowei <suches@btbtd.org> | 75 Team
  * @example
-        <h2>DropdownTree example</h2>
+        <div class="bdtBox js_bizDropdownTree" bdtData="treeData1" bdtDefaultLabel="请选择" bdtDefaultValue="0">
+            <i class="bdtIcon"></i>
+            <span class="bdtLabel"></span>
+            <input type="hidden" name="tree03" value="" class="bdtInput" />                                            	
+            <div class="bdtTreeBox"></div>
+        </div>
  */
     Bizs.DropdownTree = DropdownTree;
 
