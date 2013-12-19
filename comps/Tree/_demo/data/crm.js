@@ -1,24 +1,28 @@
-$(document).ready( function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.Tree' ], function(){
+;( function( $ ){
     window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
 
-    JC.Tree.dataFilter =
+    JC.Tree.dataFilter = JC.Tree.dataFilter ||
         function( _data ){
             var _r = {};
 
-            if( _data ){
-                if( _data.root.length > 2 ){
-                    _data.root.shift();
-                    _r.root = _data.root;
-                 }
+            if( _data && _data.root && _data.root.length > 2 ){
+                _data.root.shift();
+                _r.root = _data.root;
                 _r.data = {};
                 for( var k in _data.data ){
                     _r.data[ k ] = [];
                     for( var i = 0, j = _data.data[k].length; i < j; i++ ){
-                        if( _data.data[k][i].length < 3 ) continue;
+                        if( _data.data[k][i].length < 3 ) {
+                            _r.data[k].push( _data.data[k][i] );
+                            continue;
+                        }
                         _data.data[k][i].shift();
                         _r.data[k].push( _data.data[k][i] );
                     }
                 }
+            }else{
+                _r = _data;
             }
             return _r;
         };
@@ -53,7 +57,7 @@ $(document).ready( function(){
                  });
                 _tree.on( 'RenderLabel', function( _data ){
                     var _node = $(this);
-                    _node.html( printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
+                    _node.html( JC.f.printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
                 });
                 _tree.init();
                 _tree.open();
@@ -71,5 +75,5 @@ $(document).ready( function(){
             _treeNode.css( { 'top': _p.prop( 'offsetHeight' ) -2 + 'px', 'left': '-1px' } );
         }
     });
-
-});
+}(jQuery));
+});}(typeof define === 'function' && define.amd ? define : function (_require, _cb) { _cb && _cb(); }, this));

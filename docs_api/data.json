@@ -62,6 +62,17 @@
                 "window.Bizs": 1
             }
         },
+        "../bizs/DropdownTree/DropdownTree.js": {
+            "name": "../bizs/DropdownTree/DropdownTree.js",
+            "modules": {},
+            "classes": {
+                "window.Bizs.DropdownTree": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.Bizs": 1
+            }
+        },
         "../bizs/FormLogic/FormLogic.js": {
             "name": "../bizs/FormLogic/FormLogic.js",
             "modules": {},
@@ -345,6 +356,17 @@
                 "JC": 1
             }
         },
+        "../comps/PopTips/PopTips.js": {
+            "name": "../comps/PopTips/PopTips.js",
+            "modules": {},
+            "classes": {
+                "JC.PopTips": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../comps/Slider/Slider.js": {
             "name": "../comps/Slider/Slider.js",
             "modules": {},
@@ -563,6 +585,33 @@
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
             "example": [
                 "\n       <div class=\"js_bizsDisableLogic\"\n           dltrigger=\"/input[type=radio]\"\n           dltarget=\"/input.js_disableItem\"\n           >\n           <label>\n               <input type=\"radio\" name=\"discount\" checked  \n               dldisable=\"true\"\n               />自本协议签订之日起10日内生效\n           </label> <br>\n           <label>\n               <input type=\"radio\" name=\"discount\" \n               dldisable=\"false\"\n               />生效时间点\n           </label>\n           <input type=\"text\" class=\"ipt js_disableItem\" datatype=\"date\" value=\"\"\n           /><input type=\"button\" class=\"UXCCalendar_btn\">\n       </div>"
+            ]
+        },
+        "window.Bizs.DropdownTree": {
+            "name": "window.Bizs.DropdownTree",
+            "shortname": "window.Bizs.DropdownTree",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.Bizs",
+            "file": "../bizs/DropdownTree/DropdownTree.js",
+            "line": 2,
+            "description": "树菜单 形式模拟下拉框\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n  , <a href='JC.Tree.html'>JC.Tree</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc.openjavascript.org/docs_api/classes/Bizs.DropdownTree.html' target='_blank'>API docs</a>\n  | <a href='../../bizs/DropdownTree/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会自动处理 div class=\"js_bizDropdownTree\" </h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>bdtData = json, <b>window 变量域</b></dt>\n   <dd>\n       初始化的数据变量名\n       <dl><dt>数据格式:</dt>\n         <dd>\n<pre>            {\n                 root: [ id, label ]\n                 data: {\n                     id: [ [id, label], [id, label]... ] \n                     , id: [ [id, label], [id, label]... ]...\n                 }\n             }</pre>\n         </dd>\n       </dl>\n   <dd>\n\n   <dt>bdtDefaultLabel = string</dt>\n   <dd>用于显示的 默认 label</dd>\n\n   <dt>bdtDefaultValue = string</dt>\n   <dd>默认选中 ID</dd>\n\n   <dt>bdtLabel = selector, default = \"|.bdtLabel\"</dt>\n   <dd>树的 label</dd>\n\n   <dt>bdtInput = selector, default = \"|.bdtInput\"</dt>\n   <dd>保存树 ID的 input</dd>\n\n   <dt>bdtTreeBox = selector, default = \"|.bdtTreeBox\"</dt>\n   <dd>树的 node</dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-12-13",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n       <div class=\"bdtBox js_bizDropdownTree\" bdtData=\"treeData1\" bdtDefaultLabel=\"请选择\" bdtDefaultValue=\"0\">\n           <i class=\"bdtIcon\"></i>\n           <span class=\"bdtLabel\"></span>\n           <input type=\"hidden\" name=\"tree03\" value=\"\" class=\"bdtInput\" />                                            \t\n           <div class=\"bdtTreeBox\"></div>\n       </div>"
             ]
         },
         "window.Bizs.FormLogic": {
@@ -1408,6 +1457,33 @@
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
             "date": "2013-10-19"
         },
+        "JC.PopTips": {
+            "name": "JC.PopTips",
+            "shortname": "JC.PopTips",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../comps/PopTips/PopTips.js",
+            "line": 2,
+            "description": "Poptips 带箭头的气泡提示框功能\n<p>\n     <b>require</b>: \n         <a href='window.jQuery.html'>jQuery</a>\n         , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.PopTips.html' target='_blank'>API docs</a>\n| <a href='../../comps/PopTips/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化span|em|a|b为class=\"js_compPoptips\"的提示气泡</h2>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>content = string | html </dt>\n   <dd>\n      <p>声明气泡提示的内容<br>\n      如果没有设置则去查找title属性，如果title也没有设置，<br/>\n        则将触发元素的text作为提示内容。</p>\n   </dd>\n\n   <dt>theme = yellow | blue | white | green, <a href=\"../../comps/PopTips/res/default/style.html\" target=\"_blank\">查看</a></dt>\n   <dd>\n      气泡主题，提供黄色、蓝色、白色、绿色四种样式，默认为 yellow.\n      <p><b>yellow：</b>黄色<br/>\n      <b>blue：</b>蓝色<br/>\n      <b>white：</b>白色<br/>\n      <b>green：</b>绿色</p>\n   </dd>\n\n   <dt>triggerType = hover | click</dt>\n   <dd>\n       触发方式: 支持hover和click\n       <p>默认为hover</p>\n   </dd>\n\n   <dt>arrowPosition = left | right | top | bottom</dt>\n   <dd>\n       声明箭头的方向，默认值为left\n       <p><b>left:</b>箭头向左（提示框在触发元素的右边）如果右边空间不够，提示框自动显示在左边，如果左边空间不够，提示框显示在上方，如果上方空间，提示框显示到下方<br/>\n       <b>right:</b>箭头向右（提示框在触发元素的左边）如果左边空间不够，提示框自动显示在右边，如果右边空间不够，提示框显示在上方，如果上方空间，提示框显示到下方<br/>\n       <b>top:</b>箭头向上（提示框在触发元素的下边）如果下边不够，提示框自动显示到上边<br/>\n       <b>bottom:</b>箭头向下（提示框在触发元素的上边）如果上边不够，提示框自动显示到下边</p>    \n   </dd>\n\n   <dt>arrowPositionOffset = left|right|top</dt>\n   <dd>\n       声明箭头在提示框的位置，默认居中\n       <p>如果arrowPosition = left || right, arrowPositionOffset可以设置为top</p>\n       <p>如果arrowPosition = top || bottom, arrowPositionOffset可以设置为left || right</p>\n   </dd>\n\n   <dt>popTipsWidth = num</dt>\n   <dd>\n       声明提示框的宽度，默认自适应\n   </dd>\n\n   <dt>popTipsHeight = num</dt>\n   <dd>\n       声明提示框的高度，默认自适应\n   </dd>\n\n   <dt>beforeShowCallback = function</dt>\n   <dd>\n       气泡显示前, 触发的回调, <b>window 变量域</b>\n<pre>function beforeShowCallback( _selector ){\n   var _ins = this;\n   JC.log( 'beforeShowCallback', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>afterHideCallback = function</dt>\n   <dd>\n       气泡隐藏后, 触发的回调, <b>window 变量域</b>\n<pre>function afterHideCallback( _selector ){\n   var _ins = this;\n   JC.log( 'afterHideCallback', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-12-13",
+            "author": "zuojing   <zuojing1013@gmail.com> | 75 Team",
+            "example": [
+                "\n\t<span class=\"js_compPopTips\" style=\"margin-top:50px; margin-left:200px; display:inline-block;\"  \n\t\tcontent=\"1.这个tip显示在右边<br>2.古希腊学者亚里士多<br>3.古希腊学者亚里士多<br>4.古希腊学者亚里士多\"  \n\t\ttheme=\"yellow\" \n\t\tarrowposition=\"left\"\n\t\ttriggerType=\"click\"\n\t\t>\n\t\t<span>古希腊学者亚里士多德曾编<br>\n\t\t\t写过全面讲述当时学问的讲义，<br>\n\t\t\t被西方奉为“百科全书之父”，<br>\n\t\t\t中国汉朝初年的《尔雅》，<br>\n\t\t\t是中国百科全书性质著作的渊源。</span>\n\t</span>"
+            ]
+        },
         "JC.Slider": {
             "name": "JC.Slider",
             "shortname": "JC.Slider",
@@ -1700,7 +1776,7 @@
             "extension_for": [],
             "namespace": "JC.Tree",
             "file": "../comps/Tree/Tree.js",
-            "line": 243,
+            "line": 251,
             "description": "树的数据模型类",
             "is_constructor": 1
         },
@@ -2287,6 +2363,111 @@
             ],
             "static": 1,
             "class": "window.Bizs.DisableLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/DropdownTree/DropdownTree.js",
+            "line": 84,
+            "description": "初始化可识别的 DropdownTree 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of DropdownTreeInstance"
+            },
+            "class": "window.Bizs.DropdownTree",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/DropdownTree/DropdownTree.js",
+            "line": 160,
+            "description": "显示 树弹框",
+            "itemtype": "method",
+            "name": "show",
+            "class": "window.Bizs.DropdownTree",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/DropdownTree/DropdownTree.js",
+            "line": 165,
+            "description": "隐藏 树弹框",
+            "itemtype": "method",
+            "name": "hide",
+            "class": "window.Bizs.DropdownTree",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/DropdownTree/DropdownTree.js",
+            "line": 170,
+            "description": "显式/隐藏 树弹框",
+            "itemtype": "method",
+            "name": "toggle",
+            "class": "window.Bizs.DropdownTree",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/DropdownTree/DropdownTree.js",
+            "line": 175,
+            "description": "更新树菜单数据",
+            "itemtype": "method",
+            "name": "update",
+            "params": [
+                {
+                    "name": "_data",
+                    "description": "",
+                    "type": "Json"
+                }
+            ],
+            "class": "window.Bizs.DropdownTree",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/DropdownTree/DropdownTree.js",
+            "line": 186,
+            "description": "清除选择数据",
+            "itemtype": "method",
+            "name": "clear",
+            "class": "window.Bizs.DropdownTree",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/DropdownTree/DropdownTree.js",
+            "line": 206,
+            "description": "获取选中的 label",
+            "itemtype": "method",
+            "name": "label",
+            "return": {
+                "description": "string"
+            },
+            "class": "window.Bizs.DropdownTree",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/DropdownTree/DropdownTree.js",
+            "line": 212,
+            "description": "获取或设置 选中的 id",
+            "itemtype": "method",
+            "name": "val",
+            "params": [
+                {
+                    "name": "_nodeId",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String of id"
+            },
+            "class": "window.Bizs.DropdownTree",
             "namespace": "window.Bizs"
         },
         {
@@ -7865,6 +8046,71 @@
             "namespace": "JC"
         },
         {
+            "file": "../comps/PopTips/PopTips.js",
+            "line": 129,
+            "description": "获取或设置 PopTips 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "PopTipsInstance"
+            },
+            "class": "JC.PopTips",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/PopTips/PopTips.js",
+            "line": 144,
+            "description": "初始化可识别的 PopTips 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of PopTipsInstance"
+            },
+            "class": "JC.PopTips",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/PopTips/PopTips.js",
+            "line": 275,
+            "description": "更新 PopTips 状态",
+            "itemtype": "method",
+            "name": "update",
+            "class": "JC.PopTips",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/PopTips/PopTips.js",
+            "line": 583,
+            "description": "PopTips显示前的回调",
+            "class": "JC.PopTips",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/PopTips/PopTips.js",
+            "line": 594,
+            "description": "PopTips隐藏后的回调",
+            "class": "JC.PopTips",
+            "namespace": "JC"
+        },
+        {
             "file": "../comps/Slider/Slider.js",
             "line": 137,
             "description": "初始化数据模型",
@@ -10321,12 +10567,12 @@
         {
             "file": "../comps/Tree/Tree.js",
             "line": 197,
-            "description": "获取或设置树的高亮节点\n<br /><b>注意:</b> 这个只是数据层面的设置, 不会影响视觉效果",
+            "description": "获取或设置树的高亮节点",
             "itemtype": "method",
-            "name": "highlight",
+            "name": "selectedItem",
             "params": [
                 {
-                    "name": "_item",
+                    "name": "_selector",
                     "description": "",
                     "type": "Selector"
                 }
@@ -10339,7 +10585,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 209,
+            "line": 217,
             "description": "树节点的点击事件",
             "itemtype": "event",
             "name": "click",
@@ -10358,7 +10604,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 220,
+            "line": 228,
             "description": "树节点的展现事件",
             "itemtype": "event",
             "name": "RenderLabel",
@@ -10382,7 +10628,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 232,
+            "line": 240,
             "description": "树文件夹的点击事件",
             "itemtype": "event",
             "name": "FolderClick",
@@ -10401,7 +10647,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 250,
+            "line": 258,
             "description": "树要展示的容器",
             "itemtype": "property",
             "name": "_container",
@@ -10413,7 +10659,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 257,
+            "line": 265,
             "description": "展现树需要的数据",
             "itemtype": "property",
             "name": "_data",
@@ -10425,7 +10671,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 264,
+            "line": 272,
             "description": "树的随机ID前缀",
             "itemtype": "property",
             "name": "_id",
@@ -10437,7 +10683,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 271,
+            "line": 279,
             "description": "树当前的高亮节点",
             "itemtype": "property",
             "name": "_highlight",
@@ -10449,7 +10695,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 278,
+            "line": 286,
             "description": "保存树的所有绑定事件",
             "itemtype": "property",
             "name": "_events",
@@ -10461,7 +10707,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 290,
+            "line": 300,
             "description": "树模型类内部初始化方法",
             "itemtype": "method",
             "name": "_init",
@@ -10472,7 +10718,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 300,
+            "line": 310,
             "description": "获取树所要展示的容器",
             "itemtype": "method",
             "name": "container",
@@ -10484,7 +10730,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 306,
+            "line": 316,
             "description": "获取节点将要显示的ID",
             "itemtype": "method",
             "name": "id",
@@ -10503,7 +10749,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 313,
+            "line": 323,
             "description": "获取树的随机ID前缀",
             "itemtype": "method",
             "name": "idPrefix",
@@ -10515,7 +10761,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 319,
+            "line": 329,
             "description": "获取树的原始数据",
             "itemtype": "method",
             "name": "data",
@@ -10527,7 +10773,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 325,
+            "line": 335,
             "description": "获取树生成后的根节点",
             "itemtype": "method",
             "name": "root",
@@ -10539,7 +10785,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 331,
+            "line": 341,
             "description": "获取ID的具体节点",
             "itemtype": "method",
             "name": "child",
@@ -10558,7 +10804,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 338,
+            "line": 348,
             "description": "判断原始数据的某个ID是否有子级节点",
             "itemtype": "method",
             "name": "hasChild",
@@ -10577,7 +10823,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 345,
+            "line": 355,
             "description": "获取树的某类绑定事件的所有回调",
             "itemtype": "method",
             "name": "event",
@@ -10597,7 +10843,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 356,
+            "line": 366,
             "description": "添加树内部事件",
             "itemtype": "method",
             "name": "addEvent",
@@ -10618,7 +10864,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 368,
+            "line": 378,
             "description": "获取或设置树的高亮节点\n<br /><b>注意:</b> 这个只是数据层面的设置, 不会影响视觉效果",
             "itemtype": "method",
             "name": "highlight",
@@ -10637,14 +10883,14 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 381,
+            "line": 391,
             "description": "树的视图模型类",
             "class": "JC.Tree.Model",
             "namespace": "JC.Tree"
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 385,
+            "line": 395,
             "description": "树的数据模型引用",
             "itemtype": "property",
             "name": "_model",
@@ -10656,7 +10902,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 392,
+            "line": 402,
             "description": "树生成后的根节点",
             "itemtype": "property",
             "name": "_treeRoot",
@@ -10668,7 +10914,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 402,
+            "line": 412,
             "description": "初始化树的可视状态",
             "itemtype": "method",
             "name": "init",
@@ -10677,7 +10923,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 412,
+            "line": 422,
             "description": "获取或设置树生成后的根节点",
             "itemtype": "method",
             "name": "treeRoot",
@@ -10696,7 +10942,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 423,
+            "line": 433,
             "description": "处理树的展现效果",
             "itemtype": "method",
             "name": "_process",
@@ -10719,7 +10965,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 444,
+            "line": 454,
             "description": "初始化树根节点",
             "itemtype": "method",
             "name": "_initRoot",
@@ -10730,7 +10976,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 474,
+            "line": 484,
             "description": "初始化树的文件夹节点",
             "itemtype": "method",
             "name": "_initFolder",
@@ -10758,7 +11004,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 499,
+            "line": 509,
             "description": "初始化树的文件节点",
             "itemtype": "method",
             "name": "_initFile",
@@ -10786,7 +11032,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 520,
+            "line": 530,
             "description": "初始化树的节点标签",
             "itemtype": "method",
             "name": "_initLabel",
@@ -10807,7 +11053,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 544,
+            "line": 554,
             "description": "展开树的所有节点",
             "itemtype": "method",
             "name": "openAll",
@@ -10816,7 +11062,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 555,
+            "line": 565,
             "description": "关闭树的所有节点",
             "itemtype": "method",
             "name": "closeAll",
@@ -10825,7 +11071,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 567,
+            "line": 577,
             "description": "展开树到具体节点",
             "itemtype": "method",
             "name": "open",
@@ -10841,7 +11087,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 592,
+            "line": 613,
             "description": "关闭树的具体节点",
             "itemtype": "method",
             "name": "close",
@@ -10857,7 +11103,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 611,
+            "line": 632,
             "description": "树的最后的 hover 节点\n<br />树的 hover 是全局属性, 页面上的所有树只会有一个当前 hover",
             "itemtype": "property",
             "name": "lastHover",
@@ -10868,14 +11114,14 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 627,
+            "line": 648,
             "description": "捕获树文件标签的点击事件",
             "class": "JC.Tree.Model",
             "namespace": "JC.Tree"
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 655,
+            "line": 674,
             "description": "捕获树文件夹图标的点击事件",
             "class": "JC.Tree.Model",
             "namespace": "JC.Tree"
@@ -13824,6 +14070,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../bizs/DropdownTree/DropdownTree.js:2"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../bizs/FormLogic/FormLogic.js:5"
         },
         {
@@ -13965,6 +14215,10 @@
         {
             "message": "unknown tag: date",
             "line": " ../comps/Placeholder/Placeholder.js:2"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../comps/PopTips/PopTips.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -14367,6 +14621,14 @@
             "line": " ../comps/Placeholder/Placeholder.js:341"
         },
         {
+            "message": "Missing item type\nPopTips显示前的回调",
+            "line": " ../comps/PopTips/PopTips.js:583"
+        },
+        {
+            "message": "Missing item type\nPopTips隐藏后的回调",
+            "line": " ../comps/PopTips/PopTips.js:594"
+        },
+        {
             "message": "Missing item type\n初始化数据模型",
             "line": " ../comps/Slider/Slider.js:137"
         },
@@ -14408,15 +14670,15 @@
         },
         {
             "message": "Missing item type\n树的视图模型类",
-            "line": " ../comps/Tree/Tree.js:381"
+            "line": " ../comps/Tree/Tree.js:391"
         },
         {
             "message": "Missing item type\n捕获树文件标签的点击事件",
-            "line": " ../comps/Tree/Tree.js:627"
+            "line": " ../comps/Tree/Tree.js:648"
         },
         {
             "message": "Missing item type\n捕获树文件夹图标的点击事件",
-            "line": " ../comps/Tree/Tree.js:655"
+            "line": " ../comps/Tree/Tree.js:674"
         },
         {
             "message": "Missing item type\n兼容函数式使用",
