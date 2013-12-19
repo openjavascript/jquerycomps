@@ -39,6 +39,426 @@ YUI.add("widget-parent",function(e,t){function s(t){this.publish("addChild",{def
 /* YUI 3.9.1 (build 5852) Copyright 2013 Yahoo! Inc. http://yuilibrary.com/license/ */
 YUI.add("widget-child",function(e,t){function r(){e.after(this._syncUIChild,this,"syncUI"),e.after(this._bindUIChild,this,"bindUI")}var n=e.Lang;r.ATTRS={selected:{value:0,validator:n.isNumber},index:{readOnly:!0,getter:function(){var e=this.get("parent"),t=-1;return e&&(t=e.indexOf(this)),t}},parent:{readOnly:!0},depth:{readOnly:!0,getter:function(){var e=this.get("parent"),t=this.get("root"),n=-1;while(e){n+=1;if(e==t)break;e=e.get("parent")}return n}},root:{readOnly:!0,getter:function(){var t=function(n){var r=n.get("parent"),i=n.ROOT_TYPE,s=r;return i&&(s=r&&e.instanceOf(r,i)),s?t(r):n};return t(this)}}},r.prototype={ROOT_TYPE:null,_getUIEventNode:function(){var e=this.get("root"),t;return e&&(t=e.get("boundingBox")),t},next:function(e){var t=this.get("parent"),n;return t&&(n=t.item(this.get("index")+1)),!n&&e&&(n=t.item(0)),n},previous:function(e){var t=this.get("parent"),n=this.get("index"),r;return t&&n>0&&(r=t.item([n-1])),!r&&e&&(r=t.item(t.size()-1)),r},remove:function(t){var r,i;return n.isNumber(t)?i=e.WidgetParent.prototype.remove.apply(this,arguments):(r=this.get("parent"),r&&(i=r.remove(this.get("index")))),i},isRoot:function(){return this==this.get("root")},ancestor:function(e){var t=this.get("root"),n;if(this.get("depth")>e){n=this.get("parent");while(n!=t&&n.get("depth")>e)n=n.get("parent")}return n},_uiSetChildSelected:function(e){var t=this.get("boundingBox"),n=this.getClassName("selected");e===0?t.removeClass(n):t.addClass(n)},_afterChildSelectedChange:function(e){this._uiSetChildSelected(e.newVal)},_syncUIChild:function(){this._uiSetChildSelected(this.get("selected"))},_bindUIChild:function(){this.after("selectedChange",this._afterChildSelectedChange)}},e.WidgetChild=r},"3.9.1",{requires:["base-build","widget"]});
 /* YUI 3.9.1 (build 5852) Copyright 2013 Yahoo! Inc. http://yuilibrary.com/license/ */
-YUI.add("tabview-base",function(e,t){var n=e.ClassNameManager.getClassName,r="tabview",i="tab",s="panel",o="selected",u={},a=".",f={tabview:n(r),tabviewPanel:n(r,s),tabviewList:n(r,"list"),tab:n(i),tabLabel:n(i,"label"),tabPanel:n(i,s),selectedTab:n(i,o),selectedPanel:n(i,s,o)},l={tabview:a+f.tabview,tabviewList:"> ul",tab:"> ul > li",tabLabel:"> ul > li > a",tabviewPanel:"> div",tabPanel:"> div > div",selectedTab:"> ul > "+a+f.selectedTab,selectedPanel:"> div "+a+f.selectedPanel},c=function(){this.init.apply(this,arguments)};c.NAME="tabviewBase",c._queries=l,c._classNames=f,e.mix(c.prototype,{init:function(t){t=t||u,this._node=t.host||e.one(t.node),this.refresh()},initClassNames:function(t){e.Object.each(l,function(e,n){if(f[n]){var r=this.all(e);t!==undefined&&(r=r.item(t)),r&&r.addClass(f[n])}},this._node),this._node.addClass(f.tabview)},_select:function(e){var t=this._node,n=t.one(l.selectedTab),r=t.one(l.selectedPanel),i=t.all(l.tab).item(e),s=t.all(l.tabPanel).item(e);n&&n.removeClass(f.selectedTab),r&&r.removeClass(f.selectedPanel),i&&i.addClass(f.selectedTab),s&&s.addClass(f.selectedPanel)},initState:function(){var e=this._node,t=e.one(l.selectedTab),n=t?e.all(l.tab).indexOf(t):0;this._select(n)},_scrubTextNodes:function(){this._node.one(l.tabviewList).get("childNodes").each(function(e){e.get("nodeType")===3&&e.remove()})},refresh:function(){this._scrubTextNodes(),this.initClassNames(),this.initState(),this.initEvents()},tabEventName:"click",initEvents:function(){this._node.delegate(this.tabEventName,this.onTabEvent,l.tab,this)},onTabEvent:function(e){e.preventDefault(),this._select(this._node.all(l.tab).indexOf(e.currentTarget))},destroy:function(){this._node.detach(this.tabEventName)}}),e.TabviewBase=c},"3.9.1",{requires:["node-event-delegate","classnamemanager","skin-sam-tabview"]});
+YUI.add("tabview-base",function(e,t){var n=e.ClassNameManager.getClassName,r="tabview",i="tab",s="panel",o="selected",u={},a=".",f={tabview:n(r),tabviewPanel:n(r,s),tabviewList:n(r,"list"),tab:n(i),tabLabel:n(i,"label"),tabPanel:n(i,s),selectedTab:n(i,o),selectedPanel:n(i,s,o)},l={tabview:a+f.tabview,tabviewList:"> ul",tab:"> ul > li",tabLabel:"> ul > li > a",tabviewPanel:"> div",tabPanel:"> div > div",selectedTab:"> ul > "+a+f.selectedTab,selectedPanel:"> div "+a+f.selectedPanel},c=function(){this.init.apply(this,arguments)};c.NAME="tabviewBase",c._queries=l,c._classNames=f,e.mix(c.prototype,{init:function(t){t=t||u,this._node=t.host||e.one(t.node),this.refresh()},initClassNames:function(t){e.Object.each(l,function(e,n){if(f[n]){var r=this.all(e);t!==undefined&&(r=r.item(t)),r&&r.addClass(f[n])}},this._node),this._node.addClass(f.tabview)},_select:function(e){var t=this._node,n=t.one(l.selectedTab),r=t.one(l.selectedPanel),i=t.all(l.tab).item(e),s=t.all(l.tabPanel).item(e);n&&n.removeClass(f.selectedTab),r&&r.removeClass(f.selectedPanel),i&&i.addClass(f.selectedTab),s&&s.addClass(f.selectedPanel)},initState:function(){var e=this._node,t=e.one(l.selectedTab),n=t?e.all(l.tab).indexOf(t):0;this._select(n)},_scrubTextNodes:function(){this._node.one(l.tabviewList).get("childNodes").each(function(e){e.get("nodeType")===3&&e.remove()})},refresh:function(){this._scrubTextNodes(),this.initClassNames(),this.initState(),this.initEvents()},tabEventName:"click",initEvents:function(){this._node.delegate(this.tabEventName,this.onTabEvent,l.tab,this)},onTabEvent:function(e){e.preventDefault(),this._select(this._node.all(l.tab).indexOf(e.currentTarget))},destroy:function(){this._node.detach(this.tabEventName)}}),e.TabviewBase=c},"3.9.1",{requires:["node-event-delegate","classnamemanager"]});
 /* YUI 3.9.1 (build 5852) Copyright 2013 Yahoo! Inc. http://yuilibrary.com/license/ */
-YUI.add("tabview",function(e,t){var n=e.TabviewBase._queries,r=e.TabviewBase._classNames,i=".",s=e.Base.create("tabView",e.Widget,[e.WidgetParent],{_afterChildAdded:function(){this.get("contentBox").focusManager.refresh()},_defListNodeValueFn:function(){return e.Node.create(s.LIST_TEMPLATE)},_defPanelNodeValueFn:function(){return e.Node.create(s.PANEL_TEMPLATE)},_afterChildRemoved:function(e){var t=e.index,n=this.get("selection");n||(n=this.item(t-1)||this.item(0),n&&n.set("selected",1)),this.get("contentBox").focusManager.refresh()},_initAria:function(){var e=this.get("contentBox"),t=e.one(n.tabviewList);t&&t.setAttrs({role:"tablist"})},bindUI:function(){this.get("contentBox").plug(e.Plugin.NodeFocusManager,{descendants:i+r.tabLabel,keys:{next:"down:39",previous:"down:37"},circular:!0}),this.after("render",this._setDefSelection),this.after("addChild",this._afterChildAdded),this.after("removeChild",this._afterChildRemoved)},renderUI:function(){var e=this.get("contentBox");this._renderListBox(e),this._renderPanelBox(e),this._childrenContainer=this.get("listNode"),this._renderTabs(e)},_setDefSelection:function(){var e=this.get("selection")||this.item(0);this.some(function(t){if(t.get("selected"))return e=t,!0}),e&&(this.set("selection",e),e.set("selected",1))},_renderListBox:function(e){var t=this.get("listNode");t.inDoc()||e.append(t)},_renderPanelBox:function(e){var t=this.get("panelNode");t.inDoc()||e.append(t)},_renderTabs:function(e){var t=e.all(n.tab),s=this.get("panelNode"),o=s?this.get("panelNode").get("children"):null,u=this;t&&(t.addClass(r.tab),e.all(n.tabLabel).addClass(r.tabLabel),e.all(n.tabPanel).addClass(r.tabPanel),t.each(function(e,t){var n=o?o.item(t):null;u.add({boundingBox:e,contentBox:e.one(i+r.tabLabel),panelNode:n})}))}},{LIST_TEMPLATE:'<ul class="'+r.tabviewList+'"></ul>',PANEL_TEMPLATE:'<div class="'+r.tabviewPanel+'"></div>',ATTRS:{defaultChildType:{value:"Tab"},listNode:{setter:function(t){return t=e.one(t),t&&t.addClass(r.tabviewList),t},valueFn:"_defListNodeValueFn"},panelNode:{setter:function(t){return t=e.one(t),t&&t.addClass(r.tabviewPanel),t},valueFn:"_defPanelNodeValueFn"},tabIndex:{value:null}},HTML_PARSER:{listNode:n.tabviewList,panelNode:n.tabviewPanel}});e.TabView=s;var o=e.Lang,r=e.TabviewBase._classNames;e.Tab=e.Base.create("tab",e.Widget,[e.WidgetChild],{BOUNDING_TEMPLATE:'<li class="'+r.tab+'"></li>',CONTENT_TEMPLATE:'<a class="'+r.tabLabel+'"></a>',PANEL_TEMPLATE:'<div class="'+r.tabPanel+'"></div>',_uiSetSelectedPanel:function(e){this.get("panelNode").toggleClass(r.selectedPanel,e)},_afterTabSelectedChange:function(e){this._uiSetSelectedPanel(e.newVal)},_afterParentChange:function(e){e.newVal?this._add():this._remove()},_initAria:function(){var t=this.get("contentBox"),n=t.get("id"),r=this.get("panelNode");n||(n=e.guid(),t.set("id",n)),t.set("role","tab"),t.get("parentNode").set("role","presentation"),r.setAttrs({role:"tabpanel","aria-labelledby":n})},syncUI:function(){this.set("label",this.get("label")),this.set("content",this.get("content")),this._uiSetSelectedPanel(this.get("selected"))},bindUI:function(){this.after("selectedChange",this._afterTabSelectedChange),this.after("parentChange",this._afterParentChange)},renderUI:function(){this._renderPanel(),this._initAria()},_renderPanel:function(){this.get("parent").get("panelNode").appendChild(this.get("panelNode"))},_add:function(){var e=this.get("parent").get("contentBox"),t=e.get("listNode"),n=e.get("panelNode");t&&t.appendChild(this.get("boundingBox")),n&&n.appendChild(this.get("panelNode"))},_remove:function(){this.get("boundingBox").remove(),this.get("panelNode").remove()},_onActivate:function(e){e.target===this&&(e.domEvent.preventDefault(),e.target.set("selected",1))},initializer:function(){this.publish(this.get("triggerEvent"),{defaultFn:this._onActivate})},_defLabelGetter:function(){return this.get("contentBox").getHTML()},_defLabelSetter:function(e){var t=this.get("contentBox");return t.getHTML()!==e&&t.setHTML(e),e},_defContentSetter:function(e){var t=this.get("panelNode");return t.getHTML()!==e&&t.setHTML(e),e},_defContentGetter:function(){return this.get("panelNode").getHTML()},_defPanelNodeValueFn:function(){var t=this.get("contentBox").get("href")||"",n=this.get("parent"),i=t.indexOf("#"),s;return t=t.substr(i),t.charAt(0)==="#"&&(s=e.one(t),s&&s.addClass(r.tabPanel)),!s&&n&&(s=n.get("panelNode").get("children").item(this.get("index"))),s||(s=e.Node.create(this.PANEL_TEMPLATE)),s}},{ATTRS:{triggerEvent:{value:"click"},label:{setter:"_defLabelSetter",getter:"_defLabelGetter"},content:{setter:"_defContentSetter",getter:"_defContentGetter"},panelNode:{setter:function(t){return t=e.one(t),t&&t.addClass(r.tabPanel),t},valueFn:"_defPanelNodeValueFn"},tabIndex:{value:null,validator:"_validTabIndex"}},HTML_PARSER:{selected:function(){var e=this.get("boundingBox").hasClass(r.selectedTab)?1:0;return e}}})},"3.9.1",{requires:["widget","widget-parent","widget-child","tabview-base","node-pluginhost","node-focusmanager"],skinnable:!0});
+
+
+
+/* YUI 3.9.1 (build 5852) Copyright 2013 Yahoo! Inc. http://yuilibrary.com/license/ */
+YUI.add('tabview', function (Y, NAME) {
+
+/**
+ * The TabView module
+ *
+ * @module tabview
+ */
+
+var _queries = Y.TabviewBase._queries,
+    _classNames = Y.TabviewBase._classNames,
+    DOT = '.',
+
+    /**
+     * Provides a tabbed widget interface
+     * @param config {Object} Object literal specifying tabview configuration properties.
+     *
+     * @class TabView
+     * @constructor
+     * @extends Widget
+     * @uses WidgetParent
+     */
+    TabView = Y.Base.create('tabView', Y.Widget, [Y.WidgetParent], {
+    _afterChildAdded: function() {
+        this.get('contentBox').focusManager.refresh();
+    },
+
+    _defListNodeValueFn: function() {
+        return Y.Node.create(TabView.LIST_TEMPLATE);
+    },
+
+    _defPanelNodeValueFn: function() {
+        return Y.Node.create(TabView.PANEL_TEMPLATE);
+    },
+
+    _afterChildRemoved: function(e) { // update the selected tab when removed
+        var i = e.index,
+            selection = this.get('selection');
+
+        if (!selection) { // select previous item if selection removed
+            selection = this.item(i - 1) || this.item(0);
+            if (selection) {
+                selection.set('selected', 1);
+            }
+        }
+
+        this.get('contentBox').focusManager.refresh();
+    },
+
+    _initAria: function() {
+        var contentBox = this.get('contentBox'),
+            tablist = contentBox.one(_queries.tabviewList);
+
+        if (tablist) {
+            tablist.setAttrs({
+                //'aria-labelledby':
+                role: 'tablist'
+            });
+        }
+    },
+
+    bindUI: function() {
+        //  Use the Node Focus Manager to add keyboard support:
+        //  Pressing the left and right arrow keys will move focus
+        //  among each of the tabs.
+
+        this.get('contentBox').plug(Y.Plugin.NodeFocusManager, {
+                        descendants: DOT + _classNames.tabLabel,
+                        keys: { next: 'down:39', // Right arrow
+                                previous: 'down:37' },  // Left arrow
+                        circular: true
+                    });
+
+        this.after('render', this._setDefSelection);
+        this.after('addChild', this._afterChildAdded);
+        this.after('removeChild', this._afterChildRemoved);
+    },
+    
+    renderUI: function() {
+        var contentBox = this.get('contentBox');
+        this._renderListBox(contentBox);
+        this._renderPanelBox(contentBox);
+        this._childrenContainer = this.get('listNode');
+        this._renderTabs(contentBox);
+    },
+
+    _setDefSelection: function() {
+        //  If no tab is selected, select the first tab.
+        var selection = this.get('selection') || this.item(0);
+
+        this.some(function(tab) {
+            if (tab.get('selected')) {
+                selection = tab;
+                return true;
+            }
+        });
+        if (selection) {
+            // TODO: why both needed? (via widgetParent/Child)?
+            this.set('selection', selection);
+            selection.set('selected', 1);
+        }
+    },
+
+    _renderListBox: function(contentBox) {
+        var node = this.get('listNode');
+        if (!node.inDoc()) {
+            contentBox.append(node);
+        }
+    },
+
+    _renderPanelBox: function(contentBox) {
+        var node = this.get('panelNode');
+        if (!node.inDoc()) {
+            contentBox.append(node);
+        }
+    },
+
+    _renderTabs: function(contentBox) {
+        var tabs = contentBox.all(_queries.tab),
+            panelNode = this.get('panelNode'),
+            panels = (panelNode) ? this.get('panelNode').get('children') : null,
+            tabview = this;
+
+        if (tabs) { // add classNames and fill in Tab fields from markup when possible
+            tabs.addClass(_classNames.tab);
+            contentBox.all(_queries.tabLabel).addClass(_classNames.tabLabel);
+            contentBox.all(_queries.tabPanel).addClass(_classNames.tabPanel);
+
+            tabs.each(function(node, i) {
+                var panelNode = (panels) ? panels.item(i) : null;
+                tabview.add({
+                    boundingBox: node,
+                    contentBox: node.one(DOT + _classNames.tabLabel),
+                    panelNode: panelNode
+                });
+            });
+        }
+    }
+}, {
+
+    LIST_TEMPLATE: '<ul class="' + _classNames.tabviewList + '"></ul>',
+    PANEL_TEMPLATE: '<div class="' + _classNames.tabviewPanel + '"></div>',
+
+    ATTRS: {
+        defaultChildType: {
+            value: 'Tab'
+        },
+
+        listNode: {
+            setter: function(node) {
+                node = Y.one(node);
+                if (node) {
+                    node.addClass(_classNames.tabviewList);
+                }
+                return node;
+            },
+
+            valueFn: '_defListNodeValueFn'
+        },
+
+        panelNode: {
+            setter: function(node) {
+                node = Y.one(node);
+                if (node) {
+                    node.addClass(_classNames.tabviewPanel);
+                }
+                return node;
+            },
+
+            valueFn: '_defPanelNodeValueFn'
+        },
+
+        tabIndex: {
+            value: null
+            //validator: '_validTabIndex'
+        }
+    },
+
+    HTML_PARSER: {
+        listNode: _queries.tabviewList,
+        panelNode: _queries.tabviewPanel
+    }
+});
+
+Y.TabView = TabView;
+var Lang = Y.Lang,
+    _classNames = Y.TabviewBase._classNames;
+
+/**
+ * Provides Tab instances for use with TabView
+ * @param config {Object} Object literal specifying tabview configuration properties.
+ *
+ * @class Tab
+ * @constructor
+ * @extends Widget
+ * @uses WidgetChild
+ */
+Y.Tab = Y.Base.create('tab', Y.Widget, [Y.WidgetChild], {
+    BOUNDING_TEMPLATE: '<li class="' + _classNames.tab + '"></li>',
+    CONTENT_TEMPLATE: '<a class="' + _classNames.tabLabel + '"></a>',
+    PANEL_TEMPLATE: '<div class="' + _classNames.tabPanel + '"></div>',
+
+    _uiSetSelectedPanel: function(selected) {
+        this.get('panelNode').toggleClass(_classNames.selectedPanel, selected);
+    },
+
+    _afterTabSelectedChange: function(event) {
+       this._uiSetSelectedPanel(event.newVal);
+    },
+
+    _afterParentChange: function(e) {
+        if (!e.newVal) {
+            this._remove();
+        } else {
+            this._add();
+        }
+    },
+
+    _initAria: function() {
+        var anchor = this.get('contentBox'),
+            id = anchor.get('id'),
+            panel = this.get('panelNode');
+ 
+        if (!id) {
+            id = Y.guid();
+            anchor.set('id', id);
+        }
+        //  Apply the ARIA roles, states and properties to each tab
+        anchor.set('role', 'tab');
+        anchor.get('parentNode').set('role', 'presentation');
+ 
+ 
+        //  Apply the ARIA roles, states and properties to each panel
+        panel.setAttrs({
+            role: 'tabpanel',
+            'aria-labelledby': id
+        });
+    },
+
+    syncUI: function() {
+        this.set('label', this.get('label'));
+        this.set('content', this.get('content'));
+        this._uiSetSelectedPanel(this.get('selected'));
+    },
+
+    bindUI: function() {
+       this.after('selectedChange', this._afterTabSelectedChange);
+       this.after('parentChange', this._afterParentChange);
+    },
+
+    renderUI: function() {
+        this._renderPanel();
+        this._initAria();
+    },
+
+    _renderPanel: function() {
+        this.get('parent').get('panelNode')
+            .appendChild(this.get('panelNode'));
+    },
+
+    _add: function() {
+        var parent = this.get('parent').get('contentBox'),
+            list = parent.get('listNode'),
+            panel = parent.get('panelNode');
+
+        if (list) {
+            list.appendChild(this.get('boundingBox'));
+        }
+
+        if (panel) {
+            panel.appendChild(this.get('panelNode'));
+        }
+    },
+    
+    _remove: function() {
+        this.get('boundingBox').remove();
+        this.get('panelNode').remove();
+    },
+
+    _onActivate: function(e) {
+         if (e.target === this) {
+             //  Prevent the browser from navigating to the URL specified by the
+             //  anchor's href attribute.
+             e.domEvent.preventDefault();
+             e.target.set('selected', 1);
+         }
+    },
+    
+    initializer: function() {
+       this.publish(this.get('triggerEvent'), {
+           defaultFn: this._onActivate
+       });
+    },
+
+    _defLabelGetter: function() {
+        return this.get('contentBox').getHTML();
+    },
+
+    _defLabelSetter: function(label) {
+        var labelNode = this.get('contentBox');
+        if (labelNode.getHTML() !== label) { // Avoid rewriting existing label.
+            labelNode.setHTML(label);
+        }
+        return label;
+    },
+
+    _defContentSetter: function(content) {
+        var panel = this.get('panelNode');
+        if (panel.getHTML() !== content) { // Avoid rewriting existing content.
+            panel.setHTML(content);
+        }
+        return content;
+    },
+
+    _defContentGetter: function() {
+        return this.get('panelNode').getHTML();
+    },
+
+    // find panel by ID mapping from label href
+    _defPanelNodeValueFn: function() {
+        var href = this.get('contentBox').get('href') || '',
+            parent = this.get('parent'),
+            hashIndex = href.indexOf('#'),
+            panel;
+
+        href = href.substr(hashIndex);
+
+        if (href.charAt(0) === '#') { // in-page nav, find by ID
+            panel = Y.one(href);
+            if (panel) {
+                panel.addClass(_classNames.tabPanel);
+            }
+        }
+
+        // use the one found by id, or else try matching indices
+        if (!panel && parent) {
+            panel = parent.get('panelNode')
+                    .get('children').item(this.get('index'));
+        }
+
+        if (!panel) { // create if none found
+            panel = Y.Node.create(this.PANEL_TEMPLATE);
+        }
+        return panel;
+    }
+}, {
+    ATTRS: {
+        /**
+         * @attribute triggerEvent
+         * @default "click"
+         * @type String
+         */
+        triggerEvent: {
+            value: 'click'
+        },
+
+        /**
+         * @attribute label
+         * @type HTML
+         */
+        label: {
+            setter: '_defLabelSetter',
+            getter: '_defLabelGetter'
+        },
+
+        /**
+         * @attribute content
+         * @type HTML
+         */
+        content: {
+            setter: '_defContentSetter',
+            getter: '_defContentGetter'
+        },
+
+        /**
+         * @attribute panelNode
+         * @type Y.Node
+         */
+        panelNode: {
+            setter: function(node) {
+                node = Y.one(node);
+                if (node) {
+                    node.addClass(_classNames.tabPanel);
+                }
+                return node;
+            },
+            valueFn: '_defPanelNodeValueFn'
+        },
+        
+        tabIndex: {
+            value: null,
+            validator: '_validTabIndex'
+        }
+
+    },
+
+    HTML_PARSER: {
+        selected: function() {
+            var ret = (this.get('boundingBox').hasClass(_classNames.selectedTab)) ?
+                        1 : 0;
+            return ret;
+        }
+    }
+
+});
+
+
+}, '3.9.1', {
+    "requires": [
+        "widget",
+        "widget-parent",
+        "widget-child",
+        "tabview-base",
+        "node-pluginhost",
+        "node-focusmanager"
+    ],
+    "skinnable": true
+});
