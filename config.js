@@ -1,3 +1,4 @@
+;(function(){
 window.JC = window.JC || {log:function(){}};
 JC.PATH = JC.PATH || scriptPath();
 /**
@@ -80,4 +81,4 @@ function scriptPath(){
     else if( /\\/.test( _path ) ){ _path = _path.split('\\'); _path.pop(); _path = _path.join('\\') + '/'; }
     return _path;
 }
-
+}());
