@@ -467,7 +467,7 @@
          * @type    string
          * @private
          */
-        this._id = &#x27;tree_&#x27; + new Date().getTime() + &#x27;_&#x27;;
+        this._id = JC.f.printf( &#x27;tree_{0}_{1}_&#x27;, new Date().getTime(), Model._insCount++ );
         /**
          * 树当前的高亮节点
          * @property    _highlight
@@ -485,6 +485,8 @@
         
         this._init();
     }
+
+    Model._insCount = 1;
     
     Model.prototype = {
         /**
