@@ -660,11 +660,7 @@
             });
         }
 
-        if( _treeIns.highlight() ) {
-            _treeIns.highlight().removeClass('highlight').removeClass( 'selectedTreeNode' );
-        }
-        _p.addClass('highlight').addClass( 'selectedTreeNode' );
-        _treeIns.highlight( _p );
+        _treeIns.selectedItem( _p );
 
         var _events = _treeIns.event( 'change' );
         if( _events && _events.length ){

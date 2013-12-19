@@ -1,5 +1,4 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Tree' ], function(){
-;(function($){
 /**
  * 组件用途简述
  *
@@ -33,7 +32,6 @@
         <h2>DropdownTree example</h2>
  */
     Bizs.DropdownTree = DropdownTree;
-    window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
 
     function DropdownTree( _selector ){
         _selector && ( _selector = $( _selector ) );
@@ -99,12 +97,26 @@
 
                 var _p = this
                     , _selectedId = _p._model.bdtInput().val().trim()
+                    , _treeItem
                     ;
 
                 _p._model.bdtInput().is( '[name]' ) 
                     && ( _selectedId = JC.f.getUrlParam( _p._model.bdtInput().attr('name') ) || _selectedId );
 
-                JC.log( _selectedId );
+                _selectedId && ( _treeItem = _p._model.treeIns().getItem( _selectedId ) );
+
+                if( !(_selectedId && _treeItem && _treeItem.length ) ){
+                    if( _p._model.is( '[bdtDefaultLabel]' ) ){
+                        _p._model.bdtLabel().html( _p._model.bdtDefaultLabel() );
+                    }
+
+                    if( _p._model.is( '[bdtDefaultValue]' ) ){
+                        _p._model.bdtInput().val( _p._model.bdtDefaultValue() );
+                        _selectedId = _p._model.bdtDefaultValue();
+                    }
+                }
+
+                //JC.log( _selectedId );
                 _selectedId 
                     && _p._model.bdtLabel().html( _p._model.treeIns().getItem( _selectedId ).attr( 'dataname' ) )
                     && ( _p._model.bdtInput().val( _selectedId )
@@ -112,20 +124,72 @@
                        )
                     ;
             }
-
-        , show: function(){ this._view.show(); }
-
-        , hide: function(){ this._view.hide(); }
-
-        , toggle: function(){ this._view.toggle(); }
-
+        /**
+         * 显示 树弹框
+         * @method  show
+         */
+        , show: function(){ this._view.show(); return this; }
+        /**
+         * 隐藏 树弹框
+         * @method  hide
+         */
+        , hide: function(){ this._view.hide(); return this; }
+        /**
+         * 显式/隐藏 树弹框
+         * @method  toggle
+         */
+        , toggle: function(){ this._view.toggle(); return this; }
+        /**
+         * 更新树菜单数据
+         * @method  update
+         * @param   {json}  _data
+         */
         , update:
             function( _data ){
+                //this.clear();
                 this._view.update( _data );
+                return this;
+            }
+        /**
+         * 清除选择数据
+         * @method  clear
+         */
+        , clear:
+            function(){
+                var _p = this;
+                if( _p._model.is( '[bdtDefaultLabel]' ) ){
+                    _p._model.bdtLabel().html( _p._model.bdtDefaultLabel() );
+                }else{
+                    _p._model.bdtLabel().html( '' );
+                }
+
+                if( _p._model.is( '[bdtDefaultValue]' ) ){
+                    _p._model.bdtInput().val( _p._model.bdtDefaultValue() );
+                }else{
+                    _p._model.bdtInput().val( '' );
+                }
+                return this;
+            }
+        /**
+         * 获取选中的 label
+         * @method  label
+         * @return  string
+         */
+        , label: function(){ return this._model.bdtLabel(); }
+        /**
+         * 获取或设置 选中的 id
+         * @method  val
+         * @param   {string}    _nodeId
+         * @return  {string of id}
+         */
+        , val: 
+            function( _nodeId ){ 
+                typeof _nodeId != 'undefined' && this.getItem( _nodeId ).trigger( 'click' );
+                return this._model.bdtInput().val();
             }
     });
 
-    DropdownTree.Model._instanceName = 'DropdownTree';
+    DropdownTree.Model._instanceName = 'DropdownTreeIns';
     JC.f.extendObject( DropdownTree.Model.prototype, {
         init:
             function(){
@@ -133,6 +197,9 @@
             }
 
         , bdtData: function(){ return this.windowProp( 'bdtData' ) || {}; }
+
+        , bdtDefaultLabel: function(){ return this.attrProp( 'bdtDefaultLabel' ) }
+        , bdtDefaultValue: function(){ return this.attrProp( 'bdtDefaultValue' ) }
 
         , bdtTreeBox:
             function(){
@@ -192,34 +259,6 @@
                     _p._model.treeIns().init();
                     _p._model.treeIns().open();
                 }
-                _p._model.bdtTreeBox().css( { 'z-index': ZINDEX_COUNT++ } );
-
-                /*
-                if( !_treeIns ){
-                    var _data = window[ _p.attr( 'treedata' ) ];
-
-                    var _tree = new JC.Tree( _treeNode, _data );
-                        _tree.on( 'click', function(){
-                            var _sp = $(this)
-                                , _dataid = _sp.attr('dataid')
-                                , _dataname = _sp.attr('dataname');
-                            
-                            _p.find( '> span.label' ).html( _dataname );
-                            _p.find( '> input[type=hidden]' ).val( _dataid );
-                            _p.trigger( 'click' );
-                         });
-                        _tree.on( 'RenderLabel', function( _data ){
-                            var _node = $(this);
-                            _node.html( JC.f.printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
-                        });
-                        _tree.init();
-                        _tree.open();
-
-                        var _defSelected = _p.find( '> input[type=hidden]' ).val();
-                        _defSelected && _tree.open( _defSelected );
-                }
-                _treeNode.css( { 'z-index': ZINDEX_COUNT++ } );
-                */
             }
 
         , show:
@@ -229,6 +268,7 @@
                 _p.updateZIndex();
                 _p._model.selector().addClass( 'bdtBox-active' );
                 _p._model.bdtTreeBox().show();
+                _p._model.bdtTreeBox().css( { 'z-index': ZINDEX_COUNT++ } );
             }
 
         , hide:
@@ -311,7 +351,6 @@
         _evt.stopPropagation();
     });
 
-}(jQuery));
     return Bizs.DropdownTree;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 

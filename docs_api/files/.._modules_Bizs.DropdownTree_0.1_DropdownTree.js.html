@@ -193,7 +193,6 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Tree&#x27; ], function(){
-;(function($){
 /**
  * 组件用途简述
  *
@@ -227,7 +226,6 @@
         &lt;h2&gt;DropdownTree example&lt;/h2&gt;
  */
     Bizs.DropdownTree = DropdownTree;
-    window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
 
     function DropdownTree( _selector ){
         _selector &amp;&amp; ( _selector = $( _selector ) );
@@ -273,7 +271,7 @@
     JC.f.extendObject( DropdownTree.prototype, {
         _beforeInit:
             function(){
-                JC.log( &#x27;DropdownTree _beforeInit&#x27;, new Date().getTime() );
+                //JC.log( &#x27;DropdownTree _beforeInit&#x27;, new Date().getTime() );
             }
     
         , _initHanlderEvent:
@@ -288,30 +286,114 @@
 
         , _inited:
             function(){
-                JC.log( &#x27;DropdownTree _inited&#x27;, new Date().getTime() );
+                //JC.log( &#x27;DropdownTree _inited&#x27;, new Date().getTime() );
                 this.update();
+
+                var _p = this
+                    , _selectedId = _p._model.bdtInput().val().trim()
+                    , _treeItem
+                    ;
+
+                _p._model.bdtInput().is( &#x27;[name]&#x27; ) 
+                    &amp;&amp; ( _selectedId = JC.f.getUrlParam( _p._model.bdtInput().attr(&#x27;name&#x27;) ) || _selectedId );
+
+                _selectedId &amp;&amp; ( _treeItem = _p._model.treeIns().getItem( _selectedId ) );
+
+                if( !(_selectedId &amp;&amp; _treeItem &amp;&amp; _treeItem.length ) ){
+                    if( _p._model.is( &#x27;[bdtDefaultLabel]&#x27; ) ){
+                        _p._model.bdtLabel().html( _p._model.bdtDefaultLabel() );
+                    }
+
+                    if( _p._model.is( &#x27;[bdtDefaultValue]&#x27; ) ){
+                        _p._model.bdtInput().val( _p._model.bdtDefaultValue() );
+                        _selectedId = _p._model.bdtDefaultValue();
+                    }
+                }
+
+                //JC.log( _selectedId );
+                _selectedId 
+                    &amp;&amp; _p._model.bdtLabel().html( _p._model.treeIns().getItem( _selectedId ).attr( &#x27;dataname&#x27; ) )
+                    &amp;&amp; ( _p._model.bdtInput().val( _selectedId )
+                        , _p._model.treeIns().selectedItem( _p._model.treeIns().getItem( _selectedId ) )
+                       )
+                    ;
             }
-
-        , show: function(){ this._view.show(); }
-
-        , hide: function(){ this._view.hide(); }
-
-        , toggle: function(){ this._view.toggle(); }
-
+        /**
+         * 显示 树弹框
+         * @method  show
+         */
+        , show: function(){ this._view.show(); return this; }
+        /**
+         * 隐藏 树弹框
+         * @method  hide
+         */
+        , hide: function(){ this._view.hide(); return this; }
+        /**
+         * 显式/隐藏 树弹框
+         * @method  toggle
+         */
+        , toggle: function(){ this._view.toggle(); return this; }
+        /**
+         * 更新树菜单数据
+         * @method  update
+         * @param   {json}  _data
+         */
         , update:
             function( _data ){
+                //this.clear();
                 this._view.update( _data );
+                return this;
+            }
+        /**
+         * 清除选择数据
+         * @method  clear
+         */
+        , clear:
+            function(){
+                var _p = this;
+                if( _p._model.is( &#x27;[bdtDefaultLabel]&#x27; ) ){
+                    _p._model.bdtLabel().html( _p._model.bdtDefaultLabel() );
+                }else{
+                    _p._model.bdtLabel().html( &#x27;&#x27; );
+                }
+
+                if( _p._model.is( &#x27;[bdtDefaultValue]&#x27; ) ){
+                    _p._model.bdtInput().val( _p._model.bdtDefaultValue() );
+                }else{
+                    _p._model.bdtInput().val( &#x27;&#x27; );
+                }
+                return this;
+            }
+        /**
+         * 获取选中的 label
+         * @method  label
+         * @return  string
+         */
+        , label: function(){ return this._model.bdtLabel(); }
+        /**
+         * 获取或设置 选中的 id
+         * @method  val
+         * @param   {string}    _nodeId
+         * @return  {string of id}
+         */
+        , val: 
+            function( _nodeId ){ 
+                typeof _nodeId != &#x27;undefined&#x27; &amp;&amp; this.getItem( _nodeId ).trigger( &#x27;click&#x27; );
+                return this._model.bdtInput().val();
             }
     });
 
-    DropdownTree.Model._instanceName = &#x27;DropdownTree&#x27;;
+    DropdownTree.Model._instanceName = &#x27;DropdownTreeIns&#x27;;
     JC.f.extendObject( DropdownTree.Model.prototype, {
         init:
             function(){
-                JC.log( &#x27;DropdownTree.Model.init:&#x27;, new Date().getTime() );
+                //JC.log( &#x27;DropdownTree.Model.init:&#x27;, new Date().getTime() );
             }
 
         , bdtData: function(){ return this.windowProp( &#x27;bdtData&#x27; ) || {}; }
+
+        , bdtDefaultLabel: function(){ return this.attrProp( &#x27;bdtDefaultLabel&#x27; ) }
+        , bdtDefaultValue: function(){ return this.attrProp( &#x27;bdtDefaultValue&#x27; ) }
 
         , bdtTreeBox:
             function(){
@@ -330,26 +412,29 @@
                 var _r = this.selector().find( &#x27;&gt; .bdtInput&#x27; );
                 return _r;
             }
+
+        , treeIns:
+            function( _setter ){
+                this._treeIns = _setter || JC.Tree.getInstance( this.bdtTreeBox() );
+                return this._treeIns;
+            }
     });
 
     JC.f.extendObject( DropdownTree.View.prototype, {
         init:
             function(){
-                JC.log( &#x27;DropdownTree.View.init:&#x27;, new Date().getTime() );
+                //JC.log( &#x27;DropdownTree.View.init:&#x27;, new Date().getTime() );
             }
 
         , update:
             function( _data ){
-                var _p = this, _tins = _p._model.treeIns;
+                var _p = this;
                 _data = _data || _p._model.bdtData();
 
-                if( !_p._model.treeIns ){
+                if( !_p._model.treeIns() ){
+                    _p._model.treeIns( new JC.Tree( _p._model.bdtTreeBox(), _data ) );
 
-                    console.dir &amp;&amp; console.dir( _data );
-
-                    _tins = _p._model.treeIns = new JC.Tree( _p._model.bdtTreeBox(), _data );
-
-                    _tins.on( &#x27;click&#x27;, function(){
+                    _p._model.treeIns().on( &#x27;click&#x27;, function(){
                         var _sp = $(this)
                             , _dataid = _sp.attr(&#x27;dataid&#x27;)
                             , _dataname = _sp.attr(&#x27;dataname&#x27;);
@@ -360,41 +445,14 @@
                         $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ &#x27;DropdownTreeSelected&#x27;, _dataid, _dataname, _sp ] );
                      });
 
-                    _tins.on( &#x27;RenderLabel&#x27;, function( _data ){
+                    _p._model.treeIns().on( &#x27;RenderLabel&#x27;, function( _data ){
                         var _node = $(this);
                         _node.html( JC.f.printf( &#x27;&lt;a href=&quot;javascript:&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#x27;, _data[0], _data[1] ) );
                     });
 
-                    _tins.init();
-                    _tins.open();
+                    _p._model.treeIns().init();
+                    _p._model.treeIns().open();
                 }
-
-                /*
-                if( !_treeIns ){
-                    var _data = window[ _p.attr( &#x27;treedata&#x27; ) ];
-
-                    var _tree = new JC.Tree( _treeNode, _data );
-                        _tree.on( &#x27;click&#x27;, function(){
-                            var _sp = $(this)
-                                , _dataid = _sp.attr(&#x27;dataid&#x27;)
-                                , _dataname = _sp.attr(&#x27;dataname&#x27;);
-                            
-                            _p.find( &#x27;&gt; span.label&#x27; ).html( _dataname );
-                            _p.find( &#x27;&gt; input[type=hidden]&#x27; ).val( _dataid );
-                            _p.trigger( &#x27;click&#x27; );
-                         });
-                        _tree.on( &#x27;RenderLabel&#x27;, function( _data ){
-                            var _node = $(this);
-                            _node.html( JC.f.printf( &#x27;&lt;a href=&quot;javascript:&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#x27;, _data[0], _data[1] ) );
-                        });
-                        _tree.init();
-                        _tree.open();
-
-                        var _defSelected = _p.find( &#x27;&gt; input[type=hidden]&#x27; ).val();
-                        _defSelected &amp;&amp; _tree.open( _defSelected );
-                }
-                _treeNode.css( { &#x27;z-index&#x27;: ZINDEX_COUNT++ } );
-                */
             }
 
         , show:
@@ -404,6 +462,7 @@
                 _p.updateZIndex();
                 _p._model.selector().addClass( &#x27;bdtBox-active&#x27; );
                 _p._model.bdtTreeBox().show();
+                _p._model.bdtTreeBox().css( { &#x27;z-index&#x27;: ZINDEX_COUNT++ } );
             }
 
         , hide:
@@ -436,43 +495,35 @@
         function( _data ){
             var _r = {};
 
-            if( _data ){
-                if( _data.root.length &gt; 2 ){
-                    _data.root.shift();
-                    _r.root = _data.root;
-                 }
+            if( _data &amp;&amp; _data.root &amp;&amp; _data.root.length &gt; 2 ){
+                _data.root.shift();
+                _r.root = _data.root;
                 _r.data = {};
                 for( var k in _data.data ){
                     _r.data[ k ] = [];
                     for( var i = 0, j = _data.data[k].length; i &lt; j; i++ ){
-                        if( _data.data[k][i].length &lt; 3 ) continue;
+                        if( _data.data[k][i].length &lt; 3 ) {
+                            _r.data[k].push( _data.data[k][i] );
+                            continue;
+                        }
                         _data.data[k][i].shift();
                         _r.data[k].push( _data.data[k][i] );
                     }
                 }
+            }else{
+                _r = _data;
             }
             return _r;
         };
 
-    /*
     $(document).ready( function(){
         var _insAr = 0;
         DropdownTree.autoInit
             &amp;&amp; ( _insAr = DropdownTree.init() )
             ;
     });
-    */
-    var _PRE_CLICK;
+
     $(document).delegate( &#x27;div.js_bizDropdownTree&#x27;, &#x27;click&#x27;, function( _evt ){
-        _evt.stopPropagation();
-
-        if( _PRE_CLICK ){
-            if( ( new Date().getTime() - _PRE_CLICK ) &lt; 200 ){
-                return;
-            }
-        }
-        _PRE_CLICK = new Date().getTime();
-
         var _p = $(this), _ins;
 
         JC.f.safeTimeout( function(){
@@ -494,7 +545,6 @@
         _evt.stopPropagation();
     });
 
-}(jQuery));
     return Bizs.DropdownTree;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb ) { 
