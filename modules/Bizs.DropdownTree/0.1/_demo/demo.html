@@ -22,7 +22,13 @@
 
         requirejs( [ 'Bizs.DropdownTree' ]
         , function(){
-
+            $( 'div.js_bizDropdownTree' ).each( function(){
+                var _ins = JC.BaseMVC.getInstance( $(this), Bizs.DropdownTree );
+                    _ins 
+                        && _ins.on( 'DropdownTreeSelected', function( _evt, _id, _name, _triggerSelector ){
+                            JC.log( [ _evt, _id, _name ] );
+                        });
+            });
         });
 
         var treeData1 = {

@@ -310,9 +310,7 @@
         , _initHanlderEvent:
             function(){
                 var _p = this;
-
                 _p.on( &#x27;DropdownTreeSelected&#x27;, function( _evt, _id, _name, _triggerSelector ){
-                    //alert( [ _id, _name ] );
                     _p.hide();
                 });
             }
@@ -523,6 +521,22 @@
                 this._model.bdtTreeBox().css( { &#x27;z-index&#x27;: ZINDEX_COUNT++ } );
             }
     });
+    /**
+     * 选择树节点时触发的事件
+     * @event   DropdownTreeSelected
+     * @param   {object}    _evt
+     * @param   {string}    _id
+     * @param   {string}    _name
+     * @param   {selector}  _triggerSelector
+     * @example
+            $( &#x27;div.js_bizDropdownTree&#x27; ).each( function(){
+                var _ins = JC.BaseMVC.getInstance( $(this), Bizs.DropdownTree );
+                    _ins 
+                        &amp;&amp; _ins.on( &#x27;DropdownTreeSelected&#x27;, function( _evt, _id, _name, _triggerSelector ){
+                            JC.log( [ _evt, _id, _name ] );
+                        });
+            });
+     */
 
     JC.Tree.dataFilter = JC.Tree.dataFilter ||
         function( _data ){
