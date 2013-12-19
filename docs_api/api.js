@@ -18,6 +18,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.LunarCalendar",
         "JC.Panel",
         "JC.Placeholder",
+        "JC.PopTips",
         "JC.Slider",
         "JC.Suggest",
         "JC.Tab",
