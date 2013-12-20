@@ -195,7 +195,8 @@ window.Bizs = window.Bizs || {};
         * @method log
         * @static
         */
-       , log: function(){ JC.debug && window.console && console.log( sliceArgs( arguments ).join(' ') ); }
+       //, log: function(){ JC.debug && window.console && console.log( sliceArgs( arguments ).join(' ') ); }
+       //已在 JC.common 声明
        /**
         * 定义输出路径的 v 参数, 以便控制缓存
         * @property     pathPostfix
@@ -351,7 +352,7 @@ window.Bizs = window.Bizs || {};
         */
        , _USE_CACHE: {}
     };
-    for( var k in CLASS ) JC[ k ] = CLASS[ k ];
+    JC.f.extendObject( JC, CLASS );
     /**
      * UXC 是 JC 的别名
      * <br />存在这个变量是为了向后兼容
