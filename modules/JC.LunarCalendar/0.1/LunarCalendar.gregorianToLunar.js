@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.LunarCalendar.default' ], function(){
     /**
      * 从公历日期获得农历日期
      * <br /> 返回的数据格式
@@ -302,6 +302,7 @@
             }
     };
 
+    return JC.LunarCalendar;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 
             typeof _name == 'function' && ( _cb = _name );

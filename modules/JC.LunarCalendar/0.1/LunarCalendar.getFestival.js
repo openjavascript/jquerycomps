@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.LunarCalendar.default' ], function(){
     JC.LunarCalendar.getFestivals = getFestivals;
     /**
      * 返回农历和国历的所在日期的所有节日
@@ -207,6 +207,7 @@
         return _n.slice( _n.length - _len );
     }
 
+    return JC.LunarCalendar;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 
             typeof _name == 'function' && ( _cb = _name );

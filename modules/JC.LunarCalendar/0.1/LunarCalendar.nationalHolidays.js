@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.LunarCalendar.default' ], function(){
     var o = JC.LunarCalendar.nationalHolidays = JC.LunarCalendar.nationalHolidays || {};
     //2013 元旦
     o['20130101'] = { 'isHoliday': true };
@@ -92,6 +92,7 @@
     o['20141007'] = { 'isHoliday': true };
     o['20141011'] = { 'isWorkday': true };
 
+    return JC.LunarCalendar;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 
             typeof _name == 'function' && ( _cb = _name );
