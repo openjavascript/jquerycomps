@@ -1,6 +1,6 @@
  ;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
 /**
- * Poptips 带箭头的气泡提示框功能
+ * PopTips 带箭头的气泡提示框功能
  * <p>
  *      <b>require</b>: 
  *          <a href='window.jQuery.html'>jQuery</a>
