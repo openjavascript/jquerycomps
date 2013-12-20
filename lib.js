@@ -9652,6 +9652,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         , "parseBool": parseBool
         , "parseFinance": parseFinance
         , "parseISODate": parseISODate
+        , "parseDate": parseDate
         , "printf": printf
 
         , "pureDate": pureDate
@@ -10057,6 +10058,29 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         }
         return _r;
     }
+    /**
+     * 从日期字符串解析日期对象
+     * <br />兼容 JC.Calendar 日期格式
+     * @method  parseDate
+     * @param   {date}      string
+     * @param   {selector}  _selector   如果 _selector 为真, 则尝试从 _selector 的 html 属性 dateParse 对日期进行格式化
+     * @return  {date|null}
+     * @static
+     */
+    function parseDate( _date, _selector ){
+        if( !_date ) return null;
+        var _parse = parseISODate;
+            
+        _selector 
+            && ( _selector = $( _selector ) ).length
+            && _selector.attr( 'dateParse' )
+            && ( _parse = window[ _selector.attr( 'dateParse' ) ] || _parse )
+            ;
+        _date = _parse( _date );
+        _date && _date.start && ( _date = _date.start );
+        return _date;
+    }
+
     /**
      * 获取不带 时分秒的 日期对象
      * @method  pureDate
