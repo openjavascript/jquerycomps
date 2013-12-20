@@ -1006,7 +1006,7 @@
                     switch( _datatype ){
                         default:
                             {
-                                return JC.f.parseISODate( _item.attr('minvalue') );
+                                return JC.f.parseDate( _item.attr('minvalue'), _item );
                             }
                     }
                 }else{
@@ -1024,7 +1024,7 @@
                     switch( _datatype ){
                         default:
                             {
-                                return JC.f.parseISODate( _item.attr('maxvalue') );
+                                return JC.f.parseDate( _item.attr('maxvalue'), _item );
                             }
                     }
                 }else{
@@ -1254,7 +1254,7 @@
          */
         , d: 
             function( _item, _noError ){
-                var _p = this, _val = $.trim( _item.val() ), _r = true, _date = JC.f.parseISODate( _val ), _tmpDate;
+                var _p = this, _val = $.trim( _item.val() ), _r = true, _date = JC.f.parseDate( _val, _item ), _tmpDate;
                     
                 if( _val && _date ){
 
@@ -1325,8 +1325,8 @@
 
                         if( _toDateEl[0] != _fromDateEl[0] && _toDateEl.val().length && _fromDateEl.val().length ){
 
-                            _r && ( _r = _p.d( _toDateEl, true ) ) && ( _min = JC.f.parseISODate( _fromDateEl.val() ) );
-                            _r && ( _r = _p.d( _fromDateEl, true ) ) && ( _max = JC.f.parseISODate( _toDateEl.val() ) );
+                            _r && ( _r = _p.d( _toDateEl, true ) ) && ( _min = JC.f.parseDate( _fromDateEl.val(), _fromDateEl ) );
+                            _r && ( _r = _p.d( _fromDateEl, true ) ) && ( _max = JC.f.parseDate( _toDateEl.val(), _toDateEl ) );
 
                             _r && _min && _max 
                                && _min.getTime() > _max.getTime() 
