@@ -194,6 +194,7 @@
             Calendar.pickDate( this );
     });
 
+    return JC.Calendar;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 
             typeof _name == 'function' && ( _cb = _name );

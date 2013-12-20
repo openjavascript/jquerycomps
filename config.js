@@ -30,6 +30,10 @@ requirejs.config( {
         , 'JC.DCalendar.date': 'modules/JC.DCalendar/0.1/DCalendar.date'
 
         , 'JC.Form': 'modules/JC.Form/0.1/Form'
+        , 'JC.Form.default': 'modules/JC.Form/0.1/Form.default'
+        , 'JC.Form.initAutoFill': 'modules/JC.Form/0.1/Form.initAutoFill'
+        , 'JC.Form.initNumericStepper': 'modules/JC.Form/0.1/Form.initNumericStepper'
+
         , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
         , 'JC.LunarCalendar': 'modules/JC.LunarCalendar/0.1/LunarCalendar'
         , 'JC.Slider': 'modules/JC.Slider/0.1/Slider'

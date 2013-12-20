@@ -51,6 +51,7 @@
                 + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
             ;
     });
+
     return JC.CompExample;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 

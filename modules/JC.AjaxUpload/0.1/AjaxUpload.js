@@ -1,5 +1,4 @@
 (function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
- ;(function($){
     /**
      * Ajax 文件上传
      * <p><b>require</b>: 
@@ -131,7 +130,6 @@
                     "errmsg": ""
                 }
      */
-    window.JC = window.JC || {log:function(){}};
     JC.AjaxUpload = AjaxUpload;
 
     function AjaxUpload( _selector ){
@@ -650,7 +648,6 @@
         AjaxUpload.autoInit && AjaxUpload.init();
     });
 
-}(jQuery));
     return JC.AjaxUpload;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

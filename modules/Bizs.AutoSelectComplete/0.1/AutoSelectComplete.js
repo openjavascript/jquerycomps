@@ -1,7 +1,6 @@
 //TODO: 文本框 自动添加 autocomplete="off", 防止表单的默认提示
 //列表项 添加 title 属性
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.AutoComplete', 'JC.AutoSelect' ], function(){
-;(function($){
     /**
      * <h2>结合 JC.AutoSelect 与 JC.AutoComplete 综合使用的一个业务逻辑</h2>
      * <br />应用场景: CRM 多级广告位最后一级因为内容较多, 用户使用传统的下拉框选择比较不便
@@ -39,7 +38,6 @@
      * @author  qiushaowei<suches@btbtd.org> | 75 Team
      * @example
      */
-    window.Bizs = window.Bizs || {};
     Bizs.AutoSelectComplete = AutoSelectComplete;
 
     function AutoSelectComplete( _selector ){
@@ -289,7 +287,6 @@
             ;
     });
 
-}(jQuery));
     return Bizs.AutoSelectComplete;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

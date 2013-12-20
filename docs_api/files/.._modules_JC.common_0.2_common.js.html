@@ -201,12 +201,14 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 ;(function(define, _win) { &#x27;use strict&#x27;; define( [], function(){
-;(function($){
+    !window.console &amp;&amp; ( window.console = { log: function(){}, dir: function(){} } );
     /**
      * 声明主要命名空间, 方便迁移
      */
     window.JC = window.JC || {};
-    JC.log = function(){ JC.debug &amp;&amp; window.console &amp;&amp; console.log( sliceArgs( arguments ).join(&#x27; &#x27;) ); };
+    JC.log = function(){ JC.debug &amp;&amp; console.log( sliceArgs( arguments ).join(&#x27; &#x27;) ); };
+    JC.dir = function( _obj ){ JC.debug &amp;&amp; console.dir( _obj ); };
+
     JC.PATH = JC.PATH || scriptPath();
 
     window.Bizs = window.Bizs || {};
@@ -1343,7 +1345,6 @@
         return _r;
     }
 
-}(jQuery));
     return JC.f;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb) { 
