@@ -1073,10 +1073,13 @@
                 if( _tmp = JC.f.dateDetect( _selector.attr(&#x27;defaultdate&#x27;) )) _r.date = _tmp;
                 else _r.date = this.date || new Date();
 
-
                 _r.minvalue = JC.f.dateDetect( _selector.attr(&#x27;minvalue&#x27;) );
                 _r.maxvalue = JC.f.dateDetect( _selector.attr(&#x27;maxvalue&#x27;) );
                 
+                _r.date &amp;&amp; ( _r.data = JC.f.pureDate( _r.date ) );
+                _r.minvalue &amp;&amp; ( _r.minvalue = JC.f.pureDate( _r.minvalue ) );
+                _r.maxvalue &amp;&amp; ( _r.maxvalue = JC.f.pureDate( _r.maxvalue ) );
+
                 return this.dateObj = _r;
             }
         /**
@@ -1114,7 +1117,8 @@
             function(){
                 var _r = this.date;
                     this.selector().attr( &#x27;clcDate&#x27; )
-                        &amp;&amp; ( _r = JC.f.dateDetect( this.selector().attr(&#x27;clcDate&#x27;) ) || _r );
+                        &amp;&amp; ( _r = JC.f.dateDetect( this.selector().attr(&#x27;clcDate&#x27;) ) || _r )
+                        &amp;&amp; ( _r = JC.f.pureDate( _r ) );
                 return _r;
             }
         , selector: function(){ return this.container; }

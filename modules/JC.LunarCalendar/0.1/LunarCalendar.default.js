@@ -871,10 +871,13 @@
                 if( _tmp = JC.f.dateDetect( _selector.attr('defaultdate') )) _r.date = _tmp;
                 else _r.date = this.date || new Date();
 
-
                 _r.minvalue = JC.f.dateDetect( _selector.attr('minvalue') );
                 _r.maxvalue = JC.f.dateDetect( _selector.attr('maxvalue') );
                 
+                _r.date && ( _r.data = JC.f.pureDate( _r.date ) );
+                _r.minvalue && ( _r.minvalue = JC.f.pureDate( _r.minvalue ) );
+                _r.maxvalue && ( _r.maxvalue = JC.f.pureDate( _r.maxvalue ) );
+
                 return this.dateObj = _r;
             }
         /**
@@ -912,7 +915,8 @@
             function(){
                 var _r = this.date;
                     this.selector().attr( 'clcDate' )
-                        && ( _r = JC.f.dateDetect( this.selector().attr('clcDate') ) || _r );
+                        && ( _r = JC.f.dateDetect( this.selector().attr('clcDate') ) || _r )
+                        && ( _r = JC.f.pureDate( _r ) );
                 return _r;
             }
         , selector: function(){ return this.container; }
