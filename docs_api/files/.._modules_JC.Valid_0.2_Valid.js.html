@@ -1206,7 +1206,7 @@
                     switch( _datatype ){
                         default:
                             {
-                                return JC.f.parseISODate( _item.attr(&#x27;minvalue&#x27;) );
+                                return JC.f.parseDate( _item.attr(&#x27;minvalue&#x27;), _item );
                             }
                     }
                 }else{
@@ -1224,7 +1224,7 @@
                     switch( _datatype ){
                         default:
                             {
-                                return JC.f.parseISODate( _item.attr(&#x27;maxvalue&#x27;) );
+                                return JC.f.parseDate( _item.attr(&#x27;maxvalue&#x27;), _item );
                             }
                     }
                 }else{
@@ -1454,7 +1454,7 @@
          */
         , d: 
             function( _item, _noError ){
-                var _p = this, _val = $.trim( _item.val() ), _r = true, _date = JC.f.parseISODate( _val ), _tmpDate;
+                var _p = this, _val = $.trim( _item.val() ), _r = true, _date = JC.f.parseDate( _val, _item ), _tmpDate;
                     
                 if( _val &amp;&amp; _date ){
 
@@ -1525,8 +1525,8 @@
 
                         if( _toDateEl[0] != _fromDateEl[0] &amp;&amp; _toDateEl.val().length &amp;&amp; _fromDateEl.val().length ){
 
-                            _r &amp;&amp; ( _r = _p.d( _toDateEl, true ) ) &amp;&amp; ( _min = JC.f.parseISODate( _fromDateEl.val() ) );
-                            _r &amp;&amp; ( _r = _p.d( _fromDateEl, true ) ) &amp;&amp; ( _max = JC.f.parseISODate( _toDateEl.val() ) );
+                            _r &amp;&amp; ( _r = _p.d( _toDateEl, true ) ) &amp;&amp; ( _min = JC.f.parseDate( _fromDateEl.val(), _fromDateEl ) );
+                            _r &amp;&amp; ( _r = _p.d( _fromDateEl, true ) ) &amp;&amp; ( _max = JC.f.parseDate( _toDateEl.val(), _toDateEl ) );
 
                             _r &amp;&amp; _min &amp;&amp; _max 
                                &amp;&amp; _min.getTime() &gt; _max.getTime() 
