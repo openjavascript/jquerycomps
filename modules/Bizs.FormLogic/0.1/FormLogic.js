@@ -257,6 +257,7 @@
             </dl>     
     */
     Bizs.FormLogic = FormLogic;
+
     function FormLogic( _selector ){
         _selector && ( _selector = $( _selector ) );
         if( FormLogic.getInstance( _selector ) ) return FormLogic.getInstance( _selector );

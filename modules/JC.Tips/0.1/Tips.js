@@ -1,6 +1,4 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
-;(function($){
-    window.JC = window.JC || {log:function(){}};
     window.Tips = JC.Tips = Tips;
     /**
      * Tips 提示信息类
@@ -616,7 +614,6 @@
         }, 10);
     });
 
-}(jQuery));
     return JC.Tips;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

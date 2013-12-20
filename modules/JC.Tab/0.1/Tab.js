@@ -1,6 +1,4 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
-;(function($){
-    window.JC = window.JC || {log:function(){}};
     window.Tab = JC.Tab = Tab;
     /**
      * Tab 选项卡
@@ -661,7 +659,6 @@
         _tab = new Tab( _p, _src );
     });
 
-}(jQuery));
     return JC.Tab;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

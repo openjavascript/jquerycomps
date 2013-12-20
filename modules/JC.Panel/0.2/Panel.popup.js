@@ -576,6 +576,8 @@
             _p.data('PopupInstance') && _logic.onresize( _p.data('PopupInstance') );
         });
     });
+
+    return JC.Panel;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 
             typeof _name == 'function' && ( _cb = _name );

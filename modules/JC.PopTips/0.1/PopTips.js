@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
+ ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
  * PopTips 带箭头的气泡提示框功能
  * <p>
@@ -99,9 +99,6 @@
  *    </dd>
  *</dl> 
  *
- *
- *
- *
  * @namespace JC
  * @class PopTips
  * @extends JC.BaseMVC
@@ -123,8 +120,6 @@
 			是中国百科全书性质著作的渊源。</span>
 	</span>
   */
-;(function($){
-    window.JC = window.JC || {log:function(){}};
     JC.PopTips = PopTips;
  
     function PopTips( _selector ){
@@ -707,7 +702,6 @@
         //JC.log('resize');
     });
  
-}(jQuery));
     return JC.PopTips;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 
