@@ -200,7 +200,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
     ///
     /// TODO: 添加事件响应机制
     ///
@@ -208,38 +208,66 @@
     /**
      * 农历日历组件
      * &lt;br /&gt;全局访问请使用 JC.LunarCalendar 或 LunarCalendar
-     * &lt;br /&gt;DOM 加载完毕后
-     * , LunarCalendar会自动初始化页面所有具备识别符的日历, 目前可识别: div.js_LunarCalendar, td.js_LunarCalendar, li.js_LunarCalendar
-     * &lt;br /&gt;Ajax 加载内容后, 如果有日历组件需求的话, 需要手动初始化 var ins = new JC.LunarCalendar( _selector );
-     * &lt;p&gt;
-     *      初始化时, 如果日历是添加到某个selector里, 那么selector可以指定一些设置属性
-     *      &lt;br /&gt;&lt;b&gt;hidecontrol&lt;/b&gt;: 如果设置该属性, 那么日历将隐藏操作控件
-     *      &lt;br /&gt;&lt;b&gt;minvalue&lt;/b&gt;: 设置日历的有效最小选择范围, 格式YYYY-mm-dd
-     *      &lt;br /&gt;&lt;b&gt;maxvalue&lt;/b&gt;: 设置日历的有效最大选择范围, 格式YYYY-mm-dd
-     *      &lt;br /&gt;&lt;b&gt;nopreviousfestivals&lt;/b&gt;: 不显示上个月的节日
-     *      &lt;br /&gt;&lt;b&gt;nonextfestivals&lt;/b&gt;: 不显示下个月的节日
-     * &lt;/p&gt;
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
      *      &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
-     *      , &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
+     *      , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
      * &lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.LunarCalendar.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../modules/JC.LunarCalendar/0.1/_demo/&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     * &lt;p&gt;
+     * DOM 加载完毕后
+     * &lt;br /&gt;会自动初始化页面可识别的node, 目前可识别: div.js_LunarCalendar, td.js_LunarCalendar, li.js_LunarCalendar
+     * &lt;br /&gt;Ajax 加载内容后, 如果有日历组件需求的话, 需要手动初始化 JC.LunarCalendar.init( _selector );
+     * &lt;/p&gt;
+     *
+     * &lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
+     * &lt;dl&gt;
+     *      &lt;dt&gt;clcDate = date string&lt;/dt&gt;
+     *      &lt;dd&gt;设置日历的默认日期&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;minvalue = date string&lt;/dt&gt;
+     *      &lt;dd&gt;设置日历的有效最小选择范围, 格式YYYY-mm-dd&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;maxvalue = date string&lt;/dt&gt;
+     *      &lt;dd&gt;设置日历的有效最大选择范围, 格式YYYY-mm-dd&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;hidecontrol = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;是否隐藏日历将操作控件&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;nopreviousfestivals = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;不显示上个月的节日&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;nonextfestivals = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;不显示下个月的节日&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;clcSelectedItemCb = function, &lt;b&gt;window变量域&lt;/b&gt;&lt;/dt&gt;
+     *      &lt;dd&gt;选择日期时触发的回调
+&lt;pre&gt;function clcSelectedItemCb1( _date, _td, _a ){
+    var _ins = this;
+    JC.log( _date );
+}&lt;/pre&gt;
+     *      &lt;/dd&gt;
+     * &lt;/dl&gt; 
+     *
      * @namespace JC
      * @class LunarCalendar
      * @constructor
-     * @param   {selector}  _container  指定要显示日历的选择器, 如果不显示指定该值, 默认为 document.body
+     * @param   {selector}  _selector   指定要显示日历的选择器, 如果不显示指定该值, 默认为 document.body
      * @param   {date}      _date       日历的当前日期, 如果不显示指定该值, 默认为当天
      * @version dev 0.1
      * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 team
      * @date    2013-06-13
      */
-    function LunarCalendar( _container, _date ){
-        _container &amp;&amp; ( _container = $(_container) );
-        !(_container &amp;&amp; _container.length) &amp;&amp; ( _container = $(document.body) );
+    function LunarCalendar( _selector, _date ){
+        _selector &amp;&amp; ( _selector = $(_selector) );
+        !(_selector &amp;&amp; _selector.length) &amp;&amp; ( _selector = $(document.body) );
         !_date &amp;&amp; ( _date = new Date() );
-        _container.data(&#x27;LunarCalendar&#x27;, this);
+
+        if( JC.BaseMVC.getInstance( _selector, LunarCalendar ) ) 
+            return JC.BaseMVC.getInstance( _selector, LunarCalendar );
+ 
+        JC.BaseMVC.getInstance( _selector, LunarCalendar, this );
 
         JC.log( &#x27;LunarCalendar.constructor&#x27; );
         /**
@@ -248,7 +276,7 @@
          * @type    JC.LunarCalendar.Model
          * @private
          */
-        this._model = new Model( _container, _date );
+        this._model = new Model( _selector, _date );
         /**
          * LunarCalendar 的视图对像
          * @property    _view
@@ -259,6 +287,8 @@
         
         this._init();
     }
+    LunarCalendar.Model = Model;
+    LunarCalendar.View = View;
     /**
      * 自定义日历组件模板
      * &lt;p&gt;默认模板为JC.LunarCalendar.Model#tpl&lt;/p&gt;
@@ -308,6 +338,29 @@
                     _r = { &#x27;date&#x27;: _tmp, &#x27;item&#x27;: $(this), &#x27;td&#x27;: $(this).parent(&#x27;td&#x27;) };
                     return false;
                 });
+            }
+            return _r;
+        };
+    /**
+     * 初始化可识别的 LunarCalendar 实例
+     * @method  init
+     * @param   {selector}      _selector
+     * @static
+     * @return  {Array of LunarCalendarInstance}
+     */
+    LunarCalendar.init =
+        function( _selector ){
+            var _r = [];
+            _selector = $( _selector || document );
+ 
+            if( _selector &amp;&amp; _selector.length ){
+                if( _selector.hasClass( &#x27;js_LunarCalendar&#x27; )  ){
+                    _r.push( new LunarCalendar( _selector ) );
+                }else{
+                    _selector.find( &#x27;div.js_LunarCalendar, td.js_LunarCalendar, li.js_LunarCalendar&#x27; ).each( function(){
+                        _r.push( new LunarCalendar( this ) );
+                    });
+                }
             }
             return _r;
         };
@@ -526,7 +579,7 @@
         function( _data ){
             if( !_data ) return;
             $(&#x27;div.UXCLunarCalendar&#x27;).each( function(){
-                var _p = $(this), _ins = _p.data(&#x27;LunarCalendar&#x27;), _tmp;
+                var _p = $(this), _ins = JC.BaseMVC.getInstance( _p, LunarCalendar ), _tmp;
                 var _min = 0, _max = 3000000000000;
                 if( _ins.getContainer().is(&#x27;[nopreviousfestivals]&#x27;) ){
                     _min = new Date( _ins.getDate().getFullYear(), _ins.getDate().getMonth(), 1 ).getTime();
@@ -585,7 +638,27 @@
          */
         _init:
             function(){
-                this._view.layout.data(&#x27;LunarCalendar&#x27;, this);
+                var _p = this;
+
+                $( [ _p._view, _p._model ] ).on(&#x27;BindEvent&#x27;, function( _evt, _evtName, _cb ){
+                    _p.on( _evtName, _cb );
+                });
+ 
+                $([ _p._view, _p._model ] ).on(&#x27;TriggerEvent&#x27;, function( _evt, _evtName ){
+                    var _data = JC.f.sliceArgs( arguments ).slice( 2 );
+                    _p.trigger( _evtName, _data );
+                });
+
+                _p.on( &#x27;CLCSelectedItem&#x27;, function( _evt, _date, _td, _a ){
+                    //JC.log( _date, _td, _a );
+                    _p._model.clcSelectedItemCb()
+                        &amp;&amp; _p._model.clcSelectedItemCb().call( _p, _date, _td, _a );
+                });
+
+                _p._model.init();
+                _p._view.init();
+
+                _p._view.layout.data( Model._instanceName, _p );
                 
                 return this;
             }    
@@ -693,7 +766,26 @@
          * @return  bool
          */
         , isHideControl: function(){ return this._model.hideControl; }
+        /**
+         * 使用 jquery on 绑定事件
+         * @method  {string}    on
+         * @param   {string}    _evtName
+         * @param   {function}  _cb
+         * @return  BaseMVCInstance
+         */
+        , on: function( _evtName, _cb ){ $(this).on(_evtName, _cb ); return this;}
+        /**
+         * 使用 jquery trigger 触发绑定事件
+         * @method  {string}    trigger
+         * @param   {string}    _evtName
+         * @return  BaseMVCInstance
+         */
+        , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
     }
+    /**
+     * 选择日期时触发的事件
+     * @event CLCSelectedItem
+     */
     /**
      * LunarCalendar 视图类
      * @namespace   JC.LunarCalendar
@@ -715,8 +807,6 @@
          * @type    selector
          */
         this.layout;
-
-        this._init();
     }
     
     View.prototype = {
@@ -725,10 +815,10 @@
          * @method  _init
          * @private
          */
-        _init:
+        init:
             function()
             {
-                this.layout = $( this._model.tpl ).appendTo( this._model.container );
+                this.layout = this._model.layout;
                 this.initLayout();
                 return this;
             }
@@ -933,15 +1023,29 @@
          */
         this._titleObj = {};
         this.hideControl;
-
-        this._init();
     }
+
+    Model._insCount = 1;
+    LunarCalendar.Model._instanceName = &#x27;LunarCalendar&#x27;;
     
     Model.prototype = {
-        _init:
+
+        init:
             function(){
-                this.tpl = JC.LunarCalendar.tpl || _deftpl;
-                this.container.is( &#x27;[hidecontrol]&#x27; ) &amp;&amp; ( this.hideControl = true );
+                this.date = this.clcDate();
+                JC.log( this.date );
+
+                this.tpl = JC.f.printf( JC.LunarCalendar.tpl || _deftpl, Model._insCount++ );
+                if( this.container.is( &#x27;[hidecontrol]&#x27; ) ){
+                    if( !this.container.attr( &#x27;hidecontrol&#x27; ) ){
+                        this.hideControl = true;
+                    }else{
+                        this.hideControl = JC.f.parseBool( this.container.attr( &#x27;hidecontrol&#x27; ) );
+                    }
+                }
+
+                this.layout = $( this.tpl );
+                this.layout.appendTo( this.container );
                 return this;
             }
         , title: 
@@ -966,12 +1070,12 @@
                 var _selector = this.container;
                 var _r = { date: 0, minvalue: 0, maxvalue: 0 }, _tmp;
 
-                if( _tmp = JC.f.parseISODate( _selector.attr(&#x27;defaultdate&#x27;) )) _r.date = _tmp;
-                else _r.date = new Date();
+                if( _tmp = JC.f.dateDetect( _selector.attr(&#x27;defaultdate&#x27;) )) _r.date = _tmp;
+                else _r.date = this.date || new Date();
 
 
-                _r.minvalue = JC.f.parseISODate( _selector.attr(&#x27;minvalue&#x27;) );
-                _r.maxvalue = JC.f.parseISODate( _selector.attr(&#x27;maxvalue&#x27;) );
+                _r.minvalue = JC.f.dateDetect( _selector.attr(&#x27;minvalue&#x27;) );
+                _r.maxvalue = JC.f.dateDetect( _selector.attr(&#x27;maxvalue&#x27;) );
                 
                 return this.dateObj = _r;
             }
@@ -999,142 +1103,23 @@
                 _cur &amp;&amp; _cur.length &amp;&amp; _cur.attr(&#x27;date&#x27;) &amp;&amp; this.setDate( _cur.attr(&#x27;date&#x27;) );
                 return 1;
             }
-
+        , clcSelectedItemCb:
+            function(){
+                var _r = JC.LunarCalendar.clcSelectedItemCb;
+                    this.selector().attr( &#x27;clcSelectedItemCb&#x27; )
+                        &amp;&amp; ( _r = window[ this.selector().attr( &#x27;clcSelectedItemCb&#x27;) ] || _r );
+                return _r;
+            }
+        , clcDate:
+            function(){
+                var _r = this.date;
+                    this.selector().attr( &#x27;clcDate&#x27; )
+                        &amp;&amp; ( _r = JC.f.dateDetect( this.selector().attr(&#x27;clcDate&#x27;) ) || _r );
+                return _r;
+            }
+        , selector: function(){ return this.container; }
     };
-    /**
-     * 监听上一年按钮
-     */
-    $(document).delegate( &#x27;div.UXCLunarCalendar button.UPreYear&#x27;, &#x27;click&#x27;, function(){
-        var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
-        if( !_selector.length ) return;
-        var _ins = _selector.data(&#x27;LunarCalendar&#x27;);
-        _ins.preYear();
-    });
-    /**
-     * 监听上一月按钮
-     */
-    $(document).delegate( &#x27;div.UXCLunarCalendar button.UPreMonth&#x27;, &#x27;click&#x27;, function(){
-        var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
-        if( !_selector.length ) return;
-        var _ins = _selector.data(&#x27;LunarCalendar&#x27;);
-        _ins.preMonth();
-    });
-    /**
-     * 监听下一月按钮
-     */
-    $(document).delegate( &#x27;div.UXCLunarCalendar button.UNextMonth&#x27;, &#x27;click&#x27;, function(){
-        var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
-        if( !_selector.length ) return;
-        var _ins = _selector.data(&#x27;LunarCalendar&#x27;);
-        _ins.nextMonth();
-    });
-    /**
-     * 监听下一年按钮
-     */
-    $(document).delegate( &#x27;div.UXCLunarCalendar button.UNextYear&#x27;, &#x27;click&#x27;, function(){
-        var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
-        if( !_selector.length ) return;
-        var _ins = _selector.data(&#x27;LunarCalendar&#x27;);
-        _ins.nextYear();
-    });
-    /**
-     * 监听年份按钮, 是否要显示年份列表 
-     */
-    $(document).delegate( &#x27;div.UXCLunarCalendar button.UYear&#x27;, &#x27;click&#x27;, function( _evt ){
-        _evt.stopPropagation();
-        var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
-        if( !_selector.length ) return;
-        var _ins = _selector.data(&#x27;LunarCalendar&#x27;);
-        if( _ins.isHideControl() ) return;
-        var _date = _ins.getDate(), _year = _date.getFullYear();
-        var _start = _date.getFullYear() - LunarCalendar.defaultYearSpan
-            , _over = _date.getFullYear() + LunarCalendar.defaultYearSpan;
-        var _r = [], _selected = &#x27;&#x27;;
-        $(&#x27;div.UXCLunarCalendar select&#x27;).hide();
 
-        for( ; _start &lt; _over; _start++ ){
-            if( _start === _year ) _selected = &#x27; selected &#x27;; else _selected = &#x27;&#x27;
-            _r.push( &#x27;&lt;option value=&quot;&#x27;, _start, &#x27;&quot;&#x27;, _selected ,&#x27;&gt;&#x27;, _start, &#x27;&lt;/option&gt;&#x27; );
-        }
-        var _scrollTop = LunarCalendar.defaultYearSpan / 2 * 18;
-        _ins.getLayout().find(&#x27;select.UYearList&#x27;).html(_r.join(&#x27;&#x27;)).show().prop(&#x27;size&#x27;, 20).scrollTop( _scrollTop );
-    });
-    /**
-     * 监听月份按钮, 是否要显示月份列表 
-     */
-    $(document).delegate( &#x27;div.UXCLunarCalendar button.UMonth&#x27;, &#x27;click&#x27;, function( _evt ){
-        _evt.stopPropagation();
-        var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
-        if( !_selector.length ) return;
-        var _ins = _selector.data(&#x27;LunarCalendar&#x27;);
-        if( _ins.isHideControl() ) return;
-        var _date = _ins.getDate(), _year = _date.getFullYear();
-        $(&#x27;div.UXCLunarCalendar select&#x27;).hide();
-
-        _ins.getLayout().find(&#x27;select.UMonthList&#x27;).val( _date.getMonth() ).prop(&#x27;size&#x27;, 12).show();
-    });
-    /**
-     * 监听年份列表选择状态
-     */
-    $(document).delegate( &#x27;div.UXCLunarCalendar select.UYearList&#x27;, &#x27;change&#x27;, function(){
-        var _p = $(this), _layout = _p.parents( &#x27;div.UXCLunarCalendar&#x27; )
-            , _ins = _layout.data(&#x27;LunarCalendar&#x27;), _date = _ins.getDate();
-
-        _date.setFullYear( _p.val() );
-        _ins.update( _date );
-    });
-    /**
-     * 监听月份列表选择状态
-     */
-    $(document).delegate( &#x27;div.UXCLunarCalendar select.UMonthList&#x27;, &#x27;change&#x27;, function(){
-        var _p = $(this), _layout = _p.parents( &#x27;div.UXCLunarCalendar&#x27; )
-            , _ins = _layout.data(&#x27;LunarCalendar&#x27;), _date = _ins.getDate();
-
-        _date.setMonth( _p.val() );
-        _ins.update( _date );
-    });
-    /**
-     * 监听日期单元格点击事件
-     */
-    $(document).delegate( &#x27;div.UXCLunarCalendar table.UTableBorder td&#x27;, &#x27;click&#x27;, function(){
-        var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
-        if( !_selector.length ) return;
-        if( _p.hasClass(&#x27;unable&#x27;) ) return;
-        var _itema = _p.find(&#x27;&gt; a&#x27;), _curtime = _itema.attr(&#x27;date&#x27;), _ins = _selector.data(&#x27;LunarCalendar&#x27;);
-
-        var _min = 0, _max = 3000000000000;
-        if( _ins.getContainer().is(&#x27;[nopreviousfestivals]&#x27;) ){
-            _min = new Date( _ins.getDate().getFullYear(), _ins.getDate().getMonth(), 1 ).getTime();
-        }
-        if( _ins.getContainer().is(&#x27;[nonextfestivals]&#x27;) ){
-            _max = new Date( _ins.getDate().getFullYear(), _ins.getDate().getMonth() + 1, 1 ).getTime();
-        }
-
-        if( _curtime &gt;= _min &amp;&amp; _curtime &lt; _max ){
-            $(&#x27;div.UXCLunarCalendar table.UTableBorder td.cur&#x27;).removeClass(&#x27;cur&#x27;);
-            _p.addClass(&#x27;cur&#x27;);
-        }
-    });
-    /**
-     * 监听body点击事件, 点击时隐藏日历控件的年份和月份列表
-     */
-    $(document).on(&#x27;click&#x27;, function(){
-        $(&#x27;div.UXCLunarCalendar select&#x27;).hide();
-    });
-    /**
-     * DOM 加载完毕后, 初始化日历组件
-     * @event   dom ready
-     * @private
-     */
-    $(document).ready( function($evt){
-        if( LunarCalendar.autoInit ){
-            setTimeout( function(){
-                $(&#x27;div.js_LunarCalendar, td.js_LunarCalendar, li.js_LunarCalendar&#x27;).each( function(){
-                    new LunarCalendar( $(this) );
-                });
-            }, 100);
-        }
-    });
     /**
      * LunarCalendar 日历默认模板
      * @property    _deftpl
@@ -1144,7 +1129,7 @@
      */
     var _deftpl = 
         [
-        &#x27;&lt;div id=&quot;UXCLunarCalendar&quot; class=&quot;UXCLunarCalendar&quot;&gt;\n&#x27;
+        &#x27;&lt;div id=&quot;UXCLunarCalendar_{0}&quot; class=&quot;UXCLunarCalendar&quot;&gt;\n&#x27;
         ,&#x27;    &lt;div class=&quot;UXCLunarCalendar_wrapper&quot;&gt;\n&#x27;
         ,&#x27;&lt;table class=&quot;UHeader&quot;&gt;\n&#x27;
         ,&#x27;    &lt;tbody&gt;\n&#x27;
@@ -1208,7 +1193,151 @@
         ,&#x27;        &lt;/table&gt;\n&#x27;
         ,&#x27;    &lt;/div&gt;\n&#x27;
         ,&#x27;&lt;/div&gt;\n&#x27;
-        ].join(&#x27;&#x27;);    
+        ].join(&#x27;&#x27;);   
+    /**
+     * 监听上一年按钮
+     */
+    $(document).delegate( &#x27;div.UXCLunarCalendar button.UPreYear&#x27;, &#x27;click&#x27;, function(){
+        var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
+        if( !_selector.length ) return;
+        var _ins = JC.BaseMVC.getInstance( _selector, LunarCalendar );
+        _ins &amp;&amp; _ins.preYear();
+    });
+    /**
+     * 监听上一月按钮
+     */
+    $(document).delegate( &#x27;div.UXCLunarCalendar button.UPreMonth&#x27;, &#x27;click&#x27;, function(){
+        var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
+        if( !_selector.length ) return;
+        var _ins = JC.BaseMVC.getInstance( _selector, LunarCalendar );
+        _ins &amp;&amp; _ins.preMonth();
+    });
+    /**
+     * 监听下一月按钮
+     */
+    $(document).delegate( &#x27;div.UXCLunarCalendar button.UNextMonth&#x27;, &#x27;click&#x27;, function(){
+        var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
+        if( !_selector.length ) return;
+        var _ins = JC.BaseMVC.getInstance( _selector, LunarCalendar );
+        _ins &amp;&amp; _ins.nextMonth();
+    });
+    /**
+     * 监听下一年按钮
+     */
+    $(document).delegate( &#x27;div.UXCLunarCalendar button.UNextYear&#x27;, &#x27;click&#x27;, function(){
+        var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
+        if( !_selector.length ) return;
+        var _ins = JC.BaseMVC.getInstance( _selector, LunarCalendar );
+        _ins &amp;&amp; _ins.nextYear();
+    });
+    /**
+     * 监听年份按钮, 是否要显示年份列表 
+     */
+    $(document).delegate( &#x27;div.UXCLunarCalendar button.UYear&#x27;, &#x27;click&#x27;, function( _evt ){
+        _evt.stopPropagation();
+        var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
+        if( !_selector.length ) return;
+        var _ins = JC.BaseMVC.getInstance( _selector, LunarCalendar );
+        if( _ins.isHideControl() ) return;
+        var _date = _ins.getDate(), _year = _date.getFullYear();
+        var _start = _date.getFullYear() - LunarCalendar.defaultYearSpan
+            , _over = _date.getFullYear() + LunarCalendar.defaultYearSpan;
+        var _r = [], _selected = &#x27;&#x27;;
+        $(&#x27;div.UXCLunarCalendar select&#x27;).hide();
+
+        for( ; _start &lt; _over; _start++ ){
+            if( _start === _year ) _selected = &#x27; selected &#x27;; else _selected = &#x27;&#x27;
+            _r.push( &#x27;&lt;option value=&quot;&#x27;, _start, &#x27;&quot;&#x27;, _selected ,&#x27;&gt;&#x27;, _start, &#x27;&lt;/option&gt;&#x27; );
+        }
+        var _scrollTop = LunarCalendar.defaultYearSpan / 2 * 18;
+        _ins.getLayout().find(&#x27;select.UYearList&#x27;).html(_r.join(&#x27;&#x27;)).show().prop(&#x27;size&#x27;, 20).scrollTop( _scrollTop );
+    });
+    /**
+     * 监听月份按钮, 是否要显示月份列表 
+     */
+    $(document).delegate( &#x27;div.UXCLunarCalendar button.UMonth&#x27;, &#x27;click&#x27;, function( _evt ){
+        _evt.stopPropagation();
+        var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
+        if( !_selector.length ) return;
+        var _ins = JC.BaseMVC.getInstance( _selector, LunarCalendar );
+        if( !_ins ) return;
+        if( _ins.isHideControl() ) return;
+        var _date = _ins.getDate(), _year = _date.getFullYear();
+        $(&#x27;div.UXCLunarCalendar select&#x27;).hide();
+
+        _ins.getLayout().find(&#x27;select.UMonthList&#x27;).val( _date.getMonth() ).prop(&#x27;size&#x27;, 12).show();
+    });
+    /**
+     * 监听年份列表选择状态
+     */
+    $(document).delegate( &#x27;div.UXCLunarCalendar select.UYearList&#x27;, &#x27;change&#x27;, function(){
+        var _p = $(this), _layout = _p.parents( &#x27;div.UXCLunarCalendar&#x27; ), _ins, _date;
+        _ins = JC.BaseMVC.getInstance( _layout, LunarCalendar );
+        if( !_ins ) return;
+        _date = _ins.getDate();
+
+        _date.setFullYear( _p.val() );
+        _ins.update( _date );
+    });
+    /**
+     * 监听月份列表选择状态
+     */
+    $(document).delegate( &#x27;div.UXCLunarCalendar select.UMonthList&#x27;, &#x27;change&#x27;, function(){
+        var _p = $(this), _layout = _p.parents( &#x27;div.UXCLunarCalendar&#x27; ), _ins, _date;
+        _ins = JC.BaseMVC.getInstance( _layout, LunarCalendar );
+        if( !_ins ) return;
+        _date = _ins.getDate();
+
+        _date.setMonth( _p.val() );
+        _ins.update( _date );
+    });
+    /**
+     * 监听日期单元格点击事件
+     */
+    $(document).delegate( &#x27;div.UXCLunarCalendar table.UTableBorder td&#x27;, &#x27;click&#x27;, function(){
+        var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
+        if( !_selector.length ) return;
+        if( _p.hasClass(&#x27;unable&#x27;) ) return;
+        var _itema = _p.find(&#x27;&gt; a&#x27;)
+            , _curtime = _itema.attr(&#x27;date&#x27;)
+            , _ins = JC.BaseMVC.getInstance( _selector, LunarCalendar )
+            , _curDate
+            ;
+        if( !( _curtime &amp;&amp; _ins ) ) return;
+
+        _curDate = new Date();
+        _curDate.setTime( _curtime );
+
+        var _min = 0, _max = 3000000000000;
+        if( _ins.getContainer().is(&#x27;[nopreviousfestivals]&#x27;) ){
+            _min = new Date( _ins.getDate().getFullYear(), _ins.getDate().getMonth(), 1 ).getTime();
+        }
+        if( _ins.getContainer().is(&#x27;[nonextfestivals]&#x27;) ){
+            _max = new Date( _ins.getDate().getFullYear(), _ins.getDate().getMonth() + 1, 1 ).getTime();
+        }
+
+        if( _curtime &gt;= _min &amp;&amp; _curtime &lt; _max ){
+            $(&#x27;div.UXCLunarCalendar table.UTableBorder td.cur&#x27;).removeClass(&#x27;cur&#x27;);
+            _p.addClass(&#x27;cur&#x27;);
+            _ins.trigger( &#x27;CLCSelectedItem&#x27;, [ _curDate, _p, _itema ] );
+        }
+    });
+    /**
+     * 监听body点击事件, 点击时隐藏日历控件的年份和月份列表
+     */
+    $(document).on(&#x27;click&#x27;, function(){
+        $(&#x27;div.UXCLunarCalendar select&#x27;).hide();
+    });
+    /**
+     * DOM 加载完毕后, 初始化日历组件
+     * @event   dom ready
+     * @private
+     */
+    $(document).ready( function($evt){
+        LunarCalendar.autoInit 
+            &amp;&amp; JC.f.safeTimeout( function(){ LunarCalendar.init(); }, null, &#x27;INITLunarCalendar&#x27;, 100 );
+    });
+ 
 
     return JC.LunarCalendar;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 

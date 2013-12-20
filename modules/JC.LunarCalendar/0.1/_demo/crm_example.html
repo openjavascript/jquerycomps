@@ -54,11 +54,13 @@
 
                 if( !JC.f.httpRequire() ) return;
 
+                /*
                 var date = new Date(2013, 5, 1);
                 $('div.js_LunarCalendar').each( function(){
                     $(this).attr('defaultdate', [date.getFullYear(), JC.f.padChar( date.getMonth()+1 ), JC.f.padChar( date.getDate() )].join('-') );
                     date.setMonth( date.getMonth()+1 );
                 });
+                */
 
 
                 setTimeout( function(){
@@ -373,10 +375,18 @@
                             <tr>
                                 <td><button type="button" class="js_userpremonth">上个月</button></td>
                                 <td>
-                                    <div id="leftCalendar" class="js_LunarCalendar" nonextfestivals hidecontrol></div>
+                                    <div id="leftCalendar" class="js_LunarCalendar" 
+                                        nonextfestivals="" 
+                                        hidecontrol=""
+                                        clcDate="now"
+                                        ></div>
                                 </td>
                                 <td>
-                                    <div id="rightCalendar" class="js_LunarCalendar" nopreviousfestivals hidecontrol></div>
+                                    <div id="rightCalendar" class="js_LunarCalendar" 
+                                        nopreviousfestivals=""
+                                        hidecontrol=""
+                                        clcDate="now,1m"
+                                        ></div>
                                 </td>
                                 <td><button type="button" class="js_usernextmonth">下个月</button></td>
                             </tr>

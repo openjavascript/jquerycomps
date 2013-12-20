@@ -13,9 +13,20 @@
         <script src="../../../../config.js"></script>
         <script>
             JC.debug = true; 
+
             requirejs( [ 'JC.LunarCalendar' ], function( LunarCalendar ){
                 var ins = new JC.LunarCalendar( '#ph1' );
             }); 
+
+            function clcSelectedItemCb1( _date, _td, _a ){
+                var _ins = this;
+                JC.log( _date );
+            }
+
+            function clcSelectedItemCb2( _date, _td, _a ){
+                var _ins = this;
+                JC.log( _date );
+            }
         </script>
     </head>    
     <body>
@@ -24,11 +35,14 @@
             <dl>
                 <dt>JC.LunarCalendar 示例</dt>
                 <dd>
-                <div id="ph1" minvalue="2013-06-01" maxvalue="2014-01-01"></div>
+                <div id="ph1" clcSelectedItemCb="clcSelectedItemCb1" clcDate="now,2m"></div>
                 </dd>
                 <dd>
                 <!-- 这个是自动初始化 -->
-                <div id="ph2" class="js_LunarCalendar" minvalue="2013-01-01" maxvalue="2014-01-01"></div>
+                <div id="ph2" class="js_LunarCalendar" clcSelectedItemCb="clcSelectedItemCb1" 
+                    cacDate="now"
+                    minvalue="nowfirst" maxvalue="nowfirst,1m,-1d"
+                    ></div>
                 </dd>
 
             </dl>

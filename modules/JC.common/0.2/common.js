@@ -928,11 +928,15 @@
     function dateDetect( _dateStr ){
         var _r = null   
             , _re = /^now/i
+            , _nowFirstRe = /^nowfirst/
             , _d, _ar, _item
             ;
         if( _dateStr && typeof _dateStr == 'string' ){
-            if( _re.test( _dateStr ) ){
+            if( _re.test( _dateStr ) || _nowFirstRe.test( _dateStr ) ){
                 _d = new Date();
+                if( _nowFirstRe.test(_dateStr ) ){
+                    _d.setDate( 1 );
+                }
                 _dateStr = _dateStr.replace( _re, '' ).replace(/[\s]+/g, '');
                 _ar = _dateStr.split(',');
 
