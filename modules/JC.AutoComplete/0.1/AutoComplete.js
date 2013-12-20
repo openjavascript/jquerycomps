@@ -1135,7 +1135,6 @@ return _json;
     });
     */
 
-
     return JC.AutoComplete;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

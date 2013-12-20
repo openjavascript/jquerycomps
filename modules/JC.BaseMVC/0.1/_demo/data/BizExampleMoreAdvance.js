@@ -72,7 +72,7 @@
             return _r;
         };
 
-    BaseMVC.build( BizExampleMoreAdvance );
+    JC.BaseMVC.build( BizExampleMoreAdvance );
 
     JC.f.extendObject( BizExampleMoreAdvance.prototype, {
         _beforeInit:

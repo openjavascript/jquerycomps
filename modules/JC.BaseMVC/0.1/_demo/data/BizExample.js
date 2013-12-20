@@ -40,7 +40,7 @@
             return _r;
         };
 
-    BaseMVC.build( BizExample );
+    JC.BaseMVC.build( BizExample );
 
     BizExample.Model._instanceName = 'BizExample';
 

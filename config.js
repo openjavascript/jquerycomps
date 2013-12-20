@@ -35,7 +35,13 @@ requirejs.config( {
         , 'JC.Form.initNumericStepper': 'modules/JC.Form/0.1/Form.initNumericStepper'
 
         , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
+
         , 'JC.LunarCalendar': 'modules/JC.LunarCalendar/0.1/LunarCalendar'
+        , 'JC.LunarCalendar.default': 'modules/JC.LunarCalendar/0.1/LunarCalendar.default'
+        , 'JC.LunarCalendar.getFestival': 'modules/JC.LunarCalendar/0.1/LunarCalendar.getFestival'
+        , 'JC.LunarCalendar.gregorianToLunar': 'modules/JC.LunarCalendar/0.1/LunarCalendar.gregorianToLunar'
+        , 'JC.LunarCalendar.nationalHolidays': 'modules/JC.LunarCalendar/0.1/LunarCalendar.nationalHolidays'
+
         , 'JC.Slider': 'modules/JC.Slider/0.1/Slider'
         , 'JC.Suggest': 'modules/JC.Suggest/0.1/Suggest'
         , 'JC.Tab': 'modules/JC.Tab/0.1/Tab'
