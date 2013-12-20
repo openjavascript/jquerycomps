@@ -126,10 +126,10 @@
         </div>
 </div>
 <div class="box intro">
-    <p>Poptips 带箭头的气泡提示框功能</p>
+    <p>PopTips 带箭头的气泡提示框功能</p>
 <p>
      <b>require</b>: 
-         <a href='window.jQuery.html'>jQuery</a>
+         <a href='jQuery.html'>jQuery</a>
          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
 </p>
 <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -139,13 +139,19 @@
 <p></p>
 <h2>可用的 HTML attribute</h2>
 <dl>
-   <dt>content = string | html </dt>
+   <dt>content = string </dt>
    <dd>
-      <p>声明气泡提示的内容<br>
+      <p>声明气泡提示的内容，如果需要提示html内容那么用<b>htmlContent</b>属性<br>
       如果没有设置则去查找title属性，如果title也没有设置，<br/>
         则将触发元素的text作为提示内容。</p>
    </dd>
-   <dt>theme = yellow | blue | white | green, <a href="../../comps/PopTips/res/default/style.html" target="_blank">查看</a></dt>
+   <dt>htmlContent</dt>
+   <dd>
+      <p>声明气泡提示的内容支持脚本模板<br>
+       如果有设置该属性那么会优先选用htmlContent提供的内容
+      </p>
+   </dd>
+   <dt>theme = yellow | blue | white | green, <a href="../../modules/JC.PopTips/0.1/res/default/style.html" target="_blank">查看</a> </dt>
    <dd>
       气泡主题，提供黄色、蓝色、白色、绿色四种样式，默认为 yellow.
       <p><b>yellow：</b>黄色<br/>
@@ -165,11 +171,18 @@
        <b>right:</b>箭头向右（提示框在触发元素的左边）如果左边空间不够，提示框自动显示在右边，如果右边空间不够，提示框显示在上方，如果上方空间，提示框显示到下方<br/>
        <b>top:</b>箭头向上（提示框在触发元素的下边）如果下边不够，提示框自动显示到上边<br/>
        <b>bottom:</b>箭头向下（提示框在触发元素的上边）如果上边不够，提示框自动显示到下边</p><br>   </dd>
-   <dt>arrowPositionOffset = left|right|top</dt>
+   <dt>arrowPositionOffset = left | right | top , <a href="../../modules/JC.PopTips/0.1/res/default/style.html#pos" target="_blank">查看</a></dt>
    <dd>
        声明箭头在提示框的位置，默认居中
-       <p>如果arrowPosition = left || right, arrowPositionOffset可以设置为top</p>
-       <p>如果arrowPosition = top || bottom, arrowPositionOffset可以设置为left || right</p>
+       <p>如果arrowPosition = left | right, arrowPositionOffset可以设置为top</p>
+       <p>如果arrowPosition = top | bottom, arrowPositionOffset可以设置为left | right</p>
+   </dd>
+   <dt>offsetXY = num,num</dt>
+   <dd>
+       声明提示框相对于当前位置的偏移位置(x 坐标，y 坐标)，默认值为0
+       <p>x &lt; 0，往左偏移，x &gt; 0 往右偏移 <br/>
+        y &lt; 0, 往上偏移，y &gt; 0 往下偏移 <br/>
+        两个数值以<b>逗号</b>分隔，如果只写一个值表示 y 坐标为0。</p>
    </dd>
    <dt>popTipsWidth = num</dt>
    <dd>
@@ -383,7 +396,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_PopTips_PopTips.js.html#l129"><code>..&#x2F;comps&#x2F;PopTips&#x2F;PopTips.js:129</code></a>
+        <a href="../files/.._comps_PopTips_PopTips.js.html#l144"><code>..&#x2F;comps&#x2F;PopTips&#x2F;PopTips.js:144</code></a>
         </p>
     </div>
     <div class="description">
@@ -423,7 +436,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_PopTips_PopTips.js.html#l144"><code>..&#x2F;comps&#x2F;PopTips&#x2F;PopTips.js:144</code></a>
+        <a href="../files/.._comps_PopTips_PopTips.js.html#l159"><code>..&#x2F;comps&#x2F;PopTips&#x2F;PopTips.js:159</code></a>
         </p>
     </div>
     <div class="description">
@@ -562,7 +575,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_PopTips_PopTips.js.html#l275"><code>..&#x2F;comps&#x2F;PopTips&#x2F;PopTips.js:275</code></a>
+        <a href="../files/.._comps_PopTips_PopTips.js.html#l293"><code>..&#x2F;comps&#x2F;PopTips&#x2F;PopTips.js:293</code></a>
         </p>
     </div>
     <div class="description">
