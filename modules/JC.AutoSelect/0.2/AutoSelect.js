@@ -1,6 +1,5 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: 添加数据缓存逻辑
-;(function($){
     /**
      * <h2>select 级联下拉框无限联动</h2>
      * <br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能
@@ -112,7 +111,6 @@
                 };
         </script>
      */
-    window.JC = window.JC || {log:function(){}};
     JC.AutoSelect = AutoSelect;
     JC.Form && ( JC.Form.initAutoSelect = AutoSelect );
 
@@ -958,7 +956,6 @@
         setTimeout( function(){ AutoSelect( document.body ); }, 200 );
     });
 
-}(jQuery));
     return JC.AutoSelect;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

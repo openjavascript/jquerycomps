@@ -49,8 +49,6 @@
             <span class="js_bmtSpan"></span>
         </div>
  */
-;(function($){
-    window.Bizs = window.Bizs || {};
     Bizs.MoneyTips = MoneyTips;
 
     function MoneyTips( _selector ){
@@ -267,7 +265,6 @@
             ;
     });
 
-}(jQuery));
     return Bizs.MoneyTips;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

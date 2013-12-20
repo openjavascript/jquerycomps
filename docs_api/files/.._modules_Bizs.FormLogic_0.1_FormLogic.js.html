@@ -201,7 +201,6 @@
 //TODO: 添加 disabled bind hidden 操作
 //TODO: formSubmitIgnoreCheck 时, 如果在控件里回车提交的话, 控制逻辑可能会有问题, 需要仔细检查
 ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Valid&#x27;, &#x27;JC.Form&#x27;, &#x27;JC.Panel&#x27; ], function(){
-;(function($){
     /**
      * &lt;h2&gt;提交表单控制逻辑&lt;/h2&gt;
      * 应用场景
@@ -457,8 +456,8 @@
                 &lt;/dd&gt;
             &lt;/dl&gt;     
     */
-    window.Bizs = window.Bizs || {};
     Bizs.FormLogic = FormLogic;
+
     function FormLogic( _selector ){
         _selector &amp;&amp; ( _selector = $( _selector ) );
         if( FormLogic.getInstance( _selector ) ) return FormLogic.getInstance( _selector );
@@ -1184,7 +1183,6 @@
         }, 1 );
     });
 
-}(jQuery));
     return Bizs.FormLogic;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb) { 

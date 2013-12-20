@@ -1,10 +1,12 @@
 ;(function(define, _win) { 'use strict'; define( [], function(){
-;(function($){
+    !window.console && ( window.console = { log: function(){}, dir: function(){} } );
     /**
      * 声明主要命名空间, 方便迁移
      */
     window.JC = window.JC || {};
-    JC.log = function(){ JC.debug && window.console && console.log( sliceArgs( arguments ).join(' ') ); };
+    JC.log = function(){ JC.debug && console.log( sliceArgs( arguments ).join(' ') ); };
+    JC.dir = function( _obj ){ JC.debug && console.dir( _obj ); };
+
     JC.PATH = JC.PATH || scriptPath();
 
     window.Bizs = window.Bizs || {};
@@ -1141,7 +1143,6 @@
         return _r;
     }
 
-}(jQuery));
     return JC.f;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

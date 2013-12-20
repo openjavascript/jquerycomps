@@ -72,7 +72,7 @@
             return _r;
         };
 
-    BaseMVC.build( BizExampleMoreAdvance );
+    JC.BaseMVC.build( BizExampleMoreAdvance );
 
     JC.f.extendObject( BizExampleMoreAdvance.prototype, {
         _beforeInit:
@@ -113,6 +113,7 @@
                 + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
             ;
     });
+
     return Bizs.BizExampleMoreAdvance;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 

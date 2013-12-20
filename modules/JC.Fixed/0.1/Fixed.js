@@ -2,8 +2,6 @@
 //TODO: 添加回调处理
 //TODO: 添加值运动 
 //TODO: 完善注释
-;(function($){
-    window.JC = window.JC || {log:function(){}};
     window.Fixed = JC.Fixed = Fixed;
     /**
      * 内容固定于屏幕某个位置显示
@@ -448,7 +446,6 @@
            ].join() ).each( function(){ new Fixed( $(this) ); });
     });
 
-}(jQuery));
     return JC.Fixed;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

@@ -101,9 +101,6 @@
             /><input type="button" class="UXCCalendar_btn">
         </div>
  */
-;(function($){
-
-    window.Bizs = window.Bizs || {};
     window.Bizs.ChangeLogic = ChangeLogic;
 
     function ChangeLogic( _selector ){
@@ -496,7 +493,6 @@
         }, 10);
     });
     
-}(jQuery));
     return Bizs.ChangeLogic;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

@@ -1282,6 +1282,7 @@
 
         _panel.triggerSelector( _p );
     });
+
     return JC.Panel;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

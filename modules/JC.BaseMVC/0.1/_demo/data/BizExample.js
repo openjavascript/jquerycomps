@@ -40,7 +40,7 @@
             return _r;
         };
 
-    BaseMVC.build( BizExample );
+    JC.BaseMVC.build( BizExample );
 
     BizExample.Model._instanceName = 'BizExample';
 
@@ -52,6 +52,7 @@
                 + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
             ;
     });
+
     return Bizs.BizExample;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 

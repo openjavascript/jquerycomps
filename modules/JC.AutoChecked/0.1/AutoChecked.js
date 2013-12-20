@@ -1,5 +1,4 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
- ;(function($){
     /**
      * 全选/反选
      * <p><b>require</b>: 
@@ -83,7 +82,6 @@
             });
             </script>
      */
-    window.JC = window.JC || {log:function(){}};
     JC.Form && ( JC.Form.initCheckAll = AutoChecked );
     JC.AutoChecked = AutoChecked;
 
@@ -399,7 +397,6 @@
         AutoChecked.init( $(document) );
     });
 
-}(jQuery));
     return JC.AutoChecked;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 
