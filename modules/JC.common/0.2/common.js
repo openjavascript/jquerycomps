@@ -476,7 +476,7 @@
         _selector 
             && ( _selector = $( _selector ) ).length
             && _selector.attr( 'dateParse' )
-            && ( _parse = window[ _selector.attr( 'dateParse' ) ] )
+            && ( _parse = window[ _selector.attr( 'dateParse' ) ] || _parse )
             ;
         _date = _parse( _date );
         _date && _date.start && ( _date = _date.start );
