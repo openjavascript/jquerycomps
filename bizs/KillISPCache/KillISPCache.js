@@ -6,7 +6,7 @@
      * <br />ajax 或者动态添加的内容, 请显式调用  JC.KillISPCache.getInstance().process( newNodeContainer )
      * <br /><b>这是个单例类</b>
      * <p><b>require</b>: 
-     *      <a href='jQuery.html'>jQuery</a>
+     *      <a href='.jQuery.html'>jQuery</a>
      *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>

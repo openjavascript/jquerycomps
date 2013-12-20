@@ -2,7 +2,7 @@
     /**
      * 表单自动填充 URL GET 参数
      * <br />只要引用本脚本, DOM 加载完毕后, 页面上所有带 class js_autoFillUrlForm 的 form 都会自动初始化默认值
-     * <p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p>
+     * <p><b>requires</b>: <a href='window..jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>
      * @method  initAutoFill

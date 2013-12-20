@@ -5,7 +5,7 @@
     /**
      * 树菜单类 JC.Tree
      * <p><b>require</b>: 
-     *      <a href='jQuery.html'>jQuery</a>
+     *      <a href='.jQuery.html'>jQuery</a>
      *      , <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>

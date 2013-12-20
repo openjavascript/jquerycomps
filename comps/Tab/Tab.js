@@ -8,7 +8,7 @@
      * , 只要鼠标移动到具有识别符的Tab上面, Tab就会自动初始化, 目前可识别: <b>.js_autoTab</b>( CSS class )
      * <br />需要手动初始化, 请使用: var ins = new JC.Tab( _tabSelector );
      * <p><b>require</b>: 
-     *      <a href='jQuery.html'>jQuery</a>
+     *      <a href='.jQuery.html'>jQuery</a>
      *      , <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>

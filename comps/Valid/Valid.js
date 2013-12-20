@@ -7,7 +7,7 @@
      * <b>表单验证</b> (单例模式)
      * <br />全局访问请使用 JC.Valid 或 Valid
      * <p><b>require</b>: 
-     *      <a href='jQuery.html'>jQuery</a>
+     *      <a href='.jQuery.html'>jQuery</a>
      *      , <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>

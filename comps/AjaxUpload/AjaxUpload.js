@@ -3,7 +3,7 @@
     /**
      * Ajax 文件上传
      * <p><b>require</b>: 
-     *          <a href='jQuery.html'>jQuery</a>
+     *          <a href='.jQuery.html'>jQuery</a>
      *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *          , <a href='JC.Panel.html'>JC.Panel</a>
      * </p>

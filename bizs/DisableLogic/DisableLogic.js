@@ -7,7 +7,7 @@
  * <br/>但选择其他 radio 时, 其他的内容无效
  * <br/>checkbox / select 也可使用( 带change事件的标签 )
  * <p><b>require</b>: 
- *      <a href='jQuery.html'>jQuery</a>
+ *      <a href='.jQuery.html'>jQuery</a>
  *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>

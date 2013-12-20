@@ -6,7 +6,7 @@
      * Slider 划动菜单类
      * <br />页面加载完毕后, Slider 会查找那些有 class = js_autoSlider 的标签进行自动初始化
      * <p><b>require</b>: 
-     *      <a href='jQuery.html'>jQuery</a>
+     *      <a href='.jQuery.html'>jQuery</a>
      *      , <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>

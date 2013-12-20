@@ -9616,7 +9616,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
     /**
      * JC 组件通用静态方法和属性 ( JC.common, <b>别名: JC.f</b> )
      * <br />所有 JC 组件都会依赖这个静态类
-     * <p><b>require</b>: <a href='jQuery.html'>jQuery</a></p>
+     * <p><b>require</b>: <a href='.jQuery.html'>jQuery</a></p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.common.html' target='_blank'>API docs</a>
      * @class JC.common
@@ -10780,7 +10780,7 @@ window.Bizs = window.Bizs || {};
      * JC jquery 组件库 资源调用控制类
      * <br />这是一个单例模式, 全局访问使用 JC 或 window.JC
      * <p><b>require</b>: 
-     *      <a href='jQuery.html'>jQuery</a>
+     *      <a href='.jQuery.html'>jQuery</a>
      *      , <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -11133,7 +11133,7 @@ window.Bizs = window.Bizs || {};
     /**
      * MVC 抽象类 ( <b>仅供扩展用, 这个类不能实例化</b>)
      * <p><b>require</b>: 
-     *      <a href='jQuery.html'>jQuery</a>
+     *      <a href='.jQuery.html'>jQuery</a>
      *      , <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>

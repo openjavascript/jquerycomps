@@ -6,7 +6,7 @@
          * AutoComplete 文本框内容输入提示
          * <br />响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 AutoComplete 实例
          * <p><b>require</b>: 
-         *      <a href='jQuery.html'>jQuery</a>
+         *      <a href='.jQuery.html'>jQuery</a>
          *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
          * </p>
          *

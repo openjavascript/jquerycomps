@@ -5,7 +5,7 @@
     /**
      * MultiDate 复合日历业务逻辑
      * <p><b>require</b>: 
-     *      <a href='jQuery.html'>jQuery</a>
+     *      <a href='.jQuery.html'>jQuery</a>
      *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *      , <a href='JC.Calendar.html'>JC.Calendar</a>
      * </p>

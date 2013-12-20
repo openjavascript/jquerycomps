@@ -3,7 +3,7 @@
  * 组件用途简述
  *
  *<p><b>require</b>:
- *   <a href="widnow.jQuery.html">jQuery</a>
+ *   <a href="widnow..jQuery.html">jQuery</a>
  *   , <a href="JC.common.html">JC.common</a>
  *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *</p>

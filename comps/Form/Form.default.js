@@ -2,7 +2,7 @@
     /**
      * 表单常用功能类 JC.Form
      * <p><b>require</b>: 
-     *      <a href='jQuery.html'>jQuery</a>
+     *      <a href='.jQuery.html'>jQuery</a>
      *      , <a href='JC.AutoSelect.html'>JC.AutoSelect</a>
      *      , <a href='JC.AutoChecked.html'>JC.AutoChecked</a>
      * </p>

@@ -27,7 +27,7 @@ window.Bizs = window.Bizs || {};
      * JC jquery 组件库 资源调用控制类
      * <br />这是一个单例模式, 全局访问使用 JC 或 window.JC
      * <p><b>require</b>: 
-     *      <a href='jQuery.html'>jQuery</a>
+     *      <a href='.jQuery.html'>jQuery</a>
      *      , <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>

@@ -9,7 +9,7 @@
      * <br />post 提交表单
      * <br />ajax 提交表单
      * <p><b>require</b>: 
-     *      <a href='jQuery.html'>jQuery</a>
+     *      <a href='.jQuery.html'>jQuery</a>
      *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *      , <a href='JC.Valid.html'>JC.Valid</a>
      *      , <a href='JC.Form.html'>JC.Form</a>

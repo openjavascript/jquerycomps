@@ -3,7 +3,7 @@
  * 树菜单 形式模拟下拉框
  *
  *<p><b>require</b>:
- *   <a href="widnow.jQuery.html">jQuery</a>
+ *   <a href="widnow..jQuery.html">jQuery</a>
  *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *   , <a href='JC.Tree.html'>JC.Tree</a>
  *</p>
