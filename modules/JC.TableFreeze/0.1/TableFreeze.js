@@ -37,7 +37,11 @@
  *          第二个数字表示后面冻结的列数。<br/>
  *           当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。
  *        </p>
-
+ *    </dd>
+ *
+ *    <dt>scrollWidth = num</dt>
+ *    <dd>
+ *        声明表格滚动部分的宽度，默认120%
  *    </dd>
  *
  *    <dt>needHoverClass = true|false</dt>
