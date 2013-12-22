@@ -37,7 +37,11 @@
  *          第二个数字表示后面冻结的列数。<br/>
  *           当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。
  *        </p>
-
+ *    </dd>
+ *
+ *    <dt>scrollWidth = num</dt>
+ *    <dd>
+ *        声明表格滚动部分的宽度，默认120%
  *    </dd>
  *
  *    <dt>needHoverClass = true|false</dt>
@@ -91,7 +95,7 @@
             <dd>
                 <dl>
                     <dd>
-                        <div class="js_compTableFreeze" freezeType="prev" freezeCols="2"/>
+                        <div class="js_compTableFreeze" freezeType="prev" freezeCols="2" />
                             <dl>
                                 <dd>
                                     <table >
@@ -270,7 +274,7 @@
                     var _hover = _p._model.hoverClass();
 
                     if ( !_p._model.supportFreeze() || !_p._model.supportScroll() ) {
-                        _p._model.selector().find('tr')
+                        _p._model.selector().find('table>tbody>tr')
                             .on('mouseenter', function () {
                                 $(this).addClass( _hover );
                             })
@@ -512,7 +516,7 @@
             if ( _p.hasFixedPXWidth() ) {
                 _forePnt.css('width', _p.selector().find('table').prop('offsetWidth') );
             }
-            _p.selector().find('div.js-roll-table>table').width('120%');
+            _p.selector().find('div.js-roll-table>table').width(_p.scrollwidth());
             _p.setHeight();
            
         },
@@ -692,6 +696,14 @@
             _r = _r.split(',');
 
            // JC.log(_r);
+
+            return _r;
+        },
+
+        scrollwidth: function () {
+            var _r = this.attrProp('scrollwidth');
+
+            !_r && ( _r = '120%' );
 
             return _r;
         },
@@ -947,8 +959,9 @@
 
             if ( !_p._model.supportFreeze() ) {
                 _p._model.selector().css({'overflow-x': 'scroll'})
-                    .addClass('compTFAllRoll');
-                _p._model.selector().children('table').css('width','110%');
+                    .addClass('compTFAllRoll')
+                        .children('table').css('width', _p._model.scrollwidth() );
+                
                 return;
             }
 
