@@ -3,11 +3,17 @@
 <head>
     <meta charset="utf-8">
     <title>../modules/JC.PopTips/0.1/PopTips.js - open jquery components library</title>
-    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/widget.css">
+    <link rel="stylesheet" href="../assets/css/tabview.css">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
-    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+    <script src="../assets/js/yui-min.js"></script>
+    <script src="../assets/js/comps1.js"></script>
+    <script src="../assets/js/comps2.js"></script>
+    <script src="../assets/js/comps3.js"></script>
+    <script src="../assets/js/comps4.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -211,14 +217,21 @@
  * &lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
  *
  * &lt;dl&gt;
- *    &lt;dt&gt;content = string | html &lt;/dt&gt;
+ *    &lt;dt&gt;content = string &lt;/dt&gt;
  *    &lt;dd&gt;
- *       &lt;p&gt;声明气泡提示的内容&lt;br&gt;
+ *       &lt;p&gt;声明气泡提示的内容，如果需要提示html内容那么用&lt;b&gt;htmlContent&lt;/b&gt;属性&lt;br&gt;
  *       如果没有设置则去查找title属性，如果title也没有设置，&lt;br/&gt;
          则将触发元素的text作为提示内容。&lt;/p&gt;
  *    &lt;/dd&gt;
  *
- *    &lt;dt&gt;theme = yellow | blue | white | green, &lt;a href=&quot;../../modules/JC.PopTips/0.1/res/default/style.html&quot; target=&quot;_blank&quot;&gt;查看&lt;/a&gt;&lt;/dt&gt;
+ *    &lt;dt&gt;htmlContent&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *       &lt;p&gt;声明气泡提示的内容支持脚本模板&lt;br&gt;
+ *        如果有设置该属性那么会优先选用htmlContent提供的内容
+ *       &lt;/p&gt;
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;theme = yellow | blue | white | green, &lt;a href=&quot;../../modules/JC.PopTips/0.1/res/default/style.html&quot; target=&quot;_blank&quot;&gt;查看&lt;/a&gt; &lt;/dt&gt;
  *    &lt;dd&gt;
  *       气泡主题，提供黄色、蓝色、白色、绿色四种样式，默认为 yellow.
  *       &lt;p&gt;&lt;b&gt;yellow：&lt;/b&gt;黄色&lt;br/&gt;
@@ -242,11 +255,19 @@
  *        &lt;b&gt;bottom:&lt;/b&gt;箭头向下（提示框在触发元素的上边）如果上边不够，提示框自动显示到下边&lt;/p&gt;    
  *    &lt;/dd&gt;
  *
- *    &lt;dt&gt;arrowPositionOffset = left|right|top&lt;/dt&gt;
+ *    &lt;dt&gt;arrowPositionOffset = left | right | top , &lt;a href=&quot;../../modules/JC.PopTips/0.1/res/default/style.html#pos&quot; target=&quot;_blank&quot;&gt;查看&lt;/a&gt;&lt;/dt&gt;
  *    &lt;dd&gt;
  *        声明箭头在提示框的位置，默认居中
- *        &lt;p&gt;如果arrowPosition = left || right, arrowPositionOffset可以设置为top&lt;/p&gt;
- *        &lt;p&gt;如果arrowPosition = top || bottom, arrowPositionOffset可以设置为left || right&lt;/p&gt;
+ *        &lt;p&gt;如果arrowPosition = left | right, arrowPositionOffset可以设置为top&lt;/p&gt;
+ *        &lt;p&gt;如果arrowPosition = top | bottom, arrowPositionOffset可以设置为left | right&lt;/p&gt;
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;offsetXY = num,num&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *        声明提示框相对于当前位置的偏移位置(x 坐标，y 坐标)，默认值为0
+ *        &lt;p&gt;x &lt; 0，往左偏移，x &gt; 0 往右偏移 &lt;br/&gt;
+ *         y &lt; 0, 往上偏移，y &gt; 0 往下偏移 &lt;br/&gt;
+ *         两个数值以&lt;b&gt;逗号&lt;/b&gt;分隔，如果只写一个值表示 y 坐标为0。&lt;/p&gt;
  *    &lt;/dd&gt;
  *
  *    &lt;dt&gt;popTipsWidth = num&lt;/dt&gt;
@@ -371,7 +392,10 @@
 
             if( !_ins ) return;
 
-            _ins.update();
+            if ( _ins._model.layout().is(&#x27;:visible&#x27;) ) {
+                _ins.update();
+            }
+
         });
       
     },
@@ -519,6 +543,15 @@
 
         },
 
+        htmlContents: function () {
+            var _r,
+                _s = JC.f.parentSelector( this.selector(), this.attrProp(&#x27;htmlContent&#x27;) );
+
+            _r = JC.f.scriptContent( _s );
+
+            return _r;
+        },
+
         arrowPosition: function () {
             var _r = this.stringProp(&#x27;arrowPosition&#x27;);
 
@@ -546,6 +579,17 @@
             return _r;
         },
 
+        offsetXY: function () {
+            var _r = this.attrProp(&#x27;offsetXY&#x27;).split(&#x27;,&#x27;),
+                _x = parseInt( _r[0], 10 ) || 0,
+                _y = parseInt( _r[1], 10 ) || 0;
+
+            return {
+                x: _x,
+                y: _y
+            };
+        },
+
         triggerType: function () {
             var _r = this.stringProp(&#x27;triggerType&#x27;);
 
@@ -560,12 +604,22 @@
                 _tpl = _p.baseTpl;
             
             if ( !this._layout ) {
-                this._layout = $( JC.f.printf( _tpl
-                    , _p.theme()
-                    , _p.arrowPosition()
-                    , _p.contents()
-                    , &#x27;style=&quot;width:&#x27; + _p.layoutWidth() + &#x27;;height:&#x27; + _p.layoutHeight() + &#x27;;&quot;&#x27; ) )
-                    .appendTo( this.layoutBox() );
+                if ( _p.htmlContents() ) {
+                    this._layout = $( JC.f.printf( _tpl
+                        , _p.theme()
+                        , _p.arrowPosition()
+                        , _p.htmlContents()
+                        , &#x27;style=&quot;width:&#x27; + _p.layoutWidth() + &#x27;;height:&#x27; + _p.layoutHeight() + &#x27;;&quot;&#x27; ) )
+                        .appendTo( this.layoutBox() );
+                } else {
+                    this._layout = $( JC.f.printf( _tpl
+                        , _p.theme()
+                        , _p.arrowPosition()
+                        , _p.contents()
+                        , &#x27;style=&quot;width:&#x27; + _p.layoutWidth() + &#x27;;height:&#x27; + _p.layoutHeight() + &#x27;;&quot;&#x27; ) )
+                        .appendTo( this.layoutBox() );
+                }
+                
             }
 
             return this._layout;
@@ -606,8 +660,8 @@
                 _p = this,
                 _selector = _p.selector(),
                 _pos = {
-                    top: _selector.offset().top,
-                    left: _selector.offset().left,
+                    top: _selector.offset().top + _p.offsetXY().y,
+                    left: _selector.offset().left + _p.offsetXY().x,
                     width: _selector.prop(&#x27;offsetWidth&#x27;),
                     height: _selector.prop(&#x27;offsetHeight&#x27;)
                 },
@@ -617,8 +671,8 @@
             switch ( _arrowPosition ) {
                 case &#x27;top&#x27;:
                     _r = {
-                        top: _pos.top + _pos.height + 5,
-                        left: _pos.left + _pos.width / 2 - _lw / 2
+                        top: _pos.top + _pos.height + 5 ,
+                        left: _pos.left + _pos.width / 2 - _lw / 2 
                     };
                     break;
                 case &#x27;right&#x27;:
@@ -747,7 +801,7 @@
             }
 
             if ( _arrowPosition === &#x27;left&#x27; ) {
-                JC.log(&quot;_viewMaxX&quot;, _viewMaxX, &quot;_tipsMaxPosX&quot;, _tipsMaxPosX);
+                
                 if ( _viewMaxX &lt; _tipsMaxPosX ) {
                     _newAP = &#x27;right&#x27;;
                     _now = &#x27;right&#x27; + _baseP;
@@ -816,6 +870,7 @@
 
             _cal = _p._model.calcPosOffset(_arrowPosition, _pos );
             _p._model.setPosition( _cal, _arrowPosition );
+
             _p._model.layout().data(&#x27;CPopTipsIns&#x27;, _p);
         },
 

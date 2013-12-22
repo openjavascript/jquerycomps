@@ -3,11 +3,17 @@
 <head>
     <meta charset="utf-8">
     <title>../modules/JC.TableFreeze/0.1/TableFreeze.js - open jquery components library</title>
-    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/widget.css">
+    <link rel="stylesheet" href="../assets/css/tabview.css">
     <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
-    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+    <script src="../assets/js/yui-min.js"></script>
+    <script src="../assets/js/comps1.js"></script>
+    <script src="../assets/js/comps2.js"></script>
+    <script src="../assets/js/comps3.js"></script>
+    <script src="../assets/js/comps4.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -231,7 +237,11 @@
  *          第二个数字表示后面冻结的列数。&lt;br/&gt;
  *           当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。
  *        &lt;/p&gt;
-
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;scrollWidth = num&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *        声明表格滚动部分的宽度，默认120%
  *    &lt;/dd&gt;
  *
  *    &lt;dt&gt;needHoverClass = true|false&lt;/dt&gt;
@@ -285,7 +295,7 @@
             &lt;dd&gt;
                 &lt;dl&gt;
                     &lt;dd&gt;
-                        &lt;div class=&quot;js_compTableFreeze&quot; freezeType=&quot;prev&quot; freezeCols=&quot;2&quot;/&gt;
+                        &lt;div class=&quot;js_compTableFreeze&quot; freezeType=&quot;prev&quot; freezeCols=&quot;2&quot; /&gt;
                             &lt;dl&gt;
                                 &lt;dd&gt;
                                     &lt;table &gt;
@@ -464,7 +474,7 @@
                     var _hover = _p._model.hoverClass();
 
                     if ( !_p._model.supportFreeze() || !_p._model.supportScroll() ) {
-                        _p._model.selector().find(&#x27;tr&#x27;)
+                        _p._model.selector().find(&#x27;table&gt;tbody&gt;tr&#x27;)
                             .on(&#x27;mouseenter&#x27;, function () {
                                 $(this).addClass( _hover );
                             })
@@ -706,7 +716,7 @@
             if ( _p.hasFixedPXWidth() ) {
                 _forePnt.css(&#x27;width&#x27;, _p.selector().find(&#x27;table&#x27;).prop(&#x27;offsetWidth&#x27;) );
             }
-            _p.selector().find(&#x27;div.js-roll-table&gt;table&#x27;).width(&#x27;120%&#x27;);
+            _p.selector().find(&#x27;div.js-roll-table&gt;table&#x27;).width(_p.scrollwidth());
             _p.setHeight();
            
         },
@@ -886,6 +896,14 @@
             _r = _r.split(&#x27;,&#x27;);
 
            // JC.log(_r);
+
+            return _r;
+        },
+
+        scrollwidth: function () {
+            var _r = this.attrProp(&#x27;scrollwidth&#x27;);
+
+            !_r &amp;&amp; ( _r = &#x27;120%&#x27; );
 
             return _r;
         },
@@ -1141,8 +1159,9 @@
 
             if ( !_p._model.supportFreeze() ) {
                 _p._model.selector().css({&#x27;overflow-x&#x27;: &#x27;scroll&#x27;})
-                    .addClass(&#x27;compTFAllRoll&#x27;);
-                _p._model.selector().children(&#x27;table&#x27;).css(&#x27;width&#x27;,&#x27;110%&#x27;);
+                    .addClass(&#x27;compTFAllRoll&#x27;)
+                        .children(&#x27;table&#x27;).css(&#x27;width&#x27;, _p._model.scrollwidth() );
+                
                 return;
             }
 
