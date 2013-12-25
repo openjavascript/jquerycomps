@@ -982,11 +982,11 @@
             "namespace": "JC.LunarCalendar",
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
             "line": 6,
-            "description": "农历日历组件\n<br />全局访问请使用 JC.LunarCalendar 或 LunarCalendar\n<br />DOM 加载完毕后\n, LunarCalendar会自动初始化页面所有具备识别符的日历, 目前可识别: div.js_LunarCalendar, td.js_LunarCalendar, li.js_LunarCalendar\n<br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动初始化 var ins = new JC.LunarCalendar( _selector );\n<p>\n     初始化时, 如果日历是添加到某个selector里, 那么selector可以指定一些设置属性\n     <br /><b>hidecontrol</b>: 如果设置该属性, 那么日历将隐藏操作控件\n     <br /><b>minvalue</b>: 设置日历的有效最小选择范围, 格式YYYY-mm-dd\n     <br /><b>maxvalue</b>: 设置日历的有效最大选择范围, 格式YYYY-mm-dd\n     <br /><b>nopreviousfestivals</b>: 不显示上个月的节日\n     <br /><b>nonextfestivals</b>: 不显示下个月的节日\n</p>\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.LunarCalendar.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.LunarCalendar/0.1/_demo/' target='_blank'>demo link</a></p>",
+            "description": "农历日历组件\n<br />全局访问请使用 JC.LunarCalendar 或 LunarCalendar\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.LunarCalendar.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.LunarCalendar/0.1/_demo/' target='_blank'>demo link</a></p>\n<p>\nDOM 加载完毕后\n<br />会自动初始化页面可识别的node, 目前可识别: div.js_LunarCalendar, td.js_LunarCalendar, li.js_LunarCalendar\n<br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动初始化 JC.LunarCalendar.init( _selector );\n</p>\n\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>clcDate = date string</dt>\n     <dd>设置日历的默认日期</dd>\n\n     <dt>minvalue = date string</dt>\n     <dd>设置日历的有效最小选择范围, 格式YYYY-mm-dd</dd>\n\n     <dt>maxvalue = date string</dt>\n     <dd>设置日历的有效最大选择范围, 格式YYYY-mm-dd</dd>\n\n     <dt>hidecontrol = bool, default = false</dt>\n     <dd>是否隐藏日历将操作控件</dd>\n\n     <dt>nopreviousfestivals = bool, default = false</dt>\n     <dd>不显示上个月的节日</dd>\n\n     <dt>nonextfestivals = bool, default = false</dt>\n     <dd>不显示下个月的节日</dd>\n\n     <dt>clcSelectedItemCb = function, <b>window变量域</b></dt>\n     <dd>选择日期时触发的回调\n<pre>function clcSelectedItemCb1( _date, _td, _a ){\n   var _ins = this;\n   JC.log( _date );\n}</pre>\n     </dd>\n</dl>",
             "is_constructor": 1,
             "params": [
                 {
-                    "name": "_container",
+                    "name": "_selector",
                     "description": "指定要显示日历的选择器, 如果不显示指定该值, 默认为 document.body",
                     "type": "Selector"
                 },
@@ -1010,7 +1010,7 @@
             "extension_for": [],
             "namespace": "JC.LunarCalendar",
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 495,
+            "line": 587,
             "description": "LunarCalendar 视图类",
             "is_constructor": 1,
             "params": [
@@ -1031,7 +1031,7 @@
             "extension_for": [],
             "namespace": "JC.LunarCalendar",
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 689,
+            "line": 779,
             "description": "LunarCalendar 数据模型类",
             "is_constructor": 1,
             "params": [
@@ -5596,7 +5596,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 43,
+            "line": 71,
             "description": "LunarCalendar 的数据模型对象",
             "itemtype": "property",
             "name": "_model",
@@ -5608,7 +5608,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 50,
+            "line": 78,
             "description": "LunarCalendar 的视图对像",
             "itemtype": "property",
             "name": "_view",
@@ -5620,7 +5620,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 60,
+            "line": 90,
             "description": "自定义日历组件模板\n<p>默认模板为JC.LunarCalendar.Model#tpl</p>\n<p>如果用户显示定义JC.LunarCalendar.tpl的话, 将采用用户的模板</p>",
             "itemtype": "property",
             "name": "tpl",
@@ -5632,7 +5632,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 70,
+            "line": 100,
             "description": "设置是否在 dom 加载完毕后, 自动初始化所有日期控件",
             "itemtype": "property",
             "name": "autoinit",
@@ -5644,7 +5644,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 79,
+            "line": 109,
             "description": "设置默认显示的年份数, 该数为前后各多少年 默认为前后各10年",
             "itemtype": "property",
             "name": "defaultYearSpan",
@@ -5656,7 +5656,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 88,
+            "line": 118,
             "description": "从所有的LunarCalendar取得当前选中的日期\n<br /> 如果用户没有显式选中某个日期, 将尝试获取当前日期, 如果两者都没有返回undefined",
             "itemtype": "method",
             "name": "getSelectedItemGlobal",
@@ -5670,7 +5670,28 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 112,
+            "line": 142,
+            "description": "初始化可识别的 LunarCalendar 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of LunarCalendarInstance"
+            },
+            "class": "JC.LunarCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
+            "line": 165,
             "description": "从所有的LunarCalendar取得当前选中日期的日期对象\n<br /> 如果用户没有显式选中某个日期, 将尝试获取当前日期, 如果两者都没有返回undefined",
             "itemtype": "method",
             "name": "getSelectedDateGlobal",
@@ -5684,7 +5705,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 125,
+            "line": 178,
             "description": "从时间截获取选择器对象",
             "itemtype": "method",
             "name": "getItemByTimestamp",
@@ -5705,7 +5726,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 148,
+            "line": 201,
             "description": "添加或者清除工作日样式",
             "itemtype": "method",
             "name": "workday",
@@ -5727,7 +5748,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 164,
+            "line": 217,
             "description": "判断 td 是否为工作日状态",
             "itemtype": "method",
             "name": "isWorkday",
@@ -5748,7 +5769,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 176,
+            "line": 229,
             "description": "添加或者清除假日样式",
             "itemtype": "method",
             "name": "holiday",
@@ -5770,7 +5791,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 192,
+            "line": 245,
             "description": "判断 td 是否为假日状态",
             "itemtype": "method",
             "name": "isHoliday",
@@ -5791,7 +5812,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 204,
+            "line": 257,
             "description": "添加或者清除注释",
             "itemtype": "method",
             "name": "comment",
@@ -5813,7 +5834,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 231,
+            "line": 284,
             "description": "判断 td 是否为注释状态",
             "itemtype": "method",
             "name": "isComment",
@@ -5834,7 +5855,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 243,
+            "line": 296,
             "description": "返回 td 的注释",
             "itemtype": "method",
             "name": "getComment",
@@ -5855,7 +5876,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 258,
+            "line": 311,
             "description": "用于分隔默认title和注释的分隔符",
             "itemtype": "property",
             "name": "commentSeparator",
@@ -5867,7 +5888,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 266,
+            "line": 319,
             "description": "把注释添加到 a title 里",
             "itemtype": "method",
             "name": "commentTitle",
@@ -5889,7 +5910,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 292,
+            "line": 345,
             "description": "从JSON数据更新日历状态( 工作日, 休息日, 注释 )\n<br /> 注意, 该方法更新页面上所有的 LunarCalendar",
             "itemtype": "method",
             "name": "updateStatus",
@@ -5909,7 +5930,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 379,
+            "line": 432,
             "description": "LunarCalendar 内部初始化",
             "itemtype": "method",
             "name": "_init",
@@ -5920,7 +5941,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 390,
+            "line": 463,
             "description": "更新日历视图为自定义的日期",
             "itemtype": "method",
             "name": "update",
@@ -5936,7 +5957,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 400,
+            "line": 473,
             "description": "显示下一个月的日期",
             "itemtype": "method",
             "name": "nextMonth",
@@ -5945,7 +5966,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 410,
+            "line": 483,
             "description": "显示上一个月的日期",
             "itemtype": "method",
             "name": "preMonth",
@@ -5954,7 +5975,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 420,
+            "line": 493,
             "description": "显示下一年的日期",
             "itemtype": "method",
             "name": "nextYear",
@@ -5963,7 +5984,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 430,
+            "line": 503,
             "description": "显示上一年的日期",
             "itemtype": "method",
             "name": "preYear",
@@ -5972,7 +5993,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 440,
+            "line": 513,
             "description": "获取默认时间对象",
             "itemtype": "method",
             "name": "getDate",
@@ -5985,7 +6006,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 446,
+            "line": 519,
             "description": "获取所有的默认时间对象",
             "itemtype": "method",
             "name": "getAllDate",
@@ -5998,7 +6019,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 453,
+            "line": 526,
             "description": "获取当前选中的日期, 如果用户没有显式选择, 将查找当前日期, 如果两者都没有的话返回undefined",
             "itemtype": "method",
             "name": "getSelectedDate",
@@ -6011,7 +6032,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 476,
+            "line": 549,
             "description": "获取初始化日历的选择器对象",
             "itemtype": "method",
             "name": "getContainer",
@@ -6023,7 +6044,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 482,
+            "line": 555,
             "description": "获取日历的主选择器对象",
             "itemtype": "method",
             "name": "getLayout",
@@ -6035,7 +6056,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 488,
+            "line": 561,
             "description": "判断日历是否隐藏操作控件",
             "itemtype": "method",
             "name": "isHideControl",
@@ -6047,7 +6068,61 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 503,
+            "line": 567,
+            "description": "使用 jquery on 绑定事件",
+            "itemtype": "method",
+            "name": "on",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_cb",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "BaseMVCInstance"
+            },
+            "class": "JC.LunarCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
+            "line": 575,
+            "description": "使用 jquery trigger 触发绑定事件",
+            "itemtype": "method",
+            "name": "trigger",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "BaseMVCInstance"
+            },
+            "class": "JC.LunarCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
+            "line": 583,
+            "description": "选择日期时触发的事件",
+            "itemtype": "event",
+            "name": "CLCSelectedItem",
+            "class": "JC.LunarCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
+            "line": 595,
             "description": "LunarCalendar model 对象",
             "itemtype": "property",
             "name": "_model",
@@ -6059,7 +6134,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 510,
+            "line": 602,
             "description": "LunarCalendar 的主容器",
             "itemtype": "property",
             "name": "layout",
@@ -6069,7 +6144,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 521,
+            "line": 611,
             "description": "初始化 View",
             "itemtype": "method",
             "name": "_init",
@@ -6080,7 +6155,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 533,
+            "line": 623,
             "description": "初始化日历外观",
             "itemtype": "method",
             "name": "initLayout",
@@ -6096,7 +6171,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 548,
+            "line": 638,
             "description": "初始化年份",
             "itemtype": "method",
             "name": "initYear",
@@ -6112,7 +6187,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 557,
+            "line": 647,
             "description": "初始化月份",
             "itemtype": "method",
             "name": "initMonth",
@@ -6128,7 +6203,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 566,
+            "line": 656,
             "description": "初始化月份的所有日期",
             "itemtype": "method",
             "name": "_logic.initMonthDate",
@@ -6144,7 +6219,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 667,
+            "line": 757,
             "description": "把具体的公历和农历日期写进a标签的title里",
             "itemtype": "method",
             "name": "addTitle",
@@ -6160,7 +6235,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 677,
+            "line": 767,
             "description": "检查是否要隐藏操作控件",
             "itemtype": "method",
             "name": "hideControl",
@@ -6169,7 +6244,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 698,
+            "line": 788,
             "description": "LunarCalendar 所要显示的selector",
             "itemtype": "property",
             "name": "container",
@@ -6180,7 +6255,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 705,
+            "line": 795,
             "description": "初始化时的时期",
             "itemtype": "property",
             "name": "date",
@@ -6191,7 +6266,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 712,
+            "line": 802,
             "description": "日历默认模板",
             "itemtype": "property",
             "name": "tpl",
@@ -6202,7 +6277,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 719,
+            "line": 809,
             "description": "显示日历时所需要的所有日期对象",
             "itemtype": "property",
             "name": "dateObj",
@@ -6212,7 +6287,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 725,
+            "line": 815,
             "description": "a 标签 title 的临时存储对象",
             "itemtype": "property",
             "name": "_titleObj",
@@ -6225,7 +6300,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 755,
+            "line": 859,
             "description": "获取初始日期对象",
             "itemtype": "method",
             "name": "getDate",
@@ -6243,7 +6318,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 776,
+            "line": 883,
             "description": "把日期赋值给文本框",
             "itemtype": "method",
             "name": "setDate",
@@ -6261,7 +6336,7 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 786,
+            "line": 893,
             "description": "给文本框赋值, 日期为控件的当前日期",
             "itemtype": "method",
             "name": "setSelectedDate",
@@ -6276,80 +6351,12 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 802,
-            "description": "监听上一年按钮",
-            "class": "JC.LunarCalendar.Model",
-            "namespace": "JC.LunarCalendar"
-        },
-        {
-            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 811,
-            "description": "监听上一月按钮",
-            "class": "JC.LunarCalendar.Model",
-            "namespace": "JC.LunarCalendar"
-        },
-        {
-            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 820,
-            "description": "监听下一月按钮",
-            "class": "JC.LunarCalendar.Model",
-            "namespace": "JC.LunarCalendar"
-        },
-        {
-            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 829,
-            "description": "监听下一年按钮",
-            "class": "JC.LunarCalendar.Model",
-            "namespace": "JC.LunarCalendar"
-        },
-        {
-            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 838,
-            "description": "监听年份按钮, 是否要显示年份列表",
-            "class": "JC.LunarCalendar.Model",
-            "namespace": "JC.LunarCalendar"
-        },
-        {
-            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 860,
-            "description": "监听月份按钮, 是否要显示月份列表",
-            "class": "JC.LunarCalendar.Model",
-            "namespace": "JC.LunarCalendar"
-        },
-        {
-            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 874,
-            "description": "监听年份列表选择状态",
-            "class": "JC.LunarCalendar.Model",
-            "namespace": "JC.LunarCalendar"
-        },
-        {
-            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 884,
-            "description": "监听月份列表选择状态",
-            "class": "JC.LunarCalendar.Model",
-            "namespace": "JC.LunarCalendar"
-        },
-        {
-            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 894,
-            "description": "监听日期单元格点击事件",
-            "class": "JC.LunarCalendar.Model",
-            "namespace": "JC.LunarCalendar"
-        },
-        {
-            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 916,
-            "description": "监听body点击事件, 点击时隐藏日历控件的年份和月份列表",
-            "class": "JC.LunarCalendar.Model",
-            "namespace": "JC.LunarCalendar"
-        },
-        {
-            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 922,
-            "description": "DOM 加载完毕后, 初始化日历组件",
-            "itemtype": "event",
-            "name": "dom ready",
+            "line": 925,
+            "description": "LunarCalendar 日历默认模板",
+            "itemtype": "property",
+            "name": "_deftpl",
+            "type": "string",
+            "static": 1,
             "access": "private",
             "tagname": "",
             "class": "JC.LunarCalendar.Model",
@@ -6357,12 +6364,80 @@
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
-            "line": 936,
-            "description": "LunarCalendar 日历默认模板",
-            "itemtype": "property",
-            "name": "_deftpl",
-            "type": "string",
-            "static": 1,
+            "line": 999,
+            "description": "监听上一年按钮",
+            "class": "JC.LunarCalendar.Model",
+            "namespace": "JC.LunarCalendar"
+        },
+        {
+            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
+            "line": 1008,
+            "description": "监听上一月按钮",
+            "class": "JC.LunarCalendar.Model",
+            "namespace": "JC.LunarCalendar"
+        },
+        {
+            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
+            "line": 1017,
+            "description": "监听下一月按钮",
+            "class": "JC.LunarCalendar.Model",
+            "namespace": "JC.LunarCalendar"
+        },
+        {
+            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
+            "line": 1026,
+            "description": "监听下一年按钮",
+            "class": "JC.LunarCalendar.Model",
+            "namespace": "JC.LunarCalendar"
+        },
+        {
+            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
+            "line": 1035,
+            "description": "监听年份按钮, 是否要显示年份列表",
+            "class": "JC.LunarCalendar.Model",
+            "namespace": "JC.LunarCalendar"
+        },
+        {
+            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
+            "line": 1057,
+            "description": "监听月份按钮, 是否要显示月份列表",
+            "class": "JC.LunarCalendar.Model",
+            "namespace": "JC.LunarCalendar"
+        },
+        {
+            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
+            "line": 1072,
+            "description": "监听年份列表选择状态",
+            "class": "JC.LunarCalendar.Model",
+            "namespace": "JC.LunarCalendar"
+        },
+        {
+            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
+            "line": 1084,
+            "description": "监听月份列表选择状态",
+            "class": "JC.LunarCalendar.Model",
+            "namespace": "JC.LunarCalendar"
+        },
+        {
+            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
+            "line": 1096,
+            "description": "监听日期单元格点击事件",
+            "class": "JC.LunarCalendar.Model",
+            "namespace": "JC.LunarCalendar"
+        },
+        {
+            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
+            "line": 1127,
+            "description": "监听body点击事件, 点击时隐藏日历控件的年份和月份列表",
+            "class": "JC.LunarCalendar.Model",
+            "namespace": "JC.LunarCalendar"
+        },
+        {
+            "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
+            "line": 1133,
+            "description": "DOM 加载完毕后, 初始化日历组件",
+            "itemtype": "event",
+            "name": "dom ready",
             "access": "private",
             "tagname": "",
             "class": "JC.LunarCalendar.Model",
@@ -13768,7 +13843,7 @@
             "params": [
                 {
                     "name": "_dateStr",
-                    "description": "如果 起始字符为 NOW, 那么将视为当前日期",
+                    "description": "如果起始字符为 NOW, 那么将视为当前日期\n                                 , 如果起始字符为 NOWFirst, 那么将视为当前月的1号",
                     "type": "String"
                 }
             ],
@@ -13785,14 +13860,14 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 971,
+            "line": 976,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 989,
+            "line": 994,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -13827,7 +13902,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1039,
+            "line": 1044,
             "description": "日期格式化 (具体格式请查看 PHP Date Formats)",
             "itemtype": "method",
             "name": "dateFormat",
@@ -13852,7 +13927,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1084,
+            "line": 1089,
             "description": "扩展对象属性",
             "itemtype": "method",
             "name": "extendObject",
@@ -13882,7 +13957,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1106,
+            "line": 1111,
             "description": "timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行",
             "itemtype": "method",
             "name": "safeTimeout",
@@ -13917,7 +13992,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1127,
+            "line": 1132,
             "description": "URL 请求时, 获取对URL参数进行编码的函数",
             "itemtype": "method",
             "name": "encoder",
@@ -16345,43 +16420,43 @@
         },
         {
             "message": "Missing item type\n监听上一年按钮",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:802"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:999"
         },
         {
             "message": "Missing item type\n监听上一月按钮",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:811"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:1008"
         },
         {
             "message": "Missing item type\n监听下一月按钮",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:820"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:1017"
         },
         {
             "message": "Missing item type\n监听下一年按钮",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:829"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:1026"
         },
         {
             "message": "Missing item type\n监听年份按钮, 是否要显示年份列表",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:838"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:1035"
         },
         {
             "message": "Missing item type\n监听月份按钮, 是否要显示月份列表",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:860"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:1057"
         },
         {
             "message": "Missing item type\n监听年份列表选择状态",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:874"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:1072"
         },
         {
             "message": "Missing item type\n监听月份列表选择状态",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:884"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:1084"
         },
         {
             "message": "Missing item type\n监听日期单元格点击事件",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:894"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:1096"
         },
         {
             "message": "Missing item type\n监听body点击事件, 点击时隐藏日历控件的年份和月份列表",
-            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:916"
+            "line": " ../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js:1127"
         },
         {
             "message": "Missing item type\n这个判断是为了向后兼容 JC 0.1\n使用 requirejs 的项目可以移除这段判断代码",
@@ -16593,7 +16668,7 @@
         },
         {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../modules/JC.common/0.2/common.js:971"
+            "line": " ../modules/JC.common/0.2/common.js:976"
         },
         {
             "message": "Missing item type\nAES Cipher function: encrypt 'input' state with Rijndael algorithm\n  applies Nr rounds (10/12/14) using key schedule w for 'add round key' stage",

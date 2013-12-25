@@ -36,7 +36,7 @@
             , hour: ''      //农历数字时
         };
 
-        var _lunar = toLunarDate( _date );
+        var _lunar = JC.LunarCalendar.toLunarDate( _date );
         _r.year = _lunar.y;
         _r.month = _lunar.m + 1;
         _r.day = _lunar.d;
@@ -79,7 +79,7 @@
         , lunarMonth = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
         ;
 
-    lunarDate( window );
+    lunarDate( JC.LunarCalendar );
 
     function lunarDate(r){
         r = r || window;
