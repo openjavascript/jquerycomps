@@ -912,7 +912,8 @@
     /**
      * 日期占位符识别功能
      * @method  dateDetect
-     * @param   {String}    _dateStr    如果 起始字符为 NOW, 那么将视为当前日期
+     * @param   {String}    _dateStr    如果起始字符为 NOW, 那么将视为当前日期
+     *                                  , 如果起始字符为 NOWFirst, 那么将视为当前月的1号
      * @return  {date|null}
      * @static
      * @example
