@@ -1,6 +1,4 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
-;(function($){
-    window.JC = window.JC || {log:function(){}};
     window.Suggest = JC.Suggest = Suggest;
     /**
      * Suggest 关键词补全提示类
@@ -791,7 +789,6 @@
         $('dl.js_sugLayout, div.js_sugLayout').hide();
     });
 
-}(jQuery));
     return JC.Suggest;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

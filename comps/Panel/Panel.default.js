@@ -4,7 +4,7 @@
     /**
      * 弹出层基础类 JC.Panel
      * <p><b>require</b>: 
-     *      <a href='window..jQuery.html'>jQuery</a>
+     *      <a href='.jQuery.html'>jQuery</a>
      *      , <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -1282,6 +1282,7 @@
 
         _panel.triggerSelector( _p );
     });
+
     return JC.Panel;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

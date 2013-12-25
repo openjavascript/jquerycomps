@@ -1,5 +1,4 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
-;(function($){
     /**
      * 应用场景
      * <br /><b>ISP 缓存问题 引起的用户串号</b>
@@ -36,7 +35,6 @@
      *      });
      *      </script>
      */
-    window.Bizs = window.Bizs || {};
     Bizs.KillISPCache = KillISPCache;
 
     function KillISPCache( _selector ){
@@ -267,7 +265,6 @@
         }, 100 );
     });
 
-}(jQuery));
     return Bizs.KillISPCache;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

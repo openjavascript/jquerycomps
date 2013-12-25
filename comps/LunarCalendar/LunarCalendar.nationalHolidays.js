@@ -49,20 +49,16 @@
     o['20131007'] = { 'isHoliday': true };
     o['20131012'] = { 'isWorkday': true };
     //2014 元旦
-    o['20131228'] = { 'isWorkday': true };
-    o['20131229'] = { 'isWorkday': true };
-    o['20131230'] = { 'isHoliday': true };
-    o['20131231'] = { 'isHoliday': true };
     o['20140101'] = { 'isHoliday': true };
     //除夕 春节
     o['20140126'] = { 'isWorkday': true };
-    o['20140130'] = { 'isHoliday': true };
     o['20140131'] = { 'isHoliday': true };
     o['20140201'] = { 'isHoliday': true };
     o['20140202'] = { 'isHoliday': true };
     o['20140203'] = { 'isHoliday': true };
     o['20140204'] = { 'isHoliday': true };
     o['20140205'] = { 'isHoliday': true };
+    o['20140206'] = { 'isHoliday': true };
     o['20140208'] = { 'isWorkday': true };
     //清明节
     o['20140405'] = { 'name': '清明节', 'fullname': '清明节', 'priority': 8, 'isHoliday': true };

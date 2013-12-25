@@ -1,3 +1,5 @@
+//TODO: 提供静态格式化方法
+//TODO: 提供 页面载入时, 指定 class 进行格式化支持
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
  * <h2>金额格式化 业务逻辑</h2>
@@ -47,8 +49,6 @@
             <span class="js_bmtSpan"></span>
         </div>
  */
-;(function($){
-    window.Bizs = window.Bizs || {};
     Bizs.MoneyTips = MoneyTips;
 
     function MoneyTips( _selector ){
@@ -265,7 +265,6 @@
             ;
     });
 
-}(jQuery));
     return Bizs.MoneyTips;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

@@ -200,6 +200,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+//TODO: balType = ajaxaction 添加成功后删除逻辑
 ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Panel&#x27; ], function(){
 /**
  * &lt;h2&gt;node 点击操作逻辑&lt;/h2&gt;
@@ -303,8 +304,6 @@
  * @version dev 0.1 2013-09-17
  * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 Team
  */
-;(function($){
-    window.Bizs = window.Bizs || {};
     window.Bizs.ActionLogic = ActionLogic;
 
     function ActionLogic( _selector ){
@@ -714,7 +713,6 @@
         });
     });
 
-}(jQuery));
     return Bizs.ActionLogic;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb) { 
@@ -722,7 +720,7 @@
             typeof _require == &#x27;function&#x27; &amp;&amp; ( _cb = _require ); 
             _cb &amp;&amp; _cb(); 
         }
-        , this
+        , window
     )
 );
 

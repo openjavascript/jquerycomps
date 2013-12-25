@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
+ ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
  * TableFreeze 表格固定指定列功能
  *
@@ -74,9 +74,6 @@
 }</pre>
  *    </dd>
  *</dl> 
- *
- *   
-
  *
  * @namespace JC
  * @class TableFreeze
@@ -193,8 +190,6 @@
             </dd>
         </dl>
  */
-;(function($){
-    window.JC = window.JC || {log:function(){}};
     JC.TableFreeze = TableFreeze;
  
     function TableFreeze( _selector ){
@@ -1002,7 +997,6 @@
 
     });
  
-}(jQuery));
     return JC.TableFreeze;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 

@@ -1,10 +1,12 @@
 ;(function(define, _win) { 'use strict'; define( [], function(){
-;(function($){
+    !window.console && ( window.console = { log: function(){}, dir: function(){} } );
     /**
      * 声明主要命名空间, 方便迁移
      */
     window.JC = window.JC || {};
-    JC.log = function(){ JC.debug && window.console && console.log( sliceArgs( arguments ).join(' ') ); };
+    JC.log = function(){ JC.debug && console.log( sliceArgs( arguments ).join(' ') ); };
+    JC.dir = function( _obj ){ JC.debug && console.dir( _obj ); };
+
     JC.PATH = JC.PATH || scriptPath();
 
     window.Bizs = window.Bizs || {};
@@ -909,7 +911,8 @@
     /**
      * 日期占位符识别功能
      * @method  dateDetect
-     * @param   {String}    _dateStr    如果 起始字符为 NOW, 那么将视为当前日期
+     * @param   {String}    _dateStr    如果起始字符为 NOW, 那么将视为当前日期
+     *                                  , 如果起始字符为 NOWFirst, 那么将视为当前月的1号
      * @return  {date|null}
      * @static
      * @example
@@ -925,11 +928,15 @@
     function dateDetect( _dateStr ){
         var _r = null   
             , _re = /^now/i
+            , _nowFirstRe = /^nowfirst/
             , _d, _ar, _item
             ;
         if( _dateStr && typeof _dateStr == 'string' ){
-            if( _re.test( _dateStr ) ){
+            if( _re.test( _dateStr ) || _nowFirstRe.test( _dateStr ) ){
                 _d = new Date();
+                if( _nowFirstRe.test(_dateStr ) ){
+                    _d.setDate( 1 );
+                }
                 _dateStr = _dateStr.replace( _re, '' ).replace(/[\s]+/g, '');
                 _ar = _dateStr.split(',');
 
@@ -1140,7 +1147,6 @@
         return _r;
     }
 
-}(jQuery));
     return JC.f;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

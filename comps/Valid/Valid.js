@@ -1,8 +1,7 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
-//TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
-//TODO: checkbox, radio 错误时, input 添加高亮显示
-//TODO: daterange 支持一对多关系
-;(function($){
+    //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
+    //TODO: checkbox, radio 错误时, input 添加高亮显示
+    //TODO: daterange 支持一对多关系
     /**
      * <b>表单验证</b> (单例模式)
      * <br />全局访问请使用 JC.Valid 或 Valid
@@ -32,6 +31,9 @@
      *      <dd>
      *          设置 表单所有控件的 em  CSS display 显示类型
      *      </dd>
+     *
+     *      <dt>ignoreAutoCheckEvent = bool, default = false</dt>
+     *      <dd>是否禁用 自动 check 事件( focus, blur, change )</dd>
      * </dl>
      * <h2>Form Control的可用 html attribute</h2>
      * <dl>
@@ -2996,7 +2998,6 @@
         });
     });
 
-}(jQuery));
     return JC.Valid;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

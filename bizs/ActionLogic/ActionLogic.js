@@ -1,3 +1,4 @@
+//TODO: balType = ajaxaction 添加成功后删除逻辑
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
 /**
  * <h2>node 点击操作逻辑</h2>
@@ -101,8 +102,6 @@
  * @version dev 0.1 2013-09-17
  * @author  qiushaowei   <suches@btbtd.org> | 75 Team
  */
-;(function($){
-    window.Bizs = window.Bizs || {};
     window.Bizs.ActionLogic = ActionLogic;
 
     function ActionLogic( _selector ){
@@ -512,7 +511,6 @@
         });
     });
 
-}(jQuery));
     return Bizs.ActionLogic;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 
@@ -520,6 +518,6 @@
             typeof _require == 'function' && ( _cb = _require ); 
             _cb && _cb(); 
         }
-        , this
+        , window
     )
 );

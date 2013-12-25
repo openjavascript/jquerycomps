@@ -201,12 +201,14 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 ;(function(define, _win) { &#x27;use strict&#x27;; define( [], function(){
-;(function($){
+    !window.console &amp;&amp; ( window.console = { log: function(){}, dir: function(){} } );
     /**
      * 声明主要命名空间, 方便迁移
      */
     window.JC = window.JC || {};
-    JC.log = function(){ JC.debug &amp;&amp; window.console &amp;&amp; console.log( sliceArgs( arguments ).join(&#x27; &#x27;) ); };
+    JC.log = function(){ JC.debug &amp;&amp; console.log( sliceArgs( arguments ).join(&#x27; &#x27;) ); };
+    JC.dir = function( _obj ){ JC.debug &amp;&amp; console.dir( _obj ); };
+
     JC.PATH = JC.PATH || scriptPath();
 
     window.Bizs = window.Bizs || {};
@@ -1111,7 +1113,8 @@
     /**
      * 日期占位符识别功能
      * @method  dateDetect
-     * @param   {String}    _dateStr    如果 起始字符为 NOW, 那么将视为当前日期
+     * @param   {String}    _dateStr    如果起始字符为 NOW, 那么将视为当前日期
+     *                                  , 如果起始字符为 NOWFirst, 那么将视为当前月的1号
      * @return  {date|null}
      * @static
      * @example
@@ -1127,11 +1130,15 @@
     function dateDetect( _dateStr ){
         var _r = null   
             , _re = /^now/i
+            , _nowFirstRe = /^nowfirst/
             , _d, _ar, _item
             ;
         if( _dateStr &amp;&amp; typeof _dateStr == &#x27;string&#x27; ){
-            if( _re.test( _dateStr ) ){
+            if( _re.test( _dateStr ) || _nowFirstRe.test( _dateStr ) ){
                 _d = new Date();
+                if( _nowFirstRe.test(_dateStr ) ){
+                    _d.setDate( 1 );
+                }
                 _dateStr = _dateStr.replace( _re, &#x27;&#x27; ).replace(/[\s]+/g, &#x27;&#x27;);
                 _ar = _dateStr.split(&#x27;,&#x27;);
 
@@ -1342,7 +1349,6 @@
         return _r;
     }
 
-}(jQuery));
     return JC.f;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb) { 

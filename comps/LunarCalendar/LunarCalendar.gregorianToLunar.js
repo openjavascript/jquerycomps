@@ -36,7 +36,7 @@
             , hour: ''      //农历数字时
         };
 
-        var _lunar = toLunarDate( _date );
+        var _lunar = JC.LunarCalendar.toLunarDate( _date );
         _r.year = _lunar.y;
         _r.month = _lunar.m + 1;
         _r.day = _lunar.d;
@@ -79,7 +79,7 @@
         , lunarMonth = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
         ;
 
-    lunarDate( window );
+    lunarDate( JC.LunarCalendar );
 
     function lunarDate(r){
         r = r || window;
@@ -137,7 +137,10 @@
         , s = "\u7532,\u4e59,\u4e19,\u4e01,\u620a,\u5df1,\u5e9a,\u8f9b,\u58ec,\u7678".split(",")
         , t = "\u5b50,\u4e11,\u5bc5,\u536f,\u8fb0,\u5df3,\u5348,\u672a,\u7533,\u9149,\u620c,\u4ea5".split(",")
         , u = "\u9f20,\u725b,\u864e,\u5154,\u9f99,\u86c7,\u9a6c,\u7f8a,\u7334,\u9e21,\u72d7,\u732a".split(",")
-        , q = "\u5c0f\u5bd2,\u5927\u5bd2,\u7acb\u6625,\u96e8\u6c34,\u60ca\u86f0,\u6625\u5206,\u6e05\u660e,\u8c37\u96e8,\u7acb\u590f,\u5c0f\u6ee1,\u8292\u79cd,\u590f\u81f3,\u5c0f\u6691,\u5927\u6691,\u7acb\u79cb,\u5904\u6691,\u767d\u9732,\u79cb\u5206,\u5bd2\u9732,\u971c\u964d,\u7acb\u51ac,\u5c0f\u96ea,\u5927\u96ea,\u51ac\u81f3".split(",")
+        , q = ( "\u5c0f\u5bd2,\u5927\u5bd2,\u7acb\u6625,\u96e8\u6c34,\u60ca\u86f0,\u6625\u5206,"
+                  + "\u6e05\u660e,\u8c37\u96e8,\u7acb\u590f,\u5c0f\u6ee1,\u8292\u79cd,\u590f\u81f3,"
+                  + "\u5c0f\u6691,\u5927\u6691,\u7acb\u79cb,\u5904\u6691,\u767d\u9732,\u79cb\u5206,"
+                  + "\u5bd2\u9732,\u971c\u964d,\u7acb\u51ac,\u5c0f\u96ea,\u5927\u96ea,\u51ac\u81f3" ).split(",")
         , v = [
             0,21208,42467,63836,85337,107014,128867,150921,173149,195551,218072
             ,240693,263343,285989,308563,331033,353350,375494,397447,419210,440795

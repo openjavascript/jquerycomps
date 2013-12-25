@@ -1,5 +1,4 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
-;(function($){
     window.BaseMVC = JC.BaseMVC = BaseMVC;
     /**
      * MVC 抽象类 ( <b>仅供扩展用, 这个类不能实例化</b>)
@@ -442,7 +441,7 @@
                 return this;
             }
     });
-}(jQuery));
+
     return JC.BaseMVC;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 
