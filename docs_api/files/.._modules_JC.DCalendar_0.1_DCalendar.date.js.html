@@ -254,15 +254,20 @@
         _selector = $( _selector || document );
 
         if ( _selector &amp;&amp; _selector.length ) {
-            if ( _selector.prop(&#x27;nodeName&#x27;) &amp;&amp; _selector.attr(&#x27;datatype&#x27;) &amp;&amp; ( _selector.prop(&#x27;nodeName&#x27;).toLowerCase()==&#x27;input&#x27; || _selector.prop(&#x27;nodeName&#x27;).toLowerCase()==&#x27;button&#x27; ) &amp;&amp; ( _selector.attr(&#x27;datatype&#x27;).toLowerCase()==&#x27;ddate&#x27;) ) {
-                _r.push( new DCalendar(_selector) );
-            }
+            // if ( _selector.prop(&#x27;nodeName&#x27;) &amp;&amp; _selector.attr(&#x27;datatype&#x27;) &amp;&amp; ( _selector.prop(&#x27;nodeName&#x27;).toLowerCase()==&#x27;input&#x27; || _selector.prop(&#x27;nodeName&#x27;).toLowerCase()==&#x27;button&#x27; ) &amp;&amp; ( _selector.attr(&#x27;datatype&#x27;).toLowerCase()==&#x27;ddate&#x27;) ) {
+            //     _r.push( new DCalendar(_selector) );
+            // }
 
             if ( _selector.hasClass(&#x27;js_compDCalendar&#x27;) ) {
                 _r.push( new DCalendar(_selector) );
-            } 
+            } else {
+                _selector.find(&#x27;input[datatype=ddate], button[datatype=ddate]&#x27;).each( function() {
+                    _r.push( new DCalendar( this ) );
+                });
+            }
         }
-        JC.log( &#x27;DCalendar:&#x27;, new Date().getTime() );
+        //JC.log( &#x27;DCalendar:&#x27;, new Date().getTime(), _r );
+      
         return _r;
     };
 
@@ -278,6 +283,45 @@
 
         _initHanlderEvent: function () {
             var _p = this;
+
+            _p._model.selector().on(&#x27;focus&#x27;, function () {
+                _p.trigger( DCalendar.Model.SHOW );
+                
+            });
+
+            _p.on(DCalendar.Model.SHOW, function () {
+                _p._view.show();
+            });
+
+            _p.on(DCalendar.Model.HIDDEN, function () {
+                _p._view.hide();
+            });
+
+            _p.on(DCalendar.Model.CHANGE, function ( _evt, _srcSelector ) {
+                _p._view.change( _srcSelector );
+            } );
+
+            _p.on(DCalendar.Model.SETDATE, function ( _evt, _srcSelector ) {
+                _p._model.setSelected( _srcSelector );
+            });
+
+            _p.on(DCalendar.Model.DATEVIEW, function ( _evt, _srcSelector ) {
+                _p._view.dateView( _srcSelector );
+            });
+
+            _p.on(DCalendar.Model.MONTHVIEW, function ( _evt, _srcSelector ) {
+                _p._view.monthView( _srcSelector );
+            });
+
+            _p.on(DCalendar.Model.YEARVIEW, function ( _evt, _srcSelector ) {
+                _p._view.yearView( _srcSelector );
+            });
+
+            _p.on( &#x27;CDCCreateLayout&#x27;, function( _evt, _layout ){
+                _layout &amp;&amp; DCalendar.getInstance( _layout, _p );
+            });
+            
+
 
         }, 
 
@@ -297,34 +341,354 @@
         }
 
     });
- 
+    
     DCalendar.Model._instanceName = &quot;DCalendar&quot;;
+    DCalendar.Model._boxId = &quot;CompDCalendar&quot;;
+    DCalendar.Model.SHOW = &quot;CDC_SHOW&quot;;
+    DCalendar.Model.HIDDEN = &quot;CDC_HIDDEN&quot;;
+    DCalendar.Model.CHANGE = &quot;CDC_CHANGE&quot;;
+    DCalendar.Model.SETDATE = &quot;CDC_SETDATE&quot;;
+    DCalendar.Model.DATEVIEW = &quot;CDC_DATEVIEW&quot;;
+    DCalendar.Model.MONTHVIEW = &quot;CDC_MONTHVIEW&quot;;
+    DCalendar.Model.YEARVIEW = &quot;CDC_YEARVIEW&quot;;
 
     JC.f.extendObject( DCalendar.Model.prototype, {
         init: function () {
             var _p = this;
         },
 
-        baseTpl: &#x27;&lt;div class=&quot;CDCalendar_bounding_box CDCalendar_bounding_box_style&quot; &gt;&#x27;
+        cnWeek: &#x27;日一二三四五六&#x27;,
+
+        dateSpan: function () {
+            var _r = this.intProp(&#x27;dateSpan&#x27;);
+
+            !_r &amp;&amp; ( _r = 20 );
+
+            return _r;
+        },
+
+        curDate: function () {
+            var _p = this,
+                _d = _p.selector().val().trim(),
+                _r;
+
+            if ( _d ) {
+                _r = new Date( _d );
+            } else {
+                _r = new Date();
+            }
+
+            return _r;
+
+        },
+
+        curYear: function () {
+            return this.curDate().getFullYear();
+        },
+        
+        curMonth: function () {
+            return this.curDate().getMonth();
+        },
+
+        startYear: function () {
+            var _curY = this.curDate().getFullYear(),
+                _r;
+
+            _r = _curY - this.dateSpan();
+
+            return _r;
+
+        },
+
+        endYear: function () {
+            var _curY = this.curDate().getFullYear(),
+                _r;
+
+            _r = _curY + this.dateSpan();
+
+            return _r;
+
+        },
+
+        allYearsTpl: function ( _date ) {
+            var _p = this,
+                _s = _p.startYear( _date ),
+                _e = _p.endYear( _date ),
+                _r = &#x27;&lt;tr&gt;&#x27;,
+                i,
+                j;
+
+            for ( i = _s, j = 1; i &lt; _e; i++ ) {
+                _r += &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;js_compDCYear&quot; data-year=&quot;&#x27; + i + &#x27;&quot;&gt;&#x27; + i + &#x27;&lt;/a&gt;&lt;/td&gt;&#x27;
+
+                if ( j % 8 === 0 ) {
+                    _r += &#x27;&lt;/tr&gt;&lt;tr&gt;&#x27;
+                }
+
+                j++
+            }
+
+            _r = _r + &#x27;&lt;/tr&gt;&#x27;
+
+            return _r;
+
+        },
+
+        datesOfMonthTpl: function ( _date ) {
+            var _p = this,
+                _r = &#x27;&lt;tr&gt;&#x27;,
+                _t,
+                _d,
+                _day,
+                _cnDay,
+                _maxDayOfMonth = JC.f.maxDayOfMonth( _date ),
+                _placeholder = &#x27;&#x27;,
+                i,
+                j;
+
+            for ( i = 1; i &lt;= _maxDayOfMonth; i++ ) {
+                _d = new Date( _date.getFullYear(), _date.getMonth(), i );
+                _day = _d.getDay();
+                _cnDay = _p.cnWeek.charAt( _day );
+
+                if ( JC.f.isSameDay( new Date(), _d ) ) {
+                   _t = &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;today&quot; data-date=&quot;&#x27; + JC.f.formatISODate(_d) + &#x27;&quot;&gt;&#x27; + i + &#x27;&lt;/a&gt;&lt;/td&gt;&#x27;; 
+                } else {
+                   _t = &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; data-date=&quot;&#x27; + JC.f.formatISODate(_d) + &#x27;&quot;&gt;&#x27; + i + &#x27;&lt;/a&gt;&lt;/td&gt;&#x27;; 
+                }
+               
+                if ( i === 1 &amp;&amp; _day &gt; 0 ) {
+                   
+                    for ( j = 0; j &lt; _day; j++ ) {
+                        _placeholder += &#x27;&lt;td class=&quot;disabled&quot;&gt;&lt;a href=&quot;javascript:;&quot;&gt;&lt;/a&gt;&lt;/td&gt;&#x27;;
+                    } 
+
+                    _r = _r + _placeholder;
+                    _placeholder = &#x27;&#x27;;
+
+                }
+
+                _r += _t;
+
+                if ( i === _maxDayOfMonth &amp;&amp; _day &lt; 6) {
+
+                    for ( j = 0; j &lt; 6 - _day; j++ ) {
+                        _placeholder += &#x27;&lt;td class=&quot;disabled&quot;&gt;&lt;a href=&quot;javascript:;&quot;&gt;&lt;/a&gt;&lt;/td&gt;&#x27;;
+                    } 
+
+                    _r = _r + _placeholder;
+                    _placeholder = &#x27;&#x27;;
+
+                }
+
+                if ( _day % 6 === 0 &amp;&amp; _day &gt; 0) {
+                    _r = _r + &#x27;&lt;/tr&gt;&lt;tr&gt;&#x27;;
+                }
+
+            }
+
+            _r = _r + &#x27;&lt;/tr&gt;&#x27;
+    
+            return _r;
+
+        },
+
+        monthTpl: &#x27;&lt;div class=&quot;CDC_inner&quot;&gt;&#x27;
+                    + &#x27;&lt;div class=&quot;CDC_header&quot;&gt;&#x27;
+                        + &#x27;&lt;h4&gt;&lt;a href=&quot;javascript:;&quot; data-date=&quot;{1}&quot; class=&quot;CDC_Year&quot;&gt;{0}&lt;/a&gt;&lt;/h4&gt;&#x27;
+                    + &#x27;&lt;/div&gt;&#x27;
+                    + &#x27;&lt;div class=&quot;CDC_body&quot;&gt;&#x27;  
+                        + &#x27;&lt;table class=&quot;CDC_month_body&quot;&gt;&#x27;
+                            + &#x27;&lt;tbody&gt;&#x27;
+                                + &#x27;&lt;tr&gt;&#x27;
+                                    + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;js_compDCMonth&quot; data-month=&quot;0&quot;&gt;一月&lt;/a&gt;&lt;/td&gt;&#x27;
+                                    + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;js_compDCMonth&quot; data-month=&quot;1&quot;&gt;二月&lt;/a&gt;&lt;/td&gt;&#x27;
+                                    + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;js_compDCMonth&quot; data-month=&quot;2&quot;&gt;三月&lt;/a&gt;&lt;/td&gt;&#x27;
+                                    + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;js_compDCMonth&quot; data-month=&quot;3&quot;&gt;四月&lt;/a&gt;&lt;/td&gt;&#x27;
+                                    + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;js_compDCMonth&quot; data-month=&quot;4&quot;&gt;五月&lt;/a&gt;&lt;/td&gt;&#x27;
+                                    + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;js_compDCMonth&quot; data-month=&quot;5&quot;&gt;六月&lt;/a&gt;&lt;/td&gt;&#x27;
+                                + &#x27;&lt;/tr&gt;&#x27;
+                                + &#x27;&lt;tr&gt;&#x27;
+                                    + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;js_compDCMonth&quot; data-month=&quot;6&quot;&gt;七月&lt;/a&gt;&lt;/td&gt;&#x27;
+                                    + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;js_compDCMonth&quot; data-month=&quot;7&quot;&gt;八月&lt;/a&gt;&lt;/td&gt;&#x27;
+                                    + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;js_compDCMonth&quot; data-month=&quot;8&quot;&gt;九月&lt;/a&gt;&lt;/td&gt;&#x27;
+                                    + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;js_compDCMonth&quot; data-month=&quot;9&quot;&gt;十月&lt;/a&gt;&lt;/td&gt;&#x27;
+                                    + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;js_compDCMonth&quot; data-month=&quot;10&quot;&gt;十一月&lt;/a&gt;&lt;/td&gt;&#x27;
+                                    + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;js_compDCMonth&quot; data-month=&quot;11&quot;&gt;十二月&lt;/a&gt;&lt;/td&gt;&#x27;
+                                + &#x27;&lt;/tr&gt;&#x27;
+                            + &#x27;&lt;/tbody&gt;&#x27;
+                        + &#x27;&lt;/table&gt;&#x27;
+                    + &#x27;&lt;/div&gt;&#x27;
+                +&#x27;&lt;/div&gt;&#x27;,
+
+        yearTpl: &#x27;&lt;div class=&quot;CDC_inner&quot;&gt;&#x27;
+                    + &#x27;&lt;div class=&quot;CDC_header&quot;&gt;&#x27;
+                        + &#x27;&lt;h4&gt;&lt;a href=&quot;javascript:;&quot; data-date=&quot;{0}&quot; class=&quot;CDC_Date&quot;&gt;{0}&lt;/a&gt;&lt;/h4&gt;&#x27;
+                    + &#x27;&lt;/div&gt;&#x27;
+                    + &#x27;&lt;div class=&quot;CDC_body&quot;&gt;&#x27;
+                       + &#x27;&lt;table class=&quot;CDC_year_body&quot;&gt;&#x27;
+                           + &#x27;&lt;tbody&gt;&#x27;
+                           + &#x27;{1}&#x27;
+                           + &#x27;&lt;/tbody&gt;&#x27;
+                        + &#x27;&lt;/table&gt;&#x27;
+                    + &#x27;&lt;/div&gt;&#x27;
+                    + &#x27;&lt;div class=&quot;CDC_footer&quot;&gt;&lt;/div&gt;&#x27;
+                + &#x27;&lt;/div&gt;&#x27;,
+
+        dateTpl: &#x27;&lt;div class=&quot;CDC_inner&quot; style=&quot;width: 182px;&quot; &gt;&#x27;
+                    + &#x27;&lt;div class=&quot;CDC_header&quot;&gt;&#x27;
+                        + &#x27;&lt;h4&gt;&lt;a href=&quot;javascript:;&quot; data-date=&quot;{4}&quot; class=&quot;CDC_Month&quot;&gt;{0}&lt;/a&gt;&lt;/h4&gt;&#x27; 
+                    + &#x27;&lt;/div&gt;&#x27;
+                    + &#x27;&lt;div class=&quot;CDC_body&quot;&gt;&#x27;
+                        + &#x27;&lt;table class=&quot;CDC_date_body&quot;&gt;&#x27;
+                            + &#x27;&lt;thead &gt;&#x27;
+                                + &#x27;&lt;tr&gt;&#x27;
+                                    + &#x27;&lt;th class=&quot;weekend&quot;&gt;日&lt;/th&gt;&#x27;
+                                    + &#x27;&lt;th&gt;一&lt;/th&gt;&#x27;
+                                    + &#x27;&lt;th&gt;二&lt;/th&gt;&#x27;
+                                    + &#x27;&lt;th&gt;三&lt;/th&gt;&#x27;
+                                    + &#x27;&lt;th&gt;四&lt;/th&gt;&#x27;
+                                    + &#x27;&lt;th&gt;五&lt;/th&gt;&#x27;
+                                    + &#x27;&lt;th class=&quot;weekend&quot;&gt;六&lt;/th&gt;&#x27;
+                                + &#x27;&lt;/tr&gt;&#x27;
+                            + &#x27;&lt;/thead&gt;&#x27;
+                            + &#x27;&lt;tbody&gt;&#x27;
+                            +   &#x27;{1}&#x27;   
+                            + &#x27;&lt;/tbody&gt;&#x27;
+                        + &#x27;&lt;/table&gt;&#x27;
+                    + &#x27;&lt;/div&gt;&#x27;
+                    + &#x27;&lt;div class=&quot;CDC_footer&quot;&gt;&lt;/div&gt;&#x27;
+                + &#x27;&lt;/div&gt;&#x27;
+                + &#x27;&lt;div class=&quot;CDC_inner&quot; style=&quot;width: 182px;&quot; &gt;&#x27;
+                    + &#x27;&lt;div class=&quot;CDC_header&quot;&gt;&#x27;
+                        + &#x27;&lt;h4&gt;&lt;a href=&quot;javascript:;&quot; data-date=&quot;{5}&quot; class=&quot;CDC_Month&quot;&gt;{3}&lt;/a&gt;&lt;/h4&gt;&#x27;
+                    + &#x27;&lt;/div&gt;&#x27;
+                    + &#x27;&lt;div class=&quot;CDC_body&quot;&gt;&#x27;
+                        + &#x27;&lt;table class=&quot;CDC_date_body&quot;&gt;&#x27;
+                            + &#x27;&lt;thead &gt;&#x27;
+                                + &#x27;&lt;tr&gt;&#x27;
+                                    + &#x27;&lt;th class=&quot;weekend&quot; &gt;日&lt;/th&gt;&#x27;
+                                    + &#x27;&lt;th&gt;一&lt;/th&gt;&#x27;
+                                    + &#x27;&lt;th&gt;二&lt;/th&gt;&#x27;
+                                    + &#x27;&lt;th&gt;三&lt;/th&gt;&#x27;
+                                    + &#x27;&lt;th&gt;四&lt;/th&gt;&#x27;
+                                    + &#x27;&lt;th&gt;五&lt;/th&gt;&#x27;
+                                    + &#x27;&lt;th class=&quot;weekend&quot;&gt;六&lt;/th&gt;&#x27;
+                                + &#x27;&lt;/tr&gt;&#x27;
+                            + &#x27;&lt;/thead&gt;&#x27;
+                            + &#x27;&lt;tbody&gt;&#x27;
+                            + &#x27;{2}&#x27;    
+                            + &#x27;&lt;/tbody&gt;&#x27;
+                        + &#x27;&lt;/table&gt;&#x27;
+                    + &#x27;&lt;/div&gt;&#x27;
+                    + &#x27;&lt;div class=&quot;CDC_footer&quot;&gt;&lt;/div&gt;&#x27;
+                + &#x27;&lt;/div&gt;&#x27;,
+
+        baseTpl: &#x27;&lt;div class=&quot;CDCalendar_bounding_box&quot; style=&quot;width:466px;position:absolute;&quot; &gt;&#x27;
                     + &#x27;&lt;div class=&quot;CDC_container&quot; &gt;&#x27;
                         + &#x27;&lt;div class=&quot;CDC_content_box&quot; &gt;&#x27;
                             + &#x27;&lt;div class=&quot;CDC_arrow&quot; &gt;&#x27;
-                                + &#x27;&lt;span class=&quot;CDC_CDC_close_btn&quot; title=&quot;关闭&quot;&gt;close&lt;/span&gt;&#x27;
-                                + &#x27;&lt;span class=&quot;CDC_CDC_prev_btn&quot; title=&quot;上月&quot; &gt;prev&lt;/span&gt;&#x27;
-                                + &#x27;&lt;span class=&quot;CDC_CDC_next_btn&quot; title=&quot;下月&quot; &gt;next&lt;/span&gt;&#x27;
+                                + &#x27;&lt;span class=&quot;CDC_close_btn&quot; title=&quot;关闭&quot;&gt;close&lt;/span&gt;&#x27;
+                                + &#x27;&lt;span class=&quot;CDC_prev_btn&quot; data-action=&quot;prev&quot;&gt;prev&lt;/span&gt;&#x27;
+                                + &#x27;&lt;span class=&quot;CDC_next_btn&quot; data-action=&quot;next&quot;&gt;next&lt;/span&gt;&#x27;
                             + &#x27;&lt;/div&gt;&#x27;
                             + &#x27;&lt;div class=&quot;CDC_date_box&quot; &gt;&#x27;
-                                + &#x27;&lt;div class=&quot;CDC_inner&quot; style=&quot;width: 182px;&quot; &gt;&#x27;
-                                +  {0}
-                                + &#x27;&lt;/div&gt;&#x27;
-                                + &#x27;&lt;div class=&quot;CDC_inner&quot; style=&quot;width: 182px;&quot;&gt;&#x27;
-                                +  {0}
-                                + &#x27;&lt;/div&gt;&#x27;
+                               + &#x27;{0}&#x27;
                             + &#x27;&lt;/div&gt;&#x27;
                         + &#x27;&lt;/div&gt;&#x27;
                     + &#x27;&lt;/div&gt;&#x27;
-                + &#x27;&lt;/div&gt;&#x27;
+                + &#x27;&lt;/div&gt;&#x27;,
 
+        compTpl: function ( _tpl ) {
+            var _p = this,
+                _r;
+
+            _r = JC.f.printf( _p.baseTpl, _tpl );
+
+            return _r;
+        },
+
+        layout: function () {
+
+            var _p = this,
+                _r,
+                _curDate = _p.curDate(),
+                _nextMonthDate = new Date(_curDate.getFullYear(), _curDate.getMonth() + 1, 1);
+
+            if ( !this._layout ) {
+                _r = _p.compTpl( _p.dateTpl );
+
+                this._layout = $( JC.f.printf( 
+                    _r, 
+                    _curDate.getFullYear() + &#x27;年&#x27; + ( _curDate.getMonth() + 1 ) + &#x27;月&#x27;,
+                    _p.datesOfMonthTpl( _curDate ), 
+                    _p.datesOfMonthTpl( _nextMonthDate ),
+                    _nextMonthDate.getFullYear() + &#x27;年&#x27; + ( _nextMonthDate.getMonth() + 1 ) + &#x27;月&#x27;,
+                    JC.f.formatISODate( _curDate ),
+                    JC.f.formatISODate( _nextMonthDate )
+                    ) )
+                    .appendTo( _p.layoutBox() )
+                        .find(&#x27;span.CDC_next_btn&#x27;)
+                            .attr(&#x27;data-date&#x27;, JC.f.formatISODate(_nextMonthDate))
+                            .attr(&#x27;data-type&#x27;, &#x27;date&#x27;)
+                    .end()
+                        .find(&#x27;span.CDC_prev_btn&#x27;)
+                            .attr(&#x27;data-date&#x27;, JC.f.formatISODate(_curDate) )
+                            .attr(&#x27;data-type&#x27;, &#x27;date&#x27;)
+                    .end();
+                 
+
+                $(this).trigger( &#x27;TriggerEvent&#x27;, [ &#x27;CDCCreateLayout&#x27;, this._layout ] );
+               
+            }
+ 
+            return this._layout;
+        },
+
+        layoutBox: function () {
+            var _r = $(&#x27;#&#x27; + DCalendar.Model._boxId );
+
+            if ( !(_r &amp;&amp; _r.length) ) {
+                _r = $( JC.f.printf( &#x27;&lt;div id=&quot;{0}&quot;&gt;&lt;/div&gt;&#x27;, DCalendar.Model._boxId ) )
+                    .appendTo( document.body );
+            }
+
+            return _r;
+        },
+
+        position: function () {
+            var _p = this,
+                _x = _p.selector().offset().left,
+                _y = _p.selector().offset().top + _p.selector().prop(&#x27;offsetHeight&#x27;),
+                _win = $(window);
+
+            if ( ( _win.outerHeight + _win.scrollTop() ) &lt; ( _y + _p.layout().outerHeight ) ) {
+                _y = _p.selector().offset().top;
+            } else {
+                _y = _p.selector().offset().top + _p.selector().prop(&#x27;offsetHeight&#x27;);
+            }
+
+            _p.layout().css({
+                left: _x,
+                top: _y
+            });
+
+        },
+
+        setSelected: function ( _srcSelector ) {
+            var _p = this,
+                _el = $( _srcSelector ),
+                _td = JC.f.getJqParent(_el, &#x27;td&#x27;),
+                _d = _el.data(&#x27;date&#x27;);
+
+            JC.f.getJqParent(_td, &#x27;div.CDCalendar_bounding_box&#x27;)
+            .find(&#x27;table.CDC_date_body&gt;tbody&gt;tr&gt;td&#x27;).removeClass(&#x27;start_date&#x27;);
+
+            _td.addClass(&#x27;start_date&#x27;).data(&#x27;date&#x27;);
+
+            _p.selector().val( _d );
+
+        }
         
     });
  
@@ -333,21 +697,276 @@
             var _p = this;
         },
 
-        update: function () {
-          
+        update: function ( _type, _date ) {
+            var _p = this;
+        },
+
+        yearView: function ( _srcSelector ) {
+            var _p = this,
+                _el = $( _srcSelector ),
+                _r = _p._model.yearTpl,
+                _date = new Date();
+
+            _p._model.layout().find(&#x27;div.CDC_date_box&#x27;).html(
+                JC.f.printf( _r, JC.f.formatISODate( _date ), _p._model.allYearsTpl() )
+            )
+            .find(&#x27;table.CDC_year_body&gt;tbody&gt;tr&gt;td&gt;a&#x27;).each( function () {
+                var _sp = $(this),
+                    _d = new Date( _sp.data(&#x27;year&#x27;), 0, 1 );
+
+                if ( _sp.data(&#x27;year&#x27;) === new Date().getFullYear() ){
+                    _sp.addClass(&#x27;today&#x27;);
+                }
+
+                _sp.attr( &#x27;data-date&#x27;, JC.f.formatISODate( _d ) );
+
+            } )
+            .end()
+            .end()
+            .find(&#x27;span.CDC_prev_btn&#x27;)
+                .addClass(&#x27;CDC_prev_btn_disabled&#x27;)
+                .prop(&#x27;disabled&#x27;, true)
+                .attr(&#x27;data-type&#x27;, &#x27;year&#x27;)
+            .end()
+            .find(&#x27;span.CDC_next_btn&#x27;)
+                .addClass(&#x27;CDC_next_btn_disabled&#x27;)
+                .prop(&#x27;disabled&#x27;, true)
+                .attr(&#x27;data-type&#x27;, &#x27;year&#x27;);
+
+        },
+
+        monthView: function ( _srcSelector ) {
+            var _p = this,
+                _el = $( _srcSelector ),
+                _date = new Date( _el.data(&#x27;date&#x27;) ),
+                _r = _p._model.monthTpl;
+
+            _p._model.layout().find(&#x27;div.CDC_date_box&#x27;).html(
+                JC.f.printf( _r, _date.getFullYear() + &#x27;年&#x27;, JC.f.formatISODate( _date ) )
+            )
+            .find(&#x27;table.CDC_month_body&gt;tbody&gt;tr&gt;td&gt;a&#x27;).each( function () {
+                var _sp = $(this),
+                    _d = new Date( _date.getFullYear(), _sp.data(&#x27;month&#x27;), 1 );
+
+                if ( JC.f.isSameMonth( _d, new Date() ) ){
+                    _sp.addClass(&#x27;today&#x27;)
+                }
+
+                _sp.attr(&#x27;data-date&#x27;, JC.f.formatISODate( _d ) );
+
+            } )
+            .end()
+            .end()
+            .find(&#x27;span.CDC_prev_btn&#x27;)
+                .attr(&#x27;data-date&#x27;, JC.f.formatISODate( new Date(_date.getFullYear() - 1, 0, 1) ) )
+                .attr(&#x27;data-type&#x27;, &#x27;month&#x27;)
+                .removeClass(&#x27;CDC_prev_btn_disabled&#x27;)
+                .prop(&#x27;disabled&#x27;, false)
+            .end()
+            .find(&#x27;span.CDC_next_btn&#x27;)
+                .attr(&#x27;data-date&#x27;, JC.f.formatISODate( new Date(_date.getFullYear() + 1, 0, 1) ))
+                .attr(&#x27;data-type&#x27;, &#x27;month&#x27;)
+                .removeClass(&#x27;CDC_next_btn_disabled&#x27;)
+                .prop(&#x27;disabled&#x27;, false); 
+        },
+
+        dateView: function ( _srcSelector ) {
+            var _p = this,
+                _el = $( _srcSelector ),
+                _curDate = new Date( _el.data(&#x27;date&#x27;) ),
+                _nextMonthDate = new Date(_curDate.getFullYear(), _curDate.getMonth() + 1, 1),
+                _r = _p._model.dateTpl;
+
+            _p._model.layout().find(&#x27;div.CDC_date_box&#x27;).html( JC.f.printf( 
+                _r, 
+                _curDate.getFullYear() + &#x27;年&#x27; + ( _curDate.getMonth() + 1 ) + &#x27;月&#x27;,
+                _p._model.datesOfMonthTpl( _curDate ), 
+                _p._model.datesOfMonthTpl( _nextMonthDate ),
+                _nextMonthDate.getFullYear() + &#x27;年&#x27; + ( _nextMonthDate.getMonth() + 1 ) + &#x27;月&#x27;,
+                JC.f.formatISODate( _curDate ),
+                JC.f.formatISODate( _nextMonthDate )
+                ) )
+                .end()
+                .find(&#x27;span.CDC_next_btn&#x27;)
+                    .attr(&#x27;data-date&#x27;, JC.f.formatISODate(_nextMonthDate))
+                    .attr(&#x27;data-type&#x27;, &#x27;date&#x27;)
+                    .removeClass(&#x27;CDC_next_btn_disabled&#x27;)
+                    .prop(&#x27;disabled&#x27;, false)
+                .end()
+                .find(&#x27;span.CDC_prev_btn&#x27;)
+                    .attr(&#x27;data-date&#x27;, JC.f.formatISODate(_curDate) )
+                    .attr(&#x27;data-type&#x27;, &#x27;date&#x27;)
+                    .removeClass(&#x27;CDC_prev_btn_disabled&#x27;)
+                    .prop(&#x27;disabled&#x27;, false)
+                .end();
+            
+        },
+
+        change: function  ( _srcSelector ) {
+            var _p = this,
+                _el = $( _srcSelector ),
+                _action = _el.data(&#x27;action&#x27;),
+                _type = _el.attr(&#x27;data-type&#x27;),
+                _curDate ,
+                _nextMonthDate,
+                _nextYear,
+                _r;
+
+            if ( _type === &#x27;date&#x27; ) {
+                
+                if ( _action === &#x27;prev&#x27; ) {
+                    _nextMonthDate = new Date( _el.attr(&#x27;data-date&#x27;) );
+                    _curDate = new Date( _nextMonthDate.getFullYear(), _nextMonthDate.getMonth() - 1, 1);
+                } else {
+                    _curDate = new Date( _el.attr(&#x27;data-date&#x27;) );
+                    _nextMonthDate = new Date(_curDate.getFullYear(), _curDate.getMonth() + 1, 1);
+                }
+
+                _r = _p._model.dateTpl;
+
+                _p._model.layout().find(&#x27;div.CDC_date_box&#x27;).html( 
+                    JC.f.printf( 
+                        _r, 
+                        _curDate.getFullYear() + &#x27;年&#x27; + ( _curDate.getMonth() + 1 ) + &#x27;月&#x27;,
+                        _p._model.datesOfMonthTpl( _curDate ), 
+                        _p._model.datesOfMonthTpl( _nextMonthDate ),
+                        _nextMonthDate.getFullYear() + &#x27;年&#x27; + ( _nextMonthDate.getMonth() + 1 ) + &#x27;月&#x27;,
+                        JC.f.formatISODate( _curDate ),
+                        JC.f.formatISODate( _nextMonthDate )
+                    ) 
+                )
+                .end()
+                .find(&#x27;span.CDC_next_btn&#x27;)
+                    .attr(&#x27;data-date&#x27;, JC.f.formatISODate(_nextMonthDate))
+                .end()
+                .find(&#x27;span.CDC_prev_btn&#x27;)
+                    .attr(&#x27;data-date&#x27;, JC.f.formatISODate(_curDate) )
+                .end();
+
+            } else if ( _type === &#x27;month&#x27;) {
+
+                _r = _p._model.monthTpl;
+                
+                _curDate = new Date( _el.attr(&#x27;data-date&#x27;) );
+                // if ( _action === &#x27;prev&#x27; ) {
+                //     _curDate = new Date( new Date(_el.attr(&#x27;data-date&#x27;)).getFullYear() -1, 0, 1 );
+                //     _nextYear = new Date(_curDate.getFullYear() - 1, 0, 1);
+                // } else {
+                //     _nextYear = new Date( _el.attr(&#x27;data-date&#x27;) );
+                //     _curDate = new Date( _nextYear.getFullYear() - 1, 0, 1 );
+                    
+                // }
+
+                console.log( _curDate );
+                // if ( _curDate.getFullYear() &gt; _p._model.startYear() ) {
+                //     _p._model.layout().find(&#x27;span.CDC_prev_btn&#x27;)
+                //     .addClass(&#x27;CDC_prev_btn_disabled&#x27;)
+                //     .prop(&#x27;disabled&#x27;, true);
+                // } else {
+                //     _p._model.layout().find(&#x27;span.CDC_prev_btn&#x27;)
+                //     .removeClass(&#x27;CDC_prev_btn_disabled&#x27;)
+                //     .prop(&#x27;disabled&#x27;, false);
+                // }
+
+                // if ( _nextYear.getFullYear() &lt; _p._model.endYear() ) {
+                //     _p._model.layout().find(&#x27;span.CDC_next_btn&#x27;)
+                //     .addClass(&#x27;CDC_next_btn_disabled&#x27;)
+                //     .prop(&#x27;disabled&#x27;, true);
+                // } else {
+                //     _p._model.layout().find(&#x27;span.CDC_next_btn&#x27;)
+                //     .removeClass(&#x27;CDC_next_btn_disabled&#x27;)
+                //     .prop(&#x27;disabled&#x27;, false);
+                // }
+
+                _p._model.layout().find(&#x27;div.CDC_date_box&#x27;).html(
+                    JC.f.printf( _r, _curDate.getFullYear() + &#x27;年&#x27;, JC.f.formatISODate( _curDate ) )
+                )
+                .find(&#x27;table.CDC_month_body&gt;tbody&gt;tr&gt;td&gt;a&#x27;).each( function () {
+                    var _sp = $(this),
+                        _d = new Date( _curDate.getFullYear(), _sp.data(&#x27;month&#x27;), 1 );
+
+                    if ( JC.f.isSameMonth( _d, new Date() ) ){
+                        _sp.addClass(&#x27;today&#x27;)
+                    }
+
+                    _sp.attr(&#x27;data-date&#x27;, JC.f.formatISODate( _d ) );
+
+                } )
+                .end()
+                .end()
+                .find(&#x27;span.CDC_next_btn&#x27;)
+                    .attr(&#x27;data-date&#x27;, JC.f.formatISODate( new Date( _curDate.getFullYear() + 1, 0, 1 ) ) )
+                .end()
+                .find(&#x27;span.CDC_prev_btn&#x27;)
+                    .attr(&#x27;data-date&#x27;, JC.f.formatISODate( new Date( _curDate.getFullYear() - 1, 0, 1 ) ) )
+                .end();
+
+            }
+
         },
 
         show: function () {
-           
+           var _p = this;
+
+           _p._model.position();
+           _p._model.layout().show();
             
         },
 
         hide: function () {
-           
+            var _p = this;
+
+            _p._model.layout().hide();
 
         }
 
     });
+
+    $(document).delegate( &#x27;div.CDCalendar_bounding_box span.CDC_close_btn&#x27;, &#x27;click&#x27;, function ( _evt ) {
+        var _ins = DCalendar.getInstance( JC.f.parentSelector( this, &#x27;.CDCalendar_bounding_box&#x27;) );
+        _ins &amp;&amp; _ins.trigger( DCalendar.Model.HIDDEN );
+    });
+
+    $(document).delegate( &#x27;div.CDCalendar_bounding_box span.CDC_next_btn, div.CDCalendar_bounding_box span.CDC_prev_btn&#x27;, &#x27;click&#x27;, function ( _evt ) {
+        var _ins = DCalendar.getInstance( JC.f.parentSelector( this, &#x27;.CDCalendar_bounding_box&#x27;) );
+        _ins &amp;&amp; _ins.trigger( DCalendar.Model.CHANGE, [ $(this) ] );
+       
+    });
+
+    $(document).delegate( &#x27;div.CDCalendar_bounding_box a.CDC_Month&#x27;, &#x27;click&#x27;, function ( _evt ) {
+        var _ins = DCalendar.getInstance( JC.f.parentSelector( this, &#x27;.CDCalendar_bounding_box&#x27;) );
+        _ins &amp;&amp; _ins.trigger( DCalendar.Model.MONTHVIEW, [ $(this) ] );
+       
+    });
+
+    $(document).delegate( &#x27;div.CDCalendar_bounding_box a.CDC_Year&#x27;, &#x27;click&#x27;, function ( _evt ) {
+        var _ins = DCalendar.getInstance( JC.f.parentSelector( this, &#x27;.CDCalendar_bounding_box&#x27;) );
+        _ins &amp;&amp; _ins.trigger( DCalendar.Model.YEARVIEW, [ $(this) ] );
+       
+    });
+
+    $(document).delegate( &#x27;div.CDCalendar_bounding_box a.CDC_Date&#x27;, &#x27;click&#x27;, function ( _evt ) {
+        var _ins = DCalendar.getInstance( JC.f.parentSelector( this, &#x27;.CDCalendar_bounding_box&#x27;) );
+        _ins &amp;&amp; _ins.trigger( DCalendar.Model.DATEVIEW, [ $(this) ] );
+    });
+
+    $(document).delegate( &#x27;div.CDCalendar_bounding_box table.CDC_date_body&gt;tbody&gt;tr&gt;td&gt;a&#x27;, &#x27;click&#x27;, function ( _evt ) {
+        var _ins = DCalendar.getInstance( JC.f.parentSelector( this, &#x27;.CDCalendar_bounding_box&#x27;) );
+        _ins &amp;&amp; _ins.trigger( DCalendar.Model.SETDATE, [ $(this) ] );
+        _ins &amp;&amp; _ins.trigger( DCalendar.Model.HIDDEN );
+    } );
+
+    $(document).delegate( &#x27;div.CDCalendar_bounding_box table.CDC_month_body&gt;tbody&gt;tr&gt;td&gt;a&#x27;, &#x27;click&#x27;, function ( _evt ) {
+        var _ins = DCalendar.getInstance( JC.f.parentSelector( this, &#x27;.CDCalendar_bounding_box&#x27;) );
+        _ins &amp;&amp; _ins.trigger( DCalendar.Model.DATEVIEW, [ $(this) ] );
+        
+    } );
+
+    $(document).delegate( &#x27;div.CDCalendar_bounding_box table.CDC_year_body&gt;tbody&gt;tr&gt;td&gt;a&#x27;, &#x27;click&#x27;, function ( _evt ) {
+        var _ins = DCalendar.getInstance( JC.f.parentSelector( this, &#x27;.CDCalendar_bounding_box&#x27;) );
+        _ins &amp;&amp; _ins.trigger( DCalendar.Model.MONTHVIEW, [ $(this) ] );
+        
+    } );
 
     $(document).ready( function () {
         var _insAr = 0;
@@ -363,6 +982,7 @@
 
     });
     return JC.DCalendar;
+
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb ) { 
             typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );
