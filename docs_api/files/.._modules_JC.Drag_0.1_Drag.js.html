@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../modules/JC.Panel/0.2/Panel.js - jquery components</title>
+    <title>../modules/JC.Drag/0.1/Drag.js - jquery components</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -198,27 +198,149 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../modules/JC.Panel/0.2/Panel.js</h1>
+                        <h1 class="file-heading">File: ../modules/JC.Drag/0.1/Drag.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; 
-    define( [ &#x27;JC.Panel.default&#x27;, &#x27;JC.Panel.popup&#x27;, &#x27;JC.Dialog&#x27;, &#x27;JC.Dialog.popup&#x27; ], function(){
-    /**
-     * 这个判断是为了向后兼容 JC 0.1
-     * 使用 requirejs 的项目可以移除这段判断代码
-     */
-    JC.use 
-        &amp;&amp; JC.PATH
-        &amp;&amp; JC.use([ 
-                JC.PATH + &#x27;comps/Panel/Panel.default.js&#x27;
-                , JC.PATH + &#x27;comps/Panel/Panel.popup.js&#x27; 
-                , JC.PATH + &#x27;comps/Panel/Dialog.js&#x27; 
-                , JC.PATH + &#x27;comps/Panel/Dialog.popup.js&#x27; 
-            ].join())
-        ;
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
+/**
+ * JC.Drag 提供各种拖曳功能
+ *
+ *&lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
+ *   &lt;a href=&quot;widnow.jQuery.html&quot;&gt;jQuery&lt;/a&gt;
+ *   , &lt;a href=&quot;JC.common.html&quot;&gt;JC.common&lt;/a&gt;
+ *   , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+ *&lt;/p&gt;
+ *
+ *&lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
+ *   | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Drag.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+ *   | &lt;a href=&#x27;../../modules/JC.Drag/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+ *  
+ *&lt;h2&gt;页面只要引用本脚本, 默认会处理 div class=&quot;js_compDrag&quot;&lt;/h2&gt;
+ *
+ *&lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
+ *
+ *&lt;dl&gt;
+ *    &lt;dt&gt;&lt;/dt&gt;
+ *    &lt;dd&gt;&lt;dd&gt;
+ *&lt;/dl&gt; 
+ *
+ * @namespace JC
+ * @class Drag
+ * @extends JC.BaseMVC
+ * @constructor
+ * @param   {selector|string}   _selector   
+ * @version dev 0.1 2013-12-26
+ * @author  qiushaowei &lt;suches@btbtd.org&gt; | 75 Team
+ * @example
+        &lt;h2&gt;JC.Drag 示例&lt;/h2&gt;
+ */
+    JC.Drag = Drag;
 
-    return JC.Panel;
+    function Drag( _selector ){
+        _selector &amp;&amp; ( _selector = $( _selector ) );
+
+        if( JC.BaseMVC.getInstance( _selector, Drag ) ) 
+            return JC.BaseMVC.getInstance( _selector, Drag );
+
+        JC.BaseMVC.getInstance( _selector, Drag, this );
+
+        this._model = new Drag.Model( _selector );
+        this._view = new Drag.View( this._model );
+
+        this._init();
+
+        JC.log( Drag.Model._instanceName, &#x27;all inited&#x27;, new Date().getTime() );
+    }
+    /**
+     * 初始化可识别的 Drag 实例
+     * @method  init
+     * @param   {selector}      _selector
+     * @static
+     * @return  {Array of DragInstance}
+     */
+    Drag.init =
+        function( _selector ){
+            var _r = [];
+            _selector = $( _selector || document );
+
+            if( _selector &amp;&amp; _selector.length ){
+                if( _selector.hasClass( &#x27;js_compDrag&#x27; )  ){
+                    _r.push( new Drag( _selector ) );
+                }else{
+                    _selector.find( &#x27;div.js_compDrag, button.js_compDrag&#x27; ).each( function(){
+                        _r.push( new Drag( this ) );
+                    });
+                }
+            }
+            return _r;
+        };
+
+    JC.BaseMVC.build( Drag );
+
+    JC.f.extendObject( Drag.prototype, {
+        _beforeInit:
+            function(){
+                JC.log( &#x27;Drag _beforeInit&#x27;, new Date().getTime() );
+            }
+
+        , _initHanlderEvent:
+            function(){
+                var _p = this;
+
+            }
+
+        , _inited:
+            function(){
+                JC.log( &#x27;Drag _inited&#x27;, new Date().getTime() );
+            }
+    });
+
+    Drag.Model._instanceName = &#x27;JCDrag&#x27;;
+    JC.f.extendObject( Drag.Model.prototype, {
+        init:
+            function(){
+                JC.log( &#x27;Drag.Model.init:&#x27;, new Date().getTime() );
+            }
+
+        , dragTarget:
+            function(){
+                if( !this._dragTarget ){
+                    this._dragTarget = this.selectorProp( &#x27;dragTarget&#x27; );
+
+                    !( this._dragTarget &amp;&amp; this._dragTarget.length ) 
+                        &amp;&amp; ( this._dragTarget = this.selector() )
+                        ;
+                }
+                return this._dragTarget;
+            }
+    });
+
+    JC.f.extendObject( Drag.View.prototype, {
+        init:
+            function(){
+                JC.log( &#x27;Drag.View.init:&#x27;, new Date().getTime() );
+            }
+    });
+
+    /*
+    $(document).ready( function(){
+        var _insAr = 0;
+        Drag.autoInit
+            &amp;&amp; ( _insAr = Drag.init() )
+            ;
+    });
+    */
+    $( document ).delegate( &#x27;div.js_compDrag, button.js_compDrag&#x27;, &#x27;mouseover&#x27;, function( _evt ){
+        var _p = $( this ), _ins = JC.BaseMVC.getInstance( _p, Drag );
+        !_ins &amp;&amp; ( _ins = new Drag( _p ) );
+    });
+
+    $( document ).delegate( &#x27;div.js_compDrag, button.js_compDrag&#x27;, &#x27;mousedown&#x27;, function( _evt ){
+        return false;
+    });
+
+    return JC.Drag;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb ) { 
             typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );

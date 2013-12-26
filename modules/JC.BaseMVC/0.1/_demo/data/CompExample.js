@@ -41,7 +41,7 @@
         };
 
     JC.BaseMVC.build( CompExample );
-    CompExample.Model._instanceName = 'CompExample';
+    CompExample.Model._instanceName = 'JCCompExample';
 
     $(document).ready( function(){
         var _insAr = 0;

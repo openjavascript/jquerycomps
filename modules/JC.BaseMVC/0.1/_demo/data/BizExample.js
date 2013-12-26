@@ -42,7 +42,7 @@
 
     JC.BaseMVC.build( BizExample );
 
-    BizExample.Model._instanceName = 'BizExample';
+    BizExample.Model._instanceName = 'JCBizExample';
 
     $(document).ready( function(){
         var _insAr = 0;

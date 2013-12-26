@@ -247,6 +247,17 @@
                 "JC": 1
             }
         },
+        "../modules/JC.Drag/0.1/Drag.js": {
+            "name": "../modules/JC.Drag/0.1/Drag.js",
+            "modules": {},
+            "classes": {
+                "JC.Drag": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../modules/JC.Fixed/0.1/Fixed.js": {
             "name": "../modules/JC.Fixed/0.1/Fixed.js",
             "modules": {},
@@ -977,6 +988,33 @@
             ],
             "version": "dev 0.1 2013-12-20",
             "author": "zuojing   <zuojing1013@gmail.com> | 75 Team"
+        },
+        "JC.Drag": {
+            "name": "JC.Drag",
+            "shortname": "JC.Drag",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 2,
+            "description": "JC.Drag 提供各种拖曳功能\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Drag.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.Drag/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compDrag\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt></dt>\n   <dd><dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-12-26",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n       <h2>JC.Drag 示例</h2>"
+            ]
         },
         "JC.Fixed": {
             "name": "JC.Fixed",
@@ -4217,6 +4255,45 @@
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
             "line": 241,
+            "description": "使用 jquery on 为 controler 绑定事件",
+            "itemtype": "method",
+            "name": "on",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_cb",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
+            "line": 252,
+            "description": "使用 jquery trigger 触发 controler 绑定事件",
+            "itemtype": "method",
+            "name": "trigger",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
+            "line": 262,
             "description": "初始化的 jq 选择器",
             "itemtype": "method",
             "name": "selector",
@@ -4235,7 +4312,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 252,
+            "line": 273,
             "description": "读取 int 属性的值",
             "itemtype": "method",
             "name": "intProp",
@@ -4259,7 +4336,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 273,
+            "line": 294,
             "description": "读取 float 属性的值",
             "itemtype": "method",
             "name": "floatProp",
@@ -4283,7 +4360,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 294,
+            "line": 315,
             "description": "读取 string 属性的值",
             "itemtype": "method",
             "name": "stringProp",
@@ -4307,7 +4384,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 312,
+            "line": 333,
             "description": "读取 html 属性值\n<br />这个跟 stringProp 的区别是不会强制转换为小写",
             "itemtype": "method",
             "name": "attrProp",
@@ -4331,7 +4408,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 335,
+            "line": 356,
             "description": "读取 boolean 属性的值",
             "itemtype": "method",
             "name": "boolProp",
@@ -4361,7 +4438,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 361,
+            "line": 382,
             "description": "读取 callback 属性的值",
             "itemtype": "method",
             "name": "callbackProp",
@@ -4386,7 +4463,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 384,
+            "line": 405,
             "description": "获取与属性名匹配的 window 变量",
             "itemtype": "method",
             "name": "windowProp",
@@ -4411,7 +4488,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 395,
+            "line": 416,
             "description": "获取 selector 属性的 jquery 选择器",
             "itemtype": "method",
             "name": "selectorProp",
@@ -4435,7 +4512,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 418,
+            "line": 439,
             "description": "判断 _selector 是否具体某种特征",
             "itemtype": "method",
             "name": "is",
@@ -4454,6 +4531,20 @@
             "return": {
                 "description": "bool"
             },
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
+            "line": 464,
+            "description": "使用 jquery on 为 controler 绑定事件",
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
+            "line": 472,
+            "description": "使用 jquery trigger 触发 controler 绑定事件",
             "class": "JC.BaseMVC.Model",
             "namespace": "JC"
         },
@@ -5392,6 +5483,27 @@
             "itemtype": "method",
             "name": "update",
             "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 51,
+            "description": "初始化可识别的 Drag 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of DragInstance"
+            },
+            "class": "JC.Drag",
             "namespace": "JC"
         },
         {
@@ -15541,7 +15653,7 @@
         },
         {
             "file": "../config.js",
-            "line": 86,
+            "line": 90,
             "description": "取当前脚本标签的 src路径",
             "static": 1,
             "return": {
@@ -16007,6 +16119,10 @@
         {
             "message": "unknown tag: version",
             "line": " ../modules/JC.DCalendar/0.1/DCalendar.date.js:2"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../modules/JC.Drag/0.1/Drag.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -16503,6 +16619,14 @@
         {
             "message": "Missing item type\n初始化 BaseMVC Model 类 和 View 类",
             "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:207"
+        },
+        {
+            "message": "Missing item type\n使用 jquery on 为 controler 绑定事件",
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:464"
+        },
+        {
+            "message": "Missing item type\n使用 jquery trigger 触发 controler 绑定事件",
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:472"
         },
         {
             "message": "Missing item type\n保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",
@@ -17242,7 +17366,7 @@
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
-            "line": " ../config.js:86"
+            "line": " ../config.js:90"
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",

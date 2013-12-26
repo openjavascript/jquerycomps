@@ -239,6 +239,27 @@
                 return this;
             }
         /**
+         * 使用 jquery on 为 controler 绑定事件
+         * @method  {string}    on
+         * @param   {string}    _evtName
+         * @param   {function}  _cb
+         */
+        , on:
+            function(){
+                $( this ).trigger( 'BindEvent', sliceArgs( arguments ) );
+                return this;
+            }
+        /**
+         * 使用 jquery trigger 触发 controler 绑定事件
+         * @method  {string}    trigger
+         * @param   {string}    _evtName
+         */
+        , trigger:
+            function(){
+                $( this ).trigger( 'TriggerEvent', sliceArgs( arguments ) );
+                return this;
+            }
+        /**
          * 初始化的 jq 选择器
          * @method  selector
          * @param   {selector}  _setter
@@ -438,6 +459,22 @@
     JC.f.extendObject( BaseMVC.View.prototype, {
         init:
             function() {
+                return this;
+            }
+        /**
+         * 使用 jquery on 为 controler 绑定事件
+         */
+        , on:
+            function(){
+                $( this ).trigger( 'BindEvent', sliceArgs( arguments ) );
+                return this;
+            }
+        /**
+         * 使用 jquery trigger 触发 controler 绑定事件
+         */
+        , trigger:
+            function(){
+                $( this ).trigger( 'TriggerEvent', sliceArgs( arguments ) );
                 return this;
             }
     });

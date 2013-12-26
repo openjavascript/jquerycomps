@@ -90,7 +90,7 @@
             }
     });
 
-    CompExampleMoreAdvance.Model._instanceName = 'CompExampleMoreAdvance';
+    CompExampleMoreAdvance.Model._instanceName = 'JCCompExampleMoreAdvance';
     JC.f.extendObject( CompExampleMoreAdvance.Model.prototype, {
         init:
             function(){
