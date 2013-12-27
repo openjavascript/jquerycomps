@@ -79,6 +79,7 @@
                 Drag._dragInfo = {
                     'ins': _ins
                     , 'evt': _evt
+                    , 'offset': _ins._model.offset( _evt )
                 };
             }
             return Drag._dragInfo;
@@ -113,7 +114,12 @@
                 var _p = this;
 
                 _p.selector().on( 'mousedown', function( _evt ){
-                    JC.log( 'Drag mousedown', new Date().getTime() );
+
+                    JC.log( 
+                        'Drag mousedown', new Date().getTime()
+                        //, _evt.clientX, _evt.clientY
+                        //, _evt.pageX, _evt.pageY
+                    );
 
                     Drag.dragInfo( _p, _evt );
 
@@ -136,6 +142,8 @@
                         , _p._model.defaultCSSZIndex() 
                         );
             }
+
+        , dragTarget: function(){ return this._model.dragTarget(); }
     });
 
     Drag.Model._instanceName = 'JCDrag';
@@ -167,6 +175,26 @@
                         ;
                 }
                 return this._dragTarget;
+            }
+
+        , offset:
+            function( _evt ){
+                var _p = this
+                    , _toffset = _p.dragTarget().offset()
+                    , _r = {
+                        'mouseX': _evt.clientX
+                        , 'mouseY': _evt.clientY
+                        , 'targetX': _toffset.left
+                        , 'targetY': _toffset.top
+                    }
+                    ;
+
+                    _r.x = _r.mouseX - _r.targetX;
+                    _r.y = _r.mouseY - _r.targetY;
+
+                    JC.log( [ _r.mouseX, _r.targetX, _r.x, '---', _r.mouseY, _r.targetY, _r.y ] );
+
+                return _r;
             }
     });
 
