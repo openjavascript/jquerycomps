@@ -1,5 +1,11 @@
 ;(function(define, _win) { 'use strict'; define( [], function(){
-    !window.console && ( window.console = { log: function(){}, dir: function(){} } );
+    /**
+     * 如果 console 不可用, 生成一个模拟的 console 对象
+     */
+    !window.console && ( window.console = { 
+        log: function(){ window.status = sliceArgs( arguments ).join(' '); }
+         , dir: function(){} 
+    });
     /**
      * 声明主要命名空间, 方便迁移
      */
@@ -98,12 +104,6 @@
      * jquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法
      */
     !String.prototype.trim && ( String.prototype.trim = function(){ return $.trim( this ); } );
-    /**
-     * 如果 console 不可用, 则生成一个模拟的 console 对象
-     */
-    if( !window.console ) window.console = { log:function(){
-        window.status = [].slice.apply( arguments ).join(' ');
-    }};
     /**
      * 全局 css z-index 控制属性
      * <br /> <b>注意</b>: 这个变量是 window.ZINDEX_COUNT
@@ -1026,7 +1026,7 @@
 
         while( _parts[0].length > _len ){
             var _tmp = _parts[0].slice( _parts[0].length - _len, _parts[0].length );
-            console.log( _tmp );
+            //console.log( _tmp );
             _sparts.push( _tmp );
             _parts[0] = _parts[0].slice( 0, _parts[0].length - _len );
         }
