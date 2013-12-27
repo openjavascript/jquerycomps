@@ -32,6 +32,7 @@
         <h2>JC.Drag 示例</h2>
  */
     JC.Drag = Drag;
+    var _jdoc = $( document ), _jwin = $( window );
 
     function Drag( _selector ){
         _selector && ( _selector = $( _selector ) );
@@ -72,6 +73,33 @@
             return _r;
         };
 
+    Drag.dragInfo =
+        function( _ins, _evt ){
+            if( _ins && _evt ){
+                Drag._dragInfo = {
+                    'ins': _ins
+                    , 'evt': _evt
+                };
+            }
+            return Drag._dragInfo;
+        };
+
+    Drag._dragInfo;
+
+    Drag.cleanDragInfo = function(){ Drag._dragInfo = null; };
+
+    Drag.defaultMouseMove =
+        function( _evt ){
+            if( !Drag.dragInfo() ) return;
+            JC.log( 'JC.Drag mousemove', new Date().getTime() );
+        };
+
+    Drag.defaultMouseUp =
+        function( _evt ){
+            Drag.cleanDragInfo();
+            _jdoc.off( 'mousemove', Drag.defaultMousemove );
+        };
+
     JC.BaseMVC.build( Drag );
 
     JC.f.extendObject( Drag.prototype, {
@@ -85,8 +113,15 @@
                 var _p = this;
 
                 _p.selector().on( 'mousedown', function( _evt ){
-                    var _dragTarget = _p._model.dragTarget();
-                    JC.log( 'Drag mousedown', new Date().getTime(), _dragTarget.css( 'position' ) );
+                    JC.log( 'Drag mousedown', new Date().getTime() );
+
+                    Drag.dragInfo( _p, _evt );
+
+                    _jdoc.off( 'mousemove', Drag.defaultMouseMove );
+                    _jdoc.off( 'mouseup', Drag.defaultMouseUp );
+
+                    _jdoc.on( 'mouseup', Drag.defaultMouseUp );
+                    _jdoc.on( 'mousemove', Drag.defaultMouseMove );
                 });
             }
 
@@ -94,8 +129,12 @@
             function(){
                 var _p = this;
                 _p._model.defaultCSSPosition( _p._model.dragTarget().css( 'position' ) );
+                _p._model.defaultCSSZIndex( _p._model.dragTarget().css( 'z-index' ) );
                 
-                JC.log( 'Drag _inited', new Date().getTime(), _p._model.defaultCSSPosition() );
+                JC.log( 'Drag _inited', new Date().getTime()
+                        , _p._model.defaultCSSPosition() 
+                        , _p._model.defaultCSSZIndex() 
+                        );
             }
     });
 
@@ -110,6 +149,12 @@
             function( _setter ){
                 typeof _setter != 'undefined' && ( this._defaultCSSPosition = _setter );
                 return this._defaultCSSPosition;
+            }
+
+        , defaultCSSZIndex:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._defaultCSSZIndex = _setter );
+                return this._defaultCSSZIndex;
             }
 
         , dragTarget:
@@ -140,12 +185,13 @@
             ;
     });
     */
-    $( document ).delegate( 'div.js_compDrag, button.js_compDrag', 'mouseover', function( _evt ){
+
+    _jdoc.delegate( 'div.js_compDrag, button.js_compDrag', 'mouseover', function( _evt ){
         var _p = $( this ), _ins = JC.BaseMVC.getInstance( _p, Drag );
         !_ins && ( _ins = new Drag( _p ) );
     });
 
-    $( document ).delegate( 'div.js_compDrag, button.js_compDrag', 'mousedown', function( _evt ){
+    _jdoc.delegate( 'div.js_compDrag, button.js_compDrag', 'mousedown', function( _evt ){
         return false;
     });
 

@@ -31,6 +31,8 @@
  * @example
         <h2>JC.CompExampleMoreAdvance 示例</h2>
  */
+    var _jdoc = $( document ), _jwin = $( window );
+
     JC.CompExampleMoreAdvance = CompExampleMoreAdvance;
 
     function CompExampleMoreAdvance( _selector ){
@@ -105,7 +107,7 @@
             }
     });
 
-    $(document).ready( function(){
+    _jdoc.ready( function(){
         var _insAr = 0;
         CompExampleMoreAdvance.autoInit
             && ( _insAr = CompExampleMoreAdvance.init() )

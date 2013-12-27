@@ -31,6 +31,8 @@
  * @example
         <h2>Bizs.BizExampleMoreAdvance 示例</h2>
  */
+    var _jdoc = $( document ), _jwin = $( window );
+
     Bizs.BizExampleMoreAdvance = BizExampleMoreAdvance;
 
     function BizExampleMoreAdvance( _selector ){
@@ -105,7 +107,7 @@
             }
     });
 
-    $(document).ready( function(){
+    _jdoc.ready( function(){
         var _insAr = 0;
         BizExampleMoreAdvance.autoInit
             && ( _insAr = BizExampleMoreAdvance.init() )
