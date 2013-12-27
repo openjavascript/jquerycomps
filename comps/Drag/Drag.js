@@ -615,8 +615,8 @@
                 if( !this._relativeParent == 'undefined' || _cleanCache ){
                     this._relativeParent = null;
                     var _tmp = this.dragTarget();
-                    while( (_tmp = _tmp.parent()).length ){
-                        //JC.log( _tmp.html() );
+                    while( (_tmp = $( _tmp.parent() ) ).length ){
+                        if( /body|html/i.test( _tmp.prop( 'nodeName' ) ) ) break;
                         if( ( _tmp.css( 'position' ) || '' ).toLowerCase() == 'relative' ){
                             this._relativeParent = _tmp;
                             break;
@@ -709,8 +709,8 @@
                         , 'targetY': _toffset.top
                         , 'scrollX': _p.dragIn().scrollLeft()
                         , 'scrollY': _p.dragIn().scrollTop() 
-                        , 'maxXFix': 0
-                        , 'maxYFix': 0
+                        , 'maxXFix': -1
+                        , 'maxYFix': -1
                         , 'width': _p.dragTarget().prop( 'offsetWidth' )
                         , 'height': _p.dragTarget().prop( 'offsetHeight' )
                         , 'relativeFixX': _roffset.left
