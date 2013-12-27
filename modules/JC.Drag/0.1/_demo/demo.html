@@ -37,6 +37,13 @@
             background: #ccc;
         }
 
+        .dragStyle2 {
+            border: 1px solid #000;
+            cursor: default;
+            position: absolute;
+            background: #fff;
+        }
+
     </style>
     <link href='../res/default/style.css' rel='stylesheet' />
     <script src="../../../../lib.js"></script>
@@ -54,8 +61,68 @@
     <dl class="defDl">
         <dt></dt>
         <dd>
-            <div class="JCDrag dragStyle1 js_compDrag">drag me</div>
+            <div class="JCDrag dragStyle1 js_compDrag">normal drag</div>
         </dd>
+
+        <dd>
+            <div class="dragStyle2" style="left: 500px;">
+                <div style="cursor:move" 
+                    class="dragStyle1 js_compDrag" 
+                    dragTarget="(div"
+                    >drag parent, dragTarget="(div"</div>
+                content...
+                <br />content...
+                <br />content...
+                <br />content...
+            </div>
+        </dd>
+
+        <dd>
+            <div style="width:800px; height:500px; border:1px dashed #000; margin-top: 125px;">
+                <div class="JCDrag dragStyle1 js_compDrag" dragIn="(div" style="top:200px;">
+                    drag in div, dragIn="(div"
+                </div>
+
+                <div class="dragStyle2" style="left: 450px; top: 205px;">
+                    <div style="cursor:move; width:380px!important;" 
+                        class="dragStyle1 js_compDrag" 
+                        dragIn="//"
+                        dragTarget="(div"
+                        >drag parent, dragIn="//", dragTarget="(div"</div>
+                    content...
+                    <br />content...
+                    <br />content...
+                    <br />content...
+                </div>
+
+            </div>
+        </dd>
+
+        <dd>
+            <div style="width:800px; height:500px; border:1px dashed #000; margin-top: 100px;">
+                <div class="JCDrag dragStyle1 js_compDrag" dragIn="(div" style="top:900px;">
+                    drag in div, dragIn="(div"
+                </div>
+
+                <div class="dragStyle2" style="left: 450px; top: 905px;">
+                    <div style="cursor:move; width:380px!important;" 
+                        class="dragStyle1 js_compDrag" 
+                        dragIn="//"
+                        dragTarget="(div"
+                        >drag parent, dragIn="//", dragTarget="(div"</div>
+                    content...
+                    <br />content...
+                    <br />content...
+                    <br />content...
+                </div>
+
+            </div>
+        </dd>
+
+        <dd>
+            <div class="JCDrag dragStyle1 js_compDrag" style="top:700px; left: 800px;">normal drag</div>
+        </dd>
+
     </dl>
 </body>
 </html>

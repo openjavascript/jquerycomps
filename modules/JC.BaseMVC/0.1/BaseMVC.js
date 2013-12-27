@@ -246,7 +246,7 @@
          */
         , on:
             function(){
-                $( this ).trigger( 'BindEvent', sliceArgs( arguments ) );
+                $( this ).trigger( 'BindEvent', JC.f.sliceArgs( arguments ) );
                 return this;
             }
         /**
@@ -256,7 +256,7 @@
          */
         , trigger:
             function(){
-                $( this ).trigger( 'TriggerEvent', sliceArgs( arguments ) );
+                $( this ).trigger( 'TriggerEvent', JC.f.sliceArgs( arguments ) );
                 return this;
             }
         /**
@@ -466,7 +466,7 @@
          */
         , on:
             function(){
-                $( this ).trigger( 'BindEvent', sliceArgs( arguments ) );
+                $( this ).trigger( 'BindEvent', JC.fsliceArgs( arguments ) );
                 return this;
             }
         /**
@@ -474,7 +474,7 @@
          */
         , trigger:
             function(){
-                $( this ).trigger( 'TriggerEvent', sliceArgs( arguments ) );
+                $( this ).trigger( 'TriggerEvent', JC.fsliceArgs( arguments ) );
                 return this;
             }
     });
