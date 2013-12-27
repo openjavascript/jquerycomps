@@ -29,91 +29,85 @@
 <script src="../../../../config.js"></script>
 <script>
     JC.debug = true; 
-    requirejs( [ 'JC.Panel' ], function( Panel ){
-        $('button.dom_panel').on( 'click', function( _evt ){
+    
+    requirejs( [ 'modules/JC.Panel/0.2/Dialog' ], function( Panel ){
+
+        $('button.dom_dialog').on( 'click', function( _evt ){
             /**
              * 注意, 如果是从DOM读取模板的话, 
              * 需要做个判断, 是否之前初始化过, 否则会导致重复初始化
              *
              * 如果需要重复使用的话, 还需要对 close 事件做一次重载, 避免关闭时从DOM清除
-             *      panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
-             *      //如果要强制从DOM清除, 可以调用 panel.dispose();
+             *      dialog.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
+             *      //如果要强制从DOM清除, 可以调用 dialog.dispose();
              */
-            JC.hideAllPanel( 1 );
-
-            var panel = Panel.getInstance( $('div.dom_panel') ); 
-            if( !panel ){
-                panel = new JC.Panel( $('div.dom_panel') ); 
-                panel.clickClose();
-                panel.on( 'confirm', function( _evt, _panel ){
+            //这里使用 Panel.getInstance 是因为 Dialog 的 base 类是Panel
+            if( !JC.Panel.getInstance( $('div.dom_dialog') ) ){
+                var dialog = JC.Dialog( $('div.dom_dialog') ); 
+                dialog.on( 'confirm', function( _evt, _dialog ){
                     JC.log( 'dom confirm' );
                 });
 
-                panel.on( 'cancel', function( _evt, _panel ){
+                dialog.on( 'cancel', function( _evt, _dialog ){
                     JC.log( 'dom cancel' );
                 });
 
-                panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
+                dialog.on( 'close', function( _evt, _dialog ){ _dialog.hide(); return false; });
+            }else{
+                JC.Dialog( $('div.dom_dialog') ); 
             }
-            panel.show( this ); //让Panel显示在 this 的上方或下方
         });
 
-        $('button.string_panel').on( 'click', function( _evt ){
-            JC.hideAllPanel( 1 );
-            var panel = new JC.Panel( JC.f.scriptContent( '#js_tpl' ) ); 
-                panel.clickClose();
-                panel.center();
-                panel.show();
+        $('button.string_dialog').on( 'click', function( _evt ){
 
-                panel.on( 'confirm', function( _evt, _panel ){
+            var dialog = JC.Dialog( JC.f.scriptContent( '#js_tpl' ) ); 
+
+                dialog.on( 'confirm', function( _evt, _dialog ){
                     JC.log( 'string confirm' );
                 });
 
-                panel.on( 'cancel', function( _evt, _panel ){
+                dialog.on( 'cancel', function( _evt, _dialog ){
                     JC.log( 'string cancel' );
                 });
 
-                panel.on( 'close', function( _evt, _panel ){
+                dialog.on( 'close', function( _evt, _dialog ){
                     JC.log( 'string close' );
                 });
         });
 
-        $('button.string_panel_with_src').on( 'click', function( _evt ){
-            JC.hideAllPanel( 1 );
-            var panel = new JC.Panel( JC.f.scriptContent( '#js_tpl' ), 'string_panel_with_src panel' ); 
-                panel.clickClose();
-                panel.show( this );
+        $('button.string_dialog_with_src').on( 'click', function( _evt ){
 
-                panel.on( 'confirm', function( _evt, _panel ){
-                    JC.log( 'string_panel_with_src confirm' );
+            var dialog = JC.Dialog( JC.f.scriptContent( '#js_tpl' ), 'string_dialog_with_src dialog' ); 
+
+                dialog.on( 'confirm', function( _evt, _dialog ){
+                    JC.log( 'string_dialog_with_src confirm' );
                 });
 
-                panel.on( 'cancel', function( _evt, _panel ){
-                    JC.log( 'string_panel_with_src cancel' );
+                dialog.on( 'cancel', function( _evt, _dialog ){
+                    JC.log( 'string_dialog_with_src cancel' );
                 });
 
-                panel.on( 'close', function( _evt, _panel ){
-                    JC.log( 'string_panel_with_src close' );
-                });
-        });
+                dialog.on( 'close', function( _evt, _dialog ){ JC.log( 'string_dialog_with_src close' ); }); 
+        }); 
 
     }); 
 </script>
 
 </head>    
 <body>
-    <div style="height: 100px;"></div>
+    <div style="height:100px;"></div>
+
     <dl class="def">
         <dt>JC.Panel 示例</dt>
         <dd>
-            <button type="button" class="dom_panel">dom panel</button>
-            <button type="button" class="string_panel">string panel</button>
-            <button type="button" class="string_panel_with_src">string panel with source</button>
+            <button type="button" class="dom_dialog">dom panel</button>
+            <button type="button" class="string_dialog">string panel</button>
+            <button type="button" class="string_dialog_with_src">string panel with source</button>
         </dd>
 
     </dl>
 
-    <div class="UPanel dom_panel" style="display:none; width: 400px;" >
+    <div class="UPanel dom_dialog" style="display:none; width: 400px;" >
         <div class="UPContent">
             <div class="hd">dom panel</div>
             <div class="bd">
@@ -146,7 +140,6 @@
     </script>
 
     <div style="height:3000px;"></div>
-
 </body>
 </html>
 
