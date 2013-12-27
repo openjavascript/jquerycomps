@@ -213,6 +213,8 @@
 
                     _p.trigger( Drag.Model.DRAG_BEFORE );
 
+                    _p._model.relativeParent( true );
+
                     _p._model.isDropFor() 
                         && ( 
                                 _p._model.dragMovingTarget( true )
@@ -434,6 +436,9 @@
             _newX >= _offset.maxX && ( _newX = _offset.maxX );
             _newY >= _offset.maxY && ( _newY = _offset.maxY );
 
+            _newX -= _di.offset.relativeFixX;
+            _newY -= _di.offset.relativeFixY;
+
             //JC.log( _newX, _newY, _offset.maxX, _offset.maxY );
             _p._updatePosition( _newX, _newY, _offset );
             _p.trigger( Drag.Model.DRAGGING_MOVING, [ _newX, _newY, _evt, _offset ] );
@@ -485,6 +490,9 @@
                 , 'top': _newY + 'px'
             });
             */
+            _newX -= _di.offset.relativeFixX;
+            _newY -= _di.offset.relativeFixY;
+
             _di.ins._updatePosition( _newX, _newY, _offset );
 
             _di.offset.scrollX = _scrollX;
@@ -602,6 +610,22 @@
                 return this._dropFor;
             }
 
+        , relativeParent:
+            function( _cleanCache ){
+                if( !this._relativeParent == 'undefined' || _cleanCache ){
+                    this._relativeParent = null;
+                    var _tmp = this.dragTarget();
+                    while( (_tmp = $( _tmp.parent() ) ).length ){
+                        if( /body|html/i.test( _tmp.prop( 'nodeName' ) ) ) break;
+                        if( ( _tmp.css( 'position' ) || '' ).toLowerCase() == 'relative' ){
+                            this._relativeParent = _tmp;
+                            break;
+                        }
+                    }
+                }
+                return this._relativeParent;
+            }
+
         , dropSwap:
             function(){
                 return this.boolProp( 'dropSwap' );
@@ -677,6 +701,7 @@
                 var _p = this
                     , _toffset = _p.dragTarget().offset()
                     , _inoffset = _p.dragIn().offset()
+                    , _roffset = _p.relativeParent() ? _p.relativeParent().offset() : { 'left': 0, 'top': 0 }
                     , _r = {
                         'mouseX': _evt.pageX
                         , 'mouseY': _evt.pageY
@@ -684,12 +709,13 @@
                         , 'targetY': _toffset.top
                         , 'scrollX': _p.dragIn().scrollLeft()
                         , 'scrollY': _p.dragIn().scrollTop() 
-                        , 'maxXFix': 0
-                        , 'maxYFix': 0
+                        , 'maxXFix': -1
+                        , 'maxYFix': -1
                         , 'width': _p.dragTarget().prop( 'offsetWidth' )
                         , 'height': _p.dragTarget().prop( 'offsetHeight' )
-                    }
-                    ;
+                        , 'relativeFixX': _roffset.left
+                        , 'relativeFixY': _roffset.top
+                    };
 
                     _r.x = _r.mouseX - _r.targetX;
                     _r.y = _r.mouseY - _r.targetY;
