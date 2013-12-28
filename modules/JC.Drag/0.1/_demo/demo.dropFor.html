@@ -49,10 +49,13 @@
         }
 
         .dropBox div.js_compDrag {
-            padding: 50px 50px;
+            padding: 5px;
             background: #fff;
             border: 1px dashed #000;
             margin-top: 5px;
+            width: 110px;
+            height: 110px;
+            word-wrap: break-word; 
         }
 
     </style>
@@ -64,6 +67,22 @@
 
         requirejs( [ 'JC.Drag' ], function(){
         });
+
+        function dragInitedCb( _selector ){
+            var _ins = this;
+            JC.log( 'dragInitedCb', new Date().getTime() );
+        }
+
+        function dropDoneCbAllow( _srcSelector, _targetSelector ){
+            var _initSelector = this;
+            JC.log( 'dropDoneCbAllow', new Date().getTime() );
+        }
+
+        function dropDoneCbBan( _srcSelector, _targetSelector ){
+            var _initSelector = this;
+            JC.log( 'dropDoneCbBan', new Date().getTime() );
+            return false;
+        }
     </script>
 </head>    
 <body>
@@ -78,13 +97,19 @@
                 <table>
                     <tr>
                         <td>
-                            <div class="js_compDrag" dropFor="(table td">drop 1</div>
+                            <div class="js_compDrag" dropFor="(table td" dropDoneCb="dropDoneCbAllow">
+                                dropDoneCb="dropDoneCbAllow"
+                            </div>
                         </td>
                         <td>
-                            <div class="js_compDrag" dropFor="(table td">drop 2</div>
+                            <div class="js_compDrag" dropFor="(table td" dropDoneCb="dropDoneCbBan"> 
+                                dropDoneCb="dropDoneCbBan"
+                            </div>
                         </td>
                         <td>
-                            <div class="js_compDrag" dropFor="(table td">drop 3</div>
+                            <div class="js_compDrag" dropFor="(table td" dragInitedCb="dragInitedCb">
+                                 dragInitedCb="dragInitedCb"
+                            </div>
                         </td>
                         <td>
                             <div class="js_compDrag" dropFor="(table td">drop 4</div>
@@ -92,7 +117,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <div class="js_compDrag" dropFor="(table td">drop 5</div>
+                            <div class="js_compDrag" dropFor="(table td" ignoreDrag="true"> ignoreDrag="true"</div>
                         </td>
                         <td>
                             <div class="js_compDrag" dropFor="(table td">drop 6</div>

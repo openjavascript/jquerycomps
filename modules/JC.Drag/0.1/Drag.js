@@ -55,7 +55,7 @@
     JC.f.extendObject( Drag.prototype, {
         _beforeInit:
             function(){
-                JC.log( 'Drag _beforeInit', new Date().getTime() );
+                //JC.log( 'Drag _beforeInit', new Date().getTime() );
             }
 
         , _initHanlderEvent:
@@ -65,12 +65,17 @@
                 _p.selector().on( 'mousedown', function( _evt, _srcEvt ){
                     _evt = _srcEvt || _evt;
 
+                    if( _p._model.boolProp( 'ignoreDrag' ) ) return;
+
+                    _p.trigger( Drag.Model.DRAG_BEFORE );
+
+                    /*
                     JC.log( 
                         'Drag mousedown', new Date().getTime()
                         //, _evt.clientX, _evt.clientY
                         //, _evt.pageX, _evt.pageY
                     );
-
+                    */
                     _p._model.isDropFor() 
                         && ( 
                                 _p._model.dropDragTarget( true )
@@ -78,7 +83,7 @@
                            );
 
                     Drag.dragInfo( _p, _evt );
-                    _p.trigger( Drag.Model.DRAG_START, [ _evt, Drag.dragInfo() ] );
+                    _p.trigger( Drag.Model.DRAG_BEGIN, [ _evt, Drag.dragInfo() ] );
 
                     _jdoc.off( 'mousemove', Drag.defaultMouseMove );
                     _jdoc.off( 'mouseup', Drag.defaultMouseUp );
@@ -94,24 +99,39 @@
                 //低版本 IE 拖曳时不选中文字
                 _p.selector()[0].onselectstart = function(){ return false; }
 
-                _p.on( Drag.Model.DRAG_START, function( _evt, _dragInfo ){
-                    JC.log( 'drag start', new Date().getTime() );
-                    _p._model.dragTarget().css( 'z-index', window.ZINDEX_COUNT++ );
-
-                    Drag.draggingItem( _p._model.dragTarget() );
+                _p.on( Drag.Model.DRAG_BEFORE, function( _evt ){
+                    JC.log( 'drag drag before', new Date().getTime() );
                 });
 
-                _p.on( Drag.Model.DRAG_END, function( _evt, _dragInfo ){
-                    JC.log( 'drag end', new Date().getTime() );
+                _p.on( Drag.Model.DRAG_BEGIN, function( _evt, _dragInfo ){
+                    JC.log( 'drag begin', new Date().getTime() );
+                    _p._model.dragTarget().css( 'z-index', window.ZINDEX_COUNT++ );
+                    Drag.draggingItem( _p._model.dragTarget() );
+
+                    _p._model.dragBeginCb() 
+                        && _p._model.dragBeginCb().call( _p, _p.selector(), _p._model.dragTarget(), _p._model.dropDragTarget() );
+                });
+
+                _p.on( Drag.Model.DRAG_DONE, function( _evt, _dragInfo ){
+                    JC.log( 'drag done', new Date().getTime() );
 
                     _p._view.dropDone( _dragInfo );
                     _p._view.clean( _dragInfo );
                     _p._model.clean( _dragInfo );
 
                     Drag.draggingItem( null );
+
+                    _p._model.dragDoneCb() 
+                        && _p._model.dragDoneCb().call( _p, _p.selector(), _p._model.dragTarget() );
+
+                    _p.trigger( Drag.Model.DRAG_AFTER );
                 });
 
-                _p.on( Drag.Model.FIRE_DRAG, function( _evt, _srcEvt ){
+                _p.on( Drag.Model.DRAG_AFTER, function( _evt ){
+                    JC.log( 'drag drag after', new Date().getTime() );
+                });
+
+                _p.on( Drag.Model.TRIGGER_DRAG, function( _evt, _srcEvt ){
                     _p.selector().trigger( 'mousedown', [ _srcEvt || _evt ] );
                 });
             }
@@ -123,10 +143,13 @@
                 _p._model.defaultCSSZIndex( _p._model.dragTarget().css( 'z-index' ) );
                 _p._model.dragTarget().css( { 'cursor': 'move' } );
                 
+                _p._model.dragInitedCb() && _p._model.dragInitedCb().call( this, _p.selector() );
+                /*
                 JC.log( 'Drag _inited', new Date().getTime()
                         , _p._model.defaultCSSPosition() 
                         , _p._model.defaultCSSZIndex() 
                         );
+                */
             }
 
         , dragTarget: function(){ return this._model.dragTarget(); }
@@ -216,7 +239,7 @@
             var _di = Drag.dragInfo();
 
             if( _di && _di.ins ){
-                _di.ins.trigger( Drag.Model.DRAG_END, _di );
+                _di.ins.trigger( Drag.Model.DRAG_DONE, _di );
             }
 
             Drag.cleanDragInfo();
@@ -255,14 +278,16 @@
 
 
     Drag.Model._instanceName = 'JCDrag';
-    Drag.Model.DRAG_START = 'JCDragStart';
-    Drag.Model.DRAG_END = 'JCDragEnd';
-    Drag.Model.FIRE_DRAG = 'JCFireDrag';
+    Drag.Model.DRAG_BEFORE = 'JCDragBefore';
+    Drag.Model.DRAG_BEGIN = 'JCDragBegin';
+    Drag.Model.DRAG_DONE = 'JCDragDone';
+    Drag.Model.DRAG_AFTER = 'JCDragAfter';
+    Drag.Model.TRIGGER_DRAG = 'JCTriggerDrag';
 
     JC.f.extendObject( Drag.Model.prototype, {
         init:
             function(){
-                JC.log( 'Drag.Model.init:', new Date().getTime() );
+                //JC.log( 'Drag.Model.init:', new Date().getTime() );
             }
 
         , defaultCSSPosition:
@@ -466,6 +491,36 @@
                 return _r;
             }
 
+        , dragInitedCb:
+            function(){
+                var _r = this.callbackProp( 'dragInitedCb' ) || Drag.dragInitedCb;
+                return _r;
+            }
+
+        , dragBeginCb:
+            function(){
+                var _r = this.callbackProp( 'dragBeginCb' ) || Drag.dragBeginCb;
+                return _r;
+            }
+
+        , dragDoneCb:
+            function(){
+                var _r = this.callbackProp( 'dragDoneCb' ) || Drag.dragDoneCb;
+                return _r;
+            }
+
+        , dropDoneCb:
+            function(){
+                var _r = this.callbackProp( 'dropDoneCb' ) || Drag.dropDoneCb;
+                return _r;
+            }
+
+        , afterDropDoneCb:
+            function(){
+                var _r = this.callbackProp( 'afterDropDoneCb' ) || Drag.afterDropDoneCb;
+                return _r;
+            }
+
         , clean:
             function( _dragInfo ){
                 var _p = this;
@@ -476,7 +531,7 @@
     JC.f.extendObject( Drag.View.prototype, {
         init:
             function(){
-                JC.log( 'Drag.View.init:', new Date().getTime() );
+                //JC.log( 'Drag.View.init:', new Date().getTime() );
             }
 
         , updatePosition: 
@@ -509,6 +564,16 @@
 
                     if( _selectedDropBox.data( 'JCDraggingItem' ) ) return;
 
+                    if( _p._model.dropDoneCb() 
+                            && _p._model.dropDoneCb().call( 
+                                _p._model.selector()
+                                , _p._model.dragTarget() 
+                                , _selectedDropBox
+                           ) === false
+                    ){
+                        return;
+                    }
+
                     if( _p._model.dropSwap() ){
                         var _srcIpt = $( '<input type="hidden" />' )
                             , _targetIpt = _srcIpt.clone()
@@ -524,6 +589,13 @@
                     }else{
                         _p._model.dragTarget().appendTo( _selectedDropBox );
                     }
+
+                    _p._model.afterDropDoneCb() 
+                        && _p._model.afterDropDoneCb().call( 
+                            _p._model.selector()
+                            , _p._model.dragTarget() 
+                            , _selectedDropBox
+                        );
                 }
             }
 
@@ -595,7 +667,7 @@
     _jdoc.delegate( 'div.js_compDrag, button.js_compDrag', 'mousedown', function( _evt ){
         var _p = $( this ), _ins = JC.BaseMVC.getInstance( _p, Drag );
         if( _p.is( '[ignoreDrag]' ) ) return
-        !_ins && ( _ins = new Drag( _p ) ) && _ins.trigger( Drag.Model.FIRE_DRAG, [ _evt ] );
+        !_ins && ( _ins = new Drag( _p ) ) && _ins.trigger( Drag.Model.TRIGGER_DRAG, [ _evt ] );
         return false;
     });
 

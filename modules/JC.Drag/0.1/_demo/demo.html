@@ -8,28 +8,10 @@
             margin: 20px 40px;
         }
 
-        .ipt,.txt,.txt-1{ border:1px solid #e2e3ea; border-top:1px solid #abadb3; border-radius:2px; height:22px; *line-height:22px;}
-        .ipt{ width:126px;}
-        .ipt-w58{ width:58px;}
-        .ipt-w48{ width:48px; text-align:center;}
-        .ipt-w80{ width:80px;}
-        .ipt-w180{ width:180px;}
-        .ipt-w230{ width: 230px;}
-        .ipt-w320{ width:320px;}
-        .ipt-w380{ width:380px;}
-        .ipt-w480{ width:480px;}
-        .ipt-w545{ width:545px;}
-        .txt,.txt-1{ resize:none; height:50px; width:99.8%;}
-        .txt-w280{ width:280px;}
-        .txt-w480{ width:480px;}
-        .txt-w545{ width:545px;}
-        .txt-w400{ width:410px;}
-        .txt-w380{ width:380px;}
-        .txt-w650{ width:650px;}
-
         .defDl > dd{
             border-bottom:1px solid #e2e3ea; 
         }
+
         .dragStyle1 {
             border: 1px solid #000;
             height: 30px;
@@ -53,6 +35,17 @@
 
         requirejs( [ 'JC.Drag' ], function(){
         });
+
+        function dragBeginCb( _selector, _dragSelector, _dragMovingSelector ){
+            var _ins = this;
+            JC.log( 'dragBeginCb', new Date().getTime() );
+        }
+
+        function dragDoneCb( _selector, _dragSelector ){
+            var _ins = this;
+            JC.log( 'dragDoneCb', new Date().getTime() );
+        }
+
     </script>
 </head>    
 <body>
@@ -61,7 +54,17 @@
     <dl class="defDl">
         <dt></dt>
         <dd>
-            <div class="JCDrag dragStyle1 js_compDrag">normal drag</div>
+            <div class="JCDrag dragStyle1 js_compDrag" dragBeginCb="dragBeginCb">
+                normal drag 
+                , dragBeginCb="dragBeginCb"
+            </div>
+        </dd>
+
+       <dd>
+            <div class="JCDrag dragStyle1 js_compDrag" dragDoneCb="dragDoneCb" style="top:120px">
+                normal drag 
+                , dragDoneCb="dragDoneCb"
+            </div>
         </dd>
 
         <dd>
@@ -120,7 +123,9 @@
         </dd>
 
         <dd>
-            <div class="JCDrag dragStyle1 js_compDrag" style="top:700px; left: 800px;">normal drag</div>
+            <div class="JCDrag dragStyle1 js_compDrag" style="top:700px; left: 800px;" >
+                normal drag 
+            </div>
         </dd>
 
     </dl>
