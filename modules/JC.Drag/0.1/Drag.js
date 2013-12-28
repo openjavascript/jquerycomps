@@ -97,6 +97,8 @@
                 _p.on( Drag.Model.DRAG_START, function( _evt, _dragInfo ){
                     JC.log( 'drag start', new Date().getTime() );
                     _p._model.dragTarget().css( 'z-index', window.ZINDEX_COUNT++ );
+
+                    Drag.draggingItem( _p._model.dragTarget() );
                 });
 
                 _p.on( Drag.Model.DRAG_END, function( _evt, _dragInfo ){
@@ -105,6 +107,8 @@
                     _p._view.dropDone( _dragInfo );
                     _p._view.clean( _dragInfo );
                     _p._model.clean( _dragInfo );
+
+                    Drag.draggingItem( null );
                 });
 
                 _p.on( Drag.Model.FIRE_DRAG, function( _evt, _srcEvt ){
@@ -168,8 +172,19 @@
             }
             return Drag._dragInfo;
         };
-
     Drag._dragInfo;
+
+    Drag.draggingItem =
+        function( _setter ){
+            if( typeof _setter != 'undefined' ){
+                Drag._draggingItem && Drag._draggingItem.data( 'JCDraggingItem', false );
+                _setter && _setter.data( 'JCDraggingItem', true );
+
+                Drag._draggingItem = _setter;
+            }
+            return Drag._draggingItem;
+        };
+    Drag._draggingItem;
 
     Drag.cleanDragInfo = function(){ Drag._dragInfo = null; };
 
@@ -310,10 +325,9 @@
                             'position': 'absolute'
                             , 'left': _offset.left + 'px'
                             , 'top': _offset.top + 'px'
-                            , 'opacity': '.35'
                             , 'z-index': window.ZINDEX_COUNT++ 
                         } );
-                        this._dropDragTarget.attr( 'ignoreDrag', true );
+                        this._dropDragTarget.attr( 'ignoreDrag', true ).addClass( 'JCMovingDropBox' );
                     }
                 }
 
@@ -358,6 +372,7 @@
                     if( _dropFor ){
                         _dropFor.each( function(){
                             var _sp = $(this);
+                            if( _sp.is( '[ignoreDrag]' ) ) return;
                             var _offset = _sp.offset()
                                 , _rect = locationToRect( _offset.left
                                                             , _offset.top
@@ -377,7 +392,7 @@
                                 var _dist = pointDistance( rectToPoint( _srcRect ), rectToPoint( _rect ) );
                                     _rect.dist = _dist;
                                     //JC.log( _dist );
-                                    //_rect.selector.find('> div').html( JC.f.moneyFormat( _dist ) );
+                                    //_rect.selector.html( JC.f.moneyFormat( _dist ) );
                                 if( !_ix ){
                                     _findItem = _rect;
                                     return;
@@ -492,7 +507,20 @@
                     var _selectedDropBox = _p._model.selectedDropBox();
                     if( !( _selectedDropBox && _selectedDropBox.length ) ) return;
 
+                    if( _selectedDropBox.data( 'JCDraggingItem' ) ) return;
+
                     if( _p._model.dropSwap() ){
+                        var _srcIpt = $( '<input type="hidden" />' )
+                            , _targetIpt = _srcIpt.clone()
+                            ;
+                        _p._model.dragTarget().after( _srcIpt );
+                        _selectedDropBox.after( _targetIpt );
+
+                        _targetIpt.after( _p._model.dragTarget() );
+                        _srcIpt.after( _selectedDropBox );
+
+                        _srcIpt.remove();
+                        _targetIpt.remove();
                     }else{
                         _p._model.dragTarget().appendTo( _selectedDropBox );
                     }
