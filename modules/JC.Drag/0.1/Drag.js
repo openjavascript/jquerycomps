@@ -1,4 +1,3 @@
-//TODO: add moving callback
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
  * JC.Drag 提供各种拖曳功能
@@ -139,6 +138,20 @@
                     Drag.cleanDragData();
                 });
 
+                _p.on( Drag.Model.DRAGGING_MOVING, function( _evt, _x, _y, _srcEvt, _offset ){
+                    //JC.log( 'Drag.Model.DRAGGING_MOVING', new Date().getTime() );DRAG_MOVING
+                    _p._model.dragMovingCb()
+                        && _p._model.dragMovingCb().call(
+                            _p
+                            , _p.selector()
+                            , _p.dragTarget()
+                            , _p.dropDragTarget()
+                            , _x
+                            , _y
+                            , _srcEvt
+                        );
+                });
+
                 _p.on( Drag.Model.DRAG_AFTER, function( _evt ){
                     JC.log( 'drag after', new Date().getTime() );
 
@@ -166,7 +179,7 @@
                 _p._model.dragTarget().css( { 'cursor': 'move' } );
                 
                 _p._model.dragInitedCb() 
-                    && _p._model.dragInitedCb().call( this, _p.selector(), _p.dragTarget() );
+                    && _p._model.dragInitedCb().call( _p, _p.selector(), _p.dragTarget() );
                 /*
                 JC.log( 'Drag _inited', new Date().getTime()
                         , _p._model.defaultCSSPosition() 
@@ -176,9 +189,12 @@
             }
 
         , dragTarget: function(){ return this._model.dragTarget(); }
+
         , dropDragTarget: function(){ return this._model.dropDragTarget(); }
+
         , dragIn: function(){ return this._model.dragIn(); }
-        , updatePosition: 
+
+        , _updatePosition: 
             function(){ 
                 this._view.updatePosition.apply( this._view, JC.f.sliceArgs( arguments ) ); 
             }
@@ -223,8 +239,8 @@
     Drag.draggingItem =
         function( _setter ){
             if( typeof _setter != 'undefined' ){
-                Drag._draggingItem && Drag._draggingItem.data( 'JCDraggingItem', false );
-                _setter && _setter.data( 'JCDraggingItem', true );
+                Drag._draggingItem && Drag._draggingItem.data( Drag.Model.DRAGGING_ITEM, false );
+                _setter && _setter.data( Drag.Model.DRAGGING_ITEM, true );
 
                 Drag._draggingItem = _setter;
             }
@@ -262,7 +278,8 @@
             _newY >= _offset.maxY && ( _newY = _offset.maxY );
 
             //JC.log( _newX, _newY, _offset.maxX, _offset.maxY );
-            _p.updatePosition( _newX, _newY, _offset );
+            _p._updatePosition( _newX, _newY, _offset );
+            _p.trigger( Drag.Model.DRAGGING_MOVING, [ _newX, _newY, _evt, _offset ] );
         };
 
     Drag.defaultMouseUp =
@@ -278,6 +295,9 @@
 
     Drag.defaultScroll =
         function( _evt ){
+            //
+            /// 如果 dragIn 不是 window的时候, scrollTop 计算有问题
+            //
             var _di = Drag.dragInfo();
             if( !( _di && _di.ins ) ) return;
             var _scrollX = _di.ins.dragIn().scrollLeft()
@@ -298,7 +318,7 @@
                 , 'top': _newY + 'px'
             });
             */
-            _di.ins.updatePosition( _newX, _newY, _offset );
+            _di.ins._updatePosition( _newX, _newY, _offset );
 
             _di.offset.scrollX = _scrollX;
             _di.offset.scrollY = _scrollY;
@@ -306,18 +326,22 @@
             _di.offset.maxY += _fixScrollY;
         };
 
-
-    Drag.Model._instanceName = 'JCDrag';
+    Drag.Model._instanceName = 'JCDragIns';
 
     Drag.Model.DRAG_BEFORE = 'JCDragBefore';
     Drag.Model.DRAG_BEGIN = 'JCDragBegin';
     Drag.Model.DRAG_DONE = 'JCDragDone';
     Drag.Model.DRAG_AFTER = 'JCDragAfter';
     Drag.Model.TRIGGER_DRAG = 'JCTriggerDrag';
+    Drag.Model.DRAGGING_ITEM = 'JCDraggingItem';
+    Drag.Model.DRAGGING_MOVING= 'JCDraggingMoving';
 
     Drag.Model.DISABLE_DRAG = 'disableDrag';
     Drag.Model.DISABLE_DROP = 'disableDrop';
     Drag.Model.IGNORE_DRAG = 'ignoreDrog';
+
+    Drag.Model.CLASS_CURRENT = 'JCCurrentDropBox';
+    Drag.Model.CLASS_MOVING = 'JCMovingDropBox';
 
     JC.f.extendObject( Drag.Model.prototype, {
         init:
@@ -345,58 +369,58 @@
 
         , dragTarget:
             function(){
+                var _p = this;
+                if( !_p._dragTarget ){
+                    _p._dragTarget = _p.selectorProp( 'dragTarget' );
 
-                if( !this._dragTarget ){
-                    this._dragTarget = this.selectorProp( 'dragTarget' );
-
-                    !( this._dragTarget && this._dragTarget.length ) 
-                        && ( this._dragTarget = this.selector() )
+                    !( _p._dragTarget && _p._dragTarget.length ) 
+                        && ( _p._dragTarget = _p.selector() )
                         ;
                 }
-                return this._dragTarget;
+                return _p._dragTarget;
             }
 
         , dropDragTarget:
             function( _cleanCache ){
-                var _isDropFor = this.isDropFor();
+                var _p = this, _isDropFor = _p.isDropFor();
 
                 if( _isDropFor && _cleanCache ){
-                    this._dropDragTarget && this._dropDragTarget.remove();
-                    this._dropDragTarget = null;
+                    _p._dropDragTarget && _p._dropDragTarget.remove();
+                    _p._dropDragTarget = null;
                 }
 
-                if( !this._dropDragTarget ){
-                    this._dropDragTarget = this.dragTarget();
+                if( !_p._dropDragTarget ){
+                    _p._dropDragTarget = _p.dragTarget();
 
                     if( _isDropFor ){
-                        var _offset = this.dragTarget().offset();
+                        var _offset = _p.dragTarget().offset();
 
-                        this._dropDragTarget = this.dragTarget().clone();
-                        this._dropDragTarget.css( { 
+                        _p._dropDragTarget = _p.dragTarget().clone();
+                        _p._dropDragTarget.css( { 
                             'position': 'absolute'
                             , 'left': _offset.left + 'px'
                             , 'top': _offset.top + 'px'
                             , 'z-index': window.ZINDEX_COUNT++ 
                         } );
-                        this._dropDragTarget.attr( 'disableDrop', true )
+                        _p._dropDragTarget.attr( Drag.Model.DISABLE_DROP, true )
                             .attr( Drag.Model.IGNORE_DRAG, true )
-                            .addClass( 'JCMovingDropBox' )
+                            .addClass( Drag.Model.CLASS_MOVING )
                             ;
                     }
                 }
 
                 _isDropFor 
                     && _cleanCache 
-                    && this.dragTarget().after( this._dropDragTarget )
+                    && _p.dragTarget().after( _p._dropDragTarget )
                     ;
 
-                return this._dropDragTarget;
+                return _p._dropDragTarget;
             }
 
         , isDropFor: 
             function(){ 
                 typeof this._isDropFor == 'undefined'
-                    && ( this._isDropFor = JC.f.parseBool( this.is( '[dropFor]' ) ) );
+                    && ( this._isDropFor = this.is( '[dropFor]' ) && JC.f.parseBool( this.attrProp( 'dropFor' ) ) );
                 return this._isDropFor;
             }
 
@@ -415,21 +439,22 @@
         , selectedDropBox:
             function( _x, _y ){
                 var _p = this, _dropFor = _p.dropFor(), _di = Drag.dragInfo();
-                if( !_di ){
-                    return null;
-                }
+
+                if( !_di ){ return null; }
+
                 if( typeof _x != 'undefined' && typeof _y != 'undefined' && _dropFor && _dropFor.length ){
-                    this._selectedDropBox = null;
-                    //JC.log( '_dropFor.length', _dropFor.length, new Date().getTime() );
-                    var _ls = [], _srcRect = locationToRect( _x, _y, _di.offset.width, _di.offset.height );
-                    //JC.log( '_srcRect', _srcRect.left, _srcRect.right, _srcRect.top, _srcRect.bottom );
-                    if( _dropFor ){
+                    _p._selectedDropBox = null;
+
+                    if( _dropFor && _dropFor.length ){
+                        var _ls = []
+                            , _srcRect = locationToRect( _x, _y, _di.offset.width, _di.offset.height )
+                            ;
+
                         _dropFor.each( function(){
                             var _sp = $(this);
-                            if( _sp.is( '[disableDrop]' ) ) {
-                                //JC.log(11111111, new Date().getTime());
-                                return;
-                            }
+
+                            if( _sp.is( '[' + Drag.Model.DISABLE_DROP + ']' ) ) { return; }
+
                             var _offset = _sp.offset()
                                 , _rect = locationToRect( _offset.left
                                                             , _offset.top
@@ -442,21 +467,19 @@
                                 _ls.push( _rect );
                             }
                         });
-                        //JC.log( '_ls.length', _ls.length );
+
                         if( _ls.length ){
                             var _findItem;
                             $.each( _ls, function( _ix, _rect ){
-                                var _dist = pointDistance( rectToPoint( _srcRect ), rectToPoint( _rect ) );
-                                    _rect.dist = _dist;
-                                    //JC.log( _dist );
-                                    //_rect.selector.html( JC.f.moneyFormat( _dist ) );
+                                _rect.dist = pointDistance( rectToPoint( _srcRect ), rectToPoint( _rect ) );
+
+                                //_rect.selector.html( JC.f.moneyFormat( _dist ) );
+
                                 if( !_ix ){
                                     _findItem = _rect;
                                     return;
                                 }
-                                if( _rect.dist < _findItem.dist ){
-                                    _findItem = _rect
-                                }
+                                _rect.dist < _findItem.dist && ( _findItem = _rect );
                             });
                             this._selectedDropBox = _findItem.selector;
                         }else{
@@ -523,53 +546,19 @@
                 return _r;
             }
 
-        , dragInitedCb:
-            function(){
-                var _r = this.callbackProp( 'dragInitedCb' ) || Drag.dragInitedCb;
-                return _r;
-            }
-
-        , dragBeforeCb:
-            function(){
-                var _r = this.callbackProp( 'dragBeforeCb' ) || Drag.dragBeforeCb;
-                return _r;
-            }
-
-        , dragAfterCb:
-            function(){
-                var _r = this.callbackProp( 'dragAfterCb' ) || Drag.dragAfterCb;
-                return _r;
-            }
-
-        , dragBeginCb:
-            function(){
-                var _r = this.callbackProp( 'dragBeginCb' ) || Drag.dragBeginCb;
-                return _r;
-            }
-
-        , dragDoneCb:
-            function(){
-                var _r = this.callbackProp( 'dragDoneCb' ) || Drag.dragDoneCb;
-                return _r;
-            }
-
-        , dropDoneCb:
-            function(){
-                var _r = this.callbackProp( 'dropDoneCb' ) || Drag.dropDoneCb;
-                return _r;
-            }
-
-        , afterDropDoneCb:
-            function(){
-                var _r = this.callbackProp( 'afterDropDoneCb' ) || Drag.afterDropDoneCb;
-                return _r;
-            }
+        , dragInitedCb: function(){ return this.callbackProp( 'dragInitedCb' ) || Drag.dragInitedCb; }
+        , dragBeforeCb: function(){ return this.callbackProp( 'dragBeforeCb' ) || Drag.dragBeforeCb; }
+        , dragAfterCb: function(){ return this.callbackProp( 'dragAfterCb' ) || Drag.dragAfterCb; }
+        , dragBeginCb: function(){ return this.callbackProp( 'dragBeginCb' ) || Drag.dragBeginCb; }
+        , dragDoneCb: function(){ return this.callbackProp( 'dragDoneCb' ) || Drag.dragDoneCb; }
+        , dropDoneCb: function(){ return this.callbackProp( 'dropDoneCb' ) || Drag.dropDoneCb; }
+        , dragMovingCb: function(){ return this.callbackProp( 'dragMovingCb' ) || Drag.dragMovingCb; }
+        , afterDropDoneCb: function(){ return this.callbackProp( 'afterDropDoneCb' ) || Drag.afterDropDoneCb; }
 
         , clean:
             function( _dragInfo ){
                 var _p = this;
             }
-
     });
 
     JC.f.extendObject( Drag.View.prototype, {
@@ -592,9 +581,9 @@
 
                 if( _p._model.isDropFor() ){
                     _selectedDropBox = _p._model.selectedDropBox();
-                    _selectedDropBox && _selectedDropBox.removeClass( 'JCCurrentDropBox' );
+                    _selectedDropBox && _selectedDropBox.removeClass( Drag.Model.CLASS_CURRENT );
                     _selectedDropBox = _p._model.selectedDropBox( _x, _y );
-                    _selectedDropBox && _selectedDropBox.addClass( 'JCCurrentDropBox' );
+                    _selectedDropBox && _selectedDropBox.addClass( Drag.Model.CLASS_CURRENT );
                 }
             }
 
@@ -606,7 +595,7 @@
                     var _selectedDropBox = _p._model.selectedDropBox();
                     if( !( _selectedDropBox && _selectedDropBox.length ) ) return;
 
-                    if( _selectedDropBox.data( 'JCDraggingItem' ) ) return;
+                    if( _selectedDropBox.data( Drag.Model.DRAGGING_ITEM ) ) return;
 
                     if( _p._model.dropDoneCb() 
                             && _p._model.dropDoneCb().call( 
@@ -651,8 +640,10 @@
                     _p._model.dropDragTarget() 
                         && _p._model.dropDragTarget().remove()
                         ;
-                    var _selectedDropBox = _p._model.selectedDropBox();
-                    _selectedDropBox && _selectedDropBox.removeClass( 'JCCurrentDropBox' );
+
+                    _p._model.selectedDropBox() 
+                        && _p._model.selectedDropBox().removeClass( Drag.Model.CLASS_CURRENT )
+                        ;
                 }
             }
     });
@@ -667,6 +658,7 @@
                     r2.bottom < r1.top
                 );
     }
+
     function locationToRect( _x, _y, _width, _height ){
         var _offset, _r = {
             'left': _x
@@ -676,6 +668,7 @@
         };
         return _r;
     }
+
     function rectToPoint( _rect ){
         var _r = {
             'x': _rect.left + ( _rect.right - _rect.left ) / 2
@@ -683,6 +676,7 @@
         };
         return _r;
     }
+
     function pointDistance( _p1, _p2 ){
         var _dx = _p2.x - _p1.x
             , _dy = _p2.y - _p1.y
@@ -703,9 +697,7 @@
     _jdoc.delegate( 'div.js_compDrag, button.js_compDrag', 'mouseenter', function( _evt ){
         var _p = $( this ), _ins = JC.BaseMVC.getInstance( $(this), JC.Drag );
         if( _p.is( '[' + Drag.Model.IGNORE_DRAG + ']' ) ) return
-        //JC.log( _p.prop( 'nodeName' ), _p.html(), _p.prop( 'className' ), _ins || 'null' );
-        !_ins && ( _ins = new JC.Drag( _p ) );
-        JC.BaseMVC.getInstance( _p, JC.Drag, _ins )
+        !_ins && ( _ins = new JC.Drag( _p ) ) && JC.BaseMVC.getInstance( _p, JC.Drag, _ins );
     });
 
     _jdoc.delegate( 'div.js_compDrag, button.js_compDrag', 'mousedown', function( _evt ){
@@ -716,8 +708,7 @@
     });
 
     _jwin.on( 'resize', function( _evt ){
-        _jdoc.off( 'mousemove', Drag.defaultMouseMove );
-        _jdoc.off( 'mouseup', Drag.defaultMouseUp );
+        Drag.cleanDragData();
     });
 
     return JC.Drag;

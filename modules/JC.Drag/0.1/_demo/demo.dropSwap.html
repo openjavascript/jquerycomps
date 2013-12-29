@@ -34,6 +34,9 @@
             margin: 20px;
         }
 
+        .redColor { color: red; }
+        .redBgColor { background: red; }
+
         .dragStyle1 {
             border: 1px solid #000;
             height: 30px;
@@ -96,6 +99,11 @@
             return false;
         }
 
+        function dragMovingCb( _selector, _dragTarget, _movingSelector, _x, _y, _evt ){
+            var _ins = this;
+            JC.log( 'dragMovingCb', new Date().getTime() );
+        }
+
     </script>
 </head>    
 <body>
@@ -144,7 +152,11 @@
                             > disableDrop="true"</div>
                         </td>
                         <td>
-                            <div class="js_compDrag" dropFor="(table div.js_compDrag" dropSwap="true">drop 7</div>
+                            <div class="js_compDrag" 
+                                dropFor="(table div.js_compDrag" 
+                                dropSwap="true"
+                                style="color:red;"
+                            >drop 7</div>
                         </td>
                         <td>
                             <div class="js_compDrag" 
@@ -178,10 +190,18 @@
                             </div>
                         </td>
                         <td>
-                            <div class="js_compDrag" dropFor="(table div.js_compDrag" dropSwap="true">drop 11</div>
+                            <div class="js_compDrag" 
+                                dropFor="(table div.js_compDrag" 
+                                dropSwap="true"
+                                style="background:red;"
+                            >drop 11</div>
                         </td>
                         <td>
-                            <div class="js_compDrag" dropFor="(table div.js_compDrag" dropSwap="true">drop 12</div>
+                            <div class="js_compDrag" 
+                                dropFor="(table div.js_compDrag" 
+                                dropSwap="true"
+                                dragMovingCb="dragMovingCb"
+                                >dragMovingCb="dragMovingCb"</div>
                         </td>
                     </tr>
                     <tr>
