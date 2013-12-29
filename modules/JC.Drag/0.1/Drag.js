@@ -1,3 +1,4 @@
+//TODO: add moving callback
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
  * JC.Drag 提供各种拖曳功能
@@ -78,13 +79,6 @@
 
                     _p.trigger( Drag.Model.DRAG_BEFORE );
 
-                    /*
-                    JC.log( 
-                        'Drag mousedown', new Date().getTime()
-                        //, _evt.clientX, _evt.clientY
-                        //, _evt.pageX, _evt.pageY
-                    );
-                    */
                     _p._model.isDropFor() 
                         && ( 
                                 _p._model.dropDragTarget( true )
@@ -102,19 +96,26 @@
                 });
 
                 //低版本 IE 拖曳时不选中文字
-                _p.selector()[0].onselectstart = function(){ return false; }
+                _p.selector()[0].onselectstart = function(){ return false; };
 
                 _p.on( Drag.Model.DRAG_BEFORE, function( _evt ){
-                    JC.log( 'drag drag before', new Date().getTime() );
+                    JC.log( 'drag before', new Date().getTime() );
                 });
 
                 _p.on( Drag.Model.DRAG_BEGIN, function( _evt, _dragInfo ){
                     JC.log( 'drag begin', new Date().getTime() );
+
                     _p._model.dragTarget().css( 'z-index', window.ZINDEX_COUNT++ );
+
                     Drag.draggingItem( _p._model.dragTarget() );
 
                     _p._model.dragBeginCb() 
-                        && _p._model.dragBeginCb().call( _p, _p.selector(), _p._model.dragTarget(), _p._model.dropDragTarget() );
+                        && _p._model.dragBeginCb().call( 
+                            _p
+                            , _p.selector()
+                            , _p._model.dragTarget()
+                            , _p._model.dropDragTarget() 
+                        );
                 });
 
                 _p.on( Drag.Model.DRAG_DONE, function( _evt, _dragInfo ){
@@ -127,7 +128,11 @@
                     Drag.draggingItem( null );
 
                     _p._model.dragDoneCb() 
-                        && _p._model.dragDoneCb().call( _p, _p.selector(), _p._model.dragTarget() );
+                        && _p._model.dragDoneCb().call( 
+                            _p
+                            , _p.selector()
+                            , _p._model.dragTarget() 
+                        );
 
                     _p.trigger( Drag.Model.DRAG_AFTER );
 
@@ -135,11 +140,14 @@
                 });
 
                 _p.on( Drag.Model.DRAG_AFTER, function( _evt ){
-                    JC.log( 'drag drag after', new Date().getTime() );
+                    JC.log( 'drag after', new Date().getTime() );
 
                     _p._model.dragAfterCb() 
-                        && _p._model.dragAfterCb().call( _p, _p._model.dragTarget(), _p.selector() )
-                        ;
+                        && _p._model.dragAfterCb().call( 
+                            _p
+                            , _p._model.dragTarget()
+                            , _p.selector() 
+                        );
                 });
 
                 _p.on( Drag.Model.TRIGGER_DRAG, function( _evt, _srcEvt ){
@@ -150,11 +158,15 @@
         , _inited:
             function(){
                 var _p = this;
+
                 _p._model.defaultCSSPosition( _p._model.dragTarget().css( 'position' ) );
                 _p._model.defaultCSSZIndex( _p._model.dragTarget().css( 'z-index' ) );
+                _p._model.defaultCSSCursor( _p._model.dragTarget().css( 'cursor' ) );
+
                 _p._model.dragTarget().css( { 'cursor': 'move' } );
                 
-                _p._model.dragInitedCb() && _p._model.dragInitedCb().call( this, _p.selector() );
+                _p._model.dragInitedCb() 
+                    && _p._model.dragInitedCb().call( this, _p.selector(), _p.dragTarget() );
                 /*
                 JC.log( 'Drag _inited', new Date().getTime()
                         , _p._model.defaultCSSPosition() 
@@ -227,6 +239,7 @@
             _jwin.off( 'scroll', Drag.defaultScroll );
 
             Drag._dragInfo = null; 
+            Drag.draggingItem( null );
         };
 
     Drag.defaultMouseMove =
@@ -322,6 +335,12 @@
             function( _setter ){
                 typeof _setter != 'undefined' && ( this._defaultCSSZIndex = _setter );
                 return this._defaultCSSZIndex;
+            }
+
+        , defaultCSSCursor:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._defaultCSSCursor = _setter );
+                return this._defaultCSSCursor;
             }
 
         , dragTarget:
