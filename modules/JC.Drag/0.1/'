@@ -68,14 +68,6 @@
                     if( _p._model.boolProp( Drag.Model.DISABLE_DRAG ) ) return;
                     if( _p._model.boolProp( Drag.Model.IGNORE_DRAG ) ) return;
 
-                    Drag.cleanDragData();
-
-                    if( _p._model.dragBeforeCb() 
-                        && _p._model.dragBeforeCb().call( _p, _p._model.dragTarget(), _p.selector() ) === false 
-                    ){
-                        return;
-                    }
-
                     _p.trigger( Drag.Model.DRAG_BEFORE );
 
                     /*
@@ -93,6 +85,10 @@
 
                     Drag.dragInfo( _p, _evt );
                     _p.trigger( Drag.Model.DRAG_BEGIN, [ _evt, Drag.dragInfo() ] );
+
+                    _jdoc.off( 'mousemove', Drag.defaultMouseMove );
+                    _jdoc.off( 'mouseup', Drag.defaultMouseUp );
+                    _jwin.off( 'scroll', Drag.defaultScroll );
 
                     _jdoc.on( 'mouseup', Drag.defaultMouseUp );
                     _jdoc.on( 'mousemove', Drag.defaultMouseMove );
@@ -130,16 +126,10 @@
                         && _p._model.dragDoneCb().call( _p, _p.selector(), _p._model.dragTarget() );
 
                     _p.trigger( Drag.Model.DRAG_AFTER );
-
-                    Drag.cleanDragData();
                 });
 
                 _p.on( Drag.Model.DRAG_AFTER, function( _evt ){
                     JC.log( 'drag drag after', new Date().getTime() );
-
-                    _p._model.dragAfterCb() 
-                        && _p._model.dragAfterCb().call( _p, _p._model.dragTarget(), _p.selector() )
-                        ;
                 });
 
                 _p.on( Drag.Model.TRIGGER_DRAG, function( _evt, _srcEvt ){
@@ -220,14 +210,7 @@
         };
     Drag._draggingItem;
 
-    Drag.cleanDragData = 
-        function(){ 
-            _jdoc.off( 'mousemove', Drag.defaultMouseMove );
-            _jdoc.off( 'mouseup', Drag.defaultMouseUp );
-            _jwin.off( 'scroll', Drag.defaultScroll );
-
-            Drag._dragInfo = null; 
-        };
+    Drag.cleanDragInfo = function(){ Drag._dragInfo = null; };
 
     Drag.defaultMouseMove =
         function( _evt ){
@@ -260,7 +243,10 @@
                 _di.ins.trigger( Drag.Model.DRAG_DONE, _di );
             }
 
-            Drag.cleanDragData();
+            Drag.cleanDragInfo();
+            _jdoc.off( 'mousemove', Drag.defaultMouseMove );
+            _jdoc.off( 'mouseup', Drag.defaultMouseUp );
+            _jwin.off( 'scroll', Drag.defaultScroll );
         };
 
     Drag.defaultScroll =
@@ -507,18 +493,6 @@
         , dragInitedCb:
             function(){
                 var _r = this.callbackProp( 'dragInitedCb' ) || Drag.dragInitedCb;
-                return _r;
-            }
-
-        , dragBeforeCb:
-            function(){
-                var _r = this.callbackProp( 'dragBeforeCb' ) || Drag.dragBeforeCb;
-                return _r;
-            }
-
-        , dragAfterCb:
-            function(){
-                var _r = this.callbackProp( 'dragAfterCb' ) || Drag.dragAfterCb;
                 return _r;
             }
 
