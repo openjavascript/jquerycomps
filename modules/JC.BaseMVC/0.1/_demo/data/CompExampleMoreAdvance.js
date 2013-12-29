@@ -21,9 +21,9 @@
  *    <dd><dd>
  *</dl> 
  *
- * @namespace JC
- * @class CompExampleMoreAdvance
- * @extends JC.BaseMVC
+ * @namespace   JC
+ * @class       CompExampleMoreAdvance
+ * @extends     JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-12-13

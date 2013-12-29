@@ -1,6 +1,7 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
- * JC.Drag 提供各种拖曳功能
+ * Drag, Dragdrop 功能
+ * <br />响应式初始化 [div|button].js_compDrag
  *
  *<p><b>require</b>:
  *   <a href="widnow.jQuery.html">jQuery</a>
@@ -12,18 +13,37 @@
  *   | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Drag.html' target='_blank'>API docs</a>
  *   | <a href='../../modules/JC.Drag/0.1/_demo' target='_blank'>demo link</a></p>
  *  
- *<h2>页面只要引用本脚本, 默认会处理 div class="js_compDrag"</h2>
- *
- *<h2>可用的 HTML attribute</h2>
- *
+ *<h2>通用 HTML attribute</h2>
  *<dl>
- *    <dt></dt>
- *    <dd><dd>
+ *    <dt>dragTarget = selector, default = self</dt>
+ *    <dd>要拖动的 selector, 可以通过该属性指定拖动的父节点<dd>
+ *
+ *    <dt>dragIn = selector, default = window</dt>
+ *    <dd>可拖动的范围</dd>
+ *
+ *    <dt>disableDrag = bool, default = false</dt>
+ *    <dd>是否禁止拖动, 会执行实例初始化</dd>
+ *
+ *    <dt>ignoreDrog = bool, default = false</dt>
+ *    <dd>是否忽略拖动, 不会执行实例初始化</dd>
  *</dl> 
  *
- * @namespace JC
- * @class Drag
- * @extends JC.BaseMVC
+ *<h2>drop HTML attribute</h2>
+ *<dl>
+ *    <dt>dropFor = selector</dt>
+ *    <dd>指定可拖放的 selector</dd>
+ *
+ *    <dt>dropSwap = bool, default = false</dt>
+ *    <dd>
+ *          是否交换拖曳的位置
+ *          <br />为真, 交换 selector 的位置
+ *          <br />不为真, 将 append 到目标 selector
+ *    </dd>
+ *</dl>
+ *
+ * @namespace   JC
+ * @class       Drag
+ * @extends     JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-12-26
@@ -47,7 +67,7 @@
 
         this._init();
 
-        JC.log( Drag.Model._instanceName, 'all inited', new Date().getTime() );
+        JC.log( Drag.Model._instanceName, 'inited', new Date().getTime() );
     }
 
     JC.BaseMVC.build( Drag );

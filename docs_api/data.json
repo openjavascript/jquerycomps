@@ -1000,7 +1000,7 @@
             "namespace": "JC",
             "file": "../modules/JC.Drag/0.1/Drag.js",
             "line": 2,
-            "description": "JC.Drag 提供各种拖曳功能\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Drag.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.Drag/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compDrag\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt></dt>\n   <dd><dd>\n</dl>",
+            "description": "Drag, Dragdrop 功能\n<br />响应式初始化 [div|button].js_compDrag\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Drag.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.Drag/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>通用 HTML attribute</h2>\n<dl>\n   <dt>dragTarget = selector, default = self</dt>\n   <dd>要拖动的 selector, 可以通过该属性指定拖动的父节点<dd>\n\n   <dt>dragIn = selector, default = window</dt>\n   <dd>可拖动的范围</dd>\n\n   <dt>disableDrag = bool, default = false</dt>\n   <dd>是否禁止拖动, 会执行实例初始化</dd>\n\n   <dt>ignoreDrog = bool, default = false</dt>\n   <dd>是否忽略拖动, 不会执行实例初始化</dd>\n</dl> \n\n<h2>drop HTML attribute</h2>\n<dl>\n   <dt>dropFor = selector</dt>\n   <dd>指定可拖放的 selector</dd>\n\n   <dt>dropSwap = bool, default = false</dt>\n   <dd>\n         是否交换拖曳的位置\n         <br />为真, 交换 selector 的位置\n         <br />不为真, 将 append 到目标 selector\n   </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -5487,7 +5487,7 @@
         },
         {
             "file": "../modules/JC.Drag/0.1/Drag.js",
-            "line": 51,
+            "line": 222,
             "description": "初始化可识别的 Drag 实例",
             "itemtype": "method",
             "name": "init",
@@ -5503,6 +5503,13 @@
                 "description": "",
                 "type": "Array of DragInstance"
             },
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 670,
+            "description": "判断两个矩形是否有交集",
             "class": "JC.Drag",
             "namespace": "JC"
         },
@@ -13941,7 +13948,7 @@
         {
             "file": "../modules/JC.common/0.2/common.js",
             "line": 804,
-            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder, JC.TableFreeze\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
+            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar, JC.Drag, JC.Placeholder, JC.TableFreeze\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
             "params": [
@@ -13999,35 +14006,42 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 854,
-            "description": "disable / enable",
+            "line": 852,
+            "description": "拖曳",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
             "line": 858,
-            "description": "表单提交逻辑",
+            "description": "disable / enable",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
             "line": 862,
-            "description": "格式化金额",
+            "description": "表单提交逻辑",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
             "line": 866,
+            "description": "格式化金额",
+            "class": "JC.common",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.common/0.2/common.js",
+            "line": 870,
             "description": "自动完成",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 871,
+            "line": 875,
             "description": "URL 占位符识别功能\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "urlDetect",
@@ -14050,7 +14064,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 912,
+            "line": 916,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -14074,14 +14088,14 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 976,
+            "line": 980,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 994,
+            "line": 998,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -14116,7 +14130,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1044,
+            "line": 1048,
             "description": "日期格式化 (具体格式请查看 PHP Date Formats)",
             "itemtype": "method",
             "name": "dateFormat",
@@ -14141,7 +14155,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1089,
+            "line": 1093,
             "description": "扩展对象属性",
             "itemtype": "method",
             "name": "extendObject",
@@ -14171,7 +14185,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1111,
+            "line": 1115,
             "description": "timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行",
             "itemtype": "method",
             "name": "safeTimeout",
@@ -14206,7 +14220,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1132,
+            "line": 1136,
             "description": "URL 请求时, 获取对URL参数进行编码的函数",
             "itemtype": "method",
             "name": "encoder",
@@ -16657,6 +16671,10 @@
             "line": " ../modules/JC.Calendar/0.3/Calendar.week.js:234"
         },
         {
+            "message": "Missing item type\n判断两个矩形是否有交集",
+            "line": " ../modules/JC.Drag/0.1/Drag.js:670"
+        },
+        {
             "message": "Missing item type\n这个判断是为了向后兼容 JC 0.1\n使用 requirejs 的项目可以移除这段判断代码",
             "line": " ../modules/JC.Form/0.1/Form.js:3"
         },
@@ -16893,24 +16911,28 @@
             "line": " ../modules/JC.common/0.2/common.js:848"
         },
         {
-            "message": "Missing item type\ndisable / enable",
-            "line": " ../modules/JC.common/0.2/common.js:854"
+            "message": "Missing item type\n拖曳",
+            "line": " ../modules/JC.common/0.2/common.js:852"
         },
         {
-            "message": "Missing item type\n表单提交逻辑",
+            "message": "Missing item type\ndisable / enable",
             "line": " ../modules/JC.common/0.2/common.js:858"
         },
         {
-            "message": "Missing item type\n格式化金额",
+            "message": "Missing item type\n表单提交逻辑",
             "line": " ../modules/JC.common/0.2/common.js:862"
         },
         {
-            "message": "Missing item type\n自动完成",
+            "message": "Missing item type\n格式化金额",
             "line": " ../modules/JC.common/0.2/common.js:866"
         },
         {
+            "message": "Missing item type\n自动完成",
+            "line": " ../modules/JC.common/0.2/common.js:870"
+        },
+        {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../modules/JC.common/0.2/common.js:976"
+            "line": " ../modules/JC.common/0.2/common.js:980"
         },
         {
             "message": "Missing item type\nAES Cipher function: encrypt 'input' state with Rijndael algorithm\n  applies Nr rounds (10/12/14) using key schedule w for 'add round key' stage",
