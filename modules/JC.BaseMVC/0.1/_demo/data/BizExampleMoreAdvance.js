@@ -21,9 +21,9 @@
  *    <dd><dd>
  *</dl> 
  *
- * @namespace window.Bizs
- * @class BizExampleMoreAdvance
- * @extends JC.BaseMVC
+ * @namespace   window.Bizs
+ * @class       BizExampleMoreAdvance
+ * @extends     JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-12-13
@@ -31,6 +31,8 @@
  * @example
         <h2>Bizs.BizExampleMoreAdvance 示例</h2>
  */
+    var _jdoc = $( document ), _jwin = $( window );
+
     Bizs.BizExampleMoreAdvance = BizExampleMoreAdvance;
 
     function BizExampleMoreAdvance( _selector ){
@@ -90,7 +92,7 @@
             }
     });
 
-    BizExampleMoreAdvance.Model._instanceName = 'BizExampleMoreAdvance';
+    BizExampleMoreAdvance.Model._instanceName = 'JCBizExampleMoreAdvance';
     JC.f.extendObject( BizExampleMoreAdvance.Model.prototype, {
         init:
             function(){
@@ -105,7 +107,7 @@
             }
     });
 
-    $(document).ready( function(){
+    _jdoc.ready( function(){
         var _insAr = 0;
         BizExampleMoreAdvance.autoInit
             && ( _insAr = BizExampleMoreAdvance.init() )

@@ -1,4 +1,6 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+    var _jdoc = $( document ), _jwin = $( window );
+
     JC.CompExample = CompExample;
 
     function CompExample( _selector ){
@@ -41,9 +43,9 @@
         };
 
     JC.BaseMVC.build( CompExample );
-    CompExample.Model._instanceName = 'CompExample';
+    CompExample.Model._instanceName = 'JCCompExample';
 
-    $(document).ready( function(){
+    _jdoc.ready( function(){
         var _insAr = 0;
         CompExample.autoInit
             && ( _insAr = CompExample.init() )

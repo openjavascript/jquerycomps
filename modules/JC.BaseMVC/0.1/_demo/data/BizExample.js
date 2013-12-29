@@ -1,4 +1,6 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+    var _jdoc = $( document ), _jwin = $( window );
+
     Bizs.BizExample = BizExample;
 
     function BizExample( _selector ){
@@ -42,9 +44,9 @@
 
     JC.BaseMVC.build( BizExample );
 
-    BizExample.Model._instanceName = 'BizExample';
+    BizExample.Model._instanceName = 'JCBizExample';
 
-    $(document).ready( function(){
+    _jdoc.ready( function(){
         var _insAr = 0;
         BizExample.autoInit
             && ( _insAr = BizExample.init() )

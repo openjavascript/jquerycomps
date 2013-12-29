@@ -9,8 +9,8 @@
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>
      * | <a href='../../modules/JC.BaseMVC/0.1/_demo' target='_blank'>demo link</a></p>
-     * @namespace JC
-     * @class BaseMVC
+     * @namespace   JC
+     * @class       BaseMVC
      * @constructor
      * @param   {selector|string}   _selector   
      * @version dev 0.1 2013-09-07
@@ -239,6 +239,27 @@
                 return this;
             }
         /**
+         * 使用 jquery on 为 controler 绑定事件
+         * @method  {string}    on
+         * @param   {string}    _evtName
+         * @param   {function}  _cb
+         */
+        , on:
+            function(){
+                $( this ).trigger( 'BindEvent', JC.f.sliceArgs( arguments ) );
+                return this;
+            }
+        /**
+         * 使用 jquery trigger 触发 controler 绑定事件
+         * @method  {string}    trigger
+         * @param   {string}    _evtName
+         */
+        , trigger:
+            function(){
+                $( this ).trigger( 'TriggerEvent', JC.f.sliceArgs( arguments ) );
+                return this;
+            }
+        /**
          * 初始化的 jq 选择器
          * @method  selector
          * @param   {selector}  _setter
@@ -438,6 +459,26 @@
     JC.f.extendObject( BaseMVC.View.prototype, {
         init:
             function() {
+                return this;
+            }
+        , selector:
+            function(){
+                return this._model.selector();
+            }
+        /**
+         * 使用 jquery on 为 controler 绑定事件
+         */
+        , on:
+            function(){
+                $( this ).trigger( 'BindEvent', JC.f.sliceArgs( arguments ) );
+                return this;
+            }
+        /**
+         * 使用 jquery trigger 触发 controler 绑定事件
+         */
+        , trigger:
+            function(){
+                $( this ).trigger( 'TriggerEvent', JC.f.sliceArgs( arguments ) );
                 return this;
             }
     });

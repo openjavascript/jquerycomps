@@ -236,6 +236,17 @@
             },
             "namespaces": {}
         },
+        "../modules/JC.Drag/0.1/Drag.js": {
+            "name": "../modules/JC.Drag/0.1/Drag.js",
+            "modules": {},
+            "classes": {
+                "JC.Drag": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../modules/JC.Fixed/0.1/Fixed.js": {
             "name": "../modules/JC.Fixed/0.1/Fixed.js",
             "modules": {},
@@ -926,6 +937,33 @@
             "description": "日期选择组件\n<br />全局访问请使用 JC.Calendar 或 Calendar\n<br />DOM 加载完毕后\n, Calendar会自动初始化页面所有日历组件, input[type=text][datatype=date]标签\n<br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动使用Calendar.init( _selector )\n<br />_selector 可以是 新加载的容器, 也可以是新加载的所有input\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Calendar.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Calendar/0.3/_demo/' target='_blank'>demo link</a></p>\n<h2> 可用的html attribute, (input|button):(datatype|multidate)=(date|week|month|season) </h2> \n<dl>\n     <dt>defaultdate = ISO Date</dt>\n     <dd>默认显示日期, 如果 value 为空, 则尝试读取 defaultdate 属性</dd>\n\n     <dt>datatype = string</dt>\n     <dd>\n         声明日历控件的类型:\n         <br /><b>date:</b> 日期日历\n         <br /><b>week:</b> 周日历\n         <br /><b>month:</b> 月日历\n         <br /><b>season:</b> 季日历\n         <br /><b>year:</b> 年日历\n         <br /><b>monthday:</b> 多选日期日历\n     </dd>\n\n     <dt>multidate = string</dt>\n     <dd>\n         与 datatype 一样, 这个是扩展属性, 避免表单验证带来的逻辑冲突\n     </dd>\n\n     <dt>calendarshow = function</dt>\n     <dd>显示日历时的回调\n<pre>function calendarshow( _selector, _ins ){\n   var _selector = $(this);\n   UXC.log( 'calendarshow', _selector.val() );\n}\n</pre></dd>\n\n     <dt>calendarhide = function</dt>\n     <dd>隐藏日历时的回调\n<pre>function calendarhide( _selector, _ins ){\n   var _selector = $(this);\n   UXC.log( 'calendarhide', _selector.val() );\n}</pre></dd>\n\n     <dt>calendarlayoutchange = function</dt>\n     <dd>用户点击日历控件操作按钮后, 外观产生变化时触发的回调\n<pre>function calendarlayoutchange( _selector, _ins ){\n   var _selector = $(this);\n   JC.log( 'calendarlayoutchange', _selector.val() );\n}\n</pre></dd>\n\n     <dt>calendarupdate = function</dt>\n     <dd>\n         赋值后触发的回调\n<pre>function calendarupdate( _startDate, _endDate, _ins ){\n   var _selector = $(this);\n   JC.log( 'calendarupdate', _selector.val(), _startDate, _endDate );\n}\n</pre></dd>\n\n     <dt>calendarclear = function</dt>\n     <dd>清空日期触发的回调\n<pre>function calendarclear( _selector, _ins ){\n   var _selector = $(this);\n}</pre></dd>\n\n     <dt>minvalue = ISO Date</dt>\n     <dd>日期的最小时间, YYYY-MM-DD</dd>\n\n     <dt>maxvalue = ISO Date</dt>\n     <dd>日期的最大时间, YYYY-MM-DD</dd>\n\n     <dt>currentcanselect = bool, default = true</dt>\n     <dd>当前日期是否能选择</dd>\n\n     <dt>multiselect = bool (目前支持 month: default=false, monthday: default = true)</dt>\n     <dd>是否为多选日历</dd>\n\n     <dt>calendarupdatemultiselect = function</dt>\n     <dd>\n         多选日历赋值后触发的回调\n         <dl>\n             <dt>参数: _data:</dt>\n             <dd>\n                 [{\"start\": Date,\"end\": Date}[, {\"start\": Date,\"end\": Date}... ] ]\n             </dd>\n         </dl>\n<pre>function calendarupdatemultiselect( _data, _ins ){\n   var _selector = $(this);\n   window.JSON && ( _data = JSON.stringify( _data ) );\n   JC.log( 'calendarupdatemultiselect:'\n       , JC.f.printf( 'val:{0}, data:{1}', _selector.val(), _data ) );\n}</pre></dd>\n\n     <dt>dateFormat = string</dt>\n     <dd>\n         自定义日期格式化显示, 使用 JC.f.dateFormat 函数进行格式化\n         <br />如果日期去除非数字后不是 8/16 位数字的话, 需要 显式声明 dateParse 属性, 自定义日期解析函数\n     </dd>\n\n     <dt>fullDateFormat = string</dt>\n     <dd>\n         针对 日期类型: 月/季/年 定义显示格式, default: \"{0} 至 {1}\"\n         <br />{0}代表开始日期, {1}代表结束日期\n     </dd>\n\n     <dt>dateParse = function </dt>\n     <dd>\n         自定义日期格式函数, 针对日期不能解析为 8 位数字的特殊日期\n         <br />例子:\n<pre>//\n/// 针对月份日期格式化 YY-MM\n//\nfunction parseYearMonthDate( _dateStr ){\n   _dateStr = $.trim( _dateStr || '' );\n   var _r = { start: null, end: null };\n   if( !_dateStr ) return _r;\n\n   _dateStr = _dateStr.replace( /[^\\d]+/g, '' );\n   var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4 ), 10 ) - 1;\n\n   _r.start = new Date( _year, _month, 1 );\n   return _r;\n}\n//\n/// 针对季度日期格式化 YY-MM ~ YY-MM\n//\nfunction parseSeasonDate( _dateStr ){\n   _dateStr = $.trim( _dateStr || '' );\n   var _r = { start: null, end: null };\n   if( !_dateStr ) return _r;\n\n   _dateStr = _dateStr.replace( /[^\\d]+/g, '' );\n\n   _r.start = JC.f.parseISODate( _dateStr.slice( 0, 6 ) + '01' );\n   _r.end = JC.f.parseISODate( _dateStr.slice( 6 ) + '01' );\n\n   return _r;\n}\n//\n/// 针对年份日期格式化 YY\n//\nfunction parseYearDate( _dateStr ){\n   _dateStr = $.trim( _dateStr || '' );\n   var _r = { start: null, end: null };\n   if( !_dateStr ) return _r;\n\n   _dateStr = _dateStr.replace( /[^\\d]+/g, '' );\n   var _year = _dateStr.slice( 0, 4 );\n\n   _r.start = new Date( _year, 0, 1 );\n   return _r;\n}</pre>\n     </dd>\n</dl>",
             "version": "dev 0.1, 2013-06-04",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
+        },
+        "JC.Drag": {
+            "name": "JC.Drag",
+            "shortname": "JC.Drag",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 2,
+            "description": "响应式 Drag and Drop 功能\n<br />对 [ div | button ].js_compDrag 生效\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Drag.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.Drag/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>通用 HTML attribute</h2>\n<dl>\n   <dt>dragTarget = selector, default = self</dt>\n   <dd>要拖动的 selector, 可以通过该属性指定拖动的父节点<dd>\n\n   <dt>dragIn = selector, default = window</dt>\n   <dd>可拖动的范围</dd>\n\n   <dt>disableDrag = bool, default = false</dt>\n   <dd>是否禁止拖动, 会执行实例初始化</dd>\n\n   <dt>ignoreDrog = bool, default = false</dt>\n   <dd>是否忽略拖动, 不会执行实例初始化</dd>\n\n   <dt>dragInitedCb = function, <b>window 变量域</b></dt>\n   <dd>实例初始化后调用的回调\n<pre>function dragInitedCb( _selector, _dragTarget ){\n   var _ins = this;\n   JC.log( 'dragInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>dragBeforeCb = function, <b>window 变量域</b></dt>\n   <dd>拖动之前调用的回调, 如果返回 false, 将停止拖动操作\n<pre>function dragBeforeCb( _dragTarget, _selector ){\n   var _ins = this;\n   JC.log( 'dragBeforeCb', new Date().getTime() );\n   //return false;\n}</pre>\n   </dd>\n\n   <dt>dragAfterCb = function, <b>window 变量域</b></dt>\n   <dd>拖动完成之后的回调\n<pre>function dragAfterCb( _dragTarget, _selector ){\n   var _ins = this;\n   JC.log( 'dragAfterCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>dragBeginCb = function, <b>window 变量域</b></dt> \n   <dd>拖动开始时的回调\n<pre>function dragBeginCb( _selector, _dragTarget, _movingSelector ){\n   var _ins = this;\n   JC.log( 'dragBeginCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>dragMovingCb = function, <b>window 变量域</b></dt>\n   <dd>拖动移动时的回\n<pre>function dragMovingCb( _selector, _dragTarget, _movingSelector, _x, _y, _evt ){\n   var _ins = this;\n   JC.log( 'dragMovingCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>dragDoneCb = function, <b>window 变量域</b></dt>\n   <dd>拖动完成时的回调\n<pre>function dragDoneCb( _selector, _dragTarget ){\n   var _ins = this;\n   JC.log( 'dragDoneCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n</dl> \n\n<h2>drop HTML attribute</h2>\n<dl>\n   <dt>dropFor = selector</dt>\n   <dd>指定可拖放的 selector</dd>\n\n   <dt>dropSwap = bool, default = false</dt>\n   <dd>\n         是否交换拖曳的位置\n         <br />为真, 交换 selector 的位置\n         <br />不为真, 将 append 到目标 selector\n   </dd>\n\n   <dt>disableDrop = bool, default = false</dt>\n   <dd>是否禁止 拖放功能, 这个属性应当写在  dropFor 的 selector 里</dd>\n\n   <dt>dropDoneCb = function, <b>window 变量域</b></dt>\n   <dd>拖放完成时的回调, 如果返回 false, 将停止拖放操\n<pre>function dropDoneCb( _dragTarget, _dropTarget ){\n   var _initSelector = this;\n   JC.log( 'dropDoneCb', new Date().getTime() );\n   //return false;\n}</pre>\n   </dd>\n\n   <dt>dropDoneAfterCb = function, <b>window 变量域</b></dt>\n   <dd>拖放完成后的回调\n<pre>function dropDoneAfterCb( _dragTarget, _dropTarget ){\n   var _initSelector = this;\n   JC.log( 'dropDoneAfterCb', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-12-26",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n       <h2>拖动示例</h2>\n       <div class=\"JCDrag dragStyle1 js_compDrag\" dragBeginCb=\"dragBeginCb\">\n           normal drag \n           , dragBeginCb=\"dragBeginCb\"\n       </div>\n\n       <h2>拖放示例</h2>\n       <table>\n           <tr>\n               <td>\n                   <div class=\"js_compDrag\" \n                       dropFor=\"(table div.js_compDrag\" \n                       dropSwap=\"true\" \n                       dropDoneCb=\"dropDoneCbAllow\"\n                       >\n                       dropDoneCb=\"dropDoneCbAllow\"\n                   </div>\n               </td>\n               <td>\n                   <div class=\"js_compDrag\" \n                       dropFor=\"(table div.js_compDrag\" \n                       dropSwap=\"true\" \n                       dropDoneCb=\"dropDoneCbBan\"\n                       > \n                       dropDoneCb=\"dropDoneCbBan\"\n                   </div>\n               </td>\n           </tr>\n       </table>"
+            ]
         },
         "JC.Fixed": {
             "name": "JC.Fixed",
@@ -4166,6 +4204,45 @@
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
             "line": 241,
+            "description": "使用 jquery on 为 controler 绑定事件",
+            "itemtype": "method",
+            "name": "on",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_cb",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
+            "line": 252,
+            "description": "使用 jquery trigger 触发 controler 绑定事件",
+            "itemtype": "method",
+            "name": "trigger",
+            "type": "String",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
+            "line": 262,
             "description": "初始化的 jq 选择器",
             "itemtype": "method",
             "name": "selector",
@@ -4184,7 +4261,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 252,
+            "line": 273,
             "description": "读取 int 属性的值",
             "itemtype": "method",
             "name": "intProp",
@@ -4208,7 +4285,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 273,
+            "line": 294,
             "description": "读取 float 属性的值",
             "itemtype": "method",
             "name": "floatProp",
@@ -4232,7 +4309,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 294,
+            "line": 315,
             "description": "读取 string 属性的值",
             "itemtype": "method",
             "name": "stringProp",
@@ -4256,7 +4333,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 312,
+            "line": 333,
             "description": "读取 html 属性值\n<br />这个跟 stringProp 的区别是不会强制转换为小写",
             "itemtype": "method",
             "name": "attrProp",
@@ -4280,7 +4357,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 335,
+            "line": 356,
             "description": "读取 boolean 属性的值",
             "itemtype": "method",
             "name": "boolProp",
@@ -4310,7 +4387,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 361,
+            "line": 382,
             "description": "读取 callback 属性的值",
             "itemtype": "method",
             "name": "callbackProp",
@@ -4335,7 +4412,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 384,
+            "line": 405,
             "description": "获取与属性名匹配的 window 变量",
             "itemtype": "method",
             "name": "windowProp",
@@ -4360,7 +4437,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 395,
+            "line": 416,
             "description": "获取 selector 属性的 jquery 选择器",
             "itemtype": "method",
             "name": "selectorProp",
@@ -4384,7 +4461,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 418,
+            "line": 439,
             "description": "判断 _selector 是否具体某种特征",
             "itemtype": "method",
             "name": "is",
@@ -4403,6 +4480,20 @@
             "return": {
                 "description": "bool"
             },
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
+            "line": 468,
+            "description": "使用 jquery on 为 controler 绑定事件",
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
+            "line": 476,
+            "description": "使用 jquery trigger 触发 controler 绑定事件",
             "class": "JC.BaseMVC.Model",
             "namespace": "JC"
         },
@@ -5290,6 +5381,292 @@
             "default": "empty",
             "static": 1,
             "class": "JC.Calendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 310,
+            "description": "获取拖动的源节点",
+            "itemtype": "method",
+            "name": "dragTarget",
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 316,
+            "description": "获取拖动时移动的节点, drag 使用 dragTarget, drop clone dragTarget",
+            "itemtype": "method",
+            "name": "dragMovingTarget",
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 322,
+            "description": "获取可拖动范围的 [ 节点 | window ]",
+            "itemtype": "method",
+            "name": "dragIn",
+            "return": {
+                "description": "",
+                "type": "Selector|window"
+            },
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 328,
+            "description": "更新 dragMovingTarget 的位置",
+            "itemtype": "method",
+            "name": "_updatePosition",
+            "access": "protected",
+            "tagname": "",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 339,
+            "description": "初始化可识别的 Drag 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of DragInstance"
+            },
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 362,
+            "description": "设置/获取 拖动时所需的数据",
+            "itemtype": "method",
+            "name": "dragInfo",
+            "params": [
+                {
+                    "name": "_ins",
+                    "description": "",
+                    "type": "DragInstance"
+                },
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Json|null"
+            },
+            "static": 1,
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 381,
+            "description": "设置当前的拖动 selector",
+            "itemtype": "method",
+            "name": "draggingItem",
+            "params": [
+                {
+                    "name": "_setter",
+                    "description": "",
+                    "type": "Selector|null"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Selector|null"
+            },
+            "static": 1,
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 398,
+            "description": "清除拖动的相关数据",
+            "itemtype": "method",
+            "name": "cleanDragData",
+            "static": 1,
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 412,
+            "description": "拖动时, 默认的 mousemove 函数",
+            "itemtype": "method",
+            "name": "defaultMouseMove",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Evt"
+                }
+            ],
+            "static": 1,
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 441,
+            "description": "拖动时, 默认的 mouseup 函数",
+            "itemtype": "method",
+            "name": "defaultMouseUp",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Evt"
+                }
+            ],
+            "static": 1,
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 457,
+            "description": "拖动时, 默认的 scroll 函数",
+            "itemtype": "method",
+            "name": "defaultScroll",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Evt"
+                }
+            ],
+            "static": 1,
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 826,
+            "description": "判断两个矩形是否有交集",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 837,
+            "description": "把坐标和宽高生成一个 rectangle 数据",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 849,
+            "description": "把 rectangle 数据 转换为 坐标数据",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 859,
+            "description": "计算两个坐标点之间的距离",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 869,
+            "description": "实例初始化后触发的事件",
+            "itemtype": "event",
+            "name": "JCDragInited",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 873,
+            "description": "拖动开始前触发的事件",
+            "itemtype": "event",
+            "name": "JCDragBefore",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 877,
+            "description": "拖动开始时触发的事件",
+            "itemtype": "event",
+            "name": "JCDragBegin",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 881,
+            "description": "拖动完成时触发的事件",
+            "itemtype": "event",
+            "name": "JCDragDone",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 885,
+            "description": "拖动完成之后触发的事件",
+            "itemtype": "event",
+            "name": "JCDragAfter",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 889,
+            "description": "拖动移动时触发的事件",
+            "itemtype": "event",
+            "name": "JCDraggingMoving",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 893,
+            "description": "拖放完成时触发的事件",
+            "itemtype": "event",
+            "name": "JCDropDone",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 897,
+            "description": "拖放完成后触发的事件",
+            "itemtype": "event",
+            "name": "JCDropDoneAfter",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 901,
+            "description": "手动触发拖动事件",
+            "itemtype": "event",
+            "name": "JCTriggerDrag",
+            "class": "JC.Drag",
             "namespace": "JC"
         },
         {
@@ -13727,7 +14104,7 @@
         {
             "file": "../modules/JC.common/0.2/common.js",
             "line": 804,
-            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder, JC.TableFreeze\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
+            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar, JC.Drag, JC.Placeholder, JC.TableFreeze\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
             "params": [
@@ -13785,35 +14162,42 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 854,
-            "description": "disable / enable",
+            "line": 852,
+            "description": "拖曳",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
             "line": 858,
-            "description": "表单提交逻辑",
+            "description": "disable / enable",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
             "line": 862,
-            "description": "格式化金额",
+            "description": "表单提交逻辑",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
             "line": 866,
+            "description": "格式化金额",
+            "class": "JC.common",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.common/0.2/common.js",
+            "line": 870,
             "description": "自动完成",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 871,
+            "line": 875,
             "description": "URL 占位符识别功能\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "urlDetect",
@@ -13836,7 +14220,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 912,
+            "line": 916,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -13860,14 +14244,14 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 976,
+            "line": 980,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 994,
+            "line": 998,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -13902,7 +14286,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1044,
+            "line": 1048,
             "description": "日期格式化 (具体格式请查看 PHP Date Formats)",
             "itemtype": "method",
             "name": "dateFormat",
@@ -13927,7 +14311,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1089,
+            "line": 1093,
             "description": "扩展对象属性",
             "itemtype": "method",
             "name": "extendObject",
@@ -13957,7 +14341,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1111,
+            "line": 1115,
             "description": "timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行",
             "itemtype": "method",
             "name": "safeTimeout",
@@ -13992,7 +14376,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1132,
+            "line": 1136,
             "description": "URL 请求时, 获取对URL参数进行编码的函数",
             "itemtype": "method",
             "name": "encoder",
@@ -15439,7 +15823,7 @@
         },
         {
             "file": "../config.js",
-            "line": 83,
+            "line": 85,
             "description": "取当前脚本标签的 src路径",
             "static": 1,
             "return": {
@@ -15889,6 +16273,10 @@
         {
             "message": "unknown tag: prototype",
             "line": " ../modules/JC.Calendar/0.3/Calendar.date.js:522"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../modules/JC.Drag/0.1/Drag.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -16387,6 +16775,14 @@
             "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:207"
         },
         {
+            "message": "Missing item type\n使用 jquery on 为 controler 绑定事件",
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:468"
+        },
+        {
+            "message": "Missing item type\n使用 jquery trigger 触发 controler 绑定事件",
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:476"
+        },
+        {
             "message": "Missing item type\n保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",
             "line": " ../modules/JC.Calendar/0.3/Calendar.date.js:522"
         },
@@ -16413,6 +16809,22 @@
         {
             "message": "Missing item type\n元旦开始的第一个星期一开始的一周为政治经济上的第一周",
             "line": " ../modules/JC.Calendar/0.3/Calendar.week.js:234"
+        },
+        {
+            "message": "Missing item type\n判断两个矩形是否有交集",
+            "line": " ../modules/JC.Drag/0.1/Drag.js:826"
+        },
+        {
+            "message": "Missing item type\n把坐标和宽高生成一个 rectangle 数据",
+            "line": " ../modules/JC.Drag/0.1/Drag.js:837"
+        },
+        {
+            "message": "Missing item type\n把 rectangle 数据 转换为 坐标数据",
+            "line": " ../modules/JC.Drag/0.1/Drag.js:849"
+        },
+        {
+            "message": "Missing item type\n计算两个坐标点之间的距离",
+            "line": " ../modules/JC.Drag/0.1/Drag.js:859"
         },
         {
             "message": "Missing item type\n这个判断是为了向后兼容 JC 0.1\n使用 requirejs 的项目可以移除这段判断代码",
@@ -16651,24 +17063,28 @@
             "line": " ../modules/JC.common/0.2/common.js:848"
         },
         {
-            "message": "Missing item type\ndisable / enable",
-            "line": " ../modules/JC.common/0.2/common.js:854"
+            "message": "Missing item type\n拖曳",
+            "line": " ../modules/JC.common/0.2/common.js:852"
         },
         {
-            "message": "Missing item type\n表单提交逻辑",
+            "message": "Missing item type\ndisable / enable",
             "line": " ../modules/JC.common/0.2/common.js:858"
         },
         {
-            "message": "Missing item type\n格式化金额",
+            "message": "Missing item type\n表单提交逻辑",
             "line": " ../modules/JC.common/0.2/common.js:862"
         },
         {
-            "message": "Missing item type\n自动完成",
+            "message": "Missing item type\n格式化金额",
             "line": " ../modules/JC.common/0.2/common.js:866"
         },
         {
+            "message": "Missing item type\n自动完成",
+            "line": " ../modules/JC.common/0.2/common.js:870"
+        },
+        {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../modules/JC.common/0.2/common.js:976"
+            "line": " ../modules/JC.common/0.2/common.js:980"
         },
         {
             "message": "Missing item type\nAES Cipher function: encrypt 'input' state with Rijndael algorithm\n  applies Nr rounds (10/12/14) using key schedule w for 'add round key' stage",
@@ -17124,7 +17540,7 @@
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
-            "line": " ../config.js:83"
+            "line": " ../config.js:85"
         },
         {
             "message": "Missing item type",

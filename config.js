@@ -26,6 +26,8 @@ requirejs.config( {
         , 'JC.Calendar.year': 'modules/JC.Calendar/0.3/Calendar.year'
         , 'JC.Calendar.monthday': 'modules/JC.Calendar/0.3/Calendar.monthday'
 
+        , 'JC.Drag': 'modules/JC.Drag/0.1/Drag'
+
         , 'JC.Form': 'modules/JC.Form/0.1/Form'
         , 'JC.Form.default': 'modules/JC.Form/0.1/Form.default'
         , 'JC.Form.initAutoFill': 'modules/JC.Form/0.1/Form.initAutoFill'
