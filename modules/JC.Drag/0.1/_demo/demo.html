@@ -46,6 +46,12 @@
             JC.log( 'dragDoneCb', new Date().getTime() );
         }
 
+        function dragMovingCb( _selector, _dragTarget, _movingSelector, _x, _y, _evt ){
+            var _ins = this;
+            JC.log( 'dragMovingCb', new Date().getTime() );
+        }
+
+
     </script>
 </head>    
 <body>
@@ -62,8 +68,7 @@
 
        <dd>
             <div class="JCDrag dragStyle1 js_compDrag" dragDoneCb="dragDoneCb" style="top:120px">
-                normal drag 
-                , dragDoneCb="dragDoneCb"
+                dragDoneCb="dragDoneCb"
             </div>
        </dd>
 
@@ -76,6 +81,12 @@
        <dd>
             <div class="JCDrag dragStyle1 js_compDrag" ignoreDrog="true" style="top:220px">
                  ignoreDrog="true"
+            </div>
+       </dd>
+
+       <dd>
+            <div class="JCDrag dragStyle1 js_compDrag" dragMovingCb="dragMovingCb" style="top:270px">
+                dragMovingCb="dragMovingCb"
             </div>
        </dd>
 

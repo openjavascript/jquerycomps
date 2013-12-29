@@ -1000,7 +1000,7 @@
             "namespace": "JC",
             "file": "../modules/JC.Drag/0.1/Drag.js",
             "line": 2,
-            "description": "Drag, Dragdrop 功能\n<br />响应式初始化 [div|button].js_compDrag\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Drag.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.Drag/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>通用 HTML attribute</h2>\n<dl>\n   <dt>dragTarget = selector, default = self</dt>\n   <dd>要拖动的 selector, 可以通过该属性指定拖动的父节点<dd>\n\n   <dt>dragIn = selector, default = window</dt>\n   <dd>可拖动的范围</dd>\n\n   <dt>disableDrag = bool, default = false</dt>\n   <dd>是否禁止拖动, 会执行实例初始化</dd>\n\n   <dt>ignoreDrog = bool, default = false</dt>\n   <dd>是否忽略拖动, 不会执行实例初始化</dd>\n</dl> \n\n<h2>drop HTML attribute</h2>\n<dl>\n   <dt>dropFor = selector</dt>\n   <dd>指定可拖放的 selector</dd>\n\n   <dt>dropSwap = bool, default = false</dt>\n   <dd>\n         是否交换拖曳的位置\n         <br />为真, 交换 selector 的位置\n         <br />不为真, 将 append 到目标 selector\n   </dd>\n</dl>",
+            "description": "响应式 Drag and Drop 功能\n<br />对 [ div | button ].js_compDrag 生效\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Drag.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.Drag/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>通用 HTML attribute</h2>\n<dl>\n   <dt>dragTarget = selector, default = self</dt>\n   <dd>要拖动的 selector, 可以通过该属性指定拖动的父节点<dd>\n\n   <dt>dragIn = selector, default = window</dt>\n   <dd>可拖动的范围</dd>\n\n   <dt>disableDrag = bool, default = false</dt>\n   <dd>是否禁止拖动, 会执行实例初始化</dd>\n\n   <dt>ignoreDrog = bool, default = false</dt>\n   <dd>是否忽略拖动, 不会执行实例初始化</dd>\n\n   <dt>dragInitedCb = function, <b>window 变量域</b></dt>\n   <dd>实例初始化后调用的回调\n<pre>function dragInitedCb( _selector, _dragTarget ){\n   var _ins = this;\n   JC.log( 'dragInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>dragBeforeCb = function, <b>window 变量域</b></dt>\n   <dd>拖动之前调用的回调, 如果返回 false, 将停止拖动操作\n<pre>function dragBeforeCb( _dragTarget, _selector ){\n   var _ins = this;\n   JC.log( 'dragBeforeCb', new Date().getTime() );\n   //return false;\n}</pre>\n   </dd>\n\n   <dt>dragAfterCb = function, <b>window 变量域</b></dt>\n   <dd>拖动完成之后的回调\n<pre>function dragAfterCb( _dragTarget, _selector ){\n   var _ins = this;\n   JC.log( 'dragAfterCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>dragBeginCb = function, <b>window 变量域</b></dt> \n   <dd>拖动开始时的回调\n<pre>function dragBeginCb( _selector, _dragTarget, _movingSelector ){\n   var _ins = this;\n   JC.log( 'dragBeginCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>dragMovingCb = function, <b>window 变量域</b></dt>\n   <dd>拖动移动时的回\n<pre>function dragMovingCb( _selector, _dragTarget, _movingSelector, _x, _y, _evt ){\n   var _ins = this;\n   JC.log( 'dragMovingCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>dragDoneCb = function, <b>window 变量域</b></dt>\n   <dd>拖动完成时的回调\n<pre>function dragDoneCb( _selector, _dragTarget ){\n   var _ins = this;\n   JC.log( 'dragDoneCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n</dl> \n\n<h2>drop HTML attribute</h2>\n<dl>\n   <dt>dropFor = selector</dt>\n   <dd>指定可拖放的 selector</dd>\n\n   <dt>dropSwap = bool, default = false</dt>\n   <dd>\n         是否交换拖曳的位置\n         <br />为真, 交换 selector 的位置\n         <br />不为真, 将 append 到目标 selector\n   </dd>\n\n   <dt>disableDrop = bool, default = false</dt>\n   <dd>是否禁止 拖放功能, 这个属性应当写在  dropFor 的 selector 里</dd>\n\n   <dt>dropDoneCb = function, <b>window 变量域</b></dt>\n   <dd>拖放完成时的回调, 如果返回 false, 将停止拖放操\n<pre>function dropDoneCb( _dragTarget, _dropTarget ){\n   var _initSelector = this;\n   JC.log( 'dropDoneCb', new Date().getTime() );\n   //return false;\n}</pre>\n   </dd>\n\n   <dt>dropDoneAfterCb = function, <b>window 变量域</b></dt>\n   <dd>拖放完成后的回调\n<pre>function dropDoneAfterCb( _dragTarget, _dropTarget ){\n   var _initSelector = this;\n   JC.log( 'dropDoneAfterCb', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -1013,7 +1013,7 @@
             "version": "dev 0.1 2013-12-26",
             "author": "qiushaowei <suches@btbtd.org> | 75 Team",
             "example": [
-                "\n       <h2>JC.Drag 示例</h2>"
+                "\n       <h2>拖动示例</h2>\n       <div class=\"JCDrag dragStyle1 js_compDrag\" dragBeginCb=\"dragBeginCb\">\n           normal drag \n           , dragBeginCb=\"dragBeginCb\"\n       </div>\n\n       <h2>拖放示例</h2>\n       <table>\n           <tr>\n               <td>\n                   <div class=\"js_compDrag\" \n                       dropFor=\"(table div.js_compDrag\" \n                       dropSwap=\"true\" \n                       dropDoneCb=\"dropDoneCbAllow\"\n                       >\n                       dropDoneCb=\"dropDoneCbAllow\"\n                   </div>\n               </td>\n               <td>\n                   <div class=\"js_compDrag\" \n                       dropFor=\"(table div.js_compDrag\" \n                       dropSwap=\"true\" \n                       dropDoneCb=\"dropDoneCbBan\"\n                       > \n                       dropDoneCb=\"dropDoneCbBan\"\n                   </div>\n               </td>\n           </tr>\n       </table>"
             ]
         },
         "JC.Fixed": {
@@ -4536,14 +4536,14 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 464,
+            "line": 468,
             "description": "使用 jquery on 为 controler 绑定事件",
             "class": "JC.BaseMVC.Model",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 472,
+            "line": 476,
             "description": "使用 jquery trigger 触发 controler 绑定事件",
             "class": "JC.BaseMVC.Model",
             "namespace": "JC"
@@ -5487,7 +5487,55 @@
         },
         {
             "file": "../modules/JC.Drag/0.1/Drag.js",
-            "line": 222,
+            "line": 310,
+            "description": "获取拖动的源节点",
+            "itemtype": "method",
+            "name": "dragTarget",
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 316,
+            "description": "获取拖动时移动的节点, drag 使用 dragTarget, drop clone dragTarget",
+            "itemtype": "method",
+            "name": "dragMovingTarget",
+            "return": {
+                "description": "selector"
+            },
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 322,
+            "description": "获取可拖动范围的 [ 节点 | window ]",
+            "itemtype": "method",
+            "name": "dragIn",
+            "return": {
+                "description": "",
+                "type": "Selector|window"
+            },
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 328,
+            "description": "更新 dragMovingTarget 的位置",
+            "itemtype": "method",
+            "name": "_updatePosition",
+            "access": "protected",
+            "tagname": "",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 339,
             "description": "初始化可识别的 Drag 实例",
             "itemtype": "method",
             "name": "init",
@@ -5508,8 +5556,218 @@
         },
         {
             "file": "../modules/JC.Drag/0.1/Drag.js",
-            "line": 670,
+            "line": 362,
+            "description": "设置/获取 拖动时所需的数据",
+            "itemtype": "method",
+            "name": "dragInfo",
+            "params": [
+                {
+                    "name": "_ins",
+                    "description": "",
+                    "type": "DragInstance"
+                },
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Json|null"
+            },
+            "static": 1,
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 381,
+            "description": "设置当前的拖动 selector",
+            "itemtype": "method",
+            "name": "draggingItem",
+            "params": [
+                {
+                    "name": "_setter",
+                    "description": "",
+                    "type": "Selector|null"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Selector|null"
+            },
+            "static": 1,
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 398,
+            "description": "清除拖动的相关数据",
+            "itemtype": "method",
+            "name": "cleanDragData",
+            "static": 1,
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 412,
+            "description": "拖动时, 默认的 mousemove 函数",
+            "itemtype": "method",
+            "name": "defaultMouseMove",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Evt"
+                }
+            ],
+            "static": 1,
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 441,
+            "description": "拖动时, 默认的 mouseup 函数",
+            "itemtype": "method",
+            "name": "defaultMouseUp",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Evt"
+                }
+            ],
+            "static": 1,
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 457,
+            "description": "拖动时, 默认的 scroll 函数",
+            "itemtype": "method",
+            "name": "defaultScroll",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Evt"
+                }
+            ],
+            "static": 1,
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 826,
             "description": "判断两个矩形是否有交集",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 837,
+            "description": "把坐标和宽高生成一个 rectangle 数据",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 849,
+            "description": "把 rectangle 数据 转换为 坐标数据",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 859,
+            "description": "计算两个坐标点之间的距离",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 869,
+            "description": "实例初始化后触发的事件",
+            "itemtype": "event",
+            "name": "JCDragInited",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 873,
+            "description": "拖动开始前触发的事件",
+            "itemtype": "event",
+            "name": "JCDragBefore",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 877,
+            "description": "拖动开始时触发的事件",
+            "itemtype": "event",
+            "name": "JCDragBegin",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 881,
+            "description": "拖动完成时触发的事件",
+            "itemtype": "event",
+            "name": "JCDragDone",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 885,
+            "description": "拖动完成之后触发的事件",
+            "itemtype": "event",
+            "name": "JCDragAfter",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 889,
+            "description": "拖动移动时触发的事件",
+            "itemtype": "event",
+            "name": "JCDraggingMoving",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 893,
+            "description": "拖放完成时触发的事件",
+            "itemtype": "event",
+            "name": "JCDropDone",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 897,
+            "description": "拖放完成后触发的事件",
+            "itemtype": "event",
+            "name": "JCDropDoneAfter",
+            "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Drag/0.1/Drag.js",
+            "line": 901,
+            "description": "手动触发拖动事件",
+            "itemtype": "event",
+            "name": "JCTriggerDrag",
             "class": "JC.Drag",
             "namespace": "JC"
         },
@@ -16636,11 +16894,11 @@
         },
         {
             "message": "Missing item type\n使用 jquery on 为 controler 绑定事件",
-            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:464"
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:468"
         },
         {
             "message": "Missing item type\n使用 jquery trigger 触发 controler 绑定事件",
-            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:472"
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:476"
         },
         {
             "message": "Missing item type\n保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",
@@ -16672,7 +16930,19 @@
         },
         {
             "message": "Missing item type\n判断两个矩形是否有交集",
-            "line": " ../modules/JC.Drag/0.1/Drag.js:670"
+            "line": " ../modules/JC.Drag/0.1/Drag.js:826"
+        },
+        {
+            "message": "Missing item type\n把坐标和宽高生成一个 rectangle 数据",
+            "line": " ../modules/JC.Drag/0.1/Drag.js:837"
+        },
+        {
+            "message": "Missing item type\n把 rectangle 数据 转换为 坐标数据",
+            "line": " ../modules/JC.Drag/0.1/Drag.js:849"
+        },
+        {
+            "message": "Missing item type\n计算两个坐标点之间的距离",
+            "line": " ../modules/JC.Drag/0.1/Drag.js:859"
         },
         {
             "message": "Missing item type\n这个判断是为了向后兼容 JC 0.1\n使用 requirejs 的项目可以移除这段判断代码",

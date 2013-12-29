@@ -665,12 +665,16 @@
             function() {
                 return this;
             }
+        , selector:
+            function(){
+                return this._model.selector();
+            }
         /**
          * 使用 jquery on 为 controler 绑定事件
          */
         , on:
             function(){
-                $( this ).trigger( &#x27;BindEvent&#x27;, JC.fsliceArgs( arguments ) );
+                $( this ).trigger( &#x27;BindEvent&#x27;, JC.f.sliceArgs( arguments ) );
                 return this;
             }
         /**
@@ -678,7 +682,7 @@
          */
         , trigger:
             function(){
-                $( this ).trigger( &#x27;TriggerEvent&#x27;, JC.fsliceArgs( arguments ) );
+                $( this ).trigger( &#x27;TriggerEvent&#x27;, JC.f.sliceArgs( arguments ) );
                 return this;
             }
     });

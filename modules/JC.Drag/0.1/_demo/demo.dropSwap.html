@@ -87,6 +87,11 @@
             JC.log( 'dragAfterCb', new Date().getTime() );
         }
 
+        function dragMovingCb( _selector, _dragTarget, _movingSelector, _x, _y, _evt ){
+            var _ins = this;
+            JC.log( 'dragMovingCb', new Date().getTime() );
+        }
+
         function dropDoneCbAllow( _dragTarget, _dropTarget ){
             var _initSelector = this;
             JC.log( 'dropDoneCbAllow', new Date().getTime() );
@@ -99,9 +104,9 @@
             return false;
         }
 
-        function dragMovingCb( _selector, _dragTarget, _movingSelector, _x, _y, _evt ){
-            var _ins = this;
-            JC.log( 'dragMovingCb', new Date().getTime() );
+        function dropDoneAfterCb( _dragTarget, _dropTarget ){
+            var _initSelector = this;
+            JC.log( 'dropDoneAfterCb', new Date().getTime() );
         }
 
     </script>
@@ -118,22 +123,37 @@
                 <table>
                     <tr>
                         <td>
-                            <div class="js_compDrag" dropFor="(table div.js_compDrag" dropSwap="true" dropDoneCb="dropDoneCbAllow">
+                            <div class="js_compDrag" 
+                                dropFor="(table div.js_compDrag" 
+                                dropSwap="true" 
+                                dropDoneCb="dropDoneCbAllow"
+                                >
                                 dropDoneCb="dropDoneCbAllow"
                             </div>
                         </td>
                         <td>
-                            <div class="js_compDrag" dropFor="(table div.js_compDrag" dropSwap="true" dropDoneCb="dropDoneCbBan"> 
+                            <div class="js_compDrag" 
+                                dropFor="(table div.js_compDrag" 
+                                dropSwap="true" 
+                                dropDoneCb="dropDoneCbBan"
+                                > 
                                 dropDoneCb="dropDoneCbBan"
                             </div>
                         </td>
                         <td>
-                            <div class="js_compDrag" dropFor="(table div.js_compDrag" dropSwap="true" dragInitedCb="dragInitedCb">
+                            <div class="js_compDrag" 
+                                dropFor="(table div.js_compDrag" 
+                                dropSwap="true" 
+                                dragInitedCb="dragInitedCb"
+                                >
                                  dragInitedCb="dragInitedCb"
                             </div>
                         </td>
                         <td>
-                            <div class="js_compDrag" dropFor="(table div.js_compDrag" dropSwap="true">drop 4</div>
+                            <div class="js_compDrag" 
+                                dropFor="(table div.js_compDrag" 
+                                dropSwap="true"
+                                >drop 4</div>
                         </td>
                     </tr>
                     <tr>
@@ -156,7 +176,8 @@
                                 dropFor="(table div.js_compDrag" 
                                 dropSwap="true"
                                 style="color:red;"
-                            >drop 7</div>
+                                dropDoneAfterCb="dropDoneAfterCb"
+                            >dropDoneAfterCb="dropDoneAfterCb"</div>
                         </td>
                         <td>
                             <div class="js_compDrag" 

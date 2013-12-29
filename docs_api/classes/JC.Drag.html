@@ -127,8 +127,8 @@
         </div>
 </div>
 <div class="box intro">
-    <p>Drag, Dragdrop 功能
-<br />响应式初始化 [div|button].js_compDrag</p>
+    <p>响应式 Drag and Drop 功能
+<br />对 [ div | button ].js_compDrag 生效</p>
 <p><b>require</b>:
   <a href="widnow.jQuery.html">jQuery</a>
   , <a href="JC.common.html">JC.common</a>
@@ -147,6 +147,49 @@
    <dd>是否禁止拖动, 会执行实例初始化</dd>
    <dt>ignoreDrog = bool, default = false</dt>
    <dd>是否忽略拖动, 不会执行实例初始化</dd>
+   <dt>dragInitedCb = function, <b>window 变量域</b></dt>
+   <dd>实例初始化后调用的回调
+<pre>function dragInitedCb( _selector, _dragTarget ){
+   var _ins = this;
+   JC.log( &#39;dragInitedCb&#39;, new Date().getTime() );
+}</pre>
+   </dd>
+   <dt>dragBeforeCb = function, <b>window 变量域</b></dt>
+   <dd>拖动之前调用的回调, 如果返回 false, 将停止拖动操作
+<pre>function dragBeforeCb( _dragTarget, _selector ){
+   var _ins = this;
+   JC.log( &#39;dragBeforeCb&#39;, new Date().getTime() );
+   //return false;
+}</pre>
+   </dd>
+   <dt>dragAfterCb = function, <b>window 变量域</b></dt>
+   <dd>拖动完成之后的回调
+<pre>function dragAfterCb( _dragTarget, _selector ){
+   var _ins = this;
+   JC.log( &#39;dragAfterCb&#39;, new Date().getTime() );
+}</pre>
+   </dd>
+   <dt>dragBeginCb = function, <b>window 变量域</b></dt> 
+   <dd>拖动开始时的回调
+<pre>function dragBeginCb( _selector, _dragTarget, _movingSelector ){
+   var _ins = this;
+   JC.log( &#39;dragBeginCb&#39;, new Date().getTime() );
+}</pre>
+   </dd>
+   <dt>dragMovingCb = function, <b>window 变量域</b></dt>
+   <dd>拖动移动时的回
+<pre>function dragMovingCb( _selector, _dragTarget, _movingSelector, _x, _y, _evt ){
+   var _ins = this;
+   JC.log( &#39;dragMovingCb&#39;, new Date().getTime() );
+}</pre>
+   </dd>
+   <dt>dragDoneCb = function, <b>window 变量域</b></dt>
+   <dd>拖动完成时的回调
+<pre>function dragDoneCb( _selector, _dragTarget ){
+   var _ins = this;
+   JC.log( &#39;dragDoneCb&#39;, new Date().getTime() );
+}</pre>
+   </dd>
 </dl> 
 <p><h2>drop HTML attribute</h2></p>
 <dl>
@@ -157,6 +200,23 @@
          是否交换拖曳的位置
          <br />为真, 交换 selector 的位置
          <br />不为真, 将 append 到目标 selector
+   </dd>
+   <dt>disableDrop = bool, default = false</dt>
+   <dd>是否禁止 拖放功能, 这个属性应当写在  dropFor 的 selector 里</dd>
+   <dt>dropDoneCb = function, <b>window 变量域</b></dt>
+   <dd>拖放完成时的回调, 如果返回 false, 将停止拖放操
+<pre>function dropDoneCb( _dragTarget, _dropTarget ){
+   var _initSelector = this;
+   JC.log( &#39;dropDoneCb&#39;, new Date().getTime() );
+   //return false;
+}</pre>
+   </dd>
+   <dt>dropDoneAfterCb = function, <b>window 变量域</b></dt>
+   <dd>拖放完成后的回调
+<pre>function dropDoneAfterCb( _dragTarget, _dropTarget ){
+   var _initSelector = this;
+   JC.log( &#39;dropDoneAfterCb&#39;, new Date().getTime() );
+}</pre>
    </dd>
 </dl>
 </div>
@@ -193,7 +253,34 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>   &lt;h2&gt;JC.Drag 示例&lt;/h2&gt;</code></pre>
+                <pre class="code prettyprint"><code>   &lt;h2&gt;拖动示例&lt;/h2&gt;
+   &lt;div class=&quot;JCDrag dragStyle1 js_compDrag&quot; dragBeginCb=&quot;dragBeginCb&quot;&gt;
+       normal drag 
+       , dragBeginCb=&quot;dragBeginCb&quot;
+   &lt;/div&gt;
+   &lt;h2&gt;拖放示例&lt;/h2&gt;
+   &lt;table&gt;
+       &lt;tr&gt;
+           &lt;td&gt;
+               &lt;div class=&quot;js_compDrag&quot; 
+                   dropFor=&quot;(table div.js_compDrag&quot; 
+                   dropSwap=&quot;true&quot; 
+                   dropDoneCb=&quot;dropDoneCbAllow&quot;
+                   &gt;
+                   dropDoneCb=&quot;dropDoneCbAllow&quot;
+               &lt;/div&gt;
+           &lt;/td&gt;
+           &lt;td&gt;
+               &lt;div class=&quot;js_compDrag&quot; 
+                   dropFor=&quot;(table div.js_compDrag&quot; 
+                   dropSwap=&quot;true&quot; 
+                   dropDoneCb=&quot;dropDoneCbBan&quot;
+                   &gt; 
+                   dropDoneCb=&quot;dropDoneCbBan&quot;
+               &lt;/div&gt;
+           &lt;/td&gt;
+       &lt;/tr&gt;
+   &lt;/table&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -202,6 +289,7 @@
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab events"><a href="#events">Events</a></li>
     </ul>
     <div>
         <div id="index" class="api-class-tabpanel index">
@@ -221,6 +309,42 @@
                             <li class="index-item method private inherited">
                                 <a href="#method__initHanlderEvent">_initHanlderEvent</a>
                             </li>
+                            <li class="index-item method protected">
+                                <a href="#method__updatePosition">_updatePosition</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_cleanDragData">cleanDragData</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_defaultMouseMove">defaultMouseMove</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_defaultMouseUp">defaultMouseUp</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_defaultScroll">defaultScroll</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_draggingItem">draggingItem</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_dragIn">dragIn</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_dragInfo">dragInfo</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_dragMovingTarget">dragMovingTarget</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_dragTarget">dragTarget</a>
+                            </li>
                             <li class="index-item method">
                                 <a href="#method_init">init</a>
                                     <span class="flag static">static</span>
@@ -233,6 +357,38 @@
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_trigger">trigger</a>
+                            </li>
+                    </ul>
+                </div>
+                <div class="index-section events">
+                    <h3>Events</h3>
+                    <ul class="index-list events extends">
+                            <li class="index-item event">
+                                <a href="#event_JCDragAfter">JCDragAfter</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_JCDragBefore">JCDragBefore</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_JCDragBegin">JCDragBegin</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_JCDragDone">JCDragDone</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_JCDraggingMoving">JCDraggingMoving</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_JCDragInited">JCDragInited</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_JCDropDone">JCDropDone</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_JCDropDoneAfter">JCDropDoneAfter</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_JCTriggerDrag">JCTriggerDrag</a>
                             </li>
                     </ul>
                 </div>
@@ -312,6 +468,282 @@
         <p>内部事件初始化方法</p>
     </div>
 </div>
+                    <div id="method__updatePosition" class="method item protected">
+    <h3 class="name"><code>_updatePosition</code></h3>
+        <span class="paren">()</span>
+        <span class="flag protected">protected</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l328"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:328</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>更新 dragMovingTarget 的位置</p>
+    </div>
+</div>
+                    <div id="method_cleanDragData" class="method item">
+    <h3 class="name"><code>cleanDragData</code></h3>
+        <span class="paren">()</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l398"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:398</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>清除拖动的相关数据</p>
+    </div>
+</div>
+                    <div id="method_defaultMouseMove" class="method item">
+    <h3 class="name"><code>defaultMouseMove</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_evt</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l412"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:412</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>拖动时, 默认的 mousemove 函数</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_evt</code>
+                        <span class="type">Evt</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_defaultMouseUp" class="method item">
+    <h3 class="name"><code>defaultMouseUp</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_evt</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l441"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:441</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>拖动时, 默认的 mouseup 函数</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_evt</code>
+                        <span class="type">Evt</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_defaultScroll" class="method item">
+    <h3 class="name"><code>defaultScroll</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_evt</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l457"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:457</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>拖动时, 默认的 scroll 函数</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_evt</code>
+                        <span class="type">Evt</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_draggingItem" class="method item">
+    <h3 class="name"><code>draggingItem</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_setter</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">Selector | Null</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l381"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:381</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>设置当前的拖动 selector</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_setter</code>
+                        <span class="type">Selector | Null</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Selector | Null</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_dragIn" class="method item">
+    <h3 class="name"><code>dragIn</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type">Selector | Window</span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l322"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:322</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取可拖动范围的 [ 节点 | window ]</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Selector | Window</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_dragInfo" class="method item">
+    <h3 class="name"><code>dragInfo</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_ins</code>
+                </li>
+                <li class="arg">
+                        <code>_evt</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">Json | Null</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l362"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:362</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>设置/获取 拖动时所需的数据</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_ins</code>
+                        <span class="type">DragInstance</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_evt</code>
+                        <span class="type">Event</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Json | Null</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_dragMovingTarget" class="method item">
+    <h3 class="name"><code>dragMovingTarget</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l316"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:316</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取拖动时移动的节点, drag 使用 dragTarget, drop clone dragTarget</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    <p>selector</p>
+            </div>
+        </div>
+</div>
+                    <div id="method_dragTarget" class="method item">
+    <h3 class="name"><code>dragTarget</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l310"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:310</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取拖动的源节点</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    <p>selector</p>
+            </div>
+        </div>
+</div>
                     <div id="method_init" class="method item">
     <h3 class="name"><code>init</code></h3>
         <div class="args">
@@ -328,7 +760,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l222"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:222</code></a>
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l339"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:339</code></a>
         </p>
     </div>
     <div class="description">
@@ -460,6 +892,126 @@
                     <p>BaseMVCInstance</p>
             </div>
         </div>
+</div>
+            </div>
+            <div id="events" class="api-class-tabpanel">
+                <h2 class="off-left">Events</h2>
+                    <div id="event_JCDragAfter" class="events item">
+    <h3 class="name"><code>JCDragAfter</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l885"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:885</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>拖动完成之后触发的事件</p>
+    </div>
+</div>
+                    <div id="event_JCDragBefore" class="events item">
+    <h3 class="name"><code>JCDragBefore</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l873"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:873</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>拖动开始前触发的事件</p>
+    </div>
+</div>
+                    <div id="event_JCDragBegin" class="events item">
+    <h3 class="name"><code>JCDragBegin</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l877"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:877</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>拖动开始时触发的事件</p>
+    </div>
+</div>
+                    <div id="event_JCDragDone" class="events item">
+    <h3 class="name"><code>JCDragDone</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l881"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:881</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>拖动完成时触发的事件</p>
+    </div>
+</div>
+                    <div id="event_JCDraggingMoving" class="events item">
+    <h3 class="name"><code>JCDraggingMoving</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l889"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:889</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>拖动移动时触发的事件</p>
+    </div>
+</div>
+                    <div id="event_JCDragInited" class="events item">
+    <h3 class="name"><code>JCDragInited</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l869"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:869</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>实例初始化后触发的事件</p>
+    </div>
+</div>
+                    <div id="event_JCDropDone" class="events item">
+    <h3 class="name"><code>JCDropDone</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l893"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:893</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>拖放完成时触发的事件</p>
+    </div>
+</div>
+                    <div id="event_JCDropDoneAfter" class="events item">
+    <h3 class="name"><code>JCDropDoneAfter</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l897"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:897</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>拖放完成后触发的事件</p>
+    </div>
+</div>
+                    <div id="event_JCTriggerDrag" class="events item">
+    <h3 class="name"><code>JCTriggerDrag</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Drag_0.1_Drag.js.html#l901"><code>..&#x2F;modules&#x2F;JC.Drag&#x2F;0.1&#x2F;Drag.js:901</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>手动触发拖动事件</p>
+    </div>
 </div>
             </div>
     </div>
