@@ -83,6 +83,8 @@
             
                 <li><a href="../classes/JC.Dialog.msgbox.html">JC.Dialog.msgbox</a></li>
             
+                <li><a href="../classes/JC.Drag.html">JC.Drag</a></li>
+            
                 <li><a href="../classes/JC.f.html">JC.f</a></li>
             
                 <li><a href="../classes/JC.Fixed.html">JC.Fixed</a></li>
@@ -441,6 +443,27 @@
                 return this;
             }
         /**
+         * 使用 jquery on 为 controler 绑定事件
+         * @method  {string}    on
+         * @param   {string}    _evtName
+         * @param   {function}  _cb
+         */
+        , on:
+            function(){
+                $( this ).trigger( &#x27;BindEvent&#x27;, JC.f.sliceArgs( arguments ) );
+                return this;
+            }
+        /**
+         * 使用 jquery trigger 触发 controler 绑定事件
+         * @method  {string}    trigger
+         * @param   {string}    _evtName
+         */
+        , trigger:
+            function(){
+                $( this ).trigger( &#x27;TriggerEvent&#x27;, JC.f.sliceArgs( arguments ) );
+                return this;
+            }
+        /**
          * 初始化的 jq 选择器
          * @method  selector
          * @param   {selector}  _setter
@@ -640,6 +663,26 @@
     JC.f.extendObject( BaseMVC.View.prototype, {
         init:
             function() {
+                return this;
+            }
+        , selector:
+            function(){
+                return this._model.selector();
+            }
+        /**
+         * 使用 jquery on 为 controler 绑定事件
+         */
+        , on:
+            function(){
+                $( this ).trigger( &#x27;BindEvent&#x27;, JC.f.sliceArgs( arguments ) );
+                return this;
+            }
+        /**
+         * 使用 jquery trigger 触发 controler 绑定事件
+         */
+        , trigger:
+            function(){
+                $( this ).trigger( &#x27;TriggerEvent&#x27;, JC.f.sliceArgs( arguments ) );
                 return this;
             }
     });

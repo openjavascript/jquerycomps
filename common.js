@@ -812,7 +812,7 @@
      * <dl>
      *      <dt>可识别的组件</dt>
      *      <dd>
-     *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder, JC.TableFreeze
+     *          JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar, JC.Drag, JC.Placeholder, JC.TableFreeze
      *          <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete
      *      </dd>
      * </d>
@@ -848,6 +848,10 @@
          * 表格冻结
          */
         JC.TableFreeze && JC.TableFreeze.init( _selector );
+        /**
+         * 拖曳
+         */
+        JC.Drag && JC.Drag.init( _selector );
 
         if( !window.Bizs ) return;
         /**

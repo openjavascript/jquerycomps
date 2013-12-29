@@ -10411,7 +10411,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
      * <dl>
      *      <dt>可识别的组件</dt>
      *      <dd>
-     *          JC.AutoSelect, JC.Calendar, JC.AutoChecked, JC.AjaxUpload, JC.Placeholder, JC.TableFreeze
+     *          JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar, JC.Drag, JC.Placeholder, JC.TableFreeze
      *          <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete
      *      </dd>
      * </d>
@@ -10447,6 +10447,10 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
          * 表格冻结
          */
         JC.TableFreeze && JC.TableFreeze.init( _selector );
+        /**
+         * 拖曳
+         */
+        JC.Drag && JC.Drag.init( _selector );
 
         if( !window.Bizs ) return;
         /**
@@ -11375,6 +11379,27 @@ window.Bizs = window.Bizs || {};
                 return this;
             }
         /**
+         * 使用 jquery on 为 controler 绑定事件
+         * @method  {string}    on
+         * @param   {string}    _evtName
+         * @param   {function}  _cb
+         */
+        , on:
+            function(){
+                $( this ).trigger( 'BindEvent', JC.f.sliceArgs( arguments ) );
+                return this;
+            }
+        /**
+         * 使用 jquery trigger 触发 controler 绑定事件
+         * @method  {string}    trigger
+         * @param   {string}    _evtName
+         */
+        , trigger:
+            function(){
+                $( this ).trigger( 'TriggerEvent', JC.f.sliceArgs( arguments ) );
+                return this;
+            }
+        /**
          * 初始化的 jq 选择器
          * @method  selector
          * @param   {selector}  _setter
@@ -11574,6 +11599,26 @@ window.Bizs = window.Bizs || {};
     JC.f.extendObject( BaseMVC.View.prototype, {
         init:
             function() {
+                return this;
+            }
+        , selector:
+            function(){
+                return this._model.selector();
+            }
+        /**
+         * 使用 jquery on 为 controler 绑定事件
+         */
+        , on:
+            function(){
+                $( this ).trigger( 'BindEvent', JC.f.sliceArgs( arguments ) );
+                return this;
+            }
+        /**
+         * 使用 jquery trigger 触发 controler 绑定事件
+         */
+        , trigger:
+            function(){
+                $( this ).trigger( 'TriggerEvent', JC.f.sliceArgs( arguments ) );
                 return this;
             }
     });
