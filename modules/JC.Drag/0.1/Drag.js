@@ -65,7 +65,7 @@
                 _p.selector().on( 'mousedown', function( _evt, _srcEvt ){
                     _evt = _srcEvt || _evt;
 
-                    if( _p._model.boolProp( 'ignoreDrag' ) ) return;
+                    if( _p._model.boolProp( 'disableDrag' ) ) return;
 
                     _p.trigger( Drag.Model.DRAG_BEFORE );
 
@@ -174,10 +174,10 @@
 
             if( _selector && _selector.length ){
                 if( _selector.hasClass( 'js_compDrag' )  ){
-                    !_selector.is( '[ignoreDrag]' ) && _r.push( new Drag( _selector ) );
+                    !_selector.is( '[disableDrag]' ) && _r.push( new Drag( _selector ) );
                 }else{
                     _selector.find( 'div.js_compDrag, button.js_compDrag' ).each( function(){
-                        !_selector.is( '[ignoreDrag]' ) && _r.push( new Drag( this ) );
+                        !_selector.is( '[disableDrag]' ) && _r.push( new Drag( this ) );
                     });
                 }
             }
@@ -311,21 +311,6 @@
                     !( this._dragTarget && this._dragTarget.length ) 
                         && ( this._dragTarget = this.selector() )
                         ;
-                    /*
-                    if( _isDropFor ){
-                        var _src = this._dragTarget, _offset = _src.offset();
-                        this._dragTarget = _src.clone();
-                        this._dragTarget.css( { 
-                            'position': 'absolute'
-                            , 'left': _offset.left + 'px'
-                            , 'top': _offset.top + 'px'
-                            , 'opacity': '.35'
-                            , 'z-index': window.ZINDEX_COUNT++ 
-                        } );
-                        this._dragTarget.attr( 'ignoreDrag', true );
-                        _src.after( this._dragTarget );
-                    }
-                    */
                 }
                 return this._dragTarget;
             }
@@ -352,7 +337,7 @@
                             , 'top': _offset.top + 'px'
                             , 'z-index': window.ZINDEX_COUNT++ 
                         } );
-                        this._dropDragTarget.attr( 'ignoreDrag', true ).addClass( 'JCMovingDropBox' );
+                        this._dropDragTarget.attr( 'disableDrop', true ).addClass( 'JCMovingDropBox' );
                     }
                 }
 
@@ -397,7 +382,11 @@
                     if( _dropFor ){
                         _dropFor.each( function(){
                             var _sp = $(this);
-                            if( _sp.is( '[ignoreDrag]' ) ) return;
+                            //if( _sp.is( '[disableDrag]' ) ) return;
+                            if( _sp.is( '[disableDrop]' ) ) {
+                                JC.log(11111111, new Date().getTime());
+                                return;
+                            }
                             var _offset = _sp.offset()
                                 , _rect = locationToRect( _offset.left
                                                             , _offset.top
@@ -658,7 +647,7 @@
 
     _jdoc.delegate( 'div.js_compDrag, button.js_compDrag', 'mouseenter', function( _evt ){
         var _p = $( this ), _ins = JC.BaseMVC.getInstance( $(this), JC.Drag );
-        if( _p.is( '[ignoreDrag]' ) ) return
+        if( _p.is( '[disableDrag]' ) ) return
         //JC.log( _p.prop( 'nodeName' ), _p.html(), _p.prop( 'className' ), _ins || 'null' );
         !_ins && ( _ins = new JC.Drag( _p ) );
         JC.BaseMVC.getInstance( _p, JC.Drag, _ins )
@@ -666,7 +655,7 @@
 
     _jdoc.delegate( 'div.js_compDrag, button.js_compDrag', 'mousedown', function( _evt ){
         var _p = $( this ), _ins = JC.BaseMVC.getInstance( _p, Drag );
-        if( _p.is( '[ignoreDrag]' ) ) return
+        if( _p.is( '[disableDrag]' ) ) return
         !_ins && ( _ins = new Drag( _p ) ) && _ins.trigger( Drag.Model.TRIGGER_DRAG, [ _evt ] );
         return false;
     });
