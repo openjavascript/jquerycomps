@@ -1641,14 +1641,24 @@ function parseYearDate( _dateStr ){
 
                     if( _maxMonthDate && _tdate.getTime() > _maxMonthDate.getTime() ) break;
                     if( _minMonthDate && _tdate.getTime() < _minMonthDate.getTime() ){
-                        //continue;
+                        JC.log(
+                            'xxxxxxxx'
+                            , JC.f.formatISODate( _dateo.date )
+                            , JC.f.formatISODate( _tdate )
+                            , JC.f.formatISODate( _maxMonthDate ) 
+                            , _tdate.getTime(), _maxMonthDate.getTime()
+                            , i
+                            );
+                        continue;
                     }
-                    JC.log( 
+                        JC.log(
                             JC.f.formatISODate( _dateo.date )
                             , JC.f.formatISODate( _tdate )
                             , JC.f.formatISODate( _maxMonthDate ) 
                             , _tdate.getTime(), _maxMonthDate.getTime()
+                            , i
                             );
+
                     _ls.push( JC.f.printf( '<option value="{0}"{1}>{2}月</option>'
                                 , i
                                 , i === _selectedMonth ? ' selected' : ''
@@ -1660,7 +1670,7 @@ function parseYearDate( _dateStr ){
                     _mname = Calendar.getCnNum( _dateo.date.getMonth() + 1 );
 
                     _ls.push( JC.f.printf( '<option value="{0}"{1}>{2}月</option>'
-                                , i
+                                , _dateo.date.getMonth()
                                 , ' selected'
                                 , _mname 
                                 ) 
