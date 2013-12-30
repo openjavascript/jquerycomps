@@ -1012,6 +1012,9 @@ function parseYearDate( _dateStr ){
                         && ( _r.maxvalue = JC.f.parseISODate( _p.selector().attr('maxvalue') ) );
                 }
 
+                _r.minvalue && ( _r.minvalue = JC.f.pureDate( _r.minvalue ) );
+                _r.maxvalue && ( _r.maxvalue = JC.f.pureDate( _r.maxvalue ) );
+
                 return _r;
             }
         , defaultSingleSelectDate:
@@ -1425,6 +1428,17 @@ function parseYearDate( _dateStr ){
             function( _offset ){
                 if( typeof _offset == 'undefined' || _offset == 0 ) return;
 
+                var _dateo = this._model.layoutDate(), _date = JC.f.cloneDate( _dateo.date );
+                if( _dateo.minvalue || _dateo.maxvalue ){
+                    _date.setFullYear( _date.getFullYear() + _offset );
+                    if( _dateo.minvalue && _date.getFullYear() < _dateo.minvalue.getFullYear() ){
+                        return;
+                    }
+                    if( _dateo.maxvalue && _date.getFullYear() > _dateo.maxvalue.getFullYear() ){
+                        return;
+                    }
+                }
+
                 this._model.multiselect() 
                     ? this.updateMultiYear( _offset )
                     : this.updateSingleYear( _offset )
@@ -1460,6 +1474,23 @@ function parseYearDate( _dateStr ){
         , updateMonth:
             function( _offset ){
                 if( typeof _offset == 'undefined' || _offset == 0 ) return;
+
+                var _dateo = this._model.layoutDate(), _date = JC.f.cloneDate( _dateo.date );
+                if( _dateo.minvalue || _dateo.maxvalue ){
+                    _date.setMonth( _date.getMonth() + _offset );
+                    _date.setDate( 1 );
+                    var _minvalue = _dateo.minvalue ? JC.f.cloneDate( _dateo.minvalue ) : null
+                        , _maxvalue = _dateo.maxvalue ? JC.f.cloneDate( _dateo.maxvalue ) : null
+                        ;
+                    _minvalue && _minvalue.setDate( 1 );
+                    _maxvalue && _maxvalue.setDate( 1 );
+                    if( _minvalue && _date.getTime() < _minvalue.getTime() ){
+                        return;
+                    }
+                    if( _maxvalue && _date.getTime() > _maxvalue.getTime() ){
+                        return;
+                    }
+                }
 
                 this._model.multiselect() 
                     ? this.updateMultiMonth( _offset )
@@ -1567,17 +1598,76 @@ function parseYearDate( _dateStr ){
                     , _layout = _p._model.layout()
                     , _ls = []
                     , _tmp
-                    , _selected = _selected = _dateo.date.getFullYear()
+                    , _selected = _dateo.date.getFullYear()
+                    , _selectedMonth = _dateo.date.getMonth()
                     , _startYear = _p._model.startYear( _dateo )
                     , _endYear = _p._model.endYear( _dateo )
+                    , _curYear = _dateo.date.getFullYear()
+                    , _curDateMonth = new Date( _dateo.date.getFullYear(), _dateo.date.getMonth(), 1 )
+                    , _minYear = _dateo.minvalue ? _dateo.minvalue.getFullYear() : 0
+                    , _maxYear = _dateo.maxvalue ? _dateo.maxvalue.getFullYear() : 0
+                    , _minMonthDate = _dateo.minvalue ? new Date( _dateo.minvalue.getFullYear(), _dateo.minvalue.getMonth(), 1 ) : 0
+                    , _maxMonthDate = _dateo.maxvalue ? new Date( _dateo.maxvalue.getFullYear(), _dateo.maxvalue.getMonth(), 1 ) : 0
+                    , i, j, _mname, _tdate, _addDateYear 
                     ;
                 JC.log( _startYear, _endYear );
-                for( var i = _startYear; i <= _endYear; i++ ){
+                for( i = _startYear; i <= _endYear; i++ ){
+
+                    if( _maxYear && i > _maxYear ) break;
+                    if( _minYear && ( i < _minYear || ( i > _curYear && _maxYear && _curYear > _maxYear ) ) ) {
+                        continue;
+                    }
+                    if( _curYear && _minYear && _curYear < _minYear ) _addDateYear = true;
+
                     _ls.push( JC.f.printf( '<option value="{0}"{1}>{0}</option>', i, i === _selected ? ' selected' : '' ) );
+                }
+                if( _addDateYear ){
+                    _ls.unshift( JC.f.printf( '<option value="{0}"{1}>{0}</option>', _curYear, ' selected' ) );
                 }
                 $( _ls.join('') ).appendTo( _layout.find('select.UYear').html('') );
 
-                $( _layout.find('select.UMonth').val( _dateo.date.getMonth() ) );
+                _ls = [];
+                for( i = 0; i < 12; i++ ){
+                    _mname = Calendar.getCnNum( i + 1 );
+                    _tdate = new Date( _curYear, i, 1 );
+
+                    /*
+                    JC.log( _dateo.date.getFullYear(), i
+                            , JC.f.formatISODate( _tdate )
+                            , JC.f.formatISODate( _minMonthDate )
+                            , JC.f.formatISODate( _maxMonthDate ) 
+                            );
+                    */
+
+                    if( _maxMonthDate && _tdate.getTime() > _maxMonthDate.getTime() ) break;
+                    if( _minMonthDate && _tdate.getTime() < _minMonthDate.getTime() ){
+                        //continue;
+                    }
+                    JC.log( 
+                            JC.f.formatISODate( _dateo.date )
+                            , JC.f.formatISODate( _tdate )
+                            , JC.f.formatISODate( _maxMonthDate ) 
+                            , _tdate.getTime(), _maxMonthDate.getTime()
+                            );
+                    _ls.push( JC.f.printf( '<option value="{0}"{1}>{2}月</option>'
+                                , i
+                                , i === _selectedMonth ? ' selected' : ''
+                                , _mname 
+                                ) 
+                            );
+                }
+                if( !_ls.length ){
+                    _mname = Calendar.getCnNum( _dateo.date.getMonth() + 1 );
+
+                    _ls.push( JC.f.printf( '<option value="{0}"{1}>{2}月</option>'
+                                , i
+                                , ' selected'
+                                , _mname 
+                                ) 
+                            );
+                }
+                $( _ls.join('') ).appendTo( _layout.find( 'select.UMonth' ).html( '' ) );
+                //$( _layout.find('select.UMonth').val( _dateo.date.getMonth() ) );
             }
         , _buildBody:
             function( _dateo ){

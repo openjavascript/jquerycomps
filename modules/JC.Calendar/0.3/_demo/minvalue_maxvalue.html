@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>360 75 team</title>
+<style type='text/css'>
+    *{ margin: 0; padding: 0; }
+    body{ width: 600px; margin: 20px auto 20px; background:#ececec; }
+    .ipt,.txt,.txt-1{ border:1px solid #e2e3ea; border-top:1px solid #abadb3; border-radius:2px; height:22px; *line-height:22px;}
+    .ipt{ width:126px;}
+    .ipt-w58{ width:58px;}
+    .ipt-w48{ width:48px; text-align:center;}
+    .ipt-w80{ width:80px;}
+    .ipt-w180{ width:180px;}
+    .ipt-w230{ width: 230px;}
+    .ipt-w320{ width:320px;}
+    .ipt-w380{ width:380px;}
+    .ipt-w480{ width:480px;}
+    .ipt-w545{ width:545px;}
+    .txt,.txt-1{ resize:none; height:50px; width:99.8%;}
+    .txt-w280{ width:280px;}
+    .txt-w480{ width:480px;}
+    .txt-w545{ width:545px;}
+    .txt-w400{ width:410px;}
+    .txt-w380{ width:380px;}
+    .txt-w650{ width:650px;}
+
+    dl dd{ margin: 10px 0; }
+
+    dl.defDl{
+        margin: 20px 20px;
+    }
+
+    dl.defDl > dt{
+        font-weight: bold;
+    }
+
+    dl.defDl > dd{
+        margin: 5px 40px;
+    }
+</style>
+<link href='../../../../modules/JC.Calendar/0.3/res/default/style.css' rel='stylesheet' />
+<link href='../../../../modules/JC.Valid/0.2/res/default/style.css' rel='stylesheet' />
+<script src="../../../../lib.js"></script>
+<script src="../../../../config.js"></script>
+<script>
+    JC.debug = true; 
+    
+    requirejs( [ 'JC.Calendar', 'JC.Valid' ], function( Calendar, Valid ){
+    });
+</script>
+</head>    
+<body>
+    <h2>JC.Calendar 示例</h2>
+    <form action='' method='get'>
+        <dl class="defDl">
+            <dt>datatype = date</dt>
+            <dd><input type="text" class="ipt" name="date1" datatype="date" /></dd>
+            <dd>
+                <input type="text" class="ipt" name="date1" 
+                    value="now,-6m" 
+                    datatype="date" 
+                    maxvalue="now,-6m"
+                    />
+                <em class="error"></em>
+                maxvalue="now,-6m"
+            </dd>
+            <dd>
+                <input type="text" class="ipt" name="date1" 
+                    value="now" 
+                    datatype="date" 
+                    maxvalue="now"
+                    />
+                <em class="error"></em>
+                maxvalue="now"
+            </dd>
+            <dd>
+                <input type="text" class="ipt" name="date1" 
+                    value="now" 
+                    datatype="date" 
+                    minvalue="now"
+                    />
+                <em class="error"></em>
+                minvalue="now"
+            </dd>
+
+            <dd>
+                <input type="text" class="ipt" name="date1" 
+                    value="now" 
+                    datatype="date" 
+                    minvalue="now"
+                    maxvalue="now"
+                    />
+                <em class="error"></em>
+                minvalue="now"
+                , maxvalue="now"
+            </dd>
+
+            <dd>
+                <input type="text" class="ipt" name="date1" 
+                    value="now,-1y" 
+                    datatype="date" 
+                    minvalue="now"
+                    maxvalue="now"
+                    />
+                <em class="error"></em>
+                value="now,-1y" 
+                , minvalue="now"
+                , maxvalue="now"
+            </dd>
+
+        </dl>
+
+        <dl class="defDl">
+
+            <dt>multidate = week</dt>
+            <dd><input type="text" class="ipt" name="date1" datatype="week" /></dd>
+           <dd>
+                <input type="text" class="ipt" name="date1" 
+                    datatype="date" 
+                    maxvalue="now"
+                    currentcanselect="true"
+                    />
+                <em class="error"></em>
+                maxvalue="now"
+            </dd>
+            <dd>
+                <input type="text" class="ipt" name="date1" 
+                    datatype="date" 
+                    maxvalue="now"
+                    currentcanselect="true"
+                    />
+                <em class="error"></em>
+                maxvalue="now"
+            </dd>
+            <dd>
+                <input type="text" class="ipt" name="date1" 
+                    multidate="week" 
+                    minvalue="now"
+                    currentcanselect="true"
+                    />
+                <em class="error"></em>
+                minvalue="now"
+            </dd>
+
+            <dd>
+                <input type="text" class="ipt" name="date1" 
+                    multidate="week" 
+                    minvalue="now"
+                    maxvalue="now"
+                    currentcanselect="true"
+                    />
+                <em class="error"></em>
+                minvalue="now"
+                , maxvalue="now"
+            </dd>
+
+            <dd>
+                <input type="text" class="ipt" name="date1" 
+                    value="now,-1y" 
+                    multidate="week" 
+                    minvalue="now"
+                    maxvalue="now"
+                    />
+                <em class="error"></em>
+                value="now,-1y" 
+                , minvalue="now"
+                , maxvalue="now"
+            </dd>
+
+        </dl>
+
+    </form>
+</body>
+</html>
+
