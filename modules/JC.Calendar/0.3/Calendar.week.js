@@ -129,12 +129,25 @@
                     , _rows = Math.ceil( weeks.length / 8 )
                     , ipt = JC.Calendar.lastIpt
                     , currentcanselect = JC.f.parseBool( ipt.attr('currentcanselect') )
+                    , _wd
+                    , _minvalue = _dateo.minvalue ? JC.f.cloneDate( _dateo.minvalue ) : null
+                    , _maxvalue = _dateo.maxvalue ? JC.f.cloneDate( _dateo.maxvalue ) : null
                     ;
 
-                if( _dateo.maxvalue && currentcanselect ){
-                    var _wd = _dateo.maxvalue.getDay();
+                if( _maxvalue && currentcanselect ){
+                    _wd = _maxvalue.getDay();
                     if( _wd > 0 ) {
-                        _dateo.maxvalue.setDate( _dateo.maxvalue.getDate() + ( 7 - _wd ) );
+                        _maxvalue.setDate( _maxvalue.getDate() + ( 7 - _wd ) );
+                    }else{
+                    }
+                }
+
+                if( _minvalue && currentcanselect ){
+                    _wd = _minvalue.getDay();
+                    if( _wd > 0 ) {
+                        _minvalue.setDate( _minvalue.getDate() - _wd + 1 );
+                    }else{
+                        _minvalue.setDate( _minvalue.getDate() - 6 );
                     }
                 }
 
@@ -145,7 +158,7 @@
                         _data = nextYearWeeks[ nextCount++ ];
                         _year = _date.getFullYear() + 1;
                     }
-                    _sdate = new Date(); _edate = new Date();
+                    _sdate = JC.f.pureDate( new Date() ); _edate = JC.f.pureDate( new Date() );
                     _sdate.setTime( _data.start ); _edate.setTime( _data.end );
 
                     _title = JC.f.printf( "{0}年 第{1}周\n开始日期: {2} (周{4})\n结束日期: {3} (周{5})"
@@ -159,11 +172,43 @@
 
                     _class = [];
 
-                    if( _dateo.minvalue && _sdate.getTime() < _dateo.minvalue.getTime() ) 
+                    if( _minvalue && _sdate.getTime() < _minvalue.getTime() ) 
                         _class.push( 'unable' );
-                    if( _dateo.maxvalue && _edate.getTime() > _dateo.maxvalue.getTime() ){
+                    if( _maxvalue && _edate.getTime() > _maxvalue.getTime() ){
                         _class.push( 'unable' );
                     }
+                    /*
+                    if( _minvalue && _maxvalue ){
+                        JC.log( 
+                                JC.f.formatISODate( _sdate )
+                                , JC.f.formatISODate( _edate )
+                                , JC.f.formatISODate( _minvalue )
+                                , JC.f.formatISODate( _maxvalue )
+                                , _sdate.getTime() 
+                                , _edate.getTime() 
+                                , _minvalue.getTime()
+                                , _maxvalue.getTime()
+                            );
+                    }else if( _minvalue ){
+                        JC.log( 
+                                JC.f.formatISODate( _sdate )
+                                , JC.f.formatISODate( _edate )
+                                , JC.f.formatISODate( _minvalue )
+                                , _sdate.getTime() 
+                                , _edate.getTime() 
+                                , _minvalue.getTime()
+                            );
+                    }else if( _maxvalue ){
+                        JC.log( 
+                                JC.f.formatISODate( _sdate )
+                                , JC.f.formatISODate( _edate )
+                                , JC.f.formatISODate( _maxvalue )
+                                , _sdate.getTime() 
+                                , _edate.getTime() 
+                                , _maxvalue.getTime()
+                            );
+                    }
+                    */
 
                     if( _dateo.curweek ){
                         if( _data.week == _dateo.curweek 
