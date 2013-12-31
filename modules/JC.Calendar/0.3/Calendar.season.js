@@ -101,10 +101,11 @@
                     , currentcanselect = JC.f.parseBool( ipt.attr('currentcanselect') )
                     , _minvalue = _dateo.minvalue ? JC.f.cloneDate( _dateo.minvalue ) : null
                     , _maxvalue = _dateo.maxvalue ? JC.f.cloneDate( _dateo.maxvalue ) : null
+                    , _m
                     ;
 
                     if( _maxvalue && currentcanselect ){
-                        var _m = _maxvalue.getMonth() + 1, _md;
+                       var _m = _maxvalue.getMonth() + 1, _md;
 
                         if( _m % 3 !== 0 ){
                             _maxvalue.setDate( 1 );
@@ -112,6 +113,16 @@
                         }
                         _maxvalue.setDate( JC.f.maxDayOfMonth( _maxvalue ) );
                     }
+
+                    if( _minvalue && currentcanselect ){
+                        _m = _minvalue.getMonth() + 1, _md;
+
+                        _minvalue.setDate( 1 );
+                        _minvalue.setMonth( _minvalue.getMonth() - ( 3 - _m % 3 ) );
+                        //_minvalue.setDate( JC.f.maxDayOfMonth( _minvalue ) );
+                    }
+
+                    //JC.log( JC.f.formatISODate( _minvalue ), JC.f.formatISODate( _maxvalue ) );
 
                     _ls.push('<tr>');
                     for( var i = 1, j = 4; i <= j; i++ ){
