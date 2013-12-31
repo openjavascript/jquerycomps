@@ -177,7 +177,7 @@
                     if( _maxvalue && _edate.getTime() > _maxvalue.getTime() ){
                         _class.push( 'unable' );
                     }
-
+                    /*
                     if( _minvalue && _maxvalue ){
                         JC.log( 
                                 JC.f.formatISODate( _sdate )
@@ -208,6 +208,7 @@
                                 , _maxvalue.getTime()
                             );
                     }
+                    */
 
                     if( _dateo.curweek ){
                         if( _data.week == _dateo.curweek 

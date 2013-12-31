@@ -99,16 +99,18 @@
                     , _rows = 4
                     , ipt = JC.Calendar.lastIpt
                     , currentcanselect = JC.f.parseBool( ipt.attr('currentcanselect') )
+                    , _minvalue = _dateo.minvalue ? JC.f.cloneDate( _dateo.minvalue ) : null
+                    , _maxvalue = _dateo.maxvalue ? JC.f.cloneDate( _dateo.maxvalue ) : null
                     ;
 
-                    if( _dateo.maxvalue && currentcanselect ){
-                        var _m = _dateo.maxvalue.getMonth() + 1, _md;
+                    if( _maxvalue && currentcanselect ){
+                        var _m = _maxvalue.getMonth() + 1, _md;
 
                         if( _m % 3 !== 0 ){
-                            _dateo.maxvalue.setDate( 1 );
-                            _dateo.maxvalue.setMonth( _m + ( 3 - ( _m % 3 ) - 1 ) );
+                            _maxvalue.setDate( 1 );
+                            _maxvalue.setMonth( _m + ( 3 - ( _m % 3 ) - 1 ) );
                         }
-                        _dateo.maxvalue.setDate( JC.f.maxDayOfMonth( _dateo.maxvalue ) );
+                        _maxvalue.setDate( JC.f.maxDayOfMonth( _maxvalue ) );
                     }
 
                     _ls.push('<tr>');
@@ -131,15 +133,14 @@
 
                         _class = [];
 
-                        if( _dateo.minvalue && _sdate.getTime() < _dateo.minvalue.getTime() ) 
+                        if( _minvalue && _sdate.getTime() < _minvalue.getTime() ) 
                             _class.push( 'unable' );
-                        if( _dateo.maxvalue && _edate.getTime() > _dateo.maxvalue.getTime() ){
+                        if( _maxvalue && _edate.getTime() > _maxvalue.getTime() ){
                             _class.push( 'unable' );
                         }
 
                         if( _date.getTime() >= _sdate.getTime() && _date.getTime() <= _edate.getTime() ) _class.push( 'cur' );
                         if( today >= _sdate.getTime() && today <= _edate.getTime() ) _class.push( 'today' );
-
 
                         _ls.push( JC.f.printf( '<td class="{0}"><a href="javascript:" title="{1}"'+
                                         ' dstart="{3}" dend="{4}" month="{5}" >{2}季度</a></td>'
