@@ -316,10 +316,16 @@
                     , ipt = JC.Calendar.lastIpt
                     , currentcanselect = JC.f.parseBool( ipt.attr(&#x27;currentcanselect&#x27;) )
                     , _tmpMultidate = _dateo.multidate ? _dateo.multidate.slice() : null
+                    , _minvalue = _dateo.minvalue ? JC.f.cloneDate( _dateo.minvalue ) : null
+                    , _maxvalue = _dateo.maxvalue ? JC.f.cloneDate( _dateo.maxvalue ) : null
                     ;
 
-                    if( _dateo.maxvalue &amp;&amp; currentcanselect ){
-                        _dateo.maxvalue.setDate( JC.f.maxDayOfMonth( _dateo.maxvalue ) );
+                    if( _maxvalue &amp;&amp; currentcanselect ){
+                        _maxvalue.setDate( JC.f.maxDayOfMonth( _maxvalue ) );
+                    }
+
+                    if( _minvalue &amp;&amp; currentcanselect ){
+                        _minvalue.setDate( 1 );
                     }
 
                     _ls.push(&#x27;&lt;tr&gt;&#x27;);
@@ -338,9 +344,9 @@
 
                         _class = [];
 
-                        if( _dateo.minvalue &amp;&amp; _dstart.getTime() &lt; _dateo.minvalue.getTime() ) 
+                        if( _minvalue &amp;&amp; _dstart.getTime() &lt; _minvalue.getTime() ) 
                             _class.push( &#x27;unable&#x27; );
-                        if( _dateo.maxvalue &amp;&amp; _dend.getTime() &gt; _dateo.maxvalue.getTime() ){
+                        if( _maxvalue &amp;&amp; _dend.getTime() &gt; _maxvalue.getTime() ){
                             _class.push( &#x27;unable&#x27; );
                         }
 

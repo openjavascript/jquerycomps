@@ -303,17 +303,30 @@
                     , _rows = 4
                     , ipt = JC.Calendar.lastIpt
                     , currentcanselect = JC.f.parseBool( ipt.attr(&#x27;currentcanselect&#x27;) )
+                    , _minvalue = _dateo.minvalue ? JC.f.cloneDate( _dateo.minvalue ) : null
+                    , _maxvalue = _dateo.maxvalue ? JC.f.cloneDate( _dateo.maxvalue ) : null
+                    , _m
                     ;
 
-                    if( _dateo.maxvalue &amp;&amp; currentcanselect ){
-                        var _m = _dateo.maxvalue.getMonth() + 1, _md;
+                    if( _maxvalue &amp;&amp; currentcanselect ){
+                       var _m = _maxvalue.getMonth() + 1, _md;
 
                         if( _m % 3 !== 0 ){
-                            _dateo.maxvalue.setDate( 1 );
-                            _dateo.maxvalue.setMonth( _m + ( 3 - ( _m % 3 ) - 1 ) );
+                            _maxvalue.setDate( 1 );
+                            _maxvalue.setMonth( _m + ( 3 - ( _m % 3 ) - 1 ) );
                         }
-                        _dateo.maxvalue.setDate( JC.f.maxDayOfMonth( _dateo.maxvalue ) );
+                        _maxvalue.setDate( JC.f.maxDayOfMonth( _maxvalue ) );
                     }
+
+                    if( _minvalue &amp;&amp; currentcanselect ){
+                        _m = _minvalue.getMonth() + 1, _md;
+
+                        _minvalue.setDate( 1 );
+                        _minvalue.setMonth( _minvalue.getMonth() - ( 3 - _m % 3 ) );
+                        //_minvalue.setDate( JC.f.maxDayOfMonth( _minvalue ) );
+                    }
+
+                    //JC.log( JC.f.formatISODate( _minvalue ), JC.f.formatISODate( _maxvalue ) );
 
                     _ls.push(&#x27;&lt;tr&gt;&#x27;);
                     for( var i = 1, j = 4; i &lt;= j; i++ ){
@@ -335,15 +348,14 @@
 
                         _class = [];
 
-                        if( _dateo.minvalue &amp;&amp; _sdate.getTime() &lt; _dateo.minvalue.getTime() ) 
+                        if( _minvalue &amp;&amp; _sdate.getTime() &lt; _minvalue.getTime() ) 
                             _class.push( &#x27;unable&#x27; );
-                        if( _dateo.maxvalue &amp;&amp; _edate.getTime() &gt; _dateo.maxvalue.getTime() ){
+                        if( _maxvalue &amp;&amp; _edate.getTime() &gt; _maxvalue.getTime() ){
                             _class.push( &#x27;unable&#x27; );
                         }
 
                         if( _date.getTime() &gt;= _sdate.getTime() &amp;&amp; _date.getTime() &lt;= _edate.getTime() ) _class.push( &#x27;cur&#x27; );
                         if( today &gt;= _sdate.getTime() &amp;&amp; today &lt;= _edate.getTime() ) _class.push( &#x27;today&#x27; );
-
 
                         _ls.push( JC.f.printf( &#x27;&lt;td class=&quot;{0}&quot;&gt;&lt;a href=&quot;javascript:&quot; title=&quot;{1}&quot;&#x27;+
                                         &#x27; dstart=&quot;{3}&quot; dend=&quot;{4}&quot; month=&quot;{5}&quot; &gt;{2}季度&lt;/a&gt;&lt;/td&gt;&#x27;
