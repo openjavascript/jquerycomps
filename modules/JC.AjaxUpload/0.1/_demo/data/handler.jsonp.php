@@ -10,10 +10,23 @@
         $r['errmsg'] = $_REQUEST['errmsg'];
     }
 
+    if( isset( $_REQUEST['callback'] ) ){
+        $callback = $_REQUEST['callback'];
+    }
+
+    if( isset( $_REQUEST['callback_first'] ) ){
+        $callback = $_REQUEST['callback_first'];
+    }
+
     $r['data']['name'] = 'test.jpg';
     $r['data']['url'] = './data/images/test.jpg';
 
     $data = json_encode( $r );
 
-    echo $data;
+    echo <<<EOF
+<script>
+    window.parent && window.parent.$callback && window.parent.$callback( $data );
+</script>
+EOF;
+
 ?>
