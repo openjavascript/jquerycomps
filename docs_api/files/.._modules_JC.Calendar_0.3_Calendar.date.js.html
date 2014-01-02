@@ -1632,6 +1632,23 @@ function parseYearDate( _dateStr ){
         , updateLayout:
             function( _dateo ){
                 typeof _dateo == &#x27;undefined&#x27; &amp;&amp; ( _dateo = this._model.layoutDate() );
+                /*
+                JC.log( 
+                        JC.f.formatISODate( _dateo.date ) 
+                        , JC.f.formatISODate( _dateo.minvalue) 
+                        , JC.f.formatISODate( _dateo.maxvalue) 
+                        );
+                */
+
+                if( _dateo.minvalue || _dateo.maxvalue ){
+                    if( _dateo.minvalue &amp;&amp; _dateo.date.getTime() &lt; _dateo.minvalue.getTime() ){
+                        _dateo.date = JC.f.cloneDate( _dateo.minvalue );
+                    }
+                    if( _dateo.maxvalue &amp;&amp; _dateo.date.getTime() &gt; _dateo.maxvalue.getTime() ){
+                        _dateo.date = JC.f.cloneDate( _dateo.maxvalue );
+                    }
+                }
+
                 this._buildLayout( _dateo );
                 this._buildDone();
             }
