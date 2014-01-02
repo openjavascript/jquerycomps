@@ -759,8 +759,8 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 2,
-            "description": "Ajax 文件上传\n<p><b>require</b>: \n         <a href='.jQuery.html'>jQuery</a>\n         , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n         , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../comps/AjaxUpload/_demo' target='_blank'>demo link</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../comps/AjaxUpload//res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>\n     <dd>\n         上传完成后是否隐藏上传按钮\n     </dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址</dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<pre>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '&lt;a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}&lt;/a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;&lt;a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\">&lt;/a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</pre>\n     </dd>\n</dl>",
+            "line": 4,
+            "description": "Ajax 文件上传\n<p><b>require</b>: \n         <a href='.jQuery.html'>jQuery</a>\n         , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n         , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../comps/AjaxUpload/_demo' target='_blank'>demo link</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../comps/AjaxUpload//res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>\n     <dd>\n         上传完成后是否隐藏上传按钮\n     </dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址\n         <br />如果 url 带有参数 callback, 返回数据将以 jsonp 方式处理\n     </dd>\n\n     <dt>cauJSONPName = function name</dt>\n     <dd>显式声明上传后返回数据的 jsonp 回调名\n         <h3>jsonp 返回数据示例:</h3>\nurl: ?callback=callback\n<br /> data: \n&lt;script>\n   window.parent && window.parent.callback && window.parent.callback( {\"errorno\":0,\"errmsg\":\"\",\"data\":{\"name\":\"test.jpg\",\"url\":\".\\/data\\/images\\/test.jpg\"}} );\n&lt;/script>\n     </dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<pre>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '&lt;a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}&lt;/a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;&lt;a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\">&lt;/a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</pre>\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -2926,7 +2926,7 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 148,
+            "line": 162,
             "description": "获取或设置 AjaxUpload 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -2947,7 +2947,7 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 164,
+            "line": 178,
             "description": "初始化可识别的组件",
             "itemtype": "method",
             "name": "init",
@@ -2968,7 +2968,7 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 184,
+            "line": 198,
             "description": "frame 文件名",
             "itemtype": "property",
             "name": "frameFileName",
@@ -2980,7 +2980,7 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 192,
+            "line": 206,
             "description": "载入 frame 文件时, 是否添加随机数防止缓存",
             "itemtype": "property",
             "name": "randomFrame",
@@ -2992,7 +2992,7 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 200,
+            "line": 214,
             "description": "frame 文件夹位于库的位置",
             "itemtype": "property",
             "name": "_FRAME_DIR",
@@ -3006,7 +3006,7 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 210,
+            "line": 224,
             "description": "初始化 frame 时递增的统计变量",
             "itemtype": "property",
             "name": "_INS_COUNT",
@@ -3020,42 +3020,42 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 232,
+            "line": 246,
             "description": "iframe 加载完毕后触发的事件, 执行初始化操作",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 266,
+            "line": 280,
             "description": "文件扩展名错误",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 273,
+            "line": 287,
             "description": "上传前触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 279,
+            "line": 293,
             "description": "上传完毕触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 316,
+            "line": 333,
             "description": "frame 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 333,
+            "line": 350,
             "description": "手动更新数据",
             "itemtype": "method",
             "name": "update",
@@ -3077,7 +3077,7 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 453,
+            "line": 480,
             "description": "恢复默认状态",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
@@ -5035,7 +5035,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1766,
+            "line": 1770,
             "description": "捕获用户更改年份 \n<p>监听 年份下拉框</p>",
             "itemtype": "event",
             "name": "year change",
@@ -5046,7 +5046,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1776,
+            "line": 1780,
             "description": "捕获用户更改年份 \n<p>监听 下一年按钮</p>",
             "itemtype": "event",
             "name": "next year",
@@ -5057,7 +5057,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1786,
+            "line": 1790,
             "description": "捕获用户更改年份 \n<p>监听 上一年按钮</p>",
             "itemtype": "event",
             "name": "previous year",
@@ -5068,7 +5068,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1796,
+            "line": 1800,
             "description": "增加或者减少一年\n<p>监听 年份map</p>",
             "itemtype": "event",
             "name": "year map click",
@@ -5079,7 +5079,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1810,
+            "line": 1814,
             "description": "增加或者减少一个月\n<p>监听 月份map</p>",
             "itemtype": "event",
             "name": "month map click",
@@ -5090,7 +5090,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1824,
+            "line": 1828,
             "description": "捕获用户更改月份 \n<p>监听 下一月按钮</p>",
             "itemtype": "event",
             "name": "next year",
@@ -5101,7 +5101,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1834,
+            "line": 1838,
             "description": "捕获用户更改月份\n<p>监听 上一月按钮</p>",
             "itemtype": "event",
             "name": "previous year",
@@ -5112,7 +5112,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1845,
+            "line": 1849,
             "description": "日期点击事件",
             "itemtype": "event",
             "name": "date click",
@@ -5123,7 +5123,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1858,
+            "line": 1862,
             "description": "选择当前日期\n<p>监听确定按钮</p>",
             "itemtype": "event",
             "name": "confirm click",
@@ -5134,7 +5134,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1868,
+            "line": 1872,
             "description": "清除文本框内容\n<p>监听 清空按钮</p>",
             "itemtype": "event",
             "name": "clear click",
@@ -5145,7 +5145,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1878,
+            "line": 1882,
             "description": "取消日历组件, 相当于隐藏\n<p>监听 取消按钮</p>",
             "itemtype": "event",
             "name": "cancel click",
@@ -5156,7 +5156,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1888,
+            "line": 1892,
             "description": "日历组件按钮点击事件",
             "itemtype": "event",
             "name": "calendar button click",
@@ -5167,7 +5167,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1903,
+            "line": 1907,
             "description": "日历组件点击事件, 阻止冒泡, 防止被 document click事件隐藏",
             "itemtype": "event",
             "name": "UXCCalendar click",
@@ -5178,7 +5178,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1912,
+            "line": 1916,
             "description": "DOM 加载完毕后, 初始化日历组件相关事件",
             "itemtype": "event",
             "name": "dom ready",
@@ -5189,14 +5189,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1918,
+            "line": 1922,
             "description": "延迟200毫秒初始化页面的所有日历控件\n之所以要延迟是可以让用户自己设置是否需要自动初始化",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1926,
+            "line": 1930,
             "description": "监听窗口滚动和改变大小, 实时变更日历组件显示位置",
             "itemtype": "event",
             "name": "window scroll, window resize",
@@ -5207,7 +5207,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1935,
+            "line": 1939,
             "description": "dom 点击时, 检查事件源是否为日历组件对象, 如果不是则会隐藏日历组件",
             "itemtype": "event",
             "name": "dom click",
@@ -5348,7 +5348,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 312,
+            "line": 313,
             "description": "获取拖动的源节点",
             "itemtype": "method",
             "name": "dragTarget",
@@ -5360,7 +5360,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 318,
+            "line": 319,
             "description": "获取拖动时移动的节点, drag 使用 dragTarget, drop clone dragTarget",
             "itemtype": "method",
             "name": "dragMovingTarget",
@@ -5372,7 +5372,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 324,
+            "line": 325,
             "description": "获取可拖动范围的 [ 节点 | window ]",
             "itemtype": "method",
             "name": "dragIn",
@@ -5385,7 +5385,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 330,
+            "line": 331,
             "description": "更新 dragMovingTarget 的位置",
             "itemtype": "method",
             "name": "_updatePosition",
@@ -5396,7 +5396,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 341,
+            "line": 342,
             "description": "初始化可识别的 Drag 实例",
             "itemtype": "method",
             "name": "init",
@@ -5417,7 +5417,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 364,
+            "line": 365,
             "description": "设置/获取 拖动时所需的数据",
             "itemtype": "method",
             "name": "dragInfo",
@@ -5443,7 +5443,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 383,
+            "line": 384,
             "description": "设置当前的拖动 selector",
             "itemtype": "method",
             "name": "draggingItem",
@@ -5464,7 +5464,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 400,
+            "line": 401,
             "description": "清除拖动的相关数据",
             "itemtype": "method",
             "name": "cleanDragData",
@@ -5474,7 +5474,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 414,
+            "line": 415,
             "description": "拖动时, 默认的 mousemove 函数",
             "itemtype": "method",
             "name": "defaultMouseMove",
@@ -5491,7 +5491,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 446,
+            "line": 447,
             "description": "拖动时, 默认的 mouseup 函数",
             "itemtype": "method",
             "name": "defaultMouseUp",
@@ -5508,7 +5508,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 462,
+            "line": 463,
             "description": "拖动时, 默认的 scroll 函数",
             "itemtype": "method",
             "name": "defaultScroll",
@@ -5525,35 +5525,35 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 852,
+            "line": 853,
             "description": "判断两个矩形是否有交集",
             "class": "JC.Drag",
             "namespace": "JC"
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 863,
+            "line": 864,
             "description": "把坐标和宽高生成一个 rectangle 数据",
             "class": "JC.Drag",
             "namespace": "JC"
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 875,
+            "line": 876,
             "description": "把 rectangle 数据 转换为 坐标数据",
             "class": "JC.Drag",
             "namespace": "JC"
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 885,
+            "line": 886,
             "description": "计算两个坐标点之间的距离",
             "class": "JC.Drag",
             "namespace": "JC"
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 895,
+            "line": 896,
             "description": "实例初始化后触发的事件",
             "itemtype": "event",
             "name": "JCDragInited",
@@ -5562,7 +5562,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 899,
+            "line": 900,
             "description": "拖动开始前触发的事件",
             "itemtype": "event",
             "name": "JCDragBefore",
@@ -5571,7 +5571,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 903,
+            "line": 904,
             "description": "拖动开始时触发的事件",
             "itemtype": "event",
             "name": "JCDragBegin",
@@ -5580,7 +5580,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 907,
+            "line": 908,
             "description": "拖动完成时触发的事件",
             "itemtype": "event",
             "name": "JCDragDone",
@@ -5589,7 +5589,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 911,
+            "line": 912,
             "description": "拖动完成之后触发的事件",
             "itemtype": "event",
             "name": "JCDragAfter",
@@ -5598,7 +5598,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 915,
+            "line": 916,
             "description": "拖动移动时触发的事件",
             "itemtype": "event",
             "name": "JCDraggingMoving",
@@ -5607,7 +5607,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 919,
+            "line": 920,
             "description": "拖放完成时触发的事件",
             "itemtype": "event",
             "name": "JCDropDone",
@@ -5616,7 +5616,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 923,
+            "line": 924,
             "description": "拖放完成后触发的事件",
             "itemtype": "event",
             "name": "JCDropDoneAfter",
@@ -5625,7 +5625,7 @@
         },
         {
             "file": "../comps/Drag/Drag.js",
-            "line": 927,
+            "line": 928,
             "description": "手动触发拖动事件",
             "itemtype": "event",
             "name": "JCTriggerDrag",
@@ -14633,11 +14633,11 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:2"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:4"
         },
         {
             "message": "unknown tag: date",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:2"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:4"
         },
         {
             "message": "unknown tag: version",
@@ -15009,27 +15009,27 @@
         },
         {
             "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:232"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:246"
         },
         {
             "message": "Missing item type\n文件扩展名错误",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:266"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:280"
         },
         {
             "message": "Missing item type\n上传前触发的事件",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:273"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:287"
         },
         {
             "message": "Missing item type\n上传完毕触发的事件",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:279"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:293"
         },
         {
             "message": "Missing item type\nframe 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:316"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:333"
         },
         {
             "message": "Missing item type\n恢复默认状态",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:453"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:480"
         },
         {
             "message": "Missing item type\n点击列表时, 阻止冒泡",
@@ -15077,7 +15077,7 @@
         },
         {
             "message": "Missing item type\n延迟200毫秒初始化页面的所有日历控件\n之所以要延迟是可以让用户自己设置是否需要自动初始化",
-            "line": " ../comps/Calendar/Calendar.date.js:1918"
+            "line": " ../comps/Calendar/Calendar.date.js:1922"
         },
         {
             "message": "Missing item type\n�����ж���Ϊ���������� JC 0.1\nʹ�� requirejs ����Ŀ�����Ƴ������жϴ���",
@@ -15093,19 +15093,19 @@
         },
         {
             "message": "Missing item type\n判断两个矩形是否有交集",
-            "line": " ../comps/Drag/Drag.js:852"
+            "line": " ../comps/Drag/Drag.js:853"
         },
         {
             "message": "Missing item type\n把坐标和宽高生成一个 rectangle 数据",
-            "line": " ../comps/Drag/Drag.js:863"
+            "line": " ../comps/Drag/Drag.js:864"
         },
         {
             "message": "Missing item type\n把 rectangle 数据 转换为 坐标数据",
-            "line": " ../comps/Drag/Drag.js:875"
+            "line": " ../comps/Drag/Drag.js:876"
         },
         {
             "message": "Missing item type\n计算两个坐标点之间的距离",
-            "line": " ../comps/Drag/Drag.js:885"
+            "line": " ../comps/Drag/Drag.js:886"
         },
         {
             "message": "Missing item type\n这个判断是为了向后兼容 JC 0.1\n使用 requirejs 的项目可以移除这段判断代码",

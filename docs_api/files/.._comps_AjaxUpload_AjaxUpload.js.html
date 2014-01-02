@@ -202,6 +202,8 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+//TODO: 添加文件大小判断
+//TODO: 0.2 添加 flash 上传支持
 (function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Panel&#x27; ], function(){
     /**
      * Ajax 文件上传
@@ -238,7 +240,19 @@
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;cauUrl = url, require&lt;/dt&gt;
-     *      &lt;dd&gt;上传文件的接口地址&lt;/dd&gt;
+     *      &lt;dd&gt;上传文件的接口地址
+     *          &lt;br /&gt;如果 url 带有参数 callback, 返回数据将以 jsonp 方式处理
+     *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauJSONPName = function name&lt;/dt&gt;
+     *      &lt;dd&gt;显式声明上传后返回数据的 jsonp 回调名
+     *          &lt;h3&gt;jsonp 返回数据示例:&lt;/h3&gt;
+url: ?callback=callback
+&lt;br /&gt; data: 
+&amp;lt;script&gt;
+    window.parent &amp;&amp; window.parent.callback &amp;&amp; window.parent.callback( {&quot;errorno&quot;:0,&quot;errmsg&quot;:&quot;&quot;,&quot;data&quot;:{&quot;name&quot;:&quot;test.jpg&quot;,&quot;url&quot;:&quot;.\/data\/images\/test.jpg&quot;}} );
+&amp;lt;/script&gt;
+     *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;cauFileExt = file ext, optional&lt;/dt&gt;
      *      &lt;dd&gt;允许上传的文件扩展名, 例: &quot;.jpg, .jpeg, .png, .gif&quot;&lt;/dd&gt;
@@ -483,7 +497,8 @@
                 /**
                  * 上传完毕触发的事件
                  */
-                _p.on( &#x27;UploadDone&#x27;, function( _evt, _d ){
+                _p.on( &#x27;UploadDone&#x27;, function( _evt, _d, _ignore ){
+                    if( _ignore ) return;
                     JC.log( _d );
                     var _err = false, _od = _d;
                     try{ 
@@ -497,11 +512,12 @@
                         _p._view.updateChange();
 
                         _p._model.cauUploadErrorCallback()
-                            &amp;&amp; _p._model.cauUploadErrorCallback().call(    _p
-                                                                        , _d
-                                                                        , _p._model.selector()
-                                                                        , _p._model.frame() 
-                                                                    );
+                            &amp;&amp; _p._model.cauUploadErrorCallback().call(    
+                                _p
+                                , _d
+                                , _p._model.selector()
+                                , _p._model.frame() 
+                            );
                     }else{
                         if( _d.errorno ){
                             _p._view.errUpload( _d );
@@ -510,11 +526,12 @@
                             _p._view.updateChange( _d );
                         }
                         _p._model.cauUploadDoneCallback()
-                            &amp;&amp; _p._model.cauUploadDoneCallback().call(    _p
-                                                                        , _d
-                                                                        , _p._model.selector()
-                                                                        , _p._model.frame() 
-                                                                    );
+                            &amp;&amp; _p._model.cauUploadDoneCallback().call(
+                                _p
+                                , _d
+                                , _p._model.selector()
+                                , _p._model.frame() 
+                            );
                     }
                 });
                 /**
@@ -613,6 +630,16 @@
                 return this.callbackProp( &#x27;cauUploadErrorCallback&#x27; );
             }
 
+        , cauJSONPName:
+            function(){
+                var _r = AjaxUpload.JSONPName;
+
+                _r = JC.f.getUrlParam( this.cauUrl(), &#x27;callback&#x27; ) || _r;
+                _r = this.attrProp( &#x27;cauJSONPName&#x27; ) || _r;
+
+                return _r;
+            }
+
         , framePath:
             function(){
                 var _fl = this.attrProp(&#x27;cauFrameFileName&#x27;) || AjaxUpload.frameFileName
@@ -709,7 +736,7 @@
 
                 _frame.attr( &#x27;src&#x27;, _path );
                 _frame.on( &#x27;load&#x27;, function(){
-                    $(_p).trigger( &#x27;TriggerEvent&#x27;, &#x27;FrameLoad&#x27; );
+                    _p.trigger( &#x27;FrameLoad&#x27; );
                 });
 
                 //_p._model.selector().hide();
