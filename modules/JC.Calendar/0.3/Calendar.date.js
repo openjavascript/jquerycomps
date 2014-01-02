@@ -1031,7 +1031,6 @@ function parseYearDate( _dateStr ){
                     return _r;
                 }
 
-
                 if( _p.dateParse( _p.selector() ) ){
                     var _tmpDataObj = _p.dateParse( _p.selector() )( _p.selector().val().trim() );
                         _r.date = _tmpDataObj.start;
@@ -1051,7 +1050,9 @@ function parseYearDate( _dateStr ){
                             _r.date = new Date( _tmp.getFullYear(), _tmp.getMonth(), _tmp.getDate() );
                         }
                     }
+
                 }
+
 
                 return _r;
             }
@@ -1120,17 +1121,7 @@ function parseYearDate( _dateStr ){
             }
         , layoutDate:
             function(){
-                var _r = this.multiselect() ? this.multiLayoutDate() : this.singleLayoutDate(); 
-
-                _r.minvalue 
-                    && _r.date.getTime() < _r.minvalue.getTime()
-                    && ( _r.date = JC.f.cloneDate( _r.minvalue ) );
-
-                _r.maxvalue 
-                    && _r.date.getTime() > _r.maxvalue.getTime()
-                    && ( _r.date = JC.f.cloneDate( _r.maxvalue ) );
-
-                return _r;
+                return this.multiselect() ? this.multiLayoutDate() : this.singleLayoutDate();
             }
         , singleLayoutDate:
             function(){
@@ -1635,6 +1626,7 @@ function parseYearDate( _dateStr ){
             function( _dateo ){
                 this._model.layout();
                 
+
                 //JC.log( '_buildBody: \n', JSON.stringify( _dateo ) );
 
                 if( !( _dateo && _dateo.date ) ) return;
@@ -1734,13 +1726,9 @@ function parseYearDate( _dateStr ){
                 var _p = this, _layout = _p._model.layout();
                 var _maxday = JC.f.maxDayOfMonth( _dateo.date ), _weekday = _dateo.date.getDay() || 7
                     , _sumday = _weekday + _maxday, _row = 6, _ls = [], _premaxday, _prebegin
-                    , _tmp, i, _class
-                    , _minvalue = _dateo.minvalue ? JC.f.cloneDate( _dateo.minvalue ) : null
-                    , _maxvalue = _dateo.maxvalue ? JC.f.cloneDate( _dateo.maxvalue ) : null
-                    ;
+                    , _tmp, i, _class;
 
                 var _beginDate = new Date( _dateo.date.getFullYear(), _dateo.date.getMonth(), 1 );
-                //JC.log( 1, JC.f.formatISODate( _beginDate ), _dateo.date.getMonth() );
                 var _beginWeekday = _beginDate.getDay() || 7;
                 if( _beginWeekday < 2 ){
                     _beginDate.setDate( -( _beginWeekday - 1 + 6 ) );
@@ -1758,19 +1746,10 @@ function parseYearDate( _dateStr ){
                     _class = [];
                     if( _beginDate.getDay() === 0 || _beginDate.getDay() == 6 ) _class.push('weekend');
                     if( !JC.f.isSameMonth( _dateo.date, _beginDate ) ) _class.push( 'other' );
-
-                    if( _minvalue && _beginDate.getTime() < _minvalue.getTime() ) 
+                    if( _dateo.minvalue && _beginDate.getTime() < _dateo.minvalue.getTime() ) 
                         _class.push( 'unable' );
-                    if( _maxvalue && _beginDate.getTime() > _maxvalue.getTime() ) 
+                    if( _dateo.maxvalue && _beginDate.getTime() > _dateo.maxvalue.getTime() ) 
                         _class.push( 'unable' );
-
-                    /*
-                    JC.log( 
-                            JC.f.formatISODate( _minvalue )
-                            , JC.f.formatISODate( _maxvalue )
-                            , JC.f.formatISODate( _beginDate )
-                          );
-                    */
 
                     if( JC.f.isSameDay( _beginDate, today ) ) _class.push( 'today' );
                     if( JC.f.isSameDay( _dateo.date, _beginDate ) ) _class.push( 'cur' );
