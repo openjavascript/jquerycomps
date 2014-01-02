@@ -109,7 +109,6 @@
                 _dateo.date.setDate( _day );
 
                 _curWeek.length && ( _dateo.curweek = parseInt( _curWeek.attr('week'), 10 ) );
-                //JC.log( 'WeekModel.singleLayoutDate:', _curWeek.length, _dateo.curweek );
 
                 return _dateo;
             }

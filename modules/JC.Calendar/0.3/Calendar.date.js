@@ -976,7 +976,6 @@ function parseYearDate( _dateStr ){
                 if( _tmp.length ){
                     _date.setTime( _tmp.attr('date') || _tmp.attr('dstart') );
                 }
-                //JC.log( 'dddddd', _date.getDate() );
                 return _date.getDate();
             }
         , defaultDate:
@@ -1102,7 +1101,6 @@ function parseYearDate( _dateStr ){
                                 }
                             }
                         });
-                        //alert( _multidatear + ', ' + _selector.val() );
 
                         _r.multidate = _multidatear;
 
@@ -1144,8 +1142,13 @@ function parseYearDate( _dateStr ){
                     , _dateo = _p.defaultDate()
                     , _year = _p.year()
                     , _month = _p.month()
+                    , _day = _p.day()
+                    , _newDate = new Date( _year, _month, 1 )
+                    , _max = JC.f.maxDayOfMonth( _newDate )
                     , _monthSel = _p.layout().find('select.UMonth')
                     ;
+
+                //JC.log( 'eeeeeeeeeee', _month );
 
                 _dateo.multidate = [];
 
@@ -1157,8 +1160,12 @@ function parseYearDate( _dateStr ){
                     _dateo.multidate.push( { 'start': _dstart, 'end': _dend } );
                 });
 
+                /*
                 _dateo.date.setFullYear( _year );
                 _dateo.enddate.setFullYear( _year );
+                */
+                _dateo.date = new Date( _year, _month, 1 );
+                _dateo.date.enddate = new Date( _year, _month, _max );
 
                 if( _monthSel.length ){
                     _dateo.date.setMonth( _month );
@@ -1430,27 +1437,35 @@ function parseYearDate( _dateStr ){
 
                 var _dateo = this._model.layoutDate(), _date;
                 if( _dateo.minvalue || _dateo.maxvalue ){
+                    var _fixYear;
                     _date = JC.f.cloneDate( _dateo.date );
                     _date.setFullYear( _date.getFullYear() + _offset );
                     if( _dateo.minvalue ){
                         if( _date.getFullYear() < _dateo.minvalue.getFullYear() ){
                             _date = JC.f.cloneDate( _dateo.minvalue );
                             _offset = 0;
+                            _fixYear = true;
                         }else if( new Date( _date.getFullYear(), _date.getMonth(), 1 ).getTime() <
                             new Date( _dateo.minvalue.getFullYear(), _dateo.minvalue.getMonth(), 1 ).getTime() ){
                             _offset = 0;
                             _date = JC.f.cloneDate( _dateo.minvalue );
+                            _fixYear = true;
                         }
                     }
                     if( _dateo.maxvalue ){
                         if( _date.getFullYear() > _dateo.maxvalue.getFullYear() ){
                             _offset = 0;
                             _date = JC.f.cloneDate( _dateo.maxvalue );
+                            _fixYear = true;
                         }else if( new Date( _date.getFullYear(), _date.getMonth(), 1 ).getTime() >
                             new Date( _dateo.maxvalue.getFullYear(), _dateo.maxvalue.getMonth(), 1 ).getTime() ){
                             _offset = 0;
                             _date = JC.f.cloneDate( _dateo.maxvalue );
+                            _fixYear = true;
                         }
+                    }
+                    if( !_fixYear ) _date = null;
+                    else {
                     }
                 }
 
@@ -1464,14 +1479,14 @@ function parseYearDate( _dateStr ){
                 var _dateo = this._model.layoutDate();
 
                 if( _date ){
+                    _dateo.date = _date;
+                }else{
                     var _day = _dateo.date.getDate(), _max;
                     _dateo.date.setDate( 1 );
                     _dateo.date.setFullYear( _dateo.date.getFullYear() + _offset );
                     _max = JC.f.maxDayOfMonth( _dateo.date );
                     _day > _max && ( _day = _max );
                     _dateo.date.setDate( _day );
-                }else{
-                    _dateo.date = _date;
                 }
                 this._buildLayout( _dateo );
                 this._buildDone();
@@ -1505,6 +1520,7 @@ function parseYearDate( _dateStr ){
                     _date.setMonth( _date.getMonth() + _offset );
                     var _minvalue = _dateo.minvalue ? JC.f.cloneDate( _dateo.minvalue ) : null
                         , _maxvalue = _dateo.maxvalue ? JC.f.cloneDate( _dateo.maxvalue ) : null
+                        , _fixDate
                         ;
                     _minvalue && _minvalue.setDate( 1 );
                     _maxvalue && _maxvalue.setDate( 1 );
@@ -1512,11 +1528,13 @@ function parseYearDate( _dateStr ){
                         if( _date.getTime() < _minvalue.getTime() ) {
                             _offset = 0;
                             _date = JC.f.cloneDate( _dateo.minvalue );
+                            _fixDate = true;
                         }
                         if( new Date( _date.getFullYear(), _date.getMonth(), 1 ).getTime() <
                             new Date( _dateo.minvalue.getFullYear(), _dateo.minvalue.getMonth(), 1 ).getTime() ){
                             _offset = 0;
                             _date = JC.f.cloneDate( _dateo.minvalue );
+                            _fixDate = true;
                         }
 
                     }
@@ -1524,12 +1542,21 @@ function parseYearDate( _dateStr ){
                         if( _date.getTime() > _maxvalue.getTime() ) {
                             _offset = 0;
                             _date = JC.f.cloneDate( _dateo.maxvalue );
+                            _fixDate = true;
                         }
                         if( new Date( _date.getFullYear(), _date.getMonth(), 1 ).getTime() >
                             new Date( _dateo.maxvalue.getFullYear(), _dateo.maxvalue.getMonth(), 1 ).getTime() ){
                             _offset = 0;
                             _date = JC.f.cloneDate( _dateo.maxvalue );
+                            _fixDate = true;
                         }
+                    }
+                    if( !_fixDate ) {
+                        _date = null;
+                    }else{
+                        var _md = JC.f.maxDayOfMonth( _date ), _newD = _dateo.date.getDate();
+                        _newD > _md && ( _newD = _md );
+                        _date.setDate( _newD );
                     }
                 }
 
@@ -1541,17 +1568,21 @@ function parseYearDate( _dateStr ){
         , updateMultiMonth:
             function( _offset, _date ){
                 var _dateo = this._model.layoutDate(), _day, _max;
-                _dateo.date = _date || _dateo.date;
+                if( _date ){
+                    _dateo.date = _date;
+                    _offset = 0;
+                }else{
+                    JC.Calendar.updateMultiMonth( _dateo.date, _offset );
+                    JC.Calendar.updateMultiMonth( _dateo.enddate, _offset );
 
-                JC.Calendar.updateMultiMonth( _dateo.date, _offset );
-                JC.Calendar.updateMultiMonth( _dateo.enddate, _offset );
-
-                if( _dateo.multidate ){
-                    $.each( _dateo.multidate, function( _ix, _item ){
-                        JC.Calendar.updateMultiMonth( _item.start, _offset );
-                        JC.Calendar.updateMultiMonth( _item.end, _offset );
-                    });
+                    if( _dateo.multidate ){
+                        $.each( _dateo.multidate, function( _ix, _item ){
+                            JC.Calendar.updateMultiMonth( _item.start, _offset );
+                            JC.Calendar.updateMultiMonth( _item.end, _offset );
+                        });
+                    }
                 }
+
                 this._buildLayout( _dateo );
                 this._buildDone();
             }
@@ -1607,7 +1638,6 @@ function parseYearDate( _dateStr ){
                 _x = _ioset.left; _y = _ioset.top + _ih + 5;
 
                 if( ( _y + _lh - _scrtop ) > _winh ){
-                    //JC.log('y overflow');
                     _y = _ioset.top - _lh - 3;
                     _y < _scrtop && ( _y = _scrtop );
                 }
@@ -1634,7 +1664,6 @@ function parseYearDate( _dateStr ){
             function( _dateo ){
                 this._model.layout();
                 
-
                 //JC.log( '_buildBody: \n', JSON.stringify( _dateo ) );
 
                 if( !( _dateo && _dateo.date ) ) return;
@@ -1662,7 +1691,6 @@ function parseYearDate( _dateStr ){
                     , i, j, _mname, _tdate, _addDateYear 
                     , _addCurYear
                     ;
-                //JC.log( _startYear, _endYear );
                 for( i = _startYear; i <= _endYear; i++ ){
 
                     if( _maxYear && _curYear > _maxYear ){

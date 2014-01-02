@@ -119,7 +119,6 @@
                     _dateo.maxvalue.setFullYear( _dateo.maxvalue.getFullYear() + 1 );
                 }
                 
-                //alert( _tds.length );
                 _tds.each( function( _ix, _item ){
                     _item = $( _item );
                     if( _ix == 0 || _ix == _len ){
@@ -178,14 +177,28 @@
                 JC.Calendar.hide();
             }
 
+        , updateYear:
+            function( _offset ){
+                if( typeof _offset == 'undefined' || _offset == 0 ) return;
+
+                var _dateo = this._model.layoutDate(), _date;
+
+                this._model.multiselect() 
+                    ? this.updateMultiYear( _offset )
+                    : this.updateSingleYear( _offset )
+                    ;
+            }
+
         , updateSingleYear:
             function( _offset ){
+                if( !_offset ) return;
                 var _dateo = this._model.layoutDate()
                     , _a = this._model.layout().find( 'a[dstart]' )
                     , _firstA = _a.first()
                     , _lastA = _a.last()
                     , _dstart = new Date(), _dend = new Date()
-                    , _offsetYear = 17;
+                    , _offsetYear = 17
+                    , _tmpYear
                     ;
 
                 if( _offset > 0 ){
@@ -205,6 +218,12 @@
                     _dateo.date.setFullYear( _dateo.date.getFullYear() - _offsetYear );
                     _dateo.enddate.setFullYear( _dateo.enddate.getFullYear() - _offsetYear );
                 }
+                var _min = _dateo.date.getFullYear() - _offsetYear + 1
+                    , _max = _dateo.date.getFullYear() + _offsetYear - 1
+                    ; 
+                //JC.log( JC.f.formatISODate( _dateo.date ), JC.f.formatISODate( _dateo.minvalue ), _min, _max );
+                if( _dateo.minvalue && _dateo.minvalue.getFullYear() > _max ) return;
+                if( _dateo.maxvalue && _dateo.maxvalue.getFullYear() < _min ) return;
 
                 this._buildLayout( _dateo );
                 this._buildDone();
