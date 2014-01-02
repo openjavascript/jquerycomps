@@ -16,9 +16,10 @@
 			padding: 7px 32px 7px 4px;
 			border: 1px solid #b9bcbe;
 			overflow: hidden;
-			background-position: 0 -200px;
-			border-radius: 3px;
+			
 			padding: 8px 32px 5px 4px\9;
+			border-radius: 3px;
+			
 			line-height: 1;
 			height: 14px;
 			overflow: hidden;
@@ -27,34 +28,152 @@
 
 	</style>
 	<link href='../../../../modules/JC.DCalendar/0.1/res/default/style.css' rel='stylesheet' />
+	<link href='../../../../modules/JC.Valid/0.2/res/default/style.css' rel="stylesheet" />
 </head>
 <body>
-	<input type="text" style="margin:50px;" datatype="ddate" minvalue="2013|12|10" maxvalue="2014-01-30" value="2013-12-23" />
-	<input type="text"  datatype="ddate"   /> 
+	<input type="text" style="margin: 250px;" datatype="ddate" class="calendar" 
+		minvalue="2013|12|10" 
+		maxvalue="2014-01-30" 
+		value=""
+		weekendCanSelect="false"
+		calendarshow="calendarShow"
+		calendarhide="calendarhide"
+		updatedate="updatedate"
+		updatemonth="updatemonth"
+		updateyear="updateyear"
+		updateprevmonth="updateprevmonth"
+		updatenextmonth="updatenextmonth"
+		updateprevyear="updateprevyear"
+		updatenextyear="updatenextyear"
+		beforeupdatemonth="beforeupdatemonth"
+		beforeupdateyear="beforeupdateyear"
+		updateprevpageyear="updateprevpageyear"
+		updatenextpageyear="updatenextpageyear"
+		currentCanSelect="false" />
+	<input type="text" reqmsg="msg"  datatype="ddate" hideonselect="false" currentCanSelect="false"   /> 
 
-	<!-- <table class="dd">
-		<thead>
-			<tr>
-				<th class="weekend" >日</th>
-                <th class="" >一</th>
-                <th class="">二</th>
-                <th class="" >三</th>
-                <th class="">四</th>
-                <th class="">五</th>
-                <th class="weekend">六</th>
-			</tr>
-		</thead>
-		<tbody>
-			
-		</tbody>
-	</table> -->
+	<input type="text" class="ipt" style="position: absolute; top: 421px;  left: 660.5px;" />
+	
+
 	<script src="../../../../lib.js"></script>
 	<script src="../../../../config.js"></script>
     <script>
         JC.debug = true;
         requirejs( [ 'JC.DCalendar', 'JC.Valid' ], function( DCalendar, Valid ){
     	});
-       
+        
+
+        // function calendarShow( selector ) {
+        // 	var ins = this;
+        // 	JC.log( "calendarshow", new Date().getTime(), selector.val() );
+        // }
+
+        // function updatedate( selector ) {
+        // 	var selector = $( selector );
+        // 	JC.log( "updatedate", selector.val() );
+        // }
+
+        // function calendarhide( selector ) {
+        // 	JC.log( "calendarhide", $(selector).val(), new Date().getTime() );
+        // }
+
+        // function updatemonth( selector ) {
+        // 	var ins = this;
+
+        // 	JC.log("updatemonth", new Date().getTime() );
+        // }
+
+        // function updateyear( selector ) {
+        // 	var ins = this;
+
+        // 	JC.log("updateyear", new Date().getTime() );
+        // }
+
+        // function updateprevmonth( selector ) {
+        // 	var ins = this;
+
+        // 	JC.log("updateprevmonth", new Date().getTime() );
+        // }
+
+        // function updatenextmonth( selector ) {
+        // 	var ins = this;
+        	
+        // 	JC.log("updatenextmonth", new Date().getTime() );
+        // }
+
+        // function updateprevyear( selector ) {
+        // 	var ins = this;
+
+        // 	JC.log("updateprevyear", new Date().getTime() );
+        // }
+
+        // function updatenextyear( selector ) {
+        // 	var ins = this;
+        	
+        // 	JC.log("updatenextyear", new Date().getTime() );
+        // }
+
+
+        // function beforeupdatemonth( selector ) {
+        // 	var ins = this;
+        	
+        // 	JC.log("beforeupdatemonth", new Date().getTime() );
+        // }
+
+        // function beforeupdateyear( selector ) {
+        // 	var ins = this;
+        	
+        // 	JC.log("beforeupdateyear", new Date().getTime() );
+        // }
+
+        // function updatenextpageyear() {
+        // 	var ins = this;
+        	
+        // 	JC.log("updatenextpageyear", new Date().getTime() );
+        // }
+
+        // function updateprevpageyear() {
+        // 	var ins = this;
+        	
+        // 	JC.log("updateprevpageyear", new Date().getTime() );
+        // }
+
+
+        var _t1 = null,
+			_t2 = null;	
+
+
+		$('.ipt').click( function () {
+			//clearTimeout( _t1 );
+			//clearTimeout( _t2 );
+
+			//_t1 = setTimeout( function () {
+				//console.log("click");
+			//}, 20);
+
+			JC.f.safeTimeout(function(){
+				console.log("click");
+			}, null, "Dclick", 120);
+
+		} );
+
+		$('.ipt').focus( function () {
+			//clearTimeout( _t1 );
+			//clearTimeout( _t2 );
+
+			//_t2 = setTimeout( function () {
+				//console.log("focus");
+			//},20 );
+
+			JC.f.safeTimeout(function(){
+				console.log("focus");
+			}, null, "Dfocus", 120);
+
+		} );
+
+		$(document).click( function () {
+			//console.log("document");
+		} );
     </script>
 </body>
 </html>
