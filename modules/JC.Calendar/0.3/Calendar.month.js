@@ -147,14 +147,11 @@
                         }
 
                         if( _tmpMultidate ){
-                            //JC.log( '_tmpMultidate.length:', _tmpMultidate.length );
                             $.each( _tmpMultidate, function( _ix, _item ){
-                                //JC.log( _dstart.getTime(), _item.start.getTime(), _item.end.getTime() );
                                 if( _dstart.getTime() >= _item.start.getTime() 
                                   && _dstart.getTime() <= _item.end.getTime() ){
                                     _class.push( 'cur' );
                                     _tmpMultidate.splice( _ix, 1 );
-                                    //JC.log( _tmpMultidate.length );
                                     return false;
                                 }
                             });
