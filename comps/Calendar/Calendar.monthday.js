@@ -206,7 +206,6 @@
                 $(_p).on('MonthDayToggle', function( _evt, _item ){
                     var _data = _p._model.findItemByTimestamp( _item.attr('dstart')  );
                     if( _data.atd.hasClass('unable') ) return;
-                    //JC.log( 'MonthDayView: MonthDayToggle', _item.attr('dstart'), _data.atd.hasClass( 'cur' ) );
                     _data.input.prop( 'checked', _data.atd.hasClass( 'cur' )  );
                     _p._model.fixCheckall();
                 });
@@ -217,20 +216,17 @@
                      * 如果 atd 为空, 那么是 全选按钮触发的事件
                      */
                     if( !_data.atd ){
-                        //alert( _item.attr('action') );
                         $(_p).trigger( 'MonthDayToggleAll', [ _item ] );
                         return;
                     }
 
                     if( _data.atd.hasClass('unable') ) return;
-                    //JC.log( 'MonthDayView: MonthDayInputToggle', _item.attr('dstart'), _data.input.prop('checked') );
                     _data.atd[ _data.input.prop('checked') ? 'addClass' : 'removeClass' ]( 'cur' );
                     _p._model.fixCheckall();
                 });
 
                 $(_p).on('MonthDayToggleAll', function( _evt, _input ){
                     var _all = _p._model.layout().find( 'a[dstart]' ), _checked = _input.prop('checked');
-                    //JC.log( 'MonthDayView: MonthDayToggleAll', _input.attr('action'), _input.prop('checked'), _all.length );
                     if( !_all.length ) return;
                     _all.each( function(){
                         var _sp = $(this), _td = JC.f.getJqParent( _sp, 'td' );
@@ -302,7 +298,6 @@
                         _today = new Date();
 
                     _p._model.fixedDate( _dateo );
-                    //JC.log( _dateo.date );
 
                     var _headLs = [], _dayLs = [], _ckLs = [];
                     var _headClass = [], _dayClass = [];
