@@ -1462,13 +1462,17 @@ function parseYearDate( _dateStr ){
         , updateSingleYear:
             function( _offset, _date ){
                 var _dateo = this._model.layoutDate();
-                _dateo.date = _date || _dateo.date;
-                var _day = _dateo.date.getDate(), _max;
-                _dateo.date.setDate( 1 );
-                _dateo.date.setFullYear( _dateo.date.getFullYear() + _offset );
-                _max = JC.f.maxDayOfMonth( _dateo.date );
-                _day > _max && ( _day = _max );
-                _dateo.date.setDate( _day );
+
+                if( _date ){
+                    var _day = _dateo.date.getDate(), _max;
+                    _dateo.date.setDate( 1 );
+                    _dateo.date.setFullYear( _dateo.date.getFullYear() + _offset );
+                    _max = JC.f.maxDayOfMonth( _dateo.date );
+                    _day > _max && ( _day = _max );
+                    _dateo.date.setDate( _day );
+                }else{
+                    _dateo.date = _date;
+                }
                 this._buildLayout( _dateo );
                 this._buildDone();
             }
@@ -1554,14 +1558,18 @@ function parseYearDate( _dateStr ){
         , updateSingleMonth:
             function( _offset, _date ){
                 var _dateo = this._model.layoutDate()
-                _dateo.date = _date || _dateo.date;
-                var _day = _dateo.date.getDate(), _max;
 
-                _dateo.date.setDate( 1 );
-                _dateo.date.setMonth( _dateo.date.getMonth() + _offset );
-                _max = JC.f.maxDayOfMonth( _dateo.date );
-                _day > _max && ( _day = _max );
-                _dateo.date.setDate( _day );
+                if( _date ){
+                    _dateo.date = _date;
+                }else{
+                    var _day = _dateo.date.getDate(), _max;
+
+                    _dateo.date.setDate( 1 );
+                    _dateo.date.setMonth( _dateo.date.getMonth() + _offset );
+                    _max = JC.f.maxDayOfMonth( _dateo.date );
+                    _day > _max && ( _day = _max );
+                    _dateo.date.setDate( _day );
+                }
                 this._buildLayout( _dateo );
                 this._buildDone();
             }
