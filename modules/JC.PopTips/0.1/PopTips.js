@@ -163,7 +163,7 @@
         
         _selector = $( _selector || document );
 
-        if ( _selector && _selector.length ) {
+        if ( _selector.length ) {
             if ( _selector.hasClass('js_compPopTips') ) {
                 _r.push( new PopTips(_selector) );
             } else {

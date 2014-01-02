@@ -233,7 +233,7 @@
         
         _selector = $( _selector || document );
 
-        if ( _selector && _selector.length ) {
+        if ( _selector.length ) {
             if ( _selector.hasClass('js_compTableFreeze') ) {
                 _r.push( new TableFreeze(_selector) );
             } else {

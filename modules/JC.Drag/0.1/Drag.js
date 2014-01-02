@@ -181,11 +181,12 @@
                 var _p = this;
 
                 _p.on( Drag.Model.DRAG_INITED, function( _evt ){
+
                     _p._model.defaultCSSPosition( _p._model.dragTarget().css( 'position' ) );
                     _p._model.defaultCSSZIndex( _p._model.dragTarget().css( 'z-index' ) );
                     _p._model.defaultCSSCursor( _p._model.dragTarget().css( 'cursor' ) );
 
-                    _p._model.dragTarget().css( { 'cursor': 'move' } );
+                    _p._model.selector().css( { 'cursor': 'move' } );
                     
                     _p._model.dragInitedCb() 
                         && _p._model.dragInitedCb().call( _p, _p.selector(), _p.dragTarget() );

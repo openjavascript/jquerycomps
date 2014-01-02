@@ -383,11 +383,12 @@
                 var _p = this;
 
                 _p.on( Drag.Model.DRAG_INITED, function( _evt ){
+
                     _p._model.defaultCSSPosition( _p._model.dragTarget().css( &#x27;position&#x27; ) );
                     _p._model.defaultCSSZIndex( _p._model.dragTarget().css( &#x27;z-index&#x27; ) );
                     _p._model.defaultCSSCursor( _p._model.dragTarget().css( &#x27;cursor&#x27; ) );
 
-                    _p._model.dragTarget().css( { &#x27;cursor&#x27;: &#x27;move&#x27; } );
+                    _p._model.selector().css( { &#x27;cursor&#x27;: &#x27;move&#x27; } );
                     
                     _p._model.dragInitedCb() 
                         &amp;&amp; _p._model.dragInitedCb().call( _p, _p.selector(), _p.dragTarget() );

@@ -67,7 +67,7 @@
                             , _d = $.trim( _wb.innerHTML )
                             ;
 
-                        _auIns.trigger( 'UploadDone', [ _d ] );
+                        _auIns.trigger( 'UploadDone', [ _d, _auIns._model.cauJSONPName() ] );
                         try{ _flBtn.val(''); }catch(ex){}
                         _fm.trigger('reset');
                     });
@@ -154,6 +154,9 @@
 
                 });
                 //alert( _updateLayout + ', ' + _disBtn.html() );
+
+                _model.cauJSONPName()
+                    && ( window[ _model.cauJSONPName() ] = callback );
             }
             /**
              * 验证文件扩展名是否可用
@@ -208,6 +211,13 @@
             {
                 if(document.addEventListener) $ele.addEventListener($evtName, $func, $cap);
                 else if(document.attachEvent) $ele.attachEvent('on' + $evtName, $func);
+            }
+
+            function callback( _d ){
+                if( !( _auIns && _fm ) ) return;
+                _auIns.trigger( 'UploadDone', [ _d ] );
+                try{ _flBtn.val(''); }catch(ex){}
+                _fm.trigger('reset');
             }
 
         </script>

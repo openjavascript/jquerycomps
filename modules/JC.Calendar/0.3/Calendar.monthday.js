@@ -302,7 +302,7 @@
                         _today = new Date();
 
                     _p._model.fixedDate( _dateo );
-                    JC.log( _dateo.date );
+                    //JC.log( _dateo.date );
 
                     var _headLs = [], _dayLs = [], _ckLs = [];
                     var _headClass = [], _dayClass = [];

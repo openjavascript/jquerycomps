@@ -176,7 +176,7 @@ function parseYearDate( _dateStr ){
 
         var _type = Calendar.type( _selector );
 
-        JC.log( 'Calendar init:', _type, new Date().getTime() );
+        //JC.log( 'Calendar init:', _type, new Date().getTime() );
 
         switch( _type ){
             case 'week': 
@@ -443,7 +443,7 @@ function parseYearDate( _dateStr ){
          */
         , updateSelected:
             function( _userSelectedItem ){
-                JC.log( 'JC.Calendar: updateSelector', new Date().getTime() );
+                //JC.log( 'JC.Calendar: updateSelector', new Date().getTime() );
                 this._view && this._view.updateSelected( _userSelectedItem );
                 return this;
             }
@@ -976,7 +976,7 @@ function parseYearDate( _dateStr ){
                 if( _tmp.length ){
                     _date.setTime( _tmp.attr('date') || _tmp.attr('dstart') );
                 }
-                JC.log( 'dddddd', _date.getDate() );
+                //JC.log( 'dddddd', _date.getDate() );
                 return _date.getDate();
             }
         , defaultDate:
@@ -1139,7 +1139,7 @@ function parseYearDate( _dateStr ){
             }
         , multiLayoutDate:
             function(){
-                JC.log( 'Calendar.Model multiLayoutDate', new Date().getTime() );
+                //JC.log( 'Calendar.Model multiLayoutDate', new Date().getTime() );
                 var _p = this
                     , _dateo = _p.defaultDate()
                     , _year = _p.year()
@@ -1413,7 +1413,7 @@ function parseYearDate( _dateStr ){
         , show:
             function(){
                 var _dateo = this._model.defaultDate();
-                JC.log( 'Calendar.View: show', new Date().getTime(), JC.f.formatISODate( _dateo.date ) );
+                //JC.log( 'Calendar.View: show', new Date().getTime(), JC.f.formatISODate( _dateo.date ) );
 
                 this._buildLayout( _dateo );
                 this._buildDone();
@@ -1599,7 +1599,7 @@ function parseYearDate( _dateStr ){
                 _x = _ioset.left; _y = _ioset.top + _ih + 5;
 
                 if( ( _y + _lh - _scrtop ) > _winh ){
-                    JC.log('y overflow');
+                    //JC.log('y overflow');
                     _y = _ioset.top - _lh - 3;
                     _y < _scrtop && ( _y = _scrtop );
                 }
@@ -1611,8 +1611,10 @@ function parseYearDate( _dateStr ){
 
                 _layout.css( {left: _x+'px', top: _y+'px'} );
 
+                /*
                 JC.log( _lw, _lh, _iw, _ih, _ioset.left, _ioset.top, _winw, _winh );
                 JC.log( _scrtop, _x, _y );
+                */
             }
         , _buildDone:
             function(){
@@ -1652,7 +1654,7 @@ function parseYearDate( _dateStr ){
                     , i, j, _mname, _tdate, _addDateYear 
                     , _addCurYear
                     ;
-                JC.log( _startYear, _endYear );
+                //JC.log( _startYear, _endYear );
                 for( i = _startYear; i <= _endYear; i++ ){
 
                     if( _maxYear && _curYear > _maxYear ){
@@ -1688,12 +1690,14 @@ function parseYearDate( _dateStr ){
 
                     if( _maxMonthDate && _tdate.getTime() > _maxMonthDate.getTime() ) break;
                     if( _minMonthDate && _tdate.getTime() < _minMonthDate.getTime() ){
+                        /*
                         JC.log(
                             'xxxxxxxx'
                             , JC.f.formatISODate( _dateo.date )
                             , JC.f.formatISODate( _tdate )
                             , i
                             );
+                        */
                         continue;
                     }
 

@@ -1,3 +1,5 @@
+//TODO: 添加文件大小判断
+//TODO: 0.2 添加 flash 上传支持
 (function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
     /**
      * Ajax 文件上传
@@ -34,7 +36,19 @@
      *      </dd>
      *
      *      <dt>cauUrl = url, require</dt>
-     *      <dd>上传文件的接口地址</dd>
+     *      <dd>上传文件的接口地址
+     *          <br />如果 url 带有参数 callback, 返回数据将以 jsonp 方式处理
+     *      </dd>
+     *
+     *      <dt>cauJSONPName = function name</dt>
+     *      <dd>显式声明上传后返回数据的 jsonp 回调名
+     *          <h3>jsonp 返回数据示例:</h3>
+url: ?callback=callback
+<br /> data: 
+&lt;script>
+    window.parent && window.parent.callback && window.parent.callback( {"errorno":0,"errmsg":"","data":{"name":"test.jpg","url":".\/data\/images\/test.jpg"}} );
+&lt;/script>
+     *      </dd>
      *
      *      <dt>cauFileExt = file ext, optional</dt>
      *      <dd>允许上传的文件扩展名, 例: ".jpg, .jpeg, .png, .gif"</dd>
@@ -279,7 +293,8 @@
                 /**
                  * 上传完毕触发的事件
                  */
-                _p.on( 'UploadDone', function( _evt, _d ){
+                _p.on( 'UploadDone', function( _evt, _d, _ignore ){
+                    if( _ignore ) return;
                     JC.log( _d );
                     var _err = false, _od = _d;
                     try{ 
@@ -293,11 +308,12 @@
                         _p._view.updateChange();
 
                         _p._model.cauUploadErrorCallback()
-                            && _p._model.cauUploadErrorCallback().call(    _p
-                                                                        , _d
-                                                                        , _p._model.selector()
-                                                                        , _p._model.frame() 
-                                                                    );
+                            && _p._model.cauUploadErrorCallback().call(    
+                                _p
+                                , _d
+                                , _p._model.selector()
+                                , _p._model.frame() 
+                            );
                     }else{
                         if( _d.errorno ){
                             _p._view.errUpload( _d );
@@ -306,11 +322,12 @@
                             _p._view.updateChange( _d );
                         }
                         _p._model.cauUploadDoneCallback()
-                            && _p._model.cauUploadDoneCallback().call(    _p
-                                                                        , _d
-                                                                        , _p._model.selector()
-                                                                        , _p._model.frame() 
-                                                                    );
+                            && _p._model.cauUploadDoneCallback().call(
+                                _p
+                                , _d
+                                , _p._model.selector()
+                                , _p._model.frame() 
+                            );
                     }
                 });
                 /**
@@ -409,6 +426,16 @@
                 return this.callbackProp( 'cauUploadErrorCallback' );
             }
 
+        , cauJSONPName:
+            function(){
+                var _r = AjaxUpload.JSONPName;
+
+                _r = JC.f.getUrlParam( this.cauUrl(), 'callback' ) || _r;
+                _r = this.attrProp( 'cauJSONPName' ) || _r;
+
+                return _r;
+            }
+
         , framePath:
             function(){
                 var _fl = this.attrProp('cauFrameFileName') || AjaxUpload.frameFileName
@@ -505,7 +532,7 @@
 
                 _frame.attr( 'src', _path );
                 _frame.on( 'load', function(){
-                    $(_p).trigger( 'TriggerEvent', 'FrameLoad' );
+                    _p.trigger( 'FrameLoad' );
                 });
 
                 //_p._model.selector().hide();
