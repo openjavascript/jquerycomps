@@ -62,7 +62,7 @@
             var _r = [];
             _selector = $( _selector || document );
 
-            if( _selector && _selector.length ){
+            if( _selector.length ){
                 if( _selector.hasClass( 'js_bizBizExampleMoreAdvance' )  ){
                     _r.push( new BizExampleMoreAdvance( _selector ) );
                 }else{
