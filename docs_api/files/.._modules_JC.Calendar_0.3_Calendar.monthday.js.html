@@ -410,7 +410,6 @@
                 $(_p).on(&#x27;MonthDayToggle&#x27;, function( _evt, _item ){
                     var _data = _p._model.findItemByTimestamp( _item.attr(&#x27;dstart&#x27;)  );
                     if( _data.atd.hasClass(&#x27;unable&#x27;) ) return;
-                    //JC.log( &#x27;MonthDayView: MonthDayToggle&#x27;, _item.attr(&#x27;dstart&#x27;), _data.atd.hasClass( &#x27;cur&#x27; ) );
                     _data.input.prop( &#x27;checked&#x27;, _data.atd.hasClass( &#x27;cur&#x27; )  );
                     _p._model.fixCheckall();
                 });
@@ -421,20 +420,17 @@
                      * 如果 atd 为空, 那么是 全选按钮触发的事件
                      */
                     if( !_data.atd ){
-                        //alert( _item.attr(&#x27;action&#x27;) );
                         $(_p).trigger( &#x27;MonthDayToggleAll&#x27;, [ _item ] );
                         return;
                     }
 
                     if( _data.atd.hasClass(&#x27;unable&#x27;) ) return;
-                    //JC.log( &#x27;MonthDayView: MonthDayInputToggle&#x27;, _item.attr(&#x27;dstart&#x27;), _data.input.prop(&#x27;checked&#x27;) );
                     _data.atd[ _data.input.prop(&#x27;checked&#x27;) ? &#x27;addClass&#x27; : &#x27;removeClass&#x27; ]( &#x27;cur&#x27; );
                     _p._model.fixCheckall();
                 });
 
                 $(_p).on(&#x27;MonthDayToggleAll&#x27;, function( _evt, _input ){
                     var _all = _p._model.layout().find( &#x27;a[dstart]&#x27; ), _checked = _input.prop(&#x27;checked&#x27;);
-                    //JC.log( &#x27;MonthDayView: MonthDayToggleAll&#x27;, _input.attr(&#x27;action&#x27;), _input.prop(&#x27;checked&#x27;), _all.length );
                     if( !_all.length ) return;
                     _all.each( function(){
                         var _sp = $(this), _td = JC.f.getJqParent( _sp, &#x27;td&#x27; );
@@ -506,7 +502,6 @@
                         _today = new Date();
 
                     _p._model.fixedDate( _dateo );
-                    //JC.log( _dateo.date );
 
                     var _headLs = [], _dayLs = [], _ckLs = [];
                     var _headClass = [], _dayClass = [];
