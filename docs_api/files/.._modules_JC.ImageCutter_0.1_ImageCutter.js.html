@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../lib.js - jquery components</title>
+    <title>../modules/JC.ImageCutter/0.1/ImageCutter.js - jquery components</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -200,26 +200,138 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../lib.js</h1>
+                        <h1 class="file-heading">File: ../modules/JC.ImageCutter/0.1/ImageCutter.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;void function(){
-    /**
-     * 取当前脚本标签的 src路径 
-     * @author  scuehs@btbtd.org 2013-05-23
-     * @return  {string} 脚本所在目录的完整路径
-     */
-    function scriptPath(){
-        var _sc = document.getElementsByTagName(&#x27;script&#x27;), _sc = _sc[ _sc.length - 1 ], _path = _sc.getAttribute(&#x27;src&#x27;);
-        if( /\//.test( _path ) ){ _path = _path.split(&#x27;/&#x27;); _path.pop(); _path = _path.join(&#x27;/&#x27;) + &#x27;/&#x27;; }
-        else if( /\\/.test( _path ) ){ _path = _path.split(&#x27;\\&#x27;); _path.pop(); _path = _path.join(&#x27;\\&#x27;) + &#x27;/&#x27;; }
-        return _path;
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
+/**
+ * 组件用途简述
+ *
+ *&lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
+ *   &lt;a href=&quot;widnow.jQuery.html&quot;&gt;jQuery&lt;/a&gt;
+ *   , &lt;a href=&quot;JC.common.html&quot;&gt;JC.common&lt;/a&gt;
+ *   , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+ *&lt;/p&gt;
+ *
+ *&lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
+ *   | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.ImageCutter.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+ *   | &lt;a href=&#x27;../../modules/JC.ImageCutter/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+ *  
+ *&lt;h2&gt;页面只要引用本脚本, 默认会处理 div class=&quot;js_compImageCutter&quot;&lt;/h2&gt;
+ *
+ *&lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
+ *
+ *&lt;dl&gt;
+ *    &lt;dt&gt;&lt;/dt&gt;
+ *    &lt;dd&gt;&lt;dd&gt;
+ *&lt;/dl&gt; 
+ *
+ * @namespace   JC
+ * @class       ImageCutter
+ * @extends     JC.BaseMVC
+ * @constructor
+ * @param   {selector|string}   _selector   
+ * @version dev 0.1 2013-12-13
+ * @author  qiushaowei &lt;suches@btbtd.org&gt; | 75 Team
+ * @example
+        &lt;h2&gt;JC.ImageCutter 示例&lt;/h2&gt;
+ */
+    var _jdoc = $( document ), _jwin = $( window );
+
+    JC.ImageCutter = ImageCutter;
+
+    function ImageCutter( _selector ){
+        _selector &amp;&amp; ( _selector = $( _selector ) );
+
+        if( JC.BaseMVC.getInstance( _selector, ImageCutter ) ) 
+            return JC.BaseMVC.getInstance( _selector, ImageCutter );
+
+        JC.BaseMVC.getInstance( _selector, ImageCutter, this );
+
+        this._model = new ImageCutter.Model( _selector );
+        this._view = new ImageCutter.View( this._model );
+
+        this._init();
+
+        JC.log( ImageCutter.Model._instanceName, &#x27;all inited&#x27;, new Date().getTime() );
     }
-    var _path = scriptPath();
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;require.js&quot; &gt;&lt;\/script&gt;&#x27; );
-    document.write( &#x27;&lt;script src=&quot;&#x27;+_path+&#x27;jquery.js&quot; &gt;&lt;\/script&gt;&#x27; );
-}();
+    /**
+     * 初始化可识别的 ImageCutter 实例
+     * @method  init
+     * @param   {selector}      _selector
+     * @static
+     * @return  {Array of ImageCutterInstance}
+     */
+    ImageCutter.init =
+        function( _selector ){
+            var _r = [];
+            _selector = $( _selector || document );
+
+            if( _selector.length ){
+                if( _selector.hasClass( &#x27;js_compImageCutter&#x27; )  ){
+                    _r.push( new ImageCutter( _selector ) );
+                }else{
+                    _selector.find( &#x27;div.js_compImageCutter&#x27; ).each( function(){
+                        _r.push( new ImageCutter( this ) );
+                    });
+                }
+            }
+            return _r;
+        };
+
+    JC.BaseMVC.build( ImageCutter );
+
+    JC.f.extendObject( ImageCutter.prototype, {
+        _beforeInit:
+            function(){
+                JC.log( &#x27;ImageCutter _beforeInit&#x27;, new Date().getTime() );
+            }
+
+        , _initHanlderEvent:
+            function(){
+            }
+
+        , _inited:
+            function(){
+                JC.log( &#x27;ImageCutter _inited&#x27;, new Date().getTime() );
+            }
+    });
+
+    ImageCutter.Model._instanceName = &#x27;JCImageCutter&#x27;;
+    JC.f.extendObject( ImageCutter.Model.prototype, {
+        init:
+            function(){
+                JC.log( &#x27;ImageCutter.Model.init:&#x27;, new Date().getTime() );
+            }
+    });
+
+    JC.f.extendObject( ImageCutter.View.prototype, {
+        init:
+            function(){
+                JC.log( &#x27;ImageCutter.View.init:&#x27;, new Date().getTime() );
+            }
+    });
+
+    _jdoc.ready( function(){
+        var _insAr = 0;
+        ImageCutter.autoInit
+            &amp;&amp; ( _insAr = ImageCutter.init() )
+            &amp;&amp; $( &#x27;&lt;h2&gt;ImageCutter total ins: &#x27; 
+                + _insAr.length + &#x27;&lt;br/&gt;&#x27; + new Date().getTime() + &#x27;&lt;/h2&gt;&#x27; ).appendTo( document.body )
+            ;
+    });
+
+    return JC.ImageCutter;
+});}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
+        function ( _name, _require, _cb ) { 
+            typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );
+            typeof _require == &#x27;function&#x27; &amp;&amp; ( _cb = _require ); 
+            _cb &amp;&amp; _cb(); 
+        }
+        , window
+    )
+);
 
     </pre>
 </div>
