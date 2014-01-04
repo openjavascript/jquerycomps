@@ -1,3 +1,6 @@
+//TODO: 每种不同的日期类型只能有一个实例, 使用单例模式创建各种日期类型的实例, 2014-01-05
+//TODO: 改变窗口大小/滚动条滚动时, 日历应该实时响应变化, 显示在合适的位置, 2014-01-05
+//TODO: 上下按钮双击的时间, 不应该出错 蓝色 背景的选择状态, 2014-01-05
  ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
  * 双日历日期选择组件
@@ -16,8 +19,9 @@
  *
  * <dl>
  *      <dt>datatype = string 必填项</dt>
- *      <dd>声明日历控件的类型：<br/>
- *      <b>ddate:</b> 日期日历
+ *      <dd>声明日历控件的类型：
+ *      <br/><b>ddate:</b> 日期日历
+ *      <br/><b>drange:</b> 日期范围日历( 成对出现 )
  *      </dd>
  *
  *      <dt>minvalue = ISO Date</dt>
@@ -142,6 +146,8 @@
         this._view = new DCalendar.View( this._model );
         
         this._init();
+
+        JC.log( 'DCalendar inited', new Date().getTime() );
     }
     /**
      * 获取或设置 DCalendar 的实例
@@ -162,28 +168,66 @@
      * 初始化可识别的 DCalendar 实例
      * @method  init
      * @param   {selector}      _selector
+     * @param   {bool}          _onlyStatus     default = false
      * @static
      * @return  {Array of DCalendarInstance}
      */
-    DCalendar.init = function ( _selector ) {
+    DCalendar.init = function ( _selector, _onlyStatus ) {
         var _r = [] ;
+
+        typeof _selector == 'boolean' && ( _onlyStatus = _selector, _selector = document );
         
         _selector = $( _selector || document );
 
         if ( _selector.length ) {
+            var _nodeName = _selector.length === 1 ? _selector.prop( 'nodeName' ).toLowerCase() : '';
 
-            if ( _selector.hasClass('js_compDCalendar') ) {
-                _r.push( new DCalendar(_selector) );
+            if ( _nodeName && ( _nodeName == 'input' || _nodeName == 'button' ) ) {
+                DCalendar._initStatus( _selector );
+                !_onlyStatus && _r.push( new DCalendar(_selector) );
             } else {
-                _selector.find('input[datatype=ddate], button[datatype=ddate]').each( function() {
-                    _r.push( new DCalendar( this ) );
+                _selector.find( [ 
+                                    'input[datatype=ddate]'
+                                    , 'input[datatype=drange]'
+                                    , 'button[datatype=ddate]' 
+                                    , 'button[multidate=ddate]' 
+                                    , 'button[multidate=ddate]' 
+                                ].join() ).each( function() {
+                    DCalendar._initStatus( $( this ) );
+                    !_onlyStatus && _r.push( new DCalendar( this ) );
                 })
             }
-
         }
 
         return _r;
     };
+    /**
+     * 初始化可识别的 DCalendar 的状态
+     * @method  _initStatus
+     * @param   {selector}      _selector
+     * @static
+     * @protected
+     */
+    DCalendar._initStatus =
+        function( _selector ){
+            _selector && ( _selector = $( _selector ) );
+            if( !( _selector && _selector.length ) ) return;
+            var _tmp;
+            _selector.val() 
+                && ( _tmp = JC.f.dateDetect( _selector.val() ) )
+                && _selector.val( JC.f.formatISODate( _tmp )  )
+
+            _selector.attr( 'minValue' )
+                && ( _tmp = JC.f.dateDetect( _selector.attr( 'minValue' ) ) )
+                && _selector.attr( 'minValue', JC.f.formatISODate( _tmp )  )
+
+
+            _selector.attr( 'maxValue' )
+                && ( _tmp = JC.f.dateDetect( _selector.attr( 'maxValue' ) ) )
+                && _selector.attr( 'maxValue', JC.f.formatISODate( _tmp )  )
+
+            _selector.addClass( 'CDCalendar_icon' );
+        };
 
     DCalendar.update = function () {
         var _items = $( JC.f.printf( '#{0}>div', DCalendar.Model._boxId ) );
@@ -291,6 +335,7 @@
                 _p._model.selector().addClass('cdc_ignore', false);
                 _p._view.hide();
                 DCalendar.visible = false;
+                _p.selector().blur();
                 _p._model.calendarhide()
                     && _p._model.calendarhide().call( _p, _p.selector() );
             });
@@ -1277,31 +1322,25 @@
 
     });
 
+    var _doc = $(document)
+        , _selector = 'input[datatype=ddate], button[datetype=ddate], input[datatype=drange]'
+        ;
 
-    var _doc = $(document),
-        _srcEl = $('input[datatype=ddate],button[datatype=ddate]');
+    _doc.delegate( _selector, 'focus', function ( _evt ) {
 
-    _doc.ready( function () {
-        // var _insAr = 0;
-        // DCalendar.autoInit
-        //     && ( _insAr = DCalendar.init() );
-        $('input[datatype=ddate]').addClass('CDCalendar_icon');
-
-    });    
-        
-    _srcEl.on('focus', function ( _evt ) {
         $(this).addClass('cdc_ignore', true);
         JC.f.safeTimeout( function(){
             DCalendar.pickDate( _evt.target || _evt.srcElement );
-        }, null, 'DCalendarClick', 120 );
+        }, null, 'DCalendarClick', 50 );
   
     } );
 
-    _srcEl.on('click', function ( _evt ) {
+    _doc.delegate( _selector, 'click', function ( _evt ) {
+
         $(this).addClass('cdc_ignore', true);
         JC.f.safeTimeout( function(){
             DCalendar.pickDate( _evt.target || _evt.srcElement );
-        }, null, 'DCalendarClick', 120 );
+        }, null, 'DCalendarClick', 50 );
 
     });
 
@@ -1391,6 +1430,13 @@
         }, null, 'DCalendarResize', 20 );
 
     });
+
+    _doc.ready( function () {
+        // var _insAr = 0;
+        // DCalendar.autoInit
+        //     && ( _insAr = DCalendar.init() );
+        DCalendar.init( true );
+    });    
     
     return JC.DCalendar;
 

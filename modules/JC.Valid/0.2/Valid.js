@@ -1251,7 +1251,7 @@
                     <input type="TEXT" name="company_d" errmsg="请填写正确的日期范围2013-05-01 - 2013-05-31" datatype="daterange" minvalue="2013-05-01" maxvalue="2013-05-31" >
                 </div>
          */
-        , d: 
+        , 'd': 
             function( _item, _noError ){
                 var _p = this, _val = $.trim( _item.val() ), _r = true, _date = JC.f.parseDate( _val, _item ), _tmpDate;
                     
@@ -1264,6 +1264,8 @@
                     if( _r && _p.isMaxvalue( _item ) && ( _tmpDate = _p.maxvalue( _item, 'd' ) ) ){
                         _date.getTime() > _tmpDate.getTime() && ( _r = false );
                     }
+                }else if( _val ){
+                    _r = false;
                 }
 
                 !_r && !_noError && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
@@ -1271,6 +1273,8 @@
                 return _r;
             }
         , 'date': function(){ return this.d.apply( this, JC.f.sliceArgs( arguments ) ); }
+        , 'ddate': function(){ return this.d.apply( this, JC.f.sliceArgs( arguments ) ); }
+
         /**
          * 检查两个输入框的日期
          * <br />日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD
@@ -1342,6 +1346,7 @@
 
                 return _r;
             }
+        , 'drange': function(){ return this.daterange.apply( this, JC.f.sliceArgs( arguments ) ); }
         /**
          * 检查时间格式, 格式为 hh:mm:ss
          * @method  time

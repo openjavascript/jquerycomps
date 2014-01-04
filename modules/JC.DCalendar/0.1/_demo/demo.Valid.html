@@ -34,77 +34,43 @@
 	<link href='../../../../modules/JC.Valid/0.2/res/default/style.css' rel="stylesheet" />
 </head>
 <body>
-	
-
-	
 
 	<dl>
-		
 		<dd>
-			<input type="text"  datatype="ddate" class="calendar" value="2013-12-25" />
+            <input type="text" class="calendar" value="" 
+            datatype="ddate" 
+            reqmsg="日期" 
+            />
 		</dd>
+
 		<dd>
-			<input type="text"  datatype="ddate" class="calendar" value="2014-01-25" currentCanSelect="false" />
-			今天不可选
+            <input type="text" class="calendar" value="asdfas" 
+            datatype="ddate" 
+            reqmsg="日期" 
+            errmsg="请填写正确的日期" 
+            />
 		</dd>
+
 		<dd>
-			<input type="text" > not date
+            <input type="text" class="calendar" value="2013-12-25" 
+            datatype="ddate" 
+            reqmsg="日期" 
+            />
 		</dd>
+
 		<dd>
-			<input type="text" datatype="ddate" 
-				minvalue="2013|12|10" 
-				maxvalue="2014-01-30" >
-			minvalue="2013-12-10" maxvalue="2014-01-30"
+            <input type="text" class="calendar" value="" 
+            datatype="drange" 
+            reqmsg="日期" 
+            errmsg="请填写正确的日期范围"
+            />
+            <input type="text" class="calendar" value="" 
+            datatype="drange" 
+            reqmsg="日期" 
+            errmsg="请填写正确的日期范围"
+            />
+            <em class="error"></em>
 		</dd>
-		<dd>
-			<input type="text" datatype="ddate" 
-				minvalue="2013|01|10" 
-				maxvalue="2014-12-30" >
-			minvalue="2013-01-10" maxvalue="2014-12-30"
-		</dd>
-		<dd>
-			<input type="text" datatype="ddate" 
-				minvalue="2013|12|10" 
-				 >
-			minvalue="2013-12-10"
-		</dd>
-		<dd>
-			<input type="text" datatype="ddate"  
-				maxvalue="2014-01-30" >
-			maxvalue="2014-01-30"
-		</dd>
-		<dd>
-			<input type="text"  datatype="ddate" class="calendar" 
-				value=""
-				weekendCanSelect="false"
-				calendarshow="calendarShow"
-				calendarhide="calendarhide"
-				updatedate="updatedate"
-				updatemonth="updatemonth"
-				updateyear="updateyear"
-				updateprevmonth="updateprevmonth"
-				updatenextmonth="updatenextmonth"
-				updateprevyear="updateprevyear"
-				updatenextyear="updatenextyear"
-				beforeupdatemonth="beforeupdatemonth"
-				beforeupdateyear="beforeupdateyear"
-				updateprevpageyear="updateprevpageyear"
-				updatenextpageyear="updatenextpageyear"
-				 /> 
-				manual 各种回调 
-		</dd>
-        <dd>
-            <input type="text" name="date6" class="manualPickDate" value="20110201" />
-            manual JC.DCalendar.pickDate
-        </dd>
-        <dd>
-            <input type="text" name="date7" class="manualPickDate" />
-            manual JC.DCalendar.pickDate
-        </dd>
-        <dd>
-            <button datatype="ddate">button 日期</button>
-            
-        </dd>
     </dl>
 
 	<script src="../../../../lib.js"></script>
@@ -113,87 +79,6 @@
         JC.debug = true;
         requirejs( [ 'JC.DCalendar', 'JC.Valid' ], function( DCalendar, Valid ){
     	});
-        
-
-        function calendarShow( selector ) {
-        	var ins = this;
-        	JC.log( "calendarshow", new Date().getTime(), selector.val() );
-        }
-
-        function updatedate( selector ) {
-        	var selector = $( selector );
-        	JC.log( "updatedate", selector.val() );
-        }
-
-        function calendarhide( selector ) {
-        	JC.log( "calendarhide", $(selector).val(), new Date().getTime() );
-        }
-
-        function updatemonth( selector ) {
-        	var ins = this;
-
-        	JC.log("updatemonth", new Date().getTime() );
-        }
-
-        function updateyear( selector ) {
-        	var ins = this;
-
-        	JC.log("updateyear", new Date().getTime() );
-        }
-
-        function updateprevmonth( selector ) {
-        	var ins = this;
-
-        	JC.log("updateprevmonth", new Date().getTime() );
-        }
-
-        function updatenextmonth( selector ) {
-        	var ins = this;
-        	
-        	JC.log("updatenextmonth", new Date().getTime() );
-        }
-
-        function updateprevyear( selector ) {
-        	var ins = this;
-
-        	JC.log("updateprevyear", new Date().getTime() );
-        }
-
-        function updatenextyear( selector ) {
-        	var ins = this;
-        	
-        	JC.log("updatenextyear", new Date().getTime() );
-        }
-
-
-        function beforeupdatemonth( selector ) {
-        	var ins = this;
-        	
-        	JC.log("beforeupdatemonth", new Date().getTime() );
-        }
-
-        function beforeupdateyear( selector ) {
-        	var ins = this;
-        	
-        	JC.log("beforeupdateyear", new Date().getTime() );
-        }
-
-        function updatenextpageyear() {
-        	var ins = this;
-        	
-        	JC.log("updatenextpageyear", new Date().getTime() );
-        }
-
-        function updateprevpageyear() {
-        	var ins = this;
-        	
-        	JC.log("updateprevpageyear", new Date().getTime() );
-        }
-
-
-        $('.manualPickDate').click( function () {
-        	JC.DCalendar.pickDate( this );
-        } );
     </script>
 </body>
 </html>
