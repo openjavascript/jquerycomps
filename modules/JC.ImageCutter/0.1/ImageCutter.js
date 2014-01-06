@@ -114,9 +114,9 @@
                         , 'left': _newSize.left + 'px'
                         , 'top': _newSize.top + 'px'
                     });
-
                     _img.prependTo( _p.selector() );
-                    _p._view.updateDragger( _newSize );
+
+                    _p._view.initDragger( _newSize );
                 });
 
                 _p.on( 'CICSizeError', function( _evt, _width, _height, _img ){
@@ -189,74 +189,116 @@
             function(){
             }
 
-        , dragger:
+        , draggerList:
             function(){
-                if( !this._dragger ){
-                    this._dragger = 
+                if( !this._draggerList ){
+                    this._draggerList = 
                         $( 
                             JC.f.printf( 
                                 '{0}{1}{2}{3}{4}{5}{6}{7}{8}'
-                                , '<button type="button" class="cic_btn cic_tl"></button>'
-                                , '<button type="button" class="cic_btn cic_tc"></button>'
-                                , '<button type="button" class="cic_btn cic_tr"></button>'
-                                , '<button type="button" class="cic_btn cic_ml"></button>'
-                                , '<button type="button" class="cic_btn cic_mr"></button>'
-                                , '<button type="button" class="cic_btn cic_bl"></button>'
-                                , '<button type="button" class="cic_btn cic_bc"></button>'
-                                , '<button type="button" class="cic_btn cic_br"></button>'
+                                , '<button type="button" class="cic_btn cic_btnTl"></button>'
+                                , '<button type="button" class="cic_btn cic_btnTc"></button>'
+                                , '<button type="button" class="cic_btn cic_btnTr"></button>'
+                                , '<button type="button" class="cic_btn cic_btnMl"></button>'
+                                , '<button type="button" class="cic_btn cic_btnMr"></button>'
+                                , '<button type="button" class="cic_btn cic_btnBl"></button>'
+                                , '<button type="button" class="cic_btn cic_btnBc"></button>'
+                                , '<button type="button" class="cic_btn cic_btnBr"></button>'
                             )
                          );
-                    this._dragger.appendTo( this.selector() );
+                    this._draggerList.hide().appendTo( this.selector() );
                 }
-                return this._dragger;
+                return this._draggerList;
             }
 
         , btnTl:
             function(){
-                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
+                !this._btnTl && ( this.draggerList(), this._btnTl =  this.selector().find( 'button.cic_btnTl' ) );
                 return this._btnTl;
             }
 
         , btnTc:
             function(){
-                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
-                return this._btnTl;
+                !this._btnTc && ( this.draggerList(), this._btnTc =  this.selector().find( 'button.cic_btnTc' ) );
+                return this._btnTc;
             }
 
         , btnTr:
             function(){
-                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
-                return this._btnTl;
+                !this._btnTr && ( this.draggerList(), this._btnTr =  this.selector().find( 'button.cic_btnTr' ) );
+                return this._btnTr;
             }
 
         , btnMl:
             function(){
-                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
-                return this._btnTl;
+                !this._btnMl && ( this.draggerList(), this._btnMl =  this.selector().find( 'button.cic_btnMl' ) );
+                return this._btnMl;
             }
 
         , btnMr:
             function(){
-                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
-                return this._btnTl;
+                !this._btnMr && ( this.draggerList(), this._btnMr =  this.selector().find( 'button.cic_btnMr' ) );
+                return this._btnMr;
             }
 
         , btnBl:
             function(){
-                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
-                return this._btnTl;
+                !this._btnBl && ( this.draggerList(), this._btnBl =  this.selector().find( 'button.cic_btnBl' ) );
+                return this._btnBl;
             }
 
         , btnBc:
             function(){
-                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
-                return this._btnTl;
+                !this._btnBc && ( this.draggerList(), this._btnBc =  this.selector().find( 'button.cic_btnBc' ) );
+                return this._btnBc;
             }
 
         , btnBr:
             function(){
-                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
-                return this._btnTl;
+                !this._btnBr && ( this.draggerList(), this._btnBr =  this.selector().find( 'button.cic_btnBr' ) );
+                return this._btnBr;
+            }
+
+        , maskList:
+            function(){
+                if( !this._maskList ){
+                    this._maskList = 
+                        $( 
+                            JC.f.printf( 
+                                '{0}{1}{2}{3}'
+                                , '<div class="cic_mask cic_maskLeft"></div>'
+                                , '<div class="cic_mask cic_maskTop"></div>'
+                                , '<div class="cic_mask cic_maskRight"></div>'
+                                , '<div class="cic_mask cic_maskBottom"></div>'
+                            )
+                         );
+                    this._maskList.hide().appendTo( this.selector() );
+                }
+                return this._maskList;
+            }
+
+        , maskLeft:
+            function(){
+                !this._maskLeft && ( this.maskList(), this._maskLeft =  this.selector().find( 'button.cic_maskLeft' ) );
+                return this._maskLeft;
+            }
+
+        , maskTop:
+            function(){
+                !this._maskTop && ( this.maskList(), this._maskTop =  this.selector().find( 'button.cic_maskTop' ) );
+                return this._maskTop;
+            }
+
+        , maskRight:
+            function(){
+                !this._maskRight && ( this.maskList(), this._maskRight =  this.selector().find( 'button.cic_maskRight' ) );
+                return this._maskRight;
+            }
+
+        , maskBottom:
+            function(){
+                !this._maskBottom && ( this.maskList(), this._maskBottom =  this.selector().find( 'button.cic_maskBottom' ) );
+                return this._maskBottom;
             }
 
         , cicErrorBox:
@@ -299,36 +341,71 @@
                     _img.attr( 'src', _imgUrl );
             }
 
-        , updateDragger:
+        , initDragger:
             function( _size ){
+                this._model.maskList()
+
                 var _p = this
-                    , _dragger = _p._model.dragger( _size )
+                    , _dragger = _p._model.draggerList()
+                    , _draggerSize = Math.ceil( ( _size.zoom.width > _size.zoom.height ? _size.zoom.height : _size.zoom.width ) / 2 )
+                    , _btnSize = _p._model.btnTl().width()
+                    , _srcDraggerSize = _draggerSize
+                    , _draggerSize = _draggerSize - _btnSize
+                    , _halfSize = _draggerSize / 2
+                    , _x = _size.left + ( _size.zoom.width - _draggerSize ) / 2 - _btnSize / 2
+                    , _y = _size.top + ( _size.zoom.height - _draggerSize ) / 2 - _btnSize / 2
+
+                    ;
+                JC.log( 'initDragger', _draggerSize, new Date().getTime() );
+
+                _p._model.btnTl().css( { 'left': _x , 'top': _y } );
+                _p._model.btnTc().css( { 'left': ( _x + _halfSize ), 'top': _y } );
+                _p._model.btnTr().css( { 'left': ( _x + _draggerSize ), 'top': _y } );
+
+                _p._model.btnMl().css( { 'left': _x, 'top': ( _y + _halfSize ) } );
+                _p._model.btnMr().css( { 'left': _x + _draggerSize, 'top': ( _y + _halfSize ) } );
+
+
+                _p._model.btnBl().css( { 'left': _x, 'top': _y + _draggerSize } );
+                _p._model.btnBc().css( { 'left': _x + _halfSize, 'top': _y + _draggerSize } );
+                _p._model.btnBr().css( { 'left': _x + _draggerSize , 'top': _y + _draggerSize } );
+
+                _p._model.draggerList().show();
+
+                _p.initMask( _x, _y, _size );
+            }
+
+        , initMask:
+            function( _x, _y, _size ){
+                var _p = this
+                    , _maskList = _p._model.maskList()
                     ;
             }
 
         , sizeError:
             function( _width, _height, _img ){
                 this._model.cicErrorBox().show().html(
-                    JC.f.printf( '{5}<p>图片实际宽高为: {2}, {3}</p><p>可接受的最小宽高为: {0}, {1}</p>{4}'
-                                , this._model.cicMinWidth(), this._model.cicMinHeight()
-                                , _width, _height
-                                , '<a href="' + _img.attr( 'src' ) + '" target="_blank">查看图片</a>'
-                                , '<h3>图片尺寸错误 </h3>'
-                                )
+                    JC.f.printf( 
+                        '{5}<p>图片实际宽高为: {2}, {3}</p><p>可接受的最小宽高为: {0}, {1}</p>{4}'
+                        , this._model.cicMinWidth(), this._model.cicMinHeight()
+                        , _width, _height
+                        , '<a href="' + _img.attr( 'src' ) + '" target="_blank">查看图片</a>'
+                        , '<h3>图片尺寸错误 </h3>'
+                    )
                 );
             }
 
         , zoomError:
             function( _width, _height, _img, _newSize ){
                 this._model.cicErrorBox().show().html(
-                    JC.f.printf( '{5}<p>图片实际宽高为: {2}, {3}</p><p>图片缩放后宽高为: {6}, {7}</p>' 
-                                + '<p>可接受的最小宽高为: {0}, {1}</p>{4}'
-                                , this._model.cicMinWidth(), this._model.cicMinHeight()
-                                , _width, _height
-                                , '<a href="' + _img.attr( 'src' ) + '" target="_blank">查看图片</a>'
-                                , '<h3>图片缩放尺寸错误 </h3>'
-                                , _newSize.zoom.width, _newSize.zoom.height
-                                )
+                    JC.f.printf( 
+                        '{5}<p>图片实际宽高为: {2}, {3}</p><p>图片缩放后宽高为: {6}, {7}</p><p>可接受的最小宽高为: {0}, {1}</p>{4}'
+                        , this._model.cicMinWidth(), this._model.cicMinHeight()
+                        , _width, _height
+                        , '<a href="' + _img.attr( 'src' ) + '" target="_blank">查看图片</a>'
+                        , '<h3>图片缩放尺寸错误 </h3>'
+                        , _newSize.zoom.width, _newSize.zoom.height
+                    )
                 );
             }
 
