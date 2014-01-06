@@ -96,7 +96,17 @@
 
                 _p.on( 'CICImageLoad', function( _evt, _img, _width, _height ){
 
+                    if( _width < _p._model.cicMinWidth() || _height < _p._model.cicMinHeight() ){
+                        _p.trigger( 'CICSizeError', [ _width, _height, _img ] );
+                        return;
+                    }
+
                     var _newSize = _p._model.size( _width, _height );
+
+                    if( _newSize.zoom.width < _p._model.cicMinWidth() || _newSize.zoom.height < _p._model.cicMinHeight() ){
+                        _p.trigger( 'CICZoomError', [ _width, _height, _img, _newSize ] );
+                        return;
+                    }
 
                     _img.css( { 
                         'width': _newSize.zoom.width + 'px'
@@ -108,6 +118,15 @@
                     _img.prependTo( _p.selector() );
                     _p._view.updateDragger( _newSize );
                 });
+
+                _p.on( 'CICSizeError', function( _evt, _width, _height, _img ){
+                    _p._view.sizeError( _width, _height, _img );
+                });
+
+                _p.on( 'CICZoomError', function( _evt, _width, _height, _img, _newSize ){
+                    _p._view.zoomError( _width, _height, _img, _newSize );
+                });
+
             }
 
         , _inited:
@@ -239,6 +258,15 @@
                 this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
                 return this._btnTl;
             }
+
+        , cicErrorBox:
+            function(){
+                if( !this._cicErrorBox ){
+                    this._cicErrorBox = $( '<div class="CIC_ERROR"></div>' );
+                    this._cicErrorBox.appendTo( this.selector() );
+                }
+                return this._cicErrorBox;
+            }
     });
 
     JC.f.extendObject( ImageCutter.View.prototype, {
@@ -252,6 +280,8 @@
             function(){
                 this.selector().find( 'img' ).remove();
                 this.selector().find( 'button' ).hide();
+
+                this._model.cicErrorBox().hide();
             }
 
         , update:
@@ -275,6 +305,33 @@
                     , _dragger = _p._model.dragger( _size )
                     ;
             }
+
+        , sizeError:
+            function( _width, _height, _img ){
+                this._model.cicErrorBox().show().html(
+                    JC.f.printf( '{5}<p>图片实际宽高为: {2}, {3}</p><p>可接受的最小宽高为: {0}, {1}</p>{4}'
+                                , this._model.cicMinWidth(), this._model.cicMinHeight()
+                                , _width, _height
+                                , '<a href="' + _img.attr( 'src' ) + '" target="_blank">查看图片</a>'
+                                , '<h3>图片尺寸错误 </h3>'
+                                )
+                );
+            }
+
+        , zoomError:
+            function( _width, _height, _img, _newSize ){
+                this._model.cicErrorBox().show().html(
+                    JC.f.printf( '{5}<p>图片实际宽高为: {2}, {3}</p><p>图片缩放后宽高为: {6}, {7}</p>' 
+                                + '<p>可接受的最小宽高为: {0}, {1}</p>{4}'
+                                , this._model.cicMinWidth(), this._model.cicMinHeight()
+                                , _width, _height
+                                , '<a href="' + _img.attr( 'src' ) + '" target="_blank">查看图片</a>'
+                                , '<h3>图片缩放尺寸错误 </h3>'
+                                , _newSize.zoom.width, _newSize.zoom.height
+                                )
+                );
+            }
+
     });
 
     /**
