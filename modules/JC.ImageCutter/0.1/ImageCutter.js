@@ -187,15 +187,55 @@
             JC.log( 'ImageCutter.dragBtnMouseMove', _posX, _posY, _direct, new Date().getTime() );
 
             switch( _direct ){
-                case 'cic_btnTl': break;
-                case 'cic_btnTc': break;
-                case 'cic_btnTr': break;
-                case 'cic_btnMl': break;
-                case 'cic_btnMr': break;
-                case 'cic_btnBl': break;
-                case 'cic_btnBc': break;
-                case 'cic_btnBr': break;
+                case 'cic_btnTl': ImageCutter.resizeTopLeft( _di, _posX, _posY, _evt ); break;
+                case 'cic_btnTc': ImageCutter.resizeTopCenter( _di, _posX, _posY, _evt ); break;
+                case 'cic_btnTr': ImageCutter.resizeTopRight( _di, _posX, _posY, _evt ); break;
+                case 'cic_btnMl': ImageCutter.resizeMidLeft( _di, _posX, _posY, _evt ); break;
+                case 'cic_btnMr': ImageCutter.resizeMidRight( _di, _posX, _posY, _evt ); break;
+                case 'cic_btnBl': ImageCutter.resizeBottomLeft( _di, _posX, _posY, _evt ); break;
+                case 'cic_btnBc': ImageCutter.resizeBottomCenter( _di, _posX, _posY, _evt ); break;
+                case 'cic_btnBr': ImageCutter.resizeBottomRight( _di, _posX, _posY, _evt ); break;
             }
+        };
+
+    ImageCutter.resizeTopLeft =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+        };
+
+    ImageCutter.resizeTopCenter =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+        };
+
+    ImageCutter.resizeTopRight =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+        };
+
+    ImageCutter.resizeMidLeft =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+        };
+
+    ImageCutter.resizeMidRight =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+        };
+
+    ImageCutter.resizeBottomLeft=
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+        };
+
+    ImageCutter.resizeBottomCenter=
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+        };
+
+    ImageCutter.resizeBottomRight=
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
         };
 
     ImageCutter.dragBtnMouseUp =
