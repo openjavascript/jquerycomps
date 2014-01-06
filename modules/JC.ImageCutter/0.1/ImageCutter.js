@@ -78,7 +78,7 @@
     ImageCutter.minheight = 50;
 
     ImageCutter.dragInfo =
-        function( _p, _evt, _size ){
+        function( _p, _evt, _size, _srcSelector ){
             if( _p && _evt && _size ){
                 ImageCutter._dragInfo = {
                     'ins': _p
@@ -87,6 +87,7 @@
                     , 'tmpSize': _size
                     , 'pageX': _evt.pageX
                     , 'pageY': _evt.pageY
+                    , 'srcSelector': _srcSelector
                 }
                 //window.JSON && JC.log( JSON.stringify( _size ) );
             }
@@ -137,9 +138,10 @@
     */
     ImageCutter.dragMainMouseMove =
         function( _evt ){
+            if( !( ImageCutter.dragInfo() && _evt ) ) return;
             var _di = ImageCutter.dragInfo(), _p;
-            if( !( _di && _evt ) ) return;
-            var _posX = _di.pageX - _evt.pageX
+            var _p = _di.ins
+                , _posX = _di.pageX - _evt.pageX
                 , _posY = _di.pageY - _evt.pageY
 
                 , _newX = _di.size.dragger.left - _posX
@@ -158,64 +160,49 @@
             _di.tmpSize.dragger.left = _newX;
             _di.tmpSize.dragger.top = _newY;
 
-            _di.ins.updatePosition( _di.tmpSize );
+            _p.updatePosition( _di.tmpSize );
 
             //JC.log( 'ImageCutter.dragMainMouseMove', _newX, _newY );
         };
 
     ImageCutter.dragMainMouseUp =
         function( _evt ){
-            var _di = ImageCutter.dragInfo(), _p;
-            if( !_di ) return;
-            _p = _di.ins;
+            if( !ImageCutter.dragInfo() ) return;
+            var _di = ImageCutter.dragInfo(), _p = _di.ins;
 
             _p._size( _di.tmpSize );
 
             _p.cleanStatus();
         };
 
-    ImageCutter.dragBtnMouseUp =
+    ImageCutter.dragBtnMouseMove =
         function( _evt ){
-            var _di = ImageCutter.dragInfo(), _p;
-            if( !( _di && _evt ) ) return;
-
-            JC.log( 'ImageCutter.dragBtnMouseUp', new Date().getTime() );
-            return;
-
-            var _posX = _di.pageX - _evt.pageX
+            if( !( ImageCutter.dragInfo() && _evt ) ) return;
+            var _di = ImageCutter.dragInfo()
+                , _posX = _di.pageX - _evt.pageX
                 , _posY = _di.pageY - _evt.pageY
-
-                , _newX = _di.size.dragger.left - _posX
-                , _newY = _di.size.dragger.top - _posY
-
-                , _maxX = _di.size.maxX - _di.size.dragger.srcSize
-                , _maxY = _di.size.maxY - _di.size.dragger.srcSize
+                , _direct = _di.srcSelector.attr( 'diretype' )
                 ;
 
-            _newX < _di.size.minX && ( _newX = _di.size.minX );
-            _newX > _maxX && ( _newX = _maxX );
+            JC.log( 'ImageCutter.dragBtnMouseMove', _posX, _posY, _direct, new Date().getTime() );
 
-            _newY < _di.size.minY && ( _newY = _di.size.minY );
-            _newY > _maxY && ( _newY = _maxY );
-
-            _di.tmpSize.dragger.left = _newX;
-            _di.tmpSize.dragger.top = _newY;
-
-            _di.ins.updatePosition( _di.tmpSize );
-
-            //JC.log( 'ImageCutter.dragMainMouseMove', _newX, _newY );
+            switch( _direct ){
+                case 'cic_btnTl': break;
+                case 'cic_btnTc': break;
+                case 'cic_btnTr': break;
+                case 'cic_btnMl': break;
+                case 'cic_btnMr': break;
+                case 'cic_btnBl': break;
+                case 'cic_btnBc': break;
+                case 'cic_btnBr': break;
+            }
         };
 
     ImageCutter.dragBtnMouseUp =
         function( _evt ){
-            var _di = ImageCutter.dragInfo(), _p;
-            if( !_di ) return;
-
+            if( !ImageCutter.dragInfo() ) return;
+            var _di = ImageCutter.dragInfo(), _p = _di.ins;
             JC.log( 'ImageCutter.dragBtnMouseUp', new Date().getTime() );
-            return;
-            _p = _di.ins;
-
-            _p._size( _di.tmpSize );
 
             _p.cleanStatus();
         };
@@ -269,10 +256,10 @@
                     _p._model.dragMain().addClass( 'cic_move' );
 
                     ImageCutter.cleanInfo();
-                    ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ) );
+                    ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ), $( this ) );
 
-                    _jdoc.on( 'mouseup', ImageCutter.dragMainMouseUp );
                     _jdoc.on( 'mousemove', ImageCutter.dragMainMouseMove );
+                    _jdoc.on( 'mouseup', ImageCutter.dragMainMouseUp );
 
                     return false;
                 });
@@ -282,10 +269,10 @@
                     JC.log( 'div.cic_btn mousedown', new Date().getTime() );
 
                     ImageCutter.cleanInfo();
-                    ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ) );
+                    ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ), $( this ) );
 
-                    _jdoc.on( 'mouseup', ImageCutter.dragBtnMouseUp );
                     _jdoc.on( 'mousemove', ImageCutter.dragBtnMouseMove );
+                    _jdoc.on( 'mouseup', ImageCutter.dragBtnMouseUp );
 
                     return false;
                 });
@@ -402,14 +389,14 @@
                         $( 
                             JC.f.printf( 
                                 '{0}{1}{2}{3}{4}{5}{6}{7}{8}'
-                                , '<button type="button" class="cic_btn cic_btnTl"></button>'
-                                , '<button type="button" class="cic_btn cic_btnTc"></button>'
-                                , '<button type="button" class="cic_btn cic_btnTr"></button>'
-                                , '<button type="button" class="cic_btn cic_btnMl"></button>'
-                                , '<button type="button" class="cic_btn cic_btnMr"></button>'
-                                , '<button type="button" class="cic_btn cic_btnBl"></button>'
-                                , '<button type="button" class="cic_btn cic_btnBc"></button>'
-                                , '<button type="button" class="cic_btn cic_btnBr"></button>'
+                                , '<button type="button" class="cic_btn cic_btnTl" diretype="cic_btnTl" ></button>'
+                                , '<button type="button" class="cic_btn cic_btnTc" diretype="cic_btnTc" ></button>'
+                                , '<button type="button" class="cic_btn cic_btnTr" diretype="cic_btnTr" ></button>'
+                                , '<button type="button" class="cic_btn cic_btnMl" diretype="cic_btnMl" ></button>'
+                                , '<button type="button" class="cic_btn cic_btnMr" diretype="cic_btnMr" ></button>'
+                                , '<button type="button" class="cic_btn cic_btnBl" diretype="cic_btnBl" ></button>'
+                                , '<button type="button" class="cic_btn cic_btnBc" diretype="cic_btnBc" ></button>'
+                                , '<button type="button" class="cic_btn cic_btnBr" diretype="cic_btnBr" ></button>'
                             )
                          );
                     this._draggerList.hide().appendTo( this.selector() );
