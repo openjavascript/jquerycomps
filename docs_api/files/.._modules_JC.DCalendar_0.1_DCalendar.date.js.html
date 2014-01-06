@@ -204,10 +204,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//TODO: 每种不同的日期类型只能有一个实例, 使用单例模式创建各种日期类型的实例, 2014-01-05
-//TODO: 改变窗口大小/滚动条滚动时, 日历应该实时响应变化, 显示在合适的位置, 2014-01-05
-//TODO: 上下按钮双击的时间, 不应该出错 蓝色 背景的选择状态, 2014-01-05
- ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
+ ;(function(define, _win) { &#x27;use strict&#x27;; define( [&#x27;JC.BaseMVC&#x27;], function () {
 /**
  * 双日历日期选择组件
  * &lt;p&gt;
@@ -341,20 +338,18 @@
  * @author  zuojing   &lt;zuojing1013@gmail.com&gt; | 75 Team
 */
     JC.DCalendar = DCalendar;
- 
-    function DCalendar( _selector ){
-        _selector &amp;&amp; ( _selector = $( _selector ) );
-        
-        if( DCalendar.getInstance( _selector ) ) return DCalendar.getInstance( _selector );
-        DCalendar.getInstance( _selector, this );
- 
-        this._model = new DCalendar.Model( _selector );
-        this._view = new DCalendar.View( this._model );
-        
+
+    function DCalendar(_selector) {
+        _selector &amp;&amp; (_selector = $(_selector));
+        if ( DCalendar.getInstance(_selector) ) return DCalendar.getInstance(_selector);
+        DCalendar.getInstance(_selector, this);
+        this._model = new DCalendar.Model(_selector);
+        this._view = new DCalendar.View(this._model);
         this._init();
 
         JC.log( &#x27;DCalendar inited&#x27;, new Date().getTime() );
     }
+
     /**
      * 获取或设置 DCalendar 的实例
      * @method  getInstance
@@ -362,14 +357,22 @@
      * @static
      * @return  {DCalendarInstance}
      */
-    DCalendar.getInstance = function ( _selector, _setter ) {
+    DCalendar.getInstance = function (_selector, _setter) {
+        var _type = DCalendar._type( _selector );
 
-        if( typeof _selector == &#x27;string&#x27; &amp;&amp; !/&lt;/.test( _selector ) ) 
+        if ( typeof _selector === &#x27;string&#x27; &amp;&amp; !/&lt;/.test( _selector ) ) 
             _selector = $(_selector);
-        if( !(_selector &amp;&amp; _selector.length ) || ( typeof _selector == &#x27;string&#x27; ) ) return;
-        typeof _setter != &#x27;undefined&#x27; &amp;&amp; _selector.data( DCalendar.Model._instanceName, _setter );
-        return _selector.data( DCalendar.Model._instanceName );
+        
+        if ( !(_selector &amp;&amp; _selector.length ) || ( typeof _selector === &#x27;string&#x27; ) ) return;
+        
+        if ( typeof _setter !== &#x27;undefined&#x27; ) {
+            DCalendar.ins[_type] = _setter;
+        }
+        
+        return DCalendar.ins[_type];
     };
+
+    DCalendar.ins = {};
     /**
      * 初始化可识别的 DCalendar 实例
      * @method  init
@@ -378,35 +381,36 @@
      * @static
      * @return  {Array of DCalendarInstance}
      */
-    DCalendar.init = function ( _selector, _onlyStatus ) {
+    DCalendar.init = function (_selector, _onlyStatus) {
         var _r = [] ;
 
-        typeof _selector == &#x27;boolean&#x27; &amp;&amp; ( _onlyStatus = _selector, _selector = document );
+        typeof _selector === &#x27;boolean&#x27; &amp;&amp; ( _onlyStatus = _selector, _selector = document );
         
-        _selector = $( _selector || document );
+        _selector = $(_selector || document);
 
         if ( _selector.length ) {
-            var _nodeName = _selector.length === 1 ? _selector.prop( &#x27;nodeName&#x27; ).toLowerCase() : &#x27;&#x27;;
+            var _nodeName = _selector.length === 1 ? _selector.prop(&#x27;nodeName&#x27;).toLowerCase() : &#x27;&#x27;;
 
-            if ( _nodeName &amp;&amp; ( _nodeName == &#x27;input&#x27; || _nodeName == &#x27;button&#x27; ) ) {
+            if ( _nodeName &amp;&amp; (_nodeName === &#x27;input&#x27; || _nodeName === &#x27;button&#x27;) ) {
                 DCalendar._initStatus( _selector );
-                !_onlyStatus &amp;&amp; _r.push( new DCalendar(_selector) );
+                !_onlyStatus &amp;&amp; _r.push(new DCalendar(_selector));
             } else {
-                _selector.find( [ 
-                                    &#x27;input[datatype=ddate]&#x27;
-                                    , &#x27;input[datatype=drange]&#x27;
+                _selector.find([ 
+                                    &#x27;input[datatype=ddate][type=text]&#x27;
+                                    , &#x27;input[datatype=drange][type=text]&#x27;
                                     , &#x27;button[datatype=ddate]&#x27; 
+                                    , &#x27;input[multidate=ddate][type=text]&#x27; 
                                     , &#x27;button[multidate=ddate]&#x27; 
-                                    , &#x27;button[multidate=ddate]&#x27; 
-                                ].join() ).each( function() {
-                    DCalendar._initStatus( $( this ) );
-                    !_onlyStatus &amp;&amp; _r.push( new DCalendar( this ) );
+                                ].join()).each( function() {
+                    DCalendar._initStatus( $(this) );
+                    !_onlyStatus &amp;&amp; _r.push( new DCalendar(this) );
                 })
             }
         }
 
         return _r;
     };
+
     /**
      * 初始化可识别的 DCalendar 的状态
      * @method  _initStatus
@@ -414,33 +418,59 @@
      * @static
      * @protected
      */
-    DCalendar._initStatus =
-        function( _selector ){
-            _selector &amp;&amp; ( _selector = $( _selector ) );
-            if( !( _selector &amp;&amp; _selector.length ) ) return;
-            var _tmp;
-            _selector.val() 
-                &amp;&amp; ( _tmp = JC.f.dateDetect( _selector.val() ) )
-                &amp;&amp; _selector.val( JC.f.formatISODate( _tmp )  )
+    DCalendar._initStatus = function (_selector) {
+        var _tmp;
 
-            _selector.attr( &#x27;minValue&#x27; )
-                &amp;&amp; ( _tmp = JC.f.dateDetect( _selector.attr( &#x27;minValue&#x27; ) ) )
-                &amp;&amp; _selector.attr( &#x27;minValue&#x27;, JC.f.formatISODate( _tmp )  )
+        _selector &amp;&amp; ( _selector = $(_selector) );
+        if( !( _selector &amp;&amp; _selector.length ) ) return;
+        
+        _selector.val() 
+            &amp;&amp; ( _tmp = JC.f.dateDetect( _selector.val() ) )
+            &amp;&amp; _selector.val( JC.f.formatISODate( _tmp )  )
+
+        _selector.attr(&#x27;minValue&#x27;)
+            &amp;&amp; ( _tmp = JC.f.dateDetect( _selector.attr(&#x27;minValue&#x27;) ) )
+            &amp;&amp; _selector.attr(&#x27;minValue&#x27;, JC.f.formatISODate( _tmp ))
 
 
-            _selector.attr( &#x27;maxValue&#x27; )
-                &amp;&amp; ( _tmp = JC.f.dateDetect( _selector.attr( &#x27;maxValue&#x27; ) ) )
-                &amp;&amp; _selector.attr( &#x27;maxValue&#x27;, JC.f.formatISODate( _tmp )  )
+        _selector.attr( &#x27;maxValue&#x27; )
+            &amp;&amp; ( _tmp = JC.f.dateDetect( _selector.attr(&#x27;maxValue&#x27;) ) )
+            &amp;&amp; _selector.attr(&#x27;maxValue&#x27;, JC.f.formatISODate( _tmp )  )
 
-            _selector.addClass( &#x27;CDCalendar_icon&#x27; );
-        };
+        _selector.addClass(&#x27;CDCalendar_icon&#x27;);
+    };
+
+    DCalendar._type = function (_selector) {
+        // var _r, 
+        //     _type = ( $.trim(_selector.attr(&#x27;multidate&#x27;)).toLowerCase() || &#x27;&#x27; )
+        //         || ( $.trim(_selector.attr(&#x27;datatype&#x27;)).toLowerCase() || &#x27;&#x27; );
+
+        // _selector　&amp;&amp; ( _selector = $(_selector) );
+            
+        // switch ( _type ) {
+        //     case &#x27;week&#x27;: 
+        //     case &#x27;month&#x27;: 
+        //     case &#x27;season&#x27;: 
+        //     case &#x27;year&#x27;: 
+        //     case &#x27;monthday&#x27;: 
+        //         {
+        //             _r = _type;
+        //             break;
+        //         }
+        //     default: 
+        //         _r = &#x27;ddate&#x27;; 
+        //         break;
+        // }
+
+        return &#x27;_ddate&#x27;;
+    },
 
     DCalendar.update = function () {
-        var _items = $( JC.f.printf( &#x27;#{0}&gt;div&#x27;, DCalendar.Model._boxId ) );
+        var _items = $(JC.f.printf( &#x27;#{0}&gt;div&#x27;, DCalendar.Model._boxId ));
 
         if( !_items.length ) return;
 
-        _items.each( function(){
+        _items.each( function() {
             var _p = $(this), 
                 _ins = _p.data( &#x27;CDCalendarIns&#x27; );
 
@@ -475,14 +505,14 @@
                 });
             &lt;/script&gt;
      */  
-    DCalendar.pickDate = function ( _selector ) {
-        var _selector = $( _selector ),
+    DCalendar.pickDate = function (_selector) {
+        var _selector = $(_selector),
             _ins, 
             _isIgnore = _selector.is(&#x27;[ignoreprocess]&#x27;);
 
         if ( !(_selector &amp;&amp; _selector.length) ) return;
         
-        if ( ( $(DCalendar.lastSrc)[0] == _selector[0] ) &amp;&amp; DCalendar.visible ) {
+        if ( ( $(DCalendar.lastSrc)[0] === _selector[0]) &amp;&amp; DCalendar.visible ) {
             _selector.attr(&#x27;cdc_ignore&#x27;, true);
         } else {
             _selector.attr(&#x27;cdc_ignore&#x27;, false);
@@ -496,7 +526,6 @@
         DCalendar.visible = false;
 
         _selector.attr(&#x27;ignoreprocess&#x27;, true)
-            //.addClass(&#x27;js_compDCalendar CDCalendar_icon&#x27;)
             .addClass(&#x27;js_compDCalendar&#x27;)
             .blur();
 
@@ -505,36 +534,37 @@
         _ins = DCalendar.getInstance( _selector );
         !_ins &amp;&amp; ( _ins = new DCalendar( _selector ) );
 
-        _ins.trigger( DCalendar.Model.SHOW );
+        _ins.trigger(DCalendar.Model.SHOW);
 
         return this;
     },
 
     DCalendar.lastSrc = null,
 
-    BaseMVC.build( DCalendar );
+    BaseMVC.build(DCalendar);
 
-    JC.f.extendObject( DCalendar.prototype, {
+    JC.f.extendObject(DCalendar.prototype, {
         _beforeInit: function () {
-            //this.trigger( DCalendar.Model.CDC_INITED );
+            //this.trigger(DCalendar.Model.CDC_INITED );
         },
 
         _initHanlderEvent: function () {
             var _p = this;
 
-            _p.on( &#x27;CDC_INITED&#x27;, function () {
+            _p.on(&#x27;CDC_INITED&#x27;, function () {
                 _p._model.selector().addClass(&#x27;CDCalendar_icon&#x27;);
-            } );
+            });
 
             _p._model.selector().on(&#x27;keydown&#x27;, function ( _evt ) {
                 _evt.preventDefault();
             });
 
             _p.on(DCalendar.Model.SHOW, function () {
+                _p._model.selector(DCalendar.lastSrc);
                 _p._view.show();
                 DCalendar.visible = true;
                 _p._model.calendarshow()
-                    &amp;&amp; _p._model.calendarshow().call( _p, _p.selector() );
+                    &amp;&amp; _p._model.calendarshow().call(_p, _p.selector());
             });
 
             _p.on(DCalendar.Model.HIDDEN, function () {
@@ -543,87 +573,83 @@
                 DCalendar.visible = false;
                 _p.selector().blur();
                 _p._model.calendarhide()
-                    &amp;&amp; _p._model.calendarhide().call( _p, _p.selector() );
+                    &amp;&amp; _p._model.calendarhide().call(_p, _p.selector());
             });
 
-            _p.on(DCalendar.Model.CHANGE, function ( _evt, _srcSelector ) {
-                _p._view.change( _srcSelector );
-            } );
+            _p.on(DCalendar.Model.CHANGE, function (_evt, _srcSelector) {
+                _p._view.change(_srcSelector);
+            });
 
-            _p.on(DCalendar.Model.SETDATE, function ( _evt, _srcSelector ) {
-                _p._model.setSelected( _srcSelector );
+            _p.on(DCalendar.Model.SETDATE, function (_evt, _srcSelector) {
+                _p._model.setSelected(_srcSelector);
                 _p._model.updatedate()
-                    &amp;&amp; _p._model.updatedate().call( _p, _p.selector() );
-
-                //if ( _p._model.hideOnSelect() ) {
-                //    _p.trigger( DCalendar.Model.HIDDEN );
-               // }
+                    &amp;&amp; _p._model.updatedate().call(_p, _p.selector());
 
             });
 
-            _p.on(DCalendar.Model.UPDATESELECTOR, function ( _evt, _srcSelector ) {
+            // _p.on(DCalendar.Model.UPDATESELECTOR, function (_evt, _srcSelector) {
 
-            });
+            // });
 
             _p.on(DCalendar.Model.CLEAR, function () {
                 _p._model.clear();
                 _p._model.calendarclear()
-                    &amp;&amp; _p._model.calendarclear().call( _p, _p.selector() );
+                    &amp;&amp; _p._model.calendarclear().call(_p, _p.selector());
             });
 
-            _p.on(DCalendar.Model.DATEVIEW, function ( _evt, _srcSelector ) {
-                _p._view.dateView( _srcSelector );
+            _p.on(DCalendar.Model.DATEVIEW, function (_evt, _srcSelector) {
+                _p._view.dateView(_srcSelector);
                 _p._model.updatemonth()
-                    &amp;&amp; _p._model.updatemonth().call( _p, _p.selector() );
+                    &amp;&amp; _p._model.updatemonth().call(_p, _p.selector());
             });
 
-            _p.on(DCalendar.Model.MONTHVIEW, function ( _evt, _srcSelector ) {
-                _p._view.monthView( _srcSelector );
+            _p.on(DCalendar.Model.MONTHVIEW, function (_evt, _srcSelector) {
+                _p._view.monthView(_srcSelector);
 
                 if ( $(_srcSelector).attr(&#x27;data-year&#x27;) ) {
                     _p._model.updateyear()
-                    &amp;&amp; _p._model.updateyear().call( _p, _p.selector() );
+                    &amp;&amp; _p._model.updateyear().call(_p, _p.selector());
                 } else {
                     _p._model.beforeupdatemonth()
-                        &amp;&amp; _p._model.beforeupdatemonth().call( _p, _p.selector() );
+                        &amp;&amp; _p._model.beforeupdatemonth().call(_p, _p.selector());
                 }
                 
             });
 
-            _p.on(DCalendar.Model.YEARVIEW, function ( _evt, _srcSelector ) {
-                _p._view.yearView( _srcSelector );
+            _p.on(DCalendar.Model.YEARVIEW, function (_evt, _srcSelector) {
+                _p._view.yearView(_srcSelector);
                 _p._model.beforeupdateyear()
-                    &amp;&amp; _p._model.beforeupdateyear().call( _p, _p.selector() );
+                    &amp;&amp; _p._model.beforeupdateyear().call(_p, _p.selector());
             });
 
             _p.on(DCalendar.Model.UPDATENEXTPAGEYEAR, function () {
                 _p._model.updatenextpageyear()
-                    &amp;&amp; _p._model.updatenextpageyear().call( _p, _p.selector() );
+                    &amp;&amp; _p._model.updatenextpageyear().call(_p, _p.selector());
             });
 
             _p.on(DCalendar.Model.UPDATEPREVPAGEYEAR, function () {
                 _p._model.updateprevpageyear()
-                    &amp;&amp; _p._model.updateprevpageyear().call( _p, _p.selector() );
+                    &amp;&amp; _p._model.updateprevpageyear().call(_p, _p.selector());
             });
 
             _p.on(DCalendar.Model.UPDATEPREVMONTH, function () {
                 _p._model.updateprevmonth()
-                    &amp;&amp; _p._model.updateprevmonth().call( _p, _p.selector() );
+                    &amp;&amp; _p._model.updateprevmonth().call(_p, _p.selector());
             });
 
             _p.on(DCalendar.Model.UPDATENEXTMONTH, function () {
                 _p._model.updatenextmonth()
-                    &amp;&amp; _p._model.updatenextmonth().call( _p, _p.selector() );
+                    &amp;&amp; _p._model.updatenextmonth().call(_p, _p.selector());
             });
 
             _p.on(DCalendar.Model.UPDATEPREVYEAR, function () {
                 _p._model.updateprevyear()
-                    &amp;&amp; _p._model.updateprevyear().call( _p, _p.selector() );
+                    &amp;&amp; _p._model.updateprevyear().call(_p, _p.selector());
             });
 
             _p.on(DCalendar.Model.UPDATENEXTYEAR, function () {
                 _p._model.updatenextyear()
-                    &amp;&amp; _p._model.updatenextyear().call( _p, _p.selector() );
+                    &amp;&amp; _p._model.updatenextyear().call(_p, _p.selector());
             });
 
         }, 
@@ -631,8 +657,6 @@
         _inited: function () {
             
         }
-
-
 
     });
     
@@ -647,7 +671,7 @@
     DCalendar.Model.MONTHVIEW = &quot;CDC_MONTHVIEW&quot;;
     DCalendar.Model.YEARVIEW = &quot;CDC_YEARVIEW&quot;;
     DCalendar.Model.CLEAR = &quot;CDC_CLEAR&quot;;
-    DCalendar.Model.UPDATESELECTOR = &quot;CDC_UPDATESELECTOR&quot;;
+    //DCalendar.Model.UPDATESELECTOR = &quot;CDC_UPDATESELECTOR&quot;;
     DCalendar.Model.UPDATENEXTPAGEYEAR = &quot;CDC_UPDATENEXTPAGEYEAR&quot;;
     DCalendar.Model.UPDATEPREVPAGEYEAR = &quot;CDC_UPDATEPREVPAGEYEAR&quot;;
     DCalendar.Model.UPDATEPREVMONTH = &quot;CDC_UPDATEPREVMONTH&quot;;
@@ -655,7 +679,7 @@
     DCalendar.Model.UPDATEPREVYEAR = &quot;CDC_UPDATEPREVYEAR&quot;;
     DCalendar.Model.UPDATENEXTYEAR = &quot;CDC_UPDATENEXTYEAR&quot;;
 
-    JC.f.extendObject( DCalendar.Model.prototype, {
+    JC.f.extendObject(DCalendar.Model.prototype, {
         init: function () {
             var _p = this;
         },
@@ -668,8 +692,10 @@
                 
                 if ( _selector.prop(&#x27;nodeName&#x27;) 
                     &amp;&amp; _selector.attr(&#x27;datatype&#x27;)
-                    &amp;&amp; ( _selector.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;input&#x27; || _selector.prop(&#x27;nodeName&#x27;).toLowerCase() == &#x27;button&#x27; )
-                    &amp;&amp; ( _selector.attr(&#x27;datatype&#x27;).toLowerCase() == &#x27;ddate&#x27; )
+                    &amp;&amp; ( _selector.prop(&#x27;nodeName&#x27;).toLowerCase() === &#x27;input&#x27; 
+                        || _selector.prop(&#x27;nodeName&#x27;).toLowerCase() === &#x27;button&#x27; )
+                    &amp;&amp; ( _selector.attr(&#x27;datatype&#x27;).toLowerCase() === &#x27;ddate&#x27; 
+                        || _selector.attr(&#x27;multidate&#x27;).toLowerCase() === &#x27;ddate&#x27; )
                 ) {
                     _r = 1;
                 }
@@ -685,7 +711,7 @@
             var _p = this,
                 _r = _p.selector().val().trim();
 
-            _r = ( JC.f.dateDetect( _r ) || new Date() );
+            _r = ( JC.f.dateDetect(_r) || new Date() );
 
             return _r;
 
@@ -702,7 +728,7 @@
         minValue: function () {
             var _r =  this.attrProp(&#x27;minValue&#x27;) || &#x27;&#x27;;            
             
-            _r &amp;&amp; ( _r = JC.f.dateDetect( _r ) );
+            _r &amp;&amp; ( _r = JC.f.dateDetect(_r) );
 
             return _r;
         },
@@ -710,7 +736,7 @@
         maxValue: function () {
             var _r = this.attrProp(&#x27;maxValue&#x27;) || &#x27;&#x27;; 
             
-            _r &amp;&amp; ( _r = JC.f.dateDetect( _r ) );
+            _r &amp;&amp; ( _r = JC.f.dateDetect(_r) );
 
             return _r;
         },
@@ -749,15 +775,7 @@
             return _r;
         },
 
-        hideOnSelect: function () { 
-            var _r = this.boolProp(&#x27;hideOnSelect&#x27;);
-
-            ( typeof _r === &#x27;undefined&#x27; ) &amp;&amp; ( _r = true );
-
-            return _r;
-        },
-
-        allYearsTpl: function ( _startYear, _endYear ) {
+        allYearsTpl: function (_startYear, _endYear) {
             //前14年后13年
             var _p = this,
                 _r = &#x27;&lt;tr&gt;&#x27;,
@@ -783,7 +801,7 @@
 
         },
 
-        datesOfMonthTpl: function ( _date ) {
+        datesOfMonthTpl: function (_date) {
            
             var _p = this,
                 _r = &#x27;&lt;tr&gt;&#x27;,
@@ -792,7 +810,7 @@
                 _today = new Date(),
                 _formatDate,
                 _day,
-                _maxDayOfMonth = JC.f.maxDayOfMonth( _date ),
+                _maxDayOfMonth = JC.f.maxDayOfMonth(_date),
                 _placeholder = &#x27;&#x27;,
                 i,
                 j,
@@ -800,13 +818,13 @@
                 _weekendClass;
 
             for ( i = 1; i &lt;= _maxDayOfMonth; i++ ) {
-                _d = new Date( _date.getFullYear(), _date.getMonth(), i );
+                _d = new Date(_date.getFullYear(), _date.getMonth(), i);
                 _formatDate = JC.f.formatISODate(_d);
-                _day = ( _d.getDay() + 6 ) % 7;
+                _day = (_d.getDay() + 6) % 7;
                 _todayClass = &#x27;&#x27;;
                 _weekendClass = &#x27;&#x27;;
 
-                ( JC.f.isSameDay( _today, _d ) ) &amp;&amp; ( _todayClass = &quot;today&quot; );
+                ( JC.f.isSameDay(_today, _d) ) &amp;&amp; ( _todayClass = &quot;today&quot; );
                 ( _day === 5 || _day === 6 ) &amp;&amp; ( _weekendClass = &quot;weekend&quot; ); 
                 
                 _t = &#x27;&lt;td&gt;&#x27; 
@@ -817,10 +835,12 @@
                     + &#x27;&lt;/a&gt;&lt;/td&gt;&#x27;; 
                
                 if ( i === 1 &amp;&amp; _day &gt; 0) {
-                  
-                    for ( j = 0; j &lt; _day; j++ ) {
+                    
+                    j = _day;
+
+                    while ( j-- ) {
                         _placeholder += &#x27;&lt;td &gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&lt;/a&gt;&lt;/td&gt;&#x27;;
-                    } 
+                    }
 
                     _r = _r + _placeholder;
                     _placeholder = &#x27;&#x27;;
@@ -831,9 +851,11 @@
 
                 if ( i === _maxDayOfMonth &amp;&amp; _day &lt; 6) {
 
-                    for ( j = 0; j &lt; 6 - _day; j++ ) {
+                    j = 6 - _day;
+
+                    while ( j-- ) {
                         _placeholder += &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&lt;/a&gt;&lt;/td&gt;&#x27;;
-                    } 
+                    }
 
                     _r = _r + _placeholder;
                     _placeholder = &#x27;&#x27;;
@@ -962,10 +984,10 @@
                     + &#x27;&lt;div class=&quot;CDC_container&quot; &gt;&#x27;
                         + &#x27;&lt;div class=&quot;CDC_content_box&quot; &gt;&#x27;
                             + &#x27;&lt;div class=&quot;CDC_arrow&quot; &gt;&#x27;
-                                + &#x27;&lt;span class=&quot;CDC_close_btn&quot; title=&quot;关闭&quot;&gt;close&lt;/span&gt;&#x27;
-                                + &#x27;&lt;span class=&quot;CDC_prev_btn&quot; data-action=&quot;prev&quot;&gt;prev&lt;/span&gt;&#x27;
-                                + &#x27;&lt;span class=&quot;CDC_next_btn&quot; data-action=&quot;next&quot;&gt;next&lt;/span&gt;&#x27;
-                                + &#x27;&lt;span class=&quot;CDC_clear&quot; title=&quot;清除&quot;&gt;clear&lt;/span&gt;&#x27;
+                                + &#x27;&lt;a  href=&quot;javascript:;&quot; class=&quot;CDC_close_btn&quot; title=&quot;关闭&quot;&gt;close&lt;/a&gt;&#x27;
+                                + &#x27;&lt;a  href=&quot;javascript:;&quot; class=&quot;CDC_prev_btn&quot; data-action=&quot;prev&quot;&gt;prev&lt;/a&gt;&#x27;
+                                + &#x27;&lt;a  href=&quot;javascript:;&quot; class=&quot;CDC_next_btn&quot; data-action=&quot;next&quot;&gt;next&lt;/a&gt;&#x27;
+                                + &#x27;&lt;a  href=&quot;javascript:;&quot; class=&quot;CDC_clear&quot; title=&quot;清除&quot;&gt;clear&lt;/a&gt;&#x27;
                             + &#x27;&lt;/div&gt;&#x27;
                             + &#x27;&lt;div class=&quot;CDC_date_box&quot; &gt;&#x27;
                                + &#x27;{0}&#x27;
@@ -974,23 +996,23 @@
                     + &#x27;&lt;/div&gt;&#x27;
                 + &#x27;&lt;/div&gt;&#x27;,
 
-        buildYearTpl: function ( _date, _startYear, _endYear ) {
+        buildYearTpl: function (_date, _startYear, _endYear) {
             var _p = this,
                 _r = _p.yearTpl;
 
             _p.layoutBox().find(&#x27;.CDC_date_box&#x27;).html(
                 JC.f.printf( 
                     _r, 
-                    JC.f.formatISODate( _date ), 
-                    _p.allYearsTpl( _startYear, _endYear ), 
+                    JC.f.formatISODate(_date), 
+                    _p.allYearsTpl(_startYear, _endYear), 
                     _startYear + &#x27; ~ &#x27; + _endYear,
-                    JC.f.formatISODate( _p.curSelectedDate() )  
+                    JC.f.formatISODate(_p.curSelectedDate())  
                 )
             )
             .find(&#x27;.CDC_year_body&gt;tbody&gt;tr&gt;td&gt;a&#x27;).each( function () {
                 var _sp = $(this),
                     _year = _sp.data(&#x27;year&#x27;),
-                    _d = new Date( _year, 0, 1 );
+                    _d = new Date(_year, 0, 1);
 
                 ( _year === new Date().getFullYear() ) &amp;&amp; ( _sp.addClass(&#x27;today&#x27;) );
 
@@ -1000,17 +1022,17 @@
                     || ( _p.minYear() &amp;&amp; ( _year &lt; _p.minYear() ) ) 
                 ) &amp;&amp; ( _sp.addClass(&#x27;disabled&#x27;) );
 
-                _sp.attr( &#x27;data-date&#x27;, JC.f.formatISODate( _d ) );
+                _sp.attr(&#x27;data-date&#x27;, JC.f.formatISODate( _d ));
 
             } );
             _p.layoutBox()
             .find(&#x27;.CDC_prev_btn&#x27;)
                 .attr(&#x27;data-type&#x27;, &#x27;year&#x27;)
-                .attr(&#x27;data-date&#x27;, JC.f.formatISODate ( new Date(_startYear - 1, 0, 1) ) )
+                .attr(&#x27;data-date&#x27;, JC.f.formatISODate (new Date(_startYear - 1, 0, 1) ))
             .end()
             .find(&#x27;.CDC_next_btn&#x27;)
                 .attr(&#x27;data-type&#x27;, &#x27;year&#x27;)
-                .attr(&#x27;data-date&#x27;, JC.f.formatISODate ( new Date(_endYear + 1, 0, 1) ) );
+                .attr(&#x27;data-date&#x27;, JC.f.formatISODate (new Date(_endYear + 1, 0, 1) ));
 
             _p.disablePageBtn();
             _p.position();
@@ -1019,76 +1041,76 @@
         buildMonthTpl: function ( _date ) {
             var _p = this,
                 _r = _p.monthTpl,
-                _prevT = new Date( _date.getFullYear() - 1, 11, 1 );
+                _prevT = new Date(_date.getFullYear() - 1, 11, 1);
 
             _p.layoutBox().find(&#x27;.CDC_date_box&#x27;).html(
                 JC.f.printf( 
                     _r, 
                     _date.getFullYear() + &#x27;年&#x27;, 
-                    JC.f.formatISODate( _date ),
-                    JC.f.formatISODate( new Date() ),
-                    JC.f.formatISODate( _p.curSelectedDate() ) 
+                    JC.f.formatISODate(_date),
+                    JC.f.formatISODate(new Date()),
+                    JC.f.formatISODate(_p.curSelectedDate()) 
                 )
             )
             .find(&#x27;.CDC_month_body&gt;tbody&gt;tr&gt;td&gt;a&#x27;).each( function ( _ix ) {
                 var _sp = $(this),
                     _month = _sp.data(&#x27;month&#x27;),
-                    _d = new Date( _date.getFullYear(), _month , 1 ),
-                    _tempD = new Date( _d.getFullYear(), _month, JC.f.maxDayOfMonth( _d ) );
+                    _d = new Date(_date.getFullYear(), _month , 1),
+                    _tempD = new Date(_d.getFullYear(), _month, JC.f.maxDayOfMonth(_d));
 
-                ( JC.f.isSameMonth( _d, new Date() ) ) &amp;&amp; ( _sp.addClass(&#x27;today&#x27;) );
+                ( JC.f.isSameMonth(_d, new Date()) ) &amp;&amp; ( _sp.addClass(&#x27;today&#x27;) );
 
-                ( JC.f.isSameMonth( _p.curSelectedDate(), _d ) ) &amp;&amp; ( _sp.parent(&#x27;td&#x27;).addClass(&#x27;selected_date&#x27;) );
+                ( JC.f.isSameMonth(_p.curSelectedDate(), _d )) &amp;&amp; ( _sp.parent(&#x27;td&#x27;).addClass(&#x27;selected_date&#x27;) );
 
                 ( ( _p.minValue() &amp;&amp; ( _p.minValue().getTime() &gt; _tempD.getTime() ) )
                     || ( _p.maxValue() &amp;&amp; ( _p.maxValue().getTime() &lt; _d.getTime() ) )
                  ) &amp;&amp; ( _sp.addClass(&#x27;disabled&#x27;) );
 
-                _sp.attr(&#x27;data-date&#x27;, JC.f.formatISODate( _d ) );
+                _sp.attr(&#x27;data-date&#x27;, JC.f.formatISODate( _d ));
 
             } )
             .end()
             .end()
             .find(&#x27;.CDC_prev_btn&#x27;)
-                .attr(&#x27;data-date&#x27;, JC.f.formatISODate( new Date( _date.getFullYear() - 1, 11, JC.f.maxDayOfMonth( _prevT ) ) ) )
+                .attr(&#x27;data-date&#x27;, JC.f.formatISODate(new Date(_date.getFullYear() - 1, 11, JC.f.maxDayOfMonth(_prevT))))
                 .attr(&#x27;data-type&#x27;, &#x27;month&#x27;)
             .end()
             .find(&#x27;.CDC_next_btn&#x27;)
-                .attr(&#x27;data-date&#x27;, JC.f.formatISODate( new Date(_date.getFullYear() + 1, 0, 1) ))
+                .attr(&#x27;data-date&#x27;, JC.f.formatISODate(new Date(_date.getFullYear() + 1, 0, 1)))
                 .attr(&#x27;data-type&#x27;, &#x27;month&#x27;)
 
             _p.disablePageBtn();
             _p.position();
         },
 
-        buildDateTpl: function ( _curDate, _nextMonthDate ) {
-           
+        buildDateTpl: function (_curDate, _nextMonthDate) {
+          
             var _p = this,
                 _curDate = _curDate || _p.curSelectedDate(),
                 _curYear = _curDate.getFullYear(),
                 _curMonth = _curDate.getMonth(),
                 _nextMonthDate = _nextMonthDate || new Date(_curYear,  _curMonth + 1, 1),
-                _prevDate = new Date( _curYear, _curMonth, 1 ),
-                _nextDate = new Date( _nextMonthDate.getFullYear(), _nextMonthDate.getMonth(), JC.f.maxDayOfMonth( _nextMonthDate ) );
+                _prevDate = new Date(_curYear, _curMonth, 1),
+                _nextDate = new Date(_nextMonthDate.getFullYear(), _nextMonthDate.getMonth(), JC.f.maxDayOfMonth( _nextMonthDate ));
 
             _p.layoutBox().find(&#x27;.CDC_date_box&#x27;).html( 
                 JC.f.printf( 
                     _p.dateTpl, 
-                    JC.f.formatISODate( _curDate ),
+                    JC.f.formatISODate(_curDate),
                     _curYear + &#x27;年&#x27;, 
-                    ( _curMonth + 1 ) + &#x27;月&#x27;,
-                    _p.datesOfMonthTpl( _curDate ), 
-                    JC.f.formatISODate( _nextMonthDate ),
+                    (_curMonth + 1) + &#x27;月&#x27;,
+                    _p.datesOfMonthTpl(_curDate), 
+                    JC.f.formatISODate(_nextMonthDate),
                     _nextMonthDate.getFullYear() + &#x27;年&#x27; ,
-                    ( _nextMonthDate.getMonth() + 1 ) + &#x27;月&#x27;,
-                    _p.datesOfMonthTpl( _nextMonthDate )
+                    (_nextMonthDate.getMonth() + 1) + &#x27;月&#x27;,
+                    _p.datesOfMonthTpl(_nextMonthDate)
                 ) 
             )
             .find(&#x27;.CDC_date_body&gt;tbody&gt;tr&gt;td&gt;a[data-date]&#x27;).each( function ( _ix ) {
                 var _sp = $(this),
-                    _d = JC.f.dateDetect( _sp.data(&#x27;date&#x27;) );
+                    _d = JC.f.dateDetect(_sp.data(&#x27;date&#x27;));
 
-                ( JC.f.isSameDay( _d, _p.curSelectedDate() ) ) 
+                ( JC.f.isSameDay(_d, _p.curSelectedDate()) ) 
                     &amp;&amp; ( _sp.parent(&#x27;td&#x27;).addClass(&#x27;selected_date&#x27;) );
                 
 
@@ -1106,11 +1128,11 @@
             .end()
             .end()
                 .find(&#x27;.CDC_next_btn&#x27;)
-                    .attr(&#x27;data-date&#x27;, JC.f.formatISODate(_nextDate) )
+                    .attr(&#x27;data-date&#x27;, JC.f.formatISODate(_nextDate))
                     .attr(&#x27;data-type&#x27;, &#x27;date&#x27;)
             .end()
                 .find(&#x27;.CDC_prev_btn&#x27;)
-                    .attr(&#x27;data-date&#x27;, JC.f.formatISODate(_prevDate) )
+                    .attr(&#x27;data-date&#x27;, JC.f.formatISODate(_prevDate))
                     .attr(&#x27;data-type&#x27;, &#x27;date&#x27;);
 
             _p.disablePageBtn();
@@ -1121,8 +1143,8 @@
             var _p = this,
                 _prevBtn = _p.layoutBox().find(&#x27;.CDC_prev_btn&#x27;),
                 _nextBtn = _p.layoutBox().find(&#x27;.CDC_next_btn&#x27;),
-                _prevDate = JC.f.dateDetect( _prevBtn.attr(&#x27;data-date&#x27;) ),
-                _nextDate = JC.f.dateDetect( _nextBtn.attr(&#x27;data-date&#x27;) );
+                _prevDate = JC.f.dateDetect(_prevBtn.attr(&#x27;data-date&#x27;)),
+                _nextDate = JC.f.dateDetect(_nextBtn.attr(&#x27;data-date&#x27;));
 
             if ( _p.minValue() &amp;&amp; ( _p.minValue().getTime() &gt; _prevDate.getTime() ) ) {
                 _prevBtn.addClass(&#x27;CDC_prev_btn_disabled&#x27;)
@@ -1155,7 +1177,7 @@
                 _r = $(&#x27;#&#x27; + DCalendar.Model._boxId );
 
             if ( !(_r &amp;&amp; _r.length) ) {
-                _r = $( JC.f.printf( &#x27;&lt;div id=&quot;{0}&quot;&gt;&#x27; + _p.baseTpl + &#x27;&lt;/div&gt;&#x27;, DCalendar.Model._boxId ) )
+                _r = $(JC.f.printf( &#x27;&lt;div id=&quot;{0}&quot;&gt;&#x27; + _p.baseTpl + &#x27;&lt;/div&gt;&#x27;, DCalendar.Model._boxId ))
                     .appendTo( document.body );
             }
 
@@ -1168,9 +1190,11 @@
                 _y = _p.selector().offset().top + _p.selector().prop(&#x27;offsetHeight&#x27;),
                 _win = $(window);
 
-            if ( _win.outerHeight() &lt; ( _y + _p.layout().height() ) ) {
-                ( _p.selector().offset().top - _p.layout().height() &gt; 0 ) 
-                &amp;&amp; ( _y = _p.selector().offset().top - _p.layout().height() ) ;
+            if ( ( _win.outerHeight() + _win.scrollTop() ) &lt; ( _y + _p.layout().height() ) ) {
+                
+                ( _p.selector().offset().top  - _p.layout().height() &gt; 0 ) 
+                &amp;&amp; 
+                ( _y = _p.selector().offset().top - _p.layout().height() ) ;
                
             } else {
                 _y = _p.selector().offset().top + _p.selector().prop(&#x27;offsetHeight&#x27;);
@@ -1183,9 +1207,9 @@
 
         },
 
-        setSelected: function ( _srcSelector ) {
+        setSelected: function (_srcSelector) {
             var _p = this,
-                _el = $( _srcSelector ),
+                _el = $(_srcSelector),
                 _td = JC.f.getJqParent(_el, &#x27;td&#x27;),
                 _d = _el.data(&#x27;date&#x27;);
 
@@ -1193,7 +1217,7 @@
 
             _td.addClass(&#x27;selected_date&#x27;).data(&#x27;date&#x27;);
 
-            _p.selector().val( _d );
+            _p.selector().val(_d);
 
         },
 
@@ -1238,7 +1262,7 @@
                 _selector = _p.selector(),
                 _key = &quot;calendarshow&quot;;
 
-            return _p.callbackProp( _selector, _key );
+            return _p.callbackProp(_selector, _key);
         },
 
         /**
@@ -1249,7 +1273,7 @@
                 _selector = _p.selector(),
                 _key = &quot;calendarhide&quot;;
 
-            return _p.callbackProp( _selector, _key );
+            return _p.callbackProp(_selector, _key);
         },
 
         /**
@@ -1260,7 +1284,7 @@
                 _selector = _p.selector(),
                 _key = &quot;calendarclear&quot;;
 
-            return _p.callbackProp( _selector, _key );
+            return _p.callbackProp(_selector, _key);
         },
 
         /**
@@ -1271,7 +1295,7 @@
                 _selector = _p.selector(),
                 _key = &quot;updatedate&quot;;
 
-            return _p.callbackProp( _selector, _key );
+            return _p.callbackProp(_selector, _key);
         },
 
         /**
@@ -1282,7 +1306,7 @@
                 _selector = _p.selector(),
                 _key = &quot;beforeupdatemonth&quot;;
 
-            return _p.callbackProp( _selector, _key );
+            return _p.callbackProp(_selector, _key);
         },
 
         /**
@@ -1293,7 +1317,7 @@
                 _selector = _p.selector(),
                 _key = &quot;updatemonth&quot;;
 
-            return _p.callbackProp( _selector, _key );
+            return _p.callbackProp(_selector, _key);
         },
 
         /**
@@ -1304,7 +1328,7 @@
                 _selector = _p.selector(),
                 _key = &quot;beforeupdateyear&quot;;
 
-            return _p.callbackProp( _selector, _key );
+            return _p.callbackProp(_selector, _key);
         },
 
         /**
@@ -1315,7 +1339,7 @@
                 _selector = _p.selector(),
                 _key = &quot;updateyear&quot;;
 
-            return _p.callbackProp( _selector, _key );
+            return _p.callbackProp(_selector, _key);
         },
 
         /**
@@ -1326,7 +1350,7 @@
                 _selector = _p.selector(),
                 _key = &quot;updatenextmonth&quot;;
 
-            return _p.callbackProp( _selector, _key );
+            return _p.callbackProp(_selector, _key);
         },
 
         /**
@@ -1337,7 +1361,7 @@
                 _selector = _p.selector(),
                 _key = &quot;updateprevmonth&quot;;
 
-            return _p.callbackProp( _selector, _key );
+            return _p.callbackProp(_selector, _key);
         },
 
         /**
@@ -1348,7 +1372,7 @@
                 _selector = _p.selector(),
                 _key = &quot;updatenextyear&quot;;
 
-            return _p.callbackProp( _selector, _key );
+            return _p.callbackProp(_selector, _key);
         },
 
         /**
@@ -1359,7 +1383,7 @@
                 _selector = _p.selector(),
                 _key = &quot;updateprevyear&quot;;
 
-            return _p.callbackProp( _selector, _key );
+            return _p.callbackProp(_selector, _key);
         },
 
         /**
@@ -1370,7 +1394,7 @@
                 _selector = _p.selector(),
                 _key = &quot;updatenextpageyear&quot;;
 
-            return _p.callbackProp( _selector, _key );
+            return _p.callbackProp(_selector, _key);
         },
 
         /**
@@ -1381,12 +1405,12 @@
                 _selector = _p.selector(),
                 _key = &quot;updateprevpageyear&quot;;
 
-            return _p.callbackProp( _selector, _key );
+            return _p.callbackProp(_selector, _key);
         }
         
     });
  
-    JC.f.extendObject( DCalendar.View.prototype, {
+    JC.f.extendObject(DCalendar.View.prototype, {
         init: function () {
             var _p = this;
         },
@@ -1400,40 +1424,40 @@
 
         },
 
-        yearView: function ( _srcSelector ) {
+        yearView: function (_srcSelector) {
             var _p = this,
                 _el = $( _srcSelector ),
                 _date = new Date(),
                 _startYear = _date.getFullYear() - 14,
                 _endYear = _date.getFullYear() + 13;
 
-            _p._model.buildYearTpl( _date, _startYear, _endYear );
+            _p._model.buildYearTpl(_date, _startYear, _endYear);
 
         },
 
-        monthView: function ( _srcSelector ) {
+        monthView: function (_srcSelector) {
             var _p = this,
-                _el = $( _srcSelector ),
-                _date = JC.f.dateDetect(  _el.data(&#x27;date&#x27;) );
+                _el = $(_srcSelector),
+                _date = JC.f.dateDetect(_el.data(&#x27;date&#x27;));
 
-            _p._model.buildMonthTpl( _date );
+            _p._model.buildMonthTpl(_date);
 
         },
 
-        dateView: function ( _srcSelector ) {
+        dateView: function (_srcSelector) {
             var _p = this,
                 _el = $( _srcSelector ),
-                _curDate = JC.f.dateDetect( _el.data(&#x27;date&#x27;) ),
+                _curDate = JC.f.dateDetect(_el.data(&#x27;date&#x27;)),
                 _nextMonthDate = new Date(_curDate.getFullYear(), _curDate.getMonth() + 1, 1),
                 _r = _p._model.dateTpl;
 
-            _p._model.buildDateTpl( _curDate, _nextMonthDate );
+            _p._model.buildDateTpl(_curDate, _nextMonthDate);
             
         },
 
-        change: function  ( _srcSelector ) {
+        change: function  (_srcSelector) {
             var _p = this,
-                _el = $( _srcSelector ),
+                _el = $(_srcSelector),
                 _action = _el.data(&#x27;action&#x27;),
                 _type = _el.attr(&#x27;data-type&#x27;),
                 _curDate ,
@@ -1445,30 +1469,30 @@
             switch ( _type ) {
                 case &#x27;year&#x27;:
                     {   
-                        _curDate = JC.f.dateDetect( _el.attr(&#x27;data-date&#x27;) );
+                        _curDate = JC.f.dateDetect(_el.attr(&#x27;data-date&#x27;));
                 
                         if ( _action == &#x27;prev&#x27; ) {
                             _endYear = _curDate.getFullYear();
                             _startYear = _endYear - 27;
 
-                            _p.trigger( DCalendar.Model.UPDATEPREVPAGEYEAR );
+                            _p.trigger(DCalendar.Model.UPDATEPREVPAGEYEAR);
 
                         } else {
                             _startYear = _curDate.getFullYear();
                             _endYear = _startYear + 27;
 
-                            _p.trigger( DCalendar.Model.UPDATENEXTPAGEYEAR );
+                            _p.trigger(DCalendar.Model.UPDATENEXTPAGEYEAR);
 
                         }
 
-                        _p._model.buildYearTpl( new Date(), _startYear, _endYear );
+                        _p._model.buildYearTpl(new Date(), _startYear, _endYear);
 
                         break;
                     }
 
                 case &#x27;month&#x27;: 
                     {   
-                        _curDate = JC.f.dateDetect( _el.attr(&#x27;data-date&#x27;) );
+                        _curDate = JC.f.dateDetect(_el.attr(&#x27;data-date&#x27;));
 
                         if ( _action === &#x27;prev&#x27; ) { 
                             _p.trigger(DCalendar.Model.UPDATEPREVYEAR);
@@ -1476,7 +1500,7 @@
                             _p.trigger(DCalendar.Model.UPDATENEXTYEAR);
                         }
 
-                        _p._model.buildMonthTpl( _curDate );
+                        _p._model.buildMonthTpl(_curDate);
 
                         break;
                     }
@@ -1484,20 +1508,20 @@
                 case &#x27;date&#x27;:
                 default:
                     if ( _action === &#x27;prev&#x27; ) {
-                        _nextMonthDate = JC.f.dateDetect( _el.attr(&#x27;data-date&#x27;) );
-                        _curDate = new Date( _nextMonthDate.getFullYear(), _nextMonthDate.getMonth() - 1, 1);
+                        _nextMonthDate = JC.f.dateDetect(_el.attr(&#x27;data-date&#x27;));
+                        _curDate = new Date(_nextMonthDate.getFullYear(), _nextMonthDate.getMonth() - 1, 1);
 
                        _p.trigger(DCalendar.Model.UPDATEPREVMONTH);
 
                     } else {
-                        _curDate = JC.f.dateDetect( _el.attr(&#x27;data-date&#x27;) );
+                        _curDate = JC.f.dateDetect(_el.attr(&#x27;data-date&#x27;));
                         _nextMonthDate = new Date(_curDate.getFullYear(), _curDate.getMonth() + 1, 1);
 
                         _p.trigger(DCalendar.Model.UPDATENEXTMONTH);
                         
                     }
 
-                    _p._model.buildDateTpl( _curDate, _nextMonthDate );
+                    _p._model.buildDateTpl(_curDate, _nextMonthDate);
 
             }
 
@@ -1510,8 +1534,8 @@
                 _e ;
 
             _p._model.buildDateTpl();
-            _e = new Date().getTime();
-            JC.log( &quot;_s&quot;, &quot;_e&quot;, _e - _s );
+           _e = new Date().getTime();
+            console.log( &quot;_s&quot;, &quot;_e&quot;, _e - _s );
             _p.update();
             _p._model.layout().show();
 
@@ -1529,119 +1553,116 @@
     });
 
     var _doc = $(document)
-        , _selector = &#x27;input[datatype=ddate], button[datetype=ddate], input[datatype=drange]&#x27;
+        , _selector = &#x27;input[type=text][datatype=ddate], button[datatype=ddate], input[type=text][datatype=drange]&#x27;
         ;
 
-    _doc.delegate( _selector, &#x27;focus&#x27;, function ( _evt ) {
+    _doc.delegate(_selector, &#x27;focus&#x27;, function (_evt) {
 
         $(this).addClass(&#x27;cdc_ignore&#x27;, true);
         JC.f.safeTimeout( function(){
-            DCalendar.pickDate( _evt.target || _evt.srcElement );
+            DCalendar.pickDate( _evt.target || _evt.srcElement);
         }, null, &#x27;DCalendarClick&#x27;, 50 );
   
-    } );
+    });
 
-    _doc.delegate( _selector, &#x27;click&#x27;, function ( _evt ) {
+    _doc.delegate(_selector, &#x27;click&#x27;, function (_evt) {
 
         $(this).addClass(&#x27;cdc_ignore&#x27;, true);
         JC.f.safeTimeout( function(){
-            DCalendar.pickDate( _evt.target || _evt.srcElement );
+            DCalendar.pickDate(_evt.target || _evt.srcElement);
         }, null, &#x27;DCalendarClick&#x27;, 50 );
 
     });
 
-    _doc.on(&#x27;click&#x27;, function ( _evt ) {
+    _doc.on(&#x27;click&#x27;, function (_evt) {
         
-        var _ins = DCalendar.getInstance( DCalendar.lastSrc ),
+        var _ins = DCalendar.getInstance(DCalendar.lastSrc),
             _srcSelector = _evt.target || _evt.srcElement;
 
-        if ( _ins &amp;&amp;  _ins._model.isDCalendar( _srcSelector ) ) return;
+        if ( _ins &amp;&amp;  _ins._model.isDCalendar(_srcSelector) ) return;
 
-        _ins &amp;&amp; _ins.trigger( DCalendar.Model.HIDDEN );
+        _ins &amp;&amp; _ins.trigger(DCalendar.Model.HIDDEN);
 
-    } );
+    });
 
-    _doc.delegate( &#x27;#CompDCalendar span.CDC_close_btn&#x27;, &#x27;click&#x27;, function ( _evt ) {
+    _doc.delegate(&#x27;#CompDCalendar .CDC_close_btn&#x27;, &#x27;click&#x27;, function (_evt) {
         
-        var _ins = DCalendar.getInstance( DCalendar.lastSrc );
-        _ins &amp;&amp; _ins.trigger( DCalendar.Model.HIDDEN );
+        var _ins = DCalendar.getInstance(DCalendar.lastSrc);
+        _ins &amp;&amp; _ins.trigger(DCalendar.Model.HIDDEN);
 
     });
 
-    _doc.delegate( &#x27;#CompDCalendar span.CDC_next_btn, #CompDCalendar span.CDC_prev_btn&#x27;, &#x27;click&#x27;, function ( _evt ) {
+    _doc.delegate(&#x27;#CompDCalendar .CDC_next_btn, #CompDCalendar .CDC_prev_btn&#x27;, &#x27;click&#x27;, function (_evt) {
        
-        var _ins = DCalendar.getInstance( DCalendar.lastSrc );
-        _ins &amp;&amp; _ins.trigger( DCalendar.Model.CHANGE, [ $(this) ] );
-       
-    });
-
-    _doc.delegate( &#x27;#CompDCalendar a.CDC_Month&#x27;, &#x27;click&#x27;, function ( _evt ) {
-
-        var _ins = DCalendar.getInstance( DCalendar.lastSrc );
-        _ins &amp;&amp; _ins.trigger( DCalendar.Model.MONTHVIEW, [ $(this) ] );
+        var _ins = DCalendar.getInstance(DCalendar.lastSrc);
+        _ins &amp;&amp; _ins.trigger(DCalendar.Model.CHANGE, [$(this)]);
        
     });
 
-    _doc.delegate( &#x27;#CompDCalendar a.CDC_Year&#x27;, &#x27;click&#x27;, function ( _evt ) {
+    _doc.delegate(&#x27;#CompDCalendar .CDC_Month&#x27;, &#x27;click&#x27;, function (_evt) {
+
+        var _ins = DCalendar.getInstance(DCalendar.lastSrc);
+        _ins &amp;&amp; _ins.trigger(DCalendar.Model.MONTHVIEW, [$(this)]);
+       
+    });
+
+    _doc.delegate(&#x27;#CompDCalendar .CDC_Year&#x27;, &#x27;click&#x27;, function (_evt) {
       
-        var _ins = DCalendar.getInstance( DCalendar.lastSrc );
-        _ins &amp;&amp; _ins.trigger( DCalendar.Model.YEARVIEW, [ $(this) ] );
+        var _ins = DCalendar.getInstance(DCalendar.lastSrc);
+        _ins &amp;&amp; _ins.trigger(DCalendar.Model.YEARVIEW, [$(this)]);
        
     });
 
-    _doc.delegate( &#x27;#CompDCalendar a.CDC_Date&#x27;, &#x27;click&#x27;, function ( _evt ) {
+    _doc.delegate(&#x27;#CompDCalendar .CDC_Date&#x27;, &#x27;click&#x27;, function (_evt) {
 
-        var _ins = DCalendar.getInstance( DCalendar.lastSrc );
-        _ins &amp;&amp; _ins.trigger( DCalendar.Model.DATEVIEW, [ $(this) ] );
+        var _ins = DCalendar.getInstance(DCalendar.lastSrc);
+        _ins &amp;&amp; _ins.trigger(DCalendar.Model.DATEVIEW, [$(this)]);
 
     });
 
-    _doc.delegate( &#x27;#CompDCalendar&#x27;, &#x27;click&#x27;, function ( _evt ) {
+    _doc.delegate(&#x27;#CompDCalendar&#x27;, &#x27;click&#x27;, function (_evt) {
         _evt.stopPropagation();
+    });
+
+    _doc.delegate(&#x27;#CompDCalendar .CDC_date_body&gt;tbody&gt;tr&gt;td&gt;a:not(&quot;.disabled&quot;)&#x27;, &#x27;click&#x27;, function (_evt) {
+        
+        var _ins = DCalendar.getInstance(DCalendar.lastSrc);
+        _ins &amp;&amp; _ins.trigger(DCalendar.Model.SETDATE, [$(this)]);
+        _ins &amp;&amp; _ins.trigger(DCalendar.Model.HIDDEN );
+
+    });
+
+    _doc.delegate(&#x27;#CompDCalendar .CDC_month_body&gt;tbody&gt;tr&gt;td&gt;a&#x27;, &#x27;click&#x27;, function (_evt) {
+        
+        var _ins = DCalendar.getInstance(DCalendar.lastSrc);
+        _ins &amp;&amp; _ins.trigger(DCalendar.Model.DATEVIEW, [$(this)]);
+        
     } );
 
-    _doc.delegate( &#x27;#CompDCalendar .CDC_date_body&gt;tbody&gt;tr&gt;td&gt;a:not(&quot;.disabled&quot;)&#x27;, &#x27;click&#x27;, function ( _evt ) {
-        
-        var _ins = DCalendar.getInstance( DCalendar.lastSrc );
-        _ins &amp;&amp; _ins.trigger( DCalendar.Model.SETDATE, [ $(this) ] );
-        _ins &amp;&amp; _ins.trigger( DCalendar.Model.HIDDEN );
-
-    } );
-
-    _doc.delegate( &#x27;#CompDCalendar .CDC_month_body&gt;tbody&gt;tr&gt;td&gt;a&#x27;, &#x27;click&#x27;, function ( _evt ) {
-        
-        var _ins = DCalendar.getInstance( DCalendar.lastSrc );
-        _ins &amp;&amp; _ins.trigger( DCalendar.Model.DATEVIEW, [ $(this) ] );
-        
-    } );
-
-    _doc.delegate( &#x27;#CompDCalendar .CDC_year_body&gt;tbody&gt;tr&gt;td&gt;a&#x27;, &#x27;click&#x27;, function ( _evt ) {
+    _doc.delegate(&#x27;#CompDCalendar .CDC_year_body&gt;tbody&gt;tr&gt;td&gt;a&#x27;, &#x27;click&#x27;, function (_evt) {
       
-        var _ins = DCalendar.getInstance( DCalendar.lastSrc );
-        _ins &amp;&amp; _ins.trigger( DCalendar.Model.MONTHVIEW, [ $(this) ] );
+        var _ins = DCalendar.getInstance(DCalendar.lastSrc);
+        _ins &amp;&amp; _ins.trigger(DCalendar.Model.MONTHVIEW, [$(this)]);
         
-    } );
+    });
 
-    _doc.delegate( &#x27;#CompDCalendar .CDC_clear&#x27;, &#x27;click&#x27;, function ( _evt ) {
+    _doc.delegate(&#x27;#CompDCalendar .CDC_clear&#x27;, &#x27;click&#x27;, function (_evt) {
        
-        var _ins = DCalendar.getInstance( DCalendar.lastSrc );
-        _ins &amp;&amp; _ins.trigger( DCalendar.Model.CLEAR, [ $(this) ] );
+        var _ins = DCalendar.getInstance(DCalendar.lastSrc);
+        _ins &amp;&amp; _ins.trigger(DCalendar.Model.CLEAR, [$(this)]);
 
-    } );
+    });
 
-    $(window).on(&#x27;resize&#x27;, function () {
-        
+    $(window).on(&#x27;resize scroll&#x27;, function () {
+
         JC.f.safeTimeout( function(){
-           DCalendar.update(); //有一个bug resize时总是显示的是date panel
+           DCalendar.update(); 
         }, null, &#x27;DCalendarResize&#x27;, 20 );
 
     });
 
-    _doc.ready( function () {
-        // var _insAr = 0;
-        // DCalendar.autoInit
-        //     &amp;&amp; ( _insAr = DCalendar.init() );
-        DCalendar.init( true );
+    _doc.ready(function () {
+        DCalendar.init(true);
     });    
     
     return JC.DCalendar;
