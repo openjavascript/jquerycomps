@@ -67,6 +67,8 @@
             
                 <li><a href="../classes/JC.confirm.html">JC.confirm</a></li>
             
+                <li><a href="../classes/JC.DCalendar.html">JC.DCalendar</a></li>
+            
                 <li><a href="../classes/JC.Dialog.html">JC.Dialog</a></li>
             
                 <li><a href="../classes/JC.Dialog.alert.html">JC.Dialog.alert</a></li>
@@ -266,6 +268,7 @@
         , &quot;parseISODate&quot;: parseISODate
         , &quot;parseDate&quot;: parseDate
         , &quot;printf&quot;: printf
+        , &quot;cloneObject&quot;: cloneObject
 
         , &quot;pureDate&quot;: pureDate
         , &quot;reloadPage&quot;: reloadPage
@@ -1353,8 +1356,52 @@
         }
         return _r;
     }
+    /**
+     * 深度克隆对象
+     * @method  cloneObject
+     * @param   {Object}    _inObj
+     * @return  Object
+     * @static
+     */
+    function cloneObject( _inObj, _outObj ){
+        _outObj = _outObj || {};
+        var k, i, j;
+
+        for( k in _inObj ){
+            _outObj[ k ] = _inObj[ k ];
+            switch( Object.prototype.toString.call( _outObj[ k ] ) ){
+
+                case &#x27;[object Object]&#x27;: {
+                      _outObj[ k ] = _outObj[ k ].constructor === Object
+                        ?  cloneObject( _outObj[ k ] )
+                        :  _outObj[ k ]
+                        ;
+                    break;
+                }
+
+                case &#x27;[object Array]&#x27;: {
+                    _outObj[ k ] = _inObj[ k ].slice();
+                    for( i = 0, j = _outObj[ k ].length; i &lt; j; i++ ){
+                        if( Object.prototype.toString.call( _outObj[ k ][i] ) == &#x27;[object Object]&#x27; )
+                            _outObj[ k ][ i ] = cloneObject( _outObj[ k ][ i ] );
+                    }
+                    break;
+                }
+
+                case &#x27;[object Date]&#x27;: {
+                    _outObj[ k ] = new Date(); _outObj[ k ].setTime( _inObj[ k ].getTime() );
+                    break;
+                }
+
+                default: _outObj[ k ] = _inObj[ k ];
+            }
+        }
+
+        return _outObj;
+    }
 
     return JC.f;
+
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb) { 
             typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );

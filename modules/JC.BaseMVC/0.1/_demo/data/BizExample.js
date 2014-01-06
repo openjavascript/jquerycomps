@@ -30,7 +30,7 @@
             var _r = [];
             _selector = $( _selector || document );
 
-            if( _selector && _selector.length ){
+            if( _selector.length ){
                 if( _selector.hasClass( 'js_bizBizExample' )  ){
                     _r.push( new BizExample( _selector ) );
                 }else{

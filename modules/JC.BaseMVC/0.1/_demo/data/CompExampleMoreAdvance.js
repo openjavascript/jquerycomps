@@ -62,7 +62,7 @@
             var _r = [];
             _selector = $( _selector || document );
 
-            if( _selector && _selector.length ){
+            if( _selector.length ){
                 if( _selector.hasClass( 'js_compCompExampleMoreAdvance' )  ){
                     _r.push( new CompExampleMoreAdvance( _selector ) );
                 }else{
