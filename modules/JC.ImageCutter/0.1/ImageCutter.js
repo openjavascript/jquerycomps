@@ -74,6 +74,9 @@
             return _r;
         };
 
+    ImageCutter.minwidth = 50;
+    ImageCutter.minheight = 50;
+
     JC.BaseMVC.build( ImageCutter );
 
     JC.f.extendObject( ImageCutter.prototype, {
@@ -89,6 +92,21 @@
                 _p.on( ImageCutter.Model.INITED, function( _evt ){
                     _p._model.cicImageUrl()
                         && _p.update( _p._model.cicImageUrl() );
+                });
+
+                _p.on( 'CICImageLoad', function( _evt, _img, _width, _height ){
+
+                    var _newSize = _p._model.size( _width, _height );
+
+                    _img.css( { 
+                        'width': _newSize.zoom.width + 'px'
+                        , 'height': _newSize.zoom.height + 'px' 
+                        , 'left': _newSize.left + 'px'
+                        , 'top': _newSize.top + 'px'
+                    });
+
+                    _img.prependTo( _p.selector() );
+                    _p._view.updateDragger( _newSize );
                 });
             }
 
@@ -127,6 +145,9 @@
             function(){
                 return this.attrProp( 'cicImageUrl' );
             }
+
+        , cicMinWidth: function(){ return this.intProp( 'cicMinWidth' ) || ImageCutter.minwidth; }
+        , cicMinHeight: function(){ return this.intProp( 'cicMinHeight' ) || ImageCutter.minheight; }
         
         , size: 
             function( _width, _height ){ 
@@ -144,6 +165,80 @@
                 }
                 return this._size; 
             }
+
+        , clean: 
+            function(){
+            }
+
+        , dragger:
+            function(){
+                if( !this._dragger ){
+                    this._dragger = 
+                        $( 
+                            JC.f.printf( 
+                                '{0}{1}{2}{3}{4}{5}{6}{7}{8}'
+                                , '<button type="button" class="cic_btn cic_tl"></button>'
+                                , '<button type="button" class="cic_btn cic_tc"></button>'
+                                , '<button type="button" class="cic_btn cic_tr"></button>'
+                                , '<button type="button" class="cic_btn cic_ml"></button>'
+                                , '<button type="button" class="cic_btn cic_mr"></button>'
+                                , '<button type="button" class="cic_btn cic_bl"></button>'
+                                , '<button type="button" class="cic_btn cic_bc"></button>'
+                                , '<button type="button" class="cic_btn cic_br"></button>'
+                            )
+                         );
+                    this._dragger.appendTo( this.selector() );
+                }
+                return this._dragger;
+            }
+
+        , btnTl:
+            function(){
+                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
+                return this._btnTl;
+            }
+
+        , btnTc:
+            function(){
+                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
+                return this._btnTl;
+            }
+
+        , btnTr:
+            function(){
+                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
+                return this._btnTl;
+            }
+
+        , btnMl:
+            function(){
+                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
+                return this._btnTl;
+            }
+
+        , btnMr:
+            function(){
+                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
+                return this._btnTl;
+            }
+
+        , btnBl:
+            function(){
+                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
+                return this._btnTl;
+            }
+
+        , btnBc:
+            function(){
+                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
+                return this._btnTl;
+            }
+
+        , btnBr:
+            function(){
+                this._btnTl && ( this.dragger(), this._btnTl =  this.selector().find( 'button.cic_tl' ) );
+                return this._btnTl;
+            }
     });
 
     JC.f.extendObject( ImageCutter.View.prototype, {
@@ -151,38 +246,34 @@
             function(){
                 JC.log( 'ImageCutter.View.init:', new Date().getTime() );
                 var _p = this;
-
-                _p.on( 'CICImageLoad', function( _evt, _img, _width, _height ){
-                    _p.clean();
-
-                    var _newSize = _p._model.size( _width, _height );
-
-                    _img.css( { 
-                        'width': _newSize.zoom.width + 'px'
-                        , 'height': _newSize.zoom.height + 'px' 
-                        , 'left': _newSize.left + 'px'
-                        , 'top': _newSize.top + 'px'
-                    });
-
-                    _img.prependTo( _p.selector() );
-                });
             }
 
         , clean:
             function(){
                 this.selector().find( 'img' ).remove();
+                this.selector().find( 'button' ).hide();
             }
 
         , update:
             function( _imgUrl ){
                 if( !_imgUrl ) return;
                 var _p = this, _img = $( JC.f.printf( '<img src="about:blank" />' ) );
+
+                    _p.clean();
+
                     _img.on( 'load', function(){
                         //JC.log( this.width, this.height );
                         _p.trigger( 'CICImageLoad', [ _img, this.width, this.height ] );
                     });
                     _img.on( 'mousedown', function( _evt ){ _evt.preventDefault(); return false; } );
                     _img.attr( 'src', _imgUrl );
+            }
+
+        , updateDragger:
+            function( _size ){
+                var _p = this
+                    , _dragger = _p._model.dragger( _size )
+                    ;
             }
     });
 
