@@ -64,6 +64,7 @@
         , "parseISODate": parseISODate
         , "parseDate": parseDate
         , "printf": printf
+        , "cloneObject": cloneObject
 
         , "pureDate": pureDate
         , "reloadPage": reloadPage
@@ -1150,6 +1151,46 @@
             _r = encodeURIComponent;
         }
         return _r;
+    }
+    /**
+     * 深度克隆对象
+     * @method  cloneObject
+     * @param   {Object}    _inObj
+     * @return  Object
+     * @static
+     */
+    function cloneObject( _inObj, _outObj ){
+        _outObj = _outObj || {};
+        var k, i, j;
+
+        for( k in _inObj ){
+            _outObj[ k ] = _inObj[ k ];
+            switch( Object.prototype.toString.call( _outObj[ k ] ) ){
+
+                case '[object Object]': {
+                    _outObj[ k ] = arguments.callee( _outObj[ k ] );
+                    break;
+                }
+
+                case '[object Array]': {
+                    _outObj[ k ] = _inObj[ k ].slice();
+                    for( i = 0, j = _outObj[ k ].length; i < j; i++ ){
+                        if( Object.prototype.toString.call( _outObj[ k ][i] ) == '[object Object]' )
+                            _outObj[ k ][ i ] = arguments.callee( _outObj[ k ][ i ] );
+                    }
+                    break;
+                }
+
+                case '[object Date]': {
+                    _outObj[ k ] = new Date(); _outObj[ k ].setTime( _inObj[ k ].getTime() );
+                    break;
+                }
+
+                default: _outObj[ k ] = _inObj[ k ];
+            }
+        }
+
+        return _outObj;
     }
 
     return JC.f;

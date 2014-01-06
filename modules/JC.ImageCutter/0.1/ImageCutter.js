@@ -74,6 +74,48 @@
             return _r;
         };
 
+    ImageCutter.dragInfo =
+        function( _p, _evt ){
+            if( _p && _evt ){
+                ImageCutter._dragInfo = {
+                    'ins': _p
+                    , 'evt': _evt
+                    , 'size': _p._model.size()
+                    , 'pageX': _evt.pageX
+                    , 'pageY': _evt.pageY
+                }
+            }
+            return ImageCutter._dragInfo;
+        };
+
+    ImageCutter.cleanInfo = 
+        function(){
+            _jdoc.off( 'mouseup', ImageCutter.dragMainMouseUp );
+            _jdoc.off( 'mousemove', ImageCutter.dragMainMouseMove );
+
+            ImageCutter.dragInfo( null );
+        };
+
+    ImageCutter.dragMainMouseMove =
+        function( _evt ){
+            var _di = ImageCutter.dragInfo(), _p;
+            if( !( _di && _evt ) ) return;
+            var _newX = _di.pageX - _evt.pageX
+                , _newY = _di.pageY - _evt.pageY
+                ;
+
+            JC.log( 'ImageCutter.dragMainMouseMove', _newX, _newY );
+        };
+
+    ImageCutter.dragMainMouseUp =
+        function( _evt ){
+            var _di = ImageCutter.dragInfo(), _p;
+            if( !_di ) return;
+            _p = _di.ins;
+
+            _p.cleanStatus();
+        };
+
     ImageCutter.minwidth = 50;
     ImageCutter.minheight = 50;
 
@@ -117,10 +159,21 @@
                     _img.prependTo( _p.selector() );
 
                     _p._view.initDragger( _newSize );
+
                 });
 
-                _p.selector().delegate( 'div.cic_dragMain', 'mousedown', function(){
+                _p.selector().delegate( 'div.cic_dragMain', 'mousedown', function( _evt ){
+                    _evt.preventDefault();
                     JC.log( 'div.cic_dragMain mousedown', new Date().getTime() );
+                    _p._model.dragMain().addClass( 'cic_move' );
+
+                    ImageCutter.cleanInfo();
+                    ImageCutter.dragInfo( _p, _evt );
+
+                    _jdoc.on( 'mouseup', ImageCutter.dragMainMouseUp );
+                    _jdoc.on( 'mousemove', ImageCutter.dragMainMouseMove );
+
+                    return false;
                 });
 
                 _p.on( 'CICSizeError', function( _evt, _width, _height, _img ){
@@ -144,6 +197,15 @@
                 if( !_imgUrl ) return;
                 this._view.update( _imgUrl );
             }
+
+        , cleanStatus:
+            function(){
+                var _p = this;
+
+                ImageCutter.cleanInfo();
+                _p._model.dragMain().removeClass( 'cic_move' );
+            }
+
     });
 
     ImageCutter.Model.INITED = "JCImageCutterInited";
@@ -186,6 +248,12 @@
 
                     this._size.width = _width;
                     this._size.height = _height;
+
+                    this._size.minX = this._size.left;
+                    this._size.maxX = this._size.minX + this._size.zoom.width;
+
+                    this._size.minY = this._size.top;
+                    this._size.maxY = this._size.top + this._size.zoom.height;
 
                     this._size.dragger = {
                         srcSize: 0
@@ -384,18 +452,6 @@
                     ;
                 JC.log( 'initDragger', _draggerSize, new Date().getTime() );
 
-                _p._model.btnTl().css( { 'left': _left , 'top': _top } );
-                _p._model.btnTc().css( { 'left': ( _left + _halfSize ), 'top': _top } );
-                _p._model.btnTr().css( { 'left': ( _left + _draggerSize ), 'top': _top } );
-
-                _p._model.btnMl().css( { 'left': _left, 'top': ( _top + _halfSize ) } );
-                _p._model.btnMr().css( { 'left': _left + _draggerSize, 'top': ( _top + _halfSize ) } );
-
-
-                _p._model.btnBl().css( { 'left': _left, 'top': _top + _draggerSize } );
-                _p._model.btnBc().css( { 'left': _left + _halfSize, 'top': _top + _draggerSize } );
-                _p._model.btnBr().css( { 'left': _left + _draggerSize , 'top': _top + _draggerSize } );
-
                 _size.dragger = {
                     srcSize: _srcDraggerSize
                     , size: _draggerSize
@@ -403,6 +459,8 @@
                     , left: _left
                     , top: _top
                 };
+
+                _p.updateDragger( _size );
 
                 _p._model.draggerList().show();
 
@@ -412,6 +470,25 @@
 
         , updateDragger:
             function( _size ){
+                var _p = this;
+
+                _p._model.btnTl().css( { 'left': _size.dragger.left , 'top': _size.dragger.top } );
+                _p._model.btnTc().css( { 'left': ( _size.dragger.left + _size.dragger.halfSize ), 'top': _size.dragger.top } );
+                _p._model.btnTr().css( { 'left': ( _size.dragger.left + _size.dragger.size ), 'top': _size.dragger.top } );
+
+                _p._model.btnMl().css( { 'left': _size.dragger.left
+                                        , 'top': ( _size.dragger.top + _size.dragger.halfSize ) } );
+
+                _p._model.btnMr().css( { 'left': _size.dragger.left + _size.dragger.size
+                                        , 'top': ( _size.dragger.top + _size.dragger.halfSize ) } );
+
+                _p._model.btnBl().css( { 'left': _size.dragger.left, 'top': _size.dragger.top + _size.dragger.size } );
+
+                _p._model.btnBc().css( { 'left': _size.dragger.left + _size.dragger.halfSize
+                                        , 'top': _size.dragger.top + _size.dragger.size } );
+
+                _p._model.btnBr().css( { 'left': _size.dragger.left + _size.dragger.size 
+                                        , 'top': _size.dragger.top + _size.dragger.size } );
             }
 
         , updateMask:
