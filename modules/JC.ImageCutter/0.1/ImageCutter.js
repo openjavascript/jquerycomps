@@ -119,6 +119,10 @@
                     _p._view.initDragger( _newSize );
                 });
 
+                _p.selector().delegate( 'div.cic_dragMain', 'mousedown', function(){
+                    JC.log( 'div.cic_dragMain mousedown', new Date().getTime() );
+                });
+
                 _p.on( 'CICSizeError', function( _evt, _width, _height, _img ){
                     _p._view.sizeError( _width, _height, _img );
                 });
@@ -179,6 +183,17 @@
 
                     this._size.left = Math.round( ( this._size.selector.width - this._size.zoom.width ) / 2 );
                     this._size.top = Math.round( ( this._size.selector.height - this._size.zoom.height ) / 2 );
+
+                    this._size.width = _width;
+                    this._size.height = _height;
+
+                    this._size.dragger = {
+                        srcSize: 0
+                        , size: 0
+                        , halfSize: 0
+                        , left: 0
+                        , top: 0
+                    };
 
                     JC.log( this._size.left, this._size.top );
                 }
@@ -279,26 +294,35 @@
 
         , maskLeft:
             function(){
-                !this._maskLeft && ( this.maskList(), this._maskLeft =  this.selector().find( 'button.cic_maskLeft' ) );
+                !this._maskLeft && ( this.maskList(), this._maskLeft =  this.selector().find( 'div.cic_maskLeft' ) );
                 return this._maskLeft;
             }
 
         , maskTop:
             function(){
-                !this._maskTop && ( this.maskList(), this._maskTop =  this.selector().find( 'button.cic_maskTop' ) );
+                !this._maskTop && ( this.maskList(), this._maskTop =  this.selector().find( 'div.cic_maskTop' ) );
                 return this._maskTop;
             }
 
         , maskRight:
             function(){
-                !this._maskRight && ( this.maskList(), this._maskRight =  this.selector().find( 'button.cic_maskRight' ) );
+                !this._maskRight && ( this.maskList(), this._maskRight =  this.selector().find( 'div.cic_maskRight' ) );
                 return this._maskRight;
             }
 
         , maskBottom:
             function(){
-                !this._maskBottom && ( this.maskList(), this._maskBottom =  this.selector().find( 'button.cic_maskBottom' ) );
+                !this._maskBottom && ( this.maskList(), this._maskBottom =  this.selector().find( 'div.cic_maskBottom' ) );
                 return this._maskBottom;
+            }
+
+        , dragMain:
+            function(){
+                if( !this._dragMain ){
+                    this._dragMain = $( '<div class="cic_dragMain"></div>' );
+                    this._dragMain.hide().appendTo( this.selector() );
+                }
+                return this._dragMain;
             }
 
         , cicErrorBox:
@@ -343,43 +367,98 @@
 
         , initDragger:
             function( _size ){
+                this._model.dragMain();
                 this._model.maskList()
 
                 var _p = this
                     , _dragger = _p._model.draggerList()
                     , _draggerSize = Math.ceil( ( _size.zoom.width > _size.zoom.height ? _size.zoom.height : _size.zoom.width ) / 2 )
+                    , _draggerSize = _draggerSize > _p._model.cicMinWidth() ? _draggerSize : _p._model.cicMinWidth()
                     , _btnSize = _p._model.btnTl().width()
                     , _srcDraggerSize = _draggerSize
                     , _draggerSize = _draggerSize - _btnSize
                     , _halfSize = _draggerSize / 2
-                    , _x = _size.left + ( _size.zoom.width - _draggerSize ) / 2 - _btnSize / 2
-                    , _y = _size.top + ( _size.zoom.height - _draggerSize ) / 2 - _btnSize / 2
+                    , _left = _size.left + ( _size.zoom.width - _draggerSize ) / 2 - _btnSize / 2
+                    , _top = _size.top + ( _size.zoom.height - _draggerSize ) / 2 - _btnSize / 2
 
                     ;
                 JC.log( 'initDragger', _draggerSize, new Date().getTime() );
 
-                _p._model.btnTl().css( { 'left': _x , 'top': _y } );
-                _p._model.btnTc().css( { 'left': ( _x + _halfSize ), 'top': _y } );
-                _p._model.btnTr().css( { 'left': ( _x + _draggerSize ), 'top': _y } );
+                _p._model.btnTl().css( { 'left': _left , 'top': _top } );
+                _p._model.btnTc().css( { 'left': ( _left + _halfSize ), 'top': _top } );
+                _p._model.btnTr().css( { 'left': ( _left + _draggerSize ), 'top': _top } );
 
-                _p._model.btnMl().css( { 'left': _x, 'top': ( _y + _halfSize ) } );
-                _p._model.btnMr().css( { 'left': _x + _draggerSize, 'top': ( _y + _halfSize ) } );
+                _p._model.btnMl().css( { 'left': _left, 'top': ( _top + _halfSize ) } );
+                _p._model.btnMr().css( { 'left': _left + _draggerSize, 'top': ( _top + _halfSize ) } );
 
 
-                _p._model.btnBl().css( { 'left': _x, 'top': _y + _draggerSize } );
-                _p._model.btnBc().css( { 'left': _x + _halfSize, 'top': _y + _draggerSize } );
-                _p._model.btnBr().css( { 'left': _x + _draggerSize , 'top': _y + _draggerSize } );
+                _p._model.btnBl().css( { 'left': _left, 'top': _top + _draggerSize } );
+                _p._model.btnBc().css( { 'left': _left + _halfSize, 'top': _top + _draggerSize } );
+                _p._model.btnBr().css( { 'left': _left + _draggerSize , 'top': _top + _draggerSize } );
+
+                _size.dragger = {
+                    srcSize: _srcDraggerSize
+                    , size: _draggerSize
+                    , halfSize: _halfSize
+                    , left: _left
+                    , top: _top
+                };
 
                 _p._model.draggerList().show();
 
-                _p.initMask( _x, _y, _size );
+                _p.updateMask( _size );
+                _p.updateDragMain( _size );
             }
 
-        , initMask:
-            function( _x, _y, _size ){
+        , updateDragger:
+            function( _size ){
+            }
+
+        , updateMask:
+            function( _size ){
                 var _p = this
                     , _maskList = _p._model.maskList()
                     ;
+
+                _p._model.maskLeft().css( { 
+                    'height': _size.dragger.srcSize
+                    , 'width': _size.dragger.left
+                    , 'top': _size.dragger.top
+                });
+
+                _p._model.maskTop().css( { 
+                    'height': _size.dragger.top
+                    , 'width': _size.width 
+                });
+
+                _p._model.maskRight().css( {
+                    'left': _size.dragger.left + _size.dragger.srcSize
+                    , 'top': _size.dragger.top
+                    , 'width': _size.width - _size.dragger.left - _size.dragger.srcSize
+                    , 'height': _size.dragger.srcSize
+                });
+
+                _p._model.maskBottom().css( { 
+                    'height': _size.height - (_size.dragger.top + _size.dragger.srcSize )
+                    , 'width': _size.width
+                    , 'top': _size.dragger.top + _size.dragger.srcSize 
+                });
+
+                _maskList.show();
+            }
+
+        , updateDragMain:
+            function( _size ){
+                var _p = this, _dragMain = _p._model.dragMain();
+
+                _dragMain.css({
+                    'width': _size.dragger.srcSize 
+                    , 'height': _size.dragger.srcSize
+                    , 'left': _size.dragger.left
+                    , 'top': _size.dragger.top
+                });
+
+                _dragMain.show();
             }
 
         , sizeError:
@@ -416,22 +495,22 @@
      * <br />返回: { width: int, height: int }
      * @param   {int}   _w
      * @param   {int}   _h
-     * @param   {int}   _newW
-     * @param   {int}   _newH
+     * @param   {int}   _newWidth
+     * @param   {int}   _newHeight
      * @return  {object}    width, height
      */
-    function sizeZoom( _w, _h, _newW, _newH ){
+    function sizeZoom( _w, _h, _newWidth, _newHeight ){
         var w, h;
         
-        if( _w > _newW && ( _h < _w )){
-            w = _newW;
-            h = _h - ( _h / ( _w / ( _w - _newW ) ) );
-        }else if( _h > _newH && ( _h > _w ) ){
-            w = _w - ( _w / ( _h / ( _h - _newH ) ) );
-            h = _newH;
+        if( _w > _newWidth && ( _h < _w )){
+            w = _newWidth;
+            h = _h - ( _h / ( _w / ( _w - _newWidth ) ) );
+        }else if( _h > _newHeight && ( _h > _w ) ){
+            w = _w - ( _w / ( _h / ( _h - _newHeight ) ) );
+            h = _newHeight;
         }else{
-            w = _newW; 
-            h = _newH;
+            w = _newWidth; 
+            h = _newHeight;
         }
         return { 'width': w, 'height': h };
     }
