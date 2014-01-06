@@ -1375,7 +1375,7 @@
 
                 case &#x27;[object Object]&#x27;: {
                       _outObj[ k ] = _outObj[ k ].constructor === Object
-                        ?  arguments.callee( _outObj[ k ] )
+                        ?  cloneObject( _outObj[ k ] )
                         :  _outObj[ k ]
                         ;
                     break;
@@ -1385,7 +1385,7 @@
                     _outObj[ k ] = _inObj[ k ].slice();
                     for( i = 0, j = _outObj[ k ].length; i &lt; j; i++ ){
                         if( Object.prototype.toString.call( _outObj[ k ][i] ) == &#x27;[object Object]&#x27; )
-                            _outObj[ k ][ i ] = arguments.callee( _outObj[ k ][ i ] );
+                            _outObj[ k ][ i ] = cloneObject( _outObj[ k ][ i ] );
                     }
                     break;
                 }
@@ -1403,6 +1403,7 @@
     }
 
     return JC.f;
+
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb) { 
             typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );

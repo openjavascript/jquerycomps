@@ -1169,7 +1169,7 @@
 
                 case '[object Object]': {
                       _outObj[ k ] = _outObj[ k ].constructor === Object
-                        ?  arguments.callee( _outObj[ k ] )
+                        ?  cloneObject( _outObj[ k ] )
                         :  _outObj[ k ]
                         ;
                     break;
@@ -1179,7 +1179,7 @@
                     _outObj[ k ] = _inObj[ k ].slice();
                     for( i = 0, j = _outObj[ k ].length; i < j; i++ ){
                         if( Object.prototype.toString.call( _outObj[ k ][i] ) == '[object Object]' )
-                            _outObj[ k ][ i ] = arguments.callee( _outObj[ k ][ i ] );
+                            _outObj[ k ][ i ] = cloneObject( _outObj[ k ][ i ] );
                     }
                     break;
                 }
@@ -1197,6 +1197,7 @@
     }
 
     return JC.f;
+
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 
             typeof _name == 'function' && ( _cb = _name );

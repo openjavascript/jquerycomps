@@ -74,37 +74,93 @@
             return _r;
         };
 
+    ImageCutter.minwidth = 50;
+    ImageCutter.minheight = 50;
+
     ImageCutter.dragInfo =
-        function( _p, _evt ){
-            if( _p && _evt ){
+        function( _p, _evt, _size ){
+            if( _p && _evt && _size ){
                 ImageCutter._dragInfo = {
                     'ins': _p
                     , 'evt': _evt
                     , 'size': _p._model.size()
+                    , 'tmpSize': _size
                     , 'pageX': _evt.pageX
                     , 'pageY': _evt.pageY
                 }
+                //window.JSON && JC.log( JSON.stringify( _size ) );
             }
             return ImageCutter._dragInfo;
         };
 
     ImageCutter.cleanInfo = 
         function(){
+
             _jdoc.off( 'mouseup', ImageCutter.dragMainMouseUp );
             _jdoc.off( 'mousemove', ImageCutter.dragMainMouseMove );
 
+            _jdoc.off( 'mouseup', ImageCutter.dragBtnMouseUp );
+            _jdoc.off( 'mousemove', ImageCutter.dragBtnMouseMove );
+
             ImageCutter.dragInfo( null );
         };
-
+    /*
+        {
+            "minX": 0, 
+            "dragger": {
+                "srcSize": 94, 
+                "size": 84, 
+                "left": 103, 
+                "top": 103, 
+                "halfSize": 42
+            }, 
+            "maxX": 300, 
+            "top": 56, 
+            "left": 0, 
+            "width": 1680, 
+            "height": 1050, 
+            "selector": {
+                "width": 300, 
+                "height": 300
+            }, 
+            "zoom": {
+                "width": 300, 
+                "height": 188
+            }, 
+            "minY": 56, 
+            "img": {
+                "width": 1680, 
+                "height": 1050
+            }, 
+            "maxY": 244
+        }
+    */
     ImageCutter.dragMainMouseMove =
         function( _evt ){
             var _di = ImageCutter.dragInfo(), _p;
             if( !( _di && _evt ) ) return;
-            var _newX = _di.pageX - _evt.pageX
-                , _newY = _di.pageY - _evt.pageY
+            var _posX = _di.pageX - _evt.pageX
+                , _posY = _di.pageY - _evt.pageY
+
+                , _newX = _di.size.dragger.left - _posX
+                , _newY = _di.size.dragger.top - _posY
+
+                , _maxX = _di.size.maxX - _di.size.dragger.srcSize
+                , _maxY = _di.size.maxY - _di.size.dragger.srcSize
                 ;
 
-            JC.log( 'ImageCutter.dragMainMouseMove', _newX, _newY );
+            _newX < _di.size.minX && ( _newX = _di.size.minX );
+            _newX > _maxX && ( _newX = _maxX );
+
+            _newY < _di.size.minY && ( _newY = _di.size.minY );
+            _newY > _maxY && ( _newY = _maxY );
+
+            _di.tmpSize.dragger.left = _newX;
+            _di.tmpSize.dragger.top = _newY;
+
+            _di.ins.updatePosition( _di.tmpSize );
+
+            //JC.log( 'ImageCutter.dragMainMouseMove', _newX, _newY );
         };
 
     ImageCutter.dragMainMouseUp =
@@ -113,11 +169,56 @@
             if( !_di ) return;
             _p = _di.ins;
 
+            _p._size( _di.tmpSize );
+
             _p.cleanStatus();
         };
 
-    ImageCutter.minwidth = 50;
-    ImageCutter.minheight = 50;
+    ImageCutter.dragBtnMouseUp =
+        function( _evt ){
+            var _di = ImageCutter.dragInfo(), _p;
+            if( !( _di && _evt ) ) return;
+
+            JC.log( 'ImageCutter.dragBtnMouseUp', new Date().getTime() );
+            return;
+
+            var _posX = _di.pageX - _evt.pageX
+                , _posY = _di.pageY - _evt.pageY
+
+                , _newX = _di.size.dragger.left - _posX
+                , _newY = _di.size.dragger.top - _posY
+
+                , _maxX = _di.size.maxX - _di.size.dragger.srcSize
+                , _maxY = _di.size.maxY - _di.size.dragger.srcSize
+                ;
+
+            _newX < _di.size.minX && ( _newX = _di.size.minX );
+            _newX > _maxX && ( _newX = _maxX );
+
+            _newY < _di.size.minY && ( _newY = _di.size.minY );
+            _newY > _maxY && ( _newY = _maxY );
+
+            _di.tmpSize.dragger.left = _newX;
+            _di.tmpSize.dragger.top = _newY;
+
+            _di.ins.updatePosition( _di.tmpSize );
+
+            //JC.log( 'ImageCutter.dragMainMouseMove', _newX, _newY );
+        };
+
+    ImageCutter.dragBtnMouseUp =
+        function( _evt ){
+            var _di = ImageCutter.dragInfo(), _p;
+            if( !_di ) return;
+
+            JC.log( 'ImageCutter.dragBtnMouseUp', new Date().getTime() );
+            return;
+            _p = _di.ins;
+
+            _p._size( _di.tmpSize );
+
+            _p.cleanStatus();
+        };
 
     JC.BaseMVC.build( ImageCutter );
 
@@ -168,10 +269,23 @@
                     _p._model.dragMain().addClass( 'cic_move' );
 
                     ImageCutter.cleanInfo();
-                    ImageCutter.dragInfo( _p, _evt );
+                    ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ) );
 
                     _jdoc.on( 'mouseup', ImageCutter.dragMainMouseUp );
                     _jdoc.on( 'mousemove', ImageCutter.dragMainMouseMove );
+
+                    return false;
+                });
+
+                _p.selector().delegate( 'button.cic_btn', 'mousedown', function( _evt ){
+                    _evt.preventDefault();
+                    JC.log( 'div.cic_btn mousedown', new Date().getTime() );
+
+                    ImageCutter.cleanInfo();
+                    ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ) );
+
+                    _jdoc.on( 'mouseup', ImageCutter.dragBtnMouseUp );
+                    _jdoc.on( 'mousemove', ImageCutter.dragBtnMouseMove );
 
                     return false;
                 });
@@ -198,6 +312,8 @@
                 this._view.update( _imgUrl );
             }
 
+        , updatePosition: function(){ this._view.updatePosition.apply( this._view, JC.f.sliceArgs( arguments ) ); }
+
         , cleanStatus:
             function(){
                 var _p = this;
@@ -206,6 +322,7 @@
                 _p._model.dragMain().removeClass( 'cic_move' );
             }
 
+        , _size: function(){ this._model.size.apply( this._model, JC.f.sliceArgs( arguments ) ); }
     });
 
     ImageCutter.Model.INITED = "JCImageCutterInited";
@@ -236,6 +353,7 @@
         
         , size: 
             function( _width, _height ){ 
+
                 if( _width && _height ){
                     this._size.img = { width: _width, height: _height };
                     this._size.zoom = sizeZoom( _width, _height, this._size.selector.width, this._size.selector.height );
@@ -250,10 +368,10 @@
                     this._size.height = _height;
 
                     this._size.minX = this._size.left;
-                    this._size.maxX = this._size.minX + this._size.zoom.width;
+                    this._size.maxX = ( this._size.minX + this._size.zoom.width );
 
                     this._size.minY = this._size.top;
-                    this._size.maxY = this._size.top + this._size.zoom.height;
+                    this._size.maxY = ( this._size.minY + this._size.zoom.height );
 
                     this._size.dragger = {
                         srcSize: 0
@@ -265,6 +383,11 @@
 
                     JC.log( this._size.left, this._size.top );
                 }
+
+                if( _width && !_height ){
+                    this._size = _width;
+                }
+
                 return this._size; 
             }
 
@@ -460,9 +583,7 @@
                     , top: _top
                 };
 
-                _p.updateDragger( _size );
-                _p.updateMask( _size );
-                _p.updateDragMain( _size );
+                _p.updatePosition( _size );
             }
 
         , updatePosition:
@@ -567,7 +688,7 @@
                         , this._model.cicMinWidth(), this._model.cicMinHeight()
                         , _width, _height
                         , '<a href="' + _img.attr( 'src' ) + '" target="_blank">查看图片</a>'
-                        , '<h3>图片缩放尺寸错误 </h3>'
+                        , '<h3>图片缩放比例尺寸错误 </h3>'
                         , _newSize.zoom.width, _newSize.zoom.height
                     )
                 );
