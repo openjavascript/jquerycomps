@@ -1168,7 +1168,10 @@
             switch( Object.prototype.toString.call( _outObj[ k ] ) ){
 
                 case '[object Object]': {
-                    _outObj[ k ] = arguments.callee( _outObj[ k ] );
+                      _outObj[ k ] = _outObj[ k ].constructor === Object
+                        ?  arguments.callee( _outObj[ k ] )
+                        :  _outObj[ k ]
+                        ;
                     break;
                 }
 

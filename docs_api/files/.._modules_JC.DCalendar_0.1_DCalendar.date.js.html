@@ -1188,17 +1188,33 @@
             var _p = this,
                 _x = _p.selector().offset().left,
                 _y = _p.selector().offset().top + _p.selector().prop(&#x27;offsetHeight&#x27;),
+                _tempX,
+                _tempY,
+                //_w = 466,
                 _win = $(window);
 
+            //上下溢出
             if ( ( _win.outerHeight() + _win.scrollTop() ) &lt; ( _y + _p.layout().height() ) ) {
-                
-                ( _p.selector().offset().top  - _p.layout().height() &gt; 0 ) 
-                &amp;&amp; 
-                ( _y = _p.selector().offset().top - _p.layout().height() ) ;
-               
+                _tempY = _p.selector().offset().top  - _p.layout().height();
+                ( _tempY &gt;= 0 ) &amp;&amp; ( _y = _tempY );
             } else {
                 _y = _p.selector().offset().top + _p.selector().prop(&#x27;offsetHeight&#x27;);
             }
+
+            //左右溢出
+
+            if ( ( _win.outerWidth() + _win.scrollLeft() ) &lt; ( _x + _p.layout().outerWidth(true) ) ) {
+                _tempX = _p.selector().offset().left + _p.selector().outerWidth() - _p.layout().outerWidth(true);
+                ( _tempX &gt;= 0 ) &amp;&amp; ( _x = _tempX );
+            } else {
+                _x = _p.selector().offset().left;
+            }
+
+            // if ( ( _win.outerWidth() + _win.scrollLeft() ) &lt; ( _x + _p.layout().outerWidth(true) ) ) {
+            //     _w = 270;
+            // } else {
+            //     _w = 466;
+            // }
 
             _p.layout().css({
                 left: _x,
@@ -1632,14 +1648,14 @@
 
     });
 
-    _doc.delegate(&#x27;#CompDCalendar .CDC_month_body&gt;tbody&gt;tr&gt;td&gt;a&#x27;, &#x27;click&#x27;, function (_evt) {
+    _doc.delegate(&#x27;#CompDCalendar .CDC_month_body&gt;tbody&gt;tr&gt;td&gt;a:not(&quot;.disabled&quot;)&#x27;, &#x27;click&#x27;, function (_evt) {
         
         var _ins = DCalendar.getInstance(DCalendar.lastSrc);
         _ins &amp;&amp; _ins.trigger(DCalendar.Model.DATEVIEW, [$(this)]);
         
     } );
 
-    _doc.delegate(&#x27;#CompDCalendar .CDC_year_body&gt;tbody&gt;tr&gt;td&gt;a&#x27;, &#x27;click&#x27;, function (_evt) {
+    _doc.delegate(&#x27;#CompDCalendar .CDC_year_body&gt;tbody&gt;tr&gt;td&gt;a:not(&quot;.disabled&quot;)&#x27;, &#x27;click&#x27;, function (_evt) {
       
         var _ins = DCalendar.getInstance(DCalendar.lastSrc);
         _ins &amp;&amp; _ins.trigger(DCalendar.Model.MONTHVIEW, [$(this)]);

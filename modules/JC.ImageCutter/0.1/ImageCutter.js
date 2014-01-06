@@ -461,9 +461,15 @@
                 };
 
                 _p.updateDragger( _size );
+                _p.updateMask( _size );
+                _p.updateDragMain( _size );
+            }
 
-                _p._model.draggerList().show();
+        , updatePosition:
+            function( _size ){
+                var _p = this;
 
+                _p.updateDragger( _size );
                 _p.updateMask( _size );
                 _p.updateDragMain( _size );
             }
@@ -489,6 +495,8 @@
 
                 _p._model.btnBr().css( { 'left': _size.dragger.left + _size.dragger.size 
                                         , 'top': _size.dragger.top + _size.dragger.size } );
+
+                _p._model.draggerList().show();
             }
 
         , updateMask:
