@@ -255,8 +255,10 @@
          * @param   {string}    _evtName
          */
         , trigger:
-            function(){
-                $( this ).trigger( 'TriggerEvent', JC.f.sliceArgs( arguments ) );
+            function( _evtName, _args ){
+                _args = _args || [];
+                _args.unshift( _evtName );
+                $( this ).trigger( 'TriggerEvent', _args );
                 return this;
             }
         /**
@@ -477,8 +479,10 @@
          * 使用 jquery trigger 触发 controler 绑定事件
          */
         , trigger:
-            function(){
-                $( this ).trigger( 'TriggerEvent', JC.f.sliceArgs( arguments ) );
+            function( _evtName, _args ){
+                _args = _args || [];
+                _args.unshift( _evtName );
+                $( this ).trigger( 'TriggerEvent', _args );
                 return this;
             }
     });

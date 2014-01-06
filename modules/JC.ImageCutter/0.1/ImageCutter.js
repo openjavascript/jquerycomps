@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.Drag' ], function(){
 /**
  * 组件用途简述
  *
@@ -84,19 +84,65 @@
 
         , _initHanlderEvent:
             function(){
+                var _p = this;
+
+                _p.on( ImageCutter.Model.INITED, function( _evt ){
+                    _p._model.cicImageUrl()
+                        && _p.update( _p._model.cicImageUrl() );
+                });
             }
 
         , _inited:
             function(){
                 JC.log( 'ImageCutter _inited', new Date().getTime() );
+                this.trigger( ImageCutter.Model.INITED );
+            }
+
+        , update:
+            function( _imgUrl ){
+                if( !_imgUrl ) return;
+                this._view.update( _imgUrl );
             }
     });
+
+    ImageCutter.Model.INITED = "JCImageCutterInited";
 
     ImageCutter.Model._instanceName = 'JCImageCutter';
     JC.f.extendObject( ImageCutter.Model.prototype, {
         init:
             function(){
                 JC.log( 'ImageCutter.Model.init:', new Date().getTime() );
+                var _p = this;
+
+                this._size ={
+                    selector: { width: _p.selector().prop( 'offsetWidth' ), height: _p.selector().prop( 'offsetHeight' ) }
+                    , img: { width: 0, height: 0 }
+                    , zoom: { width: 0, height: 0 }
+                    , left: 0
+                    , top: 0
+                }
+            }
+
+        , cicImageUrl:
+            function(){
+                return this.attrProp( 'cicImageUrl' );
+            }
+        
+        , size: 
+            function( _width, _height ){ 
+                if( _width && _height ){
+                    this._size.img = { width: _width, height: _height };
+                    this._size.zoom = sizeZoom( _width, _height, this._size.selector.width, this._size.selector.height );
+
+                    this._size.zoom.width = Math.round( this._size.zoom.width );
+                    this._size.zoom.height = Math.round( this._size.zoom.height );
+
+                    this._size.left = Math.round( ( this._size.selector.width - this._size.zoom.width ) / 2 );
+                    this._size.top = Math.round( ( this._size.selector.height - this._size.zoom.height ) / 2 );
+
+                    JC.log( this._size.left, this._size.top );
+                }
+                return this._size; 
             }
     });
 
@@ -104,15 +150,75 @@
         init:
             function(){
                 JC.log( 'ImageCutter.View.init:', new Date().getTime() );
+                var _p = this;
+
+                _p.on( 'CICImageLoad', function( _evt, _img, _width, _height ){
+                    _p.clean();
+
+                    var _newSize = _p._model.size( _width, _height );
+
+                    _img.css( { 
+                        'width': _newSize.zoom.width + 'px'
+                        , 'height': _newSize.zoom.height + 'px' 
+                        , 'left': _newSize.left + 'px'
+                        , 'top': _newSize.top + 'px'
+                    });
+
+                    _img.prependTo( _p.selector() );
+                });
+            }
+
+        , clean:
+            function(){
+                this.selector().find( 'img' ).remove();
+            }
+
+        , update:
+            function( _imgUrl ){
+                if( !_imgUrl ) return;
+                var _p = this, _img = $( JC.f.printf( '<img src="about:blank" />' ) );
+                    _img.on( 'load', function(){
+                        //JC.log( this.width, this.height );
+                        _p.trigger( 'CICImageLoad', [ _img, this.width, this.height ] );
+                    });
+                    _img.on( 'mousedown', function( _evt ){ _evt.preventDefault(); return false; } );
+                    _img.attr( 'src', _imgUrl );
             }
     });
+
+    /**
+     * 按比例缩放图片
+     * <br />返回: { width: int, height: int }
+     * @param   {int}   _w
+     * @param   {int}   _h
+     * @param   {int}   _newW
+     * @param   {int}   _newH
+     * @return  {object}    width, height
+     */
+    function sizeZoom( _w, _h, _newW, _newH ){
+        var w, h;
+        
+        if( _w > _newW && ( _h < _w )){
+            w = _newW;
+            h = _h - ( _h / ( _w / ( _w - _newW ) ) );
+        }else if( _h > _newH && ( _h > _w ) ){
+            w = _w - ( _w / ( _h / ( _h - _newH ) ) );
+            h = _newH;
+        }else{
+            w = _newW; 
+            h = _newH;
+        }
+        return { 'width': w, 'height': h };
+    }
 
     _jdoc.ready( function(){
         var _insAr = 0;
         ImageCutter.autoInit
             && ( _insAr = ImageCutter.init() )
+            /*
             && $( '<h2>ImageCutter total ins: ' 
                 + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
+            */
             ;
     });
 
