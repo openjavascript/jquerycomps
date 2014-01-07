@@ -11,6 +11,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.BaseMVC",
         "JC.BaseMVC.Model",
         "JC.Calendar",
+        "JC.DCalendar",
         "JC.Dialog",
         "JC.Dialog.alert",
         "JC.Dialog.confirm",

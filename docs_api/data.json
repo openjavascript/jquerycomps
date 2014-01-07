@@ -236,6 +236,24 @@
             },
             "namespaces": {}
         },
+        "../comps/DCalendar/DCalendar.date.js": {
+            "name": "../comps/DCalendar/DCalendar.date.js",
+            "modules": {},
+            "classes": {
+                "JC.DCalendar": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
+        "../comps/DCalendar/DCalendar.js": {
+            "name": "../comps/DCalendar/DCalendar.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "../comps/Drag/Drag.js": {
             "name": "../comps/Drag/Drag.js",
             "modules": {},
@@ -916,6 +934,30 @@
             "description": "日期选择组件\n<br />全局访问请使用 JC.Calendar 或 Calendar\n<br />DOM 加载完毕后\n, Calendar会自动初始化页面所有日历组件, input[type=text][datatype=date]标签\n<br />Ajax 加载内容后, 如果有日历组件需求的话, 需要手动使用Calendar.init( _selector )\n<br />_selector 可以是 新加载的容器, 也可以是新加载的所有input\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Calendar.html' target='_blank'>API docs</a>\n| <a href='../../comps/Calendar/_demo/' target='_blank'>demo link</a></p>\n<h2> 可用的html attribute, (input|button):(datatype|multidate)=(date|week|month|season) </h2> \n<dl>\n     <dt>defaultdate = ISO Date</dt>\n     <dd>默认显示日期, 如果 value 为空, 则尝试读取 defaultdate 属性</dd>\n\n     <dt>datatype = string</dt>\n     <dd>\n         声明日历控件的类型:\n         <br /><b>date:</b> 日期日历\n         <br /><b>week:</b> 周日历\n         <br /><b>month:</b> 月日历\n         <br /><b>season:</b> 季日历\n         <br /><b>year:</b> 年日历\n         <br /><b>monthday:</b> 多选日期日历\n     </dd>\n\n     <dt>multidate = string</dt>\n     <dd>\n         与 datatype 一样, 这个是扩展属性, 避免表单验证带来的逻辑冲突\n     </dd>\n\n     <dt>calendarshow = function</dt>\n     <dd>显示日历时的回调\n<pre>function calendarshow( _selector, _ins ){\n   var _selector = $(this);\n   UXC.log( 'calendarshow', _selector.val() );\n}\n</pre></dd>\n\n     <dt>calendarhide = function</dt>\n     <dd>隐藏日历时的回调\n<pre>function calendarhide( _selector, _ins ){\n   var _selector = $(this);\n   UXC.log( 'calendarhide', _selector.val() );\n}</pre></dd>\n\n     <dt>calendarlayoutchange = function</dt>\n     <dd>用户点击日历控件操作按钮后, 外观产生变化时触发的回调\n<pre>function calendarlayoutchange( _selector, _ins ){\n   var _selector = $(this);\n   JC.log( 'calendarlayoutchange', _selector.val() );\n}\n</pre></dd>\n\n     <dt>calendarupdate = function</dt>\n     <dd>\n         赋值后触发的回调\n<pre>function calendarupdate( _startDate, _endDate, _ins ){\n   var _selector = $(this);\n   JC.log( 'calendarupdate', _selector.val(), _startDate, _endDate );\n}\n</pre></dd>\n\n     <dt>calendarclear = function</dt>\n     <dd>清空日期触发的回调\n<pre>function calendarclear( _selector, _ins ){\n   var _selector = $(this);\n}</pre></dd>\n\n     <dt>minvalue = ISO Date</dt>\n     <dd>日期的最小时间, YYYY-MM-DD</dd>\n\n     <dt>maxvalue = ISO Date</dt>\n     <dd>日期的最大时间, YYYY-MM-DD</dd>\n\n     <dt>currentcanselect = bool, default = true</dt>\n     <dd>当前日期是否能选择</dd>\n\n     <dt>multiselect = bool (目前支持 month: default=false, monthday: default = true)</dt>\n     <dd>是否为多选日历</dd>\n\n     <dt>calendarupdatemultiselect = function</dt>\n     <dd>\n         多选日历赋值后触发的回调\n         <dl>\n             <dt>参数: _data:</dt>\n             <dd>\n                 [{\"start\": Date,\"end\": Date}[, {\"start\": Date,\"end\": Date}... ] ]\n             </dd>\n         </dl>\n<pre>function calendarupdatemultiselect( _data, _ins ){\n   var _selector = $(this);\n   window.JSON && ( _data = JSON.stringify( _data ) );\n   JC.log( 'calendarupdatemultiselect:'\n       , JC.f.printf( 'val:{0}, data:{1}', _selector.val(), _data ) );\n}</pre></dd>\n\n     <dt>dateFormat = string</dt>\n     <dd>\n         自定义日期格式化显示, 使用 JC.f.dateFormat 函数进行格式化\n         <br />如果日期去除非数字后不是 8/16 位数字的话, 需要 显式声明 dateParse 属性, 自定义日期解析函数\n     </dd>\n\n     <dt>fullDateFormat = string</dt>\n     <dd>\n         针对 日期类型: 月/季/年 定义显示格式, default: \"{0} 至 {1}\"\n         <br />{0}代表开始日期, {1}代表结束日期\n     </dd>\n\n     <dt>dateParse = function </dt>\n     <dd>\n         自定义日期格式函数, 针对日期不能解析为 8 位数字的特殊日期\n         <br />例子:\n<pre>//\n/// 针对月份日期格式化 YY-MM\n//\nfunction parseYearMonthDate( _dateStr ){\n   _dateStr = $.trim( _dateStr || '' );\n   var _r = { start: null, end: null };\n   if( !_dateStr ) return _r;\n\n   _dateStr = _dateStr.replace( /[^\\d]+/g, '' );\n   var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4 ), 10 ) - 1;\n\n   _r.start = new Date( _year, _month, 1 );\n   return _r;\n}\n//\n/// 针对季度日期格式化 YY-MM ~ YY-MM\n//\nfunction parseSeasonDate( _dateStr ){\n   _dateStr = $.trim( _dateStr || '' );\n   var _r = { start: null, end: null };\n   if( !_dateStr ) return _r;\n\n   _dateStr = _dateStr.replace( /[^\\d]+/g, '' );\n\n   _r.start = JC.f.parseISODate( _dateStr.slice( 0, 6 ) + '01' );\n   _r.end = JC.f.parseISODate( _dateStr.slice( 6 ) + '01' );\n\n   return _r;\n}\n//\n/// 针对年份日期格式化 YY\n//\nfunction parseYearDate( _dateStr ){\n   _dateStr = $.trim( _dateStr || '' );\n   var _r = { start: null, end: null };\n   if( !_dateStr ) return _r;\n\n   _dateStr = _dateStr.replace( /[^\\d]+/g, '' );\n   var _year = _dateStr.slice( 0, 4 );\n\n   _r.start = new Date( _year, 0, 1 );\n   return _r;\n}</pre>\n     </dd>\n</dl>",
             "version": "dev 0.1, 2013-06-04",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
+        },
+        "JC.DCalendar": {
+            "name": "JC.DCalendar",
+            "shortname": "JC.DCalendar",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 2,
+            "description": "双日历日期选择组件\n<p>\n     <b>require</b>: \n         <a href='.jQuery.html'>jQuery</a>\n         , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.DCalendar.html' target='_blank'>API docs</a>\n| <a href='../../comps/DCalendar/_demo' target='_blank'>demo link</a></p>\n\n<p></p>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n     <dt>datatype = string 必填项</dt>\n     <dd>声明日历控件的类型：\n     <br/><b>ddate:</b> 日期日历\n     <br/><b>drange:</b> 日期范围日历( 成对出现 )\n     </dd>\n\n     <dt>minvalue = ISO Date</dt>\n     <dd>日期的最小时间, YYYY-MM-DD</dd>\n\n     <dt>maxvalue = ISO Date</dt>\n     <dd>日期的最大时间, YYYY-MM-DD</dd>\n\n     <dt>currentcanselect = bool, default = true</dt>\n     <dd>当前日期是否能选择</dd>\n\n     <dt>monthmum = int</dt>\n     <dd>\n         声明显示月份日历面板的个数（一次性可显示2到12个月份），默认为2（双日历）\n     </dd>\n\n     <dt>showtype = block || float </dt>\n     <dd>\n         声明月份日历面板的显示方式，默认为float<br/>\n         float（比如两个月份并排显示） <a href=\"../../comps/DCalendar/res/default/style.html#float\" target=\"_blank\">查看</a><br/>\n         block （月份日历面板竖排显示）<a href=\"../../comps/DCalendar/res/default/style.html#block\" target=\"_blank\">查看</a><br/>\n     </dd>\n\n     <dt>calendarshow = function</dt>\n     <dd>显示日历显示后的回调\n<pre>function calendarShow( selector ) {\n   var ins = this;\n   JC.log( \"calendarshow\", new Date().getTime(), selector.val() );\n}</pre></dd>\n\n     <dt>calendarhide = function</dt>\n     <dd>隐藏日历后的回调\n<pre>function calendarhide( selector ) {\n   JC.log( \"calendarhide\", $(selector).val(), new Date().getTime() );\n}</pre></dd>\n\n     <dt>calendarclear = function</dt>\n     <dd>清空选中日期时的回调\n<pre>function calendarclear( selector ) {\n   JC.log( \"calendarclear\", $(selector).val(), new Date().getTime() );\n}</pre></dd>\n\n    <dt>updatedate = function</dt>\n    <dd>选中日期后回调\n<pre>function updatedate( selector ) {\n   JC.log( \"updatedate\", $(selector).val(), new Date().getTime() );\n}</pre></dd>\n\n    <dt>updatemonth = function</dt>\n    <dd>选中月份后回调\n<pre>function updatemonth( selector ) {\n   JC.log( \"updatedatemonth\", $(selector).val(), new Date().getTime() );\n}</pre></dd>\n\n    <dt>updateyear = function</dt>\n    <dd>选中年份后回调\n<pre>function updateyear( selector ) {\n   JC.log( \"updatedateyear\", $(selector).val(), new Date().getTime() );\n}</pre></dd>\n\n    <dt>beforeupdateyear = function</dt>\n    <dd>更新年份前的回调，即年份日历面板出来时\n<pre>function beforeupdateyear( selector ) {\n   JC.log( \"beforeupdateyear\", $(selector).val(), new Date().getTime() );\n}</pre></dd>\n\n    <dt>beforeupdatemonth = function</dt>\n    <dd>更新月份前的回调，即月份日历面板出来时\n<pre>function beforeupdateymonth( selector ) {\n   JC.log( \"beforeupdateymonth\", $(selector).val(), new Date().getTime() );\n}</pre></dd>\n\n    <dt>beforeupdatemont = function</dt>\n    <dd>更新月份前的回调，即月份日历面板出来时\n<pre>function beforeupdateymonth( selector ) {\n   JC.log( \"beforeupdateymonth\", $(selector).val(), new Date().getTime() );\n}</pre></dd>\n\n    <dt>updateprevpageyear = function</dt>\n    <dd>点击上一页年份时的回调\n<pre>function updatprevtpageyear( selector ) {\n   JC.log( \"updateprevpageyear\", $(selector).val(), new Date().getTime() );\n}</pre></dd>\n\n    <dt>updatenextpageyear = function</dt>\n    <dd>点击下一页年份时的回调\n<pre>function updatenextpageyear( selector ) {\n   JC.log( \"updatenextpageyear\", $(selector).val(), new Date().getTime() );\n}</pre></dd>\n\n    <dt>updateprevyear = function</dt>\n    <dd>点击上一年时的回调，月份日历面板点击上一页\n<pre>function updatprevyear( selector ) {\n   JC.log( \"updateprevyear\", $(selector).val(), new Date().getTime() );\n}</pre></dd>\n\n    <dt>updatenextyear = function</dt>\n    <dd>点击下一年时的回调，月份日历面板点击下一页\n<pre>function updatenextyear( selector ) {\n   JC.log( \"updatenextyear\", $(selector).val(), new Date().getTime() );\n}</pre></dd>\n\n    <dt>updateprevmonth = function</dt>\n    <dd>点击上一月时的回调，日期日历面板点击上一页\n<pre>function updatprevmonth( selector ) {\n   JC.log( \"updateprevmonth\", $(selector).val(), new Date().getTime() );\n}</pre></dd>\n\n    <dt>updatenextmonth = function</dt>\n    <dd>点击下一月时的回调，日期日历面板点击下一页\n<pre>function updatenextmonth( selector ) {\n   JC.log( \"updatenextmonth\", $(selector).val(), new Date().getTime() );\n}</pre></dd>\n\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-12-20",
+            "author": "zuojing   <zuojing1013@gmail.com> | 75 Team"
         },
         "JC.Drag": {
             "name": "JC.Drag",
@@ -5344,6 +5386,204 @@
             "default": "empty",
             "static": 1,
             "class": "JC.Calendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 159,
+            "description": "获取或设置 DCalendar 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "DCalendarInstance"
+            },
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 182,
+            "description": "初始化可识别的 DCalendar 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_onlyStatus",
+                    "description": "default = false",
+                    "type": "Bool"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of DCalendarInstance"
+            },
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 220,
+            "description": "初始化可识别的 DCalendar 的状态",
+            "itemtype": "method",
+            "name": "_initStatus",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "access": "protected",
+            "tagname": "",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 292,
+            "description": "弹出日期选择框",
+            "itemtype": "method",
+            "name": "pickDate",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "需要显示日期选择框的标签",
+                    "type": "Selector"
+                }
+            ],
+            "example": [
+                "\n           <dl>\n               <dd>\n                   <input type=\"text\" name=\"date6\" class=\"manualPickDate\" value=\"20110201\" />\n                   manual JC.DCalendar.pickDate\n               </dd>\n               <dd>\n                   <input type=\"text\" name=\"date7\" class=\"manualPickDate\" />\n                   manual JC.DCalendar.pickDate\n               </dd>\n           </dl>\n           <script>\n               $(document).delegate('input.manualPickDate', 'focus', function($evt){\n                   JC.DCalendar.pickDate( this );\n               });\n           </script>"
+            ],
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 584,
+            "description": "显示的月份面板为2到12个",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 1107,
+            "description": "DCalendar显示时的回调",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 1118,
+            "description": "DCalendar隐藏时的回调",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 1129,
+            "description": "清除选中的日期后的回调",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 1140,
+            "description": "选择日期赋值后的回调",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 1151,
+            "description": "更改月份之前的回调，月历面板显示后",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 1162,
+            "description": "更改月份后的回调",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 1173,
+            "description": "更改年份之前的回调，年份面板显示后",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 1184,
+            "description": "更改年份后的回调",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 1195,
+            "description": "点击下一月的回调",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 1206,
+            "description": "点击上一月的回调",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 1217,
+            "description": "点击下一年的回调",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 1228,
+            "description": "点击上一年的回调",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 1239,
+            "description": "点击下一页年份的回调",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.date.js",
+            "line": 1250,
+            "description": "点击上一页年份的回调",
+            "class": "JC.DCalendar",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DCalendar/DCalendar.js",
+            "line": 4,
+            "description": "�����ж���Ϊ���������� JC 0.1\nʹ�� requirejs ����Ŀ�����Ƴ������жϴ���",
+            "class": "JC.Drag",
             "namespace": "JC"
         },
         {
@@ -12260,7 +12500,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1274,
+            "line": 1278,
             "description": "检查两个输入框的日期\n<br />日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD\n<br /> <b>注意:</b> 如果不显示指定 fromDateEl, toDateEl, \n             将会从父级查找 datatype=daterange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略",
             "itemtype": "method",
             "name": "daterange",
@@ -12283,7 +12523,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1345,
+            "line": 1350,
             "description": "检查时间格式, 格式为 hh:mm:ss",
             "itemtype": "method",
             "name": "time",
@@ -12305,7 +12545,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1362,
+            "line": 1367,
             "description": "检查时间格式, 格式为 hh:mm",
             "itemtype": "method",
             "name": "minute",
@@ -12327,7 +12567,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1379,
+            "line": 1384,
             "description": "检查银行卡号码\n<br />格式为: d{15}, d{16}, d{17}, d{19}",
             "itemtype": "method",
             "name": "bankcard",
@@ -12349,7 +12589,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1405,
+            "line": 1410,
             "description": "检查中文姓名\n<br>格式: 汉字和大小写字母\n<br>规则: 长度 2-32个字节, 非 ASCII 算2个字节",
             "itemtype": "method",
             "name": "cnname",
@@ -12371,7 +12611,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1426,
+            "line": 1431,
             "description": "检查英文\n<br>格式: 大小写字母 + 空格\n<br>规则: 长度 2-32个字节, 非 ASCII 算2个字节",
             "itemtype": "method",
             "name": "enname",
@@ -12393,7 +12633,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1447,
+            "line": 1452,
             "description": "检查 英文名称/中文名称\n<br>allname = cnname + enname\n<br>规则: 长度 2-32个字节, 非 ASCII 算2个字节",
             "itemtype": "method",
             "name": "allname",
@@ -12415,7 +12655,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1470,
+            "line": 1475,
             "description": "检查注册用户名\n<br>格式: a-zA-Z0-9_-\n<br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30",
             "itemtype": "method",
             "name": "username",
@@ -12437,7 +12677,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1490,
+            "line": 1495,
             "description": "检查身份证号码<br />\n目前只使用最简单的位数判断~ 有待完善",
             "itemtype": "method",
             "name": "idnumber",
@@ -12459,7 +12699,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1509,
+            "line": 1514,
             "description": "检查手机号码<br />",
             "itemtype": "method",
             "name": "mobilecode",
@@ -12486,7 +12726,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1529,
+            "line": 1534,
             "description": "检查手机号码\n<br />这个方法是 mobilecode 的别名",
             "itemtype": "method",
             "name": "mobile",
@@ -12510,7 +12750,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1542,
+            "line": 1547,
             "description": "检查手机号码加强方法\n<br>格式: [+国家代码] [零]11位数字",
             "itemtype": "method",
             "name": "mobilezonecode",
@@ -12537,7 +12777,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1563,
+            "line": 1568,
             "description": "检查电话号码\n<br>格式: 7/8位数字",
             "itemtype": "method",
             "name": "phonecode",
@@ -12559,7 +12799,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1582,
+            "line": 1587,
             "description": "检查电话号码\n<br>格式: [区号]7/8位电话号码",
             "itemtype": "method",
             "name": "phone",
@@ -12586,7 +12826,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1603,
+            "line": 1608,
             "description": "检查电话号码\n<br>格式: [+国家代码][ ][电话区号][ ]7/8位电话号码[#分机号]",
             "itemtype": "method",
             "name": "phoneall",
@@ -12613,7 +12853,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1625,
+            "line": 1630,
             "description": "检查电话区号",
             "itemtype": "method",
             "name": "phonezone",
@@ -12635,7 +12875,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1648,
+            "line": 1653,
             "description": "检查电话分机号码",
             "itemtype": "method",
             "name": "phoneext",
@@ -12657,7 +12897,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1666,
+            "line": 1671,
             "description": "检查手机号码/电话号码\n<br />这个方法是原有方法的混合验证 mobilecode + phone",
             "itemtype": "method",
             "name": "mobilephone",
@@ -12679,7 +12919,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1690,
+            "line": 1695,
             "description": "检查手机号码/电话号码, 泛匹配\n<br />这个方法是原有方法的混合验证 mobilezonecode + phoneall",
             "itemtype": "method",
             "name": "mobilephoneall",
@@ -12701,7 +12941,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1713,
+            "line": 1718,
             "description": "自定义正则校验",
             "itemtype": "method",
             "name": "reg",
@@ -12724,7 +12964,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1739,
+            "line": 1744,
             "description": "检查验证码<br />\n格式: 为 0-9a-zA-Z, 长度 默认为4",
             "itemtype": "method",
             "name": "vcode",
@@ -12747,7 +12987,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1765,
+            "line": 1770,
             "description": "检查文本长度",
             "itemtype": "method",
             "name": "text",
@@ -12763,7 +13003,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1774,
+            "line": 1779,
             "description": "检查文本的字节长度",
             "itemtype": "method",
             "name": "bytetext",
@@ -12779,7 +13019,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1783,
+            "line": 1788,
             "description": "检查富文本的字节\n<br />TODO: 完成富文本长度检查",
             "itemtype": "method",
             "name": "richtext",
@@ -12795,7 +13035,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1793,
+            "line": 1798,
             "description": "计算字符串的字节长度, 非 ASCII 0-255的字符视为两个字节",
             "itemtype": "method",
             "name": "bytelen",
@@ -12814,7 +13054,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1804,
+            "line": 1809,
             "description": "检查URL",
             "itemtype": "method",
             "name": "url",
@@ -12836,7 +13076,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1824,
+            "line": 1829,
             "description": "检查域名",
             "itemtype": "method",
             "name": "domain",
@@ -12855,7 +13095,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1842,
+            "line": 1847,
             "description": "检查域名",
             "itemtype": "method",
             "name": "stricdomain",
@@ -12874,7 +13114,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1859,
+            "line": 1864,
             "description": "检查电子邮件",
             "itemtype": "method",
             "name": "email",
@@ -12896,7 +13136,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1876,
+            "line": 1881,
             "description": "检查地区代码",
             "itemtype": "method",
             "name": "countrycode",
@@ -12918,7 +13158,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1893,
+            "line": 1898,
             "description": "检查邮政编码",
             "itemtype": "method",
             "name": "zipcode",
@@ -12940,7 +13180,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1910,
+            "line": 1915,
             "description": "纳税人识别号, 15, 18, 20位字符",
             "itemtype": "method",
             "name": "taxcode",
@@ -12962,7 +13202,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1931,
+            "line": 1936,
             "description": "此类型检查 2|N 个对象填写的值必须一致\n常用于注意时密码验证/重置密码",
             "itemtype": "method",
             "name": "reconfirm",
@@ -12984,7 +13224,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2019,
+            "line": 2024,
             "description": "此类型检查 2|N个对象必须至少有一个是有输入内容的, \n<br> 常用于 手机/电话 二填一",
             "itemtype": "method",
             "name": "alternative",
@@ -13006,7 +13246,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2168,
+            "line": 2173,
             "description": "如果 _item 的值非空, 那么 reqtarget 的值也不能为空",
             "itemtype": "method",
             "name": "reqtarget",
@@ -13025,7 +13265,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2192,
+            "line": 2197,
             "description": "N 个值必须保持唯一性, 不能有重复",
             "itemtype": "method",
             "name": "unique",
@@ -13044,7 +13284,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2368,
+            "line": 2373,
             "description": "获取 _selector 对象\n<br />这个方法的存在是为了向后兼容qwrap, qwrap DOM参数都为ID",
             "itemtype": "method",
             "name": "getElement",
@@ -13063,7 +13303,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2391,
+            "line": 2396,
             "description": "获取对应的错误信息, 默认的错误信息有 reqmsg, errmsg, <br />\n注意: 错误信息第一个字符如果为空格的话, 将完全使用用户定义的错误信息, 将不会动态添加 请上传/选择/填写",
             "itemtype": "method",
             "name": "errorMsg",
@@ -13092,7 +13332,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2426,
+            "line": 2431,
             "description": "检查内容是否为空,\n<br>如果声明了该属性, 那么 value 须不为空",
             "itemtype": "method",
             "name": "reqmsg",
@@ -13114,21 +13354,21 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2513,
+            "line": 2518,
             "description": "这里需要优化检查, 目前会重复检查",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2603,
+            "line": 2608,
             "description": "验证文件扩展名",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2723,
+            "line": 2728,
             "description": "显示正确的视觉效果",
             "itemtype": "method",
             "name": "valid",
@@ -13157,7 +13397,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2781,
+            "line": 2786,
             "description": "显示错误的视觉效果",
             "itemtype": "method",
             "name": "error",
@@ -13186,7 +13426,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2854,
+            "line": 2859,
             "description": "解析错误时触发的时件",
             "itemtype": "event",
             "name": "ValidError",
@@ -13195,7 +13435,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2858,
+            "line": 2863,
             "description": "解析正确时触发的时件",
             "itemtype": "event",
             "name": "ValidCorrect",
@@ -13204,7 +13444,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2862,
+            "line": 2867,
             "description": "响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果",
             "access": "private",
             "tagname": "",
@@ -13213,14 +13453,14 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2872,
+            "line": 2877,
             "description": "响应没有 type 的 文本框",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2882,
+            "line": 2887,
             "description": "响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果",
             "access": "private",
             "tagname": "",
@@ -13229,7 +13469,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2892,
+            "line": 2897,
             "description": "响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
             "access": "private",
             "tagname": "",
@@ -13238,7 +13478,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2903,
+            "line": 2908,
             "description": "响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
             "access": "private",
             "tagname": "",
@@ -13247,7 +13487,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2931,
+            "line": 2936,
             "description": "初始化 subdatatype = datavalid 相关事件",
             "class": "JC.Valid",
             "namespace": "JC"
@@ -14681,6 +14921,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../comps/DCalendar/DCalendar.date.js:2"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../comps/Drag/Drag.js:2"
         },
         {
@@ -14877,43 +15121,43 @@
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1274"
+            "line": " ../comps/Valid/Valid.js:1278"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1274"
+            "line": " ../comps/Valid/Valid.js:1278"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1274"
+            "line": " ../comps/Valid/Valid.js:1278"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1274"
+            "line": " ../comps/Valid/Valid.js:1278"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1274"
+            "line": " ../comps/Valid/Valid.js:1278"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1713"
+            "line": " ../comps/Valid/Valid.js:1718"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1739"
+            "line": " ../comps/Valid/Valid.js:1744"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1765"
+            "line": " ../comps/Valid/Valid.js:1770"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1774"
+            "line": " ../comps/Valid/Valid.js:1779"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1783"
+            "line": " ../comps/Valid/Valid.js:1788"
         },
         {
             "message": "unknown tag: date",
@@ -15090,6 +15334,70 @@
         {
             "message": "Missing item type\n元旦开始的第一个星期一开始的一周为政治经济上的第一周",
             "line": " ../comps/Calendar/Calendar.week.js:278"
+        },
+        {
+            "message": "Missing item type\n显示的月份面板为2到12个",
+            "line": " ../comps/DCalendar/DCalendar.date.js:584"
+        },
+        {
+            "message": "Missing item type\nDCalendar显示时的回调",
+            "line": " ../comps/DCalendar/DCalendar.date.js:1107"
+        },
+        {
+            "message": "Missing item type\nDCalendar隐藏时的回调",
+            "line": " ../comps/DCalendar/DCalendar.date.js:1118"
+        },
+        {
+            "message": "Missing item type\n清除选中的日期后的回调",
+            "line": " ../comps/DCalendar/DCalendar.date.js:1129"
+        },
+        {
+            "message": "Missing item type\n选择日期赋值后的回调",
+            "line": " ../comps/DCalendar/DCalendar.date.js:1140"
+        },
+        {
+            "message": "Missing item type\n更改月份之前的回调，月历面板显示后",
+            "line": " ../comps/DCalendar/DCalendar.date.js:1151"
+        },
+        {
+            "message": "Missing item type\n更改月份后的回调",
+            "line": " ../comps/DCalendar/DCalendar.date.js:1162"
+        },
+        {
+            "message": "Missing item type\n更改年份之前的回调，年份面板显示后",
+            "line": " ../comps/DCalendar/DCalendar.date.js:1173"
+        },
+        {
+            "message": "Missing item type\n更改年份后的回调",
+            "line": " ../comps/DCalendar/DCalendar.date.js:1184"
+        },
+        {
+            "message": "Missing item type\n点击下一月的回调",
+            "line": " ../comps/DCalendar/DCalendar.date.js:1195"
+        },
+        {
+            "message": "Missing item type\n点击上一月的回调",
+            "line": " ../comps/DCalendar/DCalendar.date.js:1206"
+        },
+        {
+            "message": "Missing item type\n点击下一年的回调",
+            "line": " ../comps/DCalendar/DCalendar.date.js:1217"
+        },
+        {
+            "message": "Missing item type\n点击上一年的回调",
+            "line": " ../comps/DCalendar/DCalendar.date.js:1228"
+        },
+        {
+            "message": "Missing item type\n点击下一页年份的回调",
+            "line": " ../comps/DCalendar/DCalendar.date.js:1239"
+        },
+        {
+            "message": "Missing item type\n点击上一页年份的回调",
+            "line": " ../comps/DCalendar/DCalendar.date.js:1250"
+        },
+        {
+            "message": "Missing item type\n�����ж���Ϊ���������� JC 0.1\nʹ�� requirejs ����Ŀ�����Ƴ������жϴ���",
+            "line": " ../comps/DCalendar/DCalendar.js:4"
         },
         {
             "message": "Missing item type\n判断两个矩形是否有交集",
@@ -15273,35 +15581,35 @@
         },
         {
             "message": "Missing item type\n这里需要优化检查, 目前会重复检查",
-            "line": " ../comps/Valid/Valid.js:2513"
+            "line": " ../comps/Valid/Valid.js:2518"
         },
         {
             "message": "Missing item type\n验证文件扩展名",
-            "line": " ../comps/Valid/Valid.js:2603"
+            "line": " ../comps/Valid/Valid.js:2608"
         },
         {
             "message": "Missing item type\n响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果",
-            "line": " ../comps/Valid/Valid.js:2862"
+            "line": " ../comps/Valid/Valid.js:2867"
         },
         {
             "message": "Missing item type\n响应没有 type 的 文本框",
-            "line": " ../comps/Valid/Valid.js:2872"
+            "line": " ../comps/Valid/Valid.js:2877"
         },
         {
             "message": "Missing item type\n响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果",
-            "line": " ../comps/Valid/Valid.js:2882"
+            "line": " ../comps/Valid/Valid.js:2887"
         },
         {
             "message": "Missing item type\n响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
-            "line": " ../comps/Valid/Valid.js:2892"
+            "line": " ../comps/Valid/Valid.js:2897"
         },
         {
             "message": "Missing item type\n响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
-            "line": " ../comps/Valid/Valid.js:2903"
+            "line": " ../comps/Valid/Valid.js:2908"
         },
         {
             "message": "Missing item type\n初始化 subdatatype = datavalid 相关事件",
-            "line": " ../comps/Valid/Valid.js:2931"
+            "line": " ../comps/Valid/Valid.js:2936"
         },
         {
             "message": "Missing item type\nUXC 是 JC 的别名\n<br />存在这个变量是为了向后兼容\n<br />20130804 之前的命名空间是 UXC, 这个命名空间在一段时间后将会清除, 请使用 JC 命名空间\n<p><b>see</b>: <a href='window.JC.html'>JC</a></p>",
