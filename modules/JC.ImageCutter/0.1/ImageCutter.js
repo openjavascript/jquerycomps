@@ -207,20 +207,18 @@
                 , _maxX = _di.size.dragger.left + _di.size.dragger.srcSize 
                 , _maxY = _di.size.dragger.top + _di.size.dragger.srcSize
 
-                , _srcDist = Math.ceil( pointDistance( { x: _di.offset.left + _di.size.dragger.left
-                                                        , y: _di.offset.top + _di.size.dragger.top }, { x: 0, y: 0 } ) )
+                , _srcDist = Math.ceil( pointDistance( { 
+                    x: _di.offset.left + _di.size.dragger.left
+                    , y: _di.offset.top + _di.size.dragger.top }, { x: 0, y: 0 } ) )
                 , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }, { x: 0, y: 0 } ) )
-
                 , _offset = _srcDist - _curDist
-
                 ;
-
 
             var _btnSize = _p._model.btnTl().width()
                 , _left = _di.size.dragger.left - _offset
                 , _top = _di.size.dragger.top - _offset
 
-                , _srcDraggerSize = _srcDraggerSize - _offset
+                , _srcDraggerSize = _maxX - _left
                 , _draggerSize = _srcDraggerSize - _btnSize
                 , _halfSize = _draggerSize / 2
                 ;
@@ -234,7 +232,6 @@
                 , left: _left
                 , top: _top
             };
-
 
            _p.updatePosition( _di.tmpSize );
 
