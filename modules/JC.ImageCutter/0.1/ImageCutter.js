@@ -219,11 +219,13 @@
                 , _maxX = _di.size.dragger.left + _di.size.dragger.srcSize 
                 , _maxY = _di.size.dragger.top + _di.size.dragger.srcSize
 
-                , _srcDist = Math.ceil( pointDistance( { 
-                    x: _di.offset.left + _di.size.dragger.left
-                    , y: _di.offset.top + _di.size.dragger.top }, { x: 0, y: 0 } ) )
+                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }, { x: 0, y: 0 } ) )
                 , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }, { x: 0, y: 0 } ) )
+
                 , _distance = _srcDist - _curDist
+
+                , _maxOffsetDistance = Math.ceil( pointDistance( { x:0, y: 0 }
+                                            , { x: _di.offset.left + _maxX, y: _di.offset.top + _maxY } ) )
                 ;
 
             var _btnSize = _p._model.btnTl().width()
@@ -232,8 +234,8 @@
                 , _curDistance = pointDistance( { x: _left, y: _top }, { x: _maxX, y: _maxY } )
                 ;
 
-            //JC.log( _di.minDistance, _curDistance );
-            if( _curDistance < _di.minDistance ){
+            //JC.log( _di.minDistance, _curDistance, _curDist, _maxOffsetDistance );
+            if( _curDistance < _di.minDistance || _curDist > _maxOffsetDistance ){
                 var _newPoint = distanceAngleToPoint( _di.minDistance, 225 );
                 _left = _maxX + _newPoint.x;
                 _top = _maxY + _newPoint.y;
@@ -271,6 +273,40 @@
     ImageCutter.resizeTopCenter =
         function( _di, _posX, _posY, _evt ){
             if( !_di ) return;
+            var _p = _di.ins
+                , _maxX = _di.size.left + _di.size.zoom.width
+                , _maxY = _di.size.dragger.top + _di.size.dragger.srcSize
+                , _midX = _di.size.left + ( _di.size.zoom.width - _di.size.left ) / 2
+
+                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }, { x: 0, y: 0 } ) )
+
+                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }, { x: 0, y: 0 } ) )
+
+                , _distance = _srcDist - _curDist
+
+                ;
+
+            JC.log( _maxX, _maxY, _midX );
+            /*
+
+            var _srcDraggerSize = _maxX - _left
+                , _draggerSize = _srcDraggerSize - _btnSize
+                , _halfSize = _draggerSize / 2
+                ;
+
+            //JC.log( _left, _top, _maxX, _maxY, _distance );
+
+            _di.tmpSize.dragger = {
+                srcSize: _srcDraggerSize
+                , size: _draggerSize
+                , halfSize: _halfSize
+                , left: _left
+                , top: _top
+            };
+
+           _p.updatePosition( _di.tmpSize );
+           */
+
         };
 
     ImageCutter.resizeTopRight =

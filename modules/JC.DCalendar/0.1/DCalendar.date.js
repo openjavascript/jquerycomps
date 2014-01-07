@@ -1,5 +1,4 @@
- //TODO: showtype=block时resize似乎有问题
- ;(function(define, _win) { 'use strict'; define( ['JC.BaseMVC'], function () {
+;(function(define, _win) { 'use strict'; define( ['JC.BaseMVC'], function () {
 /**
  * 双日历日期选择组件
  * <p>
@@ -1016,7 +1015,6 @@
                 _y = _p.selector().offset().top + _p.selector().prop('offsetHeight'),
                 _tempX,
                 _tempY,
-                //_w = 466,
                 _win = $(window);
 
             //上下溢出
@@ -1035,12 +1033,6 @@
             } else {
                 _x = _p.selector().offset().left;
             }
-
-            // if ( ( _win.outerWidth() + _win.scrollLeft() ) < ( _x + _p.layout().outerWidth(true) ) ) {
-            //     _w = 270;
-            // } else {
-            //     _w = 466;
-            // }
 
             _p.layoutBox().css({
                 left: _x,
