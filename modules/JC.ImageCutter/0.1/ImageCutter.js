@@ -88,6 +88,7 @@
                     , 'pageX': _evt.pageX
                     , 'pageY': _evt.pageY
                     , 'srcSelector': _srcSelector
+                    , 'offset': _p.selector().offset()
                 }
                 //window.JSON && JC.log( JSON.stringify( _size ) );
             }
@@ -183,8 +184,9 @@
                 , _posY = _di.pageY - _evt.pageY
                 , _direct = _di.srcSelector.attr( 'diretype' )
                 ;
+            //JC.log( 'old', _di.size.dragger.left, _di.size.dragger.top );
 
-            JC.log( 'ImageCutter.dragBtnMouseMove', _posX, _posY, _direct, new Date().getTime() );
+            //JC.log( 'ImageCutter.dragBtnMouseMove', _posX, _posY, _direct );
 
             switch( _direct ){
                 case 'cic_btnTl': ImageCutter.resizeTopLeft( _di, _posX, _posY, _evt ); break;
@@ -201,6 +203,41 @@
     ImageCutter.resizeTopLeft =
         function( _di, _posX, _posY, _evt ){
             if( !_di ) return;
+            var _p = _di.ins
+                , _maxX = _di.size.dragger.left + _di.size.dragger.srcSize 
+                , _maxY = _di.size.dragger.top + _di.size.dragger.srcSize
+
+                , _srcDist = Math.ceil( pointDistance( { x: _di.offset.left + _di.size.dragger.left
+                                                        , y: _di.offset.top + _di.size.dragger.top }, { x: 0, y: 0 } ) )
+                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }, { x: 0, y: 0 } ) )
+
+                , _offset = _srcDist - _curDist
+
+                ;
+
+
+            var _btnSize = _p._model.btnTl().width()
+                , _left = _di.size.dragger.left - _offset
+                , _top = _di.size.dragger.top - _offset
+
+                , _srcDraggerSize = _srcDraggerSize - _offset
+                , _draggerSize = _srcDraggerSize - _btnSize
+                , _halfSize = _draggerSize / 2
+                ;
+
+            JC.log( _left, _top, _maxX, _maxY );
+
+            _di.tmpSize.dragger = {
+                srcSize: _srcDraggerSize
+                , size: _draggerSize
+                , halfSize: _halfSize
+                , left: _left
+                , top: _top
+            };
+
+
+           _p.updatePosition( _di.tmpSize );
+
         };
 
     ImageCutter.resizeTopCenter =
@@ -377,7 +414,7 @@
 
         , cicMinWidth: function(){ return this.intProp( 'cicMinWidth' ) || ImageCutter.minwidth; }
         , cicMinHeight: function(){ return this.intProp( 'cicMinHeight' ) || ImageCutter.minheight; }
-        
+
         , size: 
             function( _width, _height ){ 
 
@@ -590,7 +627,9 @@
 
                 var _p = this
                     , _dragger = _p._model.draggerList()
-                    , _draggerSize = Math.ceil( ( _size.zoom.width > _size.zoom.height ? _size.zoom.height : _size.zoom.width ) / 2 )
+                    , _draggerSize = _size.zoom.width > _size.zoom.height ? _size.zoom.height : _size.zoom.width
+                    , _draggerSize = _draggerSize / 2 > _p._model.cicMinWidth() ? _draggerSize / 2 : _p._model.cicMinWidth()
+                    , _draggerSize = Math.ceil( _draggerSize )
                     , _draggerSize = _draggerSize > _p._model.cicMinWidth() ? _draggerSize : _p._model.cicMinWidth()
                     , _btnSize = _p._model.btnTl().width()
                     , _srcDraggerSize = _draggerSize
@@ -746,6 +785,16 @@
             h = _newHeight;
         }
         return { 'width': w, 'height': h };
+    }
+    /**
+     * 计算两个坐标点之间的距离
+     */
+    function pointDistance( _p1, _p2 ){
+        var _dx = _p2.x - _p1.x
+            , _dy = _p2.y - _p1.y
+            , _dist = Math.sqrt( _dx * _dx + _dy * _dy );
+            ;
+        return _dist;
     }
 
     _jdoc.ready( function(){
