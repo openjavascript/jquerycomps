@@ -284,7 +284,7 @@
     ImageCutter.minheight = 50;
 
     ImageCutter.dragInfo =
-        function( _p, _evt, _size ){
+        function( _p, _evt, _size, _srcSelector ){
             if( _p &amp;&amp; _evt &amp;&amp; _size ){
                 ImageCutter._dragInfo = {
                     &#x27;ins&#x27;: _p
@@ -293,6 +293,8 @@
                     , &#x27;tmpSize&#x27;: _size
                     , &#x27;pageX&#x27;: _evt.pageX
                     , &#x27;pageY&#x27;: _evt.pageY
+                    , &#x27;srcSelector&#x27;: _srcSelector
+                    , &#x27;offset&#x27;: _p.selector().offset()
                 }
                 //window.JSON &amp;&amp; JC.log( JSON.stringify( _size ) );
             }
@@ -343,9 +345,10 @@
     */
     ImageCutter.dragMainMouseMove =
         function( _evt ){
+            if( !( ImageCutter.dragInfo() &amp;&amp; _evt ) ) return;
             var _di = ImageCutter.dragInfo(), _p;
-            if( !( _di &amp;&amp; _evt ) ) return;
-            var _posX = _di.pageX - _evt.pageX
+            var _p = _di.ins
+                , _posX = _di.pageX - _evt.pageX
                 , _posY = _di.pageY - _evt.pageY
 
                 , _newX = _di.size.dragger.left - _posX
@@ -364,64 +367,122 @@
             _di.tmpSize.dragger.left = _newX;
             _di.tmpSize.dragger.top = _newY;
 
-            _di.ins.updatePosition( _di.tmpSize );
+            _p.updatePosition( _di.tmpSize );
 
             //JC.log( &#x27;ImageCutter.dragMainMouseMove&#x27;, _newX, _newY );
         };
 
     ImageCutter.dragMainMouseUp =
         function( _evt ){
-            var _di = ImageCutter.dragInfo(), _p;
-            if( !_di ) return;
-            _p = _di.ins;
+            if( !ImageCutter.dragInfo() ) return;
+            var _di = ImageCutter.dragInfo(), _p = _di.ins;
 
             _p._size( _di.tmpSize );
 
             _p.cleanStatus();
         };
 
-    ImageCutter.dragBtnMouseUp =
+    ImageCutter.dragBtnMouseMove =
         function( _evt ){
-            var _di = ImageCutter.dragInfo(), _p;
-            if( !( _di &amp;&amp; _evt ) ) return;
-
-            JC.log( &#x27;ImageCutter.dragBtnMouseUp&#x27;, new Date().getTime() );
-            return;
-
-            var _posX = _di.pageX - _evt.pageX
+            if( !( ImageCutter.dragInfo() &amp;&amp; _evt ) ) return;
+            var _di = ImageCutter.dragInfo()
+                , _posX = _di.pageX - _evt.pageX
                 , _posY = _di.pageY - _evt.pageY
+                , _direct = _di.srcSelector.attr( &#x27;diretype&#x27; )
+                ;
+            //JC.log( &#x27;old&#x27;, _di.size.dragger.left, _di.size.dragger.top );
 
-                , _newX = _di.size.dragger.left - _posX
-                , _newY = _di.size.dragger.top - _posY
+            //JC.log( &#x27;ImageCutter.dragBtnMouseMove&#x27;, _posX, _posY, _direct );
 
-                , _maxX = _di.size.maxX - _di.size.dragger.srcSize
-                , _maxY = _di.size.maxY - _di.size.dragger.srcSize
+            switch( _direct ){
+                case &#x27;cic_btnTl&#x27;: ImageCutter.resizeTopLeft( _di, _posX, _posY, _evt ); break;
+                case &#x27;cic_btnTc&#x27;: ImageCutter.resizeTopCenter( _di, _posX, _posY, _evt ); break;
+                case &#x27;cic_btnTr&#x27;: ImageCutter.resizeTopRight( _di, _posX, _posY, _evt ); break;
+                case &#x27;cic_btnMl&#x27;: ImageCutter.resizeMidLeft( _di, _posX, _posY, _evt ); break;
+                case &#x27;cic_btnMr&#x27;: ImageCutter.resizeMidRight( _di, _posX, _posY, _evt ); break;
+                case &#x27;cic_btnBl&#x27;: ImageCutter.resizeBottomLeft( _di, _posX, _posY, _evt ); break;
+                case &#x27;cic_btnBc&#x27;: ImageCutter.resizeBottomCenter( _di, _posX, _posY, _evt ); break;
+                case &#x27;cic_btnBr&#x27;: ImageCutter.resizeBottomRight( _di, _posX, _posY, _evt ); break;
+            }
+        };
+
+    ImageCutter.resizeTopLeft =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+            var _p = _di.ins
+                , _maxX = _di.size.dragger.left + _di.size.dragger.srcSize 
+                , _maxY = _di.size.dragger.top + _di.size.dragger.srcSize
+
+                , _srcDist = Math.ceil( pointDistance( { 
+                    x: _di.offset.left + _di.size.dragger.left
+                    , y: _di.offset.top + _di.size.dragger.top }, { x: 0, y: 0 } ) )
+                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }, { x: 0, y: 0 } ) )
+                , _offset = _srcDist - _curDist
                 ;
 
-            _newX &lt; _di.size.minX &amp;&amp; ( _newX = _di.size.minX );
-            _newX &gt; _maxX &amp;&amp; ( _newX = _maxX );
+            var _btnSize = _p._model.btnTl().width()
+                , _left = _di.size.dragger.left - _offset
+                , _top = _di.size.dragger.top - _offset
 
-            _newY &lt; _di.size.minY &amp;&amp; ( _newY = _di.size.minY );
-            _newY &gt; _maxY &amp;&amp; ( _newY = _maxY );
+                , _srcDraggerSize = _maxX - _left
+                , _draggerSize = _srcDraggerSize - _btnSize
+                , _halfSize = _draggerSize / 2
+                ;
 
-            _di.tmpSize.dragger.left = _newX;
-            _di.tmpSize.dragger.top = _newY;
+            JC.log( _left, _top, _maxX, _maxY );
 
-            _di.ins.updatePosition( _di.tmpSize );
+            _di.tmpSize.dragger = {
+                srcSize: _srcDraggerSize
+                , size: _draggerSize
+                , halfSize: _halfSize
+                , left: _left
+                , top: _top
+            };
 
-            //JC.log( &#x27;ImageCutter.dragMainMouseMove&#x27;, _newX, _newY );
+           _p.updatePosition( _di.tmpSize );
+
+        };
+
+    ImageCutter.resizeTopCenter =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+        };
+
+    ImageCutter.resizeTopRight =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+        };
+
+    ImageCutter.resizeMidLeft =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+        };
+
+    ImageCutter.resizeMidRight =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+        };
+
+    ImageCutter.resizeBottomLeft=
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+        };
+
+    ImageCutter.resizeBottomCenter=
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+        };
+
+    ImageCutter.resizeBottomRight=
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
         };
 
     ImageCutter.dragBtnMouseUp =
         function( _evt ){
-            var _di = ImageCutter.dragInfo(), _p;
-            if( !_di ) return;
-
+            if( !ImageCutter.dragInfo() ) return;
+            var _di = ImageCutter.dragInfo(), _p = _di.ins;
             JC.log( &#x27;ImageCutter.dragBtnMouseUp&#x27;, new Date().getTime() );
-            return;
-            _p = _di.ins;
-
-            _p._size( _di.tmpSize );
 
             _p.cleanStatus();
         };
@@ -475,10 +536,10 @@
                     _p._model.dragMain().addClass( &#x27;cic_move&#x27; );
 
                     ImageCutter.cleanInfo();
-                    ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ) );
+                    ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ), $( this ) );
 
-                    _jdoc.on( &#x27;mouseup&#x27;, ImageCutter.dragMainMouseUp );
                     _jdoc.on( &#x27;mousemove&#x27;, ImageCutter.dragMainMouseMove );
+                    _jdoc.on( &#x27;mouseup&#x27;, ImageCutter.dragMainMouseUp );
 
                     return false;
                 });
@@ -488,10 +549,10 @@
                     JC.log( &#x27;div.cic_btn mousedown&#x27;, new Date().getTime() );
 
                     ImageCutter.cleanInfo();
-                    ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ) );
+                    ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ), $( this ) );
 
-                    _jdoc.on( &#x27;mouseup&#x27;, ImageCutter.dragBtnMouseUp );
                     _jdoc.on( &#x27;mousemove&#x27;, ImageCutter.dragBtnMouseMove );
+                    _jdoc.on( &#x27;mouseup&#x27;, ImageCutter.dragBtnMouseUp );
 
                     return false;
                 });
@@ -556,7 +617,7 @@
 
         , cicMinWidth: function(){ return this.intProp( &#x27;cicMinWidth&#x27; ) || ImageCutter.minwidth; }
         , cicMinHeight: function(){ return this.intProp( &#x27;cicMinHeight&#x27; ) || ImageCutter.minheight; }
-        
+
         , size: 
             function( _width, _height ){ 
 
@@ -608,14 +669,14 @@
                         $( 
                             JC.f.printf( 
                                 &#x27;{0}{1}{2}{3}{4}{5}{6}{7}{8}&#x27;
-                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnTl&quot;&gt;&lt;/button&gt;&#x27;
-                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnTc&quot;&gt;&lt;/button&gt;&#x27;
-                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnTr&quot;&gt;&lt;/button&gt;&#x27;
-                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnMl&quot;&gt;&lt;/button&gt;&#x27;
-                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnMr&quot;&gt;&lt;/button&gt;&#x27;
-                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnBl&quot;&gt;&lt;/button&gt;&#x27;
-                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnBc&quot;&gt;&lt;/button&gt;&#x27;
-                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnBr&quot;&gt;&lt;/button&gt;&#x27;
+                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnTl&quot; diretype=&quot;cic_btnTl&quot; &gt;&lt;/button&gt;&#x27;
+                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnTc&quot; diretype=&quot;cic_btnTc&quot; &gt;&lt;/button&gt;&#x27;
+                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnTr&quot; diretype=&quot;cic_btnTr&quot; &gt;&lt;/button&gt;&#x27;
+                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnMl&quot; diretype=&quot;cic_btnMl&quot; &gt;&lt;/button&gt;&#x27;
+                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnMr&quot; diretype=&quot;cic_btnMr&quot; &gt;&lt;/button&gt;&#x27;
+                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnBl&quot; diretype=&quot;cic_btnBl&quot; &gt;&lt;/button&gt;&#x27;
+                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnBc&quot; diretype=&quot;cic_btnBc&quot; &gt;&lt;/button&gt;&#x27;
+                                , &#x27;&lt;button type=&quot;button&quot; class=&quot;cic_btn cic_btnBr&quot; diretype=&quot;cic_btnBr&quot; &gt;&lt;/button&gt;&#x27;
                             )
                          );
                     this._draggerList.hide().appendTo( this.selector() );
@@ -769,7 +830,9 @@
 
                 var _p = this
                     , _dragger = _p._model.draggerList()
-                    , _draggerSize = Math.ceil( ( _size.zoom.width &gt; _size.zoom.height ? _size.zoom.height : _size.zoom.width ) / 2 )
+                    , _draggerSize = _size.zoom.width &gt; _size.zoom.height ? _size.zoom.height : _size.zoom.width
+                    , _draggerSize = _draggerSize / 2 &gt; _p._model.cicMinWidth() ? _draggerSize / 2 : _p._model.cicMinWidth()
+                    , _draggerSize = Math.ceil( _draggerSize )
                     , _draggerSize = _draggerSize &gt; _p._model.cicMinWidth() ? _draggerSize : _p._model.cicMinWidth()
                     , _btnSize = _p._model.btnTl().width()
                     , _srcDraggerSize = _draggerSize
@@ -925,6 +988,16 @@
             h = _newHeight;
         }
         return { &#x27;width&#x27;: w, &#x27;height&#x27;: h };
+    }
+    /**
+     * 计算两个坐标点之间的距离
+     */
+    function pointDistance( _p1, _p2 ){
+        var _dx = _p2.x - _p1.x
+            , _dy = _p2.y - _p1.y
+            , _dist = Math.sqrt( _dx * _dx + _dy * _dy );
+            ;
+        return _dist;
     }
 
     _jdoc.ready( function(){

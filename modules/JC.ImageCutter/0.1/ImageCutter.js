@@ -74,8 +74,7 @@
             return _r;
         };
 
-    ImageCutter.minwidth = 50;
-    ImageCutter.minheight = 50;
+    ImageCutter.sidelength = 50;
 
     ImageCutter.dragInfo =
         function( _p, _evt, _size, _srcSelector ){
@@ -89,7 +88,9 @@
                     , 'pageY': _evt.pageY
                     , 'srcSelector': _srcSelector
                     , 'offset': _p.selector().offset()
+                    , 'minDistance': _p._model.minDistance()
                 }
+                JC.log( 'minDistance', ImageCutter._dragInfo.minDistance );
                 //window.JSON && JC.log( JSON.stringify( _size ) );
             }
             return ImageCutter._dragInfo;
@@ -200,6 +201,17 @@
             }
         };
 
+    ImageCutter.dragBtnMouseUp =
+        function( _evt ){
+            if( !ImageCutter.dragInfo() ) return;
+            var _di = ImageCutter.dragInfo(), _p = _di.ins;
+            JC.log( 'ImageCutter.dragBtnMouseUp', new Date().getTime() );
+
+            _p._size( _di.tmpSize );
+
+            _p.cleanStatus();
+        };
+
     ImageCutter.resizeTopLeft =
         function( _di, _posX, _posY, _evt ){
             if( !_di ) return;
@@ -211,19 +223,38 @@
                     x: _di.offset.left + _di.size.dragger.left
                     , y: _di.offset.top + _di.size.dragger.top }, { x: 0, y: 0 } ) )
                 , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }, { x: 0, y: 0 } ) )
-                , _offset = _srcDist - _curDist
+                , _distance = _srcDist - _curDist
                 ;
 
             var _btnSize = _p._model.btnTl().width()
-                , _left = _di.size.dragger.left - _offset
-                , _top = _di.size.dragger.top - _offset
+                , _left = _di.size.dragger.left - _distance
+                , _top = _di.size.dragger.top - _distance
+                , _curDistance = pointDistance( { x: _left, y: _top }, { x: _maxX, y: _maxY } )
+                ;
 
-                , _srcDraggerSize = _maxX - _left
+            //JC.log( _di.minDistance, _curDistance );
+            if( _curDistance < _di.minDistance ){
+                var _newPoint = distanceAngleToPoint( _di.minDistance, 225 );
+                _left = _maxX + _newPoint.x;
+                _top = _maxY + _newPoint.y;
+            }
+
+            if( _left < _di.size.left ){
+                _left = _di.size.left;
+                _top = _maxY - ( _maxX - _left );
+            }
+
+            if( _top < _di.size.top ){
+                _top = _di.size.top;
+                _left = _maxX - ( _maxY - _top );
+            }
+
+            var _srcDraggerSize = _maxX - _left
                 , _draggerSize = _srcDraggerSize - _btnSize
                 , _halfSize = _draggerSize / 2
                 ;
 
-            JC.log( _left, _top, _maxX, _maxY );
+            //JC.log( _left, _top, _maxX, _maxY, _distance );
 
             _di.tmpSize.dragger = {
                 srcSize: _srcDraggerSize
@@ -272,15 +303,6 @@
             if( !_di ) return;
         };
 
-    ImageCutter.dragBtnMouseUp =
-        function( _evt ){
-            if( !ImageCutter.dragInfo() ) return;
-            var _di = ImageCutter.dragInfo(), _p = _di.ins;
-            JC.log( 'ImageCutter.dragBtnMouseUp', new Date().getTime() );
-
-            _p.cleanStatus();
-        };
-
     JC.BaseMVC.build( ImageCutter );
 
     JC.f.extendObject( ImageCutter.prototype, {
@@ -300,14 +322,14 @@
 
                 _p.on( 'CICImageLoad', function( _evt, _img, _width, _height ){
 
-                    if( _width < _p._model.cicMinWidth() || _height < _p._model.cicMinHeight() ){
+                    if( _width < _p._model.cicSidelength() || _height < _p._model.cicSidelength() ){
                         _p.trigger( 'CICSizeError', [ _width, _height, _img ] );
                         return;
                     }
 
                     var _newSize = _p._model.size( _width, _height );
 
-                    if( _newSize.zoom.width < _p._model.cicMinWidth() || _newSize.zoom.height < _p._model.cicMinHeight() ){
+                    if( _newSize.zoom.width < _p._model.cicSidelength() || _newSize.zoom.height < _p._model.cicSidelength() ){
                         _p.trigger( 'CICZoomError', [ _width, _height, _img, _newSize ] );
                         return;
                     }
@@ -409,8 +431,12 @@
                 return this.attrProp( 'cicImageUrl' );
             }
 
-        , cicMinWidth: function(){ return this.intProp( 'cicMinWidth' ) || ImageCutter.minwidth; }
-        , cicMinHeight: function(){ return this.intProp( 'cicMinHeight' ) || ImageCutter.minheight; }
+        , cicSidelength: function(){ return this.intProp( 'cicSidelength' ) || ImageCutter.sidelength; }
+
+        , minDistance:
+            function(){
+                return pointDistance( { x: 0, y: 0 }, { x: this.cicSidelength(), y: this.cicSidelength() } );
+            }
 
         , size: 
             function( _width, _height ){ 
@@ -625,9 +651,9 @@
                 var _p = this
                     , _dragger = _p._model.draggerList()
                     , _draggerSize = _size.zoom.width > _size.zoom.height ? _size.zoom.height : _size.zoom.width
-                    , _draggerSize = _draggerSize / 2 > _p._model.cicMinWidth() ? _draggerSize / 2 : _p._model.cicMinWidth()
+                    , _draggerSize = _draggerSize / 2 > _p._model.cicSidelength() ? _draggerSize / 2 : _p._model.cicSidelength()
                     , _draggerSize = Math.ceil( _draggerSize )
-                    , _draggerSize = _draggerSize > _p._model.cicMinWidth() ? _draggerSize : _p._model.cicMinWidth()
+                    , _draggerSize = _draggerSize > _p._model.cicSidelength() ? _draggerSize : _p._model.cicSidelength()
                     , _btnSize = _p._model.btnTl().width()
                     , _srcDraggerSize = _draggerSize
                     , _draggerSize = _draggerSize - _btnSize
@@ -735,7 +761,7 @@
                 this._model.cicErrorBox().show().html(
                     JC.f.printf( 
                         '{5}<p>图片实际宽高为: {2}, {3}</p><p>可接受的最小宽高为: {0}, {1}</p>{4}'
-                        , this._model.cicMinWidth(), this._model.cicMinHeight()
+                        , this._model.cicSidelength(), this._model.cicSidelength()
                         , _width, _height
                         , '<a href="' + _img.attr( 'src' ) + '" target="_blank">查看图片</a>'
                         , '<h3>图片尺寸错误 </h3>'
@@ -748,7 +774,7 @@
                 this._model.cicErrorBox().show().html(
                     JC.f.printf( 
                         '{5}<p>图片实际宽高为: {2}, {3}</p><p>图片缩放后宽高为: {6}, {7}</p><p>可接受的最小宽高为: {0}, {1}</p>{4}'
-                        , this._model.cicMinWidth(), this._model.cicMinHeight()
+                        , this._model.cicSidelength(), this._model.cicSidelength()
                         , _width, _height
                         , '<a href="' + _img.attr( 'src' ) + '" target="_blank">查看图片</a>'
                         , '<h3>图片缩放比例尺寸错误 </h3>'
@@ -792,6 +818,16 @@
             , _dist = Math.sqrt( _dx * _dx + _dy * _dy );
             ;
         return _dist;
+    }
+    /**
+     * 从长度和角度求坐标点
+     */
+    function distanceAngleToPoint( _distance, _angle){
+        var _radian = _angle * Math.PI / 180;					
+        return {
+            x: parseInt( Math.cos( _radian  ) * _distance )
+            , y: parseInt( Math.sin( _radian ) * _distance )
+        }
     }
 
     _jdoc.ready( function(){
