@@ -482,25 +482,46 @@
             var _p = _di.ins
                 , _maxX = _di.size.left + _di.size.zoom.width
                 , _maxY = _di.size.dragger.top + _di.size.dragger.srcSize
-                , _midX = _di.size.left + ( _di.size.zoom.width - _di.size.left ) / 2
+                , _midX = _di.size.dragger.left + ( _di.size.dragger.srcSize ) / 2
 
-                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }, { x: 0, y: 0 } ) )
+                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }, { x: _di.pageX, y: 0 } ) )
 
-                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }, { x: 0, y: 0 } ) )
+                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }, { x: _di.pageX, y: 0 } ) )
 
-                , _distance = _srcDist - _curDist
+                , _distance = ( _srcDist - _curDist )
+                , _sidelength = _di.size.dragger.srcSize + _distance
 
                 ;
 
-            JC.log( _maxX, _maxY, _midX );
-            /*
+            if( ( _maxY - _sidelength ) &lt; _di.size.top ){
+                _sidelength = _maxY - _di.size.top;
+            }
 
-            var _srcDraggerSize = _maxX - _left
+            if( ( _midX - _sidelength / 2 ) &lt; _di.size.left ){
+                _sidelength = ( _midX - _di.size.left ) * 2;
+            }
+
+            if( ( _midX + _sidelength / 2 ) &gt; _maxX ){
+                _sidelength = ( _maxX - _midX ) * 2;
+            }
+
+            _sidelength = _sidelength &lt; _p._model.cicSidelength() ? _p._model.cicSidelength() : _sidelength;
+
+            var _left = _midX - _sidelength / 2
+                , _top = _maxY - _sidelength
+                ;
+
+            var _btnSize = _p._model.btnTl().width()
+                , _srcDraggerSize = _sidelength
                 , _draggerSize = _srcDraggerSize - _btnSize
                 , _halfSize = _draggerSize / 2
                 ;
 
-            //JC.log( _left, _top, _maxX, _maxY, _distance );
+            JC.log( JC.f.printf( 
+                &#x27;distance: {0}, left: {1}, top: {2}, maxX: {3}, maxY: {4}, midX: {5}, srcDraggerSize: {6}&#x27;
+                , _distance, _left, _top, _maxX, _maxY, _midX 
+                , _srcDraggerSize
+            ) );
 
             _di.tmpSize.dragger = {
                 srcSize: _srcDraggerSize
@@ -511,7 +532,6 @@
             };
 
            _p.updatePosition( _di.tmpSize );
-           */
 
         };
 

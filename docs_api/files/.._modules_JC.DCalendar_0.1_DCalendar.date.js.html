@@ -405,7 +405,6 @@
 
             if ( _nodeName &amp;&amp; (_nodeName === &#x27;input&#x27; || _nodeName === &#x27;button&#x27;) ) {
                 DCalendar._initStatus( _selector );
-                !_onlyStatus &amp;&amp; _r.push(new DCalendar(_selector));
             } else {
                 _selector.find([ 
                                     &#x27;input[datatype=ddate]&#x27;
@@ -415,7 +414,6 @@
                                     , &#x27;button[multidate=ddate]&#x27; 
                                 ].join()).each( function() {
                     DCalendar._initStatus( $(this) );
-                    !_onlyStatus &amp;&amp; _r.push( new DCalendar(this) );
                 })
             }
         }
@@ -439,15 +437,17 @@
         _selector.val() 
             &amp;&amp; ( _tmp = JC.f.dateDetect( _selector.val() ) )
             &amp;&amp; _selector.val( JC.f.formatISODate( _tmp )  )
+            ;
 
         _selector.attr(&#x27;minValue&#x27;)
             &amp;&amp; ( _tmp = JC.f.dateDetect( _selector.attr(&#x27;minValue&#x27;) ) )
             &amp;&amp; _selector.attr(&#x27;minValue&#x27;, JC.f.formatISODate( _tmp ))
-
+            ;
 
         _selector.attr( &#x27;maxValue&#x27; )
             &amp;&amp; ( _tmp = JC.f.dateDetect( _selector.attr(&#x27;maxValue&#x27;) ) )
             &amp;&amp; _selector.attr(&#x27;maxValue&#x27;, JC.f.formatISODate( _tmp )  )
+            ;
 
         _selector.addClass(&#x27;CDCalendar_icon&#x27;);
     };
