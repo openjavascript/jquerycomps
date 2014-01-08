@@ -170,6 +170,7 @@
             _di.tmpSize.dragger.top = _newY;
 
             _p.updatePosition( _di.tmpSize );
+            _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _di.tmpSize ] );
 
             //JC.log( 'ImageCutter.dragMainMouseMove', _newX, _newY );
         };
@@ -189,6 +190,7 @@
         function( _evt ){
             if( !( ImageCutter.dragInfo() && _evt ) ) return;
             var _di = ImageCutter.dragInfo()
+                , _p = _di.ins
                 , _posX = _di.pageX - _evt.pageX
                 , _posY = _di.pageY - _evt.pageY
                 , _direct = _di.srcSelector.attr( 'diretype' )
@@ -206,6 +208,7 @@
                 case 'cic_btnBc': ImageCutter.resizeBottomCenter( _di, _posX, _posY, _evt ); break;
                 case 'cic_btnBr': ImageCutter.resizeBottomRight( _di, _posX, _posY, _evt ); break;
             }
+            _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _di.tmpSize ] );
         };
 
     ImageCutter.dragBtnMouseUp =
@@ -303,6 +306,8 @@
 
                 _p.on( ImageCutter.Model.UPDATE_ZOOM, function( _evt, _size ){
                     //JC.log( 'ImageCutter.Model.UPDATE_ZOOM', new Date().getTime() );
+                    if( !_size ) return;
+                    _p._view.updateZoomItems( _size );
                 });
 
                 _p.on( ImageCutter.Model.ERROR_SIZE, function( _evt, _width, _height, _img ){
@@ -628,8 +633,6 @@
                 _p.updateMask( _size );
                 _p.updateDragMain( _size );
 
-
-                _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _size ] );
             }
 
         , updateDragger:
@@ -710,10 +713,14 @@
                 if( !( _zoomItems && _zoomItems.length ) ) return;
                 _zoomItems.each( function(){
                     var _sp = $( this );
+                    var _img = _sp.find( 'img' );
 
-                    _sp.css( { 
-                        'background-image': JC.f.printf( 'url({0})', _p._model.imageUrl() ) 
-                    } );
+                    if ( !_img.length ){
+                        _img = $( JC.f.printf( '<img src="{0}" />', _p._model.imageUrl() ) );
+                        _img.appendTo( _sp );
+                    }else{
+                        _img.attr( 'src', _p._model.imageUrl() );
+                    }
                 });
 
                 _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _p._model.size() ] );
@@ -721,6 +728,36 @@
 
         , updateZoomItems:
             function( _size ){
+                var _p = this
+                    , _zoomItems = _p._model.zoomItems()
+                    ;
+
+                if( !_size && ( _zoomItems && _zoomItems.length ) ) return;
+
+                _zoomItems.each( function(){
+                    var _sp = $( this )
+                        , _width = _sp.width()
+                        , _img = _sp.find( 'img' )
+                        ;
+
+                    if( !( _width && _img.length ) ) return;
+
+                    var _width = _sp.width()
+                        , _percent = _width / _size.dragger.srcSidelength
+                        , _newWidth = _size.zoom.width * _percent
+                        , _newHeight = _size.zoom.height * _percent
+                        , _newLeft = ( _size.dragger.left - _size.left ) * _percent
+                        , _newTop = ( _size.dragger.top - _size.top ) * _percent
+                        ;
+
+                    _img.css( {
+                        'width': _newWidth
+                        , 'height': _newHeight
+                        , 'left': -_newLeft
+                        , 'top': -_newTop
+                    });
+
+                });
             }
 
         , sizeError:
