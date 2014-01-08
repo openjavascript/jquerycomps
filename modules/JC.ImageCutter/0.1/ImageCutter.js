@@ -1,4 +1,6 @@
 //TODO: 添加按键响应
+//TODO: 初始化时, 自定义默认位置
+//TODO: 添加保存坐标值的文本框
 ;(function(define, _win) { 'use strict'; define( [ 'JC.Drag' ], function(){
 /**
  * 组件用途简述
@@ -116,11 +118,11 @@
         {
             "minX": 0, 
             "dragger": {
-                "srcSize": 94, 
-                "size": 84, 
+                "srcSidelength": 94, 
+                "sidelength": 84, 
                 "left": 103, 
                 "top": 103, 
-                "halfSize": 42
+                "halfSidelength": 42
             }, 
             "maxX": 300, 
             "top": 56, 
@@ -154,8 +156,8 @@
                 , _newX = _di.size.dragger.left - _posX
                 , _newY = _di.size.dragger.top - _posY
 
-                , _maxX = _di.size.maxX - _di.size.dragger.srcSize
-                , _maxY = _di.size.maxY - _di.size.dragger.srcSize
+                , _maxX = _di.size.maxX - _di.size.dragger.srcSidelength
+                , _maxY = _di.size.maxY - _di.size.dragger.srcSidelength
                 ;
 
             _newX < _di.size.minX && ( _newX = _di.size.minX );
@@ -178,6 +180,7 @@
             var _di = ImageCutter.dragInfo(), _p = _di.ins;
 
             _p._size( _di.tmpSize );
+            _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _di.tmpSize ] );
 
             _p.cleanStatus();
         };
@@ -191,7 +194,6 @@
                 , _direct = _di.srcSelector.attr( 'diretype' )
                 ;
             //JC.log( 'old', _di.size.dragger.left, _di.size.dragger.top );
-
             //JC.log( 'ImageCutter.dragBtnMouseMove', _posX, _posY, _direct );
 
             switch( _direct ){
@@ -213,311 +215,9 @@
             JC.log( 'ImageCutter.dragBtnMouseUp', new Date().getTime() );
 
             _p._size( _di.tmpSize );
+            _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _di.tmpSize ] );
 
             _p.cleanStatus();
-        };
-
-    ImageCutter.resizeTopLeft =
-        function( _di, _posX, _posY, _evt ){
-            if( !_di ) return;
-            var _p = _di.ins
-                , _maxX = _di.size.dragger.left + _di.size.dragger.srcSize 
-                , _maxY = _di.size.dragger.top + _di.size.dragger.srcSize
-                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
-                            , { x: 0, y: -ImageCutter._positionPoint } ) )
-                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
-                            , { x: 0, y: -ImageCutter._positionPoint } ) )
-                , _distance = _srcDist - _curDist
-                , _sidelength = _di.size.dragger.srcSize + _distance
-                ;
-
-            if( ( _maxY - _sidelength ) < _di.size.top ){
-                _sidelength = _maxY - _di.size.top;
-            }
-
-            if( ( _maxX - _sidelength ) < _di.size.left ){
-                _sidelength = _maxX - _di.size.left;
-            }
-
-            _sidelength = _sidelength < _p._model.cicMinSidelength() ? _p._model.cicMinSidelength() : _sidelength;
-
-            _di.tmpSize.dragger = {
-                srcSize: _sidelength
-                , size: _sidelength - _di.btnSidelength
-                , halfSize: ( _sidelength - _di.btnSidelength ) / 2
-                , left: _maxX - _sidelength
-                , top: _maxY - _sidelength
-            };
-
-           _p.updatePosition( _di.tmpSize );
-        };
-
-    ImageCutter.resizeTopCenter =
-        function( _di, _posX, _posY, _evt ){
-            if( !_di ) return;
-            var _p = _di.ins
-                , _maxX = _di.size.left + _di.size.zoom.width
-                , _maxY = _di.size.dragger.top + _di.size.dragger.srcSize
-                , _midX = _di.size.dragger.left + ( _di.size.dragger.srcSize ) / 2
-                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
-                            , { x: _di.pageX, y: -ImageCutter._positionPoint } ) )
-                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
-                            , { x: _di.pageX, y: -ImageCutter._positionPoint } ) )
-                , _distance = ( _srcDist - _curDist )
-                , _sidelength = _di.size.dragger.srcSize + _distance
-                ;
-
-            if( ( _maxY - _sidelength ) < _di.size.top ){
-                _sidelength = _maxY - _di.size.top;
-            }
-
-            if( ( _midX - _sidelength / 2 ) < _di.size.left ){
-                _sidelength = ( _midX - _di.size.left ) * 2;
-            }
-
-            if( ( _midX + _sidelength / 2 ) > _maxX ){
-                _sidelength = ( _maxX - _midX ) * 2;
-            }
-
-            _sidelength = _sidelength < _p._model.cicMinSidelength() ? _p._model.cicMinSidelength() : _sidelength;
-
-            _di.tmpSize.dragger = {
-                srcSize: _sidelength
-                , size: _sidelength - _di.btnSidelength
-                , halfSize: ( _sidelength - _di.btnSidelength ) / 2
-                , left: _midX - _sidelength / 2
-                , top: _maxY - _sidelength
-            };
-
-           _p.updatePosition( _di.tmpSize );
-
-        };
-
-    ImageCutter.resizeTopRight =
-        function( _di, _posX, _posY, _evt ){
-            if( !_di ) return;
-            var _p = _di.ins
-                , _minX = _di.size.dragger.left
-                , _maxY = _di.size.dragger.top + _di.size.dragger.srcSize
-                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
-                            , { x: ImageCutter._positionPoint, y: 0 } ) )
-                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
-                            , { x: ImageCutter._positionPoint, y: 0 } ) )
-                , _distance = ( _srcDist - _curDist )
-                , _sidelength = _di.size.dragger.srcSize + _distance
-                ;
-
-            if( ( _maxY - _sidelength ) < _di.size.top ){
-                _sidelength = _maxY - _di.size.top;
-            }
-
-            if( ( _minX + _sidelength ) > ( _di.size.left + _di.size.zoom.width ) ){
-                _sidelength = ( _di.size.left + _di.size.zoom.width ) - _minX;
-            }
-
-            _sidelength = _sidelength < _p._model.cicMinSidelength() ? _p._model.cicMinSidelength() : _sidelength;
-
-            _di.tmpSize.dragger = {
-                srcSize: _sidelength
-                , size: _sidelength - _di.btnSidelength
-                , halfSize: ( _sidelength - _di.btnSidelength ) / 2
-                , left: _minX
-                , top: _maxY - _sidelength
-            };
-
-           _p.updatePosition( _di.tmpSize );
-
-        };
-
-    ImageCutter.resizeMidLeft =
-        function( _di, _posX, _posY, _evt ){
-            if( !_di ) return;
-            var _p = _di.ins
-                , _maxX = _di.size.dragger.left + _di.size.dragger.srcSize
-                , _midY = _di.size.dragger.top + _di.size.dragger.srcSize / 2
-                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
-                            , { x: -ImageCutter._positionPoint, y: _di.pageY } ) )
-                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
-                            , { x: -ImageCutter._positionPoint, y: _di.pageY } ) )
-                , _distance = ( _srcDist - _curDist )
-                , _sidelength = _di.size.dragger.srcSize + _distance
-                ;
-
-            if( ( _midY - _sidelength / 2 ) < _di.size.top ){
-                _sidelength = ( _midY - _di.size.top ) * 2;
-            }
-
-            if( ( _midY + _sidelength / 2 ) > ( _di.size.top + _di.size.zoom.height ) ){
-                _sidelength = ( _di.size.top + _di.size.zoom.height - _midY ) * 2;
-            }
-
-            if( ( _maxX - _sidelength ) < _di.size.left ){
-                _sidelength = _maxX - _di.size.left;
-            }
-
-            _sidelength = _sidelength < _p._model.cicMinSidelength() ? _p._model.cicMinSidelength() : _sidelength;
-
-            _di.tmpSize.dragger = {
-                srcSize: _sidelength
-                , size: _sidelength - _di.btnSidelength
-                , halfSize: ( _sidelength - _di.btnSidelength ) / 2
-                , left: _maxX - _sidelength
-                , top: _midY - _sidelength / 2
-            };
-
-           _p.updatePosition( _di.tmpSize );
-
-        };
-
-    ImageCutter.resizeMidRight =
-        function( _di, _posX, _posY, _evt ){
-            if( !_di ) return;
-            var _p = _di.ins
-                , _minX = _di.size.dragger.left
-                , _midY = _di.size.dragger.top + _di.size.dragger.srcSize / 2
-                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
-                            , { x: ImageCutter._positionPoint, y: _di.pageY } ) )
-                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
-                            , { x: ImageCutter._positionPoint, y: _di.pageY } ) )
-                , _distance = ( _srcDist - _curDist )
-                , _sidelength = _di.size.dragger.srcSize + _distance
-                ;
-
-            if( ( _midY - _sidelength / 2 ) < _di.size.top ){
-                _sidelength = ( _midY - _di.size.top ) * 2;
-            }
-
-            if( ( _midY + _sidelength / 2 ) > ( _di.size.top + _di.size.zoom.height ) ){
-                _sidelength = ( _di.size.top + _di.size.zoom.height - _midY ) * 2;
-            }
-
-            if( ( _minX + _sidelength ) > ( _di.size.left + _di.size.zoom.width ) ){
-                _sidelength = _di.size.left + _di.size.zoom.width - _minX;
-            }
-
-            _sidelength = _sidelength < _p._model.cicMinSidelength() ? _p._model.cicMinSidelength() : _sidelength;
-
-            _di.tmpSize.dragger = {
-                srcSize: _sidelength
-                , size: _sidelength - _di.btnSidelength
-                , halfSize: ( _sidelength - _di.btnSidelength ) / 2
-                , left: _minX
-                , top: _midY - _sidelength / 2
-            };
-
-           _p.updatePosition( _di.tmpSize );
-
-        };
-
-    ImageCutter.resizeBottomLeft=
-        function( _di, _posX, _posY, _evt ){
-            if( !_di ) return;
-            var _p = _di.ins
-                , _maxX = _di.size.dragger.left + _di.size.dragger.srcSize
-                , _maxY = _di.size.dragger.top
-                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
-                            , { x: ImageCutter._positionPoint, y: 0 } ) )
-                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
-                            , { x: ImageCutter._positionPoint, y: 0 } ) )
-                , _distance = ( _srcDist - _curDist )
-                , _sidelength = _di.size.dragger.srcSize - _distance
-                ;
-
-            if( ( _maxY + _sidelength ) > ( _di.size.top + _di.size.zoom.height ) ){
-                _sidelength = ( _di.size.top + _di.size.zoom.height ) - _maxY;
-            }
-
-            if( ( _maxX - _sidelength ) < _di.size.left ){
-                _sidelength = _maxX - _di.size.left;
-            }
-
-            _sidelength = _sidelength < _p._model.cicMinSidelength() ? _p._model.cicMinSidelength() : _sidelength;
-
-            _di.tmpSize.dragger = {
-                srcSize: _sidelength
-                , size: _sidelength - _di.btnSidelength
-                , halfSize: ( _sidelength - _di.btnSidelength ) / 2
-                , left: _maxX - _sidelength
-                , top: _maxY
-            };
-
-           _p.updatePosition( _di.tmpSize );
-        };
-
-    ImageCutter.resizeBottomCenter=
-        function( _di, _posX, _posY, _evt ){
-            if( !_di ) return;
-            var _p = _di.ins
-                , _minY = _di.size.dragger.top
-                , _midX = _di.size.dragger.left + _di.size.dragger.srcSize / 2
-                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
-                            , { x: _di.pageX, y: -ImageCutter._positionPoint } ) )
-                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
-                            , { x: _di.pageX, y: -ImageCutter._positionPoint } ) )
-                , _distance = ( _srcDist - _curDist )
-                , _sidelength = _di.size.dragger.srcSize - _distance
-                ;
-
-            if( ( _minY + _sidelength ) > ( _di.size.top + _di.size.zoom.height ) ){
-                _sidelength = ( _di.size.top + _di.size.zoom.height ) - _minY;
-            }
-
-            if( ( _midX - _sidelength / 2 ) < _di.size.left ){
-                _sidelength = ( _midX - _di.size.left ) * 2;
-            }
-
-            if( ( _midX + _sidelength / 2 ) > ( _di.size.left + _di.size.zoom.width ) ){
-                _sidelength = ( _di.size.left + _di.size.zoom.width - _midX ) * 2;
-            }
-
-            _sidelength = _sidelength < _p._model.cicMinSidelength() ? _p._model.cicMinSidelength() : _sidelength;
-
-            _di.tmpSize.dragger = {
-                srcSize: _sidelength
-                , size: _sidelength - _di.btnSidelength
-                , halfSize: ( _sidelength - _di.btnSidelength ) / 2
-                , left: _midX - _sidelength / 2
-                , top: _minY
-            };
-
-           _p.updatePosition( _di.tmpSize );
-
-        };
-
-    ImageCutter.resizeBottomRight=
-        function( _di, _posX, _posY, _evt ){
-            if( !_di ) return;
-            var _p = _di.ins
-                , _minX = _di.size.dragger.left
-                , _minY = _di.size.dragger.top
-                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
-                            , { x: 0, y: -ImageCutter._positionPoint } ) )
-                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
-                            , { x: 0, y: -ImageCutter._positionPoint } ) )
-                , _distance = ( _srcDist - _curDist )
-                , _sidelength = _di.size.dragger.srcSize - _distance
-                ;
-
-            if( ( _minX + _sidelength ) > ( _di.size.left + _di.size.zoom.width ) ){
-                _sidelength = ( _di.size.left + _di.size.zoom.width ) - _minX;
-            }
-
-            if( ( _minY + _sidelength ) > ( _di.size.top + _di.size.zoom.height ) ){
-                _sidelength = ( _di.size.top + _di.size.zoom.height ) - _minY;
-            }
-
-            _sidelength = _sidelength < _p._model.cicMinSidelength() ? _p._model.cicMinSidelength() : _sidelength;
-
-            _di.tmpSize.dragger = {
-                srcSize: _sidelength
-                , size: _sidelength - _di.btnSidelength
-                , halfSize: ( _sidelength - _di.btnSidelength ) / 2
-                , left: _minX
-                , top: _minY
-            };
-
-           _p.updatePosition( _di.tmpSize );
-
         };
 
     JC.BaseMVC.build( ImageCutter );
@@ -533,21 +233,21 @@
                 var _p = this;
 
                 _p.on( ImageCutter.Model.INITED, function( _evt ){
-                    _p._model.cicImageUrl()
-                        && _p.update( _p._model.cicImageUrl() );
+                    _p._model.imageUrl()
+                        && _p.update( _p._model.imageUrl() );
                 });
 
                 _p.on( 'CICImageLoad', function( _evt, _img, _width, _height ){
 
-                    if( _width < _p._model.cicMinSidelength() || _height < _p._model.cicMinSidelength() ){
-                        _p.trigger( 'CICSizeError', [ _width, _height, _img ] );
+                    if( _width < _p._model.minSidelength() || _height < _p._model.minSidelength() ){
+                        _p.trigger( ImageCutter.Model.ERROR_SIZE, [ _width, _height, _img ] );
                         return;
                     }
 
                     var _newSize = _p._model.size( _width, _height );
 
-                    if( _newSize.zoom.width < _p._model.cicMinSidelength() || _newSize.zoom.height < _p._model.cicMinSidelength() ){
-                        _p.trigger( 'CICZoomError', [ _width, _height, _img, _newSize ] );
+                    if( _newSize.zoom.width < _p._model.minSidelength() || _newSize.zoom.height < _p._model.minSidelength() ){
+                        _p.trigger( ImageCutter.Model.ERROR_ZOOM, [ _width, _height, _img, _newSize ] );
                         return;
                     }
 
@@ -560,6 +260,8 @@
                     _img.prependTo( _p.selector() );
 
                     _p._view.initDragger( _newSize );
+                    
+                    _p.trigger( ImageCutter.Model.INIT_ZOOM );
 
                 });
 
@@ -570,6 +272,8 @@
 
                     ImageCutter.cleanInfo();
                     ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ), $( this ) );
+
+                    _p.trigger( ImageCutter.Model.INIT_ZOOM );
 
                     _jdoc.on( 'mousemove', ImageCutter.dragMainMouseMove );
                     _jdoc.on( 'mouseup', ImageCutter.dragMainMouseUp );
@@ -584,17 +288,28 @@
                     ImageCutter.cleanInfo();
                     ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ), $( this ) );
 
+                    _p.trigger( ImageCutter.Model.INIT_ZOOM );
+
                     _jdoc.on( 'mousemove', ImageCutter.dragBtnMouseMove );
                     _jdoc.on( 'mouseup', ImageCutter.dragBtnMouseUp );
 
                     return false;
                 });
 
-                _p.on( 'CICSizeError', function( _evt, _width, _height, _img ){
+                _p.on( ImageCutter.Model.INIT_ZOOM, function( _evt ){
+                    JC.log( 'ImageCutter.Model.INIT_ZOOM', new Date().getTime() );
+                    _p._view.initZoomItems();
+                });
+
+                _p.on( ImageCutter.Model.UPDATE_ZOOM, function( _evt, _size ){
+                    //JC.log( 'ImageCutter.Model.UPDATE_ZOOM', new Date().getTime() );
+                });
+
+                _p.on( ImageCutter.Model.ERROR_SIZE, function( _evt, _width, _height, _img ){
                     _p._view.sizeError( _width, _height, _img );
                 });
 
-                _p.on( 'CICZoomError', function( _evt, _width, _height, _img, _newSize ){
+                _p.on( ImageCutter.Model.ERROR_ZOOM, function( _evt, _width, _height, _img, _newSize ){
                     _p._view.zoomError( _width, _height, _img, _newSize );
                 });
 
@@ -625,9 +340,14 @@
         , _size: function(){ this._model.size.apply( this._model, JC.f.sliceArgs( arguments ) ); }
     });
 
-    ImageCutter.Model.INITED = "JCImageCutterInited";
-
     ImageCutter.Model._instanceName = 'JCImageCutter';
+
+    ImageCutter.Model.INITED = "ImageCutterInited";
+    ImageCutter.Model.INIT_ZOOM = "CICInitZoom";
+    ImageCutter.Model.UPDATE_ZOOM = "CICUpdateZoom";
+    ImageCutter.Model.ERROR_SIZE = "CICSizeError";
+    ImageCutter.Model.ERROR_ZOOM = "CICZoomError";
+
     JC.f.extendObject( ImageCutter.Model.prototype, {
         init:
             function(){
@@ -643,16 +363,24 @@
                 }
             }
 
-        , cicImageUrl:
+        , imageUrl:
             function(){
-                return this.attrProp( 'cicImageUrl' );
+                return this.attrProp( 'imageUrl' );
             }
 
-        , cicMinSidelength: function(){ return this.intProp( 'cicMinSidelength' ) || ImageCutter.minSidelength; }
+        , zoomItems:
+            function( _cleanCache ){
+                if( this.is( '[zoomItems]' ) && ( !this._zoomItems || _cleanCache ) ){
+                    this._zoomItems = this.selectorProp( 'zoomItems' );
+                }
+                return this._zoomItems;
+            }
+
+        , minSidelength: function(){ return this.intProp( 'minSidelength' ) || ImageCutter.minSidelength; }
 
         , minDistance:
             function(){
-                return pointDistance( { x: 0, y: 0 }, { x: this.cicMinSidelength(), y: this.cicMinSidelength() } );
+                return pointDistance( { x: 0, y: 0 }, { x: this.minSidelength(), y: this.minSidelength() } );
             }
 
         , size: 
@@ -678,9 +406,9 @@
                     this._size.maxY = ( this._size.minY + this._size.zoom.height );
 
                     this._size.dragger = {
-                        srcSize: 0
-                        , size: 0
-                        , halfSize: 0
+                        srcSidelength: 0
+                        , sidelength: 0
+                        , halfSidelength: 0
                         , left: 0
                         , top: 0
                     };
@@ -867,24 +595,24 @@
 
                 var _p = this
                     , _dragger = _p._model.draggerList()
-                    , _draggerSize = _size.zoom.width > _size.zoom.height ? _size.zoom.height : _size.zoom.width
-                    , _draggerSize = _draggerSize / 2 > _p._model.cicMinSidelength() ? _draggerSize / 2 : _p._model.cicMinSidelength()
-                    , _draggerSize = Math.ceil( _draggerSize )
-                    , _draggerSize = _draggerSize > _p._model.cicMinSidelength() ? _draggerSize : _p._model.cicMinSidelength()
+                    , _sidelength = _size.zoom.width > _size.zoom.height ? _size.zoom.height : _size.zoom.width
+                    , _sidelength = _sidelength / 2 > _p._model.minSidelength() ? _sidelength / 2 : _p._model.minSidelength()
+                    , _sidelength = Math.ceil( _sidelength )
+                    , _sidelength = _sidelength > _p._model.minSidelength() ? _sidelength : _p._model.minSidelength()
                     , _btnSize = _p._model.btnTl().width()
-                    , _srcDraggerSize = _draggerSize
-                    , _draggerSize = _draggerSize - _btnSize
-                    , _halfSize = _draggerSize / 2
-                    , _left = _size.left + ( _size.zoom.width - _draggerSize ) / 2 - _btnSize / 2
-                    , _top = _size.top + ( _size.zoom.height - _draggerSize ) / 2 - _btnSize / 2
+                    , _srcSidelength = _sidelength
+                    , _sidelength = _sidelength - _btnSize
+                    , _halfSidelength = _sidelength / 2
+                    , _left = _size.left + ( _size.zoom.width - _sidelength ) / 2 - _btnSize / 2
+                    , _top = _size.top + ( _size.zoom.height - _sidelength ) / 2 - _btnSize / 2
 
                     ;
-                JC.log( 'initDragger', _draggerSize, new Date().getTime() );
+                JC.log( 'initDragger', _sidelength, new Date().getTime() );
 
                 _size.dragger = {
-                    srcSize: _srcDraggerSize
-                    , size: _draggerSize
-                    , halfSize: _halfSize
+                    srcSidelength: _srcSidelength
+                    , sidelength: _sidelength
+                    , halfSidelength: _halfSidelength
                     , left: _left
                     , top: _top
                 };
@@ -899,6 +627,9 @@
                 _p.updateDragger( _size );
                 _p.updateMask( _size );
                 _p.updateDragMain( _size );
+
+
+                _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _size ] );
             }
 
         , updateDragger:
@@ -906,22 +637,22 @@
                 var _p = this;
 
                 _p._model.btnTl().css( { 'left': _size.dragger.left , 'top': _size.dragger.top } );
-                _p._model.btnTc().css( { 'left': ( _size.dragger.left + _size.dragger.halfSize ), 'top': _size.dragger.top } );
-                _p._model.btnTr().css( { 'left': ( _size.dragger.left + _size.dragger.size ), 'top': _size.dragger.top } );
+                _p._model.btnTc().css( { 'left': ( _size.dragger.left + _size.dragger.halfSidelength ), 'top': _size.dragger.top } );
+                _p._model.btnTr().css( { 'left': ( _size.dragger.left + _size.dragger.sidelength ), 'top': _size.dragger.top } );
 
                 _p._model.btnMl().css( { 'left': _size.dragger.left
-                                        , 'top': ( _size.dragger.top + _size.dragger.halfSize ) } );
+                                        , 'top': ( _size.dragger.top + _size.dragger.halfSidelength) } );
 
-                _p._model.btnMr().css( { 'left': _size.dragger.left + _size.dragger.size
-                                        , 'top': ( _size.dragger.top + _size.dragger.halfSize ) } );
+                _p._model.btnMr().css( { 'left': _size.dragger.left + _size.dragger.sidelength
+                                        , 'top': ( _size.dragger.top + _size.dragger.halfSidelength ) } );
 
-                _p._model.btnBl().css( { 'left': _size.dragger.left, 'top': _size.dragger.top + _size.dragger.size } );
+                _p._model.btnBl().css( { 'left': _size.dragger.left, 'top': _size.dragger.top + _size.dragger.sidelength } );
 
-                _p._model.btnBc().css( { 'left': _size.dragger.left + _size.dragger.halfSize
-                                        , 'top': _size.dragger.top + _size.dragger.size } );
+                _p._model.btnBc().css( { 'left': _size.dragger.left + _size.dragger.halfSidelength
+                                        , 'top': _size.dragger.top + _size.dragger.sidelength} );
 
-                _p._model.btnBr().css( { 'left': _size.dragger.left + _size.dragger.size 
-                                        , 'top': _size.dragger.top + _size.dragger.size } );
+                _p._model.btnBr().css( { 'left': _size.dragger.left + _size.dragger.sidelength 
+                                        , 'top': _size.dragger.top + _size.dragger.sidelength } );
 
                 _p._model.draggerList().show();
             }
@@ -933,7 +664,7 @@
                     ;
 
                 _p._model.maskLeft().css( { 
-                    'height': _size.dragger.srcSize
+                    'height': _size.dragger.srcSidelength
                     , 'width': _size.dragger.left
                     , 'top': _size.dragger.top
                 });
@@ -944,16 +675,16 @@
                 });
 
                 _p._model.maskRight().css( {
-                    'left': _size.dragger.left + _size.dragger.srcSize
+                    'left': _size.dragger.left + _size.dragger.srcSidelength
                     , 'top': _size.dragger.top
-                    , 'width': _size.width - _size.dragger.left - _size.dragger.srcSize
-                    , 'height': _size.dragger.srcSize
+                    , 'width': _size.width - _size.dragger.left - _size.dragger.srcSidelength
+                    , 'height': _size.dragger.srcSidelength
                 });
 
                 _p._model.maskBottom().css( { 
-                    'height': _size.height - (_size.dragger.top + _size.dragger.srcSize )
+                    'height': _size.height - (_size.dragger.top + _size.dragger.srcSidelength )
                     , 'width': _size.width
-                    , 'top': _size.dragger.top + _size.dragger.srcSize 
+                    , 'top': _size.dragger.top + _size.dragger.srcSidelength 
                 });
 
                 _maskList.show();
@@ -964,8 +695,8 @@
                 var _p = this, _dragMain = _p._model.dragMain();
 
                 _dragMain.css({
-                    'width': _size.dragger.srcSize 
-                    , 'height': _size.dragger.srcSize
+                    'width': _size.dragger.srcSidelength 
+                    , 'height': _size.dragger.srcSidelength
                     , 'left': _size.dragger.left
                     , 'top': _size.dragger.top
                 });
@@ -973,12 +704,31 @@
                 _dragMain.show();
             }
 
+        , initZoomItems:
+            function(){
+                var _p = this, _zoomItems = _p._model.zoomItems( true );
+                if( !( _zoomItems && _zoomItems.length ) ) return;
+                _zoomItems.each( function(){
+                    var _sp = $( this );
+
+                    _sp.css( { 
+                        'background-image': JC.f.printf( 'url({0})', _p._model.imageUrl() ) 
+                    } );
+                });
+
+                _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _p._model.size() ] );
+            }
+
+        , updateZoomItems:
+            function( _size ){
+            }
+
         , sizeError:
             function( _width, _height, _img ){
                 this._model.cicErrorBox().show().html(
                     JC.f.printf( 
                         '{5}<p>图片实际宽高为: {2}, {3}</p><p>可接受的最小宽高为: {0}, {1}</p>{4}'
-                        , this._model.cicMinSidelength(), this._model.cicMinSidelength()
+                        , this._model.minSidelength(), this._model.minSidelength()
                         , _width, _height
                         , '<a href="' + _img.attr( 'src' ) + '" target="_blank">查看图片</a>'
                         , '<h3>图片尺寸错误 </h3>'
@@ -991,7 +741,7 @@
                 this._model.cicErrorBox().show().html(
                     JC.f.printf( 
                         '{5}<p>图片实际宽高为: {2}, {3}</p><p>图片缩放后宽高为: {6}, {7}</p><p>可接受的最小宽高为: {0}, {1}</p>{4}'
-                        , this._model.cicMinSidelength(), this._model.cicMinSidelength()
+                        , this._model.minSidelength(), this._model.minSidelength()
                         , _width, _height
                         , '<a href="' + _img.attr( 'src' ) + '" target="_blank">查看图片</a>'
                         , '<h3>图片缩放比例尺寸错误 </h3>'
@@ -1001,6 +751,303 @@
             }
 
     });
+
+    ImageCutter.resizeTopLeft =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+            var _p = _di.ins
+                , _maxX = _di.size.dragger.left + _di.size.dragger.srcSidelength 
+                , _maxY = _di.size.dragger.top + _di.size.dragger.srcSidelength
+                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
+                            , { x: 0, y: -ImageCutter._positionPoint } ) )
+                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
+                            , { x: 0, y: -ImageCutter._positionPoint } ) )
+                , _distance = _srcDist - _curDist
+                , _sidelength = _di.size.dragger.srcSidelength + _distance
+                ;
+
+            if( ( _maxY - _sidelength ) < _di.size.top ){
+                _sidelength = _maxY - _di.size.top;
+            }
+
+            if( ( _maxX - _sidelength ) < _di.size.left ){
+                _sidelength = _maxX - _di.size.left;
+            }
+
+            _sidelength = _sidelength < _p._model.minSidelength() ? _p._model.minSidelength() : _sidelength;
+
+            _di.tmpSize.dragger = {
+                srcSidelength: _sidelength
+                , sidelength: _sidelength - _di.btnSidelength
+                , halfSidelength: ( _sidelength - _di.btnSidelength ) / 2
+                , left: _maxX - _sidelength
+                , top: _maxY - _sidelength
+            };
+
+           _p.updatePosition( _di.tmpSize );
+        };
+
+    ImageCutter.resizeTopCenter =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+            var _p = _di.ins
+                , _maxX = _di.size.left + _di.size.zoom.width
+                , _maxY = _di.size.dragger.top + _di.size.dragger.srcSidelength
+                , _midX = _di.size.dragger.left + ( _di.size.dragger.srcSidelength ) / 2
+                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
+                            , { x: _di.pageX, y: -ImageCutter._positionPoint } ) )
+                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
+                            , { x: _di.pageX, y: -ImageCutter._positionPoint } ) )
+                , _distance = ( _srcDist - _curDist )
+                , _sidelength = _di.size.dragger.srcSidelength + _distance
+                ;
+
+            if( ( _maxY - _sidelength ) < _di.size.top ){
+                _sidelength = _maxY - _di.size.top;
+            }
+
+            if( ( _midX - _sidelength / 2 ) < _di.size.left ){
+                _sidelength = ( _midX - _di.size.left ) * 2;
+            }
+
+            if( ( _midX + _sidelength / 2 ) > _maxX ){
+                _sidelength = ( _maxX - _midX ) * 2;
+            }
+
+            _sidelength = _sidelength < _p._model.minSidelength() ? _p._model.minSidelength() : _sidelength;
+
+            _di.tmpSize.dragger = {
+                srcSidelength: _sidelength
+                , sidelength: _sidelength - _di.btnSidelength
+                , halfSidelength: ( _sidelength - _di.btnSidelength ) / 2
+                , left: _midX - _sidelength / 2
+                , top: _maxY - _sidelength
+            };
+
+           _p.updatePosition( _di.tmpSize );
+        };
+
+    ImageCutter.resizeTopRight =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+            var _p = _di.ins
+                , _minX = _di.size.dragger.left
+                , _maxY = _di.size.dragger.top + _di.size.dragger.srcSidelength
+                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
+                            , { x: ImageCutter._positionPoint, y: 0 } ) )
+                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
+                            , { x: ImageCutter._positionPoint, y: 0 } ) )
+                , _distance = ( _srcDist - _curDist )
+                , _sidelength = _di.size.dragger.srcSidelength + _distance
+                ;
+
+            if( ( _maxY - _sidelength ) < _di.size.top ){
+                _sidelength = _maxY - _di.size.top;
+            }
+
+            if( ( _minX + _sidelength ) > ( _di.size.left + _di.size.zoom.width ) ){
+                _sidelength = ( _di.size.left + _di.size.zoom.width ) - _minX;
+            }
+
+            _sidelength = _sidelength < _p._model.minSidelength() ? _p._model.minSidelength() : _sidelength;
+
+            _di.tmpSize.dragger = {
+                srcSidelength: _sidelength
+                , sidelength: _sidelength - _di.btnSidelength
+                , halfSidelength: ( _sidelength - _di.btnSidelength ) / 2
+                , left: _minX
+                , top: _maxY - _sidelength
+            };
+
+           _p.updatePosition( _di.tmpSize );
+        };
+
+    ImageCutter.resizeMidLeft =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+            var _p = _di.ins
+                , _maxX = _di.size.dragger.left + _di.size.dragger.srcSidelength
+                , _midY = _di.size.dragger.top + _di.size.dragger.srcSidelength / 2
+                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
+                            , { x: -ImageCutter._positionPoint, y: _di.pageY } ) )
+                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
+                            , { x: -ImageCutter._positionPoint, y: _di.pageY } ) )
+                , _distance = ( _srcDist - _curDist )
+                , _sidelength = _di.size.dragger.srcSidelength + _distance
+                ;
+
+            if( ( _midY - _sidelength / 2 ) < _di.size.top ){
+                _sidelength = ( _midY - _di.size.top ) * 2;
+            }
+
+            if( ( _midY + _sidelength / 2 ) > ( _di.size.top + _di.size.zoom.height ) ){
+                _sidelength = ( _di.size.top + _di.size.zoom.height - _midY ) * 2;
+            }
+
+            if( ( _maxX - _sidelength ) < _di.size.left ){
+                _sidelength = _maxX - _di.size.left;
+            }
+
+            _sidelength = _sidelength < _p._model.minSidelength() ? _p._model.minSidelength() : _sidelength;
+
+            _di.tmpSize.dragger = {
+                srcSidelength: _sidelength
+                , sidelength: _sidelength - _di.btnSidelength
+                , halfSidelength: ( _sidelength - _di.btnSidelength ) / 2
+                , left: _maxX - _sidelength
+                , top: _midY - _sidelength / 2
+            };
+
+           _p.updatePosition( _di.tmpSize );
+        };
+
+    ImageCutter.resizeMidRight =
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+            var _p = _di.ins
+                , _minX = _di.size.dragger.left
+                , _midY = _di.size.dragger.top + _di.size.dragger.srcSidelength / 2
+                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
+                            , { x: ImageCutter._positionPoint, y: _di.pageY } ) )
+                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
+                            , { x: ImageCutter._positionPoint, y: _di.pageY } ) )
+                , _distance = ( _srcDist - _curDist )
+                , _sidelength = _di.size.dragger.srcSidelength + _distance
+                ;
+
+            if( ( _midY - _sidelength / 2 ) < _di.size.top ){
+                _sidelength = ( _midY - _di.size.top ) * 2;
+            }
+
+            if( ( _midY + _sidelength / 2 ) > ( _di.size.top + _di.size.zoom.height ) ){
+                _sidelength = ( _di.size.top + _di.size.zoom.height - _midY ) * 2;
+            }
+
+            if( ( _minX + _sidelength ) > ( _di.size.left + _di.size.zoom.width ) ){
+                _sidelength = _di.size.left + _di.size.zoom.width - _minX;
+            }
+
+            _sidelength = _sidelength < _p._model.minSidelength() ? _p._model.minSidelength() : _sidelength;
+
+            _di.tmpSize.dragger = {
+                srcSidelength: _sidelength
+                , sidelength: _sidelength - _di.btnSidelength
+                , halfSidelength: ( _sidelength - _di.btnSidelength ) / 2
+                , left: _minX
+                , top: _midY - _sidelength / 2
+            };
+
+           _p.updatePosition( _di.tmpSize );
+        };
+
+    ImageCutter.resizeBottomLeft=
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+            var _p = _di.ins
+                , _maxX = _di.size.dragger.left + _di.size.dragger.srcSidelength
+                , _maxY = _di.size.dragger.top
+                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
+                            , { x: ImageCutter._positionPoint, y: 0 } ) )
+                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
+                            , { x: ImageCutter._positionPoint, y: 0 } ) )
+                , _distance = ( _srcDist - _curDist )
+                , _sidelength = _di.size.dragger.srcSidelength - _distance
+                ;
+
+            if( ( _maxY + _sidelength ) > ( _di.size.top + _di.size.zoom.height ) ){
+                _sidelength = ( _di.size.top + _di.size.zoom.height ) - _maxY;
+            }
+
+            if( ( _maxX - _sidelength ) < _di.size.left ){
+                _sidelength = _maxX - _di.size.left;
+            }
+
+            _sidelength = _sidelength < _p._model.minSidelength() ? _p._model.minSidelength() : _sidelength;
+
+            _di.tmpSize.dragger = {
+                srcSidelength: _sidelength
+                , sidelength: _sidelength - _di.btnSidelength
+                , halfSidelength: ( _sidelength - _di.btnSidelength ) / 2
+                , left: _maxX - _sidelength
+                , top: _maxY
+            };
+
+           _p.updatePosition( _di.tmpSize );
+        };
+
+    ImageCutter.resizeBottomCenter=
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+            var _p = _di.ins
+                , _minY = _di.size.dragger.top
+                , _midX = _di.size.dragger.left + _di.size.dragger.srcSidelength / 2
+                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
+                            , { x: _di.pageX, y: -ImageCutter._positionPoint } ) )
+                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
+                            , { x: _di.pageX, y: -ImageCutter._positionPoint } ) )
+                , _distance = ( _srcDist - _curDist )
+                , _sidelength = _di.size.dragger.srcSidelength - _distance
+                ;
+
+            if( ( _minY + _sidelength ) > ( _di.size.top + _di.size.zoom.height ) ){
+                _sidelength = ( _di.size.top + _di.size.zoom.height ) - _minY;
+            }
+
+            if( ( _midX - _sidelength / 2 ) < _di.size.left ){
+                _sidelength = ( _midX - _di.size.left ) * 2;
+            }
+
+            if( ( _midX + _sidelength / 2 ) > ( _di.size.left + _di.size.zoom.width ) ){
+                _sidelength = ( _di.size.left + _di.size.zoom.width - _midX ) * 2;
+            }
+
+            _sidelength = _sidelength < _p._model.minSidelength() ? _p._model.minSidelength() : _sidelength;
+
+            _di.tmpSize.dragger = {
+                srcSidelength: _sidelength
+                , sidelength: _sidelength - _di.btnSidelength
+                , halfSidelength: ( _sidelength - _di.btnSidelength ) / 2
+                , left: _midX - _sidelength / 2
+                , top: _minY
+            };
+
+           _p.updatePosition( _di.tmpSize );
+        };
+
+    ImageCutter.resizeBottomRight=
+        function( _di, _posX, _posY, _evt ){
+            if( !_di ) return;
+            var _p = _di.ins
+                , _minX = _di.size.dragger.left
+                , _minY = _di.size.dragger.top
+                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
+                            , { x: 0, y: -ImageCutter._positionPoint } ) )
+                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }
+                            , { x: 0, y: -ImageCutter._positionPoint } ) )
+                , _distance = ( _srcDist - _curDist )
+                , _sidelength = _di.size.dragger.srcSidelength - _distance
+                ;
+
+            if( ( _minX + _sidelength ) > ( _di.size.left + _di.size.zoom.width ) ){
+                _sidelength = ( _di.size.left + _di.size.zoom.width ) - _minX;
+            }
+
+            if( ( _minY + _sidelength ) > ( _di.size.top + _di.size.zoom.height ) ){
+                _sidelength = ( _di.size.top + _di.size.zoom.height ) - _minY;
+            }
+
+            _sidelength = _sidelength < _p._model.minSidelength() ? _p._model.minSidelength() : _sidelength;
+
+            _di.tmpSize.dragger = {
+                srcSidelength: _sidelength
+                , sidelength: _sidelength - _di.btnSidelength
+                , halfSidelength: ( _sidelength - _di.btnSidelength ) / 2
+                , left: _minX
+                , top: _minY
+            };
+
+           _p.updatePosition( _di.tmpSize );
+        };
 
     /**
      * 按比例缩放图片
@@ -1046,6 +1093,7 @@
             , y: parseInt( Math.sin( _radian ) * _distance )
         }
     }
+
 
     _jdoc.ready( function(){
         var _insAr = 0;
