@@ -89,6 +89,9 @@
                     , 'srcSelector': _srcSelector
                     , 'offset': _p.selector().offset()
                     , 'minDistance': _p._model.minDistance()
+                    , 'winWidth': _jwin.width()
+                    , 'winHeight': _jwin.height()
+                    , 'btnSidelength': _p._model.btnTl().width()
                 }
                 JC.log( 'minDistance', ImageCutter._dragInfo.minDistance );
                 //window.JSON && JC.log( JSON.stringify( _size ) );
@@ -218,56 +221,31 @@
             var _p = _di.ins
                 , _maxX = _di.size.dragger.left + _di.size.dragger.srcSize 
                 , _maxY = _di.size.dragger.top + _di.size.dragger.srcSize
-
                 , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }, { x: 0, y: 0 } ) )
                 , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }, { x: 0, y: 0 } ) )
-
                 , _distance = _srcDist - _curDist
-
-                , _maxOffsetDistance = Math.ceil( pointDistance( { x:0, y: 0 }
-                                            , { x: _di.offset.left + _maxX, y: _di.offset.top + _maxY } ) )
+                , _sidelength = _di.size.dragger.srcSize + _distance
                 ;
 
-            var _btnSize = _p._model.btnTl().width()
-                , _left = _di.size.dragger.left - _distance
-                , _top = _di.size.dragger.top - _distance
-                , _curDistance = pointDistance( { x: _left, y: _top }, { x: _maxX, y: _maxY } )
-                ;
-
-            //JC.log( _di.minDistance, _curDistance, _curDist, _maxOffsetDistance );
-            if( _curDistance < _di.minDistance || _curDist > _maxOffsetDistance ){
-                var _newPoint = distanceAngleToPoint( _di.minDistance, 225 );
-                _left = _maxX + _newPoint.x;
-                _top = _maxY + _newPoint.y;
+            if( ( _maxY - _sidelength ) < _di.size.top ){
+                _sidelength = _maxY - _di.size.top;
             }
 
-            if( _left < _di.size.left ){
-                _left = _di.size.left;
-                _top = _maxY - ( _maxX - _left );
+            if( ( _maxX - _sidelength ) < _di.size.left ){
+                _sidelength = _maxX - _di.size.left;
             }
 
-            if( _top < _di.size.top ){
-                _top = _di.size.top;
-                _left = _maxX - ( _maxY - _top );
-            }
-
-            var _srcDraggerSize = _maxX - _left
-                , _draggerSize = _srcDraggerSize - _btnSize
-                , _halfSize = _draggerSize / 2
-                ;
-
-            //JC.log( _left, _top, _maxX, _maxY, _distance );
+            _sidelength = _sidelength < _p._model.cicSidelength() ? _p._model.cicSidelength() : _sidelength;
 
             _di.tmpSize.dragger = {
-                srcSize: _srcDraggerSize
-                , size: _draggerSize
-                , halfSize: _halfSize
-                , left: _left
-                , top: _top
+                srcSize: _sidelength
+                , size: _sidelength - _di.btnSidelength
+                , halfSize: ( _sidelength - _di.btnSidelength ) / 2
+                , left: _maxX - _sidelength
+                , top: _maxY - _sidelength
             };
 
            _p.updatePosition( _di.tmpSize );
-
         };
 
     ImageCutter.resizeTopCenter =
@@ -277,14 +255,10 @@
                 , _maxX = _di.size.left + _di.size.zoom.width
                 , _maxY = _di.size.dragger.top + _di.size.dragger.srcSize
                 , _midX = _di.size.dragger.left + ( _di.size.dragger.srcSize ) / 2
-
                 , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }, { x: _di.pageX, y: 0 } ) )
-
                 , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }, { x: _di.pageX, y: 0 } ) )
-
                 , _distance = ( _srcDist - _curDist )
                 , _sidelength = _di.size.dragger.srcSize + _distance
-
                 ;
 
             if( ( _maxY - _sidelength ) < _di.size.top ){
@@ -301,28 +275,12 @@
 
             _sidelength = _sidelength < _p._model.cicSidelength() ? _p._model.cicSidelength() : _sidelength;
 
-            var _left = _midX - _sidelength / 2
-                , _top = _maxY - _sidelength
-                ;
-
-            var _btnSize = _p._model.btnTl().width()
-                , _srcDraggerSize = _sidelength
-                , _draggerSize = _srcDraggerSize - _btnSize
-                , _halfSize = _draggerSize / 2
-                ;
-
-            JC.log( JC.f.printf( 
-                'distance: {0}, left: {1}, top: {2}, maxX: {3}, maxY: {4}, midX: {5}, srcDraggerSize: {6}'
-                , _distance, _left, _top, _maxX, _maxY, _midX 
-                , _srcDraggerSize
-            ) );
-
             _di.tmpSize.dragger = {
-                srcSize: _srcDraggerSize
-                , size: _draggerSize
-                , halfSize: _halfSize
-                , left: _left
-                , top: _top
+                srcSize: _sidelength
+                , size: _sidelength - _di.btnSidelength
+                , halfSize: ( _sidelength - _di.btnSidelength ) / 2
+                , left: _midX - _sidelength / 2
+                , top: _maxY - _sidelength
             };
 
            _p.updatePosition( _di.tmpSize );
@@ -332,6 +290,35 @@
     ImageCutter.resizeTopRight =
         function( _di, _posX, _posY, _evt ){
             if( !_di ) return;
+            var _p = _di.ins
+                , _minX = _di.size.dragger.left
+                , _maxY = _di.size.dragger.top + _di.size.dragger.srcSize
+                , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }, { x: 10000, y: 0 } ) )
+                , _curDist = Math.ceil( pointDistance( { x: _evt.pageX, y: _evt.pageY }, { x: 10000, y: 0 } ) )
+                , _distance = ( _srcDist - _curDist )
+                , _sidelength = _di.size.dragger.srcSize + _distance
+                ;
+
+            if( ( _maxY - _sidelength ) < _di.size.top ){
+                _sidelength = _maxY - _di.size.top;
+            }
+
+            if( ( _minX + _sidelength ) > ( _di.size.left + _di.size.zoom.width ) ){
+                _sidelength = ( _di.size.left + _di.size.zoom.width ) - _minX;
+            }
+
+            _sidelength = _sidelength < _p._model.cicSidelength() ? _p._model.cicSidelength() : _sidelength;
+
+            _di.tmpSize.dragger = {
+                srcSize: _sidelength
+                , size: _sidelength - _di.btnSidelength
+                , halfSize: ( _sidelength - _di.btnSidelength ) / 2
+                , left: _minX
+                , top: _maxY - _sidelength
+            };
+
+           _p.updatePosition( _di.tmpSize );
+
         };
 
     ImageCutter.resizeMidLeft =
