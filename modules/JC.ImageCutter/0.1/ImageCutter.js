@@ -1,6 +1,5 @@
 //TODO: 添加按键响应
 //TODO: 初始化时, 自定义默认位置
-//TODO: 添加保存坐标值的文本框
 //TODO: 修复 minSidelength <= 30 时的显示问题
 //TODO: 优化 鼠标指针显示
 ;(function(define, _win) { 'use strict'; define( [ 'JC.Drag' ], function(){
@@ -275,6 +274,7 @@
 
                 _p.selector().delegate( 'div.cic_dragMain', 'mousedown', function( _evt ){
                     _evt.preventDefault();
+                    _evt.stopPropagation();
                     JC.log( 'div.cic_dragMain mousedown', new Date().getTime() );
                     _p._model.dragMain().addClass( 'cic_move' );
 
@@ -645,16 +645,16 @@
         , update:
             function( _imgUrl ){
                 if( !_imgUrl ) return;
-                var _p = this, _img = $( JC.f.printf( '<img src="about:blank" />' ) );
+                var _p = this, _img = document.createElement( 'img' )
 
                     _p.clean();
 
-                    _img.on( 'load', function(){
+                    $( _img ).on( 'load', function(){
                         //JC.log( this.width, this.height );
-                        _p.trigger( 'CICImageLoad', [ _img, this.width, this.height ] );
+                        _p.trigger( 'CICImageLoad', [ $( _img ), this.width, this.height] );
                     });
-                    _img.on( 'mousedown', function( _evt ){ _evt.preventDefault(); return false; } );
-                    _img.attr( 'src', _imgUrl );
+                    $( _img ).on( 'mousedown', function( _evt ){ _evt.preventDefault(); return false; } );
+                    _img.src =  _imgUrl;
             }
 
         , initDragger:
