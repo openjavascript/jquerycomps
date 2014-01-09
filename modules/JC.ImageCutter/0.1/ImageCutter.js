@@ -98,7 +98,7 @@
                     , 'winHeight': _jwin.height()
                     , 'btnSidelength': _p._model.btnTl().width()
                 }
-                JC.log( 'minDistance', ImageCutter._dragInfo.minDistance );
+                //JC.log( 'minDistance', ImageCutter._dragInfo.minDistance );
                 //window.JSON && JC.log( JSON.stringify( _size ) );
             }
             return ImageCutter._dragInfo;
@@ -217,7 +217,7 @@
         function( _evt ){
             if( !ImageCutter.dragInfo() ) return;
             var _di = ImageCutter.dragInfo(), _p = _di.ins;
-            JC.log( 'ImageCutter.dragBtnMouseUp', new Date().getTime() );
+            //JC.log( 'ImageCutter.dragBtnMouseUp', new Date().getTime() );
 
             _p._size( _di.tmpSize );
             _p.trigger( ImageCutter.Model.UPDATE_RECT, [ _di.tmpSize ] );
@@ -231,7 +231,7 @@
     JC.f.extendObject( ImageCutter.prototype, {
         _beforeInit:
             function(){
-                JC.log( 'ImageCutter _beforeInit', new Date().getTime() );
+                //JC.log( 'ImageCutter _beforeInit', new Date().getTime() );
             }
 
         , _initHanlderEvent:
@@ -275,7 +275,7 @@
                 _p.selector().delegate( 'div.cic_dragMain', 'mousedown', function( _evt ){
                     _evt.preventDefault();
                     _evt.stopPropagation();
-                    JC.log( 'div.cic_dragMain mousedown', new Date().getTime() );
+                    //JC.log( 'div.cic_dragMain mousedown', new Date().getTime() );
                     _p._model.dragMain().addClass( 'cic_move' );
 
                     ImageCutter.cleanInfo();
@@ -291,7 +291,7 @@
 
                 _p.selector().delegate( 'button.cic_btn', 'mousedown', function( _evt ){
                     _evt.preventDefault();
-                    JC.log( 'div.cic_btn mousedown', new Date().getTime() );
+                    //JC.log( 'div.cic_btn mousedown', new Date().getTime() );
 
                     ImageCutter.cleanInfo();
                     ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ), $( this ) );
@@ -305,7 +305,7 @@
                 });
 
                 _p.on( ImageCutter.Model.INIT_ZOOM, function( _evt ){
-                    JC.log( 'ImageCutter.Model.INIT_ZOOM', new Date().getTime() );
+                    //JC.log( 'ImageCutter.Model.INIT_ZOOM', new Date().getTime() );
                     _p._view.initZoomItems();
                 });
 
@@ -320,7 +320,7 @@
                 });
 
                 _p.on( ImageCutter.Model.DRAG_DONE, function( _evt, _size ){
-                    JC.log( 'ImageCutter.DRAG_DONE', new Date().getTime() );
+                    //JC.log( 'ImageCutter.DRAG_DONE', new Date().getTime() );
                     _p.trigger( ImageCutter.Model.UPDATE_COORDINATE, [ _size ] );
                 });
 
@@ -350,7 +350,7 @@
 
         , _inited:
             function(){
-                JC.log( 'ImageCutter _inited', new Date().getTime() );
+                //JC.log( 'ImageCutter _inited', new Date().getTime() );
                 this.trigger( ImageCutter.Model.INITED );
             }
 
@@ -389,7 +389,7 @@
     JC.f.extendObject( ImageCutter.Model.prototype, {
         init:
             function(){
-                JC.log( 'ImageCutter.Model.init:', new Date().getTime() );
+                //JC.log( 'ImageCutter.Model.init:', new Date().getTime() );
                 var _p = this;
 
                 this._size ={
@@ -451,7 +451,7 @@
                         , top: 0
                     };
 
-                    JC.log( this._size.left, this._size.top );
+                    //JC.log( this._size.left, this._size.top );
                 }
 
                 if( _width && !_height ){
@@ -625,12 +625,27 @@
             }
 
         , coordinateSelector: function(){ return this.selectorProp( 'coordinateSelector' ); }
+
+        , defaultCoordinate:
+            function(){
+                var _p = this, _r = '', _v = this.attrProp( 'defaultCoordinate' );
+                if( _v ){
+                    _r = _v.replace( /[^\d,]+/g, '' );
+                    if( _r ){
+                        _r = _r.split( ',' );
+                        $.each( _r, function( _ix, _item ){
+                            _r[ _ix ] = parseInt( _item, 10 );
+                        });
+                    }
+                }
+                return _r;
+            }
     });
 
     JC.f.extendObject( ImageCutter.View.prototype, {
         init:
             function(){
-                JC.log( 'ImageCutter.View.init:', new Date().getTime() );
+                //JC.log( 'ImageCutter.View.init:', new Date().getTime() );
                 var _p = this;
             }
 
@@ -676,7 +691,7 @@
                     , _top = _size.top + ( _size.zoom.height - _sidelength ) / 2 - _btnSize / 2
 
                     ;
-                JC.log( 'initDragger', _sidelength, new Date().getTime() );
+                //JC.log( 'initDragger', _sidelength, new Date().getTime() );
 
                 _size.dragger = {
                     srcSidelength: _srcSidelength
@@ -686,7 +701,56 @@
                     , top: _top
                 };
 
+                _size = _p.processDefaultCoordinate( _size );
+
                 _p.updatePosition( _size );
+            }
+
+        , processDefaultCoordinate:
+            function( _size ){
+                var _p = this
+                    , _defaultCoordinate = _p._model.defaultCoordinate()
+                    , _btnSize = _p._model.btnTl().width()
+                    ;
+
+                if( _defaultCoordinate.length ){
+                    var _srcSidelength = _size.srcSidelength
+                        , _sidelength = _size.sidelength
+                        , _halfSidelength = _size.halfSidelength
+                        , _left = _size.left
+                        , _top = _size.top
+                        ;
+
+                    switch( _defaultCoordinate.length ){
+                        case 1: {
+                            _srcSidelength = _defaultCoordinate[0];
+                            _left = _size.left + ( _size.zoom.width - _srcSidelength ) / 2;
+                            _top = _size.top + ( _size.zoom.height - _srcSidelength ) / 2;
+
+                            break;
+                        }
+                        case 3: {
+                            _left = _defaultCoordinate[0] + _size.left;
+                            _top = _defaultCoordinate[1] + _size.top;
+                            _srcSidelength = _defaultCoordinate[2];
+                            break;
+                        }
+                    }
+
+                    _sidelength = _srcSidelength - _btnSize;
+                    _halfSidelength = _sidelength / 2;
+
+                    _size.dragger = {
+                        srcSidelength: _srcSidelength
+                        , sidelength: _sidelength
+                        , halfSidelength: _halfSidelength
+                        , left: _left
+                        , top: _top
+                    };
+
+                }
+
+                return _size;
             }
 
         , updatePosition:
