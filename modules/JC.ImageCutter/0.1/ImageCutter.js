@@ -328,8 +328,14 @@
                     var _size = _size || _p._model.size()
                         , _selector = _p._model.coordinateSelector()
                         ;
-                    if( !( _size && _selector && _selector.length ) ) return;
-                    _selector.val( _p._model.realCoordinate( _size ) );
+                    if( !_size ) return;
+                    var _corAr = _p._model.realCoordinate( _size );
+
+                    _p._model.coordinateUpdateCb() 
+                        && _p._model.coordinateUpdateCb().call( _p, _corAr, _p._model.imageUrl() );
+
+                    if( !( _selector && _selector.length ) ) return;
+                    _selector.val( _corAr );
                 });
 
                 _p.on( ImageCutter.Model.ERROR_SIZE, function( _evt, _width, _height, _img ){
@@ -481,6 +487,8 @@
                 }
                 return _r;
             }
+
+        , coordinateUpdateCb: function(){ return this.callbackProp( 'coordinateUpdateCb' ); }
 
         , clean: 
             function(){
