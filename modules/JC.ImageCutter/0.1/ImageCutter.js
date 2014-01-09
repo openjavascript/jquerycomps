@@ -1,4 +1,8 @@
 //TODO: 添加按键响应
+//TODO: 完善 update 接口
+//TODO: 完善 clean 接口
+//TODO: 添加 minImage 属性
+//TODO: 静态化 事件名 和 操作属性 Model.xxx
 ;(function(define, _win) { 'use strict'; define( [ 'JC.Drag' ], function(){
 /**
  * 组件用途简述
@@ -77,6 +81,7 @@
 
     ImageCutter.minSidelength = 50;
     ImageCutter._positionPoint = 10000;
+    ImageCutter._defaultCursor = 'auto';
 
     ImageCutter.dragInfo =
         function( _p, _evt, _size, _srcSelector ){
@@ -111,6 +116,7 @@
             _jdoc.off( 'mousemove', ImageCutter.dragBtnMouseMove );
 
             ImageCutter.dragInfo( null );
+            _jbody.css( 'cursor', ImageCutter._defaultCursor );
         };
     /*
         {
@@ -178,7 +184,7 @@
             if( !ImageCutter.dragInfo() ) return;
             var _di = ImageCutter.dragInfo(), _p = _di.ins;
 
-            _jbody.css( 'cursor', 'auto' );
+            _jbody.css( 'cursor', ImageCutter._defaultCursor );
 
             _p._size( _di.tmpSize );
             _p.trigger( ImageCutter.Model.UPDATE_RECT, [ _di.tmpSize ] );
@@ -218,7 +224,7 @@
             var _di = ImageCutter.dragInfo(), _p = _di.ins;
             //JC.log( 'ImageCutter.dragBtnMouseUp', new Date().getTime() );
 
-            _jbody.css( 'cursor', 'auto' );
+            _jbody.css( 'cursor',  ImageCutter._defaultCursor );
 
             _p._size( _di.tmpSize );
             _p.trigger( ImageCutter.Model.UPDATE_RECT, [ _di.tmpSize ] );
@@ -265,6 +271,10 @@
                         , 'top': _newSize.top + 'px'
                     });
                     _img.prependTo( _p.selector() );
+                    
+                    _p._model.imageUrlSelector()
+                        && _p._model.imageUrlSelector().length
+                        && _p._model.imageUrlSelector().val( _img.attr( 'src' ) );
 
                     _p._view.initDragger( _newSize );
                     
@@ -277,11 +287,11 @@
                     _evt.preventDefault();
                     _evt.stopPropagation();
                     //JC.log( 'div.cic_dragMain mousedown', new Date().getTime() );
-                    _jbody.css( 'cursor', 'move' );
 
                     ImageCutter.cleanInfo();
                     ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ), $( this ) );
 
+                    _jbody.css( 'cursor', 'move' );
                     _p.trigger( ImageCutter.Model.INIT_PREVIEW );
 
                     _jdoc.on( 'mousemove', ImageCutter.dragMainMouseMove );
@@ -297,8 +307,6 @@
                     ImageCutter.cleanInfo();
                     ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ), $( this ) );
 
-                    _p.trigger( ImageCutter.Model.INIT_PREVIEW );
-
                     var _btn = $( this )
                         , _direct = _btn.attr( 'diretype' )
                         ;
@@ -313,6 +321,8 @@
                         case 'cic_btnBc': _jbody.css( 'cursor', 's-resize' ); break;
                         case 'cic_btnBr': _jbody.css( 'cursor', 'se-resize' ); break;
                     }
+
+                    _p.trigger( ImageCutter.Model.INIT_PREVIEW );
 
                     _jdoc.on( 'mousemove', ImageCutter.dragBtnMouseMove );
                     _jdoc.on( 'mouseup', ImageCutter.dragBtnMouseUp );
@@ -661,6 +671,8 @@
                 }
                 return _r;
             }
+
+        , imageUrlSelector: function(){ return this.selectorProp( 'imageUrlSelector' ); }
     });
 
     JC.f.extendObject( ImageCutter.View.prototype, {
@@ -1314,9 +1326,9 @@
         }
     }
 
-
     _jdoc.ready( function(){
         _jbody = $( 'body' );
+        ImageCutter._defaultCursor = _jbody.css( 'cursor' );
         ImageCutter.autoInit && ImageCutter.init();
     });
 
