@@ -1,6 +1,8 @@
 //TODO: 添加按键响应
 //TODO: 初始化时, 自定义默认位置
 //TODO: 添加保存坐标值的文本框
+//TODO: 修复 minSidelength <= 30 时的显示问题
+//TODO: 优化 鼠标指针显示
 ;(function(define, _win) { 'use strict'; define( [ 'JC.Drag' ], function(){
 /**
  * 组件用途简述
@@ -170,7 +172,7 @@
             _di.tmpSize.dragger.top = _newY;
 
             _p.updatePosition( _di.tmpSize );
-            _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _di.tmpSize ] );
+            _p.trigger( ImageCutter.Model.UPDATE_RECT, [ _di.tmpSize ] );
 
             //JC.log( 'ImageCutter.dragMainMouseMove', _newX, _newY );
         };
@@ -181,7 +183,8 @@
             var _di = ImageCutter.dragInfo(), _p = _di.ins;
 
             _p._size( _di.tmpSize );
-            _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _di.tmpSize ] );
+            _p.trigger( ImageCutter.Model.UPDATE_RECT, [ _di.tmpSize ] );
+            _p.trigger( ImageCutter.Model.DRAG_DONE, [ _di.tmpSize ] );
 
             _p.cleanStatus();
         };
@@ -208,7 +211,7 @@
                 case 'cic_btnBc': ImageCutter.resizeBottomCenter( _di, _posX, _posY, _evt ); break;
                 case 'cic_btnBr': ImageCutter.resizeBottomRight( _di, _posX, _posY, _evt ); break;
             }
-            _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _di.tmpSize ] );
+            _p.trigger( ImageCutter.Model.UPDATE_RECT, [ _di.tmpSize ] );
         };
 
     ImageCutter.dragBtnMouseUp =
@@ -218,7 +221,8 @@
             JC.log( 'ImageCutter.dragBtnMouseUp', new Date().getTime() );
 
             _p._size( _di.tmpSize );
-            _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _di.tmpSize ] );
+            _p.trigger( ImageCutter.Model.UPDATE_RECT, [ _di.tmpSize ] );
+            _p.trigger( ImageCutter.Model.DRAG_DONE, [ _di.tmpSize ] );
 
             _p.cleanStatus();
         };
@@ -265,6 +269,7 @@
                     _p._view.initDragger( _newSize );
                     
                     _p.trigger( ImageCutter.Model.INIT_ZOOM );
+                    _p.trigger( ImageCutter.Model.UPDATE_COORDINATE, [ _newSize ] );
 
                 });
 
@@ -304,10 +309,27 @@
                     _p._view.initZoomItems();
                 });
 
+                _p.on( ImageCutter.Model.UPDATE_RECT, function( _evt, _size ){
+                    _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _size ] );
+                });
+
                 _p.on( ImageCutter.Model.UPDATE_ZOOM, function( _evt, _size ){
                     //JC.log( 'ImageCutter.Model.UPDATE_ZOOM', new Date().getTime() );
                     if( !_size ) return;
                     _p._view.updateZoomItems( _size );
+                });
+
+                _p.on( ImageCutter.Model.DRAG_DONE, function( _evt, _size ){
+                    JC.log( 'ImageCutter.DRAG_DONE', new Date().getTime() );
+                    _p.trigger( ImageCutter.Model.UPDATE_COORDINATE, [ _size ] );
+                });
+
+                _p.on( ImageCutter.Model.UPDATE_COORDINATE, function( _evt, _size ){
+                    var _size = _size || _p._model.size()
+                        , _selector = _p._model.coordinateSelector()
+                        ;
+                    if( !( _size && _selector && _selector.length ) ) return;
+                    _selector.val( _p._model.realCoordinate( _size ) );
                 });
 
                 _p.on( ImageCutter.Model.ERROR_SIZE, function( _evt, _width, _height, _img ){
@@ -349,7 +371,12 @@
 
     ImageCutter.Model.INITED = "ImageCutterInited";
     ImageCutter.Model.INIT_ZOOM = "CICInitZoom";
+    ImageCutter.Model.DRAG_DONE = "CICDragDone";
+
+    ImageCutter.Model.UPDATE_RECT = "CICUpdateDragger";
     ImageCutter.Model.UPDATE_ZOOM = "CICUpdateZoom";
+    ImageCutter.Model.UPDATE_COORDINATE = "CICUpdateCoordinate";
+
     ImageCutter.Model.ERROR_SIZE = "CICSizeError";
     ImageCutter.Model.ERROR_ZOOM = "CICZoomError";
 
@@ -426,6 +453,33 @@
                 }
 
                 return this._size; 
+            }
+
+        , realCoordinate:
+            function( _size ){
+                var _r = [];
+                //JC.log( 'ImageCutter._model.realCoordinate', new Date().getTime() );
+                if( _size ){
+                    var _p = this
+                        , _percent = _size.img.width / _size.zoom.width
+                        , _left = ( _size.dragger.left - _size.left ) * _percent
+                        , _top = ( _size.dragger.top - _size.top ) * _percent
+                        , _sidelength = _size.dragger.srcSidelength * _percent
+                        ;
+
+                    _left = Math.ceil( _left );
+                    _top = Math.ceil( _top );
+                    _sidelength = Math.ceil( _sidelength );
+
+                    _left < 0 && ( _left = 0 );
+                    _top < 0 && ( _top = 0 );
+
+                    ( _left + _sidelength ) > _size.img.width && ( _sidelength = _size.img.width - _left );
+                    ( _top + _sidelength ) > _size.img.height && ( _sidelength = _size.img.height - _top );
+
+                    _r.push( _left, _top, _sidelength, _sidelength );
+                }
+                return _r;
             }
 
         , clean: 
@@ -561,6 +615,8 @@
                 }
                 return this._cicErrorBox;
             }
+
+        , coordinateSelector: function(){ return this.selectorProp( 'coordinateSelector' ); }
     });
 
     JC.f.extendObject( ImageCutter.View.prototype, {
@@ -723,7 +779,7 @@
                     }
                 });
 
-                _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _p._model.size() ] );
+                _p.trigger( ImageCutter.Model.UPDATE_RECT, [ _p._model.size() ] );
             }
 
         , updateZoomItems:
