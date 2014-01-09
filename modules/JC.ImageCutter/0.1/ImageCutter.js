@@ -134,7 +134,7 @@
                 "width": 300, 
                 "height": 300
             }, 
-            "zoom": {
+            "preview": {
                 "width": 300, 
                 "height": 188
             }, 
@@ -252,14 +252,14 @@
 
                     var _newSize = _p._model.size( _width, _height );
 
-                    if( _newSize.zoom.width < _p._model.minSidelength() || _newSize.zoom.height < _p._model.minSidelength() ){
-                        _p.trigger( ImageCutter.Model.ERROR_ZOOM, [ _width, _height, _img, _newSize ] );
+                    if( _newSize.preview.width < _p._model.minSidelength() || _newSize.preview.height < _p._model.minSidelength() ){
+                        _p.trigger( ImageCutter.Model.ERROR_PREVIEW, [ _width, _height, _img, _newSize ] );
                         return;
                     }
 
                     _img.css( { 
-                        'width': _newSize.zoom.width + 'px'
-                        , 'height': _newSize.zoom.height + 'px' 
+                        'width': _newSize.preview.width + 'px'
+                        , 'height': _newSize.preview.height + 'px' 
                         , 'left': _newSize.left + 'px'
                         , 'top': _newSize.top + 'px'
                     });
@@ -267,7 +267,7 @@
 
                     _p._view.initDragger( _newSize );
                     
-                    _p.trigger( ImageCutter.Model.INIT_ZOOM );
+                    _p.trigger( ImageCutter.Model.INIT_PREVIEW );
                     _p.trigger( ImageCutter.Model.UPDATE_COORDINATE, [ _newSize ] );
 
                 });
@@ -281,7 +281,7 @@
                     ImageCutter.cleanInfo();
                     ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ), $( this ) );
 
-                    _p.trigger( ImageCutter.Model.INIT_ZOOM );
+                    _p.trigger( ImageCutter.Model.INIT_PREVIEW );
 
                     _jdoc.on( 'mousemove', ImageCutter.dragMainMouseMove );
                     _jdoc.on( 'mouseup', ImageCutter.dragMainMouseUp );
@@ -296,7 +296,7 @@
                     ImageCutter.cleanInfo();
                     ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ), $( this ) );
 
-                    _p.trigger( ImageCutter.Model.INIT_ZOOM );
+                    _p.trigger( ImageCutter.Model.INIT_PREVIEW );
 
                     _jdoc.on( 'mousemove', ImageCutter.dragBtnMouseMove );
                     _jdoc.on( 'mouseup', ImageCutter.dragBtnMouseUp );
@@ -304,19 +304,19 @@
                     return false;
                 });
 
-                _p.on( ImageCutter.Model.INIT_ZOOM, function( _evt ){
-                    //JC.log( 'ImageCutter.Model.INIT_ZOOM', new Date().getTime() );
-                    _p._view.initZoomItems();
+                _p.on( ImageCutter.Model.INIT_PREVIEW, function( _evt ){
+                    //JC.log( 'ImageCutter.Model.INIT_PREVIEW', new Date().getTime() );
+                    _p._view.initPreviewItems();
                 });
 
                 _p.on( ImageCutter.Model.UPDATE_RECT, function( _evt, _size ){
-                    _p.trigger( ImageCutter.Model.UPDATE_ZOOM, [ _size ] );
+                    _p.trigger( ImageCutter.Model.UPDATE_PREVIEW, [ _size ] );
                 });
 
-                _p.on( ImageCutter.Model.UPDATE_ZOOM, function( _evt, _size ){
-                    //JC.log( 'ImageCutter.Model.UPDATE_ZOOM', new Date().getTime() );
+                _p.on( ImageCutter.Model.UPDATE_PREVIEW, function( _evt, _size ){
+                    //JC.log( 'ImageCutter.Model.UPDATE_PREVIEW', new Date().getTime() );
                     if( !_size ) return;
-                    _p._view.updateZoomItems( _size );
+                    _p._view.updatePreviewItems( _size );
                 });
 
                 _p.on( ImageCutter.Model.DRAG_DONE, function( _evt, _size ){
@@ -342,8 +342,8 @@
                     _p._view.sizeError( _width, _height, _img );
                 });
 
-                _p.on( ImageCutter.Model.ERROR_ZOOM, function( _evt, _width, _height, _img, _newSize ){
-                    _p._view.zoomError( _width, _height, _img, _newSize );
+                _p.on( ImageCutter.Model.ERROR_PREVIEW, function( _evt, _width, _height, _img, _newSize ){
+                    _p._view.previewError( _width, _height, _img, _newSize );
                 });
 
             }
@@ -376,15 +376,15 @@
     ImageCutter.Model._instanceName = 'JCImageCutter';
 
     ImageCutter.Model.INITED = "ImageCutterInited";
-    ImageCutter.Model.INIT_ZOOM = "CICInitZoom";
+    ImageCutter.Model.INIT_PREVIEW = "CICInitPreview";
     ImageCutter.Model.DRAG_DONE = "CICDragDone";
 
     ImageCutter.Model.UPDATE_RECT = "CICUpdateDragger";
-    ImageCutter.Model.UPDATE_ZOOM = "CICUpdateZoom";
+    ImageCutter.Model.UPDATE_PREVIEW = "CICUpdatePreview";
     ImageCutter.Model.UPDATE_COORDINATE = "CICUpdateCoordinate";
 
     ImageCutter.Model.ERROR_SIZE = "CICSizeError";
-    ImageCutter.Model.ERROR_ZOOM = "CICZoomError";
+    ImageCutter.Model.ERROR_PREVIEW = "CICPreviewError";
 
     JC.f.extendObject( ImageCutter.Model.prototype, {
         init:
@@ -395,7 +395,7 @@
                 this._size ={
                     selector: { width: _p.selector().prop( 'offsetWidth' ), height: _p.selector().prop( 'offsetHeight' ) }
                     , img: { width: 0, height: 0 }
-                    , zoom: { width: 0, height: 0 }
+                    , preview: { width: 0, height: 0 }
                     , left: 0
                     , top: 0
                 }
@@ -406,12 +406,12 @@
                 return this.attrProp( 'imageUrl' );
             }
 
-        , zoomItems:
+        , previewSelector:
             function( _cleanCache ){
-                if( this.is( '[zoomItems]' ) && ( !this._zoomItems || _cleanCache ) ){
-                    this._zoomItems = this.selectorProp( 'zoomItems' );
+                if( this.is( '[previewSelector]' ) && ( !this._previewSelector || _cleanCache ) ){
+                    this._previewSelector = this.selectorProp( 'previewSelector' );
                 }
-                return this._zoomItems;
+                return this._previewSelector;
             }
 
         , minSidelength: function(){ return this.intProp( 'minSidelength' ) || ImageCutter.minSidelength; }
@@ -426,22 +426,26 @@
 
                 if( _width && _height ){
                     this._size.img = { width: _width, height: _height };
-                    this._size.zoom = sizeZoom( _width, _height, this._size.selector.width, this._size.selector.height );
 
-                    this._size.zoom.width = Math.round( this._size.zoom.width );
-                    this._size.zoom.height = Math.round( this._size.zoom.height );
+                    this._size.preview = { 'width': _width, 'height': _height };
+                    if( _width > this._size.selector.width || _height > this._size.selector.height ){
+                        this._size.preview = sizeZoom( _width, _height, this._size.selector.width, this._size.selector.height );
+                    }
 
-                    this._size.left = Math.round( ( this._size.selector.width - this._size.zoom.width ) / 2 );
-                    this._size.top = Math.round( ( this._size.selector.height - this._size.zoom.height ) / 2 );
+                    this._size.preview.width = Math.round( this._size.preview.width );
+                    this._size.preview.height = Math.round( this._size.preview.height );
+
+                    this._size.left = Math.round( ( this._size.selector.width - this._size.preview.width ) / 2 );
+                    this._size.top = Math.round( ( this._size.selector.height - this._size.preview.height ) / 2 );
 
                     this._size.width = _width;
                     this._size.height = _height;
 
                     this._size.minX = this._size.left;
-                    this._size.maxX = ( this._size.minX + this._size.zoom.width );
+                    this._size.maxX = ( this._size.minX + this._size.preview.width );
 
                     this._size.minY = this._size.top;
-                    this._size.maxY = ( this._size.minY + this._size.zoom.height );
+                    this._size.maxY = ( this._size.minY + this._size.preview.height );
 
                     this._size.dragger = {
                         srcSidelength: 0
@@ -467,7 +471,7 @@
                 //JC.log( 'ImageCutter._model.realCoordinate', new Date().getTime() );
                 if( _size ){
                     var _p = this
-                        , _percent = _size.img.width / _size.zoom.width
+                        , _percent = _size.img.width / _size.preview.width
                         , _left = ( _size.dragger.left - _size.left ) * _percent
                         , _top = ( _size.dragger.top - _size.top ) * _percent
                         , _sidelength = _size.dragger.srcSidelength * _percent
@@ -679,7 +683,7 @@
 
                 var _p = this
                     , _dragger = _p._model.draggerList()
-                    , _sidelength = _size.zoom.width > _size.zoom.height ? _size.zoom.height : _size.zoom.width
+                    , _sidelength = _size.preview.width > _size.preview.height ? _size.preview.height : _size.preview.width
                     , _sidelength = _sidelength / 2 > _p._model.minSidelength() ? _sidelength / 2 : _p._model.minSidelength()
                     , _sidelength = Math.ceil( _sidelength )
                     , _sidelength = _sidelength > _p._model.minSidelength() ? _sidelength : _p._model.minSidelength()
@@ -687,8 +691,8 @@
                     , _srcSidelength = _sidelength
                     , _sidelength = _sidelength - _btnSize
                     , _halfSidelength = _sidelength / 2
-                    , _left = _size.left + ( _size.zoom.width - _sidelength ) / 2 - _btnSize / 2
-                    , _top = _size.top + ( _size.zoom.height - _sidelength ) / 2 - _btnSize / 2
+                    , _left = _size.left + ( _size.preview.width - _sidelength ) / 2 - _btnSize / 2
+                    , _top = _size.top + ( _size.preview.height - _sidelength ) / 2 - _btnSize / 2
 
                     ;
                 //JC.log( 'initDragger', _sidelength, new Date().getTime() );
@@ -701,7 +705,7 @@
                     , top: _top
                 };
 
-                _size = _p.processDefaultCoordinate( _size );
+                //_size = _p.processDefaultCoordinate( _size );
 
                 _p.updatePosition( _size );
             }
@@ -724,8 +728,8 @@
                     switch( _defaultCoordinate.length ){
                         case 1: {
                             _srcSidelength = _defaultCoordinate[0];
-                            _left = _size.left + ( _size.zoom.width - _srcSidelength ) / 2;
-                            _top = _size.top + ( _size.zoom.height - _srcSidelength ) / 2;
+                            _left = _size.left + ( _size.preview.width - _srcSidelength ) / 2;
+                            _top = _size.top + ( _size.preview.height - _srcSidelength ) / 2;
 
                             break;
                         }
@@ -794,6 +798,8 @@
                     , _maskList = _p._model.maskList()
                     ;
 
+                JC.log( _size.dragger.left, _size.dragger.top, _size.dragger.srcSidelength );
+
                 _p._model.maskLeft().css( { 
                     'height': _size.dragger.srcSidelength
                     , 'width': _size.dragger.left
@@ -802,19 +808,19 @@
 
                 _p._model.maskTop().css( { 
                     'height': _size.dragger.top
-                    , 'width': _size.width 
+                    , 'width': _size.selector.width 
                 });
 
                 _p._model.maskRight().css( {
                     'left': _size.dragger.left + _size.dragger.srcSidelength
                     , 'top': _size.dragger.top
-                    , 'width': _size.width - _size.dragger.left - _size.dragger.srcSidelength
+                    , 'width': _size.selector.width - _size.dragger.left - _size.dragger.srcSidelength
                     , 'height': _size.dragger.srcSidelength
                 });
 
                 _p._model.maskBottom().css( { 
-                    'height': _size.height - (_size.dragger.top + _size.dragger.srcSidelength )
-                    , 'width': _size.width
+                    'height': _size.selector.height - (_size.dragger.top + _size.dragger.srcSidelength )
+                    , 'width': _size.selector.width
                     , 'top': _size.dragger.top + _size.dragger.srcSidelength 
                 });
 
@@ -835,11 +841,11 @@
                 _dragMain.show();
             }
 
-        , initZoomItems:
+        , initPreviewItems:
             function(){
-                var _p = this, _zoomItems = _p._model.zoomItems( true );
-                if( !( _zoomItems && _zoomItems.length ) ) return;
-                _zoomItems.each( function(){
+                var _p = this, _previewSelector = _p._model.previewSelector( true );
+                if( !( _previewSelector && _previewSelector.length ) ) return;
+                _previewSelector.each( function(){
                     var _sp = $( this );
                     var _img = _sp.find( 'img' );
 
@@ -854,15 +860,16 @@
                 _p.trigger( ImageCutter.Model.UPDATE_RECT, [ _p._model.size() ] );
             }
 
-        , updateZoomItems:
+        , updatePreviewItems:
             function( _size ){
                 var _p = this
-                    , _zoomItems = _p._model.zoomItems()
+                    , _previewSelector = _p._model.previewSelector()
                     ;
 
-                if( !_size && ( _zoomItems && _zoomItems.length ) ) return;
+                if( !_size ) return;
+                if( !( _previewSelector && _previewSelector.length ) ) return;
 
-                _zoomItems.each( function(){
+                _previewSelector.each( function(){
                     var _sp = $( this )
                         , _width = _sp.width()
                         , _img = _sp.find( 'img' )
@@ -872,8 +879,8 @@
 
                     var _width = _sp.width()
                         , _percent = _width / _size.dragger.srcSidelength
-                        , _newWidth = _size.zoom.width * _percent
-                        , _newHeight = _size.zoom.height * _percent
+                        , _newWidth = _size.preview.width * _percent
+                        , _newHeight = _size.preview.height * _percent
                         , _newLeft = ( _size.dragger.left - _size.left ) * _percent
                         , _newTop = ( _size.dragger.top - _size.top ) * _percent
                         ;
@@ -901,7 +908,7 @@
                 );
             }
 
-        , zoomError:
+        , previewError:
             function( _width, _height, _img, _newSize ){
                 this._model.cicErrorBox().show().html(
                     JC.f.printf( 
@@ -910,7 +917,7 @@
                         , _width, _height
                         , '<a href="' + _img.attr( 'src' ) + '" target="_blank">查看图片</a>'
                         , '<h3>图片缩放比例尺寸错误 </h3>'
-                        , _newSize.zoom.width, _newSize.zoom.height
+                        , _newSize.preview.width, _newSize.preview.height
                     )
                 );
             }
@@ -956,7 +963,7 @@
         function( _di, _posX, _posY, _evt ){
             if( !_di ) return;
             var _p = _di.ins
-                , _maxX = _di.size.left + _di.size.zoom.width
+                , _maxX = _di.size.left + _di.size.preview.width
                 , _maxY = _di.size.dragger.top + _di.size.dragger.srcSidelength
                 , _midX = _di.size.dragger.left + ( _di.size.dragger.srcSidelength ) / 2
                 , _srcDist = Math.ceil( pointDistance( { x: _di.pageX, y: _di.pageY }
@@ -1010,8 +1017,8 @@
                 _sidelength = _maxY - _di.size.top;
             }
 
-            if( ( _minX + _sidelength ) > ( _di.size.left + _di.size.zoom.width ) ){
-                _sidelength = ( _di.size.left + _di.size.zoom.width ) - _minX;
+            if( ( _minX + _sidelength ) > ( _di.size.left + _di.size.preview.width ) ){
+                _sidelength = ( _di.size.left + _di.size.preview.width ) - _minX;
             }
 
             _sidelength = _sidelength < _p._model.minSidelength() ? _p._model.minSidelength() : _sidelength;
@@ -1045,8 +1052,8 @@
                 _sidelength = ( _midY - _di.size.top ) * 2;
             }
 
-            if( ( _midY + _sidelength / 2 ) > ( _di.size.top + _di.size.zoom.height ) ){
-                _sidelength = ( _di.size.top + _di.size.zoom.height - _midY ) * 2;
+            if( ( _midY + _sidelength / 2 ) > ( _di.size.top + _di.size.preview.height ) ){
+                _sidelength = ( _di.size.top + _di.size.preview.height - _midY ) * 2;
             }
 
             if( ( _maxX - _sidelength ) < _di.size.left ){
@@ -1084,12 +1091,12 @@
                 _sidelength = ( _midY - _di.size.top ) * 2;
             }
 
-            if( ( _midY + _sidelength / 2 ) > ( _di.size.top + _di.size.zoom.height ) ){
-                _sidelength = ( _di.size.top + _di.size.zoom.height - _midY ) * 2;
+            if( ( _midY + _sidelength / 2 ) > ( _di.size.top + _di.size.preview.height ) ){
+                _sidelength = ( _di.size.top + _di.size.preview.height - _midY ) * 2;
             }
 
-            if( ( _minX + _sidelength ) > ( _di.size.left + _di.size.zoom.width ) ){
-                _sidelength = _di.size.left + _di.size.zoom.width - _minX;
+            if( ( _minX + _sidelength ) > ( _di.size.left + _di.size.preview.width ) ){
+                _sidelength = _di.size.left + _di.size.preview.width - _minX;
             }
 
             _sidelength = _sidelength < _p._model.minSidelength() ? _p._model.minSidelength() : _sidelength;
@@ -1119,8 +1126,8 @@
                 , _sidelength = _di.size.dragger.srcSidelength - _distance
                 ;
 
-            if( ( _maxY + _sidelength ) > ( _di.size.top + _di.size.zoom.height ) ){
-                _sidelength = ( _di.size.top + _di.size.zoom.height ) - _maxY;
+            if( ( _maxY + _sidelength ) > ( _di.size.top + _di.size.preview.height ) ){
+                _sidelength = ( _di.size.top + _di.size.preview.height ) - _maxY;
             }
 
             if( ( _maxX - _sidelength ) < _di.size.left ){
@@ -1154,16 +1161,16 @@
                 , _sidelength = _di.size.dragger.srcSidelength - _distance
                 ;
 
-            if( ( _minY + _sidelength ) > ( _di.size.top + _di.size.zoom.height ) ){
-                _sidelength = ( _di.size.top + _di.size.zoom.height ) - _minY;
+            if( ( _minY + _sidelength ) > ( _di.size.top + _di.size.preview.height ) ){
+                _sidelength = ( _di.size.top + _di.size.preview.height ) - _minY;
             }
 
             if( ( _midX - _sidelength / 2 ) < _di.size.left ){
                 _sidelength = ( _midX - _di.size.left ) * 2;
             }
 
-            if( ( _midX + _sidelength / 2 ) > ( _di.size.left + _di.size.zoom.width ) ){
-                _sidelength = ( _di.size.left + _di.size.zoom.width - _midX ) * 2;
+            if( ( _midX + _sidelength / 2 ) > ( _di.size.left + _di.size.preview.width ) ){
+                _sidelength = ( _di.size.left + _di.size.preview.width - _midX ) * 2;
             }
 
             _sidelength = _sidelength < _p._model.minSidelength() ? _p._model.minSidelength() : _sidelength;
@@ -1193,12 +1200,12 @@
                 , _sidelength = _di.size.dragger.srcSidelength - _distance
                 ;
 
-            if( ( _minX + _sidelength ) > ( _di.size.left + _di.size.zoom.width ) ){
-                _sidelength = ( _di.size.left + _di.size.zoom.width ) - _minX;
+            if( ( _minX + _sidelength ) > ( _di.size.left + _di.size.preview.width ) ){
+                _sidelength = ( _di.size.left + _di.size.preview.width ) - _minX;
             }
 
-            if( ( _minY + _sidelength ) > ( _di.size.top + _di.size.zoom.height ) ){
-                _sidelength = ( _di.size.top + _di.size.zoom.height ) - _minY;
+            if( ( _minY + _sidelength ) > ( _di.size.top + _di.size.preview.height ) ){
+                _sidelength = ( _di.size.top + _di.size.preview.height ) - _minY;
             }
 
             _sidelength = _sidelength < _p._model.minSidelength() ? _p._model.minSidelength() : _sidelength;
