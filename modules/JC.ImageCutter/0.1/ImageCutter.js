@@ -1,7 +1,4 @@
 //TODO: 添加按键响应
-//TODO: 初始化时, 自定义默认位置
-//TODO: 修复 minSidelength <= 30 时的显示问题
-//TODO: 优化 鼠标指针显示
 ;(function(define, _win) { 'use strict'; define( [ 'JC.Drag' ], function(){
 /**
  * 组件用途简述
@@ -35,7 +32,7 @@
  * @example
         <h2>JC.ImageCutter 示例</h2>
  */
-    var _jdoc = $( document ), _jwin = $( window );
+    var _jdoc = $( document ), _jwin = $( window ), _jbody;
 
     JC.ImageCutter = ImageCutter;
 
@@ -181,6 +178,8 @@
             if( !ImageCutter.dragInfo() ) return;
             var _di = ImageCutter.dragInfo(), _p = _di.ins;
 
+            _jbody.css( 'cursor', 'auto' );
+
             _p._size( _di.tmpSize );
             _p.trigger( ImageCutter.Model.UPDATE_RECT, [ _di.tmpSize ] );
             _p.trigger( ImageCutter.Model.DRAG_DONE, [ _di.tmpSize ] );
@@ -218,6 +217,8 @@
             if( !ImageCutter.dragInfo() ) return;
             var _di = ImageCutter.dragInfo(), _p = _di.ins;
             //JC.log( 'ImageCutter.dragBtnMouseUp', new Date().getTime() );
+
+            _jbody.css( 'cursor', 'auto' );
 
             _p._size( _di.tmpSize );
             _p.trigger( ImageCutter.Model.UPDATE_RECT, [ _di.tmpSize ] );
@@ -276,7 +277,7 @@
                     _evt.preventDefault();
                     _evt.stopPropagation();
                     //JC.log( 'div.cic_dragMain mousedown', new Date().getTime() );
-                    _p._model.dragMain().addClass( 'cic_move' );
+                    _jbody.css( 'cursor', 'move' );
 
                     ImageCutter.cleanInfo();
                     ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ), $( this ) );
@@ -297,6 +298,21 @@
                     ImageCutter.dragInfo( _p, _evt, JC.f.cloneObject( _p._model.size() ), $( this ) );
 
                     _p.trigger( ImageCutter.Model.INIT_PREVIEW );
+
+                    var _btn = $( this )
+                        , _direct = _btn.attr( 'diretype' )
+                        ;
+
+                    switch( _direct ){
+                        case 'cic_btnTl': _jbody.css( 'cursor', 'nw-resize' ); break;
+                        case 'cic_btnTc': _jbody.css( 'cursor', 'n-resize' ); break;
+                        case 'cic_btnTr': _jbody.css( 'cursor', 'ne-resize' ); break;
+                        case 'cic_btnMl': _jbody.css( 'cursor', 'w-resize' ); break;
+                        case 'cic_btnMr': _jbody.css( 'cursor', 'e-resize' ); break;
+                        case 'cic_btnBl': _jbody.css( 'cursor', 'sw-resize' ); break;
+                        case 'cic_btnBc': _jbody.css( 'cursor', 's-resize' ); break;
+                        case 'cic_btnBr': _jbody.css( 'cursor', 'se-resize' ); break;
+                    }
 
                     _jdoc.on( 'mousemove', ImageCutter.dragBtnMouseMove );
                     _jdoc.on( 'mouseup', ImageCutter.dragBtnMouseUp );
@@ -367,7 +383,6 @@
                 var _p = this;
 
                 ImageCutter.cleanInfo();
-                _p._model.dragMain().removeClass( 'cic_move' );
             }
 
         , _size: function(){ this._model.size.apply( this._model, JC.f.sliceArgs( arguments ) ); }
@@ -634,12 +649,14 @@
             function(){
                 var _p = this, _r = '', _v = this.attrProp( 'defaultCoordinate' );
                 if( _v ){
-                    _r = _v.replace( /[^\d,]+/g, '' );
+                    _r = _v.replace( /[^\d,\-]+/g, '' );
                     if( _r ){
                         _r = _r.split( ',' );
                         $.each( _r, function( _ix, _item ){
                             _r[ _ix ] = parseInt( _item, 10 );
+                            JC.log( 'aaa', _item, _r[ _ix ] );
                         });
+                        JC.log( _r );
                     }
                 }
                 return _r;
@@ -705,7 +722,7 @@
                     , top: _top
                 };
 
-                //_size = _p.processDefaultCoordinate( _size );
+                _size = _p.processDefaultCoordinate( _size );
 
                 _p.updatePosition( _size );
             }
@@ -718,9 +735,9 @@
                     ;
 
                 if( _defaultCoordinate.length ){
-                    var _srcSidelength = _size.srcSidelength
-                        , _sidelength = _size.sidelength
-                        , _halfSidelength = _size.halfSidelength
+                    var _srcSidelength = _size.dragger.srcSidelength
+                        , _sidelength = _size.dragger.sidelength
+                        , _halfSidelength = _size.dragger.halfSidelength
                         , _left = _size.left
                         , _top = _size.top
                         ;
@@ -733,6 +750,11 @@
 
                             break;
                         }
+                        case 2: {
+                            _left = _defaultCoordinate[0];
+                            _top = _defaultCoordinate[1];
+                            break;
+                        }
                         case 3: {
                             _left = _defaultCoordinate[0] + _size.left;
                             _top = _defaultCoordinate[1] + _size.top;
@@ -740,9 +762,35 @@
                             break;
                         }
                     }
+                    //JC.log( [ _left, _top, 'xxx', _p.selector().attr(  'defaultCoordinate' ) ] );
+
+                    if( _srcSidelength > _size.preview.width || _srcSidelength > _size.preview.height ){
+                        _srcSidelength = _size.preview.width > _size.preview.height 
+                                            ? _size.preview.height
+                                            : _size.preview.width;
+                        _left = _size.left + ( _size.preview.width - _srcSidelength ) / 2;
+                        _top = _size.top + ( _size.preview.height - _srcSidelength ) / 2;
+                    }
+
+                    if( _left < _size.left 
+                        || ( _left + _srcSidelength ) > ( _size.left + _size.preview.width ) 
+                        || _top < _size.top
+                        || ( _top + _srcSidelength ) > ( _size.top + _size.preview.height )
+                    ){
+                        _left = _size.left + ( _size.preview.width - _srcSidelength ) / 2;
+                        _top = _size.top + ( _size.preview.height - _srcSidelength ) / 2;
+                    }
 
                     _sidelength = _srcSidelength - _btnSize;
                     _halfSidelength = _sidelength / 2;
+
+                    if( _srcSidelength < _p._model.minSidelength() ){
+                        _srcSidelength = _p._model.minSidelength();
+                        _sidelength = _srcSidelength - _btnSize;
+                        _halfSidelength = _sidelength/ 2;
+                        _left = _size.left + ( _p.preview.width - _srcSidelength ) / 2;
+                        _top = _size.top + ( _p.preview.height - _srcSidelength ) / 2;
+                    }
 
                     _size.dragger = {
                         srcSidelength: _srcSidelength
@@ -798,7 +846,7 @@
                     , _maskList = _p._model.maskList()
                     ;
 
-                JC.log( _size.dragger.left, _size.dragger.top, _size.dragger.srcSidelength );
+                //JC.log( _size.dragger.left, _size.dragger.top, _size.dragger.srcSidelength );
 
                 _p._model.maskLeft().css( { 
                     'height': _size.dragger.srcSidelength
@@ -1268,14 +1316,8 @@
 
 
     _jdoc.ready( function(){
-        var _insAr = 0;
-        ImageCutter.autoInit
-            && ( _insAr = ImageCutter.init() )
-            /*
-            && $( '<h2>ImageCutter total ins: ' 
-                + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
-            */
-            ;
+        _jbody = $( 'body' );
+        ImageCutter.autoInit && ImageCutter.init();
     });
 
     return JC.ImageCutter;
