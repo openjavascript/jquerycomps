@@ -483,7 +483,7 @@
                     ( _left + _sidelength ) > _size.img.width && ( _sidelength = _size.img.width - _left );
                     ( _top + _sidelength ) > _size.img.height && ( _sidelength = _size.img.height - _top );
 
-                    _r.push( _left, _top, _sidelength, _sidelength );
+                    _r.push( _left, _top, _sidelength, _sidelength, _size.img.width, _size.img.height );
                 }
                 return _r;
             }
