@@ -814,7 +814,8 @@
      * <dl>
      *      <dt>可识别的组件</dt>
      *      <dd>
-     *          JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar, JC.Drag, JC.Placeholder, JC.TableFreeze
+     *          JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar
+     *          , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze
      *          <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete
      *      </dd>
      * </d>
@@ -834,6 +835,10 @@
          * 日历组件
          */
         JC.Calendar && JC.Calendar.initTrigger( _selector );
+        /**
+         * 双日历组件
+         */
+        JC.DCalendar && JC.DCalendar.init && JC.DCalendar.init( _selector );
         /**
          * 全选反选
          */
