@@ -1,9 +1,5 @@
-//TODO: 添加按键响应
-//TODO: 完善 update 接口
-//TODO: 完善 clean 接口
-//TODO: 静态化 事件名 和 操作属性 Model.xxx
 //TODO: 捕获图片加载错误
-;(function(define, _win) { 'use strict'; define( [ 'JC.Drag' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
  * 组件用途简述
  *
@@ -241,7 +237,7 @@
             if( !( _evt && ImageCutter._currentIns ) ) return;
             _evt.preventDefault();
             var _keyCode = _evt.keyCode;
-            JC.log( 'ImageCutter.defaultKeydown', new Date().getTime(), _keyCode );
+            //JC.log( 'ImageCutter.defaultKeydown', new Date().getTime(), _keyCode );
             switch( _keyCode ){
                 case 37: ImageCutter._currentIns.moveMinus(); break;
                 case 38: ImageCutter._currentIns.moveUp(); break;
@@ -255,13 +251,13 @@
             var _sp = $( this ), _ins = BaseMVC.getInstance( _sp, ImageCutter );
             if( !_ins ) return;
             ImageCutter._currentIns = _ins;
-            JC.log( 'ImageCutter.defaultMouseenter', new Date().getTime() );
+            //JC.log( 'ImageCutter.defaultMouseenter', new Date().getTime() );
         };
 
     ImageCutter.defaultMouseleave =
         function( _evt ){
             ImageCutter._currentIns = null;
-            JC.log( 'ImageCutter.defaultMouseleave', new Date().getTime() );
+            //JC.log( 'ImageCutter.defaultMouseleave', new Date().getTime() );
         };
 
     JC.BaseMVC.build( ImageCutter );
@@ -279,11 +275,16 @@
                 _p.on( ImageCutter.Model.INITED, function( _evt ){
                     _p._model.imageUrl()
                         && _p.update( _p._model.imageUrl() );
+
+                    _p._model.cicInitedCb()
+                        && _p._model.cicInitedCb().call( _p, _p.selector() );
                 });
 
-                _p.on( 'CICImageLoad', function( _evt, _img, _width, _height ){
+                _p.on( ImageCutter.Model.IMAGE_LOAD, function( _evt, _img, _width, _height ){
 
                     _p.clean();
+
+                    _p._model.imageUrl( _img.attr( 'src' ) );
 
                     if( _p._model.maxImageSidelength()
                         && ( _width > _p._model.maxImageSidelength() || _height > _p._model.maxImageSidelength() ) 
@@ -293,7 +294,7 @@
                     }
 
                     if( _p._model.minImageSidelength()
-                        && ( _width < _p._model.minImageSidelength() || _height < _p._model.maxImageSidelength() ) 
+                        && ( _width < _p._model.minImageSidelength() || _height < _p._model.minImageSidelength() ) 
                     ){
                         _p.trigger( ImageCutter.Model.ERROR_SIZE, [ _width, _height, _img ] );
                         return;
@@ -325,6 +326,9 @@
                     _p.trigger( ImageCutter.Model.UPDATE_COORDINATE, [ _newSize ] );
 
                     _p._model.ready( true );
+
+                    _p._model.imageInitedCb()
+                        && _p._model.imageInitedCb().call( _p, _p.selector(), _img );
                 });
 
                 _p.selector().on( 'mouseenter', ImageCutter.defaultMouseenter );
@@ -416,6 +420,13 @@
                     _p._model.ready( false );
                 });
 
+                _p.on( ImageCutter.Model.LOAD_ERROR, function( _evt, _imgUrl ){
+                    _p.clean();
+                    _p._model.ready( false );
+                    _p._view.imageLoadError( _imgUrl );
+                    _p.trigger( ImageCutter.Model.ERROR );
+                });
+
                 _p.on( ImageCutter.Model.ERROR_SIZE, function( _evt, _width, _height, _img, _isMax ){
                     _p._view.sizeError( _width, _height, _img, _isMax );
                     _p.trigger( ImageCutter.Model.ERROR );
@@ -473,9 +484,13 @@
     ImageCutter.Model.UPDATE_PREVIEW = "CICUpdatePreview";
     ImageCutter.Model.UPDATE_COORDINATE = "CICUpdateCoordinate";
 
+    ImageCutter.Model.IMAGE_LOAD = 'CICImageLoad';
+    ImageCutter.Model.LOAD_ERROR = 'CICImageLoadError';
+
     ImageCutter.Model.ERROR = "CICError";
     ImageCutter.Model.ERROR_SIZE = "CICSizeError";
     ImageCutter.Model.ERROR_PREVIEW = "CICPreviewError";
+
 
     JC.f.extendObject( ImageCutter.Model.prototype, {
         init:
@@ -491,9 +506,13 @@
             }
 
         , imageUrl:
-            function(){
+            function( _setter ){
+                _setter && this.selector().attr( 'imageUrl', _setter );
                 return this.attrProp( 'imageUrl' );
             }
+
+        , cicInitedCb: function(){ return this.callbackProp( 'cicInitedCb' ); }
+        , imageInitedCb: function(){ return this.callbackProp( 'imageInitedCb' ); }
 
         , previewSelector:
             function( _cleanCache ){
@@ -576,8 +595,8 @@
                     _left < 0 && ( _left = 0 );
                     _top < 0 && ( _top = 0 );
 
-                    ( _left + _sidelength ) > _size.img.width && ( _sidelength = _size.img.width - _left );
-                    ( _top + _sidelength ) > _size.img.height && ( _sidelength = _size.img.height - _top );
+                    ( _left + _sidelength ) > _size.img.width && ( _left = _size.img.width - _sidelength );
+                    ( _top + _sidelength ) > _size.img.height && ( _top = _size.img.height - _sidelength );
 
                     _r.push( _left, _top, _sidelength, _sidelength, _size.img.width, _size.img.height );
                 }
@@ -596,6 +615,14 @@
                     , left: 0
                     , top: 0
                 };
+
+                this.previewSelector()
+                    && this.previewSelector().each( function(){
+                            $( this ).html( '' );
+                       });
+
+                this.coordinateSelector() && this.coordinateSelector().val( '' );
+                this.imageUrlSelector() && this.imageUrlSelector().val( '' );
             }
 
         , draggerList:
@@ -739,9 +766,9 @@
                         _r = _r.split( ',' );
                         $.each( _r, function( _ix, _item ){
                             _r[ _ix ] = parseInt( _item, 10 );
-                            JC.log( 'aaa', _item, _r[ _ix ] );
+                            //JC.log( 'aaa', _item, _r[ _ix ] );
                         });
-                        JC.log( _r );
+                        //JC.log( _r );
                     }
                 }
                 return _r;
@@ -762,21 +789,27 @@
                 this.selector().find( 'img' ).remove();
                 this.selector().find( 'button' ).hide();
 
+                this._model.maskList().hide();
                 this._model.cicErrorBox().hide();
             }
 
         , update:
             function( _imgUrl ){
                 if( !_imgUrl ) return;
-                var _p = this, _img = document.createElement( 'img' )
+                var _p = this, _img = document.createElement( 'img' ), _jimg = $( _img );
 
                     _p.clean();
 
-                    $( _img ).on( 'load', function(){
+                    _jimg.on( 'load', function(){
                         //JC.log( this.width, this.height );
-                        _p.trigger( 'CICImageLoad', [ $( _img ), this.width, this.height] );
+                        _p.trigger( ImageCutter.Model.IMAGE_LOAD, [ _jimg, this.width, this.height] );
                     });
-                    $( _img ).on( 'mousedown', function( _evt ){ _evt.preventDefault(); return false; } );
+
+                    _jimg.on( 'error', function(){
+                        _p.trigger( ImageCutter.Model.LOAD_ERROR, [ _imgUrl ] );
+                    });
+
+                    _jimg.on( 'mousedown', function( _evt ){ _evt.preventDefault(); return false; } );
                     _img.src =  _imgUrl;
             }
 
@@ -895,6 +928,7 @@
         , updatePosition:
             function( _size ){
                 var _p = this;
+                //JC.log( 'updatePosition', new Date().getTime() );
 
                 _p.updateDragger( _size );
                 _p.updateMask( _size );
@@ -1113,6 +1147,14 @@
                 );
             }
 
+        , imageLoadError:
+            function( _imgUrl){
+                this._model.cicErrorBox().show().html(
+                    JC.f.printf( '<p>无法加载图片<br/>请检查图片路径和网络链接</p><p>{0}</p>'
+                        , _imgUrl
+                    )
+                );
+            }
 
     });
 
