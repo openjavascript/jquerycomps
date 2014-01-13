@@ -330,8 +330,12 @@
         fixHeight: function () {
             var _p = this,
                 _wArr = _p._model.saveWidth,
-                _newWArr = _p._model.selector().prop('offsetWidth'),
-                _els = _p._model.selector().find('div.js-roll-table,div.js-fixed-table');
+                _selector = _p._model.selector(),
+                _newWArr = _selector.prop('offsetWidth'),
+                _els = _selector.find('div.js-roll-table,div.js-fixed-table'),
+                _scrollTable = _selector.find('div.js-roll-table'),
+                _fixedTable = _selector.find('div.js-fixed-table'),
+                _fixedWidth = 0;
 
             _p._model.setHeight();
             
@@ -343,8 +347,15 @@
 
                 _p._model.setHeight();
                 
-                
             }   
+
+
+            _fixedTable.each( function () {
+                _fixedWidth += $(this).parent('td').prop('offsetWidth');
+            } );
+
+            _scrollTable.css('width', _newWArr - _fixedWidth - 2);
+
              
             return this;       
 
@@ -631,16 +642,25 @@
         setWidth: function (_i, _box, _cols, _scrollBox ) {
             var _wArr = this.colWidth(),
                 _w = 0,
-                i;
+                i,
+                _totalWidth = this.tableWidth(),
+                _percentW = 0,
+                _scrollBox = $(_scrollBox);
 
             for (i = _i; i < _cols; i++ ) {
                 _w = _w + _wArr[i];
             }
             
-            _w = _w * 100;
+            _percentW  = _w / _totalWidth;
+            _percentW  = _percentW  * 100;
 
-            $(_box).css('width', _w + '%' );
-            $(_scrollBox).length && ( $(_scrollBox).css('width', (100 - _w ) + '%' ) );
+
+            $(_box).css('width', _percentW  + '%');
+            
+            if ( _scrollBox.length ) {
+                _scrollBox.css('width', (100 - _percentW ) + '%' )
+                .find('>div').css('width', _totalWidth - _w );
+            }
     
         },
 
@@ -768,7 +788,8 @@
                 _totalWidth = _p.tableWidth();
 
             _ths.each( function () {
-                _w.push( $(this).prop('offsetWidth') / _totalWidth );
+                //_w.push( $(this).prop('offsetWidth') / _totalWidth );
+                _w.push( $(this).prop('offsetWidth') );
             } );
 
             return _w;
@@ -997,7 +1018,7 @@
             $( 'div.js_compTableFreeze' ).each( function () {
                 var _ins = TableFreeze.getInstance( $( this ) );
                 _ins && _ins.fixHeight() ;
-                _ins._model.saveWidth = _ins._model.selector().width();
+                _ins._model.saveWidth = _ins._model.tableWidth();
             });
 
             _win.data( 'CTFResizeTimeout' ) && clearTimeout( _win.data( 'CTFResizeTimeout' ) );
