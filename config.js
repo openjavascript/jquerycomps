@@ -39,6 +39,7 @@ requirejs.config( {
         , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
 
         , 'JC.ImageCutter': 'modules/JC.ImageCutter/0.1/ImageCutter'
+        , 'DEV.JC.ImageCutter': 'modules/JC.ImageCutter/dev/ImageCutter'
 
         , 'JC.LunarCalendar': 'modules/JC.LunarCalendar/0.1/LunarCalendar'
         , 'JC.LunarCalendar.default': 'modules/JC.LunarCalendar/0.1/LunarCalendar.default'
