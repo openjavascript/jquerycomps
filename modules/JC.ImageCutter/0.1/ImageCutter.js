@@ -803,6 +803,7 @@
                         , _left = ( _size.dragger.left - _size.left ) * _percent
                         , _top = ( _size.dragger.top - _size.top ) * _percent
                         , _sidelength = _size.dragger.srcSidelength * _percent
+                        , _offset
                         ;
 
                     _left = Math.ceil( _left );
@@ -814,6 +815,20 @@
 
                     ( _left + _sidelength ) > _size.img.width && ( _left = _size.img.width - _sidelength );
                     ( _top + _sidelength ) > _size.img.height && ( _top = _size.img.height - _sidelength );
+
+                    if( _sidelength > _size.img.width ){
+                        _offset = _sidelength - _size.img.width;
+                        _sidelength = _size.img.width;
+                        _top !== 0 && ( _top += _offset );
+                        _left += _offset;
+                    }
+
+                    if( _sidelength > _size.img.height ){
+                        _offset = _sidelength - _size.img.height;
+                        _sidelength = _size.img.height;
+                        _left !== 0 && ( _left += _offset );
+                        _top += _offset;
+                    }
 
                     _r.push( _left, _top, _sidelength, _sidelength, _size.img.width, _size.img.height );
                 }
@@ -1237,17 +1252,18 @@
             function(){
                 var _p = this, _previewSelector = _p._model.previewSelector( true );
                 if( !( _previewSelector && _previewSelector.length ) ) return;
-                _previewSelector.each( function(){
-                    var _sp = $( this );
-                    var _img = _sp.find( 'img' );
+                if( !_p._model.ready() ){
+                    _previewSelector.each( function(){
+                        var _sp = $( this ), _img = _sp.find( 'img' );
 
-                    if ( !_img.length ){
-                        _img = $( JC.f.printf( '<img src="{0}" />', _p._model.imageUrl() ) );
-                        _img.appendTo( _sp );
-                    }else{
-                        _img.attr( 'src', _p._model.imageUrl() );
-                    }
-                });
+                        if ( !_img.length ){
+                            _img = $( JC.f.printf( '<img src="{0}" />', _p._model.imageUrl() ) );
+                            _img.appendTo( _sp );
+                        }else{
+                            _img.attr( 'src', _p._model.imageUrl() );
+                        }
+                    });
+                }
 
                 _p.trigger( ImageCutter.Model.UPDATE_RECT, [ _p._model.size() ] );
             }
@@ -1271,10 +1287,10 @@
 
                     var _width = _sp.width()
                         , _percent = _width / _size.dragger.srcSidelength
-                        , _newWidth = _size.preview.width * _percent
-                        , _newHeight = _size.preview.height * _percent
-                        , _newLeft = ( _size.dragger.left - _size.left ) * _percent
-                        , _newTop = ( _size.dragger.top - _size.top ) * _percent
+                        , _newWidth = Math.ceil( _size.preview.width * _percent )
+                        , _newHeight = Math.ceil( _size.preview.height * _percent )
+                        , _newLeft = Math.ceil( ( _size.dragger.left - _size.left ) * _percent )
+                        , _newTop = Math.ceil( ( _size.dragger.top - _size.top ) * _percent )
                         ;
 
                     _img.css( {
