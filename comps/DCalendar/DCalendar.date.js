@@ -38,8 +38,8 @@
  *      <dt>showtype = block || float </dt>
  *      <dd>
  *          声明月份日历面板的显示方式，默认为float<br/>
- *          float（比如两个月份并排显示） <a href="../../comps/DCalendar/res/default/style.html#float" target="_blank">查看</a><br/>
- *          block （月份日历面板竖排显示）<a href="../../comps/DCalendar/res/default/style.html#block" target="_blank">查看</a><br/>
+ *          float（比如两个月份并排显示） <a href="../../modules/JC.DCalendar/0.1/res/default/style.html#float" target="_blank">查看</a><br/>
+ *          block （月份日历面板竖排显示）<a href="../../modules/JC.DCalendar/0.1/res/default/style.html#block" target="_blank">查看</a><br/>
  *      </dd>
  *
  *      <dt>calendarshow = function</dt>
@@ -56,7 +56,7 @@
 }</pre></dd>
  *
  *      <dt>calendarclear = function</dt>
- *      <dd>清空选中日期时的回调
+ *      <dd>清空选中日期后的回调
 <pre>function calendarclear( selector ) {
     JC.log( "calendarclear", $(selector).val(), new Date().getTime() );
 }</pre></dd>
@@ -199,7 +199,7 @@
 
             if ( _nodeName && (_nodeName === 'input' || _nodeName === 'button') ) {
                 DCalendar._initStatus( _selector );
-                !_onlyStatus && _r.push(new DCalendar(_selector));
+                
             } else {
                 _selector.find([ 
                                     'input[datatype=ddate]'
@@ -209,7 +209,7 @@
                                     , 'button[multidate=ddate]' 
                                 ].join()).each( function() {
                     DCalendar._initStatus( $(this) );
-                    !_onlyStatus && _r.push( new DCalendar(this) );
+                    
                 })
             }
         }
@@ -668,7 +668,7 @@
                     + '<a href="javascript:;" title="' + _formatDate 
                     + '" data-date="' + _formatDate 
                     + '" class="' + _todayClass + _weekendClass
-                    + '">' + i 
+                    + '" >' + i 
                     + '</a></td>'; 
                
                 if ( i === 1 && _day > 0) {
@@ -1066,13 +1066,13 @@
             var _p = this,
                 _tables = _p.layoutBox().find('.CDC_date_body'),
                 _t = '<tr>'
-                        + '<td><a href="javascript:;" class="disabled"></a></td>'
-                        + '<td><a href="javascript:;" class="disabled"></a></td>'
-                        + '<td><a href="javascript:;" class="disabled"></a></td>'
-                        + '<td><a href="javascript:;" class="disabled"></a></td>'
-                        + '<td><a href="javascript:;" class="disabled"></a></td>'
-                        + '<td><a href="javascript:;" class="disabled"></a></td>'
-                        + '<td><a href="javascript:;" class="disabled"></a></td>'
+                        + '<td><a href="javascript:;" class="disabled">&nbsp;</a></td>'
+                        + '<td><a href="javascript:;" class="disabled">&nbsp;</a></td>'
+                        + '<td><a href="javascript:;" class="disabled">&nbsp;</a></td>'
+                        + '<td><a href="javascript:;" class="disabled">&nbsp;</a></td>'
+                        + '<td><a href="javascript:;" class="disabled">&nbsp;</a></td>'
+                        + '<td><a href="javascript:;" class="disabled">&nbsp;</a></td>'
+                        + '<td><a href="javascript:;" class="disabled">&nbsp;</a></td>'
                     + '</tr>',
                 _max = 0;
 
