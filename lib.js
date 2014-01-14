@@ -9662,6 +9662,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         , "parseISODate": parseISODate
         , "parseDate": parseDate
         , "printf": printf
+        , "cloneObject": cloneObject
 
         , "pureDate": pureDate
         , "reloadPage": reloadPage
@@ -10411,7 +10412,8 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
      * <dl>
      *      <dt>可识别的组件</dt>
      *      <dd>
-     *          JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar, JC.Drag, JC.Placeholder, JC.TableFreeze
+     *          JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar
+     *          , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter
      *          <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete
      *      </dd>
      * </d>
@@ -10432,6 +10434,10 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
          */
         JC.Calendar && JC.Calendar.initTrigger( _selector );
         /**
+         * 双日历组件
+         */
+        JC.DCalendar && JC.DCalendar.init && JC.DCalendar.init( _selector );
+        /**
          * 全选反选
          */
         JC.AutoChecked && JC.AutoChecked( _selector );
@@ -10451,6 +10457,10 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
          * 拖曳
          */
         JC.Drag && JC.Drag.init( _selector );
+        /**
+         * 图片裁切
+         */
+        JC.ImageCutter && JC.ImageCutter.init( _selector );
 
         if( !window.Bizs ) return;
         /**
@@ -10749,8 +10759,52 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         }
         return _r;
     }
+    /**
+     * 深度克隆对象
+     * @method  cloneObject
+     * @param   {Object}    _inObj
+     * @return  Object
+     * @static
+     */
+    function cloneObject( _inObj, _outObj ){
+        _outObj = _outObj || {};
+        var k, i, j;
+
+        for( k in _inObj ){
+            _outObj[ k ] = _inObj[ k ];
+            switch( Object.prototype.toString.call( _outObj[ k ] ) ){
+
+                case '[object Object]': {
+                      _outObj[ k ] = _outObj[ k ].constructor === Object
+                        ?  cloneObject( _outObj[ k ] )
+                        :  _outObj[ k ]
+                        ;
+                    break;
+                }
+
+                case '[object Array]': {
+                    _outObj[ k ] = _inObj[ k ].slice();
+                    for( i = 0, j = _outObj[ k ].length; i < j; i++ ){
+                        if( Object.prototype.toString.call( _outObj[ k ][i] ) == '[object Object]' )
+                            _outObj[ k ][ i ] = cloneObject( _outObj[ k ][ i ] );
+                    }
+                    break;
+                }
+
+                case '[object Date]': {
+                    _outObj[ k ] = new Date(); _outObj[ k ].setTime( _inObj[ k ].getTime() );
+                    break;
+                }
+
+                default: _outObj[ k ] = _inObj[ k ];
+            }
+        }
+
+        return _outObj;
+    }
 
     return JC.f;
+
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 
             typeof _name == 'function' && ( _cb = _name );
@@ -11395,8 +11449,10 @@ window.Bizs = window.Bizs || {};
          * @param   {string}    _evtName
          */
         , trigger:
-            function(){
-                $( this ).trigger( 'TriggerEvent', JC.f.sliceArgs( arguments ) );
+            function( _evtName, _args ){
+                _args = _args || [];
+                _args.unshift( _evtName );
+                $( this ).trigger( 'TriggerEvent', _args );
                 return this;
             }
         /**
@@ -11617,8 +11673,10 @@ window.Bizs = window.Bizs || {};
          * 使用 jquery trigger 触发 controler 绑定事件
          */
         , trigger:
-            function(){
-                $( this ).trigger( 'TriggerEvent', JC.f.sliceArgs( arguments ) );
+            function( _evtName, _args ){
+                _args = _args || [];
+                _args.unshift( _evtName );
+                $( this ).trigger( 'TriggerEvent', _args );
                 return this;
             }
     });

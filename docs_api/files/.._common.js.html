@@ -97,6 +97,8 @@
             
                 <li><a href="../classes/JC.hideAllPopup.html">JC.hideAllPopup</a></li>
             
+                <li><a href="../classes/JC.ImageCutter.html">JC.ImageCutter</a></li>
+            
                 <li><a href="../classes/JC.LunarCalendar.html">JC.LunarCalendar</a></li>
             
                 <li><a href="../classes/JC.LunarCalendar.Model.html">JC.LunarCalendar.Model</a></li>
@@ -269,6 +271,7 @@
         , &quot;parseISODate&quot;: parseISODate
         , &quot;parseDate&quot;: parseDate
         , &quot;printf&quot;: printf
+        , &quot;cloneObject&quot;: cloneObject
 
         , &quot;pureDate&quot;: pureDate
         , &quot;reloadPage&quot;: reloadPage
@@ -1018,7 +1021,8 @@
      * &lt;dl&gt;
      *      &lt;dt&gt;可识别的组件&lt;/dt&gt;
      *      &lt;dd&gt;
-     *          JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar, JC.Drag, JC.Placeholder, JC.TableFreeze
+     *          JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar
+     *          , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter
      *          &lt;br /&gt;Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete
      *      &lt;/dd&gt;
      * &lt;/d&gt;
@@ -1039,6 +1043,10 @@
          */
         JC.Calendar &amp;&amp; JC.Calendar.initTrigger( _selector );
         /**
+         * 双日历组件
+         */
+        JC.DCalendar &amp;&amp; JC.DCalendar.init &amp;&amp; JC.DCalendar.init( _selector );
+        /**
          * 全选反选
          */
         JC.AutoChecked &amp;&amp; JC.AutoChecked( _selector );
@@ -1058,6 +1066,10 @@
          * 拖曳
          */
         JC.Drag &amp;&amp; JC.Drag.init( _selector );
+        /**
+         * 图片裁切
+         */
+        JC.ImageCutter &amp;&amp; JC.ImageCutter.init( _selector );
 
         if( !window.Bizs ) return;
         /**
@@ -1356,8 +1368,52 @@
         }
         return _r;
     }
+    /**
+     * 深度克隆对象
+     * @method  cloneObject
+     * @param   {Object}    _inObj
+     * @return  Object
+     * @static
+     */
+    function cloneObject( _inObj, _outObj ){
+        _outObj = _outObj || {};
+        var k, i, j;
+
+        for( k in _inObj ){
+            _outObj[ k ] = _inObj[ k ];
+            switch( Object.prototype.toString.call( _outObj[ k ] ) ){
+
+                case &#x27;[object Object]&#x27;: {
+                      _outObj[ k ] = _outObj[ k ].constructor === Object
+                        ?  cloneObject( _outObj[ k ] )
+                        :  _outObj[ k ]
+                        ;
+                    break;
+                }
+
+                case &#x27;[object Array]&#x27;: {
+                    _outObj[ k ] = _inObj[ k ].slice();
+                    for( i = 0, j = _outObj[ k ].length; i &lt; j; i++ ){
+                        if( Object.prototype.toString.call( _outObj[ k ][i] ) == &#x27;[object Object]&#x27; )
+                            _outObj[ k ][ i ] = cloneObject( _outObj[ k ][ i ] );
+                    }
+                    break;
+                }
+
+                case &#x27;[object Date]&#x27;: {
+                    _outObj[ k ] = new Date(); _outObj[ k ].setTime( _inObj[ k ].getTime() );
+                    break;
+                }
+
+                default: _outObj[ k ] = _inObj[ k ];
+            }
+        }
+
+        return _outObj;
+    }
 
     return JC.f;
+
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb) { 
             typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );

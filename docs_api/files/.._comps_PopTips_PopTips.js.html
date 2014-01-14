@@ -97,6 +97,8 @@
             
                 <li><a href="../classes/JC.hideAllPopup.html">JC.hideAllPopup</a></li>
             
+                <li><a href="../classes/JC.ImageCutter.html">JC.ImageCutter</a></li>
+            
                 <li><a href="../classes/JC.LunarCalendar.html">JC.LunarCalendar</a></li>
             
                 <li><a href="../classes/JC.LunarCalendar.Model.html">JC.LunarCalendar.Model</a></li>
@@ -204,7 +206,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
- ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27;, &#x27;JC.BaseMVC&#x27; ], function(){
+ ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
 /**
  * PopTips 带箭头的气泡提示框功能
  * &lt;p&gt;
@@ -305,9 +307,6 @@
  *    &lt;/dd&gt;
  *&lt;/dl&gt; 
  *
- *
- *
- *
  * @namespace JC
  * @class PopTips
  * @extends JC.BaseMVC
@@ -329,8 +328,6 @@
 			是中国百科全书性质著作的渊源。&lt;/span&gt;
 	&lt;/span&gt;
   */
-;(function($){
-    window.JC = window.JC || {log:function(){}};
     JC.PopTips = PopTips;
  
     function PopTips( _selector ){
@@ -374,7 +371,7 @@
         
         _selector = $( _selector || document );
 
-        if ( _selector &amp;&amp; _selector.length ) {
+        if ( _selector.length ) {
             if ( _selector.hasClass(&#x27;js_compPopTips&#x27;) ) {
                 _r.push( new PopTips(_selector) );
             } else {
@@ -913,7 +910,6 @@
         //JC.log(&#x27;resize&#x27;);
     });
  
-}(jQuery));
     return JC.PopTips;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb ) { 

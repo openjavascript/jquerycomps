@@ -20,6 +20,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Drag",
         "JC.Fixed",
         "JC.Form",
+        "JC.ImageCutter",
         "JC.LunarCalendar",
         "JC.Panel",
         "JC.Placeholder",
