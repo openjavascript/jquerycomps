@@ -106,6 +106,12 @@
      *      <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>
      * </dl>
      *
+     * <h2>Form Control 可用的 html 属性</h2>
+     * <dl>
+     *      <dt>ignoreResetClear = bool, default = false</dt>
+     *      <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>
+     * </dl>
+     *
      * <h2>submit button 可用的 html 属性</h2>
      * <dl>
      *      <dd>

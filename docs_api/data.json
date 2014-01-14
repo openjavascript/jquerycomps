@@ -749,7 +749,7 @@
             "namespace": "window.Bizs",
             "file": "../modules/Bizs.FormLogic/0.1/FormLogic.js",
             "line": 4,
-            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Valid.html'>JC.Valid</a>\n     , <a href='JC.Form.html'>JC.Form</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.FormLogic/0.1/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function</dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dd>\n\n     <dt>formSubmitIgnoreCheck = bool, default = false</dt>\n     <dd>\n         表单提交时, 是否忽略 JC.Valid 的验证\n         <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配\n         <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>\n     </dd>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n\n     <dt>buttonClickBindSelector = selector</dt>\n     <dd>\n         点击按钮时, 把按钮的值赋值给 绑定的 控件\n         <br /><b>注意:</b> 这个属性仅支持 [input|button] 标签\n     </dd>\n</dl>",
+            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Valid.html'>JC.Valid</a>\n     , <a href='JC.Form.html'>JC.Form</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.FormLogic/0.1/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function</dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>Form Control 可用的 html 属性</h2>\n<dl>\n     <dt>ignoreResetClear = bool, default = false</dt>\n     <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dd>\n\n     <dt>formSubmitIgnoreCheck = bool, default = false</dt>\n     <dd>\n         表单提交时, 是否忽略 JC.Valid 的验证\n         <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配\n         <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>\n     </dd>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n\n     <dt>buttonClickBindSelector = selector</dt>\n     <dd>\n         点击按钮时, 把按钮的值赋值给 绑定的 控件\n         <br /><b>注意:</b> 这个属性仅支持 [input|button] 标签\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-08",
@@ -1090,7 +1090,7 @@
             "namespace": "JC",
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
             "line": 2,
-            "description": "图片裁切组件\n<br />借助 PHP GD 库进行图片裁切\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.ImageCutter.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.ImageCutter/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compImageCutter\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>imageUrl = url string</dt>\n   <dd>图片URL<dd>\n\n   <dt>defaultCoordinate = string</dt>\n   <dd>\n       设置默认选择范围, 有以下三种模式\n       <br />sidelength\n       <br />x, y\n       <br />x, y, sidelength\n   </dd>\n\n   <dt>coordinateSelector =  selector</dt>\n   <dd>保存当前坐标值的 node\n         <br />坐标值分别为: [ x, y, rectWidth, rectHeight, imgWidth, imgHeight ]\n   </dd>\n\n   <dt>imageUrlSelector = selector</dt>\n   <dd>保存当前图片URL的 node</dd>\n\n   <dt>previewSelector = selector</dt>\n   <dd>用于显示预览的 node, 支持多个预览, node 宽高并须为正方形</dd>\n\n   <dt>minRectSidelength = int, default = 50</dt>\n   <dd>裁切块的最小边长</dd>\n\n   <dt>minImageSidelength = int, default = 50</dt>\n   <dd>图片的最小边长</dd>\n\n   <dt>maxImageSidelength = int</dt>\n   <dd>图片的最大边长</dd>\n\n   <dt>cicInitedCb = function</dt>\n   <dd>组件初始化后的回调, <b>window变量域</b>\n<pre>function cicInitedCb(){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicImageInitedCb = function</dt>\n   <dd>图片初始化完成时的回调, <b>window变量域</b>\n<pre>function cicImageInitedCb( _sizeObj, _img ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicImageInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicCoordinateUpdateCb = function</dt>\n   <dd>更新裁切坐标后的回调, <b>window变量域</b>\n   <br />_corAr = Array = [ x, y, rectWidth, rectHeight, imgWidth, imgHeight ]\n<pre>function cicCoordinateUpdateCb( _corAr, _imgUrl ){\n   var _p = this, _selector = _p.selector();\n   JC.log( 'cicCoordinateUpdateCb', _corAr, _imgUrl, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicDragDoneCb = function</dt>\n   <dd>拖动完成后的回调, <b>window变量域</b>\n     <br/>与 cicCoordinateUpdateCb 的差别是: cicDragDoneCb 初始化不会触发\n<pre>function cicDragDoneCb( _sizeObj ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicDragDoneCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicErrorCb = function</dt>\n   <dd>发生错误时的回调, <b>window变量域</b>\n     <br />所有错误类型都会触发这个回调\n<pre>function cicErrorCb( _errType, _args ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicErrorCb', _errType, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicLoadErrorCb = function</dt>\n   <dd>图片加载错误时的回调, <b>window变量域</b>\n<pre>function cicLoadErrorCb( _imgUrl ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicLoadErrorCb',_imgUrl, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicSizeErrorCb = function</dt>\n   <dd>图片尺寸不符合设置要求时的回调, <b>window变量域</b>\n<pre>function cicSizeErrorCb( _width, _height, _imgUrl, _isMax ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicSizeErrorCb', _width, _height, _imgUrl, _isMax, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicPreviewSizeErrorCb = function</dt>\n   <dd>图片缩放后尺寸不符合设置要求时的回调, <b>window变量域</b>\n<pre>function cicPreviewSizeErrorCb( _width, _height, _imgUrl, _newSize ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicPreviewSizeErrorCb', _width, _height, _imgUrl, _newSize, new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
+            "description": "图片裁切组件\n<br />借助 PHP GD 库进行图片裁切( 不仅限于 PHP GD )\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.ImageCutter.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.ImageCutter/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compImageCutter\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>imageUrl = url string</dt>\n   <dd>图片URL<dd>\n\n   <dt>defaultCoordinate = string</dt>\n   <dd>\n       设置默认选择范围, 有以下三种模式\n       <br />sidelength\n       <br />x, y\n       <br />x, y, sidelength\n   </dd>\n\n   <dt>coordinateSelector =  selector</dt>\n   <dd>保存当前坐标值的 node\n         <br />坐标值分别为: [ x, y, rectWidth, rectHeight, imgWidth, imgHeight ]\n   </dd>\n\n   <dt>imageUrlSelector = selector</dt>\n   <dd>保存当前图片URL的 node</dd>\n\n   <dt>previewSelector = selector</dt>\n   <dd>用于显示预览的 node, 支持多个预览, node 宽高并须为正方形</dd>\n\n   <dt>minRectSidelength = int, default = 50</dt>\n   <dd>裁切块的最小边长</dd>\n\n   <dt>minImageSidelength = int, default = 50</dt>\n   <dd>图片的最小边长</dd>\n\n   <dt>maxImageSidelength = int</dt>\n   <dd>图片的最大边长</dd>\n\n   <dt>cicInitedCb = function</dt>\n   <dd>组件初始化后的回调, <b>window变量域</b>\n<pre>function cicInitedCb(){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicImageInitedCb = function</dt>\n   <dd>图片初始化完成时的回调, <b>window变量域</b>\n<pre>function cicImageInitedCb( _sizeObj, _img ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicImageInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicCoordinateUpdateCb = function</dt>\n   <dd>更新裁切坐标后的回调, <b>window变量域</b>\n   <br />_corAr = Array = [ x, y, rectWidth, rectHeight, imgWidth, imgHeight ]\n<pre>function cicCoordinateUpdateCb( _corAr, _imgUrl ){\n   var _p = this, _selector = _p.selector();\n   JC.log( 'cicCoordinateUpdateCb', _corAr, _imgUrl, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicDragDoneCb = function</dt>\n   <dd>拖动完成后的回调, <b>window变量域</b>\n     <br/>与 cicCoordinateUpdateCb 的差别是: cicDragDoneCb 初始化不会触发\n<pre>function cicDragDoneCb( _sizeObj ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicDragDoneCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicErrorCb = function</dt>\n   <dd>发生错误时的回调, <b>window变量域</b>\n     <br />所有错误类型都会触发这个回调\n<pre>function cicErrorCb( _errType, _args ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicErrorCb', _errType, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicLoadErrorCb = function</dt>\n   <dd>图片加载错误时的回调, <b>window变量域</b>\n<pre>function cicLoadErrorCb( _imgUrl ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicLoadErrorCb',_imgUrl, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicSizeErrorCb = function</dt>\n   <dd>图片尺寸不符合设置要求时的回调, <b>window变量域</b>\n<pre>function cicSizeErrorCb( _width, _height, _imgUrl, _isMax ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicSizeErrorCb', _width, _height, _imgUrl, _isMax, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicPreviewSizeErrorCb = function</dt>\n   <dd>图片缩放后尺寸不符合设置要求时的回调, <b>window变量域</b>\n<pre>function cicPreviewSizeErrorCb( _width, _height, _imgUrl, _newSize ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicPreviewSizeErrorCb', _width, _height, _imgUrl, _newSize, new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -2690,7 +2690,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.1/FormLogic.js",
-            "line": 271,
+            "line": 277,
             "description": "获取或设置 FormLogic 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -2711,7 +2711,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.1/FormLogic.js",
-            "line": 294,
+            "line": 300,
             "description": "处理 form 或者 _selector 的所有form.js_bizsFormLogic",
             "itemtype": "method",
             "name": "init",
@@ -2732,7 +2732,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.1/FormLogic.js",
-            "line": 315,
+            "line": 321,
             "description": "msgbox 提示框的自动关闭时间",
             "itemtype": "property",
             "name": "popupCloseMs",
@@ -2744,7 +2744,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.1/FormLogic.js",
-            "line": 323,
+            "line": 329,
             "description": "AJAX 表单的提交类型\n<br />plugins, form\n<br />plugins 可以支持文件上传",
             "itemtype": "property",
             "name": "popupCloseMs",
@@ -2756,7 +2756,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.1/FormLogic.js",
-            "line": 333,
+            "line": 339,
             "description": "表单提交后, 是否禁用提交按钮",
             "itemtype": "property",
             "name": "submitDisable",
@@ -2768,7 +2768,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.1/FormLogic.js",
-            "line": 341,
+            "line": 347,
             "description": "表单提交后, 是否重置表单内容",
             "itemtype": "property",
             "name": "resetAfterSubmit",
@@ -2780,7 +2780,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.1/FormLogic.js",
-            "line": 349,
+            "line": 355,
             "description": "表单提交时, 内容填写不完整时触发的全局回调",
             "itemtype": "property",
             "name": "processErrorCb",
@@ -2792,7 +2792,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.1/FormLogic.js",
-            "line": 357,
+            "line": 363,
             "description": "全局返回数据处理回调\n<br />所有提交结果都会调用\n<br />arg: _data[string of result]",
             "itemtype": "property",
             "name": "GLOBAL_AJAX_CHECK",
@@ -2804,28 +2804,28 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.1/FormLogic.js",
-            "line": 381,
+            "line": 387,
             "description": "默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.FormLogic/0.1/FormLogic.js",
-            "line": 451,
+            "line": 457,
             "description": "全局 AJAX 提交完成后的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.FormLogic/0.1/FormLogic.js",
-            "line": 457,
+            "line": 463,
             "description": "这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.FormLogic/0.1/FormLogic.js",
-            "line": 501,
+            "line": 507,
             "description": "表单内容验证通过后, 开始提交前的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
@@ -6290,7 +6290,7 @@
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
             "line": 192,
-            "description": "裁切范围的边长",
+            "description": "裁切范围的最小边长",
             "itemtype": "property",
             "name": "minRectSidelength",
             "type": "int",
@@ -6380,7 +6380,7 @@
                     "type": "Event"
                 },
                 {
-                    "name": "object",
+                    "name": "_size",
                     "description": "",
                     "type": "Object"
                 },
@@ -6448,15 +6448,6 @@
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
             "line": 659,
-            "description": "清除拖动状态",
-            "itemtype": "method",
-            "name": "cleanStatus",
-            "class": "JC.ImageCutter",
-            "namespace": "JC"
-        },
-        {
-            "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 668,
             "description": "设置拖动信息",
             "itemtype": "method",
             "name": "_size",
@@ -6474,7 +6465,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 675,
+            "line": 666,
             "description": "向左移动, 移动步长为 ImageCutter.moveStep 定义的步长",
             "itemtype": "method",
             "name": "moveLeft",
@@ -6483,7 +6474,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 680,
+            "line": 671,
             "description": "向上移动, 移动步长为 ImageCutter.moveStep 定义的步长",
             "itemtype": "method",
             "name": "moveUp",
@@ -6492,7 +6483,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 685,
+            "line": 676,
             "description": "向右移动, 移动步长为 ImageCutter.moveStep 定义的步长",
             "itemtype": "method",
             "name": "moveRight",
@@ -6501,7 +6492,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 690,
+            "line": 681,
             "description": "向下移动, 移动步长为 ImageCutter.moveStep 定义的步长",
             "itemtype": "method",
             "name": "moveDown",
@@ -6510,7 +6501,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1694,
+            "line": 1701,
             "description": "初始化实例时触发的事件",
             "itemtype": "event",
             "name": "ImageCutterInited",
@@ -6519,7 +6510,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1698,
+            "line": 1705,
             "description": "初始化预览时触发的事件",
             "itemtype": "event",
             "name": "CICInitPreview",
@@ -6528,7 +6519,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1702,
+            "line": 1709,
             "description": "拖动完成时触发的事件",
             "itemtype": "event",
             "name": "CICDragDone",
@@ -6537,7 +6528,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1706,
+            "line": 1713,
             "description": "更新拖动块时触发的事件",
             "itemtype": "event",
             "name": "CICUpdateDragger",
@@ -6546,7 +6537,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1710,
+            "line": 1717,
             "description": "更新预览时触发的事件",
             "itemtype": "event",
             "name": "CICUpdatePreview",
@@ -6555,7 +6546,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1714,
+            "line": 1721,
             "description": "更新坐标值时触发的事件",
             "itemtype": "event",
             "name": "CICUpdateCoordinate",
@@ -6564,7 +6555,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1718,
+            "line": 1725,
             "description": "图片加载完毕时触发的事件",
             "itemtype": "event",
             "name": "CICImageLoad",
@@ -6573,7 +6564,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1722,
+            "line": 1729,
             "description": "图片加载失败时触发的事件",
             "itemtype": "event",
             "name": "CICImageLoadError",
@@ -6582,7 +6573,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1726,
+            "line": 1733,
             "description": "发生错误时触发的事件",
             "itemtype": "event",
             "name": "CICError",
@@ -6591,7 +6582,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1730,
+            "line": 1737,
             "description": "图片大小不符合要求时触发的事件",
             "itemtype": "event",
             "name": "CICSizeError",
@@ -6600,7 +6591,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1734,
+            "line": 1741,
             "description": "图片缩放后大小不符合要求时触发的事件",
             "itemtype": "event",
             "name": "CICPreviewError",
@@ -6609,7 +6600,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1738,
+            "line": 1745,
             "description": "按比例缩放图片\n<br />返回: { width: int, height: int }",
             "params": [
                 {
@@ -6642,14 +6633,14 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1762,
+            "line": 1769,
             "description": "计算两个坐标点之间的距离",
             "class": "JC.ImageCutter",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1772,
+            "line": 1779,
             "description": "从长度和角度求坐标点",
             "class": "JC.ImageCutter",
             "namespace": "JC"
@@ -11066,21 +11057,21 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 746,
+            "line": 747,
             "description": "IE6下，当表格的宽度超出了实际可用宽度时，其父节点的宽度会跟随内容的宽度",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 944,
+            "line": 945,
             "description": "TableFreeze调用前的回调",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 955,
+            "line": 956,
             "description": "TableFreeze调用后的回调",
             "class": "JC.TableFreeze",
             "namespace": "JC"
@@ -14794,7 +14785,7 @@
         {
             "file": "../modules/JC.common/0.2/common.js",
             "line": 805,
-            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar\n         , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
+            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar\n         , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
             "params": [
@@ -14866,35 +14857,42 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 864,
-            "description": "disable / enable",
+            "line": 862,
+            "description": "图片裁切",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
             "line": 868,
-            "description": "表单提交逻辑",
+            "description": "disable / enable",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
             "line": 872,
-            "description": "格式化金额",
+            "description": "表单提交逻辑",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
             "line": 876,
+            "description": "格式化金额",
+            "class": "JC.common",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.common/0.2/common.js",
+            "line": 880,
             "description": "自动完成",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 881,
+            "line": 885,
             "description": "URL 占位符识别功能\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "urlDetect",
@@ -14917,7 +14915,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 922,
+            "line": 926,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -14941,14 +14939,14 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 986,
+            "line": 990,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1004,
+            "line": 1008,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -14983,7 +14981,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1054,
+            "line": 1058,
             "description": "日期格式化 (具体格式请查看 PHP Date Formats)",
             "itemtype": "method",
             "name": "dateFormat",
@@ -15008,7 +15006,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1099,
+            "line": 1103,
             "description": "扩展对象属性",
             "itemtype": "method",
             "name": "extendObject",
@@ -15038,7 +15036,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1121,
+            "line": 1125,
             "description": "timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行",
             "itemtype": "method",
             "name": "safeTimeout",
@@ -15073,7 +15071,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1142,
+            "line": 1146,
             "description": "URL 请求时, 获取对URL参数进行编码的函数",
             "itemtype": "method",
             "name": "encoder",
@@ -15094,7 +15092,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1160,
+            "line": 1164,
             "description": "深度克隆对象",
             "itemtype": "method",
             "name": "cloneObject",
@@ -17449,19 +17447,19 @@
         },
         {
             "message": "Missing item type\n默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
-            "line": " ../modules/Bizs.FormLogic/0.1/FormLogic.js:381"
+            "line": " ../modules/Bizs.FormLogic/0.1/FormLogic.js:387"
         },
         {
             "message": "Missing item type\n全局 AJAX 提交完成后的处理事件",
-            "line": " ../modules/Bizs.FormLogic/0.1/FormLogic.js:451"
-        },
-        {
-            "message": "Missing item type\n这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
             "line": " ../modules/Bizs.FormLogic/0.1/FormLogic.js:457"
         },
         {
+            "message": "Missing item type\n这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
+            "line": " ../modules/Bizs.FormLogic/0.1/FormLogic.js:463"
+        },
+        {
             "message": "Missing item type\n表单内容验证通过后, 开始提交前的处理事件",
-            "line": " ../modules/Bizs.FormLogic/0.1/FormLogic.js:501"
+            "line": " ../modules/Bizs.FormLogic/0.1/FormLogic.js:507"
         },
         {
             "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
@@ -17633,15 +17631,15 @@
         },
         {
             "message": "Missing item type\n按比例缩放图片\n<br />返回: { width: int, height: int }",
-            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1738"
+            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1745"
         },
         {
             "message": "Missing item type\n计算两个坐标点之间的距离",
-            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1762"
+            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1769"
         },
         {
             "message": "Missing item type\n从长度和角度求坐标点",
-            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1772"
+            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1779"
         },
         {
             "message": "Missing item type\n监听上一年按钮",
@@ -17769,15 +17767,15 @@
         },
         {
             "message": "Missing item type\nIE6下，当表格的宽度超出了实际可用宽度时，其父节点的宽度会跟随内容的宽度",
-            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:746"
+            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:747"
         },
         {
             "message": "Missing item type\nTableFreeze调用前的回调",
-            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:944"
+            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:945"
         },
         {
             "message": "Missing item type\nTableFreeze调用后的回调",
-            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:955"
+            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:956"
         },
         {
             "message": "Missing item type\n页面加载完毕后, 是否自动初始化 Tips",
@@ -17888,24 +17886,28 @@
             "line": " ../modules/JC.common/0.2/common.js:858"
         },
         {
-            "message": "Missing item type\ndisable / enable",
-            "line": " ../modules/JC.common/0.2/common.js:864"
+            "message": "Missing item type\n图片裁切",
+            "line": " ../modules/JC.common/0.2/common.js:862"
         },
         {
-            "message": "Missing item type\n表单提交逻辑",
+            "message": "Missing item type\ndisable / enable",
             "line": " ../modules/JC.common/0.2/common.js:868"
         },
         {
-            "message": "Missing item type\n格式化金额",
+            "message": "Missing item type\n表单提交逻辑",
             "line": " ../modules/JC.common/0.2/common.js:872"
         },
         {
-            "message": "Missing item type\n自动完成",
+            "message": "Missing item type\n格式化金额",
             "line": " ../modules/JC.common/0.2/common.js:876"
         },
         {
+            "message": "Missing item type\n自动完成",
+            "line": " ../modules/JC.common/0.2/common.js:880"
+        },
+        {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../modules/JC.common/0.2/common.js:986"
+            "line": " ../modules/JC.common/0.2/common.js:990"
         },
         {
             "message": "Missing item type\nAES Cipher function: encrypt 'input' state with Rijndael algorithm\n  applies Nr rounds (10/12/14) using key schedule w for 'add round key' stage",

@@ -329,7 +329,7 @@
         */
         fixHeight: function () {
             var _p = this,
-                _wArr = _p._model.saveWidth,
+                _wArr = TableFreeze.Model.saveWidth,
                 _selector = _p._model.selector(),
                 _newWArr = _selector.prop('offsetWidth'),
                 _els = _selector.find('div.js-roll-table,div.js-fixed-table'),
@@ -354,9 +354,9 @@
                 _fixedWidth += $(this).parent('td').prop('offsetWidth');
             } );
 
-            _scrollTable.css('width', _newWArr - _fixedWidth - 2);
+            _scrollTable.css('width', _newWArr - _fixedWidth);
 
-             
+            $('#t21').append('<p>' +  _newWArr + '   ' + (_newWArr - _fixedWidth)  + '</p>');
             return this;       
 
         }
@@ -364,6 +364,7 @@
     });
  
     TableFreeze.Model._instanceName = "TableFreeze";
+    TableFreeze.Model.saveWidth = 0;
    
     JC.f.extendObject( TableFreeze.Model.prototype, {
         init: function () {
@@ -376,8 +377,6 @@
             //this.sourceTable.detach();
             this.sourceTable.remove();
         },
-
-        saveWidth: [],
 
         linkTpl: function () {
             var _p = this,
@@ -649,18 +648,20 @@
 
             for (i = _i; i < _cols; i++ ) {
                 _w = _w + _wArr[i];
+
             }
-            
+            _w = _w + 1;
             _percentW  = _w / _totalWidth;
             _percentW  = _percentW  * 100;
 
-
-            $(_box).css('width', _percentW  + '%');
+           $(_box).css('width', _percentW  + '%');
             
             if ( _scrollBox.length ) {
                 _scrollBox.css('width', (100 - _percentW ) + '%' )
-                .find('>div').css('width', _totalWidth - _w );
+                .find('>div').css('width', _totalWidth - _w - 1);
             }
+         
+           $('#t21').append(',' +  _totalWidth + '   '  +  ( $('.js-roll-table').prop('offsetWidth') ) + '   ' + _percentW + ' '  + (100 - _percentW) );
     
         },
 
@@ -740,7 +741,7 @@
 
         tableWidth: function () {
             var _p = this,
-                _w = _p.selector().prop('offsetWidth'),
+                _w = _p.selector().width(),
                 _pnt = _p.selector().parent();
 
             /**
@@ -750,8 +751,8 @@
 
                 if ( _pnt && _pnt.prop('nodeName').toUpperCase() === 'BODY' ) break;
 
-                if ( _pnt.prop('offsetWidth') < _w ) {
-                    _w = _pnt.prop('offsetWidth');
+                if ( _pnt.width() < _w ) {
+                    _w = _pnt.width();
                     break;
                 }
 
@@ -1018,7 +1019,9 @@
             $( 'div.js_compTableFreeze' ).each( function () {
                 var _ins = TableFreeze.getInstance( $( this ) );
                 _ins && _ins.fixHeight() ;
-                _ins._model.saveWidth = _ins._model.tableWidth();
+                TableFreeze.Model.saveWidth = _ins._model.tableWidth();
+
+
             });
 
             _win.data( 'CTFResizeTimeout' ) && clearTimeout( _win.data( 'CTFResizeTimeout' ) );

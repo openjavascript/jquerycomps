@@ -815,7 +815,7 @@
      *      <dt>可识别的组件</dt>
      *      <dd>
      *          JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar
-     *          , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze
+     *          , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter
      *          <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete
      *      </dd>
      * </d>
@@ -859,6 +859,10 @@
          * 拖曳
          */
         JC.Drag && JC.Drag.init( _selector );
+        /**
+         * 图片裁切
+         */
+        JC.ImageCutter && JC.ImageCutter.init( _selector );
 
         if( !window.Bizs ) return;
         /**
