@@ -688,10 +688,10 @@
                     }
 
                     _img.css( { 
-                        &#x27;width&#x27;: _newSize.preview.width + &#x27;px&#x27;
-                        , &#x27;height&#x27;: _newSize.preview.height + &#x27;px&#x27; 
-                        , &#x27;left&#x27;: _newSize.left + &#x27;px&#x27;
-                        , &#x27;top&#x27;: _newSize.top + &#x27;px&#x27;
+                        &#x27;width&#x27;: _newSize.preview.width
+                        , &#x27;height&#x27;: _newSize.preview.height
+                        , &#x27;left&#x27;: _newSize.left
+                        , &#x27;top&#x27;: _newSize.top
                     });
                     _img.prependTo( _p.selector() );
                     
@@ -1407,11 +1407,14 @@
                     &#x27;height&#x27;: _size.dragger.srcSidelength
                     , &#x27;width&#x27;: _size.dragger.left
                     , &#x27;top&#x27;: _size.dragger.top
+                    , &#x27;left&#x27;: 0
                 });
 
                 _p._model.maskTop().css( { 
                     &#x27;height&#x27;: _size.dragger.top
-                    , &#x27;width&#x27;: _size.selector.width 
+                    , &#x27;width&#x27;: _size.selector.width
+                    , &#x27;top&#x27;: 0
+                    , &#x27;left&#x27;: 0
                 });
 
                 _p._model.maskRight().css( {
@@ -1424,7 +1427,8 @@
                 _p._model.maskBottom().css( { 
                     &#x27;height&#x27;: _size.selector.height - (_size.dragger.top + _size.dragger.srcSidelength )
                     , &#x27;width&#x27;: _size.selector.width
-                    , &#x27;top&#x27;: _size.dragger.top + _size.dragger.srcSidelength 
+                    , &#x27;top&#x27;: _size.dragger.top + _size.dragger.srcSidelength
+                    , &#x27;left&#x27;: 0
                 });
 
                 _maskList.show();
@@ -1493,6 +1497,10 @@
                         , &#x27;height&#x27;: _newHeight
                         , &#x27;left&#x27;: -_newLeft
                         , &#x27;top&#x27;: -_newTop
+                        , &#x27;max-width&#x27;: _newWidth
+                        , &#x27;min-width&#x27;: _newWidth
+                        , &#x27;max-height&#x27;: _newHeight
+                        , &#x27;min-height&#x27;: _newHeight
                     });
 
                 });

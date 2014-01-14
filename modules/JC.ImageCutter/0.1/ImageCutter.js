@@ -1201,11 +1201,14 @@
                     'height': _size.dragger.srcSidelength
                     , 'width': _size.dragger.left
                     , 'top': _size.dragger.top
+                    , 'left': 0
                 });
 
                 _p._model.maskTop().css( { 
                     'height': _size.dragger.top
-                    , 'width': _size.selector.width 
+                    , 'width': _size.selector.width
+                    , 'top': 0
+                    , 'left': 0
                 });
 
                 _p._model.maskRight().css( {
@@ -1218,7 +1221,8 @@
                 _p._model.maskBottom().css( { 
                     'height': _size.selector.height - (_size.dragger.top + _size.dragger.srcSidelength )
                     , 'width': _size.selector.width
-                    , 'top': _size.dragger.top + _size.dragger.srcSidelength 
+                    , 'top': _size.dragger.top + _size.dragger.srcSidelength
+                    , 'left': 0
                 });
 
                 _maskList.show();
