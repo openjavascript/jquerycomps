@@ -106,6 +106,12 @@
      *      <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>
      * </dl>
      *
+     * <h2>Form Control 可用的 html 属性</h2>
+     * <dl>
+     *      <dt>ignoreResetClear = bool, default = false</dt>
+     *      <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>
+     * </dl>
+     *
      * <h2>submit button 可用的 html 属性</h2>
      * <dl>
      *      <dd>
@@ -864,8 +870,12 @@
                     setTimeout(function(){
                         var _form = _p._model.selector();
 
-                        _form.find('input[type=text], input[type=password], input[type=file], textarea').val('');
+                        _form.find('input[type=text], input[type=password], input[type=file], textarea').each( function(){
+                            if( $( this ).attr( 'ignoreResetClear' ) ) return;
+                            $( this ).val( '' );
+                        });
                         _form.find('select').each( function() {
+                            if( $( this ).attr( 'ignoreResetClear' ) ) return;
                             var sp = $(this);
                             var cs = sp.find('option');
                             if( cs.length > 1 ){

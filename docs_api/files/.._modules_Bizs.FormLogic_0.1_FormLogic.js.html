@@ -91,6 +91,8 @@
             
                 <li><a href="../classes/JC.hideAllPopup.html">JC.hideAllPopup</a></li>
             
+                <li><a href="../classes/JC.ImageCutter.html">JC.ImageCutter</a></li>
+            
                 <li><a href="../classes/JC.LunarCalendar.html">JC.LunarCalendar</a></li>
             
                 <li><a href="../classes/JC.LunarCalendar.Model.html">JC.LunarCalendar.Model</a></li>
@@ -308,6 +310,12 @@
      *
      *      &lt;dt&gt;formAjaxDoneAction = url&lt;/dt&gt;
      *      &lt;dd&gt;声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作&lt;/dd&gt;
+     * &lt;/dl&gt;
+     *
+     * &lt;h2&gt;Form Control 可用的 html 属性&lt;/h2&gt;
+     * &lt;dl&gt;
+     *      &lt;dt&gt;ignoreResetClear = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;重置时, 是否忽略清空控件的值, 默认清空&lt;/dd&gt;
      * &lt;/dl&gt;
      *
      * &lt;h2&gt;submit button 可用的 html 属性&lt;/h2&gt;
@@ -1068,8 +1076,12 @@
                     setTimeout(function(){
                         var _form = _p._model.selector();
 
-                        _form.find(&#x27;input[type=text], input[type=password], input[type=file], textarea&#x27;).val(&#x27;&#x27;);
+                        _form.find(&#x27;input[type=text], input[type=password], input[type=file], textarea&#x27;).each( function(){
+                            if( $( this ).attr( &#x27;ignoreResetClear&#x27; ) ) return;
+                            $( this ).val( &#x27;&#x27; );
+                        });
                         _form.find(&#x27;select&#x27;).each( function() {
+                            if( $( this ).attr( &#x27;ignoreResetClear&#x27; ) ) return;
                             var sp = $(this);
                             var cs = sp.find(&#x27;option&#x27;);
                             if( cs.length &gt; 1 ){
