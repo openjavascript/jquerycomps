@@ -188,15 +188,63 @@
             return _r;
         };
     /**
-     *
+     * 裁切范围的边长
+     * @property    minRectSidelength
+     * @type        int
+     * @default     50
+     * @static
      */
     ImageCutter.minRectSidelength = 50;
+    /**
+     * 图片的最小边长
+     * @property    minImageSidelength
+     * @type        int
+     * @default     50
+     * @static
+     */
     ImageCutter.minImageSidelength = 50;
+    /**
+     * 图片的最大边长
+     * @property    maxImageSidelength
+     * @type        int
+     * @static
+     */
     ImageCutter.maxImageSidelength;
+    /**
+     * 上下左右方向键移动的步长
+     * @property    moveStep
+     * @type        int
+     * @default     1
+     * @static
+     */
     ImageCutter.moveStep = 1;
+    /**
+     * 进行坐标计算的偏移值
+     * @property    _positionPoint
+     * @type        int
+     * @default     10000
+     * @static
+     * @protected
+     */
     ImageCutter._positionPoint = 10000;
+    /**
+     * 默认的 CSS cursor
+     * @property    _defaultCursor
+     * @type        string
+     * @default     auto
+     * @static
+     * @protected
+     */
     ImageCutter._defaultCursor = 'auto';
-
+    /**
+     * 获取 拖动 的相关信息
+     * @method  dragInfo
+     * @param   {ImageCutterInstance}   _p 
+     * @param   {event}                 _evt
+     * @param   {object}                object
+     * @param   {selector}              _srcSelector
+     * @static
+     */
     ImageCutter.dragInfo =
         function( _p, _evt, _size, _srcSelector ){
             if( _p && _evt && _size ){
@@ -219,7 +267,11 @@
             }
             return ImageCutter._dragInfo;
         };
-
+    /**
+     * 清除拖动信息
+     * @method  cleanInfo
+     * @static
+     */
     ImageCutter.cleanInfo = 
         function(){
 
@@ -354,9 +406,9 @@
             var _keyCode = _evt.keyCode;
             //JC.log( 'ImageCutter.defaultKeydown', new Date().getTime(), _keyCode );
             switch( _keyCode ){
-                case 37: ImageCutter._currentIns.moveMinus(); break;
+                case 37: ImageCutter._currentIns.moveLeft(); break;
                 case 38: ImageCutter._currentIns.moveUp(); break;
-                case 39: ImageCutter._currentIns.movePlus(); break;
+                case 39: ImageCutter._currentIns.moveRight(); break;
                 case 40: ImageCutter._currentIns.moveDown(); break;
             }
         };
@@ -572,34 +624,69 @@
                 //JC.log( 'ImageCutter _inited', new Date().getTime() );
                 this.trigger( ImageCutter.Model.INITED );
             }
-
+        /**
+         * 更新图片
+         * @method  update
+         * @param   {string}    _imgUrl
+         */
         , update:
             function( _imgUrl ){
                 if( !_imgUrl ) return;
                 this._view.update( _imgUrl );
+                return this;
             }
-
+        /**
+         * 清除拖动的所有内容
+         * @method  clean
+         */
         , clean:
             function(){
                 this.cleanStatus();
                 this._view.clean();
                 this._model.clean();
+                return this;
             }
-
-        , updatePosition: function(){ this._view.updatePosition.apply( this._view, JC.f.sliceArgs( arguments ) ); }
-
+        /**
+         * 更新拖动位置
+         * @method  updatePosition
+         * @param   {object}    _size
+         */
+        , updatePosition: function(){ this._view.updatePosition.apply( this._view, JC.f.sliceArgs( arguments ) ); return this;}
+        /**
+         * 清除拖动状态
+         * @method  cleanStatus
+         */
         , cleanStatus:
             function(){
-                var _p = this;
-
                 ImageCutter.cleanInfo();
+                return this;
             }
-
+        /**
+         * 设置拖动信息
+         * @method  _size
+         * @param   {object}    _size
+         * @protected
+         */
         , _size: function(){ this._model.size.apply( this._model, JC.f.sliceArgs( arguments ) ); }
-
-        , moveMinus: function(){ this._view.moveMinus.apply( this._view, JC.f.sliceArgs( arguments ) ); }
+        /**
+         * 向左移动, 移动步长为 ImageCutter.moveStep 定义的步长
+         * @method  moveLeft
+         */
+        , moveLeft: function(){ this._view.moveLeft.apply( this._view, JC.f.sliceArgs( arguments ) ); }
+        /**
+         * 向上移动, 移动步长为 ImageCutter.moveStep 定义的步长
+         * @method  moveUp
+         */
         , moveUp: function(){ this._view.moveUp.apply( this._view, JC.f.sliceArgs( arguments ) ); }
-        , movePlus: function(){ this._view.movePlus.apply( this._view, JC.f.sliceArgs( arguments ) ); }
+        /**
+         * 向右移动, 移动步长为 ImageCutter.moveStep 定义的步长
+         * @method  moveRight
+         */
+        , moveRight: function(){ this._view.moveRight.apply( this._view, JC.f.sliceArgs( arguments ) ); }
+        /**
+         * 向下移动, 移动步长为 ImageCutter.moveStep 定义的步长
+         * @method  moveDown
+         */
         , moveDown: function(){ this._view.moveDown.apply( this._view, JC.f.sliceArgs( arguments ) ); }
     });
 
@@ -1199,7 +1286,7 @@
                 });
             }
 
-        , moveMinus:
+        , moveLeft:
             function(){
                 if( !this._model.ready() ) return;
                 var _p = this, _size = _p._model.size(); 
@@ -1221,7 +1308,7 @@
                 _p.trigger( ImageCutter.Model.DRAG_DONE, [ _size ] );
             }
 
-        , movePlus:
+        , moveRight:
             function(){
                 if( !this._model.ready() ) return;
                 var _p = this, _size = _p._model.size(); 
