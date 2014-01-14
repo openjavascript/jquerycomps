@@ -1090,7 +1090,7 @@
             "namespace": "JC",
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
             "line": 2,
-            "description": "图片裁切组件\n<br />借助 PHP GD 库进行图片裁切\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.ImageCutter.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.ImageCutter/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compImageCutter\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>imageUrl = url string</dt>\n   <dd>图片URL<dd>\n\n   <dt>defaultCoordinate = string</dt>\n   <dd>\n       设置默认选择范围, 有以下三种模式\n       <br />sidelength\n       <br />x, y\n       <br />x, y, sidelength\n   </dd>\n\n   <dt>coordinateSelector =  selector</dt>\n   <dd>保存当前坐标值的 node</dd>\n\n   <dt>imageUrlSelector = selector</dt>\n   <dd>保存当前图片URL的 node</dd>\n\n   <dt>previewSelector = selector</dt>\n   <dd>用于显示预览的 node, 支持多个预览, node 宽高并须为正方形</dd>\n\n   <dt>minRectSidelength = int, default = 50</dt>\n   <dd>裁切块的最小边长</dd>\n\n   <dt>minImageSidelength = int, default = 50</dt>\n   <dd>图片的最小边长</dd>\n\n   <dt>maxImageSidelength = int</dt>\n   <dd>图片的最大边长</dd>\n\n   <dt>cicInitedCb = function</dt>\n   <dd>组件初始化后的回调, <b>window变量域</b>\n<pre>function cicInitedCb(){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicImageInitedCb = function</dt>\n   <dd>图片初始化完成时的回调, <b>window变量域</b>\n<pre>function cicImageInitedCb( _sizeObj, _img ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicImageInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicCoordinateUpdateCb = function</dt>\n   <dd>更新裁切坐标后的回调, <b>window变量域</b>\n   <br />_corAr = Array = [ x, y, rectWidth, rectHeight, imgWidth, imageHeight ]\n<pre>function cicCoordinateUpdateCb( _corAr, _imgUrl ){\n   var _p = this, _selector = _p.selector();\n   JC.log( 'cicCoordinateUpdateCb', _corAr, _imgUrl, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicDragDoneCb = function</dt>\n   <dd>拖动完成后的回调, <b>window变量域</b>\n     <br/>与 cicCoordinateUpdateCb 的差别是: cicDragDoneCb 初始化不会触发\n<pre>function cicDragDoneCb( _sizeObj ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicDragDoneCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicErrorCb = function</dt>\n   <dd>发生错误时的回调, <b>window变量域</b>\n     <br />所有错误类型都会触发这个回调\n<pre>function cicErrorCb( _errType, _args ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicErrorCb', _errType, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicLoadErrorCb = function</dt>\n   <dd>图片加载错误时的回调, <b>window变量域</b>\n<pre>function cicLoadErrorCb( _imgUrl ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicLoadErrorCb',_imgUrl, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicSizeErrorCb = function</dt>\n   <dd>图片尺寸不符合设置要求时的回调, <b>window变量域</b>\n<pre>function cicSizeErrorCb( _width, _height, _imgUrl, _isMax ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicSizeErrorCb', _width, _height, _imgUrl, _isMax, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicPreviewSizeErrorCb = function</dt>\n   <dd>图片缩放后尺寸不符合设置要求时的回调, <b>window变量域</b>\n<pre>function cicPreviewSizeErrorCb( _width, _height, _imgUrl, _newSize ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicPreviewSizeErrorCb', _width, _height, _imgUrl, _newSize, new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
+            "description": "图片裁切组件\n<br />借助 PHP GD 库进行图片裁切\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.ImageCutter.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.ImageCutter/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compImageCutter\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>imageUrl = url string</dt>\n   <dd>图片URL<dd>\n\n   <dt>defaultCoordinate = string</dt>\n   <dd>\n       设置默认选择范围, 有以下三种模式\n       <br />sidelength\n       <br />x, y\n       <br />x, y, sidelength\n   </dd>\n\n   <dt>coordinateSelector =  selector</dt>\n   <dd>保存当前坐标值的 node\n         <br />坐标值分别为: [ x, y, rectWidth, rectHeight, imgWidth, imgHeight ]\n   </dd>\n\n   <dt>imageUrlSelector = selector</dt>\n   <dd>保存当前图片URL的 node</dd>\n\n   <dt>previewSelector = selector</dt>\n   <dd>用于显示预览的 node, 支持多个预览, node 宽高并须为正方形</dd>\n\n   <dt>minRectSidelength = int, default = 50</dt>\n   <dd>裁切块的最小边长</dd>\n\n   <dt>minImageSidelength = int, default = 50</dt>\n   <dd>图片的最小边长</dd>\n\n   <dt>maxImageSidelength = int</dt>\n   <dd>图片的最大边长</dd>\n\n   <dt>cicInitedCb = function</dt>\n   <dd>组件初始化后的回调, <b>window变量域</b>\n<pre>function cicInitedCb(){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicImageInitedCb = function</dt>\n   <dd>图片初始化完成时的回调, <b>window变量域</b>\n<pre>function cicImageInitedCb( _sizeObj, _img ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicImageInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicCoordinateUpdateCb = function</dt>\n   <dd>更新裁切坐标后的回调, <b>window变量域</b>\n   <br />_corAr = Array = [ x, y, rectWidth, rectHeight, imgWidth, imgHeight ]\n<pre>function cicCoordinateUpdateCb( _corAr, _imgUrl ){\n   var _p = this, _selector = _p.selector();\n   JC.log( 'cicCoordinateUpdateCb', _corAr, _imgUrl, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicDragDoneCb = function</dt>\n   <dd>拖动完成后的回调, <b>window变量域</b>\n     <br/>与 cicCoordinateUpdateCb 的差别是: cicDragDoneCb 初始化不会触发\n<pre>function cicDragDoneCb( _sizeObj ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicDragDoneCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicErrorCb = function</dt>\n   <dd>发生错误时的回调, <b>window变量域</b>\n     <br />所有错误类型都会触发这个回调\n<pre>function cicErrorCb( _errType, _args ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicErrorCb', _errType, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicLoadErrorCb = function</dt>\n   <dd>图片加载错误时的回调, <b>window变量域</b>\n<pre>function cicLoadErrorCb( _imgUrl ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicLoadErrorCb',_imgUrl, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicSizeErrorCb = function</dt>\n   <dd>图片尺寸不符合设置要求时的回调, <b>window变量域</b>\n<pre>function cicSizeErrorCb( _width, _height, _imgUrl, _isMax ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicSizeErrorCb', _width, _height, _imgUrl, _isMax, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicPreviewSizeErrorCb = function</dt>\n   <dd>图片缩放后尺寸不符合设置要求时的回调, <b>window变量域</b>\n<pre>function cicPreviewSizeErrorCb( _width, _height, _imgUrl, _newSize ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicPreviewSizeErrorCb', _width, _height, _imgUrl, _newSize, new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -1103,7 +1103,7 @@
             "version": "dev 0.1 2013-12-13",
             "author": "qiushaowei <suches@btbtd.org> | 75 Team",
             "example": [
-                "\n   <table>\n       <tr>\n           <td>\n               <div class=\"js_compImageCutter\"\n                   imageUrl=\"data/uploads/h_1680x1050.jpg\"\n                   previewSelector=\"(tr div.js_previewItem\"\n                   coordinateSelector=\"(td input.js_coordinate\"\n                   imageUrlSelector=\"(td input.js_imageUrl\"\n                   cicCoordinateUpdateCb=\"cicCoordinateUpdateCb\"\n                   >\n               </div>\n               <input type=\"text\" class=\"ipt js_coordinate\" value=\"\" />\n               <input type=\"text\" class=\"ipt js_imageUrl\" value=\"\" />\n           </td>\n           <td>\n               <div class=\"cic_previewItem js_previewItem\" style=\"width: 50px; height: 50px;\"></div>\n               <div class=\"cic_previewItem js_previewItem\" style=\"width: 75px; height: 75px;\"></div>\n               <div class=\"cic_previewItem js_previewItem\" style=\"width: 150px; height: 150px;\"></div>\n           </td>\n       </tr>\n   </table>"
+                "\n<xmp><table>\n   <tr>\n       <td>\n           <div class=\"js_compImageCutter\"\n               imageUrl=\"data/uploads/h_1680x1050.jpg\"\n               previewSelector=\"(tr div.js_previewItem\"\n               coordinateSelector=\"(td input.js_coordinate\"\n               imageUrlSelector=\"(td input.js_imageUrl\"\n               cicCoordinateUpdateCb=\"cicCoordinateUpdateCb\"\n               >\n           </div>\n           <input type=\"text\" class=\"ipt js_coordinate\" value=\"\" />\n           <input type=\"text\" class=\"ipt js_imageUrl\" value=\"\" />\n       </td>\n       <td>\n           <div class=\"cic_previewItem js_previewItem\" style=\"width: 50px; height: 50px;\"></div>\n           <div class=\"cic_previewItem js_previewItem\" style=\"width: 75px; height: 75px;\"></div>\n           <div class=\"cic_previewItem js_previewItem\" style=\"width: 150px; height: 150px;\"></div>\n       </td>\n   </tr>\n</table></xmp>"
             ]
         },
         "JC.LunarCalendar": {
@@ -6268,7 +6268,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 167,
+            "line": 169,
             "description": "初始化可识别的 ImageCutter 实例",
             "itemtype": "method",
             "name": "init",
@@ -6289,7 +6289,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 190,
+            "line": 192,
             "description": "裁切范围的边长",
             "itemtype": "property",
             "name": "minRectSidelength",
@@ -6301,7 +6301,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 198,
+            "line": 200,
             "description": "图片的最小边长",
             "itemtype": "property",
             "name": "minImageSidelength",
@@ -6313,7 +6313,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 206,
+            "line": 208,
             "description": "图片的最大边长",
             "itemtype": "property",
             "name": "maxImageSidelength",
@@ -6324,7 +6324,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 213,
+            "line": 215,
             "description": "上下左右方向键移动的步长",
             "itemtype": "property",
             "name": "moveStep",
@@ -6336,7 +6336,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 221,
+            "line": 223,
             "description": "进行坐标计算的偏移值",
             "itemtype": "property",
             "name": "_positionPoint",
@@ -6350,7 +6350,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 230,
+            "line": 232,
             "description": "默认的 CSS cursor",
             "itemtype": "property",
             "name": "_defaultCursor",
@@ -6364,7 +6364,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 239,
+            "line": 241,
             "description": "获取 拖动 的相关信息",
             "itemtype": "method",
             "name": "dragInfo",
@@ -6396,7 +6396,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 270,
+            "line": 272,
             "description": "清除拖动信息",
             "itemtype": "method",
             "name": "cleanInfo",
@@ -6406,7 +6406,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 627,
+            "line": 631,
             "description": "更新图片",
             "itemtype": "method",
             "name": "update",
@@ -6422,7 +6422,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 638,
+            "line": 642,
             "description": "清除拖动的所有内容",
             "itemtype": "method",
             "name": "clean",
@@ -6431,7 +6431,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 649,
+            "line": 653,
             "description": "更新拖动位置",
             "itemtype": "method",
             "name": "updatePosition",
@@ -6447,7 +6447,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 655,
+            "line": 659,
             "description": "清除拖动状态",
             "itemtype": "method",
             "name": "cleanStatus",
@@ -6456,7 +6456,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 664,
+            "line": 668,
             "description": "设置拖动信息",
             "itemtype": "method",
             "name": "_size",
@@ -6474,7 +6474,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 671,
+            "line": 675,
             "description": "向左移动, 移动步长为 ImageCutter.moveStep 定义的步长",
             "itemtype": "method",
             "name": "moveLeft",
@@ -6483,7 +6483,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 676,
+            "line": 680,
             "description": "向上移动, 移动步长为 ImageCutter.moveStep 定义的步长",
             "itemtype": "method",
             "name": "moveUp",
@@ -6492,7 +6492,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 681,
+            "line": 685,
             "description": "向右移动, 移动步长为 ImageCutter.moveStep 定义的步长",
             "itemtype": "method",
             "name": "moveRight",
@@ -6501,7 +6501,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 686,
+            "line": 690,
             "description": "向下移动, 移动步长为 ImageCutter.moveStep 定义的步长",
             "itemtype": "method",
             "name": "moveDown",
@@ -6510,7 +6510,106 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1680,
+            "line": 1686,
+            "description": "初始化实例时触发的事件",
+            "itemtype": "event",
+            "name": "ImageCutterInited",
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
+            "line": 1690,
+            "description": "初始化预览时触发的事件",
+            "itemtype": "event",
+            "name": "CICInitPreview",
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
+            "line": 1694,
+            "description": "拖动完成时触发的事件",
+            "itemtype": "event",
+            "name": "CICDragDone",
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
+            "line": 1698,
+            "description": "更新拖动块时触发的事件",
+            "itemtype": "event",
+            "name": "CICUpdateDragger",
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
+            "line": 1702,
+            "description": "更新预览时触发的事件",
+            "itemtype": "event",
+            "name": "CICUpdatePreview",
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
+            "line": 1706,
+            "description": "更新坐标值时触发的事件",
+            "itemtype": "event",
+            "name": "CICUpdateCoordinate",
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
+            "line": 1710,
+            "description": "图片加载完毕时触发的事件",
+            "itemtype": "event",
+            "name": "CICImageLoad",
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
+            "line": 1714,
+            "description": "图片加载失败时触发的事件",
+            "itemtype": "event",
+            "name": "CICImageLoadError",
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
+            "line": 1718,
+            "description": "发生错误时触发的事件",
+            "itemtype": "event",
+            "name": "CICError",
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
+            "line": 1722,
+            "description": "图片大小不符合要求时触发的事件",
+            "itemtype": "event",
+            "name": "CICSizeError",
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
+            "line": 1726,
+            "description": "图片缩放后大小不符合要求时触发的事件",
+            "itemtype": "event",
+            "name": "CICPreviewError",
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
+            "line": 1730,
             "description": "按比例缩放图片\n<br />返回: { width: int, height: int }",
             "params": [
                 {
@@ -6543,14 +6642,14 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1704,
+            "line": 1754,
             "description": "计算两个坐标点之间的距离",
             "class": "JC.ImageCutter",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1714,
+            "line": 1764,
             "description": "从长度和角度求坐标点",
             "class": "JC.ImageCutter",
             "namespace": "JC"
@@ -17534,15 +17633,15 @@
         },
         {
             "message": "Missing item type\n按比例缩放图片\n<br />返回: { width: int, height: int }",
-            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1680"
+            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1730"
         },
         {
             "message": "Missing item type\n计算两个坐标点之间的距离",
-            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1704"
+            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1754"
         },
         {
             "message": "Missing item type\n从长度和角度求坐标点",
-            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1714"
+            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1764"
         },
         {
             "message": "Missing item type\n监听上一年按钮",

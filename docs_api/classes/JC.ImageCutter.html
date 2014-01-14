@@ -151,7 +151,9 @@
        <br />x, y, sidelength
    </dd>
    <dt>coordinateSelector =  selector</dt>
-   <dd>保存当前坐标值的 node</dd>
+   <dd>保存当前坐标值的 node
+         <br />坐标值分别为: [ x, y, rectWidth, rectHeight, imgWidth, imgHeight ]
+   </dd>
    <dt>imageUrlSelector = selector</dt>
    <dd>保存当前图片URL的 node</dd>
    <dt>previewSelector = selector</dt>
@@ -178,7 +180,7 @@
    </dd>
    <dt>cicCoordinateUpdateCb = function</dt>
    <dd>更新裁切坐标后的回调, <b>window变量域</b>
-   <br />_corAr = Array = [ x, y, rectWidth, rectHeight, imgWidth, imageHeight ]
+   <br />_corAr = Array = [ x, y, rectWidth, rectHeight, imgWidth, imgHeight ]
 <pre>function cicCoordinateUpdateCb( _corAr, _imgUrl ){
    var _p = this, _selector = _p.selector();
    JC.log( &#39;cicCoordinateUpdateCb&#39;, _corAr, _imgUrl, new Date().getTime() );
@@ -256,27 +258,27 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                   <table>
-       <tr>
-           <td>
-               <div class="js_compImageCutter"
-                   imageUrl="data/uploads/h_1680x1050.jpg"
-                   previewSelector="(tr div.js_previewItem"
-                   coordinateSelector="(td input.js_coordinate"
-                   imageUrlSelector="(td input.js_imageUrl"
-                   cicCoordinateUpdateCb="cicCoordinateUpdateCb"
-                   >
-               </div>
-               <input type="text" class="ipt js_coordinate" value="" />
-               <input type="text" class="ipt js_imageUrl" value="" />
-           </td>
-           <td>
-               <div class="cic_previewItem js_previewItem" style="width: 50px; height: 50px;"></div>
-               <div class="cic_previewItem js_previewItem" style="width: 75px; height: 75px;"></div>
-               <div class="cic_previewItem js_previewItem" style="width: 150px; height: 150px;"></div>
-           </td>
-       </tr>
-   </table>
+                <xmp><table>
+   <tr>
+       <td>
+           <div class="js_compImageCutter"
+               imageUrl="data/uploads/h_1680x1050.jpg"
+               previewSelector="(tr div.js_previewItem"
+               coordinateSelector="(td input.js_coordinate"
+               imageUrlSelector="(td input.js_imageUrl"
+               cicCoordinateUpdateCb="cicCoordinateUpdateCb"
+               >
+           </div>
+           <input type="text" class="ipt js_coordinate" value="" />
+           <input type="text" class="ipt js_imageUrl" value="" />
+       </td>
+       <td>
+           <div class="cic_previewItem js_previewItem" style="width: 50px; height: 50px;"></div>
+           <div class="cic_previewItem js_previewItem" style="width: 75px; height: 75px;"></div>
+           <div class="cic_previewItem js_previewItem" style="width: 150px; height: 150px;"></div>
+       </td>
+   </tr>
+</table></xmp>
             </div>
         </div>
 </div>
@@ -286,6 +288,7 @@
         <li class="api-class-tab index"><a href="#index">Index</a></li>
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
             <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+            <li class="api-class-tab events"><a href="#events">Events</a></li>
     </ul>
     <div>
         <div id="index" class="api-class-tabpanel index">
@@ -384,6 +387,44 @@
                             </li>
                     </ul>
                 </div>
+                <div class="index-section events">
+                    <h3>Events</h3>
+                    <ul class="index-list events extends">
+                            <li class="index-item event">
+                                <a href="#event_CICDragDone">CICDragDone</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_CICError">CICError</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_CICImageLoad">CICImageLoad</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_CICImageLoadError">CICImageLoadError</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_CICInitPreview">CICInitPreview</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_CICPreviewError">CICPreviewError</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_CICSizeError">CICSizeError</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_CICUpdateCoordinate">CICUpdateCoordinate</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_CICUpdateDragger">CICUpdateDragger</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_CICUpdatePreview">CICUpdatePreview</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_ImageCutterInited">ImageCutterInited</a>
+                            </li>
+                    </ul>
+                </div>
         </div>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
@@ -473,7 +514,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l664"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:664</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l668"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:668</code></a>
         </p>
     </div>
     <div class="description">
@@ -497,7 +538,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l638"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:638</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l642"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:642</code></a>
         </p>
     </div>
     <div class="description">
@@ -511,7 +552,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l270"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:270</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l272"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:272</code></a>
         </p>
     </div>
     <div class="description">
@@ -524,7 +565,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l655"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:655</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l659"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:659</code></a>
         </p>
     </div>
     <div class="description">
@@ -553,7 +594,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l239"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:239</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l241"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:241</code></a>
         </p>
     </div>
     <div class="description">
@@ -605,7 +646,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l167"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:167</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l169"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:169</code></a>
         </p>
     </div>
     <div class="description">
@@ -635,7 +676,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l686"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:686</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l690"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:690</code></a>
         </p>
     </div>
     <div class="description">
@@ -648,7 +689,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l671"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:671</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l675"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:675</code></a>
         </p>
     </div>
     <div class="description">
@@ -661,7 +702,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l681"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:681</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l685"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:685</code></a>
         </p>
     </div>
     <div class="description">
@@ -674,7 +715,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l676"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:676</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l680"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:680</code></a>
         </p>
     </div>
     <div class="description">
@@ -802,7 +843,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l627"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:627</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l631"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:631</code></a>
         </p>
     </div>
     <div class="description">
@@ -832,7 +873,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l649"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:649</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l653"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:653</code></a>
         </p>
     </div>
     <div class="description">
@@ -861,7 +902,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l230"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:230</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l232"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:232</code></a>
         </p>
     </div>
     <div class="description">
@@ -877,7 +918,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l221"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:221</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l223"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:223</code></a>
         </p>
     </div>
     <div class="description">
@@ -892,7 +933,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l206"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:206</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l208"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:208</code></a>
         </p>
     </div>
     <div class="description">
@@ -906,7 +947,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l198"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:198</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l200"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:200</code></a>
         </p>
     </div>
     <div class="description">
@@ -921,7 +962,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l190"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:190</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l192"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:192</code></a>
         </p>
     </div>
     <div class="description">
@@ -936,13 +977,159 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l213"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:213</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l215"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:215</code></a>
         </p>
     </div>
     <div class="description">
         <p>上下左右方向键移动的步长</p>
     </div>
         <p><strong>Default:</strong> 1</p>
+</div>
+            </div>
+            <div id="events" class="api-class-tabpanel">
+                <h2 class="off-left">Events</h2>
+                    <div id="event_CICDragDone" class="events item">
+    <h3 class="name"><code>CICDragDone</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l1694"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:1694</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>拖动完成时触发的事件</p>
+    </div>
+</div>
+                    <div id="event_CICError" class="events item">
+    <h3 class="name"><code>CICError</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l1718"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:1718</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>发生错误时触发的事件</p>
+    </div>
+</div>
+                    <div id="event_CICImageLoad" class="events item">
+    <h3 class="name"><code>CICImageLoad</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l1710"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:1710</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>图片加载完毕时触发的事件</p>
+    </div>
+</div>
+                    <div id="event_CICImageLoadError" class="events item">
+    <h3 class="name"><code>CICImageLoadError</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l1714"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:1714</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>图片加载失败时触发的事件</p>
+    </div>
+</div>
+                    <div id="event_CICInitPreview" class="events item">
+    <h3 class="name"><code>CICInitPreview</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l1690"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:1690</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>初始化预览时触发的事件</p>
+    </div>
+</div>
+                    <div id="event_CICPreviewError" class="events item">
+    <h3 class="name"><code>CICPreviewError</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l1726"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:1726</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>图片缩放后大小不符合要求时触发的事件</p>
+    </div>
+</div>
+                    <div id="event_CICSizeError" class="events item">
+    <h3 class="name"><code>CICSizeError</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l1722"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:1722</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>图片大小不符合要求时触发的事件</p>
+    </div>
+</div>
+                    <div id="event_CICUpdateCoordinate" class="events item">
+    <h3 class="name"><code>CICUpdateCoordinate</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l1706"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:1706</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>更新坐标值时触发的事件</p>
+    </div>
+</div>
+                    <div id="event_CICUpdateDragger" class="events item">
+    <h3 class="name"><code>CICUpdateDragger</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l1698"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:1698</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>更新拖动块时触发的事件</p>
+    </div>
+</div>
+                    <div id="event_CICUpdatePreview" class="events item">
+    <h3 class="name"><code>CICUpdatePreview</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l1702"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:1702</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>更新预览时触发的事件</p>
+    </div>
+</div>
+                    <div id="event_ImageCutterInited" class="events item">
+    <h3 class="name"><code>ImageCutterInited</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l1686"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:1686</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>初始化实例时触发的事件</p>
+    </div>
 </div>
             </div>
     </div>

@@ -30,7 +30,9 @@
  *    </dd>
  *
  *    <dt>coordinateSelector =  selector</dt>
- *    <dd>保存当前坐标值的 node</dd>
+ *    <dd>保存当前坐标值的 node
+ *          <br />坐标值分别为: [ x, y, rectWidth, rectHeight, imgWidth, imgHeight ]
+ *    </dd>
  *
  *    <dt>imageUrlSelector = selector</dt>
  *    <dd>保存当前图片URL的 node</dd>
@@ -65,7 +67,7 @@
  *
  *    <dt>cicCoordinateUpdateCb = function</dt>
  *    <dd>更新裁切坐标后的回调, <b>window变量域</b>
- *    <br />_corAr = Array = [ x, y, rectWidth, rectHeight, imgWidth, imageHeight ]
+ *    <br />_corAr = Array = [ x, y, rectWidth, rectHeight, imgWidth, imgHeight ]
  <pre>function cicCoordinateUpdateCb( _corAr, _imgUrl ){
     var _p = this, _selector = _p.selector();
     JC.log( 'cicCoordinateUpdateCb', _corAr, _imgUrl, new Date().getTime() );
@@ -123,27 +125,27 @@
  * @version dev 0.1 2013-12-13
  * @author  qiushaowei <suches@btbtd.org> | 75 Team
  * @example
-    <table>
-        <tr>
-            <td>
-                <div class="js_compImageCutter"
-                    imageUrl="data/uploads/h_1680x1050.jpg"
-                    previewSelector="(tr div.js_previewItem"
-                    coordinateSelector="(td input.js_coordinate"
-                    imageUrlSelector="(td input.js_imageUrl"
-                    cicCoordinateUpdateCb="cicCoordinateUpdateCb"
-                    >
-                </div>
-                <input type="text" class="ipt js_coordinate" value="" />
-                <input type="text" class="ipt js_imageUrl" value="" />
-            </td>
-            <td>
-                <div class="cic_previewItem js_previewItem" style="width: 50px; height: 50px;"></div>
-                <div class="cic_previewItem js_previewItem" style="width: 75px; height: 75px;"></div>
-                <div class="cic_previewItem js_previewItem" style="width: 150px; height: 150px;"></div>
-            </td>
-        </tr>
-    </table>
+<xmp><table>
+    <tr>
+        <td>
+            <div class="js_compImageCutter"
+                imageUrl="data/uploads/h_1680x1050.jpg"
+                previewSelector="(tr div.js_previewItem"
+                coordinateSelector="(td input.js_coordinate"
+                imageUrlSelector="(td input.js_imageUrl"
+                cicCoordinateUpdateCb="cicCoordinateUpdateCb"
+                >
+            </div>
+            <input type="text" class="ipt js_coordinate" value="" />
+            <input type="text" class="ipt js_imageUrl" value="" />
+        </td>
+        <td>
+            <div class="cic_previewItem js_previewItem" style="width: 50px; height: 50px;"></div>
+            <div class="cic_previewItem js_previewItem" style="width: 75px; height: 75px;"></div>
+            <div class="cic_previewItem js_previewItem" style="width: 150px; height: 150px;"></div>
+        </td>
+    </tr>
+</table></xmp>
  */
     var _jdoc = $( document ), _jwin = $( window ), _jbody;
 
@@ -480,10 +482,10 @@
                     }
 
                     _img.css( { 
-                        'width': _newSize.preview.width + 'px'
-                        , 'height': _newSize.preview.height + 'px' 
-                        , 'left': _newSize.left + 'px'
-                        , 'top': _newSize.top + 'px'
+                        'width': _newSize.preview.width
+                        , 'height': _newSize.preview.height
+                        , 'left': _newSize.left
+                        , 'top': _newSize.top
                     });
                     _img.prependTo( _p.selector() );
                     
@@ -506,6 +508,7 @@
                 _p.selector().on( 'mouseleave', ImageCutter.defaultMouseleave );
 
                 _p.selector().delegate( 'div.cic_dragMain', 'mousedown', function( _evt ){
+                    if( !_p._model.ready() ) return;
                     _evt.preventDefault();
                     _evt.stopPropagation();
                     //JC.log( 'div.cic_dragMain mousedown', new Date().getTime() );
@@ -523,6 +526,7 @@
                 });
 
                 _p.selector().delegate( 'button.cic_btn', 'mousedown', function( _evt ){
+                    if( !_p._model.ready() ) return;
                     _evt.preventDefault();
                     //JC.log( 'div.cic_btn mousedown', new Date().getTime() );
 
@@ -845,6 +849,8 @@
 
                 this.coordinateSelector() && this.coordinateSelector().val( '' );
                 this.imageUrlSelector() && this.imageUrlSelector().val( '' );
+
+                _p.ready( false );
             }
 
         , draggerList:
@@ -1281,6 +1287,10 @@
                         , 'height': _newHeight
                         , 'left': -_newLeft
                         , 'top': -_newTop
+                        , 'max-width': _newWidth
+                        , 'min-width': _newWidth
+                        , 'max-height': _newHeight
+                        , 'min-height': _newHeight
                     });
 
                 });
@@ -1677,6 +1687,50 @@
            _p.updatePosition( _di.tmpSize );
         };
 
+    /**
+     * 初始化实例时触发的事件
+     * @event   ImageCutterInited
+     */
+    /**
+     * 初始化预览时触发的事件
+     * @event   CICInitPreview
+     */
+    /**
+     * 拖动完成时触发的事件
+     * @event   CICDragDone
+     */
+    /**
+     * 更新拖动块时触发的事件
+     * @event   CICUpdateDragger
+     */
+    /**
+     * 更新预览时触发的事件
+     * @event   CICUpdatePreview
+     */
+    /**
+     * 更新坐标值时触发的事件
+     * @event   CICUpdateCoordinate
+     */
+    /**
+     * 图片加载完毕时触发的事件
+     * @event   CICImageLoad
+     */
+    /**
+     * 图片加载失败时触发的事件
+     * @event   CICImageLoadError
+     */
+    /**
+     * 发生错误时触发的事件
+     * @event   CICError
+     */
+    /**
+     * 图片大小不符合要求时触发的事件
+     * @event   CICSizeError
+     */
+    /**
+     * 图片缩放后大小不符合要求时触发的事件
+     * @event   CICPreviewError
+     */
     /**
      * 按比例缩放图片
      * <br />返回: { width: int, height: int }
