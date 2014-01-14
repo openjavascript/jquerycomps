@@ -109,13 +109,23 @@
             });
         });
 
-        function coordinateUpdateCb( _corAr, _imgUrl ){
-            var _p = this
-                , _td = JC.f.getJqParent( _p.selector(), 'td' )
+        function cicInitedCb(){
+            var _ins = this, _selector = _ins.selector();
+            JC.log( 'cicInitedCb', new Date().getTime() );
+        }
+
+        function cicImageInitedCb( _sizeObj, _img ){
+            var _ins = this, _selector = _ins.selector();
+            JC.log( 'cicImageInitedCb', new Date().getTime() );
+        }
+
+        function cicCoordinateUpdateCb( _corAr, _imgUrl ){
+            var _p = this, _selector = _p.selector()
+                , _td = JC.f.getJqParent( _selector, 'td' )
                 , _a = _td.find( '.js_createPic' )
                 , _href = _a.attr( 'href' )
                 ;
-            //JC.log( 'coordinateUpdateCb', _corAr, _imgUrl, new Date().getTime() );
+            JC.log( 'cicCoordinateUpdateCb', _corAr, _imgUrl, new Date().getTime() );
 
             _href =
                 JC.f.addUrlParams( _href, {
@@ -124,6 +134,31 @@
                 });
 
             _a.attr( 'href', _href );
+        }
+
+        function cicDragDoneCb( _sizeObj ){
+            var _ins = this, _selector = _ins.selector();
+            JC.log( 'cicDragDoneCb', new Date().getTime() );
+        }
+
+        function cicErrorCb( _errType, _args ){
+            var _ins = this, _selector = _ins.selector();
+            JC.log( 'cicErrorCb', _errType, new Date().getTime() );
+        }
+
+        function cicLoadErrorCb( _imgUrl ){
+            var _ins = this, _selector = _ins.selector();
+            JC.log( 'cicLoadErrorCb',_imgUrl, new Date().getTime() );
+        }
+
+        function cicSizeErrorCb( _width, _height, _imgUrl, _isMax ){
+            var _ins = this, _selector = _ins.selector();
+            JC.log( 'cicSizeErrorCb', _width, _height, _imgUrl, _isMax, new Date().getTime() );
+        }
+
+        function cicPreviewSizeErrorCb( _width, _height, _imgUrl, _newSize ){
+            var _ins = this, _selector = _ins.selector();
+            JC.log( 'cicPreviewSizeErrorCb', _width, _height, _imgUrl, _newSize, new Date().getTime() );
         }
 
     </script>
@@ -140,13 +175,20 @@
                     <td>
                         <div class="js_compImageCutter"
                             imageUrl="data/uploads/h1_600x415.jpg"
-                            previewSelector="(tr div.js_previewItem"
                             coordinateSelector="(td input.js_coordinate"
+                            previewSelector="(tr div.js_previewItem"
                             imageUrlSelector="(td input.js_imageUrl"
-                            coordinateUpdateCb="coordinateUpdateCb"
-                            minImageSidelength="100"
+                            minRectSidelength="60"
+                            minImageSidelength="60"
                             maxImageSidelength="1000"
-                            minRectSidelength="100"
+                            cicInitedCb="cicInitedCb"
+                            cicImageInitedCb="cicImageInitedCb"
+                            cicCoordinateUpdateCb="cicCoordinateUpdateCb"
+                            cicDragDoneCb="cicDragDoneCb"
+                            cicErrorCb="cicErrorCb"
+                            cicLoadErrorCb="cicLoadErrorCb"
+                            cicSizeErrorCb="cicSizeErrorCb"
+                            cicPreviewSizeErrorCb="cicPreviewSizeErrorCb"
                             >
                         </div>
                         <input type="text" class="ipt js_coordinate" value="" />
@@ -234,12 +276,12 @@
 
     </dl>
 
-<div style="position:fixed; right: 20px; top: 20px; width: 240px;">
+<div style="position:fixed; right: 20px; top: 20px; width: 280px;">
 <pre>imageUrl="data/uploads/h1_600x415.jpg"
 previewSelector="(tr div.js_previewItem"
 coordinateSelector="(td input.js_coordinate"
 imageUrlSelector="(td input.js_imageUrl"
-coordinateUpdateCb="coordinateUpdateCb"
+cicCoordinateUpdateCb="cicCoordinateUpdateCb"
 minImageSidelength="100"
 maxImageSidelength="1000"
 minRectSidelength="100"</pre>

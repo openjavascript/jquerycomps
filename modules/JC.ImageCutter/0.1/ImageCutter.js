@@ -1,7 +1,7 @@
-//TODO: 捕获图片加载错误
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
- * 组件用途简述
+ * 图片裁切组件
+ * <br />借助 PHP GD 库进行图片裁切
  *
  *<p><b>require</b>:
  *   <a href="widnow.jQuery.html">jQuery</a>
@@ -18,8 +18,101 @@
  *<h2>可用的 HTML attribute</h2>
  *
  *<dl>
- *    <dt></dt>
- *    <dd><dd>
+ *    <dt>imageUrl = url string</dt>
+ *    <dd>图片URL<dd>
+ *
+ *    <dt>defaultCoordinate = string</dt>
+ *    <dd>
+ *        设置默认选择范围, 有以下三种模式
+ *        <br />sidelength
+ *        <br />x, y
+ *        <br />x, y, sidelength
+ *    </dd>
+ *
+ *    <dt>coordinateSelector =  selector</dt>
+ *    <dd>保存当前坐标值的 node</dd>
+ *
+ *    <dt>imageUrlSelector = selector</dt>
+ *    <dd>保存当前图片URL的 node</dd>
+ *
+ *    <dt>previewSelector = selector</dt>
+ *    <dd>用于显示预览的 node, 支持多个预览, node 宽高并须为正方形</dd>
+ *
+ *    <dt>minRectSidelength = int, default = 50</dt>
+ *    <dd>裁切块的最小边长</dd>
+ *
+ *    <dt>minImageSidelength = int, default = 50</dt>
+ *    <dd>图片的最小边长</dd>
+ *
+ *    <dt>maxImageSidelength = int</dt>
+ *    <dd>图片的最大边长</dd>
+ *
+ *    <dt>cicInitedCb = function</dt>
+ *    <dd>组件初始化后的回调, <b>window变量域</b>
+<pre>function cicInitedCb(){
+    var _ins = this, _selector = _ins.selector();
+    JC.log( 'cicInitedCb', new Date().getTime() );
+}</pre>
+ *    </dd>
+ *
+ *    <dt>cicImageInitedCb = function</dt>
+ *    <dd>图片初始化完成时的回调, <b>window变量域</b>
+<pre>function cicImageInitedCb( _sizeObj, _img ){
+    var _ins = this, _selector = _ins.selector();
+    JC.log( 'cicImageInitedCb', new Date().getTime() );
+}</pre>
+ *    </dd>
+ *
+ *    <dt>cicCoordinateUpdateCb = function</dt>
+ *    <dd>更新裁切坐标后的回调, <b>window变量域</b>
+ *    <br />_corAr = Array = [ x, y, rectWidth, rectHeight, imgWidth, imageHeight ]
+ <pre>function cicCoordinateUpdateCb( _corAr, _imgUrl ){
+    var _p = this, _selector = _p.selector();
+    JC.log( 'cicCoordinateUpdateCb', _corAr, _imgUrl, new Date().getTime() );
+}</pre>
+ *    </dd>
+ *
+ *    <dt>cicDragDoneCb = function</dt>
+ *    <dd>拖动完成后的回调, <b>window变量域</b>
+ *      <br/>与 cicCoordinateUpdateCb 的差别是: cicDragDoneCb 初始化不会触发
+ <pre>function cicDragDoneCb( _sizeObj ){
+    var _ins = this, _selector = _ins.selector();
+    JC.log( 'cicDragDoneCb', new Date().getTime() );
+}</pre>
+ *    </dd>
+ *
+ *    <dt>cicErrorCb = function</dt>
+ *    <dd>发生错误时的回调, <b>window变量域</b>
+ *      <br />所有错误类型都会触发这个回调
+ <pre>function cicErrorCb( _errType, _args ){
+    var _ins = this, _selector = _ins.selector();
+    JC.log( 'cicErrorCb', _errType, new Date().getTime() );
+}</pre>
+ *    </dd>
+ *
+ *    <dt>cicLoadErrorCb = function</dt>
+ *    <dd>图片加载错误时的回调, <b>window变量域</b>
+ <pre>function cicLoadErrorCb( _imgUrl ){
+    var _ins = this, _selector = _ins.selector();
+    JC.log( 'cicLoadErrorCb',_imgUrl, new Date().getTime() );
+}</pre>
+ *    </dd>
+ *
+ *    <dt>cicSizeErrorCb = function</dt>
+ *    <dd>图片尺寸不符合设置要求时的回调, <b>window变量域</b>
+<pre>function cicSizeErrorCb( _width, _height, _imgUrl, _isMax ){
+    var _ins = this, _selector = _ins.selector();
+    JC.log( 'cicSizeErrorCb', _width, _height, _imgUrl, _isMax, new Date().getTime() );
+}</pre>
+ *    </dd>
+ *
+ *    <dt>cicPreviewSizeErrorCb = function</dt>
+ *    <dd>图片缩放后尺寸不符合设置要求时的回调, <b>window变量域</b>
+ <pre>function cicPreviewSizeErrorCb( _width, _height, _imgUrl, _newSize ){
+    var _ins = this, _selector = _ins.selector();
+    JC.log( 'cicPreviewSizeErrorCb', _width, _height, _imgUrl, _newSize, new Date().getTime() );
+}</pre>
+ *    </dd>
  *</dl> 
  *
  * @namespace   JC
@@ -78,9 +171,9 @@
     ImageCutter.minRectSidelength = 50;
     ImageCutter.minImageSidelength = 50;
     ImageCutter.maxImageSidelength;
+    ImageCutter.moveStep = 1;
     ImageCutter._positionPoint = 10000;
     ImageCutter._defaultCursor = 'auto';
-    ImageCutter.moveStep = 1;
 
     ImageCutter.dragInfo =
         function( _p, _evt, _size, _srcSelector ){
@@ -273,11 +366,14 @@
                 var _p = this;
 
                 _p.on( ImageCutter.Model.INITED, function( _evt ){
+                    _p._model.coordinateSelector() && _p._model.coordinateSelector().val( '' );
+                    _p._model.imageUrlSelector() && _p._model.imageUrlSelector().val( '' );
+
                     _p._model.imageUrl()
                         && _p.update( _p._model.imageUrl() );
 
                     _p._model.cicInitedCb()
-                        && _p._model.cicInitedCb().call( _p, _p.selector() );
+                        && _p._model.cicInitedCb().call( _p );
                 });
 
                 _p.on( ImageCutter.Model.IMAGE_LOAD, function( _evt, _img, _width, _height ){
@@ -302,8 +398,9 @@
 
                     var _newSize = _p._model.size( _width, _height );
 
+                    //if( true ){
                     if( _newSize.preview.width < _p._model.minRectSidelength() 
-                        || _newSize.preview.height < _p._model.minRectSidelength() ){
+                            || _newSize.preview.height < _p._model.minRectSidelength() ){
                         _p.trigger( ImageCutter.Model.ERROR_PREVIEW, [ _width, _height, _img, _newSize ] );
                         return;
                     }
@@ -327,8 +424,8 @@
 
                     _p._model.ready( true );
 
-                    _p._model.imageInitedCb()
-                        && _p._model.imageInitedCb().call( _p, _p.selector(), _img );
+                    _p._model.cicImageInitedCb()
+                        && _p._model.cicImageInitedCb().call( _p, _p._model.size(), _img );
                 });
 
                 _p.selector().on( 'mouseenter', ImageCutter.defaultMouseenter );
@@ -399,6 +496,9 @@
                 _p.on( ImageCutter.Model.DRAG_DONE, function( _evt, _size ){
                     //JC.log( 'ImageCutter.DRAG_DONE', new Date().getTime() );
                     _p.trigger( ImageCutter.Model.UPDATE_COORDINATE, [ _size ] );
+
+                    _p._model.cicDragDoneCb()
+                        && _p._model.cicDragDoneCb().call( _p, _p._model.size() );
                 });
 
                 _p.on( ImageCutter.Model.UPDATE_COORDINATE, function( _evt, _size ){
@@ -408,33 +508,40 @@
                     if( !_size ) return;
                     var _corAr = _p._model.realCoordinate( _size );
 
-                    _p._model.coordinateUpdateCb() 
-                        && _p._model.coordinateUpdateCb().call( _p, _corAr, _p._model.imageUrl() );
+                    _p._model.cicCoordinateUpdateCb() 
+                        && _p._model.cicCoordinateUpdateCb().call( _p, _corAr, _p._model.imageUrl() );
 
                     if( !( _selector && _selector.length ) ) return;
                     _selector.val( _corAr );
                 });
 
-                _p.on( ImageCutter.Model.ERROR, function( _evt ){
+                _p.on( ImageCutter.Model.ERROR, function( _evt, _type, _args ){
                     _p._model.clean();
                     _p._model.ready( false );
+
+                    _p._model.cicErrorCb()
+                        && _p._model.cicErrorCb().call( _p, _type, _args );
                 });
 
                 _p.on( ImageCutter.Model.LOAD_ERROR, function( _evt, _imgUrl ){
                     _p.clean();
                     _p._model.ready( false );
                     _p._view.imageLoadError( _imgUrl );
-                    _p.trigger( ImageCutter.Model.ERROR );
+                    _p._model.cicLoadErrorCb() && _p._model.cicLoadErrorCb().call( _p, _imgUrl );
+                    _p.trigger( ImageCutter.Model.ERROR, [ ImageCutter.Model.LOAD_ERROR, [ _imgUrl ] ] );
                 });
 
                 _p.on( ImageCutter.Model.ERROR_SIZE, function( _evt, _width, _height, _img, _isMax ){
                     _p._view.sizeError( _width, _height, _img, _isMax );
-                    _p.trigger( ImageCutter.Model.ERROR );
+                    _p._model.cicSizeErrorCb() && _p._model.cicSizeErrorCb().call( _p, _width, _height, _img.attr('src'), _isMax );
+                    _p.trigger( ImageCutter.Model.ERROR, [ ImageCutter.Model.ERROR_SIZE, [ _width, _height, _img, _isMax ] ] );
                 });
 
                 _p.on( ImageCutter.Model.ERROR_PREVIEW, function( _evt, _width, _height, _img, _newSize ){
                     _p._view.previewError( _width, _height, _img, _newSize );
-                    _p.trigger( ImageCutter.Model.ERROR );
+                    _p._model.cicPreviewSizeErrorCb() 
+                        && _p._model.cicPreviewSizeErrorCb().call( _p, _width, _height, _img.attr('src'), _newSize );
+                    _p.trigger( ImageCutter.Model.ERROR, [ ImageCutter.Model.ERROR_PREVIEW, [ _width, _height, _img, _newSize ] ]  );
                 });
             }
 
@@ -511,8 +618,14 @@
                 return this.attrProp( 'imageUrl' );
             }
 
+        , cicImageInitedCb: function(){ return this.callbackProp( 'cicImageInitedCb' ); }
+
         , cicInitedCb: function(){ return this.callbackProp( 'cicInitedCb' ); }
-        , imageInitedCb: function(){ return this.callbackProp( 'imageInitedCb' ); }
+        , cicDragDoneCb: function(){ return this.callbackProp( 'cicDragDoneCb' ); }
+        , cicErrorCb: function(){ return this.callbackProp( 'cicErrorCb' ); }
+        , cicLoadErrorCb: function(){ return this.callbackProp( 'cicLoadErrorCb' ); }
+        , cicSizeErrorCb: function(){ return this.callbackProp( 'cicSizeErrorCb' ); }
+        , cicPreviewSizeErrorCb: function(){ return this.callbackProp( 'cicPreviewSizeErrorCb' ); }
 
         , previewSelector:
             function( _cleanCache ){
@@ -603,7 +716,7 @@
                 return _r;
             }
 
-        , coordinateUpdateCb: function(){ return this.callbackProp( 'coordinateUpdateCb' ); }
+        , cicCoordinateUpdateCb: function(){ return this.callbackProp( 'cicCoordinateUpdateCb' ); }
 
         , clean: 
             function(){

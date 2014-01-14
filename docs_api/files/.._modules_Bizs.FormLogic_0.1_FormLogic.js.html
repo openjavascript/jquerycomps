@@ -1070,8 +1070,12 @@
                     setTimeout(function(){
                         var _form = _p._model.selector();
 
-                        _form.find(&#x27;input[type=text], input[type=password], input[type=file], textarea&#x27;).val(&#x27;&#x27;);
+                        _form.find(&#x27;input[type=text], input[type=password], input[type=file], textarea&#x27;).each( function(){
+                            if( $( this ).attr( &#x27;ignoreResetClear&#x27; ) ) return;
+                            $( this ).val( &#x27;&#x27; );
+                        });
                         _form.find(&#x27;select&#x27;).each( function() {
+                            if( $( this ).attr( &#x27;ignoreResetClear&#x27; ) ) return;
                             var sp = $(this);
                             var cs = sp.find(&#x27;option&#x27;);
                             if( cs.length &gt; 1 ){

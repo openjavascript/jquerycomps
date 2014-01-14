@@ -124,11 +124,12 @@
             Extends <a href="../classes/JC.BaseMVC.html" class="crosslink">JC.BaseMVC</a>
         </div>
         <div class="foundat">
-            Defined in: <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l7"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:7</code></a>
+            Defined in: <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l2"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:2</code></a>
         </div>
 </div>
 <div class="box intro">
-    <p>组件用途简述</p>
+    <p>图片裁切组件
+<br />借助 PHP GD 库进行图片裁切</p>
 <p><b>require</b>:
   <a href="widnow.jQuery.html">jQuery</a>
   , <a href="JC.common.html">JC.common</a>
@@ -140,8 +141,86 @@
 <h2>页面只要引用本脚本, 默认会处理 div class=&quot;js_compImageCutter&quot;</h2>
 <h2>可用的 HTML attribute</h2>
 <dl>
-   <dt></dt>
-   <dd><dd>
+   <dt>imageUrl = url string</dt>
+   <dd>图片URL<dd>
+   <dt>defaultCoordinate = string</dt>
+   <dd>
+       设置默认选择范围, 有以下三种模式
+       <br />sidelength
+       <br />x, y
+       <br />x, y, sidelength
+   </dd>
+   <dt>coordinateSelector =  selector</dt>
+   <dd>保存当前坐标值的 node</dd>
+   <dt>imageUrlSelector = selector</dt>
+   <dd>保存当前图片URL的 node</dd>
+   <dt>previewSelector = selector</dt>
+   <dd>用于显示预览的 node, 支持多个预览, node 宽高并须为正方形</dd>
+   <dt>minRectSidelength = int, default = 50</dt>
+   <dd>裁切块的最小边长</dd>
+   <dt>minImageSidelength = int, default = 50</dt>
+   <dd>图片的最小边长</dd>
+   <dt>maxImageSidelength = int</dt>
+   <dd>图片的最大边长</dd>
+   <dt>cicInitedCb = function</dt>
+   <dd>组件初始化后的回调, <b>window变量域</b>
+<pre>function cicInitedCb(){
+   var _ins = this, _selector = _ins.selector();
+   JC.log( &#39;cicInitedCb&#39;, new Date().getTime() );
+}</pre>
+   </dd>
+   <dt>cicImageInitedCb = function</dt>
+   <dd>图片初始化完成时的回调, <b>window变量域</b>
+<pre>function cicImageInitedCb( _sizeObj, _img ){
+   var _ins = this, _selector = _ins.selector();
+   JC.log( &#39;cicImageInitedCb&#39;, new Date().getTime() );
+}</pre>
+   </dd>
+   <dt>cicCoordinateUpdateCb = function</dt>
+   <dd>更新裁切坐标后的回调, <b>window变量域</b>
+   <br />_corAr = Array = [ x, y, rectWidth, rectHeight, imgWidth, imageHeight ]
+<pre>function cicCoordinateUpdateCb( _corAr, _imgUrl ){
+   var _p = this, _selector = _p.selector();
+   JC.log( &#39;cicCoordinateUpdateCb&#39;, _corAr, _imgUrl, new Date().getTime() );
+}</pre>
+   </dd>
+   <dt>cicDragDoneCb = function</dt>
+   <dd>拖动完成后的回调, <b>window变量域</b>
+     <br/>与 cicCoordinateUpdateCb 的差别是: cicDragDoneCb 初始化不会触发
+<pre>function cicDragDoneCb( _sizeObj ){
+   var _ins = this, _selector = _ins.selector();
+   JC.log( &#39;cicDragDoneCb&#39;, new Date().getTime() );
+}</pre>
+   </dd>
+   <dt>cicErrorCb = function</dt>
+   <dd>发生错误时的回调, <b>window变量域</b>
+     <br />所有错误类型都会触发这个回调
+<pre>function cicErrorCb( _errType, _args ){
+   var _ins = this, _selector = _ins.selector();
+   JC.log( &#39;cicErrorCb&#39;, _errType, new Date().getTime() );
+}</pre>
+   </dd>
+   <dt>cicLoadErrorCb = function</dt>
+   <dd>图片加载错误时的回调, <b>window变量域</b>
+<pre>function cicLoadErrorCb( _imgUrl ){
+   var _ins = this, _selector = _ins.selector();
+   JC.log( &#39;cicLoadErrorCb&#39;,_imgUrl, new Date().getTime() );
+}</pre>
+   </dd>
+   <dt>cicSizeErrorCb = function</dt>
+   <dd>图片尺寸不符合设置要求时的回调, <b>window变量域</b>
+<pre>function cicSizeErrorCb( _width, _height, _imgUrl, _isMax ){
+   var _ins = this, _selector = _ins.selector();
+   JC.log( &#39;cicSizeErrorCb&#39;, _width, _height, _imgUrl, _isMax, new Date().getTime() );
+}</pre>
+   </dd>
+   <dt>cicPreviewSizeErrorCb = function</dt>
+   <dd>图片缩放后尺寸不符合设置要求时的回调, <b>window变量域</b>
+<pre>function cicPreviewSizeErrorCb( _width, _height, _imgUrl, _newSize ){
+   var _ins = this, _selector = _ins.selector();
+   JC.log( &#39;cicPreviewSizeErrorCb&#39;, _width, _height, _imgUrl, _newSize, new Date().getTime() );
+}</pre>
+   </dd>
 </dl>
 </div>
     <div class="constructor">
@@ -158,7 +237,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l7"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:7</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l2"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:2</code></a>
         </p>
     </div>
     <div class="description">
@@ -312,7 +391,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l58"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:58</code></a>
+        <a href="../files/.._modules_JC.ImageCutter_0.1_ImageCutter.js.html#l147"><code>..&#x2F;modules&#x2F;JC.ImageCutter&#x2F;0.1&#x2F;ImageCutter.js:147</code></a>
         </p>
     </div>
     <div class="description">

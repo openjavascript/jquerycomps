@@ -1089,8 +1089,8 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 7,
-            "description": "组件用途简述\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.ImageCutter.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.ImageCutter/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compImageCutter\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt></dt>\n   <dd><dd>\n</dl>",
+            "line": 2,
+            "description": "图片裁切组件\n<br />借助 PHP GD 库进行图片裁切\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.ImageCutter.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.ImageCutter/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compImageCutter\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>imageUrl = url string</dt>\n   <dd>图片URL<dd>\n\n   <dt>defaultCoordinate = string</dt>\n   <dd>\n       设置默认选择范围, 有以下三种模式\n       <br />sidelength\n       <br />x, y\n       <br />x, y, sidelength\n   </dd>\n\n   <dt>coordinateSelector =  selector</dt>\n   <dd>保存当前坐标值的 node</dd>\n\n   <dt>imageUrlSelector = selector</dt>\n   <dd>保存当前图片URL的 node</dd>\n\n   <dt>previewSelector = selector</dt>\n   <dd>用于显示预览的 node, 支持多个预览, node 宽高并须为正方形</dd>\n\n   <dt>minRectSidelength = int, default = 50</dt>\n   <dd>裁切块的最小边长</dd>\n\n   <dt>minImageSidelength = int, default = 50</dt>\n   <dd>图片的最小边长</dd>\n\n   <dt>maxImageSidelength = int</dt>\n   <dd>图片的最大边长</dd>\n\n   <dt>cicInitedCb = function</dt>\n   <dd>组件初始化后的回调, <b>window变量域</b>\n<pre>function cicInitedCb(){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicImageInitedCb = function</dt>\n   <dd>图片初始化完成时的回调, <b>window变量域</b>\n<pre>function cicImageInitedCb( _sizeObj, _img ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicImageInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicCoordinateUpdateCb = function</dt>\n   <dd>更新裁切坐标后的回调, <b>window变量域</b>\n   <br />_corAr = Array = [ x, y, rectWidth, rectHeight, imgWidth, imageHeight ]\n<pre>function cicCoordinateUpdateCb( _corAr, _imgUrl ){\n   var _p = this, _selector = _p.selector();\n   JC.log( 'cicCoordinateUpdateCb', _corAr, _imgUrl, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicDragDoneCb = function</dt>\n   <dd>拖动完成后的回调, <b>window变量域</b>\n     <br/>与 cicCoordinateUpdateCb 的差别是: cicDragDoneCb 初始化不会触发\n<pre>function cicDragDoneCb( _sizeObj ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicDragDoneCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicErrorCb = function</dt>\n   <dd>发生错误时的回调, <b>window变量域</b>\n     <br />所有错误类型都会触发这个回调\n<pre>function cicErrorCb( _errType, _args ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicErrorCb', _errType, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicLoadErrorCb = function</dt>\n   <dd>图片加载错误时的回调, <b>window变量域</b>\n<pre>function cicLoadErrorCb( _imgUrl ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicLoadErrorCb',_imgUrl, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicSizeErrorCb = function</dt>\n   <dd>图片尺寸不符合设置要求时的回调, <b>window变量域</b>\n<pre>function cicSizeErrorCb( _width, _height, _imgUrl, _isMax ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicSizeErrorCb', _width, _height, _imgUrl, _isMax, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicPreviewSizeErrorCb = function</dt>\n   <dd>图片缩放后尺寸不符合设置要求时的回调, <b>window变量域</b>\n<pre>function cicPreviewSizeErrorCb( _width, _height, _imgUrl, _newSize ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicPreviewSizeErrorCb', _width, _height, _imgUrl, _newSize, new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -6268,7 +6268,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 58,
+            "line": 147,
             "description": "初始化可识别的 ImageCutter 实例",
             "itemtype": "method",
             "name": "init",
@@ -6289,7 +6289,7 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1284,
+            "line": 1571,
             "description": "按比例缩放图片\n<br />返回: { width: int, height: int }",
             "params": [
                 {
@@ -6322,14 +6322,14 @@
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1308,
+            "line": 1595,
             "description": "计算两个坐标点之间的距离",
             "class": "JC.ImageCutter",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 1318,
+            "line": 1605,
             "description": "从长度和角度求坐标点",
             "class": "JC.ImageCutter",
             "namespace": "JC"
@@ -14474,7 +14474,7 @@
         {
             "file": "../modules/JC.common/0.2/common.js",
             "line": 805,
-            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar, JC.Drag, JC.Placeholder, JC.TableFreeze\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
+            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar\n         , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
             "params": [
@@ -14490,84 +14490,91 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 829,
+            "line": 830,
             "description": "联动下拉框",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 833,
+            "line": 834,
             "description": "日历组件",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 837,
+            "line": 838,
+            "description": "双日历组件",
+            "class": "JC.common",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.common/0.2/common.js",
+            "line": 842,
             "description": "全选反选",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 841,
+            "line": 846,
             "description": "Ajax 上传",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 845,
+            "line": 850,
             "description": "占位符",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 849,
+            "line": 854,
             "description": "表格冻结",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 853,
+            "line": 858,
             "description": "拖曳",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 859,
+            "line": 864,
             "description": "disable / enable",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 863,
+            "line": 868,
             "description": "表单提交逻辑",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 867,
+            "line": 872,
             "description": "格式化金额",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 871,
+            "line": 876,
             "description": "自动完成",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 876,
+            "line": 881,
             "description": "URL 占位符识别功能\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "urlDetect",
@@ -14590,7 +14597,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 917,
+            "line": 922,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -14614,14 +14621,14 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 981,
+            "line": 986,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 999,
+            "line": 1004,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -14656,7 +14663,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1049,
+            "line": 1054,
             "description": "日期格式化 (具体格式请查看 PHP Date Formats)",
             "itemtype": "method",
             "name": "dateFormat",
@@ -14681,7 +14688,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1094,
+            "line": 1099,
             "description": "扩展对象属性",
             "itemtype": "method",
             "name": "extendObject",
@@ -14711,7 +14718,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1116,
+            "line": 1121,
             "description": "timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行",
             "itemtype": "method",
             "name": "safeTimeout",
@@ -14746,7 +14753,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1137,
+            "line": 1142,
             "description": "URL 请求时, 获取对URL参数进行编码的函数",
             "itemtype": "method",
             "name": "encoder",
@@ -14767,7 +14774,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1155,
+            "line": 1160,
             "description": "深度克隆对象",
             "itemtype": "method",
             "name": "cloneObject",
@@ -16718,7 +16725,7 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:7"
+            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -17306,15 +17313,15 @@
         },
         {
             "message": "Missing item type\n按比例缩放图片\n<br />返回: { width: int, height: int }",
-            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1284"
+            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1571"
         },
         {
             "message": "Missing item type\n计算两个坐标点之间的距离",
-            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1308"
+            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1595"
         },
         {
             "message": "Missing item type\n从长度和角度求坐标点",
-            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1318"
+            "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1605"
         },
         {
             "message": "Missing item type\n监听上一年按钮",
@@ -17530,51 +17537,55 @@
         },
         {
             "message": "Missing item type\n联动下拉框",
-            "line": " ../modules/JC.common/0.2/common.js:829"
+            "line": " ../modules/JC.common/0.2/common.js:830"
         },
         {
             "message": "Missing item type\n日历组件",
-            "line": " ../modules/JC.common/0.2/common.js:833"
+            "line": " ../modules/JC.common/0.2/common.js:834"
+        },
+        {
+            "message": "Missing item type\n双日历组件",
+            "line": " ../modules/JC.common/0.2/common.js:838"
         },
         {
             "message": "Missing item type\n全选反选",
-            "line": " ../modules/JC.common/0.2/common.js:837"
+            "line": " ../modules/JC.common/0.2/common.js:842"
         },
         {
             "message": "Missing item type\nAjax 上传",
-            "line": " ../modules/JC.common/0.2/common.js:841"
+            "line": " ../modules/JC.common/0.2/common.js:846"
         },
         {
             "message": "Missing item type\n占位符",
-            "line": " ../modules/JC.common/0.2/common.js:845"
+            "line": " ../modules/JC.common/0.2/common.js:850"
         },
         {
             "message": "Missing item type\n表格冻结",
-            "line": " ../modules/JC.common/0.2/common.js:849"
+            "line": " ../modules/JC.common/0.2/common.js:854"
         },
         {
             "message": "Missing item type\n拖曳",
-            "line": " ../modules/JC.common/0.2/common.js:853"
+            "line": " ../modules/JC.common/0.2/common.js:858"
         },
         {
             "message": "Missing item type\ndisable / enable",
-            "line": " ../modules/JC.common/0.2/common.js:859"
+            "line": " ../modules/JC.common/0.2/common.js:864"
         },
         {
             "message": "Missing item type\n表单提交逻辑",
-            "line": " ../modules/JC.common/0.2/common.js:863"
+            "line": " ../modules/JC.common/0.2/common.js:868"
         },
         {
             "message": "Missing item type\n格式化金额",
-            "line": " ../modules/JC.common/0.2/common.js:867"
+            "line": " ../modules/JC.common/0.2/common.js:872"
         },
         {
             "message": "Missing item type\n自动完成",
-            "line": " ../modules/JC.common/0.2/common.js:871"
+            "line": " ../modules/JC.common/0.2/common.js:876"
         },
         {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../modules/JC.common/0.2/common.js:981"
+            "line": " ../modules/JC.common/0.2/common.js:986"
         },
         {
             "message": "Missing item type\nAES Cipher function: encrypt 'input' state with Rijndael algorithm\n  applies Nr rounds (10/12/14) using key schedule w for 'add round key' stage",

@@ -864,8 +864,12 @@
                     setTimeout(function(){
                         var _form = _p._model.selector();
 
-                        _form.find('input[type=text], input[type=password], input[type=file], textarea').val('');
+                        _form.find('input[type=text], input[type=password], input[type=file], textarea').each( function(){
+                            if( $( this ).attr( 'ignoreResetClear' ) ) return;
+                            $( this ).val( '' );
+                        });
                         _form.find('select').each( function() {
+                            if( $( this ).attr( 'ignoreResetClear' ) ) return;
                             var sp = $(this);
                             var cs = sp.find('option');
                             if( cs.length > 1 ){
