@@ -123,7 +123,27 @@
  * @version dev 0.1 2013-12-13
  * @author  qiushaowei <suches@btbtd.org> | 75 Team
  * @example
-        <h2>JC.ImageCutter 示例</h2>
+    <table>
+        <tr>
+            <td>
+                <div class="js_compImageCutter"
+                    imageUrl="data/uploads/h_1680x1050.jpg"
+                    previewSelector="(tr div.js_previewItem"
+                    coordinateSelector="(td input.js_coordinate"
+                    imageUrlSelector="(td input.js_imageUrl"
+                    cicCoordinateUpdateCb="cicCoordinateUpdateCb"
+                    >
+                </div>
+                <input type="text" class="ipt js_coordinate" value="" />
+                <input type="text" class="ipt js_imageUrl" value="" />
+            </td>
+            <td>
+                <div class="cic_previewItem js_previewItem" style="width: 50px; height: 50px;"></div>
+                <div class="cic_previewItem js_previewItem" style="width: 75px; height: 75px;"></div>
+                <div class="cic_previewItem js_previewItem" style="width: 150px; height: 150px;"></div>
+            </td>
+        </tr>
+    </table>
  */
     var _jdoc = $( document ), _jwin = $( window ), _jbody;
 
@@ -167,7 +187,9 @@
             }
             return _r;
         };
-
+    /**
+     *
+     */
     ImageCutter.minRectSidelength = 50;
     ImageCutter.minImageSidelength = 50;
     ImageCutter.maxImageSidelength;
