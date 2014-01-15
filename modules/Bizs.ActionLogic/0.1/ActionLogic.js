@@ -1,4 +1,3 @@
-//TODO: balType = ajaxaction 添加成功后删除逻辑
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
 /**
  * <h2>node 点击操作逻辑</h2>
@@ -281,7 +280,7 @@
                         if( _p._model.balCallback() ){
                             _p._model.balCallback().call( _p.selector(), _d, _p );
                         }else{
-                            if( _d && 'errorno' in _d ){
+                            if( _d && typeof _d != 'string' && 'errorno' in _d ){
                                 if( _d.errorno ){
                                     _p.trigger( 'ShowError', [ _d.errmsg || '操作失败, 请重试!', 1 ] );
                                 }else{
@@ -300,7 +299,11 @@
                                     );
                                 }
                             }else{
-                                JC.Dialog.alert( _d, 1 );
+                                var _msg = JC.f.printf( 
+                                        '服务端错误, 无法解析返回数据: <p class="auExtErr" style="color:red">{0}</p>'
+                                            , _d.replace( /</g, '&lt;' ).replace( />/g, '&gt;' )
+                                            );
+                                JC.Dialog.alert( _msg, 1 );
                             }
                         }
                     }
