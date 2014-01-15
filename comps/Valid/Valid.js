@@ -1,7 +1,8 @@
+//TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
+//TODO: checkbox, radio 错误时, input 添加高亮显示
+//TODO: daterange 支持一对多关系
+//TODO: datavalid 添加自定义 ajax 数据 和 方法 
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
-    //TODO: 错误提示 不占用页面宽高, 使用 position = absolute,  date = 2013-08-03
-    //TODO: checkbox, radio 错误时, input 添加高亮显示
-    //TODO: daterange 支持一对多关系
     /**
      * <b>表单验证</b> (单例模式)
      * <br />全局访问请使用 JC.Valid 或 Valid
@@ -2954,10 +2955,14 @@
         _sp.data( 'DataValidInited', true );
         _sp.data( 'DataValidCache', {} );
 
-        _sp.on( 'DataValidUpdate', function( _evt, _v ){
+        _sp.on( 'DataValidUpdate', function( _evt, _v, _data ){
             var _tmp, _json;
-            if( !_sp.data( 'DataValidCache') ) return;
-            _json = _sp.data( 'DataValidCache' )[ _v ];
+            if( JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) ) ){
+                _json = _data;
+            }else{
+                if( !_sp.data( 'DataValidCache') ) return;
+                _json = _sp.data( 'DataValidCache' )[ _v ];
+            }
             if( !_json ) return;
 
             _v === 'suchestest' && (  _json.data.errorno = 0 );
@@ -2968,9 +2973,7 @@
                 ;
         });
 
-        _sp.on( 'blur', function( _evt, _ignoreProcess ){
-            JC.log( 'datavalid', new Date().getTime() );
-            if( _ignoreProcess ) return;
+        _sp.on( 'DataValidVerify', function( _evt, _ignoreStatus, _cb ){
             var _v = _sp.val().trim(), _tmp, _strData, _url = _sp.attr('datavalidurl');
             if( !_v ) return;
             if( !_url ) return;
@@ -2981,7 +2984,11 @@
                     _v = _sp.val().trim();
                     if( !_v ) return;
                     _v = JC.f.encoder( _sp )( _v );
-                    if( !_sp.data('JCValidStatus') ) return;
+
+                    if( !_ignoreStatus ){
+                        if( !_sp.data('JCValidStatus') ) return;
+                    }
+
                     _url = JC.f.printf( _url, _v );
                     _sp.attr('datavalidUrlFilter')
                         && ( _tmp = window[ _sp.attr('datavalidUrlFilter') ] )
@@ -2991,15 +2998,41 @@
                         _sp.trigger( 'DataValidUpdate', _v );
                         return;
                     }
-                    $.get( _url ).done( function( _d ){
+                    var _ajaxType = 'get', _requestData;
+                    _sp.attr( 'datavalidAjaxType' ) && ( _ajaxType = _sp.attr( 'datavalidAjaxType' ) || _ajaxType );
+                    if( _sp.attr( 'datavalidRequestData' ) ){
+                        try{ _requestData = eval( '(' + _sp.attr('datavalidRequestData') + ')' ); }catch( ex ){}
+                    }
+                    _requestData = _requestData || {};
+
+                    if( _ajaxType.toLowerCase() == 'post' ){
+                        $.post( _url, _requestData ).done( innerDone );
+                    }else{
+                        $.get( _url, _requestData ).done( innerDone );
+                    }
+
+                    function innerDone( _d ){
                         _strData = _d;
                         try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
-                        _sp.data( 'DataValidCache' )[ _v ] = { 'key': _v, data: _d, 'text': _strData };
-                        _sp.trigger( 'DataValidUpdate', _v );
-                    });
+
+                        var _data = { 'key': _v, data: _d, 'text': _strData };
+
+                        ! JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) )
+                             && ( _sp.data( 'DataValidCache' )[ _v ] = _data );
+
+                        _sp.trigger( 'DataValidUpdate', [ _v, _data ] );
+
+                        _cb && _cb.call( _sp, _data );
+                    }
                 }, 151)
             );
-            
+
+        });
+
+        _sp.on( 'blur', function( _evt, _ignoreProcess ){
+            JC.log( 'datavalid', new Date().getTime() );
+            if( _ignoreProcess ) return;
+            _sp.trigger( 'DataValidVerify' );
         });
     });
 
