@@ -2957,8 +2957,12 @@
 
         _sp.on( 'DataValidUpdate', function( _evt, _v ){
             var _tmp, _json;
-            if( !_sp.data( 'DataValidCache') ) return;
-            _json = _sp.data( 'DataValidCache' )[ _v ];
+            if( JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) ) ){
+                _json = _v;
+            }else{
+                if( !_sp.data( 'DataValidCache') ) return;
+                _json = _sp.data( 'DataValidCache' )[ _v ];
+            }
             if( !_json ) return;
 
             _v === 'suchestest' && (  _json.data.errorno = 0 );
@@ -2969,9 +2973,7 @@
                 ;
         });
 
-        _sp.on( 'blur', function( _evt, _ignoreProcess ){
-            JC.log( 'datavalid', new Date().getTime() );
-            if( _ignoreProcess ) return;
+        _sp.on( 'DataValidVerify', function( _evt, _ignoreStatus, _cb ){
             var _v = _sp.val().trim(), _tmp, _strData, _url = _sp.attr('datavalidurl');
             if( !_v ) return;
             if( !_url ) return;
@@ -2982,7 +2984,11 @@
                     _v = _sp.val().trim();
                     if( !_v ) return;
                     _v = JC.f.encoder( _sp )( _v );
-                    if( !_sp.data('JCValidStatus') ) return;
+
+                    if( !_ignoreStatus ){
+                        if( !_sp.data('JCValidStatus') ) return;
+                    }
+
                     _url = JC.f.printf( _url, _v );
                     _sp.attr('datavalidUrlFilter')
                         && ( _tmp = window[ _sp.attr('datavalidUrlFilter') ] )
@@ -3000,7 +3006,7 @@
                     _requestData = _requestData || {};
 
                     if( _ajaxType.toLowerCase() == 'post' ){
-                        $.post( _url, _requestData || {}, innerDone );
+                        $.post( _url, _requestData ).done( innerDone );
                     }else{
                         $.get( _url, _requestData ).done( innerDone );
                     }
@@ -3009,14 +3015,24 @@
                         _strData = _d;
                         try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
 
-                        !JC.f.parseBool( 'datavalidNoCache' )
-                            && ( _sp.data( 'DataValidCache' )[ _v ] = { 'key': _v, data: _d, 'text': _strData } );
+                        var _data = { 'key': _v, data: _d, 'text': _strData };
 
-                        _sp.trigger( 'DataValidUpdate', _v );
+                        !JC.f.parseBool( 'datavalidNoCache' )
+                            && ( _sp.data( 'DataValidCache' )[ _v ] = _data );
+
+                        _sp.trigger( 'DataValidUpdate', _data );
+
+                        _cb && _cb.call( _sp, _data );
                     }
                 }, 151)
             );
-            
+
+        });
+
+        _sp.on( 'blur', function( _evt, _ignoreProcess ){
+            JC.log( 'datavalid', new Date().getTime() );
+            if( _ignoreProcess ) return;
+            _sp.trigger( 'DataValidVerify' );
         });
     });
 
