@@ -2955,10 +2955,10 @@
         _sp.data( 'DataValidInited', true );
         _sp.data( 'DataValidCache', {} );
 
-        _sp.on( 'DataValidUpdate', function( _evt, _v ){
+        _sp.on( 'DataValidUpdate', function( _evt, _v, _data ){
             var _tmp, _json;
             if( JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) ) ){
-                _json = _v;
+                _json = _data;
             }else{
                 if( !_sp.data( 'DataValidCache') ) return;
                 _json = _sp.data( 'DataValidCache' )[ _v ];
@@ -3017,10 +3017,10 @@
 
                         var _data = { 'key': _v, data: _d, 'text': _strData };
 
-                        !JC.f.parseBool( 'datavalidNoCache' )
-                            && ( _sp.data( 'DataValidCache' )[ _v ] = _data );
+                        ! JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) )
+                             && ( _sp.data( 'DataValidCache' )[ _v ] = _data );
 
-                        _sp.trigger( 'DataValidUpdate', _data );
+                        _sp.trigger( 'DataValidUpdate', [ _v, _data ] );
 
                         _cb && _cb.call( _sp, _data );
                     }
