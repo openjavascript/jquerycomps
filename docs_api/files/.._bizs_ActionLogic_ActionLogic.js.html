@@ -301,6 +301,15 @@
 }
 &lt;/pre&gt;
  *      &lt;/dd&gt;
+ *
+ *      &lt;dt&gt;balRequestData = json&lt;/dt&gt;
+ *      &lt;dd&gt;ajax 请求发送的数据&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;balAjaxType = string, default = get&lt;/dt&gt;
+ *      &lt;dd&gt;ajax 请求的类型&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;balDoneRemoveSelector = selector&lt;/dt&gt;
+ *      &lt;dd&gt;ajax 操作完成后要删除的 node&lt;/dd&gt;
  * &lt;/dl&gt;
  *
  * @namespace   window.Bizs
@@ -467,7 +476,14 @@
                     if( !_url ) return;
                     _p._model.balRandom() 
                         &amp;&amp; ( _url = JC.f.addUrlParams( _url, { &#x27;rnd&#x27;: new Date().getTime() } ) );
-                    $.get( _url ).done( function( _d ){
+                    
+                    if( _p._model.balRequestData() ){
+                        $[ _p._model.balAjaxType() ]( _url, _p._model.balRequestData() ).done( innerDone );
+                    }else{
+                        $[ _p._model.balAjaxType() ]( _url ).done( innerDone );
+                    }
+
+                    function innerDone( _d ){
                         try{ _d = $.parseJSON( _d ); }catch(ex){}
 
                         if( _p._model.balCallback() ){
@@ -481,6 +497,9 @@
                                                 [ 
                                                     _d.errmsg || &#x27;操作完成&#x27;
                                                     , function(){
+                                                            _p._model.balDoneRemoveSelector()
+                                                                &amp;&amp; _p._model.balDoneRemoveSelector().remove();
+
                                                             _p._model.balDoneUrl() 
                                                             &amp;&amp; JC.f.reloadPage( _p._model.balDoneUrl() || location.href )
                                                             ;
@@ -492,7 +511,7 @@
                                 JC.Dialog.alert( _d, 1 );
                             }
                         }
-                    });
+                    }
                 });
                 /**
                  * 处理错误提示
@@ -664,6 +683,23 @@
                 _p.is(&#x27;[balRandom]&#x27;) &amp;&amp; ( _r = JC.f.parseBool( _p.stringProp( &#x27;balRandom&#x27; ) ) );
                 return _r;
             }
+        , balRequestData:
+            function(){
+                var _r;
+                if( this.attrProp( &#x27;balRequestData&#x27; ) ){
+                    _r = eval( &#x27;(&#x27; + this.attrProp( &#x27;balRequestData&#x27; ) + &#x27;)&#x27; );
+                    try{ 
+                    }catch( ex ){}
+                }
+                return _r;
+            }
+        , balAjaxType:
+            function(){
+                var _r = &#x27;get&#x27;;
+                this.balRequestData() &amp;&amp; ( _r = &#x27;post&#x27; );
+                _r = this.attrProp( &#x27;balAjaxType&#x27; ) || _r;
+                return _r;
+            }
         , balUrl:
             function(){
                 var _r = &#x27;?&#x27;, _p = this;
@@ -676,6 +712,10 @@
             function(){
                 var _r = this.attrProp( &#x27;balDoneUrl&#x27; );
                 return JC.f.urlDetect( _r );
+            }
+        , balDoneRemoveSelector:
+            function(){
+                return this.selectorProp( &#x27;balDoneRemoveSelector&#x27; );
             }
         , balConfirmMsg:
             function(){

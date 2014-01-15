@@ -93,6 +93,15 @@
 }
 </pre>
  *      </dd>
+ *
+ *      <dt>balRequestData = json</dt>
+ *      <dd>ajax 请求发送的数据</dd>
+ *
+ *      <dt>balAjaxType = string, default = get</dt>
+ *      <dd>ajax 请求的类型</dd>
+ *
+ *      <dt>balDoneRemoveSelector = selector</dt>
+ *      <dd>ajax 操作完成后要删除的 node</dd>
  * </dl>
  *
  * @namespace   window.Bizs
@@ -259,7 +268,14 @@
                     if( !_url ) return;
                     _p._model.balRandom() 
                         && ( _url = JC.f.addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
-                    $.get( _url ).done( function( _d ){
+                    
+                    if( _p._model.balRequestData() ){
+                        $[ _p._model.balAjaxType() ]( _url, _p._model.balRequestData() ).done( innerDone );
+                    }else{
+                        $[ _p._model.balAjaxType() ]( _url ).done( innerDone );
+                    }
+
+                    function innerDone( _d ){
                         try{ _d = $.parseJSON( _d ); }catch(ex){}
 
                         if( _p._model.balCallback() ){
@@ -273,6 +289,9 @@
                                                 [ 
                                                     _d.errmsg || '操作完成'
                                                     , function(){
+                                                            _p._model.balDoneRemoveSelector()
+                                                                && _p._model.balDoneRemoveSelector().remove();
+
                                                             _p._model.balDoneUrl() 
                                                             && JC.f.reloadPage( _p._model.balDoneUrl() || location.href )
                                                             ;
@@ -284,7 +303,7 @@
                                 JC.Dialog.alert( _d, 1 );
                             }
                         }
-                    });
+                    }
                 });
                 /**
                  * 处理错误提示
@@ -456,6 +475,23 @@
                 _p.is('[balRandom]') && ( _r = JC.f.parseBool( _p.stringProp( 'balRandom' ) ) );
                 return _r;
             }
+        , balRequestData:
+            function(){
+                var _r;
+                if( this.attrProp( 'balRequestData' ) ){
+                    _r = eval( '(' + this.attrProp( 'balRequestData' ) + ')' );
+                    try{ 
+                    }catch( ex ){}
+                }
+                return _r;
+            }
+        , balAjaxType:
+            function(){
+                var _r = 'get';
+                this.balRequestData() && ( _r = 'post' );
+                _r = this.attrProp( 'balAjaxType' ) || _r;
+                return _r;
+            }
         , balUrl:
             function(){
                 var _r = '?', _p = this;
@@ -468,6 +504,10 @@
             function(){
                 var _r = this.attrProp( 'balDoneUrl' );
                 return JC.f.urlDetect( _r );
+            }
+        , balDoneRemoveSelector:
+            function(){
+                return this.selectorProp( 'balDoneRemoveSelector' );
             }
         , balConfirmMsg:
             function(){
