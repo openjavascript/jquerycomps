@@ -487,7 +487,7 @@
                         if( _p._model.balCallback() ){
                             _p._model.balCallback().call( _p.selector(), _d, _p );
                         }else{
-                            if( _d &amp;&amp; &#x27;errorno&#x27; in _d ){
+                            if( _d &amp;&amp; typeof _d != &#x27;string&#x27; &amp;&amp; &#x27;errorno&#x27; in _d ){
                                 if( _d.errorno ){
                                     _p.trigger( &#x27;ShowError&#x27;, [ _d.errmsg || &#x27;操作失败, 请重试!&#x27;, 1 ] );
                                 }else{
@@ -506,7 +506,11 @@
                                     );
                                 }
                             }else{
-                                JC.Dialog.alert( _d, 1 );
+                                var _msg = JC.f.printf( 
+                                        &#x27;服务端错误, 无法解析返回数据: &lt;p class=&quot;auExtErr&quot; style=&quot;color:red&quot;&gt;{0}&lt;/p&gt;&#x27;
+                                            , _d.replace( /&lt;/g, &#x27;&amp;lt;&#x27; ).replace( /&gt;/g, &#x27;&amp;gt;&#x27; )
+                                            );
+                                JC.Dialog.alert( _msg, 1 );
                             }
                         }
                     }
