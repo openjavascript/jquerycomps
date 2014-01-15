@@ -246,8 +246,8 @@
  *      &lt;dt&gt;showtype = block || float &lt;/dt&gt;
  *      &lt;dd&gt;
  *          声明月份日历面板的显示方式，默认为float&lt;br/&gt;
- *          float（比如两个月份并排显示） &lt;a href=&quot;../../comps/DCalendar/res/default/style.html#float&quot; target=&quot;_blank&quot;&gt;查看&lt;/a&gt;&lt;br/&gt;
- *          block （月份日历面板竖排显示）&lt;a href=&quot;../../comps/DCalendar/res/default/style.html#block&quot; target=&quot;_blank&quot;&gt;查看&lt;/a&gt;&lt;br/&gt;
+ *          float（比如两个月份并排显示） &lt;a href=&quot;../../modules/JC.DCalendar/0.1/res/default/style.html#float&quot; target=&quot;_blank&quot;&gt;查看&lt;/a&gt;&lt;br/&gt;
+ *          block （月份日历面板竖排显示）&lt;a href=&quot;../../modules/JC.DCalendar/0.1/res/default/style.html#block&quot; target=&quot;_blank&quot;&gt;查看&lt;/a&gt;&lt;br/&gt;
  *      &lt;/dd&gt;
  *
  *      &lt;dt&gt;calendarshow = function&lt;/dt&gt;
@@ -264,7 +264,7 @@
 }&lt;/pre&gt;&lt;/dd&gt;
  *
  *      &lt;dt&gt;calendarclear = function&lt;/dt&gt;
- *      &lt;dd&gt;清空选中日期时的回调
+ *      &lt;dd&gt;清空选中日期后的回调
 &lt;pre&gt;function calendarclear( selector ) {
     JC.log( &quot;calendarclear&quot;, $(selector).val(), new Date().getTime() );
 }&lt;/pre&gt;&lt;/dd&gt;
@@ -407,7 +407,7 @@
 
             if ( _nodeName &amp;&amp; (_nodeName === &#x27;input&#x27; || _nodeName === &#x27;button&#x27;) ) {
                 DCalendar._initStatus( _selector );
-                !_onlyStatus &amp;&amp; _r.push(new DCalendar(_selector));
+                
             } else {
                 _selector.find([ 
                                     &#x27;input[datatype=ddate]&#x27;
@@ -417,7 +417,7 @@
                                     , &#x27;button[multidate=ddate]&#x27; 
                                 ].join()).each( function() {
                     DCalendar._initStatus( $(this) );
-                    !_onlyStatus &amp;&amp; _r.push( new DCalendar(this) );
+                    
                 })
             }
         }
@@ -876,7 +876,7 @@
                     + &#x27;&lt;a href=&quot;javascript:;&quot; title=&quot;&#x27; + _formatDate 
                     + &#x27;&quot; data-date=&quot;&#x27; + _formatDate 
                     + &#x27;&quot; class=&quot;&#x27; + _todayClass + _weekendClass
-                    + &#x27;&quot;&gt;&#x27; + i 
+                    + &#x27;&quot; &gt;&#x27; + i 
                     + &#x27;&lt;/a&gt;&lt;/td&gt;&#x27;; 
                
                 if ( i === 1 &amp;&amp; _day &gt; 0) {
@@ -1274,13 +1274,13 @@
             var _p = this,
                 _tables = _p.layoutBox().find(&#x27;.CDC_date_body&#x27;),
                 _t = &#x27;&lt;tr&gt;&#x27;
-                        + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&lt;/a&gt;&lt;/td&gt;&#x27;
-                        + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&lt;/a&gt;&lt;/td&gt;&#x27;
-                        + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&lt;/a&gt;&lt;/td&gt;&#x27;
-                        + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&lt;/a&gt;&lt;/td&gt;&#x27;
-                        + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&lt;/a&gt;&lt;/td&gt;&#x27;
-                        + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&lt;/a&gt;&lt;/td&gt;&#x27;
-                        + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&lt;/a&gt;&lt;/td&gt;&#x27;
+                        + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;&#x27;
+                        + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;&#x27;
+                        + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;&#x27;
+                        + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;&#x27;
+                        + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;&#x27;
+                        + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;&#x27;
+                        + &#x27;&lt;td&gt;&lt;a href=&quot;javascript:;&quot; class=&quot;disabled&quot;&gt;&amp;nbsp;&lt;/a&gt;&lt;/td&gt;&#x27;
                     + &#x27;&lt;/tr&gt;&#x27;,
                 _max = 0;
 
