@@ -812,6 +812,8 @@ function parseYearDate( _dateStr ){
                     _p.after( _btn = $('<input type="button" class="UXCCalendar_btn"  />') );
                 }
 
+                Calendar.fixDefaultDate( _p );
+
                 //!_p.is( '[dateFormat]' )
                 ( _tmp = _p.val().trim() )
                     && ( _tmp = JC.f.dateDetect( _tmp ) )
@@ -847,6 +849,40 @@ function parseYearDate( _dateStr ){
 
                 _btn.data( Calendar.Model.INPUT, _p );
             });
+        };
+
+    Calendar.fixDefaultDate =
+        function( _selector ){
+            _selector && ( _selector = $( _selector ) );
+            if( !( _selector && _selector.length ) ) return;
+            var _tmp;
+
+            _tmp = _selector.val().trim();
+            if( _tmp ){
+                _tmp = _tmp
+                        .replace( Calendar.Model.REG_REMOVE_NOT_DIGITAL, '' )
+                        .replace( Calendar.Model.REG_REMOVE_ALL_ZERO, '' )
+                        ;
+                !_tmp && _selector.val( '' );
+            }
+
+            _tmp = ( _selector.attr( 'minvalue') || '' ).trim();
+            if( _tmp ){
+                _tmp = _tmp
+                        .replace( Calendar.Model.REG_REMOVE_NOT_DIGITAL, '' )
+                        .replace( Calendar.Model.REG_REMOVE_ALL_ZERO, '' )
+                        ;
+                !_tmp && _selector.removeAttr( 'minvalue' );
+            }
+
+            _tmp = ( _selector.attr( 'maxvalue') || '' ).trim();
+            if( _tmp ){
+                _tmp = _tmp
+                        .replace( Calendar.Model.REG_REMOVE_NOT_DIGITAL, '' )
+                        .replace( Calendar.Model.REG_REMOVE_ALL_ZERO, '' )
+                        ;
+                !_tmp && _selector.removeAttr( 'maxvalue' );
+            }
         };
 
     Calendar.updateMultiYear =
@@ -904,6 +940,9 @@ function parseYearDate( _dateStr ){
     Calendar.Model.CANCEL = 'CalendarCancel';
     Calendar.Model.LAYOUT_CHANGE = 'CalendarLayoutChange';
     Calendar.Model.UPDATE_MULTISELECT = 'CalendarUpdateMultiSelect';
+
+    Calendar.Model.REG_REMOVE_ALL_ZERO = /^[0]+$/;
+    Calendar.Model.REG_REMOVE_NOT_DIGITAL = /[^\d]+/g;
     
     Model.prototype = {
         init:
