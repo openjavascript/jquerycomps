@@ -1,4 +1,3 @@
-//TODO: balType = ajaxaction 添加成功后删除逻辑
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
 /**
  * <h2>node 点击操作逻辑</h2>
