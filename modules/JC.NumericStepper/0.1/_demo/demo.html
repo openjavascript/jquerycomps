@@ -40,17 +40,17 @@
         JC.debug = true;
 
         requirejs( [ 'JC.NumericStepper', 'JC.Valid' ], function(){
-
-            JC.NumericStepper.onchange =
-                function( _btn ){
-                    var _ipt = $(this);
-                    JC.log( 'JC.Form.initNumericStepper.onchange: ', _ipt.val() );
-                };
         });
 
-        function userChangeCallback( _btn ){
+        function cnsChangeCb( _newVal, _oldVal, _ins ){
             var _ipt = $(this);
-            JC.log( 'userChangeCallback: ', _ipt.val() );
+            JC.log( 'cnsChangeCb: ', _newVal, _oldVal );
+        }
+
+        function cnsBeforeChangeCb( _newVal, _oldVal, _ins ){
+            var _ipt = $(this);
+            JC.log( 'cnsBeforeChangeCb: ', _newVal, _oldVal );
+            if( _newVal > 5 ) return false;
         }
        
     </script>
@@ -65,7 +65,7 @@
                 cnsMinusButton="|button:first"
                 cnsPlusButton="|button:last"
                 cnsTarget="|input[type=text]"
-                cnsChangeCb="userChangeCallback"
+                cnsChangeCb="cnsChangeCb"
                 >
                 <button type="button" class="cnsIcon cnsMinus"></button>
                 <input type="text" value="0" class="ipt" />
@@ -81,7 +81,7 @@
                 cnsMinusButton="|button:first"
                 cnsPlusButton="|button:last"
                 cnsTarget="|input[type=text]"
-                cnsChangeCb="userChangeCallback"
+                cnsChangeCb="cnsChangeCb"
                 >
                 <button type="button" class="cnsIcon cnsMinus"></button>
                 <input type="text" value="0" class="ipt" minvalue="0" maxvalue="100" />
@@ -90,14 +90,14 @@
         </dd>
     </dl>
 
-<dl class="defDl example1">
+    <dl class="defDl example1">
         <dt>范围 0 ~ 10</dt>
         <dd>
             <span class="js_compNumericStepper"
                 cnsMinusButton="|button:first"
                 cnsPlusButton="|button:last"
                 cnsTarget="|input[type=text]"
-                cnsChangeCb="userChangeCallback"
+                cnsChangeCb="cnsChangeCb"
                 >
                 <button type="button" class="cnsIcon cnsMinus"></button>
                 <input type="text" value="0" class="ipt" minvalue="0" maxvalue="10" />
@@ -113,7 +113,7 @@
                 cnsMinusButton="|button:first"
                 cnsPlusButton="|button:last"
                 cnsTarget="|input[type=text]"
-                cnsChangeCb="userChangeCallback"
+                cnsChangeCb="cnsChangeCb"
                 >
                 <button type="button" class="cnsIcon cnsMinus"></button>
                 <input type="text" value="0" class="ipt" minvalue="-10" maxvalue="10" step="2" />
@@ -129,7 +129,7 @@
                 cnsMinusButton="|button:first"
                 cnsPlusButton="|button:last"
                 cnsTarget="|input[type=text]"
-                cnsChangeCb="userChangeCallback"
+                cnsChangeCb="cnsChangeCb"
                 >
                 <button type="button" class="cnsIcon cnsMinus"></button>
                 <input type="text" value="0" class="ipt" minvalue="0" maxvalue="1000" step="50" />
@@ -145,7 +145,7 @@
                 cnsMinusButton="|button:first"
                 cnsPlusButton="|button:last"
                 cnsTarget="|input[type=text]"
-                cnsChangeCb="userChangeCallback"
+                cnsChangeCb="cnsChangeCb"
                 >
                 <button type="button" class="cnsIcon cnsMinus"></button>
                 <input type="text" value="0.5" class="ipt" minvalue="0.1" maxvalue="1.00" step="0.1" fixed="1" />
@@ -161,12 +161,29 @@
                 cnsMinusButton="|button:first"
                 cnsPlusButton="|button:last"
                 cnsTarget="|input[type=text]"
-                cnsChangeCb="userChangeCallback"
+                cnsChangeCb="cnsChangeCb"
                 >
                 <button type="button" class="cnsIcon cnsMinus"></button>
                 <input type="text" value="0.50" class="ipt" minvalue="0.01" maxvalue="1.00" step="0.01" fixed="2" />
                 <button type="button" class="cnsIcon cnsPlus"></button>
             </div>
+        </dd>
+    </dl>
+
+    <dl class="defDl example1">
+        <dt>范围 0 ~ 10, cnsBeforeChangeCb, cnsChangeCb</dt>
+        <dd>
+            <span class="js_compNumericStepper"
+                cnsMinusButton="|button:first"
+                cnsPlusButton="|button:last"
+                cnsTarget="|input[type=text]"
+                cnsChangeCb="cnsChangeCb"
+                cnsBeforeChangeCb="cnsBeforeChangeCb"
+                >
+                <button type="button" class="cnsIcon cnsMinus"></button>
+                <input type="text" value="0" class="ipt" minvalue="0" maxvalue="10" />
+                <button type="button" class="cnsIcon cnsPlus"></button>
+            </span>
         </dd>
     </dl>
 </body>

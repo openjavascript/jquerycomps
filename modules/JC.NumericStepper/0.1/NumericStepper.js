@@ -75,6 +75,15 @@
         };
 
     NumericStepper.redoMs = 100;
+    NumericStepper.timeoutMs = 500;
+
+    NumericStepper.defaultMouseUp =
+        function( _evt ){
+            if( !NumericStepper._currentIns ) return;
+            JC.f.safeTimeout( null, NumericStepper._currentIns._model.cnsTarget(), NumericStepper.Model.REDO_TM_NAME );
+            NumericStepper.Model.interval && clearInterval( NumericStepper.Model.interval );
+        };
+    NumericStepper._currentIns;
 
     JC.BaseMVC.build( NumericStepper );
 
@@ -89,7 +98,9 @@
                 var _p = this;
 
                 _p._model.cnsMinusButton() 
-                    && _p._model.cnsMinusButton().on( 'mousedown', function( _evt ){
+                    && ( _p._model.cnsMinusButton().on( 'mousedown', function( _evt ){
+
+                        NumericStepper._currentIns = _p;
                         _p.trigger( NumericStepper.Model.CALC, [ NumericStepper.Model.CALC_MINUS ] );
 
                         JC.f.safeTimeout( function(){
@@ -97,17 +108,18 @@
                             NumericStepper.Model.interval =
                                 setInterval( function(){
                                     _p.trigger( NumericStepper.Model.CALC, [ NumericStepper.Model.CALC_MINUS ] );
-                                }, 100 );
-                        }, _p._model.cnsTarget(), 'CNS_TM', 500 );
-                    })
-                    && _p._model.cnsMinusButton().on( 'mouseup', function( _evt ){
-                        JC.f.safeTimeout( null, _p._model.cnsTarget(), 'CNS_TM' );
-                        NumericStepper.Model.interval && clearInterval( NumericStepper.Model.interval );
-                    })
-                    ;
+                                }, _p._model.cnsRedoMs() );
+                        }, _p._model.cnsTarget(), NumericStepper.Model.REDO_TM_NAME, _p._model.cnsTimeoutMs() );
+
+                        _jwin.on( 'mouseup', NumericStepper.defaultMouseUp );
+                    }), _p._model.cnsMinusButton().each( function(){ 
+                        BaseMVC.getInstance( $( this ), NumericStepper, _p );
+                    } ) );
 
                 _p._model.cnsPlusButton() 
-                    && _p._model.cnsPlusButton().on( 'mousedown', function( _evt ){
+                    && ( _p._model.cnsPlusButton().on( 'mousedown', function( _evt ){
+
+                        NumericStepper._currentIns = _p;
                         _p.trigger( NumericStepper.Model.CALC, [ NumericStepper.Model.CALC_PLUS ] );
 
                         JC.f.safeTimeout( function(){
@@ -115,19 +127,17 @@
                             NumericStepper.Model.interval =
                                 setInterval( function(){
                                     _p.trigger( NumericStepper.Model.CALC, [ NumericStepper.Model.CALC_PLUS ] );
-                                }, 100 );
-                        }, _p._model.cnsTarget(), 'CNS_TM', 500 );
+                                }, _p._model.cnsRedoMs() );
+                        }, _p._model.cnsTarget(), NumericStepper.Model.REDO_TM_NAME, _p._model.cnsTimeoutMs() );
 
-                    })
-                    && _p._model.cnsPlusButton().on( 'mouseup', function( _evt ){
-                        JC.f.safeTimeout( null, _p._model.cnsTarget(), 'CNS_TM' );
-                        NumericStepper.Model.interval && clearInterval( NumericStepper.Model.interval );
-                    })
-                    ;
+                        _jwin.on( 'mouseup', NumericStepper.defaultMouseUp );
+                    }), _p._model.cnsPlusButton().each( function(){ 
+                        BaseMVC.getInstance( $( this ), NumericStepper, _p );
+                    } ) );
 
                 _p.on( NumericStepper.Model.CALC, function( _evt, _type ){
                     if( !( _p._model.cnsTarget() && _p._model.cnsTarget().length ) ) return;
-                    JC.log( 'NumericStepper.Model.CALC', _type );
+                    //JC.log( 'NumericStepper.Model.CALC', _type );
                     var _val = _p._model.val()
                         , _newVal = _val
                         , _step = _p._model.step()
@@ -156,9 +166,17 @@
                             break;
                     }
 
-                    JC.log( _p._model.isMaxvalue(), _newVal, _val, _step, _fixed, _minvalue, _minvalue, new Date().getTime() );
+                    //JC.log( _p._model.isMaxvalue(), _newVal, _val, _step, _fixed, _minvalue, _minvalue, new Date().getTime() );
+                    if( _newVal === _val ) return;
+
+                    if( _p._model.cnsBeforeChangeCb() 
+                            && _p._model.cnsBeforeChangeCb().call( _p._model.cnsTarget(), _newVal, _val, _p ) === false ) return;
 
                     _p._model.cnsTarget().val( JC.f.parseFinance( _newVal, _fixed ).toFixed( _fixed ) );
+
+                    _p._model.cnsChangeCb() 
+                        && _p._model.cnsChangeCb().call( _p._model.cnsTarget(), _newVal, _val, _p )
+                        ;
                 });
             }
 
@@ -166,6 +184,18 @@
             function(){
                 //JC.log( 'NumericStepper _inited', new Date().getTime() );
                 this._view.initStyle();
+            }
+
+        , plus: 
+            function(){
+                this.trigger( NumericStepper.Model.CALC, [ NumericStepper.Model.CALC_PLUS ] );
+                return this;
+            }
+
+        , minus:
+            function(){
+                this.trigger( NumericStepper.Model.CALC, [ NumericStepper.Model.CALC_MINUS ] );
+                return this;
             }
     });
 
@@ -179,6 +209,8 @@
     NumericStepper.Model.CLASS_MINUS = 'cnsMinus';
     NumericStepper.Model.CLASS_PLUS = 'cnsPlus';
 
+    NumericStepper.Model.REDO_TM_NAME = "cnsTm";
+
     JC.f.extendObject( NumericStepper.Model.prototype, {
         init:
             function(){
@@ -190,8 +222,11 @@
         , cnsMinusButton: function(){ return this.selectorProp( 'cnsMinusButton' ); }
         , cnsPlusButton: function(){ return this.selectorProp( 'cnsPlusButton' ); }
 
-        , cnsBeforeChangeCb: function(){ return this.selectorProp( 'cnsBeforeChangeCb' ); }
-        , cnsChangeCb: function(){ return this.selectorProp( 'cnsChangeCb' ); }
+        , cnsBeforeChangeCb: function(){ return this.callbackProp( 'cnsBeforeChangeCb' ) || NumericStepper.beforeChangeCb; }
+        , cnsChangeCb: function(){ return this.callbackProp( 'cnsChangeCb' ) || NumericStepper.changeCb; }
+
+        , cnsRedoMs: function(){ return this.intProp( 'cnsRedoMs' ) || NumericStepper.redoMs; }
+        , cnsTimeoutMs: function(){ return this.intProp( 'cnsTimeoutMs' ) || NumericStepper.timeoutMs; }
 
         , isMinvalue: function(){ return this.cnsTarget().is( '[minvalue]' ); }
         , isMaxvalue: function(){ return this.cnsTarget().is( '[maxvalue]' ); }
@@ -251,8 +286,19 @@
     });
 
     $( document ).delegate( 'div.js_compNumericStepper, span.js_compNumericStepper', 'mouseenter', function( _evt ){
-        var _p = $( this ), _ins = BaseMVC.getInstance( _p, NumericStepper );
+        var _p = $( this ), _ins = JC.BaseMVC.getInstance( _p, NumericStepper );
         !_ins && ( new NumericStepper( _p ) );
+    });
+
+    $( document ).delegate( 'div.js_compNumericStepper .cnsIcon, span.js_compNumericStepper .cnsIcon', 'click', function( _evt ){
+        var _p = $( this ), _ins = JC.BaseMVC.getInstance( _p, NumericStepper );
+
+        if( !_ins ){
+            var _pnt = JC.f.getJqParent( _p, '.js_compNumericStepper' );
+            if( !( _pnt && _pnt.length ) ) return;
+            _ins = new NumericStepper( _pnt );
+            _p.hasClass( 'cnsPlus' ) ? _ins.plus() : _ins.minus();
+        }
     });
 
     return JC.NumericStepper;
