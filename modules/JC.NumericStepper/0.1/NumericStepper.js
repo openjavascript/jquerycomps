@@ -1,6 +1,7 @@
  ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
- * 组件用途简述
+ * 数值加减
+ * <br />响应式初始化
  *
  *<p><b>require</b>:
  *   <a href="widnow.jQuery.html">jQuery</a>
@@ -15,11 +16,47 @@
  *<h2>页面只要引用本脚本, 默认会处理 (div|span) class="js_compNumericStepper"</h2>
  *
  *<h2>可用的 HTML attribute</h2>
- *
  *<dl>
- *    <dt></dt>
- *    <dd><dd>
+ *    <dt>cnsMinusButton = selector</dt>
+ *    <dd>减少数值的 selector<dd>
+ *
+ *    <dt>cnsPlusButton = selector</dt>
+ *    <dd>增加数值的 selector<dd>
+ *
+ *    <dt>cnsTarget = selector</dt>
+ *    <dd>目标文本框的 selector</dd>
+ *
+ *    <dt>cnsChangeCb = function</dt>
+ *    <dd>内容改变后的回调
+<pre>function cnsChangeCb( _newVal, _oldVal, _ins ){
+    var _ipt = $(this);
+    JC.log( 'cnsChangeCb: ', _newVal, _oldVal );
+}</pre>
+ *    </dd>
+ *
+ *    <dt>cnsBeforeChangeCb = function</dt>
+ *    <dd>内容改变前的回调, 如果显式返回 false 将终止内容变更
+<pre>function cnsBeforeChangeCb( _newVal, _oldVal, _ins ){
+    var _ipt = $(this);
+    JC.log( 'cnsBeforeChangeCb: ', _newVal, _oldVal );
+    if( _newVal > 5 ) return false;
+}</pre>
+ *    </dd>
  *</dl> 
+ *<h2>textbox 可用的 HTML attribute</h2>
+ *<dl>
+ *    <dt>minvalue = number</dt>
+ *    <dd>最小值</dd>
+ *
+ *    <dt>maxvalue = number</dt>
+ *    <dd>最大值</dd>
+ *
+ *    <dt>step = number, default = 1</dt>
+ *    <dd>每次变更的步长</dd>
+ *
+ *    <dt>fixed = int, default = 0</dt>
+ *    <dd>显示多少位小数点</dd>
+ *</dl>
  *
  * @namespace   JC
  * @class       NumericStepper
@@ -30,6 +67,16 @@
  * @author  qiushaowei <suches@btbtd.org> | 75 Team
  * @example
         <h2>JC.NumericStepper 示例</h2>
+        <span class="js_compNumericStepper"
+            cnsMinusButton="|button:first"
+            cnsPlusButton="|button:last"
+            cnsTarget="|input[type=text]"
+            cnsChangeCb="cnsChangeCb"
+            >
+            <button type="button" class="cnsIcon cnsMinus"></button>
+            <input type="text" value="0" class="ipt" minvalue="0" maxvalue="10" />
+            <button type="button" class="cnsIcon cnsPlus"></button>
+        </span>
  */
     var _jdoc = $( document ), _jwin = $( window );
 
@@ -73,8 +120,21 @@
             }
             return _r;
         };
-
+    /**
+     * 按下鼠标时 重复执行的频率
+     * @property    redoMs
+     * @type        ms
+     * @default     100
+     * @static
+     */
     NumericStepper.redoMs = 100;
+    /**
+     * 按下鼠标时 延迟 多少毫秒执行重复执行
+     * @property    timeoutMs
+     * @type        ms
+     * @default     100
+     * @static
+     */
     NumericStepper.timeoutMs = 500;
 
     NumericStepper.defaultMouseUp =
@@ -185,13 +245,19 @@
                 //JC.log( 'NumericStepper _inited', new Date().getTime() );
                 this._view.initStyle();
             }
-
+        /**
+         * 增加一个 step
+         * @method  plus
+         */
         , plus: 
             function(){
                 this.trigger( NumericStepper.Model.CALC, [ NumericStepper.Model.CALC_PLUS ] );
                 return this;
             }
-
+        /**
+         * 减少一个 step
+         * @method  minus
+         */
         , minus:
             function(){
                 this.trigger( NumericStepper.Model.CALC, [ NumericStepper.Model.CALC_MINUS ] );

@@ -1232,7 +1232,7 @@
             "namespace": "JC",
             "file": "../modules/JC.NumericStepper/0.1/NumericStepper.js",
             "line": 2,
-            "description": "组件用途简述\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.NumericStepper.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.NumericStepper/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 (div|span) class=\"js_compNumericStepper\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt></dt>\n   <dd><dd>\n</dl>",
+            "description": "数值加减\n<br />响应式初始化\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.NumericStepper.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.NumericStepper/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 (div|span) class=\"js_compNumericStepper\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n<dl>\n   <dt>cnsMinusButton = selector</dt>\n   <dd>减少数值的 selector<dd>\n\n   <dt>cnsPlusButton = selector</dt>\n   <dd>增加数值的 selector<dd>\n\n   <dt>cnsTarget = selector</dt>\n   <dd>目标文本框的 selector</dd>\n\n   <dt>cnsChangeCb = function</dt>\n   <dd>内容改变后的回调\n<pre>function cnsChangeCb( _newVal, _oldVal, _ins ){\n   var _ipt = $(this);\n   JC.log( 'cnsChangeCb: ', _newVal, _oldVal );\n}</pre>\n   </dd>\n\n   <dt>cnsBeforeChangeCb = function</dt>\n   <dd>内容改变前的回调, 如果显式返回 false 将终止内容变更\n<pre>function cnsBeforeChangeCb( _newVal, _oldVal, _ins ){\n   var _ipt = $(this);\n   JC.log( 'cnsBeforeChangeCb: ', _newVal, _oldVal );\n   if( _newVal > 5 ) return false;\n}</pre>\n   </dd>\n</dl> \n<h2>textbox 可用的 HTML attribute</h2>\n<dl>\n   <dt>minvalue = number</dt>\n   <dd>最小值</dd>\n\n   <dt>maxvalue = number</dt>\n   <dd>最大值</dd>\n\n   <dt>step = number, default = 1</dt>\n   <dd>每次变更的步长</dd>\n\n   <dt>fixed = int, default = 0</dt>\n   <dd>显示多少位小数点</dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -1245,7 +1245,7 @@
             "version": "dev 0.1 2014-01-18",
             "author": "qiushaowei <suches@btbtd.org> | 75 Team",
             "example": [
-                "\n       <h2>JC.NumericStepper 示例</h2>"
+                "\n       <h2>JC.NumericStepper 示例</h2>\n       <span class=\"js_compNumericStepper\"\n           cnsMinusButton=\"|button:first\"\n           cnsPlusButton=\"|button:last\"\n           cnsTarget=\"|input[type=text]\"\n           cnsChangeCb=\"cnsChangeCb\"\n           >\n           <button type=\"button\" class=\"cnsIcon cnsMinus\"></button>\n           <input type=\"text\" value=\"0\" class=\"ipt\" minvalue=\"0\" maxvalue=\"10\" />\n           <button type=\"button\" class=\"cnsIcon cnsPlus\"></button>\n       </span>"
             ]
         },
         "JC.Dialog": {
@@ -7713,7 +7713,7 @@
         },
         {
             "file": "../modules/JC.NumericStepper/0.1/NumericStepper.js",
-            "line": 53,
+            "line": 100,
             "description": "初始化可识别的 NumericStepper 实例",
             "itemtype": "method",
             "name": "init",
@@ -7729,6 +7729,48 @@
                 "description": "",
                 "type": "Array of NumericStepperInstance"
             },
+            "class": "JC.NumericStepper",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NumericStepper/0.1/NumericStepper.js",
+            "line": 123,
+            "description": "按下鼠标时 重复执行的频率",
+            "itemtype": "property",
+            "name": "redoMs",
+            "type": "ms",
+            "default": "100",
+            "static": 1,
+            "class": "JC.NumericStepper",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NumericStepper/0.1/NumericStepper.js",
+            "line": 131,
+            "description": "按下鼠标时 延迟 多少毫秒执行重复执行",
+            "itemtype": "property",
+            "name": "timeoutMs",
+            "type": "ms",
+            "default": "100",
+            "static": 1,
+            "class": "JC.NumericStepper",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NumericStepper/0.1/NumericStepper.js",
+            "line": 248,
+            "description": "增加一个 step",
+            "itemtype": "method",
+            "name": "plus",
+            "class": "JC.NumericStepper",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.NumericStepper/0.1/NumericStepper.js",
+            "line": 257,
+            "description": "减少一个 step",
+            "itemtype": "method",
+            "name": "minus",
             "class": "JC.NumericStepper",
             "namespace": "JC"
         },

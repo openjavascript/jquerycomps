@@ -210,7 +210,8 @@
     <pre class="code prettyprint linenums">
  ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
 /**
- * 组件用途简述
+ * 数值加减
+ * &lt;br /&gt;响应式初始化
  *
  *&lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
  *   &lt;a href=&quot;widnow.jQuery.html&quot;&gt;jQuery&lt;/a&gt;
@@ -225,11 +226,47 @@
  *&lt;h2&gt;页面只要引用本脚本, 默认会处理 (div|span) class=&quot;js_compNumericStepper&quot;&lt;/h2&gt;
  *
  *&lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
- *
  *&lt;dl&gt;
- *    &lt;dt&gt;&lt;/dt&gt;
- *    &lt;dd&gt;&lt;dd&gt;
+ *    &lt;dt&gt;cnsMinusButton = selector&lt;/dt&gt;
+ *    &lt;dd&gt;减少数值的 selector&lt;dd&gt;
+ *
+ *    &lt;dt&gt;cnsPlusButton = selector&lt;/dt&gt;
+ *    &lt;dd&gt;增加数值的 selector&lt;dd&gt;
+ *
+ *    &lt;dt&gt;cnsTarget = selector&lt;/dt&gt;
+ *    &lt;dd&gt;目标文本框的 selector&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;cnsChangeCb = function&lt;/dt&gt;
+ *    &lt;dd&gt;内容改变后的回调
+&lt;pre&gt;function cnsChangeCb( _newVal, _oldVal, _ins ){
+    var _ipt = $(this);
+    JC.log( &#x27;cnsChangeCb: &#x27;, _newVal, _oldVal );
+}&lt;/pre&gt;
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;cnsBeforeChangeCb = function&lt;/dt&gt;
+ *    &lt;dd&gt;内容改变前的回调, 如果显式返回 false 将终止内容变更
+&lt;pre&gt;function cnsBeforeChangeCb( _newVal, _oldVal, _ins ){
+    var _ipt = $(this);
+    JC.log( &#x27;cnsBeforeChangeCb: &#x27;, _newVal, _oldVal );
+    if( _newVal &gt; 5 ) return false;
+}&lt;/pre&gt;
+ *    &lt;/dd&gt;
  *&lt;/dl&gt; 
+ *&lt;h2&gt;textbox 可用的 HTML attribute&lt;/h2&gt;
+ *&lt;dl&gt;
+ *    &lt;dt&gt;minvalue = number&lt;/dt&gt;
+ *    &lt;dd&gt;最小值&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;maxvalue = number&lt;/dt&gt;
+ *    &lt;dd&gt;最大值&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;step = number, default = 1&lt;/dt&gt;
+ *    &lt;dd&gt;每次变更的步长&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;fixed = int, default = 0&lt;/dt&gt;
+ *    &lt;dd&gt;显示多少位小数点&lt;/dd&gt;
+ *&lt;/dl&gt;
  *
  * @namespace   JC
  * @class       NumericStepper
@@ -240,6 +277,16 @@
  * @author  qiushaowei &lt;suches@btbtd.org&gt; | 75 Team
  * @example
         &lt;h2&gt;JC.NumericStepper 示例&lt;/h2&gt;
+        &lt;span class=&quot;js_compNumericStepper&quot;
+            cnsMinusButton=&quot;|button:first&quot;
+            cnsPlusButton=&quot;|button:last&quot;
+            cnsTarget=&quot;|input[type=text]&quot;
+            cnsChangeCb=&quot;cnsChangeCb&quot;
+            &gt;
+            &lt;button type=&quot;button&quot; class=&quot;cnsIcon cnsMinus&quot;&gt;&lt;/button&gt;
+            &lt;input type=&quot;text&quot; value=&quot;0&quot; class=&quot;ipt&quot; minvalue=&quot;0&quot; maxvalue=&quot;10&quot; /&gt;
+            &lt;button type=&quot;button&quot; class=&quot;cnsIcon cnsPlus&quot;&gt;&lt;/button&gt;
+        &lt;/span&gt;
  */
     var _jdoc = $( document ), _jwin = $( window );
 
@@ -283,8 +330,21 @@
             }
             return _r;
         };
-
+    /**
+     * 按下鼠标时 重复执行的频率
+     * @property    redoMs
+     * @type        ms
+     * @default     100
+     * @static
+     */
     NumericStepper.redoMs = 100;
+    /**
+     * 按下鼠标时 延迟 多少毫秒执行重复执行
+     * @property    timeoutMs
+     * @type        ms
+     * @default     100
+     * @static
+     */
     NumericStepper.timeoutMs = 500;
 
     NumericStepper.defaultMouseUp =
@@ -395,13 +455,19 @@
                 //JC.log( &#x27;NumericStepper _inited&#x27;, new Date().getTime() );
                 this._view.initStyle();
             }
-
+        /**
+         * 增加一个 step
+         * @method  plus
+         */
         , plus: 
             function(){
                 this.trigger( NumericStepper.Model.CALC, [ NumericStepper.Model.CALC_PLUS ] );
                 return this;
             }
-
+        /**
+         * 减少一个 step
+         * @method  minus
+         */
         , minus:
             function(){
                 this.trigger( NumericStepper.Model.CALC, [ NumericStepper.Model.CALC_MINUS ] );

@@ -130,7 +130,8 @@
         </div>
 </div>
 <div class="box intro">
-    <p>组件用途简述</p>
+    <p>数值加减
+<br />响应式初始化</p>
 <p><b>require</b>:
   <a href="widnow.jQuery.html">jQuery</a>
   , <a href="JC.common.html">JC.common</a>
@@ -140,10 +141,40 @@
   | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.NumericStepper.html' target='_blank'>API docs</a>
   | <a href='../../modules/JC.NumericStepper/0.1/_demo' target='_blank'>demo link</a></p>
 <h2>页面只要引用本脚本, 默认会处理 (div|span) class=&quot;js_compNumericStepper&quot;</h2>
-<h2>可用的 HTML attribute</h2>
+<p><h2>可用的 HTML attribute</h2></p>
 <dl>
-   <dt></dt>
-   <dd><dd>
+   <dt>cnsMinusButton = selector</dt>
+   <dd>减少数值的 selector<dd>
+   <dt>cnsPlusButton = selector</dt>
+   <dd>增加数值的 selector<dd>
+   <dt>cnsTarget = selector</dt>
+   <dd>目标文本框的 selector</dd>
+   <dt>cnsChangeCb = function</dt>
+   <dd>内容改变后的回调
+<pre>function cnsChangeCb( _newVal, _oldVal, _ins ){
+   var _ipt = $(this);
+   JC.log( &#39;cnsChangeCb: &#39;, _newVal, _oldVal );
+}</pre>
+   </dd>
+   <dt>cnsBeforeChangeCb = function</dt>
+   <dd>内容改变前的回调, 如果显式返回 false 将终止内容变更
+<pre>function cnsBeforeChangeCb( _newVal, _oldVal, _ins ){
+   var _ipt = $(this);
+   JC.log( &#39;cnsBeforeChangeCb: &#39;, _newVal, _oldVal );
+   if( _newVal &gt; 5 ) return false;
+}</pre>
+   </dd>
+</dl> 
+<h2>textbox 可用的 HTML attribute</h2>
+<dl>
+   <dt>minvalue = number</dt>
+   <dd>最小值</dd>
+   <dt>maxvalue = number</dt>
+   <dd>最大值</dd>
+   <dt>step = number, default = 1</dt>
+   <dd>每次变更的步长</dd>
+   <dt>fixed = int, default = 0</dt>
+   <dd>显示多少位小数点</dd>
 </dl>
 </div>
     <div class="constructor">
@@ -179,7 +210,17 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>   &lt;h2&gt;JC.NumericStepper 示例&lt;/h2&gt;</code></pre>
+                <pre class="code prettyprint"><code>   &lt;h2&gt;JC.NumericStepper 示例&lt;/h2&gt;
+   &lt;span class=&quot;js_compNumericStepper&quot;
+       cnsMinusButton=&quot;|button:first&quot;
+       cnsPlusButton=&quot;|button:last&quot;
+       cnsTarget=&quot;|input[type=text]&quot;
+       cnsChangeCb=&quot;cnsChangeCb&quot;
+       &gt;
+       &lt;button type=&quot;button&quot; class=&quot;cnsIcon cnsMinus&quot;&gt;&lt;/button&gt;
+       &lt;input type=&quot;text&quot; value=&quot;0&quot; class=&quot;ipt&quot; minvalue=&quot;0&quot; maxvalue=&quot;10&quot; /&gt;
+       &lt;button type=&quot;button&quot; class=&quot;cnsIcon cnsPlus&quot;&gt;&lt;/button&gt;
+   &lt;/span&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -188,6 +229,7 @@
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
     <div>
         <div id="index" class="api-class-tabpanel index">
@@ -211,14 +253,33 @@
                                 <a href="#method_init">init</a>
                                     <span class="flag static">static</span>
                             </li>
+                            <li class="index-item method">
+                                <a href="#method_minus">minus</a>
+                            </li>
                             <li class="index-item method inherited">
                                 <a href="#method_on">on</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_plus">plus</a>
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_selector">selector</a>
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_trigger">trigger</a>
+                            </li>
+                    </ul>
+                </div>
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+                    <ul class="index-list properties extends">
+                            <li class="index-item property">
+                                <a href="#property_redoMs">redoMs</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_timeoutMs">timeoutMs</a>
+                                    <span class="flag static">static</span>
                             </li>
                     </ul>
                 </div>
@@ -314,7 +375,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.NumericStepper_0.1_NumericStepper.js.html#l53"><code>..&#x2F;modules&#x2F;JC.NumericStepper&#x2F;0.1&#x2F;NumericStepper.js:53</code></a>
+        <a href="../files/.._modules_JC.NumericStepper_0.1_NumericStepper.js.html#l100"><code>..&#x2F;modules&#x2F;JC.NumericStepper&#x2F;0.1&#x2F;NumericStepper.js:100</code></a>
         </p>
     </div>
     <div class="description">
@@ -337,6 +398,19 @@
                         <span class="type">Array of NumericStepperInstance</span>:
             </div>
         </div>
+</div>
+                    <div id="method_minus" class="method item">
+    <h3 class="name"><code>minus</code></h3>
+        <span class="paren">()</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.NumericStepper_0.1_NumericStepper.js.html#l257"><code>..&#x2F;modules&#x2F;JC.NumericStepper&#x2F;0.1&#x2F;NumericStepper.js:257</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>减少一个 step</p>
+    </div>
 </div>
                     <div id="method_on" class="method item inherited">
     <h3 class="name"><code>on</code></h3>
@@ -385,6 +459,19 @@
                     <p>BaseMVCInstance</p>
             </div>
         </div>
+</div>
+                    <div id="method_plus" class="method item">
+    <h3 class="name"><code>plus</code></h3>
+        <span class="paren">()</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.NumericStepper_0.1_NumericStepper.js.html#l248"><code>..&#x2F;modules&#x2F;JC.NumericStepper&#x2F;0.1&#x2F;NumericStepper.js:248</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>增加一个 step</p>
+    </div>
 </div>
                     <div id="method_selector" class="method item inherited">
     <h3 class="name"><code>selector</code></h3>
@@ -446,6 +533,39 @@
                     <p>BaseMVCInstance</p>
             </div>
         </div>
+</div>
+            </div>
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+                    <div id="property_redoMs" class="property item">
+    <h3 class="name"><code>redoMs</code></h3>
+    <span class="type">Ms</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.NumericStepper_0.1_NumericStepper.js.html#l123"><code>..&#x2F;modules&#x2F;JC.NumericStepper&#x2F;0.1&#x2F;NumericStepper.js:123</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>按下鼠标时 重复执行的频率</p>
+    </div>
+        <p><strong>Default:</strong> 100</p>
+</div>
+                    <div id="property_timeoutMs" class="property item">
+    <h3 class="name"><code>timeoutMs</code></h3>
+    <span class="type">Ms</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.NumericStepper_0.1_NumericStepper.js.html#l131"><code>..&#x2F;modules&#x2F;JC.NumericStepper&#x2F;0.1&#x2F;NumericStepper.js:131</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>按下鼠标时 延迟 多少毫秒执行重复执行</p>
+    </div>
+        <p><strong>Default:</strong> 100</p>
 </div>
             </div>
     </div>
