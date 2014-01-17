@@ -49,6 +49,8 @@ requirejs.config( {
         , 'JC.LunarCalendar.gregorianToLunar': 'modules/JC.LunarCalendar/0.1/LunarCalendar.gregorianToLunar'
         , 'JC.LunarCalendar.nationalHolidays': 'modules/JC.LunarCalendar/0.1/LunarCalendar.nationalHolidays'
 
+        , 'JC.NumericStepper': 'modules/JC.NumericStepper/0.1/NumericStepper'
+
         , 'JC.Slider': 'modules/JC.Slider/0.1/Slider'
         , 'JC.Suggest': 'modules/JC.Suggest/0.1/Suggest'
         , 'JC.Tab': 'modules/JC.Tab/0.1/Tab'

@@ -12,7 +12,9 @@
      *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *      , <a href='JC.Valid.html'>JC.Valid</a>
      *      , <a href='JC.Panel.html'>JC.Panel</a>
-     *      , <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>
+     * </p>
+     * <p><b>optional</b>: 
+     *      <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>

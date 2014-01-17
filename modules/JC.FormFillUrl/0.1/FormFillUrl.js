@@ -249,6 +249,7 @@
                         var _nt = ( _item.prop( 'nodeName' ) ).toLowerCase()
                             , _type = ( _item.attr( 'type' ) || 'text' ).toLowerCase()
                             ;
+                        if( _type == 'file' ) return;
 
                         JC.log( _nt, _type );
 
