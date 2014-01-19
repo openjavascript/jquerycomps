@@ -19,7 +19,7 @@
      JC.Form.initAutoFill =
         function( _selector, _url ){
             _selector = $( _selector || document );
-            if( !(_selector && _selector.length ) ) _selector = $(document);
+            if( !_selector.length ) _selector = $(document);
             _url = _url || location.href;
 
             JC.log( 'JC.Form.initAutoFill' );

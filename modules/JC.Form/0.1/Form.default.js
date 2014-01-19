@@ -1,9 +1,13 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
     /**
      * 表单常用功能类 JC.Form
-     * <p><b>require</b>: 
+     * <p>
+     *      <b>require</b>: 
      *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.AutoSelect.html'>JC.AutoSelect</a>
+     * </p>
+     * <p>
+     *      <b>optional</b>: 
+     *      <a href='JC.AutoSelect.html'>JC.AutoSelect</a>
      *      , <a href='JC.AutoChecked.html'>JC.AutoChecked</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
