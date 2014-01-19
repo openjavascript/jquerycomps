@@ -780,6 +780,7 @@
 
     $(document).delegate( 'input[type=text]', 'focus', function( _evt ){
         var _p = $(this), _ins = Suggest.getInstance( _p );
+        if( _p.is( '[readonly]' ) || _p.is( '[disabled]' ) ) return;
         if( _ins || !Suggest.isSuggest( _p ) || !Suggest.autoInit ) return;
         JC.log( 'Suggest input fined:', _p.attr('name'), new Date().getTime() );
         _ins = new Suggest( _p );
