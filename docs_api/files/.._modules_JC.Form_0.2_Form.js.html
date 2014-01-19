@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../modules/JC.Form/0.1/Form.js - open jquery components library</title>
+    <title>../modules/JC.Form/0.2/Form.js - open jquery components library</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -86,6 +86,8 @@
                 <li><a href="../classes/JC.Fixed.html">JC.Fixed</a></li>
             
                 <li><a href="../classes/JC.Form.html">JC.Form</a></li>
+            
+                <li><a href="../classes/JC.FormFillUrl.html">JC.FormFillUrl</a></li>
             
                 <li><a href="../classes/JC.hideAllPanel.html">JC.hideAllPanel</a></li>
             
@@ -200,12 +202,14 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../modules/JC.Form/0.1/Form.js</h1>
+                        <h1 class="file-heading">File: ../modules/JC.Form/0.2/Form.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.Form.default&#x27;, &#x27;JC.Form.initAutoFill&#x27;, &#x27;JC.Form.initNumericStepper&#x27;
-                                                    , &#x27;JC.AutoSelect&#x27;, &#x27;JC.AutoChecked&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ 
+        &#x27;JC.AutoSelect&#x27;, &#x27;JC.AutoChecked&#x27;, &#x27;JC.FormFillUrl&#x27;
+        , &#x27;JC.Form.default&#x27;, &#x27;JC.Form.initNumericStepper&#x27;
+    ], function(){
     /**
      * 这个判断是为了向后兼容 JC 0.1
      * 使用 requirejs 的项目可以移除这段判断代码
@@ -214,8 +218,8 @@
         &amp;&amp; JC.PATH
         &amp;&amp; JC.use([ 
                 JC.PATH + &#x27;comps/Form/Form.default.js&#x27;
-                , JC.PATH + &#x27;comps/Form/Form.initAutoFill.js&#x27; 
                 , JC.PATH + &#x27;comps/Form/Form.initNumericStepper.js&#x27; 
+                , &#x27;JC.FormFillUrl&#x27;
                 , &#x27;JC.AutoSelect&#x27;
                 , &#x27;JC.AutoChecked&#x27;
             ].join())

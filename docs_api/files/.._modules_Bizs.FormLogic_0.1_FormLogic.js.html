@@ -87,6 +87,8 @@
             
                 <li><a href="../classes/JC.Form.html">JC.Form</a></li>
             
+                <li><a href="../classes/JC.FormFillUrl.html">JC.FormFillUrl</a></li>
+            
                 <li><a href="../classes/JC.hideAllPanel.html">JC.hideAllPanel</a></li>
             
                 <li><a href="../classes/JC.hideAllPopup.html">JC.hideAllPopup</a></li>
@@ -206,7 +208,7 @@
     <pre class="code prettyprint linenums">
 //TODO: 添加 disabled bind hidden 操作
 //TODO: formSubmitIgnoreCheck 时, 如果在控件里回车提交的话, 控制逻辑可能会有问题, 需要仔细检查
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Valid&#x27;, &#x27;JC.Form&#x27;, &#x27;JC.Panel&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Valid&#x27;, &#x27;JC.Panel&#x27;, &#x27;JC.FormFillUrl&#x27; ], function(){
     /**
      * &lt;h2&gt;提交表单控制逻辑&lt;/h2&gt;
      * 应用场景
@@ -217,8 +219,8 @@
      *      &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
      *      , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
      *      , &lt;a href=&#x27;JC.Valid.html&#x27;&gt;JC.Valid&lt;/a&gt;
-     *      , &lt;a href=&#x27;JC.Form.html&#x27;&gt;JC.Form&lt;/a&gt;
      *      , &lt;a href=&#x27;JC.Panel.html&#x27;&gt;JC.Panel&lt;/a&gt;
+     *      , &lt;a href=&#x27;JC.FormFillUrl.html&#x27;&gt;JC.FormFillUrl&lt;/a&gt;
      * &lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
@@ -498,9 +500,9 @@
         };
 
     if( !define.amd &amp;&amp; JC.use ){
-        !JC.Valid &amp;&amp; JC.use( &#x27;Valid&#x27; );
-        !JC.Form &amp;&amp; JC.use( &#x27;Form&#x27; );
-        !JC.Panel &amp;&amp; JC.use( &#x27;Panel&#x27; );
+        !JC.Valid &amp;&amp; JC.use( &#x27;JC.Valid&#x27; );
+        !JC.Panel &amp;&amp; JC.use( &#x27;JC.Panel&#x27; );
+        !JC.FormFillUrl &amp;&amp; JC.use( &#x27;JC.FormFillUrl&#x27; );
     }
 
     /**
@@ -1063,7 +1065,7 @@
                 var _p = this;
                 if( _p._model.formType() != FormLogic.Model.GET ) return;
 
-                JC.Form &amp;&amp; JC.Form.initAutoFill( _p._model.selector() );
+                JC.FormFillUrl &amp;&amp; JC.FormFillUrl.init( _p._model.selector() );
             }
         , reset:
             function( _btn ){

@@ -157,6 +157,23 @@
             return _r;
         };
     /**
+     * 禁用按钮一定时间, 默认为1秒
+     * @method  disableButton
+     * @static
+     * @param   {selector}  _selector   要禁用button的选择器
+     * @param   {int}       _durationMs 禁用多少时间, 单位毫秒, 默认1秒
+     */
+    ActionLogic.disableButton = 
+        function( _selector, _durationMs ){
+            _selector && ( _selector = $( _selector ) );
+            if( !( _selector && _selector.length ) ) return;
+            _durationMs = _durationMs || 1000;
+            _selector.attr('disabled', true);
+            JC.f.safeTimeout( function(){
+                _selector.attr('disabled', false);
+            }, _selector, 'DISABLE_BUTTON', _durationMs );
+        };
+    /**
      * 批量初始化 ActionLogic
      * <br />页面加载完毕时, 已使用 事件代理 初始化
      * <br />如果是弹框中的 ActionLogic, 由于事件冒泡被阻止了, 需要显示调用  init 方法

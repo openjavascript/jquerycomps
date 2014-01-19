@@ -87,6 +87,8 @@
             
                 <li><a href="../classes/JC.Form.html">JC.Form</a></li>
             
+                <li><a href="../classes/JC.FormFillUrl.html">JC.FormFillUrl</a></li>
+            
                 <li><a href="../classes/JC.hideAllPanel.html">JC.hideAllPanel</a></li>
             
                 <li><a href="../classes/JC.hideAllPopup.html">JC.hideAllPopup</a></li>
@@ -361,6 +363,23 @@
                 &amp;&amp; ( _selector = $(_selector) ).length 
                 &amp;&amp; ( _r = _selector.is( &#x27;[baltype]&#x27; ) );
             return _r;
+        };
+    /**
+     * 禁用按钮一定时间, 默认为1秒
+     * @method  disableButton
+     * @static
+     * @param   {selector}  _selector   要禁用button的选择器
+     * @param   {int}       _durationMs 禁用多少时间, 单位毫秒, 默认1秒
+     */
+    ActionLogic.disableButton = 
+        function( _selector, _durationMs ){
+            _selector &amp;&amp; ( _selector = $( _selector ) );
+            if( !( _selector &amp;&amp; _selector.length ) ) return;
+            _durationMs = _durationMs || 1000;
+            _selector.attr(&#x27;disabled&#x27;, true);
+            JC.f.safeTimeout( function(){
+                _selector.attr(&#x27;disabled&#x27;, false);
+            }, _selector, &#x27;DISABLE_BUTTON&#x27;, _durationMs );
         };
     /**
      * 批量初始化 ActionLogic

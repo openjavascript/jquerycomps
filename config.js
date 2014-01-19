@@ -7,7 +7,7 @@ JC.PATH = JC.PATH || scriptPath();
 window.requirejs && 
 requirejs.config( {
     baseUrl: JC.PATH
-    , urlArgs: 'v=20131201'
+    , urlArgs: 'v=20140119'
     , paths: {
         'JC.common': 'modules/JC.common/0.2/common'
         , 'JC.BaseMVC': 'modules/JC.BaseMVC/0.1/BaseMVC'
@@ -31,12 +31,14 @@ requirejs.config( {
 
         , 'JC.Drag': 'modules/JC.Drag/0.1/Drag'
 
-        , 'JC.Form': 'modules/JC.Form/0.1/Form'
-        , 'JC.Form.default': 'modules/JC.Form/0.1/Form.default'
-        , 'JC.Form.initAutoFill': 'modules/JC.Form/0.1/Form.initAutoFill'
-        , 'JC.Form.initNumericStepper': 'modules/JC.Form/0.1/Form.initNumericStepper'
+        , 'JC.Form': 'modules/JC.Form/0.2/Form'
+        , 'JC.Form.default': 'modules/JC.Form/0.2/Form.default'
+        , 'JC.Form.initNumericStepper': 'modules/JC.Form/0.2/Form.initNumericStepper'
+        //, 'JC.Form.initAutoFill': 'modules/JC.Form/0.1/Form.initAutoFill'
 
         , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
+
+        , 'JC.FormFillUrl': 'modules/JC.FormFillUrl/0.1/FormFillUrl'
 
         , 'JC.ImageCutter': 'modules/JC.ImageCutter/0.1/ImageCutter'
         , 'JC.LunarCalendar': 'modules/JC.LunarCalendar/0.1/LunarCalendar'

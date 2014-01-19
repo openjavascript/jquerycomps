@@ -87,6 +87,8 @@
             
                 <li><a href="../classes/JC.Form.html">JC.Form</a></li>
             
+                <li><a href="../classes/JC.FormFillUrl.html">JC.FormFillUrl</a></li>
+            
                 <li><a href="../classes/JC.hideAllPanel.html">JC.hideAllPanel</a></li>
             
                 <li><a href="../classes/JC.hideAllPopup.html">JC.hideAllPopup</a></li>
@@ -653,7 +655,7 @@
 
                 if( _ignoreAction ) return;
 
-                JC.log( &#x27;_responeChange:&#x27;, _sp.attr(&#x27;name&#x27;), _v );
+                //JC.log( &#x27;_responeChange:&#x27;, _sp.attr(&#x27;name&#x27;), _v );
 
                 if( !( _next &amp;&amp; _next.length ) ){
                     _p.trigger( &#x27;SelectChange&#x27; );
@@ -773,7 +775,7 @@
                 _p.trigger( &#x27;SelectChange&#x27;, [ _selector ] );
                 
                 if( _next &amp;&amp; _next.length ){
-                    JC.log( &#x27;_firstInitCb:&#x27;, _selector.val(), _next.attr(&#x27;name&#x27;), _selector.attr(&#x27;name&#x27;) );
+                    //JC.log( &#x27;_firstInitCb:&#x27;, _selector.val(), _next.attr(&#x27;name&#x27;), _selector.attr(&#x27;name&#x27;) );
                     _p._update( _next, _p._firstInitCb, _selector.val() );
                 }
 
@@ -788,7 +790,7 @@
         , _updateStatic:
             function( _selector, _cb, _pid ){
                 var _p = this, _data, _ignoreUpdate = false;
-                JC.log( &#x27;static select&#x27; );
+                //JC.log( &#x27;static select&#x27; );
                 if( _p._model.isFirst( _selector ) ){
                     typeof _pid == &#x27;undefined&#x27; 
                         &amp;&amp; ( _pid = _p._model.selectparentid( _selector ) 
@@ -812,7 +814,7 @@
         , _updateNormal:
             function( _selector, _cb, _pid ){
                var _p = this, _data;
-                JC.log( &#x27;normal select&#x27; );
+                //JC.log( &#x27;normal select&#x27; );
                 if( _p._model.isFirst( _selector ) ){
                     var _next = _p._model.next( _selector );
                     typeof _pid == &#x27;undefined&#x27; &amp;&amp; ( _pid = _p._model.selectvalue( _selector ) || _selector.val() || &#x27;&#x27; );
@@ -851,7 +853,7 @@
         _init:
             function(){
                 this._findAllItems( this._selector );
-                JC.log( &#x27;select items.length:&#x27;, this._items.length );
+                //JC.log( &#x27;select items.length:&#x27;, this._items.length );
                 this._initRelationship();
                 return this;
             }

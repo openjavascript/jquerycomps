@@ -1,0 +1,231 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Open JQuery Components Library - suches</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+
+        .ipt,.txt,.txt{ border:1px solid #e2e3ea; border-top:1px solid #abadb3; border-radius:2px; height:22px; *line-height:22px;}
+        .ipt{ width:126px;}
+        .ipt-w58{ width:58px;}
+        .ipt-w48{ width:48px; text-align:center;}
+        .ipt-w80{ width:80px;}
+        .ipt-w180{ width:180px;}
+        .ipt-w230{ width: 230px;}
+        .ipt-w320{ width:320px;}
+        .ipt-w380{ width:380px;}
+        .ipt-w480{ width:480px;}
+        .ipt-w545{ width:545px;}
+        .txt,.txt{ resize:none; height:50px; width:99.8%;}
+        .txt-w280{ width:280px;}
+        .txt-w480{ width:480px;}
+        .txt-w545{ width:545px;}
+        .txt-w400{ width:410px;}
+        .txt-w380{ width:380px;}
+        .txt-w650{ width:650px;}
+
+        .defDl > dd{
+            border-bottom:1px solid #e2e3ea; 
+        }
+
+    </style>
+    <link href='../../../JC.Calendar/0.3/res/default/style.css' rel='stylesheet' />
+
+    <script src="../../../../lib.js"></script>
+    <script src="../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+
+        requirejs( [ 'JC.FormFillUrl' ], function(){
+        });
+    </script>
+</head>    
+<body>
+    <h2>JC.FormFillUrl 示例 - checkbox && radio</h2>
+
+    <form method="get" action="" class="js_compFormFillUrl" charset="utf-8" >
+
+        <dl class="defDl">
+            <dt>normal</dt>
+            <dd>
+                <div>
+                    <label>
+                        <input type='checkbox' name='normalCheckbox' value='1' />
+                        label1
+                    </label>
+                    <label>
+                        <input type='checkbox' name='normalCheckbox' value='2' />
+                        label2
+                    </label>
+                    <label>
+                        <input type='checkbox' name='normalCheckbox' value='3' />
+                        label3
+                    </label>
+                    <label>
+                        <input type='checkbox' name='normalCheckbox' value='4' />
+                        label4
+                    </label>
+                    <label>
+                        <input type='checkbox' name='normalCheckbox' value='5' />
+                        label5
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type='radio' name='normalRadio' value='1' />
+                        label1
+                    </label>
+                    <label>
+                        <input type='radio' name='normalRadio' value='2' />
+                        label2
+                    </label>
+                    <label>
+                        <input type='radio' name='normalRadio' value='3' />
+                        label3
+                    </label>
+                    <label>
+                        <input type='radio' name='normalRadio' value='4' />
+                        label4
+                    </label>
+                    <label>
+                        <input type='radio' name='normalRadio' value='5' />
+                        label5
+                    </label>
+                </div>
+            </dd>
+        </dl>
+
+        <dl class="defDl">
+            <dt>range - name with []</dt>
+            <dd>
+                <div class="frm-list">
+                    <table border="0" cellspacing="0" cellpadding="0">
+                        <tbody>    
+                            <tr>    
+                                <td>    
+                                    提交人为：
+                                </td>
+                                <td colspan="3">
+                                    <ul class="key-list xallocate_ckls js_bizAllocate" baotriggeritems="|input[type=checkbox]" baotriggerdelegate="input[type=checkbox]" baotargetbox="ul.js_salesBox" baotargetboxitems="&gt; li" baourl="./data/handler_dep.php?deps={0}" baoitemtpl="#allocateCkboxTpl" baoitemname="operator">
+                                        <li>    
+                                            <label>    
+                                                <input type="checkbox" checktype="all" checkfor="&lt;ul input[type=checkbox]" />
+                                                全选
+                                            </label>
+                                        </li>
+                                        <li>    
+                                            <label>    
+                                                <input type="checkbox" name="department[]" value="1" />
+                                                销售一部
+                                            </label>
+                                        </li>
+                                        <li>    
+                                            <label>    
+                                                <input type="checkbox" name="department[]" value="2" />
+                                                销售二部
+                                            </label>
+                                        </li>
+                                        <li>    
+                                            <label>    
+                                                <input type="checkbox" name="department[]" value="3" />
+                                                销售三部
+                                            </label>
+                                        </li>
+                                        <li>    
+                                            <label>    
+                                                <input type="checkbox" name="department[]" value="4" />
+                                                销售四部
+                                            </label>
+                                        </li>
+                                    </ul>
+                                    <em class="error"></em>
+                                </td>
+                            </tr>
+                            <tr>    
+                                <td>    
+                                </td>
+                                <td >
+                                    <ul class="key-list xallocate_ckls clearfix js_salesBox">
+                                        <li baoignore="true">
+                                            <label>    
+                                                <input type="checkbox" checktype="all" checkfor="&lt;ul input[type=checkbox]" emel="//em.error" validel="//em.validmsg" focusel="//em.focusmsg" />
+                                                全选
+                                            </label>
+                                        </li>
+                                        <li>    
+                                            <label>    
+                                                <input type="checkbox" name="operator[]" value="327" datatype="checkbox" datatarget="&lt;ul input[type=checkbox]" reqmsg="人员" emel="&lt;td &gt; em.error" pid="2" validel="//em.validmsg" focusel="//em.focusmsg" />        name327
+                                            </label>
+                                        </li>
+                                        <li>    
+                                            <label>    
+                                                <input type="checkbox" name="operator[]" value="328" datatype="checkbox" datatarget="&lt;ul input[type=checkbox]" reqmsg="人员" emel="&lt;td &gt; em.error" pid="2" validel="//em.validmsg" focusel="//em.focusmsg" />        name328
+                                            </label>
+                                        </li>
+                                        <li>    
+                                            <label>    
+                                                <input type="checkbox" name="operator[]" value="329" datatype="checkbox" datatarget="&lt;ul input[type=checkbox]" reqmsg="人员" emel="&lt;td &gt; em.error" pid="2" validel="//em.validmsg" focusel="//em.focusmsg" />        name329
+                                            </label>
+                                        </li>
+                                        <li>    
+                                            <label>    
+                                                <input type="checkbox" name="operator[]" value="330" datatype="checkbox" datatarget="&lt;ul input[type=checkbox]" reqmsg="人员" emel="&lt;td &gt; em.error" pid="2" validel="//em.validmsg" focusel="//em.focusmsg" />        name330
+                                            </label>
+                                        </li>
+                                        <li>    
+                                            <label>    
+                                                <input type="checkbox" name="operator[]" value="331" datatype="checkbox" datatarget="&lt;ul input[type=checkbox]" reqmsg="人员" emel="&lt;td &gt; em.error" pid="2" validel="//em.validmsg" focusel="//em.focusmsg" />        name331
+                                            </label>
+                                        </li>
+                                        <li>    
+                                            <label>    
+                                                <input type="checkbox" name="operator[]" value="328" datatype="checkbox" datatarget="&lt;ul input[type=checkbox]" reqmsg="人员" emel="&lt;td &gt; em.error" pid="4" validel="//em.validmsg" focusel="//em.focusmsg" />        name328
+                                            </label>
+                                        </li>
+                                    </ul>
+                                    <em class="error" style="display: none;"></em>
+                                </td>
+                                <th>
+                                </th>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            <input type="radio" name="testRadio" value="1" checked />1
+                                        </li>
+                                        <li>
+                                            <input type="radio" name="testRadio" value="2" />2
+                                        </li>
+                                        <li>
+                                            <input type="radio" name="testRadio" value="3" />3
+                                        </li>
+                                        <li>
+                                            <input type="radio" name="testRadio" value="4" />4
+                                        </li>
+                                    </ul>
+                                </td>
+
+                            </tr>
+                            <tr>    
+                                <th>    
+                                </th>
+                                <td colspan="3">    
+                                    <button type="submit" class="btn btn-1">提交</button>
+                                    <em class="error" id="queryErrem" style="display: none;"></em>
+                                    <a href="?">back</a>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </dd>
+        </dl>
+    </form>
+</body>
+</html>
+
+
