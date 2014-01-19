@@ -1020,6 +1020,8 @@ function parseYearDate( _dateStr ){
                     _p.after( _btn = $(&#x27;&lt;input type=&quot;button&quot; class=&quot;UXCCalendar_btn&quot;  /&gt;&#x27;) );
                 }
 
+                Calendar.fixDefaultDate( _p );
+
                 //!_p.is( &#x27;[dateFormat]&#x27; )
                 ( _tmp = _p.val().trim() )
                     &amp;&amp; ( _tmp = JC.f.dateDetect( _tmp ) )
@@ -1055,6 +1057,40 @@ function parseYearDate( _dateStr ){
 
                 _btn.data( Calendar.Model.INPUT, _p );
             });
+        };
+
+    Calendar.fixDefaultDate =
+        function( _selector ){
+            _selector &amp;&amp; ( _selector = $( _selector ) );
+            if( !( _selector &amp;&amp; _selector.length ) ) return;
+            var _tmp;
+
+            _tmp = _selector.val().trim();
+            if( _tmp ){
+                _tmp = _tmp
+                        .replace( Calendar.Model.REG_REMOVE_NOT_DIGITAL, &#x27;&#x27; )
+                        .replace( Calendar.Model.REG_REMOVE_ALL_ZERO, &#x27;&#x27; )
+                        ;
+                !_tmp &amp;&amp; _selector.val( &#x27;&#x27; );
+            }
+
+            _tmp = ( _selector.attr( &#x27;minvalue&#x27;) || &#x27;&#x27; ).trim();
+            if( _tmp ){
+                _tmp = _tmp
+                        .replace( Calendar.Model.REG_REMOVE_NOT_DIGITAL, &#x27;&#x27; )
+                        .replace( Calendar.Model.REG_REMOVE_ALL_ZERO, &#x27;&#x27; )
+                        ;
+                !_tmp &amp;&amp; _selector.removeAttr( &#x27;minvalue&#x27; );
+            }
+
+            _tmp = ( _selector.attr( &#x27;maxvalue&#x27;) || &#x27;&#x27; ).trim();
+            if( _tmp ){
+                _tmp = _tmp
+                        .replace( Calendar.Model.REG_REMOVE_NOT_DIGITAL, &#x27;&#x27; )
+                        .replace( Calendar.Model.REG_REMOVE_ALL_ZERO, &#x27;&#x27; )
+                        ;
+                !_tmp &amp;&amp; _selector.removeAttr( &#x27;maxvalue&#x27; );
+            }
         };
 
     Calendar.updateMultiYear =
@@ -1112,6 +1148,9 @@ function parseYearDate( _dateStr ){
     Calendar.Model.CANCEL = &#x27;CalendarCancel&#x27;;
     Calendar.Model.LAYOUT_CHANGE = &#x27;CalendarLayoutChange&#x27;;
     Calendar.Model.UPDATE_MULTISELECT = &#x27;CalendarUpdateMultiSelect&#x27;;
+
+    Calendar.Model.REG_REMOVE_ALL_ZERO = /^[0]+$/;
+    Calendar.Model.REG_REMOVE_NOT_DIGITAL = /[^\d]+/g;
     
     Model.prototype = {
         init:

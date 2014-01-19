@@ -988,6 +988,7 @@
 
     $(document).delegate( &#x27;input[type=text]&#x27;, &#x27;focus&#x27;, function( _evt ){
         var _p = $(this), _ins = Suggest.getInstance( _p );
+        if( _p.is( &#x27;[readonly]&#x27; ) || _p.is( &#x27;[disabled]&#x27; ) ) return;
         if( _ins || !Suggest.isSuggest( _p ) || !Suggest.autoInit ) return;
         JC.log( &#x27;Suggest input fined:&#x27;, _p.attr(&#x27;name&#x27;), new Date().getTime() );
         _ins = new Suggest( _p );
