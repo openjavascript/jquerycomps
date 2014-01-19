@@ -543,6 +543,8 @@
                 _fixedTable = _selector.find(&#x27;div.js-fixed-table&#x27;),
                 _fixedWidth = 0;
 
+            TableFreeze.Model.windowWidth = $(window).width();
+
             _p._model.setHeight();
             
             if ( _wArr &lt;= _newWArr ) {
@@ -561,8 +563,9 @@
             } );
 
             _scrollTable.css(&#x27;width&#x27;, _newWArr - _fixedWidth);
+            _p._model.fixWidth();
 
-            $(&#x27;#t21&#x27;).append(&#x27;&lt;p&gt;&#x27; +  _newWArr + &#x27;   &#x27; + (_newWArr - _fixedWidth)  + &#x27;&lt;/p&gt;&#x27;);
+            //$(&#x27;#t21&#x27;).append(&#x27;&lt;p&gt;&#x27; +  _newWArr + &#x27;   &#x27; + (_newWArr - _fixedWidth)  + &#x27;&lt;/p&gt;&#x27;);
             return this;       
 
         }
@@ -571,6 +574,7 @@
  
     TableFreeze.Model._instanceName = &quot;TableFreeze&quot;;
     TableFreeze.Model.saveWidth = 0;
+    TableFreeze.Model.windowWidth = 0;
    
     JC.f.extendObject( TableFreeze.Model.prototype, {
         init: function () {
@@ -866,9 +870,25 @@
                 _scrollBox.css(&#x27;width&#x27;, (100 - _percentW ) + &#x27;%&#x27; )
                 .find(&#x27;&gt;div&#x27;).css(&#x27;width&#x27;, _totalWidth - _w - 1);
             }
-         
-           $(&#x27;#t21&#x27;).append(&#x27;,&#x27; +  _totalWidth + &#x27;   &#x27;  +  ( $(&#x27;.js-roll-table&#x27;).prop(&#x27;offsetWidth&#x27;) ) + &#x27;   &#x27; + _percentW + &#x27; &#x27;  + (100 - _percentW) );
     
+        },
+
+        fixWidth: function () {
+            var _initWidth = TableFreeze.Model.windowWidth,
+                _winWidth = $(window).width(),
+                _scrollBox = this.selector().find(&#x27;.js-roll-table&#x27;),
+                _w = _scrollBox.width();
+
+            if ( _initWidth &lt; _winWidth ) {
+                _w += _winWidth - _initWidth;
+                _scrollBox.width( _w ); 
+                
+            } else {
+                _scrollBox.width( _w ); 
+            }
+
+            //$(&#x27;#t21&#x27;).append(&#x27;update&#x27; + &#x27;TableFreeze.Model.windowWidth&#x27; + _initWidth + &#x27;,   windowWidth&#x27; + _winWidth  );
+
         },
 
         setHeight: function () {
@@ -1204,18 +1224,23 @@
 
             _p._model.createTplBox();
             _p._model.detachTable();
+            _p._model.fixWidth();
 
         }
 
     });
 
     $(document).ready( function () {
-        var _insAr = 0;
+        //$(&#x27;#t21&#x27;).append( &#x27;document.width&#x27; + $(document).width() + &#x27;,  window.width&#x27; + $(window).width() );
+        
+        var _insAr = 0,
+            _win= $( window );
+
+        TableFreeze.Model.windowWidth = _win.width();
         TableFreeze.autoInit
             &amp;&amp; ( _insAr = TableFreeze.init() )
             ;
 
-        var _win= $( window );
         _win.on( &#x27;resize&#x27;, CTFResize );
 
         function CTFResize(){
