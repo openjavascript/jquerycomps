@@ -1,4 +1,5 @@
 var _fs = require('fs');
+return;
 
 var _dir = __dirname + '/'
     , _paths = []
@@ -7,7 +8,6 @@ var _dir = __dirname + '/'
     ;
 
     _paths.push( _dir + 'Form.default.js' );
-    _paths.push( _dir + 'Form.initAutoFill.js' );
     _paths.push( _dir + 'Form.initNumericStepper.js' );
 
 for( var i = 0, j = _paths.length; i < j; i++ ){
@@ -21,6 +21,7 @@ for( var i = 0, j = _paths.length; i < j; i++ ){
 _fs.writeFileSync( _dir + _outputName, _contents.join(';\n') );
 
 for( var i = 0, j = _paths.length; i < j; i++ ){
+    if( _paths[i] == _dir + _outputName ) continue;
     _fs.unlinkSync( _paths[i] );
 }
 

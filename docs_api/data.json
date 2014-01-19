@@ -287,15 +287,6 @@
                 "JC": 1
             }
         },
-        "../comps/Form/Form.initAutoFill.js": {
-            "name": "../comps/Form/Form.initAutoFill.js",
-            "modules": {},
-            "classes": {},
-            "fors": {
-                "JC.Form": 1
-            },
-            "namespaces": {}
-        },
         "../comps/Form/Form.initNumericStepper.js": {
             "name": "../comps/Form/Form.initNumericStepper.js",
             "modules": {},
@@ -311,6 +302,17 @@
             "classes": {},
             "fors": {},
             "namespaces": {}
+        },
+        "../comps/FormFillUrl/FormFillUrl.js": {
+            "name": "../comps/FormFillUrl/FormFillUrl.js",
+            "modules": {},
+            "classes": {
+                "JC.FormFillUrl": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
         },
         "../comps/ImageCutter/ImageCutter.js": {
             "name": "../comps/ImageCutter/ImageCutter.js",
@@ -711,7 +713,7 @@
             "namespace": "window.Bizs",
             "file": "../bizs/FormLogic/FormLogic.js",
             "line": 4,
-            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Valid.html'>JC.Valid</a>\n     , <a href='JC.Form.html'>JC.Form</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function</dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>Form Control 可用的 html 属性</h2>\n<dl>\n     <dt>ignoreResetClear = bool, default = false</dt>\n     <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dd>\n\n     <dt>formSubmitIgnoreCheck = bool, default = false</dt>\n     <dd>\n         表单提交时, 是否忽略 JC.Valid 的验证\n         <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配\n         <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>\n     </dd>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n\n     <dt>buttonClickBindSelector = selector</dt>\n     <dd>\n         点击按钮时, 把按钮的值赋值给 绑定的 控件\n         <br /><b>注意:</b> 这个属性仅支持 [input|button] 标签\n     </dd>\n</dl>",
+            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Valid.html'>JC.Valid</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n     , <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function</dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>Form Control 可用的 html 属性</h2>\n<dl>\n     <dt>ignoreResetClear = bool, default = false</dt>\n     <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dd>\n\n     <dt>formSubmitIgnoreCheck = bool, default = false</dt>\n     <dd>\n         表单提交时, 是否忽略 JC.Valid 的验证\n         <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配\n         <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>\n     </dd>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n\n     <dt>buttonClickBindSelector = selector</dt>\n     <dd>\n         点击按钮时, 把按钮的值赋值给 绑定的 控件\n         <br /><b>注意:</b> 这个属性仅支持 [input|button] 标签\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-08",
@@ -1035,11 +1037,37 @@
             "namespace": "JC",
             "file": "../comps/Form/Form.default.js",
             "line": 2,
-            "description": "表单常用功能类 JC.Form\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.AutoSelect.html'>JC.AutoSelect</a>\n     , <a href='JC.AutoChecked.html'>JC.AutoChecked</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>\n| <a href='../../comps/Form/_demo' target='_blank'>demo link</a></p>",
+            "description": "表单常用功能类 JC.Form\n<h1 style=\"color: red;\">这个类将不再维护, 相关功能请使用抽取出来的对应组件</h1>\n<p>\n     <b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n</p>\n<p>\n     <b>optional</b>: \n     <a href='JC.AutoSelect.html'>JC.AutoSelect</a>\n     , <a href='JC.AutoChecked.html'>JC.AutoChecked</a>\n     , <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>\n| <a href='../../comps/Form/_demo' target='_blank'>demo link</a></p>",
             "static": 1,
-            "version": "dev 0.1",
-            "author": "qiushaowei   <suches@btbtd.org> | 75 team",
-            "date": "2013-06-11"
+            "version": "dev 0.1 2013-06-11",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 team"
+        },
+        "JC.FormFillUrl": {
+            "name": "JC.FormFillUrl",
+            "shortname": "JC.FormFillUrl",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../comps/FormFillUrl/FormFillUrl.js",
+            "line": 3,
+            "description": "FormFillUrl 表单自动填充 URL 参数\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc.openjavascript.org/docs_api/classes/JC.FormFillUrl.html' target='_blank'>API docs</a>\n  | <a href='../../comps/JC.FormFillUrl/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 form class=\"js_compFormFillUrl\"</h2>\n\n<h2>Form 可用的 HTML attribute</h2>\n\n<dl>\n   <dt>decoder = function, default = decodeURIComponent</dt>\n   <dd>URL 的解码函数<dd>\n\n   <dt>encoder = function, default = encodeURIComponent</dt>\n   <dd>URL 的编码码函数<dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2014-01-19",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n       <h2>JC.FormFillUrl 示例</h2>\n       <form method=\"get\" action=\"\" class=\"js_compFormFillUrl\" charset=\"utf-8\" >\n       </form>"
+            ]
         },
         "JC.ImageCutter": {
             "name": "JC.ImageCutter",
@@ -2082,6 +2110,28 @@
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
             "line": 159,
+            "description": "禁用按钮一定时间, 默认为1秒",
+            "itemtype": "method",
+            "name": "disableButton",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "要禁用button的选择器",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_durationMs",
+                    "description": "禁用多少时间, 单位毫秒, 默认1秒",
+                    "type": "Int"
+                }
+            ],
+            "class": "window.Bizs.ActionLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/ActionLogic/ActionLogic.js",
+            "line": 176,
             "description": "批量初始化 ActionLogic\n<br />页面加载完毕时, 已使用 事件代理 初始化\n<br />如果是弹框中的 ActionLogic, 由于事件冒泡被阻止了, 需要显示调用  init 方法",
             "itemtype": "method",
             "name": "init",
@@ -2097,7 +2147,7 @@
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 178,
+            "line": 195,
             "description": "初始化 ActionLogic, 并执行",
             "itemtype": "method",
             "name": "process",
@@ -2118,63 +2168,63 @@
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 206,
+            "line": 223,
             "description": "脚本模板 Panel",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 212,
+            "line": 229,
             "description": "显示 Panel",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 224,
+            "line": 241,
             "description": "ajax Panel",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 254,
+            "line": 271,
             "description": "跳转到 URL",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 263,
+            "line": 280,
             "description": "ajax 执行操作",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 311,
+            "line": 328,
             "description": "处理错误提示",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 343,
+            "line": 360,
             "description": "处理二次确认",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 363,
+            "line": 380,
             "description": "处理成功提示",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 396,
+            "line": 413,
             "description": "执行操作",
             "itemtype": "method",
             "name": "process",
@@ -6067,8 +6117,8 @@
         },
         {
             "file": "../comps/Form/Form.default.js",
-            "line": 20,
-            "description": "禁用按钮一定时间, 默认为1秒",
+            "line": 26,
+            "description": "禁用按钮一定时间, 默认为1秒\n<br />这个方法已停止维护\n, 请使用 <a href=\"../../docs_api/classes/window.Bizs.ActionLogic.html#method_disableButton\">Bizs.ActionLogic.disableButton</a>",
             "itemtype": "method",
             "name": "disableButton",
             "static": 1,
@@ -6089,8 +6139,8 @@
         },
         {
             "file": "../comps/Form/Form.default.js",
-            "line": 38,
-            "description": "select 级联下拉框无限联动\n<br />这个方法已经摘取出来, 单独成为一个类.\n<br />详情请见: <a href=\"../../docs_api/classes/JC.AutoSelect.html\">JC.AutoSelect.html</a>\n<br />目前摘出去的类与之前的逻辑保持向后兼容, 但在不久的将来将会清除这个方法",
+            "line": 46,
+            "description": "select 级联下拉框无限联动\n<br />这个方法已经摘取出来, 单独成为一个类.\n<br />详情请见: <a href=\"../../docs_api/classes/JC.AutoSelect.html\">JC.AutoSelect</a>\n<br />目前摘出去的类与之前的逻辑保持向后兼容, 但在不久的将来将会清除这个方法",
             "itemtype": "method",
             "name": "initAutoSelect",
             "static": 1,
@@ -6099,8 +6149,8 @@
         },
         {
             "file": "../comps/Form/Form.default.js",
-            "line": 47,
-            "description": "全选/反选\n<br />这个方法已经摘取出来, 单独成为一个类.\n<br />详情请见: <a href=\"../../docs_api/classes/JC.AutoChecked.html\">JC.AutoChecked.html</a>\n<br />目前摘出去的类与之前的逻辑保持向后兼容, 但在不久的将来将会清除这个方法",
+            "line": 55,
+            "description": "全选/反选\n<br />这个方法已经摘取出来, 单独成为一个类.\n<br />详情请见: <a href=\"../../docs_api/classes/JC.AutoChecked.html\">JC.AutoChecked</a>\n<br />目前摘出去的类与之前的逻辑保持向后兼容, 但在不久的将来将会清除这个方法",
             "itemtype": "method",
             "name": "initCheckAll",
             "static": 1,
@@ -6108,15 +6158,11 @@
             "namespace": "JC"
         },
         {
-            "file": "../comps/Form/Form.initAutoFill.js",
-            "line": 2,
-            "description": "表单自动填充 URL GET 参数\n<br />只要引用本脚本, DOM 加载完毕后, 页面上所有带 class js_autoFillUrlForm 的 form 都会自动初始化默认值\n<p><b>requires</b>: <a href='.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>",
+            "file": "../comps/Form/Form.default.js",
+            "line": 64,
+            "description": "表单自动填充 URL GET 参数\n<br />这个方法已经摘取出来, 单独成为一个类.\n<br />详情请见: <a href=\"../../docs_api/classes/JC.FormFillUrl.html\">JC.FormFillUrl</a>",
             "itemtype": "method",
             "name": "initAutoFill",
-            "static": 1,
-            "version": "dev 0.1",
-            "author": "qiushaowei   <suches@btbtd.org> | 75 team",
-            "date": "2013-06-13",
             "params": [
                 {
                     "name": "_selector",
@@ -6129,45 +6175,7 @@
                     "type": "String"
                 }
             ],
-            "example": [
-                "\n     JC.Form.initAutoFill( myCustomSelector, myUrl );"
-            ],
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/Form.initAutoFill.js",
-            "line": 104,
-            "description": "自定义 URI decode 函数",
-            "itemtype": "property",
-            "name": "initAutoFill.decodeFunc",
             "static": 1,
-            "type": "function",
-            "default": "null",
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/Form.initAutoFill.js",
-            "line": 120,
-            "description": "判断下拉框的option里是否有给定的值",
-            "itemtype": "method",
-            "name": "initAutoFill.selectHasVal",
-            "access": "private",
-            "tagname": "",
-            "static": 1,
-            "params": [
-                {
-                    "name": "_select",
-                    "description": "",
-                    "type": "Selector"
-                },
-                {
-                    "name": "_val",
-                    "description": "要查找的值",
-                    "type": "String"
-                }
-            ],
             "class": "JC.Form",
             "namespace": "JC"
         },
@@ -6207,9 +6215,100 @@
         },
         {
             "file": "../comps/Form/Form.js",
-            "line": 3,
+            "line": 5,
             "description": "这个判断是为了向后兼容 JC 0.1\n使用 requirejs 的项目可以移除这段判断代码",
-            "class": "JC.ImageCutter",
+            "class": "JC.FormFillUrl",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FormFillUrl/FormFillUrl.js",
+            "line": 60,
+            "description": "初始化可识别的 FormFillUrl 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of FormFillUrlInstance"
+            },
+            "class": "JC.FormFillUrl",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FormFillUrl/FormFillUrl.js",
+            "line": 91,
+            "description": "自定义 URI decode 函数",
+            "itemtype": "property",
+            "name": "decoder",
+            "type": "function",
+            "default": "decodeURIComponent",
+            "static": 1,
+            "class": "JC.FormFillUrl",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FormFillUrl/FormFillUrl.js",
+            "line": 100,
+            "description": "自定义 URI encode 函数",
+            "itemtype": "property",
+            "name": "encoder",
+            "type": "function",
+            "default": "encodeURIComponent",
+            "static": 1,
+            "class": "JC.FormFillUrl",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FormFillUrl/FormFillUrl.js",
+            "line": 109,
+            "description": "判断下拉框的option里是否有给定的值",
+            "itemtype": "method",
+            "name": "selectHasVal",
+            "params": [
+                {
+                    "name": "_select",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_val",
+                    "description": "要查找的值",
+                    "type": "String"
+                }
+            ],
+            "static": 1,
+            "class": "JC.FormFillUrl",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FormFillUrl/FormFillUrl.js",
+            "line": 164,
+            "description": "手动填充 URL 值",
+            "itemtype": "method",
+            "name": "fill",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_url",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "FormFillUrlInstance"
+            },
+            "class": "JC.FormFillUrl",
             "namespace": "JC"
         },
         {
@@ -15395,24 +15494,20 @@
             "line": " ../comps/Form/Form.default.js:2"
         },
         {
-            "message": "unknown tag: date",
+            "message": "unknown tag: version",
             "line": " ../comps/Form/Form.default.js:2"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../comps/Form/Form.initAutoFill.js:2"
+            "line": " ../comps/Form/Form.initNumericStepper.js:2"
         },
         {
             "message": "unknown tag: date",
-            "line": " ../comps/Form/Form.initAutoFill.js:2"
+            "line": " ../comps/Form/Form.initNumericStepper.js:2"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../comps/Form/Form.initNumericStepper.js:2"
-        },
-        {
-            "message": "unknown tag: date",
-            "line": " ../comps/Form/Form.initNumericStepper.js:2"
+            "line": " ../comps/FormFillUrl/FormFillUrl.js:3"
         },
         {
             "message": "unknown tag: version",
@@ -15656,35 +15751,35 @@
         },
         {
             "message": "Missing item type\n脚本模板 Panel",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:206"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:223"
         },
         {
             "message": "Missing item type\n显示 Panel",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:212"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:229"
         },
         {
             "message": "Missing item type\najax Panel",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:224"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:241"
         },
         {
             "message": "Missing item type\n跳转到 URL",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:254"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:271"
         },
         {
             "message": "Missing item type\najax 执行操作",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:263"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:280"
         },
         {
             "message": "Missing item type\n处理错误提示",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:311"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:328"
         },
         {
             "message": "Missing item type\n处理二次确认",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:343"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:360"
         },
         {
             "message": "Missing item type\n处理成功提示",
-            "line": " ../bizs/ActionLogic/ActionLogic.js:363"
+            "line": " ../bizs/ActionLogic/ActionLogic.js:380"
         },
         {
             "message": "Missing item type\nselectallchanged",
@@ -15876,7 +15971,7 @@
         },
         {
             "message": "Missing item type\n这个判断是为了向后兼容 JC 0.1\n使用 requirejs 的项目可以移除这段判断代码",
-            "line": " ../comps/Form/Form.js:3"
+            "line": " ../comps/Form/Form.js:5"
         },
         {
             "message": "Missing item type\n按比例缩放图片\n<br />返回: { width: int, height: int }",

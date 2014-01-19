@@ -93,6 +93,8 @@
             
                 <li><a href="../classes/JC.Form.html">JC.Form</a></li>
             
+                <li><a href="../classes/JC.FormFillUrl.html">JC.FormFillUrl</a></li>
+            
                 <li><a href="../classes/JC.hideAllPanel.html">JC.hideAllPanel</a></li>
             
                 <li><a href="../classes/JC.hideAllPopup.html">JC.hideAllPopup</a></li>
@@ -206,8 +208,10 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.Form.default&#x27;, &#x27;JC.Form.initAutoFill&#x27;, &#x27;JC.Form.initNumericStepper&#x27;
-                                                    , &#x27;JC.AutoSelect&#x27;, &#x27;JC.AutoChecked&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ 
+        &#x27;JC.AutoSelect&#x27;, &#x27;JC.AutoChecked&#x27;, &#x27;JC.FormFillUrl&#x27;
+        , &#x27;JC.Form.default&#x27;, &#x27;JC.Form.initNumericStepper&#x27;
+    ], function(){
     /**
      * 这个判断是为了向后兼容 JC 0.1
      * 使用 requirejs 的项目可以移除这段判断代码
@@ -216,8 +220,8 @@
         &amp;&amp; JC.PATH
         &amp;&amp; JC.use([ 
                 JC.PATH + &#x27;comps/Form/Form.default.js&#x27;
-                , JC.PATH + &#x27;comps/Form/Form.initAutoFill.js&#x27; 
                 , JC.PATH + &#x27;comps/Form/Form.initNumericStepper.js&#x27; 
+                , &#x27;JC.FormFillUrl&#x27;
                 , &#x27;JC.AutoSelect&#x27;
                 , &#x27;JC.AutoChecked&#x27;
             ].join())
