@@ -1,3 +1,4 @@
+//TODO: 支持 或 忽略 多选下拉框
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
  * FormFillUrl 表单自动填充 URL 参数
@@ -33,6 +34,8 @@
  * @author  qiushaowei <suches@btbtd.org> | 75 Team
  * @example
         <h2>JC.FormFillUrl 示例</h2>
+        <form method="get" action="" class="js_compFormFillUrl" charset="utf-8" >
+        </form>
  */
     var _jdoc = $( document );
 
@@ -144,6 +147,8 @@
                     _selector && _p._model.selector( _selector );
                     _url && _p._model.url( _url );
 
+                    if( !_p._model.formtoken() ) return;
+
                     _p._model.selector().prop( 'nodeName' ).toLowerCase() == 'form'
                         ? _p._model.fillForm()
                         : _p._model.fillItems()
@@ -189,6 +194,20 @@
                 return this._url;
             }
 
+        , formtoken:
+            function(){
+                var _p = this, _r = true;
+                if( JC.f.hasUrlParam( _p.url(), 'formtoken' ) ){
+                    var _item = _p.selector().find( '[name=formtoken]' );
+                    if( !_item.length ) return false;
+
+                    if( _item.val() != JC.f.getUrlParam( _p.url(), 'formtoken' ) ){
+                        return false;
+                    }
+                }
+                return _r;
+            }
+
         , fillForm:
             function( _selector, _url ){
                 this.fillItems( _selector, _url );
@@ -196,137 +215,120 @@
 
         , fillItems:
             function( _selector, _url ){
-                var _p = this;
+                _selector = $( _selector || this.selector() );
 
-                _selector = $(_selector || _p.selector() );
+                var _p = this
+                    , _controls = []
+                    , _params
+                    ;
+
                 _url = _url || _p.url();
+                _params = _p.urlParams( _url, _p.decoder() );
 
-                _p._fillInput( _selector, _url );
-                _p._fillSpecialInput( _selector, _url );
-                _p._fillSelect( _selector, _url );
+                _selector.find( '[name]' ).each( function( _ix, _item ){
+                    _item = $( _item );
+                    switch( ( _item.prop( 'nodeName' ) || '' ).toLowerCase() ){
+                        case 'input':
+                        case 'select':
+                        case 'textarea':
+                            _controls.push( _item );
+                            break;
+                    }
+                });
+
+                $.each( _params, function( _k, _vals ){
+                    //alert( [ _k,  _items ] );
+                    var _findControls = [], _isCheck;
+                    $.each( _controls, function( _ix, _item ){
+                        _item.attr( 'name' ) == _k && ( _findControls.push( _item ) );
+                    });
+
+                    if( !_findControls.length ) return;
+
+                    $.each( _findControls, function( _ix, _item ){
+                        var _nt = ( _item.prop( 'nodeName' ) ).toLowerCase()
+                            , _type = ( _item.attr( 'type' ) || 'text' ).toLowerCase()
+                            ;
+
+                        JC.log( _nt, _type );
+
+                        if( /input/i.test( _nt ) ){
+                            switch( _type ){
+                                case 'radio':
+                                case 'checkbox':
+                                    _isCheck = true;
+                                    break;
+
+                                default: 
+                                    _p._updateInputVal( _item, _vals, _ix );
+                                    break;
+                            }
+                        }else if( /textarea/i.test( _nt ) ){
+                            _p._updateInputVal( _item, _vals, _ix );
+                        }else if( /select/i.test( _nt ) ){
+                            _p._updateSelect( _item, _vals, _ix );
+                        }
+                    });
+
+                    if( _isCheck ){
+                        _p._updateInputChecked( _findControls, _vals );
+                    }
+                });
 
                 window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( _selector );
             }
-        
-        , _fillInput:
-            function( _selector, _url ){
-                var _p = this
-                    , _keyObj = {}
-                    , _selectors = _selector.find( 'input[type=text][name],input[type=password][name],textarea[name]' )
-                    ;
 
-                _selectors.each( function(){
-                    var _sp = $(this)
-                        , _key = _sp.attr('name').trim()
-                        , _encodeKey = _p.encoder()( _key )
-                        , _items
-                        ;
-
-                    if( !( _key in _keyObj ) && ( JC.f.hasUrlParam( _url, _key ) || JC.f.hasUrlParam( _url, _encodeKey ) ) ){
-                        _items = JC.f.getUrlParams( _url, _key );
-                        !( _items && _items.length ) && ( _items = JC.f.getUrlParams( _url, _encodeKey ) );
-
-                        if( !( _items && _items.length ) ) return;
-
-                        _keyObj[ _key ] = {
-                            'items': _items
-                        };
-                    }
-                });
-
-                for( var k in _keyObj ){
-                    var _item = _keyObj[ k ], _items = [];
-
-                    _selectors.each( function(_ix, _item){
-                        _item = $( _item );
-                        _item.attr( 'name' ) == k && _items.push( _item );
-                    });
-
-                    $.each( _items, function( _ix, _sitem ){
-                        _sitem.val( _p.decoder()( _p.fixSpace( _item.items[ _ix ] ) ) );
-                    });
+        , _updateSelect:
+            function( _item, _vals, _ix ){
+                var _val = _vals[ _ix ] || '';
+                if( FormFillUrl.selectHasVal( _item, _val ) ){
+                    _item.removeAttr('selectIgnoreInitRequest');
+                    _item.val( _val );
+                }else{
+                    _item.attr( 'selectvalue', _val );
                 }
             }
 
-        , fixSpace: function( _v ){ return ( _v || '' ).replace(/[\+]/g, ' ' ); }
+        , _updateInputVal:
+            function( _item, _vals, _ix ){
+                _item.val( _vals[ _ix ] || '' );
+            }
 
-        , _fillSpecialInput:
-            function( _selector, _url ){
-                var _p = this, _keyObj = {};
-
-                _selector.find( 'input[type=checkbox][name], input[type=radio][name]' ).each( function(){
-                    var _sp = $(this)
-                        , _key = _sp.attr('name').trim()
-                        , _encodeKey = _p.encoder()( _key )
-                        , _keys
-                        , _v = _sp.val();
-
-                    if( !( _key in _keyObj ) ){
-                        _keys = JC.f.getUrlParams( _url, _key );
-                        !( _keys && _keys.length ) && ( _keys = JC.f.getUrlParams( _encodeKey ) );
-
-                        _keyObj[ _key ] = _keys;
-                    }else{
-                        _keys = _keyObj[ _key ];
-                    }
-
-                    if( _keys && _keys.length ){
-                        $.each( _keys, function( _ix, _item ){
-                            if( _item == _v ){
-                                _sp.prop('checked', true);
-                                _sp.trigger('change');
-                            }
-                        });
-                    }
+        , _updateInputChecked:
+            function( _controls, _vals ){
+                $.each( _controls, function( _ix, _item ){
+                    var _type = ( _item.attr( 'type' ) || 'text' ).toLowerCase(), _find;
+                    if( !( _type == 'checkbox' || _type == 'radio' ) ) return;
+                    $.each( _vals, function( _six, _sitem ){
+                        _item.val() == _sitem  && ( _find = true );
+                    });
+                    _find ? _item.prop( 'checked', true ) : _item.prop( 'checked', false );
                 });
             }
 
-        , _fillSelect:
-            function( _selector, _url ){
-                var _p = this
-                    , _keyObj = {}
-                    , _selectors = _selector.find( 'select[name]' )
-                    ;
+        , urlParams: 
+            function( _url, _decoder ){
+                var _r = {}, _re = /[\+]/g;
+                _decoder = _decoder || decodeURIComponent;
+                if( _url ){
+                    _url = _url.split( /[?]+/ );
+                    _url.shift();
 
-                _selectors.each( function(){
-                    var _sp = $(this)
-                        , _key = _sp.attr('name').trim()
-                        , _encodeKey = _p.encoder()( _key )
-                        , _items
-                        ;
+                    if( !_url.length ) return _r;
+                    _url = _url[ 0 ];
 
-                    if( !( _key in _keyObj ) && ( JC.f.hasUrlParam( _url, _key ) || JC.f.hasUrlParam( _url, _encodeKey ) ) ){
-                        _items = JC.f.getUrlParams( _url, _key );
-                        !( _items && _items.length ) && ( _items = JC.f.getUrlParams( _url, _encodeKey ) );
-
-                        if( !( _items && _items.length ) ) return;
-
-                        _keyObj[ _key ] = {
-                            'items': _items
-                        };
-                    }
-                });
-
-                for( var k in _keyObj ){
-                    var _item = _keyObj[ k ], _items = [];
-
-                    _selectors.each( function(_ix, _item){
-                        _item = $( _item );
-                        _item.attr( 'name' ) == k && _items.push( _item );
-                    });
-
-                    $.each( _items, function( _ix, _sitem ){
-                        //_sitem.val( _p.decoder()( _p.fixSpace( _item.items[ _ix ] ) ) );
-                        var _val = _p.decoder()( _p.fixSpace( _item.items[ _ix ] ) );
-
-                        if( FormFillUrl.selectHasVal( _sitem, _val ) ){
-                            _sitem.removeAttr('selectIgnoreInitRequest');
-                            _sitem.val( _val );
-                        }else{
-                            _sitem.attr( 'selectvalue', _val );
-                        }
+                    _url = _url.split( '&' );
+                    $.each( _url, function( _ix, _item ){
+                        if( !_item ) return;
+                        var _sitem = _item.split( '=' );
+                        if( !_sitem[0] ) return;
+                        _sitem[ 0 ] = ( _sitem[ 0 ] || '' ).replace( _re, ' ' );
+                        try{ _sitem[ 0 ] = _decoder( _sitem[ 0 ] ); }catch( ex ){}
+                        !( _sitem[0] in _r ) && ( _r[ _sitem[0] ] = [] );
+                        _r[ _sitem[0] ].push( _decoder( ( _sitem[ 1 ] || '' ).replace( _re, ' ' ) ) );
                     });
                 }
+                return _r;
             }
 
         , decoder: function(){ return this.callbackProp( 'decoder' ) || FormFillUrl.decoder; }
