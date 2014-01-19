@@ -1,5 +1,4 @@
 var _fs = require('fs');
-return;
 
 var _dir = __dirname + '/'
     , _paths = []
