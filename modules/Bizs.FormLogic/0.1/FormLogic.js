@@ -1,6 +1,6 @@
 //TODO: 添加 disabled bind hidden 操作
 //TODO: formSubmitIgnoreCheck 时, 如果在控件里回车提交的话, 控制逻辑可能会有问题, 需要仔细检查
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Valid', 'JC.Form', 'JC.Panel' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Valid', 'JC.Panel', 'JC.FormFillUrl' ], function(){
     /**
      * <h2>提交表单控制逻辑</h2>
      * 应用场景
@@ -11,8 +11,8 @@
      *      <a href='window.jQuery.html'>jQuery</a>
      *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *      , <a href='JC.Valid.html'>JC.Valid</a>
-     *      , <a href='JC.Form.html'>JC.Form</a>
      *      , <a href='JC.Panel.html'>JC.Panel</a>
+     *      , <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>
@@ -292,9 +292,9 @@
         };
 
     if( !define.amd && JC.use ){
-        !JC.Valid && JC.use( 'Valid' );
-        !JC.Form && JC.use( 'Form' );
-        !JC.Panel && JC.use( 'Panel' );
+        !JC.Valid && JC.use( 'JC.Valid' );
+        !JC.Panel && JC.use( 'JC.Panel' );
+        !JC.FormFillUrl && JC.use( 'JC.FormFillUrl' );
     }
 
     /**
@@ -857,7 +857,7 @@
                 var _p = this;
                 if( _p._model.formType() != FormLogic.Model.GET ) return;
 
-                JC.Form && JC.Form.initAutoFill( _p._model.selector() );
+                JC.FormFillUrl && JC.FormFillUrl.init( _p._model.selector() );
             }
         , reset:
             function( _btn ){

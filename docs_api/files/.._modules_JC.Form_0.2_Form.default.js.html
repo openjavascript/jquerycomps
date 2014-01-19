@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../modules/JC.Form/0.1/Form.js - jquery components</title>
+    <title>../modules/JC.Form/0.2/Form.default.js - jquery components</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -202,26 +202,83 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../modules/JC.Form/0.1/Form.js</h1>
+                        <h1 class="file-heading">File: ../modules/JC.Form/0.2/Form.default.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.Form.default&#x27;, &#x27;JC.Form.initAutoFill&#x27;, &#x27;JC.Form.initNumericStepper&#x27;
-                                                    , &#x27;JC.AutoSelect&#x27;, &#x27;JC.AutoChecked&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
     /**
-     * 这个判断是为了向后兼容 JC 0.1
-     * 使用 requirejs 的项目可以移除这段判断代码
+     * 表单常用功能类 JC.Form
+     * &lt;h1 style=&quot;color: red;&quot;&gt;这个类将不再维护, 相关功能请使用抽取出来的对应组件&lt;/h1&gt;
+     * &lt;p&gt;
+     *      &lt;b&gt;require&lt;/b&gt;: 
+     *      &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     *      &lt;b&gt;optional&lt;/b&gt;: 
+     *      &lt;a href=&#x27;JC.AutoSelect.html&#x27;&gt;JC.AutoSelect&lt;/a&gt;
+     *      , &lt;a href=&#x27;JC.AutoChecked.html&#x27;&gt;JC.AutoChecked&lt;/a&gt;
+     *      , &lt;a href=&#x27;JC.FormFillUrl.html&#x27;&gt;JC.FormFillUrl&lt;/a&gt;
+     * &lt;/p&gt;
+     * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
+     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Form.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+     * | &lt;a href=&#x27;../../modules/JC.Form/0.2/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     * @namespace JC
+     * @class Form
+     * @static
+     * @version dev 0.2 2014-01-19
+     * @version dev 0.1 2013-06-11
+     * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 team
      */
-    JC.use 
-        &amp;&amp; JC.PATH
-        &amp;&amp; JC.use([ 
-                JC.PATH + &#x27;comps/Form/Form.default.js&#x27;
-                , JC.PATH + &#x27;comps/Form/Form.initAutoFill.js&#x27; 
-                , JC.PATH + &#x27;comps/Form/Form.initNumericStepper.js&#x27; 
-                , &#x27;JC.AutoSelect&#x27;
-                , &#x27;JC.AutoChecked&#x27;
-            ].join())
-        ;
+    window.JCForm = JC.Form = {
+        /**
+         * 禁用按钮一定时间, 默认为1秒
+         * &lt;br /&gt;这个方法已停止维护
+         * , 请使用 &lt;a href=&quot;../../docs_api/classes/window.Bizs.ActionLogic.html#method_disableButton&quot;&gt;Bizs.ActionLogic.disableButton&lt;/a&gt;
+         * @method  disableButton
+         * @static
+         * @param   {selector}  _selector   要禁用button的选择器
+         * @param   {int}       _durationMs 禁用多少时间, 单位毫秒, 默认1秒
+         */
+        &#x27;disableButton&#x27;:
+            function( _selector, _durationMs ){
+                if( !_selector ) return;
+                _selector = $(_selector);
+                _durationMs = _durationMs || 1000;
+                _selector.attr(&#x27;disabled&#x27;, true);
+                setTimeout( function(){
+                    _selector.attr(&#x27;disabled&#x27;, false);
+                }, _durationMs);
+            }
+    };
+    /**
+     * select 级联下拉框无限联动
+     * &lt;br /&gt;这个方法已经摘取出来, 单独成为一个类.
+     * &lt;br /&gt;详情请见: &lt;a href=&quot;../../docs_api/classes/JC.AutoSelect.html&quot;&gt;JC.AutoSelect&lt;/a&gt;
+     * &lt;br /&gt;目前摘出去的类与之前的逻辑保持向后兼容, 但在不久的将来将会清除这个方法
+     * @method  initAutoSelect
+     * @static
+     */
+    JC.AutoSelect &amp;&amp; ( JC.Form.initAutoSelect = JC.AutoSelect );
+    /**
+     * 全选/反选
+     * &lt;br /&gt;这个方法已经摘取出来, 单独成为一个类.
+     * &lt;br /&gt;详情请见: &lt;a href=&quot;../../docs_api/classes/JC.AutoChecked.html&quot;&gt;JC.AutoChecked&lt;/a&gt;
+     * &lt;br /&gt;目前摘出去的类与之前的逻辑保持向后兼容, 但在不久的将来将会清除这个方法
+     * @method  initCheckAll
+     * @static
+     */
+    JC.AutoChecked &amp;&amp; ( JC.Form.initCheckAll = JC.AutoChecked );
+    /**
+     * 表单自动填充 URL GET 参数
+     * &lt;br /&gt;这个方法已经摘取出来, 单独成为一个类.
+     * &lt;br /&gt;详情请见: &lt;a href=&quot;../../docs_api/classes/JC.FormFillUrl.html&quot;&gt;JC.FormFillUrl&lt;/a&gt;
+     * @method  initAutoFill
+     * @param   {selector|url string}   _selector   显示指定要初始化的区域, 默认为 document
+     * @param   {string}                _url        显示指定, 取初始化值的 URL, 默认为 location.href
+     * @static
+     */
+    JC.FormFillUrl &amp;&amp; ( JC.Form.initAutoFill = JC.FormFillUrl.init );
 
     return JC.Form;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 

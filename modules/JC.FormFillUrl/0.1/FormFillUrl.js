@@ -87,7 +87,7 @@
             }
             return _r;
         };
-
+    JC.Form && ( JC.Form.initAutoFill = FormFillUrl.init );
     /**
      * 自定义 URI decode 函数
      * @property    decoder

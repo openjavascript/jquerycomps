@@ -122,11 +122,12 @@
                         <h1>JC.Form Class</h1>
 <div class="box meta">
         <div class="foundat">
-            Defined in: <a href="../files/.._modules_JC.Form_0.1_Form.default.js.html#l2"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.1&#x2F;Form.default.js:2</code></a>
+            Defined in: <a href="../files/.._modules_JC.Form_0.2_Form.default.js.html#l2"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.2&#x2F;Form.default.js:2</code></a>
         </div>
 </div>
 <div class="box intro">
     <p>表单常用功能类 JC.Form</p>
+<p><h1 style="color: red;">这个类将不再维护, 相关功能请使用抽取出来的对应组件</h1></p>
 <p>
      <b>require</b>: 
      <a href='window.jQuery.html'>jQuery</a>
@@ -135,10 +136,11 @@
      <b>optional</b>: 
      <a href='JC.AutoSelect.html'>JC.AutoSelect</a>
      , <a href='JC.AutoChecked.html'>JC.AutoChecked</a>
+     , <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>
 </p>
 <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
 | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>
-| <a href='../../modules/JC.Form/0.1/_demo' target='_blank'>demo link</a></p>
+| <a href='../../modules/JC.Form/0.2/_demo' target='_blank'>demo link</a></p>
 </div>
 <div id="classdocs" class="tabview">
     <ul class="api-class-tabs">
@@ -160,10 +162,6 @@
                                 <a href="#method_initAutoFill">initAutoFill</a>
                                     <span class="flag static">static</span>
                             </li>
-                            <li class="index-item method private">
-                                <a href="#method_initAutoFill.selectHasVal">initAutoFill.selectHasVal</a>
-                                    <span class="flag static">static</span>
-                            </li>
                             <li class="index-item method">
                                 <a href="#method_initAutoSelect">initAutoSelect</a>
                                     <span class="flag static">static</span>
@@ -181,10 +179,6 @@
                 <div class="index-section properties">
                     <h3>Properties</h3>
                     <ul class="index-list properties">
-                            <li class="index-item property">
-                                <a href="#property_initAutoFill.decodeFunc">initAutoFill.decodeFunc</a>
-                                    <span class="flag static">static</span>
-                            </li>
                             <li class="index-item property">
                                 <a href="#property_initNumericStepper.onchange">initNumericStepper.onchange</a>
                                     <span class="flag static">static</span>
@@ -210,11 +204,13 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Form_0.1_Form.default.js.html#l24"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.1&#x2F;Form.default.js:24</code></a>
+        <a href="../files/.._modules_JC.Form_0.2_Form.default.js.html#l26"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.2&#x2F;Form.default.js:26</code></a>
         </p>
     </div>
     <div class="description">
-        <p>禁用按钮一定时间, 默认为1秒</p>
+        <p>禁用按钮一定时间, 默认为1秒
+<br />这个方法已停止维护
+, 请使用 <a href="../../docs_api/classes/window.Bizs.ActionLogic.html#method_disableButton">Bizs.ActionLogic.disableButton</a></p>
     </div>
         <div class="params">
             <h4>Parameters:</h4>
@@ -252,15 +248,13 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Form_0.1_Form.initAutoFill.js.html#l2"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.1&#x2F;Form.initAutoFill.js:2</code></a>
+        <a href="../files/.._modules_JC.Form_0.2_Form.default.js.html#l64"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.2&#x2F;Form.default.js:64</code></a>
         </p>
     </div>
     <div class="description">
         <p>表单自动填充 URL GET 参数
-<br />只要引用本脚本, DOM 加载完毕后, 页面上所有带 class js_autoFillUrlForm 的 form 都会自动初始化默认值</p>
-<p><p><b>requires</b>: <a href='window.jQuery.html'>jQuery</a></p></p>
-<p><p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-| <a href='http://jc2.openjavascript.org/docs/docs_api/classes/JC.Form.html' target='_blank'>API docs</a></p>
+<br />这个方法已经摘取出来, 单独成为一个类.
+<br />详情请见: <a href="../../docs_api/classes/JC.FormFillUrl.html">JC.FormFillUrl</a></p>
     </div>
         <div class="params">
             <h4>Parameters:</h4>
@@ -281,54 +275,6 @@
                 </li>
             </ul>
         </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code> JC.Form.initAutoFill( myCustomSelector, myUrl );</code></pre>
-            </div>
-        </div>
-</div>
-                    <div id="method_initAutoFill.selectHasVal" class="method item private">
-    <h3 class="name"><code>initAutoFill.selectHasVal</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_select</code>
-                </li>
-                <li class="arg">
-                        <code>_val</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="flag private">private</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.Form_0.1_Form.initAutoFill.js.html#l120"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.1&#x2F;Form.initAutoFill.js:120</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>判断下拉框的option里是否有给定的值</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_select</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-                <li class="param">
-                        <code class="param-name">_val</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    <div class="param-description">
-                        <p>要查找的值</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
 </div>
                     <div id="method_initAutoSelect" class="method item">
     <h3 class="name"><code>initAutoSelect</code></h3>
@@ -337,13 +283,13 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Form_0.1_Form.default.js.html#l42"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.1&#x2F;Form.default.js:42</code></a>
+        <a href="../files/.._modules_JC.Form_0.2_Form.default.js.html#l46"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.2&#x2F;Form.default.js:46</code></a>
         </p>
     </div>
     <div class="description">
         <p>select 级联下拉框无限联动
 <br />这个方法已经摘取出来, 单独成为一个类.
-<br />详情请见: <a href="../../docs_api/classes/JC.AutoSelect.html">JC.AutoSelect.html</a>
+<br />详情请见: <a href="../../docs_api/classes/JC.AutoSelect.html">JC.AutoSelect</a>
 <br />目前摘出去的类与之前的逻辑保持向后兼容, 但在不久的将来将会清除这个方法</p>
     </div>
 </div>
@@ -354,13 +300,13 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Form_0.1_Form.default.js.html#l51"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.1&#x2F;Form.default.js:51</code></a>
+        <a href="../files/.._modules_JC.Form_0.2_Form.default.js.html#l55"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.2&#x2F;Form.default.js:55</code></a>
         </p>
     </div>
     <div class="description">
         <p>全选/反选
 <br />这个方法已经摘取出来, 单独成为一个类.
-<br />详情请见: <a href="../../docs_api/classes/JC.AutoChecked.html">JC.AutoChecked.html</a>
+<br />详情请见: <a href="../../docs_api/classes/JC.AutoChecked.html">JC.AutoChecked</a>
 <br />目前摘出去的类与之前的逻辑保持向后兼容, 但在不久的将来将会清除这个方法</p>
     </div>
 </div>
@@ -377,7 +323,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Form_0.1_Form.initNumericStepper.js.html#l2"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.1&#x2F;Form.initNumericStepper.js:2</code></a>
+        <a href="../files/.._modules_JC.Form_0.2_Form.initNumericStepper.js.html#l2"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.2&#x2F;Form.initNumericStepper.js:2</code></a>
         </p>
     </div>
     <div class="description">
@@ -425,21 +371,6 @@
             </div>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
-                    <div id="property_initAutoFill.decodeFunc" class="property item">
-    <h3 class="name"><code>initAutoFill.decodeFunc</code></h3>
-    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.Form_0.1_Form.initAutoFill.js.html#l104"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.1&#x2F;Form.initAutoFill.js:104</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>自定义 URI decode 函数</p>
-    </div>
-        <p><strong>Default:</strong> null</p>
-</div>
                     <div id="property_initNumericStepper.onchange" class="property item">
     <h3 class="name"><code>initNumericStepper.onchange</code></h3>
     <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
@@ -447,7 +378,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Form_0.1_Form.initNumericStepper.js.html#l61"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.1&#x2F;Form.initNumericStepper.js:61</code></a>
+        <a href="../files/.._modules_JC.Form_0.2_Form.initNumericStepper.js.html#l61"><code>..&#x2F;modules&#x2F;JC.Form&#x2F;0.2&#x2F;Form.initNumericStepper.js:61</code></a>
         </p>
     </div>
     <div class="description">

@@ -5,6 +5,7 @@
     , fileExclusionRegExp: /^(((r|build)\.js)|document.html|index.php|[\s\S]+?\.md|(_demo|docs|docs_api|tools|deploy|dist|node_modules|\.git|\.gitignore))$/
     , optimizeCss: 'standard'
     , removeCombined: false
+    /*
     , paths: {
         'JC.common': 'modules/JC.common/0.2/common'
         , 'JC.BaseMVC': 'modules/JC.BaseMVC/0.1/BaseMVC'
@@ -46,5 +47,6 @@
         , 'plugins.Base64': 'plugins/Base64/0.1/Base64'
         , 'plugins.md5': 'plugins/md5/0.1/md5'
     }
+    */
 })
 
