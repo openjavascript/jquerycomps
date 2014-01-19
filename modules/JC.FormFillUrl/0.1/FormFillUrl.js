@@ -1,6 +1,6 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
- * 组件用途简述
+ * FormFillUrl 表单自动填充 URL 参数
  *
  *<p><b>require</b>:
  *   <a href="widnow.jQuery.html">jQuery</a>
@@ -12,13 +12,16 @@
  *   | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.FormFillUrl.html' target='_blank'>API docs</a>
  *   | <a href='../../modules/JC.FormFillUrl/0.1/_demo' target='_blank'>demo link</a></p>
  *  
- *<h2>页面只要引用本脚本, 默认会处理 div class="js_compFormFillUrl"</h2>
+ *<h2>页面只要引用本脚本, 默认会处理 form class="js_compFormFillUrl"</h2>
  *
- *<h2>可用的 HTML attribute</h2>
+ *<h2>Form 可用的 HTML attribute</h2>
  *
  *<dl>
- *    <dt></dt>
- *    <dd><dd>
+ *    <dt>decoder = function, default = decodeURIComponent</dt>
+ *    <dd>URL 的解码函数<dd>
+ *
+ *    <dt>encoder = function, default = encodeURIComponent</dt>
+ *    <dd>URL 的编码码函数<dd>
  *</dl> 
  *
  * @namespace   JC
@@ -31,7 +34,7 @@
  * @example
         <h2>JC.FormFillUrl 示例</h2>
  */
-    var _jdoc = $( document ), _jwin = $( window );
+    var _jdoc = $( document );
 
     JC.FormFillUrl = FormFillUrl;
 
@@ -126,7 +129,7 @@
     JC.f.extendObject( FormFillUrl.prototype, {
         _beforeInit:
             function(){
-                JC.log( 'FormFillUrl _beforeInit', new Date().getTime() );
+                //JC.log( 'FormFillUrl _beforeInit', new Date().getTime() );
             }
 
         , _initHanlderEvent:
@@ -150,15 +153,22 @@
 
         , _inited:
             function(){
-                JC.log( 'FormFillUrl _inited', new Date().getTime() );
+                //JC.log( 'FormFillUrl _inited', new Date().getTime() );
                 this.trigger( FormFillUrl.Model.INITED );
             }
-
+        /**
+         * 手动填充 URL 值
+         * @method fill
+         * @param   {selector}  _selector
+         * @param   {string}    _url
+         * @return  FormFillUrlInstance
+         */
         , fill:
             function( _selector, _url ){
                 _selector && ( _selector = $( _selector ) );
                 if( !( _selector && _selector.length && _url ) ) return this;
                 _p.trigger( FormFillUrl.Model.PROCESS, [ _selector, _url ] );
+                return this;
             }
 
     });
@@ -170,7 +180,7 @@
     JC.f.extendObject( FormFillUrl.Model.prototype, {
         init:
             function(){
-                JC.log( 'FormFillUrl.Model.init:', new Date().getTime() );
+                //JC.log( 'FormFillUrl.Model.init:', new Date().getTime() );
             }
 
         , url:
@@ -200,15 +210,45 @@
         
         , _fillInput:
             function( _selector, _url ){
-                var _p = this;
+                var _p = this
+                    , _keyObj = {}
+                    , _selectors = _selector.find( 'input[type=text][name],input[type=password][name],textarea[name]' )
+                    ;
 
-                _selector.find( 'input[type=text][name],input[type=password][name],textarea[name]' ).each( function(){
-                    var _sp = $(this);
-                    if( JC.f.hasUrlParam( _url, _sp.attr('name') ) ){
-                        _sp.val( _p.decoder()( JC.f.getUrlParam( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) );
+                _selectors.each( function(){
+                    var _sp = $(this)
+                        , _key = _sp.attr('name').trim()
+                        , _encodeKey = _p.encoder()( _key )
+                        , _items
+                        ;
+
+                    if( !( _key in _keyObj ) && ( JC.f.hasUrlParam( _url, _key ) || JC.f.hasUrlParam( _url, _encodeKey ) ) ){
+                        _items = JC.f.getUrlParams( _url, _key );
+                        !( _items && _items.length ) && ( _items = JC.f.getUrlParams( _url, _encodeKey ) );
+
+                        if( !( _items && _items.length ) ) return;
+
+                        _keyObj[ _key ] = {
+                            'items': _items
+                        };
                     }
                 });
+
+                for( var k in _keyObj ){
+                    var _item = _keyObj[ k ], _items = [];
+
+                    _selectors.each( function(_ix, _item){
+                        _item = $( _item );
+                        _item.attr( 'name' ) == k && _items.push( _item );
+                    });
+
+                    $.each( _items, function( _ix, _sitem ){
+                        _sitem.val( _p.decoder()( _p.fixSpace( _item.items[ _ix ] ) ) );
+                    });
+                }
             }
+
+        , fixSpace: function( _v ){ return ( _v || '' ).replace(/[\+]/g, ' ' ); }
 
         , _fillSpecialInput:
             function( _selector, _url ){
@@ -243,23 +283,51 @@
 
         , _fillSelect:
             function( _selector, _url ){
-                var _p = this;
+                var _p = this
+                    , _keyObj = {}
+                    , _selectors = _selector.find( 'select[name]' )
+                    ;
 
-                _selector.find( 'select[name]' ).each( function(){
+                _selectors.each( function(){
                     var _sp = $(this)
-                        , _uval = _p.decoder()( JC.f.getUrlParam( _url, _sp.attr('name') ).replace(/[\+]/g, ' ' ) ) 
+                        , _key = _sp.attr('name').trim()
+                        , _encodeKey = _p.encoder()( _key )
+                        , _items
                         ;
-                    if( JC.f.hasUrlParam( _url, _sp.attr('name') ) ){
-                        if( FormFillUrl.selectHasVal( _sp, _uval ) ){
-                            _sp.removeAttr('selectignoreinitrequest');
-                            _sp.val( JC.f.getUrlParam( _url, _sp.attr('name') ) );
-                        }else{
-                            _sp.attr( 'selectvalue', _uval );
-                        }
+
+                    if( !( _key in _keyObj ) && ( JC.f.hasUrlParam( _url, _key ) || JC.f.hasUrlParam( _url, _encodeKey ) ) ){
+                        _items = JC.f.getUrlParams( _url, _key );
+                        !( _items && _items.length ) && ( _items = JC.f.getUrlParams( _url, _encodeKey ) );
+
+                        if( !( _items && _items.length ) ) return;
+
+                        _keyObj[ _key ] = {
+                            'items': _items
+                        };
                     }
                 });
-            }
 
+                for( var k in _keyObj ){
+                    var _item = _keyObj[ k ], _items = [];
+
+                    _selectors.each( function(_ix, _item){
+                        _item = $( _item );
+                        _item.attr( 'name' ) == k && _items.push( _item );
+                    });
+
+                    $.each( _items, function( _ix, _sitem ){
+                        //_sitem.val( _p.decoder()( _p.fixSpace( _item.items[ _ix ] ) ) );
+                        var _val = _p.decoder()( _p.fixSpace( _item.items[ _ix ] ) );
+
+                        if( FormFillUrl.selectHasVal( _sitem, _val ) ){
+                            _sitem.removeAttr('selectIgnoreInitRequest');
+                            _sitem.val( _val );
+                        }else{
+                            _sitem.attr( 'selectvalue', _val );
+                        }
+                    });
+                }
+            }
 
         , decoder: function(){ return this.callbackProp( 'decoder' ) || FormFillUrl.decoder; }
         , encoder: function(){ return this.callbackProp( 'encoder' ) || FormFillUrl.encoder; }

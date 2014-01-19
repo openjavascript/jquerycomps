@@ -208,7 +208,7 @@
     <pre class="code prettyprint linenums">
 ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
 /**
- * 组件用途简述
+ * FormFillUrl 表单自动填充 URL 参数
  *
  *&lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
  *   &lt;a href=&quot;widnow.jQuery.html&quot;&gt;jQuery&lt;/a&gt;
@@ -220,13 +220,16 @@
  *   | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.FormFillUrl.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
  *   | &lt;a href=&#x27;../../modules/JC.FormFillUrl/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
  *  
- *&lt;h2&gt;页面只要引用本脚本, 默认会处理 div class=&quot;js_compFormFillUrl&quot;&lt;/h2&gt;
+ *&lt;h2&gt;页面只要引用本脚本, 默认会处理 form class=&quot;js_compFormFillUrl&quot;&lt;/h2&gt;
  *
- *&lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
+ *&lt;h2&gt;Form 可用的 HTML attribute&lt;/h2&gt;
  *
  *&lt;dl&gt;
- *    &lt;dt&gt;&lt;/dt&gt;
- *    &lt;dd&gt;&lt;dd&gt;
+ *    &lt;dt&gt;decoder = function, default = decodeURIComponent&lt;/dt&gt;
+ *    &lt;dd&gt;URL 的解码函数&lt;dd&gt;
+ *
+ *    &lt;dt&gt;encoder = function, default = encodeURIComponent&lt;/dt&gt;
+ *    &lt;dd&gt;URL 的编码码函数&lt;dd&gt;
  *&lt;/dl&gt; 
  *
  * @namespace   JC
@@ -239,7 +242,7 @@
  * @example
         &lt;h2&gt;JC.FormFillUrl 示例&lt;/h2&gt;
  */
-    var _jdoc = $( document ), _jwin = $( window );
+    var _jdoc = $( document );
 
     JC.FormFillUrl = FormFillUrl;
 
@@ -334,7 +337,7 @@
     JC.f.extendObject( FormFillUrl.prototype, {
         _beforeInit:
             function(){
-                JC.log( &#x27;FormFillUrl _beforeInit&#x27;, new Date().getTime() );
+                //JC.log( &#x27;FormFillUrl _beforeInit&#x27;, new Date().getTime() );
             }
 
         , _initHanlderEvent:
@@ -358,15 +361,22 @@
 
         , _inited:
             function(){
-                JC.log( &#x27;FormFillUrl _inited&#x27;, new Date().getTime() );
+                //JC.log( &#x27;FormFillUrl _inited&#x27;, new Date().getTime() );
                 this.trigger( FormFillUrl.Model.INITED );
             }
-
+        /**
+         * 手动填充 URL 值
+         * @method fill
+         * @param   {selector}  _selector
+         * @param   {string}    _url
+         * @return  FormFillUrlInstance
+         */
         , fill:
             function( _selector, _url ){
                 _selector &amp;&amp; ( _selector = $( _selector ) );
                 if( !( _selector &amp;&amp; _selector.length &amp;&amp; _url ) ) return this;
                 _p.trigger( FormFillUrl.Model.PROCESS, [ _selector, _url ] );
+                return this;
             }
 
     });
@@ -378,7 +388,7 @@
     JC.f.extendObject( FormFillUrl.Model.prototype, {
         init:
             function(){
-                JC.log( &#x27;FormFillUrl.Model.init:&#x27;, new Date().getTime() );
+                //JC.log( &#x27;FormFillUrl.Model.init:&#x27;, new Date().getTime() );
             }
 
         , url:
@@ -408,15 +418,45 @@
         
         , _fillInput:
             function( _selector, _url ){
-                var _p = this;
+                var _p = this
+                    , _keyObj = {}
+                    , _selectors = _selector.find( &#x27;input[type=text][name],input[type=password][name],textarea[name]&#x27; )
+                    ;
 
-                _selector.find( &#x27;input[type=text][name],input[type=password][name],textarea[name]&#x27; ).each( function(){
-                    var _sp = $(this);
-                    if( JC.f.hasUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) ){
-                        _sp.val( _p.decoder()( JC.f.getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) );
+                _selectors.each( function(){
+                    var _sp = $(this)
+                        , _key = _sp.attr(&#x27;name&#x27;).trim()
+                        , _encodeKey = _p.encoder()( _key )
+                        , _items
+                        ;
+
+                    if( !( _key in _keyObj ) &amp;&amp; ( JC.f.hasUrlParam( _url, _key ) || JC.f.hasUrlParam( _url, _encodeKey ) ) ){
+                        _items = JC.f.getUrlParams( _url, _key );
+                        !( _items &amp;&amp; _items.length ) &amp;&amp; ( _items = JC.f.getUrlParams( _url, _encodeKey ) );
+
+                        if( !( _items &amp;&amp; _items.length ) ) return;
+
+                        _keyObj[ _key ] = {
+                            &#x27;items&#x27;: _items
+                        };
                     }
                 });
+
+                for( var k in _keyObj ){
+                    var _item = _keyObj[ k ], _items = [];
+
+                    _selectors.each( function(_ix, _item){
+                        _item = $( _item );
+                        _item.attr( &#x27;name&#x27; ) == k &amp;&amp; _items.push( _item );
+                    });
+
+                    $.each( _items, function( _ix, _sitem ){
+                        _sitem.val( _p.decoder()( _p.fixSpace( _item.items[ _ix ] ) ) );
+                    });
+                }
             }
+
+        , fixSpace: function( _v ){ return ( _v || &#x27;&#x27; ).replace(/[\+]/g, &#x27; &#x27; ); }
 
         , _fillSpecialInput:
             function( _selector, _url ){
@@ -451,23 +491,51 @@
 
         , _fillSelect:
             function( _selector, _url ){
-                var _p = this;
+                var _p = this
+                    , _keyObj = {}
+                    , _selectors = _selector.find( &#x27;select[name]&#x27; )
+                    ;
 
-                _selector.find( &#x27;select[name]&#x27; ).each( function(){
+                _selectors.each( function(){
                     var _sp = $(this)
-                        , _uval = _p.decoder()( JC.f.getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ).replace(/[\+]/g, &#x27; &#x27; ) ) 
+                        , _key = _sp.attr(&#x27;name&#x27;).trim()
+                        , _encodeKey = _p.encoder()( _key )
+                        , _items
                         ;
-                    if( JC.f.hasUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) ){
-                        if( FormFillUrl.selectHasVal( _sp, _uval ) ){
-                            _sp.removeAttr(&#x27;selectignoreinitrequest&#x27;);
-                            _sp.val( JC.f.getUrlParam( _url, _sp.attr(&#x27;name&#x27;) ) );
-                        }else{
-                            _sp.attr( &#x27;selectvalue&#x27;, _uval );
-                        }
+
+                    if( !( _key in _keyObj ) &amp;&amp; ( JC.f.hasUrlParam( _url, _key ) || JC.f.hasUrlParam( _url, _encodeKey ) ) ){
+                        _items = JC.f.getUrlParams( _url, _key );
+                        !( _items &amp;&amp; _items.length ) &amp;&amp; ( _items = JC.f.getUrlParams( _url, _encodeKey ) );
+
+                        if( !( _items &amp;&amp; _items.length ) ) return;
+
+                        _keyObj[ _key ] = {
+                            &#x27;items&#x27;: _items
+                        };
                     }
                 });
-            }
 
+                for( var k in _keyObj ){
+                    var _item = _keyObj[ k ], _items = [];
+
+                    _selectors.each( function(_ix, _item){
+                        _item = $( _item );
+                        _item.attr( &#x27;name&#x27; ) == k &amp;&amp; _items.push( _item );
+                    });
+
+                    $.each( _items, function( _ix, _sitem ){
+                        //_sitem.val( _p.decoder()( _p.fixSpace( _item.items[ _ix ] ) ) );
+                        var _val = _p.decoder()( _p.fixSpace( _item.items[ _ix ] ) );
+
+                        if( FormFillUrl.selectHasVal( _sitem, _val ) ){
+                            _sitem.removeAttr(&#x27;selectIgnoreInitRequest&#x27;);
+                            _sitem.val( _val );
+                        }else{
+                            _sitem.attr( &#x27;selectvalue&#x27;, _val );
+                        }
+                    });
+                }
+            }
 
         , decoder: function(){ return this.callbackProp( &#x27;decoder&#x27; ) || FormFillUrl.decoder; }
         , encoder: function(){ return this.callbackProp( &#x27;encoder&#x27; ) || FormFillUrl.encoder; }

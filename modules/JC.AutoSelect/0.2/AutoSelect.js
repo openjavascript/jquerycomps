@@ -447,7 +447,7 @@
 
                 if( _ignoreAction ) return;
 
-                JC.log( '_responeChange:', _sp.attr('name'), _v );
+                //JC.log( '_responeChange:', _sp.attr('name'), _v );
 
                 if( !( _next && _next.length ) ){
                     _p.trigger( 'SelectChange' );
@@ -567,7 +567,7 @@
                 _p.trigger( 'SelectChange', [ _selector ] );
                 
                 if( _next && _next.length ){
-                    JC.log( '_firstInitCb:', _selector.val(), _next.attr('name'), _selector.attr('name') );
+                    //JC.log( '_firstInitCb:', _selector.val(), _next.attr('name'), _selector.attr('name') );
                     _p._update( _next, _p._firstInitCb, _selector.val() );
                 }
 
@@ -582,7 +582,7 @@
         , _updateStatic:
             function( _selector, _cb, _pid ){
                 var _p = this, _data, _ignoreUpdate = false;
-                JC.log( 'static select' );
+                //JC.log( 'static select' );
                 if( _p._model.isFirst( _selector ) ){
                     typeof _pid == 'undefined' 
                         && ( _pid = _p._model.selectparentid( _selector ) 
@@ -606,7 +606,7 @@
         , _updateNormal:
             function( _selector, _cb, _pid ){
                var _p = this, _data;
-                JC.log( 'normal select' );
+                //JC.log( 'normal select' );
                 if( _p._model.isFirst( _selector ) ){
                     var _next = _p._model.next( _selector );
                     typeof _pid == 'undefined' && ( _pid = _p._model.selectvalue( _selector ) || _selector.val() || '' );
@@ -645,7 +645,7 @@
         _init:
             function(){
                 this._findAllItems( this._selector );
-                JC.log( 'select items.length:', this._items.length );
+                //JC.log( 'select items.length:', this._items.length );
                 this._initRelationship();
                 return this;
             }
