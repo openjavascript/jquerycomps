@@ -23,6 +23,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.FormFillUrl",
         "JC.ImageCutter",
         "JC.LunarCalendar",
+        "JC.NumericStepper",
         "JC.Panel",
         "JC.Placeholder",
         "JC.PopTips",

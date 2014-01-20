@@ -79,10 +79,10 @@
      *      <dt>maxlength = int(最大长度)</dt>
      *      <dd>验证内容的最大长度, 但不验证为空的值</dd>
      *
-     *      <dt>minvalue = [number|ISO date](最小值)</dt>
+     *      <dt>minvalue = number|ISO date(最小值)</dt>
      *      <dd>验证内容的最小值, 但不验证为空的值</dd>
      *
-     *      <dt>maxvalue = [number|ISO date](最大值)</dt>
+     *      <dt>maxvalue = number|ISO date(最大值)</dt>
      *      <dd>验证内容的最大值, 但不验证为空的值</dd>
      *
      *      <dt>validitemcallback = function</dt>

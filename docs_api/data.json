@@ -276,8 +276,8 @@
                 "JC": 1
             }
         },
-        "../comps/Form/Form.default.js": {
-            "name": "../comps/Form/Form.default.js",
+        "../comps/Form/Form.js": {
+            "name": "../comps/Form/Form.js",
             "modules": {},
             "classes": {
                 "JC.Form": 1
@@ -286,22 +286,6 @@
             "namespaces": {
                 "JC": 1
             }
-        },
-        "../comps/Form/Form.initNumericStepper.js": {
-            "name": "../comps/Form/Form.initNumericStepper.js",
-            "modules": {},
-            "classes": {},
-            "fors": {
-                "JC.Form": 1
-            },
-            "namespaces": {}
-        },
-        "../comps/Form/Form.js": {
-            "name": "../comps/Form/Form.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
         },
         "../comps/FormFillUrl/FormFillUrl.js": {
             "name": "../comps/FormFillUrl/FormFillUrl.js",
@@ -363,6 +347,17 @@
             "classes": {},
             "fors": {},
             "namespaces": {}
+        },
+        "../comps/NumericStepper/NumericStepper.js": {
+            "name": "../comps/NumericStepper/NumericStepper.js",
+            "modules": {},
+            "classes": {
+                "JC.NumericStepper": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
         },
         "../comps/Panel/Dialog.js": {
             "name": "../comps/Panel/Dialog.js",
@@ -713,7 +708,7 @@
             "namespace": "window.Bizs",
             "file": "../bizs/FormLogic/FormLogic.js",
             "line": 4,
-            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Valid.html'>JC.Valid</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n     , <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function</dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>Form Control 可用的 html 属性</h2>\n<dl>\n     <dt>ignoreResetClear = bool, default = false</dt>\n     <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dd>\n\n     <dt>formSubmitIgnoreCheck = bool, default = false</dt>\n     <dd>\n         表单提交时, 是否忽略 JC.Valid 的验证\n         <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配\n         <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>\n     </dd>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n\n     <dt>buttonClickBindSelector = selector</dt>\n     <dd>\n         点击按钮时, 把按钮的值赋值给 绑定的 控件\n         <br /><b>注意:</b> 这个属性仅支持 [input|button] 标签\n     </dd>\n</dl>",
+            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Valid.html'>JC.Valid</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><b>optional</b>: \n     <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function</dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>Form Control 可用的 html 属性</h2>\n<dl>\n     <dt>ignoreResetClear = bool, default = false</dt>\n     <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dd>\n\n     <dt>formSubmitIgnoreCheck = bool, default = false</dt>\n     <dd>\n         表单提交时, 是否忽略 JC.Valid 的验证\n         <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配\n         <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>\n     </dd>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n\n     <dt>buttonClickBindSelector = selector</dt>\n     <dd>\n         点击按钮时, 把按钮的值赋值给 绑定的 控件\n         <br /><b>注意:</b> 这个属性仅支持 [input|button] 标签\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-08",
@@ -1035,9 +1030,9 @@
             "plugin_for": [],
             "extension_for": [],
             "namespace": "JC",
-            "file": "../comps/Form/Form.default.js",
+            "file": "../comps/Form/Form.js",
             "line": 2,
-            "description": "表单常用功能类 JC.Form\n<h1 style=\"color: red;\">这个类将不再维护, 相关功能请使用抽取出来的对应组件</h1>\n<p>\n     <b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n</p>\n<p>\n     <b>optional</b>: \n     <a href='JC.AutoSelect.html'>JC.AutoSelect</a>\n     , <a href='JC.AutoChecked.html'>JC.AutoChecked</a>\n     , <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>\n| <a href='../../comps/Form/_demo' target='_blank'>demo link</a></p>",
+            "description": "表单常用功能类 JC.Form\n<h1 style=\"color: red;\">这个组件将不再维护, 相关功能请使用抽取出来的对应组件</h1>\n<p>\n     <b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n</p>\n<p>\n     <b>optional</b>: \n     <a href='JC.AutoSelect.html'>JC.AutoSelect</a>\n     , <a href='JC.AutoChecked.html'>JC.AutoChecked</a>\n     , <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Form.html' target='_blank'>API docs</a>\n| <a href='../../comps/Form/_demo' target='_blank'>demo link</a></p>",
             "static": 1,
             "version": "dev 0.1 2013-06-11",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
@@ -1170,6 +1165,33 @@
                     "description": "",
                     "type": "Date"
                 }
+            ]
+        },
+        "JC.NumericStepper": {
+            "name": "JC.NumericStepper",
+            "shortname": "JC.NumericStepper",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../comps/NumericStepper/NumericStepper.js",
+            "line": 2,
+            "description": "数值加减\n<br />响应式初始化\n\n<p><b>require</b>:\n  <a href=\".jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc.openjavascript.org/docs_api/classes/JC.NumericStepper.html' target='_blank'>API docs</a>\n  | <a href='../../comps/NumericStepper/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 (div|span) class=\"js_compNumericStepper\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n<dl>\n   <dt>cnsMinusButton = selector</dt>\n   <dd>减少数值的 selector<dd>\n\n   <dt>cnsPlusButton = selector</dt>\n   <dd>增加数值的 selector<dd>\n\n   <dt>cnsTarget = selector</dt>\n   <dd>目标文本框的 selector</dd>\n\n   <dt>cnsChangeCb = function</dt>\n   <dd>内容改变后的回调\n<pre>function cnsChangeCb( _newVal, _oldVal, _ins ){\n   var _ipt = $(this);\n   JC.log( 'cnsChangeCb: ', _newVal, _oldVal );\n}</pre>\n   </dd>\n\n   <dt>cnsBeforeChangeCb = function</dt>\n   <dd>内容改变前的回调, 如果显式返回 false 将终止内容变更\n<pre>function cnsBeforeChangeCb( _newVal, _oldVal, _ins ){\n   var _ipt = $(this);\n   JC.log( 'cnsBeforeChangeCb: ', _newVal, _oldVal );\n   if( _newVal > 5 ) return false;\n}</pre>\n   </dd>\n</dl> \n<h2>textbox 可用的 HTML attribute</h2>\n<dl>\n   <dt>minvalue = number</dt>\n   <dd>最小值</dd>\n\n   <dt>maxvalue = number</dt>\n   <dd>最大值</dd>\n\n   <dt>step = number, default = 1</dt>\n   <dd>每次变更的步长</dd>\n\n   <dt>fixed = int, default = 0</dt>\n   <dd>显示多少位小数点</dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2014-01-18",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n       <h2>JC.NumericStepper 示例</h2>\n       <span class=\"js_compNumericStepper\"\n           cnsMinusButton=\"|button:first\"\n           cnsPlusButton=\"|button:last\"\n           cnsTarget=\"|input[type=text]\"\n           cnsChangeCb=\"cnsChangeCb\"\n           >\n           <button type=\"button\" class=\"cnsIcon cnsMinus\"></button>\n           <input type=\"text\" value=\"0\" class=\"ipt\" minvalue=\"0\" maxvalue=\"10\" />\n           <button type=\"button\" class=\"cnsIcon cnsPlus\"></button>\n       </span>"
             ]
         },
         "JC.Dialog": {
@@ -1983,7 +2005,7 @@
             "namespace": "JC",
             "file": "../comps/Valid/Valid.js",
             "line": 6,
-            "description": "<b>表单验证</b> (单例模式)\n<br />全局访问请使用 JC.Valid 或 Valid\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>\n| <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>\n<h2>Form 的可用 html attribute</h2>\n<dl>\n     <dt>errorabort = bool, default = true</dt>\n     <dd>\n         查检Form Control时, 如果发生错误是否继续检查下一个\n         <br />true: 继续检查, false, 停止检查下一个\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 表单所有控件的 em  CSS display 显示类型\n     </dd>\n\n     <dt>ignoreAutoCheckEvent = bool, default = false</dt>\n     <dd>是否禁用 自动 check 事件( focus, blur, change )</dd>\n</dl>\n<h2>Form Control的可用 html attribute</h2>\n<dl>\n     <dt>reqmsg = 错误提示</dt>\n     <dd>值不能为空, class=error errormsg</dd>\n\n     <dt>errmsg = 错误提示</dt>\n     <dd>格式错误, 但不验证为空的值, class=error errormsg</dd>\n\n     <dt>focusmsg = 控件获得焦点的提示信息</dt>\n     <dd>\n         这个只作提示用, class=focusmsg\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>emel = selector</dt>\n     <dd>显示错误信息的selector</dd>\n\n     <dt>validel = selector</dt>\n     <dd>显示正确信息的selector</dd>\n\n     <dt>focusel = selector</dt>\n     <dd>显示提示信息的selector</dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 em 的 CSS display 显示类型\n     </dd>\n\n     <dt>ignoreprocess = bool, default = false</dt>\n     <dd>验证表单控件时, 是否忽略</dd>\n\n     <dt>minlength = int(最小长度)</dt>\n     <dd>验证内容的最小长度, 但不验证为空的值</dd>\n\n     <dt>maxlength = int(最大长度)</dt>\n     <dd>验证内容的最大长度, 但不验证为空的值</dd>\n\n     <dt>minvalue = [number|ISO date](最小值)</dt>\n     <dd>验证内容的最小值, 但不验证为空的值</dd>\n\n     <dt>maxvalue = [number|ISO date](最大值)</dt>\n     <dd>验证内容的最大值, 但不验证为空的值</dd>\n\n     <dt>validitemcallback = function</dt>\n     <dd>\n         对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>\n<pre>function validItemCallback( &#95;selector, &#95;isValid ){\n}</pre>\n     </dd>\n\n     <dt>datatype: 常用数据类型</dt>\n     <dd><b>n:</b> 检查是否为正确的数字</dd>\n     <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>\n     <dd>\n         <b>nrange:</b> 检查两个control的数值范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>d:</b> 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD</dd>\n     <dd>\n         <b>daterange:</b> 检查两个control的日期范围\n         <dl>\n             <dd>html attr <b>fromDateEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toDateEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 daterange, 按顺序定为 fromDateEl, toDateEl</dd>\n         </dl>\n     </dd>\n     <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>\n     <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>\n     <dd>\n         <b>bankcard:</b> 是否为正确的银行卡\n         <br />格式为: 12 ~ 22 位数字\n     </dd>\n     <dd>\n         <b>cnname:</b> 中文姓名\n         <br>格式: 汉字和大小写字母\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>enname:</b> 英文姓名\n         <br>格式: 大小写字母 + 空格\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>allname:</b> cnname | enname\n         <br />中文姓名和英文姓名的复合验证\n     </dd>\n     <dd>\n         <b>username:</b> 注册用户名\n         <br>格式: a-zA-Z0-9_-\n         <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30\n     </dd>\n     <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>\n     <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\\d]{9}</dd>\n     <dd><b>mobile:</b> mobilecode 的别名</dd>\n     <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>\n     <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>\n     <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>\n     <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>\n     <dd><b>phonezone:</b> 电话区号, 3~4位数字. phonezone-n,m 可指定位数长度</dd>\n     <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>\n     <dd><b>countrycode:</b> 地区代码, [+]1~6位数字</dd>\n     <dd><b>mobilephone:</b> mobilecode | phone</dd>\n     <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>\n     <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>\n     <dd>\n         <b>vcode:</b> 验证码, 0-9a-zA-Z, 长度 默认为4\n         <br />可通过 vcode-[\\d], 指定验证码长度\n     </dd>\n     <dd>\n         <b>text:</b> 显示声明检查的内容为文本类型\n         <br />默认就是 text, 没有特殊原因其实不用显示声明\n     </dd>\n     <dd>\n         <b>bytetext:</b> 声明按字节检查文本长度\n         <br /> ASCII 算一个字符, 非 ASCII 算两个字符\n     </dd>\n     <dd><b>url:</b> URL 格式, ftp, http, https</dd>\n     <dd><b>domain:</b> 匹配域名, 宽松模式, 允许匹配 http(s), 且结尾允许匹配反斜扛(/)</dd>\n     <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>\n     <dd><b>email:</b> 电子邮件</dd>\n     <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>\n     <dd><b>taxcode:</b> 纳税人识别号, 长度: 15, 18, 20 </dd>\n\n     <dd>\n         <dl>\n             <dt>checkbox: 默认需要至少选中N 个 checkbox</dt>\n             <dd>\n                 默认必须选中一个 checkbox\n                 <br > 如果需要选中N个, 用这种格式 checkbox-n, checkbox-3 = 必须选中三个\n                 <br > datatarget: 声明所有 checkbox 的选择器\n             </dd>\n         </dl>\n     </dd>\n\n     <dd>\n         <dl>\n             <dt>file: 判断文件扩展名</dt>\n             <dd>属性名(文件扩展名列表): fileext</dd>\n             <dd>格式: .ext[, .ext]</dd>\n             <dd>\n<xmp>   <input type=\"file\" \n   reqmsg=\"文件\" \n   errmsg=\"允许上传的文件类型: .gif, .jpg, .jpeg, .png\"\n   datatype=\"file\" \n   fileext=\".gif, .jpg, .jpeg, .png\" \n   />\n   <label>.gif, .jpg, .jpeg, .png</label>\n   <em class=\"error\"></em>\n   <em class=\"validmsg\"></em>\n</xmp>\n                   </dd>\n         </dl>\n     </dd>\n\n     <dt>subdatatype: 特殊数据类型, 以逗号分隔多个属性</dt>\n     <dd>\n         <dl>\n             <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>\n             <dd><b>alternativedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>alternativemsg:</b> N 选一的错误提示</dd>\n\n             <dd>\n                 <b>alternativeReqTarget:</b> 为 alternative node 指定一个不能为空的 node\n                 <br /><b>请使用 subdatatype = reqtarget</b>, 这个附加属性将弃除\n             </dd>\n             <dd><b>alternativeReqmsg:</b> alternativeReqTarget 目标 node 的html属性, 错误时显示的提示信息</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reqtarget: 如果 selector 的值非空, 那么 datatarget 的值也不能为空</dt>\n             <dd><b>datatarget:</b> 显式指定 目标 target</dd>\n             <dd><b>reqTargetDatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reqtargetmsg:</b> target node 用于显示错误提示的 html 属性</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reconfirm: N 个 Control 的值必须保持一致</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>\n             <dd><b>reconfirmdatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>unique: N 个 Control 的值必须保持唯一性, 不能有重复</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=unique]</dd>\n             <dd><b>uniquedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>\n             <dd><b>uniqueIgnoreCase:</b> 是否忽略大小写</dd>\n             <dd><b>uniqueIgnoreEmpty:</b> 是否忽略空的值, 如果组中有空值也会被忽略</dd>\n             <dd><b>processDisabled:</b> 是否处理 disabled 但 visible 的node</dd>\n             <dd>unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )</dt>\n             <dd><b>datavalidMsg:</b> 值不合法时的提示信息</dd>\n             <dd>\n                 <b>datavalidUrl:</b> 验证内容正确与否的 url api\n                 <p>{\"errorno\":0,\"errmsg\":\"\"}</p>\n                 errorno: 0( 正确 ), 非0( 错误 )\n                 <p>datavalidurl=\"./data/handler.php?key={0}\"</p>\n                 {0} 代表 value\n             </dd>\n             <dd>\n                 <b>datavalidCallback:</b> 请求 datavalidUrl 后调用的回调\n<pre>function datavalidCallback( _json ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n                 <b>datavalidKeyupCallback:</b> 每次 keyup 的回调\n<pre>function datavalidKeyupCallback( _evt ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n             <dd>\n                 <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调\n<pre>function datavalidUrlFilter( _url ){\n   var _selector = $(this);\n   _url = JC.f.addUrlParams( _url, { 'xtest': 'customData' } );\n   return _url;\n});</pre>\n             </dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>hidden: 验证隐藏域的值</dt>\n             <dd>\n                 有些特殊情况需要验证隐藏域的值, 请使用 subdatatype=\"hidden\"\n             </dd>\n         </dl>\n     </dd>\n</dl>",
+            "description": "<b>表单验证</b> (单例模式)\n<br />全局访问请使用 JC.Valid 或 Valid\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>\n| <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>\n<h2>Form 的可用 html attribute</h2>\n<dl>\n     <dt>errorabort = bool, default = true</dt>\n     <dd>\n         查检Form Control时, 如果发生错误是否继续检查下一个\n         <br />true: 继续检查, false, 停止检查下一个\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 表单所有控件的 em  CSS display 显示类型\n     </dd>\n\n     <dt>ignoreAutoCheckEvent = bool, default = false</dt>\n     <dd>是否禁用 自动 check 事件( focus, blur, change )</dd>\n</dl>\n<h2>Form Control的可用 html attribute</h2>\n<dl>\n     <dt>reqmsg = 错误提示</dt>\n     <dd>值不能为空, class=error errormsg</dd>\n\n     <dt>errmsg = 错误提示</dt>\n     <dd>格式错误, 但不验证为空的值, class=error errormsg</dd>\n\n     <dt>focusmsg = 控件获得焦点的提示信息</dt>\n     <dd>\n         这个只作提示用, class=focusmsg\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>emel = selector</dt>\n     <dd>显示错误信息的selector</dd>\n\n     <dt>validel = selector</dt>\n     <dd>显示正确信息的selector</dd>\n\n     <dt>focusel = selector</dt>\n     <dd>显示提示信息的selector</dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 em 的 CSS display 显示类型\n     </dd>\n\n     <dt>ignoreprocess = bool, default = false</dt>\n     <dd>验证表单控件时, 是否忽略</dd>\n\n     <dt>minlength = int(最小长度)</dt>\n     <dd>验证内容的最小长度, 但不验证为空的值</dd>\n\n     <dt>maxlength = int(最大长度)</dt>\n     <dd>验证内容的最大长度, 但不验证为空的值</dd>\n\n     <dt>minvalue = number|ISO date(最小值)</dt>\n     <dd>验证内容的最小值, 但不验证为空的值</dd>\n\n     <dt>maxvalue = number|ISO date(最大值)</dt>\n     <dd>验证内容的最大值, 但不验证为空的值</dd>\n\n     <dt>validitemcallback = function</dt>\n     <dd>\n         对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>\n<pre>function validItemCallback( &#95;selector, &#95;isValid ){\n}</pre>\n     </dd>\n\n     <dt>datatype: 常用数据类型</dt>\n     <dd><b>n:</b> 检查是否为正确的数字</dd>\n     <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>\n     <dd>\n         <b>nrange:</b> 检查两个control的数值范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>d:</b> 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD</dd>\n     <dd>\n         <b>daterange:</b> 检查两个control的日期范围\n         <dl>\n             <dd>html attr <b>fromDateEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toDateEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 daterange, 按顺序定为 fromDateEl, toDateEl</dd>\n         </dl>\n     </dd>\n     <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>\n     <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>\n     <dd>\n         <b>bankcard:</b> 是否为正确的银行卡\n         <br />格式为: 12 ~ 22 位数字\n     </dd>\n     <dd>\n         <b>cnname:</b> 中文姓名\n         <br>格式: 汉字和大小写字母\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>enname:</b> 英文姓名\n         <br>格式: 大小写字母 + 空格\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>allname:</b> cnname | enname\n         <br />中文姓名和英文姓名的复合验证\n     </dd>\n     <dd>\n         <b>username:</b> 注册用户名\n         <br>格式: a-zA-Z0-9_-\n         <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30\n     </dd>\n     <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>\n     <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\\d]{9}</dd>\n     <dd><b>mobile:</b> mobilecode 的别名</dd>\n     <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>\n     <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>\n     <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>\n     <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>\n     <dd><b>phonezone:</b> 电话区号, 3~4位数字. phonezone-n,m 可指定位数长度</dd>\n     <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>\n     <dd><b>countrycode:</b> 地区代码, [+]1~6位数字</dd>\n     <dd><b>mobilephone:</b> mobilecode | phone</dd>\n     <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>\n     <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>\n     <dd>\n         <b>vcode:</b> 验证码, 0-9a-zA-Z, 长度 默认为4\n         <br />可通过 vcode-[\\d], 指定验证码长度\n     </dd>\n     <dd>\n         <b>text:</b> 显示声明检查的内容为文本类型\n         <br />默认就是 text, 没有特殊原因其实不用显示声明\n     </dd>\n     <dd>\n         <b>bytetext:</b> 声明按字节检查文本长度\n         <br /> ASCII 算一个字符, 非 ASCII 算两个字符\n     </dd>\n     <dd><b>url:</b> URL 格式, ftp, http, https</dd>\n     <dd><b>domain:</b> 匹配域名, 宽松模式, 允许匹配 http(s), 且结尾允许匹配反斜扛(/)</dd>\n     <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>\n     <dd><b>email:</b> 电子邮件</dd>\n     <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>\n     <dd><b>taxcode:</b> 纳税人识别号, 长度: 15, 18, 20 </dd>\n\n     <dd>\n         <dl>\n             <dt>checkbox: 默认需要至少选中N 个 checkbox</dt>\n             <dd>\n                 默认必须选中一个 checkbox\n                 <br > 如果需要选中N个, 用这种格式 checkbox-n, checkbox-3 = 必须选中三个\n                 <br > datatarget: 声明所有 checkbox 的选择器\n             </dd>\n         </dl>\n     </dd>\n\n     <dd>\n         <dl>\n             <dt>file: 判断文件扩展名</dt>\n             <dd>属性名(文件扩展名列表): fileext</dd>\n             <dd>格式: .ext[, .ext]</dd>\n             <dd>\n<xmp>   <input type=\"file\" \n   reqmsg=\"文件\" \n   errmsg=\"允许上传的文件类型: .gif, .jpg, .jpeg, .png\"\n   datatype=\"file\" \n   fileext=\".gif, .jpg, .jpeg, .png\" \n   />\n   <label>.gif, .jpg, .jpeg, .png</label>\n   <em class=\"error\"></em>\n   <em class=\"validmsg\"></em>\n</xmp>\n                   </dd>\n         </dl>\n     </dd>\n\n     <dt>subdatatype: 特殊数据类型, 以逗号分隔多个属性</dt>\n     <dd>\n         <dl>\n             <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>\n             <dd><b>alternativedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>alternativemsg:</b> N 选一的错误提示</dd>\n\n             <dd>\n                 <b>alternativeReqTarget:</b> 为 alternative node 指定一个不能为空的 node\n                 <br /><b>请使用 subdatatype = reqtarget</b>, 这个附加属性将弃除\n             </dd>\n             <dd><b>alternativeReqmsg:</b> alternativeReqTarget 目标 node 的html属性, 错误时显示的提示信息</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reqtarget: 如果 selector 的值非空, 那么 datatarget 的值也不能为空</dt>\n             <dd><b>datatarget:</b> 显式指定 目标 target</dd>\n             <dd><b>reqTargetDatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reqtargetmsg:</b> target node 用于显示错误提示的 html 属性</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reconfirm: N 个 Control 的值必须保持一致</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>\n             <dd><b>reconfirmdatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>unique: N 个 Control 的值必须保持唯一性, 不能有重复</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=unique]</dd>\n             <dd><b>uniquedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>\n             <dd><b>uniqueIgnoreCase:</b> 是否忽略大小写</dd>\n             <dd><b>uniqueIgnoreEmpty:</b> 是否忽略空的值, 如果组中有空值也会被忽略</dd>\n             <dd><b>processDisabled:</b> 是否处理 disabled 但 visible 的node</dd>\n             <dd>unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )</dt>\n             <dd><b>datavalidMsg:</b> 值不合法时的提示信息</dd>\n             <dd>\n                 <b>datavalidUrl:</b> 验证内容正确与否的 url api\n                 <p>{\"errorno\":0,\"errmsg\":\"\"}</p>\n                 errorno: 0( 正确 ), 非0( 错误 )\n                 <p>datavalidurl=\"./data/handler.php?key={0}\"</p>\n                 {0} 代表 value\n             </dd>\n             <dd>\n                 <b>datavalidCallback:</b> 请求 datavalidUrl 后调用的回调\n<pre>function datavalidCallback( _json ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n                 <b>datavalidKeyupCallback:</b> 每次 keyup 的回调\n<pre>function datavalidKeyupCallback( _evt ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n             <dd>\n                 <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调\n<pre>function datavalidUrlFilter( _url ){\n   var _selector = $(this);\n   _url = JC.f.addUrlParams( _url, { 'xtest': 'customData' } );\n   return _url;\n});</pre>\n             </dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>hidden: 验证隐藏域的值</dt>\n             <dd>\n                 有些特殊情况需要验证隐藏域的值, 请使用 subdatatype=\"hidden\"\n             </dd>\n         </dl>\n     </dd>\n</dl>",
             "static": 1,
             "version": "0.1,  2013-05-22",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
@@ -2686,7 +2708,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 277,
+            "line": 279,
             "description": "获取或设置 FormLogic 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -2707,7 +2729,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 300,
+            "line": 302,
             "description": "处理 form 或者 _selector 的所有form.js_bizsFormLogic",
             "itemtype": "method",
             "name": "init",
@@ -2728,7 +2750,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 321,
+            "line": 323,
             "description": "msgbox 提示框的自动关闭时间",
             "itemtype": "property",
             "name": "popupCloseMs",
@@ -2740,7 +2762,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 329,
+            "line": 331,
             "description": "AJAX 表单的提交类型\n<br />plugins, form\n<br />plugins 可以支持文件上传",
             "itemtype": "property",
             "name": "popupCloseMs",
@@ -2752,7 +2774,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 339,
+            "line": 341,
             "description": "表单提交后, 是否禁用提交按钮",
             "itemtype": "property",
             "name": "submitDisable",
@@ -2764,7 +2786,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 347,
+            "line": 349,
             "description": "表单提交后, 是否重置表单内容",
             "itemtype": "property",
             "name": "resetAfterSubmit",
@@ -2776,7 +2798,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 355,
+            "line": 357,
             "description": "表单提交时, 内容填写不完整时触发的全局回调",
             "itemtype": "property",
             "name": "processErrorCb",
@@ -2788,7 +2810,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 363,
+            "line": 365,
             "description": "全局返回数据处理回调\n<br />所有提交结果都会调用\n<br />arg: _data[string of result]",
             "itemtype": "property",
             "name": "GLOBAL_AJAX_CHECK",
@@ -2800,28 +2822,28 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 387,
+            "line": 389,
             "description": "默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 457,
+            "line": 459,
             "description": "全局 AJAX 提交完成后的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 463,
+            "line": 465,
             "description": "这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 507,
+            "line": 509,
             "description": "表单内容验证通过后, 开始提交前的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
@@ -6116,7 +6138,7 @@
             "namespace": "JC"
         },
         {
-            "file": "../comps/Form/Form.default.js",
+            "file": "../comps/Form/Form.js",
             "line": 26,
             "description": "禁用按钮一定时间, 默认为1秒\n<br />这个方法已停止维护\n, 请使用 <a href=\"../../docs_api/classes/window.Bizs.ActionLogic.html#method_disableButton\">Bizs.ActionLogic.disableButton</a>",
             "itemtype": "method",
@@ -6138,7 +6160,7 @@
             "namespace": "JC"
         },
         {
-            "file": "../comps/Form/Form.default.js",
+            "file": "../comps/Form/Form.js",
             "line": 46,
             "description": "select 级联下拉框无限联动\n<br />这个方法已经摘取出来, 单独成为一个类.\n<br />详情请见: <a href=\"../../docs_api/classes/JC.AutoSelect.html\">JC.AutoSelect</a>\n<br />目前摘出去的类与之前的逻辑保持向后兼容, 但在不久的将来将会清除这个方法",
             "itemtype": "method",
@@ -6148,7 +6170,7 @@
             "namespace": "JC"
         },
         {
-            "file": "../comps/Form/Form.default.js",
+            "file": "../comps/Form/Form.js",
             "line": 55,
             "description": "全选/反选\n<br />这个方法已经摘取出来, 单独成为一个类.\n<br />详情请见: <a href=\"../../docs_api/classes/JC.AutoChecked.html\">JC.AutoChecked</a>\n<br />目前摘出去的类与之前的逻辑保持向后兼容, 但在不久的将来将会清除这个方法",
             "itemtype": "method",
@@ -6158,7 +6180,7 @@
             "namespace": "JC"
         },
         {
-            "file": "../comps/Form/Form.default.js",
+            "file": "../comps/Form/Form.js",
             "line": 64,
             "description": "表单自动填充 URL GET 参数\n<br />这个方法已经摘取出来, 单独成为一个类.\n<br />详情请见: <a href=\"../../docs_api/classes/JC.FormFillUrl.html\">JC.FormFillUrl</a>",
             "itemtype": "method",
@@ -6177,47 +6199,6 @@
             ],
             "static": 1,
             "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/Form.initNumericStepper.js",
-            "line": 2,
-            "description": "文本框 值增减 应用\n<br />只要引用本脚本, 页面加载完毕时就会自动初始化 NumericStepper\n<br />所有带 class js_NStepperPlus, js_NStepperMinus 视为值加减按钮\n<br /><br />目标文本框可以添加一些HTML属性自己的规则, \n<br />nsminvalue=最小值(默认=0), nsmaxvalue=最大值(默认=100), nsstep=步长(默认=1), nsfixed=小数点位数(默认=0)\n<br />nschangecallback=值变改后的回调",
-            "itemtype": "method",
-            "name": "initNumericStepper",
-            "static": 1,
-            "version": "dev 0.1",
-            "author": "qiushaowei   <suches@btbtd.org> | 360 75 Team",
-            "date": "2013-07-05",
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "要初始化的全选反选的父级节点",
-                    "type": "Selector"
-                }
-            ],
-            "example": [
-                "\n            <dl class=\"def example1\">\n               <dt>JC.Form.initNumericStepper 默认值 0 - 100, step 1, fixed 0</dt>\n               <dd>\n                   <button class=\"NS_icon NS_minus js_NStepperMinus\" nstarget=\"input.js_ipt1\" ></button>\n                   <input type=\"text\" value=\"0\" class=\"js_ipt1\" />\n                   <button class=\"NS_icon NS_plus js_NStepperPlus\" nstarget=\"input.js_ipt1\" ></button>\n               </dd>\n           </dl>\n\n           <dl class=\"def example1\">\n               <dt>JC.Form.initNumericStepper -10 ~ 10, step 2, fixed 2</dt>\n               <dd>\n                   <button class=\"NS_icon NS_minus js_NStepperMinus\" nstarget=\"input.js_ipt2\" ></button>\n                   <input type=\"text\" value=\"4\" class=\"js_ipt2\" nsminvalue=\"-10\" nsmaxvalue=\"10\" nsstep=\"2\" nsfixed=\"2\" />\n                   <button class=\"NS_icon NS_plus js_NStepperPlus\" nstarget=\"input.js_ipt2\" ></button>\n               </dd>\n           </dl>"
-            ],
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/Form.initNumericStepper.js",
-            "line": 61,
-            "description": "文本框 值增减 值变改后的回调\n<br />这个是定义全局的回调函数, 要定义局部回调请在目标文本框上添加 nschangecallback=回调 HTML属性",
-            "itemtype": "property",
-            "name": "initNumericStepper.onchange",
-            "type": "function",
-            "static": 1,
-            "class": "JC.Form",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Form/Form.js",
-            "line": 5,
-            "description": "这个判断是为了向后兼容 JC 0.1\n使用 requirejs 的项目可以移除这段判断代码",
-            "class": "JC.FormFillUrl",
             "namespace": "JC"
         },
         {
@@ -7616,8 +7597,71 @@
             "file": "../comps/LunarCalendar/LunarCalendar.js",
             "line": 8,
             "description": "这个判断是为了向后兼容 JC 0.1\n使用 requirejs 的项目可以移除这段判断代码",
-            "class": "JC.Dialog",
+            "class": "JC.NumericStepper",
             "namespace": "JC.LunarCalendar"
+        },
+        {
+            "file": "../comps/NumericStepper/NumericStepper.js",
+            "line": 100,
+            "description": "初始化可识别的 NumericStepper 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of NumericStepperInstance"
+            },
+            "class": "JC.NumericStepper",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/NumericStepper/NumericStepper.js",
+            "line": 123,
+            "description": "按下鼠标时 重复执行的频率",
+            "itemtype": "property",
+            "name": "redoMs",
+            "type": "ms",
+            "default": "100",
+            "static": 1,
+            "class": "JC.NumericStepper",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/NumericStepper/NumericStepper.js",
+            "line": 131,
+            "description": "按下鼠标时 延迟 多少毫秒执行重复执行",
+            "itemtype": "property",
+            "name": "timeoutMs",
+            "type": "ms",
+            "default": "100",
+            "static": 1,
+            "class": "JC.NumericStepper",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/NumericStepper/NumericStepper.js",
+            "line": 248,
+            "description": "增加一个 step",
+            "itemtype": "method",
+            "name": "plus",
+            "class": "JC.NumericStepper",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/NumericStepper/NumericStepper.js",
+            "line": 257,
+            "description": "减少一个 step",
+            "itemtype": "method",
+            "name": "minus",
+            "class": "JC.NumericStepper",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Panel/Dialog.js",
@@ -15491,19 +15535,11 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../comps/Form/Form.default.js:2"
+            "line": " ../comps/Form/Form.js:2"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../comps/Form/Form.default.js:2"
-        },
-        {
-            "message": "unknown tag: version",
-            "line": " ../comps/Form/Form.initNumericStepper.js:2"
-        },
-        {
-            "message": "unknown tag: date",
-            "line": " ../comps/Form/Form.initNumericStepper.js:2"
+            "line": " ../comps/Form/Form.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -15520,6 +15556,10 @@
         {
             "message": "unknown tag: date",
             "line": " ../comps/LunarCalendar/LunarCalendar.default.js:6"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../comps/NumericStepper/NumericStepper.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -15791,19 +15831,19 @@
         },
         {
             "message": "Missing item type\n默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
-            "line": " ../bizs/FormLogic/FormLogic.js:387"
+            "line": " ../bizs/FormLogic/FormLogic.js:389"
         },
         {
             "message": "Missing item type\n全局 AJAX 提交完成后的处理事件",
-            "line": " ../bizs/FormLogic/FormLogic.js:457"
+            "line": " ../bizs/FormLogic/FormLogic.js:459"
         },
         {
             "message": "Missing item type\n这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
-            "line": " ../bizs/FormLogic/FormLogic.js:463"
+            "line": " ../bizs/FormLogic/FormLogic.js:465"
         },
         {
             "message": "Missing item type\n表单内容验证通过后, 开始提交前的处理事件",
-            "line": " ../bizs/FormLogic/FormLogic.js:507"
+            "line": " ../bizs/FormLogic/FormLogic.js:509"
         },
         {
             "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
@@ -15968,10 +16008,6 @@
         {
             "message": "Missing item type\n计算两个坐标点之间的距离",
             "line": " ../comps/Drag/Drag.js:886"
-        },
-        {
-            "message": "Missing item type\n这个判断是为了向后兼容 JC 0.1\n使用 requirejs 的项目可以移除这段判断代码",
-            "line": " ../comps/Form/Form.js:5"
         },
         {
             "message": "Missing item type\n按比例缩放图片\n<br />返回: { width: int, height: int }",

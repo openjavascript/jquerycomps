@@ -29,7 +29,7 @@ cd $cur_dir
 
 sh -c "cd $dir/deploy/comps/Calendar && node nodejs_merge.js";
 sh -c "cd $dir/deploy/comps/Panel && node nodejs_merge.js";
-sh -c "cd $dir/deploy/comps/Form && node nodejs_merge.js";
+#sh -c "cd $dir/deploy/comps/Form && node nodejs_merge.js";
 sh -c "cd $dir/deploy/comps/LunarCalendar && node nodejs_merge.js";
 
 cd $cur_dir
