@@ -103,6 +103,8 @@
             
                 <li><a href="../classes/JC.msgbox.html">JC.msgbox</a></li>
             
+                <li><a href="../classes/JC.NumericStepper.html">JC.NumericStepper</a></li>
+            
                 <li><a href="../classes/JC.Panel.html">JC.Panel</a></li>
             
                 <li><a href="../classes/JC.Panel.Model.html">JC.Panel.Model</a></li>
@@ -617,10 +619,8 @@
      */
     function parseFinance( _i, _dot ){
         _i = parseFloat( _i ) || 0;
-        _dot = _dot || 2;
-        if( _i &amp;&amp; _dot ) {
-            _i = parseFloat( _i.toFixed( _dot ) );
-        }
+        _dot == &#x27;undefined&#x27; &amp;&amp; ( _dot = 2 );
+        _i &amp;&amp; ( _i = parseFloat( _i.toFixed( _dot ) ) );
         return _i;
     }
     /**
