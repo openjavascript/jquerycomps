@@ -10007,10 +10007,8 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
      */
     function parseFinance( _i, _dot ){
         _i = parseFloat( _i ) || 0;
-        _dot = _dot || 2;
-        if( _i && _dot ) {
-            _i = parseFloat( _i.toFixed( _dot ) );
-        }
+        _dot == 'undefined' && ( _dot = 2 );
+        _i && ( _i = parseFloat( _i.toFixed( _dot ) ) );
         return _i;
     }
     /**
