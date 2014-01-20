@@ -32,10 +32,6 @@ requirejs.config( {
         , 'JC.Drag': 'modules/JC.Drag/0.1/Drag'
 
         , 'JC.Form': 'modules/JC.Form/0.2/Form'
-        , 'JC.Form.default': 'modules/JC.Form/0.2/Form.default'
-        , 'JC.Form.initNumericStepper': 'modules/JC.Form/0.2/Form.initNumericStepper'
-        //, 'JC.Form.initAutoFill': 'modules/JC.Form/0.1/Form.initAutoFill'
-
         , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
 
         , 'JC.FormFillUrl': 'modules/JC.FormFillUrl/0.1/FormFillUrl'
