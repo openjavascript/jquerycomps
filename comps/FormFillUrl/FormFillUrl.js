@@ -11,7 +11,7 @@
  *
  *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  *   | <a href='http://jc.openjavascript.org/docs_api/classes/JC.FormFillUrl.html' target='_blank'>API docs</a>
- *   | <a href='../../comps/JC.FormFillUrl/_demo' target='_blank'>demo link</a></p>
+ *   | <a href='../../comps/FormFillUrl/_demo' target='_blank'>demo link</a></p>
  *  
  *<h2>页面只要引用本脚本, 默认会处理 form class="js_compFormFillUrl"</h2>
  *
