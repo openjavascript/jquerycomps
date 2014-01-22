@@ -320,6 +320,30 @@
      *
      *      &lt;dt&gt;formAjaxDoneAction = url&lt;/dt&gt;
      *      &lt;dd&gt;声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;formJsonpCb = function, default = FormLogic#_model._innerJsonpCb&lt;/dt&gt;
+     *      &lt;dd&gt;自定义 JSOPN 处理回调, &lt;b&gt;window 变量域&lt;/b&gt;
+&lt;pre&gt;function customFormJsonpCb( _data, _info ){
+    if( !( _data &amp;&amp; _info ) ) return;
+
+    var _frm = $( &#x27;form.&#x27; + _info ), _ins;
+    if( !_frm.length ) return;
+    _ins = JC.BaseMVC.getInstance( _frm, Bizs.FormLogic );
+    if( !_ins ) return;
+
+    _ins.trigger( Bizs.FormLogic.Model.AJAX_DONE, [ _data ] );
+}&lt;/pre&gt;
+
+&lt;pre&gt;URL: &lt;b&gt;handler_jsonp.php?callbackInfo=FormLogic_1&amp;callback=callback&lt;/b&gt;
+OUTPUT:
+&lt;b&gt;&amp;lt;script&amp;gt;
+window.parent 
+    &amp;&amp; window.parent != this
+    &amp;&amp; window.parent&amp;#91; &#x27;callback&#x27; &amp;#93;
+    &amp;&amp; window.parent&amp;#91; &#x27;callback&#x27; &amp;#93;( {&quot;errorno&quot;:0,&quot;errmsg&quot;:&quot;&quot;,&quot;data&quot;:{&quot;callbackInfo&quot;:&quot;FormLogic_1&quot;,&quot;callback&quot;:&quot;callback&quot;}}, &#x27;FormLogic_1&#x27; )
+    ;
+&amp;lt;/script&amp;gt;&lt;/b&gt;&lt;/pre&gt;
+     *      &lt;/dd&gt;
      * &lt;/dl&gt;
      *
      * &lt;h2&gt;Form Control 可用的 html 属性&lt;/h2&gt;

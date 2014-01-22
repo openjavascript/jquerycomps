@@ -106,6 +106,30 @@
      *
      *      <dt>formAjaxDoneAction = url</dt>
      *      <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>
+     *
+     *      <dt>formJsonpCb = function, default = FormLogic#_model._innerJsonpCb</dt>
+     *      <dd>自定义 JSOPN 处理回调, <b>window 变量域</b>
+<pre>function customFormJsonpCb( _data, _info ){
+    if( !( _data && _info ) ) return;
+
+    var _frm = $( 'form.' + _info ), _ins;
+    if( !_frm.length ) return;
+    _ins = JC.BaseMVC.getInstance( _frm, Bizs.FormLogic );
+    if( !_ins ) return;
+
+    _ins.trigger( Bizs.FormLogic.Model.AJAX_DONE, [ _data ] );
+}</pre>
+
+<pre>URL: <b>handler_jsonp.php?callbackInfo=FormLogic_1&callback=callback</b>
+OUTPUT:
+<b>&lt;script&gt;
+window.parent 
+    && window.parent != this
+    && window.parent&#91; 'callback' &#93;
+    && window.parent&#91; 'callback' &#93;( {"errorno":0,"errmsg":"","data":{"callbackInfo":"FormLogic_1","callback":"callback"}}, 'FormLogic_1' )
+    ;
+&lt;/script&gt;</b></pre>
+     *      </dd>
      * </dl>
      *
      * <h2>Form Control 可用的 html 属性</h2>
