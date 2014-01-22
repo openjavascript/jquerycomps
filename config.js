@@ -76,7 +76,7 @@ requirejs.config( {
         , 'Bizs.DropdownTree': 'modules/Bizs.DropdownTree/0.1/DropdownTree'
 
         , 'Bizs.CommonModify': 'modules/Bizs.CommonModify/0.1/CommonModify'
-        , 'Bizs.FormLogic': 'modules/Bizs.FormLogic/0.1/FormLogic'
+        , 'Bizs.FormLogic': 'modules/Bizs.FormLogic/0.2/FormLogic'
         , 'Bizs.KillISPCache': 'modules/Bizs.KillISPCache/0.1/KillISPCache'
         , 'Bizs.MoneyTips': 'modules/Bizs.MoneyTips/0.1/MoneyTips'
         , 'Bizs.MultiDate': 'modules/Bizs.MultiDate/0.1/MultiDate'

@@ -375,6 +375,8 @@
      */
     FormLogic.GLOBAL_AJAX_CHECK;
 
+    FormLogic._currentIns;
+
 
     JC.BaseMVC.build( FormLogic, 'Bizs' );
 
@@ -398,6 +400,7 @@
                 _p.selector().on('submit', function( _evt ){
                     //_evt.preventDefault();
                     _p._model.isSubmited( true );
+                    FormLogic._currentIns = _p;
 
                     var _ignoreCheck, _btn = _p.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON );
                         _btn && ( _btn = $( _btn ) );
@@ -442,6 +445,17 @@
                     */
                 });
 
+                _p.on( FormLogic.Model.INITED, function( _evt ){
+                    _p.trigger( FormLogic.Model.INIT_JSONP );
+                    _p.trigger( FormLogic.Model.BIND_FORM );
+                });
+
+                _p.on( FormLogic.Model.INIT_JSONP, function( _evt ){
+                    if( !( _type == FormLogic.Model.JSONP ) ) return;
+
+                    window[ _p._model.jsonpKey() ] = _p._model.jsonpCb();
+                });
+
                 _p.on( FormLogic.Model.BIND_FORM, function( _evt ){
                     var _frame
                         , _type = _p._model.formType()
@@ -451,6 +465,7 @@
 
                     _frame = _p._model.frame();
                     _frame.on( 'load', function( _evt ){
+                        if( _p._model.formType() == FormLogic.Model.JSONP ) return;
                         var _w = _frame.prop('contentWindow')
                             , _wb = _w.document.body
                             , _d = $( '<div>' + ( $.trim( _wb.innerHTML ) || '' ) + '</div>' ).text()
@@ -458,13 +473,13 @@
                         if( !_p._model.isSubmited() ) return;
 
                         JC.log( 'common ajax done' );
-                        _p.trigger( 'AjaxDone', [ _d ] );
+                        _p.trigger( FormLogic.Model.AJAX_DONE, [ _d ] );
                     });
                 });
                 /**
                  * 全局 AJAX 提交完成后的处理事件
                  */
-                _p.on('AjaxDone', function( _evt, _data ){
+                _p.on( FormLogic.Model.AJAX_DONE, function( _evt, _data ){
                     FormLogic.GLOBAL_AJAX_CHECK
                         && FormLogic.GLOBAL_AJAX_CHECK( _data );
                     /**
@@ -473,10 +488,12 @@
                      */
                     var _resetBtn = _p._model.selector().find('button[type=reset], input[type=reset]');
 
-                    _p._model.formSubmitDisable() && _p.trigger( 'EnableSubmit' );
+                    _p._model.formSubmitDisable() && _p.trigger( FormLogic.Model.ENABLE_SUBMIT );
 
                     var _json, _fatalError, _resultType = _p._model.formAjaxResultType();
-                    if( _resultType == 'json' ){
+                    if( Object.prototype.toString.call( _data ) == '[object Object]' ){
+                        _json = _data;
+                    }else if( _resultType == 'json' ){
                         try{ _json = $.parseJSON( _data ); }catch(ex){ _fatalError = true; _json = _data; }
                     }
 
@@ -551,11 +568,11 @@
                         return _p._model.prevent( _evt );
                     }else{
                         _p._view.reset();
-                        _p.trigger( 'EnableSubmit' );
+                        _p.trigger( FormLogic.Model.ENABLE_SUBMIT );
                     }
                 });
 
-                _p.on( 'EnableSubmit', function(){
+                _p.on( FormLogic.Model.ENABLE_SUBMIT, function(){
                     _p.selector().find('input[type=submit], button[type=submit]').each( function(){
                         $( this ).prop('disabled', false );
                     });
@@ -579,7 +596,7 @@
                         _p.selector().data( FormLogic.Model.RESET_CONFIRM_BUTTON, null );
                         _p.selector().trigger( 'reset' );
                         _p._view.reset();
-                        _p.trigger( 'EnableSubmit' );
+                        _p.trigger( FormLogic.Model.ENABLE_SUBMIT );
                     });
 
                     _popup.on('close', function(){
@@ -600,11 +617,15 @@
                     && _p.selector().attr( 'encoding', 'multipart/form-data' )
                     ;
 
-                _p.trigger( FormLogic.Model.BIND_FORM );
+                _p._model.trigger( FormLogic.Model.INITED );
             }
     }) ;
 
     FormLogic.Model._instanceName = 'FormLogic';
+
+    FormLogic.Model.INITED = 'inited';
+    FormLogic.Model.INIT_JSONP = 'init_jsonp';
+
     FormLogic.Model.GET = 'get';
     FormLogic.Model.POST = 'post';
     FormLogic.Model.AJAX = 'ajax';
@@ -626,19 +647,88 @@
 
     FormLogic.Model.IGNORE_KEY = "formSubmitIgnoreCheck";
     FormLogic.Model.BIND_FORM = "BindFrame";
+    FormLogic.Model.AJAX_DONE = "AjaxDone";
+    FormLogic.Model.ENABLE_SUBMIT = "EnableSubmit";
 
     JC.f.extendObject( FormLogic.Model.prototype, {
         init:
             function(){
                 this.id();
+                this.selector().addClass( FormLogic.Model._instanceName );
+                this.selector().addClass( this.id() );
+
+                if( this.formType() == FormLogic.Model.JSONP ){
+                    var _r = this.attrProp( 'formAjaxAction' ) || this.attrProp( 'action' ) || '?';
+
+                    this.attrProp( 'action' ) 
+                        && (
+                            this.selector().attr( 'action'
+                                , JC.f.addUrlParams( this.attrProp( 'action' ), { 'callbackInfo': this.id() } ) )
+                            , this.selector().attr( 'action'
+                                , JC.f.addUrlParams( this.attrProp( 'action' ), { 'callback': this.jsonpKey() } ) )
+                        );
+                            
+                    this.attrProp( 'formAjaxAction' )
+                        && ( 
+                            this.selector().attr( 'formAjaxAction', 
+                                JC.f.addUrlParams( this.attr( 'formAjaxAction' ), { 'callbackInfo': this.id() } ) )
+                            , this.selector().attr( 'formAjaxAction', 
+                                JC.f.addUrlParams( this.attr( 'formAjaxAction' ), { 'callback': this.jsonpKey() } ) )
+                        );
+                }
             }
         , id:
             function(){
                 if( ! this._id ){
-                    this._id = FormLogic.Model._instanceName + ( FormLogic.Model.INS_COUNT++ );
+                    this._id = FormLogic.Model._instanceName + '_' + ( FormLogic.Model.INS_COUNT++ );
                 }
                 return this._id;
             }
+
+        , jsonpCb:
+            function(){
+                var _r = this._innerJsonpCb
+                    , _action = this.formAjaxAction()
+                    ;
+
+                _r = this.callbackProp( 'formJsonpCb' ) || _r;
+
+                if( JC.f.hasUrlParam( _action, 'callback' ) ){
+                    _r = this.windowProp( JC.f.getUrlParam( _action, 'callback' ) ) || _r;
+                }
+
+                return _r;
+            }
+
+        , jsonpKey:
+            function(){
+                var _r = this.id() + '_JsonpCb'
+                    , _action = this.formAjaxAction()
+                    ;
+
+                _r = this.attrProp( 'formJsonpCb' ) || _r;
+
+                if( JC.f.hasUrlParam( _action, 'callback' ) ){
+                    _r = JC.f.getUrlParam( _action, 'callback' ) || _r;
+                }
+
+                return _r;
+            }
+        /**
+         * 这个回调的 this 指针是 window
+         */
+        , _innerJsonpCb:
+            function( _data, _info ){
+                if( !( _data && _info ) ) return;
+
+                var _frm = $( 'form.' + _info ), _ins;
+                if( !_frm.length ) return;
+                _ins = JC.BaseMVC.getInstance( _frm, Bizs.FormLogic );
+                if( !_ins ) return;
+
+                _ins.trigger( Bizs.FormLogic.Model.AJAX_DONE, [ _data ] );
+            }
+
         , isSubmited:
             function( _setter ){
                 typeof _setter != 'undefined' && ( this._submited = _setter );
