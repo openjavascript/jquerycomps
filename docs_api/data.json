@@ -84,6 +84,17 @@
                 "window.Bizs": 1
             }
         },
+        "../modules/Bizs.FormLogic/dev/FormLogic.js": {
+            "name": "../modules/Bizs.FormLogic/dev/FormLogic.js",
+            "modules": {},
+            "classes": {
+                "DEV.Bizs.FormLogic": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "DEV.Bizs": 1
+            }
+        },
         "../modules/Bizs.KillISPCache/0.1/KillISPCache.js": {
             "name": "../modules/Bizs.KillISPCache/0.1/KillISPCache.js",
             "modules": {},
@@ -300,6 +311,15 @@
         },
         "../modules/JC.ImageCutter/0.1/ImageCutter.js": {
             "name": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
+        "../modules/JC.ImageCutter/dev/ImageCutter.js": {
+            "name": "../modules/JC.ImageCutter/dev/ImageCutter.js",
             "modules": {},
             "classes": {
                 "JC.ImageCutter": 1
@@ -755,6 +775,26 @@
                 "\n           <script>\n               JC.debug = true;\n               JC.use( 'Bizs.FormLogic, Calendar, plugins.json2' );\n\n               function formBeforeProcess( _evt, _ins ){\n                   var _form = $(this);\n                   JC.log( 'formBeforeProcess', new Date().getTime() );\n               }\n\n               function formAfterProcess( _evt, _ins ){\n                   var _form = $(this);\n                   JC.log( 'formAfterProcess', new Date().getTime() );\n                   //return false;\n               }\n\n               function formAjaxDone( _json, _submitButton, _ins ){\n                   var _form = $(this);\n                   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n                   if( _json.errorno ){\n                       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n                   }else{\n                       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n                           JC.f.reloadPage( \"?donetype=custom\" );\n                       });\n                   }\n               };\n           </script>\n\n           <dl class=\"defdl\">\n               <dt>Bizs.FormLogic, get form example 3, nothing at done</dt>\n               <dd>\n                   <dl>\n                       <form action=\"./data/handler.php\" method=\"POST\"\n                           class=\"js_bizsFormLogic\"\n                           formType=\"ajax\"\n                           formAjaxMethod=\"POST\"\n                           formBeforeProcess=\"formBeforeProcess\"\n                           formAfterProcess=\"formAfterProcess\"\n                           formAjaxDone=\"formAjaxDone\"                            \n                           formAjaxDoneAction=\"?donetype=system\"\n                           >\n                           <dl>\n                               <dd>\n                                   文件框: <input type=\"text\" name=\"text\" reqmsg=\"文本框\" value=\"test3\" />\n                               </dd>\n                               <dd>\n                                   日期: <input type=\"text\" name=\"date\" datatype=\"date\" reqmsg=\"日期\" value=\"2015-02-20\" />\n                                   <em class=\"error\"></em>\n                               </dd>\n                               <dd>\n                                   下拉框:\n                                       <select name=\"dropdown\" reqmsg=\"下拉框\" >\n                                           <option value=\"\">请选择</option>\n                                           <option value=\"1\">条件1</option>\n                                           <option value=\"2\">条件2</option>\n                                           <option value=\"3\" selected>条件3</option>\n                                       </select>\n                               </dd>\n                               <dd>\n                                   <input type=\"hidden\" name=\"getform\" value=\"1\" />\n                                   <button type=\"submit\" formSubmitConfirm=\"确定要提交吗?\" >submit - dialog</button>\n                                   <button type=\"submit\" formConfirmPopupType=\"dialog\" \n                                                           formSubmitConfirm=\"确定要提交吗?\" >submit - popup</button>\n\n                                   <button type=\"reset\" formResetConfirm=\"确定要重置吗?\"  >reset</button>\n                                   <button type=\"reset\" formResetConfirm=\"确定要重置吗?\" formResetUrl=\"?\"  >reset - url</button>\n                                   <a href=\"?\">back</a>\n                               </dd>\n                           </dl>\n                       </form>\n                   </dl>\n               </dd>\n           </dl>     "
             ]
         },
+        "DEV.Bizs.FormLogic": {
+            "name": "DEV.Bizs.FormLogic",
+            "shortname": "DEV.Bizs.FormLogic",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "DEV.Bizs",
+            "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
+            "line": 5,
+            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Valid.html'>JC.Valid</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><b>optional</b>: \n     <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.FormLogic/dev/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax, jsonp \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function</dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>Form Control 可用的 html 属性</h2>\n<dl>\n     <dt>ignoreResetClear = bool, default = false</dt>\n     <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dd>\n\n     <dt>formSubmitIgnoreCheck = bool, default = false</dt>\n     <dd>\n         表单提交时, 是否忽略 JC.Valid 的验证\n         <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配\n         <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>\n     </dd>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n\n     <dt>buttonClickBindSelector = selector</dt>\n     <dd>\n         点击按钮时, 把按钮的值赋值给 绑定的 控件\n         <br /><b>注意:</b> 这个属性仅支持 [input|button] 标签\n     </dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "version": "dev 0.1 2013-09-08",
+            "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n           <script>\n               JC.debug = true;\n               JC.use( 'Bizs.FormLogic, Calendar, plugins.json2' );\n\n               function formBeforeProcess( _evt, _ins ){\n                   var _form = $(this);\n                   JC.log( 'formBeforeProcess', new Date().getTime() );\n               }\n\n               function formAfterProcess( _evt, _ins ){\n                   var _form = $(this);\n                   JC.log( 'formAfterProcess', new Date().getTime() );\n                   //return false;\n               }\n\n               function formAjaxDone( _json, _submitButton, _ins ){\n                   var _form = $(this);\n                   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n                   if( _json.errorno ){\n                       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n                   }else{\n                       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n                           JC.f.reloadPage( \"?donetype=custom\" );\n                       });\n                   }\n               };\n           </script>\n\n           <dl class=\"defdl\">\n               <dt>Bizs.FormLogic, get form example 3, nothing at done</dt>\n               <dd>\n                   <dl>\n                       <form action=\"./data/handler.php\" method=\"POST\"\n                           class=\"js_bizsFormLogic\"\n                           formType=\"ajax\"\n                           formAjaxMethod=\"POST\"\n                           formBeforeProcess=\"formBeforeProcess\"\n                           formAfterProcess=\"formAfterProcess\"\n                           formAjaxDone=\"formAjaxDone\"                            \n                           formAjaxDoneAction=\"?donetype=system\"\n                           >\n                           <dl>\n                               <dd>\n                                   文件框: <input type=\"text\" name=\"text\" reqmsg=\"文本框\" value=\"test3\" />\n                               </dd>\n                               <dd>\n                                   日期: <input type=\"text\" name=\"date\" datatype=\"date\" reqmsg=\"日期\" value=\"2015-02-20\" />\n                                   <em class=\"error\"></em>\n                               </dd>\n                               <dd>\n                                   下拉框:\n                                       <select name=\"dropdown\" reqmsg=\"下拉框\" >\n                                           <option value=\"\">请选择</option>\n                                           <option value=\"1\">条件1</option>\n                                           <option value=\"2\">条件2</option>\n                                           <option value=\"3\" selected>条件3</option>\n                                       </select>\n                               </dd>\n                               <dd>\n                                   <input type=\"hidden\" name=\"getform\" value=\"1\" />\n                                   <button type=\"submit\" formSubmitConfirm=\"确定要提交吗?\" >submit - dialog</button>\n                                   <button type=\"submit\" formConfirmPopupType=\"dialog\" \n                                                           formSubmitConfirm=\"确定要提交吗?\" >submit - popup</button>\n\n                                   <button type=\"reset\" formResetConfirm=\"确定要重置吗?\"  >reset</button>\n                                   <button type=\"reset\" formResetConfirm=\"确定要重置吗?\" formResetUrl=\"?\"  >reset - url</button>\n                                   <a href=\"?\">back</a>\n                               </dd>\n                           </dl>\n                       </form>\n                   </dl>\n               </dd>\n           </dl>     "
+            ]
+        },
         "window.Bizs.KillISPCache": {
             "name": "window.Bizs.KillISPCache",
             "shortname": "window.Bizs.KillISPCache",
@@ -1111,9 +1151,9 @@
             "plugin_for": [],
             "extension_for": [],
             "namespace": "JC",
-            "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
-            "line": 2,
-            "description": "图片裁切组件\n<br />借助 PHP GD 库进行图片裁切( 不仅限于 PHP GD )\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.ImageCutter.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.ImageCutter/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compImageCutter\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>imageUrl = url string</dt>\n   <dd>图片URL<dd>\n\n   <dt>defaultCoordinate = string</dt>\n   <dd>\n       设置默认选择范围, 有以下三种模式\n       <br />sidelength\n       <br />x, y\n       <br />x, y, sidelength\n   </dd>\n\n   <dt>coordinateSelector =  selector</dt>\n   <dd>保存当前坐标值的 node\n         <br />坐标值分别为: [ x, y, rectWidth, rectHeight, imgWidth, imgHeight ]\n   </dd>\n\n   <dt>imageUrlSelector = selector</dt>\n   <dd>保存当前图片URL的 node</dd>\n\n   <dt>previewSelector = selector</dt>\n   <dd>用于显示预览的 node, 支持多个预览, node 宽高并须为正方形</dd>\n\n   <dt>minRectSidelength = int, default = 50</dt>\n   <dd>裁切块的最小边长</dd>\n\n   <dt>minImageSidelength = int, default = 50</dt>\n   <dd>图片的最小边长</dd>\n\n   <dt>maxImageSidelength = int</dt>\n   <dd>图片的最大边长</dd>\n\n   <dt>cicInitedCb = function</dt>\n   <dd>组件初始化后的回调, <b>window变量域</b>\n<pre>function cicInitedCb(){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicImageInitedCb = function</dt>\n   <dd>图片初始化完成时的回调, <b>window变量域</b>\n<pre>function cicImageInitedCb( _sizeObj, _img ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicImageInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicCoordinateUpdateCb = function</dt>\n   <dd>更新裁切坐标后的回调, <b>window变量域</b>\n   <br />_corAr = Array = [ x, y, rectWidth, rectHeight, imgWidth, imgHeight ]\n<pre>function cicCoordinateUpdateCb( _corAr, _imgUrl ){\n   var _p = this, _selector = _p.selector();\n   JC.log( 'cicCoordinateUpdateCb', _corAr, _imgUrl, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicDragDoneCb = function</dt>\n   <dd>拖动完成后的回调, <b>window变量域</b>\n     <br/>与 cicCoordinateUpdateCb 的差别是: cicDragDoneCb 初始化不会触发\n<pre>function cicDragDoneCb( _sizeObj ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicDragDoneCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicErrorCb = function</dt>\n   <dd>发生错误时的回调, <b>window变量域</b>\n     <br />所有错误类型都会触发这个回调\n<pre>function cicErrorCb( _errType, _args ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicErrorCb', _errType, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicLoadErrorCb = function</dt>\n   <dd>图片加载错误时的回调, <b>window变量域</b>\n<pre>function cicLoadErrorCb( _imgUrl ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicLoadErrorCb',_imgUrl, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicSizeErrorCb = function</dt>\n   <dd>图片尺寸不符合设置要求时的回调, <b>window变量域</b>\n<pre>function cicSizeErrorCb( _width, _height, _imgUrl, _isMax ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicSizeErrorCb', _width, _height, _imgUrl, _isMax, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicPreviewSizeErrorCb = function</dt>\n   <dd>图片缩放后尺寸不符合设置要求时的回调, <b>window变量域</b>\n<pre>function cicPreviewSizeErrorCb( _width, _height, _imgUrl, _newSize ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicPreviewSizeErrorCb', _width, _height, _imgUrl, _newSize, new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
+            "file": "../modules/JC.ImageCutter/dev/ImageCutter.js",
+            "line": 7,
+            "description": "组件用途简述\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.ImageCutter.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.ImageCutter/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compImageCutter\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt></dt>\n   <dd><dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -2901,6 +2941,148 @@
             "description": "表单内容验证通过后, 开始提交前的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
+            "line": 286,
+            "description": "获取或设置 FormLogic 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "FormLogic instance"
+            },
+            "class": "DEV.Bizs.FormLogic",
+            "namespace": "DEV.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
+            "line": 304,
+            "description": "处理 form 或者 _selector 的所有form.js_bizsFormLogic",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "Array of FormLogicInstance",
+                "type": "Array"
+            },
+            "static": 1,
+            "class": "DEV.Bizs.FormLogic",
+            "namespace": "DEV.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
+            "line": 325,
+            "description": "msgbox 提示框的自动关闭时间",
+            "itemtype": "property",
+            "name": "popupCloseMs",
+            "type": "int",
+            "default": "2000",
+            "static": 1,
+            "class": "DEV.Bizs.FormLogic",
+            "namespace": "DEV.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
+            "line": 333,
+            "description": "AJAX 表单的提交类型\n<br />plugins, form\n<br />plugins 可以支持文件上传",
+            "itemtype": "property",
+            "name": "popupCloseMs",
+            "type": "string",
+            "default": "empty",
+            "static": 1,
+            "class": "DEV.Bizs.FormLogic",
+            "namespace": "DEV.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
+            "line": 343,
+            "description": "表单提交后, 是否禁用提交按钮",
+            "itemtype": "property",
+            "name": "submitDisable",
+            "type": "bool",
+            "default": "true",
+            "static": 1,
+            "class": "DEV.Bizs.FormLogic",
+            "namespace": "DEV.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
+            "line": 351,
+            "description": "表单提交后, 是否重置表单内容",
+            "itemtype": "property",
+            "name": "resetAfterSubmit",
+            "type": "bool",
+            "default": "true",
+            "static": 1,
+            "class": "DEV.Bizs.FormLogic",
+            "namespace": "DEV.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
+            "line": 359,
+            "description": "表单提交时, 内容填写不完整时触发的全局回调",
+            "itemtype": "property",
+            "name": "processErrorCb",
+            "type": "function",
+            "default": "null",
+            "static": 1,
+            "class": "DEV.Bizs.FormLogic",
+            "namespace": "DEV.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
+            "line": 367,
+            "description": "全局返回数据处理回调\n<br />所有提交结果都会调用\n<br />arg: _data[string of result]",
+            "itemtype": "property",
+            "name": "GLOBAL_AJAX_CHECK",
+            "type": "function",
+            "default": "null",
+            "static": 1,
+            "class": "DEV.Bizs.FormLogic",
+            "namespace": "DEV.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
+            "line": 394,
+            "description": "默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
+            "class": "DEV.Bizs.FormLogic",
+            "namespace": "DEV.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
+            "line": 464,
+            "description": "全局 AJAX 提交完成后的处理事件",
+            "class": "DEV.Bizs.FormLogic",
+            "namespace": "DEV.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
+            "line": 470,
+            "description": "这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
+            "class": "DEV.Bizs.FormLogic",
+            "namespace": "DEV.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
+            "line": 514,
+            "description": "表单内容验证通过后, 开始提交前的处理事件",
+            "class": "DEV.Bizs.FormLogic",
+            "namespace": "DEV.Bizs"
         },
         {
             "file": "../modules/Bizs.KillISPCache/0.1/KillISPCache.js",
@@ -6721,6 +6903,74 @@
         {
             "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
             "line": 1779,
+            "description": "从长度和角度求坐标点",
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/dev/ImageCutter.js",
+            "line": 58,
+            "description": "初始化可识别的 ImageCutter 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of ImageCutterInstance"
+            },
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/dev/ImageCutter.js",
+            "line": 1284,
+            "description": "按比例缩放图片\n<br />返回: { width: int, height: int }",
+            "params": [
+                {
+                    "name": "_w",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "_h",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "_newWidth",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "_newHeight",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "width, height",
+                "type": "Object"
+            },
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/dev/ImageCutter.js",
+            "line": 1308,
+            "description": "计算两个坐标点之间的距离",
+            "class": "JC.ImageCutter",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.ImageCutter/dev/ImageCutter.js",
+            "line": 1318,
             "description": "从长度和角度求坐标点",
             "class": "JC.ImageCutter",
             "namespace": "JC"
@@ -17086,6 +17336,14 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../modules/Bizs.FormLogic/dev/FormLogic.js:5"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../modules/Bizs.FormLogic/dev/FormLogic.js:5"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../modules/Bizs.KillISPCache/0.1/KillISPCache.js:2"
         },
         {
@@ -17175,6 +17433,10 @@
         {
             "message": "unknown tag: version",
             "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:2"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../modules/JC.ImageCutter/dev/ImageCutter.js:7"
         },
         {
             "message": "unknown tag: version",
@@ -17597,6 +17859,22 @@
             "line": " ../modules/Bizs.FormLogic/0.1/FormLogic.js:509"
         },
         {
+            "message": "Missing item type\n默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
+            "line": " ../modules/Bizs.FormLogic/dev/FormLogic.js:394"
+        },
+        {
+            "message": "Missing item type\n全局 AJAX 提交完成后的处理事件",
+            "line": " ../modules/Bizs.FormLogic/dev/FormLogic.js:464"
+        },
+        {
+            "message": "Missing item type\n这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
+            "line": " ../modules/Bizs.FormLogic/dev/FormLogic.js:470"
+        },
+        {
+            "message": "Missing item type\n表单内容验证通过后, 开始提交前的处理事件",
+            "line": " ../modules/Bizs.FormLogic/dev/FormLogic.js:514"
+        },
+        {
             "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
             "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:246"
         },
@@ -17771,6 +18049,18 @@
         {
             "message": "Missing item type\n从长度和角度求坐标点",
             "line": " ../modules/JC.ImageCutter/0.1/ImageCutter.js:1779"
+        },
+        {
+            "message": "Missing item type\n按比例缩放图片\n<br />返回: { width: int, height: int }",
+            "line": " ../modules/JC.ImageCutter/dev/ImageCutter.js:1284"
+        },
+        {
+            "message": "Missing item type\n计算两个坐标点之间的距离",
+            "line": " ../modules/JC.ImageCutter/dev/ImageCutter.js:1308"
+        },
+        {
+            "message": "Missing item type\n从长度和角度求坐标点",
+            "line": " ../modules/JC.ImageCutter/dev/ImageCutter.js:1318"
         },
         {
             "message": "Missing item type\n监听上一年按钮",
