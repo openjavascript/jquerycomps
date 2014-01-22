@@ -15,7 +15,7 @@
  *
  *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  *   | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.ImageCutter.html' target='_blank'>API docs</a>
- *   | <a href='../../modules/JC.ImageCutter/0.1/_demo' target='_blank'>demo link</a></p>
+ *   | <a href='../../modules/JC.ImageCutter/dev/_demo' target='_blank'>demo link</a></p>
  *  
  *<h2>页面只要引用本脚本, 默认会处理 div class="js_compImageCutter"</h2>
  *
@@ -26,7 +26,7 @@
  *    <dd><dd>
  *</dl> 
  *
- * @namespace   JC
+ * @namespace   DEV.JC
  * @class       ImageCutter
  * @extends     JC.BaseMVC
  * @constructor

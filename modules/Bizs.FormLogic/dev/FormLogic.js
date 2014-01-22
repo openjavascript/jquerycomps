@@ -447,7 +447,7 @@
                         , _type = _p._model.formType()
                         , _frameName
                         ;
-                    if( _type != FormLogic.Model.AJAX ) return;
+                    if( !( _type == FormLogic.Model.AJAX || _type == FormLogic.Model.JSONP ) ) return;
 
                     _frame = _p._model.frame();
                     _frame.on( 'load', function( _evt ){
@@ -608,6 +608,7 @@
     FormLogic.Model.GET = 'get';
     FormLogic.Model.POST = 'post';
     FormLogic.Model.AJAX = 'ajax';
+    FormLogic.Model.JSONP = 'jsonp';
     FormLogic.Model.IFRAME = 'iframe';
 
     FormLogic.Model.SUBMIT_CONFIRM_BUTTON = 'SubmitButton';

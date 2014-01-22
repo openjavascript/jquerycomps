@@ -49,6 +49,8 @@
             
                 <li><a href="../classes/DEV.Bizs.FormLogic.html">DEV.Bizs.FormLogic</a></li>
             
+                <li><a href="../classes/DEV.JC.ImageCutter.html">DEV.JC.ImageCutter</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -659,7 +661,8 @@
                         , _type = _p._model.formType()
                         , _frameName
                         ;
-                    if( _type != FormLogic.Model.AJAX ) return;
+                    if( !( _type == FormLogic.Model.AJAX || _type == FormLogic.Model.JSONP ) ) return;
+                    alert( 1 );
 
                     _frame = _p._model.frame();
                     _frame.on( &#x27;load&#x27;, function( _evt ){
@@ -820,6 +823,7 @@
     FormLogic.Model.GET = &#x27;get&#x27;;
     FormLogic.Model.POST = &#x27;post&#x27;;
     FormLogic.Model.AJAX = &#x27;ajax&#x27;;
+    FormLogic.Model.JSONP = &#x27;jsonp&#x27;;
     FormLogic.Model.IFRAME = &#x27;iframe&#x27;;
 
     FormLogic.Model.SUBMIT_CONFIRM_BUTTON = &#x27;SubmitButton&#x27;;

@@ -312,7 +312,9 @@
         "../modules/JC.ImageCutter/0.1/ImageCutter.js": {
             "name": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "JC.ImageCutter": 1
+            },
             "fors": {},
             "namespaces": {
                 "JC": 1
@@ -322,11 +324,11 @@
             "name": "../modules/JC.ImageCutter/dev/ImageCutter.js",
             "modules": {},
             "classes": {
-                "JC.ImageCutter": 1
+                "DEV.JC.ImageCutter": 1
             },
             "fors": {},
             "namespaces": {
-                "JC": 1
+                "DEV.JC": 1
             }
         },
         "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js": {
@@ -1151,6 +1153,33 @@
             "plugin_for": [],
             "extension_for": [],
             "namespace": "JC",
+            "file": "../modules/JC.ImageCutter/0.1/ImageCutter.js",
+            "line": 2,
+            "description": "图片裁切组件\n<br />借助 PHP GD 库进行图片裁切( 不仅限于 PHP GD )\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.ImageCutter.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.ImageCutter/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compImageCutter\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>imageUrl = url string</dt>\n   <dd>图片URL<dd>\n\n   <dt>defaultCoordinate = string</dt>\n   <dd>\n       设置默认选择范围, 有以下三种模式\n       <br />sidelength\n       <br />x, y\n       <br />x, y, sidelength\n   </dd>\n\n   <dt>coordinateSelector =  selector</dt>\n   <dd>保存当前坐标值的 node\n         <br />坐标值分别为: [ x, y, rectWidth, rectHeight, imgWidth, imgHeight ]\n   </dd>\n\n   <dt>imageUrlSelector = selector</dt>\n   <dd>保存当前图片URL的 node</dd>\n\n   <dt>previewSelector = selector</dt>\n   <dd>用于显示预览的 node, 支持多个预览, node 宽高并须为正方形</dd>\n\n   <dt>minRectSidelength = int, default = 50</dt>\n   <dd>裁切块的最小边长</dd>\n\n   <dt>minImageSidelength = int, default = 50</dt>\n   <dd>图片的最小边长</dd>\n\n   <dt>maxImageSidelength = int</dt>\n   <dd>图片的最大边长</dd>\n\n   <dt>cicInitedCb = function</dt>\n   <dd>组件初始化后的回调, <b>window变量域</b>\n<pre>function cicInitedCb(){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicImageInitedCb = function</dt>\n   <dd>图片初始化完成时的回调, <b>window变量域</b>\n<pre>function cicImageInitedCb( _sizeObj, _img ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicImageInitedCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicCoordinateUpdateCb = function</dt>\n   <dd>更新裁切坐标后的回调, <b>window变量域</b>\n   <br />_corAr = Array = [ x, y, rectWidth, rectHeight, imgWidth, imgHeight ]\n<pre>function cicCoordinateUpdateCb( _corAr, _imgUrl ){\n   var _p = this, _selector = _p.selector();\n   JC.log( 'cicCoordinateUpdateCb', _corAr, _imgUrl, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicDragDoneCb = function</dt>\n   <dd>拖动完成后的回调, <b>window变量域</b>\n     <br/>与 cicCoordinateUpdateCb 的差别是: cicDragDoneCb 初始化不会触发\n<pre>function cicDragDoneCb( _sizeObj ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicDragDoneCb', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicErrorCb = function</dt>\n   <dd>发生错误时的回调, <b>window变量域</b>\n     <br />所有错误类型都会触发这个回调\n<pre>function cicErrorCb( _errType, _args ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicErrorCb', _errType, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicLoadErrorCb = function</dt>\n   <dd>图片加载错误时的回调, <b>window变量域</b>\n<pre>function cicLoadErrorCb( _imgUrl ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicLoadErrorCb',_imgUrl, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicSizeErrorCb = function</dt>\n   <dd>图片尺寸不符合设置要求时的回调, <b>window变量域</b>\n<pre>function cicSizeErrorCb( _width, _height, _imgUrl, _isMax ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicSizeErrorCb', _width, _height, _imgUrl, _isMax, new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>cicPreviewSizeErrorCb = function</dt>\n   <dd>图片缩放后尺寸不符合设置要求时的回调, <b>window变量域</b>\n<pre>function cicPreviewSizeErrorCb( _width, _height, _imgUrl, _newSize ){\n   var _ins = this, _selector = _ins.selector();\n   JC.log( 'cicPreviewSizeErrorCb', _width, _height, _imgUrl, _newSize, new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-12-13",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n<xmp><table>\n   <tr>\n       <td>\n           <div class=\"js_compImageCutter\"\n               imageUrl=\"data/uploads/h_1680x1050.jpg\"\n               previewSelector=\"(tr div.js_previewItem\"\n               coordinateSelector=\"(td input.js_coordinate\"\n               imageUrlSelector=\"(td input.js_imageUrl\"\n               cicCoordinateUpdateCb=\"cicCoordinateUpdateCb\"\n               >\n           </div>\n           <input type=\"text\" class=\"ipt js_coordinate\" value=\"\" />\n           <input type=\"text\" class=\"ipt js_imageUrl\" value=\"\" />\n       </td>\n       <td>\n           <div class=\"cic_previewItem js_previewItem\" style=\"width: 50px; height: 50px;\"></div>\n           <div class=\"cic_previewItem js_previewItem\" style=\"width: 75px; height: 75px;\"></div>\n           <div class=\"cic_previewItem js_previewItem\" style=\"width: 150px; height: 150px;\"></div>\n       </td>\n   </tr>\n</table></xmp>"
+            ]
+        },
+        "DEV.JC.ImageCutter": {
+            "name": "DEV.JC.ImageCutter",
+            "shortname": "DEV.JC.ImageCutter",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "DEV.JC",
             "file": "../modules/JC.ImageCutter/dev/ImageCutter.js",
             "line": 7,
             "description": "组件用途简述\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.ImageCutter.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.ImageCutter/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compImageCutter\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt></dt>\n   <dd><dd>\n</dl>",
@@ -1166,7 +1195,7 @@
             "version": "dev 0.1 2013-12-13",
             "author": "qiushaowei <suches@btbtd.org> | 75 Team",
             "example": [
-                "\n<xmp><table>\n   <tr>\n       <td>\n           <div class=\"js_compImageCutter\"\n               imageUrl=\"data/uploads/h_1680x1050.jpg\"\n               previewSelector=\"(tr div.js_previewItem\"\n               coordinateSelector=\"(td input.js_coordinate\"\n               imageUrlSelector=\"(td input.js_imageUrl\"\n               cicCoordinateUpdateCb=\"cicCoordinateUpdateCb\"\n               >\n           </div>\n           <input type=\"text\" class=\"ipt js_coordinate\" value=\"\" />\n           <input type=\"text\" class=\"ipt js_imageUrl\" value=\"\" />\n       </td>\n       <td>\n           <div class=\"cic_previewItem js_previewItem\" style=\"width: 50px; height: 50px;\"></div>\n           <div class=\"cic_previewItem js_previewItem\" style=\"width: 75px; height: 75px;\"></div>\n           <div class=\"cic_previewItem js_previewItem\" style=\"width: 150px; height: 150px;\"></div>\n       </td>\n   </tr>\n</table></xmp>"
+                "\n       <h2>JC.ImageCutter 示例</h2>"
             ]
         },
         "JC.LunarCalendar": {
@@ -3065,21 +3094,21 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
-            "line": 464,
+            "line": 465,
             "description": "全局 AJAX 提交完成后的处理事件",
             "class": "DEV.Bizs.FormLogic",
             "namespace": "DEV.Bizs"
         },
         {
             "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
-            "line": 470,
+            "line": 471,
             "description": "这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
             "class": "DEV.Bizs.FormLogic",
             "namespace": "DEV.Bizs"
         },
         {
             "file": "../modules/Bizs.FormLogic/dev/FormLogic.js",
-            "line": 514,
+            "line": 515,
             "description": "表单内容验证通过后, 开始提交前的处理事件",
             "class": "DEV.Bizs.FormLogic",
             "namespace": "DEV.Bizs"
@@ -6925,8 +6954,8 @@
                 "description": "",
                 "type": "Array of ImageCutterInstance"
             },
-            "class": "JC.ImageCutter",
-            "namespace": "JC"
+            "class": "DEV.JC.ImageCutter",
+            "namespace": "DEV.JC"
         },
         {
             "file": "../modules/JC.ImageCutter/dev/ImageCutter.js",
@@ -6958,22 +6987,22 @@
                 "description": "width, height",
                 "type": "Object"
             },
-            "class": "JC.ImageCutter",
-            "namespace": "JC"
+            "class": "DEV.JC.ImageCutter",
+            "namespace": "DEV.JC"
         },
         {
             "file": "../modules/JC.ImageCutter/dev/ImageCutter.js",
             "line": 1308,
             "description": "计算两个坐标点之间的距离",
-            "class": "JC.ImageCutter",
-            "namespace": "JC"
+            "class": "DEV.JC.ImageCutter",
+            "namespace": "DEV.JC"
         },
         {
             "file": "../modules/JC.ImageCutter/dev/ImageCutter.js",
             "line": 1318,
             "description": "从长度和角度求坐标点",
-            "class": "JC.ImageCutter",
-            "namespace": "JC"
+            "class": "DEV.JC.ImageCutter",
+            "namespace": "DEV.JC"
         },
         {
             "file": "../modules/JC.LunarCalendar/0.1/LunarCalendar.default.js",
@@ -16931,7 +16960,7 @@
         },
         {
             "file": "../config.js",
-            "line": 91,
+            "line": 92,
             "description": "取当前脚本标签的 src路径",
             "static": 1,
             "return": {
@@ -17864,15 +17893,15 @@
         },
         {
             "message": "Missing item type\n全局 AJAX 提交完成后的处理事件",
-            "line": " ../modules/Bizs.FormLogic/dev/FormLogic.js:464"
+            "line": " ../modules/Bizs.FormLogic/dev/FormLogic.js:465"
         },
         {
             "message": "Missing item type\n这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
-            "line": " ../modules/Bizs.FormLogic/dev/FormLogic.js:470"
+            "line": " ../modules/Bizs.FormLogic/dev/FormLogic.js:471"
         },
         {
             "message": "Missing item type\n表单内容验证通过后, 开始提交前的处理事件",
-            "line": " ../modules/Bizs.FormLogic/dev/FormLogic.js:514"
+            "line": " ../modules/Bizs.FormLogic/dev/FormLogic.js:515"
         },
         {
             "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
@@ -18784,7 +18813,7 @@
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
-            "line": " ../config.js:91"
+            "line": " ../config.js:92"
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",

@@ -12,6 +12,10 @@ requirejs.config( {
         'JC.common': 'modules/JC.common/0.2/common'
         , 'JC.BaseMVC': 'modules/JC.BaseMVC/0.1/BaseMVC'
 
+        , 'DEV.Bizs.FormLogic': 'modules/Bizs.FormLogic/dev/FormLogic'
+
+        , 'DEV.JC.ImageCutter': 'modules/JC.ImageCutter/dev/ImageCutter'
+
         , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload'
         , 'JC.AutoChecked': 'modules/JC.AutoChecked/0.1/AutoChecked'
         , 'JC.AutoSelect': 'modules/JC.AutoSelect/0.2/AutoSelect'
@@ -37,7 +41,6 @@ requirejs.config( {
         , 'JC.FormFillUrl': 'modules/JC.FormFillUrl/0.1/FormFillUrl'
 
         , 'JC.ImageCutter': 'modules/JC.ImageCutter/0.1/ImageCutter'
-        , 'DEV.JC.ImageCutter': 'modules/JC.ImageCutter/dev/ImageCutter'
 
         , 'JC.LunarCalendar': 'modules/JC.LunarCalendar/0.1/LunarCalendar'
         , 'JC.LunarCalendar.default': 'modules/JC.LunarCalendar/0.1/LunarCalendar.default'
