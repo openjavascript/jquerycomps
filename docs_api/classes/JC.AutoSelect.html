@@ -176,6 +176,32 @@
    var _ins = this;
 }</pre>
      </dd>
+     <dt>selectCacheData = bool, default = true</dt>
+     <dd>是否缓存ajax数据</dd>
+     <dt>selectItemDataFilter = function</dt>
+     <dd>每个select 显示option前,可自定义数据过滤函数
+<pre>function selectItemDataFilter2( _selector, _data, _pid){
+   //alert( &#39;_pid:&#39; + _pid + &#39;\n&#39; + JSON.stringify( _data ) );
+   var _r, i, j;
+   if( _pid === &#39;&#39; ){//过滤北京id = 28
+       _r = [];
+       for( i = 0, j = _data.length; i &lt; j; i++ ){
+           if( _data[i][0] == 28 ) continue;
+           _r.push( _data[i] );
+       }
+       _data = _r;
+   }
+   else if( _pid == 14 ){//过滤江门id=2254
+       _r = [];
+       for( i = 0, j = _data.length; i &lt; j; i++ ){
+           if( _data[i][0] == 2254 ) continue;
+           _r.push( _data[i] );
+       }
+       _data = _r;
+   }
+   return _data;
+}</pre>
+     </dd>
 </dl>
 <h2>option 标签可用的 HTML 属性</h2>
 <dl>
@@ -332,7 +358,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l406"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:406</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l434"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:434</code></a>
         </p>
     </div>
     <div class="description">
@@ -365,7 +391,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l367"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:367</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l395"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:395</code></a>
         </p>
     </div>
     <div class="description">
@@ -397,7 +423,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l254"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:254</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l282"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:282</code></a>
         </p>
     </div>
     <div class="description">
@@ -442,7 +468,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l385"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:385</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l413"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:413</code></a>
         </p>
     </div>
     <div class="description">
@@ -481,7 +507,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l399"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:399</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l427"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:427</code></a>
         </p>
     </div>
     <div class="description">
@@ -520,7 +546,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l392"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:392</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l420"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:420</code></a>
         </p>
     </div>
     <div class="description">
@@ -560,7 +586,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l131"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:131</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l159"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:159</code></a>
         </p>
     </div>
     <div class="description">
@@ -593,7 +619,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l379"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:379</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l407"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:407</code></a>
         </p>
     </div>
     <div class="description">
@@ -615,7 +641,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l373"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:373</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l401"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:401</code></a>
         </p>
     </div>
     <div class="description">
@@ -646,7 +672,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l352"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:352</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l380"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:380</code></a>
         </p>
     </div>
     <div class="description">
@@ -692,7 +718,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l271"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:271</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l299"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:299</code></a>
         </p>
     </div>
     <div class="description">
@@ -732,7 +758,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l360"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:360</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l388"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:388</code></a>
         </p>
     </div>
     <div class="description">
@@ -771,7 +797,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l413"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:413</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l441"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:441</code></a>
         </p>
     </div>
     <div class="description">
@@ -806,7 +832,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l209"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:209</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l237"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:237</code></a>
         </p>
     </div>
     <div class="description">
@@ -822,7 +848,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l182"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:182</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l210"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:210</code></a>
         </p>
     </div>
     <div class="description">
@@ -838,7 +864,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l200"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:200</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l228"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:228</code></a>
         </p>
     </div>
     <div class="description">
@@ -854,7 +880,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l159"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:159</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l187"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:187</code></a>
         </p>
     </div>
     <div class="description">
@@ -888,7 +914,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l148"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:148</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l176"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:176</code></a>
         </p>
     </div>
     <div class="description">
@@ -910,7 +936,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l245"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:245</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l273"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:273</code></a>
         </p>
     </div>
     <div class="description">
@@ -926,7 +952,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l191"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:191</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l219"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:219</code></a>
         </p>
     </div>
     <div class="description">
@@ -942,7 +968,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l236"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:236</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l264"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:264</code></a>
         </p>
     </div>
     <div class="description">
@@ -958,7 +984,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l227"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:227</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l255"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:255</code></a>
         </p>
     </div>
     <div class="description">
@@ -974,7 +1000,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l218"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:218</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l246"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:246</code></a>
         </p>
     </div>
     <div class="description">
@@ -992,7 +1018,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l940"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:940</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l989"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:989</code></a>
         </p>
     </div>
     <div class="description">
@@ -1005,7 +1031,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l928"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:928</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l977"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:977</code></a>
         </p>
     </div>
     <div class="description">
@@ -1018,7 +1044,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l936"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:936</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l985"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:985</code></a>
         </p>
     </div>
     <div class="description">
@@ -1031,7 +1057,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l932"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:932</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l981"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:981</code></a>
         </p>
     </div>
     <div class="description">
@@ -1044,7 +1070,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l944"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:944</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l993"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:993</code></a>
         </p>
     </div>
     <div class="description">
@@ -1057,7 +1083,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l948"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:948</code></a>
+        <a href="../files/.._modules_JC.AutoSelect_0.2_AutoSelect.js.html#l997"><code>..&#x2F;modules&#x2F;JC.AutoSelect&#x2F;0.2&#x2F;AutoSelect.js:997</code></a>
         </p>
     </div>
     <div class="description">

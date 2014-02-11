@@ -946,7 +946,7 @@
             "namespace": "JC",
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
             "line": 3,
-            "description": "<h2>select 级联下拉框无限联动</h2>\n<br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能\n<br /><br />动态添加的 DOM 需要显式调用 JC.AutoSelect( domSelector ) 进行初始化\n<br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoSelect.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.AutoSelect/0.2/_demo' target='_blank'>demo link</a></p>\n<h2>select 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultselect, 这个属性不需要赋值</dt>\n     <dd>该属性声明这是级联下拉框的第一个下拉框, <b>这是必填项,初始化时以这个为入口</b></dd>\n\n     <dt>selectvalue = string</dt>\n     <dd>下拉框的默认选中值</dd>\n\n     <dt>selecturl = AJAX 数据请求的URL</dt>\n     <dd>下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符</dd>\n\n     <dt>selectignoreinitrequest = bool, default = false</dt>\n     <dd>\n         首次初始化时, 是否需要请求新数据\n         <br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多\n     </dd>\n\n     <dt>selecttarget = selector</dt>\n     <dd>下一级下拉框的选择器语法</dd>\n\n     <dt>selectdatacb = 静态数据请求回调</dt>\n     <dd>如果数据不需要 AJAX 请求, 可使用这个属性, 自行定义数据处理方式</dd>\n\n     <dt>selectrandomurl = bool, default = false</dt>\n     <dd>AJAX 请求时, 添加随机参数, 防止数据缓存</dd>\n\n     <dt>selecttriggerinitchange = bool, default = true</dt>\n     <dd>首次初始化时, 是否触发 change 事件</dd>\n\n     <dt>selecthideempty = bool, default = false</dt>\n     <dd>是否隐藏没有数据的 selecct</dd>\n\n     <dt>selectdatafilter = 请求数据后的处理回调</dt>\n     <dd>如果接口的数据不符合 select 的要求, 可通过这个属性定义数据过滤函数</dd>\n\n     <dt>selectbeforeinited = 初始化之前的回调</dt>\n\n     <dt>selectinited = 初始化后的回调</dt>\n<dd><pre>function selectinited( _items ){\n   var _ins = this;\n}</pre>\n</dd>\n\n     <dt>selectallchanged = 所有select请求完数据之后的回调, <b>window 变量域</b></dt>\n     <dd><pre>function selectallchanged( _items ){\n   var _ins = this;\n}</pre>\n     </dd>\n</dl>\n<h2>option 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultoption, 这个属性不需要赋值</dt>\n     <dd>声明默认 option 选项, 更新option时, 有该属性的项不会被清除</dd>\n</dl>\n<h2>数据格式</h2>\n<p>\n     [ [id, name], [id, name] ... ]\n     <br /> 如果获取到的数据格式不是默认格式,\n     可以通过 <a href='JC.AutoSelect.html#property_dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤\n</p>",
+            "description": "<h2>select 级联下拉框无限联动</h2>\n<br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能\n<br /><br />动态添加的 DOM 需要显式调用 JC.AutoSelect( domSelector ) 进行初始化\n<br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoSelect.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.AutoSelect/0.2/_demo' target='_blank'>demo link</a></p>\n<h2>select 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultselect, 这个属性不需要赋值</dt>\n     <dd>该属性声明这是级联下拉框的第一个下拉框, <b>这是必填项,初始化时以这个为入口</b></dd>\n\n     <dt>selectvalue = string</dt>\n     <dd>下拉框的默认选中值</dd>\n\n     <dt>selecturl = AJAX 数据请求的URL</dt>\n     <dd>下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符</dd>\n\n     <dt>selectignoreinitrequest = bool, default = false</dt>\n     <dd>\n         首次初始化时, 是否需要请求新数据\n         <br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多\n     </dd>\n\n     <dt>selecttarget = selector</dt>\n     <dd>下一级下拉框的选择器语法</dd>\n\n     <dt>selectdatacb = 静态数据请求回调</dt>\n     <dd>如果数据不需要 AJAX 请求, 可使用这个属性, 自行定义数据处理方式</dd>\n\n     <dt>selectrandomurl = bool, default = false</dt>\n     <dd>AJAX 请求时, 添加随机参数, 防止数据缓存</dd>\n\n     <dt>selecttriggerinitchange = bool, default = true</dt>\n     <dd>首次初始化时, 是否触发 change 事件</dd>\n\n     <dt>selecthideempty = bool, default = false</dt>\n     <dd>是否隐藏没有数据的 selecct</dd>\n\n     <dt>selectdatafilter = 请求数据后的处理回调</dt>\n     <dd>如果接口的数据不符合 select 的要求, 可通过这个属性定义数据过滤函数</dd>\n\n     <dt>selectbeforeinited = 初始化之前的回调</dt>\n\n     <dt>selectinited = 初始化后的回调</dt>\n<dd><pre>function selectinited( _items ){\n   var _ins = this;\n}</pre>\n</dd>\n\n     <dt>selectallchanged = 所有select请求完数据之后的回调, <b>window 变量域</b></dt>\n     <dd><pre>function selectallchanged( _items ){\n   var _ins = this;\n}</pre>\n     </dd>\n\n     <dt>selectCacheData = bool, default = true</dt>\n     <dd>是否缓存ajax数据</dd>\n\n     <dt>selectItemDataFilter = function</dt>\n     <dd>每个select 显示option前,可自定义数据过滤函数\n<pre>function selectItemDataFilter2( _selector, _data, _pid){\n   //alert( '_pid:' + _pid + '\\n' + JSON.stringify( _data ) );\n   var _r, i, j;\n   if( _pid === '' ){//过滤北京id = 28\n       _r = [];\n       for( i = 0, j = _data.length; i < j; i++ ){\n           if( _data[i][0] == 28 ) continue;\n           _r.push( _data[i] );\n       }\n       _data = _r;\n   }\n   else if( _pid == 14 ){//过滤江门id=2254\n       _r = [];\n       for( i = 0, j = _data.length; i < j; i++ ){\n           if( _data[i][0] == 2254 ) continue;\n           _r.push( _data[i] );\n       }\n       _data = _r;\n   }\n   return _data;\n}</pre>\n     </dd>\n</dl>\n<h2>option 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultoption, 这个属性不需要赋值</dt>\n     <dd>声明默认 option 选项, 更新option时, 有该属性的项不会被清除</dd>\n</dl>\n<h2>数据格式</h2>\n<p>\n     [ [id, name], [id, name] ... ]\n     <br /> 如果获取到的数据格式不是默认格式,\n     可以通过 <a href='JC.AutoSelect.html#property_dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤\n</p>",
             "static": 1,
             "version": "dev 0.2",
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
@@ -3904,7 +3904,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 131,
+            "line": 159,
             "description": "判断 selector 是否为符合自动初始化联动框的要求",
             "itemtype": "method",
             "name": "isSelect",
@@ -3924,7 +3924,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 148,
+            "line": 176,
             "description": "是否自动隐藏空值的级联下拉框, 起始下拉框不会被隐藏\n<br />这个是全局设置, 如果需要对具体某个select进行处理, 对应的 HTML 属性 selecthideempty",
             "itemtype": "property",
             "name": "hideEmpty",
@@ -3939,7 +3939,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 159,
+            "line": 187,
             "description": "级联下拉框的数据过滤函数\n<br />默认数据格式: [ [id, name], [id, name] ... ]\n<br />如果获取到的数据格式非默认格式, 可通过本函数进行数据过滤\n<p>\n <b>注意, 这个是全局过滤, 如果要使用该函数进行数据过滤, 判断逻辑需要比较具体</b>\n <br />如果要对具体 select 进行数据过滤, 可以使用HTML属性 selectdatafilter 指定过滤函数\n</p>",
             "itemtype": "property",
             "name": "dataFilter",
@@ -3954,7 +3954,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 182,
+            "line": 210,
             "description": "下拉框初始化功能都是未初始化 数据之前的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectbeforeInited",
             "itemtype": "property",
             "name": "beforeInited",
@@ -3966,7 +3966,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 191,
+            "line": 219,
             "description": "下拉框第一次初始完所有数据的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectinited",
             "itemtype": "property",
             "name": "inited",
@@ -3978,7 +3978,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 200,
+            "line": 228,
             "description": "下拉框每个项数据变更后的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectchange",
             "itemtype": "property",
             "name": "change",
@@ -3990,7 +3990,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 209,
+            "line": 237,
             "description": "下拉框所有项数据变更后的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectallchanged",
             "itemtype": "property",
             "name": "allChanged",
@@ -4002,7 +4002,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 218,
+            "line": 246,
             "description": "第一次初始化所有联动框时, 是否触发 change 事件\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selecttriggerinitchange",
             "itemtype": "property",
             "name": "triggerInitChange",
@@ -4014,7 +4014,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 227,
+            "line": 255,
             "description": "ajax 请求数据时, 是否添加随机参数防止缓存\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectrandomurl",
             "itemtype": "property",
             "name": "randomurl",
@@ -4026,7 +4026,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 236,
+            "line": 264,
             "description": "处理 ajax url 的回调处理函数\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectprocessurl",
             "itemtype": "property",
             "name": "processUrl",
@@ -4038,7 +4038,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 245,
+            "line": 273,
             "description": "首次初始化时, 是否需要请求新数据\n<br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多",
             "itemtype": "property",
             "name": "ignoreInitRequest",
@@ -4050,7 +4050,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 254,
+            "line": 282,
             "description": "获取或设置 selector 的实例引用",
             "itemtype": "method",
             "name": "getInstance",
@@ -4075,7 +4075,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 271,
+            "line": 299,
             "description": "清除 select 的 所有 option, 带有属性 defaultoption 例外",
             "itemtype": "method",
             "name": "removeItems",
@@ -4096,7 +4096,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 352,
+            "line": 380,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -4121,7 +4121,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 360,
+            "line": 388,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -4141,7 +4141,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 367,
+            "line": 395,
             "description": "获取第一个 select",
             "itemtype": "method",
             "name": "first",
@@ -4153,7 +4153,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 373,
+            "line": 401,
             "description": "获取最后一个 select",
             "itemtype": "method",
             "name": "last",
@@ -4165,7 +4165,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 379,
+            "line": 407,
             "description": "获取所有 select",
             "itemtype": "method",
             "name": "items",
@@ -4177,7 +4177,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 385,
+            "line": 413,
             "description": "是否为第一个 select",
             "itemtype": "method",
             "name": "isFirst",
@@ -4196,7 +4196,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 392,
+            "line": 420,
             "description": "是否为最后一个 select",
             "itemtype": "method",
             "name": "isLast",
@@ -4215,7 +4215,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 399,
+            "line": 427,
             "description": "是否已经初始化过",
             "itemtype": "method",
             "name": "isInited",
@@ -4234,7 +4234,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 406,
+            "line": 434,
             "description": "获取 select 的数据",
             "itemtype": "method",
             "name": "data",
@@ -4253,7 +4253,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 413,
+            "line": 441,
             "description": "更新默认选中列表",
             "itemtype": "method",
             "name": "update",
@@ -4272,7 +4272,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 855,
+            "line": 891,
             "description": "判断下拉框的option里是否有给定的值",
             "params": [
                 {
@@ -4291,7 +4291,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 928,
+            "line": 977,
             "description": "初始化之事的事件",
             "itemtype": "event",
             "name": "SelectBeforeInited",
@@ -4300,7 +4300,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 932,
+            "line": 981,
             "description": "初始化后的事件",
             "itemtype": "event",
             "name": "SelectInited",
@@ -4309,7 +4309,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 936,
+            "line": 985,
             "description": "响应每个 select 的 change 事件",
             "itemtype": "event",
             "name": "SelectChange",
@@ -4318,7 +4318,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 940,
+            "line": 989,
             "description": "最后一个 select change 后的事件",
             "itemtype": "event",
             "name": "SelectAllChanged",
@@ -4327,7 +4327,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 944,
+            "line": 993,
             "description": "select 更新数据之前触发的事件",
             "itemtype": "event",
             "name": "SelectItemBeforeUpdate",
@@ -4336,7 +4336,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 948,
+            "line": 997,
             "description": "select 更新数据之后触发的事件",
             "itemtype": "event",
             "name": "SelectItemUpdated",
@@ -4345,7 +4345,7 @@
         },
         {
             "file": "../modules/JC.AutoSelect/0.2/AutoSelect.js",
-            "line": 952,
+            "line": 1001,
             "description": "页面加载完毕时, 延时进行自动化, 延时可以避免来自其他逻辑的干扰",
             "class": "JC.AutoSelect",
             "namespace": "JC"
@@ -17967,11 +17967,11 @@
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",
-            "line": " ../modules/JC.AutoSelect/0.2/AutoSelect.js:855"
+            "line": " ../modules/JC.AutoSelect/0.2/AutoSelect.js:891"
         },
         {
             "message": "Missing item type\n页面加载完毕时, 延时进行自动化, 延时可以避免来自其他逻辑的干扰",
-            "line": " ../modules/JC.AutoSelect/0.2/AutoSelect.js:952"
+            "line": " ../modules/JC.AutoSelect/0.2/AutoSelect.js:1001"
         },
         {
             "message": "Missing item type\n初始化 BaseMVC Model 类 和 View 类",
