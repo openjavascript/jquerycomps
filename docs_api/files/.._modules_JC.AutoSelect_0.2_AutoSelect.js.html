@@ -270,6 +270,34 @@
     var _ins = this;
 }&lt;/pre&gt;
      *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;selectCacheData = bool, default = true&lt;/dt&gt;
+     *      &lt;dd&gt;是否缓存ajax数据&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;selectItemDataFilter = function&lt;/dt&gt;
+     *      &lt;dd&gt;每个select 显示option前,可自定义数据过滤函数
+&lt;pre&gt;function selectItemDataFilter2( _selector, _data, _pid){
+    //alert( &#x27;_pid:&#x27; + _pid + &#x27;\n&#x27; + JSON.stringify( _data ) );
+    var _r, i, j;
+    if( _pid === &#x27;&#x27; ){//过滤北京id = 28
+        _r = [];
+        for( i = 0, j = _data.length; i &lt; j; i++ ){
+            if( _data[i][0] == 28 ) continue;
+            _r.push( _data[i] );
+        }
+        _data = _r;
+    }
+    else if( _pid == 14 ){//过滤江门id=2254
+        _r = [];
+        for( i = 0, j = _data.length; i &lt; j; i++ ){
+            if( _data[i][0] == 2254 ) continue;
+            _r.push( _data[i] );
+        }
+        _data = _r;
+    }
+    return _data;
+}&lt;/pre&gt;
+     *      &lt;/dd&gt;
      * &lt;/dl&gt;
      * &lt;h2&gt;option 标签可用的 HTML 属性&lt;/h2&gt;
      * &lt;dl&gt;
@@ -692,18 +720,18 @@
                         _url = _p._model.selecturl( _selector, _pid );
                         _token = _p._model.token( true );
 
-                        if( Model.ajaxCache( _url ) ){
+                        if( _p._model.selectCacheData() &amp;&amp; Model.ajaxCache( _url ) ){
                             setTimeout( function(){
                                 _data = Model.ajaxCache( _url );
-                                _p._view.update( _selector, _data );
+                                _p._view.update( _selector, _data, _pid );
                                 _cb &amp;&amp; _cb.call( _p, _selector, _data, _token );
                             }, 10 );
                         }else{
                             setTimeout( function(){
                                 $.get( _url, function( _data ){
-                                    _data = $.parseJSON( _data );
-                                    Model.ajaxCache( _url, _data );
-                                    _p._view.update( _selector, _data );
+                                    _data = Model.ajaxCache( _url, $.parseJSON( _data ) );
+
+                                    _p._view.update( _selector, _data, _pid );
                                     _cb &amp;&amp; _cb.call( _p, _selector, _data, _token );
                                 });
                             }, 10 );
@@ -715,12 +743,13 @@
                     }
                     _url = _p._model.selecturl( _selector, _pid );
 
-                    if( Model.ajaxCache( _url ) ){
-                            _p._processData( _oldToken, _selector, _cb, Model.ajaxCache( _url ) );
+                    if( _p._model.selectCacheData() &amp;&amp; Model.ajaxCache( _url ) ){
+                        _data = Model.ajaxCache( _url );
+                        _p._processData( _oldToken, _selector, _cb, _data, _pid );
                     }else{
                         $.get( _url, function( _data ){
                             _data = $.parseJSON( _data );
-                            _p._processData( _oldToken, _selector, _cb, Model.ajaxCache( _url, _data ) );
+                            _p._processData( _oldToken, _selector, _cb, Model.ajaxCache( _url, _data, _pid ) );
                         });
                     }
                 }
@@ -728,13 +757,13 @@
             }
 
         , _processData:
-            function( _oldToken, _selector, _cb, _data ){
+            function( _oldToken, _selector, _cb, _data, _pid ){
                 var _p = this;
                 setTimeout( function(){
                     if( typeof _oldToken != &#x27;undefined&#x27; &amp;&amp; _oldToken != _p._model.token() ){
                         return;
                     }
-                    _p._view.update( _selector, _data );
+                    _p._view.update( _selector, _data, _pid );
                     _cb &amp;&amp; _cb.call( _p, _selector, _data, _oldToken );
                 }, 10 );
             }
@@ -808,7 +837,7 @@
                 }else{
                     _data = _p._model.datacb( _selector )( _pid );
                 }
-                !_ignoreUpdate &amp;&amp; _p._view.update( _selector, _data );
+                !_ignoreUpdate &amp;&amp; _p._view.update( _selector, _data, _pid );
                 _cb &amp;&amp; _cb.call( _p, _selector, _data );
                 return this;
             }
@@ -830,7 +859,7 @@
                 }else{
                     _data = _p._model.datacb( _selector )( _pid );
                 }
-                _p._view.update( _selector, _data );
+                _p._view.update( _selector, _data, _pid );
                 _cb &amp;&amp; _cb.call( _p, _selector, _data );
                 return this;
             }
@@ -865,6 +894,13 @@
                 typeof this._token == &#x27;undefined&#x27; &amp;&amp; ( this._token = 0 );
                 _next &amp;&amp; ( this._token++ );
                 return this._token;
+            }
+
+        , selectCacheData:
+            function(){
+                var _r = true;
+                this.first().is( &#x27;[selectCacheData]&#x27; ) &amp;&amp; ( _r = JC.f.parseBool( this.first().attr(&#x27;selectCacheData&#x27;) ) );
+                return _r;
             }
 
         , _findAllItems:
@@ -1079,6 +1115,15 @@
                 });
                 return _r;
             }
+
+        , selectItemDataFilter:
+            function( _selector ){
+                var _r;
+                _selector 
+                    &amp;&amp; _selector.is( &#x27;[selectItemDataFilter]&#x27; )
+                    &amp;&amp; ( _r = window[ _selector.attr( &#x27;selectItemDataFilter&#x27; ) ] );
+                return _r;
+            }
     };
     
     function View( _model, _control ){
@@ -1095,9 +1140,13 @@
             }
 
         , update:
-            function( _selector, _data ){
-                var _default = this._model.selectvalue( _selector );
+            function( _selector, _data, _pid ){
+                var _p = this, _default = this._model.selectvalue( _selector );
                 _data = this._model.dataFilter( _selector, _data );
+
+                _p._model.selectItemDataFilter( _selector ) 
+                    &amp;&amp; ( _data = _p._model.selectItemDataFilter( _selector )( _selector, _data, _pid ) );
+
                 this._model.data( _selector, _data );
 
                 this._control.trigger( &#x27;SelectItemBeforeUpdate&#x27;, [ _selector, _data ] );
