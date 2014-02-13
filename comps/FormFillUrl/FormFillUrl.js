@@ -4,8 +4,7 @@
  * FormFillUrl 表单自动填充 URL 参数
  *
  *<p><b>require</b>:
- *   <a href="widnow.jQuery.html">jQuery</a>
- *   , <a href="JC.common.html">JC.common</a>
+ *   <a href=".jQuery.html">jQuery</a>
  *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *</p>
  *

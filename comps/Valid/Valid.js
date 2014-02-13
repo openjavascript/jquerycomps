@@ -254,6 +254,9 @@
      *                  <p>datavalidurl="./data/handler.php?key={0}"</p>
      *                  {0} 代表 value
      *              </dd>
+     *              <dd><b>datavalidNoCache:</b> 是否禁止缓存, default = false</dd>
+     *              <dd><b>datavalidAjaxType:</b> ajax 请求类型, default = get</dd>
+     *              <dd><b>datavalidRequestData:</b> ajax 请求数据, json data</dd>
      *              <dd>
      *                  <b>datavalidCallback:</b> 请求 datavalidUrl 后调用的回调
 <pre>function datavalidCallback( _json ){

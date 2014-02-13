@@ -38,7 +38,6 @@
      * @author  qiushaowei<suches@btbtd.org> | 75 Team
      * @example
      */
-    window.Bizs = window.Bizs || {};
     Bizs.AutoSelectComplete = AutoSelectComplete;
 
     function AutoSelectComplete( _selector ){
