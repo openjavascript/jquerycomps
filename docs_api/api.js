@@ -1,7 +1,6 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "DEV.Bizs.FormLogic",
         "DEV.JC.ImageCutter",
         "JC.AjaxUpload",
         "JC.AutoChecked",
