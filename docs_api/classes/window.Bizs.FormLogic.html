@@ -154,7 +154,7 @@
      <dt>formType = string, default = get</dt>
      <dd>
          form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性
-         <br/> 类型有: get, post, ajax 
+         <br/> 类型有: get, post, ajax, jsonp 
      </dd>
      <dt>formSubmitDisable = bool, default = true</dt>
      <dd>表单提交后, 是否禁用提交按钮</dd>
@@ -220,6 +220,25 @@
      </dd>
      <dt>formAjaxDoneAction = url</dt>
      <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>
+     <dt>formJsonpCb = function, default = FormLogic#_model._innerJsonpCb</dt>
+     <dd>自定义 JSOPN 处理回调, <b>window 变量域</b>
+<pre>function customFormJsonpCb( _data, _info ){
+   if( !( _data &amp;&amp; _info ) ) return;
+   var _frm = $( &#39;form.&#39; + _info ), _ins;
+   if( !_frm.length ) return;
+   _ins = JC.BaseMVC.getInstance( _frm, Bizs.FormLogic );
+   if( !_ins ) return;
+}</pre>
+<pre>URL: <b>handler_jsonp.php?callbackInfo=FormLogic_1&amp;callback=callback</b>
+OUTPUT:
+<b>&lt;script&gt;
+window.parent 
+   &amp;&amp; window.parent != this
+   &amp;&amp; window.parent&#91; &#39;callback&#39; &#93;
+   &amp;&amp; window.parent&#91; &#39;callback&#39; &#93;( {&quot;errorno&quot;:0,&quot;errmsg&quot;:&quot;&quot;,&quot;data&quot;:{&quot;callbackInfo&quot;:&quot;FormLogic_1&quot;,&quot;callback&quot;:&quot;callback&quot;}}, &#39;FormLogic_1&#39; )
+   ;
+&lt;/script&gt;</b></pre>
+     </dd>
 </dl>
 <p><h2>Form Control 可用的 html 属性</h2></p>
 <dl>
@@ -534,7 +553,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l279"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:279</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l309"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:309</code></a>
         </p>
     </div>
     <div class="description">
@@ -574,7 +593,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l302"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:302</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l327"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:327</code></a>
         </p>
     </div>
     <div class="description">
@@ -718,7 +737,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l365"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:365</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l390"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:390</code></a>
         </p>
     </div>
     <div class="description">
@@ -735,7 +754,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l323"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:323</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l348"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:348</code></a>
         </p>
     </div>
     <div class="description">
@@ -750,7 +769,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l331"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:331</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l356"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:356</code></a>
         </p>
     </div>
     <div class="description">
@@ -767,7 +786,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l357"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:357</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l382"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:382</code></a>
         </p>
     </div>
     <div class="description">
@@ -782,7 +801,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l349"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:349</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l374"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:374</code></a>
         </p>
     </div>
     <div class="description">
@@ -797,7 +816,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l341"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:341</code></a>
+        <a href="../files/.._bizs_FormLogic_FormLogic.js.html#l366"><code>..&#x2F;bizs&#x2F;FormLogic&#x2F;FormLogic.js:366</code></a>
         </p>
     </div>
     <div class="description">

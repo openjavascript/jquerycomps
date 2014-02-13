@@ -708,7 +708,7 @@
             "namespace": "window.Bizs",
             "file": "../bizs/FormLogic/FormLogic.js",
             "line": 4,
-            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Valid.html'>JC.Valid</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><b>optional</b>: \n     <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function</dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n</dl>\n\n<h2>Form Control 可用的 html 属性</h2>\n<dl>\n     <dt>ignoreResetClear = bool, default = false</dt>\n     <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dd>\n\n     <dt>formSubmitIgnoreCheck = bool, default = false</dt>\n     <dd>\n         表单提交时, 是否忽略 JC.Valid 的验证\n         <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配\n         <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>\n     </dd>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n\n     <dt>buttonClickBindSelector = selector</dt>\n     <dd>\n         点击按钮时, 把按钮的值赋值给 绑定的 控件\n         <br /><b>注意:</b> 这个属性仅支持 [input|button] 标签\n     </dd>\n</dl>",
+            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Valid.html'>JC.Valid</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><b>optional</b>: \n     <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax, jsonp \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function</dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function</dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function</dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n\n     <dt>formJsonpCb = function, default = FormLogic#_model._innerJsonpCb</dt>\n     <dd>自定义 JSOPN 处理回调, <b>window 变量域</b>\n<pre>function customFormJsonpCb( _data, _info ){\n   if( !( _data && _info ) ) return;\n\n   var _frm = $( 'form.' + _info ), _ins;\n   if( !_frm.length ) return;\n   _ins = JC.BaseMVC.getInstance( _frm, Bizs.FormLogic );\n   if( !_ins ) return;\n\n   _ins.trigger( Bizs.FormLogic.Model.AJAX_DONE, [ _data ] );\n}</pre>\n\n<pre>URL: <b>handler_jsonp.php?callbackInfo=FormLogic_1&callback=callback</b>\nOUTPUT:\n<b>&lt;script&gt;\nwindow.parent \n   && window.parent != this\n   && window.parent&#91; 'callback' &#93;\n   && window.parent&#91; 'callback' &#93;( {\"errorno\":0,\"errmsg\":\"\",\"data\":{\"callbackInfo\":\"FormLogic_1\",\"callback\":\"callback\"}}, 'FormLogic_1' )\n   ;\n&lt;/script&gt;</b></pre>\n     </dd>\n</dl>\n\n<h2>Form Control 可用的 html 属性</h2>\n<dl>\n     <dt>ignoreResetClear = bool, default = false</dt>\n     <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dd>\n\n     <dt>formSubmitIgnoreCheck = bool, default = false</dt>\n     <dd>\n         表单提交时, 是否忽略 JC.Valid 的验证\n         <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配\n         <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>\n     </dd>\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n\n     <dt>buttonClickBindSelector = selector</dt>\n     <dd>\n         点击按钮时, 把按钮的值赋值给 绑定的 控件\n         <br /><b>注意:</b> 这个属性仅支持 [input|button] 标签\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-08",
@@ -866,7 +866,7 @@
             "namespace": "JC",
             "file": "../comps/AutoSelect/AutoSelect.js",
             "line": 3,
-            "description": "<h2>select 级联下拉框无限联动</h2>\n<br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能\n<br /><br />动态添加的 DOM 需要显式调用 JC.AutoSelect( domSelector ) 进行初始化\n<br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoSelect.html' target='_blank'>API docs</a>\n| <a href='../../comps/AutoSelect/_demo' target='_blank'>demo link</a></p>\n<h2>select 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultselect, 这个属性不需要赋值</dt>\n     <dd>该属性声明这是级联下拉框的第一个下拉框, <b>这是必填项,初始化时以这个为入口</b></dd>\n\n     <dt>selectvalue = string</dt>\n     <dd>下拉框的默认选中值</dd>\n\n     <dt>selecturl = AJAX 数据请求的URL</dt>\n     <dd>下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符</dd>\n\n     <dt>selectignoreinitrequest = bool, default = false</dt>\n     <dd>\n         首次初始化时, 是否需要请求新数据\n         <br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多\n     </dd>\n\n     <dt>selecttarget = selector</dt>\n     <dd>下一级下拉框的选择器语法</dd>\n\n     <dt>selectdatacb = 静态数据请求回调</dt>\n     <dd>如果数据不需要 AJAX 请求, 可使用这个属性, 自行定义数据处理方式</dd>\n\n     <dt>selectrandomurl = bool, default = false</dt>\n     <dd>AJAX 请求时, 添加随机参数, 防止数据缓存</dd>\n\n     <dt>selecttriggerinitchange = bool, default = true</dt>\n     <dd>首次初始化时, 是否触发 change 事件</dd>\n\n     <dt>selecthideempty = bool, default = false</dt>\n     <dd>是否隐藏没有数据的 selecct</dd>\n\n     <dt>selectdatafilter = 请求数据后的处理回调</dt>\n     <dd>如果接口的数据不符合 select 的要求, 可通过这个属性定义数据过滤函数</dd>\n\n     <dt>selectbeforeinited = 初始化之前的回调</dt>\n\n     <dt>selectinited = 初始化后的回调</dt>\n<dd><pre>function selectinited( _items ){\n   var _ins = this;\n}</pre>\n</dd>\n\n     <dt>selectallchanged = 所有select请求完数据之后的回调, <b>window 变量域</b></dt>\n     <dd><pre>function selectallchanged( _items ){\n   var _ins = this;\n}</pre>\n     </dd>\n</dl>\n<h2>option 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultoption, 这个属性不需要赋值</dt>\n     <dd>声明默认 option 选项, 更新option时, 有该属性的项不会被清除</dd>\n</dl>\n<h2>数据格式</h2>\n<p>\n     [ [id, name], [id, name] ... ]\n     <br /> 如果获取到的数据格式不是默认格式,\n     可以通过 <a href='JC.AutoSelect.html#property_dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤\n</p>",
+            "description": "<h2>select 级联下拉框无限联动</h2>\n<br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能\n<br /><br />动态添加的 DOM 需要显式调用 JC.AutoSelect( domSelector ) 进行初始化\n<br /><br />要使页面上的级联下拉框功能能够自动初始化, 需要在select标签上加入一些HTML 属性\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoSelect.html' target='_blank'>API docs</a>\n| <a href='../../comps/AutoSelect/_demo' target='_blank'>demo link</a></p>\n<h2>select 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultselect, 这个属性不需要赋值</dt>\n     <dd>该属性声明这是级联下拉框的第一个下拉框, <b>这是必填项,初始化时以这个为入口</b></dd>\n\n     <dt>selectvalue = string</dt>\n     <dd>下拉框的默认选中值</dd>\n\n     <dt>selecturl = AJAX 数据请求的URL</dt>\n     <dd>下拉框的数据请求接口, 符号 {0} 代表下拉框值的占位符</dd>\n\n     <dt>selectignoreinitrequest = bool, default = false</dt>\n     <dd>\n         首次初始化时, 是否需要请求新数据\n         <br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多\n     </dd>\n\n     <dt>selecttarget = selector</dt>\n     <dd>下一级下拉框的选择器语法</dd>\n\n     <dt>selectdatacb = 静态数据请求回调</dt>\n     <dd>如果数据不需要 AJAX 请求, 可使用这个属性, 自行定义数据处理方式</dd>\n\n     <dt>selectrandomurl = bool, default = false</dt>\n     <dd>AJAX 请求时, 添加随机参数, 防止数据缓存</dd>\n\n     <dt>selecttriggerinitchange = bool, default = true</dt>\n     <dd>首次初始化时, 是否触发 change 事件</dd>\n\n     <dt>selecthideempty = bool, default = false</dt>\n     <dd>是否隐藏没有数据的 selecct</dd>\n\n     <dt>selectdatafilter = 请求数据后的处理回调</dt>\n     <dd>如果接口的数据不符合 select 的要求, 可通过这个属性定义数据过滤函数</dd>\n\n     <dt>selectbeforeinited = 初始化之前的回调</dt>\n\n     <dt>selectinited = 初始化后的回调</dt>\n<dd><pre>function selectinited( _items ){\n   var _ins = this;\n}</pre>\n</dd>\n\n     <dt>selectallchanged = 所有select请求完数据之后的回调, <b>window 变量域</b></dt>\n     <dd><pre>function selectallchanged( _items ){\n   var _ins = this;\n}</pre>\n     </dd>\n\n     <dt>selectCacheData = bool, default = true</dt>\n     <dd>是否缓存ajax数据</dd>\n\n     <dt>selectItemDataFilter = function</dt>\n     <dd>每个select 显示option前,可自定义数据过滤函数\n<pre>function selectItemDataFilter2( _selector, _data, _pid){\n   //alert( '_pid:' + _pid + '\\n' + JSON.stringify( _data ) );\n   var _r, i, j;\n   if( _pid === '' ){//过滤北京id = 28\n       _r = [];\n       for( i = 0, j = _data.length; i < j; i++ ){\n           if( _data[i][0] == 28 ) continue;\n           _r.push( _data[i] );\n       }\n       _data = _r;\n   }\n   else if( _pid == 14 ){//过滤江门id=2254\n       _r = [];\n       for( i = 0, j = _data.length; i < j; i++ ){\n           if( _data[i][0] == 2254 ) continue;\n           _r.push( _data[i] );\n       }\n       _data = _r;\n   }\n   return _data;\n}</pre>\n     </dd>\n</dl>\n<h2>option 标签可用的 HTML 属性</h2>\n<dl>\n     <dt>defaultoption, 这个属性不需要赋值</dt>\n     <dd>声明默认 option 选项, 更新option时, 有该属性的项不会被清除</dd>\n</dl>\n<h2>数据格式</h2>\n<p>\n     [ [id, name], [id, name] ... ]\n     <br /> 如果获取到的数据格式不是默认格式,\n     可以通过 <a href='JC.AutoSelect.html#property_dataFilter'>AutoSelect.dataFilter</a> 属性自定义函数, 进行数据过滤\n</p>",
             "static": 1,
             "version": "dev 0.2",
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
@@ -2708,7 +2708,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 279,
+            "line": 309,
             "description": "获取或设置 FormLogic 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -2729,7 +2729,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 302,
+            "line": 327,
             "description": "处理 form 或者 _selector 的所有form.js_bizsFormLogic",
             "itemtype": "method",
             "name": "init",
@@ -2750,7 +2750,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 323,
+            "line": 348,
             "description": "msgbox 提示框的自动关闭时间",
             "itemtype": "property",
             "name": "popupCloseMs",
@@ -2762,7 +2762,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 331,
+            "line": 356,
             "description": "AJAX 表单的提交类型\n<br />plugins, form\n<br />plugins 可以支持文件上传",
             "itemtype": "property",
             "name": "popupCloseMs",
@@ -2774,7 +2774,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 341,
+            "line": 366,
             "description": "表单提交后, 是否禁用提交按钮",
             "itemtype": "property",
             "name": "submitDisable",
@@ -2786,7 +2786,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 349,
+            "line": 374,
             "description": "表单提交后, 是否重置表单内容",
             "itemtype": "property",
             "name": "resetAfterSubmit",
@@ -2798,7 +2798,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 357,
+            "line": 382,
             "description": "表单提交时, 内容填写不完整时触发的全局回调",
             "itemtype": "property",
             "name": "processErrorCb",
@@ -2810,7 +2810,7 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 365,
+            "line": 390,
             "description": "全局返回数据处理回调\n<br />所有提交结果都会调用\n<br />arg: _data[string of result]",
             "itemtype": "property",
             "name": "GLOBAL_AJAX_CHECK",
@@ -2822,29 +2822,36 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 389,
+            "line": 419,
             "description": "默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 459,
+            "line": 502,
             "description": "全局 AJAX 提交完成后的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 465,
+            "line": 508,
             "description": "这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 509,
+            "line": 554,
             "description": "表单内容验证通过后, 开始提交前的处理事件",
+            "class": "window.Bizs.FormLogic",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/FormLogic/FormLogic.js",
+            "line": 740,
+            "description": "这个回调的 this 指针是 window",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
@@ -3625,7 +3632,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 131,
+            "line": 159,
             "description": "判断 selector 是否为符合自动初始化联动框的要求",
             "itemtype": "method",
             "name": "isSelect",
@@ -3645,7 +3652,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 148,
+            "line": 176,
             "description": "是否自动隐藏空值的级联下拉框, 起始下拉框不会被隐藏\n<br />这个是全局设置, 如果需要对具体某个select进行处理, 对应的 HTML 属性 selecthideempty",
             "itemtype": "property",
             "name": "hideEmpty",
@@ -3660,7 +3667,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 159,
+            "line": 187,
             "description": "级联下拉框的数据过滤函数\n<br />默认数据格式: [ [id, name], [id, name] ... ]\n<br />如果获取到的数据格式非默认格式, 可通过本函数进行数据过滤\n<p>\n <b>注意, 这个是全局过滤, 如果要使用该函数进行数据过滤, 判断逻辑需要比较具体</b>\n <br />如果要对具体 select 进行数据过滤, 可以使用HTML属性 selectdatafilter 指定过滤函数\n</p>",
             "itemtype": "property",
             "name": "dataFilter",
@@ -3675,7 +3682,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 182,
+            "line": 210,
             "description": "下拉框初始化功能都是未初始化 数据之前的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectbeforeInited",
             "itemtype": "property",
             "name": "beforeInited",
@@ -3687,7 +3694,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 191,
+            "line": 219,
             "description": "下拉框第一次初始完所有数据的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectinited",
             "itemtype": "property",
             "name": "inited",
@@ -3699,7 +3706,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 200,
+            "line": 228,
             "description": "下拉框每个项数据变更后的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectchange",
             "itemtype": "property",
             "name": "change",
@@ -3711,7 +3718,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 209,
+            "line": 237,
             "description": "下拉框所有项数据变更后的回调\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectallchanged",
             "itemtype": "property",
             "name": "allChanged",
@@ -3723,7 +3730,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 218,
+            "line": 246,
             "description": "第一次初始化所有联动框时, 是否触发 change 事件\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selecttriggerinitchange",
             "itemtype": "property",
             "name": "triggerInitChange",
@@ -3735,7 +3742,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 227,
+            "line": 255,
             "description": "ajax 请求数据时, 是否添加随机参数防止缓存\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectrandomurl",
             "itemtype": "property",
             "name": "randomurl",
@@ -3747,7 +3754,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 236,
+            "line": 264,
             "description": "处理 ajax url 的回调处理函数\n<br />这个是全局回调, 如果需要对具体某一组进行处理, 对应的 HTML 属性 selectprocessurl",
             "itemtype": "property",
             "name": "processUrl",
@@ -3759,7 +3766,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 245,
+            "line": 273,
             "description": "首次初始化时, 是否需要请求新数据\n<br />有时 联动框太多, 载入页面时, 后端直接把初始数据输出, 避免请求过多",
             "itemtype": "property",
             "name": "ignoreInitRequest",
@@ -3771,7 +3778,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 254,
+            "line": 282,
             "description": "获取或设置 selector 的实例引用",
             "itemtype": "method",
             "name": "getInstance",
@@ -3796,7 +3803,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 271,
+            "line": 299,
             "description": "清除 select 的 所有 option, 带有属性 defaultoption 例外",
             "itemtype": "method",
             "name": "removeItems",
@@ -3817,7 +3824,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 352,
+            "line": 380,
             "description": "使用 jquery on 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -3842,7 +3849,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 360,
+            "line": 388,
             "description": "使用 jquery trigger 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -3862,7 +3869,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 367,
+            "line": 395,
             "description": "获取第一个 select",
             "itemtype": "method",
             "name": "first",
@@ -3874,7 +3881,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 373,
+            "line": 401,
             "description": "获取最后一个 select",
             "itemtype": "method",
             "name": "last",
@@ -3886,7 +3893,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 379,
+            "line": 407,
             "description": "获取所有 select",
             "itemtype": "method",
             "name": "items",
@@ -3898,7 +3905,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 385,
+            "line": 413,
             "description": "是否为第一个 select",
             "itemtype": "method",
             "name": "isFirst",
@@ -3917,7 +3924,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 392,
+            "line": 420,
             "description": "是否为最后一个 select",
             "itemtype": "method",
             "name": "isLast",
@@ -3936,7 +3943,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 399,
+            "line": 427,
             "description": "是否已经初始化过",
             "itemtype": "method",
             "name": "isInited",
@@ -3955,7 +3962,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 406,
+            "line": 434,
             "description": "获取 select 的数据",
             "itemtype": "method",
             "name": "data",
@@ -3974,7 +3981,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 413,
+            "line": 441,
             "description": "更新默认选中列表",
             "itemtype": "method",
             "name": "update",
@@ -3993,7 +4000,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 855,
+            "line": 891,
             "description": "判断下拉框的option里是否有给定的值",
             "params": [
                 {
@@ -4012,7 +4019,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 928,
+            "line": 977,
             "description": "初始化之事的事件",
             "itemtype": "event",
             "name": "SelectBeforeInited",
@@ -4021,7 +4028,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 932,
+            "line": 981,
             "description": "初始化后的事件",
             "itemtype": "event",
             "name": "SelectInited",
@@ -4030,7 +4037,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 936,
+            "line": 985,
             "description": "响应每个 select 的 change 事件",
             "itemtype": "event",
             "name": "SelectChange",
@@ -4039,7 +4046,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 940,
+            "line": 989,
             "description": "最后一个 select change 后的事件",
             "itemtype": "event",
             "name": "SelectAllChanged",
@@ -4048,7 +4055,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 944,
+            "line": 993,
             "description": "select 更新数据之前触发的事件",
             "itemtype": "event",
             "name": "SelectItemBeforeUpdate",
@@ -4057,7 +4064,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 948,
+            "line": 997,
             "description": "select 更新数据之后触发的事件",
             "itemtype": "event",
             "name": "SelectItemUpdated",
@@ -4066,7 +4073,7 @@
         },
         {
             "file": "../comps/AutoSelect/AutoSelect.js",
-            "line": 952,
+            "line": 1001,
             "description": "页面加载完毕时, 延时进行自动化, 延时可以避免来自其他逻辑的干扰",
             "class": "JC.AutoSelect",
             "namespace": "JC"
@@ -15459,6 +15466,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../bizs/FormLogic/FormLogic.js:4"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../bizs/KillISPCache/KillISPCache.js:2"
         },
         {
@@ -15831,19 +15842,23 @@
         },
         {
             "message": "Missing item type\n默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
-            "line": " ../bizs/FormLogic/FormLogic.js:389"
+            "line": " ../bizs/FormLogic/FormLogic.js:419"
         },
         {
             "message": "Missing item type\n全局 AJAX 提交完成后的处理事件",
-            "line": " ../bizs/FormLogic/FormLogic.js:459"
+            "line": " ../bizs/FormLogic/FormLogic.js:502"
         },
         {
             "message": "Missing item type\n这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
-            "line": " ../bizs/FormLogic/FormLogic.js:465"
+            "line": " ../bizs/FormLogic/FormLogic.js:508"
         },
         {
             "message": "Missing item type\n表单内容验证通过后, 开始提交前的处理事件",
-            "line": " ../bizs/FormLogic/FormLogic.js:509"
+            "line": " ../bizs/FormLogic/FormLogic.js:554"
+        },
+        {
+            "message": "Missing item type\n这个回调的 this 指针是 window",
+            "line": " ../bizs/FormLogic/FormLogic.js:740"
         },
         {
             "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
@@ -15883,11 +15898,11 @@
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",
-            "line": " ../comps/AutoSelect/AutoSelect.js:855"
+            "line": " ../comps/AutoSelect/AutoSelect.js:891"
         },
         {
             "message": "Missing item type\n页面加载完毕时, 延时进行自动化, 延时可以避免来自其他逻辑的干扰",
-            "line": " ../comps/AutoSelect/AutoSelect.js:952"
+            "line": " ../comps/AutoSelect/AutoSelect.js:1001"
         },
         {
             "message": "Missing item type\n初始化 BaseMVC Model 类 和 View 类",
