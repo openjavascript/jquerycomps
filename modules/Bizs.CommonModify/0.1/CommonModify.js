@@ -508,7 +508,9 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
 
     $(document).delegate( 'a.js_autoCommonModify, button.js_autoCommonModify'
                           + ', a.js_bizsCommonModify, button.js_bizsCommonModify', 'click', function( _evt ){
-        CommonModify.getInstance().process(  $(this) );
+        var _p = $( this );
+        _p.prop( 'nodeName' ).toLowerCase() == 'a' && _evt.preventDefault();
+        CommonModify.getInstance().process( _p );
     });
 
     return Bizs.CommonModify;

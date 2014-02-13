@@ -37,6 +37,7 @@ requirejs.config( {
         , 'JC.FormFillUrl': 'modules/JC.FormFillUrl/0.1/FormFillUrl'
 
         , 'JC.ImageCutter': 'modules/JC.ImageCutter/0.1/ImageCutter'
+
         , 'JC.LunarCalendar': 'modules/JC.LunarCalendar/0.1/LunarCalendar'
         , 'JC.LunarCalendar.default': 'modules/JC.LunarCalendar/0.1/LunarCalendar.default'
         , 'JC.LunarCalendar.getFestival': 'modules/JC.LunarCalendar/0.1/LunarCalendar.getFestival'
@@ -71,7 +72,7 @@ requirejs.config( {
         , 'Bizs.DropdownTree': 'modules/Bizs.DropdownTree/0.1/DropdownTree'
 
         , 'Bizs.CommonModify': 'modules/Bizs.CommonModify/0.1/CommonModify'
-        , 'Bizs.FormLogic': 'modules/Bizs.FormLogic/0.1/FormLogic'
+        , 'Bizs.FormLogic': 'modules/Bizs.FormLogic/0.2/FormLogic'
         , 'Bizs.KillISPCache': 'modules/Bizs.KillISPCache/0.1/KillISPCache'
         , 'Bizs.MoneyTips': 'modules/Bizs.MoneyTips/0.1/MoneyTips'
         , 'Bizs.MultiDate': 'modules/Bizs.MultiDate/0.1/MultiDate'

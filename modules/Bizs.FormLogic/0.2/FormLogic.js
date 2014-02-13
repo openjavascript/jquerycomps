@@ -18,7 +18,7 @@
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/Bizs.FormLogic/0.1/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/Bizs.FormLogic/0.2/_demo' target='_blank'>demo link</a></p>
      *
      * <h2>页面只要引用本文件, 默认会自动初始化 from class="js_bizsFormLogic" 的表单</h2>
      * <h2>Form 可用的 HTML 属性</h2>
@@ -26,7 +26,7 @@
      *      <dt>formType = string, default = get</dt>
      *      <dd>
      *          form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性
-     *          <br/> 类型有: get, post, ajax 
+     *          <br/> 类型有: get, post, ajax, jsonp 
      *      </dd>
      *
      *      <dt>formSubmitDisable = bool, default = true</dt>
@@ -106,6 +106,30 @@
      *
      *      <dt>formAjaxDoneAction = url</dt>
      *      <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>
+     *
+     *      <dt>formJsonpCb = function, default = FormLogic#_model._innerJsonpCb</dt>
+     *      <dd>自定义 JSOPN 处理回调, <b>window 变量域</b>
+<pre>function customFormJsonpCb( _data, _info ){
+    if( !( _data && _info ) ) return;
+
+    var _frm = $( 'form.' + _info ), _ins;
+    if( !_frm.length ) return;
+    _ins = JC.BaseMVC.getInstance( _frm, Bizs.FormLogic );
+    if( !_ins ) return;
+
+    _ins.trigger( Bizs.FormLogic.Model.AJAX_DONE, [ _data ] );
+}</pre>
+
+<pre>URL: <b>handler_jsonp.php?callbackInfo=FormLogic_1&callback=callback</b>
+OUTPUT:
+<b>&lt;script&gt;
+window.parent 
+    && window.parent != this
+    && window.parent&#91; 'callback' &#93;
+    && window.parent&#91; 'callback' &#93;( {"errorno":0,"errmsg":"","data":{"callbackInfo":"FormLogic_1","callback":"callback"}}, 'FormLogic_1' )
+    ;
+&lt;/script&gt;</b></pre>
+     *      </dd>
      * </dl>
      *
      * <h2>Form Control 可用的 html 属性</h2>
@@ -186,6 +210,7 @@
      * @class           FormLogic
      * @extends         JC.BaseMVC
      * @constructor 
+     * @version dev 0.2 2014-01-22
      * @version dev 0.1 2013-09-08
      * @author  qiushaowei   <suches@btbtd.org> | 75 Team
      * @example
@@ -268,13 +293,18 @@
 
     function FormLogic( _selector ){
         _selector && ( _selector = $( _selector ) );
-        if( FormLogic.getInstance( _selector ) ) return FormLogic.getInstance( _selector );
-        FormLogic.getInstance( _selector, this );
+
+        if( JC.BaseMVC.getInstance( _selector, FormLogic ) ) 
+            return JC.BaseMVC.getInstance( _selector, FormLogic );
+
+        JC.BaseMVC.getInstance( _selector, FormLogic, this );
 
         this._model = new FormLogic.Model( _selector );
         this._view = new FormLogic.View( this._model );
 
         this._init();
+
+        JC.log( FormLogic.Model._instanceName, 'all inited', new Date().getTime() );
     }
     /**
      * 获取或设置 FormLogic 的实例
@@ -285,12 +315,7 @@
      */
     FormLogic.getInstance =
         function( _selector, _setter ){
-            if( typeof _selector == 'string' && !/</.test( _selector ) ) 
-                    _selector = $(_selector);
-            if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
-            typeof _setter != 'undefined' && _selector.data( 'FormLogicIns', _setter );
-
-            return _selector.data('FormLogicIns');
+            return JC.BaseMVC.getInstance( _selector, FormLogic, _setter );
         };
 
     if( !define.amd && JC.use ){
@@ -373,7 +398,12 @@
      */
     FormLogic.GLOBAL_AJAX_CHECK;
 
-    FormLogic.prototype = {
+    FormLogic._currentIns;
+
+
+    JC.BaseMVC.build( FormLogic, 'Bizs' );
+
+    JC.f.extendObject( FormLogic.prototype, {
         _beforeInit:
             function(){
                 //JC.log( 'FormLogic._beforeInit', new Date().getTime() );
@@ -393,11 +423,12 @@
                 _p.selector().on('submit', function( _evt ){
                     //_evt.preventDefault();
                     _p._model.isSubmited( true );
+                    FormLogic._currentIns = _p;
 
                     var _ignoreCheck, _btn = _p.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON );
                         _btn && ( _btn = $( _btn ) );
                     if( _btn && _btn.length ){
-                        _ignoreCheck = JC.f.parseBool( _btn.attr('formSubmitIgnoreCheck') );
+                        _ignoreCheck = JC.f.parseBool( _btn.attr( FormLogic.Model.IGNORE_KEY ) );
                         JC.Valid.ignore( _p.selector(), !_ignoreCheck ); 
                     }else{
                         JC.Valid.ignore( _p.selector(), true );
@@ -427,7 +458,7 @@
                         return _p._model.prevent( _evt );
                     }
 
-                    _p.trigger( 'ProcessDone' );
+                    _p.trigger( FormLogic.Model.PROCESS_DONE );
 
                     /*
                     if( _type == FormLogic.Model.AJAX ){
@@ -437,15 +468,27 @@
                     */
                 });
 
-                _p.on( 'BindFrame', function( _evt ){
+                _p.on( FormLogic.Model.INITED, function( _evt ){
+                    _p.trigger( FormLogic.Model.INIT_JSONP );
+                    _p.trigger( FormLogic.Model.BIND_FORM );
+                });
+
+                _p.on( FormLogic.Model.INIT_JSONP, function( _evt ){
+                    if( !( _type == FormLogic.Model.JSONP ) ) return;
+
+                    window[ _p._model.jsonpKey() ] = _p._model.jsonpCb();
+                });
+
+                _p.on( FormLogic.Model.BIND_FORM, function( _evt ){
                     var _frame
                         , _type = _p._model.formType()
                         , _frameName
                         ;
-                    if( _type != FormLogic.Model.AJAX ) return;
+                    if( !( _type == FormLogic.Model.AJAX || _type == FormLogic.Model.JSONP ) ) return;
 
                     _frame = _p._model.frame();
                     _frame.on( 'load', function( _evt ){
+                        if( _p._model.formType() == FormLogic.Model.JSONP ) return;
                         var _w = _frame.prop('contentWindow')
                             , _wb = _w.document.body
                             , _d = $( '<div>' + ( $.trim( _wb.innerHTML ) || '' ) + '</div>' ).text()
@@ -453,13 +496,13 @@
                         if( !_p._model.isSubmited() ) return;
 
                         JC.log( 'common ajax done' );
-                        _p.trigger( 'AjaxDone', [ _d ] );
+                        _p.trigger( FormLogic.Model.AJAX_DONE, [ _d ] );
                     });
                 });
                 /**
                  * 全局 AJAX 提交完成后的处理事件
                  */
-                _p.on('AjaxDone', function( _evt, _data ){
+                _p.on( FormLogic.Model.AJAX_DONE, function( _evt, _data ){
                     FormLogic.GLOBAL_AJAX_CHECK
                         && FormLogic.GLOBAL_AJAX_CHECK( _data );
                     /**
@@ -468,10 +511,12 @@
                      */
                     var _resetBtn = _p._model.selector().find('button[type=reset], input[type=reset]');
 
-                    _p._model.formSubmitDisable() && _p.trigger( 'EnableSubmit' );
+                    _p._model.formSubmitDisable() && _p.trigger( FormLogic.Model.ENABLE_SUBMIT );
 
                     var _json, _fatalError, _resultType = _p._model.formAjaxResultType();
-                    if( _resultType == 'json' ){
+                    if( Object.prototype.toString.call( _data ) == '[object Object]' ){
+                        _json = _data;
+                    }else if( _resultType == 'json' ){
                         try{ _json = $.parseJSON( _data ); }catch(ex){ _fatalError = true; _json = _data; }
                     }
 
@@ -509,7 +554,7 @@
                 /**
                  * 表单内容验证通过后, 开始提交前的处理事件
                  */
-                _p.on('ProcessDone', function(){
+                _p.on( FormLogic.Model.PROCESS_DONE, function(){
                     _p._model.formSubmitDisable() 
                         && _p.selector().find('input[type=submit], button[type=submit]').each( function(){
                             $( this ).prop('disabled', true);
@@ -546,11 +591,11 @@
                         return _p._model.prevent( _evt );
                     }else{
                         _p._view.reset();
-                        _p.trigger( 'EnableSubmit' );
+                        _p.trigger( FormLogic.Model.ENABLE_SUBMIT );
                     }
                 });
 
-                _p.on( 'EnableSubmit', function(){
+                _p.on( FormLogic.Model.ENABLE_SUBMIT, function(){
                     _p.selector().find('input[type=submit], button[type=submit]').each( function(){
                         $( this ).prop('disabled', false );
                     });
@@ -574,7 +619,7 @@
                         _p.selector().data( FormLogic.Model.RESET_CONFIRM_BUTTON, null );
                         _p.selector().trigger( 'reset' );
                         _p._view.reset();
-                        _p.trigger( 'EnableSubmit' );
+                        _p.trigger( FormLogic.Model.ENABLE_SUBMIT );
                     });
 
                     _popup.on('close', function(){
@@ -595,16 +640,19 @@
                     && _p.selector().attr( 'encoding', 'multipart/form-data' )
                     ;
 
-                _p.trigger( 'BindFrame' );
+                _p._model.trigger( FormLogic.Model.INITED );
             }
-    };
+    }) ;
 
-    JC.BaseMVC.buildModel( FormLogic );
+    FormLogic.Model._instanceName = 'FormLogic';
 
-    FormLogic.Model._instanceName = 'FormLogicIns';
+    FormLogic.Model.INITED = 'inited';
+    FormLogic.Model.INIT_JSONP = 'init_jsonp';
+
     FormLogic.Model.GET = 'get';
     FormLogic.Model.POST = 'post';
     FormLogic.Model.AJAX = 'ajax';
+    FormLogic.Model.JSONP = 'jsonp';
     FormLogic.Model.IFRAME = 'iframe';
 
     FormLogic.Model.SUBMIT_CONFIRM_BUTTON = 'SubmitButton';
@@ -618,18 +666,92 @@
     FormLogic.Model.EVT_AJAX_SUBMIT = "AjaxSubmit"
     FormLogic.Model.INS_COUNT = 1;
 
-    FormLogic.Model.prototype = {
+    FormLogic.Model.PROCESS_DONE = "ProcessDone";
+
+    FormLogic.Model.IGNORE_KEY = "formSubmitIgnoreCheck";
+    FormLogic.Model.BIND_FORM = "BindFrame";
+    FormLogic.Model.AJAX_DONE = "AjaxDone";
+    FormLogic.Model.ENABLE_SUBMIT = "EnableSubmit";
+
+    JC.f.extendObject( FormLogic.Model.prototype, {
         init:
             function(){
                 this.id();
+                this.selector().addClass( FormLogic.Model._instanceName );
+                this.selector().addClass( this.id() );
+
+                if( this.formType() == FormLogic.Model.JSONP ){
+                    var _r = this.attrProp( 'formAjaxAction' ) || this.attrProp( 'action' ) || '?';
+
+                    this.attrProp( 'action' ) 
+                        && (
+                            this.selector().attr( 'action'
+                                , JC.f.addUrlParams( this.attrProp( 'action' ), { 'callbackInfo': this.id() } ) )
+                            , this.selector().attr( 'action'
+                                , JC.f.addUrlParams( this.attrProp( 'action' ), { 'callback': this.jsonpKey() } ) )
+                        );
+                            
+                    this.attrProp( 'formAjaxAction' )
+                        && ( 
+                            this.selector().attr( 'formAjaxAction', 
+                                JC.f.addUrlParams( this.attr( 'formAjaxAction' ), { 'callbackInfo': this.id() } ) )
+                            , this.selector().attr( 'formAjaxAction', 
+                                JC.f.addUrlParams( this.attr( 'formAjaxAction' ), { 'callback': this.jsonpKey() } ) )
+                        );
+                }
             }
         , id:
             function(){
                 if( ! this._id ){
-                    this._id = 'FormLogicIns_' + ( FormLogic.Model.INS_COUNT++ );
+                    this._id = FormLogic.Model._instanceName + '_' + ( FormLogic.Model.INS_COUNT++ );
                 }
                 return this._id;
             }
+
+        , jsonpCb:
+            function(){
+                var _r = this._innerJsonpCb
+                    , _action = this.formAjaxAction()
+                    ;
+
+                _r = this.callbackProp( 'formJsonpCb' ) || _r;
+
+                if( JC.f.hasUrlParam( _action, 'callback' ) ){
+                    _r = this.windowProp( JC.f.getUrlParam( _action, 'callback' ) ) || _r;
+                }
+
+                return _r;
+            }
+
+        , jsonpKey:
+            function(){
+                var _r = this.id() + '_JsonpCb'
+                    , _action = this.formAjaxAction()
+                    ;
+
+                _r = this.attrProp( 'formJsonpCb' ) || _r;
+
+                if( JC.f.hasUrlParam( _action, 'callback' ) ){
+                    _r = JC.f.getUrlParam( _action, 'callback' ) || _r;
+                }
+
+                return _r;
+            }
+        /**
+         * 这个回调的 this 指针是 window
+         */
+        , _innerJsonpCb:
+            function( _data, _info ){
+                if( !( _data && _info ) ) return;
+
+                var _frm = $( 'form.' + _info ), _ins;
+                if( !_frm.length ) return;
+                _ins = JC.BaseMVC.getInstance( _frm, Bizs.FormLogic );
+                if( !_ins ) return;
+
+                _ins.trigger( Bizs.FormLogic.Model.AJAX_DONE, [ _data ] );
+            }
+
         , isSubmited:
             function( _setter ){
                 typeof _setter != 'undefined' && ( this._submited = _setter );
@@ -850,10 +972,9 @@
                 return _r.trim();
             }
 
-    };
+    });
 
-    JC.BaseMVC.buildView( FormLogic );
-    FormLogic.View.prototype = {
+    JC.f.extendObject( FormLogic.View.prototype, {
         initQueryVal:
             function(){
                 var _p = this;
@@ -897,9 +1018,7 @@
 
                 JC.hideAllPopup( 1 );
             }
-    };
-
-    JC.BaseMVC.build( FormLogic, 'Bizs' );
+    });
 
     $(document).delegate( 'input[formSubmitConfirm], button[formSubmitConfirm]', 'click', function( _evt ){
         var _p = $(this)
