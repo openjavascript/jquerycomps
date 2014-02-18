@@ -401,7 +401,7 @@ window.parent
     FormLogic._currentIns;
 
 
-    JC.BaseMVC.build( FormLogic, 'Bizs' );
+    JC.BaseMVC.build( FormLogic );
 
     JC.f.extendObject( FormLogic.prototype, {
         _beforeInit:

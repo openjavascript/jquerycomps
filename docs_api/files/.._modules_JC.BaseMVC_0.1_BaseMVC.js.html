@@ -356,13 +356,16 @@
      * @static
      */
     BaseMVC.build =
-        function( _outClass ){
+        function( _outClass, _srcClass ){
+            _srcClass = _srcClass || BaseMVC;
+            typeof _srcClass == &#x27;string&#x27; &amp;&amp; ( _srcClass = BaseMVC );
+
             BaseMVC.buildModel( _outClass );
             BaseMVC.buildView( _outClass );
 
-            BaseMVC.buildClass( BaseMVC, _outClass );
-            BaseMVC.buildClass( BaseMVC.Model, _outClass.Model );
-            BaseMVC.buildClass( BaseMVC.View, _outClass.View );
+            BaseMVC.buildClass( _srcClass, _outClass );
+            _srcClass.Model &amp;&amp; BaseMVC.buildClass( _srcClass.Model, _outClass.Model );
+            _srcClass.View &amp;&amp; BaseMVC.buildClass( _srcClass.View, _outClass.View );
         };
     /**
      * 复制 _inClass 的所有方法到 _outClass

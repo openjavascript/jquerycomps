@@ -146,6 +146,7 @@
     BaseMVC.build =
         function( _outClass, _srcClass ){
             _srcClass = _srcClass || BaseMVC;
+            typeof _srcClass == 'string' && ( _srcClass = BaseMVC );
 
             BaseMVC.buildModel( _outClass );
             BaseMVC.buildView( _outClass );
