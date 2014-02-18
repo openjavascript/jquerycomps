@@ -313,6 +313,12 @@
                             }
                         case 13://回车
                             {
+                                var _tmpSelectedItem;
+                                if( _p._model.layout().is( ':visible' ) 
+                                        && ( _tmpSelectedItem = _p._model.layout().find( 'dd.active') ) && _tmpSelectedItem.length ){
+                                    _p.trigger('SuggestSelected', [ _tmpSelectedItem, _p._model.getKeyword( _tmpSelectedItem ) ]);
+                                }
+
                                 _p.hide();
                                 _sp.data( 'IgnoreTime', new Date().getTime() );
 
@@ -336,13 +342,16 @@
                     Suggest._hideOther( _p );
                 });
 
+                _p.on( 'SuggestSelected', function( _evt, _sp, _keyword ){
+                    _p._model.sugselectedcallback() && _p._model.sugselectedcallback().call( _p, _keyword );
+                });
+
                 $( _p._model.layout() ).delegate( '.js_sugItem', 'click', function(_evt){
                     var _sp = $(this), _keyword = _p._model.getKeyword( _sp );
                     _p.selector().val( _keyword );
                     _p.hide();
                     
-                    _p.trigger('SuggestSelected', [_sp]);
-                    _p._model.sugselectedcallback() && _p._model.sugselectedcallback().call( _p, _keyword );
+                    _p.trigger('SuggestSelected', [_sp, _keyword ]);
                     setTimeout( function(){
                         _p.selector().trigger( 'blur' );
                     }, 50);
