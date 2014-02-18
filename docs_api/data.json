@@ -601,7 +601,7 @@
             "namespace": "window.Bizs",
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
             "line": 2,
-            "description": "<h2>node 点击操作逻辑</h2>\n应用场景\n<br/>点击后弹框( 脚本模板 )\n<br/>点击后弹框( AJAX )\n<br/>点击后弹框( Dom 模板 )\n<br/>点击后执行 AJAX 操作\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.ActionLogic/0.1/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_bizsActionLogic\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>balType = string, 操作类型 </dt>\n     <dd>\n         <dl>\n             <dt>类型:</dt>\n             <dd>panel: 弹框</dd>\n             <dd>link: 链接跳转</dd>\n             <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>\n         </dl>\n     </dd>\n</dl>\n<h2>balType = panel 可用的 HTML 属性</h2>\n<dl>\n     <dt>balPanelTpl = script selector</dt>\n     <dd>脚本模板选择器</dd>\n\n     <dt>balAjaxHtml = url</dt>\n     <dd>返回 HTML 的 AJAX 模板</dd>\n\n     <dt>balAjaxData = url</dt>\n     <dd>返回 json 的 AJAX 模板, { errorno: int, data: html } </dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         显示模板后的回调\n<pre>function balPanelInitCb( _panelIns ){\n   var _trigger = $(this);\n   //return true; //如果返回真的话, 表单提交后会关闭弹框\n}</pre>\n     </dd>\n</dl>\n<h2>balType = link 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>要跳转的目标 URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>跳转前的二次确认提示信息</dd>\n\n     <dt>balConfirmPopupType = string, default = confirm</dt>\n     <dd>二次确认的弹框类型: confirm, dialog.confirm</dd>\n</dl>\n<h2>balType = ajaxaction 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>AJAX 操作的接口</dd>\n\n     <dt>balDoneUrl = url</dt>\n     <dd>AJAX 操作完成后跳转的URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>操作前的二次确认提示信息</dd>\n\n     <dt>balErrorPopupType = string, default = dialog.alert</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balSuccessPopupType = string, default = msgbox</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         操作完成后的回调\n<pre>function ajaxDelCallback( _d, _ins ){\n   var _trigger = $(this);\n   if( _d && !_d.errorno ){\n       JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){\n           JC.f.reloadPage( '?usercallback=ajaxaction' );\n       });\n   }else{\n       JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );\n   }\n}\n</pre>\n     </dd>\n\n     <dt>balRequestData = json</dt>\n     <dd>ajax 请求发送的数据</dd>\n\n     <dt>balAjaxType = string, default = get</dt>\n     <dd>ajax 请求的类型</dd>\n\n     <dt>balDoneRemoveSelector = selector</dt>\n     <dd>ajax 操作完成后要删除的 node</dd>\n</dl>",
+            "description": "<h2>node 点击操作逻辑</h2>\n应用场景\n<br/>点击后弹框( 脚本模板 )\n<br/>点击后弹框( AJAX )\n<br/>点击后弹框( Dom 模板 )\n<br/>点击后执行 AJAX 操作\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.ActionLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.ActionLogic/0.1/_demo' target='_blank'>demo link</a></p>\n\na|button 需要 添加 class=\"js_bizsActionLogic\"\n\n<h2>可用的 HTML 属性</h2>\n<dl>\n     <dt>balType = string, 操作类型 </dt>\n     <dd>\n         <dl>\n             <dt>类型:</dt>\n             <dd>panel: 弹框</dd>\n             <dd>link: 链接跳转</dd>\n             <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>\n         </dl>\n     </dd>\n\n     <dt>balUnHtmlEntity = bool, default = false</dt>\n     <dd>是否将 Panel 转义的 html 反转回来</dd>\n</dl>\n<h2>balType = panel 可用的 HTML 属性</h2>\n<dl>\n     <dt>balPanelTpl = script selector</dt>\n     <dd>脚本模板选择器</dd>\n\n     <dt>balAjaxHtml = url</dt>\n     <dd>返回 HTML 的 AJAX 模板</dd>\n\n     <dt>balAjaxData = url</dt>\n     <dd>返回 json 的 AJAX 模板, { errorno: int, data: html } </dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         显示模板后的回调\n<pre>function balPanelInitCb( _panelIns ){\n   var _trigger = $(this);\n   //return true; //如果返回真的话, 表单提交后会关闭弹框\n}</pre>\n     </dd>\n</dl>\n<h2>balType = link 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>要跳转的目标 URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>跳转前的二次确认提示信息</dd>\n\n     <dt>balConfirmPopupType = string, default = confirm</dt>\n     <dd>二次确认的弹框类型: confirm, dialog.confirm</dd>\n</dl>\n<h2>balType = ajaxaction 可用的 HTML 属性</h2>\n<dl>\n     <dt>balUrl = url</dt>\n     <dd>AJAX 操作的接口</dd>\n\n     <dt>balDoneUrl = url</dt>\n     <dd>AJAX 操作完成后跳转的URL</dd>\n\n     <dt>balConfirmMsg = string</dt>\n     <dd>操作前的二次确认提示信息</dd>\n\n     <dt>balErrorPopupType = string, default = dialog.alert</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balSuccessPopupType = string, default = msgbox</dt>\n     <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>\n\n     <dt>balCallback = function</dt>\n     <dd>\n         操作完成后的回调\n<pre>function ajaxDelCallback( _d, _ins ){\n   var _trigger = $(this);\n   if( _d && !_d.errorno ){\n       JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){\n           JC.f.reloadPage( '?usercallback=ajaxaction' );\n       });\n   }else{\n       JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );\n   }\n}\n</pre>\n     </dd>\n\n     <dt>balRequestData = json</dt>\n     <dd>ajax 请求发送的数据</dd>\n\n     <dt>balAjaxType = string, default = get</dt>\n     <dd>ajax 请求的类型</dd>\n\n     <dt>balDoneRemoveSelector = selector</dt>\n     <dd>ajax 操作完成后要删除的 node</dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-17",
@@ -936,7 +936,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 212,
+            "line": 215,
             "description": "MVC Model 类( <b>仅供扩展用</b> )\n<br />这个类默认已经包含在lib.js里面, 不需要显式引用\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.BaseMVC/0.1/_demo' target='_blank'>demo link</a></p>\n<p><b>see also</b>: <a href='JC.BaseMVC.html'>JC.BaseMVC</a></p>",
             "is_constructor": 1,
             "params": [
@@ -1069,7 +1069,7 @@
             "namespace": "JC",
             "file": "../modules/JC.FormFillUrl/0.1/FormFillUrl.js",
             "line": 3,
-            "description": "FormFillUrl 表单自动填充 URL 参数\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.FormFillUrl.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.FormFillUrl/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 form class=\"js_compFormFillUrl\"</h2>\n\n<h2>Form 可用的 HTML attribute</h2>\n\n<dl>\n   <dt>decoder = function, default = decodeURIComponent</dt>\n   <dd>URL 的解码函数<dd>\n\n   <dt>encoder = function, default = encodeURIComponent</dt>\n   <dd>URL 的编码码函数<dd>\n</dl>",
+            "description": "FormFillUrl 表单自动填充 URL 参数\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.FormFillUrl.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.FormFillUrl/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 form class=\"js_compFormFillUrl\"</h2>\n\n<h2>Form 可用的 HTML attribute</h2>\n\n<dl>\n   <dt>decoder = function, default = decodeURIComponent</dt>\n   <dd>URL 的解码函数<dd>\n\n   <dt>encoder = function, default = encodeURIComponent</dt>\n   <dd>URL 的编码码函数<dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -2093,7 +2093,7 @@
     "classitems": [
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 128,
+            "line": 131,
             "description": "获取或设置 ActionLogic 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -2114,7 +2114,7 @@
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 144,
+            "line": 147,
             "description": "判断 selector 是否可以初始化 ActionLogic",
             "itemtype": "method",
             "name": "isActionLogic",
@@ -2134,7 +2134,7 @@
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 159,
+            "line": 162,
             "description": "禁用按钮一定时间, 默认为1秒",
             "itemtype": "method",
             "name": "disableButton",
@@ -2156,7 +2156,7 @@
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 176,
+            "line": 179,
             "description": "批量初始化 ActionLogic\n<br />页面加载完毕时, 已使用 事件代理 初始化\n<br />如果是弹框中的 ActionLogic, 由于事件冒泡被阻止了, 需要显示调用  init 方法",
             "itemtype": "method",
             "name": "init",
@@ -2172,7 +2172,7 @@
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 195,
+            "line": 198,
             "description": "初始化 ActionLogic, 并执行",
             "itemtype": "method",
             "name": "process",
@@ -2193,63 +2193,63 @@
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 223,
+            "line": 226,
             "description": "脚本模板 Panel",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 229,
+            "line": 232,
             "description": "显示 Panel",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 241,
+            "line": 247,
             "description": "ajax Panel",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 271,
+            "line": 277,
             "description": "跳转到 URL",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 280,
+            "line": 286,
             "description": "ajax 执行操作",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 328,
+            "line": 334,
             "description": "处理错误提示",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 360,
+            "line": 366,
             "description": "处理二次确认",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 380,
+            "line": 386,
             "description": "处理成功提示",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 413,
+            "line": 419,
             "description": "执行操作",
             "itemtype": "method",
             "name": "process",
@@ -4285,7 +4285,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 155,
+            "line": 158,
             "description": "复制 _inClass 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "buildClass",
@@ -4307,7 +4307,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 184,
+            "line": 187,
             "description": "为 _outClass 生成一个通用 Model 类",
             "itemtype": "method",
             "name": "buildModel",
@@ -4324,7 +4324,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 197,
+            "line": 200,
             "description": "为 _outClass 生成一个通用 View 类",
             "itemtype": "method",
             "name": "buildView",
@@ -4341,14 +4341,14 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 207,
+            "line": 210,
             "description": "初始化 BaseMVC Model 类 和 View 类",
             "class": "JC.BaseMVC",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 227,
+            "line": 230,
             "description": "设置 selector 实例引用的 data 属性名",
             "itemtype": "property",
             "name": "_instanceName",
@@ -4362,7 +4362,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 241,
+            "line": 244,
             "description": "使用 jquery on 为 controler 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -4384,7 +4384,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 252,
+            "line": 255,
             "description": "使用 jquery trigger 触发 controler 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -4401,7 +4401,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 264,
+            "line": 267,
             "description": "初始化的 jq 选择器",
             "itemtype": "method",
             "name": "selector",
@@ -4420,7 +4420,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 275,
+            "line": 278,
             "description": "读取 int 属性的值",
             "itemtype": "method",
             "name": "intProp",
@@ -4444,7 +4444,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 296,
+            "line": 299,
             "description": "读取 float 属性的值",
             "itemtype": "method",
             "name": "floatProp",
@@ -4468,7 +4468,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 317,
+            "line": 320,
             "description": "读取 string 属性的值",
             "itemtype": "method",
             "name": "stringProp",
@@ -4492,7 +4492,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 335,
+            "line": 338,
             "description": "读取 html 属性值\n<br />这个跟 stringProp 的区别是不会强制转换为小写",
             "itemtype": "method",
             "name": "attrProp",
@@ -4516,7 +4516,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 358,
+            "line": 361,
             "description": "读取 boolean 属性的值",
             "itemtype": "method",
             "name": "boolProp",
@@ -4546,7 +4546,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 384,
+            "line": 387,
             "description": "读取 callback 属性的值",
             "itemtype": "method",
             "name": "callbackProp",
@@ -4571,7 +4571,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 407,
+            "line": 410,
             "description": "获取与属性名匹配的 window 变量",
             "itemtype": "method",
             "name": "windowProp",
@@ -4596,7 +4596,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 418,
+            "line": 421,
             "description": "获取 selector 属性的 jquery 选择器",
             "itemtype": "method",
             "name": "selectorProp",
@@ -4620,7 +4620,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 441,
+            "line": 444,
             "description": "判断 _selector 是否具体某种特征",
             "itemtype": "method",
             "name": "is",
@@ -4644,14 +4644,14 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 470,
+            "line": 473,
             "description": "使用 jquery on 为 controler 绑定事件",
             "class": "JC.BaseMVC.Model",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 478,
+            "line": 481,
             "description": "使用 jquery trigger 触发 controler 绑定事件",
             "class": "JC.BaseMVC.Model",
             "namespace": "JC"
@@ -6247,7 +6247,7 @@
         },
         {
             "file": "../modules/JC.FormFillUrl/0.1/FormFillUrl.js",
-            "line": 60,
+            "line": 59,
             "description": "初始化可识别的 FormFillUrl 实例",
             "itemtype": "method",
             "name": "init",
@@ -6268,7 +6268,7 @@
         },
         {
             "file": "../modules/JC.FormFillUrl/0.1/FormFillUrl.js",
-            "line": 91,
+            "line": 90,
             "description": "自定义 URI decode 函数",
             "itemtype": "property",
             "name": "decoder",
@@ -6280,7 +6280,7 @@
         },
         {
             "file": "../modules/JC.FormFillUrl/0.1/FormFillUrl.js",
-            "line": 100,
+            "line": 99,
             "description": "自定义 URI encode 函数",
             "itemtype": "property",
             "name": "encoder",
@@ -6292,7 +6292,7 @@
         },
         {
             "file": "../modules/JC.FormFillUrl/0.1/FormFillUrl.js",
-            "line": 109,
+            "line": 108,
             "description": "判断下拉框的option里是否有给定的值",
             "itemtype": "method",
             "name": "selectHasVal",
@@ -6314,7 +6314,7 @@
         },
         {
             "file": "../modules/JC.FormFillUrl/0.1/FormFillUrl.js",
-            "line": 164,
+            "line": 163,
             "description": "手动填充 URL 值",
             "itemtype": "method",
             "name": "fill",
@@ -10361,7 +10361,7 @@
         },
         {
             "file": "../modules/JC.Suggest/0.1/Suggest.js",
-            "line": 360,
+            "line": 369,
             "description": "获取或设置 Suggest 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -10387,7 +10387,7 @@
         },
         {
             "file": "../modules/JC.Suggest/0.1/Suggest.js",
-            "line": 377,
+            "line": 386,
             "description": "判断 selector 是否可以初始化 Suggest",
             "itemtype": "method",
             "name": "isSuggest",
@@ -10407,7 +10407,7 @@
         },
         {
             "file": "../modules/JC.Suggest/0.1/Suggest.js",
-            "line": 392,
+            "line": 401,
             "description": "设置 Suggest 是否需要自动初始化",
             "itemtype": "property",
             "name": "autoInit",
@@ -10419,7 +10419,7 @@
         },
         {
             "file": "../modules/JC.Suggest/0.1/Suggest.js",
-            "line": 400,
+            "line": 409,
             "description": "自定义列表显示模板",
             "itemtype": "property",
             "name": "layoutTpl",
@@ -10431,7 +10431,7 @@
         },
         {
             "file": "../modules/JC.Suggest/0.1/Suggest.js",
-            "line": 408,
+            "line": 417,
             "description": "Suggest 返回列表的内容是否只使用",
             "itemtype": "property",
             "name": "layoutTpl",
@@ -10443,7 +10443,7 @@
         },
         {
             "file": "../modules/JC.Suggest/0.1/Suggest.js",
-            "line": 416,
+            "line": 425,
             "description": "数据过滤回调",
             "itemtype": "property",
             "name": "dataFilter",
@@ -10455,7 +10455,7 @@
         },
         {
             "file": "../modules/JC.Suggest/0.1/Suggest.js",
-            "line": 424,
+            "line": 433,
             "description": "保存所有初始化过的实例",
             "itemtype": "property",
             "name": "_allIns",
@@ -10469,7 +10469,7 @@
         },
         {
             "file": "../modules/JC.Suggest/0.1/Suggest.js",
-            "line": 433,
+            "line": 442,
             "description": "隐藏其他 Suggest 显示列表",
             "itemtype": "method",
             "name": "_hideOther",
@@ -10488,7 +10488,7 @@
         },
         {
             "file": "../modules/JC.Suggest/0.1/Suggest.js",
-            "line": 760,
+            "line": 769,
             "description": "初始化完后的事件",
             "itemtype": "event",
             "name": "SuggestInited",
@@ -10497,7 +10497,7 @@
         },
         {
             "file": "../modules/JC.Suggest/0.1/Suggest.js",
-            "line": 764,
+            "line": 773,
             "description": "获得新数据的事件",
             "itemtype": "event",
             "name": "SuggestUpdate",
@@ -10506,7 +10506,7 @@
         },
         {
             "file": "../modules/JC.Suggest/0.1/Suggest.js",
-            "line": 768,
+            "line": 777,
             "description": "数据更新完毕后的事件",
             "itemtype": "event",
             "name": "SuggestUpdated",
@@ -10515,7 +10515,7 @@
         },
         {
             "file": "../modules/JC.Suggest/0.1/Suggest.js",
-            "line": 772,
+            "line": 781,
             "description": "显示前的事件",
             "itemtype": "event",
             "name": "SuggestBeforeShow",
@@ -10524,7 +10524,7 @@
         },
         {
             "file": "../modules/JC.Suggest/0.1/Suggest.js",
-            "line": 776,
+            "line": 785,
             "description": "显示后的事件",
             "itemtype": "event",
             "name": "SuggestShow",
@@ -17108,7 +17108,7 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:212"
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:215"
         },
         {
             "message": "unknown tag: version",
@@ -17524,35 +17524,35 @@
         },
         {
             "message": "Missing item type\n脚本模板 Panel",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:223"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:226"
         },
         {
             "message": "Missing item type\n显示 Panel",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:229"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:232"
         },
         {
             "message": "Missing item type\najax Panel",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:241"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:247"
         },
         {
             "message": "Missing item type\n跳转到 URL",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:271"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:277"
         },
         {
             "message": "Missing item type\najax 执行操作",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:280"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:286"
         },
         {
             "message": "Missing item type\n处理错误提示",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:328"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:334"
         },
         {
             "message": "Missing item type\n处理二次确认",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:360"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:366"
         },
         {
             "message": "Missing item type\n处理成功提示",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:380"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:386"
         },
         {
             "message": "Missing item type\nselectallchanged",
@@ -17628,15 +17628,15 @@
         },
         {
             "message": "Missing item type\n初始化 BaseMVC Model 类 和 View 类",
-            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:207"
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:210"
         },
         {
             "message": "Missing item type\n使用 jquery on 为 controler 绑定事件",
-            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:470"
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:473"
         },
         {
             "message": "Missing item type\n使用 jquery trigger 触发 controler 绑定事件",
-            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:478"
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:481"
         },
         {
             "message": "Missing item type\n保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",

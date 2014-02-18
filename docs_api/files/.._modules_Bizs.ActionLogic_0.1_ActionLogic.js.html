@@ -238,6 +238,9 @@
  *              &lt;dd&gt;ajaxaction: ajax操作, 删除, 启用, 禁用&lt;/dd&gt;
  *          &lt;/dl&gt;
  *      &lt;/dd&gt;
+ *
+ *      &lt;dt&gt;balUnHtmlEntity = bool, default = false&lt;/dt&gt;
+ *      &lt;dd&gt;是否将 Panel 转义的 html 反转回来&lt;/dd&gt;
  * &lt;/dl&gt;
  * &lt;h2&gt;balType = panel 可用的 HTML 属性&lt;/h2&gt;
  * &lt;dl&gt;
@@ -440,7 +443,10 @@
                  * 显示 Panel
                  */
                 _p.on(ActionLogic.Model.SHOW_PANEL, function( _evt, _html){
+
+                    _html = _p._model.unHtmlEntity( _html );
                     var _pins = JC.Dialog( _html );
+
                     _pins.on(&#x27;confirm&#x27;, function(){
                         if( _p._model.balCallback() 
                             &amp;&amp; _p._model.balCallback().call( _p._model.selector(), _pins, _p ) 
@@ -682,6 +688,23 @@
     ActionLogic.Model.prototype = {
         init:
             function(){
+            }
+
+        , unHtmlEntity:
+            function( _html ){
+                var _r = this.boolProp( &#x27;balUnHtmlEntity&#x27; );
+                _r &amp;&amp; 
+                _html 
+                &amp;&amp; ( $.isArray(_html) &amp;&amp; ( _html = _html.join(&#x27;&#x27;) ) )
+                &amp;&amp; ( 
+                    _html = _html.replace( /\&amp;gt;/g, &#x27;&gt;&#x27; )
+                    .replace(/\&amp;amp;/g, &#x27;&amp;&#x27;)
+                    .replace( /\&amp;lt;/g, &#x27;&lt;&#x27;)
+                    .replace(/\&amp;quot;/g, &#x27;&quot;&#x27;)
+                    .replace(/\&amp;nbsp;/g, &#x27; &#x27;)
+                );
+
+                return _html;
             }
         
         , baltype: function(){ return this.stringProp( &#x27;baltype&#x27; ); }

@@ -523,6 +523,12 @@
                             }
                         case 13://回车
                             {
+                                var _tmpSelectedItem;
+                                if( _p._model.layout().is( &#x27;:visible&#x27; ) 
+                                        &amp;&amp; ( _tmpSelectedItem = _p._model.layout().find( &#x27;dd.active&#x27;) ) &amp;&amp; _tmpSelectedItem.length ){
+                                    _p.trigger(&#x27;SuggestSelected&#x27;, [ _tmpSelectedItem, _p._model.getKeyword( _tmpSelectedItem ) ]);
+                                }
+
                                 _p.hide();
                                 _sp.data( &#x27;IgnoreTime&#x27;, new Date().getTime() );
 
@@ -546,13 +552,16 @@
                     Suggest._hideOther( _p );
                 });
 
+                _p.on( &#x27;SuggestSelected&#x27;, function( _evt, _sp, _keyword ){
+                    _p._model.sugselectedcallback() &amp;&amp; _p._model.sugselectedcallback().call( _p, _keyword );
+                });
+
                 $( _p._model.layout() ).delegate( &#x27;.js_sugItem&#x27;, &#x27;click&#x27;, function(_evt){
                     var _sp = $(this), _keyword = _p._model.getKeyword( _sp );
                     _p.selector().val( _keyword );
                     _p.hide();
                     
-                    _p.trigger(&#x27;SuggestSelected&#x27;, [_sp]);
-                    _p._model.sugselectedcallback() &amp;&amp; _p._model.sugselectedcallback().call( _p, _keyword );
+                    _p.trigger(&#x27;SuggestSelected&#x27;, [_sp, _keyword ]);
                     setTimeout( function(){
                         _p.selector().trigger( &#x27;blur&#x27; );
                     }, 50);
