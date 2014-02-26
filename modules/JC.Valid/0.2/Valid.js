@@ -392,13 +392,26 @@
                         }
                 }
 
-                if( !_p._model.reqmsg( _item ) ){ _r = false; return _r; }
-                if( !_p._model.lengthValid( _item ) ){ _r = false; return _r; }
+                if( !_p._model.reqmsg( _item ) ){ 
+                    _item.attr( 'datatypestatus', 'false' );
+                    return _r = false; 
+                }
+
+                if( !_p._model.lengthValid( _item ) ){ 
+                    _item.attr( 'datatypestatus', 'false' );
+                    return _r = false; 
+                }
 
                 //验证 datatype
                 if( _dt && _p._model[ _dt ] && _item.val() ){
-                    if( !_p._model[ _dt ]( _item ) ){ _r = false; return _r; }
+                    if( !_p._model[ _dt ]( _item ) ){ 
+                        _item.attr( 'datatypestatus', 'false' );
+                        return _r = false; 
+                    }
                 }
+
+                _item.attr( 'datatypestatus', 'true' );
+
                 //验证子类型
                 var _subDtLs = _item.attr('subdatatype');
                 if( _subDtLs ){

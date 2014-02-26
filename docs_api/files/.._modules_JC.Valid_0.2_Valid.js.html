@@ -602,13 +602,26 @@
                         }
                 }
 
-                if( !_p._model.reqmsg( _item ) ){ _r = false; return _r; }
-                if( !_p._model.lengthValid( _item ) ){ _r = false; return _r; }
+                if( !_p._model.reqmsg( _item ) ){ 
+                    _item.attr( &#x27;datatypestatus&#x27;, &#x27;false&#x27; );
+                    return _r = false; 
+                }
+
+                if( !_p._model.lengthValid( _item ) ){ 
+                    _item.attr( &#x27;datatypestatus&#x27;, &#x27;false&#x27; );
+                    return _r = false; 
+                }
 
                 //验证 datatype
                 if( _dt &amp;&amp; _p._model[ _dt ] &amp;&amp; _item.val() ){
-                    if( !_p._model[ _dt ]( _item ) ){ _r = false; return _r; }
+                    if( !_p._model[ _dt ]( _item ) ){ 
+                        _item.attr( &#x27;datatypestatus&#x27;, &#x27;false&#x27; );
+                        return _r = false; 
+                    }
                 }
+
+                _item.attr( &#x27;datatypestatus&#x27;, &#x27;true&#x27; );
+
                 //验证子类型
                 var _subDtLs = _item.attr(&#x27;subdatatype&#x27;);
                 if( _subDtLs ){
