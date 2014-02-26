@@ -401,7 +401,7 @@ window.parent
     FormLogic._currentIns;
 
 
-    JC.BaseMVC.build( FormLogic, 'Bizs' );
+    JC.BaseMVC.build( FormLogic );
 
     JC.f.extendObject( FormLogic.prototype, {
         _beforeInit:
@@ -441,10 +441,17 @@ window.parent
                     }
 
                     if( !JC.Valid.check( _p.selector() ) ){
+                        _p._model.prevent( _evt );
+
+                        if( !_p._model.checkDataValid() ){
+                            _p._view.dataValidError();
+                            return false;
+                        }
+
                         if( _p._model.formProcessError() ){
                             _p._model.formProcessError().call( _p.selector(), _evt, _p );
                         }
-                        return _p._model.prevent( _evt );
+                        return false;
                     }
 
                     if( _p._model.formAfterProcess() ){
@@ -642,6 +649,7 @@ window.parent
 
                 _p._model.trigger( FormLogic.Model.INITED );
             }
+
     }) ;
 
     FormLogic.Model._instanceName = 'FormLogic';
@@ -700,6 +708,38 @@ window.parent
                         );
                 }
             }
+
+        , checkDataValid:
+            function(){
+                var _r = true;
+
+                $.each( this.dataValidItems(), function( _ix, _item ){
+                    var _v = _item.val().trim()
+                        , _status = _item.attr('datavalid')
+                        , _datatypestatus = JC.f.parseBool( _item.attr('datatypestatus') )
+                        ;
+                    if( !( _v && _status ) ) return;
+                    if( !_datatypestatus ) return;
+
+                    if( !JC.f.parseBool( _item.attr( _status ) ) ){
+                        return _r = false;
+                    }
+                });
+                return _r;
+            }
+
+        , dataValidItems:
+            function(){
+                var _r = [];
+                this.selector().find( 'input[type=text][subdatatype]' ).each( function(){
+                    var _item = $(this);
+                    if( !/datavalid/i.test( _item.attr( 'subdatatype' ) ) ) return;
+                    _r.push( _item );
+                });
+
+                return $( _r );
+            }
+
         , id:
             function(){
                 if( ! this._id ){
@@ -972,6 +1012,13 @@ window.parent
                 return _r.trim();
             }
 
+        , datavalidFormLogicMsg:
+            function( _item ){
+                var _msg = "需要验证后才能提交, 请稍后再试...";
+                _msg = $( _item ).attr( 'datavalidFormLogicMsg' ) || _msg;
+                return _msg;
+            }
+
     });
 
     JC.f.extendObject( FormLogic.View.prototype, {
@@ -1018,6 +1065,23 @@ window.parent
 
                 JC.hideAllPopup( 1 );
             }
+        , dataValidError:
+            function(){
+                var _p = this;
+                $.each( this._model.dataValidItems(), function( _ix, _item ){
+                    var _v = _item.val().trim(), _status = _item.attr('datavalid');
+                    if( !( _v && _status ) ) return;
+
+                    if( JC.f.parseBool( _item.attr( _status ) ) ) return;
+
+                    JC.msgbox( _p._model.datavalidFormLogicMsg( _item ), _item, 2 );
+
+                    JC.f.safeTimeout( function(){
+                        _item.trigger( 'blur' );
+                    }, _item, 'FORMLOGIC_DATAVALID', 10 );
+                });
+            }
+
     });
 
     $(document).delegate( 'input[formSubmitConfirm], button[formSubmitConfirm]', 'click', function( _evt ){
