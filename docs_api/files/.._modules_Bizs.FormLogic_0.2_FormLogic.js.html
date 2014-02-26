@@ -926,8 +926,12 @@ window.parent
                 var _r = true;
 
                 $.each( this.dataValidItems(), function( _ix, _item ){
-                    var _v = _item.val().trim(), _status = _item.attr(&#x27;datavalid&#x27;);
+                    var _v = _item.val().trim()
+                        , _status = _item.attr(&#x27;datavalid&#x27;)
+                        , _datatypestatus = JC.f.parseBool( _item.attr(&#x27;datatypestatus&#x27;) )
+                        ;
                     if( !( _v &amp;&amp; _status ) ) return;
+                    if( !_datatypestatus ) return;
 
                     if( !JC.f.parseBool( _item.attr( _status ) ) ){
                         return _r = false;
