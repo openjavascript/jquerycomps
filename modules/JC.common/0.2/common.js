@@ -79,6 +79,7 @@
         , "extendObject": extendObject
         , "safeTimeout": safeTimeout
         , "encoder": encoder
+        , "weekOfYear": weekOfYear
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -115,6 +116,41 @@
      * @static
      */
     window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
+    /**
+     * 取一年中所有的星期, 及其开始结束日期
+     * @method  weekOfYear
+     * @static
+     * @param   {int}   _year
+     * @param   {int}   _dayOffset  每周的默认开始为周几, 默认0(周一)
+     * @return  Array
+     */
+    function weekOfYear( _year, _dayOffset ){
+        var _r = [], _tmp, _count = 1, _dayOffset = _dayOffset || 0
+            , _year = parseInt( _year, 10 )
+            , _d = new Date( _year, 0, 1 );
+        /**
+         * 元旦开始的第一个星期一开始的一周为政治经济上的第一周
+         */
+         _d.getDay() > 1 && _d.setDate( _d.getDate() - _d.getDay() + 7 );
+
+         _d.getDay() === 0 && _d.setDate( _d.getDate() + 1 );
+
+         _dayOffset > 0 && ( _dayOffset = (new Date( 2000, 1, 2 ) - new Date( 2000, 1, 1 )) * _dayOffset );
+
+        while( _d.getFullYear() <= _year ){
+            _tmp = { 'week': _count++, 'start': null, 'end': null };
+            _tmp.start = _d.getTime() + _dayOffset;
+            _d.setDate( _d.getDate() + 6 );
+            _tmp.end = _d.getTime() + _dayOffset;
+            _d.setDate( _d.getDate() + 1 );
+            if( _d.getFullYear() > _year ) {
+                _d = new Date( _d.getFullYear(), 0, 1 );
+                if( _d.getDay() < 2 ) break;
+             }
+            _r.push( _tmp );
+        }
+        return _r;
+    }
     /**
      * 把函数的参数转为数组
      * @method  sliceArgs

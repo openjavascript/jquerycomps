@@ -105,6 +105,35 @@
         UXC.log( 'calendarupdate', _p.val(), _start, _end );
     }
     //
+    /// 针对周的日期格式化
+    //
+    function parseWeekDate( _dateStr ){
+        _dateStr = $.trim( _dateStr || '' );
+        var _r = { start: null, end: null };
+        if( !_dateStr ) return _r;
+
+        _dateStr = _dateStr.split( 'W' );
+
+        var _year = parseInt( _dateStr[0], 10 ), _week = parseInt( _dateStr[1], 10 )
+            , _sdate = JC.f.pureDate( new Date( _dateStr[0] ), 0, 1 )
+            , _edate = JC.f.pureDate( new Date( _dateStr[1] ), 0, 1 )
+            , _weeks = JC.f.weekOfYear( _dateStr[0], JC.Calendar.weekDayOffset )
+            ;
+
+        $( _weeks ).each( function( _ix, _item ){
+            if( _item.week === _week ){
+                _r.start = new Date();
+                _r.end = new Date();
+
+                _r.start.setTime( _item.start );
+                _r.end.setTime( _item.end );
+                return false;
+            }
+        });
+
+        return _r;
+    }
+    //
     /// 针对月份日期格式化 YY-MM
     //
     function parseYearMonthDate( _dateStr ){
@@ -132,11 +161,6 @@
         _r.end = JC.f.parseISODate( _dateStr.slice( 6 ) + '01' );
 
         return _r;
-    }
-    //
-    /// 针对周的日期格式化
-    //
-    function parseWeekDate( _dateStr ){
     }
 
 </script>
