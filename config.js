@@ -54,8 +54,10 @@ requirejs.config( {
         , 'JC.Suggest': 'modules/JC.Suggest/0.1/Suggest'
         , 'JC.Tab': 'modules/JC.Tab/0.1/Tab'
         , 'JC.TableFreeze': 'modules/JC.TableFreeze/0.2/TableFreeze'
+        , 'JC.TableSort': 'modules/JC.TableSort/0.1/TableSort'
         , 'JC.Tips': 'modules/JC.Tips/0.1/Tips'
         , 'JC.Tree': 'modules/JC.Tree/0.1/Tree'
+        , 'JC.Lazyload': 'modules/JC.Lazyload/0.1/Lazyload'
 
         //, 'JC.Panel': 'modules/JC.Panel/0.1/Panel'
         , 'JC.Panel': 'modules/JC.Panel/0.2/Panel'

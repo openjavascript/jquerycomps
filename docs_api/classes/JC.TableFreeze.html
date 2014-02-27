@@ -65,6 +65,7 @@
                 <li><a href="../classes/JC.hideAllPanel.html">JC.hideAllPanel</a></li>
                 <li><a href="../classes/JC.hideAllPopup.html">JC.hideAllPopup</a></li>
                 <li><a href="../classes/JC.ImageCutter.html">JC.ImageCutter</a></li>
+                <li><a href="../classes/JC.Lazyload.html">JC.Lazyload</a></li>
                 <li><a href="../classes/JC.LunarCalendar.html">JC.LunarCalendar</a></li>
                 <li><a href="../classes/JC.msgbox.html">JC.msgbox</a></li>
                 <li><a href="../classes/JC.NumericStepper.html">JC.NumericStepper</a></li>
@@ -75,6 +76,7 @@
                 <li><a href="../classes/JC.Suggest.html">JC.Suggest</a></li>
                 <li><a href="../classes/JC.Tab.html">JC.Tab</a></li>
                 <li><a href="../classes/JC.TableFreeze.html">JC.TableFreeze</a></li>
+                <li><a href="../classes/JC.TableSort.html">JC.TableSort</a></li>
                 <li><a href="../classes/JC.Tips.html">JC.Tips</a></li>
                 <li><a href="../classes/JC.Tree.html">JC.Tree</a></li>
                 <li><a href="../classes/JC.Valid.html">JC.Valid</a></li>
@@ -88,6 +90,7 @@
                 <li><a href="../classes/window.Bizs.KillISPCache.html">window.Bizs.KillISPCache</a></li>
                 <li><a href="../classes/window.Bizs.MoneyTips.html">window.Bizs.MoneyTips</a></li>
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
+                <li><a href="../classes/window.Bizs.MultiSelect.html">window.Bizs.MultiSelect</a></li>
                 <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
                 <li><a href="../classes/window.requirejs.html">window.requirejs</a></li>
             </ul>
@@ -127,7 +130,7 @@
             Extends <a href="../classes/JC.BaseMVC.html" class="crosslink">JC.BaseMVC</a>
         </div>
         <div class="foundat">
-            Defined in: <a href="../files/.._modules_JC.TableFreeze_0.1_TableFreeze.js.html#l2"><code>..&#x2F;modules&#x2F;JC.TableFreeze&#x2F;0.1&#x2F;TableFreeze.js:2</code></a>
+            Defined in: <a href="../files/.._modules_JC.TableFreeze_0.2_TableFreeze.js.html#l7"><code>..&#x2F;modules&#x2F;JC.TableFreeze&#x2F;0.2&#x2F;TableFreeze.js:7</code></a>
         </div>
 </div>
 <div class="box intro">
@@ -171,10 +174,10 @@
        声明表格行是否需要鼠标hover高亮效果:
        <p>默认值为true</p>
    </dd>
-   <dt>hoverClass = string</dt>
+   <dt>alternateClass = string</dt>
    <dd>
-       声明表格行高亮的className:
-       <p>默认值为compTFHover</p>
+       声明表格索引值为奇数行的背景色的className: （表格行隔行换色）
+       <p>如果为空则不指定隔行背景色</p>
    </dd>
    <dt>beforeCreateTableCallback = function</dt>
    <dd>
@@ -208,7 +211,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.TableFreeze_0.1_TableFreeze.js.html#l2"><code>..&#x2F;modules&#x2F;JC.TableFreeze&#x2F;0.1&#x2F;TableFreeze.js:2</code></a>
+        <a href="../files/.._modules_JC.TableFreeze_0.2_TableFreeze.js.html#l7"><code>..&#x2F;modules&#x2F;JC.TableFreeze&#x2F;0.2&#x2F;TableFreeze.js:7</code></a>
         </p>
     </div>
     <div class="description">
@@ -355,9 +358,6 @@
                                 <a href="#method__initHanlderEvent">_initHanlderEvent</a>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_fixHeight">fixHeight</a>
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_getInstance">getInstance</a>
                                     <span class="flag static">static</span>
                             </li>
@@ -373,9 +373,6 @@
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_trigger">trigger</a>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_update">update</a>
                             </li>
                     </ul>
                 </div>
@@ -455,19 +452,6 @@
         <p>内部事件初始化方法</p>
     </div>
 </div>
-                    <div id="method_fixHeight" class="method item">
-    <h3 class="name"><code>fixHeight</code></h3>
-        <span class="paren">()</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.TableFreeze_0.1_TableFreeze.js.html#l326"><code>..&#x2F;modules&#x2F;JC.TableFreeze&#x2F;0.1&#x2F;TableFreeze.js:326</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>resize时更新 TableFreeze 状态</p>
-    </div>
-</div>
                     <div id="method_getInstance" class="method item">
     <h3 class="name"><code>getInstance</code></h3>
         <div class="args">
@@ -484,7 +468,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.TableFreeze_0.1_TableFreeze.js.html#l209"><code>..&#x2F;modules&#x2F;JC.TableFreeze&#x2F;0.1&#x2F;TableFreeze.js:209</code></a>
+        <a href="../files/.._modules_JC.TableFreeze_0.2_TableFreeze.js.html#l214"><code>..&#x2F;modules&#x2F;JC.TableFreeze&#x2F;0.2&#x2F;TableFreeze.js:214</code></a>
         </p>
     </div>
     <div class="description">
@@ -524,7 +508,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.TableFreeze_0.1_TableFreeze.js.html#l224"><code>..&#x2F;modules&#x2F;JC.TableFreeze&#x2F;0.1&#x2F;TableFreeze.js:224</code></a>
+        <a href="../files/.._modules_JC.TableFreeze_0.2_TableFreeze.js.html#l229"><code>..&#x2F;modules&#x2F;JC.TableFreeze&#x2F;0.2&#x2F;TableFreeze.js:229</code></a>
         </p>
     </div>
     <div class="description">
@@ -656,19 +640,6 @@
                     <p>BaseMVCInstance</p>
             </div>
         </div>
-</div>
-                    <div id="method_update" class="method item">
-    <h3 class="name"><code>update</code></h3>
-        <span class="paren">()</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.TableFreeze_0.1_TableFreeze.js.html#l315"><code>..&#x2F;modules&#x2F;JC.TableFreeze&#x2F;0.1&#x2F;TableFreeze.js:315</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>更新 TableFreeze 状态</p>
-    </div>
 </div>
             </div>
     </div>

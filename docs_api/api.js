@@ -20,6 +20,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Form",
         "JC.FormFillUrl",
         "JC.ImageCutter",
+        "JC.Lazyload",
         "JC.LunarCalendar",
         "JC.NumericStepper",
         "JC.Panel",
@@ -29,6 +30,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Suggest",
         "JC.Tab",
         "JC.TableFreeze",
+        "JC.TableSort",
         "JC.Tips",
         "JC.Tree",
         "JC.Valid",
@@ -49,6 +51,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.KillISPCache",
         "window.Bizs.MoneyTips",
         "window.Bizs.MultiDate",
+        "window.Bizs.MultiSelect",
         "window.jQuery",
         "window.requirejs"
     ],
