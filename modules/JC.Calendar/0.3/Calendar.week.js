@@ -257,11 +257,13 @@
                 );
                 */
                 _p._model.selector().val( _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) ); 
+                /*
                 if( _userSelectedItem ){
                     _p._model.selector().val( _p._model.selector().val().replace( /WK/g, 
                         JC.f.padChar( _userSelectedItem.attr( 'week' ) )
                     ));
                 }
+                */
                 $(_p).trigger( 'TriggerEvent', [ JC.Calendar.Model.UPDATE, 'week', _dstart, _dend ] );
 
                 JC.Calendar.hide();

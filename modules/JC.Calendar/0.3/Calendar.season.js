@@ -189,11 +189,13 @@
                 _p._model.selector().val( JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) );
                 */
                 _p._model.selector().val( _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) );
+                /*
                 if( _userSelectedItem ){
                     _p._model.selector().val( _p._model.selector().val().replace( /YQ/g, 
                         _userSelectedItem.attr( 'season' )
                     ));
                 }
+                */
                 $(_p).trigger( 'TriggerEvent', [ JC.Calendar.Model.UPDATE, 'season', _dstart, _dend ] );
 
                 JC.Calendar.hide();
