@@ -131,6 +131,11 @@
             }
         });
 
+        if( !_r.start ){
+            _r.start = new Date();
+            _r.end = new Date();
+        }
+
         return _r;
     }
     //
@@ -189,6 +194,12 @@
                         <input type="text" name="date2" value="" datatype="daterange" emel="/em" />
                         <em></em>
                     </dd>
+                    <dd>
+                        <input type="text" name="date2" value="" datatype="daterange" emel="/em" maxvalue="now" />
+                        <input type="text" name="date2" value="" datatype="daterange" emel="/em" maxvalue="now" />
+                        maxvalue="now"
+                        <em></em>
+                    </dd>
                 </dl>
 
             </dd>
@@ -200,11 +211,15 @@
                 <dl>
                     <dt>normal( week )</dt>
                     <dd>
-                        <input type="text" multidate="week" currentcanselect="true" 
+                        <input type="text" 
+                        multidate="week" 
+                        currentcanselect="true" 
                         /> 
                     </dd>
                     <dd>
-                        <input type="text" multidate="week" currentcanselect="true" 
+                        <input type="text" 
+                        multidate="week" 
+                        currentcanselect="true" 
                         fullDateFormat="{0}"
                         dateFormat="YYWWK"
                         dateParse="parseWeekDate"
@@ -215,173 +230,75 @@
                 <dl>
                     <dt>week range( week range )</dt>
                     <dd>
-                        <input type="text" name="date2" value="" datatype="daterange" emel="/em" />
-                        <input type="text" name="date2" value="" datatype="daterange" emel="/em" />
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY-MM-DD"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{1}"
+                            dateFormat="YY-MM-DD"
+                            emel="/em" 
+                            />
+                        <em></em>
+                    </dd>
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYWWK"
+                            dateParse="parseWeekDate"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYWWK"
+                            dateParse="parseWeekDate"
+                            emel="/em" 
+                            /> 
+                            dateformat="YYWWK"
+                        <em></em>
+                    </dd>
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYWWK"
+                            dateParse="parseWeekDate"
+                            maxvalue="now"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYWWK"
+                            dateParse="parseWeekDate"
+                            maxvalue="now"
+                            emel="/em" 
+                            /> 
+                            dateformat="YYWWK"
+                            , maxvalue="now"
                         <em></em>
                     </dd>
                 </dl>
             </dd>
         </dl>
 
-        <dl>
-            <dt>special format</dt>
-            <dd>
-                <input type="text" name="date1" class="testitem" 
-                multidate="date" 
-                currentcanselect="true" 
-                dateFormat="YYMMDD"
-                /> date ( dateformat="YYMMDD" )
-            </dd>
-            <dd>
-                <input type="text" name="date1" class="testitem" value="20130910" 
-                multidate="date" 
-                currentcanselect="true" 
-                dateFormat="YYMMDD"
-                /> date ( dateformat="YYMMDD" )
-            </dd>
-            <dd>
-                <input type="text" name="date1" class="testitem" 
-                multidate="date" 
-                currentcanselect="true" 
-                dateFormat="YY/MM/DD"
-                /> date ( dateformat="YY/MM/DD" )
-            </dd>
-            <dd>
-                <input type="text" name="date1" class="testitem" value="2014/09/10"
-                multidate="date" 
-                currentcanselect="true" 
-                dateFormat="YY/MM/DD"
-                /> date ( dateformat="YY/MM/DD" )
-            </dd>
-            <dd>
-            </dd>
-            <dd>
-                <input type="text" name="date1" value="" class="testitem"  
-                multidate="week" currentcanselect="true" 
-                fullDateFormat="{0} ~ {1}"
-                /> week ( fullDateFormat="{0} ~ {1}" )
-            </dd>
-            <dd>
-                <input type="text" name="date1" value="" class="testitem"  
-                multidate="week" currentcanselect="true" 
-                dateFormat="YY/MM/DD"
-                fullDateFormat="{0} ~ {1}"
-                /> week ( dateFormat="YY/MM/DD", fullDateFormat="{0} ~ {1}" )
-            </dd>
-
-            <dd>
-                <input type="text" name="date3" value="" class="testitem" 
-                multidate="month" 
-                currentcanselect="true" 
-                /> month
-            </dd>
-
-            <dd>
-                <input type="text" name="date3" value="" class="testitem" 
-                multidate="month" 
-                currentcanselect="true" 
-                dateFormat="YY/MM/DD"
-                fullDateFormat="{0} ~ {1}"
-                /> month ( dateFormat="YY/MM/DD", fullDateFormat="{0} ~ {1}" )
-            </dd>
-
-            <dd>
-                <input type="text" name="date3" value="now" class="testitem" 
-                multidate="month" 
-                currentcanselect="true" 
-
-                fullDateFormat="{0}"
-                dateFormat="YY-MM"
-                dateParse="parseYearMonthDate"
-                /> month ( dateFormat="YY-MM", fullDateFormat="{0}", dateParse="parseYearMonthDate" )
-            </dd>
-
-            <dd>
-                <input type="text" name="date3" class="testitem" value="1998-10"
-                multidate="month" 
-                currentcanselect="true" 
-
-                fullDateFormat="{0}"
-                dateFormat="YY-MM"
-                dateParse="parseYearMonthDate"
-                /> month ( dateFormat="YY-MM", fullDateFormat="{0}", dateParse="parseYearMonthDate" )
-            </dd>
-
-            <dd>
-                <input type="text" name="date2" multidate="season" value="" currentcanselect="true" class="testitem" />
-                <input type="button" class="UXCCalendar_btn" /> season
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" value="" class="testitem"  
-                multidate="season" currentcanselect="true" 
-                fullDateFormat="{0} ~ {1}"
-                /> season ( fullDateFormat="{0} ~ {1}" )
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" value="" class="testitem"  
-                multidate="season" currentcanselect="true" 
-                dateFormat="YY/MM/DD"
-                fullDateFormat="{0} ~ {1}"
-                /> season ( dateFormat="YY/MM/DD", fullDateFormat="{0} ~ {1}" )
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" value="" class="testitem"  
-                multidate="season" currentcanselect="true" 
-                dateFormat="YY-MM"
-                fullDateFormat="{0} ~ {1}"
-                dateParse="parseSeasonDate"
-                /> season ( dateFormat="YY-MM", fullDateFormat="{0} ~ {1}", dateParse="parseSeasonDate" )
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" value="2015-01 ~ 2015-03" class="testitem"  
-                multidate="season" currentcanselect="true" 
-                dateFormat="YY-MM"
-                fullDateFormat="{0} ~ {1}"
-                dateParse="parseSeasonDate"
-                /> season ( dateFormat="YY-MM", fullDateFormat="{0} ~ {1}", dateParse="parseSeasonDate" )
-            </dd>
-
-            <dd>
-            </dd>
-        </dl>
-
-        <dl>
-            <dt>normal format</dt>
-            <dd>
-                <input type="text" name="date1" class="testitem" 
-                multidate="date" 
-                currentcanselect="true"
-                /> date
-            </dd>
-            <dd>
-                <input type="text" name="date1" value="" class="testitem" 
-                multidate="week" 
-                currentcanselect="true" 
-                /> week
-            </dd>
-            <dd>
-                <input type="text" name="date3" value="" class="testitem" 
-                multidate="month" 
-                currentcanselect="true" 
-                /> month
-                </dd>
-            <dd>
-                <input type="text" name="date2" value="" class="testitem" 
-                multidate="season" 
-                currentcanselect="true" 
-                />
-                <input type="button" class="UXCCalendar_btn" /> season
-            </dd>
-            <dd>
-                date range:
-                <input type="text" name="date2" value="2013-06-03" multidate="daterange" maxvalue="2013-06-30" />
-                <input type="text" name="date2" value="2013-06-03" multidate="daterange" maxvalue="2013-06-30" />
-            </dd>
-        </dl>
 
     </form>
 

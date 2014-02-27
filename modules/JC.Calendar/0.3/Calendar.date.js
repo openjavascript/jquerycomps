@@ -812,13 +812,13 @@ function parseYearDate( _dateStr ){
                     _p.after( _btn = $('<input type="button" class="UXCCalendar_btn"  />') );
                 }
 
-                Calendar.fixDefaultDate( _p );
+                //Calendar.fixDefaultDate( _p );
 
-                //!_p.is( '[dateFormat]' )
                 ( _tmp = _p.val().trim() )
                     && ( _tmp = JC.f.dateDetect( _tmp ) )
                     && _p.val( JC.f.formatISODate( _tmp ) )
                     ; 
+
 
                 ( _tmp = ( _p.attr('minvalue') || '' ) )
                     && ( _tmp = JC.f.dateDetect( _tmp ) )
@@ -829,6 +829,7 @@ function parseYearDate( _dateStr ){
                     && ( _tmp = JC.f.dateDetect( _tmp ) )
                     && _p.attr( 'maxvalue', JC.f.formatISODate( _tmp ) )
                     ; 
+
 
                 if( _p.is( '[dateFormat]' ) || _p.is( '[fullDateFormat]' ) ){
                     var _ins = Calendar.getInstance( _selector );
