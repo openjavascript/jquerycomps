@@ -154,7 +154,7 @@
                         if( today >= _sdate.getTime() && today <= _edate.getTime() ) _class.push( 'today' );
 
                         _ls.push( JC.f.printf( '<td class="{0}"><a href="javascript:" title="{1}"'+
-                                        ' dstart="{3}" dend="{4}" month="{5}" >{2}季度</a></td>'
+                                        ' dstart="{3}" dend="{4}" month="{5}" season="{5}" >{2}季度</a></td>'
                                     , _class.join(' ')
                                     , _title
                                     , _cnUnit
@@ -189,6 +189,11 @@
                 _p._model.selector().val( JC.f.printf( '{0} 至 {1}', JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) );
                 */
                 _p._model.selector().val( _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) );
+                if( _userSelectedItem ){
+                    _p._model.selector().val( _p._model.selector().val().replace( /YQ/g, 
+                        _userSelectedItem.attr( 'season' )
+                    ));
+                }
                 $(_p).trigger( 'TriggerEvent', [ JC.Calendar.Model.UPDATE, 'season', _dstart, _dend ] );
 
                 JC.Calendar.hide();

@@ -80,6 +80,7 @@
         , "safeTimeout": safeTimeout
         , "encoder": encoder
         , "weekOfYear": weekOfYear
+        , "seasonOfYear": seasonOfYear
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -151,6 +152,42 @@
         }
         return _r;
     }
+    /**
+     * 取一年中所有的季度, 及其开始结束日期
+     * @method  seasonOfYear
+     * @static
+     * @param   {int}   _year
+     * @return  Array
+     */
+    function seasonOfYear( _year ){
+        var _r = []
+            , _year = parseInt( _year, 10 )
+            ;
+
+        _r.push( 
+                {
+                    start: pureDate( new Date( _year, 0, 1 ) )
+                    , end: pureDate( new Date( _year, 2, 31 ) )
+                    , season: 1
+                }, {
+                    start: pureDate( new Date( _year, 3, 1 ) )
+                    , end: pureDate( new Date( _year, 5, 30 ) )
+                    , season: 2
+                }, {
+                    start: pureDate( new Date( _year, 6, 1 ) )
+                    , end: pureDate( new Date( _year, 8, 30 ) )
+                    , season: 3
+                }, {
+                    start: pureDate( new Date( _year, 9, 1 ) )
+                    , end: pureDate( new Date( _year, 11, 31 ) )
+                    , season: 4
+                }
+        );
+                
+
+        return _r;
+    }
+
     /**
      * 把函数的参数转为数组
      * @method  sliceArgs
@@ -1109,6 +1146,36 @@
 
         _r = _r
             .replace( /YY/g, _date.getFullYear() )
+            .replace( /WK/g, function(){
+                var _r = 1, _offset = 0, _weeks;
+
+                JC.Calendar && ( _offset = JC.Calendar.weekDayOffset );
+
+                _weeks = weekOfYear( _date.getFullYear(), JC.Calendar.weekDayOffset );
+
+                $( _weeks ).each( function( _ix, _item ){
+                    if( _date.getTime() >= _item.start && _date.getTime() <= _item.end ){
+                        _r = _item.week;
+                        return false;
+                    }
+                });
+
+                return _r;
+            })
+            .replace( /YQ/g, function(){
+                var _r = 1, _offset = 0, _seasons;
+
+                _seasons = seasonOfYear( _date.getFullYear() );
+
+                $( _seasons ).each( function( _ix, _item ){
+                    if( _date.getTime() >= _item.start && _date.getTime() <= _item.end ){
+                        _r = _item.season;
+                        return false;
+                    }
+                });
+
+                return _r;
+            })
             .replace( /MM/g, padChar( _date.getMonth() + 1 ) )
             .replace( /DD/g, padChar( _date.getDate() ) )
 

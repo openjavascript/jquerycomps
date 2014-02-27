@@ -819,7 +819,6 @@ function parseYearDate( _dateStr ){
                     && _p.val( JC.f.formatISODate( _tmp ) )
                     ; 
 
-
                 ( _tmp = ( _p.attr('minvalue') || '' ) )
                     && ( _tmp = JC.f.dateDetect( _tmp ) )
                     && _p.attr( 'minvalue', JC.f.formatISODate( _tmp ) )
@@ -829,7 +828,6 @@ function parseYearDate( _dateStr ){
                     && ( _tmp = JC.f.dateDetect( _tmp ) )
                     && _p.attr( 'maxvalue', JC.f.formatISODate( _tmp ) )
                     ; 
-
 
                 if( _p.is( '[dateFormat]' ) || _p.is( '[fullDateFormat]' ) ){
                     var _ins = Calendar.getInstance( _selector );
