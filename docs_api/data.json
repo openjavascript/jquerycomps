@@ -1862,8 +1862,8 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/TableFreeze/TableFreeze.js",
-            "line": 2,
-            "description": "TableFreeze 表格固定指定列功能\n\n<p><b>require</b>:\n  <a href=\".jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>\n  | <a href='../../comps/TableFreeze/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化div为class=\"js_compTableFreeze\"下的表格</h2>\n<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>freezeType = string</dt>\n   <dd>\n      声明表格列冻结的类型：\n      <p><b>prev：</b>左边的列固定，其他滚动</p>\n      <p><b>next：</b>右边的列固定，其他滚动</p>\n      <p><b>both：</b>两边的列固定，其他滚动</p>\n   </dd>\n\n   <dt>freezeCol = string</dt>\n   <dd>\n       声明表格要冻结的列数:\n       <p>为<b>0：</b>全部滚动，不冻结</p>\n       <p>为<b>列表数目：</b>全部冻结， 不滚动</p>\n       <p>为<b>num,num：</b>freezeType为<b>both</b>时，第一个数字表示前面冻结的列数<br/>\n         第二个数字表示后面冻结的列数。<br/>\n          当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。\n       </p>\n   </dd>\n\n   <dt>scrollWidth = num</dt>\n   <dd>\n       声明表格滚动部分的宽度，默认120%\n   </dd>\n\n   <dt>needHoverClass = true|false</dt>\n   <dd>\n       声明表格行是否需要鼠标hover高亮效果:\n       <p>默认值为true</p>\n   </dd>\n\n   <dt>hoverClass = string</dt>\n   <dd>\n       声明表格行高亮的className:\n       <p>默认值为compTFHover</p>\n   </dd>\n\n   <dt>beforeCreateTableCallback = function</dt>\n   <dd>\n       表格创建前, 触发的回调, <b>window 变量域</b>\n<pre>function beforeCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'beforeCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>afterCreateTableCallback = function</dt>\n   <dd>\n       表格创建后, 触发的回调, <b>window 变量域</b>\n<pre>function afterCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'afterCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
+            "line": 7,
+            "description": "TableFreeze 表格固定指定列功能\n\n<p><b>require</b>:\n  <a href=\".jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>\n  | <a href='../../comps/TableFreeze/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化div为class=\"js_compTableFreeze\"下的表格</h2>\n<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>freezeType = string</dt>\n   <dd>\n      声明表格列冻结的类型：\n      <p><b>prev：</b>左边的列固定，其他滚动</p>\n      <p><b>next：</b>右边的列固定，其他滚动</p>\n      <p><b>both：</b>两边的列固定，其他滚动</p>\n   </dd>\n\n   <dt>freezeCol = string</dt>\n   <dd>\n       声明表格要冻结的列数:\n       <p>为<b>0：</b>全部滚动，不冻结</p>\n       <p>为<b>列表数目：</b>全部冻结， 不滚动</p>\n       <p>为<b>num,num：</b>freezeType为<b>both</b>时，第一个数字表示前面冻结的列数<br/>\n         第二个数字表示后面冻结的列数。<br/>\n          当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。\n       </p>\n   </dd>\n\n   <dt>scrollWidth = num</dt>\n   <dd>\n       声明表格滚动部分的宽度，默认120%\n   </dd>\n\n   <dt>needHoverClass = true|false</dt>\n   <dd>\n       声明表格行是否需要鼠标hover高亮效果:\n       <p>默认值为true</p>\n   </dd>\n\n   <dt>alternateClass = string</dt>\n   <dd>\n       声明表格索引值为奇数行的背景色的className: （表格行隔行换色）\n       <p>如果为空则不指定隔行背景色</p>\n   </dd>\n\n   <dt>beforeCreateTableCallback = function</dt>\n   <dd>\n       表格创建前, 触发的回调, <b>window 变量域</b>\n<pre>function beforeCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'beforeCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>afterCreateTableCallback = function</dt>\n   <dd>\n       表格创建后, 触发的回调, <b>window 变量域</b>\n<pre>function afterCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'afterCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -2246,7 +2246,7 @@
         },
         {
             "file": "../bizs/ActionLogic/ActionLogic.js",
-            "line": 419,
+            "line": 423,
             "description": "执行操作",
             "itemtype": "method",
             "name": "process",
@@ -5173,7 +5173,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 913,
+            "line": 912,
             "description": "克隆 Calendar 默认 Model, View 的原型属性",
             "itemtype": "method",
             "name": "clone",
@@ -5194,7 +5194,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1862,
+            "line": 1861,
             "description": "捕获用户更改年份 \n<p>监听 年份下拉框</p>",
             "itemtype": "event",
             "name": "year change",
@@ -5205,7 +5205,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1872,
+            "line": 1871,
             "description": "捕获用户更改年份 \n<p>监听 下一年按钮</p>",
             "itemtype": "event",
             "name": "next year",
@@ -5216,7 +5216,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1882,
+            "line": 1881,
             "description": "捕获用户更改年份 \n<p>监听 上一年按钮</p>",
             "itemtype": "event",
             "name": "previous year",
@@ -5227,7 +5227,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1892,
+            "line": 1891,
             "description": "增加或者减少一年\n<p>监听 年份map</p>",
             "itemtype": "event",
             "name": "year map click",
@@ -5238,7 +5238,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1906,
+            "line": 1905,
             "description": "增加或者减少一个月\n<p>监听 月份map</p>",
             "itemtype": "event",
             "name": "month map click",
@@ -5249,7 +5249,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1920,
+            "line": 1919,
             "description": "捕获用户更改月份 \n<p>监听 下一月按钮</p>",
             "itemtype": "event",
             "name": "next year",
@@ -5260,7 +5260,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1930,
+            "line": 1929,
             "description": "捕获用户更改月份\n<p>监听 上一月按钮</p>",
             "itemtype": "event",
             "name": "previous year",
@@ -5271,7 +5271,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1941,
+            "line": 1940,
             "description": "日期点击事件",
             "itemtype": "event",
             "name": "date click",
@@ -5282,7 +5282,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1954,
+            "line": 1953,
             "description": "选择当前日期\n<p>监听确定按钮</p>",
             "itemtype": "event",
             "name": "confirm click",
@@ -5293,7 +5293,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1964,
+            "line": 1963,
             "description": "清除文本框内容\n<p>监听 清空按钮</p>",
             "itemtype": "event",
             "name": "clear click",
@@ -5304,7 +5304,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1974,
+            "line": 1973,
             "description": "取消日历组件, 相当于隐藏\n<p>监听 取消按钮</p>",
             "itemtype": "event",
             "name": "cancel click",
@@ -5315,7 +5315,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1984,
+            "line": 1983,
             "description": "日历组件按钮点击事件",
             "itemtype": "event",
             "name": "calendar button click",
@@ -5326,7 +5326,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 1999,
+            "line": 1998,
             "description": "日历组件点击事件, 阻止冒泡, 防止被 document click事件隐藏",
             "itemtype": "event",
             "name": "UXCCalendar click",
@@ -5337,7 +5337,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 2008,
+            "line": 2007,
             "description": "DOM 加载完毕后, 初始化日历组件相关事件",
             "itemtype": "event",
             "name": "dom ready",
@@ -5348,14 +5348,14 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 2014,
+            "line": 2013,
             "description": "延迟200毫秒初始化页面的所有日历控件\n之所以要延迟是可以让用户自己设置是否需要自动初始化",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 2022,
+            "line": 2021,
             "description": "监听窗口滚动和改变大小, 实时变更日历组件显示位置",
             "itemtype": "event",
             "name": "window scroll, window resize",
@@ -5366,7 +5366,7 @@
         },
         {
             "file": "../comps/Calendar/Calendar.date.js",
-            "line": 2031,
+            "line": 2030,
             "description": "dom 点击时, 检查事件源是否为日历组件对象, 如果不是则会隐藏日历组件",
             "itemtype": "event",
             "name": "dom click",
@@ -5458,38 +5458,6 @@
             "static": 1,
             "type": "int",
             "default": "1",
-            "class": "JC.Calendar",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Calendar/Calendar.week.js",
-            "line": 266,
-            "description": "取一年中所有的星期, 及其开始结束日期",
-            "itemtype": "method",
-            "name": "weekOfYear",
-            "static": 1,
-            "params": [
-                {
-                    "name": "_year",
-                    "description": "",
-                    "type": "Int"
-                },
-                {
-                    "name": "_dayOffset",
-                    "description": "每周的默认开始为周几, 默认0(周一)",
-                    "type": "Int"
-                }
-            ],
-            "return": {
-                "description": "Array"
-            },
-            "class": "JC.Calendar",
-            "namespace": "JC"
-        },
-        {
-            "file": "../comps/Calendar/Calendar.week.js",
-            "line": 278,
-            "description": "元旦开始的第一个星期一开始的一周为政治经济上的第一周",
             "class": "JC.Calendar",
             "namespace": "JC"
         },
@@ -6140,6 +6108,18 @@
                     "type": "Interval"
                 }
             ],
+            "static": 1,
+            "class": "JC.Fixed",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Fixed/Fixed.js",
+            "line": 438,
+            "description": "判断是否支持 CSS position: fixed",
+            "itemtype": "property",
+            "name": "$.support.isFixed",
+            "type": "bool",
+            "require": "jquery",
             "static": 1,
             "class": "JC.Fixed",
             "namespace": "JC"
@@ -11093,7 +11073,7 @@
         },
         {
             "file": "../comps/TableFreeze/TableFreeze.js",
-            "line": 209,
+            "line": 214,
             "description": "获取或设置 TableFreeze 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -11114,7 +11094,7 @@
         },
         {
             "file": "../comps/TableFreeze/TableFreeze.js",
-            "line": 224,
+            "line": 229,
             "description": "初始化可识别的 TableFreeze 实例",
             "itemtype": "method",
             "name": "init",
@@ -11135,39 +11115,56 @@
         },
         {
             "file": "../comps/TableFreeze/TableFreeze.js",
-            "line": 315,
-            "description": "更新 TableFreeze 状态",
-            "itemtype": "method",
-            "name": "update",
+            "line": 260,
+            "description": "为了解决ie6下表格的宽度超出父容器的宽度，父容器的宽度会跟随表格的宽度",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../comps/TableFreeze/TableFreeze.js",
-            "line": 326,
-            "description": "resize时更新 TableFreeze 状态",
-            "itemtype": "method",
-            "name": "fixHeight",
+            "line": 338,
+            "description": "冻结类型:prev, both, last; 默认为prev",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../comps/TableFreeze/TableFreeze.js",
-            "line": 767,
-            "description": "IE6下，当表格的宽度超出了实际可用宽度时，其父节点的宽度会跟随内容的宽度",
+            "line": 349,
+            "description": "冻结列数:num,num 默认为1",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../comps/TableFreeze/TableFreeze.js",
-            "line": 965,
+            "line": 381,
+            "description": "滚动区域的宽度默认120%",
+            "class": "JC.TableFreeze",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/TableFreeze/TableFreeze.js",
+            "line": 392,
+            "description": "tr 是否需要hover效果,默认为true",
+            "class": "JC.TableFreeze",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/TableFreeze/TableFreeze.js",
+            "line": 411,
+            "description": "tr的隔行换色",
+            "class": "JC.TableFreeze",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/TableFreeze/TableFreeze.js",
+            "line": 653,
             "description": "TableFreeze调用前的回调",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../comps/TableFreeze/TableFreeze.js",
-            "line": 976,
+            "line": 664,
             "description": "TableFreeze调用后的回调",
             "class": "JC.TableFreeze",
             "namespace": "JC"
@@ -13074,7 +13071,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1295,
+            "line": 1297,
             "description": "检查两个输入框的日期\n<br />日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD\n<br /> <b>注意:</b> 如果不显示指定 fromDateEl, toDateEl, \n             将会从父级查找 datatype=daterange属性的input, 如果数量等于2, 则会进行验证, 不等2将忽略",
             "itemtype": "method",
             "name": "daterange",
@@ -13097,7 +13094,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1367,
+            "line": 1369,
             "description": "检查时间格式, 格式为 hh:mm:ss",
             "itemtype": "method",
             "name": "time",
@@ -13119,7 +13116,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1384,
+            "line": 1386,
             "description": "检查时间格式, 格式为 hh:mm",
             "itemtype": "method",
             "name": "minute",
@@ -13141,7 +13138,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1401,
+            "line": 1403,
             "description": "检查银行卡号码\n<br />格式为: d{15}, d{16}, d{17}, d{19}",
             "itemtype": "method",
             "name": "bankcard",
@@ -13163,7 +13160,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1427,
+            "line": 1429,
             "description": "检查中文姓名\n<br>格式: 汉字和大小写字母\n<br>规则: 长度 2-32个字节, 非 ASCII 算2个字节",
             "itemtype": "method",
             "name": "cnname",
@@ -13185,7 +13182,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1448,
+            "line": 1450,
             "description": "检查英文\n<br>格式: 大小写字母 + 空格\n<br>规则: 长度 2-32个字节, 非 ASCII 算2个字节",
             "itemtype": "method",
             "name": "enname",
@@ -13207,7 +13204,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1469,
+            "line": 1471,
             "description": "检查 英文名称/中文名称\n<br>allname = cnname + enname\n<br>规则: 长度 2-32个字节, 非 ASCII 算2个字节",
             "itemtype": "method",
             "name": "allname",
@@ -13229,7 +13226,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1492,
+            "line": 1494,
             "description": "检查注册用户名\n<br>格式: a-zA-Z0-9_-\n<br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30",
             "itemtype": "method",
             "name": "username",
@@ -13251,7 +13248,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1512,
+            "line": 1514,
             "description": "检查身份证号码<br />\n目前只使用最简单的位数判断~ 有待完善",
             "itemtype": "method",
             "name": "idnumber",
@@ -13273,7 +13270,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1531,
+            "line": 1533,
             "description": "检查手机号码<br />",
             "itemtype": "method",
             "name": "mobilecode",
@@ -13300,7 +13297,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1551,
+            "line": 1553,
             "description": "检查手机号码\n<br />这个方法是 mobilecode 的别名",
             "itemtype": "method",
             "name": "mobile",
@@ -13324,7 +13321,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1564,
+            "line": 1566,
             "description": "检查手机号码加强方法\n<br>格式: [+国家代码] [零]11位数字",
             "itemtype": "method",
             "name": "mobilezonecode",
@@ -13351,7 +13348,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1585,
+            "line": 1587,
             "description": "检查电话号码\n<br>格式: 7/8位数字",
             "itemtype": "method",
             "name": "phonecode",
@@ -13373,7 +13370,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1604,
+            "line": 1606,
             "description": "检查电话号码\n<br>格式: [区号]7/8位电话号码",
             "itemtype": "method",
             "name": "phone",
@@ -13400,7 +13397,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1625,
+            "line": 1627,
             "description": "检查电话号码\n<br>格式: [+国家代码][ ][电话区号][ ]7/8位电话号码[#分机号]",
             "itemtype": "method",
             "name": "phoneall",
@@ -13427,7 +13424,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1647,
+            "line": 1649,
             "description": "检查电话区号",
             "itemtype": "method",
             "name": "phonezone",
@@ -13449,7 +13446,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1670,
+            "line": 1672,
             "description": "检查电话分机号码",
             "itemtype": "method",
             "name": "phoneext",
@@ -13471,7 +13468,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1688,
+            "line": 1690,
             "description": "检查手机号码/电话号码\n<br />这个方法是原有方法的混合验证 mobilecode + phone",
             "itemtype": "method",
             "name": "mobilephone",
@@ -13493,7 +13490,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1712,
+            "line": 1714,
             "description": "检查手机号码/电话号码, 泛匹配\n<br />这个方法是原有方法的混合验证 mobilezonecode + phoneall",
             "itemtype": "method",
             "name": "mobilephoneall",
@@ -13515,7 +13512,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1735,
+            "line": 1737,
             "description": "自定义正则校验",
             "itemtype": "method",
             "name": "reg",
@@ -13538,7 +13535,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1761,
+            "line": 1763,
             "description": "检查验证码<br />\n格式: 为 0-9a-zA-Z, 长度 默认为4",
             "itemtype": "method",
             "name": "vcode",
@@ -13561,7 +13558,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1787,
+            "line": 1789,
             "description": "检查文本长度",
             "itemtype": "method",
             "name": "text",
@@ -13577,7 +13574,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1796,
+            "line": 1798,
             "description": "检查文本的字节长度",
             "itemtype": "method",
             "name": "bytetext",
@@ -13593,7 +13590,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1805,
+            "line": 1807,
             "description": "检查富文本的字节\n<br />TODO: 完成富文本长度检查",
             "itemtype": "method",
             "name": "richtext",
@@ -13609,7 +13606,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1815,
+            "line": 1817,
             "description": "计算字符串的字节长度, 非 ASCII 0-255的字符视为两个字节",
             "itemtype": "method",
             "name": "bytelen",
@@ -13628,7 +13625,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1826,
+            "line": 1828,
             "description": "检查URL",
             "itemtype": "method",
             "name": "url",
@@ -13650,7 +13647,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1846,
+            "line": 1848,
             "description": "检查域名",
             "itemtype": "method",
             "name": "domain",
@@ -13669,7 +13666,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1864,
+            "line": 1866,
             "description": "检查域名",
             "itemtype": "method",
             "name": "stricdomain",
@@ -13688,7 +13685,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1881,
+            "line": 1883,
             "description": "检查电子邮件",
             "itemtype": "method",
             "name": "email",
@@ -13710,7 +13707,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1898,
+            "line": 1900,
             "description": "检查地区代码",
             "itemtype": "method",
             "name": "countrycode",
@@ -13732,7 +13729,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1915,
+            "line": 1917,
             "description": "检查邮政编码",
             "itemtype": "method",
             "name": "zipcode",
@@ -13754,7 +13751,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1932,
+            "line": 1934,
             "description": "纳税人识别号, 15, 18, 20位字符",
             "itemtype": "method",
             "name": "taxcode",
@@ -13776,7 +13773,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 1953,
+            "line": 1955,
             "description": "此类型检查 2|N 个对象填写的值必须一致\n常用于注意时密码验证/重置密码",
             "itemtype": "method",
             "name": "reconfirm",
@@ -13798,7 +13795,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2041,
+            "line": 2043,
             "description": "此类型检查 2|N个对象必须至少有一个是有输入内容的, \n<br> 常用于 手机/电话 二填一",
             "itemtype": "method",
             "name": "alternative",
@@ -13820,7 +13817,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2190,
+            "line": 2192,
             "description": "如果 _item 的值非空, 那么 reqtarget 的值也不能为空",
             "itemtype": "method",
             "name": "reqtarget",
@@ -13839,7 +13836,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2214,
+            "line": 2216,
             "description": "N 个值必须保持唯一性, 不能有重复",
             "itemtype": "method",
             "name": "unique",
@@ -13858,7 +13855,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2390,
+            "line": 2392,
             "description": "获取 _selector 对象\n<br />这个方法的存在是为了向后兼容qwrap, qwrap DOM参数都为ID",
             "itemtype": "method",
             "name": "getElement",
@@ -13877,7 +13874,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2413,
+            "line": 2415,
             "description": "获取对应的错误信息, 默认的错误信息有 reqmsg, errmsg, <br />\n注意: 错误信息第一个字符如果为空格的话, 将完全使用用户定义的错误信息, 将不会动态添加 请上传/选择/填写",
             "itemtype": "method",
             "name": "errorMsg",
@@ -13906,7 +13903,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2448,
+            "line": 2450,
             "description": "检查内容是否为空,\n<br>如果声明了该属性, 那么 value 须不为空",
             "itemtype": "method",
             "name": "reqmsg",
@@ -13928,21 +13925,21 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2535,
+            "line": 2537,
             "description": "这里需要优化检查, 目前会重复检查",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2625,
+            "line": 2627,
             "description": "验证文件扩展名",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2745,
+            "line": 2747,
             "description": "显示正确的视觉效果",
             "itemtype": "method",
             "name": "valid",
@@ -13971,7 +13968,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2803,
+            "line": 2805,
             "description": "显示错误的视觉效果",
             "itemtype": "method",
             "name": "error",
@@ -14000,7 +13997,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2876,
+            "line": 2878,
             "description": "解析错误时触发的时件",
             "itemtype": "event",
             "name": "ValidError",
@@ -14009,7 +14006,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2880,
+            "line": 2882,
             "description": "解析正确时触发的时件",
             "itemtype": "event",
             "name": "ValidCorrect",
@@ -14018,7 +14015,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2884,
+            "line": 2886,
             "description": "响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果",
             "access": "private",
             "tagname": "",
@@ -14027,14 +14024,14 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2894,
+            "line": 2896,
             "description": "响应没有 type 的 文本框",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2904,
+            "line": 2906,
             "description": "响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果",
             "access": "private",
             "tagname": "",
@@ -14043,7 +14040,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2914,
+            "line": 2916,
             "description": "响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
             "access": "private",
             "tagname": "",
@@ -14052,7 +14049,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2925,
+            "line": 2927,
             "description": "响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
             "access": "private",
             "tagname": "",
@@ -14061,7 +14058,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2953,
+            "line": 2955,
             "description": "初始化 subdatatype = datavalid 相关事件",
             "class": "JC.Valid",
             "namespace": "JC"
@@ -14275,19 +14272,19 @@
         },
         {
             "file": "../common.js",
-            "line": 82,
+            "line": 87,
             "description": "判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 104,
+            "line": 109,
             "description": "jquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 108,
+            "line": 113,
             "description": "全局 css z-index 控制属性\n<br /> <b>注意</b>: 这个变量是 window.ZINDEX_COUNT",
             "itemtype": "property",
             "name": "ZINDEX_COUNT",
@@ -14298,7 +14295,7 @@
         },
         {
             "file": "../common.js",
-            "line": 117,
+            "line": 122,
             "description": "把函数的参数转为数组",
             "itemtype": "method",
             "name": "sliceArgs",
@@ -14317,7 +14314,7 @@
         },
         {
             "file": "../common.js",
-            "line": 131,
+            "line": 136,
             "description": "取 URL 的 host name",
             "itemtype": "method",
             "name": "urlHostName",
@@ -14336,7 +14333,7 @@
         },
         {
             "file": "../common.js",
-            "line": 147,
+            "line": 152,
             "description": "把 URL 相对路径 转换为 绝对路径",
             "itemtype": "method",
             "name": "relativePath",
@@ -14360,7 +14357,7 @@
         },
         {
             "file": "../common.js",
-            "line": 175,
+            "line": 180,
             "description": "按格式输出字符串",
             "itemtype": "method",
             "name": "printf",
@@ -14382,7 +14379,7 @@
         },
         {
             "file": "../common.js",
-            "line": 191,
+            "line": 196,
             "description": "判断URL中是否有某个get参数",
             "itemtype": "method",
             "name": "hasUrlParam",
@@ -14409,7 +14406,7 @@
         },
         {
             "file": "../common.js",
-            "line": 213,
+            "line": 218,
             "description": "添加URL参数\n<br /><b>require:</b> delUrlParam, filterXSS",
             "itemtype": "method",
             "name": "addUrlParams",
@@ -14436,7 +14433,7 @@
         },
         {
             "file": "../common.js",
-            "line": 239,
+            "line": 244,
             "description": "xss 过滤函数",
             "itemtype": "method",
             "name": "filterXSS",
@@ -14455,7 +14452,7 @@
         },
         {
             "file": "../common.js",
-            "line": 254,
+            "line": 259,
             "description": "取URL参数的值\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "getUrlParam",
@@ -14482,7 +14479,7 @@
         },
         {
             "file": "../common.js",
-            "line": 282,
+            "line": 287,
             "description": "取URL参数的值, 这个方法返回数组\n<br />与 getUrlParam 的区别是可以获取 checkbox 的所有值\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "getUrlParams",
@@ -14509,7 +14506,7 @@
         },
         {
             "file": "../common.js",
-            "line": 312,
+            "line": 317,
             "description": "删除URL参数\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "delUrlParam",
@@ -14536,7 +14533,7 @@
         },
         {
             "file": "../common.js",
-            "line": 342,
+            "line": 347,
             "description": "提示需要 HTTP 环境",
             "itemtype": "method",
             "name": "httpRequire",
@@ -14555,7 +14552,7 @@
         },
         {
             "file": "../common.js",
-            "line": 357,
+            "line": 362,
             "description": "删除 URL 的锚点\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "removeUrlSharp",
@@ -14584,7 +14581,7 @@
         },
         {
             "file": "../common.js",
-            "line": 379,
+            "line": 384,
             "description": "重载页面\n<br /><b>require:</b> removeUrlSharp, addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "reloadPage",
@@ -14610,7 +14607,7 @@
         },
         {
             "file": "../common.js",
-            "line": 400,
+            "line": 405,
             "description": "取小数点的N位\n<br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题",
             "itemtype": "method",
             "name": "parseFinance",
@@ -14634,7 +14631,7 @@
         },
         {
             "file": "../common.js",
-            "line": 415,
+            "line": 420,
             "description": "js 附加字串函数",
             "itemtype": "method",
             "name": "padChar",
@@ -14663,7 +14660,7 @@
         },
         {
             "file": "../common.js",
-            "line": 431,
+            "line": 436,
             "description": "格式化日期为 YYYY-mm-dd 格式\n<br /><b>require</b>: pad\\_char\\_f",
             "itemtype": "method",
             "name": "formatISODate",
@@ -14687,7 +14684,7 @@
         },
         {
             "file": "../common.js",
-            "line": 445,
+            "line": 450,
             "description": "从 ISODate 字符串解析日期对象",
             "itemtype": "method",
             "name": "parseISODate",
@@ -14706,7 +14703,7 @@
         },
         {
             "file": "../common.js",
-            "line": 463,
+            "line": 468,
             "description": "从日期字符串解析日期对象\n<br />兼容 JC.Calendar 日期格式",
             "itemtype": "method",
             "name": "parseDate",
@@ -14731,7 +14728,7 @@
         },
         {
             "file": "../common.js",
-            "line": 486,
+            "line": 491,
             "description": "获取不带 时分秒的 日期对象",
             "itemtype": "method",
             "name": "pureDate",
@@ -14749,7 +14746,7 @@
         },
         {
             "file": "../common.js",
-            "line": 498,
+            "line": 503,
             "description": "克隆日期对象",
             "itemtype": "method",
             "name": "cloneDate",
@@ -14769,7 +14766,7 @@
         },
         {
             "file": "../common.js",
-            "line": 506,
+            "line": 511,
             "description": "判断两个日期是否为同一天",
             "itemtype": "method",
             "name": "isSameDay",
@@ -14794,7 +14791,7 @@
         },
         {
             "file": "../common.js",
-            "line": 518,
+            "line": 523,
             "description": "判断两个日期是否为同一月份",
             "itemtype": "method",
             "name": "isSameMonth",
@@ -14819,7 +14816,131 @@
         },
         {
             "file": "../common.js",
-            "line": 530,
+            "line": 536,
+            "description": "判断两个日期是否为同一季度",
+            "itemtype": "method",
+            "name": "isSameWeek",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_d1",
+                    "description": "需要判断的日期1",
+                    "type": "Date"
+                },
+                {
+                    "name": "_d2",
+                    "description": "需要判断的日期2",
+                    "type": "Date"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Bool"
+            },
+            "class": "JC.common"
+        },
+        {
+            "file": "../common.js",
+            "line": 567,
+            "description": "判断两个日期是否为同一季度",
+            "itemtype": "method",
+            "name": "isSameSeason",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_d1",
+                    "description": "需要判断的日期1",
+                    "type": "Date"
+                },
+                {
+                    "name": "_d2",
+                    "description": "需要判断的日期2",
+                    "type": "Date"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Bool"
+            },
+            "class": "JC.common"
+        },
+        {
+            "file": "../common.js",
+            "line": 599,
+            "description": "判断两个日期是否为同一年",
+            "itemtype": "method",
+            "name": "isSameSeason",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_d1",
+                    "description": "需要判断的日期1",
+                    "type": "Date"
+                },
+                {
+                    "name": "_d2",
+                    "description": "需要判断的日期2",
+                    "type": "Date"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Bool"
+            },
+            "class": "JC.common"
+        },
+        {
+            "file": "../common.js",
+            "line": 611,
+            "description": "取一年中所有的星期, 及其开始结束日期",
+            "itemtype": "method",
+            "name": "weekOfYear",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_year",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "_dayOffset",
+                    "description": "每周的默认开始为周几, 默认0(周一)",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "Array"
+            },
+            "class": "JC.common"
+        },
+        {
+            "file": "../common.js",
+            "line": 623,
+            "description": "元旦开始的第一个星期一开始的一周为政治经济上的第一周",
+            "class": "JC.common"
+        },
+        {
+            "file": "../common.js",
+            "line": 648,
+            "description": "取一年中所有的季度, 及其开始结束日期",
+            "itemtype": "method",
+            "name": "seasonOfYear",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_year",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "Array"
+            },
+            "class": "JC.common"
+        },
+        {
+            "file": "../common.js",
+            "line": 685,
             "description": "取得一个月份中最大的一天",
             "itemtype": "method",
             "name": "maxDayOfMonth",
@@ -14839,7 +14960,7 @@
         },
         {
             "file": "../common.js",
-            "line": 543,
+            "line": 698,
             "description": "取当前脚本标签的 src路径",
             "itemtype": "method",
             "name": "scriptPath",
@@ -14852,7 +14973,7 @@
         },
         {
             "file": "../common.js",
-            "line": 555,
+            "line": 710,
             "description": "缓动函数, 动画效果为按时间缓动 \n<br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval",
             "itemtype": "method",
             "name": "easyEffect",
@@ -14894,7 +15015,7 @@
         },
         {
             "file": "../common.js",
-            "line": 608,
+            "line": 763,
             "description": "把输入值转换为布尔值",
             "itemtype": "method",
             "name": "parseBool",
@@ -14913,18 +15034,7 @@
         },
         {
             "file": "../common.js",
-            "line": 627,
-            "description": "判断是否支持 CSS position: fixed",
-            "itemtype": "property",
-            "name": "$.support.isFixed",
-            "type": "bool",
-            "require": "jquery",
-            "static": 1,
-            "class": "JC.common"
-        },
-        {
-            "file": "../common.js",
-            "line": 656,
+            "line": 782,
             "description": "绑定或清除 mousewheel 事件",
             "itemtype": "method",
             "name": "mousewheelEvent",
@@ -14945,7 +15055,7 @@
         },
         {
             "file": "../common.js",
-            "line": 678,
+            "line": 804,
             "description": "获取 selector 的指定父级标签",
             "itemtype": "method",
             "name": "getJqParent",
@@ -14970,7 +15080,7 @@
         },
         {
             "file": "../common.js",
-            "line": 704,
+            "line": 830,
             "description": "扩展 jquery 选择器\n<br />扩展起始字符的 '/' 符号为 jquery 父节点选择器\n<br />扩展起始字符的 '|' 符号为 jquery 子节点选择器\n<br />扩展起始字符的 '(' 符号为 jquery 父节点查找识别符( getJqParent )",
             "itemtype": "method",
             "name": "parentSelector",
@@ -15000,7 +15110,7 @@
         },
         {
             "file": "../common.js",
-            "line": 772,
+            "line": 898,
             "description": "获取脚本模板的内容",
             "itemtype": "method",
             "name": "scriptContent",
@@ -15019,7 +15129,7 @@
         },
         {
             "file": "../common.js",
-            "line": 787,
+            "line": 913,
             "description": "取函数名 ( 匿名函数返回空 )",
             "itemtype": "method",
             "name": "funcName",
@@ -15038,7 +15148,7 @@
         },
         {
             "file": "../common.js",
-            "line": 802,
+            "line": 928,
             "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar\n         , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
@@ -15054,85 +15164,85 @@
         },
         {
             "file": "../common.js",
-            "line": 827,
+            "line": 953,
             "description": "联动下拉框",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 831,
+            "line": 957,
             "description": "日历组件",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 835,
+            "line": 961,
             "description": "双日历组件",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 839,
+            "line": 965,
             "description": "全选反选",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 843,
+            "line": 969,
             "description": "Ajax 上传",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 847,
+            "line": 973,
             "description": "占位符",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 851,
+            "line": 977,
             "description": "表格冻结",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 855,
+            "line": 981,
             "description": "拖曳",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 859,
+            "line": 985,
             "description": "图片裁切",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 865,
+            "line": 991,
             "description": "disable / enable",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 869,
+            "line": 995,
             "description": "表单提交逻辑",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 873,
+            "line": 999,
             "description": "格式化金额",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 877,
+            "line": 1003,
             "description": "自动完成",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 882,
+            "line": 1008,
             "description": "URL 占位符识别功能\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "urlDetect",
@@ -15154,7 +15264,7 @@
         },
         {
             "file": "../common.js",
-            "line": 923,
+            "line": 1049,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -15177,13 +15287,13 @@
         },
         {
             "file": "../common.js",
-            "line": 987,
+            "line": 1113,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1005,
+            "line": 1131,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -15217,7 +15327,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1055,
+            "line": 1181,
             "description": "日期格式化 (具体格式请查看 PHP Date Formats)",
             "itemtype": "method",
             "name": "dateFormat",
@@ -15241,7 +15351,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1100,
+            "line": 1256,
             "description": "扩展对象属性",
             "itemtype": "method",
             "name": "extendObject",
@@ -15270,7 +15380,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1122,
+            "line": 1278,
             "description": "timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行",
             "itemtype": "method",
             "name": "safeTimeout",
@@ -15304,7 +15414,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1143,
+            "line": 1299,
             "description": "URL 请求时, 获取对URL参数进行编码的函数",
             "itemtype": "method",
             "name": "encoder",
@@ -15324,7 +15434,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1161,
+            "line": 1317,
             "description": "深度克隆对象",
             "itemtype": "method",
             "name": "cloneObject",
@@ -15545,6 +15655,10 @@
             "line": " ../comps/Fixed/Fixed.js:6"
         },
         {
+            "message": "unknown tag: require",
+            "line": " ../comps/Fixed/Fixed.js:438"
+        },
+        {
             "message": "unknown tag: version",
             "line": " ../comps/Form/Form.js:2"
         },
@@ -15642,7 +15756,7 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../comps/TableFreeze/TableFreeze.js:2"
+            "line": " ../comps/TableFreeze/TableFreeze.js:7"
         },
         {
             "message": "unknown tag: version",
@@ -15726,43 +15840,43 @@
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1295"
+            "line": " ../comps/Valid/Valid.js:1297"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1295"
+            "line": " ../comps/Valid/Valid.js:1297"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1295"
+            "line": " ../comps/Valid/Valid.js:1297"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1295"
+            "line": " ../comps/Valid/Valid.js:1297"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1295"
+            "line": " ../comps/Valid/Valid.js:1297"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1735"
+            "line": " ../comps/Valid/Valid.js:1737"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1761"
+            "line": " ../comps/Valid/Valid.js:1763"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1787"
+            "line": " ../comps/Valid/Valid.js:1789"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1796"
+            "line": " ../comps/Valid/Valid.js:1798"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Valid/Valid.js:1805"
+            "line": " ../comps/Valid/Valid.js:1807"
         },
         {
             "message": "unknown tag: date",
@@ -15782,15 +15896,11 @@
         },
         {
             "message": "unknown tag: require",
-            "line": " ../common.js:627"
+            "line": " ../common.js:804"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../common.js:678"
-        },
-        {
-            "message": "unknown tag: require",
-            "line": " ../common.js:704"
+            "line": " ../common.js:830"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -15930,7 +16040,7 @@
         },
         {
             "message": "Missing item type\n延迟200毫秒初始化页面的所有日历控件\n之所以要延迟是可以让用户自己设置是否需要自动初始化",
-            "line": " ../comps/Calendar/Calendar.date.js:2014"
+            "line": " ../comps/Calendar/Calendar.date.js:2013"
         },
         {
             "message": "Missing item type\n�����ж���Ϊ���������� JC 0.1\nʹ�� requirejs ����Ŀ�����Ƴ������жϴ���",
@@ -15939,10 +16049,6 @@
         {
             "message": "Missing item type\n如果 atd 为空, 那么是 全选按钮触发的事件",
             "line": " ../comps/Calendar/Calendar.monthday.js:215"
-        },
-        {
-            "message": "Missing item type\n元旦开始的第一个星期一开始的一周为政治经济上的第一周",
-            "line": " ../comps/Calendar/Calendar.week.js:278"
         },
         {
             "message": "Missing item type\n显示的月份面板为2到12个",
@@ -16161,16 +16267,36 @@
             "line": " ../comps/Tab/Tab.js:652"
         },
         {
-            "message": "Missing item type\nIE6下，当表格的宽度超出了实际可用宽度时，其父节点的宽度会跟随内容的宽度",
-            "line": " ../comps/TableFreeze/TableFreeze.js:767"
+            "message": "Missing item type\n为了解决ie6下表格的宽度超出父容器的宽度，父容器的宽度会跟随表格的宽度",
+            "line": " ../comps/TableFreeze/TableFreeze.js:260"
+        },
+        {
+            "message": "Missing item type\n冻结类型:prev, both, last; 默认为prev",
+            "line": " ../comps/TableFreeze/TableFreeze.js:338"
+        },
+        {
+            "message": "Missing item type\n冻结列数:num,num 默认为1",
+            "line": " ../comps/TableFreeze/TableFreeze.js:349"
+        },
+        {
+            "message": "Missing item type\n滚动区域的宽度默认120%",
+            "line": " ../comps/TableFreeze/TableFreeze.js:381"
+        },
+        {
+            "message": "Missing item type\ntr 是否需要hover效果,默认为true",
+            "line": " ../comps/TableFreeze/TableFreeze.js:392"
+        },
+        {
+            "message": "Missing item type\ntr的隔行换色",
+            "line": " ../comps/TableFreeze/TableFreeze.js:411"
         },
         {
             "message": "Missing item type\nTableFreeze调用前的回调",
-            "line": " ../comps/TableFreeze/TableFreeze.js:965"
+            "line": " ../comps/TableFreeze/TableFreeze.js:653"
         },
         {
             "message": "Missing item type\nTableFreeze调用后的回调",
-            "line": " ../comps/TableFreeze/TableFreeze.js:976"
+            "line": " ../comps/TableFreeze/TableFreeze.js:664"
         },
         {
             "message": "Missing item type\n页面加载完毕后, 是否自动初始化 Tips",
@@ -16202,35 +16328,35 @@
         },
         {
             "message": "Missing item type\n这里需要优化检查, 目前会重复检查",
-            "line": " ../comps/Valid/Valid.js:2535"
+            "line": " ../comps/Valid/Valid.js:2537"
         },
         {
             "message": "Missing item type\n验证文件扩展名",
-            "line": " ../comps/Valid/Valid.js:2625"
+            "line": " ../comps/Valid/Valid.js:2627"
         },
         {
             "message": "Missing item type\n响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果",
-            "line": " ../comps/Valid/Valid.js:2884"
+            "line": " ../comps/Valid/Valid.js:2886"
         },
         {
             "message": "Missing item type\n响应没有 type 的 文本框",
-            "line": " ../comps/Valid/Valid.js:2894"
+            "line": " ../comps/Valid/Valid.js:2896"
         },
         {
             "message": "Missing item type\n响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果",
-            "line": " ../comps/Valid/Valid.js:2904"
+            "line": " ../comps/Valid/Valid.js:2906"
         },
         {
             "message": "Missing item type\n响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
-            "line": " ../comps/Valid/Valid.js:2914"
+            "line": " ../comps/Valid/Valid.js:2916"
         },
         {
             "message": "Missing item type\n响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
-            "line": " ../comps/Valid/Valid.js:2925"
+            "line": " ../comps/Valid/Valid.js:2927"
         },
         {
             "message": "Missing item type\n初始化 subdatatype = datavalid 相关事件",
-            "line": " ../comps/Valid/Valid.js:2953"
+            "line": " ../comps/Valid/Valid.js:2955"
         },
         {
             "message": "Missing item type\nUXC 是 JC 的别名\n<br />存在这个变量是为了向后兼容\n<br />20130804 之前的命名空间是 UXC, 这个命名空间在一段时间后将会清除, 请使用 JC 命名空间\n<p><b>see</b>: <a href='window.JC.html'>JC</a></p>",
@@ -16250,67 +16376,71 @@
         },
         {
             "message": "Missing item type\n判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数",
-            "line": " ../common.js:82"
+            "line": " ../common.js:87"
         },
         {
             "message": "Missing item type\njquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
-            "line": " ../common.js:104"
+            "line": " ../common.js:109"
+        },
+        {
+            "message": "Missing item type\n元旦开始的第一个星期一开始的一周为政治经济上的第一周",
+            "line": " ../common.js:623"
         },
         {
             "message": "Missing item type\n联动下拉框",
-            "line": " ../common.js:827"
+            "line": " ../common.js:953"
         },
         {
             "message": "Missing item type\n日历组件",
-            "line": " ../common.js:831"
+            "line": " ../common.js:957"
         },
         {
             "message": "Missing item type\n双日历组件",
-            "line": " ../common.js:835"
+            "line": " ../common.js:961"
         },
         {
             "message": "Missing item type\n全选反选",
-            "line": " ../common.js:839"
+            "line": " ../common.js:965"
         },
         {
             "message": "Missing item type\nAjax 上传",
-            "line": " ../common.js:843"
+            "line": " ../common.js:969"
         },
         {
             "message": "Missing item type\n占位符",
-            "line": " ../common.js:847"
+            "line": " ../common.js:973"
         },
         {
             "message": "Missing item type\n表格冻结",
-            "line": " ../common.js:851"
+            "line": " ../common.js:977"
         },
         {
             "message": "Missing item type\n拖曳",
-            "line": " ../common.js:855"
+            "line": " ../common.js:981"
         },
         {
             "message": "Missing item type\n图片裁切",
-            "line": " ../common.js:859"
+            "line": " ../common.js:985"
         },
         {
             "message": "Missing item type\ndisable / enable",
-            "line": " ../common.js:865"
+            "line": " ../common.js:991"
         },
         {
             "message": "Missing item type\n表单提交逻辑",
-            "line": " ../common.js:869"
+            "line": " ../common.js:995"
         },
         {
             "message": "Missing item type\n格式化金额",
-            "line": " ../common.js:873"
+            "line": " ../common.js:999"
         },
         {
             "message": "Missing item type\n自动完成",
-            "line": " ../common.js:877"
+            "line": " ../common.js:1003"
         },
         {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../common.js:987"
+            "line": " ../common.js:1113"
         },
         {
             "message": "Missing item type\nFor feature detection",

@@ -812,9 +812,8 @@ function parseYearDate( _dateStr ){
                     _p.after( _btn = $('<input type="button" class="UXCCalendar_btn"  />') );
                 }
 
-                Calendar.fixDefaultDate( _p );
+                //Calendar.fixDefaultDate( _p );
 
-                //!_p.is( '[dateFormat]' )
                 ( _tmp = _p.val().trim() )
                     && ( _tmp = JC.f.dateDetect( _tmp ) )
                     && _p.val( JC.f.formatISODate( _tmp ) )

@@ -211,6 +211,11 @@
 <div class="file">
     <pre class="code prettyprint linenums">
  ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
+
+//Todo: IE下resize，缩小窗口时tr的高度每一行隔了一像素。
+//Todo: 鼠标hover效果性能优化
+//Todo: 包含colspan和rowspan的情况
+
 /**
  * TableFreeze 表格固定指定列功能
  *
@@ -262,10 +267,10 @@
  *        &lt;p&gt;默认值为true&lt;/p&gt;
  *    &lt;/dd&gt;
  *
- *    &lt;dt&gt;hoverClass = string&lt;/dt&gt;
+ *    &lt;dt&gt;alternateClass = string&lt;/dt&gt;
  *    &lt;dd&gt;
- *        声明表格行高亮的className:
- *        &lt;p&gt;默认值为compTFHover&lt;/p&gt;
+ *        声明表格索引值为奇数行的背景色的className: （表格行隔行换色）
+ *        &lt;p&gt;如果为空则不指定隔行背景色&lt;/p&gt;
  *    &lt;/dd&gt;
  *
  *    &lt;dt&gt;beforeCreateTableCallback = function&lt;/dt&gt;
@@ -462,717 +467,400 @@
 
     JC.f.extendObject( TableFreeze.prototype, {
         _beforeInit: function () {
-            //JC.log( &#x27;TableFreeze _beforeInit&#x27;, new Date().getTime() );
+            var _p = this,
+                _table = _p._model.selector().find(&#x27;&gt;table&#x27;);
+            /**
+             *为了解决ie6下表格的宽度超出父容器的宽度，父容器的宽度会跟随表格的宽度
+            */
+            _p._model.alternateClass() &amp;&amp; (_table.find(&#x27;&gt;tbody&gt;tr:odd&#x27;).addClass(_p._model.alternateClass()));
+            TableFreeze.Model.sourceTable = _table.clone();
+            TableFreeze.Model.colnumWidth = _p._model.colnumWidth(_table);
+            _p._model.needProcess() &amp;&amp; _table.detach();
+            TableFreeze.Model.initWidth = _p._model.selector().width();
         },
 
         _initHanlderEvent: function () {
-            var _p = this;
+            var _p = this,
+                _hoverClass;
 
-            _p.on( &#x27;CTableFreezeUpdate&#x27;, function( _evt ){
-                _p._model.beforeCreateTableCallback()
+            _p._model.beforeCreateTableCallback()
                     &amp;&amp; _p._model.beforeCreateTableCallback().call( _p, _p.selector() );
-                
-                _p._view.update();
+                    
+            _p._view.update();
 
-                _p._model.afterCreateTableCallback()
+            _p._model.afterCreateTableCallback()
                     &amp;&amp; _p._model.afterCreateTableCallback().call( _p, _p.selector() );
+
+            if ( _p._model.needHoverClass() ) {
+                _p._model.selector().addClass(&#x27;needHoverClass&#x27;);
                 
-                if ( _p._model.needHoverClass() ) {
-                    var _hover = _p._model.hoverClass();
-
-                    if ( !_p._model.supportFreeze() || !_p._model.supportScroll() ) {
-                        _p._model.selector().find(&#x27;table&gt;tbody&gt;tr&#x27;)
-                            .on(&#x27;mouseenter&#x27;, function () {
-                                $(this).addClass( _hover );
-                            })
-                            .on(&#x27;mouseleave&#x27;, function () {
-                                $(this).removeClass( _hover );
-                            });
-                    } else {
-
-                        var _trs = &#x27;td.compTFEextraTd&gt;div&gt;table&gt;tbody&gt;tr&#x27;,
-                            _brother = &#x27;td.compTFEextraTd&gt;div&gt;table&gt;tbody&gt;tr.&#x27;,
-                            _el;
-
-                        $(document).undelegate(_trs, &#x27;mouseenter&#x27;)
-                            .delegate(_trs, &#x27;mouseenter&#x27;, function () {
-                                var _sp = $(this),
-                                    _pnt = JC.f.getJqParent(_sp, &#x27;table.compTFEextraTable&#x27;);
+                if ( _p._model.needProcess() ) {
+                    //_hoverClass = _p._model.hoverClass();
+                    _hoverClass = &quot;compTFHover&quot;;
+                    //.js-fixed-table&gt;table&gt;tbody&gt;tr,.js-roll-table&gt;table&gt;tbody&gt;tr
+                    $(document)
+                        .delegate(&#x27;tbody .CTF&#x27;, &#x27;mouseenter&#x27;, function () {
+                            var _sp = $(this),
+                                _item = &#x27;tbody .&#x27; + _sp.attr(&#x27;data-ctf&#x27;),
+                                _trs = _sp.parents(&#x27;.js_compTableFreeze&#x27;).find(_item);
                                 
-                                _el = _pnt.find( _brother + _sp.data(&#x27;linktr&#x27;) ).addClass(_hover);
-                              
-                            }).undelegate(_trs, &#x27;mouseleave&#x27;)
-                            .delegate(_trs, &#x27;mouseleave&#x27;, function () {
-                                if ( _el &amp;&amp; _el.length &gt; 0 ) {
-                                    _el.removeClass(_hover);
-                                }
-                            });
-                    }
+                            _trs.addClass(_hoverClass).attr(&#x27;status&#x27;, &#x27;1&#x27;); 
+
+                        } )
+                        .delegate(&#x27;tbody .CTF&#x27;, &#x27;mouseleave&#x27;, function () {
+                            var _sp = $(this),
+                                _item = &#x27;tbody .&#x27; + _sp.attr(&#x27;data-ctf&#x27;),
+                                _trs = _sp.parents(&#x27;.js_compTableFreeze&#x27;).find(_item);
+
+                            _trs.removeClass(_hoverClass); 
+                            
+                        });
 
                 }
 
-            });
-
-            
+            }
         }, 
 
         _inited: function () {
-            //JC.log( &#x27;TableFreeze _inited&#x27;, new Date().getTime() );
-           var _p = $(this);
-
-           _p.trigger(&#x27;CTableFreezeUpdate&#x27;);
 
         },
 
-        /**
-         * 更新 TableFreeze 状态
-         * @method update
-         */
         update: function () {
-            this._view.update();
-
-            return this;
-
-        },
-
-        /**
-         * resize时更新 TableFreeze 状态
-         * @method fixHeight
-        */
-        fixHeight: function () {
             var _p = this,
-                _wArr = TableFreeze.Model.saveWidth,
                 _selector = _p._model.selector(),
-                _newWArr = _selector.prop(&#x27;offsetWidth&#x27;),
-                _els = _selector.find(&#x27;div.js-roll-table,div.js-fixed-table&#x27;),
-                _scrollTable = _selector.find(&#x27;div.js-roll-table&#x27;),
-                _fixedTable = _selector.find(&#x27;div.js-fixed-table&#x27;),
-                _fixedWidth = 0;
+                _currentWidth = _selector.width(),
+                _trs = _selector.find(&#x27;.js-fixed-table&gt;table&gt;thead&gt;tr,.js-fixed-table&gt;table&gt;tbody&gt;tr,.js-roll-table&gt;table&gt;thead&gt;tr,.js-roll-table&gt;table&gt;tbody&gt;tr&#x27;);
 
-            TableFreeze.Model.windowWidth = $(window).width();
-
-            _p._model.setHeight();
-            
-            if ( _wArr &lt;= _newWArr ) {
-                
-                _els.each( function () {
-                    $(this).find(&#x27;tr&#x27;).height(&#x27;auto&#x27;);
-                } );
-
-                _p._model.setHeight();
-                
-            }   
-
-
-            _fixedTable.each( function () {
-                _fixedWidth += $(this).parent(&#x27;td&#x27;).prop(&#x27;offsetWidth&#x27;);
-            } );
-
-            _scrollTable.css(&#x27;width&#x27;, _newWArr - _fixedWidth);
-            _p._model.fixWidth();
-
-            //$(&#x27;#t21&#x27;).append(&#x27;&lt;p&gt;&#x27; +  _newWArr + &#x27;   &#x27; + (_newWArr - _fixedWidth)  + &#x27;&lt;/p&gt;&#x27;);
-            return this;       
-
+            ( _currentWidth &gt; TableFreeze.Model.tempWidth ) &amp;&amp; _trs.height(&#x27;auto&#x27;);
+            _p._view.fixHeight();
         }
-
+        
     });
  
     TableFreeze.Model._instanceName = &quot;TableFreeze&quot;;
-    TableFreeze.Model.saveWidth = 0;
-    TableFreeze.Model.windowWidth = 0;
+    TableFreeze.Model.sourceTable = &#x27;&#x27;;
+    TableFreeze.Model.colnumWidth = [];
+    TableFreeze.Model.initWidth = 0;
+    TableFreeze.Model.tempWidth = TableFreeze.Model.initWidth;
    
     JC.f.extendObject( TableFreeze.Model.prototype, {
         init: function () {
-            var _p = this;
-
-            this.sourceTable = this.selector().find(&#x27;table&#x27;).eq(0);
         },
 
-        detachTable: function () {
-            //this.sourceTable.detach();
-            this.sourceTable.remove();
-        },
-
-        linkTpl: function () {
-            var _p = this,
-                _trs;
-
-            if ( _p.selector().find(&#x27;table&gt;tbody&#x27;).length &gt; 0 ) {
-                _trs = _p.selector().find(&#x27;table&gt;tbody&gt;tr&#x27;);
-            } else {
-                _trs = _p.selector().find(&#x27;table&gt;tr&#x27;);
-            }
-
-            _trs.each( function ( _ix ) {
-                $(this).attr(&#x27;data-linktr&#x27;, &#x27;CTF&#x27; + _ix);
-            });
-            
-        },
-
-        createTplBox: function () {
-            var _p = this,
-                _ftype = _p.freezeType(),
-                _baseTpl = _p.tTpl(),
-                _selector = _p.selector(),
-                _colNum = _p.colNum(),
-                _tpl ,
-                _fcols,
-                _thead,
-                _tbody,
-                _thead2,
-                _tbody2;
-
-            var _pnt1,
-                _pnt2,
-                _pnt3,
-                _forePnt;
-
-            switch( _ftype ) {
-                case &#x27;prev&#x27;:
-                    {
-                        _fcols = parseInt( _p.freezeCols(), 10 ); 
-
-                        _tpl = JC.f.printf(_baseTpl, 
-                            &#x27;js-fixed-table compTFPrevFixed&#x27;, 
-                            &#x27;js-roll-table compTFPrevRoll&#x27; );
-                        _selector.append( _tpl );
-
-                        _pnt1 = JC.f.getJqParent(_selector.find(&#x27;.js-fixed-table&#x27;), &#x27;.compTFEextraTd&#x27;);
-                        _pnt2 = JC.f.getJqParent(_selector.find(&#x27;.js-roll-table&#x27;), &#x27;.compTFEextraTd&#x27;);
-                        
-                        //if ( !_p.hasFixedPXWidth() ) {
-                            _p.setWidth(0, _pnt1, _fcols, _pnt2);
-                            //_p.setWidth(_fcols, _pnt2, _colNum); 
-                        //}
-
-                        _thead = _selector.find(&#x27;.js-fixed-table&gt;table&gt;thead&#x27;);
-                        _tbody = _selector.find(&#x27;.js-fixed-table&gt;table&gt;tbody&#x27;);
-                        _thead2 = _selector.find(&#x27;.js-roll-table&gt;table&gt;thead&#x27;);
-                        _tbody2 = _selector.find(&#x27;.js-roll-table&gt;table&gt;tbody&#x27;);
-
-                        _p.createHdTpl( _thead, _fcols );
-                        _p.createBdTpl( _tbody, _fcols );
-
-                        _p.createHdTpl( _thead2, _colNum - _fcols );
-                        _p.createBdTpl( _tbody2, _colNum - _fcols );
-
-                        break;
-                    }
-                   
-                case &#x27;last&#x27;:
-                    {
-                        _fcols = parseInt( _p.freezeCols(), 10 );
-
-                        _tpl = JC.f.printf(_baseTpl, 
-                            &#x27;js-roll-table compTFLastRoll&#x27;, 
-                            &#x27;js-fixed-table compTFLastFixed&#x27;)
-                        _selector.append( _tpl );
-
-                        _pnt1 = JC.f.getJqParent(_selector.find(&#x27;div.js-roll-table&#x27;), &#x27;td.compTFEextraTd&#x27;);
-                        _pnt2 = JC.f.getJqParent(_selector.find(&#x27;div.js-fixed-table&#x27;), &#x27;td.compTFEextraTd&#x27;);
-
-                        //if ( !_p.hasFixedPXWidth() ) {
-                            //_p.setWidth(0, _pnt1, _colNum - _fcols  );
-                            _p.setWidth(_colNum - _fcols, _pnt2, _colNum, _pnt1 );
-                        //}
-
-                        _thead = _selector.find(&#x27;div.js-roll-table&gt;table&gt;thead&#x27;);
-                        _tbody = _selector.find(&#x27;div.js-roll-table&gt;table&gt;tbody&#x27;);
-                        _thead2 = _selector.find(&#x27;div.js-fixed-table&gt;table&gt;thead&#x27;);
-                        _tbody2 = _selector.find(&#x27;div.js-fixed-table&gt;table&gt;tbody&#x27;);
-
-                        _p.createHdTpl( _thead, _colNum - _fcols );
-                        _p.createBdTpl( _tbody, _colNum - _fcols );
-                        
-                        _p.createHdTpl( _thead2, _fcols );
-                        _p.createBdTpl( _tbody2, _fcols );
-
-                        break;
-                    }  
-                       
-                case &#x27;both&#x27;:
-                    {   
-                        var _fcols2,
-                            _thead3,
-                            _tbody3;
-
-                        _fcols = parseInt( _p.freezeCols()[0], 10 );
-                        _fcols2 = parseInt( _p.freezeCols()[1], 10 );
-
-                        _tpl = JC.f.printf(_baseTpl, 
-                                &#x27;js-fixed-table compTFBothFixed&#x27;,
-                                &#x27;js-roll-table compTFBothRoll&#x27;,
-                                &#x27;js-fixed-table compTFBothFixed&#x27;);
-                        _selector.append( _tpl );
-
-                        _pnt1 = JC.f.getJqParent(_selector.find(&#x27;div.js-fixed-table:eq(0)&#x27;), &#x27;td.compTFEextraTd&#x27;);
-                        _pnt2 = JC.f.getJqParent(_selector.find(&#x27;div.js-roll-table&#x27;), &#x27;td.compTFEextraTd&#x27;);
-                        _pnt3 = JC.f.getJqParent(_selector.find(&#x27;div.js-fixed-table:eq(1)&#x27;), &#x27;td.compTFEextraTd&#x27;);
-
-                        //if ( !_p.hasFixedPXWidth() ) {
-                            _p.setWidth(0, _pnt1, _fcols  );
-                            _p.setWidth(_fcols, _pnt2,  _fcols + _colNum - _fcols - _fcols2 );
-                            _p.setWidth(_fcols + _colNum - _fcols - _fcols2, _pnt3, _colNum );
-                        //}
-
-                        _thead = _selector.find(&#x27;div.js-fixed-table:eq(0)&gt;table&gt;thead&#x27;);
-                        _tbody = _selector.find(&#x27;div.js-fixed-table:eq(0)&gt;table&gt;tbody&#x27;);
-                        _thead2 = _selector.find(&#x27;div.js-roll-table&gt;table&gt;thead&#x27;);
-                        _tbody2 = _selector.find(&#x27;div.js-roll-table&gt;table&gt;tbody&#x27;);
-                        _thead3 = _selector.find(&#x27;div.js-fixed-table:eq(1)&gt;table&gt;thead&#x27;);
-                        _tbody3 = _selector.find(&#x27;div.js-fixed-table:eq(1)&gt;table&gt;tbody&#x27;);
-
-                        _p.createHdTpl( _thead, _fcols );
-                        _p.createBdTpl( _tbody, _fcols );
-                        _p.createHdTpl( _thead2, _colNum - _fcols - _fcols2 );
-                        _p.createBdTpl( _tbody2, _colNum - _fcols - _fcols2 );
-                        _p.createHdTpl( _thead3, _fcols2 );
-                        _p.createBdTpl( _tbody3, _fcols2 );
-
-                        break;
-                    }
-                   
-            }
-
-           // _forePnt = JC.f.getJqParent(_pnt1, &#x27;table&#x27;);
-            // if ( _p.hasFixedPXWidth() ) {
-            //     _forePnt.css(&#x27;width&#x27;, _selector.find(&#x27;table&#x27;).prop(&#x27;offsetWidth&#x27;) );
-            // }
-            _selector.find(&#x27;div.js-roll-table&gt;table&#x27;).width(_p.scrollwidth());
-            _p.setHeight();
-           
-        },
-
-        createHdTpl: function ( _thead, _fc ) {
-            var _p = this,
-                _stpl = _p.sourceTable,
-                _fragment = document.createDocumentFragment(),
-                _$fragment = $(_fragment);
-
-            _stpl.find(&#x27;thead:eq(0)&gt;tr&#x27;).each( function ( _ix, _item ) {
-
-                var _cix = 0,
-                    _tr,
-                    _cloneTr = $(_item).get(0).cloneNode(false);
-
-                _$fragment.append(_cloneTr);
-                _tr = _$fragment.children(&#x27;tr:last&#x27;);
-
-                $( _item ).children(&#x27;td,th&#x27;).each( function ( _six, _sitem ) {
-                    
-                    var _colspan = $(this).attr(&#x27;colspan&#x27;);
-
-                    if ( _cix &gt;= _fc ) {
-                      return false;
-                    }
-
-                    $(this).appendTo( _tr );
-                    
-                    if ( typeof _colspan === &#x27;undefined&#x27; ) {
-                        _cix = _cix + 1;
-                    } else {
-                        _cix += parseInt(_colspan, 10);
-                    }
-
-                });
-                
-            });
-
-            _$fragment.appendTo( _thead );   
-        },
-
-        createBdTpl: function ( _tbody, _fc ) {
-
-            var _p = this,
-                _stpl = _p.sourceTable,
-                _strs = _stpl.find(&#x27;tbody:eq(0)&gt;tr&#x27;),
-                _row = {},
-                _fragment = document.createDocumentFragment(),
-                _$fragment = $(_fragment);
-
-            _strs.each( function ( _ix, _item ) {
-                var _sp = $(this),
-                    _cloneTr = _sp.get(0).cloneNode(false),
-                    _stds =  _sp.children(&#x27;td,th&#x27;),
-                    _cix = 0,
-                    _tr;
-
-                $(_cloneTr).addClass(&#x27;CTF CTF&#x27; + _ix).removeAttr(&#x27;id&#x27;);    
-                _$fragment.append( _cloneTr );
-                _tr = _$fragment.children(&#x27;tr:last&#x27;);
-
-                _stds.each( function ( _six, _sitem ) {
-                    
-                    var _sp = $(this), 
-                        _colspan = _sp.attr(&#x27;colspan&#x27;),
-                        _rowspan = _sp.attr(&#x27;rowspan&#x27;),
-                        _obj = {},
-                        _key;
-                    
-                    if ( _cix &gt;= _fc ) {
-                      return false;
-                    }
-
-                    if ( typeof _rowspan != &#x27;undefined&#x27; ) {
-                        _rowspan = parseInt(_rowspan, 10);
-
-                        _obj = {
-                            six: _six,
-                            rowspan: _rowspan
-                        };
-
-                        for ( var i = 1; i &lt; _rowspan; i++ ) {
-                            if ( _six == 0 ) {
-                                _row[(_ix + i) + ( _six + 1 ).toString()] = _obj;
-                            } else {
-                                _row[(_ix + i) + _six.toString()] = _obj;
-                            }
-                        }
-
-                    }
-                    
-                    if ( typeof _colspan === &#x27;undefined&#x27; ) {
-                        _cix = _cix + 1;
-                    } else {
-                        _cix += parseInt(_colspan, 10);
-                    }
-
-                    _key = _ix + (_six + 1).toString();
-                    
-                    if ( _key in _row  ) {
-                        _cix = _cix + 1;
-                    }
-
-                    _sp.appendTo( _tr );
-
-                });
-             
-            }); 
-
-            _$fragment.appendTo( _tbody );  
-            
-        },
-
-        setWidth: function (_i, _box, _cols, _scrollBox ) {
-            var _wArr = this.colWidth(),
-                _w = 0,
-                i,
-                _totalWidth = this.tableWidth(),
-                _percentW = 0,
-                _scrollBox = $(_scrollBox);
-
-            for (i = _i; i &lt; _cols; i++ ) {
-                _w = _w + _wArr[i];
-
-            }
-            _w = _w + 1;
-            _percentW  = _w / _totalWidth;
-            _percentW  = _percentW  * 100;
-
-           $(_box).css(&#x27;width&#x27;, _percentW  + &#x27;%&#x27;);
-            
-            if ( _scrollBox.length ) {
-                _scrollBox.css(&#x27;width&#x27;, (100 - _percentW ) + &#x27;%&#x27; )
-                .find(&#x27;&gt;div&#x27;).css(&#x27;width&#x27;, _totalWidth - _w - 1);
-            }
-    
-        },
-
-        fixWidth: function () {
-            var _initWidth = TableFreeze.Model.windowWidth,
-                _winWidth = $(window).width(),
-                _scrollBox = this.selector().find(&#x27;.js-roll-table&#x27;),
-                _w = _scrollBox.width();
-
-            if ( _initWidth &lt; _winWidth ) {
-                _w += _winWidth - _initWidth;
-                _scrollBox.width( _w ); 
-                
-            } else {
-                _scrollBox.width( _w ); 
-            }
-
-            //$(&#x27;#t21&#x27;).append(&#x27;update&#x27; + &#x27;TableFreeze.Model.windowWidth&#x27; + _initWidth + &#x27;,   windowWidth&#x27; + _winWidth  );
-
-        },
-
-        setHeight: function () {
-            var _p = this,
-                _ftype = _p.freezeType(),
-                _leftTr = _p.selector().find(&#x27;div.js-fixed-table:eq(0)&gt;table&gt;thead&gt;tr,div.js-fixed-table:eq(0)&gt;table&gt;tbody&gt;tr&#x27;),
-                _rightTr = _p.selector().find(&#x27;div.js-roll-table&gt;table&gt;thead&gt;tr,div.js-roll-table&gt;table&gt;tbody&gt;tr&#x27;),
-                _midTr = _p.selector().find(&#x27;div.js-fixed-table:eq(1)&gt;table&gt;thead&gt;tr,div.js-fixed-table:eq(1)&gt;table&gt;tbody&gt;tr&#x27;);
-
-            _leftTr.each( function ( _ix, _item ) {
-                var _rightTrx = _rightTr.eq( _ix ),
-                    _midTrx = _midTr.eq( _ix ),
-                    _sp = $(_item),
-                    _maxH;
-
-                _maxH = Math.max( _sp.prop(&#x27;offsetHeight&#x27;), _rightTrx.prop(&#x27;offsetHeight&#x27;) );
-
-                if ( _ftype == &#x27;both&#x27; ) {
-                    _maxH = Math.max( _maxH, _midTrx.prop(&#x27;offsetHeight&#x27;) );
-                }   
-
-                _sp.height(_maxH);
-                _rightTrx.height(_maxH);
-                
-                if ( _ftype == &#x27;both&#x27; ) {
-                    _midTrx.height(_maxH);
-                }
-                
-            } );
-
-        },
-
+        /**
+         * 冻结类型:prev, both, last; 默认为prev
+         */
         freezeType: function () {
-            var _p = this,
-                _r;
-                
-            _r = _p.attrProp( _p.selector(), &#x27;freezeType&#x27;) || &#x27;prev&#x27;;
+            var _r = this.stringProp(&#x27;freezeType&#x27;) || &#x27;prev&#x27; 
+
+            !( _r === &#x27;prev&#x27; || _r === &#x27;both&#x27; || _r === &#x27;last&#x27; ) &amp;&amp; ( _r = &#x27;prev&#x27; );
 
             return _r;
         },
-        
+
+        /**
+         * 冻结列数:num,num 默认为1
+         */
         freezeCols: function () {
             var _p = this,
-                _r;
+                _r = _p.attrProp(&#x27;freezeCols&#x27;),
+                _type = _p.freezeType(),
+                _t = [];
 
-            _r = _p.attrProp( _p.selector(), &#x27;freezeCols&#x27;) || 1;
-            _r = _r.split(&#x27;,&#x27;);
+            if ( !_r ) {
+                ( _type !== &#x27;both&#x27; ) &amp;&amp; ( _r = 1 );
+                ( _type === &#x27;both&#x27; ) &amp;&amp; ( _r =  [1, 1] );
+               return _r;
+            }
+            
+            _t = _r.split(&#x27;,&#x27;);
+            _t[0] = + _t[0];
+            _t[1] = + _t[1];
 
-            return _r;
+            if ( _type === &#x27;both&#x27; ) {
+                if ( _t[0] === 0 &amp;&amp; _t[1] === 0 ) {
+                    _r = 0;
+                } else {
+                    _r = _t.slice();
+                }
+            } else {
+                _r = _t[0];
+            }
+
+            return _r
         },
 
-        scrollwidth: function () {
-            var _r = this.attrProp(&#x27;scrollwidth&#x27;);
+        /**
+         * 滚动区域的宽度默认120%
+         */
+        scrollWidth: function () {
+            var _r = this.attrProp(&#x27;scrollWidth&#x27;);
 
             !_r &amp;&amp; ( _r = &#x27;120%&#x27; );
 
             return _r;
         },
 
+        /**
+         * tr 是否需要hover效果,默认为true
+         */
         needHoverClass: function () {
-            var _r = this.boolProp( this.selector().find(&#x27;table&#x27;).eq(0), &#x27;needHoverClass&#x27; );
+            var _r = this.boolProp(&#x27;needHoverClass&#x27;);
 
-            !_r &amp;&amp; ( _r = true );
+            ( typeof _r === &#x27;undefined&#x27; ) &amp;&amp; ( _r = true );
+
+            return _r;
+        },
+        
+        // hoverClass: function () {
+        //     var _r = this.attrProp(&#x27;hoverClass&#x27;);
+
+        //     ( !_r ) &amp;&amp; ( _r = &#x27;compTFHover&#x27;);
+
+        //     return _r;
+        // },
+
+        /**
+         * tr的隔行换色
+         */
+        alternateClass: function () {
+            var _r = this.attrProp(&#x27;alternateClass&#x27;);
 
             return _r;
         },
 
-        hoverClass: function () {
-            var _r = this.attrProp( this.selector().find(&#x27;table&#x27;).eq(0), &#x27;hoverClass&#x27; );
+        colnum: function () {
+            var _table = TableFreeze.Model.sourceTable,
+                _tr = _table.find(&#x27;tr:eq(0)&#x27;),
+                _col = _tr.find(&#x27;&gt;th, &gt;td&#x27;),
+                _r = _col.length;
 
-            !_r &amp;&amp; ( _r = &#x27;compTFHover&#x27; );
-
-            return _r;
-
-        },
-
-        tableWidth: function () {
-            var _p = this,
-                _w = _p.selector().width(),
-                _pnt = _p.selector().parent();
-
-            /**
-             * IE6下，当表格的宽度超出了实际可用宽度时，其父节点的宽度会跟随内容的宽度
-            */
-            while (1) {
-
-                if ( _pnt &amp;&amp; _pnt.prop(&#x27;nodeName&#x27;).toUpperCase() === &#x27;BODY&#x27; ) break;
-
-                if ( _pnt.width() &lt; _w ) {
-                    _w = _pnt.width();
-                    break;
-                }
-
-                _pnt = _pnt.parent();
-
-            }
-
-            return _w;
-        },
-
-        rowHeight: function () {
-            var _p = this,
-                _trs = _p.selector().find(&#x27;table tr&#x27;),
-                _h = [];
-
-            _trs.each( function () {
-                _h.push( $(this).prop(&#x27;offsetHeight&#x27;)  + &#x27;px&#x27;);
-            } );
-
-            return _h;
-        },
-
-        scrollWidth: function () {
-            var _p = this;
-
-            return _p.selector().attr(&#x27;scrollWidth&#x27;);
-        },
-
-        colWidth: function () {
-            var _p = this,
-                _ths = _p.selector().find(&#x27;table&gt;thead th&#x27;),
-                _ths,
-                _w = [],
-                _totalWidth = _p.tableWidth();
-
-            _ths.each( function () {
-                //_w.push( $(this).prop(&#x27;offsetWidth&#x27;) / _totalWidth );
-                _w.push( $(this).prop(&#x27;offsetWidth&#x27;) );
-            } );
-
-            return _w;
-        },
-
-        colNum: function () {
-            var _p = this,
-                _num = 0;
-
-            _num = _p.selector().find(&#x27;thead&gt;tr&gt;th&#x27;).length ;
-
-            return _num;
-        },  
-
-        rowNum: function () {
-            var _p = this,
-                _num = 0;
-
-            _num = _p.selector().find(&#x27;tbody&gt;tr&#x27;).length;
-
-            return _num;
-        },
-
-        supportFreeze: function () {
-            var _p = this,
-                _r = true;
-
-            if ( _p.freezeCols().length == 0 
-                || ( _p.freezeCols().length == 1 
-                    &amp;&amp; ( parseInt(_p.freezeCols(),10) == 0 ) 
-                    || parseInt(_p.freezeCols(),10) &gt; _p.colNum() 
-                    )
-                || ( _p.freezeCols().length == 2
-                    &amp;&amp; ( parseInt(_p.freezeCols()[0], 10) + parseInt(_p.freezeCols()[1], 10) &gt;= _p.colNum() ) 
-                    ) 
-                ) {
-                _r = false;
-            }
-
-            return _r;
-        },
-
-        supportScroll: function () {
-            var _p = this,
-                _c = 0,
-                _r = true;
-
-            $.each( _p.freezeCols(), function (_ix, _val) {
-                _c = _c + parseInt(_val, 10);
-            });
-
-            if ( _c == _p.colNum() ) {
-                _r = false;
-            }
-
-            return _r;
-        },
-
-        hasFixedPXWidth: function () {
-            var _p = this,
-                _pntW = _p.selector().get(0).style.width,
-                _selfW = _p.selector().find(&#x27;table&#x27;).eq(0).attr(&#x27;width&#x27;) 
-                    || _p.selector().find(&#x27;table&#x27;).eq(0).get(0).style.width,
-                _childrenW = _p.tdThHasFixedPXWidth(),
-                _tag = true;
-
-            if ( _pntW &amp;&amp; /%/.test( _pntW ) ) {
-                
-                if ( !_selfW || ( _selfW &amp;&amp; /%/.test(_selfW) )  ) {
-                    return false;
-                }
-            }
-
-            if ( !_selfW || ( _selfW &amp;&amp; /%/.test(_selfW) )  ) {
-                return false;
-            }   
-
-            if ( !_childrenW ) {
-                return false;
-            }
-
-            return true;
-        },
-
-        tdThHasFixedPXWidth: function () {
-            var _p = this,
-                _children = _p.selector().find(&#x27;table&#x27;).eq(0).find(&#x27;tr&#x27;).eq(0).find(&#x27;th,td&#x27;);
-
-            _children.each( function () {
+            _col.each( function () {
                 var _sp = $(this),
-                    _w = _sp.attr(&#x27;width&#x27;) || _sp.get(0).style.width;
+                    _colspan = _sp.prop(&#x27;colspan&#x27;);
 
-                if ( !_w ) {
-                    return false;
-                }
-
-                if ( _w &amp;&amp; /%/.test(_w) ) {
-                    return false;
-                }
-
+                ( _sp.prop(&#x27;colspan&#x27;) ) &amp;&amp; ( _r += ( _colspan - 1 ) );
+                
             } );
 
-            return true;
+            return _r;
+        },
+
+        colnumWidth: function ( _table ) {
+            var _tr = _table.find(&#x27;tr:eq(0)&#x27;),
+                _col = _tr.find(&#x27;&gt;th, &gt;td&#x27;),
+                _r = [];
+
+            _col.each( function () {
+                _r.push( $(this).prop(&#x27;offsetWidth&#x27;) );
+            } );
+
+            return _r;
+        },
+
+        trElement: function ( _table ) {
+            var _thead = _table.find(&#x27;&gt;thead&#x27;),
+                _tbody = _table.find(&#x27;&gt;tbody&#x27;),
+                _theadTr,
+                _tbodyTr;
+
+            if ( _thead.length ) {
+                _theadTr = _thead.find(&#x27;&gt;tr&#x27;);
+            } else {
+                _theadTr = _table.find(&#x27;&gt;tr:eq(0)&#x27;);
+            }
+
+            if ( _tbody.length ) {
+                _tbodyTr = _tbody.find(&#x27;&gt;tr&#x27;);
+            } else {
+                _tbodyTr = _table.find(&#x27;&gt;tr:gt(0)&#x27;);
+            }
+
+            return {
+                theadTr: _theadTr,
+                tbodyTr: _tbodyTr
+            }
 
         },
 
-        tTpl: function () {
+        needProcess: function () {
+            
+            //Todo: 正则判断freezeCols的值是否合法
+
             var _p = this,
-                _table,
-                _thead,
-                _tbody,
+                _freezeCols = _p.freezeCols(),
+                _freezeType = _p.freezeType(),
+                _selector = _p.selector(),
+                //_table = _p.selector().find(&#x27;&gt;table&#x27;),
+                _table = TableFreeze.Model.sourceTable,
+                _r = true;
+
+            if ( _table.find(&#x27;tr&#x27;).length === 0 ) {
+                return false;
+            }
+
+            //全部滚动，在这里处理滚动有耦合
+            if ( _freezeCols === 0 ) {
+                _selector.css(&#x27;overflow-x&#x27;, &#x27;scroll&#x27;)
+                    .find(&#x27;&gt;table&#x27;).css(&#x27;width&#x27;, _p.scrollWidth());
+                return false;
+            }
+
+            //全部冻结
+            if ( _freezeType === &#x27;both&#x27; &amp;&amp; ( _freezeCols[0] + _freezeCols[1] &gt;= _p.colnum() ) ) {
+                return false;
+            }
+
+            return _r;
+        },
+
+        layout: function ( _freezeType ) {
+            var _leftClass,
+                _rightClass,
+                _midClass = &#x27;&#x27;,
                 _tpl;
 
-            _table = _p.selector().find(&#x27;table&#x27;).get(0).cloneNode(false);
-            _thead = _p.selector().find(&#x27;thead&#x27;).get(0).cloneNode(false);
-            _tbody = _p.selector().find(&#x27;tbody&#x27;).get(0).cloneNode(false);
-
-            $(_thead).appendTo($(_table));
-            $(_tbody).appendTo($(_table));
-
-            $(_table).width(&#x27;100%&#x27;);
-
-            switch ( _p.freezeType() ) {
-                case &#x27;prev&#x27;:
+            switch ( _freezeType ) {
                 case &#x27;last&#x27;:
-                    _tpl = &#x27;&lt;table class=&quot;compTFEextraTable&quot;&gt;&lt;tr&gt;&lt;td class=&quot;compTFEextraTd&quot;&gt;&lt;div class=&quot;{0}&quot; style=&quot;width:100%;&quot;&gt;&#x27;
-                        + _table.outerHTML
-                        + &#x27;&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;compTFEextraTd&quot;&gt;&lt;div class=&quot;{1}&quot; style=&quot;width:100%;&quot;&gt;&#x27;
-                        + _table.outerHTML
-                        + &#x27;&lt;/div&gt;&lt;/td&gt;&#x27;
-                        + &#x27;&lt;/tr&gt;&lt;/table&gt;&#x27;;
-                    // _tpl = &#x27;&lt;div class=&quot;compTFEextraTable&quot;&gt;&#x27;
-                    //     + &#x27;&lt;div class=&quot;compTFEextraTd&quot;&gt;&lt;div class=&quot;{0}&quot; style=&quot;width:100%;&quot;&gt;&#x27; + _table.outerHTML + &#x27;&lt;/div&gt;&lt;/div&gt;&#x27;
-                    //     + &#x27;&lt;div class=&quot;compTFEextraTd&quot;&gt;&lt;div class=&quot;{1}&quot; style=&quot;width:100%;&quot;&gt;&#x27; + _table.outerHTML + &#x27; &lt;/div&gt;&lt;/div&gt;&#x27;
-                    //     + &#x27;&lt;/div&gt;&#x27;
+                    _leftClass = &quot;js-roll-table compTFLastRoll&quot;;
+                    _rightClass = &quot;js-fixed-table compTFLastFixed&quot;;
                     break;
+
                 case &#x27;both&#x27;:
-                    _tpl = &#x27;&lt;table class=&quot;compTFEextraTable&quot;&gt;&lt;tr&gt;&lt;td class=&quot;compTFEextraTd&quot;&gt;&lt;div class=&quot;{0}&quot; style=&quot;width:100%;&quot;&gt;&#x27;
-                        + _table.outerHTML
-                        + &#x27;&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;compTFEextraTd&quot;&gt;&lt;div class=&quot;{1}&quot; style=&quot;width:100%;&quot;&gt;&#x27;
-                        + _table.outerHTML
-                        + &#x27;&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;compTFEextraTd&quot;&gt;&lt;div class=&quot;{2}&quot; style=&quot;width:100%;&quot;&gt;&#x27;
-                        + _table.outerHTML
-                        + &#x27;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#x27;
+                    _leftClass = &quot;js-fixed-table compTFBothFixed&quot;;
+                    _rightClass = &quot;js-fixed-table compTFBothFixed&quot;;
+                    _midClass = &quot;js-roll-table compTFBothRoll&quot;;
                     break;
+
+                case &#x27;prev&#x27;:
+                default:
+                    _leftClass = &quot;js-fixed-table compTFPrevFixed&quot;;
+                    _rightClass = &quot;js-roll-table compTFPrevRoll&quot;;
             }
+           
+            if ( !_midClass ) {
+                _tpl = &#x27;&lt;div class=&quot;&#x27; + _leftClass + &#x27;&quot;&gt;&lt;table&gt;&lt;thead&gt;{0}&lt;/thead&gt;&lt;tbody&gt;{1}&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&#x27;
+                     + &#x27;&lt;div class=&quot;&#x27; + _rightClass + &#x27;&quot;&gt;&lt;table&gt;&lt;thead&gt;{2}&lt;/thead&gt;&lt;tbody&gt;{3}&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&#x27;;
+            } else {
+                _tpl = &#x27;&lt;div class=&quot;&#x27; + _leftClass + &#x27;&quot;&gt;&lt;table&gt;&lt;thead&gt;{0}&lt;/thead&gt;&lt;tbody&gt;{1}&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&#x27;
+                     + &#x27;&lt;div class=&quot;&#x27; + _midClass + &#x27;&quot;&gt;&lt;table&gt;&lt;thead&gt;{2}&lt;/thead&gt;&lt;tbody&gt;{3}&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&#x27;
+                     + &#x27;&lt;div class=&quot;&#x27; + _rightClass + &#x27;&quot;&gt;&lt;table&gt;&lt;thead&gt;{4}&lt;/thead&gt;&lt;tbody&gt;{5}&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&#x27;;
+            }
+            
+            return _tpl;
+        },
+
+        creatTpl: function () {
+            var _p = this,
+                _table = TableFreeze.Model.sourceTable,
+                _freezeType = _p.freezeType(),
+                _freezeCols = _p.freezeCols(),
+                _colNum = _p.colnum(),
+                _trElement = _p.trElement(_table),
+                _theadTr = _trElement.theadTr,
+                _tbodyTr = _trElement.tbodyTr,
+                _headerTr = _p.getTr(_freezeType, _freezeCols, _theadTr, _colNum),
+                _bodyTr = _p.getTr(_freezeType, _freezeCols, _tbodyTr, _colNum),
+                _layout = _p.layout(_freezeType),
+                _tpl;
+
+            switch ( _freezeType ) {
+                case &#x27;both&#x27;: 
+                    {   
+                        _tpl = JC.f.printf(_layout, _headerTr.leftTr, _bodyTr.leftTr, _headerTr.midTr, 
+                            _bodyTr.midTr, _headerTr.rightTr, _bodyTr.rightTr);
+                        break;
+                    }
+                case &#x27;last&#x27;:
+                case &#x27;prev&#x27;:
+                    {   
+                        _tpl = JC.f.printf(_layout, _headerTr.leftTr, _bodyTr.leftTr, 
+                            _headerTr.rightTr, _bodyTr.rightTr);
+                        break;
+                    }
+            }
+
+            _p.selector().append(_tpl);
+
+        },
+
+        //Todo: 还没有考虑rolspan, colspan的情况
+        getTr: function ( _freezeType, _freezeCols, _trs, _colNum ) {
+            var _sLeftTpl = [],
+                _sMidTpl = [],
+                _sRightTpl = [] ,
+                _tpl,
+                _start = 0,
+                _end = _freezeCols;
+
+            _trs.each( function (_ix) {
+                var _sp = $(this),
+                    _clasname = &#x27;CTF CTF&#x27; + _ix,
+                    _leftTr = _sp[0].cloneNode(false),
+                    _rightTr = _sp[0].cloneNode(false),
+                    _tds = _sp.find(&#x27;&gt;td&#x27;),
+                    _midTr = &#x27;&#x27;,
+                    _leftTd,
+                    _rightTd,
+                    _midTd;
+
+                switch ( _freezeType ) {
+                    case &#x27;both&#x27;:
+                        {   
+                            _midTr = _sp[0].cloneNode(false);
+                            _end = _freezeCols[0];
+                            _leftTd =  _sp.find(&#x27;&gt;th,&gt;td&#x27;).slice(_start, _end).appendTo(_leftTr);
+                            _rightTd = _sp.find(&#x27;&gt;th,&gt;td&#x27;).slice(_colNum - _end - _freezeCols[1], _colNum).appendTo(_rightTr);
+                            _midTd = _sp.find(&#x27;&gt;th,&gt;td&#x27;).appendTo(_midTr);
+                            break;
+                        }
+
+                    case &#x27;last&#x27;:
+                        {
+                            _end = _colNum - _freezeCols;
+                            _leftTd = _sp.find(&#x27;&gt;th,&gt;td&#x27;).slice(_start, _end).appendTo(_leftTr);
+                            _rightTd = _sp.find(&#x27;&gt;th,&gt;td&#x27;).appendTo(_rightTr);
+                            break;
+                        }
+
+                    case &#x27;prev&#x27;:
+                        {
+                            _leftTd = _sp.find(&#x27;&gt;th,&gt;td&#x27;).slice(_start, _end).appendTo(_leftTr);
+                            _rightTd = _sp.find(&#x27;&gt;th,&gt;td&#x27;).appendTo(_rightTr);
+                            break;
+                        }   
+                }
+
+                $(_leftTr).addClass(_clasname).attr(&#x27;data-ctf&#x27;, &#x27;CTF&#x27; + _ix);
+                $(_midTr).addClass(_clasname).attr(&#x27;data-ctf&#x27;, &#x27;CTF&#x27; + _ix);
+                $(_rightTr).addClass(_clasname).attr(&#x27;data-ctf&#x27;, &#x27;CTF&#x27; + _ix);
+
+                _sLeftTpl.push(_leftTr.outerHTML);
+                _sMidTpl.push(_midTr.outerHTML);
+                _sRightTpl.push(_rightTr.outerHTML);
+
+            } );
+
+
+            _tpl = {
+                leftTr: _sLeftTpl.join(&#x27; &#x27;),
+                midTr: _sMidTpl.join(&#x27; &#x27;),
+                rightTr: _sRightTpl.join(&#x27; &#x27;)
+            };
 
             return _tpl;
         },
 
+        getSum: function ( _array ) {
+            var _sum = 1,
+                _len = _array.length;
+
+            while ( _len-- ) {
+                _sum += _array.pop();
+            }
+
+            return _sum;
+        },
 
         /**
          * TableFreeze调用前的回调
@@ -1181,10 +869,10 @@
             var _p = this,
                 _selector = _p.selector(),
                 _key = &#x27;beforeCreateTableCallback&#x27;;
-
+ 
             return _p.callbackProp(_selector, _key);
         },
-
+ 
         /**
          * TableFreeze调用后的回调
          */
@@ -1192,80 +880,145 @@
             var _p = this,
                 _selector = _p.selector(),
                 _key = &#x27;afterCreateTableCallback&#x27;;
-
+ 
             return _p.callbackProp(_selector, _key);
-        },
-
-        baseTpl: &#x27;&lt;div class=&quot;{0}&quot; style=&quot;width:100%;&quot;&gt;&#x27;
-                +       &#x27;&lt;table style=&quot;padding:0;margin:0;&quot;&gt;&#x27;
-                +           &#x27;&lt;thead&gt;&#x27;
-                +           &#x27;&lt;/thead&gt;&#x27;
-                +            &#x27;&lt;tbody&gt;&#x27;
-                +            &#x27;&lt;/tbody&gt;&#x27;
-                +         &#x27;&lt;/table&gt;&#x27;
-                +   &#x27;&lt;/div&gt;&#x27;
+        }
+        
     });
  
     JC.f.extendObject( TableFreeze.View.prototype, {
         init: function () {
-            var _p = this;
-
-            _p._model.linkTpl();
+           
         },
 
         update: function () {
-            var _p = this;
-            
-            if ( !_p._model.supportScroll() ) {
-                return;
-            } 
+            var _p = this,
+                _selector = _p._model.selector(),
+                _needProcess = _p._model.needProcess();
 
-            if ( !_p._model.supportFreeze() ) {
-                _p._model.selector().css({&#x27;overflow-x&#x27;: &#x27;scroll&#x27;})
-                    .addClass(&#x27;compTFAllRoll&#x27;)
-                        .children(&#x27;table&#x27;).css(&#x27;width&#x27;, _p._model.scrollwidth() );
-                
-                return;
+            if ( _needProcess ) {
+                _p._model.creatTpl();
+                _p.fixWidth();
+                _p.fixHeight();
             }
 
-            _p._model.createTplBox();
-            _p._model.detachTable();
-            _p._model.fixWidth();
+        },
 
+        fixWidth: function () {
+            var _p = this,
+                _selector = _p.selector(),
+                _freezeType = _p._model.freezeType(),
+                _freezeCols = _p._model.freezeCols(),
+                _totalWidth = TableFreeze.Model.initWidth,
+                _scrollWidth = _p._model.scrollWidth(),
+                _colWidth = TableFreeze.Model.colnumWidth,
+                _colNum = _colWidth.length,
+                _leftWidth,
+                _rightWidth,
+                _midWidth;
+
+            switch ( _freezeType ) {
+                case &#x27;prev&#x27; : 
+                    {
+                        _leftWidth = _p._model.getSum(_colWidth.slice(0, _freezeCols));
+                        _rightWidth = _totalWidth - _leftWidth;
+
+                        _selector.find(&#x27;&gt;.js-fixed-table&#x27;).width(_leftWidth / _totalWidth * 100 + &#x27;%&#x27;)
+                            .end()
+                            .find(&#x27;&gt;.js-roll-table&#x27;).width(_rightWidth / _totalWidth * 100 + &#x27;%&#x27;)
+                            .find(&#x27;&gt;table&#x27;).width(_scrollWidth);
+
+                        break;
+                    }
+
+                case &#x27;last&#x27;:
+                    {
+                        _rightWidth = _p._model.getSum(_colWidth.slice(_colNum - _freezeCols, _colNum));
+                        _leftWidth = _totalWidth - _rightWidth - 1;
+
+                        _selector.find(&#x27;&gt;.js-fixed-table&#x27;).width(_rightWidth / _totalWidth * 100 + &#x27;%&#x27;)
+                            .end()
+                            .find(&#x27;&gt;.js-roll-table&#x27;).width(_leftWidth / _totalWidth * 100 + &#x27;%&#x27;)
+                            .find(&#x27;&gt;table&#x27;).width(_scrollWidth);
+
+                        break;
+                    }
+
+                case &#x27;both&#x27;:
+                    {
+                        _leftWidth = _p._model.getSum(_colWidth.slice(0, _freezeCols[0]));
+                        _rightWidth = _p._model.getSum(_colWidth.slice(_colNum - _freezeCols[1], _colNum));
+                        _midWidth = _totalWidth - _leftWidth - _rightWidth;
+                        //_midWidth = 1 - _leftWidth - _rightWidth;
+
+                        _selector.find(&#x27;&gt;.js-fixed-table:eq(0)&#x27;).width(_leftWidth / _totalWidth * 100 + &#x27;%&#x27;)
+                            .end()
+                            .find(&#x27;&gt;.js-roll-table&#x27;).width(_midWidth / _totalWidth * 100 + &#x27;%&#x27;)
+                            .find(&#x27;&gt;table&#x27;).width(_scrollWidth)
+                            .end()
+                            .end()
+                            .find(&#x27;&gt;.js-fixed-table:eq(1)&#x27;).width(_rightWidth / _totalWidth * 100 + &#x27;%&#x27;);
+
+                        break;
+                    }
+            } 
+
+        },
+
+        fixHeight: function () {
+            var _p = this,
+                _selector = _p._model.selector(),
+                _leftTrs = _selector.find(&#x27;&gt;.js-fixed-table:eq(0)&gt;table&gt;thead&gt;tr, &gt;.js-fixed-table:eq(0)&gt;table&gt;tbody&gt;tr&#x27;),
+                _rightTrs = _selector.find(&#x27;&gt;.js-roll-table&gt;table&gt;thead&gt;tr,&gt;.js-roll-table&gt;table&gt;tbody&gt;tr&#x27;),
+                _midTrs = _selector.find(&#x27;&gt;.js-fixed-table:eq(1)&gt;table&gt;thead&gt;tr, &gt;.js-fixed-table:eq(1)&gt;table&gt;tbody&gt;tr&#x27;),
+                _freezeType = _p._model.freezeType();
+
+            _leftTrs.each( function ( _ix, _item ) {
+                var _sp = $(this),
+                    _rightTr = _rightTrs.eq(_ix),
+                    _midTr = _midTrs.eq(_ix),
+                    _height = Math.max(_sp.prop(&#x27;offsetHeight&#x27;), _rightTr.prop(&#x27;offsetHeight&#x27;));
+
+                if ( _freezeType === &#x27;both&#x27; ) {
+                    _height = Math.max(_height, _midTr.prop(&#x27;offsetHeight&#x27;));
+                    _midTr.height(_height);
+                }
+
+                _sp.height(_height);
+                _rightTr.height(_height);
+
+            } );    
+
+            return;
+        },
+
+        highlight: function () {
+            console.log(&quot;highlight&quot;);
         }
 
     });
 
     $(document).ready( function () {
-        //$(&#x27;#t21&#x27;).append( &#x27;document.width&#x27; + $(document).width() + &#x27;,  window.width&#x27; + $(window).width() );
-        
         var _insAr = 0,
             _win= $( window );
 
-        TableFreeze.Model.windowWidth = _win.width();
-        TableFreeze.autoInit
-            &amp;&amp; ( _insAr = TableFreeze.init() )
-            ;
-
+        TableFreeze.autoInit &amp;&amp; ( _insAr = TableFreeze.init() );
         _win.on( &#x27;resize&#x27;, CTFResize );
 
-        function CTFResize(){
-
+        function CTFResize() {
             _win.off( &#x27;resize&#x27;, CTFResize );
 
             $( &#x27;div.js_compTableFreeze&#x27; ).each( function () {
                 var _ins = TableFreeze.getInstance( $( this ) );
-                _ins &amp;&amp; _ins.fixHeight() ;
-                TableFreeze.Model.saveWidth = _ins._model.tableWidth();
-
-
+                _ins &amp;&amp; _ins.update() ;
+                TableFreeze.Model.tempWidth = _ins._model.selector().prop(&#x27;offsetWidth&#x27;);
             });
 
-            _win.data( &#x27;CTFResizeTimeout&#x27; ) &amp;&amp; clearTimeout( _win.data( &#x27;CTFResizeTimeout&#x27; ) );
-            _win.data( &#x27;CTFResizeTimeout&#x27;, setTimeout( function(){
+            _win.data(&#x27;CTFResizeTimeout&#x27;) &amp;&amp; clearTimeout(_win.data(&#x27;CTFResizeTimeout&#x27;));
+            _win.data(&#x27;CTFResizeTimeout&#x27;, setTimeout(function () {
                 _win.off( &#x27;resize&#x27;, CTFResize );
                 _win.on( &#x27;resize&#x27;, CTFResize );
-            }, 200 ) );
+            }, 80 ));
 
         }
 

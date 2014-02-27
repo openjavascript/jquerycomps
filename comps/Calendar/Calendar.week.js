@@ -121,8 +121,8 @@
                     , _date = _dateo.date
                     , _layout = _p._model.layout()
                     , today = new Date( new Date().getFullYear(), new Date().getMonth(), new Date().getDate() ).getTime()
-                    , weeks = weekOfYear( _date.getFullYear(), JC.Calendar.weekDayOffset )
-                    , nextYearWeeks = weekOfYear( _date.getFullYear() + 1, JC.Calendar.weekDayOffset )
+                    , weeks = JC.f.weekOfYear( _date.getFullYear(), JC.Calendar.weekDayOffset )
+                    , nextYearWeeks = JC.f.weekOfYear( _date.getFullYear() + 1, JC.Calendar.weekDayOffset )
                     , nextCount = 0
                     , _ls = [], _class, _data, _title, _sdate, _edate, _year = _date.getFullYear()
                     , _rows = Math.ceil( weeks.length / 8 )
@@ -257,47 +257,19 @@
                 );
                 */
                 _p._model.selector().val( _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) ); 
+                /*
+                if( _userSelectedItem ){
+                    _p._model.selector().val( _p._model.selector().val().replace( /WK/g, 
+                        JC.f.padChar( _userSelectedItem.attr( 'week' ) )
+                    ));
+                }
+                */
                 $(_p).trigger( 'TriggerEvent', [ JC.Calendar.Model.UPDATE, 'week', _dstart, _dend ] );
 
                 JC.Calendar.hide();
             }
 
     });
-    /**
-     * 取一年中所有的星期, 及其开始结束日期
-     * @method  weekOfYear
-     * @static
-     * @param   {int}   _year
-     * @param   {int}   _dayOffset  每周的默认开始为周几, 默认0(周一)
-     * @return  Array
-     */
-    function weekOfYear( _year, _dayOffset ){
-        var _r = [], _tmp, _count = 1, _dayOffset = _dayOffset || 0
-            , _year = parseInt( _year, 10 )
-            , _d = new Date( _year, 0, 1 );
-        /**
-         * 元旦开始的第一个星期一开始的一周为政治经济上的第一周
-         */
-         _d.getDay() > 1 && _d.setDate( _d.getDate() - _d.getDay() + 7 );
-
-         _d.getDay() === 0 && _d.setDate( _d.getDate() + 1 );
-
-         _dayOffset > 0 && ( _dayOffset = (new Date( 2000, 1, 2 ) - new Date( 2000, 1, 1 )) * _dayOffset );
-
-        while( _d.getFullYear() <= _year ){
-            _tmp = { 'week': _count++, 'start': null, 'end': null };
-            _tmp.start = _d.getTime() + _dayOffset;
-            _d.setDate( _d.getDate() + 6 );
-            _tmp.end = _d.getTime() + _dayOffset;
-            _d.setDate( _d.getDate() + 1 );
-            if( _d.getFullYear() > _year ) {
-                _d = new Date( _d.getFullYear(), 0, 1 );
-                if( _d.getDay() < 2 ) break;
-             }
-            _r.push( _tmp );
-        }
-        return _r;
-    }
 
     $(document).delegate( [ 'input[datatype=week]', 'input[multidate=week]' ].join(), 'focus' 
     , function($evt){

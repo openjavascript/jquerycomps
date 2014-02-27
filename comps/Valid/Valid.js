@@ -1270,9 +1270,11 @@
          */
         , 'd': 
             function( _item, _noError ){
-                var _p = this, _val = $.trim( _item.val() ), _r = true, _date = JC.f.parseDate( _val, _item ), _tmpDate;
+                var _p = this, _val = $.trim( _item.val() ), _r = true
+                    , _date = JC.f.parseDate( _val, _item ), _tmpDate;
                     
                 if( _val && _date ){
+
 
                     if( _p.isMinvalue( _item ) && ( _tmpDate = _p.minvalue( _item, 'd' ) ) ){
                         _date.getTime() < _tmpDate.getTime() && ( _r = false );
