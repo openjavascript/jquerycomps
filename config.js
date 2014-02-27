@@ -53,7 +53,7 @@ requirejs.config( {
         , 'JC.Slider': 'modules/JC.Slider/0.1/Slider'
         , 'JC.Suggest': 'modules/JC.Suggest/0.1/Suggest'
         , 'JC.Tab': 'modules/JC.Tab/0.1/Tab'
-        , 'JC.TableFreeze': 'modules/JC.TableFreeze/0.1/TableFreeze'
+        , 'JC.TableFreeze': 'modules/JC.TableFreeze/0.2/TableFreeze'
         , 'JC.Tips': 'modules/JC.Tips/0.1/Tips'
         , 'JC.Tree': 'modules/JC.Tree/0.1/Tree'
 
@@ -80,6 +80,7 @@ requirejs.config( {
         , 'Bizs.KillISPCache': 'modules/Bizs.KillISPCache/0.1/KillISPCache'
         , 'Bizs.MoneyTips': 'modules/Bizs.MoneyTips/0.1/MoneyTips'
         , 'Bizs.MultiDate': 'modules/Bizs.MultiDate/0.1/MultiDate'
+        , 'Bizs.MultiSelect': 'modules/Bizs.MultiSelect/0.1/MultiSelect'
 
         , 'plugins.jquery.form': 'plugins/jquery.form/3.36.0/jquery.form'
         , 'plugins.jquery.rate': 'plugins/jquery.rate/2.5.2/jquery.rate'
