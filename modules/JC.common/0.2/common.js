@@ -52,7 +52,12 @@
         , 'urlHostName': urlHostName
         , "httpRequire": httpRequire
         , "isSameDay": isSameDay
+        , "isSameWeek": isSameWeek
         , "isSameMonth": isSameMonth
+        , "isSameSeason": isSameSeason
+        , "isSameYear": isSameYear
+        , "weekOfYear": weekOfYear
+        , "seasonOfYear": seasonOfYear
         , "jcAutoInitComps": jcAutoInitComps
 
         , "maxDayOfMonth": maxDayOfMonth
@@ -528,6 +533,156 @@
         return [_d1.getFullYear(), _d1.getMonth()].join() === [
                 _d2.getFullYear(), _d2.getMonth()].join()
     }
+
+    /**
+     * 判断两个日期是否为同一季度
+     * @method  isSameWeek
+     * @static
+     * @param   {Date}  _d1     需要判断的日期1
+     * @param   {Date}  _d2     需要判断的日期2
+     * @return {bool}
+     */
+    function isSameWeek( _d1, _d2 ){
+        var _weeks = [],
+            _r = false,
+            i = 0,
+            l;
+
+        _weeks = weekOfYear(_d1.getFullYear());
+        
+        _d1 = _d1.getTime();
+        _d2 = _d2.getTime();
+
+        for ( i = 0, l = _weeks.length; i < l; i++ ) {
+            if ( (_d1 >= _weeks[i].start && _d1 <= _weeks[i].end) 
+                && ( _d2 >= _weeks[i].start && _d2 <= _weeks[i].end ) 
+                ) {
+                console.log(i, _d1, _weeks[i]);
+                return true;
+            }  
+        }
+
+        return _r;
+    }
+
+    /**
+     * 判断两个日期是否为同一季度
+     * @method  isSameSeason
+     * @static
+     * @param   {Date}  _d1     需要判断的日期1
+     * @param   {Date}  _d2     需要判断的日期2
+     * @return {bool}
+     */
+    function isSameSeason( _d1, _d2 ){
+        var _seasons = [],
+            _r = false,
+            i = 0,
+            l ;
+
+        if ( !isSameYear( _d1, _d2 ) ) {
+            return false;
+        }
+
+        _seasons = seasonOfYear( _d1.getFullYear() );
+        _d1 = _d1.getTime();
+        _d2 = _d2.getTime();
+        
+        for (i = 0, l = _seasons.length ; i < l; i++ ) {
+            if ( (_d1 >= _seasons[i].start && _d1 <= _seasons[i].end) 
+                && ( _d2 >= _seasons[i].start && _d2 <= _seasons[i].end ) ) {
+                return true;
+            }     
+        }
+
+        return _r;
+    }
+
+    /**
+     * 判断两个日期是否为同一年
+     * @method  isSameSeason
+     * @static
+     * @param   {Date}  _d1     需要判断的日期1
+     * @param   {Date}  _d2     需要判断的日期2
+     * @return {bool}
+     */
+    function isSameYear( _d1, _d2 ) {
+        return _d1.getFullYear() === _d2.getFullYear();
+    }
+
+    /**
+     * 取一年中所有的星期, 及其开始结束日期
+     * @method  weekOfYear
+     * @static
+     * @param   {int}   _year
+     * @param   {int}   _dayOffset  每周的默认开始为周几, 默认0(周一)
+     * @return  Array
+     */
+    function weekOfYear( _year, _dayOffset ){
+        var _r = [], _tmp, _count = 1, _dayOffset = _dayOffset || 0
+            , _year = parseInt( _year, 10 )
+            , _d = new Date( _year, 0, 1 );
+        /**
+         * 元旦开始的第一个星期一开始的一周为政治经济上的第一周
+         */
+         _d.getDay() > 1 && _d.setDate( _d.getDate() - _d.getDay() + 7 );
+
+         _d.getDay() === 0 && _d.setDate( _d.getDate() + 1 );
+
+         _dayOffset > 0 && ( _dayOffset = (new Date( 2000, 1, 2 ) - new Date( 2000, 1, 1 )) * _dayOffset );
+
+        while( _d.getFullYear() <= _year ){
+            _tmp = { 'week': _count++, 'start': null, 'end': null };
+            _tmp.start = _d.getTime() + _dayOffset;
+            //_tmp.start = formatISODate(_d);
+            _d.setDate( _d.getDate() + 6 );
+            _tmp.end = _d.getTime() + _dayOffset;
+            //_tmp.end = formatISODate(_d);
+            _d.setDate( _d.getDate() + 1 );
+            if( _d.getFullYear() > _year ) {
+                _d = new Date( _d.getFullYear(), 0, 1 );
+                if( _d.getDay() < 2 ) break;
+             }
+            _r.push( _tmp );
+        }
+        return _r;
+    }
+    /**
+     * 取一年中所有的季度, 及其开始结束日期
+     * @method  seasonOfYear
+     * @static
+     * @param   {int}   _year
+     * @return  Array
+     */
+    function seasonOfYear( _year ){
+        var _r = []
+            , _year = parseInt( _year, 10 )
+            ;
+
+        _r.push( 
+                {
+                    start: pureDate( new Date( _year, 0, 1 ) )
+                    , end: pureDate( new Date( _year, 2, 31 ) )
+                    , season: 1
+                }, {
+                    start: pureDate( new Date( _year, 3, 1 ) )
+                    , end: pureDate( new Date( _year, 5, 30 ) )
+                    , season: 2
+                }, {
+                    start: pureDate( new Date( _year, 6, 1 ) )
+                    , end: pureDate( new Date( _year, 8, 30 ) )
+                    , season: 3
+                }, {
+                    start: pureDate( new Date( _year, 9, 1 ) )
+                    , end: pureDate( new Date( _year, 11, 31 ) )
+                    , season: 4
+                }
+        );
+                
+
+        return _r;
+    }
+
+
     /**
      * 取得一个月份中最大的一天
      * @method  maxDayOfMonth
@@ -625,35 +780,6 @@
         }
         return !!_input;
     }
-    /**
-     * 判断是否支持 CSS position: fixed
-     * @property    $.support.isFixed
-     * @type        bool
-     * @require jquery
-     * @static
-     */
-    window.jQuery && jQuery.support && (jQuery.support.isFixed = (function ($){
-        try{
-            var r, contain = $( document.documentElement ),
-                el = $( "<div style='position:fixed;top:100px;visibility:hidden;'>x</div>" ).appendTo( contain ),
-                originalHeight = contain[ 0 ].style.height,
-                w = window;
-            
-            contain.height( screen.height * 2 + "px" );
-         
-            w.scrollTo( 0, 100 );
-         
-            r = el[ 0 ].getBoundingClientRect().top === 100;
-         
-            contain.height( originalHeight );
-         
-            el.remove();
-         
-            w.scrollTo( 0, 0 );
-         
-            return r;
-        }catch(ex){}
-    })(jQuery));
     /**
      * 绑定或清除 mousewheel 事件
      * @method  mousewheelEvent
@@ -1073,6 +1199,36 @@
 
         _r = _r
             .replace( /YY/g, _date.getFullYear() )
+            .replace( /WK/g, function(){
+                var _r = 1, _offset = 0, _weeks;
+
+                JC.Calendar && ( _offset = JC.Calendar.weekDayOffset );
+
+                _weeks = weekOfYear( _date.getFullYear(), JC.Calendar.weekDayOffset );
+
+                $( _weeks ).each( function( _ix, _item ){
+                    if( _date.getTime() >= _item.start && _date.getTime() <= _item.end ){
+                        _r = _item.week;
+                        return false;
+                    }
+                });
+
+                return _r;
+            })
+            .replace( /YQ/g, function(){
+                var _r = 1, _offset = 0, _seasons;
+
+                _seasons = seasonOfYear( _date.getFullYear() );
+
+                $( _seasons ).each( function( _ix, _item ){
+                    if( _date.getTime() >= _item.start && _date.getTime() <= _item.end ){
+                        _r = _item.season;
+                        return false;
+                    }
+                });
+
+                return _r;
+            })
             .replace( /MM/g, padChar( _date.getMonth() + 1 ) )
             .replace( /DD/g, padChar( _date.getDate() ) )
 

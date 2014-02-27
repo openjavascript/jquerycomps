@@ -388,6 +388,10 @@
                  */
                 _p.on('ShowSuccess', function( _evt, _msg, _cb ){
                     var _panel;
+                    if( _p._model.balIgnoreSuccess() ){
+                        _cb && _cb();
+                        return;
+                    }
                     switch( _p._model.balSuccessPopupType() ){
                         case 'alert':
                             {
@@ -572,6 +576,10 @@
             function(){
                 var _r = this.stringProp('balConfirmPopupType') || 'confirm';
                 return _r;
+            }
+        , balIgnoreSuccess:
+            function(){
+                return this.boolProp( 'balIgnoreSuccess' );
             }
     }
 

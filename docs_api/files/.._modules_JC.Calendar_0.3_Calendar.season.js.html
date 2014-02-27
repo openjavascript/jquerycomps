@@ -364,7 +364,7 @@
                         if( today &gt;= _sdate.getTime() &amp;&amp; today &lt;= _edate.getTime() ) _class.push( &#x27;today&#x27; );
 
                         _ls.push( JC.f.printf( &#x27;&lt;td class=&quot;{0}&quot;&gt;&lt;a href=&quot;javascript:&quot; title=&quot;{1}&quot;&#x27;+
-                                        &#x27; dstart=&quot;{3}&quot; dend=&quot;{4}&quot; month=&quot;{5}&quot; &gt;{2}季度&lt;/a&gt;&lt;/td&gt;&#x27;
+                                        &#x27; dstart=&quot;{3}&quot; dend=&quot;{4}&quot; month=&quot;{5}&quot; season=&quot;{5}&quot; &gt;{2}季度&lt;/a&gt;&lt;/td&gt;&#x27;
                                     , _class.join(&#x27; &#x27;)
                                     , _title
                                     , _cnUnit
@@ -399,6 +399,13 @@
                 _p._model.selector().val( JC.f.printf( &#x27;{0} 至 {1}&#x27;, JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) );
                 */
                 _p._model.selector().val( _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) );
+                /*
+                if( _userSelectedItem ){
+                    _p._model.selector().val( _p._model.selector().val().replace( /YQ/g, 
+                        _userSelectedItem.attr( &#x27;season&#x27; )
+                    ));
+                }
+                */
                 $(_p).trigger( &#x27;TriggerEvent&#x27;, [ JC.Calendar.Model.UPDATE, &#x27;season&#x27;, _dstart, _dend ] );
 
                 JC.Calendar.hide();

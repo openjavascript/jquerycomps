@@ -598,6 +598,10 @@
                  */
                 _p.on(&#x27;ShowSuccess&#x27;, function( _evt, _msg, _cb ){
                     var _panel;
+                    if( _p._model.balIgnoreSuccess() ){
+                        _cb &amp;&amp; _cb();
+                        return;
+                    }
                     switch( _p._model.balSuccessPopupType() ){
                         case &#x27;alert&#x27;:
                             {
@@ -782,6 +786,10 @@
             function(){
                 var _r = this.stringProp(&#x27;balConfirmPopupType&#x27;) || &#x27;confirm&#x27;;
                 return _r;
+            }
+        , balIgnoreSuccess:
+            function(){
+                return this.boolProp( &#x27;balIgnoreSuccess&#x27; );
             }
     }
 

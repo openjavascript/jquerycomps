@@ -105,39 +105,118 @@
         UXC.log( 'calendarupdate', _p.val(), _start, _end );
     }
     //
+    /// 针对周的日期格式化
+    //
+    function parseWeekDateSpecial( _dateStr ){
+        _dateStr = $.trim( _dateStr || '' );
+        var _r = { start: null, end: null }, _normalDate;
+
+        if( _dateStr ){
+            _normalDate = _dateStr.replace( /[^\d]+/g, '' );
+            _dateStr = _dateStr.split( 'W' );
+
+            var _year, _week, _sdate, _edate, _weeks, _date
+
+            _year = parseInt( _dateStr[0], 10 );
+            _week = parseInt( _dateStr[1], 10 );
+            _sdate = JC.f.pureDate( new Date( _dateStr[0] ), 0, 1 );
+            _edate = JC.f.pureDate( new Date( _dateStr[1] ), 0, 1 );
+            _weeks = _weeks || JC.f.weekOfYear( _dateStr[0], JC.Calendar.weekDayOffset );
+
+            $( _weeks ).each( function( _ix, _item ){
+                if( _item.week === _week ){
+                    _r.start = new Date();
+                    _r.end = new Date();
+
+                    _r.start.setTime( _item.start );
+                    _r.end.setTime( _item.end );
+                    return false;
+                }
+            });
+        }
+
+        if( !_r.start ){
+            _r.start = new Date();
+            _r.end = new Date();
+        }
+
+        return _r;
+    }
+    //
     /// 针对月份日期格式化 YY-MM
     //
-    function parseYearMonthDate( _dateStr ){
+    function parseMonthDateSpecial( _dateStr ){
         _dateStr = $.trim( _dateStr || '' );
         var _r = { start: null, end: null };
-        if( !_dateStr ) return _r;
 
-        _dateStr = _dateStr.replace( /[^\d]+/g, '' );
-        var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4, 6 ), 10 ) - 1;
+        if( _dateStr ){
+            _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+            var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4, 6 ), 10 ) - 1;
 
-        _r.start = new Date( _year, _month, 1 );
+            _r.start = new Date( _year, _month, 1 );
+        }
+
+        if( !_r.start ){
+            _r.start = new Date();
+            _r.end = new Date();
+        }
         return _r;
     }
     //
     /// 针对季度日期格式化 YY-MM ~ YY-MM
     //
-    function parseSeasonDate( _dateStr ){
+    function parseSeasonDateSpecial( _dateStr ){
         _dateStr = $.trim( _dateStr || '' );
         var _r = { start: null, end: null };
-        if( !_dateStr ) return _r;
 
-        _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+        if( _dateStr ){
+            _dateStr = _dateStr.split( 'Q' );
 
-        _r.start = JC.f.parseISODate( _dateStr.slice( 0, 6 ) + '01' );
-        _r.end = JC.f.parseISODate( _dateStr.slice( 6 ) + '01' );
+            var _year = parseInt( _dateStr[0], 10 ), _season = parseInt( _dateStr[1], 10 )
+                , _sdate = JC.f.pureDate( new Date( _dateStr[0] ), 0, 1 )
+                , _edate = JC.f.pureDate( new Date( _dateStr[1] ), 0, 1 )
+                , _seasons = JC.f.seasonOfYear( _dateStr[0] )
+                ;
+
+            $( _seasons ).each( function( _ix, _item ){
+                if( _item.season === _season ){
+                    _r.start = new Date();
+                    _r.end = new Date();
+
+                    _r.start.setTime( _item.start );
+                    _r.end.setTime( _item.end );
+                    return false;
+                }
+            });
+        }
+
+        if( !_r.start ){
+            _r.start = new Date();
+            _r.end = new Date();
+        }
 
         return _r;
     }
     //
-    /// 针对周的日期格式化
+    /// 针对月份日期格式化 YY-MM
     //
-    function parseWeekDate( _dateStr ){
+    function parseYearDateSpecial( _dateStr ){
+        _dateStr = $.trim( _dateStr || '' );
+        var _r = { start: null, end: null }, _year;
+
+        if( _dateStr ){
+            _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+            _year = _dateStr.slice( 0, 4 );
+            _r.start = new Date( _year, 0, 1 );
+        }
+
+        if( !_r.start ){
+            _r.start = new Date();
+            _r.end = new Date();
+        }
+        return _r;
     }
+
 
 </script>
 </head>    
@@ -165,6 +244,12 @@
                         <input type="text" name="date2" value="" datatype="daterange" emel="/em" />
                         <em></em>
                     </dd>
+                    <dd>
+                        <input type="text" name="date2" value="" datatype="daterange" emel="/em" maxvalue="now" />
+                        <input type="text" name="date2" value="" datatype="daterange" emel="/em" maxvalue="now" />
+                        maxvalue="now"
+                        <em></em>
+                    </dd>
                 </dl>
 
             </dd>
@@ -174,25 +259,112 @@
             <dt>周</dt>
             <dd>
                 <dl>
-                    <dt>normal( week )</dt>
+                    <dt>normal</dt>
                     <dd>
-                        <input type="text" multidate="week" currentcanselect="true" 
+                        <input type="text" 
+                        multidate="week" 
+                        currentcanselect="true" 
                         /> 
                     </dd>
                     <dd>
-                        <input type="text" multidate="week" currentcanselect="true" 
+                        <input type="text" 
+                        multidate="week" 
+                        currentcanselect="true" 
                         fullDateFormat="{0}"
                         dateFormat="YYWWK"
-                        dateParse="parseWeekDate"
+                        dateParse="parseWeekDateSpecial"
                         /> dateformat="YYWWK"
                     </dd>
                 </dl>
 
                 <dl>
-                    <dt>week range( week range )</dt>
+                    <dt>date range</dt>
                     <dd>
-                        <input type="text" name="date2" value="" datatype="daterange" emel="/em" />
-                        <input type="text" name="date2" value="" datatype="daterange" emel="/em" />
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY-MM-DD"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{1}"
+                            dateFormat="YY-MM-DD"
+                            emel="/em" 
+                            />
+                        <em></em>
+                    </dd>
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYWWK"
+                            dateParse="parseWeekDateSpecial"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYWWK"
+                            dateParse="parseWeekDateSpecial"
+                            emel="/em" 
+                            /> 
+                            dateformat="YYWWK"
+                        <em></em>
+                    </dd>
+                    <dd>
+                        <input type="text" value="now" 
+                            datatype="daterange"
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYWWK"
+                            dateParse="parseWeekDateSpecial"
+                            emel="/em" 
+                            />
+                        <input type="text" value="now" 
+                            datatype="daterange"  
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYWWK"
+                            dateParse="parseWeekDateSpecial"
+                            emel="/em" 
+                            /> 
+                            dateformat="YYWWK"
+                        <em></em>
+                    </dd>
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYWWK"
+                            dateParse="parseWeekDateSpecial"
+                            maxvalue="now"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYWWK"
+                            dateParse="parseWeekDateSpecial"
+                            maxvalue="now"
+                            emel="/em" 
+                            /> 
+                            dateformat="YYWWK"
+                            , maxvalue="now"
                         <em></em>
                     </dd>
                 </dl>
@@ -200,165 +372,355 @@
         </dl>
 
         <dl>
-            <dt>special format</dt>
+            <dt>月</dt>
             <dd>
-                <input type="text" name="date1" class="testitem" 
-                multidate="date" 
-                currentcanselect="true" 
-                dateFormat="YYMMDD"
-                /> date ( dateformat="YYMMDD" )
-            </dd>
-            <dd>
-                <input type="text" name="date1" class="testitem" value="20130910" 
-                multidate="date" 
-                currentcanselect="true" 
-                dateFormat="YYMMDD"
-                /> date ( dateformat="YYMMDD" )
-            </dd>
-            <dd>
-                <input type="text" name="date1" class="testitem" 
-                multidate="date" 
-                currentcanselect="true" 
-                dateFormat="YY/MM/DD"
-                /> date ( dateformat="YY/MM/DD" )
-            </dd>
-            <dd>
-                <input type="text" name="date1" class="testitem" value="2014/09/10"
-                multidate="date" 
-                currentcanselect="true" 
-                dateFormat="YY/MM/DD"
-                /> date ( dateformat="YY/MM/DD" )
-            </dd>
-            <dd>
-            </dd>
-            <dd>
-                <input type="text" name="date1" value="" class="testitem"  
-                multidate="week" currentcanselect="true" 
-                fullDateFormat="{0} ~ {1}"
-                /> week ( fullDateFormat="{0} ~ {1}" )
-            </dd>
-            <dd>
-                <input type="text" name="date1" value="" class="testitem"  
-                multidate="week" currentcanselect="true" 
-                dateFormat="YY/MM/DD"
-                fullDateFormat="{0} ~ {1}"
-                /> week ( dateFormat="YY/MM/DD", fullDateFormat="{0} ~ {1}" )
-            </dd>
+                <dl>
+                    <dt>normal</dt>
+                    <dd>
+                        <input type="text" 
+                        multidate="month" 
+                        currentcanselect="true" 
+                        /> 
+                    </dd>
+                    <dd>
+                        <input type="text" 
+                        multidate="month" 
+                        currentcanselect="true" 
+                        fullDateFormat="{0}"
+                        dateFormat="YY-MM"
+                        dateParse="parseMonthDateSpecial"
+                        /> dateformat="YY-MM"
+                    </dd>
+                </dl>
 
-            <dd>
-                <input type="text" name="date3" value="" class="testitem" 
-                multidate="month" 
-                currentcanselect="true" 
-                /> month
-            </dd>
+                <dl>
+                    <dt>date range</dt>
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="month" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY-MM-DD"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="month" 
+                            currentcanselect="true" 
+                            fullDateFormat="{1}"
+                            dateFormat="YY-MM-DD"
+                            emel="/em" 
+                            />
+                        <em></em>
+                    </dd>
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="month" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY-MM"
+                            dateParse="parseMonthDateSpecial"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="month" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY-MM"
+                            dateParse="parseMonthDateSpecial"
+                            emel="/em" 
+                            /> 
+                            dateformat="YY-MM"
+                        <em></em>
+                    </dd>
+                    <dd>
+                        <input type="text" value="now" 
+                            datatype="daterange"
+                            multidate="month" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY-MM"
+                            dateParse="parseMonthDateSpecial"
+                            emel="/em" 
+                            />
+                        <input type="text" value="now" 
+                            datatype="daterange"  
+                            multidate="month" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY-MM"
+                            dateParse="parseMonthDateSpecial"
+                            emel="/em" 
+                            /> 
+                            dateformat="YY-MM"
+                        <em></em>
+                    </dd>
 
-            <dd>
-                <input type="text" name="date3" value="" class="testitem" 
-                multidate="month" 
-                currentcanselect="true" 
-                dateFormat="YY/MM/DD"
-                fullDateFormat="{0} ~ {1}"
-                /> month ( dateFormat="YY/MM/DD", fullDateFormat="{0} ~ {1}" )
-            </dd>
-
-            <dd>
-                <input type="text" name="date3" value="now" class="testitem" 
-                multidate="month" 
-                currentcanselect="true" 
-
-                fullDateFormat="{0}"
-                dateFormat="YY-MM"
-                dateParse="parseYearMonthDate"
-                /> month ( dateFormat="YY-MM", fullDateFormat="{0}", dateParse="parseYearMonthDate" )
-            </dd>
-
-            <dd>
-                <input type="text" name="date3" class="testitem" value="1998-10"
-                multidate="month" 
-                currentcanselect="true" 
-
-                fullDateFormat="{0}"
-                dateFormat="YY-MM"
-                dateParse="parseYearMonthDate"
-                /> month ( dateFormat="YY-MM", fullDateFormat="{0}", dateParse="parseYearMonthDate" )
-            </dd>
-
-            <dd>
-                <input type="text" name="date2" multidate="season" value="" currentcanselect="true" class="testitem" />
-                <input type="button" class="UXCCalendar_btn" /> season
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" value="" class="testitem"  
-                multidate="season" currentcanselect="true" 
-                fullDateFormat="{0} ~ {1}"
-                /> season ( fullDateFormat="{0} ~ {1}" )
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" value="" class="testitem"  
-                multidate="season" currentcanselect="true" 
-                dateFormat="YY/MM/DD"
-                fullDateFormat="{0} ~ {1}"
-                /> season ( dateFormat="YY/MM/DD", fullDateFormat="{0} ~ {1}" )
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" value="" class="testitem"  
-                multidate="season" currentcanselect="true" 
-                dateFormat="YY-MM"
-                fullDateFormat="{0} ~ {1}"
-                dateParse="parseSeasonDate"
-                /> season ( dateFormat="YY-MM", fullDateFormat="{0} ~ {1}", dateParse="parseSeasonDate" )
-            </dd>
-
-            <dd>
-                <input type="text" name="date1" value="2015-01 ~ 2015-03" class="testitem"  
-                multidate="season" currentcanselect="true" 
-                dateFormat="YY-MM"
-                fullDateFormat="{0} ~ {1}"
-                dateParse="parseSeasonDate"
-                /> season ( dateFormat="YY-MM", fullDateFormat="{0} ~ {1}", dateParse="parseSeasonDate" )
-            </dd>
-
-            <dd>
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="month" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY-MM"
+                            dateParse="parseMonthDateSpecial"
+                            maxvalue="now"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="month" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY-MM"
+                            dateParse="parseMonthDateSpecial"
+                            maxvalue="now"
+                            emel="/em" 
+                            /> 
+                            dateformat="YY-MM"
+                            , maxvalue="now"
+                        <em></em>
+                    </dd>
+                </dl>
             </dd>
         </dl>
 
         <dl>
-            <dt>normal format</dt>
+            <dt>季</dt>
             <dd>
-                <input type="text" name="date1" class="testitem" 
-                multidate="date" 
-                currentcanselect="true"
-                /> date
-            </dd>
-            <dd>
-                <input type="text" name="date1" value="" class="testitem" 
-                multidate="week" 
-                currentcanselect="true" 
-                /> week
-            </dd>
-            <dd>
-                <input type="text" name="date3" value="" class="testitem" 
-                multidate="month" 
-                currentcanselect="true" 
-                /> month
-                </dd>
-            <dd>
-                <input type="text" name="date2" value="" class="testitem" 
-                multidate="season" 
-                currentcanselect="true" 
-                />
-                <input type="button" class="UXCCalendar_btn" /> season
-            </dd>
-            <dd>
-                date range:
-                <input type="text" name="date2" value="2013-06-03" multidate="daterange" maxvalue="2013-06-30" />
-                <input type="text" name="date2" value="2013-06-03" multidate="daterange" maxvalue="2013-06-30" />
+                <dl>
+                    <dt>normal</dt>
+                    <dd>
+                        <input type="text" 
+                        multidate="season" 
+                        currentcanselect="true" 
+                        /> 
+                    </dd>
+                    <dd>
+                        <input type="text" 
+                        multidate="season" 
+                        currentcanselect="true" 
+                        fullDateFormat="{0}"
+                        dateFormat="YYQYQ"
+                        dateParse="parseSeasonDateSpecial"
+                        /> dateformat="YYQYQ"
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt>date range</dt>
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="season" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY-MM-DD"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="season" 
+                            currentcanselect="true" 
+                            fullDateFormat="{1}"
+                            dateFormat="YY-MM-DD"
+                            emel="/em" 
+                            />
+                        <em></em>
+                    </dd>
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="season" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYQYQ"
+                            dateParse="parseSeasonDateSpecial"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="season" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYQYQ"
+                            dateParse="parseSeasonDateSpecial"
+                            emel="/em" 
+                            /> 
+                            dateformat="YYQYQ"
+                        <em></em>
+                    </dd>
+                    <dd>
+                        <input type="text" value="now" 
+                            datatype="daterange"
+                            multidate="season" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYQYQ"
+                            dateParse="parseSeasonDateSpecial"
+                            emel="/em" 
+                            />
+                        <input type="text" value="now" 
+                            datatype="daterange"  
+                            multidate="season" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYQYQ"
+                            dateParse="parseSeasonDateSpecial"
+                            emel="/em" 
+                            /> 
+                            dateformat="YYQYQ"
+                        <em></em>
+                    </dd>
+
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="season" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYQYQ"
+                            dateParse="parseSeasonDateSpecial"
+                            maxvalue="now"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="season" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYQYQ"
+                            dateParse="parseSeasonDateSpecial"
+                            maxvalue="now"
+                            emel="/em" 
+                            /> 
+                            dateformat="YYQYQ"
+                            , maxvalue="now"
+                        <em></em>
+                    </dd>
+                </dl>
             </dd>
         </dl>
 
+        <dl>
+            <dt>年</dt>
+            <dd>
+                <dl>
+                    <dt>normal</dt>
+                    <dd>
+                        <input type="text" 
+                        multidate="year" 
+                        currentcanselect="true" 
+                        /> 
+                    </dd>
+                    <dd>
+                        <input type="text" 
+                        multidate="year" 
+                        currentcanselect="true" 
+                        fullDateFormat="{0}"
+                        dateFormat="YY"
+                        dateParse="parseYearDateSpecial"
+                        /> dateformat="YY"
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt>date range</dt>
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="year" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY-MM-DD"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="year" 
+                            currentcanselect="true" 
+                            fullDateFormat="{1}"
+                            dateFormat="YY-MM-DD"
+                            emel="/em" 
+                            />
+                        <em></em>
+                    </dd>
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="year" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY"
+                            dateParse="parseYearDateSpecial"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="year" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY"
+                            dateParse="parseYearDateSpecial"
+                            emel="/em" 
+                            /> 
+                            dateformat="YY"
+                        <em></em>
+                    </dd>
+                    <dd>
+                        <input type="text" value="now" 
+                            datatype="daterange"
+                            multidate="year" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY"
+                            dateParse="parseYearDateSpecial"
+                            emel="/em" 
+                            />
+                        <input type="text" value="now" 
+                            datatype="daterange"  
+                            multidate="year" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY"
+                            dateParse="parseYearDateSpecial"
+                            emel="/em" 
+                            /> 
+                            dateformat="YY"
+                        <em></em>
+                    </dd>
+
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="year" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY"
+                            dateParse="parseYearDateSpecial"
+                            maxvalue="now"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="year" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY"
+                            dateParse="parseYearDateSpecial"
+                            maxvalue="now"
+                            emel="/em" 
+                            /> 
+                            dateformat="YY"
+                            , maxvalue="now"
+                        <em></em>
+                    </dd>
+                </dl>
+            </dd>
+        </dl>
     </form>
 
     <div style="height:3000px;"></div>
