@@ -157,6 +157,8 @@
             
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
             
+                <li><a href="../classes/window.Bizs.DMultiDate.html">window.Bizs.DMultiDate</a></li>
+            
                 <li><a href="../classes/window.Bizs.DropdownTree.html">window.Bizs.DropdownTree</a></li>
             
                 <li><a href="../classes/window.Bizs.FormLogic.html">window.Bizs.FormLogic</a></li>
@@ -471,6 +473,19 @@
      *                  errorno: 0( 正确 ), 非0( 错误 )
      *                  &lt;p&gt;datavalidurl=&quot;./data/handler.php?key={0}&quot;&lt;/p&gt;
      *                  {0} 代表 value
+     *              &lt;/dd&gt;
+     *              &lt;dd&gt;
+     *                  &lt;b&gt;datavalidCheckCallback:&lt;/b&gt; 验证内容正确与否的回调(优先级比 datavalidUrl 高)
+&lt;pre&gt;window.datavalidCheckCallback =
+function (){
+    var _r = { &#x27;errorno&#x27;: 1, errmsg:&#x27;验证码错误&#x27; }, _sp = $( this ), _v = _sp.val().trim().toLowerCase();
+
+    if( _v &amp;&amp; _v === window.CHECK_CODE ){
+        _r.errorno = 0;
+    }
+
+    return _r;
+};&lt;pre&gt;
      *              &lt;/dd&gt;
      *              &lt;dd&gt;&lt;b&gt;datavalidNoCache:&lt;/b&gt; 是否禁止缓存, default = false&lt;/dd&gt;
      *              &lt;dd&gt;&lt;b&gt;datavalidAjaxType:&lt;/b&gt; ajax 请求类型, default = get&lt;/dd&gt;
@@ -1240,7 +1255,7 @@
                     switch( _datatype ){
                         default:
                             {
-                                return JC.f.parseDate( _item.attr(&#x27;minvalue&#x27;), _item );
+                                return JC.f.parseDate( _item.attr(&#x27;minvalue&#x27;), _item, true );
                             }
                     }
                 }else{
@@ -1254,11 +1269,11 @@
         , maxvalue: 
             function( _item, _isFloat ){ 
                 if( typeof _isFloat == &#x27;string&#x27; ){
-                    var _datatype = _isFloat.toLowerCase().trim();
+                    var _datatype = _isFloat.toLowerCase().trim(), _r;
                     switch( _datatype ){
                         default:
                             {
-                                return JC.f.parseDate( _item.attr(&#x27;maxvalue&#x27;), _item );
+                                return JC.f.parseDate( _item.attr(&#x27;maxvalue&#x27;), _item, true );
                             }
                     }
                 }else{

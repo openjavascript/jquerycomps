@@ -157,6 +157,8 @@
             
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
             
+                <li><a href="../classes/window.Bizs.DMultiDate.html">window.Bizs.DMultiDate</a></li>
+            
                 <li><a href="../classes/window.Bizs.DropdownTree.html">window.Bizs.DropdownTree</a></li>
             
                 <li><a href="../classes/window.Bizs.FormLogic.html">window.Bizs.FormLogic</a></li>
@@ -688,16 +690,17 @@
      * 从日期字符串解析日期对象
      * &lt;br /&gt;兼容 JC.Calendar 日期格式
      * @method  parseDate
-     * @param   {date}      string
+     * @param   {date}      _date
      * @param   {selector}  _selector   如果 _selector 为真, 则尝试从 _selector 的 html 属性 dateParse 对日期进行格式化
+     * @param   {boolean}   _forceISO   是否强制转换为ISO日期
      * @return  {date|null}
      * @static
      */
-    function parseDate( _date, _selector ){
+    function parseDate( _date, _selector, _forceISO ){
         if( !_date ) return null;
         var _parse = parseISODate;
             
-        _selector 
+        _selector &amp;&amp; !_forceISO
             &amp;&amp; ( _selector = $( _selector ) ).length
             &amp;&amp; _selector.attr( &#x27;dateParse&#x27; )
             &amp;&amp; ( _parse = window[ _selector.attr( &#x27;dateParse&#x27; ) ] || _parse )

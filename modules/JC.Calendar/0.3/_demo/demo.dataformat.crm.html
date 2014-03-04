@@ -115,6 +115,16 @@
             _normalDate = _dateStr.replace( /[^\d]+/g, '' );
             _dateStr = _dateStr.split( 'W' );
 
+            if( _normalDate.length === 8 ){
+                _r.start = JC.f.parseISODate( _normalDate );
+                _r.end = _r.start;
+                return _r;
+            }else if( _normalDate.length === 16 ){
+                _r.start = JC.f.parseISODate( _normalDate.slice( 0, 8 ) );
+                _r.end = JC.f.parseISODate( _normalDate.slice( 8, 16 ) );
+                return _r;
+            }
+
             var _year, _week, _sdate, _edate, _weeks, _date
 
             _year = parseInt( _dateStr[0], 10 );
@@ -135,11 +145,6 @@
             });
         }
 
-        if( !_r.start ){
-            _r.start = new Date();
-            _r.end = new Date();
-        }
-
         return _r;
     }
     //
@@ -147,30 +152,49 @@
     //
     function parseMonthDateSpecial( _dateStr ){
         _dateStr = $.trim( _dateStr || '' );
-        var _r = { start: null, end: null };
+        var _r = { start: null, end: null }, _normalDate;
 
         if( _dateStr ){
+            _normalDate = _dateStr.replace( /[^\d]+/g, '' );
             _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+
+            if( _normalDate.length === 8 ){
+                _r.start = JC.f.parseISODate( _normalDate );
+                _r.end = _r.start;
+                return _r;
+            }else if( _normalDate.length === 16 ){
+                _r.start = JC.f.parseISODate( _normalDate.slice( 0, 8 ) );
+                _r.end = JC.f.parseISODate( _normalDate.slice( 8, 16 ) );
+                return _r;
+            }
+
             var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4, 6 ), 10 ) - 1;
 
             _r.start = new Date( _year, _month, 1 );
         }
 
-        if( !_r.start ){
-            _r.start = new Date();
-            _r.end = new Date();
-        }
-        return _r;
+         return _r;
     }
     //
     /// 针对季度日期格式化 YY-MM ~ YY-MM
     //
     function parseSeasonDateSpecial( _dateStr ){
         _dateStr = $.trim( _dateStr || '' );
-        var _r = { start: null, end: null };
+        var _r = { start: null, end: null }, _normalDate;
 
         if( _dateStr ){
+            _normalDate = _dateStr.replace( /[^\d]+/g, '' );
             _dateStr = _dateStr.split( 'Q' );
+
+            if( _normalDate.length === 8 ){
+                _r.start = JC.f.parseISODate( _normalDate );
+                _r.end = _r.start;
+                return _r;
+            }else if( _normalDate.length === 16 ){
+                _r.start = JC.f.parseISODate( _normalDate.slice( 0, 8 ) );
+                _r.end = JC.f.parseISODate( _normalDate.slice( 8, 16 ) );
+                return _r;
+            }
 
             var _year = parseInt( _dateStr[0], 10 ), _season = parseInt( _dateStr[1], 10 )
                 , _sdate = JC.f.pureDate( new Date( _dateStr[0] ), 0, 1 )
@@ -190,11 +214,6 @@
             });
         }
 
-        if( !_r.start ){
-            _r.start = new Date();
-            _r.end = new Date();
-        }
-
         return _r;
     }
     //
@@ -205,15 +224,23 @@
         var _r = { start: null, end: null }, _year;
 
         if( _dateStr ){
+            _normalDate = _dateStr.replace( /[^\d]+/g, '' );
             _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+
+            if( _normalDate.length === 8 ){
+                _r.start = JC.f.parseISODate( _normalDate );
+                _r.end = _r.start;
+                return _r;
+            }else if( _normalDate.length === 16 ){
+                _r.start = JC.f.parseISODate( _normalDate.slice( 0, 8 ) );
+                _r.end = JC.f.parseISODate( _normalDate.slice( 8, 16 ) );
+                return _r;
+            }
+
             _year = _dateStr.slice( 0, 4 );
             _r.start = new Date( _year, 0, 1 );
         }
 
-        if( !_r.start ){
-            _r.start = new Date();
-            _r.end = new Date();
-        }
         return _r;
     }
 
@@ -390,6 +417,32 @@
                             , maxvalue="now"
                         <em></em>
                     </dd>
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYWWK"
+                            dateParse="parseWeekDateSpecial"
+                            maxvalue="2014-10-01"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="week" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYWWK"
+                            dateParse="parseWeekDateSpecial"
+                            maxvalue="2014-10-01"
+                            emel="/em" 
+                            /> 
+                            dateformat="YYWWK"
+                            , maxvalue="2014-10-01"
+                        <em></em>
+                    </dd>
+
                 </dl>
             </dd>
         </dl>
@@ -507,6 +560,33 @@
                             , maxvalue="now"
                         <em></em>
                     </dd>
+
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="month" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY-MM"
+                            dateParse="parseMonthDateSpecial"
+                            maxvalue="2014-10-01"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="month" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY-MM"
+                            dateParse="parseMonthDateSpecial"
+                            maxvalue="2014-10-01"
+                            emel="/em" 
+                            /> 
+                            dateformat="YY-MM"
+                            , maxvalue="2014-10-01"
+                        <em></em>
+                    </dd>
+
                 </dl>
             </dd>
         </dl>
@@ -624,6 +704,33 @@
                             , maxvalue="now"
                         <em></em>
                     </dd>
+
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="season" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYQYQ"
+                            dateParse="parseSeasonDateSpecial"
+                            maxvalue="2014-09-01"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="season" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YYQYQ"
+                            dateParse="parseSeasonDateSpecial"
+                            maxvalue="now"
+                            emel="/em" 
+                            /> 
+                            dateformat="YYQYQ"
+                            , maxvalue="2014-09-01"
+                        <em></em>
+                    </dd>
+
                 </dl>
             </dd>
         </dl>
@@ -741,6 +848,33 @@
                             , maxvalue="now"
                         <em></em>
                     </dd>
+
+                    <dd>
+                        <input type="text" value="" 
+                            datatype="daterange"
+                            multidate="year" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY"
+                            dateParse="parseYearDateSpecial"
+                            maxvalue="2018"
+                            emel="/em" 
+                            />
+                        <input type="text" value="" 
+                            datatype="daterange"  
+                            multidate="year" 
+                            currentcanselect="true" 
+                            fullDateFormat="{0}"
+                            dateFormat="YY"
+                            dateParse="parseYearDateSpecial"
+                            maxvalue="2018"
+                            emel="/em" 
+                            /> 
+                            dateformat="YY"
+                            , maxvalue="2018"
+                        <em></em>
+                    </dd>
+
                 </dl>
             </dd>
         </dl>

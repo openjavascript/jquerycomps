@@ -83,6 +83,7 @@ requirejs.config( {
         , 'Bizs.MoneyTips': 'modules/Bizs.MoneyTips/0.1/MoneyTips'
         , 'Bizs.MultiDate': 'modules/Bizs.MultiDate/0.1/MultiDate'
         , 'Bizs.MultiSelect': 'modules/Bizs.MultiSelect/0.1/MultiSelect'
+        , 'Bizs.DMultiDate': 'modules/Bizs.DMultiDate/0.1/DMultiDate'
 
         , 'plugins.jquery.form': 'plugins/jquery.form/3.36.0/jquery.form'
         , 'plugins.jquery.rate': 'plugins/jquery.rate/2.5.2/jquery.rate'
