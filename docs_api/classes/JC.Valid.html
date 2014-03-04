@@ -356,6 +356,17 @@
                  <p>datavalidurl=&quot;./data/handler.php?key={0}&quot;</p>
                  {0} 代表 value
              </dd>
+             <dd>
+                 <b>datavalidCheckCallback:</b> 验证内容正确与否的回调(优先级比 datavalidUrl 高)
+<pre>window.datavalidCheckCallback =
+function (){
+   var _r = { &#39;errorno&#39;: 1, errmsg:&#39;验证码错误&#39; }, _sp = $( this ), _v = _sp.val().trim().toLowerCase();
+   if( _v &amp;&amp; _v === window.CHECK_CODE ){
+       _r.errorno = 0;
+   }
+   return _r;
+};<pre>
+             </dd>
              <dd><b>datavalidNoCache:</b> 是否禁止缓存, default = false</dd>
              <dd><b>datavalidAjaxType:</b> ajax 请求类型, default = get</dd>
              <dd><b>datavalidRequestData:</b> ajax 请求数据, json data</dd>
@@ -715,7 +726,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1471"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1471</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1484"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1484</code></a>
         </p>
     </div>
     <div class="description">
@@ -758,7 +769,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2043"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2043</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2056"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2056</code></a>
         </p>
     </div>
     <div class="description">
@@ -821,7 +832,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1403"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1403</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1416"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1416</code></a>
         </p>
     </div>
     <div class="description">
@@ -863,7 +874,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1817"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1817</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1830"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1830</code></a>
         </p>
     </div>
     <div class="description">
@@ -889,7 +900,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1798"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1798</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1811"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1811</code></a>
         </p>
     </div>
     <div class="description">
@@ -912,7 +923,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l489"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:489</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l502"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:502</code></a>
         </p>
     </div>
     <div class="description">
@@ -962,7 +973,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l507"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:507</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l520"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:520</code></a>
         </p>
     </div>
     <div class="description">
@@ -1002,7 +1013,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l522"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:522</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l535"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:535</code></a>
         </p>
     </div>
     <div class="description">
@@ -1046,7 +1057,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l732"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:732</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l745"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:745</code></a>
         </p>
     </div>
     <div class="description">
@@ -1088,7 +1099,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1429"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1429</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1442"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1442</code></a>
         </p>
     </div>
     <div class="description">
@@ -1131,7 +1142,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1900"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1900</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1913"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1913</code></a>
         </p>
     </div>
     <div class="description">
@@ -1171,7 +1182,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1256"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1256</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1269"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1269</code></a>
         </p>
     </div>
     <div class="description">
@@ -1223,7 +1234,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l546"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:546</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l559"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:559</code></a>
         </p>
     </div>
     <div class="description">
@@ -1280,7 +1291,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1297"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1297</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1310"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1310</code></a>
         </p>
     </div>
     <div class="description">
@@ -1327,7 +1338,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1848"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1848</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1861"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1861</code></a>
         </p>
     </div>
     <div class="description">
@@ -1362,7 +1373,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1883"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1883</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1896"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1896</code></a>
         </p>
     </div>
     <div class="description">
@@ -1402,7 +1413,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1450"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1450</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1463"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1463</code></a>
         </p>
     </div>
     <div class="description">
@@ -1451,7 +1462,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2805"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2805</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2818"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2818</code></a>
         </p>
     </div>
     <div class="description">
@@ -1507,7 +1518,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2415"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2415</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2428"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2428</code></a>
         </p>
     </div>
     <div class="description">
@@ -1558,7 +1569,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2392"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2392</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2405"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2405</code></a>
         </p>
     </div>
     <div class="description">
@@ -1593,7 +1604,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l514"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:514</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l527"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:527</code></a>
         </p>
     </div>
     <div class="description">
@@ -1631,7 +1642,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1514"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1514</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1527"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1527</code></a>
         </p>
     </div>
     <div class="description">
@@ -1678,7 +1689,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l783"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:783</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l796"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:796</code></a>
         </p>
     </div>
     <div class="description">
@@ -1725,7 +1736,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l824"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:824</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l837"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:837</code></a>
         </p>
     </div>
     <div class="description">
@@ -1765,7 +1776,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l582"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:582</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l595"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:595</code></a>
         </p>
     </div>
     <div class="description">
@@ -1803,7 +1814,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1055"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1055</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1068"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1068</code></a>
         </p>
     </div>
     <div class="description">
@@ -1843,7 +1854,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1386"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1386</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1399"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1399</code></a>
         </p>
     </div>
     <div class="description">
@@ -1886,7 +1897,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1553"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1553</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1566"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1566</code></a>
         </p>
     </div>
     <div class="description">
@@ -1928,7 +1939,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1533"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1533</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1546"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1546</code></a>
         </p>
     </div>
     <div class="description">
@@ -1976,7 +1987,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1690"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1690</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1703"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1703</code></a>
         </p>
     </div>
     <div class="description">
@@ -2022,7 +2033,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1714"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1714</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1727"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1727</code></a>
         </p>
     </div>
     <div class="description">
@@ -2071,7 +2082,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1566"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1566</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1579"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1579</code></a>
         </p>
     </div>
     <div class="description">
@@ -2120,7 +2131,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1108"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1108</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1121"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1121</code></a>
         </p>
     </div>
     <div class="description">
@@ -2167,7 +2178,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1182"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1182</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1195"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1195</code></a>
         </p>
     </div>
     <div class="description">
@@ -2221,7 +2232,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l350"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:350</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l363"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:363</code></a>
         </p>
     </div>
     <div class="description">
@@ -2264,7 +2275,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l367"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:367</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l380"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:380</code></a>
         </p>
     </div>
     <div class="description">
@@ -2296,7 +2307,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l875"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:875</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l888"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:888</code></a>
         </p>
     </div>
     <div class="description">
@@ -2328,7 +2339,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l892"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:892</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l905"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:905</code></a>
         </p>
     </div>
     <div class="description">
@@ -2363,7 +2374,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1606"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1606</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1619"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1619</code></a>
         </p>
     </div>
     <div class="description">
@@ -2415,7 +2426,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1627"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1627</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1640"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1640</code></a>
         </p>
     </div>
     <div class="description">
@@ -2464,7 +2475,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1587"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1587</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1600"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1600</code></a>
         </p>
     </div>
     <div class="description">
@@ -2506,7 +2517,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1672"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1672</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1685"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1685</code></a>
         </p>
     </div>
     <div class="description">
@@ -2547,7 +2558,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1649"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1649</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1662"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1662</code></a>
         </p>
     </div>
     <div class="description">
@@ -2588,7 +2599,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1955"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1955</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1968"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1968</code></a>
         </p>
     </div>
     <div class="description">
@@ -2646,7 +2657,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1737"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1737</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1750"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1750</code></a>
         </p>
     </div>
     <div class="description">
@@ -2685,7 +2696,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2450"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2450</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2463"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2463</code></a>
         </p>
     </div>
     <div class="description">
@@ -2726,7 +2737,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2192"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2192</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2205"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2205</code></a>
         </p>
     </div>
     <div class="description">
@@ -2752,7 +2763,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1807"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1807</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1820"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1820</code></a>
         </p>
     </div>
     <div class="description">
@@ -2779,7 +2790,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l654"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:654</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l667"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:667</code></a>
         </p>
     </div>
     <div class="description">
@@ -2835,7 +2846,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l679"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:679</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l692"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:692</code></a>
         </p>
     </div>
     <div class="description">
@@ -2885,7 +2896,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l637"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:637</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l650"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:650</code></a>
         </p>
     </div>
     <div class="description">
@@ -2924,7 +2935,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1866"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1866</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1879"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1879</code></a>
         </p>
     </div>
     <div class="description">
@@ -2959,7 +2970,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1934"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1934</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1947"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1947</code></a>
         </p>
     </div>
     <div class="description">
@@ -2993,7 +3004,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1789"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1789</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1802"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1802</code></a>
         </p>
     </div>
     <div class="description">
@@ -3014,7 +3025,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1369"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1369</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1382"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1382</code></a>
         </p>
     </div>
     <div class="description">
@@ -3056,7 +3067,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l359"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:359</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l372"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:372</code></a>
         </p>
     </div>
     <div class="description">
@@ -3094,7 +3105,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2216"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2216</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2229"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2229</code></a>
         </p>
     </div>
     <div class="description">
@@ -3126,7 +3137,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1828"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1828</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1841"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1841</code></a>
         </p>
     </div>
     <div class="description">
@@ -3166,7 +3177,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1494"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1494</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1507"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1507</code></a>
         </p>
     </div>
     <div class="description">
@@ -3215,7 +3226,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2747"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2747</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2760"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2760</code></a>
         </p>
     </div>
     <div class="description">
@@ -3259,7 +3270,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1763"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1763</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1776"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1776</code></a>
         </p>
     </div>
     <div class="description">
@@ -3305,7 +3316,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1917"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1917</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l1930"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:1930</code></a>
         </p>
     </div>
     <div class="description">
@@ -3342,7 +3353,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l815"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:815</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l828"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:828</code></a>
         </p>
     </div>
     <div class="description">
@@ -3365,7 +3376,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l756"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:756</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l769"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:769</code></a>
         </p>
     </div>
     <div class="description">
@@ -3388,7 +3399,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l715"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:715</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l728"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:728</code></a>
         </p>
     </div>
     <div class="description">
@@ -3403,7 +3414,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l743"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:743</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l756"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:756</code></a>
         </p>
     </div>
     <div class="description">
@@ -3427,7 +3438,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l707"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:707</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l720"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:720</code></a>
         </p>
     </div>
     <div class="description">
@@ -3442,7 +3453,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l840"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:840</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l853"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:853</code></a>
         </p>
     </div>
     <div class="description">
@@ -3457,7 +3468,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l768"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:768</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l781"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:781</code></a>
         </p>
     </div>
     <div class="description">
@@ -3483,7 +3494,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l724"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:724</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l737"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:737</code></a>
         </p>
     </div>
     <div class="description">
@@ -3500,7 +3511,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2882"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2882</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2895"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2895</code></a>
         </p>
     </div>
     <div class="description">
@@ -3513,7 +3524,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2878"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2878</code></a>
+        <a href="../files/.._modules_JC.Valid_0.2_Valid.js.html#l2891"><code>..&#x2F;modules&#x2F;JC.Valid&#x2F;0.2&#x2F;Valid.js:2891</code></a>
         </p>
     </div>
     <div class="description">

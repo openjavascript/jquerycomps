@@ -464,6 +464,19 @@
      *                  &lt;p&gt;datavalidurl=&quot;./data/handler.php?key={0}&quot;&lt;/p&gt;
      *                  {0} 代表 value
      *              &lt;/dd&gt;
+     *              &lt;dd&gt;
+     *                  &lt;b&gt;datavalidCheckCallback:&lt;/b&gt; 验证内容正确与否的回调(优先级比 datavalidUrl 高)
+&lt;pre&gt;window.datavalidCheckCallback =
+function (){
+    var _r = { &#x27;errorno&#x27;: 1, errmsg:&#x27;验证码错误&#x27; }, _sp = $( this ), _v = _sp.val().trim().toLowerCase();
+
+    if( _v &amp;&amp; _v === window.CHECK_CODE ){
+        _r.errorno = 0;
+    }
+
+    return _r;
+};&lt;pre&gt;
+     *              &lt;/dd&gt;
      *              &lt;dd&gt;&lt;b&gt;datavalidNoCache:&lt;/b&gt; 是否禁止缓存, default = false&lt;/dd&gt;
      *              &lt;dd&gt;&lt;b&gt;datavalidAjaxType:&lt;/b&gt; ajax 请求类型, default = get&lt;/dd&gt;
      *              &lt;dd&gt;&lt;b&gt;datavalidRequestData:&lt;/b&gt; ajax 请求数据, json data&lt;/dd&gt;
@@ -1232,7 +1245,7 @@
                     switch( _datatype ){
                         default:
                             {
-                                return JC.f.parseDate( _item.attr(&#x27;minvalue&#x27;), _item );
+                                return JC.f.parseDate( _item.attr(&#x27;minvalue&#x27;), _item, true );
                             }
                     }
                 }else{
@@ -1246,11 +1259,11 @@
         , maxvalue: 
             function( _item, _isFloat ){ 
                 if( typeof _isFloat == &#x27;string&#x27; ){
-                    var _datatype = _isFloat.toLowerCase().trim();
+                    var _datatype = _isFloat.toLowerCase().trim(), _r;
                     switch( _datatype ){
                         default:
                             {
-                                return JC.f.parseDate( _item.attr(&#x27;maxvalue&#x27;), _item );
+                                return JC.f.parseDate( _item.attr(&#x27;maxvalue&#x27;), _item, true );
                             }
                     }
                 }else{
@@ -3202,8 +3215,19 @@
         });
 
         _sp.on( &#x27;DataValidVerify&#x27;, function( _evt, _ignoreStatus, _cb ){
-            var _v = _sp.val().trim(), _tmp, _strData, _url = _sp.attr(&#x27;datavalidurl&#x27;);
+            var _v = _sp.val().trim(), _tmp, _strData
+                , _url = _sp.attr(&#x27;datavalidurl&#x27;)
+                , _datavalidCheckCallback;
             if( !_v ) return;
+
+            _sp.attr(&#x27;datavalidCheckCallback&#x27;)
+                &amp;&amp; ( _datavalidCheckCallback = window[ _sp.attr(&#x27;datavalidCheckCallback&#x27;) ] )
+                ;
+            if( _datavalidCheckCallback ){
+                innerDone( _datavalidCheckCallback.call( _sp ) );
+                return;
+            }
+
             if( !_url ) return;
 
             _sp.data( &#x27;DataValidTm&#x27; ) &amp;&amp; clearTimeout( _sp.data( &#x27;DataValidTm&#x27;) );
@@ -3238,22 +3262,24 @@
                     }else{
                         $.get( _url, _requestData ).done( innerDone );
                     }
-
-                    function innerDone( _d ){
-                        _strData = _d;
-                        try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
-
-                        var _data = { &#x27;key&#x27;: _v, data: _d, &#x27;text&#x27;: _strData };
-
-                        ! JC.f.parseBool( _sp.attr( &#x27;datavalidNoCache&#x27; ) )
-                             &amp;&amp; ( _sp.data( &#x27;DataValidCache&#x27; )[ _v ] = _data );
-
-                        _sp.trigger( &#x27;DataValidUpdate&#x27;, [ _v, _data ] );
-
-                        _cb &amp;&amp; _cb.call( _sp, _data );
-                    }
                 }, 151)
             );
+
+            function innerDone( _d ){
+                _strData = _d;
+                if( typeof _d == &#x27;string&#x27; ){
+                    try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
+                }
+
+                var _data = { &#x27;key&#x27;: _v, data: _d, &#x27;text&#x27;: _strData };
+
+                ! JC.f.parseBool( _sp.attr( &#x27;datavalidNoCache&#x27; ) )
+                     &amp;&amp; ( _sp.data( &#x27;DataValidCache&#x27; )[ _v ] = _data );
+
+                _sp.trigger( &#x27;DataValidUpdate&#x27;, [ _v, _data ] );
+
+                _cb &amp;&amp; _cb.call( _sp, _data );
+            }
 
         });
 
