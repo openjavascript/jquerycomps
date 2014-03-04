@@ -2992,8 +2992,19 @@
         });
 
         _sp.on( 'DataValidVerify', function( _evt, _ignoreStatus, _cb ){
-            var _v = _sp.val().trim(), _tmp, _strData, _url = _sp.attr('datavalidurl');
+            var _v = _sp.val().trim(), _tmp, _strData
+                , _url = _sp.attr('datavalidurl')
+                , _datavalidCheckCallback;
             if( !_v ) return;
+
+            _sp.attr('datavalidCheckCallback')
+                && ( _datavalidCheckCallback = window[ _sp.attr('datavalidCheckCallback') ] )
+                ;
+            if( _datavalidCheckCallback ){
+                innerDone( _datavalidCheckCallback.call( _sp ) );
+                return;
+            }
+
             if( !_url ) return;
 
             _sp.data( 'DataValidTm' ) && clearTimeout( _sp.data( 'DataValidTm') );
@@ -3028,22 +3039,24 @@
                     }else{
                         $.get( _url, _requestData ).done( innerDone );
                     }
-
-                    function innerDone( _d ){
-                        _strData = _d;
-                        try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
-
-                        var _data = { 'key': _v, data: _d, 'text': _strData };
-
-                        ! JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) )
-                             && ( _sp.data( 'DataValidCache' )[ _v ] = _data );
-
-                        _sp.trigger( 'DataValidUpdate', [ _v, _data ] );
-
-                        _cb && _cb.call( _sp, _data );
-                    }
                 }, 151)
             );
+
+            function innerDone( _d ){
+                _strData = _d;
+                if( typeof _d == 'string' ){
+                    try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
+                }
+
+                var _data = { 'key': _v, data: _d, 'text': _strData };
+
+                ! JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) )
+                     && ( _sp.data( 'DataValidCache' )[ _v ] = _data );
+
+                _sp.trigger( 'DataValidUpdate', [ _v, _data ] );
+
+                _cb && _cb.call( _sp, _data );
+            }
 
         });
 
