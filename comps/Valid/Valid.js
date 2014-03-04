@@ -254,6 +254,19 @@
      *                  <p>datavalidurl="./data/handler.php?key={0}"</p>
      *                  {0} 代表 value
      *              </dd>
+     *              <dd>
+     *                  <b>datavalidCheckCallback:</b> 验证内容正确与否的回调(优先级比 datavalidUrl 高)
+<pre>window.datavalidCheckCallback =
+function (){
+    var _r = { 'errorno': 1, errmsg:'验证码错误' }, _sp = $( this ), _v = _sp.val().trim().toLowerCase();
+
+    if( _v && _v === window.CHECK_CODE ){
+        _r.errorno = 0;
+    }
+
+    return _r;
+};<pre>
+     *              </dd>
      *              <dd><b>datavalidNoCache:</b> 是否禁止缓存, default = false</dd>
      *              <dd><b>datavalidAjaxType:</b> ajax 请求类型, default = get</dd>
      *              <dd><b>datavalidRequestData:</b> ajax 请求数据, json data</dd>
@@ -1022,7 +1035,7 @@
                     switch( _datatype ){
                         default:
                             {
-                                return JC.f.parseDate( _item.attr('minvalue'), _item );
+                                return JC.f.parseDate( _item.attr('minvalue'), _item, true );
                             }
                     }
                 }else{
@@ -1036,11 +1049,11 @@
         , maxvalue: 
             function( _item, _isFloat ){ 
                 if( typeof _isFloat == 'string' ){
-                    var _datatype = _isFloat.toLowerCase().trim();
+                    var _datatype = _isFloat.toLowerCase().trim(), _r;
                     switch( _datatype ){
                         default:
                             {
-                                return JC.f.parseDate( _item.attr('maxvalue'), _item );
+                                return JC.f.parseDate( _item.attr('maxvalue'), _item, true );
                             }
                     }
                 }else{
@@ -2992,8 +3005,19 @@
         });
 
         _sp.on( 'DataValidVerify', function( _evt, _ignoreStatus, _cb ){
-            var _v = _sp.val().trim(), _tmp, _strData, _url = _sp.attr('datavalidurl');
+            var _v = _sp.val().trim(), _tmp, _strData
+                , _url = _sp.attr('datavalidurl')
+                , _datavalidCheckCallback;
             if( !_v ) return;
+
+            _sp.attr('datavalidCheckCallback')
+                && ( _datavalidCheckCallback = window[ _sp.attr('datavalidCheckCallback') ] )
+                ;
+            if( _datavalidCheckCallback ){
+                innerDone( _datavalidCheckCallback.call( _sp ) );
+                return;
+            }
+
             if( !_url ) return;
 
             _sp.data( 'DataValidTm' ) && clearTimeout( _sp.data( 'DataValidTm') );
@@ -3028,22 +3052,24 @@
                     }else{
                         $.get( _url, _requestData ).done( innerDone );
                     }
-
-                    function innerDone( _d ){
-                        _strData = _d;
-                        try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
-
-                        var _data = { 'key': _v, data: _d, 'text': _strData };
-
-                        ! JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) )
-                             && ( _sp.data( 'DataValidCache' )[ _v ] = _data );
-
-                        _sp.trigger( 'DataValidUpdate', [ _v, _data ] );
-
-                        _cb && _cb.call( _sp, _data );
-                    }
                 }, 151)
             );
+
+            function innerDone( _d ){
+                _strData = _d;
+                if( typeof _d == 'string' ){
+                    try{ _d = $.parseJSON( _d ); } catch( ex ){ _d = { errorno: 1 }; }
+                }
+
+                var _data = { 'key': _v, data: _d, 'text': _strData };
+
+                ! JC.f.parseBool( _sp.attr( 'datavalidNoCache' ) )
+                     && ( _sp.data( 'DataValidCache' )[ _v ] = _data );
+
+                _sp.trigger( 'DataValidUpdate', [ _v, _data ] );
+
+                _cb && _cb.call( _sp, _data );
+            }
 
         });
 
