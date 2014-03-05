@@ -352,9 +352,9 @@
                     _p.hide();
                     
                     _p.trigger('SuggestSelected', [_sp, _keyword ]);
-                    setTimeout( function(){
+                    JC.f.safeTimeout( function(){
                         _p.selector().trigger( 'blur' );
-                    }, 50);
+                    }, null, 'SuggestItemClick', 300);
                 });
 
                 if( _p._model.sugautoposition() ){
