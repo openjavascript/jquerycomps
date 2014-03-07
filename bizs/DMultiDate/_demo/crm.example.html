@@ -1,0 +1,246 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            *{ margin: 0; padding: 0; }
+            body{ width: 600px; margin: 20px auto 20px; background:#ececec; }
+            dl dd{ margin: 10px 0; }
+            .js_multidateBox{ display: none;}
+        </style>
+        <link href='../../../comps/Tips/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Valid//res/default/style.css' rel='stylesheet' />
+        <script src="../../../lib.js"></script>
+        <script>
+            JC.debug = true; 
+
+            JC.use( [ 'JC.Tips', 'JC.Calendar', 'JC.Form', 'Bizs.DMultiDate', 'Bizs.FormLogic', 'JC.Valid' ] );
+
+            $( document ).ready( function( Tips, Calendar, JCForm, DMultiDate, FormLogic ){
+                var _maxDate = new Date();
+                _maxDate.setDate( _maxDate.getDate() - 1 );
+                $('input.js_multidate').attr( 'maxvalue', JC.f.formatISODate( _maxDate ) );
+
+                window.Bizs && Bizs.MultiDate && ( Bizs.MultiDate.maxDate = _maxDate );
+            }
+            );
+
+            //
+    /// 针对周的日期格式化
+    //
+    function parseWeekDate( _dateStr ){
+        _dateStr = $.trim( _dateStr || '' );
+        var _r = { start: null, end: null }, _normalDate;
+
+        if( _dateStr ){
+            _normalDate = _dateStr.replace( /[^\d]+/g, '' );
+            _dateStr = _dateStr.split( 'W' );
+
+            var _year, _week, _sdate, _edate, _weeks, _date
+
+            _year = parseInt( _dateStr[0], 10 );
+            _week = parseInt( _dateStr[1], 10 );
+            _sdate = JC.f.pureDate( new Date( _dateStr[0] ), 0, 1 );
+            _edate = JC.f.pureDate( new Date( _dateStr[1] ), 0, 1 );
+            _weeks = _weeks || JC.f.weekOfYear( _dateStr[0], JC.Calendar.weekDayOffset );
+
+            $( _weeks ).each( function( _ix, _item ){
+                if( _item.week === _week ){
+                    _r.start = new Date();
+                    _r.end = new Date();
+
+                    _r.start.setTime( _item.start );
+                    _r.end.setTime( _item.end );
+                    return false;
+                }
+            });
+        }
+
+        if( !_r.start ){
+            _r.start = new Date();
+            _r.end = new Date();
+        }
+
+        return _r;
+    }
+
+
+    //
+    /// 针对月份日期格式化 YY-MM
+    //
+    function parseMonthDate( _dateStr ){
+        _dateStr = $.trim( _dateStr || '' );
+        var _r = { start: null, end: null };
+
+        if( _dateStr ){
+            _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+            var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4, 6 ), 10 ) - 1;
+
+            _r.start = new Date( _year, _month, 1 );
+        }
+
+        if( !_r.start ){
+            _r.start = new Date();
+            _r.end = new Date();
+        }
+        return _r;
+    }
+    //
+    /// 针对季度日期格式化 YY-MM ~ YY-MM
+    //
+    function parseSeasonDate( _dateStr ){
+        _dateStr = $.trim( _dateStr || '' );
+        var _r = { start: null, end: null };
+
+        if( _dateStr ){
+            _dateStr = _dateStr.split( 'Q' );
+
+            var _year = parseInt( _dateStr[0], 10 ), _season = parseInt( _dateStr[1], 10 )
+                , _sdate = JC.f.pureDate( new Date( _dateStr[0] ), 0, 1 )
+                , _edate = JC.f.pureDate( new Date( _dateStr[1] ), 0, 1 )
+                , _seasons = JC.f.seasonOfYear( _dateStr[0] )
+                ;
+
+            $( _seasons ).each( function( _ix, _item ){
+                if( _item.season === _season ){
+                    _r.start = new Date();
+                    _r.end = new Date();
+
+                    _r.start.setTime( _item.start );
+                    _r.end.setTime( _item.end );
+                    return false;
+                }
+            });
+        }
+
+        if( !_r.start ){
+            _r.start = new Date();
+            _r.end = new Date();
+        }
+
+        return _r;
+    }
+    //
+    /// 针对月份日期格式化 YY-MM
+    //
+    function parseYearDate( _dateStr ){
+        _dateStr = $.trim( _dateStr || '' );
+        var _r = { start: null, end: null }, _year;
+
+        if( _dateStr ){
+            _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+            _year = _dateStr.slice( 0, 4 );
+            _r.start = new Date( _year, 0, 1 );
+        }
+
+        if( !_r.start ){
+            _r.start = new Date();
+            _r.end = new Date();
+        }
+        return _r;
+    }
+
+
+        </script>
+    </head>    
+    <body>
+        <br /><br /><br /><br /><br /><br />
+        <form action='' method='get' class="js_autoFillUrlForm">
+            <dl>
+                <dt>JC.Calendar  CRM 示例</dt>
+                <dd>
+                <select name="dataspan" class="dataspan js_autoDMultiDate"
+                    mddateBox="/div.js_multidateDateBox"
+                    mddate="input.js_multidate"
+                    mdstartdate="/input.js_startdate"
+                    mdenddate="/input.js_enddate"
+                    >
+                    <option value="date">日数据</option>
+                    <option value="week">周数据</option>
+                    <option value="month">月数据</option>
+                    <option value="season">季数据</option>
+                </select>
+                <div class="js_multidateBox js_multidateDateBox" style="display:inline-block;">
+                    <input type="text" class="js_multidate" 
+                        multidate="date"
+                        datatype="daterange" 
+                        currentcanselect="true" 
+                        size="20" readonly=""
+                        >
+                     <input type="text" class="js_multidate" 
+                        multidate="date" 
+                        datatype="daterange"
+                        currentcanselect="true" 
+                        size="20" readonly="" 
+                        >
+                </div>
+                <div class="js_multidateBox js_multidateWeekBox">
+                    <input type="text" class="js_multidate" 
+                        multidate="week"
+                        datatype="daterange" 
+                        currentcanselect="true" 
+                        size="20" readonly=""
+                        dateparse="parseWeekDate" 
+                        fullDateFormat="{0}"
+                        dateFormat="YYWWK">
+                     <input type="text" class="js_multidate" 
+                        multidate="week" 
+                        datatype="daterange"
+                        currentcanselect="true" 
+                        size="20" readonly="" 
+                        dateparse="parseWeekDate"
+                        fullDateFormat="{1}"
+                        dateFormat="YYWWK">
+                </div>
+                <div class="js_multidateBox js_multidateMonthBox">
+                    <input type="text" class="js_multidate" 
+                        multidate="month"
+                        datatype="daterange" 
+                        currentcanselect="true" 
+                        size="20" readonly=""
+                        dateparse="parseMonthDate" 
+                        fullDateFormat="{0}"
+                        dateFormat="YY-MM">
+                     <input type="text" class="js_multidate" 
+                        multidate="month" 
+                        datatype="daterange"
+                        currentcanselect="true" 
+                        size="20" readonly="" 
+                        dateparse="parseMonthDate"
+                        fullDateFormat="{1}"
+                        dateFormat="YY-MM">
+                </div>
+                <div class="js_multidateBox js_multidateSeasonBox">
+                    <input type="text" class="js_multidate" 
+                        multidate="season"
+                        datatype="daterange" 
+                        currentcanselect="true" 
+                        size="20" readonly=""
+                        dateparse="parseSeasonDate" 
+                        fullDateFormat="{0}"
+                        dateFormat="YYQYQ">
+                     <input type="text" class="js_multidate" 
+                        multidate="season" 
+                        datatype="daterange"
+                        currentcanselect="true" 
+                        size="20" readonly="" 
+                        dateparse="parseSeasonDate"
+                        fullDateFormat="{1}"
+                        dateFormat="YYQYQ">
+                </div>
+                <input type="hidden" name="startdate" class="js_startdate" value="" />
+                <input type="hidden" name="enddate" class="js_enddate" value="" />
+
+                <button type="submit">submit</button>
+                <button type="reset" onclick="location.href='?'">reset</button>
+                </dd>
+            </dl>
+        </form>
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+    </body>
+</html>
+

@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            *{ margin: 0; padding: 0; }
+            body{ width: 600px; margin: 20px auto 20px; background:#ececec; }
+            dl dd{ margin: 10px 0; }
+        </style>
+        <link href='../../../comps/Tips/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+        <script src="../../../lib.js"></script>
+        <script>
+            JC.debug = true; 
+
+            JC.use( [ 'JC.Tips', 'JC.Calendar', 'JC.Form', 'JC.Valid', 'Bizs.DMultiDate' ] );
+            $( document ).ready( function( Tips, Calendar, JCForm, Valid, MultiDate ){
+                var _maxDate = new Date();
+                _maxDate.setDate( _maxDate.getDate() - 1 );
+                $('input.js_multidate').attr( 'maxvalue', JC.f.formatISODate( _maxDate ) );
+
+                window.Bizs && Bizs.DMultiDate && ( Bizs.DMultiDate.maxDate = _maxDate );
+            });
+        </script>
+    </head>    
+    <body>
+        <br /><br /><br /><br /><br /><br />
+        <form action='' method='get' class="">
+            <dl>
+                <dt>JC.Calendar  CRM 示例</dt>
+                <dd>
+                <div>
+                    <select name="dataspan" class="dataspan js_autoMultidate"
+                        mddate="/input.js_multidate"
+
+                        mdstartdate="/input.js_startdate"
+                        mdenddate="/input.js_enddate"
+
+                        mdDefaultBox="/span.js_mdDefault"
+                        mdCustomBox="/span.js_mdCustom"
+                        mdCustomStartDate="/input.js_mdStartDate"
+                        mdCustomEndDate="/input.js_mdEndDate"
+                        >
+                        <option value="date">日数据</option>
+                        <option value="week">周数据</option>
+                        <option value="month">月数据</option>
+                        <option value="season">季数据</option>
+                        <option value="custom">自定义</option>
+                    </select>
+                    <span class="js_mdDefault">
+                        <input type="text" class="js_multidate" 
+                        multidate="date" currentcanselect="true" size="40" readonly />
+                        <input type="hidden" name="startdate" class="js_startdate" value="" />
+                        <input type="hidden" name="enddate" class="js_enddate" value="" />
+                    </span>
+                    <span class="js_mdCustom" style="display:none;">
+                        <input type="text" datatype="daterange" name="startdate" class="js_mdStartDate" value="" />
+                        <input type="text" datatype="daterange" name="enddate" class="js_mdEndDate" value="" />
+                        <em class="error"></em>
+                    </span>
+                </div>
+                <div style="margin-top:10px; margin-left: 280px;">
+                    <button type="submit">submit</button>
+                    <button type="reset" onclick="location.href='?'">reset</button>
+                </div>
+                </dd>
+            </dl>
+        </form>
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+    </body>
+</html>
+

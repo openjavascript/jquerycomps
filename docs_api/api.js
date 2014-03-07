@@ -45,12 +45,14 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.AutoSelectComplete",
         "window.Bizs.ChangeLogic",
         "window.Bizs.CommonModify",
+        "window.Bizs.DMultiDate",
         "window.Bizs.DisableLogic",
         "window.Bizs.DropdownTree",
         "window.Bizs.FormLogic",
         "window.Bizs.KillISPCache",
         "window.Bizs.MoneyTips",
-        "window.Bizs.MultiDate"
+        "window.Bizs.MultiDate",
+        "window.Bizs.MultiSelect"
     ],
     "modules": [],
     "allModules": []
