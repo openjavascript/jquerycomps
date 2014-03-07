@@ -29,104 +29,318 @@
     
     DMultiDate.prototype = {
         _beforeInit: function () {
-            //JC.log( 'DMultiDate _beforeInit', new Date().getTime() );
+            var _p = this;
+                
+
         },
 
         _initHanlderEvent: function () {
-            var _p = this;
+            var _p = this,
+                _count = DMultiDate.Model._inscount++,
+                _updatestartcb = 'Bizs.DMultiDate_update_start' + _count,
+                _updateendcb = 'Bizs.DMultiDate_update_end' + _count,
+                _showstartcb = 'Bizs.DMultiDate_show_start' + _count,
+                _showendcb = 'Bizs.DMultiDate_show_end' + _count,
+                _hidestartcb = 'Bizs.DMultiDate_hide_start' + _count,
+                _hideendcb = 'Bizs.DMultiDate_hide_end' + _count,
+                _layoutchangestartcb = 'Bizs.DMultiDate_layoutchange_start' + _count,
+                _layoutchangeendcb = 'Bizs.DMultiDate_layoutchange_end' + _count,
+                _parseweekdate = 'parsedateweek',
+                _parsemonthdate = 'parsedatemonth',
+                _parseseasondate = 'parsedateseason',
+                _parseyeardate = 'parsedateyear';
 
-            $( [ _p._view, _p._model ] ).on('BindEvent', function( _evt, _evtName, _cb ){
-                _p.on( _evtName, _cb );
+            //如果url上有参数则回填到html tag的value;
+            _p._initDefaultData();
+
+            _p._model.calendarTypeEl().on('change', function (_evt, _flag) {
+
+                var _sp = $(this),
+                    _type = _sp.val();
+
+                //日期日历类型crm后端用的是day类型，这里作一下转换
+                if (_type === 'day') _type = 'date';
+
+                _p._model.updatemddateElProp(_type);
+
+                /**
+                 *更新日历的类型day/week/season/year
+                 *日历输入框，及隐藏域的值清空
+                 *打开第一个日历输入框的日历面板
+                 */
+
+                if (_flag) return; 
+
+                setTimeout( function () {
+                    _p._model.setmddate('');
+                    _p._model.setHiddenStartdate('');
+                    _p._model.setHiddenEnddate('');
+                    Calendar.pickDate(_p._model.mddateEl().eq(0)[0]);
+                }, 10);
 
             });
 
-            $([ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName ){
-                var _data = JC.f.sliceArgs( arguments ); 
+            _p._model.mddateEl().eq(0)
+                .attr('calendarupdate', _updatestartcb)
+                .attr('calendarshow', _showstartcb)
+                .attr('calendarhide', _hidestartcb)
+                .attr('calendarlayoutchange', _layoutchangestartcb);
 
-                _data.shift(); 
-                _data.shift();
-                _p.trigger( _evtName, _data );
-               
-            });
+            _p._model.mddateEl().eq(1)
+                .attr('calendarupdate', _updateendcb)
+                .attr('calendarshow', _showendcb)
+                .attr('calendarhide', _hideendcb)
+                .attr('calendarlayoutchange', _layoutchangeendcb);
 
-            _p._initDefaultValue();
-            _p._initHandlerEvent();
+            window[_updatestartcb] = function (_d, _ins) {
+                var _mddateEl = _p._model.mddateEl(),
+                    _type = _p._model.calendarType(),
+                    _newmaxdate = _d,
+                    _curmaxdate = _mddateEl.eq(1).attr('maxvalue'),
+                    _range,
+                    _temp = new Date();
 
-            _p.selector().trigger( 'change', [ true ] );
-        }, 
+                _curmaxdate && (_curmaxdate = JC.f.dateDetect(_curmaxdate));
 
-        _initDefaultValue: function () {
-            var _p = this, 
-                _qs = _p._model.qstartdate(), //url上的开始日期 
-                _qe = _p._model.qenddate(), //url上的结束日期
-                _mdcusStart = _p._model.mdCustomStartDate(), //开始日期的html tag
-                _mdcusEnd= _p._model.mdCustomEndDate(); //结束日期的html tag
+                switch ( _type ) {
+                    case 'week':
+                        _range = _p._model.weekrange();
+                        _range && _newmaxdate.setDate( _newmaxdate.getDate() + (_range - 1) * 7 + 6);
+                        break;
 
-            _p._model.selector( _p._model.qtype() ); //通过select的name从url上取下拉日期的类型（天，周，月）
-            _p._model.mdstartdate( _qs ); //格式化开始日期
-            _p._model.mdenddate( _qe ); //格式化结束日期
+                    case 'month':
+                        _range = _p._model.monthrange();
+                        _range && _newmaxdate.setMonth( _newmaxdate.getMonth() + (_range - 1) );
+                        break;
 
+                    case 'season':
+                        _range = _p._model.seasonrange();
+                        _range && _newmaxdate.setMonth( _newmaxdate.getMonth() + (_range) * 3 );
+                        break;
 
-            if ( !_p._model.mddate().attr('name') ) { //input的name不存在执行的格式化，之前默认是不存在的
-            
-                if( _qs && _qe ){
-                    if( _qs == _qe ){
-                        _p._model.mddate( JC.f.formatISODate(JC.f.parseISODate(_qs)) );
-                    }else{
-                        _p._model.mddate( JC.f.printf( '{0} 至 {1}'
-                            , JC.f.formatISODate(JC.f.parseISODate(_qs))
-                            , JC.f.formatISODate(JC.f.parseISODate(_qe))
-                        ) );
-                    }
+                    case 'year':
+                        _range = _p._model.yearrange();
+                        _range && _newmaxdate.setYear( _newmaxdate.getFullYear() + _range );
+                        break;
+
+                    case 'date':
+                    default:
+                        _range = _p._model.dayrange();
+                        _range && _newmaxdate.setDate( _newmaxdate.getDate() + _range );
                 }
-            }else{
-                _p._model.mddate( _p._model.qdate() ); //_p._model.qdate()取的是input的name的值
-            }
 
-            _mdcusStart && _mdcusStart.length && _mdcusStart.val( _qs ? JC.f.formatISODate( JC.f.parseISODate( _qs ) ) : _qs );
-            _mdcusEnd && _mdcusEnd.length && _mdcusEnd.val( _qe ? JC.f.formatISODate( JC.f.parseISODate( _qe ) ) : _qe );
+                if ( _range ) {
 
-        }, 
-
-        _initHandlerEvent: function () {
-            
-            var _p = this;
-            _p._model.selector().on('change', function( _evt, _noPick ){
-                var _sp = $(this), 
-                    _type = _sp.val().trim().toLowerCase(),  //_type的值date,week,month,season
-                    _defaultBox = _p._model.mdDefaultBox(), 
-                    _customBox = _p._model.mdCustomBox(); //defaultBox, customBox不知道是什么
-
-                if( _type == 'custom' ){ //这里_type怎么会等 custom呢
-                    if( _defaultBox && _customBox && _defaultBox.length && _customBox.length ){
-                        _defaultBox.hide();
-                        _defaultBox.find('input').prop( 'disabled', true );
-
-                        _customBox.find('input').prop( 'disabled', false );
-                        _customBox.show();
+                    if ( _curmaxdate.getTime() <= _temp.getTime() && _newmaxdate.getTime() > _temp.getTime() ) {
+                        _newmaxdate = _curmaxdate;
                     }
-                }else{
-                    if( _defaultBox && _customBox && _defaultBox.length && _customBox.length ){
-                        _customBox.hide();
-                        _customBox.find('input').prop( 'disabled', true);
-
-                        _defaultBox.find('input').prop( 'disabled', false);
-                        _defaultBox.show();
-                    }
-                    if( _noPick ) return;
-                    _p._model.settype( _type ); //根据option设置input的日期类型（日，周，月，季）
-                    setTimeout(function(){ //自动打开日期选择面板
-                        JC.Calendar.pickDate( _p._model.mddate()[0] );
-                        _p._model.mdstartdate( '' );
-                        _p._model.mdenddate( '' );
-                    }, 10);
+                    
+                    //_mddateEl.attr('maxvalue', JC.f.formatISODate(_newmaxdate));
+                    _mddateEl.eq(1).attr('maxvalue', JC.f.formatISODate(_newmaxdate))
                 }
-            });
+                _p._model.setHiddenStartdate(JC.f.formatISODate(_d));
+            };
+
+            window[_updateendcb] = function (_d, _ins) {
+                var _range = _p._model.getRange(_p._model.calendarType());
+
+                if ( _range ) {
+
+                }
+
+                _p._model.setHiddenEnddate(JC.f.formatISODate(_d));
+            };
+
+            window[_showstartcb] = function () {
+                //calendarshow的回调可以不要了吧？
+                //var _layout = $('body > div.UXCCalendar:visible');
+                
+                //_layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
+            };
+
+            window[_showendcb] = function () {
+                //var _layout = $('body > div.UXCCalendar:visible');
+                
+                //_layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
+            };
+            
+            window[_hidestartcb] = function () {
+                JC.Tips && JC.Tips.hide();
+                _p._model.updateHiddenStartdate();
+            };
+
+            window[_hideendcb] = function () {
+                JC.Tips && JC.Tips.hide();
+                _p._model.updateHiddenEnddate();
+            };
+
+            window[_layoutchangestartcb] = function () {
+                //layoutchange回调也不需要了吧
+                // JC.Tips && JC.Tips.hide();
+                // var _layout = $('body > div.UXCCalendar:visible');
+                // _layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
+            };
+
+            window[_layoutchangeendcb] = function () {
+                //layoutchange回调也不需要了吧
+                // JC.Tips && JC.Tips.hide();
+                // var _layout = $('body > div.UXCCalendar:visible');
+                // _layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
+            };
+
+            window[_parseweekdate] = function (_dateStr) {
+                _dateStr = $.trim( _dateStr || '' );
+                var _r = { start: null, end: null }, _normalDate;
+
+                if( _dateStr ){
+                    _normalDate = _dateStr.replace( /[^\d]+/g, '' );
+                    _dateStr = _dateStr.split( 'W' );
+
+                    if ( _normalDate.length === 8 ) {
+                        _r.start = JC.f.parseISODate( _normalDate );
+                        _r.end = _r.start;
+                        return _r;
+                    } else if( _normalDate.length === 16 ) {
+                        _r.start = JC.f.parseISODate( _normalDate.slice( 0, 8 ) );
+                        _r.end = JC.f.parseISODate( _normalDate.slice( 8, 16 ) );
+                        return _r;
+                    }
+
+                    var _year, _week, _sdate, _edate, _weeks, _date
+
+                    _year = parseInt( _dateStr[0], 10 );
+                    _week = parseInt( _dateStr[1], 10 );
+                    _sdate = JC.f.pureDate( new Date( _dateStr[0] ), 0, 1 );
+                    _edate = JC.f.pureDate( new Date( _dateStr[1] ), 0, 1 );
+                    _weeks = _weeks || JC.f.weekOfYear( _dateStr[0], JC.Calendar.weekDayOffset );
+
+                    $( _weeks ).each( function( _ix, _item ){
+                        if( _item.week === _week ){
+                            _r.start = new Date();
+                            _r.end = new Date();
+
+                            _r.start.setTime( _item.start );
+                            _r.end.setTime( _item.end );
+                            return false;
+                        }
+                    });
+                }
+
+                return _r;
+            };
+
+            window[_parsemonthdate] = function (_dateStr) {
+                
+                _dateStr = $.trim( _dateStr || '' );
+                
+                var _r = { start: null, end: null }, 
+                    _normalDate;
+
+                if( _dateStr ){
+                    _normalDate = _dateStr.replace( /[^\d]+/g, '' );
+                    _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+
+                    if( _normalDate.length === 8 ){
+                        _r.start = JC.f.parseISODate( _normalDate );
+                        _r.end = _r.start;
+                        return _r;
+                    }else if( _normalDate.length === 16 ){
+                        _r.start = JC.f.parseISODate( _normalDate.slice( 0, 8 ) );
+                        _r.end = JC.f.parseISODate( _normalDate.slice( 8, 16 ) );
+                        return _r;
+                    }
+
+                    var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4, 6 ), 10 ) - 1;
+
+                    _r.start = new Date( _year, _month, 1 );
+                }
+
+                return _r;
+            };
+
+            window[_parseseasondate] = function (_dateStr) {
+                _dateStr = $.trim( _dateStr || '' );
+                var _r = { start: null, end: null }, _normalDate;
+
+                if( _dateStr ){
+                    _normalDate = _dateStr.replace( /[^\d]+/g, '' );
+                    _dateStr = _dateStr.split( 'Q' );
+
+                    if( _normalDate.length === 8 ){
+                        _r.start = JC.f.parseISODate( _normalDate );
+                        _r.end = _r.start;
+                        return _r;
+                    }else if( _normalDate.length === 16 ){
+                        _r.start = JC.f.parseISODate( _normalDate.slice( 0, 8 ) );
+                        _r.end = JC.f.parseISODate( _normalDate.slice( 8, 16 ) );
+                        return _r;
+                    }
+
+                    var _year = parseInt( _dateStr[0], 10 ), _season = parseInt( _dateStr[1], 10 )
+                        , _sdate = JC.f.pureDate( new Date( _dateStr[0] ), 0, 1 )
+                        , _edate = JC.f.pureDate( new Date( _dateStr[1] ), 0, 1 )
+                        , _seasons = JC.f.seasonOfYear( _dateStr[0] )
+                        ;
+
+                    $( _seasons ).each( function( _ix, _item ){
+                        if( _item.season === _season ){
+                            _r.start = new Date();
+                            _r.end = new Date();
+
+                            _r.start.setTime( _item.start );
+                            _r.end.setTime( _item.end );
+                            return false;
+                        }
+                    });
+                }
+
+                return _r;
+            };
+
+            window[_parseyeardate] = function (_dateStr) {
+                _dateStr = $.trim( _dateStr || '' );
+                var _r = { start: null, end: null }, _year;
+
+                if( _dateStr ){
+                    _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+                    _year = _dateStr.slice( 0, 4 );
+                    _r.start = new Date( _year, 0, 1 );
+                }
+
+                if( !_r.start ){
+                    _r.start = new Date();
+                    _r.end = new Date();
+                }
+                return _r;
+            };
+
+            _p._model.calendarTypeEl().trigger( 'change', [ true ] );
+
+        },
+
+        _initDefaultData: function () {
+            var _p = this,
+                _startdate = _p._model.urlStartdate(),
+                _enddate = _p._model.urlEnddate(),
+                _type = _p._model.urlCalendarType() || _p._model.calendarType();
+
+            _p._model.updatemddateElProp(_type);
+            _p._model.calendarTypeEl().val(_type);
+            
+            setTimeout(function () {
+                _p._model.setmddate(_startdate, _enddate);
+                _p._model.setHiddenStartdate(_startdate);
+                _p._model.setHiddenEnddate(_enddate);
+            }, 200);
+            
         }, 
+
         _inited:function () {
             //JC.log( 'DMultiDate _inited', new Date().getTime() );
+
         }
     }
+
     /**
      * 获取或设置 DMultiDate 的实例
      * @method  getInstance
@@ -161,236 +375,208 @@
 
     BaseMVC.buildModel( DMultiDate );
     DMultiDate.Model._instanceName = 'DMultiDate';
-
+    
     DMultiDate.Model._inscount = 1;
     
     DMultiDate.Model.prototype = {
         init: function () {
-            var _p = this
-                //, _updatecb = 'Bizs.DMultiDate_' + ( DMultiDate.Model._inscount)
-                , _updatestartcb = 'Bizs.DMultiDate_Start' + ( DMultiDate.Model._inscount )
-                , _updateendcb = 'Bizs.DMultiDate_End' + ( DMultiDate.Model._inscount)
-                , _showcb = 'Bizs.DMultiDate_show_' + ( DMultiDate.Model._inscount)
-                , _hidecb = 'Bizs.DMultiDate_hide_' + ( DMultiDate.Model._inscount)
-                , _hidestartcb = 'Bizs.DMultiDate_hide_start_' + ( DMultiDate.Model._inscount)
-                , _hideendcb = 'Bizs.DMultiDate_hide_end_' + ( DMultiDate.Model._inscount)
-                , _layoutchangecb = 'Bizs.DMultiDate_layoutchange_' + ( DMultiDate.Model._inscount)
-                ;
-
-            DMultiDate.Model._inscount++;
-
-            // window[ _updatecb ] = 
-            //     function( _startDate, _endDate, _calendarIns ){
-            //         _p.mdstartdate( JC.f.formatISODate( _startDate, '' ) );
-            //         _p.mdenddate( JC.f.formatISODate( _endDate, '' ) );
-            //     };
-
-            window[ _updatestartcb ] = 
-                function( _startDate, _endDate, _calendarIns ){
-                    _p.mdstartdate( JC.f.formatISODate( _startDate, '' ) );
-                    //_p.mdenddate( JC.f.formatISODate( _endDate, '' ) );
-                    console.log("_startDate", _startDate);
-                };
-
-            window[ _updateendcb ] = 
-                function( _startDate, _endDate, _calendarIns ){
-                    //_p.mdstartdate( JC.f.formatISODate( _startDate, '' ) );
-                    _p.mdenddate( JC.f.formatISODate( _endDate, '' ) );
-                    console.log("_endDate", _endDate);
-                };
-
-            _p.mddate().eq(0).attr('calendarupdate', _updatestartcb);
-            _p.mddate().eq(1).attr('calendarupdate', _updateendcb);
-console.log("xxx");
-            window[ _showcb ] = 
-                function(){
-                    var _layout = $('body > div.UXCCalendar:visible');
-                    _layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
-                };
-            _p.mddate().attr('calendarshow', _showcb );
-
-            // window[ _hidecb ] = 
-            //     function(){
-            //         JC.Tips && JC.Tips.hide();
-            //         _p.updateHiddenDate();
-            //     };
-
-            window[ _hidestartcb ] = 
-                function(){
-                    JC.Tips && JC.Tips.hide();
-                    _p.updateHiddenDate();
-                };
-
-            window[ _hideendcb ] = 
-                function(){
-                    JC.Tips && JC.Tips.hide();
-                    _p.updateHiddenDate();
-                };
-
-            _p.mddate().eq(0).attr('calendarhide', _hidestartcb );
-            _p.mddate().eq(1).attr('calendarhide', _hideendcb );
-
-            window[ _layoutchangecb ] = 
-                function(){
-                    JC.Tips && JC.Tips.hide();
-                    var _layout = $('body > div.UXCCalendar:visible');
-                    _layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
-                };
-            _p.mddate().attr('calendarlayoutchange', _layoutchangecb );
-
-            return _p;
-        }, 
-
-        mdDefaultBox: function () { 
-            return this.selectorProp( 'mdDefaultBox' ); 
-        },
-
-        mdCustomBox: function() { 
-            return this.selectorProp( 'mdCustomBox' ); 
-        },
-
-        mdCustomStartDate: function () { 
-            return this.selectorProp( 'mdCustomStartDate' ); 
-        },
-
-        mdCustomEndDate: function () { 
-            return this.selectorProp( 'mdCustomEndDate' ); 
-        },
-        
-        selector: function ( _setter ) { 
-            typeof _setter != 'undefined' 
-                && this.hastype( this.qtype() ) 
-                && this._selector.val( _setter )
-                && this.settype( _setter )
-                ;
-            return this._selector; 
-        }, 
-
-        mddateBox: function ( _setter ) {
-            var _r = JC.f.parentSelector( this.selector(), 
-                this.selector().attr('mddatebox') );
-
             
-            return _r; 
         },
 
-        mddate: function ( _setter ) {
+        calendarTypeEl: function () {
+            return this.selector().find('>select');
+        },
 
-            var _r = this.mddateBox().find(this.selector().attr('mddate'));
+        calendarType: function () {
+            return this.calendarTypeEl().val();
+        },
 
-            typeof _setter != 'undefined' && _r.val( _setter );
-            return _r; 
-        }, 
+        mddateEl: function () {
+            var _p = this,
+                _el = _p.attrProp('mddateEl') || '.js_multidate';
 
-        mdstartdate: function ( _setter ) { 
-            var _r = JC.f.parentSelector( this.selector(), this.selector().attr('mdstartdate') );
-            typeof _setter != 'undefined' && _r.val( _setter.replace(/[^\d]/g, '') );
-            return _r;
-        }, 
+            return JC.f.parentSelector(_p.selector(), _el);
+            //return _p.selector().find(_el);
+        },
 
-        mdenddate: function( _setter ) { 
-            var _r = JC.f.parentSelector( this.selector(), this.selector().attr('mdenddate') );
-            typeof _setter != 'undefined' && _r.val( _setter.replace(/[^\d]/g, '') );
-            return _r;
-        }, 
+        setmddate: function (_starttime, _endtime) {
+            var _el = this.mddateEl();
 
-        qtype: function () {
-            return this.decodedata( JC.f.getUrlParam( this.selector().attr('name') || '' ) || '' ).toLowerCase();
-        }, 
+            _el.eq(0).val(_starttime);
+            _el.eq(1).val(_endtime);
+        },
 
-        qdate: function () {
+        updatemddateElProp: function (_setter) {
+            var _p = this,
+                _el = _p.mddateEl();
 
-            return this.decodedata( JC.f.getUrlParam( this.mddate().attr('name') || '' ) || '' ).toLowerCase();
-        }, 
+            _el.attr('multidate', _setter);
 
-        qstartdate: function () {
-            return this.decodedata( JC.f.getUrlParam( this.mdstartdate().attr('name') || '' ) || '' ).toLowerCase();
-        }, 
+            if (_setter === 'date') {
+                _el.removeAttr('dateparse')
+                    .removeAttr('dateformat')
+                    .removeAttr('fulldateformat');
+            } else {
+                _el.eq(0).attr('fulldateformat', '{0}');
+                _el.eq(1).attr('fulldateformat', '{1}');
 
-        qenddate: function () {
-            return this.decodedata( JC.f.getUrlParam( this.mdenddate().attr('name') || '' ) || '' ).toLowerCase();
-        }, 
+                _el.attr('dateformat', _p.dateformartType(_setter))
+                   .attr('dateparse', 'parsedate' + _setter);   
+            }
+        },
 
-        hastype: function ( _type ) {
-            var _r = false;
-            this.selector().find('> option').each( function(){
-                if( $(this).val().trim() == _type ){
-                    _r = true;
-                    return false;
-                }
-            });
-            return _r;
-        }, 
+        dateformartType: function (_setter) {
+            var _r;
 
-        settype: function( _type ) {
-            //this.mddate().val('').attr( 'MultiDate', _type );
-            var _mddateEl = this.mddate();
-            
-            switch( _type ) {
-                case 'date':
-                    this.selector().attr('mddatebox', '/.js_multidateDateBox');
-                    //JC.f.parentSelector(_mddateEl, '.js_multidateDateBox').css('display', 'inline-block').siblings('.js_multidateBox').hide();
-                    break;
+            switch (_setter) {
                 case 'week':
-                    this.selector().attr('mddatebox', '/.js_multidateWeekBox');
-                    //JC.f.parentSelector(_mddateEl, '.js_multidateWeekBox').css('display', 'inline-block').siblings('.js_multidateBox').hide();
-                    break;
-                case 'season':
-                    this.selector().attr('mddatebox', '/.js_multidateSeasonBox');
-                    //JC.f.parentSelector(_mddateEl, '.js_multidateSeasonBox').css('display', 'inline-block').siblings('.js_multidateBox').hide();
+                    _r = 'YYWWK';
                     break;
                 case 'month':
-                    this.selector().attr('mddatebox', '/.js_multidateMonthBox');
-                    //JC.f.parentSelector(_mddateEl, '.js_multidateMonthBox').css('display', 'inline-block').siblings('.js_multidateBox').hide();
+                    _r = 'YY-MM';
                     break;
+                case 'season':
+                    _r = 'YYQYQ';
+                    break;
+                case 'year':
+                    _r = 'YY';
+                    break;
+                case 'date':
+                default:
+                    _r = ''; 
             }
 
-            this.mddateBox().css('display', 'inline-block').siblings('.js_multidateBox').hide();
-            _mddateEl.val('');
-        }, 
+            return _r;
+        },
 
-        decodedata: function( _d ){
+        hiddenStartdateEl: function () {
+            var _p = this,
+                _el = _p.attrProp('mdstartdate') || '.js_startdate';
+
+            return JC.f.parentSelector(_p.selector(), _el);
+        },
+
+        hiddenEnddateEl: function () {
+            var _p = this,
+                _el = _p.attrProp('mdenddate') || '.js_enddate';
+
+            return JC.f.parentSelector(_p.selector(), _el);
+        },
+
+        setHiddenStartdate: function (_date) {
+            this.hiddenStartdateEl().val(_date);
+        },
+
+        setHiddenEnddate: function (_date) {
+            this.hiddenEnddateEl().val(_date);
+        },
+
+        updateHiddenStartdate: function () {
+            var _p = this,
+                _date = _p.mddateEl().eq(0).val();
+
+            if ( !_date ) {
+                _p.setHiddenStartdate('');
+                return;
+            }
+
+            _p.setHiddenStartdate(_date);
+        },
+
+        updateHiddenEnddate: function () {
+            var _p = this,
+                _date = _p.mddateEl().eq(1).val();
+
+            if ( !_date ) {
+                _p.setHiddenEnddate('');
+                return;
+            }
+
+            _p.setHiddenEnddate(_date);
+        },
+
+        urlCalendarType: function () {
+            var _p = this;
+
+            //需要转为小写
+
+            return _p.decodedata( JC.f.getUrlParam(_p.calendarTypeEl().attr('name') || '') || '' ).toLowerCase();
+        },
+
+        urlStartdate: function () {
+            var _p = this;
+
+            //不能转为小写
+
+            return _p.decodedata( JC.f.getUrlParam(_p.hiddenStartdateEl().attr('name') || '') || '');
+        },
+
+        urlEnddate: function () {
+            var _p = this;
+
+            //不能转为小写
+
+            return _p.decodedata( JC.f.getUrlParam(_p.hiddenEnddateEl().attr('name') || '') || '' );
+        },
+
+        decodedata: function ( _d ) {
             _d = _d.replace( /[\+]/g, ' ' );
-            try{ _d = decodeURIComponent( _d ); }catch(ex){}
+            
+            //这里取url参数需要转码
+            try { 
+                _d = decodeURIComponent( _d ); 
+            } catch (ex) {
+
+            }
+
             return _d;
         },
 
-        updateHiddenDate: function (  ) {
-            var _p = this;
+        getRange: function ( _calendartype ) {
+            var _p = this,
+                _r;
 
-            _p.mddate().each( function ( _ix ) {
-                var _sp = $(this),
-                    _date = $.trim( _sp.val() );
-                
-                if ( !_date ) {
-                    _ix === 0 && _p.mdstartdate('');
-                    _ix === 1 && _p.mdenddate('');
-                    return;
-                }
+            switch (_calendartype) {
+                case 'week':
+                    _r = _p.weekrange();
+                    break;
+                case 'month':
+                    _r = _p.monthrange();
+                    break;
+                case 'season':
+                    _r = _p.seasonrange();
+                    break;
+                case 'year':
+                    _r = _p.yearrange();
+                    break;
+                default:
+                    _r = _p.dayrange();
+            }
 
-                _date = _date.replace( /[^\d]+/g, '' );
-                
-                if ( _ix === 0 ) {
-                    _p.mdstartdate( _date );
-                }
+            return _r;
+        },
 
-                if ( _ix === 2 ) {
-                    _p.mdenddate( _date );
-                }
+        dayrange: function () {
+            return this.intProp('mddayrange');
+        },
 
-                // if( _date.length == 8 ){
-                //     this.mdstartdate( _date );
-                //     this.mdenddate( _date );
-                // }
+        weekrange: function () {
+            return this.intProp('mdweekrange');
+        },　
 
-                // if( _date.length == 16 ){
-                //     this.mdstartdate( _date.slice(0, 8) );
-                //     this.mdenddate( _date.slice(8) );
-                // }
+        monthrange: function () {
+            return this.intProp('mdmonthrange');
+        },
 
-            });
-            
+        seasonrange: function () {
+            return this.intProp('mdseasonrange');
+        },
+
+        yearrange: function () {
+            return this.intProp('mdyearrange');
         }
+
+        
 
     };
 
@@ -404,7 +590,7 @@ console.log("xxx");
     BaseMVC.build( DMultiDate, 'Bizs' );
 
     $(document).ready( function(){
-        $('select.js_autoDMultiDate').each( function(){
+        $('.js_autoDMultiDate').each( function(){
             new DMultiDate( $(this) );
         });
 
