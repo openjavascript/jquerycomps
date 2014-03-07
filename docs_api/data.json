@@ -51,6 +51,17 @@
                 "window.Bizs": 1
             }
         },
+        "../modules/Bizs.DMultiDate/0.1/DMultiDate.js": {
+            "name": "../modules/Bizs.DMultiDate/0.1/DMultiDate.js",
+            "modules": {},
+            "classes": {
+                "window.Bizs.DMultiDate": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.Bizs": 1
+            }
+        },
         "../modules/Bizs.DisableLogic/0.1/DisableLogic.js": {
             "name": "../modules/Bizs.DisableLogic/0.1/DisableLogic.js",
             "modules": {},
@@ -111,6 +122,17 @@
             "modules": {},
             "classes": {
                 "window.Bizs.MultiDate": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.Bizs": 1
+            }
+        },
+        "../modules/Bizs.MultiSelect/0.1/MultiSelect.js": {
+            "name": "../modules/Bizs.MultiSelect/0.1/MultiSelect.js",
+            "modules": {},
+            "classes": {
+                "window.Bizs.MultiSelect": 1
             },
             "fors": {},
             "namespaces": {
@@ -672,6 +694,24 @@
                 "\n      <table>\n            <tr>\n               <td>\n                   <label class=\"gray\">甲方主体：</label>\n               </td>\n               <td>\n                   <input type=\"text\" name=\"\" class=\"ipt ipt-w320\" />&nbsp;\n                       <a href=\"javascript:\" \n                       class=\"green js_autoCommonModify\" \n                       cmtemplate=\"#addMainFirstPartyTpl\"\n                       cmitem=\"(tr\"\n                       cmaction=\"add\"\n                   >+ 添加</a>\n                   <em class=\"error\"></em>\n               </td>\n           </tr>\n       </table>\n\n       <script type=\"text/template\" id=\"addMainFirstPartyTpl\" >\n        <tr>\n           <td>\n               <label class=\"gray\">甲方主体：</label>\n           </td>\n           <td>\n               <input type=\"text\" name=\"\" class=\"ipt ipt-w320\" />\n               <a href=\"javascript:\" \n                   class=\"green js_autoCommonModify\" \n                   cmtemplate=\"#addMainFirstPartyTpl\"\n                   cmitem=\"(tr\"\n                   cmaction=\"add\"\n               >+ 添加</a>\n               <a href=\"javascript:\" class=\"red js_autoCommonModify\"\n                   cmtemplate=\"#addMainFirstPartyTpl\"\n                   cmitem=\"(tr\"\n                   cmaction=\"del\"\n               >+ 删除</a>\n               <em class=\"error\"></em>\n           </td>\n       </tr>\n       </script>"
             ]
         },
+        "window.Bizs.DMultiDate": {
+            "name": "window.Bizs.DMultiDate",
+            "shortname": "window.Bizs.DMultiDate",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.Bizs",
+            "file": "../modules/Bizs.DMultiDate/0.1/DMultiDate.js",
+            "line": 3,
+            "description": "DMultiDate 复合日历业务逻辑\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Calendar.html'>JC.Calendar</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.DMultiDate.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.DMultiDate/0.1/_demo' target='_blank'>demo link</a></p>",
+            "is_constructor": 1,
+            "access": "private",
+            "tagname": "",
+            "version": "dev 0.1 2014-03-03",
+            "author": "zuojing   <zuojing1013@gmail.com> | 75 Team"
+        },
         "window.Bizs.DisableLogic": {
             "name": "window.Bizs.DisableLogic",
             "shortname": "window.Bizs.DisableLogic",
@@ -795,6 +835,33 @@
             "tagname": "",
             "version": "dev 0.1 2013-09-03",
             "author": "qiushaowei   <suches@btbtd.org> | 75 Team"
+        },
+        "window.Bizs.MultiSelect": {
+            "name": "window.Bizs.MultiSelect",
+            "shortname": "window.Bizs.MultiSelect",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.Bizs",
+            "file": "../modules/Bizs.MultiSelect/0.1/MultiSelect.js",
+            "line": 3,
+            "description": "模拟多选下拉框\n框的click将列表拉出来。\nclose和document的click将面板关闭，返回数据，并把数据铺到指定的面板里\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.MultiSelect.html' target='_blank'>API docs</a>\n  | <a href='../../modules/Bizs.MultiSelect/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会自动处理 div class=\"js_bizMultiSelect\" </h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>defaultLabel = string</dt>\n   <dd>\n     声明下拉框默认显示的文字信息\n   <dd>\n   <dt>binddatabox = string(selector)</dt>\n   <dd>声明选中数据，关闭下拉面板后，数据的回填区域<br/>\n    如果此属性为空，则不会在其他区域展示选中的数据\n   </dd>\n   <dt>ajaxurl = string</dt>\n   <dd>声明ajax加载数据的url\n         <dl>\n             <dt>数据格式</dt>\n             <dd>\n                 {errorno: 0,\n                 data: [ { \"id\": \"id value\", \"label\": \"label value\", \"isChecked\": \"is checked\" }, ... ],\n                 errormsg: \"\"}\n             </dd>\n         </dl></dd>\n   <dt>dataFilter = callback</dt>\n   <dd>\n          <dl>\n             <dt>如果 数据接口获取的数据不是默认格式, \n                 可以使用这个属性定义一个数据过滤函数, 把数据转换为合适的格式\n             </dt>\n             <dd>\n<pre>function cacDataFilter( _json ){\nif( _json.data && _json.data.length ){\n   _json = _json.data;\n}\n\n$.each( _json, function( _ix, _item ){\n   _item.length &&\n       ( _json[ _ix ] = { 'id': _item[0], 'label': _item[1], 'isChecked': _item[2] } )\n       ;\n});\nreturn _json;\n}</pre>\n             </dd>\n         </dl>\n   </dd>\n   <dt>dataname=string</dt>\n   <dd>声明checkbox的name属性， 适用于ajax接口的数据</dd>\n\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2014-02-20",
+            "author": "zuojing <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n    <div class=\"test\">\n       <div class=\"SELECTBOX js_bizMultiSelect\" databindbox=\"(.test .js_box\">\n          <i class=\"SELECTIcon\"></i>\n          <span class=\"SELECTLabel\">共选中<b class=\"red\">2</b>条数据</span>                                         \n          <div class=\"SELECTListBox\" style=\"z-index: 50008; display: none;\">\n               <ul>\n                   <li class=\"SELECTIgnore\">\n                      <label>\n                          <input type=\"checkbox\" value=\"\" name=\"\" checktype=\"all\" checkfor=\"///input[type=checkbox]\">\n                          全选\n                      </label>\n                   </li>\n                   <li>\n                      <label>\n                          <input type=\"checkbox\" value=\"1\" name=\"\" data-text=\"北京天地在线广告有限公司\">\n                          北京天地在线广告有限公司\n                      </label>\n                   </li>\n                   <li>\n                      <label>\n                          <input type=\"checkbox\" value=\"2\" name=\"\" data-text=\"河南天地在线广告有限公司\">\n                          河南天地在线广告有限公司\n                      </label>\n                   </li>\n                   <li>\n                      <label>\n                          <input type=\"checkbox\" value=\"3\" name=\"\" data-text=\"河北天地在线广告有限公司\">\n                          河北天地在线广告有限公司\n                      </label>\n                   </li>\n              </ul>\n              <div class=\"SELECTClose\"><a href=\"javascript:;\" class=\"SELECTCloseBtn\">关闭</a></div>\n          </div>\n       </div>\n       <div class=\"js_box\"><ul><li>北京天地在线广告有限公司</li> <li>河南天地在线广告有限公司</li></ul></div>\n     </div>"
+            ]
         },
         "JC.AjaxUpload": {
             "name": "JC.AjaxUpload",
@@ -2510,6 +2577,47 @@
             "namespace": "window.Bizs"
         },
         {
+            "file": "../modules/Bizs.DMultiDate/0.1/DMultiDate.js",
+            "line": 130,
+            "description": "获取或设置 DMultiDate 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "DMultiDateInstance"
+            },
+            "class": "window.Bizs.DMultiDate",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.DMultiDate/0.1/DMultiDate.js",
+            "line": 146,
+            "description": "判断 selector 是否可以初始化 DMultiDate",
+            "itemtype": "method",
+            "name": "isDMultiDate",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "bool"
+            },
+            "class": "window.Bizs.DMultiDate",
+            "namespace": "window.Bizs"
+        },
+        {
             "file": "../modules/Bizs.DisableLogic/0.1/DisableLogic.js",
             "line": 165,
             "description": "获取 显示 DisableLogic 的触发源选择器, 比如 a 标签",
@@ -3118,6 +3226,48 @@
                 "description": "bool"
             },
             "class": "window.Bizs.MultiDate",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.MultiSelect/0.1/MultiSelect.js",
+            "line": 124,
+            "description": "初始化可识别的 MultiSelect 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of MultiSelectInstance"
+            },
+            "class": "window.Bizs.MultiSelect",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.MultiSelect/0.1/MultiSelect.js",
+            "line": 148,
+            "description": "定义全局数据过滤函数",
+            "itemtype": "method",
+            "name": "dataFilter",
+            "params": [
+                {
+                    "name": "_json",
+                    "description": "",
+                    "type": "Json"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Json"
+            },
+            "class": "window.Bizs.MultiSelect",
             "namespace": "window.Bizs"
         },
         {
@@ -16791,7 +16941,7 @@
         },
         {
             "file": "../config.js",
-            "line": 90,
+            "line": 92,
             "description": "取当前脚本标签的 src路径",
             "static": 1,
             "return": {
@@ -17172,6 +17322,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../modules/Bizs.DMultiDate/0.1/DMultiDate.js:3"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../modules/Bizs.DisableLogic/0.1/DisableLogic.js:2"
         },
         {
@@ -17197,6 +17351,10 @@
         {
             "message": "unknown tag: version",
             "line": " ../modules/Bizs.MultiDate/0.1/MultiDate.js:3"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../modules/Bizs.MultiSelect/0.1/MultiSelect.js:3"
         },
         {
             "message": "unknown tag: version",
@@ -18620,7 +18778,7 @@
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
-            "line": " ../config.js:90"
+            "line": " ../config.js:92"
         },
         {
             "message": "Missing item type",
