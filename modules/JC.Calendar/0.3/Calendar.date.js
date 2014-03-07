@@ -1064,6 +1064,12 @@ function parseYearDate( _dateStr ){
 
                 if( !_v ){
                     _r.date = new Date();
+
+                    if( Calendar.lastIpt && Calendar.lastIpt.is('[defaultdate]') ){
+                        _tmp = JC.f.parseISODate( Calendar.lastIpt.attr('defaultdate') ) || _tmp;
+                    }
+                    _tmp && ( _r.date = JC.f.pureDate( _tmp ) );
+
                     _r.enddate = JC.f.cloneDate( _r.date );
                     return _r;
                 }
