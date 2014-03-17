@@ -15,6 +15,7 @@ requirejs.config( {
         , 'DEV.Bizs.FormLogic': 'modules/Bizs.FormLogic/dev/FormLogic'
 
         , 'DEV.JC.ImageCutter': 'modules/JC.ImageCutter/dev/ImageCutter'
+        , 'DEV.JC.AjaxUpload': 'modules/JC.AjaxUpload/dev/AjaxUpload'
 
         , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload'
         , 'JC.AutoChecked': 'modules/JC.AutoChecked/0.1/AutoChecked'
@@ -93,6 +94,8 @@ requirejs.config( {
         , 'plugins.Aes': 'plugins/Aes/0.1/Aes'
         , 'plugins.Base64': 'plugins/Base64/0.1/Base64'
         , 'plugins.md5': 'plugins/md5/0.1/md5'
+
+        , 'SWFUplaod': 'modules/SWFUpload/2.5.0/SWFUpload'
     }
 });
 /**

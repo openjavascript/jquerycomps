@@ -47,6 +47,8 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/DEV.JC.AjaxUpload.html">DEV.JC.AjaxUpload</a></li>
+            
                 <li><a href="../classes/DEV.JC.ImageCutter.html">DEV.JC.ImageCutter</a></li>
             
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
@@ -1284,6 +1286,12 @@ function parseYearDate( _dateStr ){
 
                 if( !_v ){
                     _r.date = new Date();
+
+                    if( Calendar.lastIpt &amp;&amp; Calendar.lastIpt.is(&#x27;[defaultdate]&#x27;) ){
+                        _tmp = JC.f.parseISODate( Calendar.lastIpt.attr(&#x27;defaultdate&#x27;) ) || _tmp;
+                    }
+                    _tmp &amp;&amp; ( _r.date = JC.f.pureDate( _tmp ) );
+
                     _r.enddate = JC.f.cloneDate( _r.date );
                     return _r;
                 }
