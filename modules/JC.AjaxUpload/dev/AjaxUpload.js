@@ -305,6 +305,17 @@ url: ?callback=callback
                     _p._view.updateLayout( _width, _height, _btn );
                 });
 
+                _p.on( 'UpdateDefaultStatus', function( _evt, _file, _errCode, _msg ){
+                    JC.f.safeTimeout( function(){
+                        $( _p._view ).trigger( 'UpdateDefaultStatus', [ _file, _errCode, _msg ] );
+                    }, _p, 'RESET_STATUS', 100 );
+                });
+
+               _p.on( 'UploadError', function( _evt, _file, _errCode, _msg ){
+                    $( _p._view ).trigger( 'UploadError', [ _file, _errCode, _msg ] );
+                });
+
+
                 _p.on( 'init', function(){
                     _p._model.loadSWF( _p._model.getParams() );
                 });
@@ -363,7 +374,18 @@ url: ?callback=callback
 
         , cauUrl: function(){ return this.attrProp( 'cauUrl' ); }
 
-        , cauFileExt: function(){ return this.stringProp( 'cauFileExt' ); }
+        , cauFileExt: 
+            function(){ 
+                var _r = this.stringProp( 'cauFileExt' ) || this.stringProp( 'file_types' ); 
+                if( _r && !/[\*]/.test( _r ) ){
+                    _r = _r.replace( /[\s]+/g, '' ).split(',');
+                    $.each( _r, function( _ix, _item ){
+                        _r[_ix] = '*' + _item;
+                    });
+                    _r = _r.join( ';' );
+                }
+                return _r;
+            }
 
         , cauFileName: 
             function(){ 
@@ -431,8 +453,8 @@ url: ?callback=callback
             }
 
         , cauButtonHeight:
-            function(){
-                return this.intProp( 'cauButtonHeight' ) || 22;
+            function( _setter ){
+                return this.intProp( 'cauButtonHeight' ) || _setter || 22;
             }
 
         , initButtonStyle:
@@ -450,9 +472,47 @@ url: ?callback=callback
                 switch( _p.cauStyle() ){
                     case 'g1':
                         {
-                            //_r.button_image_url = "/ignore/requirejs_dev/modules/JC.AjaxUpload/dev/res/default/g_61x27.png";
                             _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
                             _r.button_text_style = _p.button_text_style( '.uFont{ color:#ffffff; text-align: center; }' );
+                            break;
+                        }
+                    case 'g2':
+                        {
+                            _r.button_text_top_padding = "4";
+                            _r.button_height = _p.cauButtonHeight( 26 );
+                            _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
+                            _r.button_text_style = _p.button_text_style( '.uFont{ color:#ffffff; text-align: center; }' );
+                            break;
+                        }
+                    case 'g3':
+                        {
+                            _r.button_text_top_padding = "6";
+                            _r.button_height = _p.cauButtonHeight( 28 );
+                            _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
+                            _r.button_text_style = _p.button_text_style( '.uFont{ color:#ffffff; text-align: center; }' );
+                            break;
+                        }
+                    case 'w1':
+                        {
+                            _r.button_text_top_padding = "3";
+                            _r.button_image_url = JC.f.printf( '{0}res/default/w_61x27.png', _p.cauRoot() );
+                            _r.button_text_style = _p.button_text_style( '.uFont{ color:##000000; text-align: center; }' );
+                            break;
+                        }
+                    case 'w2':
+                        {
+                            _r.button_text_top_padding = "4";
+                            _r.button_height = _p.cauButtonHeight( 26 );
+                            _r.button_image_url = JC.f.printf( '{0}res/default/w_61x27.png', _p.cauRoot() );
+                            _r.button_text_style = _p.button_text_style( '.uFont{ color:#000000; text-align: center; }' );
+                            break;
+                        }
+                    case 'w3':
+                        {
+                            _r.button_text_top_padding = "6";
+                            _r.button_height = _p.cauButtonHeight( 28 );
+                            _r.button_image_url = JC.f.printf( '{0}res/default/w_61x27.png', _p.cauRoot() );
+                            _r.button_text_style = _p.button_text_style( '.uFont{ color:#000000; text-align: center; }' );
                             break;
                         }
                 }
@@ -487,8 +547,13 @@ url: ?callback=callback
 
         , file_upload_limit: function(){ return this.intProp( 'file_upload_limit' ) || 0; }
         , file_queue_limit: function(){ return this.intProp( 'file_queue_limit' ) || 0; }
-        , file_size_limit: function(){ return this.attrProp( 'file_size_limit' ) || '10 MB'; }
-        , prevent_swf_caching: function(){ return this.boolProp( 'prevent_swf_caching' ); }
+        , cauFileSize: function(){ return this.attrProp( 'file_size_limit' ) || this.attrProp( 'cauFileSize' ) || '1024 MB'; }
+        , prevent_swf_caching: 
+            function(){ 
+                var _r = true;
+                this.attrProp( 'prevent_swf_caching' ) && ( _r = this.boolProp( 'prevent_swf_caching' ) );
+                return _r;
+            }
         , http_success: 
             function(){ 
                 var _r = [ 200, 201, 204 ];
@@ -504,11 +569,14 @@ url: ?callback=callback
                     || _setter
                     || '.uFont{ color:#000000; text-align: center; }';
             }
+
+        , cauBatchUpload: function(){ return this.boolProp( 'cauBatchUpload' ); }
         
         , getParams:
             function(){
                 var _p = this
                     , _r = {}
+                    , _fileExt = _p.cauFileExt();
                     ;
 
                 _p.layoutButton();
@@ -528,23 +596,69 @@ url: ?callback=callback
                 _r.button_window_mode = SWFUpload.WINDOW_MODE.TRANSPAREN;
                 _r.button_cursor = SWFUpload.CURSOR.HAND;
 
+                _r.button_action = _p.cauBatchUpload() 
+                                    ? SWFUpload.BUTTON_ACTION.SELECT_FILES
+                                    : SWFUpload.BUTTON_ACTION.SELECT_FILE
+                                    ;
+
+                //_r.file_upload_limit = 1;
                 _r.file_upload_limit = _p.file_upload_limit();
-                _r.file_queue_limit = _p.file_queue_limit();
-                _r.file_size_limit = _p.file_size_limit();
+                _r.file_queue_limit = 1;
+                //_r.file_queue_limit = _p.file_queue_limit();
+                _r.file_size_limit = _p.cauFileSize();
                 _r.prevent_swf_caching = _p.prevent_swf_caching();
                 _r.http_success = _p.http_success();
+
+                _fileExt && ( _r.file_types = _fileExt );
+
+                _r.file_dialog_start_handler =
+                    function(){
+                        JC.hideAllPopup( 1);
+                    };
 
                 _r.file_dialog_complete_handler =
                     function( _selectedFiles ){
                         if( !_selectedFiles ) return;
                         _p.trigger( 'BeforeUpload' );
                         this.startUpload();
+                        //this.setButtonDisabled( true );
                     };
-
+                //
+                /// 上传文件时显示进度的事件
+                //
+                _r.upload_progress_handler =
+                    function( _file, _curBytes, _totalBytes ){
+                        JC.log( [ _file.name, _curBytes, _totalBytes ] );
+                    };
+                //
+                /// 上传失败后触发的事件
+                //
+                _r.upload_error_handler =
+                    function( _file, _errCode, _msg ){
+                        _p.trigger( 'UpdateDefaultStatus' );
+                        _p.trigger( 'UploadError', [ _file, _errCode, _msg ] );
+                    };
+                //
+                /// 上传成功后触发的事件
+                //
                 _r.upload_success_handler = 
                     function(fileObject, serverData, receivedResponse){
                         _p.trigger( 'UploadDone', [ serverData, false, fileObject.name ] );
                     };
+                //
+                /// 上传后无论正确与错误都会触发的事件
+                //
+                _r.upload_complete_handler =
+                    function( _file ){
+                        this.setButtonDisabled( false );
+                    }
+
+                _r.file_queue_error_handler = 
+                    function( _file, _errCode, _msg ){
+                        _p.trigger( 'UpdateDefaultStatus' );
+                        _p.trigger( 'UploadError', [ _file, _errCode, _msg ] );
+                        this.setButtonDisabled( false );
+                    }
 
                 return _r;
             }
@@ -584,6 +698,46 @@ url: ?callback=callback
                     ( _p._model.selector().attr('type') || '' ).toLowerCase() != 'hidden'
                         && _p._model.selector().show()
                         ;
+
+                });
+
+                $( _p ).on( 'UploadError', function( _evt, _file, _errCode, _msg ){
+                    var _tmp;
+                    switch( _errCode ){
+                        case -110:
+                            {
+                                _tmp = JC.f.printf( '<h2>文件大小超出限制</h2>'
+                                    +'可接受的文件大小: <b style="color:green"><= {0}</b>' 
+                                    +'<br />{1}: <b style="color:red">{2}</b>' 
+                                    , _p._model.cauFileSize()
+                                    , _file.name
+                                    , humanFileSize( _file.size ).replace( 'i', '' )
+                                );
+
+                                JC.msgbox( _tmp, _p._model.layoutButton(), 2, null, 1000 * 8 );
+                                break;
+                            }
+
+                        case -200:
+                            {
+                                _tmp = JC.f.printf( '<h2>文件大小超出服务器限制</h2>'
+                                    +'{1}: <b style="color:red">{2}</b>' 
+                                    , _p._model.cauFileSize()
+                                    , _file.name
+                                    , humanFileSize( _file.size ).replace( 'i', '' )
+                                );
+
+                                JC.msgbox( _tmp, _p._model.layoutButton(), 2, null, 1000 * 8 );
+                                break;
+                            }
+
+
+                        default:
+                            {
+                                alert( ['上传出错!', '错误代码:', _errCode, '出错原因:', _msg ].join( ' ' ) );
+                                break;
+                            }
+                    }
                 });
 
                 $( _p ).on( 'CAUUpdate', function( _evt, _d ){
@@ -750,6 +904,18 @@ url: ?callback=callback
                     o.handler()
                 }
             }
+    };
+
+    function humanFileSize(bytes, si) {
+        var thresh = si ? 1000 : 1024;
+        if(bytes < thresh) return bytes + ' B';
+        var units = si ? ['kB','MB','GB','TB','PB','EB','ZB','YB'] : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+        var u = -1;
+        do {
+            bytes /= thresh;
+            ++u;
+        } while(bytes >= thresh);
+        return bytes.toFixed(1)+' '+units[u];
     };
 
     function bytelen( _s ){

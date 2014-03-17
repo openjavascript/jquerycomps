@@ -80,7 +80,7 @@
                     , _newData = JC.f.parseBool( _p.attr('newdata') )
                     , _d = _newData
                         ? {"errorno":0,"errmsg":"","data":{"name":"testxx.jpg"
-                            ,"url":"\/ignore\/JQueryComps_dev\/comps\/AjaxUpload\/_demo\/data\/images\/test.jpg?testxx"}}
+                            ,"url":"data\/images\/test.jpg?testxx"}}
                         : null
                     ;
                 _ins.update( _d );
@@ -139,7 +139,7 @@
                     cauStyle="g1"
                     cauButtonText="上传资质文件"
                     cauUrl="../_demo/data/handler.php"
-                    cauFileExt=".jpg, .jpeg, .png, .gif"
+                    cauFileExt="*.txt"
                     cauFileName="file"
                     cauValueKey="url"
                     cauLabelKey="name"
@@ -150,6 +150,7 @@
                 <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
 
                 <button type="button" class="AUBtn AUBtn-w1 js_updateData">JC.AjaxUpload#update for clear</button>
+                <span>*.txt</span>
             </dd>
         </dl>
 
@@ -162,12 +163,12 @@
                     cauStyle="w1"
                     cauButtonText="上传资质文件"
                     cauUrl="../_demo/data/handler.php"
-                    cauFileExt=".jpg, .jpeg, .png, .gif"
                     cauFileName="file"
                     cauValueKey="url"
                     cauLabelKey="name"
                     cauStatusLabel="/label.js_statusLabel"
                     cauDisplayLabel="/label.js_fileLabel"
+                    cauFileSize="10 k"
                     />
                 <label class="js_fileLabel" style="display:none"></label>
                 <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
@@ -176,6 +177,7 @@
                     JC.AjaxUpload#update for new data
                 </button>
                 <button type="button" class="AUBtn AUBtn-g1 js_updateData">JC.AjaxUpload#update for clear</button>
+                cauFileSize="10 k"
             </dd>
         </dl>
 
@@ -195,11 +197,14 @@
                     cauStatusLabel="/label.js_statusLabel"
                     cauDisplayLabel="/label.js_fileLabel"
                     cauUploadDoneCallback="cauUploadDoneCallback"
+                    cauFileSize="100000 k"
                     />
                 <label class="js_fileLabel" style="display:none"></label>
                 <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
 
                 <button type="button" class="AUBtn AUBtn-g1 js_updateData">JC.AjaxUpload#update for clear</button>
+                <span>.jpg, .jpeg, .png, .gif</span>
+                cauFileSize="100000 k"
             </dd>
         </dl>
 
