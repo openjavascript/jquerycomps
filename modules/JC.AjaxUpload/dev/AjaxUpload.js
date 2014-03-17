@@ -1,6 +1,6 @@
 //TODO: 添加文件大小判断
 //TODO: 0.2 添加 flash 上传支持
-(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel', 'SWFUplaod' ], function(){
+(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
     /**
      * Ajax 文件上传
      * <p><b>require</b>: 
@@ -195,41 +195,6 @@ url: ?callback=callback
             }
             return _r;
         };
-    /**
-     * frame 文件名
-     * @property    frameFileName
-     * @type        string
-     * @default     "default.html"
-     * @static
-     */
-    AjaxUpload.frameFileName = 'default.html';
-    /**
-     * 载入 frame 文件时, 是否添加随机数防止缓存
-     * @property    randomFrame
-     * @type        bool
-     * @default     false
-     * @static
-     */
-    AjaxUpload.randomFrame = false;
-    /**
-     * frame 文件夹位于库的位置
-     * @property    _FRAME_DIR
-     * @type        string
-     * @default     "comps/AjaxUpload/frame/"
-     * @static
-     * @private
-     */
-    AjaxUpload._FRAME_DIR = "modules/JC.AjaxUpload/dev/frame/";
-    define && !define.amd && ( AjaxUpload._FRAME_DIR = 'comps/AjaxUpload/frame/' );
-    /**
-     * 初始化 frame 时递增的统计变量
-     * @property    _INS_COUNT
-     * @type        int
-     * @default     1
-     * @protected
-     * @static
-     */
-    AjaxUpload._INS_COUNT = 1;
 
     BaseMVC.build( AjaxUpload );
 
@@ -293,19 +258,21 @@ url: ?callback=callback
                 /**
                  * 上传完毕触发的事件
                  */
-                _p.on( 'UploadDone', function( _evt, _d, _ignore ){
+                _p.on( 'UploadDone', function( _evt, _d, _ignore, _flName ){
                     if( _ignore ) return;
                     JC.log( _d );
                     var _err = false, _od = _d;
                     try{ 
                         typeof _d == 'string' && ( _d = $.parseJSON( _d ) );
                     } catch( ex ){ _d = {}; _err = true; }
+
                     //_err = true;
                     //_d.errorno = 1;
                     //_d.errmsg = "test error"
                     if( _err ){
                         _p._view.errFatalError( _od );
-                        _p._view.updateChange();
+
+                        $( _p._view ).trigger('UpdateDefaultStatus')
 
                         _p._model.cauUploadErrorCallback()
                             && _p._model.cauUploadErrorCallback().call(    
@@ -326,7 +293,7 @@ url: ?callback=callback
                                 _p
                                 , _d
                                 , _p._model.selector()
-                                , _p._model.frame() 
+                                //, _p._model.frame() 
                             );
                     }
                 });
@@ -337,15 +304,18 @@ url: ?callback=callback
                 _p.on( 'AUUpdateLayout', function( _evt, _width, _height, _btn ){
                     _p._view.updateLayout( _width, _height, _btn );
                 });
+
+                _p.on( 'init', function(){
+                    _p._model.loadSWF( _p._model.getParams() );
+                });
             }
         , _inited:
             function(){
                 var _p = this;
                 JC.log( 'AjaxUpload _inited', new Date().getTime() );
-                _p._view.loadFrame();
-                AjaxUpload.getInstance( _p._model.frame(), _p );
-
-                _p.trigger( 'AUInited' );
+                //_p._view.loadFrame();
+                //AjaxUpload.getInstance( _p._model.frame(), _p );
+                _p.trigger( 'init' );
             }
         /**
          * 手动更新数据
@@ -373,14 +343,23 @@ url: ?callback=callback
     });
 
     AjaxUpload.Model._instanceName = 'AjaxUpload';
+    AjaxUpload.Model._insCount = 1;
+
+    AjaxUpload.Model.FLASH_URL = '/modules/SWFUpload/2.5.0/SWFUpload.swf';
+
+    AjaxUpload.Model.PATH = '/modules/JC.AjaxUpload/dev/';
+
     JC.f.extendObject( AjaxUpload.Model.prototype, {
         init:
             function(){
                 JC.log( 'AjaxUpload.Model.init:', new Date().getTime() );
+                this._id = AjaxUpload.Model._insCount++;
             }
 
-        , cauStyle: function(){ return this.attrProp('cauStyle'); }
-        , cauButtonText: function(){ return this.attrProp('cauButtonText'); }
+        , id: function(){ return this._id; }
+
+        , cauStyle: function(){ return this.attrProp('cauStyle') || 'g1'; }
+        , cauButtonText: function(){ return this.attrProp('cauButtonText') || '上传文件'; }
 
         , cauUrl: function(){ return this.attrProp( 'cauUrl' ); }
 
@@ -388,7 +367,7 @@ url: ?callback=callback
 
         , cauFileName: 
             function(){ 
-                return this.attrProp('cauFileName') || this.attrProp('name'); 
+                return this.attrProp('cauFileName') || this.attrProp('name') || 'file'; 
             }
 
         , cauLabelKey: function(){ return this.attrProp( 'cauLabelKey' ) || 'name'; }
@@ -436,41 +415,152 @@ url: ?callback=callback
                 return _r;
             }
 
-        , framePath:
+        , cauDebug: function(){ return this.boolProp( 'cauDebug' ); }
+
+        , cauFlashUrl:
             function(){
-                var _fl = this.attrProp('cauFrameFileName') || AjaxUpload.frameFileName
-                    , _r = JC.f.printf( '{0}{1}{2}', JC.PATH, AjaxUpload._FRAME_DIR, _fl )
-                    ;
-                this.randomFrame() 
-                    && ( _r = JC.f.addUrlParams( _r, { 'rnd': new Date().getTime() } ) )
-                    ;
-                return _r;
-            }
-        , randomFrame:
-            function(){
-                var _r = AjaxUpload.randomFrame;
-                this.selector().is( '[cauRandomFrame]' )
-                    && ( _r = this.boolProp( 'cauRandomFrame') )
-                    ;
+                var _r = this.attrProp( 'cauFlashUrl' );
+                !_r && ( _r = JC.PATH + AjaxUpload.Model.FLASH_URL );
                 return _r;
             }
 
-        , frame:
+        , cauButtonWidth:
             function(){
-                if( !this._iframe ){
-                    var _tpl = AjaxUpload.frameTpl;
-                    if( this.selector().is('[cauFrameScriptTpl]') ){
-                        _tpl = JC.f.scriptContent( JC.f.parentSelector( 
-                                                            this.selector()
-                                                            , this.selector().attr('cauFrameScriptTpl') 
-                                                            ) 
-                                );
-                    }
-                    this._iframe = $( AjaxUpload.frameTpl );
+                var _btnText = this.cauButtonText();
+                return this.intProp( 'cauButtonWidth' ) || ( bytelen( _btnText ) * 7 + 20 );
+            }
+
+        , cauButtonHeight:
+            function(){
+                return this.intProp( 'cauButtonHeight' ) || 22;
+            }
+
+        , initButtonStyle:
+            function( _r ){
+                if( !_r ) return;
+                var _p = this
+                    , _style = _p.cauStyle() || ''
+                    ;
+
+                _r.button_width = _p.cauButtonWidth();
+                _r.button_height = _p.cauButtonHeight();
+                _r.button_text_top_padding = "2";
+                _r.button_text_style = _p.button_text_style();
+
+                switch( _p.cauStyle() ){
+                    case 'g1':
+                        {
+                            //_r.button_image_url = "/ignore/requirejs_dev/modules/JC.AjaxUpload/dev/res/default/g_61x27.png";
+                            _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
+                            _r.button_text_style = _p.button_text_style( '.uFont{ color:#ffffff; text-align: center; }' );
+                            break;
+                        }
                 }
-                return this._iframe;
+            }
+
+        , layoutButton:
+            function(){
+                var _p = this
+                    , _holderId = 'AjaxUpload_hl_' + _p.id()
+                    ;
+                if( !this._buttonLayout ){
+                    _p._buttonLayout = 
+                            $( JC.f.printf( 
+                                '<button type="text" class="btn AUBtn AUBtn-{1} js_btn"><span id="{0}"></span></button>'
+                                , _holderId 
+                                , _p.cauStyle()
+                            ));
+
+                    _p.selector().after( this._buttonLayout );
+                }
+                return this._buttonLayout;
+            }
+
+        , cauRoot:
+            function(){
+                var _r = this.attrProp( 'cauRoot' );
+
+                !_r && ( _r = JC.f.fixPath( JC.PATH + AjaxUpload.Model.PATH ) );
+
+                return _r;
+            }
+
+        , file_upload_limit: function(){ return this.intProp( 'file_upload_limit' ) || 0; }
+        , file_queue_limit: function(){ return this.intProp( 'file_queue_limit' ) || 0; }
+        , file_size_limit: function(){ return this.attrProp( 'file_size_limit' ) || '10 MB'; }
+        , prevent_swf_caching: function(){ return this.boolProp( 'prevent_swf_caching' ); }
+        , http_success: 
+            function(){ 
+                var _r = [ 200, 201, 204 ];
+                if( this.attrProp( 'http_success' ) ){
+                    _r = this.attrProp( 'http_success' ).replace( /[\s]+/g, '' ).split( ',' );
+                }
+                return _r;
+            }
+
+        , button_text_style:
+            function( _setter){
+                return this.attrProp( 'button_text_style' ) 
+                    || _setter
+                    || '.uFont{ color:#000000; text-align: center; }';
+            }
+        
+        , getParams:
+            function(){
+                var _p = this
+                    , _r = {}
+                    ;
+
+                _p.layoutButton();
+
+                _r.debug = _p.cauDebug();
+                _r.flash_url = JC.f.fixPath( _p.cauFlashUrl() );
+
+                _r.upload_url = _p.cauUrl();
+                _r.file_post_name = _p.cauFileName();
+
+                _p.initButtonStyle( _r );
+
+                _r.button_placeholder_id = _p.layoutButton().find('> span[id]').attr( 'id' );
+
+                _r.button_text = JC.f.printf( '<span class="uFont">{0}</span>', _p.cauButtonText() );
+
+                _r.button_window_mode = SWFUpload.WINDOW_MODE.TRANSPAREN;
+                _r.button_cursor = SWFUpload.CURSOR.HAND;
+
+                _r.file_upload_limit = _p.file_upload_limit();
+                _r.file_queue_limit = _p.file_queue_limit();
+                _r.file_size_limit = _p.file_size_limit();
+                _r.prevent_swf_caching = _p.prevent_swf_caching();
+                _r.http_success = _p.http_success();
+
+                _r.file_dialog_complete_handler =
+                    function( _selectedFiles ){
+                        if( !_selectedFiles ) return;
+                        _p.trigger( 'BeforeUpload' );
+                        this.startUpload();
+                    };
+
+                _r.upload_success_handler = 
+                    function(fileObject, serverData, receivedResponse){
+                        _p.trigger( 'UploadDone', [ serverData, false, fileObject.name ] );
+                    };
+
+                return _r;
+            }
+        , loadSWF:
+            function( _params ){
+                JC.dir( _params );
+                this._swfu && this._swfu.destory();
+                this._swfu = new SWFUpload( _params );
             }
     });
+
+    /*
+    window.initSWFUpload =
+        function(){
+        };
+    */
 
     JC.f.extendObject( AjaxUpload.View.prototype, {
         init:
@@ -486,7 +576,7 @@ url: ?callback=callback
                     ;
                     
                     _p.updateChange();
-                    _p._model.frame().show();
+                    _p._model.layoutButton().show();
 
                     _statusLabel && _statusLabel.length && _statusLabel.hide();
                     _displayLabel && _displayLabel.length && _displayLabel.hide();
@@ -522,24 +612,6 @@ url: ?callback=callback
                 });
             }
 
-        , loadFrame:
-            function(){
-                var _p = this, _path = _p._model.framePath()
-                    , _frame = _p._model.frame()
-                    ;
-
-                JC.log( _path );
-
-                _frame.attr( 'src', _path );
-                _frame.on( 'load', function(){
-                    _p.trigger( 'FrameLoad' );
-                });
-
-                //_p._model.selector().hide();
-
-                _p._model.selector().before( _frame );
-            }
-
         , beforeUpload:
             function(){
                 var _p = this, _statusLabel = _p._model.cauStatusLabel();
@@ -549,7 +621,7 @@ url: ?callback=callback
 
                 if( _statusLabel && _statusLabel.length ){
                     _p._model.selector().hide();
-                    _p._model.frame().hide();
+                    _p.hideLayoutButton();
                     _statusLabel.show();
                 }
             }
@@ -564,11 +636,15 @@ url: ?callback=callback
 
                 if( _statusLabel && _statusLabel.length && !_noLabelAction ){
                     _p._model.selector().show();
-                    _p._model.frame().show();
+                    _p._model.layoutButton().show();
                     _statusLabel.hide();
                 }
                 if( _displayLabel && _displayLabel.length ){
                     _displayLabel.html( '' );
+                }
+
+                if( _d && _displayLabel && _displayLabel.length ){
+                    _p._model.layoutButton().hide();
                 }
 
                 _p._model.selector().val( '' );
@@ -590,13 +666,25 @@ url: ?callback=callback
                         if( _p._model.is('[cauHideButton]') ){
                             _p._model.cauHideButton() && _p._model.frame().hide();
                         }else{
-                            _p._model.frame().hide();
+                            _p.hideLayoutButton();
                         }
                         _displayLabel.show();
                         return;
                     }
                 }
             }
+
+        , hideLayoutButton:
+            function(){
+                var _p = this;
+                //_p._model.layoutButton().hide();
+                return;
+                _p._model.layoutButton().css( {
+                    'position': 'absolute'
+                    , 'left': '-9999px'
+                });
+            }
+
 
         , updateLayout:
             function( _width, _height, _btn ){
@@ -664,12 +752,9 @@ url: ?callback=callback
             }
     };
 
-    AjaxUpload.frameTpl =
-        JC.f.printf(
-                '<iframe src="about:blank" frameborder="0" class="AUIframe" style="{0}"></iframe>'
-                , 'width: 84px; height: 24px;cursor: pointer; vertical-align: middle;'
-              );
-            ;
+    function bytelen( _s ){
+        return _s.replace(/[^\x00-\xff]/g,"11").length;
+    }
 
     $(document).ready( function(){
         AjaxUpload.autoInit && AjaxUpload.init();
