@@ -95,7 +95,7 @@ requirejs.config( {
         , 'plugins.Base64': 'plugins/Base64/0.1/Base64'
         , 'plugins.md5': 'plugins/md5/0.1/md5'
 
-        , 'SWFUplaod': 'modules/SWFUpload/2.5.0/SWFUpload'
+        , 'SWFUpload': 'modules/SWFUpload/2.5.0/SWFUpload'
     }
 });
 /**

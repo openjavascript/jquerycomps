@@ -1,6 +1,6 @@
 //TODO: 添加文件大小判断
 //TODO: 0.2 添加 flash 上传支持
-(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
+(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel', 'SWFUpload' ], function(){
     /**
      * Ajax 文件上传
      * <p><b>require</b>: 
@@ -202,46 +202,12 @@ url: ?callback=callback
         _beforeInit:
             function(){
                 var _p = this;
-                JC.log( 'AjaxUpload _beforeInit', new Date().getTime() );
+                //JC.log( 'AjaxUpload _beforeInit', new Date().getTime() );
                 
             }
         , _initHanlderEvent:
             function(){
                 var _p = this;
-                /**
-                 * iframe 加载完毕后触发的事件, 执行初始化操作
-                 */
-                _p.on( 'FrameLoad', function(_evt){
-                    var _w = _p._model.frame().prop( 'contentWindow' );
-                    if( !( _w && _w.initPage ) ) return;
-                    _w.initPage( _p, _p._model );
-
-                    if( _p._model.INITED ) return;
-                    _p._model.INITED = true;
-                    if( _p._model.cauDefaultHide() ){
-                        setTimeout( function(){
-                            _p._model.frame().hide();
-                            _p._model.selector().hide();
-                        }, 1);
-                    }
-
-                    _p._model.selector().on( 'show', function( _evt ){
-                        JC.log( 'show');
-                    });
-
-                     _p._model.selector().on( 'hide', function( _evt ){
-                         JC.log('hide');
-                    });
-
-                    _p._model.frame().on( 'show', function( _evt ){
-                        JC.log( 'show');
-                    });
-
-                     _p._model.frame().on( 'hide', function( _evt ){
-                         JC.log('hide');
-                    });
-
-                });
                 /**
                  * 文件扩展名错误
                  */
@@ -260,7 +226,6 @@ url: ?callback=callback
                  */
                 _p.on( 'UploadDone', function( _evt, _d, _ignore, _flName ){
                     if( _ignore ) return;
-                    JC.log( _d );
                     var _err = false, _od = _d;
                     try{ 
                         typeof _d == 'string' && ( _d = $.parseJSON( _d ) );
@@ -273,6 +238,7 @@ url: ?callback=callback
                         _p._view.errFatalError( _od );
 
                         $( _p._view ).trigger('UpdateDefaultStatus')
+                        _p.trigger( 'UploadComplete' );
 
                         _p._model.cauUploadErrorCallback()
                             && _p._model.cauUploadErrorCallback().call(    
@@ -285,8 +251,10 @@ url: ?callback=callback
                         if( _d.errorno ){
                             _p._view.errUpload( _d );
                             _p._view.updateChange();
+                            _p.trigger( 'UploadComplete' );
                         }else{
                             _p._view.updateChange( _d );
+                            _p.trigger( 'UploadComplete', [ _d ] );
                         }
                         _p._model.cauUploadDoneCallback()
                             && _p._model.cauUploadDoneCallback().call(
@@ -297,13 +265,6 @@ url: ?callback=callback
                             );
                     }
                 });
-                /**
-                 * frame 的按钮样式改变后触发的事件
-                 * 需要更新 frame 的宽高
-                 */
-                _p.on( 'AUUpdateLayout', function( _evt, _width, _height, _btn ){
-                    _p._view.updateLayout( _width, _height, _btn );
-                });
 
                 _p.on( 'UpdateDefaultStatus', function( _evt, _file, _errCode, _msg ){
                     JC.f.safeTimeout( function(){
@@ -312,9 +273,22 @@ url: ?callback=callback
                 });
 
                _p.on( 'UploadError', function( _evt, _file, _errCode, _msg ){
+                    _p.trigger( 'UploadComplete' );
                     $( _p._view ).trigger( 'UploadError', [ _file, _errCode, _msg ] );
                 });
 
+               _p.on( 'CancelUpload', function( _evt ){
+                   _p._model.cancelUpload();
+                    _p.trigger( 'UploadComplete' );
+               });
+
+               _p.on( 'UploadComplete', function( _evt, _data ){
+                   _p._view.uploadComplete( _data );
+               });
+
+               _p.on( 'UploadProgress', function( _evt, _file, _curBytes, _totalBytes ){
+                   _p._view.uploadProgress( _file.name, _curBytes, _totalBytes );
+               });
 
                 _p.on( 'init', function(){
                     _p._model.loadSWF( _p._model.getParams() );
@@ -323,9 +297,14 @@ url: ?callback=callback
         , _inited:
             function(){
                 var _p = this;
-                JC.log( 'AjaxUpload _inited', new Date().getTime() );
-                //_p._view.loadFrame();
-                //AjaxUpload.getInstance( _p._model.frame(), _p );
+                //JC.log( 'AjaxUpload _inited', new Date().getTime() );
+
+                $( document ).delegate( 
+                    JC.f.printf( '.AjaxUploadProgressBox_{0} .AUCancelProgress', _p._model.id() ), 'click', 
+                    function( _evt ){
+                        _p.trigger( 'CancelUpload' );
+                });
+
                 _p.trigger( 'init' );
             }
         /**
@@ -360,10 +339,18 @@ url: ?callback=callback
 
     AjaxUpload.Model.PATH = '/modules/JC.AjaxUpload/dev/';
 
+    AjaxUpload.Model.PROGRESS_TPL =
+        [
+        '<span class="AUProgressBox" style="display:none;">'
+        ,'<button type="button" class="AUProgress"><div class="AUPercent"></div></button>'
+        ,'<button type="button" class="AUCancelProgress"></button>'
+        ,'</span>'
+        ].join('');
+
     JC.f.extendObject( AjaxUpload.Model.prototype, {
         init:
             function(){
-                JC.log( 'AjaxUpload.Model.init:', new Date().getTime() );
+                //JC.log( 'AjaxUpload.Model.init:', new Date().getTime() );
                 this._id = AjaxUpload.Model._insCount++;
             }
 
@@ -628,7 +615,7 @@ url: ?callback=callback
                 //
                 _r.upload_progress_handler =
                     function( _file, _curBytes, _totalBytes ){
-                        JC.log( [ _file.name, _curBytes, _totalBytes ] );
+                        _p.trigger( 'UploadProgress', [ _file, _curBytes, _totalBytes ] );
                     };
                 //
                 /// 上传失败后触发的事件
@@ -664,9 +651,41 @@ url: ?callback=callback
             }
         , loadSWF:
             function( _params ){
-                JC.dir( _params );
+                //JC.dir( _params );
                 this._swfu && this._swfu.destory();
                 this._swfu = new SWFUpload( _params );
+            }
+
+        , swfu: function(){ return this._swfu; }
+
+        , cancelUpload: 
+            function(){
+                if( this._swfu ){
+                    this._swfu.cancelUpload();
+                }
+            }
+
+        , cauShowProgress: 
+            function(){ 
+                var _r = this.boolProp( 'cauShowProgress' ); 
+                !_r && this.cauProgressBox() && ( _r = this.cauProgressBox().length );
+                return _r;
+            }
+
+        , cauProgressBox:
+            function(){
+                var _r = this._cauProgressBox || this.selectorProp( 'cauProgressBox' );
+                if( !( _r && _r.length ) ){
+                    if( this.boolProp( 'cauShowProgress' ) ){
+                        _r = this._cauProgressBox = $( AjaxUpload.Model.PROGRESS_TPL );
+                        this.selector().after( _r );
+                    }
+                }
+                if( _r && _r.length && !this._initedProgressBox ){
+                    _r.addClass( 'AjaxUploadProgressBox_' + this.id() );
+                    this._initedProgressBox = true;
+                }
+                return _r;
             }
     });
 
@@ -679,7 +698,7 @@ url: ?callback=callback
     JC.f.extendObject( AjaxUpload.View.prototype, {
         init:
             function(){
-                JC.log( 'AjaxUpload.View.init:', new Date().getTime() );
+                //JC.log( 'AjaxUpload.View.init:', new Date().getTime() );
                 var _p = this;
                 /**
                  * 恢复默认状态
@@ -768,16 +787,46 @@ url: ?callback=callback
 
         , beforeUpload:
             function(){
-                var _p = this, _statusLabel = _p._model.cauStatusLabel();
-                JC.log( 'AjaxUpload view#beforeUpload', new Date().getTime() );
+                var _p = this
+                    , _statusLabel = _p._model.cauStatusLabel()
+                    , _progressBox = _p._model.cauProgressBox()
+                    ;
+                //JC.log( 'AjaxUpload view#beforeUpload', new Date().getTime() );
 
                 this.updateChange( null, true );
 
                 if( _statusLabel && _statusLabel.length ){
                     _p._model.selector().hide();
-                    _p.hideLayoutButton();
                     _statusLabel.show();
                 }
+
+                _progressBox 
+                    && (
+                        _progressBox.find( '.AUPercent' ).length 
+                            && _progressBox.find( '.AUPercent' ).attr( 'width', '0' )
+                        , _progressBox.show()
+                   );
+            }
+
+        , uploadComplete: 
+            function( _d ){
+                var _p = this
+                    , _progressBox = _p._model.cauProgressBox()
+                    ;
+                _progressBox && _progressBox.length && _progressBox.hide();
+            }
+
+        , uploadProgress:
+            function( _file, _curBytes, _totalBytes ){
+                var _p = this
+                    , _progressBox = _p._model.cauProgressBox()
+                    , _percentEle, _percent = 0
+                    ;
+                if( !( _progressBox && _progressBox.length ) ) return;
+                _percentEle = _progressBox.find( '.AUPercent' );
+                if( !_percentEle.length ) return;
+                _curBytes && ( _percent = _curBytes / _totalBytes * 100 );
+                _percentEle.css( 'width', _percent + '%' );
             }
 
         , updateChange:
@@ -820,35 +869,11 @@ url: ?callback=callback
                         if( _p._model.is('[cauHideButton]') ){
                             _p._model.cauHideButton() && _p._model.frame().hide();
                         }else{
-                            _p.hideLayoutButton();
                         }
                         _displayLabel.show();
                         return;
                     }
                 }
-            }
-
-        , hideLayoutButton:
-            function(){
-                var _p = this;
-                //_p._model.layoutButton().hide();
-                return;
-                _p._model.layoutButton().css( {
-                    'position': 'absolute'
-                    , 'left': '-9999px'
-                });
-            }
-
-
-        , updateLayout:
-            function( _width, _height, _btn ){
-                if( !( _width && _height ) ) return;
-                var _p = this;
-                JC.log( 'AjaxUpload @event UpdateLayout', new Date().getTime(), _width, _height );
-                _p._model.frame().css({
-                    'width': _width + 'px'
-                    , 'height': _height + 'px'
-                });
             }
 
         , errUpload:
