@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #F0DC82;!important;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+
+            dd.odd {
+                background: #ececec;
+            }
+
+            dt{
+                font-weight: bold;
+            }
+
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
+
+            input[type=checkbox], input[type=radio], input.UXC{
+                height: auto;
+                line-height: auto;
+            }
+
+            select[multiple]{
+                height: 80px;
+            }
+
+            dt { font-weight: bold; margin: 10px auto; }
+            dd { line-height: 24px; }
+
+            input, button{    
+                display: inline-block; 
+                height: 22px; 
+                vertical-align: middle; 
+                color: #000; 
+            }
+            button, input[type=file]{ course: pointer; }
+
+            .AUIframe {
+                margin-right: 2px;
+            }
+        </style>
+        <link href='../../../../modules/JC.AjaxUpload/0.2/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Panel/0.1/res/default/style.css' rel='stylesheet' />
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config.js"></script>
+        <script>
+
+            JC.debug = true;
+
+            requirejs( ['JC.AjaxUpload'], function( AjaxUpload ){
+            });
+
+            $(document).delegate( 'button.js_updateData', 'click', function( _evt ){
+                var _p = $(this)
+                    , _selector = JC.f.getJqParent( _p, 'dd').find('.js_compAjaxUpload')
+                    , _ins = JC.AjaxUpload.getInstance( _selector )
+                    , _newData = JC.f.parseBool( _p.attr('newdata') )
+                    , _d = _newData
+                        ? {"errorno":0,"errmsg":"","data":{"name":"testxx.jpg"
+                            ,"url":"data\/images\/test.jpg?testxx"}}
+                        : null
+                    ;
+                _ins.update( _d );
+            });
+
+            function cauUploadDoneCallback( _json, _selector ){
+                var _ins = this;
+                //alert( _json ); //object object
+            }
+        </script>
+    </head>    
+    <body>
+
+        <dl class="defdl">
+            <dt> JC.AjaxUpload 示例, with hidden</dt>
+            <dd>
+                <button type="button" class="AUBtn AUBtn-w1">placehoder test</button>
+
+                <input type="hidden" class="js_compAjaxUpload" value=""
+                    cauUrl="../_demo/data/handler.php"
+                    cauFileExt=".jpg, .jpeg, .png, .gif"
+                    cauFileName="file"
+                    cauValueKey="url"
+                    cauLabelKey="name"
+                    />
+                
+                <button type="button" class="AUBtn AUBtn-w1">placehoder test</button>
+            </dd>
+        </dl>
+
+        <dl class="defdl">
+            <dt> JC.AjaxUpload 示例, with textbox</dt>
+            <dd>
+                <button type="button" class="AUBtn AUBtn-w1">placehoder test</button>
+
+                <input type="text" readonly class="js_compAjaxUpload" value=""
+                    cauUrl="../_demo/data/handler.php?errorno=0"
+                    cauFileExt=".jpg, .jpeg, .png, .gif"
+                    cauFileName="file"
+                    cauValueKey="url"
+                    cauLabelKey="name"
+                    cauStatusLabel="/label.js_statusLabel"
+                    />
+                <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
+
+                <button type="button" class="AUBtn AUBtn-w1 js_updateData">JC.AjaxUpload#update for clear</button>
+            </dd>
+        </dl>
+
+        <dl class="defdl">
+            <dt> JC.AjaxUpload 示例, with hidden && label</dt>
+            <dd>
+                <button type="button" class="AUBtn AUBtn-w1">placehoder test</button>
+
+                <input type="hidden" class="js_compAjaxUpload" value=""
+                    cauStyle="g1"
+                    cauButtonText="上传资质文件"
+                    cauUrl="../_demo/data/handler.php"
+                    cauFileExt="*.txt"
+                    cauFileName="file"
+                    cauValueKey="url"
+                    cauLabelKey="name"
+                    cauStatusLabel="/label.js_statusLabel"
+                    cauDisplayLabel="/label.js_fileLabel"
+                    />
+                <label class="js_fileLabel" style="display:none"></label>
+                <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
+
+                <button type="button" class="AUBtn AUBtn-w1 js_updateData">JC.AjaxUpload#update for clear</button>
+                <span>*.txt</span>
+            </dd>
+        </dl>
+
+        <dl class="defdl">
+            <dt> JC.AjaxUpload 示例, with hidden && label</dt>
+            <dd>
+                <button type="button" class="AUBtn AUBtn-g1">placehoder test</button>
+
+                <input type="hidden" class="js_compAjaxUpload" value=""
+                    cauStyle="w1"
+                    cauButtonText="上传资质文件"
+                    cauUrl="../_demo/data/handler.php"
+                    cauFileName="file"
+                    cauValueKey="url"
+                    cauLabelKey="name"
+                    cauStatusLabel="/label.js_statusLabel"
+                    cauDisplayLabel="/label.js_fileLabel"
+                    cauFileSize="10 k"
+                    />
+                <label class="js_fileLabel" style="display:none"></label>
+                <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
+
+                <button type="button" class="AUBtn AUBtn-g1 js_updateData" newdata="true" >
+                    JC.AjaxUpload#update for new data
+                </button>
+                <button type="button" class="AUBtn AUBtn-g1 js_updateData">JC.AjaxUpload#update for clear</button>
+                cauFileSize="10 k"
+            </dd>
+        </dl>
+
+        <dl class="defdl">
+            <dt> JC.AjaxUpload 示例, with hidden && label, 真实上传实例, 仅对 host = git.me.btbtd.org 生效</dt>
+            <dd>
+                <button type="button" class="AUBtn AUBtn-g1">placehoder test</button>
+
+                <input type="hidden" class="js_compAjaxUpload" value=""
+                    cauStyle="w1"
+                    cauButtonText="上传资质文件"
+                    cauUrl="../_demo/data/upload.php"
+                    cauFileExt=".jpg, .jpeg, .png, .gif"
+                    cauFileName="file"
+                    cauValueKey="url"
+                    cauLabelKey="name"
+                    cauStatusLabel="/label.js_statusLabel"
+                    cauDisplayLabel="/label.js_fileLabel"
+                    cauUploadDoneCallback="cauUploadDoneCallback"
+                    cauFileSize="100000 k"
+                    />
+                <label class="js_fileLabel" style="display:none"></label>
+                <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
+
+                <button type="button" class="AUBtn AUBtn-g1 js_updateData">JC.AjaxUpload#update for clear</button>
+                <span>.jpg, .jpeg, .png, .gif</span>
+                cauFileSize="100000 k"
+            </dd>
+        </dl>
+
+    </body>
+</html>
+
