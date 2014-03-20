@@ -11101,7 +11101,9 @@ window.Bizs = window.Bizs || {};
                 _parts = JC._usePatch( _parts, 'Form', 'AutoChecked' );
                 _parts = JC._usePatch( _parts, 'Form', 'FormFillUrl' );
 
+                /*
                 _parts = JC._usePatch( _parts, 'AjaxUpload', 'plugins.SWFUpload' );
+                */
                 _parts = JC._usePatch( _parts, 'AjaxUpload', 'Panel' );
 
                 $.each( _parts, function( _ix, _part ){
