@@ -2,6 +2,7 @@
     window.Bizs.DMultiDate = DMultiDate;
     /**
      * DMultiDate 复合日历业务逻辑
+     * <br/> Dom 加载后会自动加载页面上所有.js_autoDMultiDate的标签
      * <p><b>require</b>: 
      *      <a href='window.jQuery.html'>jQuery</a>
      *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
@@ -10,6 +11,36 @@
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.DMultiDate.html' target='_blank'>API docs</a>
      * | <a href='../../modules/Bizs.DMultiDate/0.1/_demo' target='_blank'>demo link</a></p>
+     *
+     * <h2>可用的html属性</h2>
+     * <dl>
+     *    <dt>mddate = css selector</dt>
+     *    <dd>声明日期input[type=text][datatype=daterange]的标签<br/>
+     *        如果缺省则自动查找子元素.js_multidate</dd>
+     *
+     *    <dt>mdstartdate = css selector</dt>
+     *    <dd>声明开始日期的隐藏域标签, 默认查找子元素.js_startdate</dd>
+     *
+     *    <dt>mdenddate = css selector</dt>
+     *    <dd>声明结束日期的隐藏域标签, 默认查找子元素.js_enddate</dd>
+     *
+     *    <dt>mddayrange = num</dt>
+     *    <dd>声明时间粒度为日时，最长可选取多少天，如果不需要则不声明此属性</dd>
+     *
+     *    <dt>mdweekrange = num</dt>
+     *    <dd>声明时间粒度为周时，最长可选取多少周，如果不需要则不声明此属性</dd>
+     *
+     *    <dt>mdmonthrange = num</dt>
+     *    <dd>声明时间粒度为月时，最长可选取多少月，如果不需要则不声明此属性</dd>
+     *
+     *    <dt>mdseasonrange = num</dt>
+     *    <dd>声明时间粒度为季时，最长可选取多少季，如果不需要则不声明此属性</dd>
+     *
+     *    <dt>mdyearrange = num</dt>
+     *    <dd>声明时间粒度为年时，最长可选取多少年，如果不需要则不声明此属性</dd>
+     *
+     * </dl>
+     *
      * @class   DMultiDate
      * @namespace   window.Bizs
      * @constructor
@@ -29,9 +60,8 @@
     
     DMultiDate.prototype = {
         _beforeInit: function () {
-            var _p = this;
-                
-
+            DMultiDate.Model._defaultMaxvalue = this._model.mddateEl().eq(0).attr('maxvalue') || '';
+            DMultiDate.Model._defaultMinvalue = this._model.mddateEl().eq(1).attr('minvalue') || '';
         },
 
         _initHanlderEvent: function () {
@@ -45,6 +75,8 @@
                 _hideendcb = 'Bizs.DMultiDate_hide_end' + _count,
                 _layoutchangestartcb = 'Bizs.DMultiDate_layoutchange_start' + _count,
                 _layoutchangeendcb = 'Bizs.DMultiDate_layoutchange_end' + _count,
+                _clearstartcb = 'Bizs.DMultiDate_clear_start' + _count,
+                _clearendcb = 'Bizs.DMultiDate_clear_end' + _count,
                 _parseweekdate = 'parsedateweek',
                 _parsemonthdate = 'parsedatemonth',
                 _parseseasondate = 'parsedateseason',
@@ -84,22 +116,24 @@
                 .attr('calendarupdate', _updatestartcb)
                 .attr('calendarshow', _showstartcb)
                 .attr('calendarhide', _hidestartcb)
-                .attr('calendarlayoutchange', _layoutchangestartcb);
+                .attr('calendarlayoutchange', _layoutchangestartcb)
+                .attr('calendarclear', _clearstartcb);
 
             _p._model.mddateEl().eq(1)
                 .attr('calendarupdate', _updateendcb)
                 .attr('calendarshow', _showendcb)
                 .attr('calendarhide', _hideendcb)
-                .attr('calendarlayoutchange', _layoutchangeendcb);
+                .attr('calendarlayoutchange', _layoutchangeendcb)
+                .attr('calendarclear', _clearendcb);
 
             window[_updatestartcb] = function (_d, _ins) {
                 var _mddateEl = _p._model.mddateEl(),
                     _type = _p._model.calendarType(),
-                    _newmaxdate = _d,
-                    _curmaxdate = _mddateEl.eq(1).attr('maxvalue'),
-                    _range,
-                    _temp = new Date();
+                    _newmaxdate = new Date(_d.getFullYear(), _d.getMonth(), _d.getDate()),
+                    _curmaxdate = DMultiDate.Model._defaultMaxvalue,
+                    _range;
 
+                _d = JC.f.formatISODate(_d);
                 _curmaxdate && (_curmaxdate = JC.f.dateDetect(_curmaxdate));
 
                 switch ( _type ) {
@@ -110,58 +144,114 @@
 
                     case 'month':
                         _range = _p._model.monthrange();
-                        _range && _newmaxdate.setMonth( _newmaxdate.getMonth() + (_range - 1) );
+                        
+                        if (_range) {
+                            _newmaxdate.setMonth( _newmaxdate.getMonth() + (_range - 1) );
+                            _newmaxdate.setDate(JC.f.maxDayOfMonth(_newmaxdate));
+                        }
+                       
                         break;
 
                     case 'season':
                         _range = _p._model.seasonrange();
-                        _range && _newmaxdate.setMonth( _newmaxdate.getMonth() + (_range) * 3 );
+                        
+                        if (_range) {
+                            _newmaxdate.setMonth( _newmaxdate.getMonth() + (_range - 1) * 3  + 2 );
+                            _newmaxdate.setDate(JC.f.maxDayOfMonth(_newmaxdate));
+                        }
+
                         break;
 
                     case 'year':
                         _range = _p._model.yearrange();
-                        _range && _newmaxdate.setYear( _newmaxdate.getFullYear() + _range );
+                        _range && _newmaxdate.setYear( _newmaxdate.getFullYear() + _range - 1 );
                         break;
 
                     case 'date':
                     default:
                         _range = _p._model.dayrange();
-                        _range && _newmaxdate.setDate( _newmaxdate.getDate() + _range );
+                        _range && _newmaxdate.setDate( _newmaxdate.getDate() + _range - 1 );
                 }
 
                 if ( _range ) {
 
-                    if ( _curmaxdate.getTime() <= _temp.getTime() && _newmaxdate.getTime() > _temp.getTime() ) {
+                    if ( _curmaxdate && ( _curmaxdate.getTime() <= _newmaxdate.getTime() ) ) {
                         _newmaxdate = _curmaxdate;
                     }
-                    
-                    //_mddateEl.attr('maxvalue', JC.f.formatISODate(_newmaxdate));
-                    _mddateEl.eq(1).attr('maxvalue', JC.f.formatISODate(_newmaxdate))
+
+                    _mddateEl.eq(1)
+                        .attr('maxvalue', JC.f.formatISODate(_newmaxdate))
+                        .attr('minvalue', _d)
+                        .attr('defaultdate', _d);
                 }
-                _p._model.setHiddenStartdate(JC.f.formatISODate(_d));
+                _p._model.setHiddenStartdate(_d);
             };
 
             window[_updateendcb] = function (_d, _ins) {
-                var _range = _p._model.getRange(_p._model.calendarType());
+                var _mddateEl = _p._model.mddateEl(),
+                    _type = _p._model.calendarType(),
+                    _mindate = new Date(_d.getFullYear(), _d.getMonth(), _d.getDate()),
+                    _curmindate = DMultiDate.Model._defaultMinvalue,
+                    _range,
+                    _temp = new Date(_d.getFullYear(), _d.getMonth(), _d.getDate());
 
-                if ( _range ) {
+                _curmindate && (_curmindate = JC.f.dateDetect(_curmindate));
+                //_d = JC.f.formatISODate(_d);
 
+                switch (_type) {
+                    case 'week':
+                        _range = _p._model.weekrange();
+                        _range && _mindate.setDate( _mindate.getDate() - (_range - 1) * 7 );
+                        break;
+
+                    case 'month':
+                        _range = _p._model.monthrange();
+                        _range && (_mindate.setMonth( _mindate.getMonth() - (_range - 1) ) && _temp.setDate(JC.f.maxDayOfMonth(_d)));
+                        break;
+
+                    case 'season':
+                        _range = _p._model.seasonrange();
+                        _range && (_mindate.setMonth( _mindate.getMonth() - (_range - 1) * 3 ));
+                        break;
+
+                    case 'year':
+                        _range = _p._model.yearrange();
+                        _range && (_mindate.setYear( _mindate.getFullYear() - _range + 1 ));
+                        break;
+
+                    case 'date':
+                    default:
+                        _range = _p._model.dayrange();
+                        _range && _mindate.setDate(_mindate.getDate() - _range + 1  );    
+                }
+
+                if (_range) {
+
+                    if ( _curmindate && _curmindate.getTime() > _mindate.getTime() ) {
+                        _mindate = _curmindate;
+                    }
+
+                    _mindate = JC.f.formatISODate(_mindate);
+                    _mddateEl.eq(0)
+                        .attr('maxvalue', JC.f.formatISODate(_temp))
+                        .attr('minvalue', _mindate)
+                        .attr('defaultdate', _mindate);
                 }
 
                 _p._model.setHiddenEnddate(JC.f.formatISODate(_d));
             };
 
             window[_showstartcb] = function () {
-                //calendarshow的回调可以不要了吧？
-                //var _layout = $('body > div.UXCCalendar:visible');
+        
+                var _layout = $('body > div.UXCCalendar:visible');
                 
-                //_layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
+                _layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
             };
 
             window[_showendcb] = function () {
-                //var _layout = $('body > div.UXCCalendar:visible');
-                
-                //_layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
+                var _layout = $('body > div.UXCCalendar:visible');
+            
+                _layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
             };
             
             window[_hidestartcb] = function () {
@@ -175,17 +265,57 @@
             };
 
             window[_layoutchangestartcb] = function () {
-                //layoutchange回调也不需要了吧
-                // JC.Tips && JC.Tips.hide();
-                // var _layout = $('body > div.UXCCalendar:visible');
-                // _layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
+                JC.Tips && JC.Tips.hide();
+                var _layout = $('body > div.UXCCalendar:visible');
+                _layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
             };
 
             window[_layoutchangeendcb] = function () {
-                //layoutchange回调也不需要了吧
-                // JC.Tips && JC.Tips.hide();
-                // var _layout = $('body > div.UXCCalendar:visible');
-                // _layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
+                JC.Tips && JC.Tips.hide();
+                var _layout = $('body > div.UXCCalendar:visible');
+                _layout.length && JC.Tips && JC.Tips.init( _layout.find('[title]') );
+            };
+
+            window[_clearstartcb] = function ( _selector, _ins ) {
+                var _enddateEl = _p._model.mddateEl().eq(1),
+                    _maxdate = DMultiDate.Model._defaultMaxvalue,
+                    _mindate = DMultiDate.Model._defaultMinvalue;
+
+                if ( _maxdate ) {
+                    _enddateEl.attr('maxvalue', _maxdate)
+                        .attr('defaultdate', _maxdate );
+                } else {
+                    _enddateEl.removeAttr('maxvalue')
+                        .removeAttr('defaultdate');
+                }
+
+                if ( _mindate ) {
+                    _enddateEl.attr('minvalue', _mindate);
+                } else {
+                    _enddateEl.removeAttr('minvalue');
+                }
+                    
+            };
+
+            window[_clearendcb] = function () {
+                var _enddateEl = _p._model.mddateEl().eq(0),
+                    _maxdate = DMultiDate.Model._defaultMaxvalue,
+                    _mindate = DMultiDate.Model._defaultMinvalue;
+
+                if ( _maxdate ) {
+                    _enddateEl.attr('maxvalue', _maxdate);
+                } else {
+                    _enddateEl.removeAttr('maxvalue');
+                }
+
+                if ( _mindate ) {
+                    _enddateEl.attr('minvalue', _mindate)
+                        .attr('defaultdate', _mindate);
+                } else {
+                    _enddateEl.removeAttr('minvalue')
+                        .removeAttr('defaultdate');
+                } 
+
             };
 
             window[_parseweekdate] = function (_dateStr) {
@@ -225,7 +355,7 @@
                         }
                     });
                 }
-
+                
                 return _r;
             };
 
@@ -337,7 +467,6 @@
 
         _inited:function () {
             //JC.log( 'DMultiDate _inited', new Date().getTime() );
-
         }
     }
 
@@ -372,15 +501,14 @@
         return _r;
     };
 
-
     BaseMVC.buildModel( DMultiDate );
     DMultiDate.Model._instanceName = 'DMultiDate';
-    
     DMultiDate.Model._inscount = 1;
+    DMultiDate.Model._defaultMaxvalue = '';
+    DMultiDate.Model._defaultMinvalue = '';
     
     DMultiDate.Model.prototype = {
         init: function () {
-            
         },
 
         calendarTypeEl: function () {
@@ -395,8 +523,7 @@
             var _p = this,
                 _el = _p.attrProp('mddateEl') || '.js_multidate';
 
-            return JC.f.parentSelector(_p.selector(), _el);
-            //return _p.selector().find(_el);
+            return _p.selector().find(_el);
         },
 
         setmddate: function (_starttime, _endtime) {
@@ -423,6 +550,20 @@
                 _el.attr('dateformat', _p.dateformartType(_setter))
                    .attr('dateparse', 'parsedate' + _setter);   
             }
+
+            if ( DMultiDate.Model._defaultMinvalue ) {
+                _el.attr('minvalue', DMultiDate.Model._defaultMinvalue)
+            } else {
+                _el.removeAttr('minvalue');
+            }
+
+            if ( DMultiDate.Model._defaultMaxvalue ) {
+                _el.attr('maxvalue', DMultiDate.Model._defaultMaxvalue)
+                    .attr('defaultdate', DMultiDate.Model._defaultMaxvalue);
+            } else {
+                _el.removeAttr('maxvalue').removeAttr('defaultdate');
+            }
+            
         },
 
         dateformartType: function (_setter) {
@@ -453,14 +594,14 @@
             var _p = this,
                 _el = _p.attrProp('mdstartdate') || '.js_startdate';
 
-            return JC.f.parentSelector(_p.selector(), _el);
+            return _p.selector().find(_el);
         },
 
         hiddenEnddateEl: function () {
             var _p = this,
                 _el = _p.attrProp('mdenddate') || '.js_enddate';
 
-            return JC.f.parentSelector(_p.selector(), _el);
+            return _p.selector().find(_el);
         },
 
         setHiddenStartdate: function (_date) {
@@ -532,30 +673,6 @@
             return _d;
         },
 
-        getRange: function ( _calendartype ) {
-            var _p = this,
-                _r;
-
-            switch (_calendartype) {
-                case 'week':
-                    _r = _p.weekrange();
-                    break;
-                case 'month':
-                    _r = _p.monthrange();
-                    break;
-                case 'season':
-                    _r = _p.seasonrange();
-                    break;
-                case 'year':
-                    _r = _p.yearrange();
-                    break;
-                default:
-                    _r = _p.dayrange();
-            }
-
-            return _r;
-        },
-
         dayrange: function () {
             return this.intProp('mddayrange');
         },
@@ -575,8 +692,6 @@
         yearrange: function () {
             return this.intProp('mdyearrange');
         }
-
-        
 
     };
 

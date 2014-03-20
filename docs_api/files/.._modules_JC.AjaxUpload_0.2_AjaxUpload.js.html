@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../modules/JC.AjaxUpload/0.1/AjaxUpload.js - open jquery components library</title>
+    <title>../modules/JC.AjaxUpload/0.2/AjaxUpload.js - open jquery components library</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -208,30 +208,29 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../modules/JC.AjaxUpload/0.1/AjaxUpload.js</h1>
+                        <h1 class="file-heading">File: ../modules/JC.AjaxUpload/0.2/AjaxUpload.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//TODO: 添加文件大小判断
-//TODO: 0.2 添加 flash 上传支持
-(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Panel&#x27; ], function(){
+(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Panel&#x27;, &#x27;SWFUpload&#x27; ], function(){
     /**
      * Ajax 文件上传
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
      *      &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
      *      , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
      *      , &lt;a href=&#x27;JC.Panel.html&#x27;&gt;JC.Panel&lt;/a&gt;
+     *      , &lt;a href=&#x27;javascript:;&#x27;&gt;SWFUpload&lt;/a&gt;
      * &lt;/p&gt;
      * &lt;p&gt;
      *      &lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      *      | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
-     *      | &lt;a href=&#x27;../../modules/JC.AjaxUpload/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;
+     *      | &lt;a href=&#x27;../../modules/JC.AjaxUpload/0.2/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;
      * &lt;/p&gt;
      * &lt;h2&gt;可用的 html attribute&lt;/h2&gt;
      * &lt;dl&gt;
      *      &lt;dt&gt;cauStyle = string, default = g1&lt;/dt&gt;
      *      &lt;dd&gt;
-     *          按钮显示的样式, &lt;a href=&#x27;../../modules/JC.AjaxUpload/0.1/res/default/style.html&#x27; target=&#x27;_blank&#x27;&gt;可选样式&lt;/a&gt;:
+     *          按钮显示的样式, &lt;a href=&#x27;../../modules/JC.AjaxUpload/dev/res/default/style.html&#x27; target=&#x27;_blank&#x27;&gt;可选样式&lt;/a&gt;:
      *          &lt;dl&gt;
      *              &lt;dt&gt;绿色按钮&lt;/dt&gt;
      *              &lt;dd&gt;g1, g2, g3&lt;/dd&gt;
@@ -244,24 +243,9 @@
      *      &lt;dt&gt;cauButtonText = string, default = 上传文件&lt;/dt&gt;
      *      &lt;dd&gt;定义上传按钮的显示文本&lt;/dd&gt;
      *
-     *      &lt;dt&gt;cauHideButton = bool, default = false( no label ), true( has label )&lt;/dt&gt;
-     *      &lt;dd&gt;
-     *          上传完成后是否隐藏上传按钮
-     *      &lt;/dd&gt;
-     *
      *      &lt;dt&gt;cauUrl = url, require&lt;/dt&gt;
      *      &lt;dd&gt;上传文件的接口地址
      *          &lt;br /&gt;如果 url 带有参数 callback, 返回数据将以 jsonp 方式处理
-     *      &lt;/dd&gt;
-     *
-     *      &lt;dt&gt;cauJSONPName = function name&lt;/dt&gt;
-     *      &lt;dd&gt;显式声明上传后返回数据的 jsonp 回调名
-     *          &lt;h3&gt;jsonp 返回数据示例:&lt;/h3&gt;
-url: ?callback=callback
-&lt;br /&gt; data: 
-&amp;lt;script&gt;
-    window.parent &amp;&amp; window.parent.callback &amp;&amp; window.parent.callback( {&quot;errorno&quot;:0,&quot;errmsg&quot;:&quot;&quot;,&quot;data&quot;:{&quot;name&quot;:&quot;test.jpg&quot;,&quot;url&quot;:&quot;.\/data\/images\/test.jpg&quot;}} );
-&amp;lt;/script&gt;
      *      &lt;/dd&gt;
      *
      *      &lt;dt&gt;cauFileExt = file ext, optional&lt;/dt&gt;
@@ -288,7 +272,7 @@ url: ?callback=callback
      *      &lt;dt&gt;cauUploadDoneCallback = function, optional&lt;/dt&gt;
      *      &lt;dd&gt;
      *          文件上传完毕时, 触发的回调
-&lt;pre&gt;function cauUploadDoneCallback( _json, _selector, _frame ){
+&lt;pre&gt;function cauUploadDoneCallback( _json, _selector ){
     var _ins = this;
     //alert( _json ); //object object
 }&lt;/pre&gt;
@@ -297,7 +281,7 @@ url: ?callback=callback
      *      &lt;dt&gt;cauUploadErrorCallback = function, optional&lt;/dt&gt;
      *      &lt;dd&gt;
      *          文件上传完毕时, 发生错误触发的回调
-&lt;pre&gt;function cauUploadErrorCallback( _json, _selector, _frame ){
+&lt;pre&gt;function cauUploadErrorCallback( _json, _selector ){
     var _ins = this;
     //alert( _json ); //object object
 }&lt;/pre&gt;
@@ -316,15 +300,67 @@ url: ?callback=callback
     return _label;
 }&lt;/pre&gt;
      *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauDebug = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;是否显示 flash 调试信息&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauFlashUrl = string&lt;/dt&gt;
+     *      &lt;dd&gt;显式声明 flash 路径&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauButtonWidth = int, default = 自动计算&lt;/dt&gt;
+     *      &lt;dd&gt;显式声明按钮的宽度&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauButtonHeight= int, default = 自动计算&lt;/dt&gt;
+     *      &lt;dd&gt;显式声明按钮的高度&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauRoot = string&lt;/dt&gt;
+     *      &lt;dd&gt;显式声明组件根路径&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauUploadLimit = int, default = 0(不限制)&lt;/dt&gt;
+     *      &lt;dd&gt;上传文件的总数量&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauQueueLimit = int, default = 0(不限制)&lt;/dt&gt;
+     *      &lt;dd&gt;队列中文件的总数量(&lt;b&gt;未实现&lt;/b&gt;)&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauFileSize = [ KB | MB | GB ], default = 1024 MB&lt;/dt&gt;
+     *      &lt;dd&gt;上传文件大小限制&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauCacheSwf = bool, default = true&lt;/dt&gt;
+     *      &lt;dd&gt;是否缓存 flash swf&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauHttpSuccess = string, default = 200, 201, 204&lt;/dt&gt;
+     *      &lt;dd&gt;http 通信成功的状态码&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauButtonStyle = string, default = .uFont{ color:#000000; text-align: center; }&lt;/dt&gt;
+     *      &lt;dd&gt;定义 flash 按钮的样式&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauParamsCallback = function&lt;/dt&gt;
+     *      &lt;dd&gt;设置 flash 参数的回调
+&lt;pre&gt;function cauParamsCallback( _params ){
+    var _model = this;
+    return _params;
+}&lt;/pre&gt;
+     *      &lt;/dd&gt;
+     *      
+     *      &lt;dt&gt;cauBatchUpload = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;是否为批量上传(&lt;b&gt;未实现&lt;/b&gt;)&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauShowProgress = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;是否显示进度条
+     *          &lt;br &gt;如果为真, 且没有声明 cauProgressBox, 那么会自动生成 cauProgressBox
+     *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauProgressBox = selector&lt;/dt&gt;
+     *      &lt;dd&gt;显式声明 进度条标签&lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
      * @class AjaxUpload
      * @extends JC.BaseMVC
      * @constructor
      * @param   {selector}   _selector   
-     * @version dev 0.1
+     * @version dev 0.2, 2014-03-20
+     * @version dev 0.1, 2013-09-26
      * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 team
-     * @date    2013-09-26
      * @example
             &lt;div&gt;
                 &lt;input type=&quot;hidden&quot; class=&quot;js_compAjaxUpload&quot; value=&quot;&quot;
@@ -409,41 +445,6 @@ url: ?callback=callback
             }
             return _r;
         };
-    /**
-     * frame 文件名
-     * @property    frameFileName
-     * @type        string
-     * @default     &quot;default.html&quot;
-     * @static
-     */
-    AjaxUpload.frameFileName = &#x27;default.html&#x27;;
-    /**
-     * 载入 frame 文件时, 是否添加随机数防止缓存
-     * @property    randomFrame
-     * @type        bool
-     * @default     false
-     * @static
-     */
-    AjaxUpload.randomFrame = false;
-    /**
-     * frame 文件夹位于库的位置
-     * @property    _FRAME_DIR
-     * @type        string
-     * @default     &quot;comps/AjaxUpload/frame/&quot;
-     * @static
-     * @private
-     */
-    AjaxUpload._FRAME_DIR = &quot;modules/JC.AjaxUpload/0.1/frame/&quot;;
-    define &amp;&amp; !define.amd &amp;&amp; ( AjaxUpload._FRAME_DIR = &#x27;comps/AjaxUpload/frame/&#x27; );
-    /**
-     * 初始化 frame 时递增的统计变量
-     * @property    _INS_COUNT
-     * @type        int
-     * @default     1
-     * @protected
-     * @static
-     */
-    AjaxUpload._INS_COUNT = 1;
 
     BaseMVC.build( AjaxUpload );
 
@@ -451,46 +452,12 @@ url: ?callback=callback
         _beforeInit:
             function(){
                 var _p = this;
-                JC.log( &#x27;AjaxUpload _beforeInit&#x27;, new Date().getTime() );
+                //JC.log( &#x27;AjaxUpload _beforeInit&#x27;, new Date().getTime() );
                 
             }
         , _initHanlderEvent:
             function(){
                 var _p = this;
-                /**
-                 * iframe 加载完毕后触发的事件, 执行初始化操作
-                 */
-                _p.on( &#x27;FrameLoad&#x27;, function(_evt){
-                    var _w = _p._model.frame().prop( &#x27;contentWindow&#x27; );
-                    if( !( _w &amp;&amp; _w.initPage ) ) return;
-                    _w.initPage( _p, _p._model );
-
-                    if( _p._model.INITED ) return;
-                    _p._model.INITED = true;
-                    if( _p._model.cauDefaultHide() ){
-                        setTimeout( function(){
-                            _p._model.frame().hide();
-                            _p._model.selector().hide();
-                        }, 1);
-                    }
-
-                    _p._model.selector().on( &#x27;show&#x27;, function( _evt ){
-                        JC.log( &#x27;show&#x27;);
-                    });
-
-                     _p._model.selector().on( &#x27;hide&#x27;, function( _evt ){
-                         JC.log(&#x27;hide&#x27;);
-                    });
-
-                    _p._model.frame().on( &#x27;show&#x27;, function( _evt ){
-                        JC.log( &#x27;show&#x27;);
-                    });
-
-                     _p._model.frame().on( &#x27;hide&#x27;, function( _evt ){
-                         JC.log(&#x27;hide&#x27;);
-                    });
-
-                });
                 /**
                  * 文件扩展名错误
                  */
@@ -507,26 +474,27 @@ url: ?callback=callback
                 /**
                  * 上传完毕触发的事件
                  */
-                _p.on( &#x27;UploadDone&#x27;, function( _evt, _d, _ignore ){
+                _p.on( &#x27;UploadDone&#x27;, function( _evt, _d, _ignore, _flName ){
                     if( _ignore ) return;
-                    JC.log( _d );
                     var _err = false, _od = _d;
                     try{ 
                         typeof _d == &#x27;string&#x27; &amp;&amp; ( _d = $.parseJSON( _d ) );
                     } catch( ex ){ _d = {}; _err = true; }
+
+                    _p.trigger( &#x27;UploadComplete&#x27; );
+
                     //_err = true;
                     //_d.errorno = 1;
                     //_d.errmsg = &quot;test error&quot;
                     if( _err ){
                         _p._view.errFatalError( _od );
-                        _p._view.updateChange();
 
+                        _p.trigger(&#x27;UpdateDefaultStatus&#x27;)
                         _p._model.cauUploadErrorCallback()
                             &amp;&amp; _p._model.cauUploadErrorCallback().call(    
                                 _p
                                 , _d
                                 , _p._model.selector()
-                                , _p._model.frame() 
                             );
                     }else{
                         if( _d.errorno ){
@@ -540,26 +508,50 @@ url: ?callback=callback
                                 _p
                                 , _d
                                 , _p._model.selector()
-                                , _p._model.frame() 
                             );
                     }
+
                 });
-                /**
-                 * frame 的按钮样式改变后触发的事件
-                 * 需要更新 frame 的宽高
-                 */
-                _p.on( &#x27;AUUpdateLayout&#x27;, function( _evt, _width, _height, _btn ){
-                    _p._view.updateLayout( _width, _height, _btn );
+
+                _p.on( &#x27;UpdateDefaultStatus&#x27;, function( _evt, _file, _errCode, _msg ){
+                    JC.f.safeTimeout( function(){
+                        $( _p._view ).trigger( &#x27;UpdateDefaultStatus&#x27;, [ _file, _errCode, _msg ] );
+                    }, _p, &#x27;RESET_STATUS&#x27;, 100 );
+                });
+
+               _p.on( &#x27;UploadError&#x27;, function( _evt, _file, _errCode, _msg ){
+                    $( _p._view ).trigger( &#x27;UploadError&#x27;, [ _file, _errCode, _msg ] );
+                });
+
+               _p.on( &#x27;CancelUpload&#x27;, function( _evt ){
+                   _p._model.cancelUpload();
+                    _p.trigger( &#x27;UploadComplete&#x27; );
+               });
+
+               _p.on( &#x27;UploadComplete&#x27;, function( _evt, _data ){
+                   _p._view.uploadComplete( _data );
+               });
+
+               _p.on( &#x27;UploadProgress&#x27;, function( _evt, _file, _curBytes, _totalBytes ){
+                   _p._view.uploadProgress( _file.name, _curBytes, _totalBytes );
+               });
+
+                _p.on( &#x27;init&#x27;, function(){
+                    _p._model.loadSWF( _p._model.getParams() );
                 });
             }
         , _inited:
             function(){
                 var _p = this;
-                JC.log( &#x27;AjaxUpload _inited&#x27;, new Date().getTime() );
-                _p._view.loadFrame();
-                AjaxUpload.getInstance( _p._model.frame(), _p );
+                //JC.log( &#x27;AjaxUpload _inited&#x27;, new Date().getTime() );
 
-                _p.trigger( &#x27;AUInited&#x27; );
+                $( document ).delegate( 
+                    JC.f.printf( &#x27;.AjaxUploadProgressBox_{0} .AUCancelProgress&#x27;, _p._model.id() ), &#x27;click&#x27;, 
+                    function( _evt ){
+                        _p.trigger( &#x27;CancelUpload&#x27; );
+                });
+
+                _p.trigger( &#x27;init&#x27; );
             }
         /**
          * 手动更新数据
@@ -580,29 +572,62 @@ url: ?callback=callback
         , update:
             function( _d ){
                 var _p = this;
-                $( _p._view ).trigger(&#x27;UpdateDefaultStatus&#x27;)
+                _p.trigger(&#x27;UpdateDefaultStatus&#x27;)
                 _d &amp;&amp; _p.trigger(&#x27;UploadDone&#x27;, [ _d ] );
                 return this;
             }
     });
 
     AjaxUpload.Model._instanceName = &#x27;AjaxUpload&#x27;;
+    AjaxUpload.Model._insCount = 1;
+
+    if( JC.use ){
+        AjaxUpload.Model.FLASH_URL = &#x27;/plugins/SWFUpload.swf&#x27;;
+        AjaxUpload.Model.PATH = &#x27;/comps/AjaxUpload/&#x27;;
+    }else{
+        AjaxUpload.Model.FLASH_URL = &#x27;/modules/SWFUpload/2.5.0/SWFUpload.swf&#x27;;
+        AjaxUpload.Model.PATH = &#x27;/modules/JC.AjaxUpload/dev/&#x27;;
+    }
+
+    AjaxUpload.Model.PROGRESS_TPL =
+        [
+        &#x27;&lt;span class=&quot;AUProgressBox&quot; style=&quot;display:none;&quot;&gt;&#x27;
+        ,&#x27;&lt;button type=&quot;button&quot; class=&quot;AUProgress&quot;&gt;&lt;div class=&quot;AUPercent&quot;&gt;&lt;/div&gt;&lt;/button&gt;&#x27;
+        ,&#x27;&lt;button type=&quot;button&quot; class=&quot;AUCancelProgress&quot;&gt;&lt;/button&gt;&#x27;
+        ,&#x27;&lt;/span&gt;&#x27;
+        ].join(&#x27;&#x27;);
+
     JC.f.extendObject( AjaxUpload.Model.prototype, {
         init:
             function(){
-                JC.log( &#x27;AjaxUpload.Model.init:&#x27;, new Date().getTime() );
+                //JC.log( &#x27;AjaxUpload.Model.init:&#x27;, new Date().getTime() );
+                this._id = AjaxUpload.Model._insCount++;
             }
 
-        , cauStyle: function(){ return this.attrProp(&#x27;cauStyle&#x27;); }
-        , cauButtonText: function(){ return this.attrProp(&#x27;cauButtonText&#x27;); }
+        , id: function(){ return this._id; }
+
+        , cauStyle: function(){ return this.attrProp(&#x27;cauStyle&#x27;) || &#x27;g1&#x27;; }
+        , cauButtonText: function(){ return this.attrProp(&#x27;cauButtonText&#x27;) || &#x27;上传文件&#x27;; }
 
         , cauUrl: function(){ return this.attrProp( &#x27;cauUrl&#x27; ); }
 
-        , cauFileExt: function(){ return this.stringProp( &#x27;cauFileExt&#x27; ); }
+        , cauFileExt: 
+            function(){ 
+                var _r = this.stringProp( &#x27;cauFileExt&#x27; ) || this.stringProp( &#x27;fileext&#x27; ) || this.stringProp( &#x27;file_types&#x27; ); 
+                _r &amp;&amp; ( _r = _r.replace( /[\s]+/g, &#x27;&#x27; ) );
+                if( _r &amp;&amp; !/[\*]/.test( _r ) ){
+                    _r = _r.split(&#x27;,&#x27;);
+                    $.each( _r, function( _ix, _item ){
+                        _r[_ix] = &#x27;*&#x27; + _item;
+                    });
+                    _r = _r.join( &#x27;;&#x27; );
+                }
+                return _r;
+            }
 
         , cauFileName: 
             function(){ 
-                return this.attrProp(&#x27;cauFileName&#x27;) || this.attrProp(&#x27;name&#x27;); 
+                return this.attrProp(&#x27;cauFileName&#x27;) || this.attrProp(&#x27;name&#x27;) || &#x27;file&#x27;; 
             }
 
         , cauLabelKey: function(){ return this.attrProp( &#x27;cauLabelKey&#x27; ) || &#x27;name&#x27;; }
@@ -616,14 +641,6 @@ url: ?callback=callback
         , cauStatusLabel: function(){ return this.selectorProp( &#x27;cauStatusLabel&#x27; ); }
         , cauDisplayLabel: function(){ return this.selectorProp( &#x27;cauDisplayLabel&#x27; ); }
         , cauDisplayLabelCallback: function(){ return this.callbackProp( &#x27;cauDisplayLabelCallback&#x27; ); }
-
-        , cauHideButton: 
-            function(){
-                var _r = false;
-                this.is( &#x27;[cauHideButton]&#x27; ) 
-                    &amp;&amp; ( _r = this.boolProp( this.attrProp(&#x27;cauHideButton&#x27;) ) );
-                return _r;
-            }
 
         , cauDefaultHide:
             function(){
@@ -640,56 +657,308 @@ url: ?callback=callback
                 return this.callbackProp( &#x27;cauUploadErrorCallback&#x27; );
             }
 
-        , cauJSONPName:
+        , cauDebug: function(){ return this.boolProp( &#x27;cauDebug&#x27; ); }
+
+        , cauFlashUrl:
             function(){
-                var _r = AjaxUpload.JSONPName;
-
-                _r = JC.f.getUrlParam( this.cauUrl(), &#x27;callback&#x27; ) || _r;
-                _r = this.attrProp( &#x27;cauJSONPName&#x27; ) || _r;
-
+                var _r = this.attrProp( &#x27;cauFlashUrl&#x27; );
+                !_r &amp;&amp; ( _r = JC.PATH + AjaxUpload.Model.FLASH_URL );
                 return _r;
             }
 
-        , framePath:
+        , cauButtonWidth:
             function(){
-                var _fl = this.attrProp(&#x27;cauFrameFileName&#x27;) || AjaxUpload.frameFileName
-                    , _r = JC.f.printf( &#x27;{0}{1}{2}&#x27;, JC.PATH, AjaxUpload._FRAME_DIR, _fl )
-                    ;
-                this.randomFrame() 
-                    &amp;&amp; ( _r = JC.f.addUrlParams( _r, { &#x27;rnd&#x27;: new Date().getTime() } ) )
-                    ;
-                return _r;
-            }
-        , randomFrame:
-            function(){
-                var _r = AjaxUpload.randomFrame;
-                this.selector().is( &#x27;[cauRandomFrame]&#x27; )
-                    &amp;&amp; ( _r = this.boolProp( &#x27;cauRandomFrame&#x27;) )
-                    ;
-                return _r;
+                var _btnText = this.cauButtonText();
+                return this.intProp( &#x27;cauButtonWidth&#x27; ) || ( bytelen( _btnText ) * 7 + 20 );
             }
 
-        , frame:
-            function(){
-                if( !this._iframe ){
-                    var _tpl = AjaxUpload.frameTpl;
-                    if( this.selector().is(&#x27;[cauFrameScriptTpl]&#x27;) ){
-                        _tpl = JC.f.scriptContent( JC.f.parentSelector( 
-                                                            this.selector()
-                                                            , this.selector().attr(&#x27;cauFrameScriptTpl&#x27;) 
-                                                            ) 
-                                );
-                    }
-                    this._iframe = $( AjaxUpload.frameTpl );
+        , cauButtonHeight:
+            function( _setter ){
+                return this.intProp( &#x27;cauButtonHeight&#x27; ) || _setter || 22;
+            }
+
+        , cauButtonStyle:
+            function( _setter){
+                return this.attrProp( &#x27;cauButtonStyle&#x27; ) 
+                    || this.attrProp( &#x27;button_text_style&#x27; ) 
+                    || _setter
+                    || &#x27;.uFont{ color:#000000; text-align: center; }&#x27;;
+            }
+
+        , initButtonStyle:
+            function( _r ){
+                if( !_r ) return;
+                var _p = this
+                    , _style = _p.cauStyle() || &#x27;&#x27;
+                    ;
+
+                _r.button_width = _p.cauButtonWidth();
+                _r.button_height = _p.cauButtonHeight();
+                _r.button_text_top_padding = &quot;2&quot;;
+
+                switch( _p.cauStyle() ){
+                    case &#x27;g1&#x27;:
+                        {
+                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/g_61x27.png&#x27;, _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
+                            break;
+                        }
+                    case &#x27;g2&#x27;:
+                        {
+                            _r.button_text_top_padding = &quot;4&quot;;
+                            _r.button_height = _p.cauButtonHeight( 26 );
+                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/g_61x27.png&#x27;, _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
+                            break;
+                        }
+                    case &#x27;g3&#x27;:
+                        {
+                            _r.button_text_top_padding = &quot;6&quot;;
+                            _r.button_height = _p.cauButtonHeight( 28 );
+                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/g_61x27.png&#x27;, _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
+                            break;
+                        }
+                    case &#x27;w1&#x27;:
+                        {
+                            _r.button_text_top_padding = &quot;3&quot;;
+                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/w_61x27.png&#x27;, _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:##000000; text-align: center; }&#x27; );
+                            break;
+                        }
+                    case &#x27;w2&#x27;:
+                        {
+                            _r.button_text_top_padding = &quot;4&quot;;
+                            _r.button_height = _p.cauButtonHeight( 26 );
+                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/w_61x27.png&#x27;, _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#000000; text-align: center; }&#x27; );
+                            break;
+                        }
+                    case &#x27;w3&#x27;:
+                        {
+                            _r.button_text_top_padding = &quot;6&quot;;
+                            _r.button_height = _p.cauButtonHeight( 28 );
+                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/w_61x27.png&#x27;, _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#000000; text-align: center; }&#x27; );
+                            break;
+                        }
+
+                    default:
+                        {
+                            _r.button_text_style = _p.cauButtonStyle();
+                            break;
+                        }
                 }
-                return this._iframe;
+            }
+
+        , layoutButton:
+            function(){
+                var _p = this
+                    , _holderId = &#x27;AjaxUpload_hl_&#x27; + _p.id()
+                    ;
+                if( !this._buttonLayout ){
+                    _p._buttonLayout = 
+                            $( JC.f.printf( 
+                                &#x27;&lt;button type=&quot;text&quot; class=&quot;btn AUBtn AUBtn-{1} js_btn&quot;&gt;&lt;span id=&quot;{0}&quot;&gt;&lt;/span&gt;&lt;/button&gt;&#x27;
+                                , _holderId 
+                                , _p.cauStyle()
+                            ));
+
+                    _p.selector().after( this._buttonLayout );
+                }
+                return this._buttonLayout;
+            }
+
+        , cauRoot:
+            function(){
+                var _r = this.attrProp( &#x27;cauRoot&#x27; );
+
+                !_r &amp;&amp; ( _r = JC.f.fixPath( JC.PATH + AjaxUpload.Model.PATH ) );
+
+                return _r;
+            }
+
+        , cauUploadLimit: 
+            function(){ 
+                return this.intProp( &#x27;cauUploadLimit&#x27; ) || this.intProp( &#x27;file_upload_limit&#x27; ) || 0; 
+            }
+        , cauQueueLimit: 
+            function(){ 
+                return this.intProp( &#x27;cauQueueLimit&#x27; ) || this.intProp( &#x27;file_queue_limit&#x27; ) || 0; 
+            }
+        , cauFileSize: function(){ return this.attrProp( &#x27;file_size_limit&#x27; ) || this.attrProp( &#x27;cauFileSize&#x27; ) || &#x27;1024 MB&#x27;; }
+        , cauCacheSwf: 
+            function(){ 
+                var _r = true;
+                this.attrProp( &#x27;prevent_swf_caching&#x27; ) &amp;&amp; ( _r = !this.boolProp( &#x27;prevent_swf_caching&#x27; ) );
+                this.attrProp( &#x27;cauCacheSwf&#x27; ) &amp;&amp; ( _r = this.boolProp( &#x27;cauCacheSwf&#x27; ) );
+                _r = !_r;
+                return _r;
+            }
+        , cauHttpSuccess: 
+            function(){ 
+                var _r = [ 200, 201, 204 ], _tmp = this.attrProp( &#x27;cauHttpSuccess&#x27; ) || this.attrProp( &#x27;http_success&#x27; );
+                _tmp &amp;&amp; ( _r = _tmp.replace( /[\s]+/g, &#x27;&#x27; ).split( &#x27;,&#x27; ) );
+                return _r;
+            }
+
+        , cauBatchUpload: function(){ return this.boolProp( &#x27;cauBatchUpload&#x27; ); }
+        
+        , getParams:
+            function(){
+                var _p = this
+                    , _r = {}
+                    , _fileExt = _p.cauFileExt();
+                    ;
+
+                _p.layoutButton();
+
+                _r.debug = _p.cauDebug();
+                _r.flash_url = JC.f.fixPath( _p.cauFlashUrl() );
+
+                _r.upload_url = _p.cauUrl();
+                _r.file_post_name = _p.cauFileName();
+
+                _p.initButtonStyle( _r );
+
+                _r.button_placeholder_id = _p.layoutButton().find(&#x27;&gt; span[id]&#x27;).attr( &#x27;id&#x27; );
+
+                _r.button_text = JC.f.printf( &#x27;&lt;span class=&quot;uFont&quot;&gt;{0}&lt;/span&gt;&#x27;, _p.cauButtonText() );
+
+                _r.button_window_mode = SWFUpload.WINDOW_MODE.TRANSPAREN;
+                _r.button_cursor = SWFUpload.CURSOR.HAND;
+
+                _r.button_action = _p.cauBatchUpload() 
+                                    ? SWFUpload.BUTTON_ACTION.SELECT_FILES
+                                    : SWFUpload.BUTTON_ACTION.SELECT_FILE
+                                    ;
+
+                _r.file_upload_limit = _p.cauUploadLimit();
+                _r.file_queue_limit = _p.cauQueueLimit();
+                _r.file_size_limit = _p.cauFileSize();
+                _r.prevent_swf_caching = _p.cauCacheSwf();
+                _r.http_success = _p.cauHttpSuccess();
+
+                _fileExt &amp;&amp; ( _r.file_types = _fileExt );
+
+                _r.file_dialog_start_handler =
+                    function(){
+                        JC.hideAllPopup( 1);
+                    };
+
+                _r.file_dialog_complete_handler =
+                    function( _selectedFiles ){
+                        if( _p.beforeUploadError() ) {
+                            _p.beforeUploadError( false );
+                            return;
+                        }
+                        if( !_selectedFiles ) return;
+                        _p.trigger( &#x27;BeforeUpload&#x27; );
+                        this.startUpload();
+                        //this.setButtonDisabled( true );
+                    };
+                //
+                /// 上传文件时显示进度的事件
+                //
+                _r.upload_progress_handler =
+                    function( _file, _curBytes, _totalBytes ){
+                        _p.trigger( &#x27;UploadProgress&#x27;, [ _file, _curBytes, _totalBytes ] );
+                    };
+                //
+                /// 上传失败后触发的事件
+                //
+                _r.upload_error_handler =
+                    function( _file, _errCode, _msg ){
+                        _p.trigger( &#x27;UpdateDefaultStatus&#x27; );
+                        _p.trigger( &#x27;UploadError&#x27;, [ _file, _errCode, _msg ] );
+                    };
+                //
+                /// 上传成功后触发的事件
+                //
+                _r.upload_success_handler = 
+                    function(fileObject, serverData, receivedResponse){
+                        _p.trigger( &#x27;UploadDone&#x27;, [ serverData, false, fileObject.name ] );
+                    };
+                //
+                /// 上传后无论正确与错误都会触发的事件
+                //
+                _r.upload_complete_handler =
+                    function( _file ){
+                        this.setButtonDisabled( false );
+                    }
+
+                _r.file_queue_error_handler = 
+                    function( _file, _errCode, _msg ){
+                        _p.trigger( &#x27;UpdateDefaultStatus&#x27; );
+                        _p.trigger( &#x27;UploadError&#x27;, [ _file, _errCode, _msg ] );
+                        this.setButtonDisabled( false );
+                    }
+
+                return _r;
+            }
+
+        , beforeUploadError:
+            function( _setter ){
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._beforeUploadError = _setter );
+                return this._beforeUploadError;
+            }
+
+        , loadSWF:
+            function( _params ){
+                //JC.dir( _params );
+                this._swfu &amp;&amp; this._swfu.destory();
+
+                this.cauParamsCallback() 
+                    &amp;&amp; ( _params = this.cauParamsCallback().call( this, _params ) );
+
+                this._swfu = new SWFUpload( _params );
+            }
+
+        , swfu: function(){ return this._swfu; }
+
+        , cauParamsCallback: function(){ return this.callbackProp( &#x27;cauParamsCallback&#x27; ); }
+
+        , cancelUpload: 
+            function(){
+                if( this._swfu ){
+                    this._swfu.cancelUpload();
+                }
+            }
+
+        , cauShowProgress: 
+            function(){ 
+                var _r = this.boolProp( &#x27;cauShowProgress&#x27; ); 
+                !_r &amp;&amp; this.cauProgressBox() &amp;&amp; ( _r = this.cauProgressBox().length );
+                return _r;
+            }
+
+        , cauProgressBox:
+            function(){
+                var _r = this._cauProgressBox || this.selectorProp( &#x27;cauProgressBox&#x27; );
+                if( !( _r &amp;&amp; _r.length ) ){
+                    if( this.boolProp( &#x27;cauShowProgress&#x27; ) ){
+                        _r = this._cauProgressBox = $( AjaxUpload.Model.PROGRESS_TPL );
+                        this.selector().after( _r );
+                    }
+                }
+                if( _r &amp;&amp; _r.length &amp;&amp; !this._initedProgressBox ){
+                    _r.addClass( &#x27;AjaxUploadProgressBox_&#x27; + this.id() );
+                    this._initedProgressBox = true;
+                }
+                return _r;
             }
     });
+
+    /*
+    window.initSWFUpload =
+        function(){
+        };
+    */
 
     JC.f.extendObject( AjaxUpload.View.prototype, {
         init:
             function(){
-                JC.log( &#x27;AjaxUpload.View.init:&#x27;, new Date().getTime() );
+                //JC.log( &#x27;AjaxUpload.View.init:&#x27;, new Date().getTime() );
                 var _p = this;
                 /**
                  * 恢复默认状态
@@ -700,7 +969,7 @@ url: ?callback=callback
                     ;
                     
                     _p.updateChange();
-                    _p._model.frame().show();
+                    _p._model.layoutButton().show();
 
                     _statusLabel &amp;&amp; _statusLabel.length &amp;&amp; _statusLabel.hide();
                     _displayLabel &amp;&amp; _displayLabel.length &amp;&amp; _displayLabel.hide();
@@ -708,6 +977,63 @@ url: ?callback=callback
                     ( _p._model.selector().attr(&#x27;type&#x27;) || &#x27;&#x27; ).toLowerCase() != &#x27;hidden&#x27;
                         &amp;&amp; _p._model.selector().show()
                         ;
+
+                });
+
+                $( _p ).on( &#x27;UploadError&#x27;, function( _evt, _file, _errCode, _msg ){
+                    var _tmp;
+                    switch( _errCode ){
+                        case -110:
+                            {
+                                _tmp = JC.f.printf( &#x27;&lt;h2&gt;文件大小超出限制&lt;/h2&gt;&#x27;
+                                    +&#x27;可接受的文件大小: &lt;b style=&quot;color:green&quot;&gt;&lt;= {0}&lt;/b&gt;&#x27; 
+                                    +&#x27;&lt;br /&gt;{1}: &lt;b style=&quot;color:red&quot;&gt;{2}&lt;/b&gt;&#x27; 
+                                    , _p._model.cauFileSize()
+                                    , _file.name
+                                    , humanFileSize( _file.size ).replace( &#x27;i&#x27;, &#x27;&#x27; )
+                                );
+
+                                JC.msgbox( _tmp, _p._model.layoutButton(), 2, null, 1000 * 8 );
+                                break;
+                            }
+
+                        case -200:
+                            {
+                                _tmp = JC.f.printf( &#x27;&lt;h2&gt;文件大小超出服务器限制&lt;/h2&gt;&#x27;
+                                    +&#x27;{1}: &lt;b style=&quot;color:red&quot;&gt;{2}&lt;/b&gt;&#x27; 
+                                    , _p._model.cauFileSize()
+                                    , _file.name
+                                    , humanFileSize( _file.size ).replace( &#x27;i&#x27;, &#x27;&#x27; )
+                                );
+
+                                JC.msgbox( _tmp, _p._model.layoutButton(), 2, null, 1000 * 8 );
+                                break;
+                            }
+
+                        case -130:
+                            {
+                                _p._model.beforeUploadError( true );
+                                _tmp = JC.f.printf( &#x27;&lt;h2&gt;文件类型错误&lt;/h2&gt;&#x27;
+                                    +&#x27;可接受的类型: &lt;b style=&quot;color:green&quot;&gt;{0}&lt;/b&gt;&#x27; 
+                                    +&#x27;&lt;br /&gt;本次上传的文件: &lt;b style=&quot;color:red&quot;&gt;{1}&lt;/b&gt;&#x27; 
+                                    , _p._model.cauFileExt()
+                                    , _file.name
+                                );
+
+                                JC.msgbox( _tmp, _p._model.layoutButton(), 2, null, 1000 * 8 );
+
+                                break;
+                            }
+
+                        default:
+                            {
+                                alert( [&#x27;上传出错!&#x27;, &#x27;错误代码:&#x27;, _errCode, &#x27;出错原因:&#x27;, _msg ].join( &#x27; &#x27; ) );
+                                //JC.log( [&#x27;上传出错!&#x27;, &#x27;错误代码:&#x27;, _errCode, &#x27;出错原因:&#x27;, _msg ].join( &#x27; &#x27; ) );
+                                break;
+                            }
+                    }
+
+                    _p.trigger( &#x27;UploadComplete&#x27; );
                 });
 
                 $( _p ).on( &#x27;CAUUpdate&#x27;, function( _evt, _d ){
@@ -736,36 +1062,48 @@ url: ?callback=callback
                 });
             }
 
-        , loadFrame:
-            function(){
-                var _p = this, _path = _p._model.framePath()
-                    , _frame = _p._model.frame()
-                    ;
-
-                JC.log( _path );
-
-                _frame.attr( &#x27;src&#x27;, _path );
-                _frame.on( &#x27;load&#x27;, function(){
-                    _p.trigger( &#x27;FrameLoad&#x27; );
-                });
-
-                //_p._model.selector().hide();
-
-                _p._model.selector().before( _frame );
-            }
-
         , beforeUpload:
             function(){
-                var _p = this, _statusLabel = _p._model.cauStatusLabel();
-                JC.log( &#x27;AjaxUpload view#beforeUpload&#x27;, new Date().getTime() );
+                var _p = this
+                    , _statusLabel = _p._model.cauStatusLabel()
+                    , _progressBox = _p._model.cauProgressBox()
+                    ;
+                //JC.log( &#x27;AjaxUpload view#beforeUpload&#x27;, new Date().getTime() );
 
                 this.updateChange( null, true );
 
                 if( _statusLabel &amp;&amp; _statusLabel.length ){
                     _p._model.selector().hide();
-                    _p._model.frame().hide();
                     _statusLabel.show();
                 }
+
+                _progressBox 
+                    &amp;&amp; (
+                        _progressBox.find( &#x27;.AUPercent&#x27; ).length 
+                            &amp;&amp; _progressBox.find( &#x27;.AUPercent&#x27; ).attr( &#x27;width&#x27;, &#x27;0&#x27; )
+                        , _progressBox.show()
+                   );
+            }
+
+        , uploadComplete: 
+            function( _d ){
+                var _p = this
+                    , _progressBox = _p._model.cauProgressBox()
+                    ;
+                _progressBox &amp;&amp; _progressBox.length &amp;&amp; _progressBox.hide();
+            }
+
+        , uploadProgress:
+            function( _file, _curBytes, _totalBytes ){
+                var _p = this
+                    , _progressBox = _p._model.cauProgressBox()
+                    , _percentEle, _percent = 0
+                    ;
+                if( !( _progressBox &amp;&amp; _progressBox.length ) ) return;
+                _percentEle = _progressBox.find( &#x27;.AUPercent&#x27; );
+                if( !_percentEle.length ) return;
+                _curBytes &amp;&amp; ( _percent = _curBytes / _totalBytes * 100 );
+                _percentEle.css( &#x27;width&#x27;, _percent + &#x27;%&#x27; );
             }
 
         , updateChange:
@@ -778,11 +1116,15 @@ url: ?callback=callback
 
                 if( _statusLabel &amp;&amp; _statusLabel.length &amp;&amp; !_noLabelAction ){
                     _p._model.selector().show();
-                    _p._model.frame().show();
+                    _p._model.layoutButton().show();
                     _statusLabel.hide();
                 }
                 if( _displayLabel &amp;&amp; _displayLabel.length ){
                     _displayLabel.html( &#x27;&#x27; );
+                }
+
+                if( _d &amp;&amp; _displayLabel &amp;&amp; _displayLabel.length ){
+                    _p._model.layoutButton().hide();
                 }
 
                 _p._model.selector().val( &#x27;&#x27; );
@@ -801,33 +1143,17 @@ url: ?callback=callback
 
                     if( _displayLabel &amp;&amp; _displayLabel.length ){
                         _p._model.selector().hide();
-                        if( _p._model.is(&#x27;[cauHideButton]&#x27;) ){
-                            _p._model.cauHideButton() &amp;&amp; _p._model.frame().hide();
-                        }else{
-                            _p._model.frame().hide();
-                        }
                         _displayLabel.show();
                         return;
                     }
                 }
             }
 
-        , updateLayout:
-            function( _width, _height, _btn ){
-                if( !( _width &amp;&amp; _height ) ) return;
-                var _p = this;
-                JC.log( &#x27;AjaxUpload @event UpdateLayout&#x27;, new Date().getTime(), _width, _height );
-                _p._model.frame().css({
-                    &#x27;width&#x27;: _width + &#x27;px&#x27;
-                    , &#x27;height&#x27;: _height + &#x27;px&#x27;
-                });
-            }
-
         , errUpload:
             function( _d ){
                 var _p = this, _cb = _p._model.callbackProp( &#x27;cauUploadErrCallback&#x27; );
                 if( _cb ){
-                    _cb.call( _p._model.selector(), _d, _p._model.frame() );
+                    _cb.call( _p._model.selector(), _d );
                 }else{
                     var _msg = _d &amp;&amp; _d.errmsg ? _d.errmsg : &#x27;上传失败, 请重试!&#x27;;
                     JC.Dialog 
@@ -841,7 +1167,7 @@ url: ?callback=callback
             function( _flPath ){
                 var _p = this, _cb = _p._model.callbackProp( &#x27;cauFileExtErrCallback&#x27; );
                 if( _cb ){
-                    _cb.call( _p._model.selector(), _p._model.cauFileExt(), _flPath, _p._model.frame() );
+                    _cb.call( _p._model.selector(), _p._model.cauFileExt(), _flPath );
                 }else{
                     var _msg = JC.f.printf( &#x27;类型错误, 允许上传的文件类型: {0} &lt;p class=&quot;auExtErr&quot; style=&quot;color:red&quot;&gt;{1}&lt;/p&gt;&#x27;
                                         , _p._model.cauFileExt(), _flPath );
@@ -856,7 +1182,7 @@ url: ?callback=callback
             function( _d ){
                 var _p = this, _cb = _p._model.callbackProp( &#x27;cauFatalErrorCallback&#x27; );
                 if( _cb ){
-                    _cb.call( _p._model.selector(), _d, _p._model.frame() );
+                    _cb.call( _p._model.selector(), _d );
                 }else{
                     var _msg = JC.f.printf( &#x27;服务端错误, 无法解析返回数据: &lt;p class=&quot;auExtErr&quot; style=&quot;color:red&quot;&gt;{0}&lt;/p&gt;&#x27;
                                         , _d );
@@ -878,12 +1204,21 @@ url: ?callback=callback
             }
     };
 
-    AjaxUpload.frameTpl =
-        JC.f.printf(
-                &#x27;&lt;iframe src=&quot;about:blank&quot; frameborder=&quot;0&quot; class=&quot;AUIframe&quot; style=&quot;{0}&quot;&gt;&lt;/iframe&gt;&#x27;
-                , &#x27;width: 84px; height: 24px;cursor: pointer; vertical-align: middle;&#x27;
-              );
-            ;
+    function humanFileSize(bytes, si) {
+        var thresh = si ? 1000 : 1024;
+        if(bytes &lt; thresh) return bytes + &#x27; B&#x27;;
+        var units = si ? [&#x27;kB&#x27;,&#x27;MB&#x27;,&#x27;GB&#x27;,&#x27;TB&#x27;,&#x27;PB&#x27;,&#x27;EB&#x27;,&#x27;ZB&#x27;,&#x27;YB&#x27;] : [&#x27;KiB&#x27;,&#x27;MiB&#x27;,&#x27;GiB&#x27;,&#x27;TiB&#x27;,&#x27;PiB&#x27;,&#x27;EiB&#x27;,&#x27;ZiB&#x27;,&#x27;YiB&#x27;];
+        var u = -1;
+        do {
+            bytes /= thresh;
+            ++u;
+        } while(bytes &gt;= thresh);
+        return bytes.toFixed(1)+&#x27; &#x27;+units[u];
+    };
+
+    function bytelen( _s ){
+        return _s.replace(/[^\x00-\xff]/g,&quot;11&quot;).length;
+    }
 
     $(document).ready( function(){
         AjaxUpload.autoInit &amp;&amp; AjaxUpload.init();

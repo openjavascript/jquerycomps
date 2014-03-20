@@ -12,7 +12,8 @@ requirejs.config( {
         'JC.common': 'modules/JC.common/0.2/common'
         , 'JC.BaseMVC': 'modules/JC.BaseMVC/0.1/BaseMVC'
 
-        , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload'
+        //, 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload'
+        , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.2/AjaxUpload'
         , 'JC.AutoChecked': 'modules/JC.AutoChecked/0.1/AutoChecked'
         , 'JC.AutoSelect': 'modules/JC.AutoSelect/0.2/AutoSelect'
         , 'JC.AutoComplete': 'modules/JC.AutoComplete/0.1/AutoComplete'
@@ -52,6 +53,7 @@ requirejs.config( {
         , 'JC.TableFreeze': 'modules/JC.TableFreeze/0.2/TableFreeze'
         , 'JC.Tips': 'modules/JC.Tips/0.1/Tips'
         , 'JC.Tree': 'modules/JC.Tree/0.1/Tree'
+        , 'JC.Lazyload': 'modules/JC.Lazyload/0.1/Lazyload'
 
         //, 'JC.Panel': 'modules/JC.Panel/0.1/Panel'
         , 'JC.Panel': 'modules/JC.Panel/0.2/Panel'
@@ -87,6 +89,8 @@ requirejs.config( {
         , 'plugins.Aes': 'plugins/Aes/0.1/Aes'
         , 'plugins.Base64': 'plugins/Base64/0.1/Base64'
         , 'plugins.md5': 'plugins/md5/0.1/md5'
+
+        , 'SWFUpload': 'modules/SWFUpload/2.5.0/SWFUpload'
     }
 });
 /**

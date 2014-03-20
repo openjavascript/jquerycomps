@@ -84,6 +84,7 @@
         , "extendObject": extendObject
         , "safeTimeout": safeTimeout
         , "encoder": encoder
+        , "fixPath": fixPath
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -120,6 +121,15 @@
      * @static
      */
     window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
+
+    function fixPath( _url ){
+        if( /\\/.test( _url ) ){
+            _url = _url.replace( /[\\]+/g, '\\' );
+        }else{
+            _url = _url.replace( /[\/]+/g, '/' );
+        }
+        return _url;
+    }
     /**
      * 把函数的参数转为数组
      * @method  sliceArgs
