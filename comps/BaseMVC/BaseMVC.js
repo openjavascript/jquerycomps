@@ -442,6 +442,30 @@
                 return _r;
             }
         /**
+         * 获取 selector 属性的 json 数据
+         * @method  jsonProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  {json | null}
+         */
+        , jsonProp:
+            function( _selector, _key ){
+                var _r;
+                if( typeof _key == 'undefined' ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector && ( _selector = $( _selector ) );
+                }
+
+                _selector
+                    && _selector.is( '[' + _key + ']' ) 
+                    && ( _r = eval( '(' + _selector.attr( _key ) + ')' ) );
+
+                return _r;
+            }
+
+        /**
          * 判断 _selector 是否具体某种特征
          * @method  is
          * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
