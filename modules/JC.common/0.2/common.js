@@ -796,21 +796,23 @@
      * @method  mousewheelEvent
      * @param   {function}  _cb
      * @param   {bool}      _detach
+     * @param   {selector}  _selector, default = document
      * @static
      */
-    function mousewheelEvent( _cb, _detach ){
+    function mousewheelEvent( _cb, _detach, _selector ){
+        _selector = _selector || document;
         var _evt =  (/Firefox/i.test(navigator.userAgent))
             ? "DOMMouseScroll" 
             : "mousewheel"
             ;
-        document.attachEvent && ( _evt = 'on' + _evt );
+        _selector.attachEvent && ( _evt = 'on' + _evt );
 
         if( _detach ){
-            document.detachEvent && document.detachEvent( _evt, _cb )
-            document.removeEventListener && document.removeEventListener( _evt, _cb );
+            _selector.detachEvent && document.detachEvent( _evt, _cb )
+            _selector.removeEventListener && document.removeEventListener( _evt, _cb );
         }else{
-            document.attachEvent && document.attachEvent( _evt, _cb )
-            document.addEventListener && document.addEventListener( _evt, _cb );
+            _selector.attachEvent && document.attachEvent( _evt, _cb )
+            _selector.addEventListener && document.addEventListener( _evt, _cb );
         }
     }
     /**

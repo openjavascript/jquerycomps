@@ -68,6 +68,12 @@
 
             JC.debug = true;
 
+            JC.AjaxUploadParamsCallback =
+                function( _params ){
+                    _params.post_params = { PHPSESSID: 'test session id' };
+                    return _params;
+                };
+
             requirejs( ['JC.AjaxUpload'], function( AjaxUpload ){
             });
 

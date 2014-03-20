@@ -127,6 +127,9 @@
     return _params;
 }</pre>
      *      </dd>
+     *
+     *      <dt>cauPostParams = json</dt>
+     *      <dd>显式声明 post params</dd>
      *      
      *      <dt>cauBatchUpload = bool, default = false</dt>
      *      <dd>是否为批量上传(<b>未实现</b>)</dd>
@@ -231,6 +234,19 @@
             }
             return _r;
         };
+
+    /**
+     * 全局的 上传 params 回调
+     * @property    paramsCallback
+     * @return      json
+     * @static
+     * @example
+<pre>function paramsCallback( _params ){
+    var _model = this;
+    return _params;
+}</pre>
+     */
+    AjaxUpload.paramsCallback;
 
     BaseMVC.build( AjaxUpload );
 
@@ -471,72 +487,6 @@
                     || '.uFont{ color:#000000; text-align: center; }';
             }
 
-        , initButtonStyle:
-            function( _r ){
-                if( !_r ) return;
-                var _p = this
-                    , _style = _p.cauStyle() || ''
-                    ;
-
-                _r.button_width = _p.cauButtonWidth();
-                _r.button_height = _p.cauButtonHeight();
-                _r.button_text_top_padding = "2";
-
-                switch( _p.cauStyle() ){
-                    case 'g1':
-                        {
-                            _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
-                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#ffffff; text-align: center; }' );
-                            break;
-                        }
-                    case 'g2':
-                        {
-                            _r.button_text_top_padding = "4";
-                            _r.button_height = _p.cauButtonHeight( 26 );
-                            _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
-                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#ffffff; text-align: center; }' );
-                            break;
-                        }
-                    case 'g3':
-                        {
-                            _r.button_text_top_padding = "6";
-                            _r.button_height = _p.cauButtonHeight( 28 );
-                            _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
-                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#ffffff; text-align: center; }' );
-                            break;
-                        }
-                    case 'w1':
-                        {
-                            _r.button_text_top_padding = "3";
-                            _r.button_image_url = JC.f.printf( '{0}res/default/w_61x27.png', _p.cauRoot() );
-                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:##000000; text-align: center; }' );
-                            break;
-                        }
-                    case 'w2':
-                        {
-                            _r.button_text_top_padding = "4";
-                            _r.button_height = _p.cauButtonHeight( 26 );
-                            _r.button_image_url = JC.f.printf( '{0}res/default/w_61x27.png', _p.cauRoot() );
-                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#000000; text-align: center; }' );
-                            break;
-                        }
-                    case 'w3':
-                        {
-                            _r.button_text_top_padding = "6";
-                            _r.button_height = _p.cauButtonHeight( 28 );
-                            _r.button_image_url = JC.f.printf( '{0}res/default/w_61x27.png', _p.cauRoot() );
-                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#000000; text-align: center; }' );
-                            break;
-                        }
-
-                    default:
-                        {
-                            _r.button_text_style = _p.cauButtonStyle();
-                            break;
-                        }
-                }
-            }
-
         , layoutButton:
             function(){
                 var _p = this
@@ -680,6 +630,15 @@
                         this.setButtonDisabled( false );
                     }
 
+
+                this.cauParamsCallback() 
+                    && ( _r = this.cauParamsCallback().call( this, _r ) );
+
+                _p.is( '[cauPostParams]' ) 
+                    && ( _r.post_params = _p.jsonProp( 'cauPostParams' ) );
+
+                JC.dir( _r );
+
                 return _r;
             }
 
@@ -693,16 +652,18 @@
             function( _params ){
                 //JC.dir( _params );
                 this._swfu && this._swfu.destory();
-
-                this.cauParamsCallback() 
-                    && ( _params = this.cauParamsCallback().call( this, _params ) );
-
                 this._swfu = new SWFUpload( _params );
             }
 
         , swfu: function(){ return this._swfu; }
 
-        , cauParamsCallback: function(){ return this.callbackProp( 'cauParamsCallback' ); }
+        , cauParamsCallback: 
+            function(){ 
+                return this.callbackProp( 'cauParamsCallback' ) 
+                    || AjaxUpload.paramsCallback
+                    || JC.AjaxUploadParamsCallback
+                    ; 
+            }
 
         , cancelUpload: 
             function(){
@@ -733,6 +694,73 @@
                 }
                 return _r;
             }
+
+        , initButtonStyle:
+            function( _r ){
+                if( !_r ) return;
+                var _p = this
+                    , _style = _p.cauStyle() || ''
+                    ;
+
+                _r.button_width = _p.cauButtonWidth();
+                _r.button_height = _p.cauButtonHeight();
+                _r.button_text_top_padding = "2";
+
+                switch( _p.cauStyle() ){
+                    case 'g1':
+                        {
+                            _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#ffffff; text-align: center; }' );
+                            break;
+                        }
+                    case 'g2':
+                        {
+                            _r.button_text_top_padding = "4";
+                            _r.button_height = _p.cauButtonHeight( 26 );
+                            _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#ffffff; text-align: center; }' );
+                            break;
+                        }
+                    case 'g3':
+                        {
+                            _r.button_text_top_padding = "6";
+                            _r.button_height = _p.cauButtonHeight( 28 );
+                            _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#ffffff; text-align: center; }' );
+                            break;
+                        }
+                    case 'w1':
+                        {
+                            _r.button_text_top_padding = "3";
+                            _r.button_image_url = JC.f.printf( '{0}res/default/w_61x27.png', _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:##000000; text-align: center; }' );
+                            break;
+                        }
+                    case 'w2':
+                        {
+                            _r.button_text_top_padding = "4";
+                            _r.button_height = _p.cauButtonHeight( 26 );
+                            _r.button_image_url = JC.f.printf( '{0}res/default/w_61x27.png', _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#000000; text-align: center; }' );
+                            break;
+                        }
+                    case 'w3':
+                        {
+                            _r.button_text_top_padding = "6";
+                            _r.button_height = _p.cauButtonHeight( 28 );
+                            _r.button_image_url = JC.f.printf( '{0}res/default/w_61x27.png', _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#000000; text-align: center; }' );
+                            break;
+                        }
+
+                    default:
+                        {
+                            _r.button_text_style = _p.cauButtonStyle();
+                            break;
+                        }
+                }
+            }
+
     });
 
     /*
@@ -1007,7 +1035,7 @@
     }
 
     $(document).ready( function(){
-        AjaxUpload.autoInit && AjaxUpload.init();
+        AjaxUpload.autoInit && setTimeout( function(){ AjaxUpload.init(); }, 1 );
     });
 
     return JC.AjaxUpload;
