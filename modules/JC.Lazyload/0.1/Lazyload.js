@@ -30,7 +30,7 @@
  *      </dd>
  *
  *      <dt>lazyPlaceholder = string</dt>
- *      <dd>声明图片加载前src的地址，默认为一个1x1像素的空白点</dd>
+ *      <dd>声明图片加载前的占位图片，默认为一个1x1像素的空白点</dd>
  *
  *      <dt>lazycontainer = css selector</dt>
  *      <dd>声明可视容器，默认为window</dd>
