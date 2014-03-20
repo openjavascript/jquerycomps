@@ -170,7 +170,7 @@
                     case 'date':
                     default:
                         _range = _p._model.dayrange();
-                        _range && _newmaxdate.setDate( _newmaxdate.getDate() + _range );
+                        _range && _newmaxdate.setDate( _newmaxdate.getDate() + _range - 1 );
                 }
 
                 if ( _range ) {

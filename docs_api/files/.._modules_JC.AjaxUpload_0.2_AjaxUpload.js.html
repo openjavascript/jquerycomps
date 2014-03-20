@@ -314,8 +314,51 @@
      *      &lt;dt&gt;cauFlashUrl = string&lt;/dt&gt;
      *      &lt;dd&gt;显式声明 flash 路径&lt;/dd&gt;
      *
-     *      &lt;dt&gt;cauButtonWidth = int&lt;/dt&gt;
+     *      &lt;dt&gt;cauButtonWidth = int, default = 自动计算&lt;/dt&gt;
      *      &lt;dd&gt;显式声明按钮的宽度&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauButtonHeight= int, default = 自动计算&lt;/dt&gt;
+     *      &lt;dd&gt;显式声明按钮的高度&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauRoot = string&lt;/dt&gt;
+     *      &lt;dd&gt;显式声明组件根路径&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauUploadLimit = int, default = 0(不限制)&lt;/dt&gt;
+     *      &lt;dd&gt;上传文件的总数量&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauQueueLimit = int, default = 0(不限制)&lt;/dt&gt;
+     *      &lt;dd&gt;队列中文件的总数量(&lt;b&gt;未实现&lt;/b&gt;)&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauFileSize = [ KB | MB | GB ], default = 1024 MB&lt;/dt&gt;
+     *      &lt;dd&gt;上传文件大小限制&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauCacheSwf = bool, default = true&lt;/dt&gt;
+     *      &lt;dd&gt;是否缓存 flash swf&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauHttpSuccess = string, default = 200, 201, 204&lt;/dt&gt;
+     *      &lt;dd&gt;http 通信成功的状态码&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauButtonStyle = string, default = .uFont{ color:#000000; text-align: center; }&lt;/dt&gt;
+     *      &lt;dd&gt;定义 flash 按钮的样式&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauParamsCallback = function&lt;/dt&gt;
+     *      &lt;dd&gt;设置 flash 参数的回调
+&lt;pre&gt;function cauParamsCallback( _params ){
+    var _model = this;
+    return _params;
+}&lt;/pre&gt;
+     *      &lt;/dd&gt;
+     *      
+     *      &lt;dt&gt;cauBatchUpload = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;是否为批量上传(&lt;b&gt;未实现&lt;/b&gt;)&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauShowProgress = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;是否显示进度条
+     *          &lt;br &gt;如果为真, 且没有声明 cauProgressBox, 那么会自动生成 cauProgressBox
+     *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauProgressBox = selector&lt;/dt&gt;
+     *      &lt;dd&gt;显式声明 进度条标签&lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
      * @class AjaxUpload
@@ -641,6 +684,14 @@
                 return this.intProp( &#x27;cauButtonHeight&#x27; ) || _setter || 22;
             }
 
+        , cauButtonStyle:
+            function( _setter){
+                return this.attrProp( &#x27;cauButtonStyle&#x27; ) 
+                    || this.attrProp( &#x27;button_text_style&#x27; ) 
+                    || _setter
+                    || &#x27;.uFont{ color:#000000; text-align: center; }&#x27;;
+            }
+
         , initButtonStyle:
             function( _r ){
                 if( !_r ) return;
@@ -651,13 +702,12 @@
                 _r.button_width = _p.cauButtonWidth();
                 _r.button_height = _p.cauButtonHeight();
                 _r.button_text_top_padding = &quot;2&quot;;
-                _r.button_text_style = _p.button_text_style();
 
                 switch( _p.cauStyle() ){
                     case &#x27;g1&#x27;:
                         {
                             _r.button_image_url = JC.f.printf( &#x27;{0}res/default/g_61x27.png&#x27;, _p.cauRoot() );
-                            _r.button_text_style = _p.button_text_style( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
                             break;
                         }
                     case &#x27;g2&#x27;:
@@ -665,7 +715,7 @@
                             _r.button_text_top_padding = &quot;4&quot;;
                             _r.button_height = _p.cauButtonHeight( 26 );
                             _r.button_image_url = JC.f.printf( &#x27;{0}res/default/g_61x27.png&#x27;, _p.cauRoot() );
-                            _r.button_text_style = _p.button_text_style( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
                             break;
                         }
                     case &#x27;g3&#x27;:
@@ -673,14 +723,14 @@
                             _r.button_text_top_padding = &quot;6&quot;;
                             _r.button_height = _p.cauButtonHeight( 28 );
                             _r.button_image_url = JC.f.printf( &#x27;{0}res/default/g_61x27.png&#x27;, _p.cauRoot() );
-                            _r.button_text_style = _p.button_text_style( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
                             break;
                         }
                     case &#x27;w1&#x27;:
                         {
                             _r.button_text_top_padding = &quot;3&quot;;
                             _r.button_image_url = JC.f.printf( &#x27;{0}res/default/w_61x27.png&#x27;, _p.cauRoot() );
-                            _r.button_text_style = _p.button_text_style( &#x27;.uFont{ color:##000000; text-align: center; }&#x27; );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:##000000; text-align: center; }&#x27; );
                             break;
                         }
                     case &#x27;w2&#x27;:
@@ -688,7 +738,7 @@
                             _r.button_text_top_padding = &quot;4&quot;;
                             _r.button_height = _p.cauButtonHeight( 26 );
                             _r.button_image_url = JC.f.printf( &#x27;{0}res/default/w_61x27.png&#x27;, _p.cauRoot() );
-                            _r.button_text_style = _p.button_text_style( &#x27;.uFont{ color:#000000; text-align: center; }&#x27; );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#000000; text-align: center; }&#x27; );
                             break;
                         }
                     case &#x27;w3&#x27;:
@@ -696,7 +746,13 @@
                             _r.button_text_top_padding = &quot;6&quot;;
                             _r.button_height = _p.cauButtonHeight( 28 );
                             _r.button_image_url = JC.f.printf( &#x27;{0}res/default/w_61x27.png&#x27;, _p.cauRoot() );
-                            _r.button_text_style = _p.button_text_style( &#x27;.uFont{ color:#000000; text-align: center; }&#x27; );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#000000; text-align: center; }&#x27; );
+                            break;
+                        }
+
+                    default:
+                        {
+                            _r.button_text_style = _p.cauButtonStyle();
                             break;
                         }
                 }
@@ -729,29 +785,28 @@
                 return _r;
             }
 
-        , file_upload_limit: function(){ return this.intProp( &#x27;file_upload_limit&#x27; ) || 0; }
-        , file_queue_limit: function(){ return this.intProp( &#x27;file_queue_limit&#x27; ) || 0; }
+        , cauUploadLimit: 
+            function(){ 
+                return this.intProp( &#x27;cauUploadLimit&#x27; ) || this.intProp( &#x27;file_upload_limit&#x27; ) || 0; 
+            }
+        , cauQueueLimit: 
+            function(){ 
+                return this.intProp( &#x27;cauQueueLimit&#x27; ) || this.intProp( &#x27;file_queue_limit&#x27; ) || 0; 
+            }
         , cauFileSize: function(){ return this.attrProp( &#x27;file_size_limit&#x27; ) || this.attrProp( &#x27;cauFileSize&#x27; ) || &#x27;1024 MB&#x27;; }
-        , prevent_swf_caching: 
+        , cauCacheSwf: 
             function(){ 
                 var _r = true;
-                this.attrProp( &#x27;prevent_swf_caching&#x27; ) &amp;&amp; ( _r = this.boolProp( &#x27;prevent_swf_caching&#x27; ) );
+                this.attrProp( &#x27;prevent_swf_caching&#x27; ) &amp;&amp; ( _r = !this.boolProp( &#x27;prevent_swf_caching&#x27; ) );
+                this.attrProp( &#x27;cauCacheSwf&#x27; ) &amp;&amp; ( _r = this.boolProp( &#x27;cauCacheSwf&#x27; ) );
+                _r = !_r;
                 return _r;
             }
-        , http_success: 
+        , cauHttpSuccess: 
             function(){ 
-                var _r = [ 200, 201, 204 ];
-                if( this.attrProp( &#x27;http_success&#x27; ) ){
-                    _r = this.attrProp( &#x27;http_success&#x27; ).replace( /[\s]+/g, &#x27;&#x27; ).split( &#x27;,&#x27; );
-                }
+                var _r = [ 200, 201, 204 ], _tmp = this.attrProp( &#x27;cauHttpSuccess&#x27; ) || this.attrProp( &#x27;http_success&#x27; );
+                _tmp &amp;&amp; ( _r = _tmp.replace( /[\s]+/g, &#x27;&#x27; ).split( &#x27;,&#x27; ) );
                 return _r;
-            }
-
-        , button_text_style:
-            function( _setter){
-                return this.attrProp( &#x27;button_text_style&#x27; ) 
-                    || _setter
-                    || &#x27;.uFont{ color:#000000; text-align: center; }&#x27;;
             }
 
         , cauBatchUpload: function(){ return this.boolProp( &#x27;cauBatchUpload&#x27; ); }
@@ -785,11 +840,11 @@
                                     : SWFUpload.BUTTON_ACTION.SELECT_FILE
                                     ;
 
-                _r.file_upload_limit = _p.file_upload_limit();
-                _r.file_queue_limit = _p.file_queue_limit();
+                _r.file_upload_limit = _p.cauUploadLimit();
+                _r.file_queue_limit = _p.cauQueueLimit();
                 _r.file_size_limit = _p.cauFileSize();
-                _r.prevent_swf_caching = _p.prevent_swf_caching();
-                _r.http_success = _p.http_success();
+                _r.prevent_swf_caching = _p.cauCacheSwf();
+                _r.http_success = _p.cauHttpSuccess();
 
                 _fileExt &amp;&amp; ( _r.file_types = _fileExt );
 
@@ -859,10 +914,16 @@
             function( _params ){
                 //JC.dir( _params );
                 this._swfu &amp;&amp; this._swfu.destory();
+
+                this.cauParamsCallback() 
+                    &amp;&amp; ( _params = this.cauParamsCallback().call( this, _params ) );
+
                 this._swfu = new SWFUpload( _params );
             }
 
         , swfu: function(){ return this._swfu; }
+
+        , cauParamsCallback: function(){ return this.callbackProp( &#x27;cauParamsCallback&#x27; ); }
 
         , cancelUpload: 
             function(){

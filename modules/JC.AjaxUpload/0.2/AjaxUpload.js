@@ -5,6 +5,7 @@
      *      <a href='window.jQuery.html'>jQuery</a>
      *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *      , <a href='JC.Panel.html'>JC.Panel</a>
+     *      , <a href='javascript:;'>SWFUpload</a>
      * </p>
      * <p>
      *      <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -92,17 +93,60 @@
      *      <dt>cauFlashUrl = string</dt>
      *      <dd>显式声明 flash 路径</dd>
      *
-     *      <dt>cauButtonWidth = int</dt>
+     *      <dt>cauButtonWidth = int, default = 自动计算</dt>
      *      <dd>显式声明按钮的宽度</dd>
+     *
+     *      <dt>cauButtonHeight= int, default = 自动计算</dt>
+     *      <dd>显式声明按钮的高度</dd>
+     *
+     *      <dt>cauRoot = string</dt>
+     *      <dd>显式声明组件根路径</dd>
+     *
+     *      <dt>cauUploadLimit = int, default = 0(不限制)</dt>
+     *      <dd>上传文件的总数量</dd>
+     *
+     *      <dt>cauQueueLimit = int, default = 0(不限制)</dt>
+     *      <dd>队列中文件的总数量(<b>未实现</b>)</dd>
+     *
+     *      <dt>cauFileSize = [ KB | MB | GB ], default = 1024 MB</dt>
+     *      <dd>上传文件大小限制</dd>
+     *
+     *      <dt>cauCacheSwf = bool, default = true</dt>
+     *      <dd>是否缓存 flash swf</dd>
+     *
+     *      <dt>cauHttpSuccess = string, default = 200, 201, 204</dt>
+     *      <dd>http 通信成功的状态码</dd>
+     *
+     *      <dt>cauButtonStyle = string, default = .uFont{ color:#000000; text-align: center; }</dt>
+     *      <dd>定义 flash 按钮的样式</dd>
+     *
+     *      <dt>cauParamsCallback = function</dt>
+     *      <dd>设置 flash 参数的回调
+<pre>function cauParamsCallback( _params ){
+    var _model = this;
+    return _params;
+}</pre>
+     *      </dd>
+     *      
+     *      <dt>cauBatchUpload = bool, default = false</dt>
+     *      <dd>是否为批量上传(<b>未实现</b>)</dd>
+     *
+     *      <dt>cauShowProgress = bool, default = false</dt>
+     *      <dd>是否显示进度条
+     *          <br >如果为真, 且没有声明 cauProgressBox, 那么会自动生成 cauProgressBox
+     *      </dd>
+     *
+     *      <dt>cauProgressBox = selector</dt>
+     *      <dd>显式声明 进度条标签</dd>
      * </dl>
      * @namespace JC
      * @class AjaxUpload
      * @extends JC.BaseMVC
      * @constructor
      * @param   {selector}   _selector   
-     * @version dev 0.1
+     * @version dev 0.2, 2014-03-20
+     * @version dev 0.1, 2013-09-26
      * @author  qiushaowei   <suches@btbtd.org> | 75 team
-     * @date    2013-09-26
      * @example
             <div>
                 <input type="hidden" class="js_compAjaxUpload" value=""
@@ -324,8 +368,8 @@
     AjaxUpload.Model._insCount = 1;
 
     if( JC.use ){
-        AjaxUpload.Model.FLASH_URL = '/plugins/SWFUpload/SWFUpload.swf';
-        AjaxUpload.Model.PATH = '/plugins/AjaxUpload/';
+        AjaxUpload.Model.FLASH_URL = '/plugins/SWFUpload.swf';
+        AjaxUpload.Model.PATH = '/comps/AjaxUpload/';
     }else{
         AjaxUpload.Model.FLASH_URL = '/modules/SWFUpload/2.5.0/SWFUpload.swf';
         AjaxUpload.Model.PATH = '/modules/JC.AjaxUpload/dev/';
@@ -419,6 +463,14 @@
                 return this.intProp( 'cauButtonHeight' ) || _setter || 22;
             }
 
+        , cauButtonStyle:
+            function( _setter){
+                return this.attrProp( 'cauButtonStyle' ) 
+                    || this.attrProp( 'button_text_style' ) 
+                    || _setter
+                    || '.uFont{ color:#000000; text-align: center; }';
+            }
+
         , initButtonStyle:
             function( _r ){
                 if( !_r ) return;
@@ -429,13 +481,12 @@
                 _r.button_width = _p.cauButtonWidth();
                 _r.button_height = _p.cauButtonHeight();
                 _r.button_text_top_padding = "2";
-                _r.button_text_style = _p.button_text_style();
 
                 switch( _p.cauStyle() ){
                     case 'g1':
                         {
                             _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
-                            _r.button_text_style = _p.button_text_style( '.uFont{ color:#ffffff; text-align: center; }' );
+                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#ffffff; text-align: center; }' );
                             break;
                         }
                     case 'g2':
@@ -443,7 +494,7 @@
                             _r.button_text_top_padding = "4";
                             _r.button_height = _p.cauButtonHeight( 26 );
                             _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
-                            _r.button_text_style = _p.button_text_style( '.uFont{ color:#ffffff; text-align: center; }' );
+                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#ffffff; text-align: center; }' );
                             break;
                         }
                     case 'g3':
@@ -451,14 +502,14 @@
                             _r.button_text_top_padding = "6";
                             _r.button_height = _p.cauButtonHeight( 28 );
                             _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
-                            _r.button_text_style = _p.button_text_style( '.uFont{ color:#ffffff; text-align: center; }' );
+                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#ffffff; text-align: center; }' );
                             break;
                         }
                     case 'w1':
                         {
                             _r.button_text_top_padding = "3";
                             _r.button_image_url = JC.f.printf( '{0}res/default/w_61x27.png', _p.cauRoot() );
-                            _r.button_text_style = _p.button_text_style( '.uFont{ color:##000000; text-align: center; }' );
+                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:##000000; text-align: center; }' );
                             break;
                         }
                     case 'w2':
@@ -466,7 +517,7 @@
                             _r.button_text_top_padding = "4";
                             _r.button_height = _p.cauButtonHeight( 26 );
                             _r.button_image_url = JC.f.printf( '{0}res/default/w_61x27.png', _p.cauRoot() );
-                            _r.button_text_style = _p.button_text_style( '.uFont{ color:#000000; text-align: center; }' );
+                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#000000; text-align: center; }' );
                             break;
                         }
                     case 'w3':
@@ -474,7 +525,13 @@
                             _r.button_text_top_padding = "6";
                             _r.button_height = _p.cauButtonHeight( 28 );
                             _r.button_image_url = JC.f.printf( '{0}res/default/w_61x27.png', _p.cauRoot() );
-                            _r.button_text_style = _p.button_text_style( '.uFont{ color:#000000; text-align: center; }' );
+                            _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#000000; text-align: center; }' );
+                            break;
+                        }
+
+                    default:
+                        {
+                            _r.button_text_style = _p.cauButtonStyle();
                             break;
                         }
                 }
@@ -507,29 +564,28 @@
                 return _r;
             }
 
-        , file_upload_limit: function(){ return this.intProp( 'file_upload_limit' ) || 0; }
-        , file_queue_limit: function(){ return this.intProp( 'file_queue_limit' ) || 0; }
+        , cauUploadLimit: 
+            function(){ 
+                return this.intProp( 'cauUploadLimit' ) || this.intProp( 'file_upload_limit' ) || 0; 
+            }
+        , cauQueueLimit: 
+            function(){ 
+                return this.intProp( 'cauQueueLimit' ) || this.intProp( 'file_queue_limit' ) || 0; 
+            }
         , cauFileSize: function(){ return this.attrProp( 'file_size_limit' ) || this.attrProp( 'cauFileSize' ) || '1024 MB'; }
-        , prevent_swf_caching: 
+        , cauCacheSwf: 
             function(){ 
                 var _r = true;
-                this.attrProp( 'prevent_swf_caching' ) && ( _r = this.boolProp( 'prevent_swf_caching' ) );
+                this.attrProp( 'prevent_swf_caching' ) && ( _r = !this.boolProp( 'prevent_swf_caching' ) );
+                this.attrProp( 'cauCacheSwf' ) && ( _r = this.boolProp( 'cauCacheSwf' ) );
+                _r = !_r;
                 return _r;
             }
-        , http_success: 
+        , cauHttpSuccess: 
             function(){ 
-                var _r = [ 200, 201, 204 ];
-                if( this.attrProp( 'http_success' ) ){
-                    _r = this.attrProp( 'http_success' ).replace( /[\s]+/g, '' ).split( ',' );
-                }
+                var _r = [ 200, 201, 204 ], _tmp = this.attrProp( 'cauHttpSuccess' ) || this.attrProp( 'http_success' );
+                _tmp && ( _r = _tmp.replace( /[\s]+/g, '' ).split( ',' ) );
                 return _r;
-            }
-
-        , button_text_style:
-            function( _setter){
-                return this.attrProp( 'button_text_style' ) 
-                    || _setter
-                    || '.uFont{ color:#000000; text-align: center; }';
             }
 
         , cauBatchUpload: function(){ return this.boolProp( 'cauBatchUpload' ); }
@@ -563,11 +619,11 @@
                                     : SWFUpload.BUTTON_ACTION.SELECT_FILE
                                     ;
 
-                _r.file_upload_limit = _p.file_upload_limit();
-                _r.file_queue_limit = _p.file_queue_limit();
+                _r.file_upload_limit = _p.cauUploadLimit();
+                _r.file_queue_limit = _p.cauQueueLimit();
                 _r.file_size_limit = _p.cauFileSize();
-                _r.prevent_swf_caching = _p.prevent_swf_caching();
-                _r.http_success = _p.http_success();
+                _r.prevent_swf_caching = _p.cauCacheSwf();
+                _r.http_success = _p.cauHttpSuccess();
 
                 _fileExt && ( _r.file_types = _fileExt );
 
@@ -637,10 +693,16 @@
             function( _params ){
                 //JC.dir( _params );
                 this._swfu && this._swfu.destory();
+
+                this.cauParamsCallback() 
+                    && ( _params = this.cauParamsCallback().call( this, _params ) );
+
                 this._swfu = new SWFUpload( _params );
             }
 
         , swfu: function(){ return this._swfu; }
+
+        , cauParamsCallback: function(){ return this.callbackProp( 'cauParamsCallback' ); }
 
         , cancelUpload: 
             function(){
