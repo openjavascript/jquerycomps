@@ -119,6 +119,9 @@ window.Bizs = window.Bizs || {};
                 _parts = JC._usePatch( _parts, 'Form', 'AutoChecked' );
                 _parts = JC._usePatch( _parts, 'Form', 'FormFillUrl' );
 
+                _parts = JC._usePatch( _parts, 'AjaxUpload', 'plugins.SWFUpload' );
+                _parts = JC._usePatch( _parts, 'AjaxUpload', 'Panel' );
+
                 $.each( _parts, function( _ix, _part ){
                     var _isComps = !_compRe.test( _part )
                         , _path
@@ -182,7 +185,7 @@ window.Bizs = window.Bizs || {};
             function( _items, _fromClass, _patchClass ){
                 var i, j, k, l, _find;
                 for( i = 0, j = _items.length; i < j; i++ ){
-                    if( ( $.trim( _items[i].toString() ) == _fromClass ) ){
+                    if( ( $.trim( _items[i].toString() ).replace( /^JC\./, '' ) == _fromClass ) ){
                         _find = true;
                         break;
                     }

@@ -64,22 +64,20 @@
             .red{ color: red; }
             .gray{ color: gray; }
         </style>
-        <link href='../../AjaxUpload/res/default/style.css' rel='stylesheet' />
-        <link href='../../Panel/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/AjaxUpload/res/default/style.css' rel='stylesheet' />
+        <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
+
         <script src="../../../lib.js"></script>
         <script>
             JC.debug = true;
-            JC.use( 'AjaxUpload, Panel, Valid, Bizs.FormLogic, Bizs.CommonModify, Bizs.DisableLogic' );
 
-            $(document).ready(function(){
-                JC.AjaxUpload.randomFrame = true;
-            });
+            JC.use( [ 'JC.AjaxUpload', 'JC.Valid', 'Bizs.FormLogic', 'Bizs.CommonModify', 'Bizs.DisableLogic' ] );
 
             $(document).delegate( 'button.js_updateData', 'click', function( _evt ){
                 var _p = $(this)
-                    , _selector = getJqParent( _p, 'dd').find('.js_compAjaxUpload')
+                    , _selector = JC.f.getJqParent( _p, 'dd').find('.js_compAjaxUpload')
                     , _ins = JC.AjaxUpload.getInstance( _selector )
-                    , _newData = parseBool( _p.attr('newdata') )
+                    , _newData = JC.f.parseBool( _p.attr('newdata') )
                     , _d = _newData
                         ? {"errorno":0,"errmsg":"","data":{"name":"testxx.jpg"
                             ,"url":"\/ignore\/JQueryComps_dev\/comps\/AjaxUpload\/_demo\/data\/images\/test.jpg?testxx"}}
@@ -88,7 +86,7 @@
                 _ins.update( _d );
             });
 
-            function cauUploadDoneCallback( _json, _selector, _frame ){
+            function cauUploadDoneCallback( _json, _selector ){
                 var _ins = this;
                 //alert( _json ); //object object
             }

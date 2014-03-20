@@ -59,6 +59,10 @@
             .AUIframe {
                 margin-right: 2px;
             }
+
+            .defdl > dd {
+                margin: 5px 20px;
+            }
         </style>
         <link href='../../../comps/AjaxUpload/res/default/style.css' rel='stylesheet' />
         <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
@@ -89,69 +93,8 @@
         </script>
     </head>    
     <body>
-
         <dl class="defdl">
-            <dt> JC.AjaxUpload 示例, with hidden</dt>
-            <dd>
-                <button type="button" class="AUBtn AUBtn-w1">placehoder test</button>
-
-                <input type="hidden" class="js_compAjaxUpload" value=""
-                    cauUrl="../_demo/data/handler.php"
-                    cauFileExt=".jpg, .jpeg, .png, .gif"
-                    cauFileName="file"
-                    cauValueKey="url"
-                    cauLabelKey="name"
-                    />
-                
-                <button type="button" class="AUBtn AUBtn-w1">placehoder test</button>
-            </dd>
-        </dl>
-
-        <dl class="defdl">
-            <dt> JC.AjaxUpload 示例, with textbox</dt>
-            <dd>
-                <button type="button" class="AUBtn AUBtn-w1">placehoder test</button>
-
-                <input type="text" readonly class="js_compAjaxUpload" value=""
-                    cauUrl="../_demo/data/handler.php?errorno=0"
-                    cauFileExt=".jpg, .jpeg, .png, .gif"
-                    cauFileName="file"
-                    cauValueKey="url"
-                    cauLabelKey="name"
-                    cauStatusLabel="/label.js_statusLabel"
-                    />
-                <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
-
-                <button type="button" class="AUBtn AUBtn-w1 js_updateData">JC.AjaxUpload#update for clear</button>
-            </dd>
-        </dl>
-
-        <dl class="defdl">
-            <dt> JC.AjaxUpload 示例, with hidden && label</dt>
-            <dd>
-                <button type="button" class="AUBtn AUBtn-w1">placehoder test</button>
-
-                <input type="hidden" class="js_compAjaxUpload" value=""
-                    cauStyle="g1"
-                    cauButtonText="上传资质文件"
-                    cauUrl="../_demo/data/handler.php"
-                    cauFileExt="*.txt"
-                    cauFileName="file"
-                    cauValueKey="url"
-                    cauLabelKey="name"
-                    cauStatusLabel="/label.js_statusLabel"
-                    cauDisplayLabel="/label.js_fileLabel"
-                    />
-                <label class="js_fileLabel" style="display:none"></label>
-                <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
-
-                <button type="button" class="AUBtn AUBtn-w1 js_updateData">JC.AjaxUpload#update for clear</button>
-                <span>*.txt</span>
-            </dd>
-        </dl>
-
-        <dl class="defdl">
-            <dt> JC.AjaxUpload 示例, with hidden && label</dt>
+            <dt> JC.AjaxUpload 示例, with Progress - autogenerate</dt>
             <dd>
                 <button type="button" class="AUBtn AUBtn-g1">placehoder test</button>
 
@@ -162,47 +105,87 @@
                     cauFileName="file"
                     cauValueKey="url"
                     cauLabelKey="name"
-                    cauStatusLabel="/label.js_statusLabel"
+                    cauShowProgress="true"
                     cauDisplayLabel="/label.js_fileLabel"
-                    cauFileSize="10 k"
                     />
                 <label class="js_fileLabel" style="display:none"></label>
-                <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
 
-                <button type="button" class="AUBtn AUBtn-g1 js_updateData" newdata="true" >
-                    JC.AjaxUpload#update for new data
-                </button>
                 <button type="button" class="AUBtn AUBtn-g1 js_updateData">JC.AjaxUpload#update for clear</button>
-                cauFileSize="10 k"
             </dd>
-        </dl>
-
-        <dl class="defdl">
-            <dt> JC.AjaxUpload 示例, with hidden && label, 真实上传实例, 仅对 host = git.me.btbtd.org 生效</dt>
             <dd>
                 <button type="button" class="AUBtn AUBtn-g1">placehoder test</button>
 
                 <input type="hidden" class="js_compAjaxUpload" value=""
                     cauStyle="w1"
                     cauButtonText="上传资质文件"
-                    cauUrl="../_demo/data/upload.php"
-                    cauFileExt=".jpg, .jpeg, .png, .gif"
+                    cauUrl="../_demo/data/handler.php"
                     cauFileName="file"
                     cauValueKey="url"
                     cauLabelKey="name"
-                    cauStatusLabel="/label.js_statusLabel"
+                    cauShowProgress="true"
                     cauDisplayLabel="/label.js_fileLabel"
-                    cauUploadDoneCallback="cauUploadDoneCallback"
+                    cauFileSize="1024 k"
+                    cauFileExt="*.txt; *.doc; *.docx"
+                    />
+                <label class="js_fileLabel" style="display:none"></label>
+
+                <button type="button" class="AUBtn AUBtn-g1 js_updateData">JC.AjaxUpload#update for clear</button>
+                cauFileSize="1024 k"
+                , cauFileExt="*.txt; *.doc; *.docx"
+            </dd>
+            <dd>
+                <button type="button" class="AUBtn AUBtn-g1">placehoder test</button>
+
+                <input type="hidden" class="js_compAjaxUpload" value=""
+                    cauStyle="w1"
+                    cauButtonText="上传资质文件"
+                    cauUrl="../_demo/data/handler.php"
+                    cauFileName="file"
+                    cauValueKey="url"
+                    cauLabelKey="name"
+                    cauShowProgress="true"
+                    cauDisplayLabel="/label.js_fileLabel"
+                    cauFileSize="100000 k"
+                    cauFileExt=".jpg, .jpeg, .png, .gif"
+                    />
+                <label class="js_fileLabel" style="display:none"></label>
+
+                <button type="button" class="AUBtn AUBtn-g1 js_updateData">JC.AjaxUpload#update for clear</button>
+                cauFileSize="100000 k"
+                , cauFileExt=".jpg, .jpeg, .png, .gif"
+            </dd>
+
+        </dl>
+
+        <dl class="defdl">
+            <dt> JC.AjaxUpload 示例, with Progress - custom</dt>
+            <dd>
+                <button type="button" class="AUBtn AUBtn-g1">placehoder test</button>
+
+                <input type="hidden" class="js_compAjaxUpload" value=""
+                    cauStyle="w1"
+                    cauButtonText="上传资质文件"
+                    cauUrl="../_demo/data/handler.php"
+                    cauFileName="file"
+                    cauValueKey="url"
+                    cauLabelKey="name"
+                    cauProgressBox="/span.AUProgressBox"
+                    cauDisplayLabel="/label.js_fileLabel"
                     cauFileSize="100000 k"
                     />
                 <label class="js_fileLabel" style="display:none"></label>
-                <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
 
                 <button type="button" class="AUBtn AUBtn-g1 js_updateData">JC.AjaxUpload#update for clear</button>
-                <span>.jpg, .jpeg, .png, .gif</span>
                 cauFileSize="100000 k"
+
+                <span class="AUProgressBox" style="display:none;">
+                    <button type="button" class="AUProgress"><div class="AUPercent"></div></button>
+                    <button type="button" class="AUCancelProgress"></button>
+                </span>
+
             </dd>
         </dl>
+
 
     </body>
 </html>

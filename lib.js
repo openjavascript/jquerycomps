@@ -9682,6 +9682,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         , "extendObject": extendObject
         , "safeTimeout": safeTimeout
         , "encoder": encoder
+        , "fixPath": fixPath
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -9718,6 +9719,15 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
      * @static
      */
     window.ZINDEX_COUNT = window.ZINDEX_COUNT || 50001;
+
+    function fixPath( _url ){
+        if( /\\/.test( _url ) ){
+            _url = _url.replace( /[\\]+/g, '\\' );
+        }else{
+            _url = _url.replace( /[\/]+/g, '/' );
+        }
+        return _url;
+    }
     /**
      * 把函数的参数转为数组
      * @method  sliceArgs
@@ -11091,6 +11101,9 @@ window.Bizs = window.Bizs || {};
                 _parts = JC._usePatch( _parts, 'Form', 'AutoChecked' );
                 _parts = JC._usePatch( _parts, 'Form', 'FormFillUrl' );
 
+                _parts = JC._usePatch( _parts, 'AjaxUpload', 'plugins.SWFUpload' );
+                _parts = JC._usePatch( _parts, 'AjaxUpload', 'Panel' );
+
                 $.each( _parts, function( _ix, _part ){
                     var _isComps = !_compRe.test( _part )
                         , _path
@@ -11154,7 +11167,7 @@ window.Bizs = window.Bizs || {};
             function( _items, _fromClass, _patchClass ){
                 var i, j, k, l, _find;
                 for( i = 0, j = _items.length; i < j; i++ ){
-                    if( ( $.trim( _items[i].toString() ) == _fromClass ) ){
+                    if( ( $.trim( _items[i].toString() ).replace( /^JC\./, '' ) == _fromClass ) ){
                         _find = true;
                         break;
                     }

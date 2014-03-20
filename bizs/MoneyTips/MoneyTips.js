@@ -164,14 +164,19 @@
                     var _v = _number
                         , _number = JC.f.parseFinance( _v )
                         , _formated
+                        , _floatLen = 2
+                        , _dt = _p.selector().attr( 'datatype' )
                         ;
+
+                    _dt.replace( /n\-[\d]+\.([\d]+)/, function( $0, $1 ){
+                        _floatLen = parseInt( $1 ) || _floatLen;
+                    });
 
                     if( isNaN( _number ) || !_number ) {
                         _p._view.update();
                         return;
                     }
-
-                    _formated = JC.f.moneyFormat( _v );
+                    _formated = JC.f.moneyFormat( _v, 3, _floatLen );
                     _p._view.update( _formated );
                 });
             }
