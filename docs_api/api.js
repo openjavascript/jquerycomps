@@ -55,6 +55,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.MoneyTips",
         "window.Bizs.MultiDate",
         "window.Bizs.MultiSelect",
+        "window.Bizs.MultiUpload",
         "window.jQuery",
         "window.requirejs"
     ],

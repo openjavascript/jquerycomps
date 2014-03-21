@@ -175,6 +175,8 @@
             
                 <li><a href="../classes/window.Bizs.MultiSelect.html">window.Bizs.MultiSelect</a></li>
             
+                <li><a href="../classes/window.Bizs.MultiUpload.html">window.Bizs.MultiUpload</a></li>
+            
                 <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
             
                 <li><a href="../classes/window.requirejs.html">window.requirejs</a></li>
@@ -351,6 +353,9 @@
     return _params;
 }&lt;/pre&gt;
      *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauPostParams = json&lt;/dt&gt;
+     *      &lt;dd&gt;显式声明 post params&lt;/dd&gt;
      *      
      *      &lt;dt&gt;cauBatchUpload = bool, default = false&lt;/dt&gt;
      *      &lt;dd&gt;是否为批量上传(&lt;b&gt;未实现&lt;/b&gt;)&lt;/dd&gt;
@@ -455,6 +460,19 @@
             }
             return _r;
         };
+
+    /**
+     * 全局的 上传 params 回调
+     * @property    paramsCallback
+     * @return      json
+     * @static
+     * @example
+&lt;pre&gt;function paramsCallback( _params ){
+    var _model = this;
+    return _params;
+}&lt;/pre&gt;
+     */
+    AjaxUpload.paramsCallback;
 
     BaseMVC.build( AjaxUpload );
 
@@ -596,7 +614,7 @@
         AjaxUpload.Model.PATH = &#x27;/comps/AjaxUpload/&#x27;;
     }else{
         AjaxUpload.Model.FLASH_URL = &#x27;/modules/SWFUpload/2.5.0/SWFUpload.swf&#x27;;
-        AjaxUpload.Model.PATH = &#x27;/modules/JC.AjaxUpload/dev/&#x27;;
+        AjaxUpload.Model.PATH = &#x27;/modules/JC.AjaxUpload/0.2/&#x27;;
     }
 
     AjaxUpload.Model.PROGRESS_TPL =
@@ -693,72 +711,6 @@
                     || this.attrProp( &#x27;button_text_style&#x27; ) 
                     || _setter
                     || &#x27;.uFont{ color:#000000; text-align: center; }&#x27;;
-            }
-
-        , initButtonStyle:
-            function( _r ){
-                if( !_r ) return;
-                var _p = this
-                    , _style = _p.cauStyle() || &#x27;&#x27;
-                    ;
-
-                _r.button_width = _p.cauButtonWidth();
-                _r.button_height = _p.cauButtonHeight();
-                _r.button_text_top_padding = &quot;2&quot;;
-
-                switch( _p.cauStyle() ){
-                    case &#x27;g1&#x27;:
-                        {
-                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/g_61x27.png&#x27;, _p.cauRoot() );
-                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
-                            break;
-                        }
-                    case &#x27;g2&#x27;:
-                        {
-                            _r.button_text_top_padding = &quot;4&quot;;
-                            _r.button_height = _p.cauButtonHeight( 26 );
-                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/g_61x27.png&#x27;, _p.cauRoot() );
-                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
-                            break;
-                        }
-                    case &#x27;g3&#x27;:
-                        {
-                            _r.button_text_top_padding = &quot;6&quot;;
-                            _r.button_height = _p.cauButtonHeight( 28 );
-                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/g_61x27.png&#x27;, _p.cauRoot() );
-                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
-                            break;
-                        }
-                    case &#x27;w1&#x27;:
-                        {
-                            _r.button_text_top_padding = &quot;3&quot;;
-                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/w_61x27.png&#x27;, _p.cauRoot() );
-                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:##000000; text-align: center; }&#x27; );
-                            break;
-                        }
-                    case &#x27;w2&#x27;:
-                        {
-                            _r.button_text_top_padding = &quot;4&quot;;
-                            _r.button_height = _p.cauButtonHeight( 26 );
-                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/w_61x27.png&#x27;, _p.cauRoot() );
-                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#000000; text-align: center; }&#x27; );
-                            break;
-                        }
-                    case &#x27;w3&#x27;:
-                        {
-                            _r.button_text_top_padding = &quot;6&quot;;
-                            _r.button_height = _p.cauButtonHeight( 28 );
-                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/w_61x27.png&#x27;, _p.cauRoot() );
-                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#000000; text-align: center; }&#x27; );
-                            break;
-                        }
-
-                    default:
-                        {
-                            _r.button_text_style = _p.cauButtonStyle();
-                            break;
-                        }
-                }
             }
 
         , layoutButton:
@@ -904,6 +856,15 @@
                         this.setButtonDisabled( false );
                     }
 
+
+                this.cauParamsCallback() 
+                    &amp;&amp; ( _r = this.cauParamsCallback().call( this, _r ) );
+
+                _p.is( &#x27;[cauPostParams]&#x27; ) 
+                    &amp;&amp; ( _r.post_params = _p.jsonProp( &#x27;cauPostParams&#x27; ) );
+
+                JC.dir( _r );
+
                 return _r;
             }
 
@@ -917,16 +878,18 @@
             function( _params ){
                 //JC.dir( _params );
                 this._swfu &amp;&amp; this._swfu.destory();
-
-                this.cauParamsCallback() 
-                    &amp;&amp; ( _params = this.cauParamsCallback().call( this, _params ) );
-
                 this._swfu = new SWFUpload( _params );
             }
 
         , swfu: function(){ return this._swfu; }
 
-        , cauParamsCallback: function(){ return this.callbackProp( &#x27;cauParamsCallback&#x27; ); }
+        , cauParamsCallback: 
+            function(){ 
+                return this.callbackProp( &#x27;cauParamsCallback&#x27; ) 
+                    || AjaxUpload.paramsCallback
+                    || JC.AjaxUploadParamsCallback
+                    ; 
+            }
 
         , cancelUpload: 
             function(){
@@ -957,6 +920,73 @@
                 }
                 return _r;
             }
+
+        , initButtonStyle:
+            function( _r ){
+                if( !_r ) return;
+                var _p = this
+                    , _style = _p.cauStyle() || &#x27;&#x27;
+                    ;
+
+                _r.button_width = _p.cauButtonWidth();
+                _r.button_height = _p.cauButtonHeight();
+                _r.button_text_top_padding = &quot;2&quot;;
+
+                switch( _p.cauStyle() ){
+                    case &#x27;g1&#x27;:
+                        {
+                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/g_61x27.png&#x27;, _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
+                            break;
+                        }
+                    case &#x27;g2&#x27;:
+                        {
+                            _r.button_text_top_padding = &quot;4&quot;;
+                            _r.button_height = _p.cauButtonHeight( 26 );
+                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/g_61x27.png&#x27;, _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
+                            break;
+                        }
+                    case &#x27;g3&#x27;:
+                        {
+                            _r.button_text_top_padding = &quot;6&quot;;
+                            _r.button_height = _p.cauButtonHeight( 28 );
+                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/g_61x27.png&#x27;, _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#ffffff; text-align: center; }&#x27; );
+                            break;
+                        }
+                    case &#x27;w1&#x27;:
+                        {
+                            _r.button_text_top_padding = &quot;3&quot;;
+                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/w_61x27.png&#x27;, _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:##000000; text-align: center; }&#x27; );
+                            break;
+                        }
+                    case &#x27;w2&#x27;:
+                        {
+                            _r.button_text_top_padding = &quot;4&quot;;
+                            _r.button_height = _p.cauButtonHeight( 26 );
+                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/w_61x27.png&#x27;, _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#000000; text-align: center; }&#x27; );
+                            break;
+                        }
+                    case &#x27;w3&#x27;:
+                        {
+                            _r.button_text_top_padding = &quot;6&quot;;
+                            _r.button_height = _p.cauButtonHeight( 28 );
+                            _r.button_image_url = JC.f.printf( &#x27;{0}res/default/w_61x27.png&#x27;, _p.cauRoot() );
+                            _r.button_text_style = _p.cauButtonStyle( &#x27;.uFont{ color:#000000; text-align: center; }&#x27; );
+                            break;
+                        }
+
+                    default:
+                        {
+                            _r.button_text_style = _p.cauButtonStyle();
+                            break;
+                        }
+                }
+            }
+
     });
 
     /*
@@ -1231,7 +1261,7 @@
     }
 
     $(document).ready( function(){
-        AjaxUpload.autoInit &amp;&amp; AjaxUpload.init();
+        AjaxUpload.autoInit &amp;&amp; setTimeout( function(){ AjaxUpload.init(); }, 1 );
     });
 
     return JC.AjaxUpload;
