@@ -341,6 +341,14 @@
                 _p.on( 'init', function(){
                     _p._model.loadSWF( _p._model.getParams() );
                 });
+
+                _p.on( 'disabled', function(){
+                    _p._view.disabled();
+                });
+
+                _p.on( 'enabled', function(){
+                    _p._view.enabled();
+                });
             }
         , _inited:
             function(){
@@ -355,6 +363,8 @@
 
                 _p.trigger( 'init' );
             }
+        , disabled: function(){ this.trigger( 'disabled' ); }
+        , enabled: function(){ this.trigger( 'enabled' ); }
         /**
          * 手动更新数据
          * @method  update
@@ -577,6 +587,13 @@
 
                 _fileExt && ( _r.file_types = _fileExt );
 
+                _r.swfupload_loaded_handler =
+                    function(){
+                        JC.log( 'ttttttttttt' );
+                        JC.dir( this );
+                        _p.swfu( this );
+                    };
+
                 _r.file_dialog_start_handler =
                     function(){
                         JC.hideAllPopup( 1);
@@ -591,7 +608,7 @@
                         if( !_selectedFiles ) return;
                         _p.trigger( 'BeforeUpload' );
                         this.startUpload();
-                        //this.setButtonDisabled( true );
+                        this.setButtonDisabled( true );
                     };
                 //
                 /// 上传文件时显示进度的事件
@@ -607,6 +624,8 @@
                     function( _file, _errCode, _msg ){
                         _p.trigger( 'UpdateDefaultStatus' );
                         _p.trigger( 'UploadError', [ _file, _errCode, _msg ] );
+
+                        _p.cauButtonAutoStatus() && this.setButtonDisabled( false );
                     };
                 //
                 /// 上传成功后触发的事件
@@ -620,16 +639,15 @@
                 //
                 _r.upload_complete_handler =
                     function( _file ){
-                        this.setButtonDisabled( false );
-                    }
+                        _p.cauButtonAutoStatus() && this.setButtonDisabled( false );
+                    };
 
                 _r.file_queue_error_handler = 
                     function( _file, _errCode, _msg ){
                         _p.trigger( 'UpdateDefaultStatus' );
                         _p.trigger( 'UploadError', [ _file, _errCode, _msg ] );
-                        this.setButtonDisabled( false );
-                    }
-
+                        _p.cauButtonAutoStatus() && this.setButtonDisabled( false );
+                    };
 
                 this.cauParamsCallback() 
                     && ( _r = this.cauParamsCallback().call( this, _r ) );
@@ -639,6 +657,13 @@
 
                 JC.dir( _r );
 
+                return _r;
+            }
+
+        , cauButtonAutoStatus:
+            function(){
+                var _r = true;
+                this.is( '[cauButtonAutoStatus]' ) && ( _r = this.boolProp( 'cauButtonAutoStatus' ) );
                 return _r;
             }
 
@@ -652,10 +677,14 @@
             function( _params ){
                 //JC.dir( _params );
                 this._swfu && this._swfu.destory();
-                this._swfu = new SWFUpload( _params );
+                new SWFUpload( _params );
             }
 
-        , swfu: function(){ return this._swfu; }
+        , swfu: 
+            function( _setter ){ 
+                typeof _setter != 'undefined' && ( this._swfu = _setter );
+                return this._swfu; 
+            }
 
         , cauParamsCallback: 
             function(){ 
@@ -1005,6 +1034,18 @@
                         : alert( _msg )
                         ;
                 }
+            }
+
+        , disabled:
+            function(){
+                var _p = this, _swfu = _p._model.swfu();
+                _swfu && ( _swfu.setButtonDisabled( true ), JC.log( 'disabled', new Date().getTime() ) );
+            }
+
+        , enabled:
+            function(){
+                var _p = this, _swfu = _p._model.swfu();
+                _swfu && ( _swfu.setButtonDisabled( false ), JC.log( 'enabled', new Date().getTime() ) );
             }
 
     });

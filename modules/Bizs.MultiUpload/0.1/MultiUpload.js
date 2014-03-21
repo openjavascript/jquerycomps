@@ -105,11 +105,19 @@
                 });
 
                 _p.on( 'ItemAdded', function( _evt, _newItem ){
-                    _p.trigger( 'CheckItemLimit' );
+                    JC.f.safeTimeout( function(){ _p.trigger( 'CheckItemLimit' ); }, _p, 'OnItemAdded', 10 );
                 });
 
                 _p.on( 'CheckItemLimit', function(){
                     _p._view.checkItemLimit();
+                });
+
+                _p._model.bmuBoxSelector().delegate( _p._model.bmuRemoveDelegate(), 'click', function(){
+                    JC.log( 'bmuRemoveDelegate click', new Date().getTime() );
+                    var _pnt = JC.f.parentSelector( this, _p._model.bmuRemoveParentSelector() );
+
+                    _pnt && _pnt.length && _pnt.remove();
+                    _p.updateStatus();
                 });
             }
 
@@ -117,6 +125,11 @@
             function(){
                 //JC.log( 'MultiUpload _inited', new Date().getTime() );
                 this.trigger( 'inited' );
+            }
+
+        , updateStatus:
+            function(){
+                this.trigger( 'CheckItemLimit' );
             }
     });
 
@@ -174,11 +187,24 @@
                 return _r;
             }
 
+        , ajaxUploadIns:
+            function(){
+                var _r;
+
+                this.bmuAjaxUploadSelector() 
+                    && this.bmuAjaxUploadSelector().length
+                    && ( _r = JC.BaseMVC.getInstance( this.bmuAjaxUploadSelector(), JC.AjaxUpload ) )
+                    ;
+
+                return _r;
+            }
+
         , bmuItemDelegate: function(){ return this.attrProp( 'bmuItemDelegate' ) || '> dd'; }
 
         , bmuItems: function(){ return this.bmuBoxSelector().find( this.bmuItemDelegate() ); }
 
         , bmuRemoveDelegate: function(){ return this.attrProp( 'bmuRemoveDelegate' ) || '.js_removeUploadItem'; }
+        , bmuRemoveParentSelector: function(){ return this.attrProp( 'bmuRemoveParentSelector' ) || '('; }
 
         , saveAjaxUploadHandler:
             function(){
@@ -238,26 +264,31 @@
                 var _p = this
                     , _limit = this._model.bmuItemLimit()
                     , _items
+                    , _ins = _p._model.ajaxUploadIns()
                     ;
                 JC.log( '_limit', _limit );
                 if( !_limit ) return;
 
                 _items = _p._model.bmuItems();
-                if( !( _items && _items.length ) ) return;
+                //if( !( _items && _items.length ) ) return;
+                _items = _items || [];
+
+                if( !_ins ) return;
 
                 if( _items.length >= _limit ){
                     JC.log( 'out limit', new Date().getTime() );
+                    _ins.disabled();
                 }else{
                     JC.log( 'in limit', new Date().getTime() );
+                    _ins.enabled();
                 }
             }
 
     });
 
     $(document).ready( function(){
-        var _insAr = 0;
         MultiUpload.autoInit
-            && ( _insAr = MultiUpload.init() )
+            && JC.f.safeTimeout( function(){ MultiUpload.init() }, null, 'MultiUploadInit', 2 )
             ;
     });
 
