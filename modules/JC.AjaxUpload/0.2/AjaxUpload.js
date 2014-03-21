@@ -388,7 +388,7 @@
         AjaxUpload.Model.PATH = '/comps/AjaxUpload/';
     }else{
         AjaxUpload.Model.FLASH_URL = '/modules/SWFUpload/2.5.0/SWFUpload.swf';
-        AjaxUpload.Model.PATH = '/modules/JC.AjaxUpload/dev/';
+        AjaxUpload.Model.PATH = '/modules/JC.AjaxUpload/0.2/';
     }
 
     AjaxUpload.Model.PROGRESS_TPL =
