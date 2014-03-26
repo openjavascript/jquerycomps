@@ -35,33 +35,66 @@
 <body>
      <div class="js_compLazyLoad" lazydatasource=".lazy-data" >
         <div>
-        <ul>
-            <li>
-                <img id="0" data-original="http://p16.qhimg.com/t01feb8ced821e4e58a.jpg" alt=""  src="" class="lazy-data">
-            </li>
-            <li>
-                <img id="1" data-original="http://p16.qhimg.com/t01c3b13c61d565dd1d.jpg" alt="" class="lazy-data">
-            </li>
-            <li>
-                <img id="2" data-original="http://p19.qhimg.com/t015c97ca533431c5a6.jpg" alt="" class="lazy-data">
-            </li>
-            <li>
-                <img id="3" data-original="http://p17.qhimg.com/t016c41d2759a160c7a.jpg" alt="" class="lazy-data">
-            </li>
-            <li>
-                <img id="4" data-original="http://p19.qhimg.com/t01a45eb92a7a9899ad.jpg" alt="" class="lazy-data">
-            </li>
-            <li>
-                <img id="5"  data-original="http://p16.qhimg.com/t01feb8ced821e4e58a.jpg" alt=""  class="lazy-data">
-            </li>
-            <li>
-                <img id="6" data-original="http://p16.qhimg.com/t01c3b13c61d565dd1d.jpg" alt="" class="lazy-data">
-            </li>
-            <li>
-                <img id="7" data-original="http://p19.qhimg.com/t015c97ca533431c5a6.jpg" alt="" class="lazy-data">
-            </li>
-           
-        </ul>
+            <ul>
+                <li>
+                    <img id="0" data-original="http://p16.qhimg.com/t01feb8ced821e4e58a.jpg" alt=""  src="" class="lazy-data">
+                </li>
+                <li>
+                    <img id="1" data-original="http://p16.qhimg.com/t01c3b13c61d565dd1d.jpg" alt="" class="lazy-data">
+                </li>
+                <li>
+                    <img id="2" data-original="http://p19.qhimg.com/t015c97ca533431c5a6.jpg" alt="" class="lazy-data">
+                </li>
+                <li>
+                    <img id="3" data-original="http://p17.qhimg.com/t016c41d2759a160c7a.jpg" alt="" class="lazy-data">
+                </li>
+                <li>
+                    <img id="4" data-original="http://p19.qhimg.com/t01a45eb92a7a9899ad.jpg" alt="" class="lazy-data">
+                </li>
+                <li>
+                    <img id="5"  data-original="http://p16.qhimg.com/t01feb8ced821e4e58a.jpg" alt=""  class="lazy-data">
+                </li>
+                <li>
+                    <img id="6" data-original="http://p16.qhimg.com/t01c3b13c61d565dd1d.jpg" alt="" class="lazy-data">
+                </li>
+                <li>
+                    <img id="7" data-original="http://p19.qhimg.com/t015c97ca533431c5a6.jpg" alt="" class="lazy-data">
+                </li>
+               
+            </ul>
+        </div>
+        
+     </div>
+     <h2>图片加载前对图片地址进行了修改：lazydatafilter</h2>
+     <div class="js_compLazyLoad" lazydatasource=".lazy-data" lazydatafilter="datafilter" >
+        <div>
+            <ul>
+                <li>
+                    <img id="0" data-original="http://p16.qhimg.com/t01feb8ced821e4e58a.jpg" alt=""  src="" class="lazy-data">
+                </li>
+                <li>
+                    <img id="1" data-original="http://p16.qhimg.com/t01c3b13c61d565dd1d.jpg" alt="" class="lazy-data">
+                </li>
+                <li>
+                    <img id="2" data-original="http://p19.qhimg.com/t015c97ca533431c5a6.jpg" alt="" class="lazy-data">
+                </li>
+                <li>
+                    <img id="3" data-original="http://p17.qhimg.com/t016c41d2759a160c7a.jpg" alt="" class="lazy-data">
+                </li>
+                <li>
+                    <img id="4" data-original="http://p19.qhimg.com/t01a45eb92a7a9899ad.jpg" alt="" class="lazy-data">
+                </li>
+                <li>
+                    <img id="5"  data-original="http://p16.qhimg.com/t01feb8ced821e4e58a.jpg" alt=""  class="lazy-data">
+                </li>
+                <li>
+                    <img id="6" data-original="http://p16.qhimg.com/t01c3b13c61d565dd1d.jpg" alt="" class="lazy-data">
+                </li>
+                <li>
+                    <img id="7" data-original="http://p19.qhimg.com/t015c97ca533431c5a6.jpg" alt="" class="lazy-data">
+                </li>
+               
+            </ul>
         </div>
         
      </div>
@@ -71,6 +104,12 @@
         JC.debug = true;
         requirejs( [ 'JC.Lazyload' ], function(){
         });
+
+        function  datafilter( _data ) {
+            console.log("_data", _data);
+            _data = "http://p19.qhimg.com/t01530ea15e6941de6d.jpg";
+            return _data;
+        }
     </script>
 </body>
 </html>

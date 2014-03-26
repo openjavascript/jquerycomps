@@ -1,8 +1,6 @@
 ;(function (define, _win) { 'use strict'; define(['JC.BaseMVC'], function () {
 //Todo:  支持tab的click事件加载
 //Todo: 替换图片src之前需要回调
-//Tofixed: instance里的数据已经加载了，但是hook还存在，导致有多个实倒存在时，出错。
-//Todo: container优化，支持parentSelector
 /**
  * Lazyload 延时加载
  * <p>
@@ -53,6 +51,10 @@
  *              </dd>
  *          </dl>
  *      </dd>
+ *
+ *      <dt>lazydatafilter = function</dt>
+ *      <dd>针对ajax返回的数据，可以对返回的数据格式作修改过滤</dd>
+ *      <dd>针对图片数据，当图片进入可视范围内时，可以在图片加载前对图片地址进行修改，比如webp优化</dd>
  *   
  * </dl>
  * 
@@ -132,9 +134,9 @@
         _beforeInit: function () {
            var _p = this;
 
-           Lazyload.Model.imgList = _p._model.dataSource().imgs;
-           Lazyload.Model.textareaList = _p._model.dataSource().textareas;
-           Lazyload.Model.ajaxList = _p._model.dataSource().ajax;
+           _p._model.imgList = _p._model.dataSource().imgs;
+           _p._model.textareaList = _p._model.dataSource().textareas;
+           _p._model.ajaxList = _p._model.dataSource().ajax;
         },
 
         _initHanlderEvent: function () {
@@ -143,15 +145,14 @@
                 _resizeTimer = null,
                 _triggerType = _p._model.triggerType();
             
-            _p.on(Lazyload.Model.BEFORELOAD, function () {
+            _p.on(Lazyload.Model.BEFORELOAD, function (_evt, _data) {
                 _p._model.beforeLoad()
-                    && _p._model.beforeLoad().call(_p, _p.selector());
+                    && _p._model.beforeLoad().call(_p, _p.selector(), _data);
             });
 
             if ( _triggerType === 'click' ) {
 
             } else {
-                _p.trigger(Lazyload.Model.BEFORELOAD);
                 //setTimeout( function () {
                     _p._view.render();
                 //}, 100);
@@ -170,6 +171,11 @@
                     _p._view.render();
                 }, 100);
             });
+
+            _p.on(Lazyload.Model.AFTERLOAD, function (_evt, _data) {
+                _p._model.afterLoad()
+                    && _p._model.afterLoad().call(_p, _p.selector(), _data);
+            });
         }, 
 
         _inited: function () {
@@ -184,15 +190,20 @@
  
     Lazyload.Model._instanceName = "Lazyload";
     Lazyload.Model.RENDER = "RENDER";
-    Lazyload.Model.imgList = [];
-    Lazyload.Model.textareaList = [];
-    Lazyload.Model.ajaxList = [];
     Lazyload.Model.BEFORELOAD = "BEFORELOAD";
+    Lazyload.Model.AFTERLOAD = "AFTERLOAD";
    
     JC.f.extendObject(Lazyload.Model.prototype, {
         init: function () {
 
         },
+
+        imgList: [],
+
+        textareaList: [],
+
+        ajaxList: [],
+
 
         triggerType: function () {
             var _r = this.attrProp('lazyTriggerType');
@@ -312,7 +323,8 @@
 
         loadImgData: function ( _offset ) {
             var _p = this,
-                _els = Lazyload.Model.imgList;
+                _els = _p.imgList,
+                _filter = _p.callbackProp('lazydatafilter') || Lazyload.DataFilter;;
 
             if ( _els.length === 0 ) {
                 return;
@@ -322,7 +334,8 @@
                 var _sp = $(this),
                     _src = _sp.attr('data-original'),
                     _pos = _sp.data('offset'),
-                    _temp;
+                    _temp,
+                    _newData;
 
                 if ( typeof _pos === 'undefined' ) {
                     _pos = _sp.offset()[_offset];
@@ -330,12 +343,13 @@
                 }
 
                 if ( _p.isInside(_pos) ) {
+                    _filter && (_src = _filter(_src));
                     _sp.attr('src', _src);
                     _sp.data('loaded', true).removeData('offset');
                     _temp = $.grep(_els, function(_el) {
                             return !$(_el).data('loaded');
                         });
-                    Lazyload.Model.imgList = $(_temp);
+                    _p.imgList = $(_temp);
                 }
 
             });
@@ -344,7 +358,7 @@
 
         loadTextareaData: function ( _offset ) {
             var _p = this,
-                _els = Lazyload.Model.textareaList;
+                _els = _p.textareaList;
 
             if (_els.length === 0) return;
 
@@ -365,14 +379,14 @@
                     _temp = $.grep(_els, function(_el) {
                             return !$(_el).data('loaded');
                         });
-                    Lazyload.Model.textareaList = $(_temp);
+                    _p.textareaList = $(_temp);
                 }
             });
         },
 
         loadAjaxData: function ( _offset ) {
             var _p = this,
-                _els = Lazyload.Model.ajaxList;
+                _els = _p.ajaxList;
 
             if ( _els.length === 0 ) {
                 return;
@@ -399,7 +413,7 @@
                             _res = $.parseJSON(_res);
                             _filter && (_res = _filter(_res));
 
-                            //_p.trigger(Lazyload.Model.BEFORELOAD, [this]);
+                            //_p.trigger(Lazyload.Model.BEFORELOAD, [_res]);
 
                             if ( _res.errorno === 0 ) {
                                 _sp.html( _res.data );
@@ -411,7 +425,8 @@
                             _temp = $.grep(_els, function(_el) {
                                 return !$(_el).data('loaded');
                             });
-                            Lazyload.Model.imgList = $(_temp);
+                            
+                            _p.imgList = $(_temp);
                         }
                     });
                 }
@@ -426,6 +441,14 @@
                 _key = "beforeLoad";
  
             return _p.callbackProp(_selector, _key);
+        },
+
+        afterLoad: function () {
+            var _p = this,
+                _selector = _p.selector(),
+                _key = "afterLoad";
+ 
+            return _p.callbackProp(_selector, _key);
         }
 
     });
@@ -433,10 +456,7 @@
     JC.f.extendObject(Lazyload.View.prototype, {
         render: function () {
             var _p = this;
-
-            
             _p._model.loadData();
-                       
         }
     });
 
