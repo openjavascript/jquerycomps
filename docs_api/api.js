@@ -24,6 +24,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Panel",
         "JC.Placeholder",
         "JC.PopTips",
+        "JC.Scrollbar",
         "JC.Slider",
         "JC.Suggest",
         "JC.Tab",

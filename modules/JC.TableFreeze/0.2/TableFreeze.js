@@ -569,7 +569,7 @@
             }
 
             _p.selector().append(_tpl);
-
+            
         },
 
         //Todo: 还没有考虑rolspan, colspan的情况
@@ -687,6 +687,8 @@
             if ( _needProcess ) {
                 _p._model.creatTpl();
                 _p.fixWidth();
+                //fix empty cell
+                _p.selector().find('td:empty').html('&nbsp;');
                 _p.fixHeight();
             }
 
