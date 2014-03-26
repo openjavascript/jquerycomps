@@ -3,8 +3,7 @@
  * 组件用途简述
  *
  *<p><b>require</b>:
- *   <a href="widnow..jQuery.html">jQuery</a>
- *   , <a href="JC.common.html">JC.common</a>
+ *   <a href=".jQuery.html">jQuery</a>
  *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *</p>
  *
@@ -21,9 +20,9 @@
  *    <dd><dd>
  *</dl> 
  *
- * @namespace JC
- * @class CompExampleMoreAdvance
- * @extends JC.BaseMVC
+ * @namespace   JC
+ * @class       CompExampleMoreAdvance
+ * @extends     JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-12-13
@@ -31,6 +30,8 @@
  * @example
         <h2>JC.CompExampleMoreAdvance 示例</h2>
  */
+    var _jdoc = $( document ), _jwin = $( window );
+
     JC.CompExampleMoreAdvance = CompExampleMoreAdvance;
 
     function CompExampleMoreAdvance( _selector ){
@@ -60,7 +61,7 @@
             var _r = [];
             _selector = $( _selector || document );
 
-            if( _selector && _selector.length ){
+            if( _selector.length ){
                 if( _selector.hasClass( 'js_compCompExampleMoreAdvance' )  ){
                     _r.push( new CompExampleMoreAdvance( _selector ) );
                 }else{
@@ -72,7 +73,7 @@
             return _r;
         };
 
-    BaseMVC.build( CompExampleMoreAdvance );
+    JC.BaseMVC.build( CompExampleMoreAdvance );
 
     JC.f.extendObject( CompExampleMoreAdvance.prototype, {
         _beforeInit:
@@ -90,7 +91,7 @@
             }
     });
 
-    CompExampleMoreAdvance.Model._instanceName = 'CompExampleMoreAdvance';
+    CompExampleMoreAdvance.Model._instanceName = 'JCCompExampleMoreAdvance';
     JC.f.extendObject( CompExampleMoreAdvance.Model.prototype, {
         init:
             function(){
@@ -105,7 +106,7 @@
             }
     });
 
-    $(document).ready( function(){
+    _jdoc.ready( function(){
         var _insAr = 0;
         CompExampleMoreAdvance.autoInit
             && ( _insAr = CompExampleMoreAdvance.init() )

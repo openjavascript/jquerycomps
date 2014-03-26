@@ -1,0 +1,325 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Open JQuery Components Library - suches</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+
+        .ipt,.txt,.txt-1{ border:1px solid #e2e3ea; border-top:1px solid #abadb3; border-radius:2px; height:22px; *line-height:22px;}
+        .ipt{ width:126px;}
+        .ipt-w58{ width:58px;}
+        .ipt-w48{ width:48px; text-align:center;}
+        .ipt-w80{ width:80px;}
+        .ipt-w180{ width:180px;}
+        .ipt-w230{ width: 230px;}
+        .ipt-w320{ width:320px;}
+        .ipt-w380{ width:380px;}
+        .ipt-w480{ width:480px;}
+        .ipt-w545{ width:545px;}
+        .txt,.txt-1{ resize:none; height:50px; width:99.8%;}
+        .txt-w280{ width:280px;}
+        .txt-w480{ width:480px;}
+        .txt-w545{ width:545px;}
+        .txt-w400{ width:410px;}
+        .txt-w380{ width:380px;}
+        .txt-w650{ width:650px;}
+
+
+        input, select, textarea {
+            border: 1px solid #b9b9b9
+        }
+
+        input, select {
+            height: 23px;
+            line-height: 23px;
+        }
+
+        input[type=checkbox], input[type=radio], input.UXC{
+            height: auto;
+            line-height: auto;
+        }
+
+        select[multiple]{
+            height: 80px;
+        }
+
+        .AUBtn {
+            margin-top: -3px;
+        }
+
+        .defDl > dd{
+            padding: 10px 20px;
+            border-bottom:1px solid #e2e3ea; 
+        }
+
+    </style>
+    <link href='../../../comps/AjaxUpload/res/default/style.css' rel='stylesheet' />
+    <link href='../../../comps/Panel/res/default/style.css' rel='stylesheet' />
+    <link href='../../../bizs/MultiUpload/res/default/style.css' rel='stylesheet' />
+
+    <script src="../../../lib.js"></script>
+    <script>
+        JC.debug = true;
+
+        JC.use( [ 'Bizs.MultiUpload', 'plugins.json2' ] );
+    </script>
+</head>    
+<body>
+    <h2>Bizs.MultiUpload - 示例</h2>
+
+    <dl class="defDl">
+        <dt>兼容所有版本 - 不带进度条</dt>
+        <dd>
+            <div class="js_bizMultiUpload">
+                <div>
+                    <input type="hidden" class="ipt ipt-w180 js_compAjaxUpload" value=""
+                        cauStyle="w1"
+                        cauButtonText="上传资质文件"
+                        cauUrl="../_demo/data/handler.php"
+                        cauFileExt=".jpg, .jpeg, .png, .gif"
+                        cauFileName="file"
+                        cauValueKey="url"
+                        cauLabelKey="name"
+                        cauStatusLabel="/label.js_statusLabel"
+                        />
+                        <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
+                        .jpg, .jpeg, .png, .gif
+                </div>
+            </div>
+        </dd>
+    </dl>
+
+    <dl class="defDl">
+        <dt>version: 0.2+ - 带进度条</dt>
+        <dd>
+            <div class="js_bizMultiUpload"
+                bmuBoxSelector="|.uploadItemBox"
+                bmuTplSelector="|script"
+                bmuItemDelegate=">"
+                bmuRemoveDelegate=".js_removeUploadItem"
+                bmuRemoveItemParentSelector="("
+                bmuAjaxUploadSelector="|.js_compAjaxUpload"
+                bmuItemLimit="2"
+                >
+                <div>
+                    <input type="hidden" class="ipt ipt-w180 js_compAjaxUpload" value=""
+                        cauStyle="w1"
+                        cauButtonText="上传资质文件"
+                        cauUrl="../_demo/data/handler.php"
+                        cauFileExt=".jpg, .jpeg, .png, .gif"
+                        cauFileName="file"
+                        cauValueKey="url"
+                        cauLabelKey="name"
+                        cauProgressBox="/span.AUProgressBox"
+                        />
+                        <span class="AUProgressBox" style="display:none;">
+                            <button type="button" class="AUProgress"><div class="AUPercent"></div></button>
+                            <button type="button" class="AUCancelProgress"></button>
+                        </span>
+                        .jpg, .jpeg, .png, .gif
+                        (最多上传2个)
+                </div>
+                <dl class="uploadItemBox">
+                </dl>
+                <script type="text/template">
+                    <dd class="js_multiUploadItem">
+                        <input type="hidden" name="file[]" value="{0}" class="js_multiUploadHidden" />
+                        <a href="{0}" target="_blank"><label class="js_multiUploadLabel">{1}</label></a>
+                        <button type="button" class="AURemove js_removeUploadItem"></button>
+                    </dd>
+                </script>
+            </div>
+        </dd>
+
+        <dd>
+            <div class="js_bizMultiUpload"
+                bmuBoxSelector="|dl.uploadItemBox"
+                bmuTplSelector="|script"
+                bmuItemDelegate=">"
+                bmuRemoveDelegate=".js_removeUploadItem"
+                bmuRemoveItemParentSelector="("
+                bmuAjaxUploadSelector="|input.js_compAjaxUpload"
+                bmuItemLimit="2"
+                >
+                <div>
+                    <input type="hidden" class="ipt ipt-w180 js_compAjaxUpload" value=""
+                        cauStyle="w1"
+                        cauButtonText="上传资质文件"
+                        cauUrl="../_demo/data/handler.php"
+                        cauFileExt=".jpg, .jpeg, .png, .gif"
+                        cauFileName="file"
+                        cauValueKey="url"
+                        cauLabelKey="name"
+                        cauProgressBox="/span.AUProgressBox"
+                        />
+                        <span class="AUProgressBox" style="display:none;">
+                            <button type="button" class="AUProgress"><div class="AUPercent"></div></button>
+                            <button type="button" class="AUCancelProgress"></button>
+                        </span>
+                        .jpg, .jpeg, .png, .gif
+                        (最多上传2个)
+                </div>
+                <dl class="uploadItemBox">
+                    <dd class="js_multiUploadItem">                        
+                        <input type="hidden" name="file[]" value="./data/images/test.jpg" class="js_multiUploadHidden">                        
+                        <a href="./data/images/test.jpg" target="_blank"><label class="js_multiUploadLabel">test.jpg</label></a>
+                        <button type="button" class="AURemove js_removeUploadItem"></button>                   
+                    </dd>
+                    <dd class="js_multiUploadItem">                        
+                        <input type="hidden" name="file[]" value="./data/images/test.jpg" class="js_multiUploadHidden">                        
+                        <a href="./data/images/test.jpg" target="_blank"><label class="js_multiUploadLabel">test.jpg</label></a>
+                        <button type="button" class="AURemove js_removeUploadItem"></button>                    
+                    </dd>
+                </dl>
+                <script type="text/template">
+                    <dd class="js_multiUploadItem">
+                        <input type="hidden" name="file[]" value="{0}" class="js_multiUploadHidden" />
+                        <a href="{0}" target="_blank"><label class="js_multiUploadLabel">{1}</label></a>
+                        <button type="button" class="AURemove js_removeUploadItem"></button>
+                    </dd>
+                </script>
+            </div>
+        </dd>
+
+
+        <dd>
+            <div class="js_bizMultiUpload"
+                bmuBoxSelector="|dl.uploadItemBox"
+                bmuTplSelector="|script"
+                bmuItemDelegate=">"
+                bmuRemoveDelegate=".js_removeUploadItem"
+                bmuRemoveItemParentSelector="("
+                bmuAjaxUploadSelector="|input.js_compAjaxUpload"
+                bmuItemLimit="5"
+                >
+                <div>
+                    <input type="hidden" class="ipt ipt-w180 js_compAjaxUpload" value=""
+                        cauStyle="g1"
+                        cauButtonText="上传资质文件"
+                        cauUrl="../_demo/data/handler.php"
+                        cauFileExt=".jpg, .jpeg, .png, .gif"
+                        cauFileName="file"
+                        cauValueKey="url"
+                        cauLabelKey="name"
+                        cauProgressBox="/span.AUProgressBox"
+                        />
+                        <span class="AUProgressBox" style="display:none;">
+                            <button type="button" class="AUProgress"><div class="AUPercent"></div></button>
+                            <button type="button" class="AUCancelProgress"></button>
+                        </span>
+                        .jpg, .jpeg, .png, .gif
+                        (最多上传5个)
+                </div>
+                <dl class="uploadItemBox">
+                </dl>
+                <script type="text/template">
+                    <dd class="js_multiUploadItem">
+                        <input type="hidden" name="file[]" value="{0}" class="js_multiUploadHidden" />
+                        <a href="{0}" target="_blank"><label class="js_multiUploadLabel">{1}</label></a>
+                        <button type="button" class="AURemove js_removeUploadItem"></button>
+                    </dd>
+                </script>
+            </div>
+        </dd>
+
+        <dd>
+            <div class="js_bizMultiUpload"
+                bmuBoxSelector="|dl.uploadItemBox"
+                bmuTplSelector="|script"
+                bmuItemDelegate=">"
+                bmuRemoveDelegate=".js_removeUploadItem"
+                bmuRemoveItemParentSelector="("
+                bmuAjaxUploadSelector="|input.js_compAjaxUpload"
+                bmuItemLimit="2"
+                >
+                <div>
+                    <input type="hidden" class="ipt ipt-w180 js_compAjaxUpload" value=""
+                        cauStyle="g1"
+                        cauButtonText="上传资质文件"
+                        cauUrl="../_demo/data/handler.php"
+                        cauFileExt=".jpg, .jpeg, .png, .gif"
+                        cauFileName="file"
+                        cauValueKey="url"
+                        cauLabelKey="name"
+                        cauProgressBox="/span.AUProgressBox"
+                        />
+                        <span class="AUProgressBox" style="display:none;">
+                            <button type="button" class="AUProgress"><div class="AUPercent"></div></button>
+                            <button type="button" class="AUCancelProgress"></button>
+                        </span>
+                        .jpg, .jpeg, .png, .gif
+                        (最多上传2个)
+                </div>
+                <dl class="uploadItemBox">
+                    <dd class="js_multiUploadItem">                        
+                        <input type="hidden" name="file[]" value="./data/images/test.jpg" class="js_multiUploadHidden">                        
+                        <a href="./data/images/test.jpg" target="_blank"><label class="js_multiUploadLabel">test.jpg</label></a>
+                        <button type="button" class="AURemove js_removeUploadItem"></button>                   
+                    </dd>
+                    <dd class="js_multiUploadItem">                        
+                        <input type="hidden" name="file[]" value="./data/images/test.jpg" class="js_multiUploadHidden">                        
+                        <a href="./data/images/test.jpg" target="_blank"><label class="js_multiUploadLabel">test.jpg</label></a>
+                        <button type="button" class="AURemove js_removeUploadItem"></button>                    
+                    </dd>
+                </dl>
+                <script type="text/template">
+                    <dd class="js_multiUploadItem">
+                        <input type="hidden" name="file[]" value="{0}" class="js_multiUploadHidden" />
+                        <a href="{0}" target="_blank"><label class="js_multiUploadLabel">{1}</label></a>
+                        <button type="button" class="AURemove js_removeUploadItem"></button>
+                    </dd>
+                </script>
+            </div>
+        </dd>
+
+
+        <dd>
+            <div class="js_bizMultiUpload"
+                bmuBoxSelector="|dl.uploadItemBox"
+                bmuTplSelector="|script"
+                bmuItemDelegate=">"
+                bmuRemoveDelegate=".js_removeUploadItem"
+                bmuRemoveItemParentSelector="("
+                bmuAjaxUploadSelector="|input.js_compAjaxUpload"
+                bmuItemLimit="2"
+                >
+                <div>
+                    <input type="hidden" class="ipt ipt-w180 js_compAjaxUpload" value=""
+                        cauStyle="g1"
+                        cauButtonText="上传资质文件"
+                        cauUrl="../_demo/data/upload.php"
+                        cauFileExt=".jpg, .jpeg, .png, .gif"
+                        cauFileName="file"
+                        cauValueKey="url"
+                        cauLabelKey="name"
+                        cauProgressBox="/span.AUProgressBox"
+                        />
+                        <span class="AUProgressBox" style="display:none;">
+                            <button type="button" class="AUProgress"><div class="AUPercent"></div></button>
+                            <button type="button" class="AUCancelProgress"></button>
+                        </span>
+                        .jpg, .jpeg, .png, .gif
+                        (最多上传2个)
+                        (真实上传实例, 仅对 host =  git.me.btbtd.org 生效)
+                </div>
+                <dl class="uploadItemBox">
+                </dl>
+                <script type="text/template">
+                    <dd class="js_multiUploadItem">
+                        <input type="hidden" name="file[]" value="{0}" class="js_multiUploadHidden" />
+                        <a href="{0}" target="_blank"><label class="js_multiUploadLabel">{1}</label></a>
+                        <button type="button" class="AURemove js_removeUploadItem"></button>
+                    </dd>
+                </script>
+            </div>
+        </dd>
+
+    </dl>
+
+</body>
+</html>
+
+

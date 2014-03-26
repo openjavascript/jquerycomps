@@ -52,7 +52,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.KillISPCache",
         "window.Bizs.MoneyTips",
         "window.Bizs.MultiDate",
-        "window.Bizs.MultiSelect"
+        "window.Bizs.MultiSelect",
+        "window.Bizs.MultiUpload"
     ],
     "modules": [],
     "allModules": []

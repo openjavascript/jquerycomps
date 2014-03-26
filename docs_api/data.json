@@ -139,6 +139,17 @@
                 "window.Bizs": 1
             }
         },
+        "../bizs/MultiUpload/MultiUpload.js": {
+            "name": "../bizs/MultiUpload/MultiUpload.js",
+            "modules": {},
+            "classes": {
+                "window.Bizs.MultiUpload": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.Bizs": 1
+            }
+        },
         "../comps/AjaxUpload/AjaxUpload.js": {
             "name": "../comps/AjaxUpload/AjaxUpload.js",
             "modules": {},
@@ -840,6 +851,33 @@
             "author": "zuojing <suches@btbtd.org> | 75 Team",
             "example": [
                 "\n    <div class=\"test\">\n       <div class=\"SELECTBOX js_bizMultiSelect\" databindbox=\"(.test .js_box\">\n          <i class=\"SELECTIcon\"></i>\n          <span class=\"SELECTLabel\">共选中<b class=\"red\">2</b>条数据</span>                                         \n          <div class=\"SELECTListBox\" style=\"z-index: 50008; display: none;\">\n               <ul>\n                   <li class=\"SELECTIgnore\">\n                      <label>\n                          <input type=\"checkbox\" value=\"\" name=\"\" checktype=\"all\" checkfor=\"///input[type=checkbox]\">\n                          全选\n                      </label>\n                   </li>\n                   <li>\n                      <label>\n                          <input type=\"checkbox\" value=\"1\" name=\"\" data-text=\"北京天地在线广告有限公司\">\n                          北京天地在线广告有限公司\n                      </label>\n                   </li>\n                   <li>\n                      <label>\n                          <input type=\"checkbox\" value=\"2\" name=\"\" data-text=\"河南天地在线广告有限公司\">\n                          河南天地在线广告有限公司\n                      </label>\n                   </li>\n                   <li>\n                      <label>\n                          <input type=\"checkbox\" value=\"3\" name=\"\" data-text=\"河北天地在线广告有限公司\">\n                          河北天地在线广告有限公司\n                      </label>\n                   </li>\n              </ul>\n              <div class=\"SELECTClose\"><a href=\"javascript:;\" class=\"SELECTCloseBtn\">关闭</a></div>\n          </div>\n       </div>\n       <div class=\"js_box\"><ul><li>北京天地在线广告有限公司</li> <li>河南天地在线广告有限公司</li></ul></div>\n     </div>"
+            ]
+        },
+        "window.Bizs.MultiUpload": {
+            "name": "window.Bizs.MultiUpload",
+            "shortname": "window.Bizs.MultiUpload",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.Bizs",
+            "file": "../bizs/MultiUpload/MultiUpload.js",
+            "line": 2,
+            "description": "组件用途简述\n\n<p><b>require</b>:\n  <a href=\"widnow..jQuery.html\">jQuery</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n  , <a href='JC.AjaxUpload.html'>JC.AjaxUpload</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc.openjavascript.org/docs_api/classes/Bizs.MultiUpload.html' target='_blank'>API docs</a>\n  | <a href='../../bizs/MultiUpload/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会自动处理 div class=\"js_bizMultiUpload\" </h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>bmuItemLimit = int, default = 0</dt>\n   <dd>限制上传的数量, 0 为不限制, 非 0 为限制的数量<dd>\n\n   <dt>bmuBoxSelector = selector, default = '|.bmuBoxSelector'</dt>\n   <dd>上传内容的父容器</dd>\n\n   <dt>bmuTplSelector = selector, default = 组件生成</dt>\n   <dd>上传内容的模板内容, {0} = file url, {1} = file name</dd>\n\n   <dt>bmuAjaxUploadSelector = selector, default = '|.js_compAjaxUpload'</dt>\n   <dd>JC.AjaxUpload 的选择器</dd>\n\n   <dt>bmuItemDelegate = selector, default = '>'</dt>\n   <dd>bmuBoxSelector 的子级标签</dd>\n\n   <dt>bmuRemoveDelegate = selector, default = '.js_removeUploadItem'</dt> \n   <dd>删除子级标签的选择器</dd>\n\n   <dt>bmuRemoveItemParentSelector = selector, default = '('</dt>\n   <dd>相对于 bmuRemoveDelegate 的子级标签父选择器</dd>\n\n   <dt>bmuItemAddedCallback = function</dt>\n   <dd>添加上传内容后的回调\n<pre>function bmuItemAddedCallback( _newItem, _json, _boxSelector ){\n   var _bmuIns = this;\n}</pre>\n   </dd>\n\n   <dt>bmuItemDeletedCallback = function</dt>\n   <dd>删除上传内容后的回调\n<pre>function bmuItemDeletedCallback( _deletedItem, _boxSelector ){\n   var _bmuIns = this;\n}</pre>\n   </dd>\n\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-12-13",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n<xmp><div class=\"js_bizMultiUpload\"\n   bmuBoxSelector=\"|.uploadItemBox\"\n   bmuTplSelector=\"|script\"\n   bmuItemDelegate=\">\"\n   bmuRemoveDelegate=\".js_removeUploadItem\"\n   bmuRemoveItemParentSelector=\"(\"\n   bmuAjaxUploadSelector=\"|.js_compAjaxUpload\"\n   bmuItemLimit=\"2\"\n   >\n   <div>\n       <input type=\"hidden\" class=\"ipt ipt-w180 js_compAjaxUpload\" value=\"\"\n           cauStyle=\"w1\"\n           cauButtonText=\"上传资质文件\"\n           cauUrl=\"../_demo/data/handler.php\"\n           cauFileExt=\".jpg, .jpeg, .png, .gif\"\n           cauFileName=\"file\"\n           cauValueKey=\"url\"\n           cauLabelKey=\"name\"\n           cauProgressBox=\"/span.AUProgressBox\"\n           />\n           <span class=\"AUProgressBox\" style=\"display:none;\">\n               <button type=\"button\" class=\"AUProgress\"><div class=\"AUPercent\"></div></button>\n               <button type=\"button\" class=\"AUCancelProgress\"></button>\n           </span>\n           .jpg, .jpeg, .png, .gif\n           (最多上传2个)\n   </div>\n   <dl class=\"uploadItemBox\">\n   </dl>\n   <script type=\"text/template\">\n       <dd class=\"js_multiUploadItem\">\n           <input type=\"hidden\" name=\"file[]\" value=\"{0}\" class=\"js_multiUploadHidden\" />\n           <a href=\"{0}\" target=\"_blank\"><label class=\"js_multiUploadLabel\">{1}</label></a>\n           <button type=\"button\" class=\"AURemove js_removeUploadItem\"></button>\n       </dd>\n   </script>\n</div></xmp>"
             ]
         },
         "JC.AjaxUpload": {
@@ -3241,6 +3279,81 @@
             "namespace": "window.Bizs"
         },
         {
+            "file": "../bizs/MultiUpload/MultiUpload.js",
+            "line": 122,
+            "description": "初始化可识别的 MultiUpload 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of MultiUploadInstance"
+            },
+            "class": "window.Bizs.MultiUpload",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/MultiUpload/MultiUpload.js",
+            "line": 213,
+            "description": "更新按钮的状态",
+            "itemtype": "method",
+            "name": "updateStatus",
+            "class": "window.Bizs.MultiUpload",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/MultiUpload/MultiUpload.js",
+            "line": 394,
+            "description": "Bizs.MultiUpload 初始化后触发的事件",
+            "itemtype": "event",
+            "name": "inited",
+            "class": "window.Bizs.MultiUpload",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/MultiUpload/MultiUpload.js",
+            "line": 398,
+            "description": "ajax 上传完毕后触发的事件",
+            "itemtype": "event",
+            "name": "AjaxDone",
+            "class": "window.Bizs.MultiUpload",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/MultiUpload/MultiUpload.js",
+            "line": 402,
+            "description": "添加上传内容后触发的事件",
+            "itemtype": "event",
+            "name": "ItemAdded",
+            "class": "window.Bizs.MultiUpload",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/MultiUpload/MultiUpload.js",
+            "line": 406,
+            "description": "删除上传内容后触发的事件",
+            "itemtype": "event",
+            "name": "ItemDeleted",
+            "class": "window.Bizs.MultiUpload",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../bizs/MultiUpload/MultiUpload.js",
+            "line": 410,
+            "description": "修正按钮状态的事件",
+            "itemtype": "event",
+            "name": "CheckItemLimit",
+            "class": "window.Bizs.MultiUpload",
+            "namespace": "window.Bizs"
+        },
+        {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
             "line": 161,
             "description": "获取或设置 AjaxUpload 的实例",
@@ -3343,35 +3456,35 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 279,
+            "line": 283,
             "description": "文件扩展名错误",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 286,
+            "line": 290,
             "description": "上传前触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 292,
+            "line": 296,
             "description": "上传完毕触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 332,
+            "line": 336,
             "description": "frame 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 349,
+            "line": 381,
             "description": "手动更新数据",
             "itemtype": "method",
             "name": "update",
@@ -3393,7 +3506,25 @@
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
-            "line": 479,
+            "line": 397,
+            "description": "禁用上传按钮",
+            "itemtype": "method",
+            "name": "disable",
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 402,
+            "description": "启用上传按钮",
+            "itemtype": "method",
+            "name": "enable",
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AjaxUpload/AjaxUpload.js",
+            "line": 549,
             "description": "恢复默认状态",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
@@ -15792,6 +15923,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../bizs/MultiUpload/MultiUpload.js:2"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../comps/AjaxUpload/AjaxUpload.js:2"
         },
         {
@@ -16180,23 +16315,23 @@
         },
         {
             "message": "Missing item type\n文件扩展名错误",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:279"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:283"
         },
         {
             "message": "Missing item type\n上传前触发的事件",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:286"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:290"
         },
         {
             "message": "Missing item type\n上传完毕触发的事件",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:292"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:296"
         },
         {
             "message": "Missing item type\nframe 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:332"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:336"
         },
         {
             "message": "Missing item type\n恢复默认状态",
-            "line": " ../comps/AjaxUpload/AjaxUpload.js:479"
+            "line": " ../comps/AjaxUpload/AjaxUpload.js:549"
         },
         {
             "message": "Missing item type\n点击列表时, 阻止冒泡",

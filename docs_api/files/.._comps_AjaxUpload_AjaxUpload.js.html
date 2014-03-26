@@ -171,6 +171,8 @@
             
                 <li><a href="../classes/window.Bizs.MultiSelect.html">window.Bizs.MultiSelect</a></li>
             
+                <li><a href="../classes/window.Bizs.MultiUpload.html">window.Bizs.MultiUpload</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -452,7 +454,7 @@ url: ?callback=callback
         _beforeInit:
             function(){
                 var _p = this;
-                JC.log( &#x27;AjaxUpload _beforeInit&#x27;, new Date().getTime() );
+                //JC.log( &#x27;AjaxUpload _beforeInit&#x27;, new Date().getTime() );
                 
             }
         , _initHanlderEvent:
@@ -476,20 +478,24 @@ url: ?callback=callback
                     }
 
                     _p._model.selector().on( &#x27;show&#x27;, function( _evt ){
-                        JC.log( &#x27;show&#x27;);
+                        //JC.log( &#x27;show&#x27;);
                     });
 
                      _p._model.selector().on( &#x27;hide&#x27;, function( _evt ){
-                         JC.log(&#x27;hide&#x27;);
+                         //JC.log(&#x27;hide&#x27;);
                     });
 
                     _p._model.frame().on( &#x27;show&#x27;, function( _evt ){
-                        JC.log( &#x27;show&#x27;);
+                        //JC.log( &#x27;show&#x27;);
                     });
 
                      _p._model.frame().on( &#x27;hide&#x27;, function( _evt ){
-                         JC.log(&#x27;hide&#x27;);
+                         //JC.log(&#x27;hide&#x27;);
                     });
+
+                     _p._model.swfu( _w );
+                    _p._model.uploadReady( true );
+                    _p.trigger( &#x27;UploadReady&#x27; );
 
                 });
                 /**
@@ -510,7 +516,7 @@ url: ?callback=callback
                  */
                 _p.on( &#x27;UploadDone&#x27;, function( _evt, _d, _ignore ){
                     if( _ignore ) return;
-                    JC.log( _d );
+                    //JC.log( _d );
                     var _err = false, _od = _d;
                     try{ 
                         typeof _d == &#x27;string&#x27; &amp;&amp; ( _d = $.parseJSON( _d ) );
@@ -552,15 +558,43 @@ url: ?callback=callback
                 _p.on( &#x27;AUUpdateLayout&#x27;, function( _evt, _width, _height, _btn ){
                     _p._view.updateLayout( _width, _height, _btn );
                 });
+
+                _p.on( &#x27;init&#x27;, function(){
+                    _p._model.loadSWF( _p._model.getParams() );
+                });
+
+                _p.on( &#x27;disable&#x27;, function(){
+                    if( !_p._model.uploadReady() ){
+                        _p._model.beforeReadyQueue( function(){ _p._view.disable(); } );
+                    }
+                    _p._view.disable();
+                });
+
+                _p.on( &#x27;enable&#x27;, function(){
+                    if( !_p._model.uploadReady() ){
+                        _p._model.beforeReadyQueue( function(){ _p._view.enable(); } );
+                    }
+                    _p._view.enable();
+                });
+
+                _p.on( &#x27;UploadReady&#x27;, function(){
+                    var _queue = _p._model.beforeReadyQueue();
+                    setTimeout( function(){
+                        $.each( _queue, function( _ix, _item ){
+                            _item();
+                        });
+                    }, 10 );
+                });
+
             }
         , _inited:
             function(){
                 var _p = this;
-                JC.log( &#x27;AjaxUpload _inited&#x27;, new Date().getTime() );
+                //JC.log( &#x27;AjaxUpload _inited&#x27;, new Date().getTime() );
                 _p._view.loadFrame();
                 AjaxUpload.getInstance( _p._model.frame(), _p );
 
-                _p.trigger( &#x27;AUInited&#x27; );
+                _p.trigger( &#x27;inited&#x27; );
             }
         /**
          * 手动更新数据
@@ -578,6 +612,16 @@ url: ?callback=callback
                     &quot;errmsg&quot;: &quot;&quot;
                 });
          */
+        /**
+         * 禁用上传按钮
+         * @method disable
+         */
+        , disable: function(){ this.trigger( &#x27;disable&#x27; ); return this; }
+        /**
+         * 启用上传按钮
+         * @method enable
+         */
+        , enable: function(){ this.trigger( &#x27;enable&#x27; ); return this; }
         , update:
             function( _d ){
                 var _p = this;
@@ -591,7 +635,7 @@ url: ?callback=callback
     JC.f.extendObject( AjaxUpload.Model.prototype, {
         init:
             function(){
-                JC.log( &#x27;AjaxUpload.Model.init:&#x27;, new Date().getTime() );
+                //JC.log( &#x27;AjaxUpload.Model.init:&#x27;, new Date().getTime() );
             }
 
         , cauStyle: function(){ return this.attrProp(&#x27;cauStyle&#x27;); }
@@ -685,12 +729,40 @@ url: ?callback=callback
                 }
                 return this._iframe;
             }
+
+        , cauCancelCallback: function(){ return this.callbackProp( &#x27;cauCancelCallback&#x27; ); }
+
+        , uploadReady:
+            function( _setter ){
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._uploadReady = _setter );
+                return this._uploadReady;
+            }
+
+        , beforeReadyQueue:
+            function( _item ){
+                !this._beforeReadyQueue &amp;&amp; ( this._beforeReadyQueue = [] );
+                _item &amp;&amp; this._beforeReadyQueue.push( _item );
+                return this._beforeReadyQueue;
+            }
+
+        , cauButtonAutoStatus:
+            function(){
+                var _r = true;
+                this.is( &#x27;[cauButtonAutoStatus]&#x27; ) &amp;&amp; ( _r = this.boolProp( &#x27;cauButtonAutoStatus&#x27; ) );
+                return _r;
+            }
+
+        , swfu:
+            function( _setter ){
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._swfu = _setter );
+                return this._swfu;
+            }
     });
 
     JC.f.extendObject( AjaxUpload.View.prototype, {
         init:
             function(){
-                JC.log( &#x27;AjaxUpload.View.init:&#x27;, new Date().getTime() );
+                //JC.log( &#x27;AjaxUpload.View.init:&#x27;, new Date().getTime() );
                 var _p = this;
                 /**
                  * 恢复默认状态
@@ -743,7 +815,7 @@ url: ?callback=callback
                     , _frame = _p._model.frame()
                     ;
 
-                JC.log( _path );
+                //JC.log( _path );
 
                 _frame.attr( &#x27;src&#x27;, _path );
                 _frame.on( &#x27;load&#x27;, function(){
@@ -758,7 +830,7 @@ url: ?callback=callback
         , beforeUpload:
             function(){
                 var _p = this, _statusLabel = _p._model.cauStatusLabel();
-                JC.log( &#x27;AjaxUpload view#beforeUpload&#x27;, new Date().getTime() );
+                //JC.log( &#x27;AjaxUpload view#beforeUpload&#x27;, new Date().getTime() );
 
                 this.updateChange( null, true );
 
@@ -817,7 +889,7 @@ url: ?callback=callback
             function( _width, _height, _btn ){
                 if( !( _width &amp;&amp; _height ) ) return;
                 var _p = this;
-                JC.log( &#x27;AjaxUpload @event UpdateLayout&#x27;, new Date().getTime(), _width, _height );
+                //JC.log( &#x27;AjaxUpload @event UpdateLayout&#x27;, new Date().getTime(), _width, _height );
                 _p._model.frame().css({
                     &#x27;width&#x27;: _width + &#x27;px&#x27;
                     , &#x27;height&#x27;: _height + &#x27;px&#x27;
@@ -826,7 +898,12 @@ url: ?callback=callback
 
         , errUpload:
             function( _d ){
-                var _p = this, _cb = _p._model.callbackProp( &#x27;cauUploadErrCallback&#x27; );
+                var _p = this
+                    , _beforeErrorCb = _p._model.callbackProp( &#x27;cauBeforeUploadErrCallback&#x27; )
+                    , _cb = _p._model.callbackProp( &#x27;cauUploadErrCallback&#x27; )
+                    ;
+
+                _beforeErrorCb &amp;&amp; _beforeErrorCb.call( _p._model.selector(), _d );
                 if( _cb ){
                     _cb.call( _p._model.selector(), _d, _p._model.frame() );
                 }else{
@@ -866,6 +943,18 @@ url: ?callback=callback
                         : alert( _msg )
                         ;
                 }
+            }
+ 
+        , disable:
+            function(){
+                var _p = this, _swfu = _p._model.swfu();
+                _swfu &amp;&amp; ( _swfu.setButtonDisabled( true ) );
+            }
+ 
+        , enable:
+            function(){
+                var _p = this, _swfu = _p._model.swfu();
+                _swfu &amp;&amp; ( _swfu.setButtonDisabled( false ) );
             }
 
     });

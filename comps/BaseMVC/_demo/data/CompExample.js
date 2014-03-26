@@ -1,4 +1,6 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+    var _jdoc = $( document ), _jwin = $( window );
+
     JC.CompExample = CompExample;
 
     function CompExample( _selector ){
@@ -28,7 +30,7 @@
             var _r = [];
             _selector = $( _selector || document );
 
-            if( _selector && _selector.length ){
+            if( _selector.length ){
                 if( _selector.hasClass( 'js_compCompExample' )  ){
                     _r.push( new CompExample( _selector ) );
                 }else{
@@ -40,10 +42,10 @@
             return _r;
         };
 
-    BaseMVC.build( CompExample );
-    CompExample.Model._instanceName = 'CompExample';
+    JC.BaseMVC.build( CompExample );
+    CompExample.Model._instanceName = 'JCCompExample';
 
-    $(document).ready( function(){
+    _jdoc.ready( function(){
         var _insAr = 0;
         CompExample.autoInit
             && ( _insAr = CompExample.init() )
@@ -51,6 +53,7 @@
                 + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
             ;
     });
+
     return JC.CompExample;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 

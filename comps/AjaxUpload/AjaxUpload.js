@@ -236,7 +236,7 @@ url: ?callback=callback
         _beforeInit:
             function(){
                 var _p = this;
-                JC.log( 'AjaxUpload _beforeInit', new Date().getTime() );
+                //JC.log( 'AjaxUpload _beforeInit', new Date().getTime() );
                 
             }
         , _initHanlderEvent:
@@ -260,20 +260,24 @@ url: ?callback=callback
                     }
 
                     _p._model.selector().on( 'show', function( _evt ){
-                        JC.log( 'show');
+                        //JC.log( 'show');
                     });
 
                      _p._model.selector().on( 'hide', function( _evt ){
-                         JC.log('hide');
+                         //JC.log('hide');
                     });
 
                     _p._model.frame().on( 'show', function( _evt ){
-                        JC.log( 'show');
+                        //JC.log( 'show');
                     });
 
                      _p._model.frame().on( 'hide', function( _evt ){
-                         JC.log('hide');
+                         //JC.log('hide');
                     });
+
+                     _p._model.swfu( _w );
+                    _p._model.uploadReady( true );
+                    _p.trigger( 'UploadReady' );
 
                 });
                 /**
@@ -294,7 +298,7 @@ url: ?callback=callback
                  */
                 _p.on( 'UploadDone', function( _evt, _d, _ignore ){
                     if( _ignore ) return;
-                    JC.log( _d );
+                    //JC.log( _d );
                     var _err = false, _od = _d;
                     try{ 
                         typeof _d == 'string' && ( _d = $.parseJSON( _d ) );
@@ -336,15 +340,43 @@ url: ?callback=callback
                 _p.on( 'AUUpdateLayout', function( _evt, _width, _height, _btn ){
                     _p._view.updateLayout( _width, _height, _btn );
                 });
+
+                _p.on( 'init', function(){
+                    _p._model.loadSWF( _p._model.getParams() );
+                });
+
+                _p.on( 'disable', function(){
+                    if( !_p._model.uploadReady() ){
+                        _p._model.beforeReadyQueue( function(){ _p._view.disable(); } );
+                    }
+                    _p._view.disable();
+                });
+
+                _p.on( 'enable', function(){
+                    if( !_p._model.uploadReady() ){
+                        _p._model.beforeReadyQueue( function(){ _p._view.enable(); } );
+                    }
+                    _p._view.enable();
+                });
+
+                _p.on( 'UploadReady', function(){
+                    var _queue = _p._model.beforeReadyQueue();
+                    setTimeout( function(){
+                        $.each( _queue, function( _ix, _item ){
+                            _item();
+                        });
+                    }, 10 );
+                });
+
             }
         , _inited:
             function(){
                 var _p = this;
-                JC.log( 'AjaxUpload _inited', new Date().getTime() );
+                //JC.log( 'AjaxUpload _inited', new Date().getTime() );
                 _p._view.loadFrame();
                 AjaxUpload.getInstance( _p._model.frame(), _p );
 
-                _p.trigger( 'AUInited' );
+                _p.trigger( 'inited' );
             }
         /**
          * 手动更新数据
@@ -362,6 +394,16 @@ url: ?callback=callback
                     "errmsg": ""
                 });
          */
+        /**
+         * 禁用上传按钮
+         * @method disable
+         */
+        , disable: function(){ this.trigger( 'disable' ); return this; }
+        /**
+         * 启用上传按钮
+         * @method enable
+         */
+        , enable: function(){ this.trigger( 'enable' ); return this; }
         , update:
             function( _d ){
                 var _p = this;
@@ -375,7 +417,7 @@ url: ?callback=callback
     JC.f.extendObject( AjaxUpload.Model.prototype, {
         init:
             function(){
-                JC.log( 'AjaxUpload.Model.init:', new Date().getTime() );
+                //JC.log( 'AjaxUpload.Model.init:', new Date().getTime() );
             }
 
         , cauStyle: function(){ return this.attrProp('cauStyle'); }
@@ -469,12 +511,40 @@ url: ?callback=callback
                 }
                 return this._iframe;
             }
+
+        , cauCancelCallback: function(){ return this.callbackProp( 'cauCancelCallback' ); }
+
+        , uploadReady:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._uploadReady = _setter );
+                return this._uploadReady;
+            }
+
+        , beforeReadyQueue:
+            function( _item ){
+                !this._beforeReadyQueue && ( this._beforeReadyQueue = [] );
+                _item && this._beforeReadyQueue.push( _item );
+                return this._beforeReadyQueue;
+            }
+
+        , cauButtonAutoStatus:
+            function(){
+                var _r = true;
+                this.is( '[cauButtonAutoStatus]' ) && ( _r = this.boolProp( 'cauButtonAutoStatus' ) );
+                return _r;
+            }
+
+        , swfu:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._swfu = _setter );
+                return this._swfu;
+            }
     });
 
     JC.f.extendObject( AjaxUpload.View.prototype, {
         init:
             function(){
-                JC.log( 'AjaxUpload.View.init:', new Date().getTime() );
+                //JC.log( 'AjaxUpload.View.init:', new Date().getTime() );
                 var _p = this;
                 /**
                  * 恢复默认状态
@@ -527,7 +597,7 @@ url: ?callback=callback
                     , _frame = _p._model.frame()
                     ;
 
-                JC.log( _path );
+                //JC.log( _path );
 
                 _frame.attr( 'src', _path );
                 _frame.on( 'load', function(){
@@ -542,7 +612,7 @@ url: ?callback=callback
         , beforeUpload:
             function(){
                 var _p = this, _statusLabel = _p._model.cauStatusLabel();
-                JC.log( 'AjaxUpload view#beforeUpload', new Date().getTime() );
+                //JC.log( 'AjaxUpload view#beforeUpload', new Date().getTime() );
 
                 this.updateChange( null, true );
 
@@ -601,7 +671,7 @@ url: ?callback=callback
             function( _width, _height, _btn ){
                 if( !( _width && _height ) ) return;
                 var _p = this;
-                JC.log( 'AjaxUpload @event UpdateLayout', new Date().getTime(), _width, _height );
+                //JC.log( 'AjaxUpload @event UpdateLayout', new Date().getTime(), _width, _height );
                 _p._model.frame().css({
                     'width': _width + 'px'
                     , 'height': _height + 'px'
@@ -610,7 +680,12 @@ url: ?callback=callback
 
         , errUpload:
             function( _d ){
-                var _p = this, _cb = _p._model.callbackProp( 'cauUploadErrCallback' );
+                var _p = this
+                    , _beforeErrorCb = _p._model.callbackProp( 'cauBeforeUploadErrCallback' )
+                    , _cb = _p._model.callbackProp( 'cauUploadErrCallback' )
+                    ;
+
+                _beforeErrorCb && _beforeErrorCb.call( _p._model.selector(), _d );
                 if( _cb ){
                     _cb.call( _p._model.selector(), _d, _p._model.frame() );
                 }else{
@@ -650,6 +725,18 @@ url: ?callback=callback
                         : alert( _msg )
                         ;
                 }
+            }
+ 
+        , disable:
+            function(){
+                var _p = this, _swfu = _p._model.swfu();
+                _swfu && ( _swfu.setButtonDisabled( true ) );
+            }
+ 
+        , enable:
+            function(){
+                var _p = this, _swfu = _p._model.swfu();
+                _swfu && ( _swfu.setButtonDisabled( false ) );
             }
 
     });
