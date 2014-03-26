@@ -328,6 +328,7 @@
                _p.on( 'CancelUpload', function( _evt ){
                    _p._model.cancelUpload();
                     _p.trigger( 'UploadComplete' );
+                    _p._model.cauCancelCallback() && _p._model.cauCancelCallback().call( _p );
                });
 
                _p.on( 'UploadComplete', function( _evt, _data ){
@@ -343,11 +344,26 @@
                 });
 
                 _p.on( 'disabled', function(){
+                    if( !_p._model.uploadReady() ){
+                        _p._model.beforeReadyQueue( function(){ _p._view.disabled(); } );
+                    }
                     _p._view.disabled();
                 });
 
                 _p.on( 'enabled', function(){
+                    if( !_p._model.uploadReady() ){
+                        _p._model.beforeReadyQueue( function(){ _p._view.enabled(); } );
+                    }
                     _p._view.enabled();
+                });
+
+                _p.on( 'UploadReady', function(){
+                    var _queue = _p._model.beforeReadyQueue();
+                    setTimeout( function(){
+                        $.each( _queue, function( _ix, _item ){
+                            _item();
+                        });
+                    }, 300 );
                 });
             }
         , _inited:
@@ -423,6 +439,8 @@
 
         , cauUrl: function(){ return this.attrProp( 'cauUrl' ); }
 
+        , cauCancelCallback: function(){ return this.callbackProp( 'cauCancelCallback' ); }
+
         , cauFileExt: 
             function(){ 
                 var _r = this.stringProp( 'cauFileExt' ) || this.stringProp( 'fileext' ) || this.stringProp( 'file_types' ); 
@@ -435,6 +453,19 @@
                     _r = _r.join( ';' );
                 }
                 return _r;
+            }
+
+        , beforeReadyQueue:
+            function( _setter ){
+                !this._beforeReadyQueue && ( this._beforeReadyQueue = [] );
+                typeof _setter != 'undefined' && ( this._beforeReadyQueue.push( _setter ) );
+                return this._beforeReadyQueue;
+            }
+
+        , uploadReady:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._uploadReady = _setter );
+                return this._uploadReady;
             }
 
         , cauFileName: 
@@ -589,9 +620,9 @@
 
                 _r.swfupload_loaded_handler =
                     function(){
-                        JC.log( 'ttttttttttt' );
-                        JC.dir( this );
                         _p.swfu( this );
+                        _p.uploadReady( true );
+                        _p.trigger( 'UploadReady' );
                     };
 
                 _r.file_dialog_start_handler =

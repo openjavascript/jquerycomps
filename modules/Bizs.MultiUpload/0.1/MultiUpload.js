@@ -114,7 +114,7 @@
 
                 _p._model.bmuBoxSelector().delegate( _p._model.bmuRemoveDelegate(), 'click', function(){
                     JC.log( 'bmuRemoveDelegate click', new Date().getTime() );
-                    var _pnt = JC.f.parentSelector( this, _p._model.bmuRemoveParentSelector() );
+                    var _pnt = JC.f.parentSelector( this, _p._model.bmuRemoveItemParentSelector() );
 
                     _pnt && _pnt.length && _pnt.remove();
                     _p.updateStatus();
@@ -167,11 +167,11 @@
         , bmuTpl:
             function(){
                 var _r = [
-                        '<dd class="js_multiUploadItem">\n'
-                        ,'<input type="hidden" name="file[]" value="{0}" class="js_multiUploadHidden" />\n'
-                        ,'<label class="js_multiUploadLabel">{1}</label>\n'
-                        ,'<button type="button" class="AURemove js_multiUploadRemove"></button>\n'
-                        ,'</dd>\n'
+                        '<dd class="js_multiUploadItem">'
+                        ,'<input type="hidden" name="file[]" value="{0}" class="js_multiUploadHidden" />'
+                        ,'<a href="{0}" target="_blank"><label class="js_multiUploadLabel">{1}</label></a>'
+                        ,'&nbsp;<button type="button" class="AURemove js_multiUploadRemove"></button>'
+                        ,'</dd>'
                     ].join('')
                     , _tplSelector = this.bmuTplSelector()
                     ;
@@ -204,7 +204,7 @@
         , bmuItems: function(){ return this.bmuBoxSelector().find( this.bmuItemDelegate() ); }
 
         , bmuRemoveDelegate: function(){ return this.attrProp( 'bmuRemoveDelegate' ) || '.js_removeUploadItem'; }
-        , bmuRemoveParentSelector: function(){ return this.attrProp( 'bmuRemoveParentSelector' ) || '('; }
+        , bmuRemoveItemParentSelector: function(){ return this.attrProp( 'bmuRemoveItemParentSelector' ) || '(dd'; }
 
         , saveAjaxUploadHandler:
             function(){
@@ -220,6 +220,7 @@
                     , _prefix = MultiUpload.Model._handlerPrefix
                     , _doneHandlerName = _prefix + 'done' + this.id()
                     , _errorHandlerName = _prefix + 'error' + this.id()
+                    , _cancelHandlerName = _prefix + 'cancel' + this.id()
                     ;
 
                 this.setAjaxUplaodHandler( _doneHandlerName, 'cauUploadDoneCallback', 
@@ -232,6 +233,16 @@
                         _p.trigger( 'AjaxDone', [ _json, _selector, _ajaxUpload ] );
 
                         //JC.log( 'cauUploadDoneCallback', new Date().getTime() );
+                    });
+
+                this.setAjaxUplaodHandler( _errorHandlerName, 'cauUploadErrCallback', 
+                    function( ){
+                        JC.f.safeTimeout( function(){ _p.trigger( 'CheckItemLimit' ); }, _p, 'OnError', 10 );
+                    });
+
+                this.setAjaxUplaodHandler( _cancelHandlerName, 'cauCancelCallback', 
+                    function( ){
+                        JC.f.safeTimeout( function(){ _p.trigger( 'CheckItemLimit' ); }, _p, 'OnCancel', 10 );
                     });
             }
 
@@ -257,6 +268,8 @@
                 _newItem.appendTo( _boxSelector );
 
                 this.trigger( 'ItemAdded', [ _newItem, _json, _boxSelector ] );
+
+                JC.f.jcAutoInitComps( _newItem );
             }
 
         , checkItemLimit:

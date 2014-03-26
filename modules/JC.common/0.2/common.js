@@ -424,7 +424,7 @@
      */
     function parseFinance( _i, _dot ){
         _i = parseFloat( _i ) || 0;
-        _dot == 'undefined' && ( _dot = 2 );
+        typeof _dot == 'undefined' && ( _dot = 2 );
         _i && ( _i = parseFloat( _i.toFixed( _dot ) ) );
         return _i;
     }
