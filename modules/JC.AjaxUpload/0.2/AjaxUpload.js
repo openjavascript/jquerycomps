@@ -339,7 +339,7 @@
                    _p._view.uploadProgress( _file.name, _curBytes, _totalBytes );
                });
 
-                _p.on( 'init', function(){
+                _p.on( 'inited', function(){
                     _p._model.loadSWF( _p._model.getParams() );
                 });
 
@@ -377,7 +377,7 @@
                         _p.trigger( 'CancelUpload' );
                 });
 
-                _p.trigger( 'init' );
+                _p.trigger( 'inited' );
             }
         /**
          * 禁用上传按钮
