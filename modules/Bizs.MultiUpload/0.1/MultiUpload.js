@@ -102,6 +102,8 @@
  */
     Bizs.MultiUpload = MultiUpload;
 
+    JC.use && !JC.AjaxUpload && JC.use( 'JC.AjaxUpload' );
+
     function MultiUpload( _selector ){
         _selector && ( _selector = $( _selector ) );
 
