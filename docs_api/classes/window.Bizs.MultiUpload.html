@@ -149,8 +149,32 @@
 <h2>页面只要引用本脚本, 默认会自动处理 div class=&quot;js_bizMultiUpload&quot; </h2>
 <h2>可用的 HTML attribute</h2>
 <dl>
-   <dt></dt>
-   <dd><dd>
+   <dt>bmuItemLimit = int, default = 0</dt>
+   <dd>限制上传的数量, 0 为不限制, 非 0 为限制的数量<dd>
+   <dt>bmuBoxSelector = selector, default = &#39;|.bmuBoxSelector&#39;</dt>
+   <dd>上传内容的父容器</dd>
+   <dt>bmuTplSelector = selector, default = 组件生成</dt>
+   <dd>上传内容的模板内容, {0} = file url, {1} = file name</dd>
+   <dt>bmuAjaxUploadSelector = selector, default = &#39;|.js_compAjaxUpload&#39;</dt>
+   <dd>JC.AjaxUpload 的选择器</dd>
+   <dt>bmuItemDelegate = selector, default = &#39;&gt;&#39;</dt>
+   <dd>bmuBoxSelector 的子级标签</dd>
+   <dt>bmuRemoveDelegate = selector, default = &#39;.js_removeUploadItem&#39;</dt> 
+   <dd>删除子级标签的选择器</dd>
+   <dt>bmuRemoveItemParentSelector = selector, default = &#39;(&#39;</dt>
+   <dd>相对于 bmuRemoveDelegate 的子级标签父选择器</dd>
+   <dt>bmuItemAddedCallback = function</dt>
+   <dd>添加上传内容后的回调
+<pre>function bmuItemAddedCallback( _newItem, _json, _boxSelector ){
+   var _bmuIns = this;
+}</pre>
+   </dd>
+   <dt>bmuItemDeletedCallback = function</dt>
+   <dd>删除上传内容后的回调
+<pre>function bmuItemDeletedCallback( _deletedItem, _boxSelector ){
+   var _bmuIns = this;
+}</pre>
+   </dd>
 </dl>
 </div>
     <div class="constructor">
@@ -186,7 +210,43 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>   &lt;h2&gt;Bizs.MultiUpload 示例&lt;/h2&gt;</code></pre>
+                <xmp><div class="js_bizMultiUpload"
+   bmuBoxSelector="|.uploadItemBox"
+   bmuTplSelector="|script"
+   bmuItemDelegate=">"
+   bmuRemoveDelegate=".js_removeUploadItem"
+   bmuRemoveItemParentSelector="("
+   bmuAjaxUploadSelector="|.js_compAjaxUpload"
+   bmuItemLimit="2"
+   >
+   <div>
+       <input type="hidden" class="ipt ipt-w180 js_compAjaxUpload" value=""
+           cauStyle="w1"
+           cauButtonText="上传资质文件"
+           cauUrl="../_demo/data/handler.php"
+           cauFileExt=".jpg, .jpeg, .png, .gif"
+           cauFileName="file"
+           cauValueKey="url"
+           cauLabelKey="name"
+           cauProgressBox="/span.AUProgressBox"
+           />
+           <span class="AUProgressBox" style="display:none;">
+               <button type="button" class="AUProgress"><div class="AUPercent"></div></button>
+               <button type="button" class="AUCancelProgress"></button>
+           </span>
+           .jpg, .jpeg, .png, .gif
+           (最多上传2个)
+   </div>
+   <dl class="uploadItemBox">
+   </dl>
+   <script type="text/template">
+       <dd class="js_multiUploadItem">
+           <input type="hidden" name="file[]" value="{0}" class="js_multiUploadHidden" />
+           <a href="{0}" target="_blank"><label class="js_multiUploadLabel">{1}</label></a>
+           <button type="button" class="AURemove js_removeUploadItem"></button>
+       </dd>
+   </script>
+</div></xmp>
             </div>
         </div>
 </div>
@@ -195,6 +255,7 @@
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab events"><a href="#events">Events</a></li>
     </ul>
     <div>
         <div id="index" class="api-class-tabpanel index">
@@ -226,6 +287,29 @@
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_trigger">trigger</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_updateStatus">updateStatus</a>
+                            </li>
+                    </ul>
+                </div>
+                <div class="index-section events">
+                    <h3>Events</h3>
+                    <ul class="index-list events extends">
+                            <li class="index-item event">
+                                <a href="#event_AjaxDone">AjaxDone</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_CheckItemLimit">CheckItemLimit</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_inited">inited</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_ItemAdded">ItemAdded</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_ItemDeleted">ItemDeleted</a>
                             </li>
                     </ul>
                 </div>
@@ -321,7 +405,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_Bizs.MultiUpload_0.1_MultiUpload.js.html#l50"><code>..&#x2F;modules&#x2F;Bizs.MultiUpload&#x2F;0.1&#x2F;MultiUpload.js:50</code></a>
+        <a href="../files/.._modules_Bizs.MultiUpload_0.1_MultiUpload.js.html#l119"><code>..&#x2F;modules&#x2F;Bizs.MultiUpload&#x2F;0.1&#x2F;MultiUpload.js:119</code></a>
         </p>
     </div>
     <div class="description">
@@ -453,6 +537,87 @@
                     <p>BaseMVCInstance</p>
             </div>
         </div>
+</div>
+                    <div id="method_updateStatus" class="method item">
+    <h3 class="name"><code>updateStatus</code></h3>
+        <span class="paren">()</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_Bizs.MultiUpload_0.1_MultiUpload.js.html#l210"><code>..&#x2F;modules&#x2F;Bizs.MultiUpload&#x2F;0.1&#x2F;MultiUpload.js:210</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>更新按钮的状态</p>
+    </div>
+</div>
+            </div>
+            <div id="events" class="api-class-tabpanel">
+                <h2 class="off-left">Events</h2>
+                    <div id="event_AjaxDone" class="events item">
+    <h3 class="name"><code>AjaxDone</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_Bizs.MultiUpload_0.1_MultiUpload.js.html#l395"><code>..&#x2F;modules&#x2F;Bizs.MultiUpload&#x2F;0.1&#x2F;MultiUpload.js:395</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>ajax 上传完毕后触发的事件</p>
+    </div>
+</div>
+                    <div id="event_CheckItemLimit" class="events item">
+    <h3 class="name"><code>CheckItemLimit</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_Bizs.MultiUpload_0.1_MultiUpload.js.html#l407"><code>..&#x2F;modules&#x2F;Bizs.MultiUpload&#x2F;0.1&#x2F;MultiUpload.js:407</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>修正按钮状态的事件</p>
+    </div>
+</div>
+                    <div id="event_inited" class="events item">
+    <h3 class="name"><code>inited</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_Bizs.MultiUpload_0.1_MultiUpload.js.html#l391"><code>..&#x2F;modules&#x2F;Bizs.MultiUpload&#x2F;0.1&#x2F;MultiUpload.js:391</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>Bizs.MultiUpload 初始化后触发的事件</p>
+    </div>
+</div>
+                    <div id="event_ItemAdded" class="events item">
+    <h3 class="name"><code>ItemAdded</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_Bizs.MultiUpload_0.1_MultiUpload.js.html#l399"><code>..&#x2F;modules&#x2F;Bizs.MultiUpload&#x2F;0.1&#x2F;MultiUpload.js:399</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>添加上传内容后触发的事件</p>
+    </div>
+</div>
+                    <div id="event_ItemDeleted" class="events item">
+    <h3 class="name"><code>ItemDeleted</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_Bizs.MultiUpload_0.1_MultiUpload.js.html#l403"><code>..&#x2F;modules&#x2F;Bizs.MultiUpload&#x2F;0.1&#x2F;MultiUpload.js:403</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>删除上传内容后触发的事件</p>
+    </div>
 </div>
             </div>
     </div>

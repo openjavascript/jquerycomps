@@ -16,8 +16,41 @@
  *<h2>可用的 HTML attribute</h2>
  *
  *<dl>
- *    <dt></dt>
- *    <dd><dd>
+ *    <dt>bmuItemLimit = int, default = 0</dt>
+ *    <dd>限制上传的数量, 0 为不限制, 非 0 为限制的数量<dd>
+ *
+ *    <dt>bmuBoxSelector = selector, default = '|.bmuBoxSelector'</dt>
+ *    <dd>上传内容的父容器</dd>
+ *
+ *    <dt>bmuTplSelector = selector, default = 组件生成</dt>
+ *    <dd>上传内容的模板内容, {0} = file url, {1} = file name</dd>
+ *
+ *    <dt>bmuAjaxUploadSelector = selector, default = '|.js_compAjaxUpload'</dt>
+ *    <dd>JC.AjaxUpload 的选择器</dd>
+ *
+ *    <dt>bmuItemDelegate = selector, default = '>'</dt>
+ *    <dd>bmuBoxSelector 的子级标签</dd>
+ *
+ *    <dt>bmuRemoveDelegate = selector, default = '.js_removeUploadItem'</dt> 
+ *    <dd>删除子级标签的选择器</dd>
+ *
+ *    <dt>bmuRemoveItemParentSelector = selector, default = '('</dt>
+ *    <dd>相对于 bmuRemoveDelegate 的子级标签父选择器</dd>
+ *
+ *    <dt>bmuItemAddedCallback = function</dt>
+ *    <dd>添加上传内容后的回调
+<pre>function bmuItemAddedCallback( _newItem, _json, _boxSelector ){
+    var _bmuIns = this;
+}</pre>
+ *    </dd>
+ *
+ *    <dt>bmuItemDeletedCallback = function</dt>
+ *    <dd>删除上传内容后的回调
+<pre>function bmuItemDeletedCallback( _deletedItem, _boxSelector ){
+    var _bmuIns = this;
+}</pre>
+ *    </dd>
+ *
  *</dl> 
  *
  * @namespace window.Bizs
@@ -28,7 +61,43 @@
  * @version dev 0.1 2013-12-13
  * @author  qiushaowei <suches@btbtd.org> | 75 Team
  * @example
-        <h2>Bizs.MultiUpload 示例</h2>
+<xmp><div class="js_bizMultiUpload"
+    bmuBoxSelector="|.uploadItemBox"
+    bmuTplSelector="|script"
+    bmuItemDelegate=">"
+    bmuRemoveDelegate=".js_removeUploadItem"
+    bmuRemoveItemParentSelector="("
+    bmuAjaxUploadSelector="|.js_compAjaxUpload"
+    bmuItemLimit="2"
+    >
+    <div>
+        <input type="hidden" class="ipt ipt-w180 js_compAjaxUpload" value=""
+            cauStyle="w1"
+            cauButtonText="上传资质文件"
+            cauUrl="../_demo/data/handler.php"
+            cauFileExt=".jpg, .jpeg, .png, .gif"
+            cauFileName="file"
+            cauValueKey="url"
+            cauLabelKey="name"
+            cauProgressBox="/span.AUProgressBox"
+            />
+            <span class="AUProgressBox" style="display:none;">
+                <button type="button" class="AUProgress"><div class="AUPercent"></div></button>
+                <button type="button" class="AUCancelProgress"></button>
+            </span>
+            .jpg, .jpeg, .png, .gif
+            (最多上传2个)
+    </div>
+    <dl class="uploadItemBox">
+    </dl>
+    <script type="text/template">
+        <dd class="js_multiUploadItem">
+            <input type="hidden" name="file[]" value="{0}" class="js_multiUploadHidden" />
+            <a href="{0}" target="_blank"><label class="js_multiUploadLabel">{1}</label></a>
+            <button type="button" class="AURemove js_removeUploadItem"></button>
+        </dd>
+    </script>
+</div></xmp>
  */
     Bizs.MultiUpload = MultiUpload;
 
@@ -101,23 +170,35 @@
 
                     if( !( _boxSelector && _boxSelector.length ) ) return;
 
+                    if( _json.errorno ) return;
                     _p._view.newItem( _json, _tpl, _boxSelector );
                 });
 
-                _p.on( 'ItemAdded', function( _evt, _newItem ){
+                _p.on( 'ItemAdded', function( _evt, _newItem, _json, _boxSelector ){
                     JC.f.safeTimeout( function(){ _p.trigger( 'CheckItemLimit' ); }, _p, 'OnItemAdded', 10 );
+
+                    _p._model.bmuItemAddedCallback()
+                        && _p._model.bmuItemAddedCallback().call( _p, _newItem, _json, _boxSelector );
+                });
+
+                _p.on( 'ItemDeleted', function( _evt, _deletedItem ){
+                    _p._model.bmuItemDeletedCallback()
+                        && _p._model.bmuItemDeletedCallback().call( _p, _deletedItem, _p._model.bmuBoxSelector() );
                 });
 
                 _p.on( 'CheckItemLimit', function(){
                     _p._view.checkItemLimit();
                 });
 
+
                 _p._model.bmuBoxSelector().delegate( _p._model.bmuRemoveDelegate(), 'click', function(){
-                    JC.log( 'bmuRemoveDelegate click', new Date().getTime() );
+                    //JC.log( 'bmuRemoveDelegate click', new Date().getTime() );
                     var _pnt = JC.f.parentSelector( this, _p._model.bmuRemoveItemParentSelector() );
 
                     _pnt && _pnt.length && _pnt.remove();
                     _p.updateStatus();
+
+                    _p.trigger( 'ItemDeleted', [ this ] );
                 });
             }
 
@@ -126,10 +207,14 @@
                 //JC.log( 'MultiUpload _inited', new Date().getTime() );
                 this.trigger( 'inited' );
             }
-
+        /**
+         * 更新按钮的状态
+         * @method updateStatus
+         */
         , updateStatus:
             function(){
                 this.trigger( 'CheckItemLimit' );
+                return this;
             }
     });
 
@@ -151,11 +236,14 @@
                 typeof _setter != 'undefined' && ( this._id = _setter );
                 return this._id; 
             }
-
         , bmuBoxSelector: 
             function(){ 
-                var _r = this.selectorProp( 'bmuBoxSelector' );
+                var _r = this._bmuBoxSelector || this.selectorProp( 'bmuBoxSelector' );
                 !( _r && _r.length ) && ( _r = this.selector().find( '.bmuBoxSelector' ) );
+                if( !( _r && _r.length ) ){
+                    _r = this._bmuBoxSelector = $( '<dl class="bmuBoxSelector"></dl>' );
+                    this._bmuBoxSelector.appendTo( this.selector() );
+                }
                 return _r;
             }
         , bmuTplSelector: 
@@ -170,7 +258,7 @@
                         '<dd class="js_multiUploadItem">'
                         ,'<input type="hidden" name="file[]" value="{0}" class="js_multiUploadHidden" />'
                         ,'<a href="{0}" target="_blank"><label class="js_multiUploadLabel">{1}</label></a>'
-                        ,'&nbsp;<button type="button" class="AURemove js_multiUploadRemove"></button>'
+                        ,'&nbsp;<button type="button" class="AURemove js_removeUploadItem"></button>'
                         ,'</dd>'
                     ].join('')
                     , _tplSelector = this.bmuTplSelector()
@@ -199,12 +287,12 @@
                 return _r;
             }
 
-        , bmuItemDelegate: function(){ return this.attrProp( 'bmuItemDelegate' ) || '> dd'; }
+        , bmuItemDelegate: function(){ return this.attrProp( 'bmuItemDelegate' ) || '>'; }
 
         , bmuItems: function(){ return this.bmuBoxSelector().find( this.bmuItemDelegate() ); }
 
         , bmuRemoveDelegate: function(){ return this.attrProp( 'bmuRemoveDelegate' ) || '.js_removeUploadItem'; }
-        , bmuRemoveItemParentSelector: function(){ return this.attrProp( 'bmuRemoveItemParentSelector' ) || '(dd'; }
+        , bmuRemoveItemParentSelector: function(){ return this.attrProp( 'bmuRemoveItemParentSelector' ) || '('; }
 
         , saveAjaxUploadHandler:
             function(){
@@ -235,7 +323,7 @@
                         //JC.log( 'cauUploadDoneCallback', new Date().getTime() );
                     });
 
-                this.setAjaxUplaodHandler( _errorHandlerName, 'cauUploadErrCallback', 
+                this.setAjaxUplaodHandler( _errorHandlerName, 'cauBeforeUploadErrCallback', 
                     function( ){
                         JC.f.safeTimeout( function(){ _p.trigger( 'CheckItemLimit' ); }, _p, 'OnError', 10 );
                     });
@@ -251,6 +339,8 @@
                 window[ _name ] = _handler;
                 this.bmuAjaxUploadSelector().attr( _attrName, _name );
             }
+        , bmuItemAddedCallback: function(){ return this.callbackProp('bmuItemAddedCallback'); }
+        , bmuItemDeletedCallback: function(){ return this.callbackProp('bmuItemDeletedCallback'); }
     });
 
     JC.f.extendObject( MultiUpload.View.prototype, {
@@ -279,7 +369,7 @@
                     , _items
                     , _ins = _p._model.ajaxUploadIns()
                     ;
-                JC.log( '_limit', _limit );
+                //JC.log( '_limit', _limit );
                 if( !_limit ) return;
 
                 _items = _p._model.bmuItems();
@@ -289,15 +379,35 @@
                 if( !_ins ) return;
 
                 if( _items.length >= _limit ){
-                    JC.log( 'out limit', new Date().getTime() );
-                    _ins.disabled();
+                    //JC.log( 'out limit', new Date().getTime() );
+                    _ins.disable();
                 }else{
-                    JC.log( 'in limit', new Date().getTime() );
-                    _ins.enabled();
+                    //JC.log( 'in limit', new Date().getTime() );
+                    _ins.enable();
                 }
             }
 
     });
+    /**
+     * Bizs.MultiUpload 初始化后触发的事件
+     * @event   inited
+     */
+    /**
+     * ajax 上传完毕后触发的事件
+     * @event   AjaxDone
+     */
+    /**
+     * 添加上传内容后触发的事件
+     * @event ItemAdded
+     */
+    /**
+     * 删除上传内容后触发的事件
+     * @event ItemDeleted
+     */
+    /**
+     * 修正按钮状态的事件
+     * @event CheckItemLimit
+     */
 
     $(document).ready( function(){
         MultiUpload.autoInit

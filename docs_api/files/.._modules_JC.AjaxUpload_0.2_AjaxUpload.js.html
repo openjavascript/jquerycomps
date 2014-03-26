@@ -554,6 +554,7 @@
                _p.on( &#x27;CancelUpload&#x27;, function( _evt ){
                    _p._model.cancelUpload();
                     _p.trigger( &#x27;UploadComplete&#x27; );
+                    _p._model.cauCancelCallback() &amp;&amp; _p._model.cauCancelCallback().call( _p );
                });
 
                _p.on( &#x27;UploadComplete&#x27;, function( _evt, _data ){
@@ -566,6 +567,29 @@
 
                 _p.on( &#x27;init&#x27;, function(){
                     _p._model.loadSWF( _p._model.getParams() );
+                });
+
+                _p.on( &#x27;disable&#x27;, function(){
+                    if( !_p._model.uploadReady() ){
+                        _p._model.beforeReadyQueue( function(){ _p._view.disable(); } );
+                    }
+                    _p._view.disable();
+                });
+
+                _p.on( &#x27;enable&#x27;, function(){
+                    if( !_p._model.uploadReady() ){
+                        _p._model.beforeReadyQueue( function(){ _p._view.enable(); } );
+                    }
+                    _p._view.enable();
+                });
+
+                _p.on( &#x27;UploadReady&#x27;, function(){
+                    var _queue = _p._model.beforeReadyQueue();
+                    setTimeout( function(){
+                        $.each( _queue, function( _ix, _item ){
+                            _item();
+                        });
+                    }, 300 );
                 });
             }
         , _inited:
@@ -581,6 +605,16 @@
 
                 _p.trigger( &#x27;init&#x27; );
             }
+        /**
+         * 禁用上传按钮
+         * @method disable
+         */
+        , disable: function(){ this.trigger( &#x27;disable&#x27; ); return this; }
+        /**
+         * 启用上传按钮
+         * @method enable
+         */
+        , enable: function(){ this.trigger( &#x27;enable&#x27; ); return this; }
         /**
          * 手动更新数据
          * @method  update
@@ -639,6 +673,8 @@
 
         , cauUrl: function(){ return this.attrProp( &#x27;cauUrl&#x27; ); }
 
+        , cauCancelCallback: function(){ return this.callbackProp( &#x27;cauCancelCallback&#x27; ); }
+
         , cauFileExt: 
             function(){ 
                 var _r = this.stringProp( &#x27;cauFileExt&#x27; ) || this.stringProp( &#x27;fileext&#x27; ) || this.stringProp( &#x27;file_types&#x27; ); 
@@ -651,6 +687,19 @@
                     _r = _r.join( &#x27;;&#x27; );
                 }
                 return _r;
+            }
+
+        , beforeReadyQueue:
+            function( _setter ){
+                !this._beforeReadyQueue &amp;&amp; ( this._beforeReadyQueue = [] );
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._beforeReadyQueue.push( _setter ) );
+                return this._beforeReadyQueue;
+            }
+
+        , uploadReady:
+            function( _setter ){
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._uploadReady = _setter );
+                return this._uploadReady;
             }
 
         , cauFileName: 
@@ -803,6 +852,13 @@
 
                 _fileExt &amp;&amp; ( _r.file_types = _fileExt );
 
+                _r.swfupload_loaded_handler =
+                    function(){
+                        _p.swfu( this );
+                        _p.uploadReady( true );
+                        _p.trigger( &#x27;UploadReady&#x27; );
+                    };
+
                 _r.file_dialog_start_handler =
                     function(){
                         JC.hideAllPopup( 1);
@@ -817,7 +873,7 @@
                         if( !_selectedFiles ) return;
                         _p.trigger( &#x27;BeforeUpload&#x27; );
                         this.startUpload();
-                        //this.setButtonDisabled( true );
+                        this.setButtonDisabled( true );
                     };
                 //
                 /// 上传文件时显示进度的事件
@@ -833,6 +889,8 @@
                     function( _file, _errCode, _msg ){
                         _p.trigger( &#x27;UpdateDefaultStatus&#x27; );
                         _p.trigger( &#x27;UploadError&#x27;, [ _file, _errCode, _msg ] );
+
+                        _p.cauButtonAutoStatus() &amp;&amp; this.setButtonDisabled( false );
                     };
                 //
                 /// 上传成功后触发的事件
@@ -846,16 +904,15 @@
                 //
                 _r.upload_complete_handler =
                     function( _file ){
-                        this.setButtonDisabled( false );
-                    }
+                        _p.cauButtonAutoStatus() &amp;&amp; this.setButtonDisabled( false );
+                    };
 
                 _r.file_queue_error_handler = 
                     function( _file, _errCode, _msg ){
                         _p.trigger( &#x27;UpdateDefaultStatus&#x27; );
                         _p.trigger( &#x27;UploadError&#x27;, [ _file, _errCode, _msg ] );
-                        this.setButtonDisabled( false );
-                    }
-
+                        _p.cauButtonAutoStatus() &amp;&amp; this.setButtonDisabled( false );
+                    };
 
                 this.cauParamsCallback() 
                     &amp;&amp; ( _r = this.cauParamsCallback().call( this, _r ) );
@@ -865,6 +922,13 @@
 
                 JC.dir( _r );
 
+                return _r;
+            }
+
+        , cauButtonAutoStatus:
+            function(){
+                var _r = true;
+                this.is( &#x27;[cauButtonAutoStatus]&#x27; ) &amp;&amp; ( _r = this.boolProp( &#x27;cauButtonAutoStatus&#x27; ) );
                 return _r;
             }
 
@@ -878,10 +942,14 @@
             function( _params ){
                 //JC.dir( _params );
                 this._swfu &amp;&amp; this._swfu.destory();
-                this._swfu = new SWFUpload( _params );
+                new SWFUpload( _params );
             }
 
-        , swfu: function(){ return this._swfu; }
+        , swfu: 
+            function( _setter ){ 
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._swfu = _setter );
+                return this._swfu; 
+            }
 
         , cauParamsCallback: 
             function(){ 
@@ -1191,7 +1259,13 @@
 
         , errUpload:
             function( _d ){
-                var _p = this, _cb = _p._model.callbackProp( &#x27;cauUploadErrCallback&#x27; );
+                var _p = this
+                    , _beforeErrorCb = _p._model.callbackProp( &#x27;cauBeforeUploadErrCallback&#x27; )
+                    , _cb = _p._model.callbackProp( &#x27;cauUploadErrCallback&#x27; )
+                    ;
+
+                _beforeErrorCb &amp;&amp; _beforeErrorCb.call( _p._model.selector(), _d );
+
                 if( _cb ){
                     _cb.call( _p._model.selector(), _d );
                 }else{
@@ -1231,6 +1305,18 @@
                         : alert( _msg )
                         ;
                 }
+            }
+
+        , disable:
+            function(){
+                var _p = this, _swfu = _p._model.swfu();
+                _swfu &amp;&amp; ( _swfu.setButtonDisabled( true ), JC.log( &#x27;disable&#x27;, new Date().getTime() ) );
+            }
+
+        , enable:
+            function(){
+                var _p = this, _swfu = _p._model.swfu();
+                _swfu &amp;&amp; ( _swfu.setButtonDisabled( false ), JC.log( &#x27;enable&#x27;, new Date().getTime() ) );
             }
 
     });

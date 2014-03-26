@@ -343,18 +343,18 @@
                     _p._model.loadSWF( _p._model.getParams() );
                 });
 
-                _p.on( 'disabled', function(){
+                _p.on( 'disable', function(){
                     if( !_p._model.uploadReady() ){
-                        _p._model.beforeReadyQueue( function(){ _p._view.disabled(); } );
+                        _p._model.beforeReadyQueue( function(){ _p._view.disable(); } );
                     }
-                    _p._view.disabled();
+                    _p._view.disable();
                 });
 
-                _p.on( 'enabled', function(){
+                _p.on( 'enable', function(){
                     if( !_p._model.uploadReady() ){
-                        _p._model.beforeReadyQueue( function(){ _p._view.enabled(); } );
+                        _p._model.beforeReadyQueue( function(){ _p._view.enable(); } );
                     }
-                    _p._view.enabled();
+                    _p._view.enable();
                 });
 
                 _p.on( 'UploadReady', function(){
@@ -379,8 +379,16 @@
 
                 _p.trigger( 'init' );
             }
-        , disabled: function(){ this.trigger( 'disabled' ); }
-        , enabled: function(){ this.trigger( 'enabled' ); }
+        /**
+         * 禁用上传按钮
+         * @method disable
+         */
+        , disable: function(){ this.trigger( 'disable' ); return this; }
+        /**
+         * 启用上传按钮
+         * @method enable
+         */
+        , enable: function(){ this.trigger( 'enable' ); return this; }
         /**
          * 手动更新数据
          * @method  update
@@ -1025,7 +1033,13 @@
 
         , errUpload:
             function( _d ){
-                var _p = this, _cb = _p._model.callbackProp( 'cauUploadErrCallback' );
+                var _p = this
+                    , _beforeErrorCb = _p._model.callbackProp( 'cauBeforeUploadErrCallback' )
+                    , _cb = _p._model.callbackProp( 'cauUploadErrCallback' )
+                    ;
+
+                _beforeErrorCb && _beforeErrorCb.call( _p._model.selector(), _d );
+
                 if( _cb ){
                     _cb.call( _p._model.selector(), _d );
                 }else{
@@ -1067,16 +1081,16 @@
                 }
             }
 
-        , disabled:
+        , disable:
             function(){
                 var _p = this, _swfu = _p._model.swfu();
-                _swfu && ( _swfu.setButtonDisabled( true ), JC.log( 'disabled', new Date().getTime() ) );
+                _swfu && ( _swfu.setButtonDisabled( true ), JC.log( 'disable', new Date().getTime() ) );
             }
 
-        , enabled:
+        , enable:
             function(){
                 var _p = this, _swfu = _p._model.swfu();
-                _swfu && ( _swfu.setButtonDisabled( false ), JC.log( 'enabled', new Date().getTime() ) );
+                _swfu && ( _swfu.setButtonDisabled( false ), JC.log( 'enable', new Date().getTime() ) );
             }
 
     });
