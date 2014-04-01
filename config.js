@@ -84,6 +84,9 @@ requirejs.config( {
         , 'Bizs.FormLogic': 'modules/Bizs.FormLogic/0.2/FormLogic'
         , 'Bizs.KillISPCache': 'modules/Bizs.KillISPCache/0.1/KillISPCache'
         , 'Bizs.MoneyTips': 'modules/Bizs.MoneyTips/0.1/MoneyTips'
+
+        , 'Bizs.MultiAutoComplete': 'modules/Bizs.MultiAutoComplete/0.1/MultiAutoComplete'
+
         , 'Bizs.MultiDate': 'modules/Bizs.MultiDate/0.1/MultiDate'
         , 'Bizs.MultiSelect': 'modules/Bizs.MultiSelect/0.1/MultiSelect'
         , 'Bizs.DMultiDate': 'modules/Bizs.DMultiDate/0.1/DMultiDate'

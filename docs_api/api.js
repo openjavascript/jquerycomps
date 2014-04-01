@@ -53,6 +53,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.FormLogic",
         "window.Bizs.KillISPCache",
         "window.Bizs.MoneyTips",
+        "window.Bizs.MultiAutoComplete",
         "window.Bizs.MultiDate",
         "window.Bizs.MultiSelect",
         "window.Bizs.MultiUpload",

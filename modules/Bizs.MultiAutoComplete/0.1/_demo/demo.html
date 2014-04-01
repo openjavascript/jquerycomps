@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AutoComplete</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+        .ui-sug-mod input{ height: 26px;  outline: 0; text-indent: 3px; }
+
+        .ui-sug-ipt{ width: 300px; max-height: 300px; overflow-y: auto; }
+        .ui-sug-ipt{ border: 1px solid #ccc;  padding: 0; }
+    </style>
+    <link href='../../../../modules/JC.AutoComplete/0.1/res/default/style.css' rel='stylesheet' />
+
+    <script src="../../../../lib.js"></script>
+    <script src="../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+
+        function cacDataFilter( _json ){
+            if( _json.data && _json.data.length ){
+                _json = _json.data;
+            }
+
+            $.each( _json, function( _ix, _item ){
+                _item.length &&
+                    ( _json[ _ix ] = { 'id': _item[0], 'label': _item[1] } )
+                    ;
+            });
+            return _json;
+        }
+
+        requirejs( [ 'Bizs.MultiAutoComplete' ], function( AutoComplete ){
+        });
+    </script>
+</head>
+<body>
+<h2>JC.MultiAutoComplete 示例</h2>
+<form action="?" method="get">
+    <div class="ui-sug-mod">
+        <div class="js_bizMultiAutoComplete"
+            >
+            <input name="k1" type="text" class="ui-sug-ipt js_compAutoComplete" value="" 
+                autocomplete="off" 
+
+                cacPopup="/ul.js_compAutoCompleteBox"
+                cacLabelKey="data-label"
+                cacIdKey="data-id"
+                cacIdSelector="/input.js_bindItem"
+                cacStrictData="true"
+                cacDataFilter="cacDataFilter"
+                cacNoDataText="暂无数据!"
+
+                cacPreventEnter="true" 
+
+                defaultMultiAutomComplete=""
+                macUrl="./data/shengshi_with_error_code.php"
+                macTarget="/input[name=k2]"
+                />
+
+            <input name="k2" type="text" class="ui-sug-ipt js_compAutoComplete" value="" 
+                autocomplete="off" 
+
+                cacPopup="/ul.js_compAutoCompleteBox"
+                cacLabelKey="data-label"
+                cacIdKey="data-id"
+                cacIdSelector="/input.js_bindItem"
+                cacStrictData="true"
+                cacDataFilter="cacDataFilter"
+                cacNoDataText="暂无数据!"
+
+                cacPreventEnter="true" 
+
+                macUrl="./data/shengshi_with_error_code.php?id={0}"
+                />
+        </div>
+    </div>
+</form>
+</body>
+</html>

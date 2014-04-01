@@ -171,6 +171,8 @@
             
                 <li><a href="../classes/window.Bizs.MoneyTips.html">window.Bizs.MoneyTips</a></li>
             
+                <li><a href="../classes/window.Bizs.MultiAutoComplete.html">window.Bizs.MultiAutoComplete</a></li>
+            
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiSelect.html">window.Bizs.MultiSelect</a></li>
@@ -487,10 +489,11 @@
              *为了解决ie6下表格的宽度超出父容器的宽度，父容器的宽度会跟随表格的宽度
             */
             _p._model.alternateClass() &amp;&amp; (_table.find(&#x27;&gt;tbody&gt;tr:odd&#x27;).addClass(_p._model.alternateClass()));
-            TableFreeze.Model.sourceTable = _table.clone();
-            TableFreeze.Model.colnumWidth = _p._model.colnumWidth(_table);
+            _p._model.sourceTable = _table.clone();
+            _p._model.initcolnumWidth = _p._model.colnumWidth(_table);
             _p._model.needProcess() &amp;&amp; _table.detach();
-            TableFreeze.Model.initWidth = _p._model.selector().width();
+            _p._model.initWidth = _p._model.selector().width();
+            _p._model.tempWidth = _p._model.initWidth;
         },
 
         _initHanlderEvent: function () {
@@ -545,22 +548,30 @@
                 _currentWidth = _selector.width(),
                 _trs = _selector.find(&#x27;.js-fixed-table&gt;table&gt;thead&gt;tr,.js-fixed-table&gt;table&gt;tbody&gt;tr,.js-roll-table&gt;table&gt;thead&gt;tr,.js-roll-table&gt;table&gt;tbody&gt;tr&#x27;);
 
-            ( _currentWidth &gt; TableFreeze.Model.tempWidth ) &amp;&amp; _trs.height(&#x27;auto&#x27;);
+            ( _currentWidth &gt; _p._model.tempWidth ) &amp;&amp; _trs.height(&#x27;auto&#x27;);
             _p._view.fixHeight();
         }
         
     });
  
     TableFreeze.Model._instanceName = &quot;TableFreeze&quot;;
-    TableFreeze.Model.sourceTable = &#x27;&#x27;;
-    TableFreeze.Model.colnumWidth = [];
-    TableFreeze.Model.initWidth = 0;
-    TableFreeze.Model.tempWidth = TableFreeze.Model.initWidth;
+    // TableFreeze.Model.sourceTable = &#x27;&#x27;;
+    // TableFreeze.Model.colnumWidth = [];
+    // TableFreeze.Model.initWidth = 0;
+    // TableFreeze.Model.tempWidth = TableFreeze.Model.initWidth;
    
     JC.f.extendObject( TableFreeze.Model.prototype, {
         init: function () {
         },
 
+        sourceTable: &#x27;&#x27;,
+
+        initcolnumWidth: [],
+
+        initWidth: 0,
+
+        tempWidth: 0,
+        
         /**
          * 冻结类型:prev, both, last; 默认为prev
          */
@@ -644,7 +655,7 @@
         },
 
         colnum: function () {
-            var _table = TableFreeze.Model.sourceTable,
+            var _table = this.sourceTable,
                 _tr = _table.find(&#x27;tr:eq(0)&#x27;),
                 _col = _tr.find(&#x27;&gt;th, &gt;td&#x27;),
                 _r = _col.length;
@@ -706,7 +717,7 @@
                 _freezeType = _p.freezeType(),
                 _selector = _p.selector(),
                 //_table = _p.selector().find(&#x27;&gt;table&#x27;),
-                _table = TableFreeze.Model.sourceTable,
+                _table = _p.sourceTable,
                 _r = true;
 
             if ( _table.find(&#x27;tr&#x27;).length === 0 ) {
@@ -729,9 +740,15 @@
         },
 
         layout: function ( _freezeType ) {
-            var _leftClass,
-                _rightClass,
+            var _sourceTable = this.sourceTable,
+                _tableObj = $(_sourceTable[0].cloneNode(false)),
+                _theadObj = $(_sourceTable.find(&#x27;thead&#x27;)[0].cloneNode(false)),
+                _tbodyObj = $(_sourceTable.find(&#x27;tbody&#x27;)[0].cloneNode(false)),
+                _leftClass = &#x27;&#x27;,
+                _rightClass = &#x27;&#x27;,
                 _midClass = &#x27;&#x27;,
+                _secondTempTpl,
+                _thirdTempTpl,
                 _tpl;
 
             switch ( _freezeType ) {
@@ -751,14 +768,18 @@
                     _leftClass = &quot;js-fixed-table compTFPrevFixed&quot;;
                     _rightClass = &quot;js-roll-table compTFPrevRoll&quot;;
             }
-           
+            
+            _theadObj.html(&#x27;{0}&#x27;).appendTo(_tableObj);
+            _tbodyObj.html(&#x27;{1}&#x27;).appendTo(_tableObj);
+            _secondTempTpl = _tableObj.clone().find(&#x27;thead&#x27;).html(&quot;{2}&quot;).end().find(&#x27;tbody&#x27;).html(&quot;{3}&quot;).end();
             if ( !_midClass ) {
-                _tpl = &#x27;&lt;div class=&quot;&#x27; + _leftClass + &#x27;&quot;&gt;&lt;table&gt;&lt;thead&gt;{0}&lt;/thead&gt;&lt;tbody&gt;{1}&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&#x27;
-                     + &#x27;&lt;div class=&quot;&#x27; + _rightClass + &#x27;&quot;&gt;&lt;table&gt;&lt;thead&gt;{2}&lt;/thead&gt;&lt;tbody&gt;{3}&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&#x27;;
+                _tpl = &#x27;&lt;div class=&quot;&#x27; + _leftClass + &#x27;&quot;&gt;&#x27; + _tableObj[0].outerHTML +&#x27;&lt;/div&gt;&#x27;
+                     + &#x27;&lt;div class=&quot;&#x27; + _rightClass + &#x27;&quot;&gt;&#x27; + _secondTempTpl[0].outerHTML + &#x27;&lt;/div&gt;&#x27;;
             } else {
-                _tpl = &#x27;&lt;div class=&quot;&#x27; + _leftClass + &#x27;&quot;&gt;&lt;table&gt;&lt;thead&gt;{0}&lt;/thead&gt;&lt;tbody&gt;{1}&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&#x27;
-                     + &#x27;&lt;div class=&quot;&#x27; + _midClass + &#x27;&quot;&gt;&lt;table&gt;&lt;thead&gt;{2}&lt;/thead&gt;&lt;tbody&gt;{3}&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&#x27;
-                     + &#x27;&lt;div class=&quot;&#x27; + _rightClass + &#x27;&quot;&gt;&lt;table&gt;&lt;thead&gt;{4}&lt;/thead&gt;&lt;tbody&gt;{5}&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&#x27;;
+                _thirdTempTpl = _tableObj.clone().find(&#x27;thead&#x27;).html(&quot;{4}&quot;).end().find(&#x27;tbody&#x27;).html(&quot;{5}&quot;).end();
+                _tpl = &#x27;&lt;div class=&quot;&#x27; + _leftClass + &#x27;&quot;&gt;&#x27; + _tableObj[0].outerHTML + &#x27;&lt;/div&gt;&#x27;
+                     + &#x27;&lt;div class=&quot;&#x27; + _midClass + &#x27;&quot;&gt;&#x27; + _secondTempTpl[0].outerHTML + &#x27;&lt;/div&gt;&#x27;
+                     + &#x27;&lt;div class=&quot;&#x27; + _rightClass + &#x27;&quot;&gt;&#x27; + _thirdTempTpl[0].outerHTML +  &#x27;&lt;/div&gt;&#x27;;
             }
             
             return _tpl;
@@ -766,7 +787,7 @@
 
         creatTpl: function () {
             var _p = this,
-                _table = TableFreeze.Model.sourceTable,
+                _table = _p.sourceTable,
                 _freezeType = _p.freezeType(),
                 _freezeCols = _p.freezeCols(),
                 _colNum = _p.colnum(),
@@ -925,9 +946,9 @@
                 _selector = _p.selector(),
                 _freezeType = _p._model.freezeType(),
                 _freezeCols = _p._model.freezeCols(),
-                _totalWidth = TableFreeze.Model.initWidth,
+                _totalWidth = _p._model.initWidth,
                 _scrollWidth = _p._model.scrollWidth(),
-                _colWidth = TableFreeze.Model.colnumWidth,
+                _colWidth = _p._model.initcolnumWidth,
                 _colNum = _colWidth.length,
                 _leftWidth,
                 _rightWidth,
@@ -1027,7 +1048,7 @@
             $( &#x27;div.js_compTableFreeze&#x27; ).each( function () {
                 var _ins = TableFreeze.getInstance( $( this ) );
                 _ins &amp;&amp; _ins.update() ;
-                TableFreeze.Model.tempWidth = _ins._model.selector().prop(&#x27;offsetWidth&#x27;);
+                _ins._model.tempWidth = _ins._model.selector().prop(&#x27;offsetWidth&#x27;);
             });
 
             _win.data(&#x27;CTFResizeTimeout&#x27;) &amp;&amp; clearTimeout(_win.data(&#x27;CTFResizeTimeout&#x27;));
