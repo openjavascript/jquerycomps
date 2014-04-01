@@ -226,7 +226,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.AutoComplete&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.AutoComplete&#x27;, &#x27;JC.Placeholder&#x27; ], function(){
 /**
  * 组件用途简述
  *
@@ -290,16 +290,18 @@
             _selector = $( _selector || document );
 
             if( _selector.length ){
-                if( _selector.hasClass( &#x27;js_bizMultiAutoComplete&#x27; )  ){
+                if( _selector.is( &#x27;[defaultMultiAutomComplete]&#x27; )  ){
                     _r.push( new MultiAutoComplete( _selector ) );
                 }else{
-                    _selector.find( &#x27;div.js_bizMultiAutoComplete&#x27; ).each( function(){
+                    _selector.find( &#x27;input[defaultMultiAutomComplete]&#x27; ).each( function(){
                         _r.push( new MultiAutoComplete( this ) );
                     });
                 }
             }
             return _r;
         };
+
+    MultiAutoComplete.ajaxRandom = true;
 
     JC.BaseMVC.build( MultiAutoComplete );
 
@@ -314,6 +316,73 @@
                 var _p = this;
 
                 _p.on( &#x27;inited&#x27; , function(){
+                    _p.trigger( &#x27;init_relationship&#x27; );
+                    _p.trigger( &#x27;fix_id_callback&#x27; );
+                    _p.trigger( &#x27;init_autoComplete&#x27; );
+                    _p.trigger( &#x27;update_selector&#x27;, [ _p.selector() ] );
+                });
+
+                _p.on( &#x27;init_relationship&#x27;, function( _evt ){
+                    _p._model.init_relationship();
+                });
+
+                _p.on( &#x27;fix_id_callback&#x27;, function( _evt ){
+                    _p._model.fixIdCallback();
+                });
+
+                _p.on( &#x27;init_autoComplete&#x27;, function( _evt ){
+                    _p._model.each( function( _selector ){
+                        _selector.hasClass( &#x27;js_compAutoComplete&#x27; )
+                            &amp;&amp; new JC.AutoComplete( _selector );
+                    });
+                });
+
+                _p.on( &#x27;update_selector&#x27;, function( _evt, _selector ){
+                    if( !( _selector &amp;&amp; _selector.length ) ) return;
+
+                    _p.trigger( &#x27;clear_selector&#x27;, [ _selector ] );
+                    _p.trigger( &#x27;ajax_data&#x27;, [ _selector ] );
+                });
+
+                _p.on( &#x27;clear_selector&#x27;, function( _evt, _selector ){
+                });
+
+                _p.on( &#x27;ajax_data&#x27;, function( _evt, _selector ){
+                    if( !_selector ) return;
+
+                    _p._model.ajax_data( _selector );
+                });
+
+                _p.on( &#x27;ajax_done&#x27;, function( _evt, _data, _selector, _text ){
+                    if( _data &amp;&amp; _data.errorno == 0 ){
+                        _p.trigger( &#x27;update&#x27;, [ _data, _selector, _text ] );
+                    }else{
+                        _p.trigger( &#x27;ajax_error&#x27;, [ _data, _selector, _text ] );
+                    }
+                });
+
+                _p.on( &#x27;update&#x27;, function( _evt, _data, _selector, _text ){
+                    var _acIns = JC.BaseMVC.getInstance( _selector, JC.AutoComplete )
+                        , _nextSelector
+                        , _macDefaultValue
+                        ;
+                    //JC.log( &#x27;_acIns:&#x27;,  _acIns );
+
+                    if( !_acIns ) return;
+                    _macDefaultValue = _p._model.macDefaultValue( _selector ) || undefined;
+                    _acIns.update( _data.data, _macDefaultValue );
+
+                    //JC.log( &#x27;_macDefaultValue:&#x27;, _macDefaultValue );
+
+                    _nextSelector = _p._model.nextSelector( _selector );
+                    if( _nextSelector &amp;&amp; _nextSelector.length ){
+                        _p.trigger( &#x27;update_selector&#x27;, [ _nextSelector ] );
+                    }else{
+                        _p.trigger( &#x27;all_updated&#x27; );
+                    }
+                });
+
+                _p.on( &#x27;all_updated&#x27;, function(){
                 });
             }
 
@@ -330,6 +399,126 @@
             function(){
                 //JC.log( &#x27;MultiAutoComplete.Model.init:&#x27;, new Date().getTime() );
             }
+
+        , init_relationship:
+            function( _selector, _prevSelector ){
+                var _p = this
+                    , _selector = _selector || _p.selector()
+                    , _nextSelector
+                    ;
+
+                _prevSelector &amp;&amp; ( _selector.data( &#x27;prevSelector&#x27;, _prevSelector ) );
+
+                if( _selector.is( &#x27;[macTarget]&#x27; ) ){
+                    _nextSelector = JC.f.parentSelector( _selector, _selector.attr( &#x27;macTarget&#x27; ) );
+                    if( ( _nextSelector &amp;&amp; _nextSelector.length ) ){
+                        _selector.data( &#x27;nextSelector&#x27;, _nextSelector );
+                        _p.init_relationship( _nextSelector, _selector );
+                        //JC.log( _selector.attr( &#x27;macTarget&#x27; ) );
+                    }
+                }else{
+                    _p.lastSelecotr( _selector );
+                }
+            }
+
+        , fixIdCallback:
+            function(){
+                var _p = this;
+                _p.each( function( _selector ){
+                    //JC.log( _selector.attr( &#x27;name&#x27; ) );
+                    !_selector.is( &#x27;[macIdCallback]&#x27; )
+                        &amp;&amp; _selector.attr( &#x27;macIdCallback&#x27;, &#x27;MultiAutoCompleteIdCallback&#x27; )
+                        ;
+                });
+            }
+
+        , firstSelector: function(){ return this.selector(); }
+
+        , lastSelecotr: 
+            function( _selector ){
+                _selector &amp;&amp; ( this._lastSelecotr = _selector );
+                return this._lastSelecotr;
+            }
+
+        , nextSelector:
+            function( _selector ){
+                if( _selector ){
+                    return $( _selector ).data( &#x27;nextSelector&#x27; );
+                }
+            }
+
+        , prevSelector:
+            function( _selector ){
+                if( _selector ){
+                    return $( _selector ).data( &#x27;prevSelector&#x27; );
+                }
+            }
+
+        , ajax_data:
+            function( _selector ){
+                var _p = this
+                    , _url = _selector.attr( &#x27;macUrl&#x27; )
+                    , _prevSelector
+                    , _parentId
+                    ;
+                if( !_url ) return;
+
+                _p.ajax_random( _selector ) &amp;&amp; ( _url = JC.f.addUrlParams( _url, { rnd: new Date().getTime() } ) );
+
+                _prevSelector = _p.prevSelector( _selector );
+
+                if( _prevSelector &amp;&amp; _prevSelector.length ){
+                    _parentId = _p.macDefaultValue( _prevSelector );
+                    //alert( [ _prevSelector.val(), _parentId, _prevSelector.attr( &#x27;name&#x27; ) ] );
+                    _parentId &amp;&amp; ( _url = JC.f.printf( _url, _parentId ) );
+                }
+
+                $.get( _url ).done( function( _text ){
+                    //JC.log( _text );
+                    var _data = $.parseJSON( _text );
+
+                    _p.trigger( &#x27;ajax_done&#x27;, [ _data, _selector, _text ] );
+                });
+            }
+
+        , ajax_random:
+            function( _selector ){
+                var _r = MultiAutoComplete.ajaxRandom;
+                _selector.is( &#x27;[macAjaxRandom]&#x27; ) 
+                    &amp;&amp; ( _r = JC.f.parseBool( _selector.attr( &#x27;macAjaxRandom&#x27; ) ) );
+                return _r;
+            }
+
+        , each:
+            function( _cb, _selector ){
+                var _p = this, _nextSelector;
+                _selector = _selector || _p.selector();
+
+                if( _selector &amp;&amp; _selector.length ){
+                    _cb.call( _p, _selector );
+                    _nextSelector = _p.nextSelector( _selector );
+
+                    _nextSelector 
+                        &amp;&amp; _nextSelector.length 
+                        &amp;&amp; _p.each( _cb, _nextSelector )
+                        ;
+                }
+            }
+
+        , macDefaultValue:
+            function( _selector ){
+                var _r = _selector.attr( &#x27;macDefaultValue&#x27; ), _idSelector;
+
+                if( _selector.is( &#x27;[cacIdSelector]&#x27; ) ){
+                    _idSelector = JC.f.parentSelector( _selector, _selector.attr( &#x27;cacIdSelector&#x27; ) );
+
+                    _idSelector
+                        &amp;&amp; _idSelector.length
+                        &amp;&amp; ( _r = _idSelector.val() );
+                }
+
+                return _r;
+            }
     });
 
     JC.f.extendObject( MultiAutoComplete.View.prototype, {
@@ -339,8 +528,14 @@
             }
     });
 
+    window.MultiAutoCompleteIdCallback =
+        function(){
+        };
+
     _jdoc.ready( function(){
-        MultiAutoComplete.autoInit &amp;&amp; MultiAutoComplete.init();
+        JC.f.safeTimeout( function(){
+            MultiAutoComplete.autoInit &amp;&amp; MultiAutoComplete.init();
+        }, null, &#x27;MultiAutoCompleteInit&#x27;, 5 );
     });
 
     return Bizs.MultiAutoComplete;

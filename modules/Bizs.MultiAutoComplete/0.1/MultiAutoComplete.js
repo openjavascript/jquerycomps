@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.AutoComplete' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.AutoComplete', 'JC.Placeholder' ], function(){
 /**
  * 组件用途简述
  *
@@ -62,16 +62,18 @@
             _selector = $( _selector || document );
 
             if( _selector.length ){
-                if( _selector.hasClass( 'js_bizMultiAutoComplete' )  ){
+                if( _selector.is( '[defaultMultiAutomComplete]' )  ){
                     _r.push( new MultiAutoComplete( _selector ) );
                 }else{
-                    _selector.find( 'div.js_bizMultiAutoComplete' ).each( function(){
+                    _selector.find( 'input[defaultMultiAutomComplete]' ).each( function(){
                         _r.push( new MultiAutoComplete( this ) );
                     });
                 }
             }
             return _r;
         };
+
+    MultiAutoComplete.ajaxRandom = true;
 
     JC.BaseMVC.build( MultiAutoComplete );
 
@@ -86,6 +88,73 @@
                 var _p = this;
 
                 _p.on( 'inited' , function(){
+                    _p.trigger( 'init_relationship' );
+                    _p.trigger( 'fix_id_callback' );
+                    _p.trigger( 'init_autoComplete' );
+                    _p.trigger( 'update_selector', [ _p.selector() ] );
+                });
+
+                _p.on( 'init_relationship', function( _evt ){
+                    _p._model.init_relationship();
+                });
+
+                _p.on( 'fix_id_callback', function( _evt ){
+                    _p._model.fixIdCallback();
+                });
+
+                _p.on( 'init_autoComplete', function( _evt ){
+                    _p._model.each( function( _selector ){
+                        _selector.hasClass( 'js_compAutoComplete' )
+                            && new JC.AutoComplete( _selector );
+                    });
+                });
+
+                _p.on( 'update_selector', function( _evt, _selector ){
+                    if( !( _selector && _selector.length ) ) return;
+
+                    _p.trigger( 'clear_selector', [ _selector ] );
+                    _p.trigger( 'ajax_data', [ _selector ] );
+                });
+
+                _p.on( 'clear_selector', function( _evt, _selector ){
+                });
+
+                _p.on( 'ajax_data', function( _evt, _selector ){
+                    if( !_selector ) return;
+
+                    _p._model.ajax_data( _selector );
+                });
+
+                _p.on( 'ajax_done', function( _evt, _data, _selector, _text ){
+                    if( _data && _data.errorno == 0 ){
+                        _p.trigger( 'update', [ _data, _selector, _text ] );
+                    }else{
+                        _p.trigger( 'ajax_error', [ _data, _selector, _text ] );
+                    }
+                });
+
+                _p.on( 'update', function( _evt, _data, _selector, _text ){
+                    var _acIns = JC.BaseMVC.getInstance( _selector, JC.AutoComplete )
+                        , _nextSelector
+                        , _macDefaultValue
+                        ;
+                    //JC.log( '_acIns:',  _acIns );
+
+                    if( !_acIns ) return;
+                    _macDefaultValue = _p._model.macDefaultValue( _selector ) || undefined;
+                    _acIns.update( _data.data, _macDefaultValue );
+
+                    //JC.log( '_macDefaultValue:', _macDefaultValue );
+
+                    _nextSelector = _p._model.nextSelector( _selector );
+                    if( _nextSelector && _nextSelector.length ){
+                        _p.trigger( 'update_selector', [ _nextSelector ] );
+                    }else{
+                        _p.trigger( 'all_updated' );
+                    }
+                });
+
+                _p.on( 'all_updated', function(){
                 });
             }
 
@@ -102,6 +171,126 @@
             function(){
                 //JC.log( 'MultiAutoComplete.Model.init:', new Date().getTime() );
             }
+
+        , init_relationship:
+            function( _selector, _prevSelector ){
+                var _p = this
+                    , _selector = _selector || _p.selector()
+                    , _nextSelector
+                    ;
+
+                _prevSelector && ( _selector.data( 'prevSelector', _prevSelector ) );
+
+                if( _selector.is( '[macTarget]' ) ){
+                    _nextSelector = JC.f.parentSelector( _selector, _selector.attr( 'macTarget' ) );
+                    if( ( _nextSelector && _nextSelector.length ) ){
+                        _selector.data( 'nextSelector', _nextSelector );
+                        _p.init_relationship( _nextSelector, _selector );
+                        //JC.log( _selector.attr( 'macTarget' ) );
+                    }
+                }else{
+                    _p.lastSelecotr( _selector );
+                }
+            }
+
+        , fixIdCallback:
+            function(){
+                var _p = this;
+                _p.each( function( _selector ){
+                    //JC.log( _selector.attr( 'name' ) );
+                    !_selector.is( '[macIdCallback]' )
+                        && _selector.attr( 'macIdCallback', 'MultiAutoCompleteIdCallback' )
+                        ;
+                });
+            }
+
+        , firstSelector: function(){ return this.selector(); }
+
+        , lastSelecotr: 
+            function( _selector ){
+                _selector && ( this._lastSelecotr = _selector );
+                return this._lastSelecotr;
+            }
+
+        , nextSelector:
+            function( _selector ){
+                if( _selector ){
+                    return $( _selector ).data( 'nextSelector' );
+                }
+            }
+
+        , prevSelector:
+            function( _selector ){
+                if( _selector ){
+                    return $( _selector ).data( 'prevSelector' );
+                }
+            }
+
+        , ajax_data:
+            function( _selector ){
+                var _p = this
+                    , _url = _selector.attr( 'macUrl' )
+                    , _prevSelector
+                    , _parentId
+                    ;
+                if( !_url ) return;
+
+                _p.ajax_random( _selector ) && ( _url = JC.f.addUrlParams( _url, { rnd: new Date().getTime() } ) );
+
+                _prevSelector = _p.prevSelector( _selector );
+
+                if( _prevSelector && _prevSelector.length ){
+                    _parentId = _p.macDefaultValue( _prevSelector );
+                    //alert( [ _prevSelector.val(), _parentId, _prevSelector.attr( 'name' ) ] );
+                    _parentId && ( _url = JC.f.printf( _url, _parentId ) );
+                }
+
+                $.get( _url ).done( function( _text ){
+                    //JC.log( _text );
+                    var _data = $.parseJSON( _text );
+
+                    _p.trigger( 'ajax_done', [ _data, _selector, _text ] );
+                });
+            }
+
+        , ajax_random:
+            function( _selector ){
+                var _r = MultiAutoComplete.ajaxRandom;
+                _selector.is( '[macAjaxRandom]' ) 
+                    && ( _r = JC.f.parseBool( _selector.attr( 'macAjaxRandom' ) ) );
+                return _r;
+            }
+
+        , each:
+            function( _cb, _selector ){
+                var _p = this, _nextSelector;
+                _selector = _selector || _p.selector();
+
+                if( _selector && _selector.length ){
+                    _cb.call( _p, _selector );
+                    _nextSelector = _p.nextSelector( _selector );
+
+                    _nextSelector 
+                        && _nextSelector.length 
+                        && _p.each( _cb, _nextSelector )
+                        ;
+                }
+            }
+
+        , macDefaultValue:
+            function( _selector ){
+                var _r = _selector.attr( 'macDefaultValue' ), _idSelector;
+
+                if( _selector.is( '[cacIdSelector]' ) ){
+                    _idSelector = JC.f.parentSelector( _selector, _selector.attr( 'cacIdSelector' ) );
+
+                    _idSelector
+                        && _idSelector.length
+                        && ( _r = _idSelector.val() );
+                }
+
+                return _r;
+            }
     });
 
     JC.f.extendObject( MultiAutoComplete.View.prototype, {
@@ -111,8 +300,14 @@
             }
     });
 
+    window.MultiAutoCompleteIdCallback =
+        function(){
+        };
+
     _jdoc.ready( function(){
-        MultiAutoComplete.autoInit && MultiAutoComplete.init();
+        JC.f.safeTimeout( function(){
+            MultiAutoComplete.autoInit && MultiAutoComplete.init();
+        }, null, 'MultiAutoCompleteInit', 5 );
     });
 
     return Bizs.MultiAutoComplete;

@@ -186,10 +186,10 @@ return _json;
      * @return  {AutoCompleteInstance}
      */
     AutoComplete.update =
-        function( _selector, _data ){
+        function( _selector, _data, _selectedId ){
             var _ins = AutoComplete.getInstance( _selector );
                 !_ins && ( _ins = new AutoComplete( _selector ) );
-                _ins && _ins.update( _data );
+                _ins && _ins.update( _data, _selectedId );
             return _ins;
         };
     /**
@@ -243,6 +243,7 @@ return _json;
                 } );
 
                 _p._model.selector().on('focus', function() {
+                    _p.trigger( 'hide_all_popup' );
                     /*
                     if( !_p._model.selector().val().trim() && _p._model.selector().val().trim() == _p._model.preVal ){
                     }else{
@@ -359,6 +360,10 @@ return _json;
                     }, 50 ) );
                 });
 
+                _p.on( 'hide_all_popup', function(){
+                    $( 'ul.js_compAutoCompleteBox' ).hide();
+                });
+
                 _p.on( AutoComplete.Model.HIDDEN, function () {
                     _p._view.hide();
                 });
@@ -421,6 +426,20 @@ return _json;
                 _p._model.selector().on( AutoComplete.Model.REMOVE, function(){
                     try{ _p._model.popup().remove(); } catch( _ex ){}
                 });
+
+                _p.on( 'select_item', function( _evt, _id ){
+                    JC.log( 'select_item: ', _id );
+                    if( typeof _id == 'undefined' ) return;
+
+                    var _popup = _p._model.popup(), _selectedItem;
+                    if( !( _popup && _popup.length ) ) return;
+                    _selectedItem = _popup.find( JC.f.printf( '> li[data-id={0}]', _id ) );
+
+                    _selectedItem 
+                        && _selectedItem.length
+                        && _selectedItem.trigger( 'click' )
+                        ;
+                });
             } 
 
         , _inited: 
@@ -443,11 +462,16 @@ return _json;
          */
         , idSelector: function(){ return this._model.cacIdSelector(); }
         /**
-         * 获取 id 值
+         * 获取/设置 id 值 
          * @method  idVal
+         * @param   {string}    _id
          * @return  {id string}
          */
-        , idVal: function(){ return this._model.cacIdVal(); }
+        , idVal: 
+            function( _id ){ 
+                typeof _id != 'undefined' && this.trigger( 'select_item' );
+                return this._model.cacIdVal(); 
+            }
         /**
          * 使用 ajax 接口更新原始数据
          * @method  ajaxUpdate
@@ -495,13 +519,14 @@ return _json;
          * @param   {json}  _json
          */
         , update:
-            function( _json ){
+            function( _json, _selectedId ){
                 var _p = this;
                 !_p._model.firstUpdate && _p.clear();
                 _p._model.firstUpdate = false;
                 _json = _p._model.cacDataFilter( _json );
                 _p.trigger( AutoComplete.Model.UPDATE, [ _json ] );
                 _p.trigger( AutoComplete.Model.UPDATE_LIST );
+                typeof _selectedId != 'undefined' && _p.trigger( 'select_item', [ _selectedId ] );
 
                 return _p;
             }

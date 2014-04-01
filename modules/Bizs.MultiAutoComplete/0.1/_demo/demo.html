@@ -9,10 +9,11 @@
         }
         .ui-sug-mod input{ height: 26px;  outline: 0; text-indent: 3px; }
 
-        .ui-sug-ipt{ width: 300px; max-height: 300px; overflow-y: auto; }
+        .ui-sug-ipt{ width: 200px; max-height: 300px; overflow-y: auto; }
         .ui-sug-ipt{ border: 1px solid #ccc;  padding: 0; }
     </style>
     <link href='../../../../modules/JC.AutoComplete/0.1/res/default/style.css' rel='stylesheet' />
+    <link href='../../../../modules/JC.Placeholder/0.1/res/default/style.css' rel='stylesheet' />
 
     <script src="../../../../lib.js"></script>
     <script src="../../../../config.js"></script>
@@ -40,42 +41,64 @@
 <h2>JC.MultiAutoComplete 示例</h2>
 <form action="?" method="get">
     <div class="ui-sug-mod">
-        <div class="js_bizMultiAutoComplete"
-            >
-            <input name="k1" type="text" class="ui-sug-ipt js_compAutoComplete" value="" 
-                autocomplete="off" 
+        <input type="text" class="ui-sug-ipt js_compAutoComplete js_k1" name="k1" value="" 
+            autocomplete="off" 
 
-                cacPopup="/ul.js_compAutoCompleteBox"
-                cacLabelKey="data-label"
-                cacIdKey="data-id"
-                cacIdSelector="/input.js_bindItem"
-                cacStrictData="true"
-                cacDataFilter="cacDataFilter"
-                cacNoDataText="暂无数据!"
+            cacPopup="/ul.js_compAutoCompleteBox"
+            cacLabelKey="data-label"
+            cacIdKey="data-id"
+            cacIdSelector="/input.js_k1_id"
+            cacStrictData="true"
+            cacDataFilter="cacDataFilter"
+            cacNoDataText="暂无数据!"
 
-                cacPreventEnter="true" 
+            cacPreventEnter="true" 
 
-                defaultMultiAutomComplete=""
-                macUrl="./data/shengshi_with_error_code.php"
-                macTarget="/input[name=k2]"
-                />
+            defaultMultiAutomComplete=""
+            macUrl="./data/shengshi_with_error_code.php?id=0"
+            macTarget="/input.js_k2"
 
-            <input name="k2" type="text" class="ui-sug-ipt js_compAutoComplete" value="" 
-                autocomplete="off" 
+            Placeholder="一级位置"
+            />
+        <input type="hidden" value="14" class="js_k1_id" name="k1_id" />
 
-                cacPopup="/ul.js_compAutoCompleteBox"
-                cacLabelKey="data-label"
-                cacIdKey="data-id"
-                cacIdSelector="/input.js_bindItem"
-                cacStrictData="true"
-                cacDataFilter="cacDataFilter"
-                cacNoDataText="暂无数据!"
+        <input type="text" class="ui-sug-ipt js_compAutoComplete js_k2" name="k2" value="" 
+            autocomplete="off" 
 
-                cacPreventEnter="true" 
+            cacPopup="/ul.js_compAutoCompleteBox"
+            cacLabelKey="data-label"
+            cacIdKey="data-id"
+            cacIdSelector="/input.js_k2_id"
+            cacStrictData="true"
+            cacDataFilter="cacDataFilter"
+            cacNoDataText="暂无数据!"
 
-                macUrl="./data/shengshi_with_error_code.php?id={0}"
-                />
-        </div>
+            cacPreventEnter="true" 
+
+            macUrl="./data/shengshi_with_error_code.php?id={0}"
+            macTarget="/input.js_k3"
+            Placeholder="二级位置"
+            />
+        <input type="hidden" value="2341" class="js_k2_id" name="k2_id" />
+
+        <input type="text" class="ui-sug-ipt js_compAutoComplete js_k3" name="k3" value="" 
+            autocomplete="off" 
+
+            cacPopup="/ul.js_compAutoCompleteBox"
+            cacLabelKey="data-label"
+            cacIdKey="data-id"
+            cacIdSelector="/input.js_k3_id"
+            cacStrictData="true"
+            cacDataFilter="cacDataFilter"
+            cacNoDataText="暂无数据!"
+
+            cacPreventEnter="true" 
+
+            macUrl="./data/shengshi_with_error_code.php?id={0}"
+            Placeholder="三级位置"
+            />
+        <input type="hidden" value="2343" class="js_k3_id" name="k3_id" />
+
     </div>
 </form>
 </body>

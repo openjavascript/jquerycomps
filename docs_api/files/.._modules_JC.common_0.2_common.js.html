@@ -268,6 +268,7 @@
         , &quot;cloneDate&quot;: cloneDate
         , &quot;dateDetect&quot;: dateDetect
         , &quot;delUrlParam&quot;: delUrlParam
+        , &quot;delUrlParams&quot;: delUrlParams
         , &quot;easyEffect&quot;: easyEffect
         , &quot;filterXSS&quot;: filterXSS
         , &quot;formatISODate&quot;: formatISODate
@@ -581,6 +582,22 @@
         }
         sharp &amp;&amp; ( _url += &#x27;#&#x27; + sharp );
        _url = filterXSS( _url );
+        return _url;
+    }
+    /**
+     * 批量删除URL参数
+     * &lt;br /&gt;&lt;b&gt;require:&lt;/b&gt; delUrlParam
+     * @method  delUrlParams
+     * @param  {string}    _url
+     * @param  {Array}    _keys
+     * @return  string
+     * @static
+     * @example
+            var url = delUrlParam( location.href, [ &#x27;k1&#x27;, &#x27;k2&#x27; ] );
+     */ 
+    function delUrlParams( _url, _keys ){
+        !_keys &amp;&amp; ( _keys = _url, _url = location.href );
+        for( var k in _keys ) _url = delUrlParam( _url, _keys[ k ] );
         return _url;
     }
     /**
