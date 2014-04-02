@@ -225,6 +225,18 @@ return _json;
      */
     AutoComplete.fixHtmlEntity = true;
 
+    AutoComplete.hideAllPopup =
+        function(){
+            $( 'ul.js_compAutoCompleteBox' ).each( function(){
+                var _sp = $( this ), _pnt = _sp.parent();
+                if( _pnt.hasClass( 'AC_layoutBox' ) ){
+                    _pnt.hide();
+                }else{
+                    _sp.hide();
+                }
+            });
+        };
+
     BaseMVC.build( AutoComplete );
 
     JC.f.extendObject( AutoComplete.prototype, {
@@ -358,14 +370,15 @@ return _json;
                 /**
                  * 点击列表时, 阻止冒泡
                  */
-                _p._model.popup().on('click', function( _evt ){
+                _p._model.layoutPopup().on('click', function( _evt ){
                     _evt.stopPropagation();
                 });
 
-                _p._model.popup().delegate( 'li', 'click', function( _evt, _ignoreBlur ){
+                _p._model.layoutPopup().delegate( 'li', 'click', function( _evt, _ignoreBlur ){
                     if( !$(this).is( '[' + _p._model.cacLabelKey() + ']' ) ) return;
                     _p.trigger( AutoComplete.Model.CHANGE, [ $(this) ] );
-                    _p.trigger( AutoComplete.Model.HIDDEN );
+
+                    !_p._model.cacAddtionItem() && _p.trigger( AutoComplete.Model.HIDDEN );
 
                     !_ignoreBlur &&
                         _p._model.blurTimeout( setTimeout( function(){
@@ -373,16 +386,16 @@ return _json;
                         }, 50 ) );
                 });
 
-                _p._model.popup().delegate( '.AC_closePopup', 'click', function( _evt ){
+                _p._model.layoutPopup().delegate( '.AC_closePopup', 'click', function( _evt ){
                     _p.trigger( 'hide_all_popup' );
                 });
 
-                _p._model.popup().delegate( '.AC_clear', 'click', function( _evt ){
+                _p._model.layoutPopup().delegate( '.AC_clear', 'click', function( _evt ){
                     _p.selector().val( '' );
                 });
 
                 _p.on( 'hide_all_popup', function(){
-                    $( 'ul.js_compAutoCompleteBox' ).hide();
+                    AutoComplete.hideAllPopup();
                 });
 
                 _p.on( AutoComplete.Model.HIDDEN, function () {
@@ -393,7 +406,7 @@ return _json;
                     _p._view.show();
                 });
 
-                _p._model.popup().delegate( '> li', 'mouseenter'
+                _p._model.layoutPopup().delegate( 'li', 'mouseenter'
                     , function mouseHandler( _evt ) {
                         if( AutoComplete.Model.isScroll ) return;
                         _p._view.updateIndex( $(this).attr('data-index'), true );
@@ -454,7 +467,7 @@ return _json;
 
                     var _popup = _p._model.popup(), _selectedItem;
                     if( !( _popup && _popup.length ) ) return;
-                    _selectedItem = _popup.find( JC.f.printf( '> li[data-id={0}]', _id ) );
+                    _selectedItem = _popup.find( JC.f.printf( 'li[data-id={0}]', _id ) );
 
                     _selectedItem 
                         && _selectedItem.length
@@ -639,12 +652,17 @@ return _json;
 
                     if( !( _r && _r.length ) ){
                         _r = $( JC.f.printf( '<ul class="AC_box js_compAutoCompleteBox"{0}>{1}</ul>'
-                                            , ' style="display:none;position:absolute;"'
+                                            , ' style="position:absolute;"'
                                             , '<li class="AC_noData">' + _p.cacNoDataText() + '</li>'
                                             ));
                         //_p.selector().after( _r );
                         _p.selector().data( 'AC_panel', _r );
-                        _r.appendTo( document.body );
+                        
+
+                        _p.cacAddtionItem() 
+                            ? _r.appendTo( _p.layoutPopup() )
+                            : _r.appendTo( document.body );
+                            ;
                     }
 
                     if( !this._inited ){
@@ -653,6 +671,21 @@ return _json;
                     }
 
                 return _r;
+            }
+
+        , layoutPopup:
+            function(){
+
+                if( !this._layoutPopup ){
+                    if( this.cacAddtionItem() ){
+                        this._layoutPopup = $( '<div class="AC_layoutBox"></div>' );
+                        this._layoutPopup.appendTo( document.body );
+                    }else{
+                        this._layoutPopup = this.popup();
+                    }
+                }
+
+                return this._layoutPopup;
             }
 
         , initPopupData:
@@ -971,7 +1004,7 @@ return _json;
 
         , cacSubItemsSelector:
             function(){
-                var _r = this.attrProp( 'cacSubItemsSelector' ) || '> li';
+                var _r = this.attrProp( 'cacSubItemsSelector' ) || 'li';
                     _r += '[' + this.cacLabelKey() + ']';
                 return _r;
             }
@@ -998,7 +1031,7 @@ return _json;
             function() {
                 var _p = this;
 
-                _p._model.popup().hide();
+                _p._model.layoutPopup().hide();
             },
 
         show: 
@@ -1008,7 +1041,7 @@ return _json;
                     , _h = _p._model.selector().prop( 'offsetHeight' )
                     , _w = _p._model.selector().prop( 'offsetWidth' )
                     ;
-                _p._model.popup().css( {
+                _p._model.layoutPopup().css( {
                     'top': _offset.top + _h + 'px'
                     , 'left': _offset.left + 'px'
                 });
@@ -1043,7 +1076,7 @@ return _json;
                     _p._model.listItems().first().addClass( AutoComplete.Model.CLASS_ACTIVE );
                 }
 
-                _p._model.popup().show();
+                _p._model.layoutPopup().show();
                 //!_p._model.key() && _p._model.list().show();
             },
 
@@ -1090,10 +1123,12 @@ return _json;
                 }
 
                 _p._model.cacAddtionItem() 
-                    && $( JC.f.printf( '<li class="AC_addtionItem" style="text-align: right; padding-right: 5px;">{0}{1}</li>'
-                                , '<a href="javascript:;" class="AC_control AC_clear">清除</a>&nbsp;'
-                                , '<a href="javascript:;" class="AC_control AC_closePopup">关闭</a>'
-                        )).appendTo( _p._model.popup() )
+                    && !_p._model.layoutPopup().find( '.AC_addtionItem' ).length
+                    && $( JC.f.printf( 
+                            '<div class="AC_addtionItem" style="text-align: right; padding-right: 5px;"><div>{0}{1}</div></div>'
+                            , '<a href="javascript:;" class="AC_control AC_clear">清除</a>&nbsp;'
+                            , '<a href="javascript:;" class="AC_control AC_closePopup">关闭</a>'
+                        )).appendTo( _p._model.layoutPopup() )
                     ;
 
             }
@@ -1198,7 +1233,7 @@ return _json;
     });
 
     $(document).on( 'click', function(){
-        $('ul.js_compAutoCompleteBox, div.js_compAutoCompleteBox').hide();
+        AutoComplete.hideAllPopup();
     });
 
     $(document).delegate( 'input.js_compAutoComplete', 'focus', function( _evt ){

@@ -123,21 +123,21 @@
                     _p._model.clearData( _selector );
                 });
 
-                _p.on( 'ajax_data', function( _evt, _selector ){
+                _p.on( 'ajax_data', function( _evt, _selector, _noTriggerAllUpdated ){
                     if( !_selector ) return;
 
-                    _p._model.ajax_data( _selector );
+                    _p._model.ajax_data( _selector, _noTriggerAllUpdated );
                 });
 
-                _p.on( 'ajax_done', function( _evt, _data, _selector, _text ){
+                _p.on( 'ajax_done', function( _evt, _data, _selector, _text, _noTriggerAllUpdated ){
                     if( _data && _data.errorno == 0 ){
-                        _p.trigger( 'update', [ _data, _selector, _text ] );
+                        _p.trigger( 'update', [ _data, _selector, _text, _noTriggerAllUpdated ] );
                     }else{
                         _p.trigger( 'ajax_error', [ _data, _selector, _text ] );
                     }
                 });
 
-                _p.on( 'update', function( _evt, _data, _selector, _text ){
+                _p.on( 'update', function( _evt, _data, _selector, _text, _noTriggerAllUpdated ){
                     var _acIns = JC.BaseMVC.getInstance( _selector, JC.AutoComplete )
                         , _nextSelector
                         , _macDefaultValue
@@ -154,11 +154,12 @@
                     if( _nextSelector && _nextSelector.length ){
                         _p.trigger( 'update_selector', [ _nextSelector, true ] );
                     }else{
-                        _p.trigger( 'all_updated' );
+                        !_noTriggerAllUpdated && _p.trigger( 'all_updated' );
                     }
                 });
 
                 _p.on( 'all_updated', function(){
+                    _p._model.checkLast();
                 });
 
                 _p.on( 'init_user_input', function( _evt ){
@@ -277,10 +278,32 @@
                 }
             }
 
-        , ajax_data:
-            function( _selector ){
+        , macAddtionUrl: function( _selector ){ return _selector.attr( 'macAddtionUrl' ); }
+
+        , checkLast:
+            function(){
                 var _p = this
-                    , _url = _selector.attr( 'macUrl' )
+                    , _last = _p.lastSelecotr()
+                    , _tmpSelector = _p.prevSelector( _last )
+                    , _hasValue
+                    ;
+
+                while( _tmpSelector && _tmpSelector.length ){
+                    _tmpSelector.val() && ( _hasValue = true );
+                    if( _hasValue ) break;
+                    _tmpSelector = _p.prevSelector( _tmpSelector );
+                }
+
+                !_hasValue 
+                    && _p.macAddtionUrl( _last )
+                    && _p.ajax_data( _last, true, _p.macAddtionUrl( _last ) )
+                    ;
+            }
+
+        , ajax_data:
+            function( _selector, _noTriggerAllUpdated, _addUrl ){
+                var _p = this
+                    , _url = _addUrl || _selector.attr( 'macUrl' )
                     , _prevSelector
                     , _parentId
                     ;
@@ -300,7 +323,7 @@
                     //JC.log( _text );
                     var _data = $.parseJSON( _text );
 
-                    _p.trigger( 'ajax_done', [ _data, _selector, _text ] );
+                    _p.trigger( 'ajax_done', [ _data, _selector, _text, _noTriggerAllUpdated ] );
                 });
             }
 
