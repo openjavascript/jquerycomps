@@ -329,8 +329,9 @@
                                     if( !_p._model.bindedPositionWithEvent ){
                                         _p._model.bindedPositionWithEvent = true;
                                         var changePosition = function(){
+                                            if( !_p._view.getPanel().is( ':visible' ) ) return;
                                             _p.positionWith( _position, _selectorDiretion );
-                                        }
+                                        };
 					
                                         $(window).on('resize', changePosition );
                                         _p.on('close', function(){
