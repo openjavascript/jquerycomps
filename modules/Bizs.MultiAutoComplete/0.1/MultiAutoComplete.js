@@ -11,7 +11,7 @@
  *   | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.MultiAutoComplete.html' target='_blank'>API docs</a>
  *   | <a href='../../modules/Bizs.MultiAutoComplete/0.1/_demo' target='_blank'>demo link</a></p>
  *  
- *<h2>页面只要引用本脚本, 默认会自动处理 div class="js_bizMultiAutoComplete" </h2>
+ *<h2>页面只要引用本脚本, 默认会自动处理 input[defaultMultiAutomComplete] </h2>
  *
  *<h2>可用的 HTML attribute</h2>
  *
@@ -151,7 +151,7 @@
                     _macDefaultValue = _p._model.macDefaultValue( _selector ) || undefined;
                     _acIns.update( _data.data, _macDefaultValue );
 
-                    //JC.log( '_macDefaultValue:', _macDefaultValue );
+                    JC.log( '_macDefaultValue:', _macDefaultValue, _text );
 
                     _nextSelector = _p._model.nextSelector( _selector );
                     if( _nextSelector && _nextSelector.length ){
