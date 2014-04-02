@@ -154,6 +154,12 @@
  */
     var _jdoc = $( document ), _jwin = $( window );
 
+    JC.use && (
+        !JC.AutoComplete && JC.use( 'JC.AutoComplete' )
+        , !JC.Placeholder && JC.use( 'JC.Placeholder' )
+        , !JC.Panel && JC.use( 'JC.Panel' )
+    );
+
     Bizs.MultiAutoComplete = MultiAutoComplete;
 
     function MultiAutoComplete( _selector ){
