@@ -51,6 +51,7 @@ requirejs.config( {
         , 'JC.Suggest': 'modules/JC.Suggest/0.1/Suggest'
         , 'JC.Tab': 'modules/JC.Tab/0.1/Tab'
         , 'JC.TableFreeze': 'modules/JC.TableFreeze/0.2/TableFreeze'
+        , 'JC.TableSort': 'modules/JC.TableSort/0.1/TableSort'
         , 'JC.Tips': 'modules/JC.Tips/0.1/Tips'
         , 'JC.Tree': 'modules/JC.Tree/0.1/Tree'
         , 'JC.Lazyload': 'modules/JC.Lazyload/0.1/Lazyload'
@@ -78,6 +79,9 @@ requirejs.config( {
         , 'Bizs.FormLogic': 'modules/Bizs.FormLogic/0.2/FormLogic'
         , 'Bizs.KillISPCache': 'modules/Bizs.KillISPCache/0.1/KillISPCache'
         , 'Bizs.MoneyTips': 'modules/Bizs.MoneyTips/0.1/MoneyTips'
+
+        , 'Bizs.MultiAutoComplete': 'modules/Bizs.MultiAutoComplete/0.1/MultiAutoComplete'
+
         , 'Bizs.MultiDate': 'modules/Bizs.MultiDate/0.1/MultiDate'
         , 'Bizs.MultiSelect': 'modules/Bizs.MultiSelect/0.1/MultiSelect'
         , 'Bizs.DMultiDate': 'modules/Bizs.DMultiDate/0.1/DMultiDate'

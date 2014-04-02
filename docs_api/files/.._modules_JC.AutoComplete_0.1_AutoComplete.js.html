@@ -163,6 +163,8 @@
             
                 <li><a href="../classes/window.Bizs.MoneyTips.html">window.Bizs.MoneyTips</a></li>
             
+                <li><a href="../classes/window.Bizs.MultiAutoComplete.html">window.Bizs.MultiAutoComplete</a></li>
+            
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiSelect.html">window.Bizs.MultiSelect</a></li>
@@ -305,6 +307,12 @@ return _json;
      *
      *      &lt;dt&gt;cacFixHtmlEntity = bool&lt;/dt&gt;
      *      &lt;dd&gt;是否将 HTML实体 转为 html&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cacMultiSelect = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;是否为多选模式&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cacListItemTpl= selector&lt;/dt&gt;
+     *      &lt;dd&gt;指定项内容的模板&lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
      * @class AutoComplete
@@ -343,6 +351,8 @@ return _json;
         &lt;/div&gt;
      */
     JC.AutoComplete = AutoComplete;
+
+    var _jdoc = $( document ), _jwin = $( window );
 
     function AutoComplete( _selector ){
         _selector &amp;&amp; ( _selector = $( _selector ) );
@@ -404,10 +414,10 @@ return _json;
      * @return  {AutoCompleteInstance}
      */
     AutoComplete.update =
-        function( _selector, _data ){
+        function( _selector, _data, _selectedId ){
             var _ins = AutoComplete.getInstance( _selector );
                 !_ins &amp;&amp; ( _ins = new AutoComplete( _selector ) );
-                _ins &amp;&amp; _ins.update( _data );
+                _ins &amp;&amp; _ins.update( _data, _selectedId );
             return _ins;
         };
     /**
@@ -443,6 +453,22 @@ return _json;
      */
     AutoComplete.fixHtmlEntity = true;
 
+    AutoComplete.hideAllPopup =
+        function(){
+            $( &#x27;ul.js_compAutoCompleteBox&#x27; ).each( function(){
+                var _sp = $( this ), _pnt = _sp.parent(), _box;
+                if( _pnt.hasClass( &#x27;AC_layoutBox&#x27; ) ){
+                    _pnt.hide();
+                    _box = _pnt;
+                }else{
+                    _sp.hide();
+                    _box = _sp;
+                }
+
+                _box.data( &#x27;AC_INS&#x27; ) &amp;&amp; _box.data( &#x27;AC_INS&#x27; ).trigger( &#x27;unbind_event&#x27; );
+            });
+        };
+
     BaseMVC.build( AutoComplete );
 
     JC.f.extendObject( AutoComplete.prototype, {
@@ -457,10 +483,25 @@ return _json;
                 var _p = this;
 
                 _p._model.selector().on(&#x27;click&#x27;, function( _evt ) {
+                    _p.trigger( &#x27;bind_event&#x27; );
                     _evt.stopPropagation();
+                    //JC.log( &#x27;click&#x27; );
+
+                    JC.f.safeTimeout( function(){
+                    }, _p._model.selector(), &#x27;SHOW_AC_POPUP&#x27;, 50 );
+                    if( !_p._model.popup().is( &#x27;:visible&#x27; ) ){
+                        _p.trigger( &#x27;show_popup&#x27; );
+                    }
                 } );
 
                 _p._model.selector().on(&#x27;focus&#x27;, function() {
+                    //JC.log( &#x27;focus&#x27; );
+                    _p.trigger( &#x27;bind_event&#x27; );
+                    _p.trigger( &#x27;show_popup&#x27; );
+                } );
+
+                _p.on( &#x27;show_popup&#x27;, function(){
+                    _p.trigger( &#x27;hide_all_popup&#x27; );
                     /*
                     if( !_p._model.selector().val().trim() &amp;&amp; _p._model.selector().val().trim() == _p._model.preVal ){
                     }else{
@@ -471,7 +512,7 @@ return _json;
 
                     _p.trigger( AutoComplete.Model.SHOW );
                     _p.selector().addClass( AutoComplete.Model.CLASS_FAKE );
-                } );
+                });
 
                 _p._model.selector().on(&#x27;blur&#x27;, function() {
                     _p._model.preVal = _p._model.selector().val().trim();
@@ -479,7 +520,22 @@ return _json;
                     _p._model.verifyKey();
                 });
 
-                _p._model.selector().on(&#x27;keyup&#x27;, function( _evt ) {
+                _jdoc.on( &#x27;click&#x27;, function(){
+                    _p.trigger( &#x27;unbind_event&#x27; );
+                });
+
+                _p.on( &#x27;bind_event&#x27;, function( _evt ){
+                    _p.trigger( &#x27;unbind_event&#x27; );
+                    _jdoc.on( &#x27;keyup&#x27;, innerKeyUp );
+                    _jdoc.on( &#x27;keydown&#x27;, innerKeyDown );
+                });
+
+                _p.on( &#x27;unbind_event&#x27;, function( _evt ){
+                    _jdoc.off( &#x27;keyup&#x27;, innerKeyUp );
+                    _jdoc.off( &#x27;keydown&#x27;, innerKeyDown );
+                });
+
+                function innerKeyUp( _evt ){
 
                     var _keyCode = _evt.keyCode
                         , _sp = $(this)
@@ -510,9 +566,11 @@ return _json;
                                 }
                         }
                     }
-                });
 
-                _p._model.selector().on(&#x27;keydown&#x27;, function( _evt ) {
+                }
+
+                function innerKeyDown( _evt ){
+
                     var _keyCode = _evt.keyCode
                         , _val = _p._model.selector().val().trim()
                         ;
@@ -521,7 +579,7 @@ return _json;
                         AutoComplete.Model.isScroll = true;
                     }
 
-                    JC.log(&#x27;keydown&#x27;, new Date().getTime() );
+                    JC.log(&#x27;keydown&#x27;, _keyCode, new Date().getTime() );
 
                     if ( _keyCode ) {
                         switch( _keyCode ){
@@ -559,22 +617,44 @@ return _json;
                         _p.trigger( AutoComplete.Model.UPDATE_LIST );
                     }, 200 ));
 
-                });
+                }
+
+                _p._model.layoutPopup().data( &#x27;AC_INS&#x27;, _p );
+
                 /**
                  * 点击列表时, 阻止冒泡
                  */
-                _p._model.popup().on(&#x27;click&#x27;, function( _evt ){
+                _p._model.layoutPopup().on(&#x27;click&#x27;, function( _evt ){
                     _evt.stopPropagation();
                 });
 
-                _p._model.popup().delegate( &#x27;li&#x27;, &#x27;click&#x27;, function( _evt ){
-                    if( !$(this).is( &#x27;[&#x27; + _p._model.cacLabelKey() + &#x27;]&#x27; ) ) return;
-                    _p.trigger( AutoComplete.Model.CHANGE, [ $(this) ] );
-                    _p.trigger( AutoComplete.Model.HIDDEN );
+                _p._model.layoutPopup().delegate( &#x27;li&#x27;, &#x27;click&#x27;, function( _evt, _ignoreBlur ){
+                    var _sp = $( this );
+                    if( !_sp.is( &#x27;[&#x27; + _p._model.cacLabelKey() + &#x27;]&#x27; ) ) return;
+                    _p.trigger( AutoComplete.Model.CHANGE, [ _sp ] );
 
-                    _p._model.blurTimeout( setTimeout( function(){
-                        _p._model.selector().trigger( &#x27;blur&#x27; );
-                    }, 50 ) );
+                    !_p._model.cacMultiSelect() &amp;&amp; _p.trigger( AutoComplete.Model.HIDDEN );
+
+                    _p.selector().trigger( &#x27;cacItemClickHanlder&#x27;, [ _sp, _p ] );
+                    _p._model.cacItemClickHanlder() 
+                        &amp;&amp; _p._model.cacItemClickHanlder().call( _p, _sp );
+
+                    !_ignoreBlur &amp;&amp;
+                        _p._model.blurTimeout( setTimeout( function(){
+                            _p._model.selector().trigger( &#x27;blur&#x27; );
+                        }, 50 ) );
+                });
+
+                _p._model.layoutPopup().delegate( &#x27;.AC_closePopup&#x27;, &#x27;click&#x27;, function( _evt ){
+                    _p.trigger( &#x27;hide_all_popup&#x27; );
+                });
+
+                _p._model.layoutPopup().delegate( &#x27;.AC_clear&#x27;, &#x27;click&#x27;, function( _evt ){
+                    _p.selector().val( &#x27;&#x27; );
+                });
+
+                _p.on( &#x27;hide_all_popup&#x27;, function(){
+                    AutoComplete.hideAllPopup();
                 });
 
                 _p.on( AutoComplete.Model.HIDDEN, function () {
@@ -585,7 +665,7 @@ return _json;
                     _p._view.show();
                 });
 
-                _p._model.popup().delegate( &#x27;&gt; li&#x27;, &#x27;mouseenter&#x27;
+                _p._model.layoutPopup().delegate( &#x27;li&#x27;, &#x27;mouseenter&#x27;
                     , function mouseHandler( _evt ) {
                         if( AutoComplete.Model.isScroll ) return;
                         _p._view.updateIndex( $(this).attr(&#x27;data-index&#x27;), true );
@@ -597,14 +677,14 @@ return _json;
                     var _selectedItem = _p._model.selectedItem();
                     _selectedItem 
                         &amp;&amp; _selectedItem.length
-                        &amp;&amp; _p.trigger( AutoComplete.Model.CHANGE, [ _selectedItem ] )
+                        &amp;&amp; _selectedItem.trigger( &#x27;click&#x27; );
                         ;
-                    _p.trigger( AutoComplete.Model.HIDDEN );
+                    !_p._model.boolProp( &#x27;cacMultiSelect&#x27; ) &amp;&amp; _p.trigger( AutoComplete.Model.HIDDEN );
                 });
 
                 _p.on( AutoComplete.Model.UPDATE_LIST_INDEX, function( _evt, _keyCode, _srcEvt ){
                     _srcEvt.preventDefault();
-                    JC.log( AutoComplete.Model.UPDATE_LIST_INDEX, _keyCode, new Date().getTime() );
+                    //JC.log( AutoComplete.Model.UPDATE_LIST_INDEX, _keyCode, new Date().getTime() );
                     _p._view.updateListIndex( _keyCode == 40 ? true : false );
 
                     var _selectedItem = _p._model.selectedItem();
@@ -639,6 +719,24 @@ return _json;
                 _p._model.selector().on( AutoComplete.Model.REMOVE, function(){
                     try{ _p._model.popup().remove(); } catch( _ex ){}
                 });
+
+                _p.on( &#x27;select_item&#x27;, function( _evt, _id ){
+                    //JC.log( &#x27;select_item: &#x27;, _id );
+                    if( typeof _id == &#x27;undefined&#x27; ) return;
+
+                    var _popup = _p._model.popup(), _selectedItem;
+                    if( !( _popup &amp;&amp; _popup.length ) ) return;
+                    _selectedItem = _popup.find( JC.f.printf( &#x27;li[data-id={0}]&#x27;, _id ) );
+
+                    _selectedItem 
+                        &amp;&amp; _selectedItem.length
+                        &amp;&amp; _selectedItem.trigger( &#x27;click&#x27;, [ true ] )
+                        ;
+                });
+
+                _p.on( AutoComplete.Model.CLEAR_DATA, function(){
+                    _p.trigger( AutoComplete.Model.UPDATE, [ [] ] );
+                });
             } 
 
         , _inited: 
@@ -661,11 +759,16 @@ return _json;
          */
         , idSelector: function(){ return this._model.cacIdSelector(); }
         /**
-         * 获取 id 值
+         * 获取/设置 id 值 
          * @method  idVal
+         * @param   {string}    _id
          * @return  {id string}
          */
-        , idVal: function(){ return this._model.cacIdVal(); }
+        , idVal: 
+            function( _id ){ 
+                typeof _id != &#x27;undefined&#x27; &amp;&amp; this.trigger( &#x27;select_item&#x27; );
+                return this._model.cacIdVal(); 
+            }
         /**
          * 使用 ajax 接口更新原始数据
          * @method  ajaxUpdate
@@ -685,6 +788,7 @@ return _json;
             function(){
                 var _p = this;
                 setTimeout( function(){
+                    _p.trigger( &#x27;bind_event&#x27; );
                     _p.trigger( AutoComplete.Model.SHOW );
                 }, 1);
                 return _p;
@@ -713,13 +817,16 @@ return _json;
          * @param   {json}  _json
          */
         , update:
-            function( _json ){
+            function( _json, _selectedId ){
                 var _p = this;
+                JC.log( this.selector().attr( &#x27;class&#x27; ), new Date().getTime() );
+                _p._model.clearCache();
                 !_p._model.firstUpdate &amp;&amp; _p.clear();
                 _p._model.firstUpdate = false;
                 _json = _p._model.cacDataFilter( _json );
                 _p.trigger( AutoComplete.Model.UPDATE, [ _json ] );
                 _p.trigger( AutoComplete.Model.UPDATE_LIST );
+                typeof _selectedId != &#x27;undefined&#x27; &amp;&amp; _p.trigger( &#x27;select_item&#x27;, [ _selectedId ] );
 
                 return _p;
             }
@@ -732,6 +839,17 @@ return _json;
                 this.trigger( AutoComplete.Model.CLEAR );
                 return this;
             }
+        /**
+         * 清除所有数据
+         * @method  clearAll
+         */
+        , clearAll:
+            function(){
+                this.trigger( AutoComplete.Model.CLEAR );
+                this.trigger( AutoComplete.Model.CLEAR_DATA );
+                return this;
+            }
+
         /**
          * 校正数据列表的显示位置
          * @method  fixPosition
@@ -752,6 +870,7 @@ return _json;
 
     AutoComplete.Model.UPDATE = &#x27;AC_UPDATE&#x27;;
     AutoComplete.Model.CLEAR = &#x27;AC_CLEAR&#x27;;
+    AutoComplete.Model.CLEAR_DATA = &#x27;AC_CLEAR_DATA&#x27;;
     AutoComplete.Model.ENTER = &#x27;AC_ENTER&#x27;;
     AutoComplete.Model.CHANGE = &#x27;AC_CHANGE&#x27;;
     AutoComplete.Model.HIDDEN = &#x27;AC_HIDDEN&#x27;;
@@ -780,8 +899,15 @@ return _json;
                                     + this.cacLabelKey() + &#x27;=&quot;{1}&quot;&#x27;
                                     + &#x27; data-index=&quot;{2}&quot; class=&quot;AC_listItem {3}&quot;&gt;{1}&lt;/li&gt;&#x27; 
                             );
+            this.is( &#x27;[cacListItemTpl]&#x27; ) 
+                &amp;&amp; ( _tpl = JC.f.scriptContent( this.selectorProp( &#x27;cacListItemTpl&#x27; ) ) )
+                ;
+            //JC.log( _tpl );
+
             return _tpl;
         }
+
+        , cacItemClickHanlder: function(){ return this.callbackProp( &#x27;cacItemClickHanlder&#x27; ); }
 
         , popup: 
             function() {
@@ -790,12 +916,17 @@ return _json;
 
                     if( !( _r &amp;&amp; _r.length ) ){
                         _r = $( JC.f.printf( &#x27;&lt;ul class=&quot;AC_box js_compAutoCompleteBox&quot;{0}&gt;{1}&lt;/ul&gt;&#x27;
-                                            , &#x27; style=&quot;display:none;position:absolute;&quot;&#x27;
-                                            , &#x27;&lt;li style=&quot;text-align:center;&quot;&gt;&#x27; + _p.cacNoDataText() + &#x27;&lt;/li&gt;&#x27;
+                                            , &#x27; style=&quot;position:absolute;&quot;&#x27;
+                                            , &#x27;&lt;li class=&quot;AC_noData&quot;&gt;&#x27; + _p.cacNoDataText() + &#x27;&lt;/li&gt;&#x27;
                                             ));
                         //_p.selector().after( _r );
                         _p.selector().data( &#x27;AC_panel&#x27;, _r );
-                        _r.appendTo( document.body );
+                        
+
+                        _p.cacMultiSelect() 
+                            ? _r.appendTo( _p.layoutPopup() )
+                            : _r.appendTo( document.body );
+                            ;
                     }
 
                     if( !this._inited ){
@@ -804,6 +935,21 @@ return _json;
                     }
 
                 return _r;
+            }
+
+        , layoutPopup:
+            function(){
+
+                if( !this._layoutPopup ){
+                    if( this.cacMultiSelect() ){
+                        this._layoutPopup = $( &#x27;&lt;div class=&quot;AC_layoutBox&quot;&gt;&lt;/div&gt;&#x27; );
+                        this._layoutPopup.appendTo( document.body );
+                    }else{
+                        this._layoutPopup = this.popup();
+                    }
+                }
+
+                return this._layoutPopup;
             }
 
         , initPopupData:
@@ -874,7 +1020,7 @@ return _json;
         , cache: 
             function ( _key ) {
 
-                JC.log( &#x27;................cache&#x27;, _key );
+                //JC.log( &#x27;................cache&#x27;, _key );
 
                 if( !( _key in this._cache ) ){
                     this._cache[ _key ] = this.keyData( _key ) || this.initData; 
@@ -882,6 +1028,8 @@ return _json;
 
                 return this._cache[ _key ];
             }
+
+        , clearCache: function(){ this._cache = {}; }
 
         , dataItems: 
             function() {
@@ -1122,10 +1270,12 @@ return _json;
 
         , cacSubItemsSelector:
             function(){
-                var _r = this.attrProp( &#x27;cacSubItemsSelector&#x27; ) || &#x27;&gt; li&#x27;;
+                var _r = this.attrProp( &#x27;cacSubItemsSelector&#x27; ) || &#x27;li&#x27;;
                     _r += &#x27;[&#x27; + this.cacLabelKey() + &#x27;]&#x27;;
                 return _r;
             }
+
+        , cacMultiSelect: function(){ return this.boolProp( &#x27;cacMultiSelect&#x27; ); }
     });
 
     JC.f.extendObject( AutoComplete.View.prototype, {
@@ -1147,7 +1297,7 @@ return _json;
             function() {
                 var _p = this;
 
-                _p._model.popup().hide();
+                _p._model.layoutPopup().hide();
             },
 
         show: 
@@ -1157,7 +1307,7 @@ return _json;
                     , _h = _p._model.selector().prop( &#x27;offsetHeight&#x27; )
                     , _w = _p._model.selector().prop( &#x27;offsetWidth&#x27; )
                     ;
-                _p._model.popup().css( {
+                _p._model.layoutPopup().css( {
                     &#x27;top&#x27;: _offset.top + _h + &#x27;px&#x27;
                     , &#x27;left&#x27;: _offset.left + &#x27;px&#x27;
                 });
@@ -1192,7 +1342,7 @@ return _json;
                     _p._model.listItems().first().addClass( AutoComplete.Model.CLASS_ACTIVE );
                 }
 
-                _p._model.popup().show();
+                _p._model.layoutPopup().show();
                 //!_p._model.key() &amp;&amp; _p._model.list().show();
             },
 
@@ -1223,6 +1373,7 @@ return _json;
 
                 if ( _data.length == 0 ) {
                     _p.hide();
+                    _p._model.popup().html( JC.f.printf( &#x27;&lt;li class=&quot;AC_noData&quot;&gt;{0}&lt;/li&gt;&#x27;, _p._model.cacNoDataText() ) );
                 } else {
                     for ( ; _i &lt; _data.length; _i++ ) {
                         _view.push( JC.f.printf( _p._model.listItemTpl()
@@ -1234,7 +1385,18 @@ return _json;
                     }
 
                     _p._model.popup().html( _view.join(&#x27;&#x27;) );
+
                 }
+
+                _p._model.cacMultiSelect() 
+                    &amp;&amp; !_p._model.layoutPopup().find( &#x27;.AC_addtionItem&#x27; ).length
+                    &amp;&amp; $( JC.f.printf( 
+                            &#x27;&lt;div class=&quot;AC_addtionItem&quot; style=&quot;text-align: right; padding-right: 5px;&quot;&gt;&lt;div&gt;{0}{1}&lt;/div&gt;&lt;/div&gt;&#x27;
+                            , &#x27;&lt;a href=&quot;javascript:;&quot; class=&quot;AC_control AC_clear&quot;&gt;清除&lt;/a&gt;&amp;nbsp;&#x27;
+                            , &#x27;&lt;a href=&quot;javascript:;&quot; class=&quot;AC_control AC_closePopup&quot;&gt;关闭&lt;/a&gt;&#x27;
+                        )).appendTo( _p._model.layoutPopup() )
+                    ;
+
             }
         , currentIndex:
             function( _isDown ){
@@ -1337,7 +1499,7 @@ return _json;
     });
 
     $(document).on( &#x27;click&#x27;, function(){
-        $(&#x27;ul.js_compAutoCompleteBox, div.js_compAutoCompleteBox&#x27;).hide();
+        AutoComplete.hideAllPopup();
     });
 
     $(document).delegate( &#x27;input.js_compAutoComplete&#x27;, &#x27;focus&#x27;, function( _evt ){

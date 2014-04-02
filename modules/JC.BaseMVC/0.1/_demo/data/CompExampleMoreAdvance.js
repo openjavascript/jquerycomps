@@ -83,11 +83,15 @@
 
         , _initHanlderEvent:
             function(){
+                var _p = this;
+
+                _p.on( 'inited' );
             }
 
         , _inited:
             function(){
                 JC.log( 'CompExampleMoreAdvance _inited', new Date().getTime() );
+                this.trigger( 'inited' );
             }
     });
 

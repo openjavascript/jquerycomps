@@ -83,11 +83,16 @@
 
         , _initHanlderEvent:
             function(){
+                var _p = this;
+
+                _p.on( 'inited', function(){
+                });
             }
 
         , _inited:
             function(){
                 JC.log( 'BizExampleMoreAdvance _inited', new Date().getTime() );
+                this.trigger( 'inited' );
             }
     });
 
