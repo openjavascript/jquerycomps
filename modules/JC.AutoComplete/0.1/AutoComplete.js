@@ -375,10 +375,15 @@ return _json;
                 });
 
                 _p._model.layoutPopup().delegate( 'li', 'click', function( _evt, _ignoreBlur ){
-                    if( !$(this).is( '[' + _p._model.cacLabelKey() + ']' ) ) return;
-                    _p.trigger( AutoComplete.Model.CHANGE, [ $(this) ] );
+                    var _sp = $( this );
+                    if( !_sp.is( '[' + _p._model.cacLabelKey() + ']' ) ) return;
+                    _p.trigger( AutoComplete.Model.CHANGE, [ _sp ] );
 
                     !_p._model.cacAddtionItem() && _p.trigger( AutoComplete.Model.HIDDEN );
+
+                    _p.selector().trigger( 'cacItemClickHanlder', [ _sp, _p ] );
+                    _p._model.cacItemClickHanlder() 
+                        && _p._model.cacItemClickHanlder().call( _p, _sp );
 
                     !_ignoreBlur &&
                         _p._model.blurTimeout( setTimeout( function(){
@@ -644,6 +649,8 @@ return _json;
 
             return _tpl;
         }
+
+        , cacItemClickHanlder: function(){ return this.callbackProp( 'cacItemClickHanlder' ); }
 
         , popup: 
             function() {

@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.AutoComplete', 'JC.Placeholder' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.AutoComplete', 'JC.Placeholder', 'JC.Panel' ], function(){
 /**
  * 组件用途简述
  *
@@ -94,6 +94,7 @@
                     _p.trigger( 'update_selector', [ _p.selector() ] );
                     _p.trigger( 'init_user_input' );
                     _p._model.ready( true );
+                    _p.trigger( 'inited_done' );
                 });
 
                 _p.on( 'init_relationship', function( _evt ){
@@ -107,7 +108,9 @@
                 _p.on( 'init_autoComplete', function( _evt ){
                     _p._model.each( function( _selector ){
                         _selector.hasClass( 'js_compAutoComplete' )
-                            && new JC.AutoComplete( _selector );
+                            && !JC.BaseMVC.getInstance( _selector, JC.AutoComplete )
+                            && new JC.AutoComplete( _selector )
+                            ;
                     });
                 });
 
@@ -190,6 +193,64 @@
                         });
                     });
                 });
+
+                _p.on( 'inited_done', function(){
+                    _p._model.each( function( _selector ){
+                        _p.trigger( 'init_addtionBox', [ _selector ] );
+                    });
+                });
+
+                _p.on( 'init_addtionBox', function( _evt, _selector ){
+                    var _box = _p._model.macAddtionBox( _selector ), _boxList;
+                    if( !( _box && _box.length ) ) return;
+                    _boxList = _box.find( '.js_macAddtionBoxList' );
+                    if( !( _boxList && _boxList.length ) ) return;
+
+                    _box.delegate( '.js_macClearAddtionList', 'click', function( _evt ){
+
+                        JC.confirm( '是否清空内容', this, 2, function( _evt ){
+                            _boxList.html( '' );
+                            _box.hide();
+                        });
+                    });
+
+                    _box.delegate( '.js_macAddtionBoxItem', 'click', function( _evt ){
+                        $( this ).remove();
+                        checkBoxStatus();
+                    });
+
+                    _selector.on( 'cacItemClickHanlder', function( _evt, _sp, _acIns){
+                        if( !_selector.is( '[macAddtionBox]' ) ) return; 
+                        var _id = _sp.attr( 'data-id' )
+                            , _label = _sp.attr( 'data-label' )
+                            , _items = _boxList.find( _p._model.macAddtionBoxItemSelector( _selector ) )
+                            , _tpl = _p._model.macAddtionBoxItemTpl( _selector )
+                            , _item
+                            , _valueSelector = _boxList.find( _p._model.macAddtionBoxItemValueSelector( _selector ) )
+                            , _find
+                            ;
+                        JC.log( _id, _label, new Date().getTime() );
+
+                        _valueSelector.each( function( _ix, _sitem ){
+                            _sitem = $( _sitem );
+                            if( _sitem.val() == _id ){
+                                _find = true;
+                            }
+                        });
+                        if( _find ) return;
+
+                        _item = $( JC.f.printf( _tpl, _id, _label ) );
+                        _item.appendTo( _boxList );
+                        _box.show();
+                    });
+
+                    checkBoxStatus();
+
+                    function checkBoxStatus(){
+                        var _items = _boxList.find( _p._model.macAddtionBoxItemSelector( _selector ) )
+                        _items.length ? _box.show() : _box.hide();
+                    }
+                });
             }
 
         , _inited:
@@ -204,6 +265,18 @@
         init:
             function(){
                 //JC.log( 'MultiAutoComplete.Model.init:', new Date().getTime() );
+            }
+
+        , macAddtionBoxItemValueSelector: function( _selector ){ return this.attrProp( _selector, 'macAddtionBoxItemValueSelector' ); }
+        , macAddtionBoxItemSelector: function( _selector ){ return this.attrProp( _selector, 'macAddtionBoxItemSelector' ); }
+        , macAddtionBoxItemTpl: 
+            function( _selector ){ 
+                return JC.f.scriptContent( this.selectorProp( _selector, 'macAddtionBoxItemTpl' ) ); 
+            }
+
+        , macAddtionBox:
+            function( _selector ){
+                return this.selectorProp( _selector, 'macAddtionBox' );
             }
 
         , ready:
