@@ -411,6 +411,10 @@ return _json;
                 _p._model.layoutPopup().delegate( 'li', 'click', function( _evt, _ignoreBlur ){
                     var _sp = $( this );
                     if( !_sp.is( '[' + _p._model.cacLabelKey() + ']' ) ) return;
+
+                    _p.trigger( 'before_click', [ _sp, _p._model.layoutPopup(), _p ] );
+                    if( _p._model.clickDisable() ) return;
+
                     _p.trigger( AutoComplete.Model.CHANGE, [ _sp ] );
 
                     !_p._model.cacMultiSelect() && _p.trigger( AutoComplete.Model.HIDDEN );
@@ -673,6 +677,12 @@ return _json;
                 this.firstUpdate = true;
             }
 
+        , clickDisable:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._clickDisable = _setter );
+                return this._clickDisable;
+            }
+
         , listItemTpl: function() {
             var _tpl = JC.f.printf( '<li ' 
                                     + this.cacIdKey()+ '="{0}" ' 
@@ -688,6 +698,8 @@ return _json;
         }
 
         , cacItemClickHanlder: function(){ return this.callbackProp( 'cacItemClickHanlder' ); }
+
+        , cacBeforeShowHandler: function(){ return this.callbackProp( 'cacBeforeShowHandler' ); }
 
         , popup: 
             function() {
@@ -1166,13 +1178,15 @@ return _json;
 
                     _p._model.popup().html( _view.join('') );
 
+                    _p._model.trigger( 'build_data' );
                 }
 
                 _p._model.cacMultiSelect() 
                     && !_p._model.layoutPopup().find( '.AC_addtionItem' ).length
                     && $( JC.f.printf( 
                             '<div class="AC_addtionItem" style="text-align: right; padding-right: 5px;"><div>{0}{1}</div></div>'
-                            , '<a href="javascript:;" class="AC_control AC_clear">清除</a>&nbsp;'
+                            //, '<a href="javascript:;" class="AC_control AC_clear">清除</a>&nbsp;'
+                            , ''
                             , '<a href="javascript:;" class="AC_control AC_closePopup">关闭</a>'
                         )).appendTo( _p._model.layoutPopup() )
                     ;
