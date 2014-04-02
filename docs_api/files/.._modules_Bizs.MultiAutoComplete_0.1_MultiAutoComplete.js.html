@@ -557,10 +557,27 @@
                 });
 
                 _p.on( &#x27;init_addtionBox&#x27;, function( _evt, _selector ){
-                    var _box = _p._model.macAddtionBox( _selector ), _boxList;
+                    var _box = _p._model.macAddtionBox( _selector ), _boxList, _acIns;
                     if( !( _box &amp;&amp; _box.length ) ) return;
                     _boxList = _box.find( &#x27;.js_macAddtionBoxList&#x27; );
                     if( !( _boxList &amp;&amp; _boxList.length ) ) return;
+                    _acIns = JC.BaseMVC.getInstance( _selector, JC.AutoComplete );
+
+                    _acIns 
+                        &amp;&amp; ( _acIns.on( &#x27;build_data&#x27;, function(){
+                                JC.f.safeTimeout( function(){
+                                    updateListStyle();
+                                }, _p, &#x27;build_data&#x27;, 10 );
+
+                            })
+                            , _acIns.on( &#x27;before_click&#x27;, function( _evt, _sp, _popup, _acIns ){
+                                if( _sp.hasClass( &#x27;macDisable&#x27; ) ){
+                                    _acIns._model.clickDisable( true );
+                                }else{
+                                    _acIns._model.clickDisable( false );
+                                }
+                            })
+                           );
 
                     _box.delegate( &#x27;.js_macClearAddtionList&#x27;, &#x27;click&#x27;, function( _evt ){
 
@@ -595,21 +612,46 @@
                             _sitem = $( _sitem );
                             if( _sitem.attr( &#x27;data-id&#x27; )== _id ){
                                 _find = true;
+                                return false;
                             }
                         });
                         if( _find ) return;
+
+                        setSelectedItemStyle( _sp );
 
                         _item = $( JC.f.printf( _tpl, _id, _label ) );
                         _item.appendTo( _boxList );
                         _item.attr( &#x27;data-id&#x27;, _id );
                         _item.attr( &#x27;data-label&#x27;, _label );
                         _box.show();
+
                         
                         _p._model.macAddtionItemAddCallback( _selector )
                             &amp;&amp; _p._model.macAddtionItemAddCallback( _selector ).call( _p, _item, _id, _label, _boxList, _box );
                     });
 
                     checkBoxStatus();
+
+                    function updateListStyle(){
+                        JC.log( &#x27;updateListStyle&#x27;, new Date().getTime() );
+                        var _items = _boxList.find( _p._model.macAddtionBoxItemSelector( _selector ) ), _list = _acIns._model.listItems();
+                        if( !( _items.length &amp;&amp; _list.length ) ) return;
+
+                        $.each( _items, function( _ix, _item ){
+                            _item = $( _item );
+                            $.each( _list, function( _six, _sitem ){
+                                _sitem = $( _sitem );
+                                JC.log( _item.attr( &#x27;data-id&#x27; ), _sitem.attr( &#x27;data-id&#x27; ) );
+                                if( _sitem.attr( &#x27;data-id&#x27; ) == _item.attr( &#x27;data-id&#x27; ) ){
+                                    setSelectedItemStyle( _sitem );
+                                }
+                            });
+                        });
+                    }
+
+                    function  setSelectedItemStyle( _item ){
+                        _item.addClass( &#x27;macDisable&#x27; );
+                    }
 
                     function checkBoxStatus(){
                         var _items = _boxList.find( _p._model.macAddtionBoxItemSelector( _selector ) )

@@ -329,10 +329,27 @@
                 });
 
                 _p.on( 'init_addtionBox', function( _evt, _selector ){
-                    var _box = _p._model.macAddtionBox( _selector ), _boxList;
+                    var _box = _p._model.macAddtionBox( _selector ), _boxList, _acIns;
                     if( !( _box && _box.length ) ) return;
                     _boxList = _box.find( '.js_macAddtionBoxList' );
                     if( !( _boxList && _boxList.length ) ) return;
+                    _acIns = JC.BaseMVC.getInstance( _selector, JC.AutoComplete );
+
+                    _acIns 
+                        && ( _acIns.on( 'build_data', function(){
+                                JC.f.safeTimeout( function(){
+                                    updateListStyle();
+                                }, _p, 'build_data', 10 );
+
+                            })
+                            , _acIns.on( 'before_click', function( _evt, _sp, _popup, _acIns ){
+                                if( _sp.hasClass( 'macDisable' ) ){
+                                    _acIns._model.clickDisable( true );
+                                }else{
+                                    _acIns._model.clickDisable( false );
+                                }
+                            })
+                           );
 
                     _box.delegate( '.js_macClearAddtionList', 'click', function( _evt ){
 
@@ -367,21 +384,46 @@
                             _sitem = $( _sitem );
                             if( _sitem.attr( 'data-id' )== _id ){
                                 _find = true;
+                                return false;
                             }
                         });
                         if( _find ) return;
+
+                        setSelectedItemStyle( _sp );
 
                         _item = $( JC.f.printf( _tpl, _id, _label ) );
                         _item.appendTo( _boxList );
                         _item.attr( 'data-id', _id );
                         _item.attr( 'data-label', _label );
                         _box.show();
+
                         
                         _p._model.macAddtionItemAddCallback( _selector )
                             && _p._model.macAddtionItemAddCallback( _selector ).call( _p, _item, _id, _label, _boxList, _box );
                     });
 
                     checkBoxStatus();
+
+                    function updateListStyle(){
+                        JC.log( 'updateListStyle', new Date().getTime() );
+                        var _items = _boxList.find( _p._model.macAddtionBoxItemSelector( _selector ) ), _list = _acIns._model.listItems();
+                        if( !( _items.length && _list.length ) ) return;
+
+                        $.each( _items, function( _ix, _item ){
+                            _item = $( _item );
+                            $.each( _list, function( _six, _sitem ){
+                                _sitem = $( _sitem );
+                                JC.log( _item.attr( 'data-id' ), _sitem.attr( 'data-id' ) );
+                                if( _sitem.attr( 'data-id' ) == _item.attr( 'data-id' ) ){
+                                    setSelectedItemStyle( _sitem );
+                                }
+                            });
+                        });
+                    }
+
+                    function  setSelectedItemStyle( _item ){
+                        _item.addClass( 'macDisable' );
+                    }
 
                     function checkBoxStatus(){
                         var _items = _boxList.find( _p._model.macAddtionBoxItemSelector( _selector ) )
