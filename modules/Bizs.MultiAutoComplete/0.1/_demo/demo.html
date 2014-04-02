@@ -81,23 +81,29 @@
             />
         <input type="hidden" value="2341" class="js_k2_id" name="k2_id" />
 
-        <input type="text" class="ui-sug-ipt js_compAutoComplete js_k3" name="k3" value="" 
+        <input type="text" class="ui-sug-ipt js_compAutoComplete js_k3" name="k3" value="区" 
             autocomplete="off" 
 
             cacPopup="/ul.js_compAutoCompleteBox"
             cacLabelKey="data-label"
             cacIdKey="data-id"
-            cacIdSelector="/input.js_k3_id"
-            cacStrictData="true"
+            cacStrictData="false"
             cacDataFilter="cacDataFilter"
             cacNoDataText="暂无数据!"
+            cacAddtionItem="true"
+            cacListItemTpl="/script.cacItemTpl"
 
             cacPreventEnter="true" 
 
             macUrl="./data/shengshi_with_error_code.php?id={0}"
             Placeholder="三级位置"
             />
-        <input type="hidden" value="2343" class="js_k3_id" name="k3_id" />
+        <script type="text/template" class="cacItemTpl">
+            <li data-id="{0}" data-label="{1}" data-index="{2}" class="AC_listItem {3}">
+            <a href="javascript:;" data-id="{0}" data-label="{1}" data-index="{2}" class="AC_control AC_customAdd">添加</a>
+            {1} 
+            </li> 
+        </script>
 
     </div>
 </form>

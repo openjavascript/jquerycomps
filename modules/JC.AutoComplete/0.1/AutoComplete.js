@@ -240,9 +240,21 @@ return _json;
 
                 _p._model.selector().on('click', function( _evt ) {
                     _evt.stopPropagation();
+                    //JC.log( 'click' );
+
+                    JC.f.safeTimeout( function(){
+                    }, _p._model.selector(), 'SHOW_AC_POPUP', 50 );
+                    if( !_p._model.popup().is( ':visible' ) ){
+                        _p.trigger( 'show_popup' );
+                    }
                 } );
 
                 _p._model.selector().on('focus', function() {
+                    //JC.log( 'focus' );
+                    _p.trigger( 'show_popup' );
+                } );
+
+                _p.on( 'show_popup', function(){
                     _p.trigger( 'hide_all_popup' );
                     /*
                     if( !_p._model.selector().val().trim() && _p._model.selector().val().trim() == _p._model.preVal ){
@@ -254,7 +266,7 @@ return _json;
 
                     _p.trigger( AutoComplete.Model.SHOW );
                     _p.selector().addClass( AutoComplete.Model.CLASS_FAKE );
-                } );
+                });
 
                 _p._model.selector().on('blur', function() {
                     _p._model.preVal = _p._model.selector().val().trim();
@@ -272,7 +284,7 @@ return _json;
                     if( _keyCode == 38 || _keyCode == 40 ){
                         AutoComplete.Model.isScroll = true;
                     }
-                    JC.log('keyup', _keyCode, new Date().getTime() );
+                    //JC.log('keyup', _keyCode, new Date().getTime() );
 
                     if ( _keyCode ) {
                         switch( _keyCode ){
@@ -304,7 +316,7 @@ return _json;
                         AutoComplete.Model.isScroll = true;
                     }
 
-                    JC.log('keydown', new Date().getTime() );
+                    //JC.log('keydown', new Date().getTime() );
 
                     if ( _keyCode ) {
                         switch( _keyCode ){
@@ -350,14 +362,23 @@ return _json;
                     _evt.stopPropagation();
                 });
 
-                _p._model.popup().delegate( 'li', 'click', function( _evt ){
+                _p._model.popup().delegate( 'li', 'click', function( _evt, _ignoreBlur ){
                     if( !$(this).is( '[' + _p._model.cacLabelKey() + ']' ) ) return;
                     _p.trigger( AutoComplete.Model.CHANGE, [ $(this) ] );
                     _p.trigger( AutoComplete.Model.HIDDEN );
 
-                    _p._model.blurTimeout( setTimeout( function(){
-                        _p._model.selector().trigger( 'blur' );
-                    }, 50 ) );
+                    !_ignoreBlur &&
+                        _p._model.blurTimeout( setTimeout( function(){
+                            _p._model.selector().trigger( 'blur' );
+                        }, 50 ) );
+                });
+
+                _p._model.popup().delegate( '.AC_closePopup', 'click', function( _evt ){
+                    _p.trigger( 'hide_all_popup' );
+                });
+
+                _p._model.popup().delegate( '.AC_clear', 'click', function( _evt ){
+                    _p.selector().val( '' );
                 });
 
                 _p.on( 'hide_all_popup', function(){
@@ -391,7 +412,7 @@ return _json;
 
                 _p.on( AutoComplete.Model.UPDATE_LIST_INDEX, function( _evt, _keyCode, _srcEvt ){
                     _srcEvt.preventDefault();
-                    JC.log( AutoComplete.Model.UPDATE_LIST_INDEX, _keyCode, new Date().getTime() );
+                    //JC.log( AutoComplete.Model.UPDATE_LIST_INDEX, _keyCode, new Date().getTime() );
                     _p._view.updateListIndex( _keyCode == 40 ? true : false );
 
                     var _selectedItem = _p._model.selectedItem();
@@ -428,7 +449,7 @@ return _json;
                 });
 
                 _p.on( 'select_item', function( _evt, _id ){
-                    JC.log( 'select_item: ', _id );
+                    //JC.log( 'select_item: ', _id );
                     if( typeof _id == 'undefined' ) return;
 
                     var _popup = _p._model.popup(), _selectedItem;
@@ -437,8 +458,12 @@ return _json;
 
                     _selectedItem 
                         && _selectedItem.length
-                        && _selectedItem.trigger( 'click' )
+                        && _selectedItem.trigger( 'click', [ true ] )
                         ;
+                });
+
+                _p.on( AutoComplete.Model.CLEAR_DATA, function(){
+                    _p.trigger( AutoComplete.Model.UPDATE, [ [] ] );
                 });
             } 
 
@@ -540,6 +565,17 @@ return _json;
                 return this;
             }
         /**
+         * 清除所有数据
+         * @method  clearAll
+         */
+        , clearAll:
+            function(){
+                this.trigger( AutoComplete.Model.CLEAR );
+                this.trigger( AutoComplete.Model.CLEAR_DATA );
+                return this;
+            }
+
+        /**
          * 校正数据列表的显示位置
          * @method  fixPosition
          */
@@ -559,6 +595,7 @@ return _json;
 
     AutoComplete.Model.UPDATE = 'AC_UPDATE';
     AutoComplete.Model.CLEAR = 'AC_CLEAR';
+    AutoComplete.Model.CLEAR_DATA = 'AC_CLEAR_DATA';
     AutoComplete.Model.ENTER = 'AC_ENTER';
     AutoComplete.Model.CHANGE = 'AC_CHANGE';
     AutoComplete.Model.HIDDEN = 'AC_HIDDEN';
@@ -587,6 +624,11 @@ return _json;
                                     + this.cacLabelKey() + '="{1}"'
                                     + ' data-index="{2}" class="AC_listItem {3}">{1}</li>' 
                             );
+            this.is( '[cacListItemTpl]' ) 
+                && ( _tpl = JC.f.scriptContent( this.selectorProp( 'cacListItemTpl' ) ) )
+                ;
+            //JC.log( _tpl );
+
             return _tpl;
         }
 
@@ -598,7 +640,7 @@ return _json;
                     if( !( _r && _r.length ) ){
                         _r = $( JC.f.printf( '<ul class="AC_box js_compAutoCompleteBox"{0}>{1}</ul>'
                                             , ' style="display:none;position:absolute;"'
-                                            , '<li style="text-align:center;">' + _p.cacNoDataText() + '</li>'
+                                            , '<li class="AC_noData">' + _p.cacNoDataText() + '</li>'
                                             ));
                         //_p.selector().after( _r );
                         _p.selector().data( 'AC_panel', _r );
@@ -681,7 +723,7 @@ return _json;
         , cache: 
             function ( _key ) {
 
-                JC.log( '................cache', _key );
+                //JC.log( '................cache', _key );
 
                 if( !( _key in this._cache ) ){
                     this._cache[ _key ] = this.keyData( _key ) || this.initData; 
@@ -933,6 +975,8 @@ return _json;
                     _r += '[' + this.cacLabelKey() + ']';
                 return _r;
             }
+
+        , cacAddtionItem: function(){ return this.boolProp( 'cacAddtionItem' ); }
     });
 
     JC.f.extendObject( AutoComplete.View.prototype, {
@@ -1030,6 +1074,7 @@ return _json;
 
                 if ( _data.length == 0 ) {
                     _p.hide();
+                    _p._model.popup().html( JC.f.printf( '<li class="AC_noData">{0}</li>', _p._model.cacNoDataText() ) );
                 } else {
                     for ( ; _i < _data.length; _i++ ) {
                         _view.push( JC.f.printf( _p._model.listItemTpl()
@@ -1041,7 +1086,16 @@ return _json;
                     }
 
                     _p._model.popup().html( _view.join('') );
+
                 }
+
+                _p._model.cacAddtionItem() 
+                    && $( JC.f.printf( '<li class="AC_addtionItem" style="text-align: right; padding-right: 5px;">{0}{1}</li>'
+                                , '<a href="javascript:;" class="AC_control AC_clear">清除</a>&nbsp;'
+                                , '<a href="javascript:;" class="AC_control AC_closePopup">关闭</a>'
+                        )).appendTo( _p._model.popup() )
+                    ;
+
             }
         , currentIndex:
             function( _isDown ){

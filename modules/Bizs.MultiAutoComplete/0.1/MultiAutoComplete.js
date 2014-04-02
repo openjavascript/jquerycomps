@@ -92,6 +92,8 @@
                     _p.trigger( 'fix_id_callback' );
                     _p.trigger( 'init_autoComplete' );
                     _p.trigger( 'update_selector', [ _p.selector() ] );
+                    _p.trigger( 'init_user_input' );
+                    _p._model.ready( true );
                 });
 
                 _p.on( 'init_relationship', function( _evt ){
@@ -109,14 +111,16 @@
                     });
                 });
 
-                _p.on( 'update_selector', function( _evt, _selector ){
+                _p.on( 'update_selector', function( _evt, _selector, _ignoreClear ){
                     if( !( _selector && _selector.length ) ) return;
 
-                    _p.trigger( 'clear_selector', [ _selector ] );
+                    !_ignoreClear && _p.trigger( 'clear_selector', [ _selector ] );
                     _p.trigger( 'ajax_data', [ _selector ] );
                 });
 
                 _p.on( 'clear_selector', function( _evt, _selector ){
+                    if( !_p._model.ready() ) return;
+                    _p._model.clearData( _selector );
                 });
 
                 _p.on( 'ajax_data', function( _evt, _selector ){
@@ -148,13 +152,42 @@
 
                     _nextSelector = _p._model.nextSelector( _selector );
                     if( _nextSelector && _nextSelector.length ){
-                        _p.trigger( 'update_selector', [ _nextSelector ] );
+                        _p.trigger( 'update_selector', [ _nextSelector, true ] );
                     }else{
                         _p.trigger( 'all_updated' );
                     }
                 });
 
                 _p.on( 'all_updated', function(){
+                });
+
+                _p.on( 'init_user_input', function( _evt ){
+                    _p._model.each( function( _selector ){
+                        _selector.on( 'focus', function( _evt ){
+                            _selector.data( 'old_value', _selector.val() );
+                        });
+
+                        _selector.on( 'blur', function( _evt ){
+
+                            JC.f.safeTimeout( function(){
+                                var _oldValue = _selector.data( 'old_value' )
+                                    , _newValue = _selector.val()
+                                    , _nextSelector
+                                    ;
+
+                                JC.log( JC.f.printf( 'oldValue: {0}, newValue: {1}', _oldValue, _newValue ) );
+
+                                if( _oldValue != _newValue ){
+                                    _nextSelector = _p._model.nextSelector( _selector );
+
+
+                                    _nextSelector 
+                                        && _nextSelector.length
+                                        && _p.trigger( 'update_selector', [ _nextSelector ] );
+                                }
+                            }, _selector, 'forMultiAutoCompleteSelectorBlur', 200 );
+                        });
+                    });
                 });
             }
 
@@ -170,6 +203,24 @@
         init:
             function(){
                 //JC.log( 'MultiAutoComplete.Model.init:', new Date().getTime() );
+            }
+
+        , ready:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._ready = _setter );
+                return this._ready;
+            }
+
+        , clearData:
+            function( _selector ){
+                var _p = this
+                    , _nextSelector = _p.nextSelector( _selector )
+                    , _acIns = JC.BaseMVC.getInstance( _selector, JC.AutoComplete )
+                    ;
+
+                _acIns && _acIns.clearAll();
+            
+                _nextSelector && _p.clearData( _nextSelector );
             }
 
         , init_relationship:
