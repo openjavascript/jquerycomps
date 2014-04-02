@@ -142,21 +142,18 @@
         _initHanlderEvent: function () {
             var _p = this,
                 _timer = null,
-                _resizeTimer = null,
-                _triggerType = _p._model.triggerType();
+                _resizeTimer = null;
             
             _p.on(Lazyload.Model.BEFORELOAD, function (_evt, _data) {
                 _p._model.beforeLoad()
                     && _p._model.beforeLoad().call(_p, _p.selector(), _data);
             });
 
-            if ( _triggerType === 'click' ) {
-
-            } else {
+           
                 //setTimeout( function () {
                     _p._view.render();
                 //}, 100);
-            }
+           
             
             $(_p._model.container()).on('scroll', function () {
                 clearTimeout(_timer);
@@ -203,13 +200,6 @@
         textareaList: [],
 
         ajaxList: [],
-
-
-        triggerType: function () {
-            var _r = this.attrProp('lazyTriggerType');
-
-            return _r;
-        },
 
         /**
          * 滚动的方向，水平，垂直，默认垂直滚动

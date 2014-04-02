@@ -315,6 +315,12 @@ return _json;
      *
      *      &lt;dt&gt;cacFixHtmlEntity = bool&lt;/dt&gt;
      *      &lt;dd&gt;是否将 HTML实体 转为 html&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cacMultiSelect = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;是否为多选模式&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cacListItemTpl= selector&lt;/dt&gt;
+     *      &lt;dd&gt;指定项内容的模板&lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
      * @class AutoComplete
@@ -635,7 +641,7 @@ return _json;
                     if( !_sp.is( &#x27;[&#x27; + _p._model.cacLabelKey() + &#x27;]&#x27; ) ) return;
                     _p.trigger( AutoComplete.Model.CHANGE, [ _sp ] );
 
-                    !_p._model.cacAddtionItem() &amp;&amp; _p.trigger( AutoComplete.Model.HIDDEN );
+                    !_p._model.cacMultiSelect() &amp;&amp; _p.trigger( AutoComplete.Model.HIDDEN );
 
                     _p.selector().trigger( &#x27;cacItemClickHanlder&#x27;, [ _sp, _p ] );
                     _p._model.cacItemClickHanlder() 
@@ -681,7 +687,7 @@ return _json;
                         &amp;&amp; _selectedItem.length
                         &amp;&amp; _selectedItem.trigger( &#x27;click&#x27; );
                         ;
-                    !_p._model.boolProp( &#x27;cacAddtionItem&#x27; ) &amp;&amp; _p.trigger( AutoComplete.Model.HIDDEN );
+                    !_p._model.boolProp( &#x27;cacMultiSelect&#x27; ) &amp;&amp; _p.trigger( AutoComplete.Model.HIDDEN );
                 });
 
                 _p.on( AutoComplete.Model.UPDATE_LIST_INDEX, function( _evt, _keyCode, _srcEvt ){
@@ -925,7 +931,7 @@ return _json;
                         _p.selector().data( &#x27;AC_panel&#x27;, _r );
                         
 
-                        _p.cacAddtionItem() 
+                        _p.cacMultiSelect() 
                             ? _r.appendTo( _p.layoutPopup() )
                             : _r.appendTo( document.body );
                             ;
@@ -943,7 +949,7 @@ return _json;
             function(){
 
                 if( !this._layoutPopup ){
-                    if( this.cacAddtionItem() ){
+                    if( this.cacMultiSelect() ){
                         this._layoutPopup = $( &#x27;&lt;div class=&quot;AC_layoutBox&quot;&gt;&lt;/div&gt;&#x27; );
                         this._layoutPopup.appendTo( document.body );
                     }else{
@@ -1277,7 +1283,7 @@ return _json;
                 return _r;
             }
 
-        , cacAddtionItem: function(){ return this.boolProp( &#x27;cacAddtionItem&#x27; ); }
+        , cacMultiSelect: function(){ return this.boolProp( &#x27;cacMultiSelect&#x27; ); }
     });
 
     JC.f.extendObject( AutoComplete.View.prototype, {
@@ -1390,7 +1396,7 @@ return _json;
 
                 }
 
-                _p._model.cacAddtionItem() 
+                _p._model.cacMultiSelect() 
                     &amp;&amp; !_p._model.layoutPopup().find( &#x27;.AC_addtionItem&#x27; ).length
                     &amp;&amp; $( JC.f.printf( 
                             &#x27;&lt;div class=&quot;AC_addtionItem&quot; style=&quot;text-align: right; padding-right: 5px;&quot;&gt;&lt;div&gt;{0}{1}&lt;/div&gt;&lt;/div&gt;&#x27;
@@ -1505,7 +1511,6 @@ return _json;
     });
 
     $(document).delegate( &#x27;input.js_compAutoComplete&#x27;, &#x27;focus&#x27;, function( _evt ){
-        if( JC.f.parseBool( $(this).attr( &#x27;cacIgnoreAutoInit&#x27; ) ) ){ JC.log( &#x27;cacIgnoreAutoInit&#x27;, new Date().getTime() ); return; }
         !AutoComplete.getInstance( this ) 
             &amp;&amp; new AutoComplete( this )
             ;

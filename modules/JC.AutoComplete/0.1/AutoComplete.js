@@ -87,6 +87,12 @@ return _json;
      *
      *      <dt>cacFixHtmlEntity = bool</dt>
      *      <dd>是否将 HTML实体 转为 html</dd>
+     *
+     *      <dt>cacMultiSelect = bool, default = false</dt>
+     *      <dd>是否为多选模式</dd>
+     *
+     *      <dt>cacListItemTpl= selector</dt>
+     *      <dd>指定项内容的模板</dd>
      * </dl>
      * @namespace JC
      * @class AutoComplete
@@ -407,7 +413,7 @@ return _json;
                     if( !_sp.is( '[' + _p._model.cacLabelKey() + ']' ) ) return;
                     _p.trigger( AutoComplete.Model.CHANGE, [ _sp ] );
 
-                    !_p._model.cacAddtionItem() && _p.trigger( AutoComplete.Model.HIDDEN );
+                    !_p._model.cacMultiSelect() && _p.trigger( AutoComplete.Model.HIDDEN );
 
                     _p.selector().trigger( 'cacItemClickHanlder', [ _sp, _p ] );
                     _p._model.cacItemClickHanlder() 
@@ -453,7 +459,7 @@ return _json;
                         && _selectedItem.length
                         && _selectedItem.trigger( 'click' );
                         ;
-                    !_p._model.boolProp( 'cacAddtionItem' ) && _p.trigger( AutoComplete.Model.HIDDEN );
+                    !_p._model.boolProp( 'cacMultiSelect' ) && _p.trigger( AutoComplete.Model.HIDDEN );
                 });
 
                 _p.on( AutoComplete.Model.UPDATE_LIST_INDEX, function( _evt, _keyCode, _srcEvt ){
@@ -697,7 +703,7 @@ return _json;
                         _p.selector().data( 'AC_panel', _r );
                         
 
-                        _p.cacAddtionItem() 
+                        _p.cacMultiSelect() 
                             ? _r.appendTo( _p.layoutPopup() )
                             : _r.appendTo( document.body );
                             ;
@@ -715,7 +721,7 @@ return _json;
             function(){
 
                 if( !this._layoutPopup ){
-                    if( this.cacAddtionItem() ){
+                    if( this.cacMultiSelect() ){
                         this._layoutPopup = $( '<div class="AC_layoutBox"></div>' );
                         this._layoutPopup.appendTo( document.body );
                     }else{
@@ -1049,7 +1055,7 @@ return _json;
                 return _r;
             }
 
-        , cacAddtionItem: function(){ return this.boolProp( 'cacAddtionItem' ); }
+        , cacMultiSelect: function(){ return this.boolProp( 'cacMultiSelect' ); }
     });
 
     JC.f.extendObject( AutoComplete.View.prototype, {
@@ -1162,7 +1168,7 @@ return _json;
 
                 }
 
-                _p._model.cacAddtionItem() 
+                _p._model.cacMultiSelect() 
                     && !_p._model.layoutPopup().find( '.AC_addtionItem' ).length
                     && $( JC.f.printf( 
                             '<div class="AC_addtionItem" style="text-align: right; padding-right: 5px;"><div>{0}{1}</div></div>'
@@ -1277,7 +1283,6 @@ return _json;
     });
 
     $(document).delegate( 'input.js_compAutoComplete', 'focus', function( _evt ){
-        if( JC.f.parseBool( $(this).attr( 'cacIgnoreAutoInit' ) ) ){ JC.log( 'cacIgnoreAutoInit', new Date().getTime() ); return; }
         !AutoComplete.getInstance( this ) 
             && new AutoComplete( this )
             ;

@@ -261,11 +261,10 @@
              *为了解决ie6下表格的宽度超出父容器的宽度，父容器的宽度会跟随表格的宽度
             */
             _p._model.alternateClass() && (_table.find('>tbody>tr:odd').addClass(_p._model.alternateClass()));
-            _p._model.sourceTable = _table.clone();
-            _p._model.initcolnumWidth = _p._model.colnumWidth(_table);
+            TableFreeze.Model.sourceTable = _table.clone();
+            TableFreeze.Model.colnumWidth = _p._model.colnumWidth(_table);
             _p._model.needProcess() && _table.detach();
-            _p._model.initWidth = _p._model.selector().width();
-            _p._model.tempWidth = _p._model.initWidth;
+            TableFreeze.Model.initWidth = _p._model.selector().width();
         },
 
         _initHanlderEvent: function () {
@@ -320,30 +319,22 @@
                 _currentWidth = _selector.width(),
                 _trs = _selector.find('.js-fixed-table>table>thead>tr,.js-fixed-table>table>tbody>tr,.js-roll-table>table>thead>tr,.js-roll-table>table>tbody>tr');
 
-            ( _currentWidth > _p._model.tempWidth ) && _trs.height('auto');
+            ( _currentWidth > TableFreeze.Model.tempWidth ) && _trs.height('auto');
             _p._view.fixHeight();
         }
         
     });
  
     TableFreeze.Model._instanceName = "TableFreeze";
-    // TableFreeze.Model.sourceTable = '';
-    // TableFreeze.Model.colnumWidth = [];
-    // TableFreeze.Model.initWidth = 0;
-    // TableFreeze.Model.tempWidth = TableFreeze.Model.initWidth;
+    TableFreeze.Model.sourceTable = '';
+    TableFreeze.Model.colnumWidth = [];
+    TableFreeze.Model.initWidth = 0;
+    TableFreeze.Model.tempWidth = TableFreeze.Model.initWidth;
    
     JC.f.extendObject( TableFreeze.Model.prototype, {
         init: function () {
         },
 
-        sourceTable: '',
-
-        initcolnumWidth: [],
-
-        initWidth: 0,
-
-        tempWidth: 0,
-        
         /**
          * 冻结类型:prev, both, last; 默认为prev
          */
@@ -427,7 +418,7 @@
         },
 
         colnum: function () {
-            var _table = this.sourceTable,
+            var _table = TableFreeze.Model.sourceTable,
                 _tr = _table.find('tr:eq(0)'),
                 _col = _tr.find('>th, >td'),
                 _r = _col.length;
@@ -489,7 +480,7 @@
                 _freezeType = _p.freezeType(),
                 _selector = _p.selector(),
                 //_table = _p.selector().find('>table'),
-                _table = _p.sourceTable,
+                _table = TableFreeze.Model.sourceTable,
                 _r = true;
 
             if ( _table.find('tr').length === 0 ) {
@@ -512,15 +503,9 @@
         },
 
         layout: function ( _freezeType ) {
-            var _sourceTable = this.sourceTable,
-                _tableObj = $(_sourceTable[0].cloneNode(false)),
-                _theadObj = $(_sourceTable.find('thead')[0].cloneNode(false)),
-                _tbodyObj = $(_sourceTable.find('tbody')[0].cloneNode(false)),
-                _leftClass = '',
-                _rightClass = '',
+            var _leftClass,
+                _rightClass,
                 _midClass = '',
-                _secondTempTpl,
-                _thirdTempTpl,
                 _tpl;
 
             switch ( _freezeType ) {
@@ -540,18 +525,14 @@
                     _leftClass = "js-fixed-table compTFPrevFixed";
                     _rightClass = "js-roll-table compTFPrevRoll";
             }
-            
-            _theadObj.html('{0}').appendTo(_tableObj);
-            _tbodyObj.html('{1}').appendTo(_tableObj);
-            _secondTempTpl = _tableObj.clone().find('thead').html("{2}").end().find('tbody').html("{3}").end();
+           
             if ( !_midClass ) {
-                _tpl = '<div class="' + _leftClass + '">' + _tableObj[0].outerHTML +'</div>'
-                     + '<div class="' + _rightClass + '">' + _secondTempTpl[0].outerHTML + '</div>';
+                _tpl = '<div class="' + _leftClass + '"><table><thead>{0}</thead><tbody>{1}</tbody></table></div>'
+                     + '<div class="' + _rightClass + '"><table><thead>{2}</thead><tbody>{3}</tbody></table></div>';
             } else {
-                _thirdTempTpl = _tableObj.clone().find('thead').html("{4}").end().find('tbody').html("{5}").end();
-                _tpl = '<div class="' + _leftClass + '">' + _tableObj[0].outerHTML + '</div>'
-                     + '<div class="' + _midClass + '">' + _secondTempTpl[0].outerHTML + '</div>'
-                     + '<div class="' + _rightClass + '">' + _thirdTempTpl[0].outerHTML +  '</div>';
+                _tpl = '<div class="' + _leftClass + '"><table><thead>{0}</thead><tbody>{1}</tbody></table></div>'
+                     + '<div class="' + _midClass + '"><table><thead>{2}</thead><tbody>{3}</tbody></table></div>'
+                     + '<div class="' + _rightClass + '"><table><thead>{4}</thead><tbody>{5}</tbody></table></div>';
             }
             
             return _tpl;
@@ -559,7 +540,7 @@
 
         creatTpl: function () {
             var _p = this,
-                _table = _p.sourceTable,
+                _table = TableFreeze.Model.sourceTable,
                 _freezeType = _p.freezeType(),
                 _freezeCols = _p.freezeCols(),
                 _colNum = _p.colnum(),
@@ -718,9 +699,9 @@
                 _selector = _p.selector(),
                 _freezeType = _p._model.freezeType(),
                 _freezeCols = _p._model.freezeCols(),
-                _totalWidth = _p._model.initWidth,
+                _totalWidth = TableFreeze.Model.initWidth,
                 _scrollWidth = _p._model.scrollWidth(),
-                _colWidth = _p._model.initcolnumWidth,
+                _colWidth = TableFreeze.Model.colnumWidth,
                 _colNum = _colWidth.length,
                 _leftWidth,
                 _rightWidth,
@@ -820,7 +801,7 @@
             $( 'div.js_compTableFreeze' ).each( function () {
                 var _ins = TableFreeze.getInstance( $( this ) );
                 _ins && _ins.update() ;
-                _ins._model.tempWidth = _ins._model.selector().prop('offsetWidth');
+                TableFreeze.Model.tempWidth = _ins._model.selector().prop('offsetWidth');
             });
 
             _win.data('CTFResizeTimeout') && clearTimeout(_win.data('CTFResizeTimeout'));

@@ -24,17 +24,14 @@
     <script>
         JC.debug = true;
 
-        function cacDataFilter( _json ){
-            if( _json.data && _json.data.length ){
-                _json = _json.data;
-            }
+        function macAddtionItemAddCallback( _item, _id, _label, _parent, _parentBox ){
+            var _macIns = this;
+            JC.log( 'macAddtionItemAddCallback', _id, _label );
+        }
 
-            $.each( _json, function( _ix, _item ){
-                _item.length &&
-                    ( _json[ _ix ] = { 'id': _item[0], 'label': _item[1] } )
-                    ;
-            });
-            return _json;
+        function macAddtionItemRemoveCallback( _item, _id, _label, _parent, _parentBox ){
+            var _macIns = this;
+            JC.log( 'macAddtionItemRemoveCallback', _id, _label );
         }
 
         requirejs( [ 'Bizs.MultiAutoComplete', 'JC.AjaxUpload' ], function( AutoComplete ){
@@ -53,11 +50,9 @@
             cacIdKey="data-id"
             cacIdSelector="/input.js_k1_id"
             cacStrictData="true"
-            cacDataFilter="cacDataFilter"
             cacNoDataText="暂无数据!"
 
             cacPreventEnter="true" 
-            cacIgnoreAutoInit="true"
 
             defaultMultiAutomComplete=""
             macUrl="./data/shengshi_with_error_code.php?id=0"
@@ -75,11 +70,9 @@
             cacIdKey="data-id"
             cacIdSelector="/input.js_k2_id"
             cacStrictData="true"
-            cacDataFilter="cacDataFilter"
             cacNoDataText="暂无数据!"
 
             cacPreventEnter="true" 
-            cacIgnoreAutoInit="true"
 
             macUrl="./data/shengshi_with_error_code.php?id={0}"
             macTarget="/input.js_k3"
@@ -95,25 +88,24 @@
             cacLabelKey="data-label"
             cacIdKey="data-id"
             cacStrictData="false"
-            cacDataFilter="cacDataFilter"
             cacNoDataText="暂无数据!"
-            cacAddtionItem="true"
+            cacMultiSelect="true"
             cacListItemTpl="/script.cacItemTpl"
 
             cacPreventEnter="true" 
-            cacIgnoreAutoInit="true"
 
             macUrl="./data/shengshi_with_error_code.php?id={0}"
             macAddtionUrl="./data/shengshi_with_error_code.php?id=0"
             macAddtionBox="/.js_macAddtionBox"
             macAddtionBoxItemTpl="/script.macAddtionBoxItemTpl"
             macAddtionBoxItemSelector="> a"
-            macAddtionBoxItemValueSelector="input[type=hidden]"
+            macAddtionItemAddCallback="macAddtionItemAddCallback"
+            macAddtionItemRemoveCallback="macAddtionItemRemoveCallback"
             />
         <span class="js_macAddtionBox" style="display:none;">
             <span class="js_macAddtionBoxList">
-                <a href="javascript:" class="js_macAddtionBoxItem">
-                    枫溪区 
+                <a href="javascript:" class="js_macAddtionBoxItem" data-id="2345" data-label="枫溪区">
+                    <label>枫溪区</label>
                     <button type="button" class="AURemove"></button>
                     <input type="hidden" name="condition[]" value="2345">
                 </a>
@@ -125,12 +117,12 @@
         <script type="text/template" class="cacItemTpl">
             <li data-id="{0}" data-label="{1}" data-index="{2}" class="AC_listItem {3} js_macAddtionBoxItemClick">
             <a href="javascript:;" data-id="{0}" data-label="{1}" data-index="{2}" class="AC_control AC_customAdd">添加</a>
-            {1} 
+            <label>{1} </label>
             </li> 
         </script>
         <script type="text/template" class="macAddtionBoxItemTpl">
-            <a href="javascript:" class="js_macAddtionBoxItem">
-                {1}
+            <a href="javascript:" class="js_macAddtionBoxItem" data-id="{0}" data-label="{1}">
+                <label>{1}</label>
                 <button type="button" class="AURemove"></button>
                 <input type="hidden" name="condition[]" value="{0}" />
             </a>

@@ -228,11 +228,12 @@
     <pre class="code prettyprint linenums">
 ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.AutoComplete&#x27;, &#x27;JC.Placeholder&#x27;, &#x27;JC.Panel&#x27; ], function(){
 /**
- * 组件用途简述
+ * 级联 Suggest
  *
  *&lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
- *   &lt;a href=&quot;widnow.jQuery.html&quot;&gt;jQuery&lt;/a&gt;
- *   , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+ *   &lt;a href=&#x27;JC.AutoComplete.html&#x27;&gt;JC.AutoComplete&lt;/a&gt;
+ *   , &lt;a href=&#x27;JC.Placeholder.html&#x27;&gt;JC.Placeholder&lt;/a&gt;
+ *   , &lt;a href=&#x27;JC.Panel.html&#x27;&gt;JC.Panel&lt;/a&gt;
  *&lt;/p&gt;
  *
  *&lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
@@ -244,9 +245,41 @@
  *&lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
  *
  *&lt;dl&gt;
- *    &lt;dt&gt;&lt;/dt&gt;
- *    &lt;dd&gt;&lt;dd&gt;
- *&lt;/dl&gt; 
+ *    &lt;dt&gt;defaultMultiAutomComplete = empty&lt;/dt&gt;
+ *    &lt;dd&gt;声明第一级联动框&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;macUrl = url&lt;/dt&gt;
+ *    &lt;dd&gt;获取数据的URL接口&lt;dd&gt;
+ *
+ *    &lt;dt&gt;macAddtionUrl = url&lt;/dt&gt;
+ *    &lt;dd&gt;用于最后一级的附加数据接口, 如果所有父级没有选中内容, 将启用该接口&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;macAddtionBox = selector&lt;/dt&gt;
+ *    &lt;dd&gt;指定用于保存选择内容的选择器&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;macAddtionBoxItemTpl = selector&lt;/dt&gt;
+ *    &lt;dd&gt;保存内容项的模板&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;macAddtionBoxItemSelector = selector&lt;/dt&gt;
+ *    &lt;dd&gt;保存内容项的选择器&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;macAddtionItemAddCallback = callback&lt;/dt&gt;
+ *    &lt;dd&gt;添加保存内容项时的回调
+ &lt;xmp&gt;function macAddtionItemAddCallback( _item, _id, _label, _parent, _parentBox ){
+    var _macIns = this;
+    JC.log( &#x27;macAddtionItemAddCallback&#x27;, _id, _label );
+}&lt;/xmp&gt;
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;macAddtionItemRemoveCallback = callback&lt;/dt&gt;
+ *    &lt;dd&gt;删除保存内容项时的回调
+&lt;xmp&gt;function macAddtionItemRemoveCallback( _item, _id, _label, _parent, _parentBox ){
+    var _macIns = this;
+    JC.log( &#x27;macAddtionItemRemoveCallback&#x27;, _id, _label );
+}&lt;/xmp&gt;
+ *    &lt;/dd&gt;
+ *
+ *&lt;/dl&gt;
  *
  * @namespace   window.Bizs
  * @class       MultiAutoComplete
@@ -256,7 +289,96 @@
  * @version dev 0.1 2013-12-13
  * @author  qiushaowei &lt;suches@btbtd.org&gt; | 75 Team
  * @example
-        &lt;h2&gt;Bizs.MultiAutoComplete 示例&lt;/h2&gt;
+&lt;xmp&gt;&lt;div class=&quot;ui-sug-mod&quot;&gt;
+    &lt;input type=&quot;text&quot; class=&quot;ui-sug-ipt js_compAutoComplete js_k1&quot; name=&quot;k1&quot; value=&quot;&quot; 
+        autocomplete=&quot;off&quot; 
+
+        cacPopup=&quot;/ul.js_compAutoCompleteBox&quot;
+        cacLabelKey=&quot;data-label&quot;
+        cacIdKey=&quot;data-id&quot;
+        cacIdSelector=&quot;/input.js_k1_id&quot;
+        cacStrictData=&quot;true&quot;
+        cacDataFilter=&quot;cacDataFilter&quot;
+        cacNoDataText=&quot;暂无数据!&quot;
+
+        cacPreventEnter=&quot;true&quot; 
+
+        defaultMultiAutomComplete=&quot;&quot;
+        macUrl=&quot;./data/shengshi_with_error_code.php?id=0&quot;
+        macTarget=&quot;/input.js_k2&quot;
+
+        Placeholder=&quot;一级位置&quot;
+        /&gt;
+    &lt;input type=&quot;hidden&quot; value=&quot;14&quot; class=&quot;js_k1_id&quot; name=&quot;k1_id&quot; /&gt;
+
+    &lt;input type=&quot;text&quot; class=&quot;ui-sug-ipt js_compAutoComplete js_k2&quot; name=&quot;k2&quot; value=&quot;&quot; 
+        autocomplete=&quot;off&quot; 
+
+        cacPopup=&quot;/ul.js_compAutoCompleteBox&quot;
+        cacLabelKey=&quot;data-label&quot;
+        cacIdKey=&quot;data-id&quot;
+        cacIdSelector=&quot;/input.js_k2_id&quot;
+        cacStrictData=&quot;true&quot;
+        cacDataFilter=&quot;cacDataFilter&quot;
+        cacNoDataText=&quot;暂无数据!&quot;
+
+        cacPreventEnter=&quot;true&quot; 
+
+        macUrl=&quot;./data/shengshi_with_error_code.php?id={0}&quot;
+        macTarget=&quot;/input.js_k3&quot;
+        Placeholder=&quot;二级位置&quot;
+        /&gt;
+    &lt;input type=&quot;hidden&quot; value=&quot;2341&quot; class=&quot;js_k2_id&quot; name=&quot;k2_id&quot; /&gt;
+
+    &lt;input type=&quot;text&quot; class=&quot;ui-sug-ipt js_compAutoComplete js_k3&quot; name=&quot;k3&quot; value=&quot;区&quot; 
+        autocomplete=&quot;off&quot; 
+        Placeholder=&quot;三级位置&quot;
+
+        cacPopup=&quot;/ul.js_compAutoCompleteBox&quot;
+        cacLabelKey=&quot;data-label&quot;
+        cacIdKey=&quot;data-id&quot;
+        cacStrictData=&quot;false&quot;
+        cacDataFilter=&quot;cacDataFilter&quot;
+        cacNoDataText=&quot;暂无数据!&quot;
+        cacAddtionItem=&quot;true&quot;
+        cacListItemTpl=&quot;/script.cacItemTpl&quot;
+
+        cacPreventEnter=&quot;true&quot; 
+
+        macUrl=&quot;./data/shengshi_with_error_code.php?id={0}&quot;
+        macAddtionUrl=&quot;./data/shengshi_with_error_code.php?id=0&quot;
+        macAddtionBox=&quot;/.js_macAddtionBox&quot;
+        macAddtionBoxItemTpl=&quot;/script.macAddtionBoxItemTpl&quot;
+        macAddtionBoxItemSelector=&quot;&gt; a&quot;
+        macAddtionItemAddCallback=&quot;macAddtionItemAddCallback&quot;
+        macAddtionItemRemoveCallback=&quot;macAddtionItemRemoveCallback&quot;
+        /&gt;
+    &lt;span class=&quot;js_macAddtionBox&quot; style=&quot;display:none;&quot;&gt;
+        &lt;span class=&quot;js_macAddtionBoxList&quot;&gt;
+            &lt;a href=&quot;javascript:&quot; class=&quot;js_macAddtionBoxItem&quot; data-id=&quot;2345&quot; data-label=&quot;枫溪区&quot;&gt;
+                &lt;label&gt;枫溪区&lt;/label&gt;
+                &lt;button type=&quot;button&quot; class=&quot;AURemove&quot;&gt;&lt;/button&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;condition[]&quot; value=&quot;2345&quot;&gt;
+            &lt;/a&gt;
+        &lt;/span&gt;
+        &lt;a href=&quot;javascript:&quot; class=&quot;js_macClearAddtionList&quot;&gt;
+            清空&lt;button type=&quot;button&quot; class=&quot;AUClose&quot;&gt;&lt;/button&gt;
+        &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;script type=&quot;text/template&quot; class=&quot;cacItemTpl&quot;&gt;
+        &lt;li data-id=&quot;{0}&quot; data-label=&quot;{1}&quot; data-index=&quot;{2}&quot; class=&quot;AC_listItem {3} js_macAddtionBoxItemClick&quot;&gt;
+        &lt;a href=&quot;javascript:;&quot; data-id=&quot;{0}&quot; data-label=&quot;{1}&quot; data-index=&quot;{2}&quot; class=&quot;AC_control AC_customAdd&quot;&gt;添加&lt;/a&gt;
+        &lt;label&gt;{1} &lt;/label&gt;
+        &lt;/li&gt; 
+    &lt;/script&gt;
+    &lt;script type=&quot;text/template&quot; class=&quot;macAddtionBoxItemTpl&quot;&gt;
+        &lt;a href=&quot;javascript:&quot; class=&quot;js_macAddtionBoxItem&quot; data-id=&quot;{0}&quot; data-label=&quot;{1}&quot;&gt;
+            &lt;label&gt;{1}&lt;/label&gt;
+            &lt;button type=&quot;button&quot; class=&quot;AURemove&quot;&gt;&lt;/button&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;condition[]&quot; value=&quot;{0}&quot; /&gt;
+        &lt;/a&gt;
+    &lt;/script&gt;
+&lt;/div&gt;&lt;/xmp&gt;
  */
     var _jdoc = $( document ), _jwin = $( window );
 
@@ -443,7 +565,12 @@
                     });
 
                     _box.delegate( &#x27;.js_macAddtionBoxItem&#x27;, &#x27;click&#x27;, function( _evt ){
-                        $( this ).remove();
+                        var _sp = $( this ), _id = _sp.attr( &#x27;data-id&#x27; ), _label = _sp.attr( &#x27;data-label&#x27; );
+
+                        _p._model.macAddtionItemRemoveCallback( _selector )
+                            &amp;&amp; _p._model.macAddtionItemRemoveCallback( _selector ).call( _p, _sp, _id, _label, _boxList, _box );
+
+                        _sp.remove();
                         checkBoxStatus();
                     });
 
@@ -454,14 +581,13 @@
                             , _items = _boxList.find( _p._model.macAddtionBoxItemSelector( _selector ) )
                             , _tpl = _p._model.macAddtionBoxItemTpl( _selector )
                             , _item
-                            , _valueSelector = _boxList.find( _p._model.macAddtionBoxItemValueSelector( _selector ) )
                             , _find
                             ;
                         JC.log( _id, _label, new Date().getTime() );
 
-                        _valueSelector.each( function( _ix, _sitem ){
+                        _items.each( function( _ix, _sitem ){
                             _sitem = $( _sitem );
-                            if( _sitem.val() == _id ){
+                            if( _sitem.attr( &#x27;data-id&#x27; )== _id ){
                                 _find = true;
                             }
                         });
@@ -469,7 +595,12 @@
 
                         _item = $( JC.f.printf( _tpl, _id, _label ) );
                         _item.appendTo( _boxList );
+                        _item.attr( &#x27;data-id&#x27;, _id );
+                        _item.attr( &#x27;data-label&#x27;, _label );
                         _box.show();
+                        
+                        _p._model.macAddtionItemAddCallback( _selector )
+                            &amp;&amp; _p._model.macAddtionItemAddCallback( _selector ).call( _p, _item, _id, _label, _boxList, _box );
                     });
 
                     checkBoxStatus();
@@ -495,7 +626,9 @@
                 //JC.log( &#x27;MultiAutoComplete.Model.init:&#x27;, new Date().getTime() );
             }
 
-        , macAddtionBoxItemValueSelector: function( _selector ){ return this.attrProp( _selector, &#x27;macAddtionBoxItemValueSelector&#x27; ); }
+        , macAddtionItemAddCallback: function( _selector ){ return this.callbackProp( _selector, &#x27;macAddtionItemAddCallback&#x27; ); }
+        , macAddtionItemRemoveCallback: function( _selector ){ return this.callbackProp( _selector, &#x27;macAddtionItemRemoveCallback&#x27; ); }
+
         , macAddtionBoxItemSelector: function( _selector ){ return this.attrProp( _selector, &#x27;macAddtionBoxItemSelector&#x27; ); }
         , macAddtionBoxItemTpl: 
             function( _selector ){ 
@@ -554,6 +687,9 @@
                     !_selector.is( &#x27;[macIdCallback]&#x27; )
                         &amp;&amp; _selector.attr( &#x27;macIdCallback&#x27;, &#x27;MultiAutoCompleteIdCallback&#x27; )
                         ;
+
+                    !_selector.is( &#x27;[cacDataFilter]&#x27; )
+                        &amp;&amp; _selector.attr( &#x27;cacDataFilter&#x27;, &#x27;MultiAutoCompleteDataFilter&#x27; );
                 });
             }
 
@@ -677,6 +813,20 @@
 
     window.MultiAutoCompleteIdCallback =
         function(){
+        };
+
+    window.MultiAutoCompleteDataFilter = 
+        function ( _json ){
+            if( _json.data &amp;&amp; _json.data.length ){
+                _json = _json.data;
+            }
+
+            $.each( _json, function( _ix, _item ){
+                _item.length &amp;&amp;
+                    ( _json[ _ix ] = { &#x27;id&#x27;: _item[0], &#x27;label&#x27;: _item[1] } )
+                    ;
+            });
+            return _json;
         };
 
     _jdoc.ready( function(){
