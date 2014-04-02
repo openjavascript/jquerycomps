@@ -117,6 +117,17 @@
                 "window.Bizs": 1
             }
         },
+        "../bizs/MultiAutoComplete/MultiAutoComplete.js": {
+            "name": "../bizs/MultiAutoComplete/MultiAutoComplete.js",
+            "modules": {},
+            "classes": {
+                "window.Bizs.MultiAutoComplete": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.Bizs": 1
+            }
+        },
         "../bizs/MultiDate/MultiDate.js": {
             "name": "../bizs/MultiDate/MultiDate.js",
             "modules": {},
@@ -808,6 +819,33 @@
                 "\n       <div>\n           金额: <input type=\"text\" value=\"6543.21\" \n           datatype=\"n-12.2\" class=\"js_bizMoneyTips\" bmtDisplayLabel=\"/span.js_bmtSpan\" />\n           <em class=\"error\"></em>\n           <span class=\"js_bmtSpan\"></span>\n       </div>"
             ]
         },
+        "window.Bizs.MultiAutoComplete": {
+            "name": "window.Bizs.MultiAutoComplete",
+            "shortname": "window.Bizs.MultiAutoComplete",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.Bizs",
+            "file": "../bizs/MultiAutoComplete/MultiAutoComplete.js",
+            "line": 2,
+            "description": "级联 Suggest\n\n<p><b>require</b>:\n  <a href='JC.AutoComplete.html'>JC.AutoComplete</a>\n  , <a href='JC.Placeholder.html'>JC.Placeholder</a>\n  , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc.openjavascript.org/docs_api/classes/Bizs.MultiAutoComplete.html' target='_blank'>API docs</a>\n  | <a href='../../bizs/MultiAutoComplete/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会自动处理 input[defaultMultiAutomComplete] </h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>defaultMultiAutomComplete = empty</dt>\n   <dd>声明第一级联动框</dd>\n\n   <dt>macUrl = url</dt>\n   <dd>获取数据的URL接口<dd>\n\n   <dt>macAddtionUrl = url</dt>\n   <dd>用于最后一级的附加数据接口, 如果所有父级没有选中内容, 将启用该接口</dd>\n\n   <dt>macAddtionBox = selector</dt>\n   <dd>指定用于保存选择内容的选择器</dd>\n\n   <dt>macAddtionBoxItemTpl = selector</dt>\n   <dd>保存内容项的模板</dd>\n\n   <dt>macAddtionBoxItemSelector = selector</dt>\n   <dd>保存内容项的选择器</dd>\n\n   <dt>macAddtionItemAddCallback = callback</dt>\n   <dd>添加保存内容项时的回调\n<xmp>function macAddtionItemAddCallback( _item, _id, _label, _parent, _parentBox ){\n   var _macIns = this;\n   JC.log( 'macAddtionItemAddCallback', _id, _label );\n}</xmp>\n   </dd>\n\n   <dt>macAddtionItemRemoveCallback = callback</dt>\n   <dd>删除保存内容项时的回调\n<xmp>function macAddtionItemRemoveCallback( _item, _id, _label, _parent, _parentBox ){\n   var _macIns = this;\n   JC.log( 'macAddtionItemRemoveCallback', _id, _label );\n}</xmp>\n   </dd>\n\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-12-13",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n<xmp><div class=\"ui-sug-mod\">\n   <input type=\"text\" class=\"ui-sug-ipt js_compAutoComplete js_k1\" name=\"k1\" value=\"\" \n       autocomplete=\"off\" \n\n       cacPopup=\"/ul.js_compAutoCompleteBox\"\n       cacLabelKey=\"data-label\"\n       cacIdKey=\"data-id\"\n       cacIdSelector=\"/input.js_k1_id\"\n       cacStrictData=\"true\"\n       cacDataFilter=\"cacDataFilter\"\n       cacNoDataText=\"暂无数据!\"\n\n       cacPreventEnter=\"true\" \n\n       defaultMultiAutomComplete=\"\"\n       macUrl=\"./data/shengshi_with_error_code.php?id=0\"\n       macTarget=\"/input.js_k2\"\n\n       Placeholder=\"一级位置\"\n       />\n   <input type=\"hidden\" value=\"14\" class=\"js_k1_id\" name=\"k1_id\" />\n\n   <input type=\"text\" class=\"ui-sug-ipt js_compAutoComplete js_k2\" name=\"k2\" value=\"\" \n       autocomplete=\"off\" \n\n       cacPopup=\"/ul.js_compAutoCompleteBox\"\n       cacLabelKey=\"data-label\"\n       cacIdKey=\"data-id\"\n       cacIdSelector=\"/input.js_k2_id\"\n       cacStrictData=\"true\"\n       cacDataFilter=\"cacDataFilter\"\n       cacNoDataText=\"暂无数据!\"\n\n       cacPreventEnter=\"true\" \n\n       macUrl=\"./data/shengshi_with_error_code.php?id={0}\"\n       macTarget=\"/input.js_k3\"\n       Placeholder=\"二级位置\"\n       />\n   <input type=\"hidden\" value=\"2341\" class=\"js_k2_id\" name=\"k2_id\" />\n\n   <input type=\"text\" class=\"ui-sug-ipt js_compAutoComplete js_k3\" name=\"k3\" value=\"区\" \n       autocomplete=\"off\" \n       Placeholder=\"三级位置\"\n\n       cacPopup=\"/ul.js_compAutoCompleteBox\"\n       cacLabelKey=\"data-label\"\n       cacIdKey=\"data-id\"\n       cacStrictData=\"false\"\n       cacDataFilter=\"cacDataFilter\"\n       cacNoDataText=\"暂无数据!\"\n       cacAddtionItem=\"true\"\n       cacListItemTpl=\"/script.cacItemTpl\"\n\n       cacPreventEnter=\"true\" \n\n       macUrl=\"./data/shengshi_with_error_code.php?id={0}\"\n       macAddtionUrl=\"./data/shengshi_with_error_code.php?id=0\"\n       macAddtionBox=\"/.js_macAddtionBox\"\n       macAddtionBoxItemTpl=\"/script.macAddtionBoxItemTpl\"\n       macAddtionBoxItemSelector=\"> a\"\n       macAddtionItemAddCallback=\"macAddtionItemAddCallback\"\n       macAddtionItemRemoveCallback=\"macAddtionItemRemoveCallback\"\n       />\n   <span class=\"js_macAddtionBox\" style=\"display:none;\">\n       <span class=\"js_macAddtionBoxList\">\n           <a href=\"javascript:\" class=\"js_macAddtionBoxItem\" data-id=\"2345\" data-label=\"枫溪区\">\n               <label>枫溪区</label>\n               <button type=\"button\" class=\"AURemove\"></button>\n               <input type=\"hidden\" name=\"condition[]\" value=\"2345\">\n           </a>\n       </span>\n       <a href=\"javascript:\" class=\"js_macClearAddtionList\">\n           清空<button type=\"button\" class=\"AUClose\"></button>\n       </a>\n   </span>\n   <script type=\"text/template\" class=\"cacItemTpl\">\n       <li data-id=\"{0}\" data-label=\"{1}\" data-index=\"{2}\" class=\"AC_listItem {3} js_macAddtionBoxItemClick\">\n       <a href=\"javascript:;\" data-id=\"{0}\" data-label=\"{1}\" data-index=\"{2}\" class=\"AC_control AC_customAdd\">添加</a>\n       <label>{1} </label>\n       </li> \n   </script>\n   <script type=\"text/template\" class=\"macAddtionBoxItemTpl\">\n       <a href=\"javascript:\" class=\"js_macAddtionBoxItem\" data-id=\"{0}\" data-label=\"{1}\">\n           <label>{1}</label>\n           <button type=\"button\" class=\"AURemove\"></button>\n           <input type=\"hidden\" name=\"condition[]\" value=\"{0}\" />\n       </a>\n   </script>\n</div></xmp>"
+            ]
+        },
         "window.Bizs.MultiDate": {
             "name": "window.Bizs.MultiDate",
             "shortname": "window.Bizs.MultiDate",
@@ -945,7 +983,7 @@
             "namespace": "JC",
             "file": "../comps/AutoComplete/AutoComplete.js",
             "line": 4,
-            "description": "AutoComplete 文本框内容输入提示\n<br />响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 AutoComplete 实例\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>\n| <a href='../../comps/AutoComplete/_demo' target='_blank'>demo link</a></p>\n\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>cacPopup = selector, optional</dt>\n     <dd>显式指定用于显示数据列表的弹框, 如不指定, 载入数据时会自己生成 popup node</dd>\n\n     <dt>cacPreventEnter = bool, default = false</dt>\n     <dd>文本框按回车键时, 是否阻止默认行为, 防止提交表单</dd>\n\n     <dt>cacLabelKey = string, default = data-label</dt>\n     <dd>用于显示 label 的HTML属性</dd>\n\n     <dt>cacIdKey = string, default= data-id</dt>\n     <dd>用于显示 ID 的HTML属性</dd>\n\n     <dt>cacIdSelector = selector</dt>\n     <dd>用于保存 ID 值的 node</dd>\n\n     <dt>cacIdVal = string, optional</dt>\n     <dd>用于初始化的默认ID, 如果 cacIdVal 为空将尝试读取 cacIdSelector 的值</dd>\n\n     <dt>cacStrictData = bool, default = false</dt>\n     <dd>是否验证已填内容的合法性<br />仅在 cacIdSelector 和 cacIdKey 显式声明时有效</dd>\n\n     <dt>cacAjaxDataUrl = url</dt>\n     <dd>\n         获取 数据的 AJAX 接口\n         <dl>\n             <dt>数据格式</dt>\n             <dd>\n                 [ { \"id\": \"id value\", \"label\": \"label value\" }, ... ]\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>cacDataFilter = callback</dt>\n     <dd>\n         <dl>\n             <dt>如果 数据接口获取的数据不是默认格式, \n                 可以使用这个属性定义一个数据过滤函数, 把数据转换为合适的格式\n             </dt>\n             <dd>\n<pre>function cacDataFilter( _json ){\nif( _json.data && _json.data.length ){\n   _json = _json.data;\n}\n\n$.each( _json, function( _ix, _item ){\n   _item.length &&\n       ( _json[ _ix ] = { 'id': _item[0], 'label': _item[1] } )\n       ;\n});\nreturn _json;\n}</pre>\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>cacBoxWidth = int</dt>\n     <dd>定义 popup 的宽度, 如果没有显式定义, 将使用 selector 的宽度</dd>\n\n     <dt>cacCasesensitive = bool, default = false</dt>\n     <dd>是否区分英文大小写</dd>\n\n     <dt>cacSubItemsSelector = selector string, default = \"&gt; li\"\n     <dd>popup 查找数据项的选择器语法</dd>\n\n     <dt>cacNoDataText = string, default = \"数据加载中, 请稍候...\"</dt>\n     <dd>加载数据时的默认提示文字</dd>\n\n     <dt>cacValidCheckTimeout = int, default = 1</dt>\n     <dd>定义 JC.Valid blur 时执行 check 的时间间隔, 主要为防止点击列表时已经 Valid.check 的问题</dd>\n\n     <dt>cacFixHtmlEntity = bool</dt>\n     <dd>是否将 HTML实体 转为 html</dd>\n</dl>",
+            "description": "AutoComplete 文本框内容输入提示\n<br />响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 AutoComplete 实例\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>\n| <a href='../../comps/AutoComplete/_demo' target='_blank'>demo link</a></p>\n\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>cacPopup = selector, optional</dt>\n     <dd>显式指定用于显示数据列表的弹框, 如不指定, 载入数据时会自己生成 popup node</dd>\n\n     <dt>cacPreventEnter = bool, default = false</dt>\n     <dd>文本框按回车键时, 是否阻止默认行为, 防止提交表单</dd>\n\n     <dt>cacLabelKey = string, default = data-label</dt>\n     <dd>用于显示 label 的HTML属性</dd>\n\n     <dt>cacIdKey = string, default= data-id</dt>\n     <dd>用于显示 ID 的HTML属性</dd>\n\n     <dt>cacIdSelector = selector</dt>\n     <dd>用于保存 ID 值的 node</dd>\n\n     <dt>cacIdVal = string, optional</dt>\n     <dd>用于初始化的默认ID, 如果 cacIdVal 为空将尝试读取 cacIdSelector 的值</dd>\n\n     <dt>cacStrictData = bool, default = false</dt>\n     <dd>是否验证已填内容的合法性<br />仅在 cacIdSelector 和 cacIdKey 显式声明时有效</dd>\n\n     <dt>cacAjaxDataUrl = url</dt>\n     <dd>\n         获取 数据的 AJAX 接口\n         <dl>\n             <dt>数据格式</dt>\n             <dd>\n                 [ { \"id\": \"id value\", \"label\": \"label value\" }, ... ]\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>cacDataFilter = callback</dt>\n     <dd>\n         <dl>\n             <dt>如果 数据接口获取的数据不是默认格式, \n                 可以使用这个属性定义一个数据过滤函数, 把数据转换为合适的格式\n             </dt>\n             <dd>\n<pre>function cacDataFilter( _json ){\nif( _json.data && _json.data.length ){\n   _json = _json.data;\n}\n\n$.each( _json, function( _ix, _item ){\n   _item.length &&\n       ( _json[ _ix ] = { 'id': _item[0], 'label': _item[1] } )\n       ;\n});\nreturn _json;\n}</pre>\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>cacBoxWidth = int</dt>\n     <dd>定义 popup 的宽度, 如果没有显式定义, 将使用 selector 的宽度</dd>\n\n     <dt>cacCasesensitive = bool, default = false</dt>\n     <dd>是否区分英文大小写</dd>\n\n     <dt>cacSubItemsSelector = selector string, default = \"&gt; li\"\n     <dd>popup 查找数据项的选择器语法</dd>\n\n     <dt>cacNoDataText = string, default = \"数据加载中, 请稍候...\"</dt>\n     <dd>加载数据时的默认提示文字</dd>\n\n     <dt>cacValidCheckTimeout = int, default = 1</dt>\n     <dd>定义 JC.Valid blur 时执行 check 的时间间隔, 主要为防止点击列表时已经 Valid.check 的问题</dd>\n\n     <dt>cacFixHtmlEntity = bool</dt>\n     <dd>是否将 HTML实体 转为 html</dd>\n\n     <dt>cacMultiSelect = bool, default = false</dt>\n     <dd>是否为多选模式</dd>\n\n     <dt>cacListItemTpl= selector</dt>\n     <dd>指定项内容的模板</dd>\n</dl>",
             "is_constructor": 1,
             "params": [
                 {
@@ -3196,6 +3234,27 @@
             "namespace": "window.Bizs"
         },
         {
+            "file": "../bizs/MultiAutoComplete/MultiAutoComplete.js",
+            "line": 180,
+            "description": "初始化可识别的 MultiAutoComplete 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of MultiAutoCompleteInstance"
+            },
+            "class": "window.Bizs.MultiAutoComplete",
+            "namespace": "window.Bizs"
+        },
+        {
             "file": "../bizs/MultiDate/MultiDate.js",
             "line": 125,
             "description": "获取或设置 MultiDate 的实例",
@@ -3655,7 +3714,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 141,
+            "line": 149,
             "description": "获取或设置 AutoComplete 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -3676,7 +3735,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 157,
+            "line": 165,
             "description": "初始化可识别的 AutoComplete 实例",
             "itemtype": "method",
             "name": "init",
@@ -3697,7 +3756,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 180,
+            "line": 188,
             "description": "更新原始数据",
             "itemtype": "method",
             "name": "update",
@@ -3723,7 +3782,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 195,
+            "line": 203,
             "description": "使用 ajax 接口更新原始数据",
             "itemtype": "method",
             "name": "ajaxUpdate",
@@ -3754,7 +3813,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 211,
+            "line": 219,
             "description": "定义全局数据过滤函数",
             "itemtype": "method",
             "name": "dataFilter",
@@ -3775,7 +3834,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 219,
+            "line": 227,
             "description": "是否将 HTML实体 转为 html",
             "itemtype": "property",
             "name": "fixHtmlEntity",
@@ -3787,21 +3846,21 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 345,
+            "line": 404,
             "description": "点击列表时, 阻止冒泡",
             "class": "JC.AutoComplete",
             "namespace": "JC"
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 403,
+            "line": 481,
             "description": "响应 li 点击时, 更新对应的内容",
             "class": "JC.AutoComplete",
             "namespace": "JC"
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 439,
+            "line": 535,
             "description": "获取 绑定的 id node",
             "itemtype": "method",
             "name": "idSelector",
@@ -3814,10 +3873,17 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 445,
-            "description": "获取 id 值",
+            "line": 541,
+            "description": "获取/设置 id 值",
             "itemtype": "method",
             "name": "idVal",
+            "params": [
+                {
+                    "name": "_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
             "return": {
                 "description": "",
                 "type": "Id string"
@@ -3827,7 +3893,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 451,
+            "line": 552,
             "description": "使用 ajax 接口更新原始数据",
             "itemtype": "method",
             "name": "ajaxUpdate",
@@ -3848,7 +3914,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 462,
+            "line": 563,
             "description": "显示数据列表",
             "itemtype": "method",
             "name": "show",
@@ -3857,7 +3923,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 474,
+            "line": 576,
             "description": "隐藏数据列表",
             "itemtype": "method",
             "name": "hide",
@@ -3866,7 +3932,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 483,
+            "line": 585,
             "description": "获取数据列表 node",
             "itemtype": "method",
             "name": "popup",
@@ -3879,7 +3945,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 492,
+            "line": 594,
             "description": "更新原始数据",
             "itemtype": "method",
             "name": "update",
@@ -3895,7 +3961,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 508,
+            "line": 613,
             "description": "清除 selector 和 idSelector 的默认值",
             "itemtype": "method",
             "name": "clear",
@@ -3904,7 +3970,16 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 517,
+            "line": 622,
+            "description": "清除所有数据",
+            "itemtype": "method",
+            "name": "clearAll",
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoComplete/AutoComplete.js",
+            "line": 633,
             "description": "校正数据列表的显示位置",
             "itemtype": "method",
             "name": "fixPosition",
@@ -3913,7 +3988,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 595,
+            "line": 739,
             "description": "验证 key && id 是否正确\n仅在 cacStrictData 为真的时候进行验证",
             "class": "JC.AutoComplete",
             "namespace": "JC"
@@ -14585,19 +14660,19 @@
         },
         {
             "file": "../common.js",
-            "line": 88,
+            "line": 89,
             "description": "判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 110,
+            "line": 111,
             "description": "jquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 114,
+            "line": 115,
             "description": "全局 css z-index 控制属性\n<br /> <b>注意</b>: 这个变量是 window.ZINDEX_COUNT",
             "itemtype": "property",
             "name": "ZINDEX_COUNT",
@@ -14608,7 +14683,7 @@
         },
         {
             "file": "../common.js",
-            "line": 132,
+            "line": 133,
             "description": "把函数的参数转为数组",
             "itemtype": "method",
             "name": "sliceArgs",
@@ -14627,7 +14702,7 @@
         },
         {
             "file": "../common.js",
-            "line": 146,
+            "line": 147,
             "description": "取 URL 的 host name",
             "itemtype": "method",
             "name": "urlHostName",
@@ -14646,7 +14721,7 @@
         },
         {
             "file": "../common.js",
-            "line": 162,
+            "line": 163,
             "description": "把 URL 相对路径 转换为 绝对路径",
             "itemtype": "method",
             "name": "relativePath",
@@ -14670,7 +14745,7 @@
         },
         {
             "file": "../common.js",
-            "line": 190,
+            "line": 191,
             "description": "按格式输出字符串",
             "itemtype": "method",
             "name": "printf",
@@ -14692,7 +14767,7 @@
         },
         {
             "file": "../common.js",
-            "line": 206,
+            "line": 207,
             "description": "判断URL中是否有某个get参数",
             "itemtype": "method",
             "name": "hasUrlParam",
@@ -14719,7 +14794,7 @@
         },
         {
             "file": "../common.js",
-            "line": 228,
+            "line": 229,
             "description": "添加URL参数\n<br /><b>require:</b> delUrlParam, filterXSS",
             "itemtype": "method",
             "name": "addUrlParams",
@@ -14746,7 +14821,7 @@
         },
         {
             "file": "../common.js",
-            "line": 254,
+            "line": 255,
             "description": "xss 过滤函数",
             "itemtype": "method",
             "name": "filterXSS",
@@ -14765,7 +14840,7 @@
         },
         {
             "file": "../common.js",
-            "line": 269,
+            "line": 270,
             "description": "取URL参数的值\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "getUrlParam",
@@ -14792,7 +14867,7 @@
         },
         {
             "file": "../common.js",
-            "line": 297,
+            "line": 298,
             "description": "取URL参数的值, 这个方法返回数组\n<br />与 getUrlParam 的区别是可以获取 checkbox 的所有值\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "getUrlParams",
@@ -14819,7 +14894,7 @@
         },
         {
             "file": "../common.js",
-            "line": 327,
+            "line": 328,
             "description": "删除URL参数\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "delUrlParam",
@@ -14846,7 +14921,34 @@
         },
         {
             "file": "../common.js",
-            "line": 357,
+            "line": 358,
+            "description": "批量删除URL参数\n<br /><b>require:</b> delUrlParam",
+            "itemtype": "method",
+            "name": "delUrlParams",
+            "params": [
+                {
+                    "name": "_url",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_keys",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "static": 1,
+            "example": [
+                "\n           var url = delUrlParam( location.href, [ 'k1', 'k2' ] );"
+            ],
+            "class": "JC.common"
+        },
+        {
+            "file": "../common.js",
+            "line": 374,
             "description": "提示需要 HTTP 环境",
             "itemtype": "method",
             "name": "httpRequire",
@@ -14865,7 +14967,7 @@
         },
         {
             "file": "../common.js",
-            "line": 372,
+            "line": 389,
             "description": "删除 URL 的锚点\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "removeUrlSharp",
@@ -14894,7 +14996,7 @@
         },
         {
             "file": "../common.js",
-            "line": 394,
+            "line": 411,
             "description": "重载页面\n<br /><b>require:</b> removeUrlSharp, addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "reloadPage",
@@ -14920,7 +15022,7 @@
         },
         {
             "file": "../common.js",
-            "line": 415,
+            "line": 432,
             "description": "取小数点的N位\n<br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题",
             "itemtype": "method",
             "name": "parseFinance",
@@ -14944,7 +15046,7 @@
         },
         {
             "file": "../common.js",
-            "line": 430,
+            "line": 447,
             "description": "js 附加字串函数",
             "itemtype": "method",
             "name": "padChar",
@@ -14973,7 +15075,7 @@
         },
         {
             "file": "../common.js",
-            "line": 446,
+            "line": 463,
             "description": "格式化日期为 YYYY-mm-dd 格式\n<br /><b>require</b>: pad\\_char\\_f",
             "itemtype": "method",
             "name": "formatISODate",
@@ -14997,7 +15099,7 @@
         },
         {
             "file": "../common.js",
-            "line": 460,
+            "line": 477,
             "description": "从 ISODate 字符串解析日期对象",
             "itemtype": "method",
             "name": "parseISODate",
@@ -15016,7 +15118,7 @@
         },
         {
             "file": "../common.js",
-            "line": 478,
+            "line": 495,
             "description": "从日期字符串解析日期对象\n<br />兼容 JC.Calendar 日期格式",
             "itemtype": "method",
             "name": "parseDate",
@@ -15046,7 +15148,7 @@
         },
         {
             "file": "../common.js",
-            "line": 502,
+            "line": 519,
             "description": "获取不带 时分秒的 日期对象",
             "itemtype": "method",
             "name": "pureDate",
@@ -15064,7 +15166,7 @@
         },
         {
             "file": "../common.js",
-            "line": 514,
+            "line": 531,
             "description": "克隆日期对象",
             "itemtype": "method",
             "name": "cloneDate",
@@ -15084,7 +15186,7 @@
         },
         {
             "file": "../common.js",
-            "line": 522,
+            "line": 539,
             "description": "判断两个日期是否为同一天",
             "itemtype": "method",
             "name": "isSameDay",
@@ -15109,7 +15211,7 @@
         },
         {
             "file": "../common.js",
-            "line": 534,
+            "line": 551,
             "description": "判断两个日期是否为同一月份",
             "itemtype": "method",
             "name": "isSameMonth",
@@ -15134,7 +15236,7 @@
         },
         {
             "file": "../common.js",
-            "line": 547,
+            "line": 564,
             "description": "判断两个日期是否为同一季度",
             "itemtype": "method",
             "name": "isSameWeek",
@@ -15159,7 +15261,7 @@
         },
         {
             "file": "../common.js",
-            "line": 578,
+            "line": 595,
             "description": "判断两个日期是否为同一季度",
             "itemtype": "method",
             "name": "isSameSeason",
@@ -15184,7 +15286,7 @@
         },
         {
             "file": "../common.js",
-            "line": 610,
+            "line": 627,
             "description": "判断两个日期是否为同一年",
             "itemtype": "method",
             "name": "isSameSeason",
@@ -15209,7 +15311,7 @@
         },
         {
             "file": "../common.js",
-            "line": 622,
+            "line": 639,
             "description": "取一年中所有的星期, 及其开始结束日期",
             "itemtype": "method",
             "name": "weekOfYear",
@@ -15233,13 +15335,13 @@
         },
         {
             "file": "../common.js",
-            "line": 634,
+            "line": 651,
             "description": "元旦开始的第一个星期一开始的一周为政治经济上的第一周",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 659,
+            "line": 676,
             "description": "取一年中所有的季度, 及其开始结束日期",
             "itemtype": "method",
             "name": "seasonOfYear",
@@ -15258,7 +15360,7 @@
         },
         {
             "file": "../common.js",
-            "line": 696,
+            "line": 713,
             "description": "取得一个月份中最大的一天",
             "itemtype": "method",
             "name": "maxDayOfMonth",
@@ -15278,7 +15380,7 @@
         },
         {
             "file": "../common.js",
-            "line": 709,
+            "line": 726,
             "description": "取当前脚本标签的 src路径",
             "itemtype": "method",
             "name": "scriptPath",
@@ -15291,7 +15393,7 @@
         },
         {
             "file": "../common.js",
-            "line": 721,
+            "line": 738,
             "description": "缓动函数, 动画效果为按时间缓动 \n<br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval",
             "itemtype": "method",
             "name": "easyEffect",
@@ -15333,7 +15435,7 @@
         },
         {
             "file": "../common.js",
-            "line": 774,
+            "line": 791,
             "description": "把输入值转换为布尔值",
             "itemtype": "method",
             "name": "parseBool",
@@ -15352,7 +15454,7 @@
         },
         {
             "file": "../common.js",
-            "line": 793,
+            "line": 810,
             "description": "绑定或清除 mousewheel 事件",
             "itemtype": "method",
             "name": "mousewheelEvent",
@@ -15378,7 +15480,7 @@
         },
         {
             "file": "../common.js",
-            "line": 817,
+            "line": 834,
             "description": "获取 selector 的指定父级标签",
             "itemtype": "method",
             "name": "getJqParent",
@@ -15403,7 +15505,7 @@
         },
         {
             "file": "../common.js",
-            "line": 843,
+            "line": 860,
             "description": "扩展 jquery 选择器\n<br />扩展起始字符的 '/' 符号为 jquery 父节点选择器\n<br />扩展起始字符的 '|' 符号为 jquery 子节点选择器\n<br />扩展起始字符的 '(' 符号为 jquery 父节点查找识别符( getJqParent )",
             "itemtype": "method",
             "name": "parentSelector",
@@ -15433,7 +15535,7 @@
         },
         {
             "file": "../common.js",
-            "line": 911,
+            "line": 928,
             "description": "获取脚本模板的内容",
             "itemtype": "method",
             "name": "scriptContent",
@@ -15452,7 +15554,7 @@
         },
         {
             "file": "../common.js",
-            "line": 926,
+            "line": 943,
             "description": "取函数名 ( 匿名函数返回空 )",
             "itemtype": "method",
             "name": "funcName",
@@ -15471,7 +15573,7 @@
         },
         {
             "file": "../common.js",
-            "line": 941,
+            "line": 958,
             "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar\n         , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
@@ -15487,85 +15589,85 @@
         },
         {
             "file": "../common.js",
-            "line": 966,
+            "line": 983,
             "description": "联动下拉框",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 970,
+            "line": 987,
             "description": "日历组件",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 974,
+            "line": 991,
             "description": "双日历组件",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 978,
+            "line": 995,
             "description": "全选反选",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 982,
+            "line": 999,
             "description": "Ajax 上传",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 986,
+            "line": 1003,
             "description": "占位符",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 990,
+            "line": 1007,
             "description": "表格冻结",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 994,
+            "line": 1011,
             "description": "拖曳",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 998,
+            "line": 1015,
             "description": "图片裁切",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1004,
+            "line": 1021,
             "description": "disable / enable",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1008,
+            "line": 1025,
             "description": "表单提交逻辑",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1012,
+            "line": 1029,
             "description": "格式化金额",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1016,
+            "line": 1033,
             "description": "自动完成",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1021,
+            "line": 1038,
             "description": "URL 占位符识别功能\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "urlDetect",
@@ -15587,7 +15689,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1062,
+            "line": 1079,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -15610,13 +15712,13 @@
         },
         {
             "file": "../common.js",
-            "line": 1126,
+            "line": 1143,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1144,
+            "line": 1161,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -15650,7 +15752,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1194,
+            "line": 1211,
             "description": "日期格式化 (具体格式请查看 PHP Date Formats)",
             "itemtype": "method",
             "name": "dateFormat",
@@ -15674,7 +15776,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1269,
+            "line": 1286,
             "description": "扩展对象属性",
             "itemtype": "method",
             "name": "extendObject",
@@ -15703,7 +15805,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1291,
+            "line": 1308,
             "description": "timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行",
             "itemtype": "method",
             "name": "safeTimeout",
@@ -15737,7 +15839,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1312,
+            "line": 1329,
             "description": "URL 请求时, 获取对URL参数进行编码的函数",
             "itemtype": "method",
             "name": "encoder",
@@ -15757,7 +15859,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1330,
+            "line": 1347,
             "description": "深度克隆对象",
             "itemtype": "method",
             "name": "cloneObject",
@@ -15912,6 +16014,10 @@
         {
             "message": "unknown tag: version",
             "line": " ../bizs/MoneyTips/MoneyTips.js:4"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../bizs/MultiAutoComplete/MultiAutoComplete.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -16231,11 +16337,11 @@
         },
         {
             "message": "unknown tag: require",
-            "line": " ../common.js:817"
+            "line": " ../common.js:834"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../common.js:843"
+            "line": " ../common.js:860"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -16335,15 +16441,15 @@
         },
         {
             "message": "Missing item type\n点击列表时, 阻止冒泡",
-            "line": " ../comps/AutoComplete/AutoComplete.js:345"
+            "line": " ../comps/AutoComplete/AutoComplete.js:404"
         },
         {
             "message": "Missing item type\n响应 li 点击时, 更新对应的内容",
-            "line": " ../comps/AutoComplete/AutoComplete.js:403"
+            "line": " ../comps/AutoComplete/AutoComplete.js:481"
         },
         {
             "message": "Missing item type\n验证 key && id 是否正确\n仅在 cacStrictData 为真的时候进行验证",
-            "line": " ../comps/AutoComplete/AutoComplete.js:595"
+            "line": " ../comps/AutoComplete/AutoComplete.js:739"
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",
@@ -16715,71 +16821,71 @@
         },
         {
             "message": "Missing item type\n判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数",
-            "line": " ../common.js:88"
+            "line": " ../common.js:89"
         },
         {
             "message": "Missing item type\njquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
-            "line": " ../common.js:110"
+            "line": " ../common.js:111"
         },
         {
             "message": "Missing item type\n元旦开始的第一个星期一开始的一周为政治经济上的第一周",
-            "line": " ../common.js:634"
+            "line": " ../common.js:651"
         },
         {
             "message": "Missing item type\n联动下拉框",
-            "line": " ../common.js:966"
+            "line": " ../common.js:983"
         },
         {
             "message": "Missing item type\n日历组件",
-            "line": " ../common.js:970"
+            "line": " ../common.js:987"
         },
         {
             "message": "Missing item type\n双日历组件",
-            "line": " ../common.js:974"
+            "line": " ../common.js:991"
         },
         {
             "message": "Missing item type\n全选反选",
-            "line": " ../common.js:978"
+            "line": " ../common.js:995"
         },
         {
             "message": "Missing item type\nAjax 上传",
-            "line": " ../common.js:982"
+            "line": " ../common.js:999"
         },
         {
             "message": "Missing item type\n占位符",
-            "line": " ../common.js:986"
+            "line": " ../common.js:1003"
         },
         {
             "message": "Missing item type\n表格冻结",
-            "line": " ../common.js:990"
+            "line": " ../common.js:1007"
         },
         {
             "message": "Missing item type\n拖曳",
-            "line": " ../common.js:994"
+            "line": " ../common.js:1011"
         },
         {
             "message": "Missing item type\n图片裁切",
-            "line": " ../common.js:998"
+            "line": " ../common.js:1015"
         },
         {
             "message": "Missing item type\ndisable / enable",
-            "line": " ../common.js:1004"
+            "line": " ../common.js:1021"
         },
         {
             "message": "Missing item type\n表单提交逻辑",
-            "line": " ../common.js:1008"
+            "line": " ../common.js:1025"
         },
         {
             "message": "Missing item type\n格式化金额",
-            "line": " ../common.js:1012"
+            "line": " ../common.js:1029"
         },
         {
             "message": "Missing item type\n自动完成",
-            "line": " ../common.js:1016"
+            "line": " ../common.js:1033"
         },
         {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../common.js:1126"
+            "line": " ../common.js:1143"
         },
         {
             "message": "Missing item type\nFor feature detection",

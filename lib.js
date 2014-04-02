@@ -9638,6 +9638,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         , "cloneDate": cloneDate
         , "dateDetect": dateDetect
         , "delUrlParam": delUrlParam
+        , "delUrlParams": delUrlParams
         , "easyEffect": easyEffect
         , "filterXSS": filterXSS
         , "formatISODate": formatISODate
@@ -9951,6 +9952,22 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         }
         sharp && ( _url += '#' + sharp );
        _url = filterXSS( _url );
+        return _url;
+    }
+    /**
+     * 批量删除URL参数
+     * <br /><b>require:</b> delUrlParam
+     * @method  delUrlParams
+     * @param  {string}    _url
+     * @param  {Array}    _keys
+     * @return  string
+     * @static
+     * @example
+            var url = delUrlParam( location.href, [ 'k1', 'k2' ] );
+     */ 
+    function delUrlParams( _url, _keys ){
+        !_keys && ( _keys = _url, _url = location.href );
+        for( var k in _keys ) _url = delUrlParam( _url, _keys[ k ] );
         return _url;
     }
     /**
