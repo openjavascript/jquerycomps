@@ -277,10 +277,10 @@ return _json;
                 _p._model.selector().on('focus', function() {
                     //JC.log( 'focus' );
                     _p.trigger( 'bind_event' );
-                    _p.trigger( 'show_popup', [ true ] );
+                    _p.trigger( 'show_popup', [ _p._model.cacListAll() ] );
                 } );
 
-                _p.on( 'show_popup', function( _evt, _all ){
+                _p.on( 'show_popup', function( _evt, _listAll ){
                     _p.trigger( 'hide_all_popup' );
                     /*
                     if( !_p._model.selector().val().trim() && _p._model.selector().val().trim() == _p._model.preVal ){
@@ -288,7 +288,7 @@ return _json;
                         _p._view.updateList();
                     }
                     */
-                    _p._view.updateList( _all );
+                    _p._view.updateList( _listAll );
 
                     _p.trigger( AutoComplete.Model.SHOW );
                     _p.selector().addClass( AutoComplete.Model.CLASS_FAKE );
@@ -682,6 +682,8 @@ return _json;
                 typeof _setter != 'undefined' && ( this._clickDisable = _setter );
                 return this._clickDisable;
             }
+
+        , cacListAll: function(){ return this.boolProp( 'cacListAll' ); }
 
         , listItemTpl: function() {
             var _tpl = JC.f.printf( '<li ' 
@@ -1139,7 +1141,7 @@ return _json;
             },
 
         updateList: 
-            function ( _all ) {
+            function ( _listAll ) {
                 var _p  = this
                     , _dataItems
                     , _view = []
@@ -1148,7 +1150,7 @@ return _json;
                     , _data
                     ;
 
-                if ( ( !_label ) || _all ) {
+                if ( ( !_label ) || _listAll ) {
                     _data = _p._model.initData;
                 }else{
                     _data = _p._model.cache( _label, _id );
