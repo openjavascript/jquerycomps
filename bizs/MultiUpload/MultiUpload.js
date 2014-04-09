@@ -1,6 +1,6 @@
  ;(function(define, _win) { 'use strict'; define( [ 'JC.AjaxUpload' ], function(){
 /**
- * 组件用途简述
+ * 上传多个文件, 基于 JC.AjaxUpload
  *
  *<p><b>require</b>:
  *   <a href="widnow..jQuery.html">jQuery</a>

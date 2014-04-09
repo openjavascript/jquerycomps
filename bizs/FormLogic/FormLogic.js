@@ -1014,7 +1014,7 @@ window.parent
 
         , datavalidFormLogicMsg:
             function( _item ){
-                var _msg = "需要验证后才能提交, 请稍后再试...";
+                var _msg = "需要AJAX验证后才能提交, 请重试...";
                 _msg = $( _item ).attr( 'datavalidFormLogicMsg' ) || _msg;
                 return _msg;
             }
