@@ -237,8 +237,10 @@
    return _params;
 }</pre>
      </dd>
-     <dt>cauPostParams = json</dt>
-     <dd>显式声明 post params</dd>
+     <dt>cauPostParams = json var name, (<b>window 变量域</b>)</dt>
+     <dd>显式声明 post params, 全局指定请用 JC.AjaxUpload.POST_PARAMS </dd>
+     <dt>cauAllCookies = bool</dt>
+     <dd>是否把所有 cookie 添加到 post_params, 发送到服务器</dd>
      <dt>cauBatchUpload = bool, default = false</dt>
      <dd>是否为批量上传(<b>未实现</b>)</dd>
      <dt>cauShowProgress = bool, default = false</dt>
@@ -371,7 +373,11 @@
                     <h3>Properties</h3>
                     <ul class="index-list properties extends">
                             <li class="index-item property">
-                                <a href="#property_paramsCallback">paramsCallback</a>
+                                <a href="#property_PARAMS_CALLBACK">PARAMS_CALLBACK</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_POST_PARAMS">POST_PARAMS</a>
                                     <span class="flag static">static</span>
                             </li>
                     </ul>
@@ -458,7 +464,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l382"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:382</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l392"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:392</code></a>
         </p>
     </div>
     <div class="description">
@@ -471,7 +477,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l387"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:387</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l397"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:397</code></a>
         </p>
     </div>
     <div class="description">
@@ -494,7 +500,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l201"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:201</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l204"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:204</code></a>
         </p>
     </div>
     <div class="description">
@@ -534,7 +540,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l217"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:217</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l220"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:220</code></a>
         </p>
     </div>
     <div class="description">
@@ -683,7 +689,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l392"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:392</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l402"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:402</code></a>
         </p>
     </div>
     <div class="description">
@@ -724,28 +730,42 @@
             </div>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
-                    <div id="property_paramsCallback" class="property item">
-    <h3 class="name"><code>paramsCallback</code></h3>
+                    <div id="property_PARAMS_CALLBACK" class="property item">
+    <h3 class="name"><code>PARAMS_CALLBACK</code></h3>
     <span class="type">Unknown</span>
         <span class="flag static">static</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l238"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:238</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l241"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:241</code></a>
         </p>
     </div>
     <div class="description">
-        <p>全局的 上传 params 回调</p>
+        <p>全局的 post params 回调</p>
     </div>
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre>function paramsCallback( _params ){
+                <pre>function PARAMS_CALLBACK( _params ){
    var _model = this;
    return _params;
 }</pre>
             </div>
         </div>
+</div>
+                    <div id="property_POST_PARAMS" class="property item">
+    <h3 class="name"><code>POST_PARAMS</code></h3>
+    <span class="type">Unknown</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l253"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:253</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>全局的 post params 属性</p>
+    </div>
 </div>
             </div>
     </div>
