@@ -356,8 +356,11 @@
 }&lt;/pre&gt;
      *      &lt;/dd&gt;
      *
-     *      &lt;dt&gt;cauPostParams = json&lt;/dt&gt;
-     *      &lt;dd&gt;显式声明 post params&lt;/dd&gt;
+     *      &lt;dt&gt;cauPostParams = json var name, (&lt;b&gt;window 变量域&lt;/b&gt;)&lt;/dt&gt;
+     *      &lt;dd&gt;显式声明 post params, 全局指定请用 JC.AjaxUpload.POST_PARAMS &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;cauAllCookies = bool&lt;/dt&gt;
+     *      &lt;dd&gt;是否把所有 cookie 添加到 post_params, 发送到服务器&lt;/dd&gt;
      *      
      *      &lt;dt&gt;cauBatchUpload = bool, default = false&lt;/dt&gt;
      *      &lt;dd&gt;是否为批量上传(&lt;b&gt;未实现&lt;/b&gt;)&lt;/dd&gt;
@@ -464,17 +467,24 @@
         };
 
     /**
-     * 全局的 上传 params 回调
-     * @property    paramsCallback
+     * 全局的 post params 回调
+     * @property    PARAMS_CALLBACK
      * @return      json
      * @static
      * @example
-&lt;pre&gt;function paramsCallback( _params ){
+&lt;pre&gt;function PARAMS_CALLBACK( _params ){
     var _model = this;
     return _params;
 }&lt;/pre&gt;
      */
-    AjaxUpload.paramsCallback;
+    AjaxUpload.PARAMS_CALLBACK;
+    /**
+     * 全局的 post params 属性
+     * @property   POST_PARAMS 
+     * @return      json
+     * @static
+     */
+    AjaxUpload.POST_PARAMS;
 
     BaseMVC.build( AjaxUpload );
 
@@ -877,6 +887,8 @@
                         this.startUpload();
                         this.setButtonDisabled( true );
                     };
+
+                _r.post_params = {};
                 //
                 /// 上传文件时显示进度的事件
                 //
@@ -913,17 +925,50 @@
                     function( _file, _errCode, _msg ){
                         _p.trigger( &#x27;UpdateDefaultStatus&#x27; );
                         _p.trigger( &#x27;UploadError&#x27;, [ _file, _errCode, _msg ] );
-                        _p.cauButtonAutoStatus() &amp;&amp; this.setButtonDisabled( false );
+                        this.setButtonDisabled( false );
+                        _p.beforeUploadError( true );
                     };
+
+                _p.cauAllCookies() &amp;&amp; ( _r.post_params = JC.f.extendObject( _r.post_params, _p.allCookies() ) );
+
+                _p.cauPostParams() &amp;&amp; ( _r.post_params = JC.f.extendObject( _r.post_params, _p.cauPostParams() ) );
 
                 this.cauParamsCallback() 
                     &amp;&amp; ( _r = this.cauParamsCallback().call( this, _r ) );
 
-                _p.is( &#x27;[cauPostParams]&#x27; ) 
-                    &amp;&amp; ( _r.post_params = _p.jsonProp( &#x27;cauPostParams&#x27; ) );
-
                 JC.dir( _r );
 
+                return _r;
+            }
+
+        , cauAllCookies: function(){ return this.boolProp( &#x27;cauAllCookies&#x27; ); }
+
+        , allCookies:
+            function(){
+                var _r = {};
+                var i, cookieArray = document.cookie.split(&#x27;;&#x27;), caLength = cookieArray.length, c, eqIndex, name, value;
+                for (i = 0; i &lt; caLength; i++) {
+                    c = cookieArray[i];
+                    
+                    // Left Trim spaces
+                    while (c.charAt(0) === &quot; &quot;) {
+                        c = c.substring(1, c.length);
+                    }
+                    eqIndex = c.indexOf(&quot;=&quot;);
+                    if (eqIndex &gt; 0) {
+                        name = c.substring(0, eqIndex);
+                        value = c.substring(eqIndex + 1);
+                        _r[name] = value;
+                    }
+                }
+
+                return _r;
+            }
+
+        , cauPostParams:
+            function(){
+                var _p = this, _r = AjaxUpload.POST_PARAMS;
+                _p.is( &#x27;[cauPostParams]&#x27; ) &amp;&amp; ( _r = _p.callbackProp( &#x27;cauPostParams&#x27; ) || _r );
                 return _r;
             }
 
@@ -956,7 +1001,7 @@
         , cauParamsCallback: 
             function(){ 
                 return this.callbackProp( &#x27;cauParamsCallback&#x27; ) 
-                    || AjaxUpload.paramsCallback
+                    || AjaxUpload.PARAMS_CALLBACK
                     || JC.AjaxUploadParamsCallback
                     ; 
             }

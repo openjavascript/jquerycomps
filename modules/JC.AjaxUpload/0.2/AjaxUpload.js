@@ -128,8 +128,11 @@
 }</pre>
      *      </dd>
      *
-     *      <dt>cauPostParams = json</dt>
-     *      <dd>显式声明 post params</dd>
+     *      <dt>cauPostParams = json var name, (<b>window 变量域</b>)</dt>
+     *      <dd>显式声明 post params, 全局指定请用 JC.AjaxUpload.POST_PARAMS </dd>
+     *
+     *      <dt>cauAllCookies = bool</dt>
+     *      <dd>是否把所有 cookie 添加到 post_params, 发送到服务器</dd>
      *      
      *      <dt>cauBatchUpload = bool, default = false</dt>
      *      <dd>是否为批量上传(<b>未实现</b>)</dd>
@@ -236,17 +239,24 @@
         };
 
     /**
-     * 全局的 上传 params 回调
-     * @property    paramsCallback
+     * 全局的 post params 回调
+     * @property    PARAMS_CALLBACK
      * @return      json
      * @static
      * @example
-<pre>function paramsCallback( _params ){
+<pre>function PARAMS_CALLBACK( _params ){
     var _model = this;
     return _params;
 }</pre>
      */
-    AjaxUpload.paramsCallback;
+    AjaxUpload.PARAMS_CALLBACK;
+    /**
+     * 全局的 post params 属性
+     * @property   POST_PARAMS 
+     * @return      json
+     * @static
+     */
+    AjaxUpload.POST_PARAMS;
 
     BaseMVC.build( AjaxUpload );
 
@@ -649,6 +659,8 @@
                         this.startUpload();
                         this.setButtonDisabled( true );
                     };
+
+                _r.post_params = {};
                 //
                 /// 上传文件时显示进度的事件
                 //
@@ -685,17 +697,50 @@
                     function( _file, _errCode, _msg ){
                         _p.trigger( 'UpdateDefaultStatus' );
                         _p.trigger( 'UploadError', [ _file, _errCode, _msg ] );
-                        _p.cauButtonAutoStatus() && this.setButtonDisabled( false );
+                        this.setButtonDisabled( false );
+                        _p.beforeUploadError( true );
                     };
+
+                _p.cauAllCookies() && ( _r.post_params = JC.f.extendObject( _r.post_params, _p.allCookies() ) );
+
+                _p.cauPostParams() && ( _r.post_params = JC.f.extendObject( _r.post_params, _p.cauPostParams() ) );
 
                 this.cauParamsCallback() 
                     && ( _r = this.cauParamsCallback().call( this, _r ) );
 
-                _p.is( '[cauPostParams]' ) 
-                    && ( _r.post_params = _p.jsonProp( 'cauPostParams' ) );
-
                 JC.dir( _r );
 
+                return _r;
+            }
+
+        , cauAllCookies: function(){ return this.boolProp( 'cauAllCookies' ); }
+
+        , allCookies:
+            function(){
+                var _r = {};
+                var i, cookieArray = document.cookie.split(';'), caLength = cookieArray.length, c, eqIndex, name, value;
+                for (i = 0; i < caLength; i++) {
+                    c = cookieArray[i];
+                    
+                    // Left Trim spaces
+                    while (c.charAt(0) === " ") {
+                        c = c.substring(1, c.length);
+                    }
+                    eqIndex = c.indexOf("=");
+                    if (eqIndex > 0) {
+                        name = c.substring(0, eqIndex);
+                        value = c.substring(eqIndex + 1);
+                        _r[name] = value;
+                    }
+                }
+
+                return _r;
+            }
+
+        , cauPostParams:
+            function(){
+                var _p = this, _r = AjaxUpload.POST_PARAMS;
+                _p.is( '[cauPostParams]' ) && ( _r = _p.callbackProp( 'cauPostParams' ) || _r );
                 return _r;
             }
 
@@ -728,7 +773,7 @@
         , cauParamsCallback: 
             function(){ 
                 return this.callbackProp( 'cauParamsCallback' ) 
-                    || AjaxUpload.paramsCallback
+                    || AjaxUpload.PARAMS_CALLBACK
                     || JC.AjaxUploadParamsCallback
                     ; 
             }
