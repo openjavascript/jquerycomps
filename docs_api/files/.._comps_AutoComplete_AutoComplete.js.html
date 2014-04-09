@@ -497,10 +497,10 @@ return _json;
                 _p._model.selector().on(&#x27;focus&#x27;, function() {
                     //JC.log( &#x27;focus&#x27; );
                     _p.trigger( &#x27;bind_event&#x27; );
-                    _p.trigger( &#x27;show_popup&#x27; );
+                    _p.trigger( &#x27;show_popup&#x27;, [ _p._model.cacListAll() ] );
                 } );
 
-                _p.on( &#x27;show_popup&#x27;, function(){
+                _p.on( &#x27;show_popup&#x27;, function( _evt, _listAll ){
                     _p.trigger( &#x27;hide_all_popup&#x27; );
                     /*
                     if( !_p._model.selector().val().trim() &amp;&amp; _p._model.selector().val().trim() == _p._model.preVal ){
@@ -508,7 +508,7 @@ return _json;
                         _p._view.updateList();
                     }
                     */
-                    _p._view.updateList();
+                    _p._view.updateList( _listAll );
 
                     _p.trigger( AutoComplete.Model.SHOW );
                     _p.selector().addClass( AutoComplete.Model.CLASS_FAKE );
@@ -631,6 +631,10 @@ return _json;
                 _p._model.layoutPopup().delegate( &#x27;li&#x27;, &#x27;click&#x27;, function( _evt, _ignoreBlur ){
                     var _sp = $( this );
                     if( !_sp.is( &#x27;[&#x27; + _p._model.cacLabelKey() + &#x27;]&#x27; ) ) return;
+
+                    _p.trigger( &#x27;before_click&#x27;, [ _sp, _p._model.layoutPopup(), _p ] );
+                    if( _p._model.clickDisable() ) return;
+
                     _p.trigger( AutoComplete.Model.CHANGE, [ _sp ] );
 
                     !_p._model.cacMultiSelect() &amp;&amp; _p.trigger( AutoComplete.Model.HIDDEN );
@@ -695,7 +699,7 @@ return _json;
                 });
 
                 _p.on( AutoComplete.Model.UPDATE_LIST, function( _evt ){
-                    this._view.updateList( this._model.selector() );
+                    this._view.updateList();
                 });
 
                 /**
@@ -893,6 +897,14 @@ return _json;
                 this.firstUpdate = true;
             }
 
+        , clickDisable:
+            function( _setter ){
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._clickDisable = _setter );
+                return this._clickDisable;
+            }
+
+        , cacListAll: function(){ return this.boolProp( &#x27;cacListAll&#x27; ); }
+
         , listItemTpl: function() {
             var _tpl = JC.f.printf( &#x27;&lt;li &#x27; 
                                     + this.cacIdKey()+ &#x27;=&quot;{0}&quot; &#x27; 
@@ -908,6 +920,8 @@ return _json;
         }
 
         , cacItemClickHanlder: function(){ return this.callbackProp( &#x27;cacItemClickHanlder&#x27; ); }
+
+        , cacBeforeShowHandler: function(){ return this.callbackProp( &#x27;cacBeforeShowHandler&#x27; ); }
 
         , popup: 
             function() {
@@ -1347,7 +1361,7 @@ return _json;
             },
 
         updateList: 
-            function () {
+            function ( _listAll ) {
                 var _p  = this
                     , _dataItems
                     , _view = []
@@ -1356,7 +1370,7 @@ return _json;
                     , _data
                     ;
 
-                if ( !_label ) {
+                if ( ( !_label ) || _listAll ) {
                     _data = _p._model.initData;
                 }else{
                     _data = _p._model.cache( _label, _id );
@@ -1386,13 +1400,15 @@ return _json;
 
                     _p._model.popup().html( _view.join(&#x27;&#x27;) );
 
+                    _p._model.trigger( &#x27;build_data&#x27; );
                 }
 
                 _p._model.cacMultiSelect() 
                     &amp;&amp; !_p._model.layoutPopup().find( &#x27;.AC_addtionItem&#x27; ).length
                     &amp;&amp; $( JC.f.printf( 
                             &#x27;&lt;div class=&quot;AC_addtionItem&quot; style=&quot;text-align: right; padding-right: 5px;&quot;&gt;&lt;div&gt;{0}{1}&lt;/div&gt;&lt;/div&gt;&#x27;
-                            , &#x27;&lt;a href=&quot;javascript:;&quot; class=&quot;AC_control AC_clear&quot;&gt;清除&lt;/a&gt;&amp;nbsp;&#x27;
+                            //, &#x27;&lt;a href=&quot;javascript:;&quot; class=&quot;AC_control AC_clear&quot;&gt;清除&lt;/a&gt;&amp;nbsp;&#x27;
+                            , &#x27;&#x27;
                             , &#x27;&lt;a href=&quot;javascript:;&quot; class=&quot;AC_control AC_closePopup&quot;&gt;关闭&lt;/a&gt;&#x27;
                         )).appendTo( _p._model.layoutPopup() )
                     ;

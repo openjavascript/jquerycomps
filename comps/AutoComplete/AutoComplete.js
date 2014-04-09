@@ -277,10 +277,10 @@ return _json;
                 _p._model.selector().on('focus', function() {
                     //JC.log( 'focus' );
                     _p.trigger( 'bind_event' );
-                    _p.trigger( 'show_popup' );
+                    _p.trigger( 'show_popup', [ _p._model.cacListAll() ] );
                 } );
 
-                _p.on( 'show_popup', function(){
+                _p.on( 'show_popup', function( _evt, _listAll ){
                     _p.trigger( 'hide_all_popup' );
                     /*
                     if( !_p._model.selector().val().trim() && _p._model.selector().val().trim() == _p._model.preVal ){
@@ -288,7 +288,7 @@ return _json;
                         _p._view.updateList();
                     }
                     */
-                    _p._view.updateList();
+                    _p._view.updateList( _listAll );
 
                     _p.trigger( AutoComplete.Model.SHOW );
                     _p.selector().addClass( AutoComplete.Model.CLASS_FAKE );
@@ -411,6 +411,10 @@ return _json;
                 _p._model.layoutPopup().delegate( 'li', 'click', function( _evt, _ignoreBlur ){
                     var _sp = $( this );
                     if( !_sp.is( '[' + _p._model.cacLabelKey() + ']' ) ) return;
+
+                    _p.trigger( 'before_click', [ _sp, _p._model.layoutPopup(), _p ] );
+                    if( _p._model.clickDisable() ) return;
+
                     _p.trigger( AutoComplete.Model.CHANGE, [ _sp ] );
 
                     !_p._model.cacMultiSelect() && _p.trigger( AutoComplete.Model.HIDDEN );
@@ -475,7 +479,7 @@ return _json;
                 });
 
                 _p.on( AutoComplete.Model.UPDATE_LIST, function( _evt ){
-                    this._view.updateList( this._model.selector() );
+                    this._view.updateList();
                 });
 
                 /**
@@ -673,6 +677,14 @@ return _json;
                 this.firstUpdate = true;
             }
 
+        , clickDisable:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._clickDisable = _setter );
+                return this._clickDisable;
+            }
+
+        , cacListAll: function(){ return this.boolProp( 'cacListAll' ); }
+
         , listItemTpl: function() {
             var _tpl = JC.f.printf( '<li ' 
                                     + this.cacIdKey()+ '="{0}" ' 
@@ -688,6 +700,8 @@ return _json;
         }
 
         , cacItemClickHanlder: function(){ return this.callbackProp( 'cacItemClickHanlder' ); }
+
+        , cacBeforeShowHandler: function(){ return this.callbackProp( 'cacBeforeShowHandler' ); }
 
         , popup: 
             function() {
@@ -1127,7 +1141,7 @@ return _json;
             },
 
         updateList: 
-            function () {
+            function ( _listAll ) {
                 var _p  = this
                     , _dataItems
                     , _view = []
@@ -1136,7 +1150,7 @@ return _json;
                     , _data
                     ;
 
-                if ( !_label ) {
+                if ( ( !_label ) || _listAll ) {
                     _data = _p._model.initData;
                 }else{
                     _data = _p._model.cache( _label, _id );
@@ -1166,13 +1180,15 @@ return _json;
 
                     _p._model.popup().html( _view.join('') );
 
+                    _p._model.trigger( 'build_data' );
                 }
 
                 _p._model.cacMultiSelect() 
                     && !_p._model.layoutPopup().find( '.AC_addtionItem' ).length
                     && $( JC.f.printf( 
                             '<div class="AC_addtionItem" style="text-align: right; padding-right: 5px;"><div>{0}{1}</div></div>'
-                            , '<a href="javascript:;" class="AC_control AC_clear">清除</a>&nbsp;'
+                            //, '<a href="javascript:;" class="AC_control AC_clear">清除</a>&nbsp;'
+                            , ''
                             , '<a href="javascript:;" class="AC_control AC_closePopup">关闭</a>'
                         )).appendTo( _p._model.layoutPopup() )
                     ;
