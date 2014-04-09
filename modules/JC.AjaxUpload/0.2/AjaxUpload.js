@@ -544,7 +544,7 @@
                 if( !this._buttonLayout ){
                     _p._buttonLayout = 
                             $( JC.f.printf( 
-                                '<button type="text" class="btn AUBtn AUBtn-{1} js_btn"><span id="{0}"></span></button>'
+                                '<button type="text" class="AUBtn AUBtn-{1} js_btn"><span id="{0}"></span></button>'
                                 , _holderId 
                                 , _p.cauStyle()
                             ));

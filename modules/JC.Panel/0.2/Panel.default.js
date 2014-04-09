@@ -333,10 +333,11 @@
                                             _p.positionWith( _position, _selectorDiretion );
                                         };
 					
+                                        $(window).off('resize', changePosition);
                                         $(window).on('resize', changePosition );
                                         _p.on('close', function(){
                                             _p._model.bindedPositionWithEvent = false;
-                                            $(window).unbind('resize', changePosition);
+                                            $(window).off('resize', changePosition);
                                         });
                                     }
 
