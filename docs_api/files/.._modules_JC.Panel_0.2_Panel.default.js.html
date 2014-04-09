@@ -557,13 +557,15 @@
                                     if( !_p._model.bindedPositionWithEvent ){
                                         _p._model.bindedPositionWithEvent = true;
                                         var changePosition = function(){
+                                            if( !_p._view.getPanel().is( &#x27;:visible&#x27; ) ) return;
                                             _p.positionWith( _position, _selectorDiretion );
-                                        }
+                                        };
 					
+                                        $(window).off(&#x27;resize&#x27;, changePosition);
                                         $(window).on(&#x27;resize&#x27;, changePosition );
                                         _p.on(&#x27;close&#x27;, function(){
                                             _p._model.bindedPositionWithEvent = false;
-                                            $(window).unbind(&#x27;resize&#x27;, changePosition);
+                                            $(window).off(&#x27;resize&#x27;, changePosition);
                                         });
                                     }
 

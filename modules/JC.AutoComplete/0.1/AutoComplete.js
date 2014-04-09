@@ -277,10 +277,10 @@ return _json;
                 _p._model.selector().on('focus', function() {
                     //JC.log( 'focus' );
                     _p.trigger( 'bind_event' );
-                    _p.trigger( 'show_popup' );
+                    _p.trigger( 'show_popup', [ true ] );
                 } );
 
-                _p.on( 'show_popup', function(){
+                _p.on( 'show_popup', function( _evt, _all ){
                     _p.trigger( 'hide_all_popup' );
                     /*
                     if( !_p._model.selector().val().trim() && _p._model.selector().val().trim() == _p._model.preVal ){
@@ -288,7 +288,7 @@ return _json;
                         _p._view.updateList();
                     }
                     */
-                    _p._view.updateList();
+                    _p._view.updateList( _all );
 
                     _p.trigger( AutoComplete.Model.SHOW );
                     _p.selector().addClass( AutoComplete.Model.CLASS_FAKE );
@@ -479,7 +479,7 @@ return _json;
                 });
 
                 _p.on( AutoComplete.Model.UPDATE_LIST, function( _evt ){
-                    this._view.updateList( this._model.selector() );
+                    this._view.updateList();
                 });
 
                 /**
@@ -1139,7 +1139,7 @@ return _json;
             },
 
         updateList: 
-            function () {
+            function ( _all ) {
                 var _p  = this
                     , _dataItems
                     , _view = []
@@ -1148,7 +1148,7 @@ return _json;
                     , _data
                     ;
 
-                if ( !_label ) {
+                if ( ( !_label ) || _all ) {
                     _data = _p._model.initData;
                 }else{
                     _data = _p._model.cache( _label, _id );
