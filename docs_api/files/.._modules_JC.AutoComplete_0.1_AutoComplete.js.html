@@ -505,10 +505,10 @@ return _json;
                 _p._model.selector().on(&#x27;focus&#x27;, function() {
                     //JC.log( &#x27;focus&#x27; );
                     _p.trigger( &#x27;bind_event&#x27; );
-                    _p.trigger( &#x27;show_popup&#x27;, [ true ] );
+                    _p.trigger( &#x27;show_popup&#x27;, [ _p._model.cacListAll() ] );
                 } );
 
-                _p.on( &#x27;show_popup&#x27;, function( _evt, _all ){
+                _p.on( &#x27;show_popup&#x27;, function( _evt, _listAll ){
                     _p.trigger( &#x27;hide_all_popup&#x27; );
                     /*
                     if( !_p._model.selector().val().trim() &amp;&amp; _p._model.selector().val().trim() == _p._model.preVal ){
@@ -516,7 +516,7 @@ return _json;
                         _p._view.updateList();
                     }
                     */
-                    _p._view.updateList( _all );
+                    _p._view.updateList( _listAll );
 
                     _p.trigger( AutoComplete.Model.SHOW );
                     _p.selector().addClass( AutoComplete.Model.CLASS_FAKE );
@@ -910,6 +910,8 @@ return _json;
                 typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._clickDisable = _setter );
                 return this._clickDisable;
             }
+
+        , cacListAll: function(){ return this.boolProp( &#x27;cacListAll&#x27; ); }
 
         , listItemTpl: function() {
             var _tpl = JC.f.printf( &#x27;&lt;li &#x27; 
@@ -1367,7 +1369,7 @@ return _json;
             },
 
         updateList: 
-            function ( _all ) {
+            function ( _listAll ) {
                 var _p  = this
                     , _dataItems
                     , _view = []
@@ -1376,7 +1378,7 @@ return _json;
                     , _data
                     ;
 
-                if ( ( !_label ) || _all ) {
+                if ( ( !_label ) || _listAll ) {
                     _data = _p._model.initData;
                 }else{
                     _data = _p._model.cache( _label, _id );
