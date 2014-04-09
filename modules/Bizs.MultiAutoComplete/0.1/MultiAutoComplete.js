@@ -279,7 +279,7 @@
                     _macDefaultValue = _p._model.macDefaultValue( _selector ) || undefined;
                     _acIns.update( _data.data, _macDefaultValue );
 
-                    JC.log( '_macDefaultValue:', _macDefaultValue, _text );
+                    //JC.log( '_macDefaultValue:', _macDefaultValue, _text );
 
                     _nextSelector = _p._model.nextSelector( _selector );
                     if( _nextSelector && _nextSelector.length ){
@@ -307,7 +307,7 @@
                                     , _nextSelector
                                     ;
 
-                                JC.log( JC.f.printf( 'oldValue: {0}, newValue: {1}', _oldValue, _newValue ) );
+                                //JC.log( JC.f.printf( 'oldValue: {0}, newValue: {1}', _oldValue, _newValue ) );
 
                                 if( _oldValue != _newValue ){
                                     _nextSelector = _p._model.nextSelector( _selector );
@@ -378,7 +378,7 @@
                             , _item
                             , _find
                             ;
-                        JC.log( _id, _label, new Date().getTime() );
+                        //JC.log( _id, _label, new Date().getTime() );
 
                         _items.each( function( _ix, _sitem ){
                             _sitem = $( _sitem );
@@ -405,7 +405,7 @@
                     checkBoxStatus();
 
                     function updateListStyle(){
-                        JC.log( 'updateListStyle', new Date().getTime() );
+                        //JC.log( 'updateListStyle', new Date().getTime() );
                         var _items = _boxList.find( _p._model.macAddtionBoxItemSelector( _selector ) ), _list = _acIns._model.listItems();
                         if( !( _items.length && _list.length ) ) return;
 
@@ -413,7 +413,7 @@
                             _item = $( _item );
                             $.each( _list, function( _six, _sitem ){
                                 _sitem = $( _sitem );
-                                JC.log( _item.attr( 'data-id' ), _sitem.attr( 'data-id' ) );
+                                //JC.log( _item.attr( 'data-id' ), _sitem.attr( 'data-id' ) );
                                 if( _sitem.attr( 'data-id' ) == _item.attr( 'data-id' ) ){
                                     setSelectedItemStyle( _sitem );
                                 }
