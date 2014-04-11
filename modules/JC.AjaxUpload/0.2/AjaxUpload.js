@@ -275,7 +275,12 @@
             }
         , _initHanlderEvent:
             function(){
-                var _p = this;
+                var _p = this, _fileBox = _p._model.cauViewFileBox();
+                if( _fileBox && _fileBox.length ){
+                    _fileBox.delegate( '.js_clearAjaxUpload', 'click', function(){
+                        _p.clear();
+                    });
+                }
                 /**
                  * 文件扩展名错误
                  */
@@ -426,6 +431,13 @@
                 var _p = this;
                 _p.trigger('UpdateDefaultStatus')
                 _d && _p.trigger('UploadDone', [ _d ] );
+                return this;
+            }
+
+        , clear: 
+            function(){
+                var _p = this;
+                _p.trigger('UpdateDefaultStatus')
                 return this;
             }
     });
@@ -884,7 +896,10 @@
 
             , cauViewFileBoxItemTpl: 
                 function(){
-                    var _r = '<a href="{1}" target="_blank" data-name="{0}" data-url="{1}">查看</a>', _tmp;
+                    var _r = [ '<a href="javascript:;" data-name="{0}" data-url="{1}" class="js_clearAjaxUpload">清除</a>'
+                         , '&nbsp;<a href="{1}" target="_blank" data-name="{0}" data-url="{1}" class="js_viewAjaxUpload">查看</a>' ].join('')
+                         , _tmp
+                         ;
 
                     this.is( '[cauViewFileBoxItemTpl]' )
                         && ( _tmp = this.selectorProp( 'cauViewFileBoxItemTpl' ) ) 
