@@ -1029,7 +1029,7 @@
             "namespace": "JC",
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
             "line": 2,
-            "description": "Ajax 文件上传\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n     , <a href='javascript:;'>SWFUpload</a>\n</p>\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.AjaxUpload/0.2/_demo' target='_blank'>demo link</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/dev/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauButtonBefore = bool</dt>\n     <dd>是否把上传按钮放在前面</dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址\n         <br />如果 url 带有参数 callback, 返回数据将以 jsonp 方式处理\n     </dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<pre>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '&lt;a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}&lt;/a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;&lt;a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\">&lt;/a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</pre>\n     </dd>\n\n     <dt>cauDebug = bool, default = false</dt>\n     <dd>是否显示 flash 调试信息</dd>\n\n     <dt>cauFlashUrl = string</dt>\n     <dd>显式声明 flash 路径</dd>\n\n     <dt>cauButtonWidth = int, default = 自动计算</dt>\n     <dd>显式声明按钮的宽度</dd>\n\n     <dt>cauButtonHeight= int, default = 自动计算</dt>\n     <dd>显式声明按钮的高度</dd>\n\n     <dt>cauRoot = string</dt>\n     <dd>显式声明组件根路径</dd>\n\n     <dt>cauUploadLimit = int, default = 0(不限制)</dt>\n     <dd>上传文件的总数量</dd>\n\n     <dt>cauQueueLimit = int, default = 0(不限制)</dt>\n     <dd>队列中文件的总数量(<b>未实现</b>)</dd>\n\n     <dt>cauFileSize = [ KB | MB | GB ], default = 1024 MB</dt>\n     <dd>上传文件大小限制</dd>\n\n     <dt>cauCacheSwf = bool, default = true</dt>\n     <dd>是否缓存 flash swf</dd>\n\n     <dt>cauHttpSuccess = string, default = 200, 201, 204</dt>\n     <dd>http 通信成功的状态码</dd>\n\n     <dt>cauButtonStyle = string, default = .uFont{ color:#000000; text-align: center; }</dt>\n     <dd>定义 flash 按钮的样式</dd>\n\n     <dt>cauParamsCallback = function</dt>\n     <dd>设置 flash 参数的回调\n<pre>function cauParamsCallback( _params ){\n   var _model = this;\n   return _params;\n}</pre>\n     </dd>\n\n     <dt>cauPostParams = json var name, (<b>window 变量域</b>)</dt>\n     <dd>显式声明 post params, 全局指定请用 JC.AjaxUpload.POST_PARAMS </dd>\n\n     <dt>cauAllCookies = bool, default = true</dt>\n     <dd>是否把所有 cookie 添加到 post_params, 发送到服务器</dd>\n     \n     <dt>cauBatchUpload = bool, default = false</dt>\n     <dd>是否为批量上传(<b>未实现</b>)</dd>\n\n     <dt>cauShowProgress = bool, default = false</dt>\n     <dd>是否显示进度条\n         <br >如果为真, 且没有声明 cauProgressBox, 那么会自动生成 cauProgressBox\n     </dd>\n\n     <dt>cauProgressBox = selector</dt>\n     <dd>显式声明 进度条标签</dd>\n\n     <dt>cauViewFileBox = selector</dt>\n     <dd>用于显示文件链接的容器</dd>\n\n     <dt>cauViewFileBoxItemTpl = selector</dt>\n     <dd>cauViewFileBox 的脚本模板</dd>\n</dl>",
+            "description": "Ajax 文件上传\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n     , <a href='javascript:;'>SWFUpload</a>\n</p>\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.AjaxUpload/0.2/_demo' target='_blank'>demo link</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/dev/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauButtonAfter= bool</dt>\n     <dd>是否把上传按钮放在后面</dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址\n         <br />如果 url 带有参数 callback, 返回数据将以 jsonp 方式处理\n     </dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<pre>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '&lt;a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}&lt;/a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;&lt;a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\">&lt;/a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</pre>\n     </dd>\n\n     <dt>cauDebug = bool, default = false</dt>\n     <dd>是否显示 flash 调试信息</dd>\n\n     <dt>cauFlashUrl = string</dt>\n     <dd>显式声明 flash 路径</dd>\n\n     <dt>cauButtonWidth = int, default = 自动计算</dt>\n     <dd>显式声明按钮的宽度</dd>\n\n     <dt>cauButtonHeight= int, default = 自动计算</dt>\n     <dd>显式声明按钮的高度</dd>\n\n     <dt>cauRoot = string</dt>\n     <dd>显式声明组件根路径</dd>\n\n     <dt>cauUploadLimit = int, default = 0(不限制)</dt>\n     <dd>上传文件的总数量</dd>\n\n     <dt>cauQueueLimit = int, default = 0(不限制)</dt>\n     <dd>队列中文件的总数量(<b>未实现</b>)</dd>\n\n     <dt>cauFileSize = [ KB | MB | GB ], default = 1024 MB</dt>\n     <dd>上传文件大小限制</dd>\n\n     <dt>cauCacheSwf = bool, default = true</dt>\n     <dd>是否缓存 flash swf</dd>\n\n     <dt>cauHttpSuccess = string, default = 200, 201, 204</dt>\n     <dd>http 通信成功的状态码</dd>\n\n     <dt>cauButtonStyle = string, default = .uFont{ color:#000000; text-align: center; }</dt>\n     <dd>定义 flash 按钮的样式</dd>\n\n     <dt>cauParamsCallback = function</dt>\n     <dd>设置 flash 参数的回调\n<pre>function cauParamsCallback( _params ){\n   var _model = this;\n   return _params;\n}</pre>\n     </dd>\n\n     <dt>cauPostParams = json var name, (<b>window 变量域</b>)</dt>\n     <dd>显式声明 post params, 全局指定请用 JC.AjaxUpload.POST_PARAMS </dd>\n\n     <dt>cauAllCookies = bool, default = true</dt>\n     <dd>是否把所有 cookie 添加到 post_params, 发送到服务器</dd>\n     \n     <dt>cauBatchUpload = bool, default = false</dt>\n     <dd>是否为批量上传(<b>未实现</b>)</dd>\n\n     <dt>cauShowProgress = bool, default = false</dt>\n     <dd>是否显示进度条\n         <br >如果为真, 且没有声明 cauProgressBox, 那么会自动生成 cauProgressBox\n     </dd>\n\n     <dt>cauProgressBox = selector</dt>\n     <dd>显式声明 进度条标签</dd>\n\n     <dt>cauViewFileBox = selector</dt>\n     <dd>用于显示文件链接的容器</dd>\n\n     <dt>cauViewFileBoxItemTpl = selector</dt>\n     <dd>cauViewFileBox 的脚本模板</dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -4157,7 +4157,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 545,
+            "line": 546,
             "description": "获取 绑定的 id node",
             "itemtype": "method",
             "name": "idSelector",
@@ -4170,7 +4170,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 551,
+            "line": 552,
             "description": "获取/设置 id 值",
             "itemtype": "method",
             "name": "idVal",
@@ -4190,7 +4190,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 562,
+            "line": 563,
             "description": "使用 ajax 接口更新原始数据",
             "itemtype": "method",
             "name": "ajaxUpdate",
@@ -4211,7 +4211,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 573,
+            "line": 574,
             "description": "显示数据列表",
             "itemtype": "method",
             "name": "show",
@@ -4220,7 +4220,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 586,
+            "line": 587,
             "description": "隐藏数据列表",
             "itemtype": "method",
             "name": "hide",
@@ -4229,7 +4229,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 595,
+            "line": 596,
             "description": "获取数据列表 node",
             "itemtype": "method",
             "name": "popup",
@@ -4242,7 +4242,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 604,
+            "line": 605,
             "description": "更新原始数据",
             "itemtype": "method",
             "name": "update",
@@ -4258,7 +4258,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 623,
+            "line": 624,
             "description": "清除 selector 和 idSelector 的默认值",
             "itemtype": "method",
             "name": "clear",
@@ -4267,7 +4267,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 632,
+            "line": 633,
             "description": "清除所有数据",
             "itemtype": "method",
             "name": "clearAll",
@@ -4276,7 +4276,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 643,
+            "line": 644,
             "description": "校正数据列表的显示位置",
             "itemtype": "method",
             "name": "fixPosition",
@@ -4285,7 +4285,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 761,
+            "line": 762,
             "description": "验证 key && id 是否正确\n仅在 cacStrictData 为真的时候进行验证",
             "class": "JC.AutoComplete",
             "namespace": "JC"
@@ -18724,7 +18724,7 @@
         },
         {
             "message": "Missing item type\n验证 key && id 是否正确\n仅在 cacStrictData 为真的时候进行验证",
-            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:761"
+            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:762"
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",
