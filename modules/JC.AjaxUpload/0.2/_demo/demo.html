@@ -143,11 +143,10 @@
                     cauFileName="file"
                     cauValueKey="url"
                     cauLabelKey="name"
-                    cauStatusLabel="/label.js_statusLabel"
+                    cauShowProgress="true"
                     cauViewFileBox="/span.js_viewFileBox"
                     cauViewFileBoxItemTpl="/script.js_viewFileItemBoxTpl"
                     />
-                <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
 
                 <button type="button" class="AUBtn AUBtn-w1 js_updateData">JC.AjaxUpload#update for clear</button>
                 with viewFileBox
@@ -157,11 +156,6 @@
         <dl class="defdl">
             <dt> JC.AjaxUpload 示例, with textbox</dt>
             <dd>
-                <span class="js_viewFileBox"></span>
-                <script type="text/template" class="js_viewFileItemBoxTpl">
-                    <a href="javascript:;" data-name="{0}" data-url="{1}" class="js_clearAjaxUpload">清除</a>
-                    <a href="{1}" target="_blank" data-name="{0}" data-url="{1}" class="js_viewAjaxUpload">查看</a>
-                </script>
                 <input type="text" readonly class="js_compAjaxUpload" value=""
                     cauUrl="../_demo/data/handler.php?errorno=0"
                     cauFileName="file"
@@ -169,16 +163,44 @@
                     cauLabelKey="name"
                     cauStatusLabel="/label.js_statusLabel"
                     cauViewFileBox="/span.js_viewFileBox"
+                    cauShowProgress="true"
+                    cauViewFileBoxItemTpl="/script.js_viewFileItemBoxTpl"
+                    cauButtonBefore="true"
+                    />
+                <span class="js_viewFileBox"></span>
+                <script type="text/template" class="js_viewFileItemBoxTpl">
+                    <a href="{1}" target="_blank" data-name="{0}" data-url="{1}" class="js_viewAjaxUpload">查看</a>
+                    <a href="javascript:;" data-name="{0}" data-url="{1}" class="js_clearAjaxUpload">清除</a>
+                </script>
+                with viewFileBox, with clear
+            </dd>
+        </dl>
+
+        <dl class="defdl">
+            <dt> JC.AjaxUpload 示例, with textbox</dt>
+            <dd>
+                <input type="text" readonly class="js_compAjaxUpload" value=""
+                    cauUrl="../_demo/data/handler.php?errorno=0"
+                    cauFileName="file"
+                    cauValueKey="url"
+                    cauLabelKey="name"
+                    cauStatusLabel="/label.js_statusLabel"
+                    cauViewFileBox="/span.js_viewFileBox"
+                    cauShowProgress="true"
                     cauViewFileBoxItemTpl="/script.js_viewFileItemBoxTpl"
                     cauFileSize="10 k"
+                    cauButtonBefore="true"
                     />
-                <label class="js_statusLabel" style="display:none">文件上传中, 请稍候...</label>
-
-                <button type="button" class="AUBtn AUBtn-w1 js_updateData">JC.AjaxUpload#update for clear</button>
+                <span class="js_viewFileBox"></span>
+                <script type="text/template" class="js_viewFileItemBoxTpl">
+                    <a href="{1}" target="_blank" data-name="{0}" data-url="{1}" class="js_viewAjaxUpload">查看</a>
+                    <a href="javascript:;" data-name="{0}" data-url="{1}" class="js_clearAjaxUpload">清除</a>
+                </script>
                 with viewFileBox, with clear
                 , cauFileSize="10 k"
             </dd>
         </dl>
+
 
 
         <dl class="defdl">

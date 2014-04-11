@@ -29,6 +29,9 @@
      *      <dt>cauButtonText = string, default = 上传文件</dt>
      *      <dd>定义上传按钮的显示文本</dd>
      *
+     *      <dt>cauButtonBefore = bool</dt>
+     *      <dd>是否把上传按钮放在前面</dd>
+     *
      *      <dt>cauUrl = url, require</dt>
      *      <dd>上传文件的接口地址
      *          <br />如果 url 带有参数 callback, 返回数据将以 jsonp 方式处理
@@ -577,10 +580,15 @@
                                 , _p.cauStyle()
                             ));
 
-                    _p.selector().after( this._buttonLayout );
+                    _p.cauButtonBefore() 
+                        ? _p.selector().before( this._buttonLayout )
+                        : _p.selector().after( this._buttonLayout )
+                        ;
                 }
                 return this._buttonLayout;
             }
+
+        , cauButtonBefore: function(){ return this.boolProp( 'cauButtonBefore' ); }
 
         , cauRoot:
             function(){
