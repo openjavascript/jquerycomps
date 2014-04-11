@@ -29,6 +29,9 @@
      *      <dt>cauButtonText = string, default = 上传文件</dt>
      *      <dd>定义上传按钮的显示文本</dd>
      *
+     *      <dt>cauButtonBefore = bool</dt>
+     *      <dd>是否把上传按钮放在前面</dd>
+     *
      *      <dt>cauUrl = url, require</dt>
      *      <dd>上传文件的接口地址
      *          <br />如果 url 带有参数 callback, 返回数据将以 jsonp 方式处理
@@ -128,8 +131,11 @@
 }</pre>
      *      </dd>
      *
-     *      <dt>cauPostParams = json</dt>
-     *      <dd>显式声明 post params</dd>
+     *      <dt>cauPostParams = json var name, (<b>window 变量域</b>)</dt>
+     *      <dd>显式声明 post params, 全局指定请用 JC.AjaxUpload.POST_PARAMS </dd>
+     *
+     *      <dt>cauAllCookies = bool</dt>
+     *      <dd>是否把所有 cookie 添加到 post_params, 发送到服务器</dd>
      *      
      *      <dt>cauBatchUpload = bool, default = false</dt>
      *      <dd>是否为批量上传(<b>未实现</b>)</dd>
@@ -141,6 +147,12 @@
      *
      *      <dt>cauProgressBox = selector</dt>
      *      <dd>显式声明 进度条标签</dd>
+     *
+     *      <dt>cauViewFileBox = selector</dt>
+     *      <dd>用于显示文件链接的容器</dd>
+     *
+     *      <dt>cauViewFileBoxItemTpl = selector</dt>
+     *      <dd>cauViewFileBox 的脚本模板</dd>
      * </dl>
      * @namespace JC
      * @class AjaxUpload
@@ -236,17 +248,24 @@
         };
 
     /**
-     * 全局的 上传 params 回调
-     * @property    paramsCallback
+     * 全局的 post params 回调
+     * @property    PARAMS_CALLBACK
      * @return      json
      * @static
      * @example
-<pre>function paramsCallback( _params ){
+<pre>function PARAMS_CALLBACK( _params ){
     var _model = this;
     return _params;
 }</pre>
      */
-    AjaxUpload.paramsCallback;
+    AjaxUpload.PARAMS_CALLBACK;
+    /**
+     * 全局的 post params 属性
+     * @property   POST_PARAMS 
+     * @return      json
+     * @static
+     */
+    AjaxUpload.POST_PARAMS;
 
     BaseMVC.build( AjaxUpload );
 
@@ -259,7 +278,12 @@
             }
         , _initHanlderEvent:
             function(){
-                var _p = this;
+                var _p = this, _fileBox = _p._model.cauViewFileBox();
+                if( _fileBox && _fileBox.length ){
+                    _fileBox.delegate( '.js_clearAjaxUpload', 'click', function(){
+                        _p.clear();
+                    });
+                }
                 /**
                  * 文件扩展名错误
                  */
@@ -412,6 +436,13 @@
                 _d && _p.trigger('UploadDone', [ _d ] );
                 return this;
             }
+
+        , clear: 
+            function(){
+                var _p = this;
+                _p.trigger('UpdateDefaultStatus')
+                return this;
+            }
     });
 
     AjaxUpload.Model._instanceName = 'AjaxUpload';
@@ -544,15 +575,20 @@
                 if( !this._buttonLayout ){
                     _p._buttonLayout = 
                             $( JC.f.printf( 
-                                '<button type="text" class="btn AUBtn AUBtn-{1} js_btn"><span id="{0}"></span></button>'
+                                '<button type="text" class="AUBtn AUBtn-{1} js_btn"><span id="{0}"></span></button>'
                                 , _holderId 
                                 , _p.cauStyle()
                             ));
 
-                    _p.selector().after( this._buttonLayout );
+                    _p.cauButtonBefore() 
+                        ? _p.selector().before( this._buttonLayout )
+                        : _p.selector().after( this._buttonLayout )
+                        ;
                 }
                 return this._buttonLayout;
             }
+
+        , cauButtonBefore: function(){ return this.boolProp( 'cauButtonBefore' ); }
 
         , cauRoot:
             function(){
@@ -649,6 +685,8 @@
                         this.startUpload();
                         this.setButtonDisabled( true );
                     };
+
+                _r.post_params = {};
                 //
                 /// 上传文件时显示进度的事件
                 //
@@ -685,17 +723,50 @@
                     function( _file, _errCode, _msg ){
                         _p.trigger( 'UpdateDefaultStatus' );
                         _p.trigger( 'UploadError', [ _file, _errCode, _msg ] );
-                        _p.cauButtonAutoStatus() && this.setButtonDisabled( false );
+                        this.setButtonDisabled( false );
+                        _p.beforeUploadError( true );
                     };
+
+                _p.cauAllCookies() && ( _r.post_params = JC.f.extendObject( _r.post_params, _p.allCookies() ) );
+
+                _p.cauPostParams() && ( _r.post_params = JC.f.extendObject( _r.post_params, _p.cauPostParams() ) );
 
                 this.cauParamsCallback() 
                     && ( _r = this.cauParamsCallback().call( this, _r ) );
 
-                _p.is( '[cauPostParams]' ) 
-                    && ( _r.post_params = _p.jsonProp( 'cauPostParams' ) );
-
                 JC.dir( _r );
 
+                return _r;
+            }
+
+        , cauAllCookies: function(){ return this.boolProp( 'cauAllCookies' ); }
+
+        , allCookies:
+            function(){
+                var _r = {};
+                var i, cookieArray = document.cookie.split(';'), caLength = cookieArray.length, c, eqIndex, name, value;
+                for (i = 0; i < caLength; i++) {
+                    c = cookieArray[i];
+                    
+                    // Left Trim spaces
+                    while (c.charAt(0) === " ") {
+                        c = c.substring(1, c.length);
+                    }
+                    eqIndex = c.indexOf("=");
+                    if (eqIndex > 0) {
+                        name = c.substring(0, eqIndex);
+                        value = c.substring(eqIndex + 1);
+                        _r[name] = value;
+                    }
+                }
+
+                return _r;
+            }
+
+        , cauPostParams:
+            function(){
+                var _p = this, _r = AjaxUpload.POST_PARAMS;
+                _p.is( '[cauPostParams]' ) && ( _r = _p.callbackProp( 'cauPostParams' ) || _r );
                 return _r;
             }
 
@@ -728,7 +799,7 @@
         , cauParamsCallback: 
             function(){ 
                 return this.callbackProp( 'cauParamsCallback' ) 
-                    || AjaxUpload.paramsCallback
+                    || AjaxUpload.PARAMS_CALLBACK
                     || JC.AjaxUploadParamsCallback
                     ; 
             }
@@ -829,6 +900,24 @@
                 }
             }
 
+            , cauViewFileBox: function(){ return this.selectorProp( 'cauViewFileBox' ); }
+
+            , cauViewFileBoxItemTpl: 
+                function(){
+                    var _r = [ '<a href="javascript:;" data-name="{0}" data-url="{1}" class="js_clearAjaxUpload">清除</a>'
+                         , '&nbsp;<a href="{1}" target="_blank" data-name="{0}" data-url="{1}" class="js_viewAjaxUpload">查看</a>' ].join('')
+                         , _tmp
+                         ;
+
+                    this.is( '[cauViewFileBoxItemTpl]' )
+                        && ( _tmp = this.selectorProp( 'cauViewFileBoxItemTpl' ) ) 
+                        && _tmp.length 
+                        && ( _r = JC.f.scriptContent( _tmp ) )
+                        ;
+
+                    return _r;
+                }
+
     });
 
     /*
@@ -842,6 +931,21 @@
             function(){
                 //JC.log( 'AjaxUpload.View.init:', new Date().getTime() );
                 var _p = this;
+
+                $( _p ).on( 'update_viewFileBox', function( _evt, _name, _url ){
+                    var _box = _p._model.cauViewFileBox(), _itemTpl;
+                    if( !( _box && _box.length ) ) return;
+                    _itemTpl = _p._model.cauViewFileBoxItemTpl();
+                    _itemTpl = JC.f.printf( _itemTpl, _name, _url );
+                    _box.html( _itemTpl );
+                });
+
+                $( _p ).on( 'clear_viewFileBox', function(){
+                    var _box = _p._model.cauViewFileBox();
+                    if( !( _box && _box.length ) ) return;
+                    _box.html( '' );
+                });
+
                 /**
                  * 恢复默认状态
                  */
@@ -860,6 +964,7 @@
                         && _p._model.selector().show()
                         ;
 
+                    $( _p ).trigger( 'clear_viewFileBox' );
                 });
 
                 $( _p ).on( 'UploadError', function( _evt, _file, _errCode, _msg ){
@@ -993,6 +1098,7 @@
                 var _p = this
                     , _statusLabel = _p._model.cauStatusLabel()
                     , _displayLabel = _p._model.cauDisplayLabel()
+                    , _name, _url
                     ;
                 //JC.log( 'AjaxUpload view#updateChange', new Date().getTime() );
 
@@ -1017,17 +1123,23 @@
                 if( _d && ( 'errorno' in _d ) && !_d.errorno ){
                     $(_p).trigger( 'CAUUpdate', [ _d ] );
 
+                    _name = _d.data[ _p._model.cauLabelKey() ];
+                    _url = _d.data[ _p._model.cauValueKey() ];
+
                     _p._model.selector().val() 
                         && _p._model.selector().is(':visible')
                         && _p._model.selector().prop('type').toLowerCase() == 'text'
                         && _p._model.selector().trigger('blur')
                         ;
+                    
+                    $( _p ).trigger( 'update_viewFileBox', [ _name, _url ] );
 
                     if( _displayLabel && _displayLabel.length ){
                         _p._model.selector().hide();
                         _displayLabel.show();
                         return;
                     }
+
                 }
             }
 
