@@ -678,8 +678,8 @@
 
         _initDefaultData: function () {
             var _p = this,
-                _startdate = _p._model.urlStartdate(),
-                _enddate = _p._model.urlEnddate(),
+                _startdate = _p._model.urlStartdate() || _p._model.mddateEl().eq(0).val(),
+                _enddate = _p._model.urlEnddate() || _p._model.mddateEl().eq(1).val(),
                 _type = _p._model.urlCalendarType() || _p._model.calendarType();
 
             _p._model.updatemddateElProp(_type);

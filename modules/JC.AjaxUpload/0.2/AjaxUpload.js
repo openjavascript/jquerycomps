@@ -134,7 +134,7 @@
      *      <dt>cauPostParams = json var name, (<b>window 变量域</b>)</dt>
      *      <dd>显式声明 post params, 全局指定请用 JC.AjaxUpload.POST_PARAMS </dd>
      *
-     *      <dt>cauAllCookies = bool</dt>
+     *      <dt>cauAllCookies = bool, default = true</dt>
      *      <dd>是否把所有 cookie 添加到 post_params, 发送到服务器</dd>
      *      
      *      <dt>cauBatchUpload = bool, default = false</dt>
@@ -739,7 +739,12 @@
                 return _r;
             }
 
-        , cauAllCookies: function(){ return this.boolProp( 'cauAllCookies' ); }
+        , cauAllCookies: 
+            function(){ 
+                var _r = true;
+                this.is( '[cauAllCookies]' ) && ( _r = this.boolProp( 'cauAllCookies' ) );
+                return _r;
+            }
 
         , allCookies:
             function(){
