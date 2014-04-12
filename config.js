@@ -53,6 +53,7 @@ requirejs.config( {
         , 'JC.NumericStepper': 'modules/JC.NumericStepper/0.1/NumericStepper'
 
         , 'JC.Slider': 'modules/JC.Slider/0.1/Slider'
+        , 'JC.StepControl': 'modules/JC.StepControl/0.1/StepControl'
         , 'JC.Suggest': 'modules/JC.Suggest/0.1/Suggest'
         , 'JC.Tab': 'modules/JC.Tab/0.1/Tab'
         , 'JC.TableFreeze': 'modules/JC.TableFreeze/0.2/TableFreeze'

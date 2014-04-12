@@ -29,6 +29,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.PopTips",
         "JC.Scrollbar",
         "JC.Slider",
+        "JC.StepControl",
         "JC.Suggest",
         "JC.Tab",
         "JC.TableFreeze",

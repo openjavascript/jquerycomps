@@ -85,7 +85,8 @@
             function(){
                 var _p = this;
 
-                _p.on( 'inited' );
+                _p.on( 'inited', function(){
+                });
             }
 
         , _inited:
