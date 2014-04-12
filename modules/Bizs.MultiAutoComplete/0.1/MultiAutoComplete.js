@@ -379,7 +379,7 @@
                     if( _selector.is( 'macAddtionBox' ) ) return;
 
                     _acIns.on( 'after_popup_show', function( _evt ){
-                        JC.log( 'after_popup_show', new Date().getTime() );
+                        //JC.log( 'after_popup_show', new Date().getTime() );
                     });
 
                     _acIns.on( 'build_data', function(){
@@ -418,13 +418,8 @@
 
                     _popupItems.each( function(){
                         var _sp = $( this );
-                        if( !_sp.prop( 'checked' ) ){
-                            _allChecked = false; 
-                        }
                         _popupItemsObj[ _sp.val() ] = { item: _sp };
                     });
-
-                    _popupItemAll.prop( 'checked', _allChecked );
 
                     _listItems.each( function(){
                         var _listSp = $( this ), _sitem;
@@ -432,6 +427,15 @@
                             _p.trigger( 'item_checked', [ _popupItemsObj[ _listSp.attr( 'data-id' ) ], true ] );
                         }
                     });
+
+                    _popupItems.each( function(){
+                        var _sp = $( this );
+                        if( !_sp.prop( 'checked' ) ){
+                            _allChecked = false; 
+                        }
+                    });
+
+                    _popupItemAll.prop( 'checked', _allChecked );
                 });
 
                 _p.on( 'item_checked', function( _evt, _data, _checked ){
@@ -453,7 +457,7 @@
                         , _listItems = _boxList.find( _p._model.macAddtionBoxItemSelector( _acIns.selector() ) )
                         ;
 
-                    JC.log( _popupItems.length, _popupItemAll.length, _listItems.length );
+                    //JC.log( _popupItems.length, _popupItemAll.length, _listItems.length );
                     if( !_popupItems.length ) return;
 
                     var _allChecked = true, _listItemsObj = {}, _popupItemsObj= {};
@@ -465,6 +469,8 @@
                         };
 
                     });
+
+                    var _isAdd;
 
                     _popupItems.each( function(){
                         var _sp = $( this ), _sitem;
@@ -480,6 +486,7 @@
                         if( _sp.prop( 'checked' ) ){
                             if( !_sitem.length ){
                                 _p.trigger( 'add_list_item', [ _sp, _acIns, _box, _boxList ] );
+                                _isAdd = true;
                             }
                         }else{
                             _sitem.length && _sitem.remove();
@@ -488,8 +495,28 @@
 
                     _popupItemAll.prop( 'checked', _allChecked );
                     !_preventRecursive && _p.trigger( 'update_list_box_status', [ _acIns ] );
-                    JC.log( _allChecked, new Date().getTime() );
 
+                    JC.f.safeTimeout( function(){
+                        //if( !_acIns._model.layoutPopup().is( ':visible' ) ) return;
+                        _isAdd && _p.trigger( 'sort_list_item', [ _boxList, _acIns ] );
+                    }, _p, 'SORT_LIST_ITEM', 1000 );
+                    //JC.log( _allChecked, new Date().getTime() );
+                });
+
+                _p.on( 'sort_list_item', function( _evt, _boxList, _acIns ){
+                    var _items = _boxList.find( _p._model.macAddtionBoxItemSelector( _acIns.selector() ) );
+
+                   _items.each( function(){
+                       var _item = $( this ), _id = _item.attr( 'data-id' ), _label = _item.attr( 'data-label' );
+                       _items.each( function(){
+                           var _sitem = $( this ), _sid = _sitem.attr( 'data-id' ), _slabel = _sitem.attr( 'data-label' );
+                           if( _id == _sid ) return;
+
+                           if( _label.localeCompare( _slabel ) > 0 ){
+                               _sitem.after( _item );
+                           }
+                       });
+                   });
                 });
 
                 _p.on( 'add_list_item', function( _evt, _sp, _acIns, _box, _boxList ){

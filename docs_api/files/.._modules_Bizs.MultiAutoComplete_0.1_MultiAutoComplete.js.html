@@ -607,7 +607,7 @@
                     if( _selector.is( &#x27;macAddtionBox&#x27; ) ) return;
 
                     _acIns.on( &#x27;after_popup_show&#x27;, function( _evt ){
-                        JC.log( &#x27;after_popup_show&#x27;, new Date().getTime() );
+                        //JC.log( &#x27;after_popup_show&#x27;, new Date().getTime() );
                     });
 
                     _acIns.on( &#x27;build_data&#x27;, function(){
@@ -646,13 +646,8 @@
 
                     _popupItems.each( function(){
                         var _sp = $( this );
-                        if( !_sp.prop( &#x27;checked&#x27; ) ){
-                            _allChecked = false; 
-                        }
                         _popupItemsObj[ _sp.val() ] = { item: _sp };
                     });
-
-                    _popupItemAll.prop( &#x27;checked&#x27;, _allChecked );
 
                     _listItems.each( function(){
                         var _listSp = $( this ), _sitem;
@@ -660,6 +655,15 @@
                             _p.trigger( &#x27;item_checked&#x27;, [ _popupItemsObj[ _listSp.attr( &#x27;data-id&#x27; ) ], true ] );
                         }
                     });
+
+                    _popupItems.each( function(){
+                        var _sp = $( this );
+                        if( !_sp.prop( &#x27;checked&#x27; ) ){
+                            _allChecked = false; 
+                        }
+                    });
+
+                    _popupItemAll.prop( &#x27;checked&#x27;, _allChecked );
                 });
 
                 _p.on( &#x27;item_checked&#x27;, function( _evt, _data, _checked ){
@@ -681,7 +685,7 @@
                         , _listItems = _boxList.find( _p._model.macAddtionBoxItemSelector( _acIns.selector() ) )
                         ;
 
-                    JC.log( _popupItems.length, _popupItemAll.length, _listItems.length );
+                    //JC.log( _popupItems.length, _popupItemAll.length, _listItems.length );
                     if( !_popupItems.length ) return;
 
                     var _allChecked = true, _listItemsObj = {}, _popupItemsObj= {};
@@ -693,6 +697,8 @@
                         };
 
                     });
+
+                    var _isAdd;
 
                     _popupItems.each( function(){
                         var _sp = $( this ), _sitem;
@@ -708,6 +714,7 @@
                         if( _sp.prop( &#x27;checked&#x27; ) ){
                             if( !_sitem.length ){
                                 _p.trigger( &#x27;add_list_item&#x27;, [ _sp, _acIns, _box, _boxList ] );
+                                _isAdd = true;
                             }
                         }else{
                             _sitem.length &amp;&amp; _sitem.remove();
@@ -716,8 +723,28 @@
 
                     _popupItemAll.prop( &#x27;checked&#x27;, _allChecked );
                     !_preventRecursive &amp;&amp; _p.trigger( &#x27;update_list_box_status&#x27;, [ _acIns ] );
-                    JC.log( _allChecked, new Date().getTime() );
 
+                    JC.f.safeTimeout( function(){
+                        //if( !_acIns._model.layoutPopup().is( &#x27;:visible&#x27; ) ) return;
+                        _isAdd &amp;&amp; _p.trigger( &#x27;sort_list_item&#x27;, [ _boxList, _acIns ] );
+                    }, _p, &#x27;SORT_LIST_ITEM&#x27;, 1000 );
+                    //JC.log( _allChecked, new Date().getTime() );
+                });
+
+                _p.on( &#x27;sort_list_item&#x27;, function( _evt, _boxList, _acIns ){
+                    var _items = _boxList.find( _p._model.macAddtionBoxItemSelector( _acIns.selector() ) );
+
+                   _items.each( function(){
+                       var _item = $( this ), _id = _item.attr( &#x27;data-id&#x27; ), _label = _item.attr( &#x27;data-label&#x27; );
+                       _items.each( function(){
+                           var _sitem = $( this ), _sid = _sitem.attr( &#x27;data-id&#x27; ), _slabel = _sitem.attr( &#x27;data-label&#x27; );
+                           if( _id == _sid ) return;
+
+                           if( _label.localeCompare( _slabel ) &gt; 0 ){
+                               _sitem.after( _item );
+                           }
+                       });
+                   });
                 });
 
                 _p.on( &#x27;add_list_item&#x27;, function( _evt, _sp, _acIns, _box, _boxList ){
