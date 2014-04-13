@@ -228,13 +228,13 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
- ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
+ ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Valid&#x27; ], function(){
 /**
  * 组件用途简述
  *
  *&lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
  *   &lt;a href=&quot;widnow.jQuery.html&quot;&gt;jQuery&lt;/a&gt;
- *   , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+ *   , &lt;a href=&#x27;JC.Valid.html&#x27;&gt;JC.Valid&lt;/a&gt;
  *&lt;/p&gt;
  *
  *&lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
@@ -308,20 +308,129 @@
     JC.f.extendObject( StepControl.prototype, {
         _beforeInit:
             function(){
-                JC.log( &#x27;StepControl _beforeInit&#x27;, new Date().getTime() );
+                //JC.log( &#x27;StepControl _beforeInit&#x27;, new Date().getTime() );
             }
 
         , _initHanlderEvent:
             function(){
                 var _p = this;
 
-                _p.on( &#x27;inited&#x27; );
+                _p.on( &#x27;inited&#x27;, function(){
+                    _p.trigger( &#x27;show_index&#x27; );
+                    _p._model.cscInitedCallback() 
+                        &amp;&amp; _p._model.cscInitedCallback().call( _p, _p.selector() );
+                });
+
+                _p._model.cscItems().each( function( _ix, _item ){
+                    _item = $( _item );
+
+                    _item.delegate( &#x27;.js_cscNext&#x27;, &#x27;click&#x27;, function(){
+                        var _trigger = $( this );
+                        _p.trigger( &#x27;next_index&#x27;, [ _item, _trigger ] );
+                    });
+
+                    _item.delegate( &#x27;.js_cscPrev&#x27;, &#x27;click&#x27;, function(){
+                        var _trigger = $( this );
+                        _p.trigger( &#x27;prev_index&#x27;, [ _item, _trigger ] );
+                    });
+                });
+
+                _p.on( &#x27;prev_index&#x27;, function( _evt, _item, _sp ){
+                    JC.log( &#x27;prev_index&#x27;, JC.f.ts() );
+                    var _validCb = _p._model.cscValidCallback( _sp ) || _p._model.cscValidCallback( _item )
+                        , _canNext
+                        , _newIndex
+                        ;
+
+                    _newIndex = _p._model.cscIndex() - 1;
+                    if( _newIndex &gt;= 0 ){
+                        _p.trigger( &#x27;show_index&#x27;, [ _p._model.cscIndex( _newIndex ) ] );
+                    }
+                });
+
+                _p.on( &#x27;next_index&#x27;, function( _evt, _item, _sp ){
+                    if( !( _item ) ) return;
+                    JC.log( &#x27;next_index&#x27;, JC.f.ts() );
+                    var _validCb = _p._model.cscValidCallback( _sp ) || _p._model.cscValidCallback( _item )
+                        , _canNext
+                        , _newIndex
+                        ;
+
+                    if( _validCb ){
+                        _canNext = _validCb().call( _p, _sp, _item );
+                    }else{
+                        _canNext = JC.Valid( _item );
+                    }
+
+                    JC.log( &#x27;_canNext&#x27;, _canNext, JC.f.ts() );
+
+                    if( !_canNext ) return;
+                    _newIndex = _p._model.cscIndex() + 1;
+                    JC.log( _newIndex, _p._model.maxIndex(), _p._model.cscIndex() );
+
+                    if( _newIndex &lt;= _p._model.maxIndex() ){
+                        _p.trigger( &#x27;show_index&#x27;, [ _p._model.cscIndex( _newIndex ) ] );
+                    }
+                });
+
+                _p.on( &#x27;show_index&#x27;, function( _evt, _cix ){
+                    var _ix = _p._model.cscIndex()
+                        , _items = _p._model.cscItems()
+                        , _labels = _p._model.cscLabels()
+                        ;
+                    typeof _cix != &#x27;undefined&#x27; &amp;&amp; ( _ix = _cix );
+
+                    _items 
+                        &amp;&amp; _items.length 
+                        &amp;&amp; _items.hide().eq( _ix ).show();
+
+                    _labels 
+                        &amp;&amp; _labels.length 
+                        &amp;&amp; _labels.removeClass( _p._model.cscActiveClass() ).eq( _ix ).addClass( _p._model.cscActiveClass() );
+                });
             }
 
         , _inited:
             function(){
-                JC.log( &#x27;StepControl _inited&#x27;, new Date().getTime() );
+                //JC.log( &#x27;StepControl _inited&#x27;, new Date().getTime() );
                 this.trigger( &#x27;inited&#x27; );
+            }
+
+        , prev:
+            function(){
+                var _p = this, _data = _p._model.current( &#x27;.js_cscPrev&#x27; );
+
+                if( _data.item ){
+                    _p.trigger( &#x27;prev_index&#x27;, [ _data.item, _data.button ] );
+                }
+
+                return this;
+            }
+
+        , next:
+            function(){
+                var _p = this, _data = _p._model.current( &#x27;.js_cscNext&#x27; );
+
+                if( _data.item ){
+                    _p.trigger( &#x27;next_index&#x27;, [ _data.item, _data.button ] );
+                }
+
+                return this;
+            }
+
+        , first:
+            function(){
+                this.trigger( &#x27;show_index&#x27;, [ this._model.cscIndex( 0 ) ] );
+                return this;
+            }
+
+        , last:
+            function(){
+                var _ix;
+                this._model.cscItems() &amp;&amp; this._model.cscItems().length 
+                    &amp;&amp; ( _ix = this._model.cscItems().length - 1 );
+                typeof _ix != &#x27;undefined&#x27; &amp;&amp; this.trigger( &#x27;show_index&#x27;, [ this._model.cscIndex( _ix ) ] );
+                return this;
             }
     });
 
@@ -329,24 +438,115 @@
     JC.f.extendObject( StepControl.Model.prototype, {
         init:
             function(){
-                JC.log( &#x27;StepControl.Model.init:&#x27;, new Date().getTime() );
+                //JC.log( &#x27;StepControl.Model.init:&#x27;, new Date().getTime() );
+                var _p = this;
+
+                _p.cscIndex( _p.cscDefaultIndex() || 0 );
             }
+
+        , next:
+            function(){
+                var _p = this
+                    , _ix = this.cscIndex() + 1
+                    , _r = { item: null, label: null, button: null, selector: _p.selector() }
+                    , _items = _p.cscItems()
+                    , _labels = _p.cscLabels()
+                    , _tmp
+                    ;
+
+                if( _items[ _ix ] ){
+                    _r.item = $( _items[ _ix ] );
+                    _tmp = _r.item.find( &#x27;.js_cscNext&#x27; );
+                    _tmp.length &amp;&amp; ( _r.button = _tmp );
+                }
+
+                _labels &amp;&amp; _labels.length &amp;&amp; _labels[ _ix ] 
+                    &amp;&amp; ( _r.label = $( _labels[ _ix ] ) );
+
+                return _r;
+            }
+
+        , prev:
+            function(){
+                var _p = this
+                    , _ix = this.cscIndex() - 1
+                    , _r = { item: null, label: null, selector: _p.selector() }
+                    , _items = _p.cscItems()
+                    , _labels = _p.cscLabels()
+                    ;
+
+                _items[ _ix ] &amp;&amp; ( _r.item = $( _items[ _ix ] ) );
+                _labels &amp;&amp; _labels.length &amp;&amp; _labels[ _ix ] 
+                    &amp;&amp; ( _r.label = $( _labels[ _ix ] ) );
+
+                return _r;
+            }
+
+        , current:
+            function( _btnSelector ){
+                _btnSelector = _btnSelector || &#x27;.js_cscNext&#x27;;
+                var _p = this
+                    , _ix = this.cscIndex()
+                    , _r = { item: null, label: null, button: null, selector: _p.selector() }
+                    , _items = _p.cscItems()
+                    , _labels = _p.cscLabels()
+                    , _tmp
+                    ;
+
+                if( _items[ _ix ] ){
+                    _r.item = $( _items[ _ix ] );
+                    _tmp = _r.item.find( _btnSelector );
+                    _tmp.length &amp;&amp; ( _r.button = _tmp );
+                }
+
+                _labels &amp;&amp; _labels.length &amp;&amp; _labels[ _ix ] 
+                    &amp;&amp; ( _r.label = $( _labels[ _ix ] ) );
+
+                return _r;
+            }
+
+
+        , maxIndex: 
+            function(){ 
+                var _r = this.cscItems().length - 1; 
+                _r &lt; 0 &amp;&amp; ( _r = 0 );
+                return _r;
+            }
+
+        , cscIndex:
+            function( _setter ){
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._cscIndex = _setter );
+                return this._cscIndex;
+            }
+        
+        , cscValidCallback: 
+            function( _selector ){
+                if( !_selector ) return null;
+                return this.callbackProp( _selector, &#x27;cscValidCallback&#x27; );
+            }
+
+        , cscInitedCallback: 
+            function(){
+                return this.callbackProp( &#x27;cscInitedCallback&#x27; );
+            }
+
+        , cscItems: function(){ return this.selectorProp( &#x27;cscItems&#x27; ); }
+        , cscLabels: function(){ return this.selectorProp( &#x27;cscLabels&#x27; ); }
+
+        , cscActiveClass: function(){ return this.attrProp( &#x27;cscActiveClass&#x27; ); }
+
+        , cscDefaultIndex: function(){ return this.intProp( &#x27;cscDefaultIndex&#x27; ) || 0; }
     });
 
     JC.f.extendObject( StepControl.View.prototype, {
         init:
             function(){
-                JC.log( &#x27;StepControl.View.init:&#x27;, new Date().getTime() );
+                //JC.log( &#x27;StepControl.View.init:&#x27;, new Date().getTime() );
             }
     });
 
     _jdoc.ready( function(){
-        var _insAr = 0;
-        StepControl.autoInit
-            &amp;&amp; ( _insAr = StepControl.init() )
-            &amp;&amp; $( &#x27;&lt;h2&gt;StepControl total ins: &#x27; 
-                + _insAr.length + &#x27;&lt;br/&gt;&#x27; + new Date().getTime() + &#x27;&lt;/h2&gt;&#x27; ).appendTo( document.body )
-            ;
+        setTimeout( function(){ StepControl.autoInit &amp;&amp; StepControl.init(); }, 1 );
     });
 
     return JC.StepControl;

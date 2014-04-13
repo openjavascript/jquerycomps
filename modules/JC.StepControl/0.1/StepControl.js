@@ -87,6 +87,8 @@
 
                 _p.on( 'inited', function(){
                     _p.trigger( 'show_index' );
+                    _p._model.cscInitedCallback() 
+                        && _p._model.cscInitedCallback().call( _p, _p.selector() );
                 });
 
                 _p._model.cscItems().each( function( _ix, _item ){
@@ -104,7 +106,7 @@
                 });
 
                 _p.on( 'prev_index', function( _evt, _item, _sp ){
-                    JC.log( 'next_index', JC.f.ts() );
+                    JC.log( 'prev_index', JC.f.ts() );
                     var _validCb = _p._model.cscValidCallback( _sp ) || _p._model.cscValidCallback( _item )
                         , _canNext
                         , _newIndex
@@ -117,6 +119,7 @@
                 });
 
                 _p.on( 'next_index', function( _evt, _item, _sp ){
+                    if( !( _item ) ) return;
                     JC.log( 'next_index', JC.f.ts() );
                     var _validCb = _p._model.cscValidCallback( _sp ) || _p._model.cscValidCallback( _item )
                         , _canNext
@@ -162,6 +165,43 @@
                 //JC.log( 'StepControl _inited', new Date().getTime() );
                 this.trigger( 'inited' );
             }
+
+        , prev:
+            function(){
+                var _p = this, _data = _p._model.current( '.js_cscPrev' );
+
+                if( _data.item ){
+                    _p.trigger( 'prev_index', [ _data.item, _data.button ] );
+                }
+
+                return this;
+            }
+
+        , next:
+            function(){
+                var _p = this, _data = _p._model.current( '.js_cscNext' );
+
+                if( _data.item ){
+                    _p.trigger( 'next_index', [ _data.item, _data.button ] );
+                }
+
+                return this;
+            }
+
+        , first:
+            function(){
+                this.trigger( 'show_index', [ this._model.cscIndex( 0 ) ] );
+                return this;
+            }
+
+        , last:
+            function(){
+                var _ix;
+                this._model.cscItems() && this._model.cscItems().length 
+                    && ( _ix = this._model.cscItems().length - 1 );
+                typeof _ix != 'undefined' && this.trigger( 'show_index', [ this._model.cscIndex( _ix ) ] );
+                return this;
+            }
     });
 
     StepControl.Model._instanceName = 'JCStepControl';
@@ -173,6 +213,68 @@
 
                 _p.cscIndex( _p.cscDefaultIndex() || 0 );
             }
+
+        , next:
+            function(){
+                var _p = this
+                    , _ix = this.cscIndex() + 1
+                    , _r = { item: null, label: null, button: null, selector: _p.selector() }
+                    , _items = _p.cscItems()
+                    , _labels = _p.cscLabels()
+                    , _tmp
+                    ;
+
+                if( _items[ _ix ] ){
+                    _r.item = $( _items[ _ix ] );
+                    _tmp = _r.item.find( '.js_cscNext' );
+                    _tmp.length && ( _r.button = _tmp );
+                }
+
+                _labels && _labels.length && _labels[ _ix ] 
+                    && ( _r.label = $( _labels[ _ix ] ) );
+
+                return _r;
+            }
+
+        , prev:
+            function(){
+                var _p = this
+                    , _ix = this.cscIndex() - 1
+                    , _r = { item: null, label: null, selector: _p.selector() }
+                    , _items = _p.cscItems()
+                    , _labels = _p.cscLabels()
+                    ;
+
+                _items[ _ix ] && ( _r.item = $( _items[ _ix ] ) );
+                _labels && _labels.length && _labels[ _ix ] 
+                    && ( _r.label = $( _labels[ _ix ] ) );
+
+                return _r;
+            }
+
+        , current:
+            function( _btnSelector ){
+                _btnSelector = _btnSelector || '.js_cscNext';
+                var _p = this
+                    , _ix = this.cscIndex()
+                    , _r = { item: null, label: null, button: null, selector: _p.selector() }
+                    , _items = _p.cscItems()
+                    , _labels = _p.cscLabels()
+                    , _tmp
+                    ;
+
+                if( _items[ _ix ] ){
+                    _r.item = $( _items[ _ix ] );
+                    _tmp = _r.item.find( _btnSelector );
+                    _tmp.length && ( _r.button = _tmp );
+                }
+
+                _labels && _labels.length && _labels[ _ix ] 
+                    && ( _r.label = $( _labels[ _ix ] ) );
+
+                return _r;
+            }
+
 
         , maxIndex: 
             function(){ 
@@ -189,7 +291,13 @@
         
         , cscValidCallback: 
             function( _selector ){
+                if( !_selector ) return null;
                 return this.callbackProp( _selector, 'cscValidCallback' );
+            }
+
+        , cscInitedCallback: 
+            function(){
+                return this.callbackProp( 'cscInitedCallback' );
             }
 
         , cscItems: function(){ return this.selectorProp( 'cscItems' ); }
@@ -208,7 +316,7 @@
     });
 
     _jdoc.ready( function(){
-        StepControl.autoInit && StepControl.init();
+        setTimeout( function(){ StepControl.autoInit && StepControl.init(); }, 1 );
     });
 
     return JC.StepControl;
