@@ -46,6 +46,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.msgbox",
         "window.Bizs.ActionLogic",
         "window.Bizs.AutoSelectComplete",
+        "window.Bizs.CRMSchedule",
         "window.Bizs.ChangeLogic",
         "window.Bizs.CommonModify",
         "window.Bizs.DMultiDate",
