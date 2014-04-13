@@ -68,7 +68,6 @@
             requirejs( [ 'Bizs.CRMSchedule' ], function(){
             });
 
-
         </script>
     </head>    
     <body>
@@ -97,6 +96,10 @@
                                 bccTpl="script.js_bccTpl"
                                 bccRowTpl="script.js_bccRowTpl"
                                 bccDateNavTpl="script.js_bccDateNavTpl"
+
+                                bccActionType="lock"
+                                bccLockupUrl="./data/lock.php?action=lockup&id={0}&date={1}"
+                                bccUnlockUrl="./data/lock.php?action=unlock&id={1}&date={1}"
                                 >
                             </div>
                         </div>
@@ -136,11 +139,8 @@
 </script>
 
 <script type="text/template" class="js_bccDateNavTpl">
-    <button type="button" class="xdate_btn">&nbsp;&lt;&nbsp;
-    </button><select class="xdate_select xdate_select_year">
-    </select>
-    <select class="xdate_select xdate_select_month">
-    </select><button type="button" class="xdate_btn">&nbsp;&gt;&nbsp;</button>
+    <button type="button" class="xdate_btn js_bccPrevMonth">&nbsp;&lt;&nbsp;</button> <select class="xdate_select js_bccYearSelect">{0}</select>
+    <select class="xdate_select js_bccMonthSelect">{1}</select><button type="button" class="xdate_btn js_bccNextMonth">&nbsp;&gt;&nbsp;</button>
 </script>
 
 <script type="text/template" class="js_bccRowTpl">

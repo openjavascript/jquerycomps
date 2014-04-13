@@ -125,6 +125,34 @@
 
                     _p._view.update( _d );
                 });
+
+                _p.on( 'lockup', function( _evt, _id, _date ){
+                    JC.log( 'lockup', _id, _date, JC.f.ts() );
+                });
+
+                _p.on( 'unlock', function( _evt, _id, _date ){
+                    JC.log( 'unlock', _id, _date, JC.f.ts() );
+                });
+
+                switch( _p._model.actionType() ){
+                    default: 
+                        {
+                            _p.selector().delegate( 'td.js_pos_canSelect', 'click', function( _evt ){
+                                var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
+                                JC.f.safeTimeout( function(){
+                                    _p.trigger( 'lockup', [ _id, _date ] );
+                                }, _sp, 'LOCK_ITEM', 200 );
+                            });
+
+                            _p.selector().delegate( 'td.js_pos_locked', 'click', function( _evt ){
+                                var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
+                                JC.f.safeTimeout( function(){
+                                    _p.trigger( 'unlock', [ _id, _date ] );
+                                }, _sp, 'LOCK_ITEM', 200 );
+                            });
+                            break;
+                        }
+                }
             }
 
         , _inited:
@@ -155,8 +183,7 @@
                     if( !_displayDate ){ _displayDate = _sdate; }
                 }else{
                     _sdate = new Date();
-                    _sdate.setFullYear( _sdate.getFullYear() + _yearSpan );
-
+                    _sdate.setFullYear( _sdate.getFullYear() - _yearSpan );
                 }
 
                 if( _d.end_date ){
@@ -171,6 +198,11 @@
                 if( !_displayDate ){ _displayDate = _cdate; }
                 return { "sdate": _sdate, "edate": _edate, "displayDate": _displayDate };
             }
+
+        , actionType: function(){ return this.stringProp( 'bccActionType' ); }
+
+        , lockupUrl: function(){ return this.attrProp( 'bccLockupUrl' ); }
+        , unlockUrl: function(){ return this.attrProp( 'bccUnlockUrl' ); }
         
     });
 
@@ -205,6 +237,48 @@
         , dateHtml:
             function( _d, _dateObj ){
                 var _p = this, _r = _p._model.dateNavTpl();
+                if( /js_bccYearSelect/.test( _r ) ){
+                    _r = _p.dateHtmlControl( _d, _dateObj, _r );
+                }else{
+                    _r = _p.dateHtmlLabel( _d, _dateObj, _r );
+                }
+                return _r;
+            }
+
+        , dateHtmlControl:
+            function( _d, _dateObj, _r ){
+                var _syear = _dateObj.sdate.getFullYear()
+                    , _eyear = _dateObj.edate.getFullYear()
+                    , _cyear = _dateObj.displayDate.getFullYear()
+                    , _cmonth = _dateObj.displayDate.getMonth()
+                    , _yearHtml = []
+                    , _monthHtml = []
+                    , _tmp
+
+                    , _mintime = _dateObj.sdate.getTime()
+                    , _maxtime = _dateObj.edate.getTime()
+                    ;
+                for( ; _syear <= _eyear; _syear++ ){
+                    _tmp = '';
+                    _syear == _cyear && ( _tmp = 'selected="selected"' );
+                    _yearHtml.push( JC.f.printf( '<option value="{0}" {1}>{0}年</option>', _syear, _tmp ) );
+                }
+
+                for( var i = 0; i < 12; i++ ){
+                    var _nowDate = new Date( _cyear, _cmonth, 1 );
+                    if( _nowDate.getTime() < _nowDate || _nowDate.getTime() > _maxtime ) continue;
+                    _tmp = '';
+                    i == _cmonth && ( _tmp = 'selected="selected"' );
+                    _monthHtml.push( JC.f.printf( '<option value="{0}" {2}>{1}月</option>', i, i + 1, _tmp ) );
+                }
+
+                _r = JC.f.printf( _r, _yearHtml.join(''), _monthHtml.join('') );
+
+                return _r;
+            }
+
+        , dateHtmlLabel:
+            function( _d, _dateObj, _r ){
                 return _r;
             }
 
@@ -247,7 +321,8 @@
 
                         _class = CRMSchedule.STATUS_CODE_MAP[ _status ] || 0;
 
-                        _days.push( JC.f.printf( '<td class="js_bccDateItem {0}">{1}</td>', _class, _name ) );
+                        _days.push( JC.f.printf( '<td class="js_bccDateItem {0}" data-id="{2}" data-date="{3}">{1}</td>'
+                                    , _class, _name, _item.id, _sPosDate ) );
                     }
 
                     _tmpTpl = JC.f.printf( _tpl
