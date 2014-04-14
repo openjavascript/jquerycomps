@@ -3,16 +3,19 @@
     <head>
         <meta charset=utf-8 />
         <title>Open JQuery Components Library - suches</title>
+        <link href='../../../../modules/Bizs.CRMSchedule/0.1/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Panel/0.2/res/default/style.css' rel='stylesheet' />
         <style>
             body{
                 margin: 20px 40px;
                 background: none!important;
             }
 
-            dt { font-weight: bold; margin: 10px auto; }
-            dd { line-height: 24px; }
+            td.js_pos_canSelect, td.js_pos_locked {
+                cursor: pointer!important;
+            }
         </style>
-        <link href='../../../../modules/Bizs.CRMSchedule/0.1/res/default/style.css' rel='stylesheet' />
+
         <script src="../../../../lib.js"></script>
         <script src="../../../../config.js"></script>
         <script>
@@ -20,12 +23,13 @@
             JC.debug = true;
 
             var LIST_DATA = {
-                start_date: ""
-                , end_date: ""
-                , pos_data: [ 
+                start_date: "2011-03-03"
+                , end_date: "2016-08-09"
+                , display_date: "2014-04"
+                , list_data: [ 
                     { "name": "pos1", "id": "1"
                         , "parent": [ { "name": "parent1", "id": "11" },  { "name": "parent2", "id": "22" } ] 
-                        , "pos_data": { 
+                        , "position_data": { 
                             "2014-04-01": { "status": 1, "company": "company 1" }
                             , "2014-04-02": { "status": 2  }
                         }
@@ -33,7 +37,7 @@
 
                     , { "name": "pos2", "id": "2"
                         , "parent": [ { "name": "parent3", "id": "11" },  { "name": "parent4", "id": "22" } ] 
-                        , "pos_data": { 
+                        , "position_data": { 
                             "2014-04-03": { "status": 3 }
                             , "2014-04-04": { "status": 4, "company": "company 4"  }
                         }
@@ -41,7 +45,7 @@
 
                     , { "name": "pos3", "id": "3"
                         , "parent": [ { "name": "parent5", "id": "11" },  { "name": "parent6", "id": "22" } ] 
-                        , "pos_data": { 
+                        , "position_data": { 
                             "2014-04-05": { "status": 5 }
                             , "2014-04-06": { "status": 0  }
                         }
@@ -49,7 +53,7 @@
 
                     , { "name": "pos4", "id": "4"
                         , "parent": [ { "name": "parent1", "id": "11" },  { "name": "parent2", "id": "22" } ] 
-                        , "pos_data": { 
+                        , "position_data": { 
                             "2014-04-11": { "status": 1 }
                             , "2014-04-12": { "status": 2, "company": "company 2"  }
                         }
@@ -57,7 +61,7 @@
 
                     , { "name": "pos5", "id": "5"
                         , "parent": [ { "name": "parent1", "id": "11" },  { "name": "parent2", "id": "22" } ] 
-                        , "pos_data": { 
+                        , "position_data": { 
                             "2014-04-13": { "status": 3, "company": "company 3" }
                             , "2014-04-14": { "status": 4  }
                         }
@@ -98,8 +102,10 @@
                                 bccDateNavTpl="script.js_bccDateNavTpl"
 
                                 bccActionType="lock"
-                                bccLockupUrl="./data/lock.php?action=lockup&id={0}&date={1}"
-                                bccUnlockUrl="./data/lock.php?action=unlock&id={1}&date={1}"
+                                bccLockupUrl="./data/lock.php?action=lockup&date={1}&id={0}"
+                                bccUnlockUrl="./data/lock.php?action=unlock&date={1}&id={0}"
+
+                                bccMonthDataUrl="./data/month_data.php?date={1}&id={0}"
                                 >
                             </div>
                         </div>
@@ -139,15 +145,15 @@
 </script>
 
 <script type="text/template" class="js_bccDateNavTpl">
-    <button type="button" class="xdate_btn js_bccPrevMonth">&nbsp;&lt;&nbsp;</button> <select class="xdate_select js_bccYearSelect">{0}</select>
-    <select class="xdate_select js_bccMonthSelect">{1}</select><button type="button" class="xdate_btn js_bccNextMonth">&nbsp;&gt;&nbsp;</button>
+    <button type="button" class="xdate_btn js_bccPrevYear">&lt;&lt;</button><button type="button" class="xdate_btn js_bccPrevMonth">&lt;</button>&nbsp;<select class="xdate_select js_bccYearSelect">{0}</select>
+    <select class="xdate_select js_bccMonthSelect">{1}</select>&nbsp;<button type="button" class="xdate_btn js_bccNextMonth">&gt;</button><button type="button" class="xdate_btn js_bccNextYear">&gt;&gt;</button>
 </script>
 
 <script type="text/template" class="js_bccRowTpl">
-    <tr>
+    <tr class="js_bccDataRow">
         <td>{0}<input type="hidden" value="{4}" /></td>
         <td>{1}<input type="hidden" value="{5}" /></td>
-        <td>{2}<input type="hidden" value="{6}" /></td>
+        <td>{2}<input type="hidden" value="{6}" class="js_bccItemId" /></td>
         <td class="xcenter"><input type="button" class="UXCCalendar_btn js_bccPopupBtn" data-id="{6}" /> </td>
         {3}
     </tr>
