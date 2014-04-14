@@ -87,6 +87,7 @@ requirejs.config( {
         , 'Bizs.MoneyTips': 'modules/Bizs.MoneyTips/0.1/MoneyTips'
 
         , 'Bizs.MultiAutoComplete': 'modules/Bizs.MultiAutoComplete/0.1/MultiAutoComplete'
+        , 'Bizs.TaskViewer': 'modules/Bizs.TaskViewer/0.1/TaskViewer'
 
         , 'Bizs.MultiDate': 'modules/Bizs.MultiDate/0.1/MultiDate'
         , 'Bizs.MultiSelect': 'modules/Bizs.MultiSelect/0.1/MultiSelect'
@@ -94,7 +95,7 @@ requirejs.config( {
         , 'Bizs.MultiUpload': 'modules/Bizs.MultiUpload/0.1/MultiUpload'
 
         , 'Bizs.CRMSchedule': 'modules/Bizs.CRMSchedule/0.1/CRMSchedule'
-        , 'Bizs.CRMSchedule.Popup': 'modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup'
+        , 'Bizs.CRMSchedulePopup': 'modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup'
 
         , 'plugins.jquery.form': 'plugins/jquery.form/3.36.0/jquery.form'
         , 'plugins.jquery.rate': 'plugins/jquery.rate/2.5.2/jquery.rate'
