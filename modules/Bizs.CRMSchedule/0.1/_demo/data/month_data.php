@@ -33,7 +33,6 @@
                 $tmp_date->add( new DateInterval( 'P1D') );
             }
 
-
             array_push( $r['data']['list_data'], array(
                 'name' => 'pos' . $item 
                 , 'id' => $item

@@ -78,6 +78,26 @@
 
                 _p.on( 'inited', function(){
                     _p._view.show();
+
+                    _p.trigger( 'ready' );
+                });
+
+                _p.on( 'ready', function(){
+                    _p._model.prevBtn().on( 'click', function( _evt ){
+                        JC.log( 'prev', JC.f.ts() );
+                        _p._model.currentDate().setMonth( _p._model.currentDate().getMonth() - 4 );
+                        _p._view.updateDate( _p._model.currentDate() );
+                    });
+
+                    _p._model.nextBtn().on( 'click', function( _evt ){
+                        JC.log( 'next', JC.f.ts() );
+                        _p._model.currentDate().setMonth( _p._model.currentDate().getMonth() + 4 );
+                        _p._view.updateDate( _p._model.currentDate() );
+                    });
+
+                    _p.on( 'clear_data', function(){
+                        _p._model.panelIns().find( 'div.js_bccPopupDateItem' ).remove();
+                    });
                 });
 
                 _p.on( 'update_status', function( _evt ){
@@ -113,6 +133,7 @@
                     );
 
                 });
+
             }
 
         , _inited:
@@ -152,6 +173,8 @@
 
         , prevBtn: function(){ return this.panelIns().find( '.js_bccPopupPrev' ); }
         , nextBtn: function(){ return this.panelIns().find( '.js_bccPopupNext' ); }
+
+        , dateBox: function(){ return this.panelIns().find( 'div.js_bccPopupDateBox' ); }
 
         , pos1Data:
             function(){
@@ -280,6 +303,19 @@
         , dispose:
             function(){
                 this._model.panelIns() && this._model.panelIns().layout().remove();
+            }
+
+        , updateDate:
+            function( _currentDate ){
+                var _p = this
+                    , _ctpl = _p._model.schIns()._model.popupCalendarTpl()
+                    , _calendarHtml = _p.calendarHtml( _ctpl, _currentDate )
+                    ;
+
+                _p.trigger( 'clear_data' );
+                $( _calendarHtml ).appendTo( _p._model.dateBox() );
+
+                _p.trigger( 'update_nav_status', [ _currentDate ] );
             }
     });
 
