@@ -224,16 +224,39 @@
                 if( !( js_bccYearSelect.length && js_bccYearSelect.length ) ) return;
 
                 _p.selector().delegate( 'select.js_bccYearSelect', 'change', function( _evt ){
-                    var _sp = $( this ), _date = new Date( js_bccYearSelect.val(), js_bccMonthSelect.val(), 1 );
-                    _p.trigger( 'get_data', [ _date ] );
+                    var js_bccYearSelect = _p.selector().find( 'select.js_bccYearSelect' )
+                        , js_bccMonthSelect = _p.selector().find( 'select.js_bccMonthSelect' )
+                        , _mindate = _p._model.initDate().sdate
+                        , _maxdate = _p._model.initDate().edate
+                        ;
+                    var _sp = $( this ), _newDate = new Date( js_bccYearSelect.val(), js_bccMonthSelect.val(), 1 );
+
+                    if( CRMSchedule.monthCompare( _maxdate, _newDate ) < 0 ) {
+                        _newDate = JC.f.cloneDate( _maxdate );
+                    }
+                    if( CRMSchedule.monthCompare( _mindate, _newDate ) > 0 ) {
+                        _newDate = JC.f.cloneDate( _mindate );
+                    }
+
+                    if( CRMSchedule.monthCompare( _p._model.currentDate(), _newDate ) === 0 ) return;
+
+                    _p.trigger( 'update_date_control', _newDate );
+                    _p.trigger( 'get_data', [ _newDate ] );
                 });
 
                 _p.selector().delegate( 'select.js_bccMonthSelect', 'change', function( _evt ){
-                    var _sp = $( this ), _date = new Date( js_bccYearSelect.val(), js_bccMonthSelect.val(), 1 );
-                    _p.trigger( 'get_data', [ _date ] );
+                    var js_bccYearSelect = _p.selector().find( 'select.js_bccYearSelect' )
+                        , js_bccMonthSelect = _p.selector().find( 'select.js_bccMonthSelect' )
+                        ;
+                    var _sp = $( this ), _newDate = new Date( js_bccYearSelect.val(), js_bccMonthSelect.val(), 1 );
+                        _p.trigger( 'update_date_control', _newDate );
+                        _p.trigger( 'get_data', [ _newDate ] );
                 });
 
                 _p.selector().delegate( 'button.js_bccPrevYear', 'click', function( _evt ){
+                    var js_bccYearSelect = _p.selector().find( 'select.js_bccYearSelect' )
+                        , js_bccMonthSelect = _p.selector().find( 'select.js_bccMonthSelect' )
+                        ;
                     var _sp = $( this )
                         , _date = new Date( js_bccYearSelect.val(), js_bccMonthSelect.val(), 1 )
                         , _newDate = JC.f.cloneDate( _date )
@@ -250,6 +273,9 @@
                 });
 
                 _p.selector().delegate( 'button.js_bccNextYear', 'click', function( _evt ){
+                    var js_bccYearSelect = _p.selector().find( 'select.js_bccYearSelect' )
+                        , js_bccMonthSelect = _p.selector().find( 'select.js_bccMonthSelect' )
+                        ;
                     var _sp = $( this )
                         , _date = new Date( js_bccYearSelect.val(), js_bccMonthSelect.val(), 1 )
                         , _newDate = JC.f.cloneDate( _date )
@@ -266,6 +292,9 @@
                 });
 
                 _p.selector().delegate( 'button.js_bccPrevMonth', 'click', function( _evt ){
+                    var js_bccYearSelect = _p.selector().find( 'select.js_bccYearSelect' )
+                        , js_bccMonthSelect = _p.selector().find( 'select.js_bccMonthSelect' )
+                        ;
                     var _sp = $( this )
                         , _date = new Date( js_bccYearSelect.val(), js_bccMonthSelect.val(), 1 )
                         , _newDate = JC.f.cloneDate( _date )
@@ -282,6 +311,9 @@
                 });
 
                 _p.selector().delegate( 'button.js_bccNextMonth', 'click', function( _evt ){
+                    var js_bccYearSelect = _p.selector().find( 'select.js_bccYearSelect' )
+                        , js_bccMonthSelect = _p.selector().find( 'select.js_bccMonthSelect' )
+                        ;
                     var _sp = $( this )
                         , _date = new Date( js_bccYearSelect.val(), js_bccMonthSelect.val(), 1 )
                         , _newDate = JC.f.cloneDate( _date )
@@ -298,6 +330,9 @@
                 });
 
                 _p.on( 'update_date_control', function( _evt, _newDate ){
+                    var js_bccYearSelect = _p.selector().find( 'select.js_bccYearSelect' )
+                        , js_bccMonthSelect = _p.selector().find( 'select.js_bccMonthSelect' )
+                        ;
                     js_bccYearSelect.val( _newDate.getFullYear() );
 
                     var _dateObj = _p._model.initDate() 
