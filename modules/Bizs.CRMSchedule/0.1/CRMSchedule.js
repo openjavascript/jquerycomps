@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel', 'Bizs.CRMSchedule.Popup' ], function(){
 /**
  * 组件用途简述
  *
@@ -389,7 +389,7 @@
                                 _item = $( _item );
                                 _date.push( _item.attr( 'data-date' ) );
                             });
-                            _p.trigger( 'lockup', [ _tr.attr( 'data-id' ), _date.join(','), _p._model.lockupDateUrl(), null
+                            _p.trigger( 'lockup', [ _tr.attr( 'data-id' ), _date.join(','), _p._model.lockupDateUrl(), _sp
                                 , function( _data, _id, _date ){
                                     _items.removeClass( CRMSchedule.ALL_CLASS )
                                         .addClass( CRMSchedule.CLASS_LOCKED )
@@ -401,7 +401,7 @@
                                 _item = $( _item );
                                 _date.push( _item.attr( 'data-date' ) );
                             });
-                            _p.trigger( 'unlock', [ _tr.attr( 'data-id' ), _date.join(','), _p._model.unlockDateUrl(), null
+                            _p.trigger( 'unlock', [ _tr.attr( 'data-id' ), _date.join(','), _p._model.unlockDateUrl(), _sp
                                 , function( _data, _id, _date ){
                                     _items.removeClass( CRMSchedule.ALL_CLASS )
                                         .addClass( CRMSchedule.CLASS_CAN_SELECT )
@@ -431,7 +431,7 @@
                             js_pos_canSelect.each( function(){
                                 _id.push( $( this ).attr( 'data-id' ) );
                             });
-                            _p.trigger( 'lockup', [ _id.join(','), _date, _p._model.lockupIdUrl(), null
+                            _p.trigger( 'lockup', [ _id.join(','), _date, _p._model.lockupIdUrl(), _sp
                                 , function( _data, _id, _date ){
                                     js_pos_canSelect.removeClass( CRMSchedule.ALL_CLASS )
                                         .addClass( CRMSchedule.CLASS_LOCKED )
@@ -441,7 +441,7 @@
                             js_pos_locked.each( function(){
                                 _id.push( $( this ).attr( 'data-id' ) );
                             });
-                            _p.trigger( 'unlock', [ _id.join(','), _date, _p._model.unlockIdUrl(), null
+                            _p.trigger( 'unlock', [ _id.join(','), _date, _p._model.unlockIdUrl(), _sp
                                 , function( _data, _id, _date ){
                                     js_pos_locked.removeClass( CRMSchedule.ALL_CLASS )
                                         .addClass( CRMSchedule.CLASS_CAN_SELECT )
@@ -470,7 +470,7 @@
                                 _data.errmsg && ( _msg = _data.errmsg );
                                 _status = 0;
 
-                                _sp 
+                                !_doneCb && _sp 
                                     && _sp.removeClass( CRMSchedule.ALL_CLASS )
                                     && _sp.addClass( CRMSchedule.CLASS_LOCKED )
                                     ;
@@ -503,7 +503,7 @@
                                 _data.errmsg && ( _msg = _data.errmsg );
                                 _status = 0;
 
-                                _sp 
+                                !_doneCb && _sp 
                                     && _sp.removeClass( CRMSchedule.ALL_CLASS )
                                     && _sp.addClass( CRMSchedule.CLASS_CAN_SELECT )
                                     ;

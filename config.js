@@ -94,6 +94,7 @@ requirejs.config( {
         , 'Bizs.MultiUpload': 'modules/Bizs.MultiUpload/0.1/MultiUpload'
 
         , 'Bizs.CRMSchedule': 'modules/Bizs.CRMSchedule/0.1/CRMSchedule'
+        , 'Bizs.CRMSchedule.Popup': 'modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup'
 
         , 'plugins.jquery.form': 'plugins/jquery.form/3.36.0/jquery.form'
         , 'plugins.jquery.rate': 'plugins/jquery.rate/2.5.2/jquery.rate'
