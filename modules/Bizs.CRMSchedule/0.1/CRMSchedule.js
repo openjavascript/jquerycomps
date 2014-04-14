@@ -370,19 +370,98 @@
 
                 _p.selector().delegate( 'td.js_pos_canSelect', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
-                        _p.trigger( 'lockup', [ _id, _date, _sp ] );
+                        _p.trigger( 'lockup', [ _id, _date, _p._model.lockupDateUrl(), _sp ] );
                 });
 
                 _p.selector().delegate( 'td.js_pos_locked', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
-                        _p.trigger( 'unlock', [ _id, _date, _sp ] );
+                        _p.trigger( 'unlock', [ _id, _date, _p._model.unlockDateUrl(), _sp ] );
                 });
 
-                _p.on( 'lockup', function( _evt, _id, _date, _sp ){
+                _p.selector().delegate( 'input.js_bccCkAll', 'change', function( _evt ){
+                    var _sp = $( this ), _tr, _date = [], _items;
+
+                    JC.f.safeTimeout( function(){
+                        _tr = JC.f.parentSelector( _sp, '(tr' );
+                        if( _sp.prop( 'checked' ) ){
+                            _items = _tr.find( 'td.js_pos_canSelect' );
+                            _items.each( function( _ix, _item ){
+                                _item = $( _item );
+                                _date.push( _item.attr( 'data-date' ) );
+                            });
+                            _p.trigger( 'lockup', [ _tr.attr( 'data-id' ), _date.join(','), _p._model.lockupDateUrl(), null
+                                , function( _data, _id, _date ){
+                                    _items.removeClass( CRMSchedule.ALL_CLASS )
+                                        .addClass( CRMSchedule.CLASS_LOCKED )
+                                        ;
+                                }]);
+                        }else{
+                            _items = _tr.find( 'td.js_pos_locked' );
+                            _items.each( function( _ix, _item ){
+                                _item = $( _item );
+                                _date.push( _item.attr( 'data-date' ) );
+                            });
+                            _p.trigger( 'unlock', [ _tr.attr( 'data-id' ), _date.join(','), _p._model.unlockDateUrl(), null
+                                , function( _data, _id, _date ){
+                                    _items.removeClass( CRMSchedule.ALL_CLASS )
+                                        .addClass( CRMSchedule.CLASS_CAN_SELECT )
+                                        ;
+                                }] );
+                        }
+                    }, _sp, 'LOCK_CK_ALL', 200 );
+                });
+
+                _p.selector().delegate( 'th.js_bccDateLabel[data-date]', 'click', function( _evt ){
+                    var _sp = $( this ), _date = _sp.attr( 'data-date' )
+                        , js_pos_canSelect, js_pos_locked
+                        ;
+                  
+                    if( !_date ) return;
+
+                    js_pos_canSelect = _p.selector().find( JC.f.printf( 'td.js_pos_canSelect[data-date={0}]', _date ) );
+                    js_pos_locked = _p.selector().find( JC.f.printf( 'td.js_pos_locked[data-date={0}]', _date ) );
+                        
+                    JC.log( 'th.js_bccDateLabel', _sp.attr( 'data-date' ), js_pos_canSelect.length, js_pos_locked.length, JC.f.ts() );
+
+                    if( ( js_pos_canSelect.length + js_pos_locked.length ) == 0 ) return;
+
+                    JC.f.safeTimeout( function(){
+                        var _id = [];
+                        if( js_pos_canSelect.length ){
+                            js_pos_canSelect.each( function(){
+                                _id.push( $( this ).attr( 'data-id' ) );
+                            });
+                            _p.trigger( 'lockup', [ _id.join(','), _date, _p._model.lockupIdUrl(), null
+                                , function( _data, _id, _date ){
+                                    js_pos_canSelect.removeClass( CRMSchedule.ALL_CLASS )
+                                        .addClass( CRMSchedule.CLASS_LOCKED )
+                                        ;
+                                }]);
+                        }else{
+                            js_pos_locked.each( function(){
+                                _id.push( $( this ).attr( 'data-id' ) );
+                            });
+                            _p.trigger( 'unlock', [ _id.join(','), _date, _p._model.unlockIdUrl(), null
+                                , function( _data, _id, _date ){
+                                    js_pos_locked.removeClass( CRMSchedule.ALL_CLASS )
+                                        .addClass( CRMSchedule.CLASS_CAN_SELECT )
+                                        ;
+                                }] );
+                        }
+                        JC.log( '_id:', _id );
+                    }, _sp, 'LOCK_CK_ALL', 200 );
+
+                });
+
+                _p.on( 'lockup', function( _evt, _id, _date, _url, _sp, _doneCb ){
                     JC.f.safeTimeout( function(){
                         JC.log( 'lockup', _id, _date, JC.f.ts() );
-                        var _url = JC.f.printf( _p._model.lockupUrl(), _id, _date )
-                            , _msg, _status;
+                        if( !( _id && _date ) ) return;
+                        var _msg, _status;
+
+                        _url = _url || _p._model.lockupDateUrl();
+                        if( !_url ) return;
+                        _url = JC.f.printf( _url, _id, _date );
 
                         $.get( _url ).done( function( _d ){
                             var _data = $.parseJSON( _d );
@@ -395,6 +474,9 @@
                                     && _sp.removeClass( CRMSchedule.ALL_CLASS )
                                     && _sp.addClass( CRMSchedule.CLASS_LOCKED )
                                     ;
+
+                                _doneCb && _doneCb( _data, _id, _date, _sp );
+
                             }else{
                                 _msg = '锁定失败, 请重试!';
                                 _data && _data.errmsg && ( _msg = _data.errmsg );
@@ -405,11 +487,14 @@
                     }, _sp, 'LOCK_ITEM', 200 );
                 });
 
-                _p.on( 'unlock', function( _evt, _id, _date, _sp ){
+                _p.on( 'unlock', function( _evt, _id, _date, _url, _sp, _doneCb ){
                     JC.f.safeTimeout( function(){
                         JC.log( 'unlock', _id, _date, JC.f.ts() );
-                        var _url = JC.f.printf( _p._model.unlockUrl(), _id, _date )
-                            , _msg, _status;
+                        if( !( _id && _date ) ) return;
+                        var _msg, _status;
+                        _url = _url || _p._model.unlockDateUrl();
+                        if( !_url ) return;
+                        _url = JC.f.printf( _url, _id, _date );
 
                         $.get( _url ).done( function( _d ){
                             var _data = $.parseJSON( _d );
@@ -422,6 +507,8 @@
                                     && _sp.removeClass( CRMSchedule.ALL_CLASS )
                                     && _sp.addClass( CRMSchedule.CLASS_CAN_SELECT )
                                     ;
+
+                                _doneCb && _doneCb( _data, _id, _date, _sp );
                             }else{
                                 _msg = '解锁失败, 请重试!';
                                 _data && _data.errmsg && ( _msg = _data.errmsg );
@@ -508,8 +595,11 @@
 
         , actionType: function(){ return this.stringProp( 'bccActionType' ); }
 
-        , lockupUrl: function(){ return this.attrProp( 'bccLockupUrl' ); }
-        , unlockUrl: function(){ return this.attrProp( 'bccUnlockUrl' ); }
+        , lockupDateUrl: function(){ return this.attrProp( 'bccLockupDateUrl' ); }
+        , unlockDateUrl: function(){ return this.attrProp( 'bccUnlockDateUrl' ); }
+
+        , lockupIdUrl: function(){ return this.attrProp( 'bccLockupIdUrl' ); }
+        , unlockIdUrl: function(){ return this.attrProp( 'bccUnlockIdUrl' ); }
 
         , monthDataUrl: function(){ return this.attrProp( 'bccMonthDataUrl' ); }
         
@@ -606,13 +696,18 @@
                     , _maxDay = JC.f.maxDayOfMonth( _date )
                     , _tpl = _p._model.rowTpl()
                     , _tmpTpl
+                    , _ckAll = ''
                     ;
+
 
                 for( var i = 0, j = _d.list_data.length; i < j; i++ ){
                     var _item = _d.list_data[ i ]
                         , _parent1 = '', _parent2 = ''
                         , _parent1_id = '', _parent2_id = ''
                         , _days = []
+                        , _ckAll = ''
+                        , _hasCanSelect
+                        , _hasLocked
                         ;
 
                     if( _item.parent ){
@@ -628,6 +723,7 @@
                             , _sPosDate = JC.f.formatISODate( _posDate )
                             , _status = 0
                             , _name = ''
+                            , _shortName = ''
                             , _class
                             ;
 
@@ -639,20 +735,36 @@
                         if( _sPosDate in _item.position_data ){
                             _status = _item.position_data[ _sPosDate ].status;
                             _name = _item.position_data[ _sPosDate ].company || '';
+                            _shortName = byteString( _name, 6 );
+
+                            bytelen( _name ) > 6 && ( _shortName += '...' );
                         }
 
                         _class = CRMSchedule.STATUS_CODE_MAP[ _status ] || 0;
 
+                        _status == CRMSchedule.STATUS_CAN_SELECT && ( _hasCanSelect = true );
+                        _status == CRMSchedule.STATUS_LOCKED && ( _hasLocked = true );
+
                         _days.push( JC.f.printf( '<td class="js_bccDateItem {0}" data-id="{2}" data-date="{3}" title="{1}">' 
-                                                    +'<div>{1}</div></td>'
-                                    , _class, _name, _item.id, _sPosDate ) );
+                                                    +'<div>{4}</div></td>'
+                                    , _class, _name, _item.id, _sPosDate, _shortName ) );
                     }
+
+                    if( _p._model.actionType() == 'lock' ){
+                        if( _hasCanSelect ){
+                            _ckAll = '<div><input type="checkbox" class="js_bccCkAll" /></div>';
+                        }else if( _hasLocked ){
+                            _ckAll = '<div><input type="checkbox" class="js_bccCkAll" checked="checked" /></div>';
+                        }
+                    }
+
 
                     _tmpTpl = JC.f.printf( _tpl
                                             , _parent1, _parent2
                                             , _item.name, _days.join('') 
                                             , _parent1_id, _parent2_id
                                             , _item.id
+                                            , _ckAll
                                         );
 
                     _r.push( _tmpTpl );
@@ -677,8 +789,10 @@
                         break;
                     }
                     _date.setDate( _cur );
-                    _r.week.push( JC.f.printf( '<th class="js_bccWeekLabel">{0}</th>', CRMSchedule.WEEK_SCH[ _date.getDay() ] ) );
-                    _r.date.push( JC.f.printf( '<th class="js_bccDateLabel">{0}</th>', _cur ) );
+                    _r.week.push( JC.f.printf( '<th class="js_bccWeekLabel" data-date="{1}" data-day="{2}">{0}</th>'
+                                , CRMSchedule.WEEK_SCH[ _date.getDay() ], JC.f.formatISODate( _date ), _date.getDay()  ) );
+                    _r.date.push( JC.f.printf( '<th class="js_bccDateLabel" data-date="{1}">{0}</th>'
+                                , _cur, JC.f.formatISODate( _date ) ) );
                 }
 
                 _r.date = _r.date.join('');
@@ -732,6 +846,21 @@
 
             return _r;
         };
+
+    function byteString( _s, _len ){
+        var _r = [], _count = 0, _char;
+        for( var i = 0, j = _s.length; i < j; i++ ){
+            _char = _s.charAt( i );
+            _count += bytelen( _char );
+            if( _count > _len ) break;
+            _r.push ( _char );
+        }
+        return _r.join('');
+    }
+
+    function bytelen( _s ){
+        return _s.replace(/[^\x00-\xff]/g,"11").length;
+    }
 
     _jdoc.ready( function(){
         JC.f.safeTimeout( function(){

@@ -103,8 +103,12 @@
                                 bccDateNavTpl="script.js_bccDateNavTpl"
 
                                 bccActionType="lock"
-                                bccLockupUrl="./data/lock.php?action=lockup&date={1}&id={0}"
-                                bccUnlockUrl="./data/lock.php?action=unlock&date={1}&id={0}"
+
+                                bccLockupDateUrl="./data/lock_date.php?action=lockup&id={0}&date={1}"
+                                bccUnlockDateUrl="./data/lock_date.php?action=unlock&&id={0}date={1}"
+
+                                bccLockupIdUrl="./data/lock_id.php?action=lockup&date={1}&id={0}"
+                                bccUnlockIdUrl="./data/lock_id.php?action=unlock&date={1}&id={0}"
 
                                 bccMonthDataUrl="./data/month_data.php?date={1}&id={0}"
                                 >
@@ -127,11 +131,11 @@
         </th>
         </tr>
       <tr>
-        <th class="js_bccWeekLabel">星期</th>
+        <th class="js_bccWeekLabelHd">星期</th>
         {2}
       </tr>
       <tr>
-        <th class="js_bccDateLabel">日期</th>
+        <th class="js_bccDateLabelHd">日期</th>
         {3}
       </tr>
       </thead>
@@ -147,11 +151,11 @@
 </script>
 
 <script type="text/template" class="js_bccRowTpl">
-    <tr class="js_bccDataRow">
+    <tr class="js_bccDataRow" data-id="{6}" data-label="{2}">
         <td>{0}<input type="hidden" value="{4}" /></td>
         <td>{1}<input type="hidden" value="{5}" /></td>
         <td>{2}<input type="hidden" value="{6}" class="js_bccItemId" /></td>
-        <td class="xcenter"><input type="button" class="UXCCalendar_btn js_bccPopupBtn" data-id="{6}" /> </td>
+        <td class="xcenter"><input type="button" class="UXCCalendar_btn js_bccPopupBtn" data-id="{6}" />{7} </td>
         {3}
     </tr>
 </script>
