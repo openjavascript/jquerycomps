@@ -170,7 +170,8 @@
 
 
                 switch( _p._model.actionType() ){
-                    case 'lock': _p._lockHandler(); break;
+                    case 'lock': _p._initLockHandler(); break;
+                    case 'edit': _p._initEditHandler(); break;
                 }
 
                 _p.selector().delegate( 'input.js_bccPopupBtn', 'click', function( _evt ){
@@ -335,7 +336,7 @@
             function(){
             }
 
-        , _lockHandler:
+        , _initLockHandler:
             function(){
                 var _p = this;
 
@@ -492,7 +493,7 @@
                 });
             }
 
-        , _selecteHandler:
+        , _initEditHandler:
             function(){
                 var _p = this;
             }

@@ -98,6 +98,12 @@
                     _p.on( 'clear_data', function(){
                         _p._model.panelIns().find( 'div.js_bccPopupDateItem' ).remove();
                     });
+
+                    if( _p._model.schIns()._model.actionType() == 'lock' ){
+                        _p._initLockHandler();
+                    }else if( _p._model.schIns()._model.actionType() == 'edit' ){
+                        _p._initEditHandler();
+                    }
                 });
 
                 _p.on( 'update_status', function( _evt, _currentDate ){
@@ -197,6 +203,38 @@
 
                 });
 
+            }
+
+        , _initLockHandler:
+            function(){
+                var _p = this;
+
+                _p._model.panelIns().layout().delegate( 'td.js_pos_canSelect', 'click', function( _evt ){
+                    var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
+                        _p._model.schIns().trigger( 'lockup', [ _id, _date, _p._model.schIns()._model.lockupDateUrl(), _sp
+                        , function( _data, _id, _date ){
+                            $( JC.f.printf( 'td.js_bccDateItem[data-id={0}][data-date={1}]',  _id, _date ) )
+                                .removeClass( Bizs.CRMSchedule.ALL_CLASS )
+                                .addClass( Bizs.CRMSchedule.CLASS_LOCKED )
+                                ;
+                        }]);
+                });
+
+                _p._model.panelIns().layout().delegate( 'td.js_pos_locked', 'click', function( _evt ){
+                    var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
+                        _p._model.schIns().trigger( 'unlock', [ _id, _date, _p._model.schIns()._model.unlockDateUrl(), _sp
+                        , function( _data, _id, _date ){
+                            $( JC.f.printf( 'td.js_bccDateItem[data-id={0}][data-date={1}]',  _id, _date ) )
+                                .removeClass( Bizs.CRMSchedule.ALL_CLASS )
+                                .addClass( Bizs.CRMSchedule.CLASS_CAN_SELECT )
+                                ;
+                        }]);
+                });
+
+            }
+
+        , _initEditHandler:
+            function(){
             }
 
         , _inited:
@@ -368,21 +406,25 @@
                 for( var i = 0; i <= _rowLen; i++ ){
                     _r.push( '<tr>');
                     for( var j = 0; j < 7; j++ ){
-                        _r.push( JC.f.printf( '<td class="js_bccDateItem" data-id="{0}" data-date="{1}">'
-                                    , _p._model.id(), JC.f.formatISODate( _date ) ) );
+
+                        var _tpl = '<td class="js_bccDateItem"{1}>{0}</td>'
+                            , _attrs = '', _day = ''
+                            , _dates = ''
+                            ;
 
                         if( _count > _startDay ){
                             if( _dayCount <= _maxDay ){
-                                _r.push( _dayCount++ );
+                                _day = _dayCount++;
+                                _dates = JC.f.formatISODate( _date );
+                                _attrs = ' data-id="{2}" data-date="{3}"'
+
+                                _date.setDate( _date.getDate() + 1 );
                             }else{
                             }
-                        }else{
                         }
-
-                        _r.push( '</td>' );
+                        _r.push( JC.f.printf( _tpl, _day, _attrs, _p._model.id(), _dates ) );
 
                         _count++;
-                        _date.setDate( _date.getDate() + 1 );
                     }
 
                     if( i == _rowLen && _dayCount <= _maxDay ){
