@@ -22,12 +22,12 @@
 
             $tmp_date = new DateTime( $date . '-01' );
 
-            $position_data = array();
+            $position_date = array();
 
             for( $k = 0; $k < 28; $k ++ ){
-                $position_data[ $tmp_date->format( 'Y-m-d' ) ] = array(
+                $position_date[ $tmp_date->format( 'Y-m-d' ) ] = array(
                     'status' => $k % 6
-                    , 'company' => $k % 6 != 0 ? '中文中文company ' . $k : ''
+                    , 'company' => $k % 6 != 0 ? '中文company ' . $k : ''
                );
                 //date_add( $tmp_date, date_interval_create_from_date_string('1 days'));
                 $tmp_date->add( new DateInterval( 'P1D') );
@@ -40,7 +40,7 @@
                         '0' => array( 'name' => 'parent' . $item, 'id' => '' . $item . $item ) 
                         , '1' => array( 'name' => 'parent2' . $item, 'id' => '' . $item . ( $item+1) ) 
                     )
-                , 'position_data' => $position_data
+                , 'position_date' => $position_date
             ) );
         }
     }

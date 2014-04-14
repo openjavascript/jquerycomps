@@ -92,15 +92,13 @@
             未上线      : 4
             已锁定      : 5
     */
-    CRMSchedule.STATUS_CODE_MAP = {
-        '0'     : 'js_pos_canSelect'
-        , '1'   : 'js_pos_ordered'
-        , '2'   : 'js_pos_preOnline'
-        , '3'   : 'js_pos_online'
-        , '4'   : 'js_pos_notOnline'
-        , '5'   : 'js_pos_locked'
-        , '999' : 'js_pos_selected'
-    };
+    CRMSchedule.STATUS_CAN_SELECT   = '0';
+    CRMSchedule.STATUS_ORDERED      = '1';
+    CRMSchedule.STATUS_PRE_ONLINE   = '2';
+    CRMSchedule.STATUS_ONLINE       = '3';
+    CRMSchedule.STATUS_NOT_ONLINE   = '4';
+    CRMSchedule.STATUS_LOCKED       = '5';
+    CRMSchedule.STATUS_SELECTED     = '999';
 
     CRMSchedule.CLASS_CAN_SELECT    = 'js_pos_canSelect';
     CRMSchedule.CLASS_ORDERED       = 'js_pos_ordered';
@@ -110,22 +108,24 @@
     CRMSchedule.CLASS_LOCKED        = 'js_pos_locked';
     CRMSchedule.CLASS_SELECTED      = 'js_pos_selected';
 
-    CRMSchedule.STATUS_CAN_SELECT   = '0';
-    CRMSchedule.STATUS_ORDERED      = '1';
-    CRMSchedule.STATUS_PRE_ONLINE   = '2';
-    CRMSchedule.STATUS_ONLINE       = '3';
-    CRMSchedule.STATUS_NOT_ONLINE   = '4';
-    CRMSchedule.STATUS_LOCKED       = '4';
-    CRMSchedule.STATUS_SELECTED     = '999';
+    CRMSchedule.STATUS_CODE_MAP = {
+        '0'                         : CRMSchedule.CLASS_CAN_SELECT
+        , '1'                       : CRMSchedule.CLASS_ORDERED
+        , '2'                       : CRMSchedule.CLASS_PRE_ONLINE
+        , '3'                       : CRMSchedule.CLASS_ONLINE
+        , '4'                       : CRMSchedule.CLASS_NOT_ONLINE
+        , '5'                       : CRMSchedule.CLASS_LOCKED
+        , '999'                     : CRMSchedule.CLASS_SELECTED
+    };
 
     CRMSchedule.CLASS_MAP = {
-        'js_pos_canSelect'          : '0'
-        , 'js_pos_ordered'          : '1'
-        , 'js_pos_preOnline'        : '2'
-        , 'js_pos_online'           : '3'
-        , 'js_pos_notOnline'        : '4'
-        , 'js_pos_locked'           : '5'
-        , 'js_pos_selected'         : '999'
+        'js_pos_canSelect'          : CRMSchedule.STATUS_CAN_SELECT
+        , 'js_pos_ordered'          : CRMSchedule.STATUS_ORDERED
+        , 'js_pos_preOnline'        : CRMSchedule.STATUS_PRE_ONLINE
+        , 'js_pos_online'           : CRMSchedule.STATUS_ONLINE
+        , 'js_pos_notOnline'        : CRMSchedule.STATUS_NOT_ONLINE
+        , 'js_pos_locked'           : CRMSchedule.STATUS_LOCKED
+        , 'js_pos_selected'         : CRMSchedule.STATUS_SELECTED
     };
 
     var _tmp = [];
@@ -260,44 +260,6 @@
                     var _sp = $( this ), _newDate = new Date( js_bccYearSelect.val(), js_bccMonthSelect.val(), 1 );
                         _p.trigger( 'update_date_control', _newDate );
                         _p.trigger( 'get_data', [ _newDate ] );
-                });
-
-                _p.selector().delegate( 'button.js_bccPrevYear', 'click', function( _evt ){
-                    var js_bccYearSelect = _p.selector().find( 'select.js_bccYearSelect' )
-                        , js_bccMonthSelect = _p.selector().find( 'select.js_bccMonthSelect' )
-                        ;
-                    var _sp = $( this )
-                        , _date = new Date( js_bccYearSelect.val(), js_bccMonthSelect.val(), 1 )
-                        , _newDate = JC.f.cloneDate( _date )
-                        , _mindate = _p._model.initDate().sdate
-                        ;
-                    _newDate.setFullYear( _newDate.getFullYear() - 1 );
-
-                    if( CRMSchedule.monthCompare( _p._model.currentDate(), _mindate ) === 0 ) return;
-
-                    if( CRMSchedule.monthCompare( _newDate, _mindate ) > -1 ){
-                        _p.trigger( 'update_date_control', _newDate );
-                        _p.trigger( 'get_data', [ _newDate ] );
-                    }
-                });
-
-                _p.selector().delegate( 'button.js_bccNextYear', 'click', function( _evt ){
-                    var js_bccYearSelect = _p.selector().find( 'select.js_bccYearSelect' )
-                        , js_bccMonthSelect = _p.selector().find( 'select.js_bccMonthSelect' )
-                        ;
-                    var _sp = $( this )
-                        , _date = new Date( js_bccYearSelect.val(), js_bccMonthSelect.val(), 1 )
-                        , _newDate = JC.f.cloneDate( _date )
-                        , _maxdate = _p._model.initDate().edate
-                        ;
-                    _newDate.setFullYear( _newDate.getFullYear() + 1 );
-
-                    if( CRMSchedule.monthCompare( _p._model.currentDate(), _maxdate ) === 0 ) return;
-
-                    if( CRMSchedule.monthCompare( _newDate, _maxdate ) < 1 ){
-                        _p.trigger( 'update_date_control', _newDate );
-                        _p.trigger( 'get_data', [ _newDate ] );
-                    }
                 });
 
                 _p.selector().delegate( 'button.js_bccPrevMonth', 'click', function( _evt ){
@@ -613,6 +575,8 @@
         , unlockIdUrl: function(){ return this.attrProp( 'bccUnlockIdUrl' ); }
 
         , monthDataUrl: function(){ return this.attrProp( 'bccMonthDataUrl' ); }
+
+        , dateRangeUrl: function(){ return this.attrProp( 'bccDateRangeUrl' ); }
         
     });
 
@@ -745,9 +709,9 @@
                             break;
                         }
 
-                        if( _sPosDate in _item.position_data ){
-                            _status = _item.position_data[ _sPosDate ].status;
-                            _name = _item.position_data[ _sPosDate ].company || '';
+                        if( _sPosDate in _item.position_date ){
+                            _status = _item.position_date[ _sPosDate ].status;
+                            _name = _item.position_date[ _sPosDate ].company || '';
                             _shortName = byteString( _name, 6 );
 
                             bytelen( _name ) > 6 && ( _shortName += '...' );
