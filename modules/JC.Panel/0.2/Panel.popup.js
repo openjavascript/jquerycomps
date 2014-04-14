@@ -226,7 +226,7 @@
             if( !_popupSrc ) _ins.center();
 
             _ins.on('show_default', function(){
-                JC.log('user show_default');
+                //JC.log('user show_default');
                 if( _popupSrc && _popupSrc.length ){
                     _logic.showEffect( _ins, _popupSrc, function(){
                         _ins.focusButton();
@@ -236,7 +236,7 @@
             });
 
             _ins.on('close_default', function(){
-                JC.log('user close_default');
+                //JC.log('user close_default');
                 if( _popupSrc && _popupSrc.length ){
                     _logic.hideEffect( _ins, _popupSrc, function(){
                         _ins.selector().remove();
@@ -249,7 +249,7 @@
             });
 
             _ins.on('hide_default', function(){
-                JC.log('user hide_default');
+                //JC.log('user hide_default');
                 if( _popupSrc && _popupSrc.length ){
                     _logic.hideEffect( _ins, _popupSrc, function(){
                         _ins.selector().hide();
@@ -351,7 +351,7 @@
                 _selector.height(0);
                 _selector.css( { 'left': _left  + 'px' } );
 
-                JC.log( _top, _poffset.top );
+                //JC.log( _top, _poffset.top );
 
                 if( _top > _poffset.top ){
                     _dom.interval = 

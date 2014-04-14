@@ -101,6 +101,8 @@
                                 bccTpl="script.js_bccTpl"
                                 bccRowTpl="script.js_bccRowTpl"
                                 bccDateNavTpl="script.js_bccDateNavTpl"
+                                bccPopupTpl="script.js_bccPopupTpl"
+                                bccPopupCalendarTpl="script.js_bccPopupCalendarTpl"
 
                                 bccActionType="lock"
 
@@ -111,6 +113,7 @@
                                 bccUnlockIdUrl="./data/lock_id.php?action=unlock&date={1}&id={0}"
 
                                 bccMonthDataUrl="./data/month_data.php?date={1}&id={0}"
+                                
                                 >
                             </div>
                         </div>
@@ -152,12 +155,63 @@
 
 <script type="text/template" class="js_bccRowTpl">
     <tr class="js_bccDataRow" data-id="{6}" data-label="{2}">
-        <td>{0}<input type="hidden" value="{4}" /></td>
-        <td>{1}<input type="hidden" value="{5}" /></td>
-        <td>{2}<input type="hidden" value="{6}" class="js_bccItemId" /></td>
+        <td class="js_pos_1" data-id="{4}" data-label="{0}" title="{0}">{0}</td>
+        <td class="js_pos_2" data-id="{5}" data-label="{1}" title="{1}">{1}</td>
+        <td class="js_pos_3" data-id="{6}" data-label="{2}" title="{2}">{2}<input type="hidden" value="{6}" class="js_bccItemId" /></td>
         <td class="xcenter"><input type="button" class="UXCCalendar_btn js_bccPopupBtn" data-id="{6}" />{7} </td>
         {3}
     </tr>
+</script>
+
+<script type="text/template" class="js_bccPopupTpl">
+    <div class="UPanel UPanelLocation">
+        <div class="UPContent">
+            <div class="hd"><h3>资源预订查询</h3></div>
+            <div class="bd">
+                <div class="Panel-top">位置：{0} - {1} - {2}</div>
+                <ul class="location-type">
+                    <li class="js_pos_selected"><span></span>选定的时间</li>
+                    <li class="gray">|</li>
+                    <li class="js_pos_canSelect"><span></span>可预定</li>
+                    <li class="js_pos_ordered"><span></span>已预定</li>
+                    <li class="js_pos_preOnline"><span></span>待上线</li>
+                    <li class="js_pos_online"><span></span>已上线</li>
+                    <li class="js_pos_notOnline"><span></span>未上线</li>
+                    <li class="js_pos_locked"><span></span>已预定</li>
+                </ul>
+                <div class="Panel-Ldate">
+                    {3}
+                    <a href="javascript:;" class="btn-arr-left js_bccPopupPrev" style="display:none;"></a>
+                    <a href="javascript:;" class="btn-arr-right js_bccPopupNext" style="display:none;"></a>
+                </div>
+            </div>
+            <span class="close" eventtype="close"></span>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" class="js_bccPopupCalendarTpl">
+    <div class="data-box2 data-location">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="jc_bccPopupCalendarTable">
+          <thead>	
+          <tr>
+              <th colspan="7">{0}</th>
+          </tr>
+          <tr>
+            <th>一</th>
+            <th>二</th>
+            <th>三</th>
+            <th>四</th>
+            <th>五</th>
+            <th>六</th>
+            <th>日</th>
+          </tr>
+          </thead>
+          <tbody>
+              {1}
+          </tbody>
+        </table>
+    </div>
 </script>
 
     </body>

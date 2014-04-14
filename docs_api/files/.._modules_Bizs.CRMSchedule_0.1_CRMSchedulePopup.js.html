@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../modules/Bizs.MoneyTips/0.1/MoneyTips.js - jquery components</title>
+    <title>../modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup.js - jquery components</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -228,285 +228,311 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../modules/Bizs.MoneyTips/0.1/MoneyTips.js</h1>
+                        <h1 class="file-heading">File: ../modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//TODO: 提供静态格式化方法
-//TODO: 提供 页面载入时, 指定 class 进行格式化支持
 ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
 /**
- * &lt;h2&gt;金额格式化 业务逻辑&lt;/h2&gt;
- * &lt;br/&gt;应用场景
- * &lt;br/&gt;用户在文本框输入金额时, 在指定的 node 显示以逗号分隔的金额
- * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
- *      &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
- *      , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
- * &lt;/p&gt;
- * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
- * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/window.Bizs.MoneyTips.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
- * | &lt;a href=&#x27;../../modules/Bizs.MoneyTips/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+ * 组件用途简述
  *
- * input[type=text] 需要 添加 class=&quot;js_bizMoneyTips&quot;
- * &lt;br /&gt;只要带有 class = js_bizMoneyTips 的文本框, 默认会自动初始化 MoneyTips 实例
+ *&lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
+ *   &lt;a href=&quot;widnow.jQuery.html&quot;&gt;jQuery&lt;/a&gt;
+ *   , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+ *&lt;/p&gt;
  *
- * &lt;p&gt;
- *      页面载入时, Bizs.MoneyTips 会对 span.js_bmtLabel, label.js_bmtLabel 进行自动格式化
- * &lt;/p&gt;
+ *&lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
+ *   | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/Bizs.CRMSchedulePopup.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+ *   | &lt;a href=&#x27;../../modules/Bizs.CRMSchedule/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+ *  
+ *&lt;h2&gt;页面只要引用本脚本, 默认会自动处理 div class=&quot;js_bizCRMSchedulePopup&quot; &lt;/h2&gt;
  *
- * &lt;h2&gt;可用的 HTML 属性&lt;/h2&gt;
- * &lt;dl&gt;
- *      &lt;dt&gt;bmtDisplayLabel = selector, default = span&lt;/dt&gt;
- *      &lt;dd&gt;
- *          指定显示 格式化金额的 node, 如果没有显式指定 node, 那么将会动态生成一个用于显示的 span
- *      &lt;/dd&gt;
+ *&lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
  *
- *      &lt;dt&gt;bmtPattern = string, default = {0}&lt;/dt&gt;
- *      &lt;dd&gt;
- *          用于显示格式化金额的显示内容, {0} = 金额占位符
- *          &lt;br /&gt;example: &amp;lt;input type=&quot;text&quot; class=&quot;js_bizMoneyTips&quot; bmtPattern=&quot;格式化金额: {0}&quot; /&gt;
- *      &lt;/dd&gt;
- * &lt;/dl&gt;
+ *&lt;dl&gt;
+ *    &lt;dt&gt;&lt;/dt&gt;
+ *    &lt;dd&gt;&lt;dd&gt;
+ *&lt;/dl&gt; 
  *
  * @namespace   window.Bizs
- * @class       MoneyTips
+ * @class       CRMSchedulePopup
  * @extends     JC.BaseMVC
  * @constructor
- * @version dev 0.1 2013-11-21
- * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 Team
- *
+ * @param   {selector|string}   _selector   
+ * @version dev 0.1 2013-12-13
+ * @author  qiushaowei &lt;suches@btbtd.org&gt; | 75 Team
  * @example
-        &lt;div&gt;
-            金额: &lt;input type=&quot;text&quot; value=&quot;6543.21&quot; 
-            datatype=&quot;n-12.2&quot; class=&quot;js_bizMoneyTips&quot; bmtDisplayLabel=&quot;/span.js_bmtSpan&quot; /&gt;
-            &lt;em class=&quot;error&quot;&gt;&lt;/em&gt;
-            &lt;span class=&quot;js_bmtSpan&quot;&gt;&lt;/span&gt;
-        &lt;/div&gt;
+        &lt;h2&gt;Bizs.CRMSchedulePopup 示例&lt;/h2&gt;
  */
-    Bizs.MoneyTips = MoneyTips;
+    var _jdoc = $( document ), _jwin = $( window );
 
-    function MoneyTips( _selector ){
+    Bizs.CRMSchedulePopup = CRMSchedulePopup;
+
+    function CRMSchedulePopup( _selector, _schIns ){
+
+        CRMSchedulePopup.dispose( this );
+
         _selector &amp;&amp; ( _selector = $( _selector ) );
-        if( MoneyTips.getInstance( _selector ) ) return MoneyTips.getInstance( _selector );
-        MoneyTips.getInstance( _selector, this );
 
-        this._model = new MoneyTips.Model( _selector );
-        this._view = new MoneyTips.View( this._model );
+        JC.BaseMVC.getInstance( _selector, CRMSchedulePopup, this );
+
+        this._model = new CRMSchedulePopup.Model( _selector );
+        this._model.schIns( _schIns );
+
+        switch( this._model.schIns()._model.actionType() ){
+            case &#x27;lock&#x27;: this._view = new CRMSchedulePopup.View( this._model ); break;
+            case &#x27;edit&#x27;: this._view = new CRMSchedulePopup.EditView( this._model ); break;
+        }
 
         this._init();
 
-        JC.log( &#x27;MoneyTips inited&#x27;, new Date().getTime() );
+        JC.log( CRMSchedulePopup.Model._instanceName, &#x27;all inited&#x27;, new Date().getTime() );
     }
-    /**
-     * 获取或设置 MoneyTips 的实例
-     * @method  getInstance
-     * @param   {selector}      _selector
-     * @static
-     * @return  {MoneyTipsInstance}
-     */
-    MoneyTips.getInstance =
-        function( _selector, _setter ){
-            if( typeof _selector == &#x27;string&#x27; &amp;&amp; !/&lt;/.test( _selector ) ) 
-                    _selector = $(_selector);
-            if( !(_selector &amp;&amp; _selector.length ) || ( typeof _selector == &#x27;string&#x27; ) ) return;
-            typeof _setter != &#x27;undefined&#x27; &amp;&amp; _selector.data( MoneyTips.Model._instanceName, _setter );
 
-            return _selector.data( MoneyTips.Model._instanceName );
-        };
-    /**
-     * 初始化可识别的 MoneyTips 实例
-     * @method  init
-     * @param   {selector}      _selector
-     * @static
-     * @return  {Array of MoneyTipsInstance}
-     */
-    MoneyTips.init =
-        function( _selector ){
-            var _r = [];
-            _selector = $( _selector || document );
-
-            if( _selector &amp;&amp; _selector.length ){
-                if( _selector.hasClass( &#x27;.js_bizMoneyTips&#x27; )  ){
-                    _r.push( new MoneyTips( _selector ) );
-                }else{
-                    _selector.find( &#x27;input.js_bizMoneyTips&#x27; ).each( function(){
-                        _r.push( new MoneyTips( $(this) ) );
-                    });
-                }
+    CRMSchedulePopup.dispose =
+        function( _setter ){
+            if( CRMSchedulePopup.INS ){
+                CRMSchedulePopup.INS.dispose();
+                CRMSchedulePopup.INS = null;
             }
-            return _r;
-        };
-    /**
-     * 格式化 node 的 value/html
-     * @method  format
-     * @param   {selector}      _selector
-     * @param   {selector}      _outputSelector     指定显示格式化内容的 node, 默认为 selector 本身
-     *                                              &lt;br /&gt;, 还可以通过 html 属性 bmtFormatOutput 指定单独的 _outputSelector
-     * @static
-     * @return  _selector
-     */
-    MoneyTips.format = 
-        function( _selector, _outputSelector ){
-            _selector &amp;&amp; ( _selector = $( _selector ) );
-            _outputSelector &amp;&amp; ( _outputSelector = $( _outputSelector ) );
-            if( !( _selector &amp;&amp; _selector.length ) ) return;
-            _selector.each( function(){
-                var _item = $(this)
-                    , _v
-                    , _subOutputSelector = JC.f.parentSelector( _item, _item.attr( &#x27;bmtFormatOutput&#x27; ) )
-                    ;
-                !( _subOutputSelector &amp;&amp; _subOutputSelector.length ) &amp;&amp; ( _subOutputSelector = _item );
-                _outputSelector &amp;&amp; _outputSelector.length &amp;&amp; ( _subOutputSelector = _outputSelector );
-                !( _subOutputSelector &amp;&amp; _subOutputSelector.length ) &amp;&amp; ( _subOutputSelector = _item );
-
-                if( &#x27;value&#x27; in this ){
-                    _v = _item.val().trim();
-                }else{
-                    _v = _item.html().trim();
-                }
-
-                if( &#x27;value&#x27; in _subOutputSelector[0] ){
-                    _subOutputSelector.val( JC.f.moneyFormat( _v ) );
-                }else{
-                    _subOutputSelector.html( JC.f.moneyFormat( _v ) );
-                }
-            });
-
-            return _selector;
+            _setter &amp;&amp; ( CRMSchedulePopup.INS = _setter );
         };
 
-    MoneyTips.prototype = {
+    JC.BaseMVC.build( CRMSchedulePopup );
+
+    JC.f.extendObject( CRMSchedulePopup.prototype, {
         _beforeInit:
             function(){
-                //JC.log( &#x27;MoneyTips _beforeInit&#x27;, new Date().getTime() );
+                //JC.log( &#x27;CRMSchedulePopup _beforeInit&#x27;, new Date().getTime() );
             }
+
         , _initHanlderEvent:
             function(){
-                var _p = this; 
+                var _p = this;
 
-                _p._model.selector().on( &#x27;focus blur &#x27;, function( _evt ){
-                    JC.log( &#x27;focus or blur&#x27;, new Date().getTime() );
-                    _p.trigger( &#x27;BMTUpdate&#x27;, [ _p._model.selector().val().trim() ] );
+                _p.on( &#x27;inited&#x27;, function(){
+                    _p._view.show();
                 });
 
-                _p._model.selector().bind( &#x27;input propertychange&#x27;, function( _evt ){
-                    JC.log( &#x27;input or propertychange&#x27;, new Date().getTime() );
-                    _p.trigger( &#x27;BMTUpdate&#x27;, [ _p._model.selector().val().trim() ] );
+                _p.on( &#x27;update_status&#x27;, function( _evt ){
+                    _p.trigger( &#x27;update_nav_status&#x27;, _p._model.currentDate() );
                 });
 
-                _p.on( &#x27;BMTUpdate&#x27;, function( _evt, _number ){
-                    var _v = _number
-                        , _number = JC.f.parseFinance( _v )
-                        , _formated
-                        , _floatLen = 2
-                        , _dt = _p.selector().attr( &#x27;datatype&#x27; )
+                _p.on( &#x27;update_nav_status&#x27;, function( _evt, _startDate ){
+
+                    if( _p._model.schIns()._model.actionType() == &#x27;edit&#x27; ) return;
+
+                    var _endDate = JC.f.cloneDate( _startDate )
                         ;
+                    _endDate.setMonth( _endDate.getMonth() + 3 );
+                    _endDate.setDate( JC.f.maxDayOfMonth( _endDate ) );
 
-                    _dt.replace( /n\-[\d]+\.([\d]+)/, function( $0, $1 ){
-                        _floatLen = parseInt( $1 ) || _floatLen;
-                    });
-
-                    if( isNaN( _number ) || !_number ) {
-                        _p._view.update();
-                        return;
+                    if( _startDate.getTime() &lt; _p._model.mindate().getTime() ){
+                        _p._model.prevBtn().hide();
+                    }else{
+                        _p._model.prevBtn().show();
                     }
-                    _formated = JC.f.moneyFormat( _v, 3, _floatLen );
-                    _p._view.update( _formated );
+
+                    if( _endDate.getTime() &gt; _p._model.maxdate().getTime() ){
+                        _p._model.nextBtn().hide();
+                    }else{
+                        _p._model.nextBtn().show();
+                    }
+
+                    JC.log( 
+                        JC.f.dateFormat( _startDate )
+                        , JC.f.dateFormat( _endDate )
+                        , JC.f.dateFormat( _p._model.mindate() )
+                        , JC.f.dateFormat( _p._model.maxdate() )
+                    );
+
                 });
             }
+
         , _inited:
             function(){
-                //JC.log( &#x27;MoneyTips _inited&#x27;, new Date().getTime() );
-                var _p = this;
-                _p.trigger( &#x27;BMTUpdate&#x27;, [ _p._model.selector().val().trim() ] );
+                //JC.log( &#x27;CRMSchedulePopup _inited&#x27;, new Date().getTime() );
+                this.trigger( &#x27;inited&#x27; );
             }
-        /**
-         * 更新 tips 的值
-         * @method update
-         * @param   {int|string}    _val
-         */
-        , update:
-            function( _val ){
-                this.trigger( &#x27;BMTUpdate&#x27;, [ _val || &#x27;&#x27; ] );
-                return this;
-            }
-    };
 
-    BaseMVC.buildModel( MoneyTips );
-    MoneyTips.Model._instanceName = &#x27;MoneyTips&#x27;;
-    MoneyTips.Model.prototype = {
+        , dispose:
+            function(){
+                this._view &amp;&amp; this._view.dispose();
+            }
+    });
+
+    CRMSchedulePopup.Model._instanceName = &#x27;JCCRMSchedulePopup&#x27;;
+    JC.f.extendObject( CRMSchedulePopup.Model.prototype, {
         init:
             function(){
-                //JC.log( &#x27;MoneyTips.Model.init:&#x27;, new Date().getTime() );
+                //JC.log( &#x27;CRMSchedulePopup.Model.init:&#x27;, new Date().getTime() );
+                this.row( JC.f.getJqParent( this.selector(), &#x27;tr&#x27; ) );
             }
-        
-        , bmtDisplayLabel:
+
+        , schIns: function( _setter ){ typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._schIns = _setter ); return this._schIns; }
+
+        , panelIns: function( _setter ){ typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._panelIns = _setter ); return this._panelIns; }
+
+        , row: function( _setter ){ typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._row = _setter ); return this._row; }
+
+        , currentDate: 
+            function( _setter ){ 
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._currentDate= _setter, this._currentDate.setDate( 1 ) ); 
+                return this._currentDate; 
+            }
+
+        , mindate: function(){ return this.schIns()._model.initDate().sdate; }
+        , maxdate: function(){ return this.schIns()._model.initDate().edate; }
+
+        , prevBtn: function(){ return this.panelIns().find( &#x27;.js_bccPopupPrev&#x27; ); }
+        , nextBtn: function(){ return this.panelIns().find( &#x27;.js_bccPopupNext&#x27; ); }
+
+        , pos1Data:
             function(){
-                this._bmtDisplayLabel = this._bmtDisplayLabel || this.selectorProp( &#x27;bmtDisplayLabel&#x27; );
+                var _p = this
+                    , _td = _p.row().find( &#x27;td.js_pos_1&#x27; )
+                    , _id = _td.attr( &#x27;data-id&#x27; )
+                    , _label = _td.attr( &#x27;data-label&#x27; )
+                    ;
 
-                if( !( this._bmtDisplayLabel &amp;&amp; this._bmtDisplayLabel.length ) ){
-                    this._bmtDisplayLabel = $( &#x27;&lt;span class=&quot;js_bmtSpan&quot;&gt;&lt;/span&gt;&#x27; );
-                    this.selector().after( this._bmtDisplayLabel );
-                }
-
-                return this._bmtDisplayLabel; 
+                return { id: _id, label: _label };
             }
 
-        , bmtPattern:
+        , pos2Data:
             function(){
-                var _r = this.attrProp( &#x27;bmtPattern&#x27; ) || &#x27;{0}&#x27;;
-                return _r;
-            }
-    };
+                var _p = this
+                    , _td = _p.row().find( &#x27;td.js_pos_2&#x27; )
+                    , _id = _td.attr( &#x27;data-id&#x27; )
+                    , _label = _td.attr( &#x27;data-label&#x27; )
+                    ;
 
-    BaseMVC.buildView( MoneyTips );
-    MoneyTips.View.prototype = {
+                return { id: _id, label: _label };
+            }
+
+        , pos3Data:
+            function(){
+                var _p = this
+                    , _td = _p.row().find( &#x27;td.js_pos_3&#x27; )
+                    , _id = _td.attr( &#x27;data-id&#x27; )
+                    , _label = _td.attr( &#x27;data-label&#x27; )
+                    ;
+
+                return { id: _id, label: _label };
+            }
+
+    });
+
+    JC.f.extendObject( CRMSchedulePopup.View.prototype, {
         init:
             function(){
-                //JC.log( &#x27;MoneyTips.View.init:&#x27;, new Date().getTime() );
+                JC.log( &#x27;CRMSchedulePopup.View.init:&#x27;, new Date().getTime() );
             }
 
         , show:
             function(){
-                this._model.bmtDisplayLabel().show();
+                var _p = this
+                    , _tpl = _p._model.schIns()._model.popupTpl()
+                    , _ctpl = _p._model.schIns()._model.popupCalendarTpl()
+                    , _selector
+                    , _schIns = _p._model.schIns(), _panelIns
+                    , _currentDate = _p._model.currentDate( JC.f.cloneDate( _schIns._model.currentDate() ) )
+                    //, _currentDate = _p._model.currentDate( new Date( 2011, 1, 1 ) )
+                    , _calendarHtml = _p.calendarHtml( _ctpl, _currentDate )
+                    ;
+
+                _tpl = JC.f.printf( _tpl 
+                    , _p._model.pos1Data().label
+                    , _p._model.pos2Data().label
+                    , _p._model.pos3Data().label
+                    , _calendarHtml
+                );
+
+                _selector = $( _tpl );
+                _panelIns = _p._model.panelIns( JC.Dialog( _selector ) );
+
+                _p.trigger( &#x27;update_status&#x27; );
             }
 
-        , hide:
-            function(){
-                this._model.bmtDisplayLabel().hide();
-            }
+        , calendarHtml:
+            function( _ctpl, _date ){
+                var _r = [];
+                _date = JC.f.cloneDate( _date );
 
-        , update:
-            function( _val ){
-                var _p = this;
-                if( !_val ){
-                    _p.hide();
-                }else{
-                    _p._model.bmtDisplayLabel().html( JC.f.printf( _p._model.bmtPattern(), _val ) );
-                    _p.show();
+                for( var i = 0, j = 4, _tpl, _dates; i &lt; j; i++ ){
+                    _dates = JC.f.dateFormat( _date, &#x27;YY年 MM月&#x27; );
+
+                    _tpl = JC.f.printf( _ctpl, _dates, this.calendarRowHtml( _date ) );
+                    _r.push( _tpl );
+                    _date.setMonth( _date.getMonth() + 1 );
                 }
+
+                return _r.join(&#x27;&#x27;);
             }
-    };
 
-    BaseMVC.build( MoneyTips, &#x27;Bizs&#x27; );
+        , calendarRowHtml:
+            function( _date ){
+                _date = JC.f.cloneDate( _date );
 
-    $(document).ready( function(){
-        var _insAr = 0;
-        MoneyTips.autoInit
-            &amp;&amp; ( _insAr = MoneyTips.init() )
-            &amp;&amp; MoneyTips.format( $( &#x27;span.js_bmtLabel, label.js_bmtLabel&#x27; ) )
-            ;
+                var _r = []
+                    , _count = 1
+                    , _dayCount = 1
+                    , _rowLen = 4
+                    , _startDay = new Date( _date.getFullYear(), _date.getMonth(), 1 ).getDay()
+                    , _maxDay = JC.f.maxDayOfMonth( _date )
+                    ;
+
+                !_startDay &amp;&amp; ( _startDay = 7 );
+                _startDay--;
+
+                for( var i = 0; i &lt;= _rowLen; i++ ){
+                    _r.push( &#x27;&lt;tr&gt;&#x27;);
+                    for( var j = 0; j &lt; 7; j++ ){
+                        _r.push( &#x27;&lt;td&gt;&#x27; );
+
+                        if( _count &gt; _startDay ){
+                            if( _dayCount &lt;= _maxDay ){
+                                _r.push( _dayCount++ );
+                            }else{
+                            }
+                        }else{
+                        }
+
+                        _r.push( &#x27;&lt;/td&gt;&#x27; );
+
+                        _count++;
+                    }
+
+                    if( i == _rowLen &amp;&amp; _dayCount &lt;= _maxDay ){
+                        _rowLen++;
+                    }
+                    _r.push( &#x27;&lt;/tr&gt;&#x27; );
+                }
+
+                return _r.join(&#x27;&#x27;);
+            }
+
+        , dispose:
+            function(){
+                this._model.panelIns() &amp;&amp; this._model.panelIns().layout().remove();
+            }
     });
 
-    $(document).delegate( &#x27;input.js_bizMoneyTips&#x27;, &#x27;focus click&#x27;, function( _evt ){
-        !MoneyTips.getInstance( $(this) )
-            &amp;&amp; new MoneyTips( $(this) )
-            ;
+    CRMSchedulePopup.EditView = 
+        function( _model ){
+            this._model = _model;
+        };
+
+    JC.f.extendObject( CRMSchedulePopup.EditView.prototype, {
+        init:
+            function(){
+                JC.log( &#x27;CRMSchedulePopup.EditView.init:&#x27;, new Date().getTime() );
+            }
     });
 
-    return Bizs.MoneyTips;
+
+    return Bizs.CRMSchedulePopup;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
-        function ( _name, _require, _cb) { 
+        function ( _name, _require, _cb ) { 
             typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );
             typeof _require == &#x27;function&#x27; &amp;&amp; ( _cb = _require ); 
             _cb &amp;&amp; _cb(); 
