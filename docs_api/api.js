@@ -1,6 +1,7 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
+        "Bizs.TaskViewer",
         "JC.AjaxUpload",
         "JC.AutoChecked",
         "JC.AutoComplete",
@@ -26,6 +27,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.PopTips",
         "JC.Scrollbar",
         "JC.Slider",
+        "JC.StepControl",
         "JC.Suggest",
         "JC.Tab",
         "JC.TableFreeze",
@@ -41,6 +43,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.msgbox",
         "window.Bizs.ActionLogic",
         "window.Bizs.AutoSelectComplete",
+        "window.Bizs.CRMSchedule",
         "window.Bizs.ChangeLogic",
         "window.Bizs.CommonModify",
         "window.Bizs.DMultiDate",

@@ -29,6 +29,9 @@
      *      <dt>cauButtonText = string, default = 上传文件</dt>
      *      <dd>定义上传按钮的显示文本</dd>
      *
+     *      <dt>cauButtonAfter= bool</dt>
+     *      <dd>是否把上传按钮放在后面</dd>
+     *
      *      <dt>cauUrl = url, require</dt>
      *      <dd>上传文件的接口地址
      *          <br />如果 url 带有参数 callback, 返回数据将以 jsonp 方式处理
@@ -131,7 +134,7 @@
      *      <dt>cauPostParams = json var name, (<b>window 变量域</b>)</dt>
      *      <dd>显式声明 post params, 全局指定请用 JC.AjaxUpload.POST_PARAMS </dd>
      *
-     *      <dt>cauAllCookies = bool</dt>
+     *      <dt>cauAllCookies = bool, default = true</dt>
      *      <dd>是否把所有 cookie 添加到 post_params, 发送到服务器</dd>
      *      
      *      <dt>cauBatchUpload = bool, default = false</dt>
@@ -577,10 +580,15 @@
                                 , _p.cauStyle()
                             ));
 
-                    _p.selector().after( this._buttonLayout );
+                    _p.cauButtonAfter() 
+                        ? _p.selector().after( this._buttonLayout )
+                        : _p.selector().before( this._buttonLayout )
+                        ;
                 }
                 return this._buttonLayout;
             }
+
+        , cauButtonAfter: function(){ return this.boolProp( 'cauButtonAfter' ); }
 
         , cauRoot:
             function(){
@@ -731,7 +739,12 @@
                 return _r;
             }
 
-        , cauAllCookies: function(){ return this.boolProp( 'cauAllCookies' ); }
+        , cauAllCookies: 
+            function(){ 
+                var _r = true;
+                this.is( '[cauAllCookies]' ) && ( _r = this.boolProp( 'cauAllCookies' ) );
+                return _r;
+            }
 
         , allCookies:
             function(){

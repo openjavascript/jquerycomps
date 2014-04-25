@@ -48,14 +48,16 @@ requirejs.config( {
         , 'JC.NumericStepper': 'modules/JC.NumericStepper/0.1/NumericStepper'
 
         , 'JC.Slider': 'modules/JC.Slider/0.1/Slider'
+        , 'JC.StepControl': 'modules/JC.StepControl/0.1/StepControl'
         , 'JC.Suggest': 'modules/JC.Suggest/0.1/Suggest'
         , 'JC.Tab': 'modules/JC.Tab/0.1/Tab'
         , 'JC.TableFreeze': 'modules/JC.TableFreeze/0.2/TableFreeze'
         , 'JC.TableSort': 'modules/JC.TableSort/0.1/TableSort'
+        , 'JC.Selectable': 'modules/JC.SelectAble/dev/Selectable'
         , 'JC.Tips': 'modules/JC.Tips/0.1/Tips'
         , 'JC.Tree': 'modules/JC.Tree/0.1/Tree'
         , 'JC.Lazyload': 'modules/JC.Lazyload/0.1/Lazyload'
-        , 'JC.Scrollbar': 'modules/JC.Scrollbar/0.1/Scrollbar'
+        , 'JC.Scrollbar': 'modules/JC.Scrollbar/0.2/Scrollbar'
 
         //, 'JC.Panel': 'modules/JC.Panel/0.1/Panel'
         , 'JC.Panel': 'modules/JC.Panel/0.2/Panel'
@@ -86,6 +88,10 @@ requirejs.config( {
         , 'Bizs.MultiSelect': 'modules/Bizs.MultiSelect/0.1/MultiSelect'
         , 'Bizs.DMultiDate': 'modules/Bizs.DMultiDate/0.1/DMultiDate'
         , 'Bizs.MultiUpload': 'modules/Bizs.MultiUpload/0.1/MultiUpload'
+        , 'Bizs.TaskViewer': 'modules/Bizs.TaskViewer/0.1/TaskViewer'
+
+        , 'Bizs.CRMSchedule': 'modules/Bizs.CRMSchedule/0.1/CRMSchedule'
+        , 'Bizs.CRMSchedulePopup': 'modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup'
 
         , 'plugins.jquery.form': 'plugins/jquery.form/3.36.0/jquery.form'
         , 'plugins.jquery.rate': 'plugins/jquery.rate/2.5.2/jquery.rate'

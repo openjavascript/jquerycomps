@@ -29,6 +29,24 @@
                 "window.Bizs": 1
             }
         },
+        "../modules/Bizs.CRMSchedule/0.1/CRMSchedule.js": {
+            "name": "../modules/Bizs.CRMSchedule/0.1/CRMSchedule.js",
+            "modules": {},
+            "classes": {
+                "window.Bizs.CRMSchedule": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.Bizs": 1
+            }
+        },
+        "../modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup.js": {
+            "name": "../modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "../modules/Bizs.ChangeLogic/0.1/ChangeLogic.js": {
             "name": "../modules/Bizs.ChangeLogic/0.1/ChangeLogic.js",
             "modules": {},
@@ -159,6 +177,17 @@
             "fors": {},
             "namespaces": {
                 "window.Bizs": 1
+            }
+        },
+        "../modules/Bizs.TaskViewer/0.1/TaskViewer.js": {
+            "name": "../modules/Bizs.TaskViewer/0.1/TaskViewer.js",
+            "modules": {},
+            "classes": {
+                "Bizs.TaskViewer": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "Bizs": 1
             }
         },
         "../modules/JC.AjaxUpload/0.2/AjaxUpload.js": {
@@ -518,6 +547,17 @@
                 "JC.Slider": 1
             }
         },
+        "../modules/JC.StepControl/0.1/StepControl.js": {
+            "name": "../modules/JC.StepControl/0.1/StepControl.js",
+            "modules": {},
+            "classes": {
+                "JC.StepControl": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../modules/JC.Suggest/0.1/Suggest.js": {
             "name": "../modules/JC.Suggest/0.1/Suggest.js",
             "modules": {},
@@ -694,6 +734,30 @@
             "example": [
                 ""
             ]
+        },
+        "window.Bizs.CRMSchedule": {
+            "name": "window.Bizs.CRMSchedule",
+            "shortname": "window.Bizs.CRMSchedule",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.Bizs",
+            "file": "../modules/Bizs.CRMSchedule/0.1/CRMSchedule.js",
+            "line": 2,
+            "description": "CRM 排期日期选择组件\n\n<p><b>require</b>:\n  <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n  , <a href='JC.Panel.html'>JC.Panel</a>\n  , <label>Bizs.CRMSchedulePopup</label>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.CRMSchedule.html' target='_blank'>API docs</a>\n  | <a href='../../modules/Bizs.CRMSchedule/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会自动处理 div class=\"js_bizCRMSchedule\" </h2>\n\n<h2><a href=\"../../modules/Bizs.CRMSchedule/0.1/_demo/data_docs.html\" target=\"_blank\">数据格式说明</a></h2>\n\n<h2>共用的 HTML attribute</h2>\n<dl>\n   <dt>bccInitData = json var name, <b>window 变量域</b></dt>\n   <dd>初始化的数据<dd>\n\n   <dt>bccTpl = script selector</dt>\n   <dd>主模板</dd>\n\n   <dt>bccRowTpl = script selector</dt>\n   <dd>数据列模板</dd>\n\n   <dt>bccDateNavTpl = script selector</dt>\n   <dd>日期导航的模板</dd>\n\n   <dt>bccPopupTpl = script selector</dt>\n   <dd>日期弹框的主模板</dd>\n\n   <dt>bccPopupCalendarTpl = script selector</dt>\n   <dd>日期弹框的日历模板</dd>\n\n   <dt>bccMonthDataUrl = url</dt>\n   <dd>显示某个月份的数据\n     <br />?date={1}&id={0}\n     <br />?date=2014-06&id=1,2,3,4,5\n   </dd>\n\n   <dt>bccDateRangeUrl = url</dt>\n   <dd>显示日期范围的数据\n     <br >?id={0}&start_date={1}&end_date={2}\n     <br >?id=1&start_date=2014-05-01&end_date=2014-08-31\n   </dd>\n\n   <dt>bccActionType = string, default = query</dt>\n   <dd>\n         排期表的操作类型: lock(锁定), edit(编辑), query(查询)\n   </dd>\n</dl> \n\n<h2>锁定模式(lock) 可用的 HTML attribute</h2>\n<dl>\n   <dt>bccLockupDateUrl = url</dt>\n   <dd>锁定日期的URL\n     <br />?action=lockup&id={0}&date={1}\n     <br />?action=lockup&id=3&date=2014-04-08\n   </dd>\n\n   <dt>bccUnlockDateUrl = url</dt>\n   <dd>解锁日期的URL\n     <br />?action=unlock&&id={0}&date={1}\n     <br />?action=unlock&&id=3&date=2014-04-05\n   </dd>\n\n   <dt>bccLockupIdUrl = url</dt>\n   <dd>锁定ID的URL\n     <br />?action=lockup&date={1}&id={0}\n     <br />?action=lockup&date=2014-04-05&id=1,2,4,5\n   </dd>\n\n   <dt>bccUnlockIdUrl = url</dt>\n   <dd>解锁ID的URL\n     <br />?action=unlock&date={1}&id={0}\n     <br />?action=unlock&date=2014-04-07&id=1,2,3,4,5\n   </dd>\n</dl>\n\n<h2>编辑模式(edit) 可用的 HTML attribute</h2>\n<dl>\n   <dt>bccSaveSelectBox = selector</dt>\n   <dd>保存选中值选择器的父容器</dd>\n\n   <dt>bccSaveSelectItemTpl = script selector</dt>\n   <dd>保存选中值项的模板</dd>\n\n   <dt>bccSaveSelectItemClass = string, default = \".js_bccSaveSelectItem\"</dt>\n   <dd>保存选中值项的css class 选择器</dd>\n\n   <dt>bccDataLabelItemTpl = script selector</dt>\n   <dd>日期 Label 的模板</dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2014-04-26",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team"
         },
         "window.Bizs.ChangeLogic": {
             "name": "window.Bizs.ChangeLogic",
@@ -957,6 +1021,30 @@
                 "\n<xmp><div class=\"js_bizMultiUpload\"\n   bmuBoxSelector=\"|.uploadItemBox\"\n   bmuTplSelector=\"|script\"\n   bmuItemDelegate=\">\"\n   bmuRemoveDelegate=\".js_removeUploadItem\"\n   bmuRemoveItemParentSelector=\"(\"\n   bmuAjaxUploadSelector=\"|.js_compAjaxUpload\"\n   bmuItemLimit=\"2\"\n   >\n   <div>\n       <input type=\"hidden\" class=\"ipt ipt-w180 js_compAjaxUpload\" value=\"\"\n           cauStyle=\"w1\"\n           cauButtonText=\"上传资质文件\"\n           cauUrl=\"../_demo/data/handler.php\"\n           cauFileExt=\".jpg, .jpeg, .png, .gif\"\n           cauFileName=\"file\"\n           cauValueKey=\"url\"\n           cauLabelKey=\"name\"\n           cauProgressBox=\"/span.AUProgressBox\"\n           />\n           <span class=\"AUProgressBox\" style=\"display:none;\">\n               <button type=\"button\" class=\"AUProgress\"><div class=\"AUPercent\"></div></button>\n               <button type=\"button\" class=\"AUCancelProgress\"></button>\n           </span>\n           .jpg, .jpeg, .png, .gif\n           (最多上传2个)\n   </div>\n   <dl class=\"uploadItemBox\">\n   </dl>\n   <script type=\"text/template\">\n       <dd class=\"js_multiUploadItem\">\n           <input type=\"hidden\" name=\"file[]\" value=\"{0}\" class=\"js_multiUploadHidden\" />\n           <a href=\"{0}\" target=\"_blank\"><label class=\"js_multiUploadLabel\">{1}</label></a>\n           <button type=\"button\" class=\"AURemove js_removeUploadItem\"></button>\n       </dd>\n   </script>\n</div></xmp>"
             ]
         },
+        "Bizs.TaskViewer": {
+            "name": "Bizs.TaskViewer",
+            "shortname": "Bizs.TaskViewer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "Bizs",
+            "file": "../modules/Bizs.TaskViewer/0.1/TaskViewer.js",
+            "line": 2,
+            "description": "TaskViewer 日历任务展示面板\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.TaskViewer.html' target='_blank'>API docs</a>\n  | <a href='../../modules/Bizs.TaskViewer/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化class=\"js_COMPTaskViewer\"下的日期</h2>\n\n\n<h2>可用的 HTML attribute</h2>\n<dl>\n<dt>taskselecteddates = selector</dt>\n<dd>指定选定的日期标签</dd>\n<dt>taskdeleteddates = selector</dt>\n<dd>指定删除的日期标签</dd>\n<dt>tasknewaddeddates = selector</dt>\n<dd>指定新增的日期标签</dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "0.1 2014-04-17",
+            "author": "zuojing   <zuojing1013@gmail.com> | 75 Team"
+        },
         "JC.AjaxUpload": {
             "name": "JC.AjaxUpload",
             "shortname": "JC.AjaxUpload",
@@ -968,7 +1056,7 @@
             "namespace": "JC",
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
             "line": 2,
-            "description": "Ajax 文件上传\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n     , <a href='javascript:;'>SWFUpload</a>\n</p>\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.AjaxUpload/0.2/_demo' target='_blank'>demo link</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/dev/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址\n         <br />如果 url 带有参数 callback, 返回数据将以 jsonp 方式处理\n     </dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<pre>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '&lt;a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}&lt;/a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;&lt;a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\">&lt;/a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</pre>\n     </dd>\n\n     <dt>cauDebug = bool, default = false</dt>\n     <dd>是否显示 flash 调试信息</dd>\n\n     <dt>cauFlashUrl = string</dt>\n     <dd>显式声明 flash 路径</dd>\n\n     <dt>cauButtonWidth = int, default = 自动计算</dt>\n     <dd>显式声明按钮的宽度</dd>\n\n     <dt>cauButtonHeight= int, default = 自动计算</dt>\n     <dd>显式声明按钮的高度</dd>\n\n     <dt>cauRoot = string</dt>\n     <dd>显式声明组件根路径</dd>\n\n     <dt>cauUploadLimit = int, default = 0(不限制)</dt>\n     <dd>上传文件的总数量</dd>\n\n     <dt>cauQueueLimit = int, default = 0(不限制)</dt>\n     <dd>队列中文件的总数量(<b>未实现</b>)</dd>\n\n     <dt>cauFileSize = [ KB | MB | GB ], default = 1024 MB</dt>\n     <dd>上传文件大小限制</dd>\n\n     <dt>cauCacheSwf = bool, default = true</dt>\n     <dd>是否缓存 flash swf</dd>\n\n     <dt>cauHttpSuccess = string, default = 200, 201, 204</dt>\n     <dd>http 通信成功的状态码</dd>\n\n     <dt>cauButtonStyle = string, default = .uFont{ color:#000000; text-align: center; }</dt>\n     <dd>定义 flash 按钮的样式</dd>\n\n     <dt>cauParamsCallback = function</dt>\n     <dd>设置 flash 参数的回调\n<pre>function cauParamsCallback( _params ){\n   var _model = this;\n   return _params;\n}</pre>\n     </dd>\n\n     <dt>cauPostParams = json var name, (<b>window 变量域</b>)</dt>\n     <dd>显式声明 post params, 全局指定请用 JC.AjaxUpload.POST_PARAMS </dd>\n\n     <dt>cauAllCookies = bool</dt>\n     <dd>是否把所有 cookie 添加到 post_params, 发送到服务器</dd>\n     \n     <dt>cauBatchUpload = bool, default = false</dt>\n     <dd>是否为批量上传(<b>未实现</b>)</dd>\n\n     <dt>cauShowProgress = bool, default = false</dt>\n     <dd>是否显示进度条\n         <br >如果为真, 且没有声明 cauProgressBox, 那么会自动生成 cauProgressBox\n     </dd>\n\n     <dt>cauProgressBox = selector</dt>\n     <dd>显式声明 进度条标签</dd>\n\n     <dt>cauViewFileBox = selector</dt>\n     <dd>用于显示文件链接的容器</dd>\n\n     <dt>cauViewFileBoxItemTpl = selector</dt>\n     <dd>cauViewFileBox 的脚本模板</dd>\n</dl>",
+            "description": "Ajax 文件上传\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n     , <a href='javascript:;'>SWFUpload</a>\n</p>\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.AjaxUpload/0.2/_demo' target='_blank'>demo link</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/dev/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauButtonAfter= bool</dt>\n     <dd>是否把上传按钮放在后面</dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址\n         <br />如果 url 带有参数 callback, 返回数据将以 jsonp 方式处理\n     </dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<pre>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '&lt;a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}&lt;/a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;&lt;a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\">&lt;/a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</pre>\n     </dd>\n\n     <dt>cauDebug = bool, default = false</dt>\n     <dd>是否显示 flash 调试信息</dd>\n\n     <dt>cauFlashUrl = string</dt>\n     <dd>显式声明 flash 路径</dd>\n\n     <dt>cauButtonWidth = int, default = 自动计算</dt>\n     <dd>显式声明按钮的宽度</dd>\n\n     <dt>cauButtonHeight= int, default = 自动计算</dt>\n     <dd>显式声明按钮的高度</dd>\n\n     <dt>cauRoot = string</dt>\n     <dd>显式声明组件根路径</dd>\n\n     <dt>cauUploadLimit = int, default = 0(不限制)</dt>\n     <dd>上传文件的总数量</dd>\n\n     <dt>cauQueueLimit = int, default = 0(不限制)</dt>\n     <dd>队列中文件的总数量(<b>未实现</b>)</dd>\n\n     <dt>cauFileSize = [ KB | MB | GB ], default = 1024 MB</dt>\n     <dd>上传文件大小限制</dd>\n\n     <dt>cauCacheSwf = bool, default = true</dt>\n     <dd>是否缓存 flash swf</dd>\n\n     <dt>cauHttpSuccess = string, default = 200, 201, 204</dt>\n     <dd>http 通信成功的状态码</dd>\n\n     <dt>cauButtonStyle = string, default = .uFont{ color:#000000; text-align: center; }</dt>\n     <dd>定义 flash 按钮的样式</dd>\n\n     <dt>cauParamsCallback = function</dt>\n     <dd>设置 flash 参数的回调\n<pre>function cauParamsCallback( _params ){\n   var _model = this;\n   return _params;\n}</pre>\n     </dd>\n\n     <dt>cauPostParams = json var name, (<b>window 变量域</b>)</dt>\n     <dd>显式声明 post params, 全局指定请用 JC.AjaxUpload.POST_PARAMS </dd>\n\n     <dt>cauAllCookies = bool, default = true</dt>\n     <dd>是否把所有 cookie 添加到 post_params, 发送到服务器</dd>\n     \n     <dt>cauBatchUpload = bool, default = false</dt>\n     <dd>是否为批量上传(<b>未实现</b>)</dd>\n\n     <dt>cauShowProgress = bool, default = false</dt>\n     <dd>是否显示进度条\n         <br >如果为真, 且没有声明 cauProgressBox, 那么会自动生成 cauProgressBox\n     </dd>\n\n     <dt>cauProgressBox = selector</dt>\n     <dd>显式声明 进度条标签</dd>\n\n     <dt>cauViewFileBox = selector</dt>\n     <dd>用于显示文件链接的容器</dd>\n\n     <dt>cauViewFileBoxItemTpl = selector</dt>\n     <dd>cauViewFileBox 的脚本模板</dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -1951,6 +2039,33 @@
                 }
             ]
         },
+        "JC.StepControl": {
+            "name": "JC.StepControl",
+            "shortname": "JC.StepControl",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../modules/JC.StepControl/0.1/StepControl.js",
+            "line": 2,
+            "description": "组件用途简述\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href='JC.Valid.html'>JC.Valid</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.StepControl.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.StepControl/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compStepControl\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt></dt>\n   <dd><dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-12-13",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n       <h2>JC.StepControl 示例</h2>"
+            ]
+        },
         "JC.Suggest": {
             "name": "JC.Suggest",
             "shortname": "JC.Suggest",
@@ -2067,7 +2182,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 7,
+            "line": 6,
             "description": "TableFreeze 表格固定指定列功能\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.TableFreeze/0.2/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化div为class=\"js_compTableFreeze\"下的表格</h2>\n<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>freezeType = string</dt>\n   <dd>\n      声明表格列冻结的类型：\n      <p><b>prev：</b>左边的列固定，其他滚动</p>\n      <p><b>next：</b>右边的列固定，其他滚动</p>\n      <p><b>both：</b>两边的列固定，其他滚动</p>\n   </dd>\n\n   <dt>freezeCol = string</dt>\n   <dd>\n       声明表格要冻结的列数:\n       <p>为<b>0：</b>全部滚动，不冻结</p>\n       <p>为<b>列表数目：</b>全部冻结， 不滚动</p>\n       <p>为<b>num,num：</b>freezeType为<b>both</b>时，第一个数字表示前面冻结的列数<br/>\n         第二个数字表示后面冻结的列数。<br/>\n          当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。\n       </p>\n   </dd>\n\n   <dt>scrollWidth = num</dt>\n   <dd>\n       声明表格滚动部分的宽度，默认120%\n   </dd>\n\n   <dt>needHoverClass = true|false</dt>\n   <dd>\n       声明表格行是否需要鼠标hover高亮效果:\n       <p>默认值为true</p>\n   </dd>\n\n   <dt>alternateClass = string</dt>\n   <dd>\n       声明表格索引值为奇数行的背景色的className: （表格行隔行换色）\n       <p>如果为空则不指定隔行背景色</p>\n   </dd>\n\n   <dt>beforeCreateTableCallback = function</dt>\n   <dd>\n       表格创建前, 触发的回调, <b>window 变量域</b>\n<pre>function beforeCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'beforeCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>afterCreateTableCallback = function</dt>\n   <dd>\n       表格创建后, 触发的回调, <b>window 变量域</b>\n<pre>function afterCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'afterCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
@@ -2412,28 +2527,28 @@
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 334,
+            "line": 343,
             "description": "处理错误提示",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 366,
+            "line": 375,
             "description": "处理二次确认",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 386,
+            "line": 395,
             "description": "处理成功提示",
             "class": "window.Bizs.ActionLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.ActionLogic/0.1/ActionLogic.js",
-            "line": 423,
+            "line": 432,
             "description": "执行操作",
             "itemtype": "method",
             "name": "process",
@@ -2491,6 +2606,52 @@
             "line": 214,
             "description": "selectallchanged",
             "class": "window.Bizs.AutoSelectComplete",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.CRMSchedule/0.1/CRMSchedule.js",
+            "line": 126,
+            "description": "初始化可识别的 CRMSchedule 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of CRMScheduleInstance"
+            },
+            "class": "window.Bizs.CRMSchedule",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.CRMSchedule/0.1/CRMSchedule.js",
+            "line": 853,
+            "description": "更新数据",
+            "itemtype": "method",
+            "name": "update",
+            "params": [
+                {
+                    "name": "_data",
+                    "description": "",
+                    "type": "Json"
+                }
+            ],
+            "class": "window.Bizs.CRMSchedule",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup.js",
+            "line": 2,
+            "description": "CRMSchedule 的弹框",
+            "version": "dev 0.1 2013-12-13",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "class": "window.Bizs.ChangeLogic",
             "namespace": "window.Bizs"
         },
         {
@@ -3491,8 +3652,50 @@
             "namespace": "window.Bizs"
         },
         {
+            "file": "../modules/Bizs.TaskViewer/0.1/TaskViewer.js",
+            "line": 51,
+            "description": "获取或设置 TaskViewer 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "TaskViewerInstance"
+            },
+            "class": "Bizs.TaskViewer",
+            "namespace": "Bizs"
+        },
+        {
+            "file": "../modules/Bizs.TaskViewer/0.1/TaskViewer.js",
+            "line": 67,
+            "description": "初始化可识别的 TaskViewer 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of TaskViewerInstance"
+            },
+            "class": "Bizs.TaskViewer",
+            "namespace": "Bizs"
+        },
+        {
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 210,
+            "line": 213,
             "description": "获取或设置 AjaxUpload 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -3513,7 +3716,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 226,
+            "line": 229,
             "description": "初始化可识别的组件",
             "itemtype": "method",
             "name": "init",
@@ -3534,7 +3737,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 247,
+            "line": 250,
             "description": "全局的 post params 回调",
             "itemtype": "property",
             "name": "PARAMS_CALLBACK",
@@ -3550,7 +3753,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 259,
+            "line": 262,
             "description": "全局的 post params 属性",
             "itemtype": "property",
             "name": "POST_PARAMS",
@@ -3563,28 +3766,28 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 284,
+            "line": 287,
             "description": "文件扩展名错误",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 291,
+            "line": 294,
             "description": "上传前触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 297,
+            "line": 300,
             "description": "上传完毕触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 403,
+            "line": 406,
             "description": "禁用上传按钮",
             "itemtype": "method",
             "name": "disable",
@@ -3593,7 +3796,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 408,
+            "line": 411,
             "description": "启用上传按钮",
             "itemtype": "method",
             "name": "enable",
@@ -3602,7 +3805,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 413,
+            "line": 416,
             "description": "手动更新数据",
             "itemtype": "method",
             "name": "update",
@@ -3624,7 +3827,7 @@
         },
         {
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 941,
+            "line": 954,
             "description": "恢复默认状态",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
@@ -3901,7 +4104,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 545,
+            "line": 546,
             "description": "获取 绑定的 id node",
             "itemtype": "method",
             "name": "idSelector",
@@ -3914,7 +4117,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 551,
+            "line": 552,
             "description": "获取/设置 id 值",
             "itemtype": "method",
             "name": "idVal",
@@ -3934,7 +4137,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 562,
+            "line": 563,
             "description": "使用 ajax 接口更新原始数据",
             "itemtype": "method",
             "name": "ajaxUpdate",
@@ -3955,7 +4158,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 573,
+            "line": 574,
             "description": "显示数据列表",
             "itemtype": "method",
             "name": "show",
@@ -3964,7 +4167,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 586,
+            "line": 587,
             "description": "隐藏数据列表",
             "itemtype": "method",
             "name": "hide",
@@ -3973,7 +4176,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 595,
+            "line": 596,
             "description": "获取数据列表 node",
             "itemtype": "method",
             "name": "popup",
@@ -3986,7 +4189,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 604,
+            "line": 605,
             "description": "更新原始数据",
             "itemtype": "method",
             "name": "update",
@@ -4002,7 +4205,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 623,
+            "line": 624,
             "description": "清除 selector 和 idSelector 的默认值",
             "itemtype": "method",
             "name": "clear",
@@ -4011,7 +4214,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 632,
+            "line": 633,
             "description": "清除所有数据",
             "itemtype": "method",
             "name": "clearAll",
@@ -4020,7 +4223,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 643,
+            "line": 644,
             "description": "校正数据列表的显示位置",
             "itemtype": "method",
             "name": "fixPosition",
@@ -4029,7 +4232,7 @@
         },
         {
             "file": "../modules/JC.AutoComplete/0.1/AutoComplete.js",
-            "line": 761,
+            "line": 762,
             "description": "验证 key && id 是否正确\n仅在 cacStrictData 为真的时候进行验证",
             "class": "JC.AutoComplete",
             "namespace": "JC"
@@ -10674,6 +10877,27 @@
             "namespace": "JC.Slider"
         },
         {
+            "file": "../modules/JC.StepControl/0.1/StepControl.js",
+            "line": 52,
+            "description": "初始化可识别的 StepControl 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of StepControlInstance"
+            },
+            "class": "JC.StepControl",
+            "namespace": "JC"
+        },
+        {
             "file": "../modules/JC.Suggest/0.1/Suggest.js",
             "line": 125,
             "description": "suggest_so({ \"p\" : true,\n              \"q\" : \"shinee\",\n              \"s\" : [ \"shinee 综艺\",\n                  \"shinee美好的一天\",\n                  \"shinee hello baby\",\n                  \"shinee吧\",\n                  \"shinee泰民\",\n                  \"shinee fx\",\n                  \"shinee快乐大本营\",\n                  \"shinee钟铉车祸\",\n                  \"shinee年下男的约会\",\n                  \"shinee dream girl\"\n                ]\n            });",
@@ -11544,7 +11768,7 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 214,
+            "line": 213,
             "description": "获取或设置 TableFreeze 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -11565,7 +11789,7 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 229,
+            "line": 228,
             "description": "初始化可识别的 TableFreeze 实例",
             "itemtype": "method",
             "name": "init",
@@ -11586,56 +11810,56 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 260,
+            "line": 259,
             "description": "为了解决ie6下表格的宽度超出父容器的宽度，父容器的宽度会跟随表格的宽度",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 347,
+            "line": 342,
             "description": "冻结类型:prev, both, last; 默认为prev",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 358,
+            "line": 353,
             "description": "冻结列数:num,num 默认为1",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 390,
+            "line": 385,
             "description": "滚动区域的宽度默认120%",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 401,
+            "line": 396,
             "description": "tr 是否需要hover效果,默认为true",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 420,
+            "line": 415,
             "description": "tr的隔行换色",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 672,
+            "line": 719,
             "description": "TableFreeze调用前的回调",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 683,
+            "line": 730,
             "description": "TableFreeze调用后的回调",
             "class": "JC.TableFreeze",
             "namespace": "JC"
@@ -14557,14 +14781,14 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 112,
+            "line": 113,
             "description": "jquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 116,
+            "line": 117,
             "description": "全局 css z-index 控制属性\n<br /> <b>注意</b>: 这个变量是 window.ZINDEX_COUNT",
             "itemtype": "property",
             "name": "ZINDEX_COUNT",
@@ -14576,7 +14800,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 134,
+            "line": 135,
             "description": "把函数的参数转为数组",
             "itemtype": "method",
             "name": "sliceArgs",
@@ -14596,7 +14820,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 148,
+            "line": 149,
             "description": "取 URL 的 host name",
             "itemtype": "method",
             "name": "urlHostName",
@@ -14616,7 +14840,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 164,
+            "line": 165,
             "description": "把 URL 相对路径 转换为 绝对路径",
             "itemtype": "method",
             "name": "relativePath",
@@ -14641,7 +14865,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 192,
+            "line": 193,
             "description": "按格式输出字符串",
             "itemtype": "method",
             "name": "printf",
@@ -14664,7 +14888,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 208,
+            "line": 209,
             "description": "判断URL中是否有某个get参数",
             "itemtype": "method",
             "name": "hasUrlParam",
@@ -14692,7 +14916,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 230,
+            "line": 231,
             "description": "添加URL参数\n<br /><b>require:</b> delUrlParam, filterXSS",
             "itemtype": "method",
             "name": "addUrlParams",
@@ -14720,7 +14944,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 256,
+            "line": 257,
             "description": "xss 过滤函数",
             "itemtype": "method",
             "name": "filterXSS",
@@ -14740,7 +14964,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 271,
+            "line": 272,
             "description": "取URL参数的值\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "getUrlParam",
@@ -14768,7 +14992,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 299,
+            "line": 300,
             "description": "取URL参数的值, 这个方法返回数组\n<br />与 getUrlParam 的区别是可以获取 checkbox 的所有值\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "getUrlParams",
@@ -14796,7 +15020,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 329,
+            "line": 330,
             "description": "删除URL参数\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "delUrlParam",
@@ -14824,7 +15048,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 359,
+            "line": 360,
             "description": "批量删除URL参数\n<br /><b>require:</b> delUrlParam",
             "itemtype": "method",
             "name": "delUrlParams",
@@ -14852,7 +15076,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 375,
+            "line": 376,
             "description": "提示需要 HTTP 环境",
             "itemtype": "method",
             "name": "httpRequire",
@@ -14872,7 +15096,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 390,
+            "line": 391,
             "description": "删除 URL 的锚点\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "removeUrlSharp",
@@ -14902,7 +15126,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 412,
+            "line": 413,
             "description": "重载页面\n<br /><b>require:</b> removeUrlSharp, addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "reloadPage",
@@ -14929,7 +15153,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 433,
+            "line": 434,
             "description": "取小数点的N位\n<br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题",
             "itemtype": "method",
             "name": "parseFinance",
@@ -14954,7 +15178,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 448,
+            "line": 449,
             "description": "js 附加字串函数",
             "itemtype": "method",
             "name": "padChar",
@@ -14984,7 +15208,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 464,
+            "line": 465,
             "description": "格式化日期为 YYYY-mm-dd 格式\n<br /><b>require</b>: pad\\_char\\_f",
             "itemtype": "method",
             "name": "formatISODate",
@@ -15009,7 +15233,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 478,
+            "line": 479,
             "description": "从 ISODate 字符串解析日期对象",
             "itemtype": "method",
             "name": "parseISODate",
@@ -15029,7 +15253,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 496,
+            "line": 497,
             "description": "从日期字符串解析日期对象\n<br />兼容 JC.Calendar 日期格式",
             "itemtype": "method",
             "name": "parseDate",
@@ -15060,7 +15284,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 520,
+            "line": 521,
             "description": "获取不带 时分秒的 日期对象",
             "itemtype": "method",
             "name": "pureDate",
@@ -15079,7 +15303,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 532,
+            "line": 533,
             "description": "克隆日期对象",
             "itemtype": "method",
             "name": "cloneDate",
@@ -15100,7 +15324,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 540,
+            "line": 541,
             "description": "判断两个日期是否为同一天",
             "itemtype": "method",
             "name": "isSameDay",
@@ -15126,7 +15350,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 552,
+            "line": 553,
             "description": "判断两个日期是否为同一月份",
             "itemtype": "method",
             "name": "isSameMonth",
@@ -15152,7 +15376,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 565,
+            "line": 566,
             "description": "判断两个日期是否为同一季度",
             "itemtype": "method",
             "name": "isSameWeek",
@@ -15178,7 +15402,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 596,
+            "line": 597,
             "description": "判断两个日期是否为同一季度",
             "itemtype": "method",
             "name": "isSameSeason",
@@ -15204,7 +15428,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 628,
+            "line": 629,
             "description": "判断两个日期是否为同一年",
             "itemtype": "method",
             "name": "isSameSeason",
@@ -15230,7 +15454,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 640,
+            "line": 641,
             "description": "取一年中所有的星期, 及其开始结束日期",
             "itemtype": "method",
             "name": "weekOfYear",
@@ -15255,14 +15479,14 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 652,
+            "line": 653,
             "description": "元旦开始的第一个星期一开始的一周为政治经济上的第一周",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 677,
+            "line": 678,
             "description": "取一年中所有的季度, 及其开始结束日期",
             "itemtype": "method",
             "name": "seasonOfYear",
@@ -15282,7 +15506,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 714,
+            "line": 715,
             "description": "取得一个月份中最大的一天",
             "itemtype": "method",
             "name": "maxDayOfMonth",
@@ -15303,7 +15527,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 727,
+            "line": 728,
             "description": "取当前脚本标签的 src路径",
             "itemtype": "method",
             "name": "scriptPath",
@@ -15317,7 +15541,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 739,
+            "line": 740,
             "description": "缓动函数, 动画效果为按时间缓动 \n<br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval",
             "itemtype": "method",
             "name": "easyEffect",
@@ -15360,7 +15584,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 792,
+            "line": 793,
             "description": "把输入值转换为布尔值",
             "itemtype": "method",
             "name": "parseBool",
@@ -15380,7 +15604,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 811,
+            "line": 812,
             "description": "绑定或清除 mousewheel 事件",
             "itemtype": "method",
             "name": "mousewheelEvent",
@@ -15407,7 +15631,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 835,
+            "line": 836,
             "description": "获取 selector 的指定父级标签",
             "itemtype": "method",
             "name": "getJqParent",
@@ -15433,7 +15657,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 861,
+            "line": 862,
             "description": "扩展 jquery 选择器\n<br />扩展起始字符的 '/' 符号为 jquery 父节点选择器\n<br />扩展起始字符的 '|' 符号为 jquery 子节点选择器\n<br />扩展起始字符的 '(' 符号为 jquery 父节点查找识别符( getJqParent )",
             "itemtype": "method",
             "name": "parentSelector",
@@ -15464,7 +15688,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 929,
+            "line": 930,
             "description": "获取脚本模板的内容",
             "itemtype": "method",
             "name": "scriptContent",
@@ -15484,7 +15708,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 944,
+            "line": 945,
             "description": "取函数名 ( 匿名函数返回空 )",
             "itemtype": "method",
             "name": "funcName",
@@ -15504,7 +15728,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 959,
+            "line": 960,
             "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar\n         , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
@@ -15521,98 +15745,98 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 984,
+            "line": 985,
             "description": "联动下拉框",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 988,
+            "line": 989,
             "description": "日历组件",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 992,
+            "line": 993,
             "description": "双日历组件",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 996,
+            "line": 997,
             "description": "全选反选",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1000,
+            "line": 1001,
             "description": "Ajax 上传",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1004,
+            "line": 1005,
             "description": "占位符",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1008,
+            "line": 1009,
             "description": "表格冻结",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1012,
+            "line": 1013,
             "description": "拖曳",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1016,
+            "line": 1017,
             "description": "图片裁切",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1022,
+            "line": 1023,
             "description": "disable / enable",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1026,
+            "line": 1027,
             "description": "表单提交逻辑",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1030,
+            "line": 1031,
             "description": "格式化金额",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1034,
+            "line": 1035,
             "description": "自动完成",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1039,
+            "line": 1040,
             "description": "URL 占位符识别功能\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "urlDetect",
@@ -15635,7 +15859,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1080,
+            "line": 1081,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -15659,14 +15883,14 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1144,
+            "line": 1145,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1162,
+            "line": 1163,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -15701,7 +15925,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1212,
+            "line": 1213,
             "description": "日期格式化 (具体格式请查看 PHP Date Formats)",
             "itemtype": "method",
             "name": "dateFormat",
@@ -15726,7 +15950,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1287,
+            "line": 1288,
             "description": "扩展对象属性",
             "itemtype": "method",
             "name": "extendObject",
@@ -15756,7 +15980,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1309,
+            "line": 1310,
             "description": "timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行",
             "itemtype": "method",
             "name": "safeTimeout",
@@ -15791,7 +16015,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1330,
+            "line": 1331,
             "description": "URL 请求时, 获取对URL参数进行编码的函数",
             "itemtype": "method",
             "name": "encoder",
@@ -15812,7 +16036,7 @@
         },
         {
             "file": "../modules/JC.common/0.2/common.js",
-            "line": 1348,
+            "line": 1349,
             "description": "深度克隆对象",
             "itemtype": "method",
             "name": "cloneObject",
@@ -17265,7 +17489,7 @@
         },
         {
             "file": "../config.js",
-            "line": 102,
+            "line": 108,
             "description": "取当前脚本标签的 src路径",
             "static": 1,
             "return": {
@@ -17638,6 +17862,14 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../modules/Bizs.CRMSchedule/0.1/CRMSchedule.js:2"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup.js:2"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../modules/Bizs.ChangeLogic/0.1/ChangeLogic.js:3"
         },
         {
@@ -17687,6 +17919,10 @@
         {
             "message": "unknown tag: version",
             "line": " ../modules/Bizs.MultiUpload/0.1/MultiUpload.js:2"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../modules/Bizs.TaskViewer/0.1/TaskViewer.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -17842,6 +18078,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../modules/JC.StepControl/0.1/StepControl.js:2"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../modules/JC.Suggest/0.1/Suggest.js:3"
         },
         {
@@ -17858,7 +18098,7 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:7"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:6"
         },
         {
             "message": "unknown tag: version",
@@ -17990,11 +18230,11 @@
         },
         {
             "message": "unknown tag: require",
-            "line": " ../modules/JC.common/0.2/common.js:835"
+            "line": " ../modules/JC.common/0.2/common.js:836"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../modules/JC.common/0.2/common.js:861"
+            "line": " ../modules/JC.common/0.2/common.js:862"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -18158,19 +18398,23 @@
         },
         {
             "message": "Missing item type\n处理错误提示",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:334"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:343"
         },
         {
             "message": "Missing item type\n处理二次确认",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:366"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:375"
         },
         {
             "message": "Missing item type\n处理成功提示",
-            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:386"
+            "line": " ../modules/Bizs.ActionLogic/0.1/ActionLogic.js:395"
         },
         {
             "message": "Missing item type\nselectallchanged",
             "line": " ../modules/Bizs.AutoSelectComplete/0.1/AutoSelectComplete.js:214"
+        },
+        {
+            "message": "Missing item type\nCRMSchedule 的弹框",
+            "line": " ../modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup.js:2"
         },
         {
             "message": "Missing item type\nupdate current selector",
@@ -18202,19 +18446,19 @@
         },
         {
             "message": "Missing item type\n文件扩展名错误",
-            "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:284"
+            "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:287"
         },
         {
             "message": "Missing item type\n上传前触发的事件",
-            "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:291"
+            "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:294"
         },
         {
             "message": "Missing item type\n上传完毕触发的事件",
-            "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:297"
+            "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:300"
         },
         {
             "message": "Missing item type\n恢复默认状态",
-            "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:941"
+            "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:954"
         },
         {
             "message": "Missing item type\n点击列表时, 阻止冒泡",
@@ -18226,7 +18470,7 @@
         },
         {
             "message": "Missing item type\n验证 key && id 是否正确\n仅在 cacStrictData 为真的时候进行验证",
-            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:761"
+            "line": " ../modules/JC.AutoComplete/0.1/AutoComplete.js:762"
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",
@@ -18490,35 +18734,35 @@
         },
         {
             "message": "Missing item type\n为了解决ie6下表格的宽度超出父容器的宽度，父容器的宽度会跟随表格的宽度",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:260"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:259"
         },
         {
             "message": "Missing item type\n冻结类型:prev, both, last; 默认为prev",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:347"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:342"
         },
         {
             "message": "Missing item type\n冻结列数:num,num 默认为1",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:358"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:353"
         },
         {
             "message": "Missing item type\n滚动区域的宽度默认120%",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:390"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:385"
         },
         {
             "message": "Missing item type\ntr 是否需要hover效果,默认为true",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:401"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:396"
         },
         {
             "message": "Missing item type\ntr的隔行换色",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:420"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:415"
         },
         {
             "message": "Missing item type\nTableFreeze调用前的回调",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:672"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:719"
         },
         {
             "message": "Missing item type\nTableFreeze调用后的回调",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:683"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:730"
         },
         {
             "message": "Missing item type\n页面加载完毕后, 是否自动初始化 Tips",
@@ -18594,67 +18838,67 @@
         },
         {
             "message": "Missing item type\njquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
-            "line": " ../modules/JC.common/0.2/common.js:112"
+            "line": " ../modules/JC.common/0.2/common.js:113"
         },
         {
             "message": "Missing item type\n元旦开始的第一个星期一开始的一周为政治经济上的第一周",
-            "line": " ../modules/JC.common/0.2/common.js:652"
+            "line": " ../modules/JC.common/0.2/common.js:653"
         },
         {
             "message": "Missing item type\n联动下拉框",
-            "line": " ../modules/JC.common/0.2/common.js:984"
+            "line": " ../modules/JC.common/0.2/common.js:985"
         },
         {
             "message": "Missing item type\n日历组件",
-            "line": " ../modules/JC.common/0.2/common.js:988"
+            "line": " ../modules/JC.common/0.2/common.js:989"
         },
         {
             "message": "Missing item type\n双日历组件",
-            "line": " ../modules/JC.common/0.2/common.js:992"
+            "line": " ../modules/JC.common/0.2/common.js:993"
         },
         {
             "message": "Missing item type\n全选反选",
-            "line": " ../modules/JC.common/0.2/common.js:996"
+            "line": " ../modules/JC.common/0.2/common.js:997"
         },
         {
             "message": "Missing item type\nAjax 上传",
-            "line": " ../modules/JC.common/0.2/common.js:1000"
+            "line": " ../modules/JC.common/0.2/common.js:1001"
         },
         {
             "message": "Missing item type\n占位符",
-            "line": " ../modules/JC.common/0.2/common.js:1004"
+            "line": " ../modules/JC.common/0.2/common.js:1005"
         },
         {
             "message": "Missing item type\n表格冻结",
-            "line": " ../modules/JC.common/0.2/common.js:1008"
+            "line": " ../modules/JC.common/0.2/common.js:1009"
         },
         {
             "message": "Missing item type\n拖曳",
-            "line": " ../modules/JC.common/0.2/common.js:1012"
+            "line": " ../modules/JC.common/0.2/common.js:1013"
         },
         {
             "message": "Missing item type\n图片裁切",
-            "line": " ../modules/JC.common/0.2/common.js:1016"
+            "line": " ../modules/JC.common/0.2/common.js:1017"
         },
         {
             "message": "Missing item type\ndisable / enable",
-            "line": " ../modules/JC.common/0.2/common.js:1022"
+            "line": " ../modules/JC.common/0.2/common.js:1023"
         },
         {
             "message": "Missing item type\n表单提交逻辑",
-            "line": " ../modules/JC.common/0.2/common.js:1026"
+            "line": " ../modules/JC.common/0.2/common.js:1027"
         },
         {
             "message": "Missing item type\n格式化金额",
-            "line": " ../modules/JC.common/0.2/common.js:1030"
+            "line": " ../modules/JC.common/0.2/common.js:1031"
         },
         {
             "message": "Missing item type\n自动完成",
-            "line": " ../modules/JC.common/0.2/common.js:1034"
+            "line": " ../modules/JC.common/0.2/common.js:1035"
         },
         {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../modules/JC.common/0.2/common.js:1144"
+            "line": " ../modules/JC.common/0.2/common.js:1145"
         },
         {
             "message": "Missing item type\nSWFUpload: http://www.swfupload.org, http://swfupload.googlecode.com\n\nmmSWFUpload 1.0: Flash upload dialog - http://profandesign.se/swfupload/,  http://www.vinterwebb.se/\n\nSWFUpload is (c) 2006-2007 Lars Huring, Olov Nilzén and Mammon Media and is released under the MIT License:\nhttp://www.opensource.org/licenses/mit-license.php\n\nSWFUpload 2 is (c) 2007-2008 Jake Roberts and is released under the MIT License:\nhttp://www.opensource.org/licenses/mit-license.php\n\nSWFObject v2.2 <http://code.google.com/p/swfobject/> \n\tis released under the MIT License <http://www.opensource.org/licenses/mit-license.php>",
@@ -19114,7 +19358,7 @@
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
-            "line": " ../config.js:102"
+            "line": " ../config.js:108"
         },
         {
             "message": "Missing item type",
