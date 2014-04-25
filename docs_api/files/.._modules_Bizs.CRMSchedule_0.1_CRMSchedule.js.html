@@ -575,12 +575,22 @@
 
                 _p.selector().delegate( &#x27;td.js_pos_canSelect&#x27;, &#x27;click&#x27;, function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( &#x27;data-id&#x27; ), _date = _sp.attr( &#x27;data-date&#x27; );
-                        _p.trigger( &#x27;lockup&#x27;, [ _id, _date, _p._model.lockupDateUrl(), _sp ] );
+                        _p.trigger( &#x27;lockup&#x27;, [ _id, _date, _p._model.lockupDateUrl(), _sp, function(){
+                            _sp.removeClass( CRMSchedule.ALL_CLASS )
+                            .addClass( CRMSchedule.CLASS_LOCKED );
+                            _p.trigger( &#x27;update_check_item_status&#x27;, [ JC.f.getJqParent( _sp, &#x27;tr&#x27; ).find( &#x27;input.js_bccCkAll&#x27; ) ] );
+                        }] );
+
                 });
 
                 _p.selector().delegate( &#x27;td.js_pos_locked&#x27;, &#x27;click&#x27;, function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( &#x27;data-id&#x27; ), _date = _sp.attr( &#x27;data-date&#x27; );
-                        _p.trigger( &#x27;unlock&#x27;, [ _id, _date, _p._model.unlockDateUrl(), _sp ] );
+                        _p.trigger( &#x27;unlock&#x27;, [ _id, _date, _p._model.unlockDateUrl(), _sp, function(){
+                            _sp.removeClass( CRMSchedule.ALL_CLASS )
+                            .addClass( CRMSchedule.CLASS_CAN_SELECT );
+                            _p.trigger( &#x27;update_check_item_status&#x27;, [ JC.f.getJqParent( _sp, &#x27;tr&#x27; ).find( &#x27;input.js_bccCkAll&#x27; ) ] );
+                        }] );
+
                 });
 
                 _p.selector().delegate( &#x27;input.js_bccCkAll&#x27;, &#x27;change&#x27;, function( _evt ){
@@ -641,6 +651,7 @@
                                     js_pos_canSelect.removeClass( CRMSchedule.ALL_CLASS )
                                         .addClass( CRMSchedule.CLASS_LOCKED )
                                         ;
+                                    _p.trigger( &#x27;update_check_status&#x27; );
                                 }]);
                         }else{
                             js_pos_locked.each( function(){
@@ -651,6 +662,7 @@
                                     js_pos_locked.removeClass( CRMSchedule.ALL_CLASS )
                                         .addClass( CRMSchedule.CLASS_CAN_SELECT )
                                         ;
+                                    _p.trigger( &#x27;update_check_status&#x27; );
                                 }] );
                         }
                         //JC.log( &#x27;_id:&#x27;, _id );
@@ -674,11 +686,6 @@
                                 _msg = &#x27;锁定成功!&#x27;;
                                 _data.errmsg &amp;&amp; ( _msg = _data.errmsg );
                                 _status = 0;
-
-                                !_doneCb &amp;&amp; _sp 
-                                    &amp;&amp; _sp.removeClass( CRMSchedule.ALL_CLASS )
-                                    &amp;&amp; _sp.addClass( CRMSchedule.CLASS_LOCKED )
-                                    ;
 
                                 _doneCb &amp;&amp; _doneCb( _data, _id, _date, _sp );
 
@@ -708,11 +715,6 @@
                                 _data.errmsg &amp;&amp; ( _msg = _data.errmsg );
                                 _status = 0;
 
-                                !_doneCb &amp;&amp; _sp 
-                                    &amp;&amp; _sp.removeClass( CRMSchedule.ALL_CLASS )
-                                    &amp;&amp; _sp.addClass( CRMSchedule.CLASS_CAN_SELECT )
-                                    ;
-
                                 _doneCb &amp;&amp; _doneCb( _data, _id, _date, _sp );
                             }else{
                                 _msg = &#x27;解锁失败, 请重试!&#x27;;
@@ -724,6 +726,39 @@
 
                     }, _sp, &#x27;LOCK_ITEM&#x27;, 200 );
                 });
+
+                _p.on( &#x27;layout_inited&#x27;, function( _evt ){
+                    _p.trigger( &#x27;update_check_status&#x27; );
+                });
+
+                _p.on( &#x27;update_check_status&#x27;, function( _evt ){
+                    var _ckLs = _p.selector().find( &#x27;input.js_bccCkAll&#x27; );
+                    if( !_ckLs.length ) return;
+
+                    _ckLs.each( function( _ix, _ckItem ){
+                        _p.trigger( &#x27;update_check_item_status&#x27;, [ _ckItem ] );
+                    });
+                });
+
+                _p.on( &#x27;update_check_item_status&#x27;, function( _evt, _ckItem ){
+                    _ckItem = $( _ckItem );
+                    var _tr = JC.f.getJqParent( _ckItem, &#x27;tr&#x27; )
+                        , js_pos_canSelect = _tr.find( &#x27;td.js_pos_canSelect&#x27; )
+                        , js_pos_locked = _tr.find( &#x27;td.js_pos_locked&#x27; )
+                        ;
+
+                    if( !( js_pos_canSelect.length || js_pos_locked.length ) ){
+                        _ckItem.hide();
+                        return;
+                    }
+                    if( js_pos_canSelect.length ){
+                        _ckItem.prop( &#x27;checked&#x27;, false );
+                    }else{
+                        _ckItem.prop( &#x27;checked&#x27;, true );
+                    }
+                    _ckItem.show();
+                });
+
             }
 
         , _initEditHandler:
@@ -732,12 +767,20 @@
 
                 _p.selector().delegate( &#x27;td.js_pos_canSelect&#x27;, &#x27;click&#x27;, function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( &#x27;data-id&#x27; ), _date = _sp.attr( &#x27;data-date&#x27; );
-                        _p.trigger( &#x27;select_item&#x27;, [ _id, _date, _sp, null ] );
+                        _p.trigger( &#x27;select_item&#x27;, [ _id, _date, _sp, function(){
+                            _sp.removeClass( CRMSchedule.ALL_CLASS )
+                            .addClass( CRMSchedule.CLASS_SELECTED );
+                            _p.trigger( &#x27;update_check_item_status&#x27;, [ JC.f.getJqParent( _sp, &#x27;tr&#x27; ).find( &#x27;input.js_bccCkAll&#x27; ) ] );
+                        }] );
                 });
 
                 _p.selector().delegate( &#x27;td.js_pos_selected&#x27;, &#x27;click&#x27;, function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( &#x27;data-id&#x27; ), _date = _sp.attr( &#x27;data-date&#x27; );
-                        _p.trigger( &#x27;unselect_item&#x27;, [ _id, _date, _sp, null ] );
+                        _p.trigger( &#x27;unselect_item&#x27;, [ _id, _date, _sp, function(){
+                            _sp.removeClass( CRMSchedule.ALL_CLASS )
+                            .addClass( CRMSchedule.CLASS_CAN_SELECT );
+                            _p.trigger( &#x27;update_check_item_status&#x27;, [ JC.f.getJqParent( _sp, &#x27;tr&#x27; ).find( &#x27;input.js_bccCkAll&#x27; ) ] );
+                        }] );
                 });
 
                 _p.on( &#x27;select_item&#x27;, function( _evt, _id, _date, _sp, _doneCb, _tm ){
@@ -745,11 +788,6 @@
                         //JC.log( &#x27;select_item&#x27;, _id, _date, JC.f.ts() );
                         if( !( _id &amp;&amp; _date ) ) return;
                         _p._model.addSelectValue( _id, _date );
-
-                        !_doneCb &amp;&amp; _sp 
-                            &amp;&amp; _sp.removeClass( CRMSchedule.ALL_CLASS )
-                            &amp;&amp; _sp.addClass( CRMSchedule.CLASS_SELECTED )
-                            ;
 
                         _doneCb &amp;&amp; _doneCb( _id, _date, _sp );
 
@@ -761,11 +799,6 @@
                         //JC.log( &#x27;unselect_item&#x27;, _id, _date, JC.f.ts() );
                         if( !( _id &amp;&amp; _date ) ) return;
                         _p._model.removeSelectValue( _id, _date );
-
-                        !_doneCb &amp;&amp; _sp 
-                            &amp;&amp; _sp.removeClass( CRMSchedule.ALL_CLASS )
-                            &amp;&amp; _sp.addClass( CRMSchedule.CLASS_CAN_SELECT )
-                            ;
 
                         _doneCb &amp;&amp; _doneCb( _id, _date, _sp );
 
@@ -830,6 +863,7 @@
                                     js_pos_canSelect.removeClass( CRMSchedule.ALL_CLASS )
                                         .addClass( CRMSchedule.CLASS_SELECTED )
                                         ;
+                                    _p.trigger( &#x27;update_check_status&#x27; );
                                 }, 10 ]);
                         }else{
                             js_pos_selected.each( function(){
@@ -840,6 +874,7 @@
                                     js_pos_selected.removeClass( CRMSchedule.ALL_CLASS )
                                         .addClass( CRMSchedule.CLASS_CAN_SELECT )
                                         ;
+                                    _p.trigger( &#x27;update_check_status&#x27; );
                                 }, 10 ] );
                         }
                         //JC.log( &#x27;_id:&#x27;, _id );
@@ -847,6 +882,76 @@
 
                 });
 
+                _p.on( &#x27;layout_inited&#x27;, function( _evt ){
+                    _p.trigger( &#x27;fill_selected_items&#x27; );
+                    _p.trigger( &#x27;update_check_status&#x27; );
+                });
+
+                _p.on( &#x27;update_check_status&#x27;, function( _evt ){
+                    var _ckLs = _p.selector().find( &#x27;input.js_bccCkAll&#x27; );
+                    if( !_ckLs.length ) return;
+
+                    _ckLs.each( function( _ix, _ckItem ){
+                        _p.trigger( &#x27;update_check_item_status&#x27;, [ _ckItem ] );
+                    });
+                });
+
+                _p.on( &#x27;update_check_item_status&#x27;, function( _evt, _ckItem ){
+                    _ckItem = $( _ckItem );
+                    var _tr = JC.f.getJqParent( _ckItem, &#x27;tr&#x27; )
+                        , js_pos_canSelect = _tr.find( &#x27;td.js_pos_canSelect&#x27; )
+                        , js_pos_selected = _tr.find( &#x27;td.js_pos_selected&#x27; )
+                        ;
+
+                    if( !( js_pos_canSelect.length || js_pos_selected.length ) ){
+                        _ckItem.hide();
+                        return;
+                    }
+                    if( js_pos_canSelect.length ){
+                        _ckItem.prop( &#x27;checked&#x27;, false );
+                    }else{
+                        _ckItem.prop( &#x27;checked&#x27;, true );
+                    }
+                    _ckItem.show();
+                });
+
+                _p.on( &#x27;fill_selected_items&#x27;, function( _evt ){
+                    var _selectedItems = _p._model.saveSelectItems();
+                    JC.log( &#x27;fill_selected_items&#x27;, _selectedItems.length );
+
+                    _selectedItems.each( function( _ix, _item ){
+                        _item = $( _item );
+                        var _id = _item.attr( &#x27;data-id&#x27; )
+                            , _dates = _item.val().replace( /[\s]+/g, &#x27;&#x27; )
+                            , _validDate = []
+                            ;
+
+                        _dates = _dates ? _dates.split( &#x27;,&#x27; ) : [];
+
+                        for( var i = _dates.length - 1; i &gt;= 0; i-- ){
+
+                            var _dateItem = _dates[i]
+                                ,_posItem = _p.selector().find( JC.f.printf( &#x27;td.js_bccDateItem[data-id={0}][data-date={1}]&#x27;
+                                                                            , _id, _dateItem
+                                                                            ) )
+                                ;
+
+                            if( _posItem.length ){
+                                if( !_posItem.hasClass( CRMSchedule.CLASS_CAN_SELECT ) ){
+                                    _dates.splice( i, 1 );
+                                }else{
+                                    _posItem.removeClass( CRMSchedule.ALL_CLASS )
+                                        .addClass( CRMSchedule.CLASS_SELECTED )
+                                        ;
+                                    _validDate.push( _dateItem );
+                                }
+                            }
+                        };
+
+                        _item.val( _dates.join( &#x27;,&#x27; ) );
+                        !_item.val() &amp;&amp; _item.remove();
+                    });
+                });
             }
 
         , _inited:
@@ -866,6 +971,10 @@
         , initData: function(){ return this.windowProp( &#x27;bccInitData&#x27; ); }
 
         , saveSelectBox: function(){ return this.selectorProp( &#x27;bccSaveSelectBox&#x27; ); }
+        , saveSelectItems: 
+            function(){ 
+                return this.saveSelectBox().find( this.saveSelectItemClass() );
+            }
         , saveSelectItemTpl: function(){ return JC.f.scriptContent( this.selectorProp( &#x27;bccSaveSelectItemTpl&#x27; ) ); }
         , saveSelectItemClass: function(){ return this.attrProp( &#x27;bccSaveSelectItemClass&#x27; ); }
         , saveValueSelector:
@@ -1047,6 +1156,7 @@
                 _tpl = JC.f.printf( _tpl, 32, _dateHtml, _headerHtml.week, _headerHtml.date, _rowHtml  );
 
                 _p._model.selector().html( _tpl );
+                _p.trigger( &#x27;layout_inited&#x27; );
             }
 
         , dateHtml:
@@ -1158,17 +1268,10 @@
                                     , _class, _name, _item.id, _sPosDate, _shortName ) );
                     }
 
-                    if( _p._model.actionType() == &#x27;lock&#x27; ){
-                        if( _hasCanSelect ){
-                            _ckAll = &#x27;&lt;div&gt;&lt;input type=&quot;checkbox&quot; class=&quot;js_bccCkAll&quot; /&gt;&lt;/div&gt;&#x27;;
-                        }else if( _hasLocked ){
-                            _ckAll = &#x27;&lt;div&gt;&lt;input type=&quot;checkbox&quot; class=&quot;js_bccCkAll&quot; checked=&quot;checked&quot; /&gt;&lt;/div&gt;&#x27;;
-                        }
-                    }else if( _p._model.actionType() == &#x27;edit&#x27; ){
-                        if( _hasCanSelect ){
-                            _ckAll = &#x27;&lt;div&gt;&lt;input type=&quot;checkbox&quot; class=&quot;js_bccCkAll&quot; /&gt;&lt;/div&gt;&#x27;;
-                        }
+                    if( _p._model.actionType() == &#x27;lock&#x27; || _p._model.actionType() == &#x27;edit&#x27; ){
+                        _ckAll = &#x27;&lt;div&gt;&lt;input type=&quot;checkbox&quot; class=&quot;js_bccCkAll&quot; data-id=&quot;{0}&quot; style=&quot;display:none&quot; /&gt;&lt;/div&gt;&#x27;;
                     }
+                    _ckAll = JC.f.printf( _ckAll, _item.id );
 
                     _tmpTpl = JC.f.printf( _tpl
                                             , _parent1, _parent2

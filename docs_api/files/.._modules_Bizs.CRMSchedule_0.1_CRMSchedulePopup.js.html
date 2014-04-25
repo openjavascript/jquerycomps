@@ -337,7 +337,7 @@
                     }
                 });
 
-                _p.on( &#x27;update_status&#x27;, function( _evt, _currentDate ){
+                _p.on( &#x27;layout_inited&#x27;, function( _evt, _currentDate ){
                     _p.trigger( &#x27;update_nav_status&#x27;, _currentDate );
                     _p.trigger( &#x27;get_data&#x27;, _currentDate );
                 });
@@ -367,7 +367,7 @@
                     if( !( _startDate &amp;&amp; _endDate ) ) return;
                     _startDate = JC.f.cloneDate( _startDate );
                     if( _data &amp;&amp; !_data.errorno ){
-                        var _item, _dates;
+                        var _item, _date;
                         _data 
                             &amp;&amp; _data.data 
                             &amp;&amp; _data.data.list_data
@@ -377,21 +377,22 @@
                         if( !_item ) return;
 
                         while( _startDate.getTime() &lt; _endDate ){
-                            _dates = JC.f.formatISODate( _startDate );
+                            _date = JC.f.formatISODate( _startDate );
                             var _status = 0
                                 , _name = &#x27;&#x27;
                                 , _selector = JC.f.printf( &#x27;td.js_bccDateItem[data-id={0}][data-date={1}]&#x27;
                                                 , _item.id
-                                                , _dates
+                                                , _date
                                             )
                                 ;
                             //JC.log( _selector );
 
                             _selector = _p._model.panelIns().find( _selector );
                             if( _selector.length ){
-                                if( _dates in _item.position_date ){
-                                    _status = _item.position_date[ _dates ].status;
-                                    _name = _item.position_date[ _dates ].company;
+                                if( _date in _item.position_date ){
+                                    _status = _item.position_date[ _date ].status;
+                                    _name = _item.position_date[ _date ].company;
+                                    _p.trigger( &#x27;update_item_status&#x27;, [ _item.id, _date, _status, _item ] );
                                 }
                                 _selector.attr( &#x27;title&#x27;, _name );
                                 _selector.addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );
@@ -400,6 +401,7 @@
                             _startDate.setDate( _startDate.getDate() + 1 );
                         }
                     }
+                    _p.trigger( &#x27;data_inited&#x27; );
                 });
 
                 _p.on( &#x27;update_nav_status&#x27;, function( _evt, _startDate ){
@@ -423,15 +425,6 @@
                         _p._model.nextBtn().show();
                     }
 
-                    /*
-                    JC.log( 
-                        JC.f.dateFormat( _startDate )
-                        , JC.f.dateFormat( _endDate )
-                        , JC.f.dateFormat( _p._model.mindate() )
-                        , JC.f.dateFormat( _p._model.maxdate() )
-                    );
-                    */
-
                 });
 
             }
@@ -448,6 +441,12 @@
                                 .removeClass( Bizs.CRMSchedule.ALL_CLASS )
                                 .addClass( Bizs.CRMSchedule.CLASS_LOCKED )
                                 ;
+
+                            _p._model.schIns().trigger( 
+                                &#x27;update_check_item_status&#x27;
+                                , [ _p._model.schIns().selector().find( 
+                                        JC.f.printf( &#x27;input.js_bccCkAll[data-id={0}]&#x27;, _id ) ) ] 
+                                );
                         }]);
                 });
 
@@ -459,6 +458,11 @@
                                 .removeClass( Bizs.CRMSchedule.ALL_CLASS )
                                 .addClass( Bizs.CRMSchedule.CLASS_CAN_SELECT )
                                 ;
+                            _p._model.schIns().trigger( 
+                                &#x27;update_check_item_status&#x27;
+                                , [ _p._model.schIns().selector().find( 
+                                        JC.f.printf( &#x27;input.js_bccCkAll[data-id={0}]&#x27;, _id ) ) ] 
+                                );
                         }]);
                 });
 
@@ -466,6 +470,99 @@
 
         , _initEditHandler:
             function(){
+                var _p = this;
+                _p._model.panelIns().layout().delegate( &#x27;td.js_pos_canSelect&#x27;, &#x27;click&#x27;, function( _evt ){
+                    var _sp = $( this ), _id = _sp.attr( &#x27;data-id&#x27; ), _date = _sp.attr( &#x27;data-date&#x27; );
+                        _p._model.schIns().trigger( &#x27;select_item&#x27;, [ _id, _date, _sp
+                        , function( _id, _date ){
+                            $( JC.f.printf( &#x27;td.js_bccDateItem[data-id={0}][data-date={1}]&#x27;,  _id, _date ) )
+                                .removeClass( Bizs.CRMSchedule.ALL_CLASS )
+                                .addClass( Bizs.CRMSchedule.CLASS_SELECTED )
+                                ;
+
+                            _p._model.schIns().trigger( 
+                                &#x27;update_check_item_status&#x27;
+                                , [ _p._model.schIns().selector().find( 
+                                        JC.f.printf( &#x27;input.js_bccCkAll[data-id={0}]&#x27;, _id ) ) ] 
+                                );
+                        }]);
+                });
+
+                _p._model.panelIns().layout().delegate( &#x27;td.js_pos_selected&#x27;, &#x27;click&#x27;, function( _evt ){
+                    var _sp = $( this ), _id = _sp.attr( &#x27;data-id&#x27; ), _date = _sp.attr( &#x27;data-date&#x27; );
+                        _p._model.schIns().trigger( &#x27;unselect_item&#x27;, [ _id, _date, _sp
+                        , function( _id, _date ){
+                            $( JC.f.printf( &#x27;td.js_bccDateItem[data-id={0}][data-date={1}]&#x27;,  _id, _date ) )
+                                .removeClass( Bizs.CRMSchedule.ALL_CLASS )
+                                .addClass( Bizs.CRMSchedule.CLASS_CAN_SELECT )
+                                ;
+                            _p._model.schIns().trigger( 
+                                &#x27;update_check_item_status&#x27;
+                                , [ _p._model.schIns().selector().find( 
+                                        JC.f.printf( &#x27;input.js_bccCkAll[data-id={0}]&#x27;, _id ) ) ] 
+                                );
+                        }]);
+                });
+
+                _p.on( &#x27;data_inited&#x27;, function( _evt ){
+                    _p.trigger( &#x27;fill_selected_items&#x27; );
+                    _p._model.schIns().trigger( &#x27;update_check_status&#x27; );
+                });
+
+                _p.on( &#x27;fill_selected_items&#x27;, function( _evt ){
+                    var _selectedItems = _p._model.schIns()._model.saveSelectItems();
+                    JC.log( &#x27;fill_selected_items&#x27;, _selectedItems.length );
+
+                    _selectedItems.each( function( _ix, _item ){
+                        _item = $( _item );
+                        var _id = _item.attr( &#x27;data-id&#x27; )
+                            , _dates = _item.val().replace( /[\s]+/g, &#x27;&#x27; )
+                            , _validDate = []
+                            ;
+
+                        _dates = _dates ? _dates.split( &#x27;,&#x27; ) : [];
+
+                        for( var i = _dates.length - 1; i &gt;= 0; i-- ){
+
+                            var _dateItem = _dates[i]
+                                ,_posItem = _p._model.panelIns().layout()
+                                    .find( JC.f.printf( &#x27;td.js_bccDateItem[data-id={0}][data-date={1}]&#x27;
+                                    , _id, _dateItem
+                                    ) )
+                                ;
+
+                            if( _posItem.length ){
+                                if( !_posItem.hasClass( Bizs.CRMSchedule.CLASS_CAN_SELECT ) ){
+                                    _dates.splice( i, 1 );
+                                }else{
+                                    _posItem.removeClass( Bizs.CRMSchedule.ALL_CLASS )
+                                        .addClass( Bizs.CRMSchedule.CLASS_SELECTED )
+                                        ;
+                                    _validDate.push( _dateItem );
+                                }
+                            }
+                        };
+
+                        _item.val( _dates.join( &#x27;,&#x27; ) );
+                        !_item.val() &amp;&amp; _item.remove();
+                    });
+                });
+
+                _p.on( &#x27;update_item_status&#x27;, function( _evt, _id, _date, _status, _itemData ){
+                    if( _status == 0 ) return;
+
+                    var _td = 
+                        _p._model.schIns().selector().find( 
+                            JC.f.printf( &#x27;td.js_bccDateItem[data-id={0}][data-date={1}]&#x27;
+                                , _id, _date
+                                )
+                            );
+                    if( _td.length ){
+                        _td.removeClass( Bizs.CRMSchedule.ALL_CLASS )
+                            .addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );
+                    }
+                });
+
             }
 
         , _inited:
@@ -598,8 +695,9 @@
 
                 _selector = $( _tpl );
                 _panelIns = _p._model.panelIns( JC.Dialog( _selector ) );
-
-                _p.trigger( &#x27;update_status&#x27;, [ JC.f.cloneDate( _currentDate ) ] );
+                _panelIns.on( &#x27;show&#x27;, function(){
+                    _p.trigger( &#x27;layout_inited&#x27;, [ JC.f.cloneDate( _currentDate ) ] );
+                });
             }
 
         , calendarHtml:
@@ -683,7 +781,7 @@
                 _p.trigger( &#x27;clear_data&#x27; );
                 $( _calendarHtml ).appendTo( _p._model.dateBox() );
 
-                _p.trigger( &#x27;update_status&#x27;, [ _currentDate ] );
+                _p.trigger( &#x27;layout_inited&#x27;, [ _currentDate ] );
             }
     });
 
