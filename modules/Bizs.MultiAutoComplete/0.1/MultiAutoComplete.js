@@ -287,7 +287,7 @@
                     //JC.log( '_macDefaultValue:', _macDefaultValue, _text );
 
                     _nextSelector = _p._model.nextSelector( _selector );
-                    if( _nextSelector && _nextSelector.length ){
+                    if( _nextSelector && _nextSelector.length && _data.data.length ){
                         _p.trigger( 'update_selector', [ _nextSelector, true ] );
                     }else{
                         !_noTriggerAllUpdated && _p.trigger( 'all_updated' );
@@ -678,7 +678,8 @@
                 if( _prevSelector && _prevSelector.length ){
                     _parentId = _p.macDefaultValue( _prevSelector );
                     //alert( [ _prevSelector.val(), _parentId, _prevSelector.attr( 'name' ) ] );
-                    _parentId && ( _url = JC.f.printf( _url, _parentId ) );
+                    !_parentId && ( _parentId = -1 );
+                    _url = JC.f.printf( _url, _parentId );
                 }
 
                 $.get( _url ).done( function( _text ){

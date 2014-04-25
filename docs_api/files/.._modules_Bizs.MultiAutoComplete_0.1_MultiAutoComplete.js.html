@@ -521,7 +521,7 @@
                     //JC.log( &#x27;_macDefaultValue:&#x27;, _macDefaultValue, _text );
 
                     _nextSelector = _p._model.nextSelector( _selector );
-                    if( _nextSelector &amp;&amp; _nextSelector.length ){
+                    if( _nextSelector &amp;&amp; _nextSelector.length &amp;&amp; _data.data.length ){
                         _p.trigger( &#x27;update_selector&#x27;, [ _nextSelector, true ] );
                     }else{
                         !_noTriggerAllUpdated &amp;&amp; _p.trigger( &#x27;all_updated&#x27; );
@@ -912,7 +912,8 @@
                 if( _prevSelector &amp;&amp; _prevSelector.length ){
                     _parentId = _p.macDefaultValue( _prevSelector );
                     //alert( [ _prevSelector.val(), _parentId, _prevSelector.attr( &#x27;name&#x27; ) ] );
-                    _parentId &amp;&amp; ( _url = JC.f.printf( _url, _parentId ) );
+                    !_parentId &amp;&amp; ( _parentId = -1 );
+                    _url = JC.f.printf( _url, _parentId );
                 }
 
                 $.get( _url ).done( function( _text ){

@@ -166,7 +166,6 @@
                     }
 
                 });
-
             }
 
         , _initLockHandler:
