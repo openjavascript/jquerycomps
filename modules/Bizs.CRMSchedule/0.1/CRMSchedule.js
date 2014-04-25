@@ -805,6 +805,17 @@
                 _p.on( 'clear_init_data', function( _evt ){
                     _p._model.saveSelectItems().remove();
                 });
+
+                _p.selector().delegate( 'tr.js_bccDataRow',  'hover', function( _evt ){
+                    $( this ).addClass( 'js_bccDataRowHover' );
+                    JC.log( 'hover', JC.f.ts() );
+                });
+
+                _p.selector().delegate( 'tr.js_bccDataRow',  'mouseleave', function( _evt ){
+                    $( this ).removeClass( 'js_bccDataRowHover' );
+                    JC.log( 'hover', JC.f.ts() );
+                });
+
             }
 
         , _inited:
