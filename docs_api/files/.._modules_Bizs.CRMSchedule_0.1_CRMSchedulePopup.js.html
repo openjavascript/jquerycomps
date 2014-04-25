@@ -279,10 +279,7 @@
         this._model = new CRMSchedulePopup.Model( _selector );
         this._model.schIns( _schIns );
 
-        switch( this._model.schIns()._model.actionType() ){
-            case &#x27;lock&#x27;: this._view = new CRMSchedulePopup.View( this._model ); break;
-            case &#x27;edit&#x27;: this._view = new CRMSchedulePopup.EditView( this._model ); break;
-        }
+        this._view = new CRMSchedulePopup.View( this._model );
 
         this._init();
 
@@ -312,10 +309,97 @@
 
                 _p.on( &#x27;inited&#x27;, function(){
                     _p._view.show();
+
+                    _p.trigger( &#x27;ready&#x27; );
                 });
 
-                _p.on( &#x27;update_status&#x27;, function( _evt ){
-                    _p.trigger( &#x27;update_nav_status&#x27;, _p._model.currentDate() );
+                _p.on( &#x27;ready&#x27;, function(){
+                    _p._model.prevBtn().on( &#x27;click&#x27;, function( _evt ){
+                        //JC.log( &#x27;prev&#x27;, JC.f.ts() );
+                        _p._model.currentDate().setMonth( _p._model.currentDate().getMonth() - 4 );
+                        _p._view.updateDate( _p._model.currentDate() );
+                    });
+
+                    _p._model.nextBtn().on( &#x27;click&#x27;, function( _evt ){
+                        //JC.log( &#x27;next&#x27;, JC.f.ts() );
+                        _p._model.currentDate().setMonth( _p._model.currentDate().getMonth() + 4 );
+                        _p._view.updateDate( _p._model.currentDate() );
+                    });
+
+                    _p.on( &#x27;clear_data&#x27;, function(){
+                        _p._model.panelIns().find( &#x27;div.js_bccPopupDateItem&#x27; ).remove();
+                    });
+
+                    if( _p._model.schIns()._model.actionType() == &#x27;lock&#x27; ){
+                        _p._initLockHandler();
+                    }else if( _p._model.schIns()._model.actionType() == &#x27;edit&#x27; ){
+                        _p._initEditHandler();
+                    }
+                });
+
+                _p.on( &#x27;update_status&#x27;, function( _evt, _currentDate ){
+                    _p.trigger( &#x27;update_nav_status&#x27;, _currentDate );
+                    _p.trigger( &#x27;get_data&#x27;, _currentDate );
+                });
+
+                _p.on( &#x27;get_data&#x27;, function( _evt, _currentDate ){
+                    var _startDate = _p._model.startDate( _currentDate ) 
+                        , _endDate = _p._model.endDate( _currentDate ) 
+                        , _url = JC.f.printf( 
+                                _p._model.schIns()._model.dateRangeUrl()
+                                , _p._model.id()
+                                , JC.f.formatISODate( _startDate )
+                                , JC.f.formatISODate( _endDate )
+                            )
+                        ;
+
+                    //JC.log( JC.f.formatISODate( _startDate ), JC.f.formatISODate( _endDate ), _url );
+                    JC.f.safeTimeout( function(){
+                        $.get( _url ).done( function( _d ){
+                            var _data = $.parseJSON( _d );
+                            //JC.dir( _data );
+                            _p.trigger( &#x27;update_data&#x27;, [ _data, _startDate, _endDate ] );
+                        });
+                    }, null, &#x27;UPDATE_CRMSCHDULE_POPUP&#x27;, 200 );
+                });
+
+                _p.on( &#x27;update_data&#x27;, function( _evt, _data, _startDate, _endDate ){
+                    if( !( _startDate &amp;&amp; _endDate ) ) return;
+                    _startDate = JC.f.cloneDate( _startDate );
+                    if( _data &amp;&amp; !_data.errorno ){
+                        var _item, _dates;
+                        _data 
+                            &amp;&amp; _data.data 
+                            &amp;&amp; _data.data.list_data
+                            &amp;&amp; _data.data.list_data[0]
+                            &amp;&amp; ( _item = _data.data.list_data[0] );
+
+                        if( !_item ) return;
+
+                        while( _startDate.getTime() &lt; _endDate ){
+                            _dates = JC.f.formatISODate( _startDate );
+                            var _status = 0
+                                , _name = &#x27;&#x27;
+                                , _selector = JC.f.printf( &#x27;td.js_bccDateItem[data-id={0}][data-date={1}]&#x27;
+                                                , _item.id
+                                                , _dates
+                                            )
+                                ;
+                            //JC.log( _selector );
+
+                            _selector = _p._model.panelIns().find( _selector );
+                            if( _selector.length ){
+                                if( _dates in _item.position_date ){
+                                    _status = _item.position_date[ _dates ].status;
+                                    _name = _item.position_date[ _dates ].company;
+                                }
+                                _selector.attr( &#x27;title&#x27;, _name );
+                                _selector.addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );
+                            }
+
+                            _startDate.setDate( _startDate.getDate() + 1 );
+                        }
+                    }
                 });
 
                 _p.on( &#x27;update_nav_status&#x27;, function( _evt, _startDate ){
@@ -339,14 +423,49 @@
                         _p._model.nextBtn().show();
                     }
 
+                    /*
                     JC.log( 
                         JC.f.dateFormat( _startDate )
                         , JC.f.dateFormat( _endDate )
                         , JC.f.dateFormat( _p._model.mindate() )
                         , JC.f.dateFormat( _p._model.maxdate() )
                     );
+                    */
 
                 });
+
+            }
+
+        , _initLockHandler:
+            function(){
+                var _p = this;
+
+                _p._model.panelIns().layout().delegate( &#x27;td.js_pos_canSelect&#x27;, &#x27;click&#x27;, function( _evt ){
+                    var _sp = $( this ), _id = _sp.attr( &#x27;data-id&#x27; ), _date = _sp.attr( &#x27;data-date&#x27; );
+                        _p._model.schIns().trigger( &#x27;lockup&#x27;, [ _id, _date, _p._model.schIns()._model.lockupDateUrl(), _sp
+                        , function( _data, _id, _date ){
+                            $( JC.f.printf( &#x27;td.js_bccDateItem[data-id={0}][data-date={1}]&#x27;,  _id, _date ) )
+                                .removeClass( Bizs.CRMSchedule.ALL_CLASS )
+                                .addClass( Bizs.CRMSchedule.CLASS_LOCKED )
+                                ;
+                        }]);
+                });
+
+                _p._model.panelIns().layout().delegate( &#x27;td.js_pos_locked&#x27;, &#x27;click&#x27;, function( _evt ){
+                    var _sp = $( this ), _id = _sp.attr( &#x27;data-id&#x27; ), _date = _sp.attr( &#x27;data-date&#x27; );
+                        _p._model.schIns().trigger( &#x27;unlock&#x27;, [ _id, _date, _p._model.schIns()._model.unlockDateUrl(), _sp
+                        , function( _data, _id, _date ){
+                            $( JC.f.printf( &#x27;td.js_bccDateItem[data-id={0}][data-date={1}]&#x27;,  _id, _date ) )
+                                .removeClass( Bizs.CRMSchedule.ALL_CLASS )
+                                .addClass( Bizs.CRMSchedule.CLASS_CAN_SELECT )
+                                ;
+                        }]);
+                });
+
+            }
+
+        , _initEditHandler:
+            function(){
             }
 
         , _inited:
@@ -367,13 +486,44 @@
             function(){
                 //JC.log( &#x27;CRMSchedulePopup.Model.init:&#x27;, new Date().getTime() );
                 this.row( JC.f.getJqParent( this.selector(), &#x27;tr&#x27; ) );
+                this.id( this.selector().attr( &#x27;data-id&#x27; ) );
             }
+
+        , row: function( _setter ){ typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._row = _setter ); return this._row; }
+        , id: function( _setter ){ typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._id = _setter ); return this._id; }
+
+        , startDate:
+            function( _date ){
+                _date = JC.f.cloneDate( _date );
+
+                if( _date.getTime() &lt; this.mindate().getTime() ){
+                    _date = JC.f.cloneDate( this.mindate() );
+                }
+
+                return _date;
+            }
+
+        , endDate:
+            function( _date ){
+                _date = JC.f.cloneDate( _date );
+                _date.setDate( 1 );
+                _date.setMonth( _date.getMonth() + 4 );
+                _date.setDate( 0 );
+
+                if( _date.getTime() &gt; this.maxdate().getTime() ){
+                    _date = JC.f.cloneDate( this.maxdate() );
+                }
+
+                return _date;
+            }
+
+
+        , mindate: function(){ return this.schIns()._model.initDate().sdate; }
+        , maxdate: function(){ return this.schIns()._model.initDate().edate; }
 
         , schIns: function( _setter ){ typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._schIns = _setter ); return this._schIns; }
 
         , panelIns: function( _setter ){ typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._panelIns = _setter ); return this._panelIns; }
-
-        , row: function( _setter ){ typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._row = _setter ); return this._row; }
 
         , currentDate: 
             function( _setter ){ 
@@ -381,11 +531,10 @@
                 return this._currentDate; 
             }
 
-        , mindate: function(){ return this.schIns()._model.initDate().sdate; }
-        , maxdate: function(){ return this.schIns()._model.initDate().edate; }
-
         , prevBtn: function(){ return this.panelIns().find( &#x27;.js_bccPopupPrev&#x27; ); }
         , nextBtn: function(){ return this.panelIns().find( &#x27;.js_bccPopupNext&#x27; ); }
+
+        , dateBox: function(){ return this.panelIns().find( &#x27;div.js_bccPopupDateBox&#x27; ); }
 
         , pos1Data:
             function(){
@@ -425,7 +574,7 @@
     JC.f.extendObject( CRMSchedulePopup.View.prototype, {
         init:
             function(){
-                JC.log( &#x27;CRMSchedulePopup.View.init:&#x27;, new Date().getTime() );
+                //JC.log( &#x27;CRMSchedulePopup.View.init:&#x27;, new Date().getTime() );
             }
 
         , show:
@@ -450,7 +599,7 @@
                 _selector = $( _tpl );
                 _panelIns = _p._model.panelIns( JC.Dialog( _selector ) );
 
-                _p.trigger( &#x27;update_status&#x27; );
+                _p.trigger( &#x27;update_status&#x27;, [ JC.f.cloneDate( _currentDate ) ] );
             }
 
         , calendarHtml:
@@ -473,7 +622,8 @@
             function( _date ){
                 _date = JC.f.cloneDate( _date );
 
-                var _r = []
+                var _p = this
+                    , _r = []
                     , _count = 1
                     , _dayCount = 1
                     , _rowLen = 4
@@ -487,17 +637,23 @@
                 for( var i = 0; i &lt;= _rowLen; i++ ){
                     _r.push( &#x27;&lt;tr&gt;&#x27;);
                     for( var j = 0; j &lt; 7; j++ ){
-                        _r.push( &#x27;&lt;td&gt;&#x27; );
+
+                        var _tpl = &#x27;&lt;td class=&quot;js_bccDateItem&quot;{1}&gt;{0}&lt;/td&gt;&#x27;
+                            , _attrs = &#x27;&#x27;, _day = &#x27;&#x27;
+                            , _dates = &#x27;&#x27;
+                            ;
 
                         if( _count &gt; _startDay ){
                             if( _dayCount &lt;= _maxDay ){
-                                _r.push( _dayCount++ );
+                                _day = _dayCount++;
+                                _dates = JC.f.formatISODate( _date );
+                                _attrs = &#x27; data-id=&quot;{2}&quot; data-date=&quot;{3}&quot;&#x27;
+
+                                _date.setDate( _date.getDate() + 1 );
                             }else{
                             }
-                        }else{
                         }
-
-                        _r.push( &#x27;&lt;/td&gt;&#x27; );
+                        _r.push( JC.f.printf( _tpl, _day, _attrs, _p._model.id(), _dates ) );
 
                         _count++;
                     }
@@ -506,6 +662,7 @@
                         _rowLen++;
                     }
                     _r.push( &#x27;&lt;/tr&gt;&#x27; );
+
                 }
 
                 return _r.join(&#x27;&#x27;);
@@ -514,6 +671,19 @@
         , dispose:
             function(){
                 this._model.panelIns() &amp;&amp; this._model.panelIns().layout().remove();
+            }
+
+        , updateDate:
+            function( _currentDate ){
+                var _p = this
+                    , _ctpl = _p._model.schIns()._model.popupCalendarTpl()
+                    , _calendarHtml = _p.calendarHtml( _ctpl, _currentDate )
+                    ;
+
+                _p.trigger( &#x27;clear_data&#x27; );
+                $( _calendarHtml ).appendTo( _p._model.dateBox() );
+
+                _p.trigger( &#x27;update_status&#x27;, [ _currentDate ] );
             }
     });
 
@@ -525,7 +695,7 @@
     JC.f.extendObject( CRMSchedulePopup.EditView.prototype, {
         init:
             function(){
-                JC.log( &#x27;CRMSchedulePopup.EditView.init:&#x27;, new Date().getTime() );
+                //JC.log( &#x27;CRMSchedulePopup.EditView.init:&#x27;, new Date().getTime() );
             }
     });
 

@@ -498,17 +498,17 @@
 
                 _p.selector().delegate( 'td.js_pos_canSelect', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
-                        _p.trigger( 'select_item', [ _id, _date, _sp, null, 1 ] );
+                        _p.trigger( 'select_item', [ _id, _date, _sp, null ] );
                 });
 
                 _p.selector().delegate( 'td.js_pos_selected', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
-                        _p.trigger( 'unselect_item', [ _id, _date, _sp, null, 1 ] );
+                        _p.trigger( 'unselect_item', [ _id, _date, _sp, null ] );
                 });
 
                 _p.on( 'select_item', function( _evt, _id, _date, _sp, _doneCb, _tm ){
                     JC.f.safeTimeout( function(){
-                        JC.log( 'select_item', _id, _date, JC.f.ts() );
+                        //JC.log( 'select_item', _id, _date, JC.f.ts() );
                         if( !( _id && _date ) ) return;
                         _p._model.addSelectValue( _id, _date );
 
@@ -517,46 +517,26 @@
                             && _sp.addClass( CRMSchedule.CLASS_SELECTED )
                             ;
 
-                        _doneCb && _doneCb( _data, _id, _date, _sp );
+                        _doneCb && _doneCb( _id, _date, _sp );
 
                     }, _sp, 'SELECT_ITEM', _tm || 200 );
                 });
 
-                return;
-                _p.on( 'unlock', function( _evt, _id, _date, _url, _sp, _doneCb ){
+                _p.on( 'unselect_item', function( _evt, _id, _date, _sp, _doneCb, _tm ){
                     JC.f.safeTimeout( function(){
-                        //JC.log( 'unlock', _id, _date, JC.f.ts() );
+                        //JC.log( 'unselect_item', _id, _date, JC.f.ts() );
                         if( !( _id && _date ) ) return;
-                        var _msg, _status;
-                        _url = _url || _p._model.unlockDateUrl();
-                        if( !_url ) return;
-                        _url = JC.f.printf( _url, _id, _date );
+                        _p._model.removeSelectValue( _id, _date );
 
-                        $.get( _url ).done( function( _d ){
-                            var _data = $.parseJSON( _d );
-                            if( _data && !_data.errorno ){
-                                _msg = '解锁成功!';
-                                _data.errmsg && ( _msg = _data.errmsg );
-                                _status = 0;
+                        !_doneCb && _sp 
+                            && _sp.removeClass( CRMSchedule.ALL_CLASS )
+                            && _sp.addClass( CRMSchedule.CLASS_CAN_SELECT )
+                            ;
 
-                                !_doneCb && _sp 
-                                    && _sp.removeClass( CRMSchedule.ALL_CLASS )
-                                    && _sp.addClass( CRMSchedule.CLASS_CAN_SELECT )
-                                    ;
+                        _doneCb && _doneCb( _id, _date, _sp );
 
-                                _doneCb && _doneCb( _data, _id, _date, _sp );
-                            }else{
-                                _msg = '解锁失败, 请重试!';
-                                _data && _data.errmsg && ( _msg = _data.errmsg );
-                                _status = 1;
-                            }
-                            _p.trigger( 'show_msg', [ _msg, _sp, _status ] );
-                        });
-
-                    }, _sp, 'LOCK_ITEM', 200 );
+                    }, _sp, 'SELECT_ITEM', _tm || 200 );
                 });
-
-                return;
 
                 _p.selector().delegate( 'input.js_bccCkAll', 'change', function( _evt ){
                     var _sp = $( this ), _tr, _date = [], _items;
@@ -569,41 +549,41 @@
                                 _item = $( _item );
                                 _date.push( _item.attr( 'data-date' ) );
                             });
-                            _p.trigger( 'lockup', [ _tr.attr( 'data-id' ), _date.join(','), _p._model.lockupDateUrl(), _sp
-                                , function( _data, _id, _date ){
+                            _p.trigger( 'select_item', [ _tr.attr( 'data-id' ), _date.join(','), _sp
+                                , function( _id, _date ){
                                     _items.removeClass( CRMSchedule.ALL_CLASS )
-                                        .addClass( CRMSchedule.CLASS_LOCKED )
+                                        .addClass( CRMSchedule.CLASS_SELECTED )
                                         ;
-                                }]);
+                                }, 10 ]);
                         }else{
-                            _items = _tr.find( 'td.js_pos_locked' );
+                            _items = _tr.find( 'td.js_pos_selected' );
                             _items.each( function( _ix, _item ){
                                 _item = $( _item );
                                 _date.push( _item.attr( 'data-date' ) );
                             });
-                            _p.trigger( 'unlock', [ _tr.attr( 'data-id' ), _date.join(','), _p._model.unlockDateUrl(), _sp
-                                , function( _data, _id, _date ){
+                            _p.trigger( 'unselect_item', [ _tr.attr( 'data-id' ), _date.join(','), _sp
+                                , function( _id, _date ){
                                     _items.removeClass( CRMSchedule.ALL_CLASS )
                                         .addClass( CRMSchedule.CLASS_CAN_SELECT )
                                         ;
-                                }] );
+                                }, 10 ] );
                         }
-                    }, _sp, 'LOCK_CK_ALL', 200 );
+                    }, _sp, 'SELECT_CK_ALL', 200 );
                 });
 
                 _p.selector().delegate( 'th.js_bccDateLabel[data-date]', 'click', function( _evt ){
                     var _sp = $( this ), _date = _sp.attr( 'data-date' )
-                        , js_pos_canSelect, js_pos_locked
+                        , js_pos_canSelect, js_pos_selected
                         ;
                   
                     if( !_date ) return;
 
                     js_pos_canSelect = _p.selector().find( JC.f.printf( 'td.js_pos_canSelect[data-date={0}]', _date ) );
-                    js_pos_locked = _p.selector().find( JC.f.printf( 'td.js_pos_locked[data-date={0}]', _date ) );
+                    js_pos_selected = _p.selector().find( JC.f.printf( 'td.js_pos_selected[data-date={0}]', _date ) );
                         
-                    //JC.log( 'th.js_bccDateLabel', _sp.attr( 'data-date' ), js_pos_canSelect.length, js_pos_locked.length, JC.f.ts() );
+                    //JC.log( 'th.js_bccDateLabel', _sp.attr( 'data-date' ), js_pos_canSelect.length, js_pos_selected.length, JC.f.ts() );
 
-                    if( ( js_pos_canSelect.length + js_pos_locked.length ) == 0 ) return;
+                    if( ( js_pos_canSelect.length + js_pos_selected.length ) == 0 ) return;
 
                     JC.f.safeTimeout( function(){
                         var _id = [];
@@ -611,25 +591,25 @@
                             js_pos_canSelect.each( function(){
                                 _id.push( $( this ).attr( 'data-id' ) );
                             });
-                            _p.trigger( 'lockup', [ _id.join(','), _date, _p._model.lockupIdUrl(), _sp
+                            _p.trigger( 'select_item', [ _id.join(','), _date, _sp
                                 , function( _data, _id, _date ){
                                     js_pos_canSelect.removeClass( CRMSchedule.ALL_CLASS )
-                                        .addClass( CRMSchedule.CLASS_LOCKED )
+                                        .addClass( CRMSchedule.CLASS_SELECTED )
                                         ;
-                                }]);
+                                }, 10 ]);
                         }else{
-                            js_pos_locked.each( function(){
+                            js_pos_selected.each( function(){
                                 _id.push( $( this ).attr( 'data-id' ) );
                             });
-                            _p.trigger( 'unlock', [ _id.join(','), _date, _p._model.unlockIdUrl(), _sp
+                            _p.trigger( 'unselect_item', [ _id.join(','), _date, _sp
                                 , function( _data, _id, _date ){
-                                    js_pos_locked.removeClass( CRMSchedule.ALL_CLASS )
+                                    js_pos_selected.removeClass( CRMSchedule.ALL_CLASS )
                                         .addClass( CRMSchedule.CLASS_CAN_SELECT )
                                         ;
-                                }] );
+                                }, 10 ] );
                         }
                         //JC.log( '_id:', _id );
-                    }, _sp, 'LOCK_CK_ALL', 200 );
+                    }, _sp, 'SELECT_CK_ALL', 200 );
 
                 });
 
@@ -654,7 +634,7 @@
         , saveSelectBox: function(){ return this.selectorProp( 'bccSaveSelectBox' ); }
         , saveSelectItemTpl: function(){ return JC.f.scriptContent( this.selectorProp( 'bccSaveSelectItemTpl' ) ); }
         , saveSelectItemClass: function(){ return this.attrProp( 'bccSaveSelectItemClass' ); }
-        , saveItem:
+        , saveValueSelector:
             function( _id ){
                 var _p = this
                     , _r = _p.saveSelectBox().find( JC.f.printf( '{0}[data-id={1}]', _p.saveSelectItemClass(), _id ) )
@@ -668,8 +648,67 @@
                 return _r;
             }
         , addSelectValue:
-            function( _id, _date ){
+            function( _idList, _dateList ){
+                var _p = this
+                    , _id, _date
+                    ;
+                _idList = _idList.replace( /[\s]+/g, '' );
+                _dateList = _dateList.replace( /[\s]+/g, '' );
+
+                if( !( _idList && _dateList ) ) return;
+
+                _id = _idList.split( ',' );
+                _date = _dateList.split( ',' );
+                
+                $.each( _id, function( _ix, _idItem ){
+                    var _selector = _p.saveValueSelector( _idItem )
+                        , _items = _selector.val().replace( /[\s]+/g, '' )
+                        , _newItemObj = {}
+                        ;
+                    _items = _items ? _items.split( ',' ) : [];
+
+                    $.each( _date, function( _dateIx, _dateItem ){
+                        if( _items.indexOf( _dateItem ) < 0 ){
+                            _newItemObj[ _dateItem ] = _dateItem;
+                        }
+                    });
+                    for( var k in _newItemObj ) _items.push( k );
+
+                    _selector.val( _items.join(',') );
+                });
             }
+        , removeSelectValue:
+            function( _idList, _dateList ){
+                var _p = this
+                    , _id, _date
+                    ;
+                _idList = _idList.replace( /[\s]+/g, '' );
+                _dateList = _dateList.replace( /[\s]+/g, '' );
+
+                if( !( _idList && _dateList ) ) return;
+
+                _id = _idList.split( ',' );
+                _date = _dateList.split( ',' );
+                
+                $.each( _id, function( _ix, _idItem ){
+                    var _selector = _p.saveValueSelector( _idItem )
+                        , _items = _selector.val().replace( /[\s]+/g, '' )
+                        , _newItemObj = {}
+                        , _itemIx
+                        ;
+                    _items = _items ? _items.split( ',' ) : [];
+
+                    $.each( _date, function( _dateIx, _dateItem ){
+                        if( ( _itemIx = _items.indexOf( _dateItem ) ) > -1 ){
+                            _items.splice( _itemIx, 1 );
+                        }
+                    });
+
+                    _selector.val( _items.join(',') );
+                    !_selector.val() && _selector.remove();
+                });
+            }
+
 
         , tpl: function(){ return JC.f.scriptContent( this.selectorProp( 'bccTpl' ) ); }
         , rowTpl: function(){ return JC.f.scriptContent( this.selectorProp( 'bccRowTpl' ) ); }

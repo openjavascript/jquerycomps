@@ -232,7 +232,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Panel&#x27;, &#x27;Bizs.CRMSchedule.Popup&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Panel&#x27;, &#x27;Bizs.CRMSchedulePopup&#x27; ], function(){
 /**
  * 组件用途简述
  *
@@ -278,7 +278,6 @@
 
         this._model = new CRMSchedule.Model( _selector );
         this._view = new CRMSchedule.View( this._model );
-
 
         this._init();
 
@@ -326,15 +325,13 @@
             未上线      : 4
             已锁定      : 5
     */
-    CRMSchedule.STATUS_CODE_MAP = {
-        &#x27;0&#x27;     : &#x27;js_pos_canSelect&#x27;
-        , &#x27;1&#x27;   : &#x27;js_pos_ordered&#x27;
-        , &#x27;2&#x27;   : &#x27;js_pos_preOnline&#x27;
-        , &#x27;3&#x27;   : &#x27;js_pos_online&#x27;
-        , &#x27;4&#x27;   : &#x27;js_pos_notOnline&#x27;
-        , &#x27;5&#x27;   : &#x27;js_pos_locked&#x27;
-        , &#x27;999&#x27; : &#x27;js_pos_selected&#x27;
-    };
+    CRMSchedule.STATUS_CAN_SELECT   = &#x27;0&#x27;;
+    CRMSchedule.STATUS_ORDERED      = &#x27;1&#x27;;
+    CRMSchedule.STATUS_PRE_ONLINE   = &#x27;2&#x27;;
+    CRMSchedule.STATUS_ONLINE       = &#x27;3&#x27;;
+    CRMSchedule.STATUS_NOT_ONLINE   = &#x27;4&#x27;;
+    CRMSchedule.STATUS_LOCKED       = &#x27;5&#x27;;
+    CRMSchedule.STATUS_SELECTED     = &#x27;999&#x27;;
 
     CRMSchedule.CLASS_CAN_SELECT    = &#x27;js_pos_canSelect&#x27;;
     CRMSchedule.CLASS_ORDERED       = &#x27;js_pos_ordered&#x27;;
@@ -344,22 +341,24 @@
     CRMSchedule.CLASS_LOCKED        = &#x27;js_pos_locked&#x27;;
     CRMSchedule.CLASS_SELECTED      = &#x27;js_pos_selected&#x27;;
 
-    CRMSchedule.STATUS_CAN_SELECT   = &#x27;0&#x27;;
-    CRMSchedule.STATUS_ORDERED      = &#x27;1&#x27;;
-    CRMSchedule.STATUS_PRE_ONLINE   = &#x27;2&#x27;;
-    CRMSchedule.STATUS_ONLINE       = &#x27;3&#x27;;
-    CRMSchedule.STATUS_NOT_ONLINE   = &#x27;4&#x27;;
-    CRMSchedule.STATUS_LOCKED       = &#x27;4&#x27;;
-    CRMSchedule.STATUS_SELECTED     = &#x27;999&#x27;;
+    CRMSchedule.STATUS_CODE_MAP = {
+        &#x27;0&#x27;                         : CRMSchedule.CLASS_CAN_SELECT
+        , &#x27;1&#x27;                       : CRMSchedule.CLASS_ORDERED
+        , &#x27;2&#x27;                       : CRMSchedule.CLASS_PRE_ONLINE
+        , &#x27;3&#x27;                       : CRMSchedule.CLASS_ONLINE
+        , &#x27;4&#x27;                       : CRMSchedule.CLASS_NOT_ONLINE
+        , &#x27;5&#x27;                       : CRMSchedule.CLASS_LOCKED
+        , &#x27;999&#x27;                     : CRMSchedule.CLASS_SELECTED
+    };
 
     CRMSchedule.CLASS_MAP = {
-        &#x27;js_pos_canSelect&#x27;          : &#x27;0&#x27;
-        , &#x27;js_pos_ordered&#x27;          : &#x27;1&#x27;
-        , &#x27;js_pos_preOnline&#x27;        : &#x27;2&#x27;
-        , &#x27;js_pos_online&#x27;           : &#x27;3&#x27;
-        , &#x27;js_pos_notOnline&#x27;        : &#x27;4&#x27;
-        , &#x27;js_pos_locked&#x27;           : &#x27;5&#x27;
-        , &#x27;js_pos_selected&#x27;         : &#x27;999&#x27;
+        &#x27;js_pos_canSelect&#x27;          : CRMSchedule.STATUS_CAN_SELECT
+        , &#x27;js_pos_ordered&#x27;          : CRMSchedule.STATUS_ORDERED
+        , &#x27;js_pos_preOnline&#x27;        : CRMSchedule.STATUS_PRE_ONLINE
+        , &#x27;js_pos_online&#x27;           : CRMSchedule.STATUS_ONLINE
+        , &#x27;js_pos_notOnline&#x27;        : CRMSchedule.STATUS_NOT_ONLINE
+        , &#x27;js_pos_locked&#x27;           : CRMSchedule.STATUS_LOCKED
+        , &#x27;js_pos_selected&#x27;         : CRMSchedule.STATUS_SELECTED
     };
 
     var _tmp = [];
@@ -404,7 +403,8 @@
 
 
                 switch( _p._model.actionType() ){
-                    case &#x27;lock&#x27;: _p._lockHandler(); break;
+                    case &#x27;lock&#x27;: _p._initLockHandler(); break;
+                    case &#x27;edit&#x27;: _p._initEditHandler(); break;
                 }
 
                 _p.selector().delegate( &#x27;input.js_bccPopupBtn&#x27;, &#x27;click&#x27;, function( _evt ){
@@ -496,44 +496,6 @@
                         _p.trigger( &#x27;get_data&#x27;, [ _newDate ] );
                 });
 
-                _p.selector().delegate( &#x27;button.js_bccPrevYear&#x27;, &#x27;click&#x27;, function( _evt ){
-                    var js_bccYearSelect = _p.selector().find( &#x27;select.js_bccYearSelect&#x27; )
-                        , js_bccMonthSelect = _p.selector().find( &#x27;select.js_bccMonthSelect&#x27; )
-                        ;
-                    var _sp = $( this )
-                        , _date = new Date( js_bccYearSelect.val(), js_bccMonthSelect.val(), 1 )
-                        , _newDate = JC.f.cloneDate( _date )
-                        , _mindate = _p._model.initDate().sdate
-                        ;
-                    _newDate.setFullYear( _newDate.getFullYear() - 1 );
-
-                    if( CRMSchedule.monthCompare( _p._model.currentDate(), _mindate ) === 0 ) return;
-
-                    if( CRMSchedule.monthCompare( _newDate, _mindate ) &gt; -1 ){
-                        _p.trigger( &#x27;update_date_control&#x27;, _newDate );
-                        _p.trigger( &#x27;get_data&#x27;, [ _newDate ] );
-                    }
-                });
-
-                _p.selector().delegate( &#x27;button.js_bccNextYear&#x27;, &#x27;click&#x27;, function( _evt ){
-                    var js_bccYearSelect = _p.selector().find( &#x27;select.js_bccYearSelect&#x27; )
-                        , js_bccMonthSelect = _p.selector().find( &#x27;select.js_bccMonthSelect&#x27; )
-                        ;
-                    var _sp = $( this )
-                        , _date = new Date( js_bccYearSelect.val(), js_bccMonthSelect.val(), 1 )
-                        , _newDate = JC.f.cloneDate( _date )
-                        , _maxdate = _p._model.initDate().edate
-                        ;
-                    _newDate.setFullYear( _newDate.getFullYear() + 1 );
-
-                    if( CRMSchedule.monthCompare( _p._model.currentDate(), _maxdate ) === 0 ) return;
-
-                    if( CRMSchedule.monthCompare( _newDate, _maxdate ) &lt; 1 ){
-                        _p.trigger( &#x27;update_date_control&#x27;, _newDate );
-                        _p.trigger( &#x27;get_data&#x27;, [ _newDate ] );
-                    }
-                });
-
                 _p.selector().delegate( &#x27;button.js_bccPrevMonth&#x27;, &#x27;click&#x27;, function( _evt ){
                     var js_bccYearSelect = _p.selector().find( &#x27;select.js_bccYearSelect&#x27; )
                         , js_bccMonthSelect = _p.selector().find( &#x27;select.js_bccMonthSelect&#x27; )
@@ -607,7 +569,7 @@
             function(){
             }
 
-        , _lockHandler:
+        , _initLockHandler:
             function(){
                 var _p = this;
 
@@ -764,9 +726,127 @@
                 });
             }
 
-        , _selecteHandler:
+        , _initEditHandler:
             function(){
                 var _p = this;
+
+                _p.selector().delegate( &#x27;td.js_pos_canSelect&#x27;, &#x27;click&#x27;, function( _evt ){
+                    var _sp = $( this ), _id = _sp.attr( &#x27;data-id&#x27; ), _date = _sp.attr( &#x27;data-date&#x27; );
+                        _p.trigger( &#x27;select_item&#x27;, [ _id, _date, _sp, null ] );
+                });
+
+                _p.selector().delegate( &#x27;td.js_pos_selected&#x27;, &#x27;click&#x27;, function( _evt ){
+                    var _sp = $( this ), _id = _sp.attr( &#x27;data-id&#x27; ), _date = _sp.attr( &#x27;data-date&#x27; );
+                        _p.trigger( &#x27;unselect_item&#x27;, [ _id, _date, _sp, null ] );
+                });
+
+                _p.on( &#x27;select_item&#x27;, function( _evt, _id, _date, _sp, _doneCb, _tm ){
+                    JC.f.safeTimeout( function(){
+                        //JC.log( &#x27;select_item&#x27;, _id, _date, JC.f.ts() );
+                        if( !( _id &amp;&amp; _date ) ) return;
+                        _p._model.addSelectValue( _id, _date );
+
+                        !_doneCb &amp;&amp; _sp 
+                            &amp;&amp; _sp.removeClass( CRMSchedule.ALL_CLASS )
+                            &amp;&amp; _sp.addClass( CRMSchedule.CLASS_SELECTED )
+                            ;
+
+                        _doneCb &amp;&amp; _doneCb( _id, _date, _sp );
+
+                    }, _sp, &#x27;SELECT_ITEM&#x27;, _tm || 200 );
+                });
+
+                _p.on( &#x27;unselect_item&#x27;, function( _evt, _id, _date, _sp, _doneCb, _tm ){
+                    JC.f.safeTimeout( function(){
+                        //JC.log( &#x27;unselect_item&#x27;, _id, _date, JC.f.ts() );
+                        if( !( _id &amp;&amp; _date ) ) return;
+                        _p._model.removeSelectValue( _id, _date );
+
+                        !_doneCb &amp;&amp; _sp 
+                            &amp;&amp; _sp.removeClass( CRMSchedule.ALL_CLASS )
+                            &amp;&amp; _sp.addClass( CRMSchedule.CLASS_CAN_SELECT )
+                            ;
+
+                        _doneCb &amp;&amp; _doneCb( _id, _date, _sp );
+
+                    }, _sp, &#x27;SELECT_ITEM&#x27;, _tm || 200 );
+                });
+
+                _p.selector().delegate( &#x27;input.js_bccCkAll&#x27;, &#x27;change&#x27;, function( _evt ){
+                    var _sp = $( this ), _tr, _date = [], _items;
+
+                    JC.f.safeTimeout( function(){
+                        _tr = JC.f.getJqParent( _sp, &#x27;tr&#x27; );
+                        if( _sp.prop( &#x27;checked&#x27; ) ){
+                            _items = _tr.find( &#x27;td.js_pos_canSelect&#x27; );
+                            _items.each( function( _ix, _item ){
+                                _item = $( _item );
+                                _date.push( _item.attr( &#x27;data-date&#x27; ) );
+                            });
+                            _p.trigger( &#x27;select_item&#x27;, [ _tr.attr( &#x27;data-id&#x27; ), _date.join(&#x27;,&#x27;), _sp
+                                , function( _id, _date ){
+                                    _items.removeClass( CRMSchedule.ALL_CLASS )
+                                        .addClass( CRMSchedule.CLASS_SELECTED )
+                                        ;
+                                }, 10 ]);
+                        }else{
+                            _items = _tr.find( &#x27;td.js_pos_selected&#x27; );
+                            _items.each( function( _ix, _item ){
+                                _item = $( _item );
+                                _date.push( _item.attr( &#x27;data-date&#x27; ) );
+                            });
+                            _p.trigger( &#x27;unselect_item&#x27;, [ _tr.attr( &#x27;data-id&#x27; ), _date.join(&#x27;,&#x27;), _sp
+                                , function( _id, _date ){
+                                    _items.removeClass( CRMSchedule.ALL_CLASS )
+                                        .addClass( CRMSchedule.CLASS_CAN_SELECT )
+                                        ;
+                                }, 10 ] );
+                        }
+                    }, _sp, &#x27;SELECT_CK_ALL&#x27;, 200 );
+                });
+
+                _p.selector().delegate( &#x27;th.js_bccDateLabel[data-date]&#x27;, &#x27;click&#x27;, function( _evt ){
+                    var _sp = $( this ), _date = _sp.attr( &#x27;data-date&#x27; )
+                        , js_pos_canSelect, js_pos_selected
+                        ;
+                  
+                    if( !_date ) return;
+
+                    js_pos_canSelect = _p.selector().find( JC.f.printf( &#x27;td.js_pos_canSelect[data-date={0}]&#x27;, _date ) );
+                    js_pos_selected = _p.selector().find( JC.f.printf( &#x27;td.js_pos_selected[data-date={0}]&#x27;, _date ) );
+                        
+                    //JC.log( &#x27;th.js_bccDateLabel&#x27;, _sp.attr( &#x27;data-date&#x27; ), js_pos_canSelect.length, js_pos_selected.length, JC.f.ts() );
+
+                    if( ( js_pos_canSelect.length + js_pos_selected.length ) == 0 ) return;
+
+                    JC.f.safeTimeout( function(){
+                        var _id = [];
+                        if( js_pos_canSelect.length ){
+                            js_pos_canSelect.each( function(){
+                                _id.push( $( this ).attr( &#x27;data-id&#x27; ) );
+                            });
+                            _p.trigger( &#x27;select_item&#x27;, [ _id.join(&#x27;,&#x27;), _date, _sp
+                                , function( _data, _id, _date ){
+                                    js_pos_canSelect.removeClass( CRMSchedule.ALL_CLASS )
+                                        .addClass( CRMSchedule.CLASS_SELECTED )
+                                        ;
+                                }, 10 ]);
+                        }else{
+                            js_pos_selected.each( function(){
+                                _id.push( $( this ).attr( &#x27;data-id&#x27; ) );
+                            });
+                            _p.trigger( &#x27;unselect_item&#x27;, [ _id.join(&#x27;,&#x27;), _date, _sp
+                                , function( _data, _id, _date ){
+                                    js_pos_selected.removeClass( CRMSchedule.ALL_CLASS )
+                                        .addClass( CRMSchedule.CLASS_CAN_SELECT )
+                                        ;
+                                }, 10 ] );
+                        }
+                        //JC.log( &#x27;_id:&#x27;, _id );
+                    }, _sp, &#x27;SELECT_CK_ALL&#x27;, 200 );
+
+                });
+
             }
 
         , _inited:
@@ -784,6 +864,85 @@
             }
 
         , initData: function(){ return this.windowProp( &#x27;bccInitData&#x27; ); }
+
+        , saveSelectBox: function(){ return this.selectorProp( &#x27;bccSaveSelectBox&#x27; ); }
+        , saveSelectItemTpl: function(){ return JC.f.scriptContent( this.selectorProp( &#x27;bccSaveSelectItemTpl&#x27; ) ); }
+        , saveSelectItemClass: function(){ return this.attrProp( &#x27;bccSaveSelectItemClass&#x27; ); }
+        , saveValueSelector:
+            function( _id ){
+                var _p = this
+                    , _r = _p.saveSelectBox().find( JC.f.printf( &#x27;{0}[data-id={1}]&#x27;, _p.saveSelectItemClass(), _id ) )
+                    ;
+
+                if( !_r.length ){
+                    _r = $( JC.f.printf( _p.saveSelectItemTpl(), _id ) );
+                    _r.appendTo( _p.saveSelectBox() );
+                }
+
+                return _r;
+            }
+        , addSelectValue:
+            function( _idList, _dateList ){
+                var _p = this
+                    , _id, _date
+                    ;
+                _idList = _idList.replace( /[\s]+/g, &#x27;&#x27; );
+                _dateList = _dateList.replace( /[\s]+/g, &#x27;&#x27; );
+
+                if( !( _idList &amp;&amp; _dateList ) ) return;
+
+                _id = _idList.split( &#x27;,&#x27; );
+                _date = _dateList.split( &#x27;,&#x27; );
+                
+                $.each( _id, function( _ix, _idItem ){
+                    var _selector = _p.saveValueSelector( _idItem )
+                        , _items = _selector.val().replace( /[\s]+/g, &#x27;&#x27; )
+                        , _newItemObj = {}
+                        ;
+                    _items = _items ? _items.split( &#x27;,&#x27; ) : [];
+
+                    $.each( _date, function( _dateIx, _dateItem ){
+                        if( _items.indexOf( _dateItem ) &lt; 0 ){
+                            _newItemObj[ _dateItem ] = _dateItem;
+                        }
+                    });
+                    for( var k in _newItemObj ) _items.push( k );
+
+                    _selector.val( _items.join(&#x27;,&#x27;) );
+                });
+            }
+        , removeSelectValue:
+            function( _idList, _dateList ){
+                var _p = this
+                    , _id, _date
+                    ;
+                _idList = _idList.replace( /[\s]+/g, &#x27;&#x27; );
+                _dateList = _dateList.replace( /[\s]+/g, &#x27;&#x27; );
+
+                if( !( _idList &amp;&amp; _dateList ) ) return;
+
+                _id = _idList.split( &#x27;,&#x27; );
+                _date = _dateList.split( &#x27;,&#x27; );
+                
+                $.each( _id, function( _ix, _idItem ){
+                    var _selector = _p.saveValueSelector( _idItem )
+                        , _items = _selector.val().replace( /[\s]+/g, &#x27;&#x27; )
+                        , _newItemObj = {}
+                        , _itemIx
+                        ;
+                    _items = _items ? _items.split( &#x27;,&#x27; ) : [];
+
+                    $.each( _date, function( _dateIx, _dateItem ){
+                        if( ( _itemIx = _items.indexOf( _dateItem ) ) &gt; -1 ){
+                            _items.splice( _itemIx, 1 );
+                        }
+                    });
+
+                    _selector.val( _items.join(&#x27;,&#x27;) );
+                    !_selector.val() &amp;&amp; _selector.remove();
+                });
+            }
+
 
         , tpl: function(){ return JC.f.scriptContent( this.selectorProp( &#x27;bccTpl&#x27; ) ); }
         , rowTpl: function(){ return JC.f.scriptContent( this.selectorProp( &#x27;bccRowTpl&#x27; ) ); }
@@ -847,6 +1006,8 @@
         , unlockIdUrl: function(){ return this.attrProp( &#x27;bccUnlockIdUrl&#x27; ); }
 
         , monthDataUrl: function(){ return this.attrProp( &#x27;bccMonthDataUrl&#x27; ); }
+
+        , dateRangeUrl: function(){ return this.attrProp( &#x27;bccDateRangeUrl&#x27; ); }
         
     });
 
@@ -975,13 +1136,13 @@
                             ;
 
                         if( k &gt; _maxDay ){
-                            _days.push( JC.f.printf( &#x27;&lt;td class=&quot;js_bccDateItem xnocursor&quot;&gt;&lt;/td&gt;&#x27; ) );
+                            _days.push( JC.f.printf( &#x27;&lt;td class=&quot;js_bccDateItem xnocursor&quot;&gt;&lt;div&gt;&amp;nbsp;&lt;/div&gt;&lt;/td&gt;&#x27; ) );
                             break;
                         }
 
-                        if( _sPosDate in _item.position_data ){
-                            _status = _item.position_data[ _sPosDate ].status;
-                            _name = _item.position_data[ _sPosDate ].company || &#x27;&#x27;;
+                        if( _sPosDate in _item.position_date ){
+                            _status = _item.position_date[ _sPosDate ].status;
+                            _name = _item.position_date[ _sPosDate ].company || &#x27;&#x27;;
                             _shortName = byteString( _name, 6 );
 
                             bytelen( _name ) &gt; 6 &amp;&amp; ( _shortName += &#x27;...&#x27; );
@@ -1003,8 +1164,11 @@
                         }else if( _hasLocked ){
                             _ckAll = &#x27;&lt;div&gt;&lt;input type=&quot;checkbox&quot; class=&quot;js_bccCkAll&quot; checked=&quot;checked&quot; /&gt;&lt;/div&gt;&#x27;;
                         }
+                    }else if( _p._model.actionType() == &#x27;edit&#x27; ){
+                        if( _hasCanSelect ){
+                            _ckAll = &#x27;&lt;div&gt;&lt;input type=&quot;checkbox&quot; class=&quot;js_bccCkAll&quot; /&gt;&lt;/div&gt;&#x27;;
+                        }
                     }
-
 
                     _tmpTpl = JC.f.printf( _tpl
                                             , _parent1, _parent2
