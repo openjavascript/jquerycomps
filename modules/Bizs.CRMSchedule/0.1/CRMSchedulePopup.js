@@ -45,10 +45,7 @@
         this._model = new CRMSchedulePopup.Model( _selector );
         this._model.schIns( _schIns );
 
-        switch( this._model.schIns()._model.actionType() ){
-            case 'lock': this._view = new CRMSchedulePopup.View( this._model ); break;
-            case 'edit': this._view = new CRMSchedulePopup.EditView( this._model ); break;
-        }
+        this._view = new CRMSchedulePopup.View( this._model );
 
         this._init();
 

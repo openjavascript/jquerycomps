@@ -124,12 +124,17 @@
                     var _validCb = _p._model.cscValidCallback( _sp ) || _p._model.cscValidCallback( _item )
                         , _canNext
                         , _newIndex
+                        , _form
                         ;
 
-                    if( _validCb ){
-                        _canNext = _validCb().call( _p, _sp, _item );
+                    if( _sp && ( _sp.attr( 'type' ).toLowerCase() == 'button' || _sp.attr( 'type' ).toLowerCase() == 'input' ) ){
+                        if( _validCb ){
+                            _canNext = _validCb().call( _p, _sp, _item );
+                        }else{
+                            _canNext = JC.Valid( _item );
+                        }
                     }else{
-                        _canNext = JC.Valid( _item );
+                        _canNext = true;
                     }
 
                     JC.log( '_canNext', _canNext, JC.f.ts() );
