@@ -179,6 +179,17 @@
                 "window.Bizs": 1
             }
         },
+        "../modules/Bizs.TaskViewer/0.1/TaskViewer.js": {
+            "name": "../modules/Bizs.TaskViewer/0.1/TaskViewer.js",
+            "modules": {},
+            "classes": {
+                "Bizs.TaskViewer": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "Bizs": 1
+            }
+        },
         "../modules/JC.AjaxUpload/0.2/AjaxUpload.js": {
             "name": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
             "modules": {},
@@ -1070,6 +1081,30 @@
             "example": [
                 "\n<xmp><div class=\"js_bizMultiUpload\"\n   bmuBoxSelector=\"|.uploadItemBox\"\n   bmuTplSelector=\"|script\"\n   bmuItemDelegate=\">\"\n   bmuRemoveDelegate=\".js_removeUploadItem\"\n   bmuRemoveItemParentSelector=\"(\"\n   bmuAjaxUploadSelector=\"|.js_compAjaxUpload\"\n   bmuItemLimit=\"2\"\n   >\n   <div>\n       <input type=\"hidden\" class=\"ipt ipt-w180 js_compAjaxUpload\" value=\"\"\n           cauStyle=\"w1\"\n           cauButtonText=\"上传资质文件\"\n           cauUrl=\"../_demo/data/handler.php\"\n           cauFileExt=\".jpg, .jpeg, .png, .gif\"\n           cauFileName=\"file\"\n           cauValueKey=\"url\"\n           cauLabelKey=\"name\"\n           cauProgressBox=\"/span.AUProgressBox\"\n           />\n           <span class=\"AUProgressBox\" style=\"display:none;\">\n               <button type=\"button\" class=\"AUProgress\"><div class=\"AUPercent\"></div></button>\n               <button type=\"button\" class=\"AUCancelProgress\"></button>\n           </span>\n           .jpg, .jpeg, .png, .gif\n           (最多上传2个)\n   </div>\n   <dl class=\"uploadItemBox\">\n   </dl>\n   <script type=\"text/template\">\n       <dd class=\"js_multiUploadItem\">\n           <input type=\"hidden\" name=\"file[]\" value=\"{0}\" class=\"js_multiUploadHidden\" />\n           <a href=\"{0}\" target=\"_blank\"><label class=\"js_multiUploadLabel\">{1}</label></a>\n           <button type=\"button\" class=\"AURemove js_removeUploadItem\"></button>\n       </dd>\n   </script>\n</div></xmp>"
             ]
+        },
+        "Bizs.TaskViewer": {
+            "name": "Bizs.TaskViewer",
+            "shortname": "Bizs.TaskViewer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "Bizs",
+            "file": "../modules/Bizs.TaskViewer/0.1/TaskViewer.js",
+            "line": 2,
+            "description": "TaskViewer 日历任务展示面板\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.TaskViewer.html' target='_blank'>API docs</a>\n  | <a href='../../modules/Bizs.TaskViewer/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化class=\"js_COMPTaskViewer\"下的日期</h2>\n\n\n<h2>可用的 HTML attribute</h2>\n<dl>\n<dt>taskselecteddates = selector</dt>\n<dd>指定选定的日期标签</dd>\n<dt>taskdeleteddates = selector</dt>\n<dd>指定删除的日期标签</dd>\n<dt>tasknewaddeddates = selector</dt>\n<dd>指定新增的日期标签</dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "0.1 2014-04-17",
+            "author": "zuojing   <zuojing1013@gmail.com> | 75 Team"
         },
         "JC.AjaxUpload": {
             "name": "JC.AjaxUpload",
@@ -2760,7 +2795,7 @@
         },
         {
             "file": "../modules/Bizs.CRMSchedule/0.1/CRMSchedule.js",
-            "line": 815,
+            "line": 826,
             "description": "更新数据",
             "itemtype": "method",
             "name": "update",
@@ -3779,6 +3814,48 @@
             "name": "CheckItemLimit",
             "class": "window.Bizs.MultiUpload",
             "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.TaskViewer/0.1/TaskViewer.js",
+            "line": 51,
+            "description": "获取或设置 TaskViewer 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "TaskViewerInstance"
+            },
+            "class": "Bizs.TaskViewer",
+            "namespace": "Bizs"
+        },
+        {
+            "file": "../modules/Bizs.TaskViewer/0.1/TaskViewer.js",
+            "line": 67,
+            "description": "初始化可识别的 TaskViewer 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of TaskViewerInstance"
+            },
+            "class": "Bizs.TaskViewer",
+            "namespace": "Bizs"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
@@ -17862,7 +17939,7 @@
         },
         {
             "file": "../config.js",
-            "line": 112,
+            "line": 113,
             "description": "取当前脚本标签的 src路径",
             "static": 1,
             "return": {
@@ -18304,6 +18381,10 @@
         {
             "message": "unknown tag: version",
             "line": " ../modules/Bizs.MultiUpload/0.1/MultiUpload.js:2"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../modules/Bizs.TaskViewer/0.1/TaskViewer.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -19811,7 +19892,7 @@
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
-            "line": " ../config.js:112"
+            "line": " ../config.js:113"
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",

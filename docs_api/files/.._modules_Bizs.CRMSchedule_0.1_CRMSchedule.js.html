@@ -47,6 +47,8 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/Bizs.TaskViewer.html">Bizs.TaskViewer</a></li>
+            
                 <li><a href="../classes/DEV.JC.AjaxUpload.html">DEV.JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/DEV.JC.ImageCutter.html">DEV.JC.ImageCutter</a></li>
@@ -1037,6 +1039,17 @@
                 _p.on( &#x27;clear_init_data&#x27;, function( _evt ){
                     _p._model.saveSelectItems().remove();
                 });
+
+                _p.selector().delegate( &#x27;tr.js_bccDataRow&#x27;,  &#x27;hover&#x27;, function( _evt ){
+                    $( this ).addClass( &#x27;js_bccDataRowHover&#x27; );
+                    JC.log( &#x27;hover&#x27;, JC.f.ts() );
+                });
+
+                _p.selector().delegate( &#x27;tr.js_bccDataRow&#x27;,  &#x27;mouseleave&#x27;, function( _evt ){
+                    $( this ).removeClass( &#x27;js_bccDataRowHover&#x27; );
+                    JC.log( &#x27;hover&#x27;, JC.f.ts() );
+                });
+
             }
 
         , _inited:

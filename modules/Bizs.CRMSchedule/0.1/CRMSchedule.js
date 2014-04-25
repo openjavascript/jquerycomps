@@ -806,14 +806,12 @@
                     _p._model.saveSelectItems().remove();
                 });
 
-                _p.selector().delegate( 'tr.js_bccDataRow',  'hover', function( _evt ){
+                _p.selector().delegate( 'tr.js_bccDataRow',  'mouseenter', function( _evt ){
                     $( this ).addClass( 'js_bccDataRowHover' );
-                    JC.log( 'hover', JC.f.ts() );
                 });
 
                 _p.selector().delegate( 'tr.js_bccDataRow',  'mouseleave', function( _evt ){
                     $( this ).removeClass( 'js_bccDataRowHover' );
-                    JC.log( 'hover', JC.f.ts() );
                 });
 
             }
@@ -1160,10 +1158,13 @@
                             , _name = ''
                             , _shortName = ''
                             , _class
+                            , _styleClass = ''
                             ;
 
+                        k === 31 ? ( _styleClass = "js_bccDataRowLastCell" );
+
                         if( k > _maxDay ){
-                            _days.push( JC.f.printf( '<td class="js_bccDateItem xnocursor"><div>&nbsp;</div></td>' ) );
+                            _days.push( JC.f.printf( '<td class="js_bccDateItem xnocursor {0}"><div>&nbsp;</div></td>', _styleClass ) );
                             break;
                         }
 
@@ -1180,9 +1181,9 @@
                         _status == CRMSchedule.STATUS_CAN_SELECT && ( _hasCanSelect = true );
                         _status == CRMSchedule.STATUS_LOCKED && ( _hasLocked = true );
 
-                        _days.push( JC.f.printf( '<td class="js_bccDateItem {0}" data-id="{2}" data-date="{3}" title="{3}\n{1}">' 
+                        _days.push( JC.f.printf( '<td class="js_bccDateItem {0} {5}" data-id="{2}" data-date="{3}" title="{3}\n{1}">' 
                                                     +'<div>{4}</div></td>'
-                                    , _class, _name, _item.id, _sPosDate, _shortName ) );
+                                    , _class, _name, _item.id, _sPosDate, _shortName, _styleClass ) );
                     }
 
                     if( _p._model.actionType() == 'lock' || _p._model.actionType() == 'edit' ){
