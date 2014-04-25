@@ -551,6 +551,15 @@
                         }
                     }
                 });
+                _p.on( &#x27;RemoveElementAction&#x27;, function( _evt ){
+
+                    if( _p._model.balDoneRemoveSelector() ){
+                        _p._model.balDoneRemoveSelector()
+                            &amp;&amp; _p._model.balDoneRemoveSelector().remove();
+                    }else{
+                        _p.selector().remove();
+                    }
+                });
                 /**
                  * 处理错误提示
                  */
@@ -688,6 +697,19 @@
                                     });
                             }else{
                                 _p.trigger( &#x27;AjaxAction&#x27;, _p._model.balUrl() );
+                            }
+                            break;
+                        }
+
+                    case &#x27;remove_element&#x27;:
+                        {
+                            if( _p._model.is( &#x27;[balConfirmMsg]&#x27; ) ){
+                                var _panel = JC.confirm( _p._model.balConfirmMsg(), _p.selector(), 2 );
+                                    _panel.on(&#x27;confirm&#x27;, function(){
+                                        _p.trigger( &#x27;RemoveElementAction&#x27; );
+                                    });
+                            }else{
+                                _p.trigger( &#x27;RemoveElementAction&#x27; );
                             }
                             break;
                         }

@@ -526,7 +526,6 @@ return _json;
                     }, 200 ));
 
                 }
-
             } 
 
         , _inited: 
@@ -539,6 +538,8 @@ return _json;
                 if( !_p._model.selector().is( '[validCheckTimeout]' ) ){
                     _p._model.selector().attr( 'validCheckTimeout', _p._model.cacValidCheckTimeout() );
                 }
+
+                JC.f.safeTimeout( function(){ _p.trigger( 'after_inited' ); }, _p.selector(), 'AutoComplete_inited', 1 );
                 //alert( _p._model.initData.length );
                 //window.JSON && JC.log( JSON.stringify( _p._model.initData ) );
             }
@@ -1078,6 +1079,17 @@ return _json;
             }
 
         , cacMultiSelect: function(){ return this.boolProp( 'cacMultiSelect' ); }
+
+        , cacMultiSelectBarTpl:
+            function(){
+                var _r = '<div><a href="javascript:;" class="AC_control AC_closePopup">关闭</a></div>', _tmp;
+                this.is( '[cacMultiSelectBarTpl]' ) 
+                    && ( _tmp = this.selectorProp( 'cacMultiSelectBarTpl' ) )
+                    && _tmp.length
+                    && ( _r = JC.f.scriptContent( _tmp ) );
+                return _r;
+            }
+
     });
 
     JC.f.extendObject( AutoComplete.View.prototype, {
@@ -1093,6 +1105,40 @@ return _json;
                 ;
 
                 // JC.log( 'AutoComplete.View.init:', new Date().getTime() );
+            },
+
+        build: 
+            function( _data ) {
+                var _p = this
+                    , _i = 0
+                    , _view = []
+                    ;
+
+                if ( _data.length == 0 ) {
+                    _p.hide();
+                    _p._model.popup().html( JC.f.printf( '<li class="AC_noData">{0}</li>', _p._model.cacNoDataText() ) );
+                } else {
+                    for ( ; _i < _data.length; _i++ ) {
+                        _view.push( JC.f.printf( _p._model.listItemTpl()
+                                    , _data[_i].id
+                                    , _data[_i].label
+                                    , _i
+                                    , _i === 0 ? AutoComplete.Model.CLASS_ACTIVE : ''
+                                    ) );
+                    }
+
+                    _p._model.popup().html( _view.join('') );
+
+                    _p._model.trigger( 'build_data' );
+                }
+
+                _p._model.cacMultiSelect() 
+                    && !_p._model.layoutPopup().find( '.AC_addtionItem' ).length
+                    && $( JC.f.printf( 
+                            '<div class="AC_addtionItem" style="text-align: right; padding-right: 5px;">{0}</div>'
+                            , _p._model.cacMultiSelectBarTpl()
+                        )).appendTo( _p._model.layoutPopup() )
+                    ;
             },
 
         hide: 
@@ -1146,6 +1192,7 @@ return _json;
 
                 _p._model.layoutPopup().show();
                 //!_p._model.key() && _p._model.list().show();
+                _p.trigger( 'after_popup_show' );
             },
 
         updateList: 
@@ -1166,43 +1213,7 @@ return _json;
                 _data && _p.build( _data );
             },
 
-        build: 
-            function( _data ) {
-                var _p = this
-                    , _i = 0
-                    , _view = []
-                    ;
-
-                if ( _data.length == 0 ) {
-                    _p.hide();
-                    _p._model.popup().html( JC.f.printf( '<li class="AC_noData">{0}</li>', _p._model.cacNoDataText() ) );
-                } else {
-                    for ( ; _i < _data.length; _i++ ) {
-                        _view.push( JC.f.printf( _p._model.listItemTpl()
-                                    , _data[_i].id
-                                    , _data[_i].label
-                                    , _i
-                                    , _i === 0 ? AutoComplete.Model.CLASS_ACTIVE : ''
-                                    ) );
-                    }
-
-                    _p._model.popup().html( _view.join('') );
-
-                    _p._model.trigger( 'build_data' );
-                }
-
-                _p._model.cacMultiSelect() 
-                    && !_p._model.layoutPopup().find( '.AC_addtionItem' ).length
-                    && $( JC.f.printf( 
-                            '<div class="AC_addtionItem" style="text-align: right; padding-right: 5px;"><div>{0}{1}</div></div>'
-                            //, '<a href="javascript:;" class="AC_control AC_clear">清除</a>&nbsp;'
-                            , ''
-                            , '<a href="javascript:;" class="AC_control AC_closePopup">关闭</a>'
-                        )).appendTo( _p._model.layoutPopup() )
-                    ;
-
-            }
-        , currentIndex:
+        currentIndex:
             function( _isDown ){
                 var _p = this
                     , _box = _p._model.popup()

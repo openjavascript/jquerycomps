@@ -38,7 +38,7 @@
 
             if( _d && !_d.errorno ){
                 JC.msgbox( _d.errmsg || '操作成功', _trigger, 0, function(){
-                    reloadPage( '?usercallback=ajaxaction' );
+                    JC.f.reloadPage( '?usercallback=ajaxaction' );
                 });
             }else{
                 JC.Dialog.alert( _d && _d.errmsg ? _d.errmsg : '操作失败, 请重试!' , 1 );
@@ -166,6 +166,14 @@
             balUrl="./data/handler.php"
             balCallback="ajaxDelCallback"
         >delete with callback</a>
+
+        <button type="button" 
+            class="js_bizsActionLogic"
+            balType="ajaxaction" 
+            balUrl="./data/handler.php"
+            balIgnoreSuccess="true"
+            balDoneUrl="?baldone=balIgnoreSuccess"
+        >delete</button>
     </dd>
     <dd>
         二次确认
@@ -212,9 +220,46 @@
             balConfirmMsg="确认要删除吗?"
             balDoneRemoveSelector="a.js_removeItem1"
         >with data</a>
+
+        <a href="#"
+            class="js_bizsActionLogic"
+            balType="ajaxaction" 
+            balUrl="?"
+            balConfirmMsg="确认要删除吗?"
+            balDoneRemoveSelector="a.js_removeItem1"
+        >data error</a>
+
     </dd>
 
 </dl>
+
+
+<dl class="defdl">
+    <dt>balType = remove_element</dt>
+    <dd>
+        <button type="button" 
+            class="js_bizsActionLogic"
+            balType="remove_element"
+            balConfirmMsg="确认要删除吗?"
+            >
+            remove self
+        </button>
+
+        <div>
+            parent text
+            <a href="javascript:" 
+                class="js_bizsActionLogic"
+                balType="remove_element"
+                balConfirmMsg="确认要删除吗?"
+                balDoneRemoveSelector="/"
+                >
+                remove parent
+            </a>
+        </div>
+
+    </dd>
+</dl>
+
 
 
 <script type="text/template" id="scriptPanel">

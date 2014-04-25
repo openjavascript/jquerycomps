@@ -2,7 +2,6 @@
 
 //Todo: IE下resize，缩小窗口时tr的高度每一行隔了一像素。
 //Todo: 鼠标hover效果性能优化
-//Todo: 包含colspan和rowspan的情况
 
 /**
  * TableFreeze 表格固定指定列功能
@@ -311,7 +310,7 @@
         }, 
 
         _inited: function () {
-
+            JC.log('TableFreeze inited', new Date().getTime());
         },
 
         update: function () {
@@ -327,10 +326,6 @@
     });
  
     TableFreeze.Model._instanceName = "TableFreeze";
-    // TableFreeze.Model.sourceTable = '';
-    // TableFreeze.Model.colnumWidth = [];
-    // TableFreeze.Model.initWidth = 0;
-    // TableFreeze.Model.tempWidth = TableFreeze.Model.initWidth;
    
     JC.f.extendObject( TableFreeze.Model.prototype, {
         init: function () {
@@ -566,8 +561,8 @@
                 _trElement = _p.trElement(_table),
                 _theadTr = _trElement.theadTr,
                 _tbodyTr = _trElement.tbodyTr,
-                _headerTr = _p.getTr(_freezeType, _freezeCols, _theadTr, _colNum),
-                _bodyTr = _p.getTr(_freezeType, _freezeCols, _tbodyTr, _colNum),
+                _headerTr = _p.getTpl(_freezeType, _freezeCols, _theadTr, _colNum),
+                _bodyTr = _p.getTpl(_freezeType, _freezeCols, _tbodyTr, _colNum),
                 _layout = _p.layout(_freezeType),
                 _tpl;
 
@@ -590,72 +585,124 @@
             _p.selector().append(_tpl);
             
         },
-
-        //Todo: 还没有考虑rolspan, colspan的情况
-        getTr: function ( _freezeType, _freezeCols, _trs, _colNum ) {
-            var _sLeftTpl = [],
+    
+        getTpl: function ( _freezeType, _freezeCols, _trs, _colNum ) {
+           
+            var _tpl,
+                _sLeftTpl = [],
                 _sMidTpl = [],
-                _sRightTpl = [] ,
-                _tpl,
-                _start = 0,
-                _end = _freezeCols;
+                _sRightTpl = [],
+                _col = _freezeCols,
+                _rcol = 0,
+                _mcol = 0,
+                _p = this;
 
+            switch (_freezeType) {
+                case 'prev':
+                    _sLeftTpl = _p.getTr( _trs,  _col );
+                    _sRightTpl = _p.getTr( _trs, _colNum - _col );
+                    break;
+                case 'last':
+                    _sLeftTpl = _p.getTr( _trs,  _colNum - _col );
+                    _sRightTpl = _p.getTr( _trs, _col );
+                    break;
+                case 'both':
+                    _col = _freezeCols[0];
+                    _rcol = _freezeCols[1];
+                    _mcol = _colNum - _col - _rcol;
+                    _sLeftTpl = _p.getTr( _trs,  _col );
+                    _sMidTpl =  _p.getTr( _trs,  _mcol );
+                    _sRightTpl = _p.getTr( _trs, _rcol );
+                    break;
+            }
+
+            _tpl = {
+                leftTr: _sLeftTpl.join(''),
+                midTr: _sMidTpl.join(''),
+                rightTr: _sRightTpl.join('')
+            };
+
+            return _tpl;
+        },
+
+        getTr: function ( _trs, _col ) {
+           
+            var _row = {},
+                _temp = [],
+                _p = this;
             _trs.each( function (_ix) {
                 var _sp = $(this),
                     _clasname = 'CTF CTF' + _ix,
                     _leftTr = _sp[0].cloneNode(false),
                     _rightTr = _sp[0].cloneNode(false),
-                    _tds = _sp.find('>td'),
-                    _midTr = '',
-                    _leftTd,
-                    _rightTd,
-                    _midTd;
+                    _midTr = _sp[0].cloneNode(false),
+                    _tds = _sp.find('>th,>td'),
+                    _leftTd = [],
+                    _rightTd = [],
+                    _midTd = [],
+                    _cix = 0,
+                    _mcix = 0,
+                    _tr = _sp[0].cloneNode(false);
+                
+                _tds.each( function ( _six, _sitem ) {
+                    
+                    var _sp = $(this), 
+                        _colspan = _sp.attr('colspan'),
+                        _rowspan = _sp.attr('rowspan'),
+                        _obj = {},
+                        _key;
+                    
+                    if ( _cix >= _col ) {
+                      return false;
+                    }
 
-                switch ( _freezeType ) {
-                    case 'both':
-                        {   
-                            _midTr = _sp[0].cloneNode(false);
-                            _end = _freezeCols[0];
-                            _leftTd =  _sp.find('>th,>td').slice(_start, _end).appendTo(_leftTr);
-                            _rightTd = _sp.find('>th,>td').slice(_colNum - _end - _freezeCols[1], _colNum).appendTo(_rightTr);
-                            _midTd = _sp.find('>th,>td').appendTo(_midTr);
-                            break;
+                    if ( typeof _rowspan != 'undefined' ) {
+                        _rowspan = parseInt(_rowspan, 10);
+
+                        _obj = {
+                            six: _six,
+                            rowspan: _rowspan,
+                            colspan: _colspan
+                        };
+
+                        for ( var i = 1; i < _rowspan; i++ ) {
+                            
+                            if (_colspan) {
+                                _colspan = parseInt(_colspan, 10);
+                                for (var j = 0; j < _colspan; j++) {        
+                                    _six === 0 ? _row[(_ix + i) + ( _six + 1 + j ).toString()] = _obj: _row[(_ix + i) + ( _six + j ).toString()] = _obj;
+                                }
+                            } else {
+                                _six === 0 ? _row[(_ix + i) + ( _six + 1 ).toString()] = _obj: _row[(_ix + i) + ( _six ).toString()] = _obj;
+                            }
                         }
 
-                    case 'last':
-                        {
-                            _end = _colNum - _freezeCols;
-                            _leftTd = _sp.find('>th,>td').slice(_start, _end).appendTo(_leftTr);
-                            _rightTd = _sp.find('>th,>td').appendTo(_rightTr);
-                            break;
+                    }
+                    
+                    if ( typeof _colspan === 'undefined' ) {
+                        _cix = _cix + 1;
+                    } else {
+                        _cix += parseInt(_colspan, 10);
+                    }
+
+                    _key = _ix + (_six + 1).toString();
+                    
+                    if ( _key in _row  ) {
+                        _cix = _cix + 1;
+                        if (_row[_key].colspan) {
+                            return;
                         }
+                    }
 
-                    case 'prev':
-                        {
-                            _leftTd = _sp.find('>th,>td').slice(_start, _end).appendTo(_leftTr);
-                            _rightTd = _sp.find('>th,>td').appendTo(_rightTr);
-                            break;
-                        }   
-                }
+                    _sp.appendTo( _tr );
 
-                $(_leftTr).addClass(_clasname).attr('data-ctf', 'CTF' + _ix);
-                $(_midTr).addClass(_clasname).attr('data-ctf', 'CTF' + _ix);
-                $(_rightTr).addClass(_clasname).attr('data-ctf', 'CTF' + _ix);
+                });
 
-                _sLeftTpl.push(_leftTr.outerHTML);
-                _sMidTpl.push(_midTr.outerHTML);
-                _sRightTpl.push(_rightTr.outerHTML);
-
+                $(_tr).attr('data-ctf', 'CTF' + _ix).addClass(_clasname);
+                _temp.push($(_tr)[0].outerHTML);
             } );
 
-
-            _tpl = {
-                leftTr: _sLeftTpl.join(' '),
-                midTr: _sMidTpl.join(' '),
-                rightTr: _sRightTpl.join(' ')
-            };
-
-            return _tpl;
+            return _temp;
         },
 
         getSum: function ( _array ) {

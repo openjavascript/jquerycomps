@@ -380,7 +380,7 @@
          */
         , close:
             function(){
-                JC.log('Panel.close');
+                //JC.log('Panel.close');
                 this.trigger('beforeclose', this._view.getPanel() );
                 this.trigger('close', this._view.getPanel() );
                 return this;
@@ -454,7 +454,7 @@
          */
         , dispose:
             function(){
-                JC.log('Panel.dispose');
+                //JC.log('Panel.dispose');
                 this._view.close();
                 return this;
             }
@@ -502,7 +502,7 @@
          */
         , trigger:
             function( _evtName, _srcElement ){
-                JC.log( 'Panel.trigger', _evtName );
+                //JC.log( 'Panel.trigger', _evtName );
 
                 var _p = this, _evts = this._model.getEvent( _evtName ), _processDefEvt = true;
                 if( _evts && _evts.length ){
@@ -748,7 +748,7 @@
                 Panel.ignoreClick = true;
                 if( _selector && _selector.length ){
                     this.selector = _selector;
-                    JC.log( 'user tpl', this.selector.parent().length );
+                    //JC.log( 'user tpl', this.selector.parent().length );
                     if( !this.selector.parent().length ){
                         _p.selector.appendTo( $(document.body ) );
                         window.JC.f.jcAutoInitComps && JC.f.jcAutoInitComps( _p.selector );
@@ -952,7 +952,7 @@
          */
         , close:
             function(){
-                JC.log( 'Panel._view.close()');
+                //JC.log( 'Panel._view.close()');
                 this.getPanel().remove();
             }
         /**
@@ -1040,10 +1040,10 @@
                 if( (_winh - _lh  - 100) > 300 ){
                     _y -= 100;
                 }
-                JC.log( (_winh - _lh / 2 - 100) )
+                //JC.log( (_winh - _lh / 2 - 100) )
 
                 if( ( _y + _lh - _scrtop ) > _winh ){
-                    JC.log('y overflow');
+                    //JC.log('y overflow');
                     _y = _scrtop + _winh - _lh;
 
                 }
@@ -1052,7 +1052,7 @@
 
                 _layout.css( {left: _x+'px', top: _y+'px'} );
 
-                JC.log( _lw, _lh, _winw, _winh );
+                //JC.log( _lw, _lh, _winw, _winh );
             }
     };
     /**
@@ -1123,7 +1123,7 @@
         var _panel = $(this), _src = $(_evt.target || _evt.srcElement), _evtName;
         if( _src && _src.length && _src.is("[eventtype]") ){
             _evtName = _src.attr('eventtype');
-            JC.log( _evtName, _panel.data('PanelInstace') );
+            //JC.log( _evtName, _panel.data('PanelInstace') );
             _evtName && _panel.data('PanelInstace') && _panel.data('PanelInstace').trigger( _evtName, _src, _evt );
         }
     });

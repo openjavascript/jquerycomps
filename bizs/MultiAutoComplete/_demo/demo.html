@@ -23,19 +23,6 @@
     <script>
         JC.debug = true;
 
-        function cacDataFilter( _json ){
-            if( _json.data && _json.data.length ){
-                _json = _json.data;
-            }
-
-            $.each( _json, function( _ix, _item ){
-                _item.length &&
-                    ( _json[ _ix ] = { 'id': _item[0], 'label': _item[1] } )
-                    ;
-            });
-            return _json;
-        }
-
         function macAddtionItemAddCallback( _item, _id, _label, _parent, _parentBox ){
             var _macIns = this;
             JC.log( 'macAddtionItemAddCallback', _id, _label );
@@ -106,6 +93,7 @@
             cacListItemTpl="/script.cacItemTpl"
             cacListAll="true"
             cacDisableSelectedBlur="true"
+            cacMultiSelectBarTpl="/script.cacMultiSelectBarTplScript"
 
             cacPreventEnter="true" 
 
@@ -131,18 +119,30 @@
                 </a>
             </span>
         </span>
-        <script type="text/template" class="cacItemTpl">
-            <li data-id="{0}" data-label="{1}" data-index="{2}" class="AC_listItem {3} js_macAddtionBoxItemClick">
-            <!--<a href="javascript:;" data-id="{0}" data-label="{1}" data-index="{2}" class="AC_control AC_customAdd">添加</a>-->
-            <label>{1} </label>
-            </li> 
+
+        <script type="text/template" class="cacMultiSelectBarTplScript">
+            <div class="cacMultiSelectBarTpl">
+                <a href="javascript:;" class="AC_control AC_closePopup">关闭</a>
+                <span style="float:left" class="cacMultiSelectBarTplLabel">
+                    <label>
+                        <input type="checkbox" schecktype="all" ><span>全部</span>
+                    </label>
+                </span>
+            </div>
         </script>
+
         <script type="text/template" class="macAddtionBoxItemTpl">
             <a href="javascript:" class="js_macAddtionBoxItem" data-id="{0}" data-label="{1}">
                 <label>{1}</label>
                 <button type="button" class="AURemove"></button>
                 <input type="hidden" name="condition[]" value="{0}" />
             </a>
+        </script>
+
+        <script type="text/template" class="cacItemTpl">
+            <li data-id="{0}" data-label="{1}" data-index="{2}" class="AC_listItem {3} js_macAddtionBoxItemClick">
+            <label><input type="checkbox" value="{0}" schecktype="item" />{1}</label>
+            </li> 
         </script>
     </div>
 </form>
