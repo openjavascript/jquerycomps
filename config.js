@@ -93,6 +93,7 @@ requirejs.config( {
         , 'Bizs.MultiSelect': 'modules/Bizs.MultiSelect/0.1/MultiSelect'
         , 'Bizs.DMultiDate': 'modules/Bizs.DMultiDate/0.1/DMultiDate'
         , 'Bizs.MultiUpload': 'modules/Bizs.MultiUpload/0.1/MultiUpload'
+        , 'Bizs.TaskViewer': 'modules/Bizs.TaskViewer/0.1/TaskViewer'
 
         , 'Bizs.CRMSchedule': 'modules/Bizs.CRMSchedule/0.1/CRMSchedule'
         , 'Bizs.CRMSchedulePopup': 'modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup'
