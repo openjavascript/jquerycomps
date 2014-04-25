@@ -616,15 +616,6 @@
                 "JC.Tab": 1
             }
         },
-        "../modules/JC.TableFreeze/0.1/TableFreeze.js": {
-            "name": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {
-                "JC": 1
-            }
-        },
         "../modules/JC.TableFreeze/0.2/TableFreeze.js": {
             "name": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
             "modules": {},
@@ -2331,7 +2322,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 6,
+            "line": 7,
             "description": "TableFreeze 表格固定指定列功能\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.TableFreeze/0.2/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化div为class=\"js_compTableFreeze\"下的表格</h2>\n<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>freezeType = string</dt>\n   <dd>\n      声明表格列冻结的类型：\n      <p><b>prev：</b>左边的列固定，其他滚动</p>\n      <p><b>next：</b>右边的列固定，其他滚动</p>\n      <p><b>both：</b>两边的列固定，其他滚动</p>\n   </dd>\n\n   <dt>freezeCol = string</dt>\n   <dd>\n       声明表格要冻结的列数:\n       <p>为<b>0：</b>全部滚动，不冻结</p>\n       <p>为<b>列表数目：</b>全部冻结， 不滚动</p>\n       <p>为<b>num,num：</b>freezeType为<b>both</b>时，第一个数字表示前面冻结的列数<br/>\n         第二个数字表示后面冻结的列数。<br/>\n          当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。\n       </p>\n   </dd>\n\n   <dt>scrollWidth = num</dt>\n   <dd>\n       声明表格滚动部分的宽度，默认120%\n   </dd>\n\n   <dt>needHoverClass = true|false</dt>\n   <dd>\n       声明表格行是否需要鼠标hover高亮效果:\n       <p>默认值为true</p>\n   </dd>\n\n   <dt>alternateClass = string</dt>\n   <dd>\n       声明表格索引值为奇数行的背景色的className: （表格行隔行换色）\n       <p>如果为空则不指定隔行背景色</p>\n   </dd>\n\n   <dt>beforeCreateTableCallback = function</dt>\n   <dd>\n       表格创建前, 触发的回调, <b>window 变量域</b>\n<pre>function beforeCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'beforeCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>afterCreateTableCallback = function</dt>\n   <dd>\n       表格创建后, 触发的回调, <b>window 变量域</b>\n<pre>function afterCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'afterCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
@@ -12184,89 +12175,8 @@
             "namespace": "JC.Tab"
         },
         {
-            "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 209,
-            "description": "获取或设置 TableFreeze 的实例",
-            "itemtype": "method",
-            "name": "getInstance",
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "",
-                    "type": "Selector"
-                }
-            ],
-            "static": 1,
-            "return": {
-                "description": "",
-                "type": "TableFreezeInstance"
-            },
-            "class": "JC.TableFreeze",
-            "namespace": "JC"
-        },
-        {
-            "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 224,
-            "description": "初始化可识别的 TableFreeze 实例",
-            "itemtype": "method",
-            "name": "init",
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "",
-                    "type": "Selector"
-                }
-            ],
-            "static": 1,
-            "return": {
-                "description": "",
-                "type": "Array of TableFreezeInstance"
-            },
-            "class": "JC.TableFreeze",
-            "namespace": "JC"
-        },
-        {
-            "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 315,
-            "description": "更新 TableFreeze 状态",
-            "itemtype": "method",
-            "name": "update",
-            "class": "JC.TableFreeze",
-            "namespace": "JC"
-        },
-        {
-            "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 326,
-            "description": "resize时更新 TableFreeze 状态",
-            "itemtype": "method",
-            "name": "fixHeight",
-            "class": "JC.TableFreeze",
-            "namespace": "JC"
-        },
-        {
-            "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 767,
-            "description": "IE6下，当表格的宽度超出了实际可用宽度时，其父节点的宽度会跟随内容的宽度",
-            "class": "JC.TableFreeze",
-            "namespace": "JC"
-        },
-        {
-            "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 965,
-            "description": "TableFreeze调用前的回调",
-            "class": "JC.TableFreeze",
-            "namespace": "JC"
-        },
-        {
-            "file": "../modules/JC.TableFreeze/0.1/TableFreeze.js",
-            "line": 976,
-            "description": "TableFreeze调用后的回调",
-            "class": "JC.TableFreeze",
-            "namespace": "JC"
-        },
-        {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 213,
+            "line": 214,
             "description": "获取或设置 TableFreeze 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -12287,7 +12197,7 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 228,
+            "line": 229,
             "description": "初始化可识别的 TableFreeze 实例",
             "itemtype": "method",
             "name": "init",
@@ -12308,56 +12218,56 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 259,
+            "line": 260,
             "description": "为了解决ie6下表格的宽度超出父容器的宽度，父容器的宽度会跟随表格的宽度",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 342,
+            "line": 347,
             "description": "冻结类型:prev, both, last; 默认为prev",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 353,
+            "line": 358,
             "description": "冻结列数:num,num 默认为1",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 385,
+            "line": 390,
             "description": "滚动区域的宽度默认120%",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 396,
+            "line": 401,
             "description": "tr 是否需要hover效果,默认为true",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 415,
+            "line": 420,
             "description": "tr的隔行换色",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 719,
+            "line": 672,
             "description": "TableFreeze调用前的回调",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 730,
+            "line": 683,
             "description": "TableFreeze调用后的回调",
             "class": "JC.TableFreeze",
             "namespace": "JC"
@@ -18666,11 +18576,7 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:2"
-        },
-        {
-            "message": "unknown tag: version",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:6"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:7"
         },
         {
             "message": "unknown tag: version",
@@ -19361,48 +19267,36 @@
             "line": " ../modules/JC.Tab/0.1/Tab.js:649"
         },
         {
-            "message": "Missing item type\nIE6下，当表格的宽度超出了实际可用宽度时，其父节点的宽度会跟随内容的宽度",
-            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:767"
-        },
-        {
-            "message": "Missing item type\nTableFreeze调用前的回调",
-            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:965"
-        },
-        {
-            "message": "Missing item type\nTableFreeze调用后的回调",
-            "line": " ../modules/JC.TableFreeze/0.1/TableFreeze.js:976"
-        },
-        {
             "message": "Missing item type\n为了解决ie6下表格的宽度超出父容器的宽度，父容器的宽度会跟随表格的宽度",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:259"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:260"
         },
         {
             "message": "Missing item type\n冻结类型:prev, both, last; 默认为prev",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:342"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:347"
         },
         {
             "message": "Missing item type\n冻结列数:num,num 默认为1",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:353"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:358"
         },
         {
             "message": "Missing item type\n滚动区域的宽度默认120%",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:385"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:390"
         },
         {
             "message": "Missing item type\ntr 是否需要hover效果,默认为true",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:396"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:401"
         },
         {
             "message": "Missing item type\ntr的隔行换色",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:415"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:420"
         },
         {
             "message": "Missing item type\nTableFreeze调用前的回调",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:719"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:672"
         },
         {
             "message": "Missing item type\nTableFreeze调用后的回调",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:730"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:683"
         },
         {
             "message": "Missing item type\n页面加载完毕后, 是否自动初始化 Tips",
