@@ -47,7 +47,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.ActionLogic",
         "window.Bizs.AutoSelectComplete",
         "window.Bizs.CRMSchedule",
-        "window.Bizs.CRMSchedulePopup",
         "window.Bizs.ChangeLogic",
         "window.Bizs.CommonModify",
         "window.Bizs.DMultiDate",
