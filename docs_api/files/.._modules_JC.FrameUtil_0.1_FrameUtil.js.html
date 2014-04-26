@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../modules/Bizs.KillISPCache/0.1/KillISPCache.js - jquery components</title>
+    <title>../modules/JC.FrameUtil/0.1/FrameUtil.js - jquery components</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -230,280 +230,137 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../modules/Bizs.KillISPCache/0.1/KillISPCache.js</h1>
+                        <h1 class="file-heading">File: ../modules/JC.FrameUtil/0.1/FrameUtil.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
-    /**
-     * 应用场景
-     * &lt;br /&gt;&lt;b&gt;ISP 缓存问题 引起的用户串号&lt;/b&gt;
-     * &lt;br /&gt;ajax 或者动态添加的内容, 请显式调用  JC.KillISPCache.getInstance().process( newNodeContainer )
-     * &lt;br /&gt;&lt;b&gt;这是个单例类&lt;/b&gt;
-     * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
-     *      &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
-     *      , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
-     * &lt;/p&gt;
-     * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
-     * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/window.Bizs.KillISPCache.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
-     * | &lt;a href=&#x27;../../modules/Bizs.KillISPCache/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
-     *
-     * &lt;h2&gt;页面只要引用本文件, 默认会自动初始化 KillISPCache 逻辑&lt;/h2&gt;
-     * &lt;dl&gt;
-     *      &lt;dt&gt;影响到的地方: &lt;/dt&gt;
-     *      &lt;dd&gt;每个 a node 会添加 isp 参数&lt;/dd&gt;
-     *      &lt;dd&gt;每个 form node 会添加 isp 参数&lt;/dd&gt;
-     *      &lt;dd&gt;每个 ajax get 请求会添加 isp 参数&lt;/dd&gt;
-     * &lt;/dl&gt;
-     * @namespace       window.Bizs
-     * @class           KillISPCache
-     * @extends         JC.BaseMVC
-     * @constructor 
-     * @version dev 0.1 2013-09-07
-     * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 Team
-     * @example
-     *      &lt;script&gt;
-     *      //动态添加的内容需要显式调用 process 方法去处理相关逻辑
-     *      $.get( _url, function( _html ){
-     *          var _node = $(_html);
-     *          _node.appendTo( document.body );
-     *          JC.KillISPCache.getInstance().process( _node );
-     *      });
-     *      &lt;/script&gt;
-     */
-    Bizs.KillISPCache = KillISPCache;
+ ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
+/**
+ *&lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
+ *   &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
+ *&lt;/p&gt;
+ *
+ *&lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
+ *   | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.FrameUtil.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+ *   | &lt;a href=&#x27;../../modules/JC.FrameUtil/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+ *  
+ *&lt;h2&gt;页面只要引用本脚本, 默认会处理 div class=&quot;js_compFrameUtil&quot;&lt;/h2&gt;
+ *
+ *&lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
+ *
+ *&lt;dl&gt;
+ *    &lt;dt&gt;&lt;/dt&gt;
+ *    &lt;dd&gt;&lt;dd&gt;
+ *&lt;/dl&gt; 
+ *
+ * @namespace   JC
+ * @class       FrameUtil
+ * @constructor
+ * @param   {selector|string}   _selector   
+ * @version dev 0.1 2014-04-26
+ * @author  qiushaowei &lt;suches@btbtd.org&gt; | 75 Team
+ * @example
+        &lt;h2&gt;JC.FrameUtil 示例&lt;/h2&gt;
+ */
+    var _jdoc = $( document ), _jwin = $( window ), FU;
 
-    function KillISPCache( _selector ){
-        if( KillISPCache._instance ) return KillISPCache._instance;
+    JC.FrameUtil = FU = {
+        noticeSize:
+            function( _ms, _type ){
+                typeof _ms == &#x27;undefined&#x27; &amp;&amp; ( _ms = 1000 );
+                _type = FU.type( _type );
+                if( !_type ) return FU;
+                if( ! FU.parent() ) return FU;
+                var _ext = { &#x27;type&#x27;: _type };
 
-        this._model = new KillISPCache.Model( _selector );
+                FU.parent().jEventHost.trigger( &#x27;size&#x27;, [ FU.getInfo( _ext ) ] );
+                _ms
+                    &amp;&amp; setInterval( function(){
+                        FU.parent().jEventHost.trigger( &#x27;size&#x27;, [ FU.getInfo( _ext ) ] );
+                    }, _ms );
 
-        this._init();
-    }
+                return FU;
+            }
 
-    KillISPCache.prototype = {
-        _beforeInit:
+        , subscribeEvent:
+            function( _name, _cb ){
+                if( !_name ) return FU;
+                $( FU.eventHost ).on( _name, _cb );
+                return FU;
+            }
+
+        , noticeData:
+            function( _data, _type ){
+                _type = FU.type( _type );
+                if( !(_data &amp;&amp; _type ) ) return FU;
+                if( !FU.parent() ) return FU;
+
+                FU.parent().jEventHost.trigger( &#x27;data&#x27;, FU.getInfo( { &#x27;data&#x27;: _data, &#x27;type&#x27;: _type } ) );
+                return FU;
+            }
+
+        , noticeClose:
+            function( _type ){
+                _type = FU.type( _type );
+                FU.parent().jEventHost.trigger( &#x27;close&#x27;, FU.getInfo( { &#x27;type&#x27;: _type } ) );
+                return FU;
+            }
+
+        , parent:
             function(){
-                JC.log( &#x27;KillISPCache._beforeInit&#x27;, new Date().getTime() );
-                this._model.processAjax();
-            }
-        /**
-         * 处理 _selector 的所有 child
-         * @method  process
-         * @param   {selector}  _selector
-         * @param   {bool}      _ignoreSameLinkText
-         * @return  {KillISPCacheInstance}
-         */
-        , process:
-            function( _selector, _ignoreSameLinkText ){
-                _selector &amp;&amp; ( _selector = $( _selector ) );
-                if( !( _selector &amp;&amp; _selector.length ) ) return;
-                var _p = this;
-                _p._model.ignoreSameLinkText( _ignoreSameLinkText );
-                _p._model.selector( _selector );
-                _p._model.processLink();
-                _p._model.processForm();
-                return this;
-            }
-        , ignoreUrl:
-            function( _url ){
-                return this._model.ignoreUrl( _url );
-            }
-        , ignoreSelector:
-            function( _selector ){
-                return this._model.ignoreSelector( _selector );
-            }
-    };
-    /**
-     * 获取 KillISPCache 实例 ( 单例模式 )
-     * @method getInstance
-     * @param   {selector}      _selector
-     * @static
-     * @return  {KillISPCacheInstance}
-     */
-    KillISPCache.getInstance = 
-        function(){
-            !KillISPCache._instance &amp;&amp; ( KillISPCache._instance = new KillISPCache() );
-            return KillISPCache._instance;
-        }
-    /**
-     * 是否忽略 url 跟 文本 相同的节点
-     * @property    ignoreSameLinkText
-     * @type        bool
-     * @default     true
-     * @static
-     */
-    KillISPCache.ignoreSameLinkText = true;
-    /**
-     * 自定义随机数的参数名
-     * @property    randName
-     * @type        string
-     * @default     empty
-     * @static
-     */
-    KillISPCache.randName = &quot;&quot;;
-    /**
-     * 添加忽略随机数的 ULR
-     * @method      ignoreUrl
-     * @param       {string|Array}  _url
-     * return       Array
-     * @static
-     */
-    KillISPCache.ignoreUrl =
-        function( _url ){
-            return KillISPCache.getInstance().ignoreUrl( _url );
-        };
-    /**
-     * 添加忽略随机数的 选择器
-     * @method      ignoreSelector
-     * @param       {selector|Array}  _selector
-     * return       Array
-     * @static
-     */
-    KillISPCache.ignoreSelector =
-        function( _selector ){
-            return KillISPCache.getInstance().ignoreSelector( _selector );
-        };
+                var _r;
 
-    JC.BaseMVC.buildModel( KillISPCache );
-
-    KillISPCache.Model.prototype = {
-        init:
-            function(){
-                this._postfix = JC.f.printf( &#x27;{0}_{1}_&#x27;
-                                        , new Date().getTime().toString()
-                                        , Math.round( Math.random() * 100000 )
-                                    );
-                this._count = 1;
-                this._ignoreSameLinkText = true;
-                this._randName = &#x27;isp&#x27;;
-
-                this._ignoreUrl = [];
-                this._ignoreSelector = [];
-            }
-
-        , ignoreUrl:
-            function( _url ){
-                if( typeof _url == &#x27;string&#x27; ){
-                    _url = _url.split(&#x27;,&#x27;);
+                if( window.parent 
+                        &amp;&amp; window.parent != window 
+                        &amp;&amp; window.parent.$ 
+                        &amp;&amp; window.parent.JC 
+                        &amp;&amp; window.parent.JC.FrameUtil
+                ){
+                    _r = {
+                        &#x27;win&#x27;: window.parent
+                        , &#x27;jwin&#x27;: window.parent.$( window.parent )
+                        , &#x27;$&#x27;: window.parent.$
+                        , &#x27;JC&#x27;: window.parent.JC
+                        , &#x27;FrameUtil&#x27;: window.parent.JC.FrameUtil
+                        , &#x27;eventHost&#x27;: window.parent.JC.FrameUtil.eventHost
+                        , &#x27;jEventHost&#x27;: window.parent.$( window.parent.JC.FrameUtil.eventHost )
+                    };
                 }
 
-                _url 
-                    &amp;&amp; _url.length 
-                    &amp;&amp; ( this._ignoreUrl = this._ignoreUrl.concat( _url ) )
-                    ;
+                return _r;
+            }
+       
+        , getInfo:
+            function( _ext ){
+                var _body = $( document.body )
+                    , _r = { 
+                        &#x27;$&#x27;: $
+                        , &#x27;width&#x27;: document.documentElement.offsetWidth
+                        , &#x27;height&#x27;: document.documentElement.offsetHeight
+                        , &#x27;bodyWidth&#x27;: _body.width()
+                        , &#x27;bodyHeight&#x27;: _body.height()
+                    };
 
-                return this._ignoreUrl;
+                _ext &amp;&amp; ( _r = JC.f.extendObject( _r, _ext ) );
+
+                return _r;
             }
 
-        , ignoreSelector:
-            function( _selector ){
-                if( typeof _selector == &#x27;string&#x27; ){
-                    _selector = _selector.split(&#x27;,&#x27;);
+        , type:
+            function( _type, _plus ){
+                if( !_type ){
+                    _type = JC.f.getUrlParam( &#x27;jsAction&#x27; );
+                    _type &amp;&amp; _plus &amp;&amp; ( _type += _plus );
                 }
-
-                _selector 
-                    &amp;&amp; _selector.length 
-                    &amp;&amp; ( this._ignoreSelector = this._ignoreSelector.concat( _selector ) )
-                    ;
-
-                return this._ignoreSelector;
+                return _type;
             }
 
-        , processLink:
-            function(){
-                var _p = this;
-                this.selector().find(&#x27;a[href]&#x27;).each(function(){
-                    var _sp = $(this), _url = (_sp.attr(&#x27;href&#x27;)||&#x27;&#x27;).trim(), _text = _sp.html().trim();
-                    if( /javascript\:/.test( _url ) || /^[\s]*\#/.test( _url ) ) return;
-                    
-                    if( _p.ignoreSameLinkText() &amp;&amp; _url.trim() == _sp.html().trim() ) return;
-
-                    var _selectors = _p.ignoreSelector(), _ignore = false;
-                    $.each( _selectors, function( _ix, _selector ){
-                        if( _sp.is( _selector ) ){
-                            _ignore = true;
-                            return false;
-                        }
-                    });
-
-                    if( _ignore ) return;
-
-                    _url = JC.f.addUrlParams( _url, _p.keyVal() );
-                    _sp.attr( &#x27;href&#x27;, _url );
-                    _sp.html( _text );
-                });
-
-            }
-        , processForm:
-            function(){
-                var _p = this;
-                this.selector().find(&#x27;form&#x27;).each(function(){
-                    var _sp = $( this ), _method = ( _sp.prop(&#x27;method&#x27;) || &#x27;&#x27; ).toLowerCase();
-                    if( _method == &#x27;post&#x27; ) return;
-
-                    var _selectors = _p.ignoreSelector(), _ignore = false;
-                    $.each( _selectors, function( _ix, _selector ){
-                        if( _sp.is( _selector ) ){
-                            _ignore = true;
-                            return false;
-                        }
-                    });
-
-                    if( _ignore ) return;
-
-                    if( !_sp.find(&#x27;input[name=&#x27; + _p.randName() + &#x27;]&#x27;).length ){
-                        $( &#x27;&lt;input type=&quot;hidden&quot; name=&quot;&#x27; + _p.randName() + &#x27;&quot; value=&quot;&#x27;+ _p.postfix() +&#x27;&quot; &gt;&#x27; ).appendTo( _sp );
-                    }
-                });
-            }
-        , processAjax:
-            function(){
-                var _p = this;
-                $(document).ajaxSend(function( _event, _jqxhr, _settings) {
-                    if( _settings.type == &#x27;POST&#x27; ) return;
-                    var _urls = _p.ignoreUrl(), _ignore = false;
-                    $.each( _urls, function( _ix, _url ){
-                        var _len = _url.length
-                            , _compare = _settings.url.slice( 0, _len );
-                            ;
-                        if( _url.toLowerCase() == _compare.toLowerCase() ){
-                            _ignore = true;
-                        }
-                    });
-                    !_ignore &amp;&amp; ( _settings.url = JC.f.addUrlParams( _settings.url, _p.keyVal() ) );
-                });
-            }
-        , ignoreSameLinkText:
-            function( _setter ){
-                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( KillISPCache.ignoreSameLinkText = _setter );
-                return KillISPCache.ignoreSameLinkText;
-            }
-        , postfix: function(){ return this._postfix + ( this._count++ ); }
-        , randName:
-            function(){
-                return KillISPCache.randName || this._randName;
-            }
-        , keyVal:
-            function(){
-                var _o = {}; _o[ this.randName() ] = this.postfix();
-                return _o;
-            }
-
+        , eventHost: {}
     };
 
-    JC.BaseMVC.build( KillISPCache, &#x27;Bizs&#x27; );
-
-    $(document).ready( function(){
-        setTimeout( function(){
-            KillISPCache.autoInit 
-                &amp;&amp; KillISPCache.getInstance().process( $(document) );
-        }, 100 );
-    });
-
-    return Bizs.KillISPCache;
+    return JC.FrameUtil;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
-        function ( _name, _require, _cb) { 
+        function ( _name, _require, _cb ) { 
             typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );
             typeof _require == &#x27;function&#x27; &amp;&amp; ( _cb = _require ); 
             _cb &amp;&amp; _cb(); 

@@ -93,6 +93,8 @@
             
                 <li><a href="../classes/JC.FormFillUrl.html">JC.FormFillUrl</a></li>
             
+                <li><a href="../classes/JC.FrameUtil.html">JC.FrameUtil</a></li>
+            
                 <li><a href="../classes/JC.hideAllPanel.html">JC.hideAllPanel</a></li>
             
                 <li><a href="../classes/JC.hideAllPopup.html">JC.hideAllPopup</a></li>
@@ -304,6 +306,7 @@
         , &quot;parseISODate&quot;: parseISODate
         , &quot;parseDate&quot;: parseDate
         , &quot;printf&quot;: printf
+        , &quot;printKey&quot;: printKey
         , &quot;cloneObject&quot;: cloneObject
 
         , &quot;pureDate&quot;: pureDate
@@ -440,6 +443,24 @@
         }
         return _str;
     }
+     /**
+     * 按格式输出字符串
+     * @method printKey
+     * @static
+     * @param   {string}    _str
+     * @param   {object}    _keys
+     * @return  string
+     * @example
+     *      JC.f.printKey( &#x27;asdfasdf{key1}sdfasdf{key2},{0}&#x27;, { &#x27;key1&#x27;: &#x27;000&#x27;, &#x27;key2&#x27;: 1111, &#x27;0&#x27;: 222 );
+     *      //return asdfasdf000sdfasdf1111,222
+     */
+    function printKey( _str, _keys ){
+        for( var k in _keys ){
+            _str = _str.replace( new RegExp(&#x27;\\{&#x27;+( k )+&#x27;\\}&#x27;, &#x27;g&#x27;), _keys[k] );
+        }
+        return _str;
+    }
+
     /**
      * 判断URL中是否有某个get参数
      * @method  hasUrlParam
