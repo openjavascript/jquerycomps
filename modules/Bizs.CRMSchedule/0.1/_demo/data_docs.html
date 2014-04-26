@@ -41,14 +41,51 @@
     <h2>Bizs.CRMSchedule 数据格式说明</h2>
 
     <dl class="defDl">
-        <dt>初始化: 锁定 和 查询 - bccInitData</dt>
+        <dt>初始化: 锁定 和 查询 - bccInitData - 这个数据在页面输出</dt>
         <dd>
 <xmp>
-{
-    "totalItems": 999, 
-    "display_date": "2014-04", 
-    "end_date": "2016-08-09", 
-    "start_date": "2011-03-03", 
+var CRMSchedule_LIST_DATA = {
+    "display_date": "2014-04",  //显示那个月
+    "start_date": "2011-03-03", //开始日期 
+    "end_date": "2016-08-09",   //结束日期
+    "list_data":
+    [
+        {                       //位置数据
+            "name": "pos1", 
+            "id": "1",
+            "parent":                   //父级数据
+            [
+                {                           //顶级父级
+                    "name": "parent1", 
+                    "id": "11"
+                }, 
+                {                           //二级父级
+                    "name": "parent2", 
+                    "id": "22"
+                }
+            ], 
+            "position_date":            //日期数据
+            {
+                "2014-04-01":               //具体日期数据
+                {
+                    "company": "company 1", 
+                    "status": 1
+                } 
+                ...
+            } 
+        } 
+        ...
+     ]
+}
+</xmp>
+        </dd>
+    </dl>
+
+    <dl class="defDl">
+        <dt>初始化: 编辑 - bccInitData - 这个数据在页面输出</dt>
+        <dd>
+<xmp>
+var CRMSchedule_LIST_DATA = {
     "list_data":
     [
         {
@@ -83,49 +120,12 @@
     </dl>
 
     <dl class="defDl">
-        <dt>初始化: 编辑 - bccInitData</dt>
+        <dt>获取月份 - bccMonthDataUrl - AJAX 接口</dt>
         <dd>
 <xmp>
 {
-    "totalItems": 999, 
-    "list_data":
-    [
-        {
-            "parent":
-            [
-                {
-                    "name": "parent1", 
-                    "id": "11"
-                }, 
-                {
-                    "name": "parent2", 
-                    "id": "22"
-                }
-            ], 
-            "name": "pos1", 
-            "position_date":
-            {
-                "2014-04-01":
-                {
-                    "company": "company 1", 
-                    "status": 1
-                } 
-                ...
-            }, 
-            "id": "1"
-        } 
-        ...
-     ]
-}
-</xmp>
-        </dd>
-    </dl>
-
-    <dl class="defDl">
-        <dt>获取月份 - bccMonthDataUrl</dt>
-        <dd>
-<xmp>
-{
+    "errorno": 0, 
+    "errmsg": "",
     "data":
     {
         "list_data":
@@ -156,19 +156,19 @@
             }
             ...
         ]
-    }, 
-    "errorno": 0, 
-    "errmsg": ""
+    } 
 }
 </xmp>
         </dd>
     </dl>
 
     <dl class="defDl">
-        <dt>获取日期范围 - bccDateRangeUrl</dt>
+        <dt>获取日期范围 - bccDateRangeUrl - AJAX 接口</dt>
         <dd>
 <xmp>
 {
+    "errorno": 0, 
+    "errmsg": "",
     "data":
     {
         "list_data":
@@ -203,35 +203,9 @@
                 "id": "1"
             }
         ]
-    }, 
-    "errorno": 0, 
-    "errmsg": ""
+    } 
 }
 </xmp>
-        </dd>
-    </dl>
-
-    <dl class="defDl">
-        <dt></dt>
-        <dd>
-        </dd>
-    </dl>
-
-    <dl class="defDl">
-        <dt></dt>
-        <dd>
-        </dd>
-    </dl>
-
-    <dl class="defDl">
-        <dt></dt>
-        <dd>
-        </dd>
-    </dl>
-
-    <dl class="defDl">
-        <dt></dt>
-        <dd>
         </dd>
     </dl>
 
