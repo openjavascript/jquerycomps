@@ -903,8 +903,11 @@
 
                 if( _prevSelector &amp;&amp; _prevSelector.length ){
                     _parentId = _p.macDefaultValue( _prevSelector );
-                    //alert( [ _prevSelector.val(), _parentId, _prevSelector.attr( &#x27;name&#x27; ) ] );
-                    !_parentId &amp;&amp; ( _parentId = -1 );
+
+                    if( !_parentId ){
+                        !_noTriggerAllUpdated &amp;&amp; _p.trigger( &#x27;all_updated&#x27; );
+                        if( !_noTriggerAllUpdated ) return;
+                    }
                     _url = JC.f.printf( _url, _parentId );
                 }
 
