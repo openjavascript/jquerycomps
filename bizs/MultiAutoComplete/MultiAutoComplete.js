@@ -677,8 +677,11 @@
 
                 if( _prevSelector && _prevSelector.length ){
                     _parentId = _p.macDefaultValue( _prevSelector );
-                    //alert( [ _prevSelector.val(), _parentId, _prevSelector.attr( 'name' ) ] );
-                    !_parentId && ( _parentId = -1 );
+
+                    if( !_parentId ){
+                        !_noTriggerAllUpdated && _p.trigger( 'all_updated' );
+                        if( !_noTriggerAllUpdated ) return;
+                    }
                     _url = JC.f.printf( _url, _parentId );
                 }
 
