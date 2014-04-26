@@ -25,7 +25,7 @@
      *<dd>指定新增的日期标签</dd>
      *</dl>
      *
-     * @namespace Bizs
+     * @namespace window.Bizs
      * @class TaskViewer
      * @extends JC.BaseMVC
      * @constructor

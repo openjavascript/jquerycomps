@@ -1,7 +1,6 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "Bizs.TaskViewer",
         "DEV.JC.AjaxUpload",
         "DEV.JC.ImageCutter",
         "JC.AjaxUpload",
@@ -60,6 +59,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.MultiDate",
         "window.Bizs.MultiSelect",
         "window.Bizs.MultiUpload",
+        "window.Bizs.TaskViewer",
         "window.jQuery",
         "window.requirejs"
     ],
