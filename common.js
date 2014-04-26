@@ -69,6 +69,7 @@
         , "parseISODate": parseISODate
         , "parseDate": parseDate
         , "printf": printf
+        , "printKey": printKey
         , "cloneObject": cloneObject
 
         , "pureDate": pureDate
@@ -205,6 +206,24 @@
         }
         return _str;
     }
+     /**
+     * 按格式输出字符串
+     * @method printKey
+     * @static
+     * @param   {string}    _str
+     * @param   {object}    _keys
+     * @return  string
+     * @example
+     *      JC.f.printKey( 'asdfasdf{key1}sdfasdf{key2},{0}', { 'key1': '000', 'key2': 1111, '0': 222 );
+     *      //return asdfasdf000sdfasdf1111,222
+     */
+    function printKey( _str, _keys ){
+        for( var k in _keys ){
+            _str = _str.replace( new RegExp('\\{'+( k )+'\\}', 'g'), _keys[k] );
+        }
+        return _str;
+    }
+
     /**
      * 判断URL中是否有某个get参数
      * @method  hasUrlParam
