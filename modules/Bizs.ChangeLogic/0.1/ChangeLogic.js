@@ -53,6 +53,9 @@
     JC.log( 'bclDisableCallback', new Date().getTime() );
 }</pre>
  *      </dd>
+ *
+ *      <dt>bclChangeCleanTarget = selector</dt>
+ *      <dd>radio change 的时候, 清除目标选择器的 html 内容</dd>
  * </dl>
  *
  * <h2>trigger 的 HTML 属性</h2>
@@ -136,7 +139,17 @@
 
                 _p._model.bclTrigger().on('change', function(_evt){
                     JC.log( 'bclTrigger change', new Date().getTime() );
-                    _p._view.change( this );
+                    _p.trigger( 'item_change', [ $(this), _evt ] );
+                });
+
+                _p.on( 'item_change', function( _evt, _item, _srcEvt ){
+                    _item = $( _item );
+                    _p._view.change( _item );
+
+                    _p._model.bclChangeCleanTarget() 
+                        && _p._model.bclChangeCleanTarget().each( function(){
+                            $( this ).html( '' );
+                        });
                 });
 
                 ( _tmp = _p._model.bclTrigger( true ) ) && _tmp.trigger( 'change');
@@ -254,6 +267,16 @@
                         }
                     });
                 }
+                return _r;
+            }
+
+        , bclChangeCleanTarget: 
+            function(){ 
+                var _p = this, _r, _tmp;
+
+                _p.selector().attr('bclChangeCleanTarget') 
+                    && ( _r = JC.f.parentSelector( _p.selector(), _p.selector().attr('bclChangeCleanTarget') ) )
+                    ;
                 return _r;
             }
 

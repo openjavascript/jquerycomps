@@ -461,6 +461,7 @@
 
                 _p.selector().delegate( 'td.js_pos_canSelect', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
+                    if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
                         _p.trigger( 'lockup', [ _id, _date, _p._model.lockupDateUrl(), _sp, function(){
                             _sp.removeClass( CRMSchedule.ALL_CLASS )
                             .addClass( CRMSchedule.CLASS_LOCKED );
@@ -471,6 +472,7 @@
 
                 _p.selector().delegate( 'td.js_pos_locked', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
+                    if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
                         _p.trigger( 'unlock', [ _id, _date, _p._model.unlockDateUrl(), _sp, function(){
                             _sp.removeClass( CRMSchedule.ALL_CLASS )
                             .addClass( CRMSchedule.CLASS_CAN_SELECT );
@@ -481,6 +483,7 @@
 
                 _p.selector().delegate( 'input.js_bccCkAll', 'change', function( _evt ){
                     var _sp = $( this ), _tr, _date = [], _items;
+                    if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
 
                     JC.f.safeTimeout( function(){
                         _tr = JC.f.getJqParent( _sp, 'tr' );
@@ -516,6 +519,7 @@
                     var _sp = $( this ), _date = _sp.attr( 'data-date' )
                         , js_pos_canSelect, js_pos_locked
                         ;
+                    if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
                   
                     if( !_date ) return;
 
@@ -653,6 +657,7 @@
 
                 _p.selector().delegate( 'td.js_pos_canSelect', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
+                    if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
                         _p.trigger( 'select_item', [ _id, _date, _sp, function(){
                             _sp.removeClass( CRMSchedule.ALL_CLASS )
                             .addClass( CRMSchedule.CLASS_SELECTED );
@@ -662,6 +667,7 @@
 
                 _p.selector().delegate( 'td.js_pos_selected', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
+                    if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
                         _p.trigger( 'unselect_item', [ _id, _date, _sp, function(){
                             _sp.removeClass( CRMSchedule.ALL_CLASS )
                             .addClass( CRMSchedule.CLASS_CAN_SELECT );
@@ -693,6 +699,7 @@
 
                 _p.selector().delegate( 'input.js_bccCkAll', 'change', function( _evt ){
                     var _sp = $( this ), _tr, _date = [], _items;
+                    if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
 
                     JC.f.safeTimeout( function(){
                         _tr = JC.f.getJqParent( _sp, 'tr' );
@@ -728,6 +735,7 @@
                     var _sp = $( this ), _date = _sp.attr( 'data-date' )
                         , js_pos_canSelect, js_pos_selected
                         ;
+                    if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
                   
                     if( !_date ) return;
 
@@ -1159,6 +1167,7 @@
                     , _tpl = _p._model.rowTpl()
                     , _tmpTpl
                     , _ckAll = ''
+                    , _now = JC.f.pureDate()
                     ;
 
 
@@ -1188,12 +1197,14 @@
                             , _shortName = ''
                             , _class
                             , _styleClass = ''
+                            , _outdateClass = ''
                             ;
 
                         k === 31 && ( _styleClass = "js_bccDataRowLastCell" );
 
                         if( k > _maxDay ){
-                            _days.push( JC.f.printf( '<td class="js_bccDateItem xnocursor {0}"><div>&nbsp;</div></td>', _styleClass ) );
+                            _days.push( JC.f.printf( '<td class="js_bccDateItem xnocursor {0}"><div>&nbsp;</div></td>'
+                                        , _styleClass ) );
                             break;
                         }
 
@@ -1210,10 +1221,15 @@
                         _status == CRMSchedule.STATUS_CAN_SELECT && ( _hasCanSelect = true );
                         _status == CRMSchedule.STATUS_LOCKED && ( _hasLocked = true );
 
-                        _days.push( JC.f.printf( '<td class="js_bccDateItem {0} {5} js_bccDateCol_{6}" title="{3}\n{1}" ' 
+                        if( _posDate.getTime() < _now.getTime() ){
+                            if( _status === 0 ) _class = '';
+                            _outdateClass = 'js_bccOutdate';
+                        }
+
+                        _days.push( JC.f.printf( '<td class="js_bccDateItem {7} {0} {5} js_bccDateCol_{6}" title="{3}\n{1}" ' 
                                     +' data-id="{2}" data-date="{3}" data-colCount="{6}">' 
                                     +'<div>{4}</div></td>'
-                                    , _class, _name, _item.id, _sPosDate, _shortName, _styleClass, k ) );
+                                    , _class, _name, _item.id, _sPosDate, _shortName, _styleClass, k, _outdateClass ) );
                     }
 
                     if( _p._model.actionType() == 'lock' || _p._model.actionType() == 'edit' ){
@@ -1240,21 +1256,25 @@
                 var _p = this, _r = { week: [], date: [] }
                     , _date = _dateObj.displayDate
                     , _maxDay = JC.f.maxDayOfMonth( _date )
+                    , _now = JC.f.pureDate()
                     , _tmp
                     ;
 
                 for( var i = 0; i < 31; i++ ){
-                    var _cur = i + 1;
+                    var _cur = i + 1, _outdateClass = '';
                     if( _cur > _maxDay ){
                         _r.week.push( JC.f.printf( '<th class="js_bccWeekLabel"></th>' ) );
                         _r.date.push( JC.f.printf( '<th class="js_bccDateLabel xnocursor"></th>', i + 1 ) );
                         break;
                     }
                     _date.setDate( _cur );
+                    if( _date.getTime() < _now.getTime() ){
+                        _outdateClass = 'js_bccOutdate';
+                    }
                     _r.week.push( JC.f.printf( '<th class="js_bccWeekLabel" data-date="{1}" data-day="{2}">{0}</th>'
                                 , CRMSchedule.WEEK_SCH[ _date.getDay() ], JC.f.formatISODate( _date ), _date.getDay()  ) );
-                    _r.date.push( JC.f.printf( '<th class="js_bccDateLabel js_bccDateCol_{2}" data-date="{1}" data-colCount="{2}">{0}</th>'
-                                , _cur, JC.f.formatISODate( _date ), i + 1 ) );
+                    _r.date.push( JC.f.printf( '<th class="js_bccDateLabel js_bccDateCol_{2} {3}" data-date="{1}" data-colCount="{2}">{0}</th>'
+                                , _cur, JC.f.formatISODate( _date ), i + 1, _outdateClass ) );
                 }
 
                 _r.date = _r.date.join('');
@@ -1308,6 +1328,11 @@
 
             return _r;
         };
+
+    CRMSchedule.outdateCheck =
+        function( _selector ){
+            return _selector.hasClass( 'js_bccOutdate' );
+        }
 
     function byteString( _s, _len ){
         var _r = [], _count = 0, _char;
