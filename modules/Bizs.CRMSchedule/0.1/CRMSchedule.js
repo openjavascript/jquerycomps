@@ -4,8 +4,8 @@
  *
  *<p><b>require</b>:
  *   <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
- *   , <a href='JC.BaseMVC.html'>JC.Panel</a>
- *   , <a href='JC.BaseMVC.html'>Bizs.CRMSchedulePopup</a>
+ *   , <a href='JC.Panel.html'>JC.Panel</a>
+ *   , <label>Bizs.CRMSchedulePopup</label>
  *</p>
  *
  *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -13,23 +13,96 @@
  *   | <a href='../../modules/Bizs.CRMSchedule/0.1/_demo' target='_blank'>demo link</a></p>
  *  
  *<h2>页面只要引用本脚本, 默认会自动处理 div class="js_bizCRMSchedule" </h2>
+
+ *<h2><a href="../../modules/Bizs.CRMSchedule/0.1/_demo/data_docs.html" target="_blank">数据格式说明</a></h2>
  *
- *<h2>可用的 HTML attribute</h2>
- *
+ *<h2>共用的 HTML attribute</h2>
  *<dl>
- *    <dt></dt>
- *    <dd><dd>
+ *    <dt>bccInitData = json var name, <b>window 变量域</b></dt>
+ *    <dd>初始化的数据<dd>
+ *
+ *    <dt>bccTpl = script selector</dt>
+ *    <dd>主模板</dd>
+ *
+ *    <dt>bccRowTpl = script selector</dt>
+ *    <dd>数据列模板</dd>
+ *
+ *    <dt>bccDateNavTpl = script selector</dt>
+ *    <dd>日期导航的模板</dd>
+ *
+ *    <dt>bccPopupTpl = script selector</dt>
+ *    <dd>日期弹框的主模板</dd>
+ *
+ *    <dt>bccPopupCalendarTpl = script selector</dt>
+ *    <dd>日期弹框的日历模板</dd>
+ *
+ *    <dt>bccMonthDataUrl = url</dt>
+ *    <dd>显示某个月份的数据
+ *      <br />?date={1}&id={0}
+ *      <br />?date=2014-06&id=1,2,3,4,5
+ *    </dd>
+ *
+ *    <dt>bccDateRangeUrl = url</dt>
+ *    <dd>显示日期范围的数据
+ *      <br >?id={0}&start_date={1}&end_date={2}
+ *      <br >?id=1&start_date=2014-05-01&end_date=2014-08-31
+ *    </dd>
+ *
+ *    <dt>bccActionType = string, default = query</dt>
+ *    <dd>
+ *          排期表的操作类型: lock(锁定), edit(编辑), query(查询)
+ *    </dd>
  *</dl> 
+ *
+ *<h2>锁定模式(lock) 可用的 HTML attribute</h2>
+ *<dl>
+ *    <dt>bccLockupDateUrl = url</dt>
+ *    <dd>锁定日期的URL
+ *      <br />?action=lockup&id={0}&date={1}
+ *      <br />?action=lockup&id=3&date=2014-04-08
+ *    </dd>
+ *
+ *    <dt>bccUnlockDateUrl = url</dt>
+ *    <dd>解锁日期的URL
+ *      <br />?action=unlock&&id={0}&date={1}
+ *      <br />?action=unlock&&id=3&date=2014-04-05
+ *    </dd>
+ *
+ *    <dt>bccLockupIdUrl = url</dt>
+ *    <dd>锁定ID的URL
+ *      <br />?action=lockup&date={1}&id={0}
+ *      <br />?action=lockup&date=2014-04-05&id=1,2,4,5
+ *    </dd>
+ *
+ *    <dt>bccUnlockIdUrl = url</dt>
+ *    <dd>解锁ID的URL
+ *      <br />?action=unlock&date={1}&id={0}
+ *      <br />?action=unlock&date=2014-04-07&id=1,2,3,4,5
+ *    </dd>
+ *</dl>
+ *
+ *<h2>编辑模式(edit) 可用的 HTML attribute</h2>
+ *<dl>
+ *    <dt>bccSaveSelectBox = selector</dt>
+ *    <dd>保存选中值选择器的父容器</dd>
+ *
+ *    <dt>bccSaveSelectItemTpl = script selector</dt>
+ *    <dd>保存选中值项的模板</dd>
+ *
+ *    <dt>bccSaveSelectItemClass = string, default = ".js_bccSaveSelectItem"</dt>
+ *    <dd>保存选中值项的css class 选择器</dd>
+ *
+ *    <dt>bccDataLabelItemTpl = script selector</dt>
+ *    <dd>日期 Label 的模板</dd>
+ *</dl>
  *
  * @namespace   window.Bizs
  * @class       CRMSchedule
  * @extends     JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
- * @version dev 0.1 2013-12-13
+ * @version dev 0.1 2014-04-26 
  * @author  qiushaowei <suches@btbtd.org> | 75 Team
- * @example
-        <h2>Bizs.CRMSchedule 示例</h2>
  */
     var _jdoc = $( document ), _jwin = $( window );
 
@@ -147,8 +220,9 @@
                 var _p = this;
 
                 _p.on( 'inited', function(){
-                    if( !_p._model.initData() ) return;
-                    _p.trigger( 'update_layout', [ _p._model.initData(), null, true ] );
+                    if( _p._model.initData() ) {
+                        _p.trigger( 'update_layout', [ _p._model.initData(), null, true ] );
+                    }
                     _p.trigger( 'init_date_nav' );
                 });
 
@@ -231,8 +305,6 @@
                     , js_bccYearSelect = _p.selector().find( 'select.js_bccYearSelect' )
                     , js_bccMonthSelect = _p.selector().find( 'select.js_bccMonthSelect' )
                     ;
-
-                if( !( js_bccYearSelect.length && js_bccYearSelect.length ) ) return;
 
                 _p.selector().delegate( 'select.js_bccYearSelect', 'change', function( _evt ){
                     var js_bccYearSelect = _p.selector().find( 'select.js_bccYearSelect' )
@@ -740,7 +812,11 @@
                 //JC.log( 'CRMSchedule _inited', new Date().getTime() );
                 this.trigger( 'inited' );
             }
-
+        /**
+         * 更新数据
+         * @method  update
+         * @param   {json}  _data
+         */
         , update:
             function( _data ){
                 var _p = this;

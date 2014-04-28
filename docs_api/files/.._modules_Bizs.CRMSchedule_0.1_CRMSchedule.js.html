@@ -236,8 +236,8 @@
  *
  *&lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
  *   &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
- *   , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.Panel&lt;/a&gt;
- *   , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;Bizs.CRMSchedulePopup&lt;/a&gt;
+ *   , &lt;a href=&#x27;JC.Panel.html&#x27;&gt;JC.Panel&lt;/a&gt;
+ *   , &lt;label&gt;Bizs.CRMSchedulePopup&lt;/label&gt;
  *&lt;/p&gt;
  *
  *&lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
@@ -245,23 +245,96 @@
  *   | &lt;a href=&#x27;../../modules/Bizs.CRMSchedule/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
  *  
  *&lt;h2&gt;页面只要引用本脚本, 默认会自动处理 div class=&quot;js_bizCRMSchedule&quot; &lt;/h2&gt;
+
+ *&lt;h2&gt;&lt;a href=&quot;../../modules/Bizs.CRMSchedule/0.1/_demo/data_docs.html&quot; target=&quot;_blank&quot;&gt;数据格式说明&lt;/a&gt;&lt;/h2&gt;
  *
- *&lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
- *
+ *&lt;h2&gt;共用的 HTML attribute&lt;/h2&gt;
  *&lt;dl&gt;
- *    &lt;dt&gt;&lt;/dt&gt;
- *    &lt;dd&gt;&lt;dd&gt;
+ *    &lt;dt&gt;bccInitData = json var name, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dt&gt;
+ *    &lt;dd&gt;初始化的数据&lt;dd&gt;
+ *
+ *    &lt;dt&gt;bccTpl = script selector&lt;/dt&gt;
+ *    &lt;dd&gt;主模板&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bccRowTpl = script selector&lt;/dt&gt;
+ *    &lt;dd&gt;数据列模板&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bccDateNavTpl = script selector&lt;/dt&gt;
+ *    &lt;dd&gt;日期导航的模板&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bccPopupTpl = script selector&lt;/dt&gt;
+ *    &lt;dd&gt;日期弹框的主模板&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bccPopupCalendarTpl = script selector&lt;/dt&gt;
+ *    &lt;dd&gt;日期弹框的日历模板&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bccMonthDataUrl = url&lt;/dt&gt;
+ *    &lt;dd&gt;显示某个月份的数据
+ *      &lt;br /&gt;?date={1}&amp;id={0}
+ *      &lt;br /&gt;?date=2014-06&amp;id=1,2,3,4,5
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bccDateRangeUrl = url&lt;/dt&gt;
+ *    &lt;dd&gt;显示日期范围的数据
+ *      &lt;br &gt;?id={0}&amp;start_date={1}&amp;end_date={2}
+ *      &lt;br &gt;?id=1&amp;start_date=2014-05-01&amp;end_date=2014-08-31
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bccActionType = string, default = query&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *          排期表的操作类型: lock(锁定), edit(编辑), query(查询)
+ *    &lt;/dd&gt;
  *&lt;/dl&gt; 
+ *
+ *&lt;h2&gt;锁定模式(lock) 可用的 HTML attribute&lt;/h2&gt;
+ *&lt;dl&gt;
+ *    &lt;dt&gt;bccLockupDateUrl = url&lt;/dt&gt;
+ *    &lt;dd&gt;锁定日期的URL
+ *      &lt;br /&gt;?action=lockup&amp;id={0}&amp;date={1}
+ *      &lt;br /&gt;?action=lockup&amp;id=3&amp;date=2014-04-08
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bccUnlockDateUrl = url&lt;/dt&gt;
+ *    &lt;dd&gt;解锁日期的URL
+ *      &lt;br /&gt;?action=unlock&amp;&amp;id={0}&amp;date={1}
+ *      &lt;br /&gt;?action=unlock&amp;&amp;id=3&amp;date=2014-04-05
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bccLockupIdUrl = url&lt;/dt&gt;
+ *    &lt;dd&gt;锁定ID的URL
+ *      &lt;br /&gt;?action=lockup&amp;date={1}&amp;id={0}
+ *      &lt;br /&gt;?action=lockup&amp;date=2014-04-05&amp;id=1,2,4,5
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bccUnlockIdUrl = url&lt;/dt&gt;
+ *    &lt;dd&gt;解锁ID的URL
+ *      &lt;br /&gt;?action=unlock&amp;date={1}&amp;id={0}
+ *      &lt;br /&gt;?action=unlock&amp;date=2014-04-07&amp;id=1,2,3,4,5
+ *    &lt;/dd&gt;
+ *&lt;/dl&gt;
+ *
+ *&lt;h2&gt;编辑模式(edit) 可用的 HTML attribute&lt;/h2&gt;
+ *&lt;dl&gt;
+ *    &lt;dt&gt;bccSaveSelectBox = selector&lt;/dt&gt;
+ *    &lt;dd&gt;保存选中值选择器的父容器&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bccSaveSelectItemTpl = script selector&lt;/dt&gt;
+ *    &lt;dd&gt;保存选中值项的模板&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bccSaveSelectItemClass = string, default = &quot;.js_bccSaveSelectItem&quot;&lt;/dt&gt;
+ *    &lt;dd&gt;保存选中值项的css class 选择器&lt;/dd&gt;
+ *
+ *    &lt;dt&gt;bccDataLabelItemTpl = script selector&lt;/dt&gt;
+ *    &lt;dd&gt;日期 Label 的模板&lt;/dd&gt;
+ *&lt;/dl&gt;
  *
  * @namespace   window.Bizs
  * @class       CRMSchedule
  * @extends     JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
- * @version dev 0.1 2013-12-13
+ * @version dev 0.1 2014-04-26 
  * @author  qiushaowei &lt;suches@btbtd.org&gt; | 75 Team
- * @example
-        &lt;h2&gt;Bizs.CRMSchedule 示例&lt;/h2&gt;
  */
     var _jdoc = $( document ), _jwin = $( window );
 
@@ -379,8 +452,9 @@
                 var _p = this;
 
                 _p.on( &#x27;inited&#x27;, function(){
-                    if( !_p._model.initData() ) return;
-                    _p.trigger( &#x27;update_layout&#x27;, [ _p._model.initData(), null, true ] );
+                    if( _p._model.initData() ) {
+                        _p.trigger( &#x27;update_layout&#x27;, [ _p._model.initData(), null, true ] );
+                    }
                     _p.trigger( &#x27;init_date_nav&#x27; );
                 });
 
@@ -463,8 +537,6 @@
                     , js_bccYearSelect = _p.selector().find( &#x27;select.js_bccYearSelect&#x27; )
                     , js_bccMonthSelect = _p.selector().find( &#x27;select.js_bccMonthSelect&#x27; )
                     ;
-
-                if( !( js_bccYearSelect.length &amp;&amp; js_bccYearSelect.length ) ) return;
 
                 _p.selector().delegate( &#x27;select.js_bccYearSelect&#x27;, &#x27;change&#x27;, function( _evt ){
                     var js_bccYearSelect = _p.selector().find( &#x27;select.js_bccYearSelect&#x27; )
@@ -972,7 +1044,11 @@
                 //JC.log( &#x27;CRMSchedule _inited&#x27;, new Date().getTime() );
                 this.trigger( &#x27;inited&#x27; );
             }
-
+        /**
+         * 更新数据
+         * @method  update
+         * @param   {json}  _data
+         */
         , update:
             function( _data ){
                 var _p = this;

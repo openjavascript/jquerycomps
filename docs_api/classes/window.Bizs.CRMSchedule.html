@@ -144,17 +144,76 @@
     <p>CRM 排期日期选择组件</p>
 <p><b>require</b>:
   <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
-  , <a href='JC.BaseMVC.html'>JC.Panel</a>
-  , <a href='JC.BaseMVC.html'>Bizs.CRMSchedulePopup</a>
+  , <a href='JC.Panel.html'>JC.Panel</a>
+  , <label>Bizs.CRMSchedulePopup</label>
 </p>
 <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
   | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.CRMSchedule.html' target='_blank'>API docs</a>
   | <a href='../../modules/Bizs.CRMSchedule/0.1/_demo' target='_blank'>demo link</a></p>
 <h2>页面只要引用本脚本, 默认会自动处理 div class=&quot;js_bizCRMSchedule&quot; </h2>
-<h2>可用的 HTML attribute</h2>
+<h2><a href="../../modules/Bizs.CRMSchedule/0.1/_demo/data_docs.html" target="_blank">数据格式说明</a></h2>
+<p><h2>共用的 HTML attribute</h2></p>
 <dl>
-   <dt></dt>
-   <dd><dd>
+   <dt>bccInitData = json var name, <b>window 变量域</b></dt>
+   <dd>初始化的数据<dd>
+   <dt>bccTpl = script selector</dt>
+   <dd>主模板</dd>
+   <dt>bccRowTpl = script selector</dt>
+   <dd>数据列模板</dd>
+   <dt>bccDateNavTpl = script selector</dt>
+   <dd>日期导航的模板</dd>
+   <dt>bccPopupTpl = script selector</dt>
+   <dd>日期弹框的主模板</dd>
+   <dt>bccPopupCalendarTpl = script selector</dt>
+   <dd>日期弹框的日历模板</dd>
+   <dt>bccMonthDataUrl = url</dt>
+   <dd>显示某个月份的数据
+     <br />?date={1}&amp;id={0}
+     <br />?date=2014-06&amp;id=1,2,3,4,5
+   </dd>
+   <dt>bccDateRangeUrl = url</dt>
+   <dd>显示日期范围的数据
+     <br >?id={0}&amp;start_date={1}&amp;end_date={2}
+     <br >?id=1&amp;start_date=2014-05-01&amp;end_date=2014-08-31
+   </dd>
+   <dt>bccActionType = string, default = query</dt>
+   <dd>
+         排期表的操作类型: lock(锁定), edit(编辑), query(查询)
+   </dd>
+</dl> 
+<p><h2>锁定模式(lock) 可用的 HTML attribute</h2></p>
+<dl>
+   <dt>bccLockupDateUrl = url</dt>
+   <dd>锁定日期的URL
+     <br />?action=lockup&amp;id={0}&amp;date={1}
+     <br />?action=lockup&amp;id=3&amp;date=2014-04-08
+   </dd>
+   <dt>bccUnlockDateUrl = url</dt>
+   <dd>解锁日期的URL
+     <br />?action=unlock&amp;&amp;id={0}&amp;date={1}
+     <br />?action=unlock&amp;&amp;id=3&amp;date=2014-04-05
+   </dd>
+   <dt>bccLockupIdUrl = url</dt>
+   <dd>锁定ID的URL
+     <br />?action=lockup&amp;date={1}&amp;id={0}
+     <br />?action=lockup&amp;date=2014-04-05&amp;id=1,2,4,5
+   </dd>
+   <dt>bccUnlockIdUrl = url</dt>
+   <dd>解锁ID的URL
+     <br />?action=unlock&amp;date={1}&amp;id={0}
+     <br />?action=unlock&amp;date=2014-04-07&amp;id=1,2,3,4,5
+   </dd>
+</dl>
+<p><h2>编辑模式(edit) 可用的 HTML attribute</h2></p>
+<dl>
+   <dt>bccSaveSelectBox = selector</dt>
+   <dd>保存选中值选择器的父容器</dd>
+   <dt>bccSaveSelectItemTpl = script selector</dt>
+   <dd>保存选中值项的模板</dd>
+   <dt>bccSaveSelectItemClass = string, default = &quot;.js_bccSaveSelectItem&quot;</dt>
+   <dd>保存选中值项的css class 选择器</dd>
+   <dt>bccDataLabelItemTpl = script selector</dt>
+   <dd>日期 Label 的模板</dd>
 </dl>
 </div>
     <div class="constructor">
@@ -186,12 +245,6 @@
                     </div>
                 </li>
             </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>   &lt;h2&gt;Bizs.CRMSchedule 示例&lt;/h2&gt;</code></pre>
-            </div>
         </div>
 </div>
     </div>
@@ -230,6 +283,9 @@
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_trigger">trigger</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_update">update</a>
                             </li>
                     </ul>
                 </div>
@@ -325,7 +381,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_Bizs.CRMSchedule_0.1_CRMSchedule.js.html#l53"><code>..&#x2F;modules&#x2F;Bizs.CRMSchedule&#x2F;0.1&#x2F;CRMSchedule.js:53</code></a>
+        <a href="../files/.._modules_Bizs.CRMSchedule_0.1_CRMSchedule.js.html#l126"><code>..&#x2F;modules&#x2F;Bizs.CRMSchedule&#x2F;0.1&#x2F;CRMSchedule.js:126</code></a>
         </p>
     </div>
     <div class="description">
@@ -456,6 +512,36 @@
             <div class="returns-description">
                     <p>BaseMVCInstance</p>
             </div>
+        </div>
+</div>
+                    <div id="method_update" class="method item">
+    <h3 class="name"><code>update</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_data</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_Bizs.CRMSchedule_0.1_CRMSchedule.js.html#l815"><code>..&#x2F;modules&#x2F;Bizs.CRMSchedule&#x2F;0.1&#x2F;CRMSchedule.js:815</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>更新数据</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_data</code>
+                        <span class="type">Json</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
         </div>
 </div>
             </div>

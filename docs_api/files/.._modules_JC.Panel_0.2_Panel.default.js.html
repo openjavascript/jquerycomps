@@ -129,6 +129,8 @@
             
                 <li><a href="../classes/JC.Slider.Model.html">JC.Slider.Model</a></li>
             
+                <li><a href="../classes/JC.StepControl.html">JC.StepControl</a></li>
+            
                 <li><a href="../classes/JC.Suggest.html">JC.Suggest</a></li>
             
                 <li><a href="../classes/JC.Tab.html">JC.Tab</a></li>
@@ -160,6 +162,8 @@
                 <li><a href="../classes/window.Bizs.ChangeLogic.html">window.Bizs.ChangeLogic</a></li>
             
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
+            
+                <li><a href="../classes/window.Bizs.CRMSchedule.html">window.Bizs.CRMSchedule</a></li>
             
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
             
@@ -610,7 +614,7 @@
          */
         , close:
             function(){
-                JC.log(&#x27;Panel.close&#x27;);
+                //JC.log(&#x27;Panel.close&#x27;);
                 this.trigger(&#x27;beforeclose&#x27;, this._view.getPanel() );
                 this.trigger(&#x27;close&#x27;, this._view.getPanel() );
                 return this;
@@ -684,7 +688,7 @@
          */
         , dispose:
             function(){
-                JC.log(&#x27;Panel.dispose&#x27;);
+                //JC.log(&#x27;Panel.dispose&#x27;);
                 this._view.close();
                 return this;
             }
@@ -732,7 +736,7 @@
          */
         , trigger:
             function( _evtName, _srcElement ){
-                JC.log( &#x27;Panel.trigger&#x27;, _evtName );
+                //JC.log( &#x27;Panel.trigger&#x27;, _evtName );
 
                 var _p = this, _evts = this._model.getEvent( _evtName ), _processDefEvt = true;
                 if( _evts &amp;&amp; _evts.length ){
@@ -978,7 +982,7 @@
                 Panel.ignoreClick = true;
                 if( _selector &amp;&amp; _selector.length ){
                     this.selector = _selector;
-                    JC.log( &#x27;user tpl&#x27;, this.selector.parent().length );
+                    //JC.log( &#x27;user tpl&#x27;, this.selector.parent().length );
                     if( !this.selector.parent().length ){
                         _p.selector.appendTo( $(document.body ) );
                         window.JC.f.jcAutoInitComps &amp;&amp; JC.f.jcAutoInitComps( _p.selector );
@@ -1182,7 +1186,7 @@
          */
         , close:
             function(){
-                JC.log( &#x27;Panel._view.close()&#x27;);
+                //JC.log( &#x27;Panel._view.close()&#x27;);
                 this.getPanel().remove();
             }
         /**
@@ -1270,10 +1274,10 @@
                 if( (_winh - _lh  - 100) &gt; 300 ){
                     _y -= 100;
                 }
-                JC.log( (_winh - _lh / 2 - 100) )
+                //JC.log( (_winh - _lh / 2 - 100) )
 
                 if( ( _y + _lh - _scrtop ) &gt; _winh ){
-                    JC.log(&#x27;y overflow&#x27;);
+                    //JC.log(&#x27;y overflow&#x27;);
                     _y = _scrtop + _winh - _lh;
 
                 }
@@ -1282,7 +1286,7 @@
 
                 _layout.css( {left: _x+&#x27;px&#x27;, top: _y+&#x27;px&#x27;} );
 
-                JC.log( _lw, _lh, _winw, _winh );
+                //JC.log( _lw, _lh, _winw, _winh );
             }
     };
     /**
@@ -1353,7 +1357,7 @@
         var _panel = $(this), _src = $(_evt.target || _evt.srcElement), _evtName;
         if( _src &amp;&amp; _src.length &amp;&amp; _src.is(&quot;[eventtype]&quot;) ){
             _evtName = _src.attr(&#x27;eventtype&#x27;);
-            JC.log( _evtName, _panel.data(&#x27;PanelInstace&#x27;) );
+            //JC.log( _evtName, _panel.data(&#x27;PanelInstace&#x27;) );
             _evtName &amp;&amp; _panel.data(&#x27;PanelInstace&#x27;) &amp;&amp; _panel.data(&#x27;PanelInstace&#x27;).trigger( _evtName, _src, _evt );
         }
     });

@@ -129,6 +129,8 @@
             
                 <li><a href="../classes/JC.Slider.Model.html">JC.Slider.Model</a></li>
             
+                <li><a href="../classes/JC.StepControl.html">JC.StepControl</a></li>
+            
                 <li><a href="../classes/JC.Suggest.html">JC.Suggest</a></li>
             
                 <li><a href="../classes/JC.Tab.html">JC.Tab</a></li>
@@ -160,6 +162,8 @@
                 <li><a href="../classes/window.Bizs.ChangeLogic.html">window.Bizs.ChangeLogic</a></li>
             
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
+            
+                <li><a href="../classes/window.Bizs.CRMSchedule.html">window.Bizs.CRMSchedule</a></li>
             
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
             
@@ -561,6 +565,15 @@
                         }
                     }
                 });
+                _p.on( &#x27;RemoveElementAction&#x27;, function( _evt ){
+
+                    if( _p._model.balDoneRemoveSelector() ){
+                        _p._model.balDoneRemoveSelector()
+                            &amp;&amp; _p._model.balDoneRemoveSelector().remove();
+                    }else{
+                        _p.selector().remove();
+                    }
+                });
                 /**
                  * 处理错误提示
                  */
@@ -698,6 +711,19 @@
                                     });
                             }else{
                                 _p.trigger( &#x27;AjaxAction&#x27;, _p._model.balUrl() );
+                            }
+                            break;
+                        }
+
+                    case &#x27;remove_element&#x27;:
+                        {
+                            if( _p._model.is( &#x27;[balConfirmMsg]&#x27; ) ){
+                                var _panel = JC.confirm( _p._model.balConfirmMsg(), _p.selector(), 2 );
+                                    _panel.on(&#x27;confirm&#x27;, function(){
+                                        _p.trigger( &#x27;RemoveElementAction&#x27; );
+                                    });
+                            }else{
+                                _p.trigger( &#x27;RemoveElementAction&#x27; );
                             }
                             break;
                         }
