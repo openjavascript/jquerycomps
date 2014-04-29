@@ -166,15 +166,6 @@
                     }
 
                 });
-
-                _p.selector().delegate( 'tr.js_bccDataRow',  'mouseenter', function( _evt ){
-                    $( this ).addClass( 'js_bccDataRowHover' );
-                });
-
-                _p.selector().delegate( 'tr.js_bccDataRow',  'mouseleave', function( _evt ){
-                    $( this ).removeClass( 'js_bccDataRowHover' );
-                });
-
             }
 
         , _initLockHandler:

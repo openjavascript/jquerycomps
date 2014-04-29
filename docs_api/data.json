@@ -179,6 +179,17 @@
                 "window.Bizs": 1
             }
         },
+        "../modules/Bizs.TaskViewer/0.1/TaskViewer.js": {
+            "name": "../modules/Bizs.TaskViewer/0.1/TaskViewer.js",
+            "modules": {},
+            "classes": {
+                "Bizs.TaskViewer": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "Bizs": 1
+            }
+        },
         "../modules/JC.AjaxUpload/0.2/AjaxUpload.js": {
             "name": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
             "modules": {},
@@ -1070,6 +1081,30 @@
             "example": [
                 "\n<xmp><div class=\"js_bizMultiUpload\"\n   bmuBoxSelector=\"|.uploadItemBox\"\n   bmuTplSelector=\"|script\"\n   bmuItemDelegate=\">\"\n   bmuRemoveDelegate=\".js_removeUploadItem\"\n   bmuRemoveItemParentSelector=\"(\"\n   bmuAjaxUploadSelector=\"|.js_compAjaxUpload\"\n   bmuItemLimit=\"2\"\n   >\n   <div>\n       <input type=\"hidden\" class=\"ipt ipt-w180 js_compAjaxUpload\" value=\"\"\n           cauStyle=\"w1\"\n           cauButtonText=\"上传资质文件\"\n           cauUrl=\"../_demo/data/handler.php\"\n           cauFileExt=\".jpg, .jpeg, .png, .gif\"\n           cauFileName=\"file\"\n           cauValueKey=\"url\"\n           cauLabelKey=\"name\"\n           cauProgressBox=\"/span.AUProgressBox\"\n           />\n           <span class=\"AUProgressBox\" style=\"display:none;\">\n               <button type=\"button\" class=\"AUProgress\"><div class=\"AUPercent\"></div></button>\n               <button type=\"button\" class=\"AUCancelProgress\"></button>\n           </span>\n           .jpg, .jpeg, .png, .gif\n           (最多上传2个)\n   </div>\n   <dl class=\"uploadItemBox\">\n   </dl>\n   <script type=\"text/template\">\n       <dd class=\"js_multiUploadItem\">\n           <input type=\"hidden\" name=\"file[]\" value=\"{0}\" class=\"js_multiUploadHidden\" />\n           <a href=\"{0}\" target=\"_blank\"><label class=\"js_multiUploadLabel\">{1}</label></a>\n           <button type=\"button\" class=\"AURemove js_removeUploadItem\"></button>\n       </dd>\n   </script>\n</div></xmp>"
             ]
+        },
+        "Bizs.TaskViewer": {
+            "name": "Bizs.TaskViewer",
+            "shortname": "Bizs.TaskViewer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "Bizs",
+            "file": "../modules/Bizs.TaskViewer/0.1/TaskViewer.js",
+            "line": 2,
+            "description": "TaskViewer 日历任务展示面板\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.TaskViewer.html' target='_blank'>API docs</a>\n  | <a href='../../modules/Bizs.TaskViewer/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化class=\"js_COMPTaskViewer\"下的日期</h2>\n\n\n<h2>可用的 HTML attribute</h2>\n<dl>\n<dt>taskselecteddates = selector</dt>\n<dd>指定选定的日期标签</dd>\n<dt>taskdeleteddates = selector</dt>\n<dd>指定删除的日期标签</dd>\n<dt>tasknewaddeddates = selector</dt>\n<dd>指定新增的日期标签</dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "0.1 2014-04-17",
+            "author": "zuojing   <zuojing1013@gmail.com> | 75 Team"
         },
         "JC.AjaxUpload": {
             "name": "JC.AjaxUpload",
@@ -2287,7 +2322,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 7,
+            "line": 6,
             "description": "TableFreeze 表格固定指定列功能\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.TableFreeze.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.TableFreeze/0.2/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化div为class=\"js_compTableFreeze\"下的表格</h2>\n<p>目前不支持带有tfooter的表格。如果表格带有tfooter，tfooter部分的内容会被清空</p>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>freezeType = string</dt>\n   <dd>\n      声明表格列冻结的类型：\n      <p><b>prev：</b>左边的列固定，其他滚动</p>\n      <p><b>next：</b>右边的列固定，其他滚动</p>\n      <p><b>both：</b>两边的列固定，其他滚动</p>\n   </dd>\n\n   <dt>freezeCol = string</dt>\n   <dd>\n       声明表格要冻结的列数:\n       <p>为<b>0：</b>全部滚动，不冻结</p>\n       <p>为<b>列表数目：</b>全部冻结， 不滚动</p>\n       <p>为<b>num,num：</b>freezeType为<b>both</b>时，第一个数字表示前面冻结的列数<br/>\n         第二个数字表示后面冻结的列数。<br/>\n          当两个数字加起来等于列数时，表示全部冻结，不会出现有滚动的列。\n       </p>\n   </dd>\n\n   <dt>scrollWidth = num</dt>\n   <dd>\n       声明表格滚动部分的宽度，默认120%\n   </dd>\n\n   <dt>needHoverClass = true|false</dt>\n   <dd>\n       声明表格行是否需要鼠标hover高亮效果:\n       <p>默认值为true</p>\n   </dd>\n\n   <dt>alternateClass = string</dt>\n   <dd>\n       声明表格索引值为奇数行的背景色的className: （表格行隔行换色）\n       <p>如果为空则不指定隔行背景色</p>\n   </dd>\n\n   <dt>beforeCreateTableCallback = function</dt>\n   <dd>\n       表格创建前, 触发的回调, <b>window 变量域</b>\n<pre>function beforeCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'beforeCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>afterCreateTableCallback = function</dt>\n   <dd>\n       表格创建后, 触发的回调, <b>window 变量域</b>\n<pre>function afterCreateTableCallback( _selector ){\n   var _ins = this;\n   JC.log( 'afterCreateTableCallback', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
@@ -2760,7 +2795,7 @@
         },
         {
             "file": "../modules/Bizs.CRMSchedule/0.1/CRMSchedule.js",
-            "line": 815,
+            "line": 853,
             "description": "更新数据",
             "itemtype": "method",
             "name": "update",
@@ -3779,6 +3814,48 @@
             "name": "CheckItemLimit",
             "class": "window.Bizs.MultiUpload",
             "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.TaskViewer/0.1/TaskViewer.js",
+            "line": 51,
+            "description": "获取或设置 TaskViewer 的实例",
+            "itemtype": "method",
+            "name": "getInstance",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "TaskViewerInstance"
+            },
+            "class": "Bizs.TaskViewer",
+            "namespace": "Bizs"
+        },
+        {
+            "file": "../modules/Bizs.TaskViewer/0.1/TaskViewer.js",
+            "line": 67,
+            "description": "初始化可识别的 TaskViewer 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of TaskViewerInstance"
+            },
+            "class": "Bizs.TaskViewer",
+            "namespace": "Bizs"
         },
         {
             "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
@@ -12099,7 +12176,7 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 214,
+            "line": 213,
             "description": "获取或设置 TableFreeze 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -12120,7 +12197,7 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 229,
+            "line": 228,
             "description": "初始化可识别的 TableFreeze 实例",
             "itemtype": "method",
             "name": "init",
@@ -12141,56 +12218,56 @@
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 260,
+            "line": 259,
             "description": "为了解决ie6下表格的宽度超出父容器的宽度，父容器的宽度会跟随表格的宽度",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 347,
+            "line": 342,
             "description": "冻结类型:prev, both, last; 默认为prev",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 358,
+            "line": 353,
             "description": "冻结列数:num,num 默认为1",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 390,
+            "line": 385,
             "description": "滚动区域的宽度默认120%",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 401,
+            "line": 396,
             "description": "tr 是否需要hover效果,默认为true",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 420,
+            "line": 415,
             "description": "tr的隔行换色",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 672,
+            "line": 719,
             "description": "TableFreeze调用前的回调",
             "class": "JC.TableFreeze",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.TableFreeze/0.2/TableFreeze.js",
-            "line": 683,
+            "line": 730,
             "description": "TableFreeze调用后的回调",
             "class": "JC.TableFreeze",
             "namespace": "JC"
@@ -17862,7 +17939,7 @@
         },
         {
             "file": "../config.js",
-            "line": 112,
+            "line": 113,
             "description": "取当前脚本标签的 src路径",
             "static": 1,
             "return": {
@@ -18307,6 +18384,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../modules/Bizs.TaskViewer/0.1/TaskViewer.js:2"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:2"
         },
         {
@@ -18495,7 +18576,7 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:7"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:6"
         },
         {
             "message": "unknown tag: version",
@@ -19187,35 +19268,35 @@
         },
         {
             "message": "Missing item type\n为了解决ie6下表格的宽度超出父容器的宽度，父容器的宽度会跟随表格的宽度",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:260"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:259"
         },
         {
             "message": "Missing item type\n冻结类型:prev, both, last; 默认为prev",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:347"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:342"
         },
         {
             "message": "Missing item type\n冻结列数:num,num 默认为1",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:358"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:353"
         },
         {
             "message": "Missing item type\n滚动区域的宽度默认120%",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:390"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:385"
         },
         {
             "message": "Missing item type\ntr 是否需要hover效果,默认为true",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:401"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:396"
         },
         {
             "message": "Missing item type\ntr的隔行换色",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:420"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:415"
         },
         {
             "message": "Missing item type\nTableFreeze调用前的回调",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:672"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:719"
         },
         {
             "message": "Missing item type\nTableFreeze调用后的回调",
-            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:683"
+            "line": " ../modules/JC.TableFreeze/0.2/TableFreeze.js:730"
         },
         {
             "message": "Missing item type\n页面加载完毕后, 是否自动初始化 Tips",
@@ -19811,7 +19892,7 @@
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
-            "line": " ../config.js:112"
+            "line": " ../config.js:113"
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",

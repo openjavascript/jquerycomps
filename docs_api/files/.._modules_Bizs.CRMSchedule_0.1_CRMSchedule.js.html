@@ -47,6 +47,8 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/Bizs.TaskViewer.html">Bizs.TaskViewer</a></li>
+            
                 <li><a href="../classes/DEV.JC.AjaxUpload.html">DEV.JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/DEV.JC.ImageCutter.html">DEV.JC.ImageCutter</a></li>
@@ -529,6 +531,43 @@
                     _p._model.dataLabelBox().html( &#x27;&#x27; );
                 });
 
+                _p.selector().delegate( &#x27;tr.js_bccDataRow&#x27;,  &#x27;mouseenter&#x27;, function( _evt ){
+                    var _sp = $( this ), _ix = parseInt( _sp.attr( &#x27;data-rowCount&#x27; ) );
+                    _sp.addClass( &#x27;js_bccDataRowHover&#x27; );
+                    if( _ix ){
+                        _sp.prev().addClass( &#x27;js_bccDataRowHover_prev&#x27; );
+                    }
+                });
+
+                _p.selector().delegate( &#x27;tr.js_bccDataRow&#x27;,  &#x27;mouseleave&#x27;, function( _evt ){
+                    var _sp = $( this ), _ix = parseInt( _sp.attr( &#x27;data-rowCount&#x27; ) );
+                    _sp.removeClass( &#x27;js_bccDataRowHover&#x27; );
+                    if( _ix ){
+                        _sp.prev().removeClass( &#x27;js_bccDataRowHover_prev&#x27; );
+                    }
+                });
+
+                _p.selector().delegate( &#x27;th.js_bccDateLabel&#x27;, &#x27;mouseenter&#x27;, function( _evt ){
+                    var _sp = $( this )
+                        , _ix = parseInt( _sp.attr( &#x27;data-colCount&#x27; ) )
+                        , _selector = JC.f.printf( &#x27;th.js_bccDateCol_{0}, td.js_bccDateCol_{0}&#x27;, _ix ) 
+                        , _prevSelector = JC.f.printf( &#x27;th.js_bccDateCol_{0}, td.js_bccDateCol_{0}&#x27;, _ix - 1 ) 
+                        ;
+                   
+                    _p.selector().find( _selector ).addClass( &#x27;js_bccDateColHover&#x27; );
+                    _p.selector().find( _prevSelector ).addClass( &#x27;js_bccDateColHover&#x27; );
+
+                });
+
+                _p.selector().delegate( &#x27;th.js_bccDateLabel&#x27;,  &#x27;mouseleave&#x27;, function( _evt ){
+                    var _sp = $( this ), _ix = parseInt( _sp.attr( &#x27;data-colCount&#x27; ) )
+                        , _selector = JC.f.printf( &#x27;th.js_bccDateCol_{0}, td.js_bccDateCol_{0}&#x27;, _ix ) 
+                        , _prevSelector = JC.f.printf( &#x27;th.js_bccDateCol_{0}, td.js_bccDateCol_{0}&#x27;, _ix - 1 ) 
+                        ;
+                   
+                    _p.selector().find( _selector ).removeClass( &#x27;js_bccDateColHover&#x27; );
+                    _p.selector().find( _prevSelector ).removeClass( &#x27;js_bccDateColHover&#x27; );
+                });
             }
 
         , _init_date_control:
@@ -1037,6 +1076,7 @@
                 _p.on( &#x27;clear_init_data&#x27;, function( _evt ){
                     _p._model.saveSelectItems().remove();
                 });
+
             }
 
         , _inited:
@@ -1381,10 +1421,13 @@
                             , _name = &#x27;&#x27;
                             , _shortName = &#x27;&#x27;
                             , _class
+                            , _styleClass = &#x27;&#x27;
                             ;
 
+                        k === 31 &amp;&amp; ( _styleClass = &quot;js_bccDataRowLastCell&quot; );
+
                         if( k &gt; _maxDay ){
-                            _days.push( JC.f.printf( &#x27;&lt;td class=&quot;js_bccDateItem xnocursor&quot;&gt;&lt;div&gt;&amp;nbsp;&lt;/div&gt;&lt;/td&gt;&#x27; ) );
+                            _days.push( JC.f.printf( &#x27;&lt;td class=&quot;js_bccDateItem xnocursor {0}&quot;&gt;&lt;div&gt;&amp;nbsp;&lt;/div&gt;&lt;/td&gt;&#x27;, _styleClass ) );
                             break;
                         }
 
@@ -1401,9 +1444,10 @@
                         _status == CRMSchedule.STATUS_CAN_SELECT &amp;&amp; ( _hasCanSelect = true );
                         _status == CRMSchedule.STATUS_LOCKED &amp;&amp; ( _hasLocked = true );
 
-                        _days.push( JC.f.printf( &#x27;&lt;td class=&quot;js_bccDateItem {0}&quot; data-id=&quot;{2}&quot; data-date=&quot;{3}&quot; title=&quot;{3}\n{1}&quot;&gt;&#x27; 
-                                                    +&#x27;&lt;div&gt;{4}&lt;/div&gt;&lt;/td&gt;&#x27;
-                                    , _class, _name, _item.id, _sPosDate, _shortName ) );
+                        _days.push( JC.f.printf( &#x27;&lt;td class=&quot;js_bccDateItem {0} {5} js_bccDateCol_{6}&quot; title=&quot;{3}\n{1}&quot; &#x27; 
+                                    +&#x27; data-id=&quot;{2}&quot; data-date=&quot;{3}&quot; data-colCount=&quot;{6}&quot;&gt;&#x27; 
+                                    +&#x27;&lt;div&gt;{4}&lt;/div&gt;&lt;/td&gt;&#x27;
+                                    , _class, _name, _item.id, _sPosDate, _shortName, _styleClass, k ) );
                     }
 
                     if( _p._model.actionType() == &#x27;lock&#x27; || _p._model.actionType() == &#x27;edit&#x27; ){
@@ -1416,7 +1460,7 @@
                                             , _item.name, _days.join(&#x27;&#x27;) 
                                             , _parent1_id, _parent2_id
                                             , _item.id
-                                            , _ckAll
+                                            , _ckAll, i
                                         );
 
                     _r.push( _tmpTpl );
@@ -1437,14 +1481,14 @@
                     var _cur = i + 1;
                     if( _cur &gt; _maxDay ){
                         _r.week.push( JC.f.printf( &#x27;&lt;th class=&quot;js_bccWeekLabel&quot;&gt;&lt;/th&gt;&#x27; ) );
-                        _r.date.push( JC.f.printf( &#x27;&lt;th class=&quot;js_bccDateLabel xnocursor&quot;&gt;&lt;/th&gt;&#x27; ) );
+                        _r.date.push( JC.f.printf( &#x27;&lt;th class=&quot;js_bccDateLabel xnocursor&quot;&gt;&lt;/th&gt;&#x27;, i + 1 ) );
                         break;
                     }
                     _date.setDate( _cur );
                     _r.week.push( JC.f.printf( &#x27;&lt;th class=&quot;js_bccWeekLabel&quot; data-date=&quot;{1}&quot; data-day=&quot;{2}&quot;&gt;{0}&lt;/th&gt;&#x27;
                                 , CRMSchedule.WEEK_SCH[ _date.getDay() ], JC.f.formatISODate( _date ), _date.getDay()  ) );
-                    _r.date.push( JC.f.printf( &#x27;&lt;th class=&quot;js_bccDateLabel&quot; data-date=&quot;{1}&quot;&gt;{0}&lt;/th&gt;&#x27;
-                                , _cur, JC.f.formatISODate( _date ) ) );
+                    _r.date.push( JC.f.printf( &#x27;&lt;th class=&quot;js_bccDateLabel js_bccDateCol_{2}&quot; data-date=&quot;{1}&quot; data-colCount=&quot;{2}&quot;&gt;{0}&lt;/th&gt;&#x27;
+                                , _cur, JC.f.formatISODate( _date ), i + 1 ) );
                 }
 
                 _r.date = _r.date.join(&#x27;&#x27;);

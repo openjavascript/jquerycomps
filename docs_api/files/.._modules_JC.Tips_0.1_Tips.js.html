@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>..\modules\JC.Tips\0.1\Tips.js - jquery components</title>
+    <title>../modules/JC.Tips/0.1/Tips.js - jquery components</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -21,7 +21,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..\jc_logo.png" title="jquery components"></h1>
+                <h1><img src="../jc_logo.png" title="jquery components"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -228,7 +228,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ..\modules\JC.Tips\0.1\Tips.js</h1>
+                        <h1 class="file-heading">File: ../modules/JC.Tips/0.1/Tips.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -833,7 +833,7 @@
      * 页面加载完毕后, 是否自动初始化 Tips
      */
     $(document).ready( function( _devt ){
-        setTimeout( function(){
+        JC.f.safeTimeout( function(){
             if( !JC.Tips.autoInit ) return;
 
             Tips.titleToTipsdata( $(&#x27;[title]&#x27;) );
@@ -845,7 +845,7 @@
                 JC.Tips.init( _p );
                 tipMouseenter.call( this, _evt );
             });
-        }, 10);
+        }, null, &#x27;COMP_INIT_TIPS&#x27;, 500 );
     });
 
     return JC.Tips;

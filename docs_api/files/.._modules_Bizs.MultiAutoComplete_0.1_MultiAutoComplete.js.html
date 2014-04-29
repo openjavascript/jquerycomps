@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>..\modules\Bizs.MultiAutoComplete\0.1\MultiAutoComplete.js - jquery components</title>
+    <title>../modules/Bizs.MultiAutoComplete/0.1/MultiAutoComplete.js - jquery components</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -21,7 +21,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..\jc_logo.png" title="jquery components"></h1>
+                <h1><img src="../jc_logo.png" title="jquery components"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -228,7 +228,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ..\modules\Bizs.MultiAutoComplete\0.1\MultiAutoComplete.js</h1>
+                        <h1 class="file-heading">File: ../modules/Bizs.MultiAutoComplete/0.1/MultiAutoComplete.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -521,7 +521,7 @@
                     //JC.log( &#x27;_macDefaultValue:&#x27;, _macDefaultValue, _text );
 
                     _nextSelector = _p._model.nextSelector( _selector );
-                    if( _nextSelector &amp;&amp; _nextSelector.length ){
+                    if( _nextSelector &amp;&amp; _nextSelector.length &amp;&amp; _data.data.length ){
                         _p.trigger( &#x27;update_selector&#x27;, [ _nextSelector, true ] );
                     }else{
                         !_noTriggerAllUpdated &amp;&amp; _p.trigger( &#x27;all_updated&#x27; );
@@ -911,8 +911,12 @@
 
                 if( _prevSelector &amp;&amp; _prevSelector.length ){
                     _parentId = _p.macDefaultValue( _prevSelector );
-                    //alert( [ _prevSelector.val(), _parentId, _prevSelector.attr( &#x27;name&#x27; ) ] );
-                    _parentId &amp;&amp; ( _url = JC.f.printf( _url, _parentId ) );
+
+                    if( !_parentId ){
+                        !_noTriggerAllUpdated &amp;&amp; _p.trigger( &#x27;all_updated&#x27; );
+                        if( !_noTriggerAllUpdated ) return;
+                    }
+                    _url = JC.f.printf( _url, _parentId );
                 }
 
                 $.get( _url ).done( function( _text ){

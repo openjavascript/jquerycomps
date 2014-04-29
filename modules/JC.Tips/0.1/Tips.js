@@ -599,7 +599,7 @@
      * 页面加载完毕后, 是否自动初始化 Tips
      */
     $(document).ready( function( _devt ){
-        setTimeout( function(){
+        JC.f.safeTimeout( function(){
             if( !JC.Tips.autoInit ) return;
 
             Tips.titleToTipsdata( $('[title]') );
@@ -611,7 +611,7 @@
                 JC.Tips.init( _p );
                 tipMouseenter.call( this, _evt );
             });
-        }, 10);
+        }, null, 'COMP_INIT_TIPS', 500 );
     });
 
     return JC.Tips;
