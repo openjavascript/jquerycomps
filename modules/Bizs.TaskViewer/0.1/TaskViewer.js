@@ -204,7 +204,7 @@
         buildHeaderTpl: function (l) {
             var cnWeek = '一二三四五六日',
                 i = 0,
-                tpl = '<tr><th>已选天数</th><th style="width:80px; height:30px; padding:0!important;">'
+                tpl = '<tr><th class="COMP_task_view_counter">已选天数</th><th style="width:80px; height:30px; padding:0!important;">'
                             + '<div class="COMP_task_view_slash">'
                                 + '<b>星期</b>'
                                 + '<em>日期</em>'
