@@ -269,15 +269,16 @@
             function( _ms, _type ){
                 typeof _ms == &#x27;undefined&#x27; &amp;&amp; ( _ms = 1000 );
                 _type = FU.type( _type );
-                if( !_type ) return FU;
                 if( ! FU.parent() ) return FU;
                 var _ext = { &#x27;type&#x27;: _type };
 
-                FU.parent().jEventHost.trigger( &#x27;size&#x27;, [ FU.getInfo( _ext ) ] );
+                $( FU ).data( &#x27;FUI_noticeSize&#x27; ) &amp;&amp; clearInterval( $( FU ).data( &#x27;FUI_noticeSize&#x27; ) );
+
+                FU.parent().jEventHost.trigger( &#x27;size&#x27;, [ FU.info( _ext ) ] );
                 _ms
-                    &amp;&amp; setInterval( function(){
-                        FU.parent().jEventHost.trigger( &#x27;size&#x27;, [ FU.getInfo( _ext ) ] );
-                    }, _ms );
+                    &amp;&amp; $(FU).data( &#x27;FUI_noticeSize&#x27;, setInterval( function(){
+                        FU.parent().jEventHost.trigger( &#x27;size&#x27;, [ FU.info( _ext ) ] );
+                    }, _ms ) );
 
                 return FU;
             }
@@ -291,18 +292,18 @@
 
         , noticeData:
             function( _data, _type ){
-                _type = FU.type( _type );
-                if( !(_data &amp;&amp; _type ) ) return FU;
+                if( !(_data) ) return FU;
                 if( !FU.parent() ) return FU;
+                _type = FU.type( _type );
 
-                FU.parent().jEventHost.trigger( &#x27;data&#x27;, FU.getInfo( { &#x27;data&#x27;: _data, &#x27;type&#x27;: _type } ) );
+                FU.parent().jEventHost.trigger( &#x27;data&#x27;, FU.info( { &#x27;data&#x27;: _data, &#x27;type&#x27;: _type } ) );
                 return FU;
             }
 
         , noticeClose:
             function( _type ){
                 _type = FU.type( _type );
-                FU.parent().jEventHost.trigger( &#x27;close&#x27;, FU.getInfo( { &#x27;type&#x27;: _type } ) );
+                FU.parent().jEventHost.trigger( &#x27;close&#x27;, FU.info( { &#x27;type&#x27;: _type } ) );
                 return FU;
             }
 
@@ -324,13 +325,14 @@
                         , &#x27;FrameUtil&#x27;: window.parent.JC.FrameUtil
                         , &#x27;eventHost&#x27;: window.parent.JC.FrameUtil.eventHost
                         , &#x27;jEventHost&#x27;: window.parent.$( window.parent.JC.FrameUtil.eventHost )
+                        , &#x27;id&#x27;: window.parent.JC.FrameUtil.id()
                     };
                 }
 
                 return _r;
             }
        
-        , getInfo:
+        , info:
             function( _ext ){
                 var _body = $( document.body )
                     , _r = { 
@@ -339,24 +341,172 @@
                         , &#x27;height&#x27;: document.documentElement.offsetHeight
                         , &#x27;bodyWidth&#x27;: _body.width()
                         , &#x27;bodyHeight&#x27;: _body.height()
+                        , &#x27;id&#x27;: FU.id()
                     };
 
                 _ext &amp;&amp; ( _r = JC.f.extendObject( _r, _ext ) );
 
                 return _r;
             }
+       
+        , frameInfo:
+            function( _frame, _ext ){
+                _frame &amp;&amp; ( _frame = $( _frame ) );
+                var _r = null;
+
+                if( _frame &amp;&amp; _frame.length ){
+                    var _cwin = _frame.prop( &#x27;contentWindow&#x27; )
+                        , _cdoc = _frame.prop( &#x27;contentDocument&#x27; )
+                        , _type = JC.f.getUrlParam( _frame.attr(&#x27;src&#x27;) || &#x27;&#x27;, &#x27;jsAction&#x27; ) || _cwin.name || &#x27;&#x27;
+                        ;
+
+                    _r = { 
+                        &#x27;$&#x27;: _cwin.$
+                        , &#x27;width&#x27;: _cdoc.documentElement.offsetWidth
+                        , &#x27;height&#x27;: _cdoc.documentElement.offsetHeight
+                        , &#x27;bodyWidth&#x27;: _cdoc.body.offsetWidth
+                        , &#x27;bodyHeight&#x27;: _cdoc.body.offsetHeight
+                        , &#x27;win&#x27;: _cwin
+                        , &#x27;doc&#x27;: _cdoc
+                        , &#x27;type&#x27;: _type
+                        , &#x27;id&#x27;: &#x27;&#x27;
+                    };
+
+                    if( _cwin.JC &amp;&amp; _cwin.JC.FrameUtil ){
+                        _r.id = _cwin.JC.FrameUtil.id();
+                    }
+
+                    _ext &amp;&amp; ( _r = JC.f.extendObject( _r, _ext ) );
+                }
+
+                return _r;
+            }
 
         , type:
-            function( _type, _plus ){
+            function( _type, _plus, _frame ){
                 if( !_type ){
-                    _type = JC.f.getUrlParam( &#x27;jsAction&#x27; );
-                    _type &amp;&amp; _plus &amp;&amp; ( _type += _plus );
+                    _frame &amp;&amp; ( _frame = $( _frame ) );
+                    if( _frame &amp;&amp; _frame.length ){
+                        _type = JC.f.getUrlParam( _frame.attr( &#x27;jsAction&#x27; ) || &#x27;&#x27;,  &#x27;jsAction&#x27; );
+                        _type = _type || _frame.prop( &#x27;contentWindow&#x27; ).name || &#x27;&#x27;;
+                    }else{
+                        _type = JC.f.getUrlParam( &#x27;jsAction&#x27; );
+                        _type = _type || window.name || &#x27;&#x27;;
+                    }
                 }
+                _type &amp;&amp; _plus &amp;&amp; ( _type += _plus );
+
                 return _type;
             }
 
         , eventHost: {}
+
+        , updateChildrenSize:
+            function( _frames ){
+                _frames &amp;&amp; ( _frames = $( _frames ) );
+                if( !( _frames &amp;&amp; _frames.length ) ) return;
+                _frames.each( function(){
+                    FU.updateChildSize( $( this ) );
+                });
+                return FU;
+            }
+
+        , updateChildSize:
+            function( _frame ){
+                _frame &amp;&amp; ( _frame = $( _frame ) );
+                if( !( _frame &amp;&amp; _frame.length ) ) return;
+                if( !_frame.is( &#x27;:visible&#x27; ) ) return;
+                var _finfo, _h;
+                _finfo = FU.frameInfo( _frame );
+                _frame.css( FU.cssFromSizePattern( FU.childSizePattern, _finfo ) );
+            }
+
+        , childrenAutoSize:
+            function( _frames, _ms ){
+                _frames &amp;&amp; ( _frames = $( _frames ) );
+                if( !( _frames &amp;&amp; _frames.length ) ) return;
+                typeof _ms == &#x27;undefined&#x27; &amp;&amp; ( _ms = 1000 );
+                var _d = { &#x27;frames&#x27;: _frames };
+
+                FU.updateChildrenSize( _frames );
+
+                _frames.data( &#x27;FUI_autoSize&#x27; ) 
+                    &amp;&amp; clearInterval( _frames.data( &#x27;FUI_autoSize&#x27; ) )
+                    ;
+
+                _ms
+                    &amp;&amp; _frames.data( &#x27;FUI_autoSize&#x27;, setInterval( function(){
+                        FU.updateChildrenSize( _frames );
+                    }, _ms ) );
+
+                return FU;
+            }
+
+        , childHeightOffset: 100
+        , childSizePattern: 1 //1: height, 2: width, 3: height + width
+
+        , id: function(){ return FU._id; }
+
+        , detectChildAutoSize: true
+
+        , childIdMap: 
+            function( _id ){
+                var _r;
+
+                if( _id ){
+                    if( _id in FU._childIdMap ){
+                        _r = FU._childIdMap[ _id ];
+                    }else{
+                        $( &#x27;iframe&#x27; ).each( function( _ix ){
+                            var _iframe = $( this ), _win = _iframe.prop( &#x27;contentWindow&#x27; ); 
+
+                            if( 
+                                _win &amp;&amp; _win.JC &amp;&amp; _win.JC.FrameUtil
+                                &amp;&amp; _win.JC.FrameUtil.id() 
+                            ){
+                                if( _win.JC.FrameUtil.id() === _id ){
+                                    FU._childIdMap[ _id ] = _r = _iframe;
+                                    return false;
+                                }
+                            }
+                        });
+                    }
+                }
+                return _r;
+            }
+        , _childIdMap: {}
+
+        //1: height, 2: width, 3: height + width
+        , cssFromSizePattern:
+            function( _pattern, _params ){
+                var _css = {};
+                switch( _pattern ){
+                    case 1: _css.height = _params.height; break;
+                    case 2: _css.width = _params.width; break;
+                    default: 
+                       _css.height = _params.height;
+                       _css.width = _params.width;
+                       break;
+                }
+                return _css;
+            }
+
     };
+
+    FU._id = location.href + &#x27;_&#x27; + new Date().getTime();
+
+    JC.f.safeTimeout( function(){
+
+        if( FU.detectChildAutoSize ){
+            JC.FrameUtil.subscribeEvent( &#x27;size&#x27;, function( _evt, _params ){
+                var _childFrame = FU.childIdMap( _params.id ), _css;
+                if( _childFrame &amp;&amp; _childFrame.length ){
+                    _childFrame.css( FU.cssFromSizePattern( FU.childSizePattern, _params ) );
+                }
+            });
+        }
+
+    }, null, &#x27;JCFrameUtilInit&#x27;, 200 );
 
     return JC.FrameUtil;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 

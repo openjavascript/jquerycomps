@@ -85,7 +85,6 @@
                 });
             }
         }
-        
         return _r;
     };
 
@@ -248,6 +247,7 @@
                 placeholder = '';
                 day = new Date(year, month, 1).getDay() - 1;      
                 while(day--) {
+                    if( day <= 0 ) break;
                     placeholder += '<td>&nbsp;</td>'
                 }
                 tpl += '<tr class="' + key + '"><td class="COMP_task_view_counter">&nbsp;</td><td class="COMP_task_view_date">' + year + '年' + (month + 1) + '月' +'</td>' + placeholder;
