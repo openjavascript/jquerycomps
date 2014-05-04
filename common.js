@@ -1054,6 +1054,11 @@
          * 自动完成
          */
         Bizs.AutoSelectComplete && Bizs.AutoSelectComplete.init( _selector );
+
+        /**
+         *排期日期展示
+        */
+        Bizs.TaskViewer && Bizs.TaskViewer.init(_selector);
     }
     /**
      * URL 占位符识别功能
