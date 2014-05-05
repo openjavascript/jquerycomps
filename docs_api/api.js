@@ -17,6 +17,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Dialog.mask",
         "JC.Dialog.msgbox",
         "JC.Drag",
+        "JC.DragSelect",
         "JC.Fixed",
         "JC.Form",
         "JC.FormFillUrl",
