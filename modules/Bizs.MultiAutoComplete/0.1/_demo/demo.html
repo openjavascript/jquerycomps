@@ -81,7 +81,7 @@
             />
         <input type="hidden" value="2341" class="js_k2_id" name="k2_id" />
 
-        <input type="text" class="ui-sug-ipt js_compAutoComplete js_k3" name="k3" value="区" 
+        <input type="text" class="ui-sug-ipt js_compAutoComplete js_k3" name="k3" value="" 
             autocomplete="off" 
             Placeholder="三级位置"
 
@@ -95,31 +95,30 @@
             cacListAll="true"
             cacDisableSelectedBlur="true"
             cacMultiSelectBarTpl="/script.cacMultiSelectBarTplScript"
+            cacBoxWidth="640"
 
             cacPreventEnter="true" 
 
             macUrl="./data/shengshi_with_error_code.php?id={0}"
-            macAddtionUrl="./data/shengshi_with_error_code.php?id=0"
+            macAddtionUrl="./data/all_three.php"
             macAddtionBox="/.js_macAddtionBox"
             macAddtionBoxItemTpl="/script.macAddtionBoxItemTpl"
             macAddtionBoxItemSelector="> a"
             macAddtionItemAddCallback="macAddtionItemAddCallback"
             macAddtionItemRemoveCallback="macAddtionItemRemoveCallback"
             />
-        <span class="js_macAddtionBox" style="display:none;">
+        <div class="js_macAddtionBox" style="display:none; width: 680px;">
             <a href="javascript:" class="js_macClearAddtionList">
                 <button type="button" class="AUClose"></button>
                 清空
             </a>
             :
-            <span class="js_macAddtionBoxList">
-                <a href="javascript:" class="js_macAddtionBoxItem" data-id="2345" data-label="枫溪区">
-                    <label>枫溪区</label>
-                    <button type="button" class="AURemove"></button>
+            <div class="js_macAddtionBoxList xclear">
+                <a href="javascript:" class="js_macAddtionBoxItem" data-id="2345" id="macAddtionBoxItemId_1_2345" data-label="枫溪区"><button type="button" class="AURemove"></button><label>枫溪区</label>
                     <input type="hidden" name="condition[]" value="2345">
                 </a>
-            </span>
-        </span>
+            </div>
+        </div>
 
         <script type="text/template" class="cacMultiSelectBarTplScript">
             <div class="cacMultiSelectBarTpl">
@@ -133,10 +132,7 @@
         </script>
 
         <script type="text/template" class="macAddtionBoxItemTpl">
-            <a href="javascript:" class="js_macAddtionBoxItem" data-id="{0}" data-label="{1}">
-                <label>{1}</label>
-                <button type="button" class="AURemove"></button>
-                <input type="hidden" name="condition[]" value="{0}" />
+            <a href="javascript:" class="js_macAddtionBoxItem" data-id="{0}" data-label="{1}" id="{2}"><button type="button" class="AURemove"></button><label>{1}</label><input type="hidden" name="condition[]" value="{0}" />
             </a>
         </script>
 

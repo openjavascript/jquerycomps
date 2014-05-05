@@ -244,13 +244,15 @@
 
                     if( !_findControls.length ) return;
 
+                    //JC.log( _k, _findControls.length, _vals );
+
                     $.each( _findControls, function( _ix, _item ){
                         var _nt = ( _item.prop( 'nodeName' ) ).toLowerCase()
                             , _type = ( _item.attr( 'type' ) || 'text' ).toLowerCase()
                             ;
                         if( _type == 'file' ) return;
 
-                        JC.log( _nt, _type );
+                        //JC.log( _nt, _type );
 
                         if( /input/i.test( _nt ) ){
                             switch( _type ){
@@ -260,6 +262,7 @@
                                     break;
 
                                 default: 
+                                    if( _findControls.length != _vals.length ) return;
                                     _p._updateInputVal( _item, _vals, _ix );
                                     break;
                             }
