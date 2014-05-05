@@ -165,11 +165,11 @@
             "name": "../bizs/TaskViewer/TaskViewer.js",
             "modules": {},
             "classes": {
-                "Bizs.TaskViewer": 1
+                "window.Bizs.TaskViewer": 1
             },
             "fors": {},
             "namespaces": {
-                "Bizs": 1
+                "window.Bizs": 1
             }
         },
         "../comps/AjaxUpload/AjaxUpload.js": {
@@ -527,6 +527,17 @@
             "namespaces": {
                 "JC": 1,
                 "JC.Slider": 1
+            }
+        },
+        "../comps/StepControl/StepControl.js": {
+            "name": "../comps/StepControl/StepControl.js",
+            "modules": {},
+            "classes": {
+                "JC.StepControl": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
             }
         },
         "../comps/Suggest/Suggest.js": {
@@ -940,15 +951,15 @@
                 "\n<xmp><div class=\"js_bizMultiUpload\"\n   bmuBoxSelector=\"|.uploadItemBox\"\n   bmuTplSelector=\"|script\"\n   bmuItemDelegate=\">\"\n   bmuRemoveDelegate=\".js_removeUploadItem\"\n   bmuRemoveItemParentSelector=\"(\"\n   bmuAjaxUploadSelector=\"|.js_compAjaxUpload\"\n   bmuItemLimit=\"2\"\n   >\n   <div>\n       <input type=\"hidden\" class=\"ipt ipt-w180 js_compAjaxUpload\" value=\"\"\n           cauStyle=\"w1\"\n           cauButtonText=\"上传资质文件\"\n           cauUrl=\"../_demo/data/handler.php\"\n           cauFileExt=\".jpg, .jpeg, .png, .gif\"\n           cauFileName=\"file\"\n           cauValueKey=\"url\"\n           cauLabelKey=\"name\"\n           cauProgressBox=\"/span.AUProgressBox\"\n           />\n           <span class=\"AUProgressBox\" style=\"display:none;\">\n               <button type=\"button\" class=\"AUProgress\"><div class=\"AUPercent\"></div></button>\n               <button type=\"button\" class=\"AUCancelProgress\"></button>\n           </span>\n           .jpg, .jpeg, .png, .gif\n           (最多上传2个)\n   </div>\n   <dl class=\"uploadItemBox\">\n   </dl>\n   <script type=\"text/template\">\n       <dd class=\"js_multiUploadItem\">\n           <input type=\"hidden\" name=\"file[]\" value=\"{0}\" class=\"js_multiUploadHidden\" />\n           <a href=\"{0}\" target=\"_blank\"><label class=\"js_multiUploadLabel\">{1}</label></a>\n           <button type=\"button\" class=\"AURemove js_removeUploadItem\"></button>\n       </dd>\n   </script>\n</div></xmp>"
             ]
         },
-        "Bizs.TaskViewer": {
-            "name": "Bizs.TaskViewer",
-            "shortname": "Bizs.TaskViewer",
+        "window.Bizs.TaskViewer": {
+            "name": "window.Bizs.TaskViewer",
+            "shortname": "window.Bizs.TaskViewer",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "namespace": "Bizs",
+            "namespace": "window.Bizs",
             "file": "../bizs/TaskViewer/TaskViewer.js",
             "line": 2,
             "description": "TaskViewer 日历任务展示面板\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href=\"JC.common.html\">JC.common</a>\n  , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.TaskViewer.html' target='_blank'>API docs</a>\n  | <a href='../../modules/Bizs.TaskViewer/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本文件, 默认会自动初始化class=\"js_COMPTaskViewer\"下的日期</h2>\n\n\n<h2>可用的 HTML attribute</h2>\n<dl>\n<dt>taskselecteddates = selector</dt>\n<dd>指定选定的日期标签</dd>\n<dt>taskdeleteddates = selector</dt>\n<dd>指定删除的日期标签</dd>\n<dt>tasknewaddeddates = selector</dt>\n<dd>指定新增的日期标签</dd>\n</dl>",
@@ -1264,20 +1275,10 @@
             "namespace": "JC",
             "file": "../comps/FrameUtil/FrameUtil.js",
             "line": 2,
-            "description": "<p><b>require</b>:\n   <a href='JC.common.html'>JC.common</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n   | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.FrameUtil.html' target='_blank'>API docs</a>\n   | <a href='../../modules/JC.FrameUtil/0.1/_demo' target='_blank'>demo link</a></p>\n  \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compFrameUtil\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n    <dt></dt>\n    <dd><dd>\n</dl>",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "",
-                    "type": "Selector|string"
-                }
-            ],
+            "description": "<h2>iframe 自适应 与 数据交互 工具类</h2>\n\n<p><b>require</b>:\n    <a href='JC.common.html'>JC.common</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n | <a href='http://jc.openjavascript.org/docs_api/classes/JC.FrameUtil.html' target='_blank'>API docs</a>\n | <a href='../../comps/FrameUtil/_demo' target='_blank'>demo link</a></p>",
+            "static": 1,
             "version": "dev 0.1 2014-04-26",
-            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
-            "example": [
-                "\n        <h2>JC.FrameUtil 示例</h2>"
-            ]
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team"
         },
         "JC.ImageCutter": {
             "name": "JC.ImageCutter",
@@ -1959,6 +1960,33 @@
                     "description": "",
                     "type": "Selector"
                 }
+            ]
+        },
+        "JC.StepControl": {
+            "name": "JC.StepControl",
+            "shortname": "JC.StepControl",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../comps/StepControl/StepControl.js",
+            "line": 2,
+            "description": "组件用途简述\n\n<p><b>require</b>:\n  <a href=\"widnow.jQuery.html\">jQuery</a>\n  , <a href='JC.Valid.html'>JC.Valid</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n  | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.StepControl.html' target='_blank'>API docs</a>\n  | <a href='../../modules/JC.StepControl/0.1/_demo' target='_blank'>demo link</a></p>\n \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compStepControl\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt></dt>\n   <dd><dd>\n</dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-12-13",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n       <h2>JC.StepControl 示例</h2>"
             ]
         },
         "JC.Suggest": {
@@ -3502,8 +3530,8 @@
                 "description": "",
                 "type": "TaskViewerInstance"
             },
-            "class": "Bizs.TaskViewer",
-            "namespace": "Bizs"
+            "class": "window.Bizs.TaskViewer",
+            "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/TaskViewer/TaskViewer.js",
@@ -3523,8 +3551,8 @@
                 "description": "",
                 "type": "Array of TaskViewerInstance"
             },
-            "class": "Bizs.TaskViewer",
-            "namespace": "Bizs"
+            "class": "window.Bizs.TaskViewer",
+            "namespace": "window.Bizs"
         },
         {
             "file": "../comps/AjaxUpload/AjaxUpload.js",
@@ -6779,6 +6807,326 @@
                 "description": "FormFillUrlInstance"
             },
             "class": "JC.FormFillUrl",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 22,
+            "description": "事件保存与触发对象",
+            "itemtype": "property",
+            "name": "eventHost",
+            "type": "object",
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 28,
+            "description": "frame 高度偏移值",
+            "itemtype": "property",
+            "name": "heightOffset",
+            "type": "int",
+            "default": "0",
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 35,
+            "description": "自动大小的间隔\n<br />单位毫秒",
+            "itemtype": "property",
+            "name": "autoUpdateSizeMs",
+            "type": "int",
+            "default": "1000",
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 43,
+            "description": "设置自适应大小应用的属性\n<br />1: height\n<br />2: width\n<br />3: height + width",
+            "itemtype": "property",
+            "name": "childSizePattern",
+            "type": "int",
+            "default": "1",
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 53,
+            "description": "是否自动响应关闭事件",
+            "itemtype": "property",
+            "name": "isChildAutoClose",
+            "type": "boolean",
+            "default": "true",
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 60,
+            "description": "是否自动响应大小改变事件",
+            "itemtype": "property",
+            "name": "isChildAutoSize",
+            "type": "boolean",
+            "default": "true",
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 67,
+            "description": "获取 JC.FrameUtil 唯一id\n<br />id = location.url_timestamp",
+            "itemtype": "method",
+            "name": "id",
+            "return": {
+                "description": "string"
+            },
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 74,
+            "description": "通知父窗口更新frame大小",
+            "itemtype": "method",
+            "name": "noticeSize",
+            "params": [
+                {
+                    "name": "_type",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 87,
+            "description": "自动通知父窗口更新frame大小",
+            "itemtype": "method",
+            "name": "autoNoticeSize",
+            "params": [
+                {
+                    "name": "_ms",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "_type",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 106,
+            "description": "订阅 frame 的事件\n<br />目前有以下事件:\n<br />close: 关闭\n<br />size: 更新大小\n<br />data: json 数据",
+            "itemtype": "method",
+            "name": "subscribeEvent",
+            "params": [
+                {
+                    "name": "_name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_cb",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 122,
+            "description": "通知父级有数据交互",
+            "itemtype": "method",
+            "name": "noticeData",
+            "params": [
+                {
+                    "name": "_data",
+                    "description": "",
+                    "type": "Json"
+                },
+                {
+                    "name": "_type",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 137,
+            "description": "通知父级关闭窗口",
+            "itemtype": "method",
+            "name": "noticeClose",
+            "params": [
+                {
+                    "name": "_type",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 148,
+            "description": "获取窗口信息",
+            "itemtype": "method",
+            "name": "info",
+            "return": {
+                "description": "$, width, height, bodyWidth, bodyHeight, id",
+                "type": "Object"
+            },
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 169,
+            "description": "获取父级窗口信息",
+            "itemtype": "method",
+            "name": "parent",
+            "return": {
+                "description": "$, win, jwin, JC, FrameUtil, eventHost, jEventHost, id",
+                "type": "Object"
+            },
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 198,
+            "description": "获取子级窗口信息",
+            "itemtype": "method",
+            "name": "parent",
+            "return": {
+                "description": "$, width, height, bodyWidth, bodyHeight, win, doc, type, id",
+                "type": "Object"
+            },
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 241,
+            "description": "获取窗口类型\n<br />这个方法的作用可用 id() + childIdMap() 替代",
+            "itemtype": "method",
+            "name": "type",
+            "default": "window.name",
+            "return": {
+                "description": "string"
+            },
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 264,
+            "description": "批量更新 frame 大小",
+            "itemtype": "method",
+            "name": "updateChildrenSize",
+            "params": [
+                {
+                    "name": "_frames",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 278,
+            "description": "更新 frame 大小",
+            "itemtype": "method",
+            "name": "updateChildSize",
+            "params": [
+                {
+                    "name": "_frame",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 294,
+            "description": "自动批量更新 frame 大小",
+            "itemtype": "method",
+            "name": "childrenAutoSize",
+            "params": [
+                {
+                    "name": "_frames",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_ms",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 320,
+            "description": "通过 id 比对 frame 的 FrameUtil.id() 获取 frame",
+            "itemtype": "method",
+            "name": "childIdMap",
+            "params": [
+                {
+                    "name": "_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "selector | null"
+            },
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FrameUtil/FrameUtil.js",
+            "line": 353,
+            "description": "通过 FrameUtil.childSizePattern 获取对应的 css 样式",
+            "itemtype": "method",
+            "name": "cssFromSizePattern",
+            "params": [
+                {
+                    "name": "_pattern",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "_params",
+                    "description": "",
+                    "type": "Json"
+                }
+            ],
+            "return": {
+                "description": "json"
+            },
+            "class": "JC.FrameUtil",
             "namespace": "JC"
         },
         {
@@ -10705,6 +11053,27 @@
             "namespace": "JC.Slider"
         },
         {
+            "file": "../comps/StepControl/StepControl.js",
+            "line": 52,
+            "description": "初始化可识别的 StepControl 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of StepControlInstance"
+            },
+            "class": "JC.StepControl",
+            "namespace": "JC"
+        },
+        {
             "file": "../comps/Suggest/Suggest.js",
             "line": 125,
             "description": "suggest_so({ \"p\" : true,\n              \"q\" : \"shinee\",\n              \"s\" : [ \"shinee 综艺\",\n                  \"shinee美好的一天\",\n                  \"shinee hello baby\",\n                  \"shinee吧\",\n                  \"shinee泰民\",\n                  \"shinee fx\",\n                  \"shinee快乐大本营\",\n                  \"shinee钟铉车祸\",\n                  \"shinee年下男的约会\",\n                  \"shinee dream girl\"\n                ]\n            });",
@@ -14594,19 +14963,14 @@
             "static": 1,
             "params": [
                 {
-                    "name": "_names",
+                    "name": "_items",
                     "description": "-            模块名\n                                          或者模块下面的某个js文件(test/test1.js, 路径前面不带\"/\"将视为test模块下的test1.js)\n                                          或者一个绝对路径的js文件, 路径前面带 \"/\"",
                     "type": "String"
                 },
                 {
-                    "name": "_basePath",
-                    "description": "-         指定要导入资源所在的主目录, 这个主要应用于 nginx 路径输出",
-                    "type": "String"
-                },
-                {
-                    "name": "_enableNginxStyle",
-                    "description": "-       指定是否需要使用 nginx 路径输出脚本资源",
-                    "type": "Bool"
+                    "name": "_readyCb",
+                    "description": "",
+                    "type": "Callback"
                 }
             ],
             "example": [
@@ -15809,6 +16173,12 @@
         {
             "file": "../common.js",
             "line": 1058,
+            "description": "排期日期展示",
+            "class": "JC.common"
+        },
+        {
+            "file": "../common.js",
+            "line": 1063,
             "description": "URL 占位符识别功能\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "urlDetect",
@@ -15830,7 +16200,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1099,
+            "line": 1104,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -15853,13 +16223,13 @@
         },
         {
             "file": "../common.js",
-            "line": 1163,
+            "line": 1168,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1181,
+            "line": 1186,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -15893,7 +16263,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1231,
+            "line": 1236,
             "description": "日期格式化 (具体格式请查看 PHP Date Formats)",
             "itemtype": "method",
             "name": "dateFormat",
@@ -15917,7 +16287,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1306,
+            "line": 1311,
             "description": "扩展对象属性",
             "itemtype": "method",
             "name": "extendObject",
@@ -15946,7 +16316,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1328,
+            "line": 1333,
             "description": "timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行",
             "itemtype": "method",
             "name": "safeTimeout",
@@ -15980,7 +16350,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1349,
+            "line": 1354,
             "description": "URL 请求时, 获取对URL参数进行编码的函数",
             "itemtype": "method",
             "name": "encoder",
@@ -16000,7 +16370,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1367,
+            "line": 1372,
             "description": "深度克隆对象",
             "itemtype": "method",
             "name": "cloneObject",
@@ -16327,6 +16697,10 @@
         {
             "message": "unknown tag: date",
             "line": " ../comps/Slider/Slider.js:3"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../comps/StepControl/StepControl.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -17033,8 +17407,12 @@
             "line": " ../common.js:1053"
         },
         {
+            "message": "Missing item type\n排期日期展示",
+            "line": " ../common.js:1058"
+        },
+        {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../common.js:1163"
+            "line": " ../common.js:1168"
         },
         {
             "message": "Missing item type\nFor feature detection",

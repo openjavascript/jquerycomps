@@ -53,8 +53,6 @@
             
                 <li><a href="../classes/.jQuery.html">.jQuery</a></li>
             
-                <li><a href="../classes/Bizs.TaskViewer.html">Bizs.TaskViewer</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -129,6 +127,8 @@
             
                 <li><a href="../classes/JC.Slider.Model.html">JC.Slider.Model</a></li>
             
+                <li><a href="../classes/JC.StepControl.html">JC.StepControl</a></li>
+            
                 <li><a href="../classes/JC.Suggest.html">JC.Suggest</a></li>
             
                 <li><a href="../classes/JC.Tab.html">JC.Tab</a></li>
@@ -179,6 +179,8 @@
             
                 <li><a href="../classes/window.Bizs.MultiUpload.html">window.Bizs.MultiUpload</a></li>
             
+                <li><a href="../classes/window.Bizs.TaskViewer.html">window.Bizs.TaskViewer</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -224,76 +226,177 @@
     <pre class="code prettyprint linenums">
  ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
 /**
- *&lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
- *   &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
- *&lt;/p&gt;
+ *  &lt;h2&gt;iframe 自适应 与 数据交互 工具类&lt;/h2&gt;
+ *
+ *  &lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
+ *      &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
+ *  &lt;/p&gt;
  *
  *&lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
- *   | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.FrameUtil.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
- *   | &lt;a href=&#x27;../../modules/JC.FrameUtil/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+ *   | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.FrameUtil.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+ *   | &lt;a href=&#x27;../../comps/FrameUtil/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
  *  
- *&lt;h2&gt;页面只要引用本脚本, 默认会处理 div class=&quot;js_compFrameUtil&quot;&lt;/h2&gt;
- *
- *&lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
- *
- *&lt;dl&gt;
- *    &lt;dt&gt;&lt;/dt&gt;
- *    &lt;dd&gt;&lt;dd&gt;
- *&lt;/dl&gt; 
- *
  * @namespace   JC
  * @class       FrameUtil
- * @constructor
- * @param   {selector|string}   _selector   
+ * @static
  * @version dev 0.1 2014-04-26
  * @author  qiushaowei &lt;suches@btbtd.org&gt; | 75 Team
- * @example
-        &lt;h2&gt;JC.FrameUtil 示例&lt;/h2&gt;
  */
     var _jdoc = $( document ), _jwin = $( window ), FU;
 
     JC.FrameUtil = FU = {
-        noticeSize:
-            function( _ms, _type ){
-                typeof _ms == &#x27;undefined&#x27; &amp;&amp; ( _ms = 1000 );
+        /**
+         * 事件保存与触发对象
+         * @property eventHost
+         * @type    object
+         */
+        eventHost: {}
+        /**
+         * frame 高度偏移值 
+         * @property heightOffset
+         * @type int
+         * @default 0
+         */
+        , heightOffset: 0
+        /**
+         * 自动大小的间隔
+         * &lt;br /&gt;单位毫秒
+         * @property autoUpdateSizeMs
+         * @type int
+         * @default 1000
+         */
+        , autoUpdateSizeMs: 1000 
+        /**
+         * 设置自适应大小应用的属性
+         * &lt;br /&gt;1: height
+         * &lt;br /&gt;2: width
+         * &lt;br /&gt;3: height + width
+         * @property childSizePattern
+         * @type int
+         * @default 1
+         */
+        , childSizePattern: 1 
+        /**
+         * 是否自动响应关闭事件
+         * @property isChildAutoClose
+         * @type boolean
+         * @default true
+         */
+        , isChildAutoClose: true
+        /**
+         * 是否自动响应大小改变事件
+         * @property isChildAutoSize
+         * @type boolean
+         * @default true
+         */
+        , isChildAutoSize: true
+        /**
+         * 获取 JC.FrameUtil 唯一id
+         * &lt;br /&gt;id = location.url_timestamp
+         * @method id
+         * @return string
+         */
+        , id: function(){ return FU._id; }
+        /**
+         * 通知父窗口更新frame大小
+         * @method noticeSize
+         * @param   {string}    _type
+         */
+        , noticeSize:
+            function( _type ){
                 _type = FU.type( _type );
-                if( !_type ) return FU;
                 if( ! FU.parent() ) return FU;
                 var _ext = { &#x27;type&#x27;: _type };
+                FU.parent().jEventHost.trigger( &#x27;size&#x27;, [ FU.info( _ext ) ] );
+                return FU;
+            }
+        /**
+         * 自动通知父窗口更新frame大小
+         * @method  autoNoticeSize
+         * @param   {int}       _ms
+         * @param   {string}    _type
+         */
+        , autoNoticeSize:
+            function( _ms, _type ){
+                typeof _ms == &#x27;undefined&#x27; &amp;&amp; ( _ms = FU.autoUpdateSizeMs );
 
-                FU.parent().jEventHost.trigger( &#x27;size&#x27;, [ FU.getInfo( _ext ) ] );
+                $( FU ).data( &#x27;FUI_noticeSize&#x27; ) &amp;&amp; clearInterval( $( FU ).data( &#x27;FUI_noticeSize&#x27; ) );
+                FU.noticeSize( _type );
                 _ms
-                    &amp;&amp; setInterval( function(){
-                        FU.parent().jEventHost.trigger( &#x27;size&#x27;, [ FU.getInfo( _ext ) ] );
-                    }, _ms );
+                    &amp;&amp; $(FU).data( &#x27;FUI_noticeSize&#x27;, setInterval( function(){
+                        FU.noticeSize( _type );
+                    }, _ms ) );
 
                 return FU;
             }
-
+        /**
+         * 订阅 frame 的事件
+         * &lt;br /&gt;目前有以下事件:
+         * &lt;br /&gt;close: 关闭
+         * &lt;br /&gt;size: 更新大小
+         * &lt;br /&gt;data: json 数据
+         * @method  subscribeEvent
+         * @param   {string}    _name
+         * @param   {function}  _cb
+         */
         , subscribeEvent:
             function( _name, _cb ){
                 if( !_name ) return FU;
                 $( FU.eventHost ).on( _name, _cb );
                 return FU;
             }
-
+        /**
+         * 通知父级有数据交互
+         * @method  noticeData
+         * @param   {json}      _data
+         * @param   {string}    _type
+         */
         , noticeData:
             function( _data, _type ){
-                _type = FU.type( _type );
-                if( !(_data &amp;&amp; _type ) ) return FU;
+                if( !(_data) ) return FU;
                 if( !FU.parent() ) return FU;
+                _type = FU.type( _type );
 
-                FU.parent().jEventHost.trigger( &#x27;data&#x27;, FU.getInfo( { &#x27;data&#x27;: _data, &#x27;type&#x27;: _type } ) );
+                FU.parent().jEventHost.trigger( &#x27;data&#x27;, FU.info( { &#x27;data&#x27;: _data, &#x27;type&#x27;: _type } ) );
                 return FU;
             }
-
+        /**
+         * 通知父级关闭窗口
+         * @method  noticeClose
+         * @param   {string}    _type
+         */
         , noticeClose:
             function( _type ){
                 _type = FU.type( _type );
-                FU.parent().jEventHost.trigger( &#x27;close&#x27;, FU.getInfo( { &#x27;type&#x27;: _type } ) );
+                FU.parent().jEventHost.trigger( &#x27;close&#x27;, FU.info( { &#x27;type&#x27;: _type } ) );
                 return FU;
             }
+        /**
+         * 获取窗口信息
+         * @method  info
+         * @return  {object}  $, width, height, bodyWidth, bodyHeight, id
+         */
+        , info:
+            function( _ext ){
+                var _body = $( document.body )
+                    , _r = { 
+                        &#x27;$&#x27;: $
+                        , &#x27;width&#x27;: document.documentElement.offsetWidth
+                        , &#x27;height&#x27;: document.documentElement.offsetHeight
+                        , &#x27;bodyWidth&#x27;: _body.width()
+                        , &#x27;bodyHeight&#x27;: _body.height()
+                        , &#x27;id&#x27;: FU.id()
+                    };
 
+                _ext &amp;&amp; ( _r = JC.f.extendObject( _r, _ext ) );
+
+                return _r;
+            }
+        /**
+         * 获取父级窗口信息
+         * @method  parent
+         * @return  {object}  $, win, jwin, JC, FrameUtil, eventHost, jEventHost, id
+         */
         , parent:
             function(){
                 var _r;
@@ -305,46 +408,226 @@
                         &amp;&amp; window.parent.JC.FrameUtil
                 ){
                     _r = {
-                        &#x27;win&#x27;: window.parent
+                        &#x27;$&#x27;: window.parent.$
+                        , &#x27;win&#x27;: window.parent
                         , &#x27;jwin&#x27;: window.parent.$( window.parent )
-                        , &#x27;$&#x27;: window.parent.$
                         , &#x27;JC&#x27;: window.parent.JC
                         , &#x27;FrameUtil&#x27;: window.parent.JC.FrameUtil
                         , &#x27;eventHost&#x27;: window.parent.JC.FrameUtil.eventHost
                         , &#x27;jEventHost&#x27;: window.parent.$( window.parent.JC.FrameUtil.eventHost )
+                        , &#x27;id&#x27;: window.parent.JC.FrameUtil.id()
                     };
                 }
 
                 return _r;
             }
-       
-        , getInfo:
-            function( _ext ){
-                var _body = $( document.body )
-                    , _r = { 
-                        &#x27;$&#x27;: $
-                        , &#x27;width&#x27;: document.documentElement.offsetWidth
-                        , &#x27;height&#x27;: document.documentElement.offsetHeight
-                        , &#x27;bodyWidth&#x27;: _body.width()
-                        , &#x27;bodyHeight&#x27;: _body.height()
+       /**
+         * 获取子级窗口信息
+         * @method  parent
+         * @return  {object}  $, width, height, bodyWidth, bodyHeight, win, doc, type, id
+         */
+        , frameInfo:
+            function( _frame, _ext ){
+                _frame &amp;&amp; ( _frame = $( _frame ) );
+                var _r = null;
+
+                if( _frame &amp;&amp; _frame.length ){
+                    var _cwin = _frame.prop( &#x27;contentWindow&#x27; )
+                        , _cdoc = _frame.prop( &#x27;contentDocument&#x27; )
+                        , _type = JC.f.getUrlParam( _frame.attr(&#x27;src&#x27;) || &#x27;&#x27;, &#x27;jsAction&#x27; ) || _cwin.name || &#x27;&#x27;
+                        ;
+
+                    _r = { 
+                        &#x27;$&#x27;: _cwin.$
+                        , &#x27;width&#x27;: _cdoc.documentElement.offsetWidth
+                        , &#x27;height&#x27;: _cdoc.documentElement.offsetHeight
+                        , &#x27;bodyWidth&#x27;: 0
+                        , &#x27;bodyHeight&#x27;: 0
+                        , &#x27;win&#x27;: _cwin
+                        , &#x27;doc&#x27;: _cdoc
+                        , &#x27;type&#x27;: _type
+                        , &#x27;id&#x27;: &#x27;&#x27;
                     };
 
-                _ext &amp;&amp; ( _r = JC.f.extendObject( _r, _ext ) );
+                    _cdoc.body 
+                        &amp;&amp; (
+                            _r.bodyWidth = _cdoc.body.offsetWidth
+                            , _r.bodyHeight = _cdoc.body.offsetHeight
+                        );
+
+                    if( _cwin.JC &amp;&amp; _cwin.JC.FrameUtil ){
+                        _r.id = _cwin.JC.FrameUtil.id();
+                    }
+
+                    _ext &amp;&amp; ( _r = JC.f.extendObject( _r, _ext ) );
+                }
 
                 return _r;
             }
-
+        /**
+         * 获取窗口类型
+         * &lt;br /&gt;这个方法的作用可用 id() + childIdMap() 替代
+         * @method type
+         * @default window.name
+         * @return string
+         */
         , type:
-            function( _type, _plus ){
+            function( _type, _plus, _frame ){
                 if( !_type ){
-                    _type = JC.f.getUrlParam( &#x27;jsAction&#x27; );
-                    _type &amp;&amp; _plus &amp;&amp; ( _type += _plus );
+                    _frame &amp;&amp; ( _frame = $( _frame ) );
+                    if( _frame &amp;&amp; _frame.length ){
+                        _type = JC.f.getUrlParam( _frame.attr( &#x27;jsAction&#x27; ) || &#x27;&#x27;,  &#x27;jsAction&#x27; );
+                        _type = _type || _frame.prop( &#x27;contentWindow&#x27; ).name || &#x27;&#x27;;
+                    }else{
+                        _type = JC.f.getUrlParam( &#x27;jsAction&#x27; );
+                        _type = _type || window.name || &#x27;&#x27;;
+                    }
                 }
+                _type &amp;&amp; _plus &amp;&amp; ( _type += _plus );
+
                 return _type;
             }
+        /**
+         * 批量更新 frame 大小
+         * @method updateChildrenSize
+         * @param   {selector}  _frames
+         */
+        , updateChildrenSize:
+            function( _frames ){
+                _frames &amp;&amp; ( _frames = $( _frames ) );
+                if( !( _frames &amp;&amp; _frames.length ) ) return FU;
+                _frames.each( function(){
+                    FU.updateChildSize( $( this ) );
+                });
+                return FU;
+            }
+        /**
+         * 更新 frame 大小
+         * @method  updateChildSize
+         * @param   {selector}  _frame
+         */
+        , updateChildSize:
+            function( _frame ){
+                _frame &amp;&amp; ( _frame = $( _frame ) );
+                if( !( _frame &amp;&amp; _frame.length ) ) return FU;
+                if( !_frame.is( &#x27;:visible&#x27; ) ) return FU;
+                var _finfo, _h;
+                _finfo = FU.frameInfo( _frame );
+                if( !_finfo.height ) return FU;
+                _frame.css( FU.cssFromSizePattern( FU.childSizePattern, _finfo ) );
+                return FU;
+            }
+        /**
+         * 自动批量更新 frame 大小
+         * @method  childrenAutoSize
+         * @param   {selector}  _frames
+         * @param   {int}       _ms
+         */
+        , childrenAutoSize:
+            function( _frames, _ms ){
+                _frames &amp;&amp; ( _frames = $( _frames ) );
+                if( !( _frames &amp;&amp; _frames.length ) ) return FU;
+                typeof _ms == &#x27;undefined&#x27; &amp;&amp; ( _ms = FU.autoUpdateSizeMs );
+                var _d = { &#x27;frames&#x27;: _frames };
 
-        , eventHost: {}
+                FU.updateChildrenSize( _frames );
+
+                _frames.data( &#x27;FUI_autoSize&#x27; ) 
+                    &amp;&amp; clearInterval( _frames.data( &#x27;FUI_autoSize&#x27; ) )
+                    ;
+
+                _ms
+                    &amp;&amp; _frames.data( &#x27;FUI_autoSize&#x27;, setInterval( function(){
+                        FU.updateChildrenSize( _frames );
+                    }, _ms ) );
+
+                return FU;
+            }
+        /**
+         * 通过 id 比对 frame 的 FrameUtil.id() 获取 frame
+         * @method  childIdMap
+         * @param   {string}  _id
+         * @return  selector | null
+         */
+        , childIdMap: 
+            function( _id ){
+                var _r;
+
+                if( _id ){
+                    if( _id in FU._childIdMap ){
+                        _r = FU._childIdMap[ _id ];
+                    }else{
+                        $( &#x27;iframe&#x27; ).each( function( _ix ){
+                            var _iframe = $( this ), _win = _iframe.prop( &#x27;contentWindow&#x27; ); 
+
+                            if( 
+                                _win &amp;&amp; _win.JC &amp;&amp; _win.JC.FrameUtil
+                                &amp;&amp; _win.JC.FrameUtil.id() 
+                            ){
+                                if( _win.JC.FrameUtil.id() === _id ){
+                                    FU._childIdMap[ _id ] = _r = _iframe;
+                                    return false;
+                                }
+                            }
+                        });
+                    }
+                }
+                return _r;
+            }
+        , _childIdMap: {}
+
+        /**
+         * 通过 FrameUtil.childSizePattern 获取对应的 css 样式
+         * @method  cssFromSizePattern
+         * @param   {int}   _pattern
+         * @param   {json}  _params
+         * @return  json
+         */
+        , cssFromSizePattern:
+            function( _pattern, _params ){
+                var _css = {};
+                switch( _pattern ){
+                    case 1: _css.height = _params.height + FU.heightOffset; break;
+                    case 2: _css.width = _params.width; break;
+                    default: 
+                       _css.height = _params.height + FU.heightOffset;
+                       _css.width = _params.width;
+                       break;
+                }
+                return _css;
+            }
+
     };
+
+    FU._id = location.href + &#x27;_&#x27; + new Date().getTime();
+
+    JC.f.safeTimeout( function(){
+
+        if( FU.isChildAutoSize ){
+            JC.FrameUtil.subscribeEvent( &#x27;size&#x27;, function( _evt, _params ){
+                if( !_params.height ) return;
+                var _childFrame = FU.childIdMap( _params.id ), _css;
+                if( _childFrame &amp;&amp; _childFrame.length ){
+                    _childFrame.css( FU.cssFromSizePattern( FU.childSizePattern, _params ) );
+                }
+            });
+        }
+
+        if( FU.isChildAutoClose ){
+            JC.FrameUtil.subscribeEvent( &#x27;close&#x27;, function( _evt, _params ){
+                var _childFrame = FU.childIdMap( _params.id ), _css, _panel;
+                if( _childFrame &amp;&amp; _childFrame.length ){
+                    _panel = JC.f.parentSelector( _childFrame, &#x27;div.UPanel&#x27; );
+                    _panel 
+                        &amp;&amp; _panel.length 
+                        &amp;&amp; JC.Panel.getInstance( _panel )
+                        &amp;&amp; JC.Panel.getInstance( _panel ).close()
+                        ;
+                }
+            });
+        }
+
+    }, null, &#x27;JCFrameUtilInit&#x27;, 200 );
 
     return JC.FrameUtil;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 

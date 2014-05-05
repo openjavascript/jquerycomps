@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Open JQuery Components Library - suches</title>
+    <style>
+        html {
+            overflow-y: hidden;
+        }
+
+        body{
+            margin: 20px 40px;
+        }
+
+        .ipt,.txt,.txt-1{ border:1px solid #e2e3ea; border-top:1px solid #abadb3; border-radius:2px; height:22px; *line-height:22px;}
+        .ipt{ width:126px;}
+        .ipt-w58{ width:58px;}
+        .ipt-w48{ width:48px; text-align:center;}
+        .ipt-w80{ width:80px;}
+        .ipt-w180{ width:180px;}
+        .ipt-w230{ width: 230px;}
+        .ipt-w320{ width:320px;}
+        .ipt-w380{ width:380px;}
+        .ipt-w480{ width:480px;}
+        .ipt-w545{ width:545px;}
+        .txt,.txt-1{ resize:none; height:50px; width:99.8%;}
+        .txt-w280{ width:280px;}
+        .txt-w480{ width:480px;}
+        .txt-w545{ width:545px;}
+        .txt-w400{ width:410px;}
+        .txt-w380{ width:380px;}
+        .txt-w650{ width:650px;}
+
+        .defDl > dd{
+            border-bottom:1px solid #e2e3ea; 
+        }
+
+    </style>
+
+    <link href='../../../../comps/Valid/res/default/style.css' rel='stylesheet' />
+    <link href='../../../../comps/Calendar/res/default/style.css' rel='stylesheet' />
+    <link href='../../../../comps/Panel/res/default/style.css' rel='stylesheet' />
+
+
+    <script src="../../../../lib.js"></script>
+    <script>
+        JC.debug = true;
+
+        JC.use( [ 'JC.Calendar', 'Bizs.FormLogic', 'Bizs.CommonModify', 'JC.FrameUtil' ]
+        , function( Calendar, FormLogic ){
+            JC.FrameUtil.autoNoticeSize();
+        });
+
+        function formAjaxDone( _json, _submitButton, _ins ){
+            var _form = $(this);
+            JC.log( 'custom formAjaxDone', new Date().getTime() );
+
+            if( _json.errorno ){
+                _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );
+            }else{
+                JC.FrameUtil.noticeData( _json );
+                _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){
+                    JC.FrameUtil.noticeClose();
+                });
+            }
+        };
+
+        function cmdonecallback( _ins, _boxParent ){
+            var _trigger = $(this);
+            JC.log( 'cmdonecallback', new Date().getTime() );
+            JC.FrameUtil.noticeSize();
+        }
+
+    </script>
+</head>    
+<body>
+    <dl class="defdl">
+        <dt>Bizs.FormLogic, ajax get form example 1, system done</dt>
+        <dd>
+            <dl>
+                <form action="./handler.php" method="GET"
+                        class="js_bizsFormLogic"
+                        formType="ajax"
+                        formAjaxDone="formAjaxDone"
+                    >
+                    <dl>
+                        <dd>
+                            文件框: <input type="text" name="text" reqmsg="文本框" value="test" />
+                        </dd>
+                        <dd>
+                            日期: <input type="text" name="date" datatype="date" reqmsg="日期" value="2013-05-20" />
+                            <em class="error"></em>
+                        </dd>
+                        <dd>
+                            下拉框:
+                                <select name="dropdown" reqmsg="下拉框" >
+                                    <option value="">请选择</option>
+                                    <option value="1" selected>条件1</option>
+                                    <option value="2">条件2</option>
+                                    <option value="3">条件3</option>
+                                </select>
+                        </dd>
+                        <dd>
+                            动态添加:
+                                <input type="text" name="test[]" class="ipt ipt-w320" />&nbsp;
+                                <a href="javascript:" 
+                                class="green js_autoCommonModify" 
+                                cmtemplate="#addMainFirstPartyTpl"
+                                cmitem="(dd"
+                                cmaction="add"
+                                cmdonecallback="cmdonecallback"
+                                >+ 添加</a>
+                                <em class="error"></em>
+                            </dd>
+                        <dd>
+                            <input type="hidden" name="getform" value="1" />
+                            <button type="submit">submit</button>
+                            <button type="reset">reset</button>
+                            <button type="button" buttonReturnUrl="?btntest=1" >cancel</button>
+                            <a href="?">back</a>
+                        </dd>
+                    </dl>
+                </form>
+            </dl>
+        </dd>
+    </dl>
+    <script type="text/template" id="addMainFirstPartyTpl" >
+        <dd>
+            动态添加:
+            <input type="text" name="test[]" class="ipt ipt-w320" />&nbsp;
+            <a href="javascript:" class="red js_autoCommonModify"
+                cmitem="(dd"
+                cmaction="del"
+                cmdonecallback="cmdonecallback"
+            >+ 删除</a>
+            <em class="error"></em>
+        </dd>
+    </script>
+
+</body>
+</html>
+
+

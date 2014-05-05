@@ -10653,6 +10653,11 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
          * 自动完成
          */
         Bizs.AutoSelectComplete && Bizs.AutoSelectComplete.init( _selector );
+
+        /**
+         *排期日期展示
+        */
+        Bizs.TaskViewer && Bizs.TaskViewer.init(_selector);
     }
     /**
      * URL 占位符识别功能
@@ -11085,12 +11090,11 @@ window.Bizs = window.Bizs || {};
         * 导入JC组件
         * @method   use
         * @static
-        * @param    {string}    _names -            模块名
+        * @param    {string}    _items -            模块名
         *                                           或者模块下面的某个js文件(test/test1.js, 路径前面不带"/"将视为test模块下的test1.js)
         *                                           或者一个绝对路径的js文件, 路径前面带 "/"
+        * @param    {callback}  _readyCb            
         *
-        * @param    {string}    _basePath -         指定要导入资源所在的主目录, 这个主要应用于 nginx 路径输出
-        * @param    {bool}      _enableNginxStyle -       指定是否需要使用 nginx 路径输出脚本资源
         *
         * @example
                 JC.use( 'SomeClass' );                              //导入类 SomeClass
@@ -11121,8 +11125,9 @@ window.Bizs = window.Bizs || {};
                     ].join()
                 );
         */ 
-        , use: function( _items ){
+        , use: function( _items, _readyCb ){
                 if( ! _items ) return;
+                _readyCb && $( document ).ready( function( _evt ){ _readyCb( _evt ); } );
                 var _p = this
                     , _paths = []
                     , _parts = $.trim( _items ).split(/[\s]*?,[\s]*/)

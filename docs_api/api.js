@@ -4,7 +4,6 @@ YUI.add("yuidoc-meta", function(Y) {
         ".Bizs",
         ".JC",
         ".jQuery",
-        "Bizs.TaskViewer",
         "JC.AjaxUpload",
         "JC.AutoChecked",
         "JC.AutoComplete",
@@ -30,6 +29,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Placeholder",
         "JC.PopTips",
         "JC.Slider",
+        "JC.StepControl",
         "JC.Suggest",
         "JC.Tab",
         "JC.TableFreeze",
@@ -56,7 +56,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.MultiAutoComplete",
         "window.Bizs.MultiDate",
         "window.Bizs.MultiSelect",
-        "window.Bizs.MultiUpload"
+        "window.Bizs.MultiUpload",
+        "window.Bizs.TaskViewer"
     ],
     "modules": [],
     "allModules": []

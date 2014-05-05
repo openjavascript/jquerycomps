@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Open JQuery Components Library - suches</title>
+    <style>
+        html {
+            overflow-y: hidden;
+        }
+
+        body{
+            margin: 20px 40px;
+        }
+
+        .ipt,.txt,.txt-1{ border:1px solid #e2e3ea; border-top:1px solid #abadb3; border-radius:2px; height:22px; *line-height:22px;}
+        .ipt{ width:126px;}
+        .ipt-w58{ width:58px;}
+        .ipt-w48{ width:48px; text-align:center;}
+        .ipt-w80{ width:80px;}
+        .ipt-w180{ width:180px;}
+        .ipt-w230{ width: 230px;}
+        .ipt-w320{ width:320px;}
+        .ipt-w380{ width:380px;}
+        .ipt-w480{ width:480px;}
+        .ipt-w545{ width:545px;}
+        .txt,.txt-1{ resize:none; height:50px; width:99.8%;}
+        .txt-w280{ width:280px;}
+        .txt-w480{ width:480px;}
+        .txt-w545{ width:545px;}
+        .txt-w400{ width:410px;}
+        .txt-w380{ width:380px;}
+        .txt-w650{ width:650px;}
+
+        .defDl > dd{
+            border-bottom:1px solid #e2e3ea; 
+        }
+
+    </style>
+
+    <script src="../../../../lib.js"></script>
+    <script>
+        JC.debug = true;
+
+        JC.use( [ 'Bizs.CommonModify', 'JC.FrameUtil' ], function(){
+            JC.FrameUtil.autoNoticeSize();
+        });
+
+        COUNT = 1;
+
+        function cmaddcallback( _ins, _newItem, _cmitem, _boxParent ){
+            var _trigger = $(this);
+            JC.log( 'cmaddcallback', new Date().getTime() );
+        }
+
+        function cmdelcallback( _ins, _boxParent ){
+            JC.log( 'cmdelcallback', new Date().getTime() );
+            //alert( _boxParent.html() );
+        }
+
+        function cmdonecallback( _ins, _boxParent ){
+            var _trigger = $(this);
+            JC.log( 'cmdonecallback', new Date().getTime() );
+            JC.FrameUtil.noticeSize();
+        }
+
+        function cmtplfiltercallback( _tpl, _item, _boxParent ){
+            var _trigger = $(this);
+            JC.log( 'cmtplfiltercallback', new Date().getTime() );
+            _tpl = JC.f.printf( _tpl, COUNT++ );
+            return _tpl;
+        }
+
+        function cmbeforeaddcallabck( _cmitem, _boxParent ){
+            var _trigger = $(this);
+            JC.log( 'cmbeforeaddcallabck', new Date().getTime() );
+            //return false;
+        }
+
+        function cmbeforedelcallback( _cmitem, _boxParent ){
+            var _trigger = $(this);
+            JC.log( 'cmbeforedelcallback', new Date().getTime() );
+            //return false;
+        }
+
+    </script>
+</head>    
+<body>
+    <dl class="defdl">
+        <dt> CommonModify 添加删除演示 示例1 </dt>
+        <dd>
+           <table>
+                 <tr>
+                    <td>
+                        <label class="gray">甲方主体：</label>
+                    </td>
+                    <td>
+                        <input type="text" name="test[0]" class="ipt ipt-w320" />&nbsp;
+                            <a href="javascript:" 
+                            class="green js_autoCommonModify" 
+                            cmtemplate="#addMainFirstPartyTpl"
+                            cmitem="(tr"
+                            cmaction="add"
+                            cmdonecallback="cmdonecallback"
+                            cmaddcallback="cmaddcallback"
+
+                            cmbeforeaddcallabck="cmbeforeaddcallabck"
+                        >+ 添加</a>
+                        <em class="error"></em>
+                    </td>
+                </tr>
+            </table>
+        </dd>
+    </dl>
+
+    <dl class="defdl">
+        <dt> CommonModify 添加删除演示 示例2 (模板过滤函数 php索引叠加) </dt>
+        <dd>
+           <table>
+                 <tr>
+                    <td>
+                        <label class="gray">甲方主体：</label>
+                    </td>
+                    <td>
+                        <input type="text" name="test[0]" class="ipt ipt-w320" />&nbsp;
+                            <a href="javascript:" 
+                            class="green js_autoCommonModify" 
+                            cmtemplate="#addMainFirstPartyFilterTpl"
+                            cmitem="(tr"
+                            cmaction="add"
+                            cmdonecallback="cmdonecallback"
+                            cmaddcallback="cmaddcallback"
+                            cmtplfiltercallback="cmtplfiltercallback"
+                        >+ 添加</a>
+                        <em class="error"></em>
+                    </td>
+                </tr>
+            </table>
+        </dd>
+    </dl>
+
+    <script type="text/template" id="addMainFirstPartyTpl" >
+     <tr>
+        <td>
+            <label class="gray">甲方主体：</label>
+        </td>
+        <td>
+            <input type="text" name="test[{0}]" class="ipt ipt-w320" />
+            <a href="javascript:" 
+                class="green js_autoCommonModify" 
+                cmtemplate="#addMainFirstPartyTpl"
+                cmitem="(tr"
+                cmaction="add"
+                cmdonecallback="cmdonecallback"
+                cmaddcallback="cmaddcallback"
+            >+ 添加</a>
+            <a href="javascript:" class="red js_autoCommonModify"
+                cmtemplate="#addMainFirstPartyTpl"
+                cmitem="(tr"
+                cmaction="del"
+                cmdonecallback="cmdonecallback"
+                cmdelcallback="cmdelcallback"
+                cmbeforedelcallback="cmbeforedelcallback"
+            >+ 删除</a>
+            <em class="error"></em>
+        </td>
+    </tr>
+    </script>
+
+    <script type="text/template" id="addMainFirstPartyFilterTpl" >
+     <tr>
+        <td>
+            <label class="gray">甲方主体：</label>
+        </td>
+        <td>
+            <input type="text" name="test[{0}]" class="ipt ipt-w320" />
+            <a href="javascript:" 
+                class="green js_autoCommonModify" 
+                cmtemplate="#addMainFirstPartyFilterTpl"
+                cmitem="(tr"
+                cmaction="add"
+                cmdonecallback="cmdonecallback"
+                cmaddcallback="cmaddcallback"
+                cmtplfiltercallback="cmtplfiltercallback"
+            >+ 添加</a>
+            <a href="javascript:" class="red js_autoCommonModify"
+                cmtemplate="#addMainFirstPartyFilterTpl"
+                cmitem="(tr"
+                cmaction="del"
+                cmdonecallback="cmdonecallback"
+                cmdelcallback="cmdelcallback"
+                cmbeforedelcallback="cmbeforedelcallback"
+            >+ 删除</a>
+            <b>{0}</b>
+            <em class="error"></em>
+        </td>
+    </tr>
+    </script>
+</body>
+</html>
+
+
