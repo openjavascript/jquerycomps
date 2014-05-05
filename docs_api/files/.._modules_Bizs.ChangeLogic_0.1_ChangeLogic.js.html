@@ -47,8 +47,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/Bizs.TaskViewer.html">Bizs.TaskViewer</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -90,6 +88,8 @@
                 <li><a href="../classes/JC.Form.html">JC.Form</a></li>
             
                 <li><a href="../classes/JC.FormFillUrl.html">JC.FormFillUrl</a></li>
+            
+                <li><a href="../classes/JC.FrameUtil.html">JC.FrameUtil</a></li>
             
                 <li><a href="../classes/JC.hideAllPanel.html">JC.hideAllPanel</a></li>
             
@@ -176,6 +176,8 @@
                 <li><a href="../classes/window.Bizs.MultiSelect.html">window.Bizs.MultiSelect</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiUpload.html">window.Bizs.MultiUpload</a></li>
+            
+                <li><a href="../classes/window.Bizs.TaskViewer.html">window.Bizs.TaskViewer</a></li>
             
                 <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
             
@@ -279,6 +281,9 @@
     JC.log( &#x27;bclDisableCallback&#x27;, new Date().getTime() );
 }&lt;/pre&gt;
  *      &lt;/dd&gt;
+ *
+ *      &lt;dt&gt;bclChangeCleanTarget = selector&lt;/dt&gt;
+ *      &lt;dd&gt;radio change 的时候, 清除目标选择器的 html 内容&lt;/dd&gt;
  * &lt;/dl&gt;
  *
  * &lt;h2&gt;trigger 的 HTML 属性&lt;/h2&gt;
@@ -362,7 +367,17 @@
 
                 _p._model.bclTrigger().on(&#x27;change&#x27;, function(_evt){
                     JC.log( &#x27;bclTrigger change&#x27;, new Date().getTime() );
-                    _p._view.change( this );
+                    _p.trigger( &#x27;item_change&#x27;, [ $(this), _evt ] );
+                });
+
+                _p.on( &#x27;item_change&#x27;, function( _evt, _item, _srcEvt ){
+                    _item = $( _item );
+                    _p._view.change( _item );
+
+                    _p._model.bclChangeCleanTarget() 
+                        &amp;&amp; _p._model.bclChangeCleanTarget().each( function(){
+                            $( this ).html( &#x27;&#x27; );
+                        });
                 });
 
                 ( _tmp = _p._model.bclTrigger( true ) ) &amp;&amp; _tmp.trigger( &#x27;change&#x27;);
@@ -480,6 +495,16 @@
                         }
                     });
                 }
+                return _r;
+            }
+
+        , bclChangeCleanTarget: 
+            function(){ 
+                var _p = this, _r, _tmp;
+
+                _p.selector().attr(&#x27;bclChangeCleanTarget&#x27;) 
+                    &amp;&amp; ( _r = JC.f.parentSelector( _p.selector(), _p.selector().attr(&#x27;bclChangeCleanTarget&#x27;) ) )
+                    ;
                 return _r;
             }
 

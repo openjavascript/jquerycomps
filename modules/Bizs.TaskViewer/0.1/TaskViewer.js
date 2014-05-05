@@ -25,7 +25,7 @@
      *<dd>指定新增的日期标签</dd>
      *</dl>
      *
-     * @namespace Bizs
+     * @namespace window.Bizs
      * @class TaskViewer
      * @extends JC.BaseMVC
      * @constructor
@@ -85,7 +85,6 @@
                 });
             }
         }
-        
         return _r;
     };
 
@@ -204,7 +203,7 @@
         buildHeaderTpl: function (l) {
             var cnWeek = '一二三四五六日',
                 i = 0,
-                tpl = '<tr><th>已选天数</th><th style="width:80px; height:30px; padding:0!important;">'
+                tpl = '<tr><th class="COMP_task_view_counter">已选天数</th><th style="width:80px; height:30px; padding:0!important;">'
                             + '<div class="COMP_task_view_slash">'
                                 + '<b>星期</b>'
                                 + '<em>日期</em>'
@@ -248,6 +247,7 @@
                 placeholder = '';
                 day = new Date(year, month, 1).getDay() - 1;      
                 while(day--) {
+                    if( day <= 0 ) break;
                     placeholder += '<td>&nbsp;</td>'
                 }
                 tpl += '<tr class="' + key + '"><td class="COMP_task_view_counter">&nbsp;</td><td class="COMP_task_view_date">' + year + '年' + (month + 1) + '月' +'</td>' + placeholder;

@@ -36,6 +36,7 @@ requirejs.config( {
         , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
 
         , 'JC.FormFillUrl': 'modules/JC.FormFillUrl/0.1/FormFillUrl'
+        , 'JC.FrameUtil': 'modules/JC.FrameUtil/0.1/FrameUtil'
 
         , 'JC.ImageCutter': 'modules/JC.ImageCutter/0.1/ImageCutter'
 

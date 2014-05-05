@@ -107,7 +107,7 @@
                     if( !( _startDate && _endDate ) ) return;
                     _startDate = JC.f.cloneDate( _startDate );
                     if( _data && !_data.errorno ){
-                        var _item, _date;
+                        var _item, _date, _now = JC.f.pureDate();
                         _data 
                             && _data.data 
                             && _data.data.list_data
@@ -135,7 +135,16 @@
                                     _p.trigger( 'update_item_status', [ _item.id, _date, _status, _item ] );
                                 }
                                 _selector.attr( 'title', _name );
-                                _selector.addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );
+
+                                if( _startDate.getTime() < _now.getTime() ){
+                                    if( _status == 0 ){
+                                    }else{
+                                        _selector.addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );
+                                    }
+                                    _selector.addClass( 'js_bccOutdate' );
+                                }else{
+                                    _selector.addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );
+                                }
                             }
 
                             _startDate.setDate( _startDate.getDate() + 1 );
@@ -174,6 +183,7 @@
 
                 _p._model.panelIns().layout().delegate( 'td.js_pos_canSelect', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
+                        if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
                         _p._model.schIns().trigger( 'lockup', [ _id, _date, _p._model.schIns()._model.lockupDateUrl(), _sp
                         , function( _data, _id, _date ){
                             $( JC.f.printf( 'td.js_bccDateItem[data-id={0}][data-date={1}]',  _id, _date ) )
@@ -191,6 +201,7 @@
 
                 _p._model.panelIns().layout().delegate( 'td.js_pos_locked', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
+                        if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
                         _p._model.schIns().trigger( 'unlock', [ _id, _date, _p._model.schIns()._model.unlockDateUrl(), _sp
                         , function( _data, _id, _date ){
                             $( JC.f.printf( 'td.js_bccDateItem[data-id={0}][data-date={1}]',  _id, _date ) )
@@ -212,6 +223,7 @@
                 var _p = this;
                 _p._model.panelIns().layout().delegate( 'td.js_pos_canSelect', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
+                        if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
                         _p._model.schIns().trigger( 'select_item', [ _id, _date, _sp
                         , function( _id, _date ){
                             $( JC.f.printf( 'td.js_bccDateItem[data-id={0}][data-date={1}]',  _id, _date ) )
@@ -229,6 +241,7 @@
 
                 _p._model.panelIns().layout().delegate( 'td.js_pos_selected', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
+                        if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
                         _p._model.schIns().trigger( 'unselect_item', [ _id, _date, _sp
                         , function( _id, _date ){
                             $( JC.f.printf( 'td.js_bccDateItem[data-id={0}][data-date={1}]',  _id, _date ) )
