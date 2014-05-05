@@ -1444,20 +1444,10 @@
             "namespace": "JC",
             "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
             "line": 2,
-            "description": "<p><b>require</b>:\n   <a href='JC.common.html'>JC.common</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n   | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.FrameUtil.html' target='_blank'>API docs</a>\n   | <a href='../../modules/JC.FrameUtil/0.1/_demo' target='_blank'>demo link</a></p>\n  \n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compFrameUtil\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n    <dt></dt>\n    <dd><dd>\n</dl>",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "",
-                    "type": "Selector|string"
-                }
-            ],
+            "description": "<h2>iframe 自适应 与 数据交互 工具类</h2>\n\n<p><b>require</b>:\n    <a href='JC.common.html'>JC.common</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n    | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.FrameUtil.html' target='_blank'>API docs</a>\n    | <a href='../../modules/JC.FrameUtil/0.1/_demo' target='_blank'>demo link</a></p>",
+            "static": 1,
             "version": "dev 0.1 2014-04-26",
-            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
-            "example": [
-                "\n        <h2>JC.FrameUtil 示例</h2>"
-            ]
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team"
         },
         "JC.ImageCutter": {
             "name": "JC.ImageCutter",
@@ -7202,6 +7192,326 @@
                 "description": "FormFillUrlInstance"
             },
             "class": "JC.FormFillUrl",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 22,
+            "description": "事件保存与触发对象",
+            "itemtype": "property",
+            "name": "eventHost",
+            "type": "object",
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 28,
+            "description": "frame 高度偏移值",
+            "itemtype": "property",
+            "name": "heightOffset",
+            "type": "int",
+            "default": "0",
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 35,
+            "description": "自动大小的间隔\n<br />单位毫秒",
+            "itemtype": "property",
+            "name": "autoUpdateSizeMs",
+            "type": "int",
+            "default": "1000",
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 43,
+            "description": "设置自适应大小应用的属性\n<br />1: height\n<br />2: width\n<br />3: height + width",
+            "itemtype": "property",
+            "name": "childSizePattern",
+            "type": "int",
+            "default": "1",
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 53,
+            "description": "是否自动响应关闭事件",
+            "itemtype": "property",
+            "name": "isChildAutoClose",
+            "type": "boolean",
+            "default": "true",
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 60,
+            "description": "是否自动响应大小改变事件",
+            "itemtype": "property",
+            "name": "isChildAutoSize",
+            "type": "boolean",
+            "default": "true",
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 67,
+            "description": "获取 JC.FrameUtil 唯一id\n<br />id = location.url_timestamp",
+            "itemtype": "method",
+            "name": "id",
+            "return": {
+                "description": "string"
+            },
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 74,
+            "description": "通知父窗口更新frame大小",
+            "itemtype": "method",
+            "name": "noticeSize",
+            "params": [
+                {
+                    "name": "_type",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 87,
+            "description": "自动通知父窗口更新frame大小",
+            "itemtype": "method",
+            "name": "autoNoticeSize",
+            "params": [
+                {
+                    "name": "_ms",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "_type",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 106,
+            "description": "订阅 frame 的事件\n<br />目前有以下事件:\n<br />close: 关闭\n<br />size: 更新大小\n<br />data: json 数据",
+            "itemtype": "method",
+            "name": "subscribeEvent",
+            "params": [
+                {
+                    "name": "_name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_cb",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 122,
+            "description": "通知父级有数据交互",
+            "itemtype": "method",
+            "name": "noticeData",
+            "params": [
+                {
+                    "name": "_data",
+                    "description": "",
+                    "type": "Json"
+                },
+                {
+                    "name": "_type",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 137,
+            "description": "通知父级关闭窗口",
+            "itemtype": "method",
+            "name": "noticeClose",
+            "params": [
+                {
+                    "name": "_type",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 148,
+            "description": "获取窗口信息",
+            "itemtype": "method",
+            "name": "info",
+            "return": {
+                "description": "$, width, height, bodyWidth, bodyHeight, id",
+                "type": "Object"
+            },
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 169,
+            "description": "获取父级窗口信息",
+            "itemtype": "method",
+            "name": "parent",
+            "return": {
+                "description": "$, win, jwin, JC, FrameUtil, eventHost, jEventHost, id",
+                "type": "Object"
+            },
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 198,
+            "description": "获取子级窗口信息",
+            "itemtype": "method",
+            "name": "parent",
+            "return": {
+                "description": "$, width, height, bodyWidth, bodyHeight, win, doc, type, id",
+                "type": "Object"
+            },
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 241,
+            "description": "获取窗口类型\n<br />这个方法的作用可用 id() + childIdMap() 替代",
+            "itemtype": "method",
+            "name": "type",
+            "default": "window.name",
+            "return": {
+                "description": "string"
+            },
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 264,
+            "description": "批量更新 frame 大小",
+            "itemtype": "method",
+            "name": "updateChildrenSize",
+            "params": [
+                {
+                    "name": "_frames",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 278,
+            "description": "更新 frame 大小",
+            "itemtype": "method",
+            "name": "updateChildSize",
+            "params": [
+                {
+                    "name": "_frame",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 294,
+            "description": "自动批量更新 frame 大小",
+            "itemtype": "method",
+            "name": "childrenAutoSize",
+            "params": [
+                {
+                    "name": "_frames",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_ms",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 320,
+            "description": "通过 id 比对 frame 的 FrameUtil.id() 获取 frame",
+            "itemtype": "method",
+            "name": "childIdMap",
+            "params": [
+                {
+                    "name": "_id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "selector | null"
+            },
+            "class": "JC.FrameUtil",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FrameUtil/0.1/FrameUtil.js",
+            "line": 353,
+            "description": "通过 FrameUtil.childSizePattern 获取对应的 css 样式",
+            "itemtype": "method",
+            "name": "cssFromSizePattern",
+            "params": [
+                {
+                    "name": "_pattern",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "_params",
+                    "description": "",
+                    "type": "Json"
+                }
+            ],
+            "return": {
+                "description": "json"
+            },
+            "class": "JC.FrameUtil",
             "namespace": "JC"
         },
         {
