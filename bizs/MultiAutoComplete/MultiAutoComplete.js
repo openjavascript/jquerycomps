@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.AutoComplete', 'JC.Placeholder', 'JC.Panel' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.AutoComplete', 'JC.AutoChecked', 'JC.Placeholder', 'JC.Panel' ], function(){
 /**
  * 级联 Suggest
  *
@@ -127,7 +127,7 @@
         />
     <span class="js_macAddtionBox" style="display:none;">
         <span class="js_macAddtionBoxList">
-            <a href="javascript:" class="js_macAddtionBoxItem" data-id="2345" data-label="枫溪区">
+            <a href="javascript:" class="js_macAddtionBoxItem" data-id="2345" id="macAddtionBoxItemId_1_2345" data-label="枫溪区">
                 <label>枫溪区</label>
                 <button type="button" class="AURemove"></button>
                 <input type="hidden" name="condition[]" value="2345">
@@ -144,7 +144,7 @@
         </li> 
     </script>
     <script type="text/template" class="macAddtionBoxItemTpl">
-        <a href="javascript:" class="js_macAddtionBoxItem" data-id="{0}" data-label="{1}">
+        <a href="javascript:" class="js_macAddtionBoxItem" data-id="{0}" id="{2}" data-label="{1}">
             <label>{1}</label>
             <button type="button" class="AURemove"></button>
             <input type="hidden" name="condition[]" value="{0}" />
@@ -177,6 +177,8 @@
 
         JC.log( MultiAutoComplete.Model._instanceName, 'all inited', new Date().getTime() );
     }
+    Bizs.MultiAutoComplete.insCount = 1;
+    Bizs.MultiAutoComplete.AJAX_CACHE = {};
     /**
      * 初始化可识别的 MultiAutoComplete 实例
      * @method  init
@@ -284,13 +286,16 @@
                     _macDefaultValue = _p._model.macDefaultValue( _selector ) || undefined;
                     _acIns.update( _data.data, _macDefaultValue );
 
-                    //JC.log( '_macDefaultValue:', _macDefaultValue, _text );
-
                     _nextSelector = _p._model.nextSelector( _selector );
                     if( _nextSelector && _nextSelector.length && _data.data.length ){
                         _p.trigger( 'update_selector', [ _nextSelector, true ] );
                     }else{
                         !_noTriggerAllUpdated && _p.trigger( 'all_updated' );
+                        if( _noTriggerAllUpdated ){
+                            _acIns._model.layoutPopup().find( 'span.cacMultiSelectBarTplLabel' ).hide();
+                        }else{
+                            _acIns._model.layoutPopup().find( 'span.cacMultiSelectBarTplLabel' ).show();
+                        }
                     }
                 });
 
@@ -384,6 +389,7 @@
 
                     _acIns.on( 'build_data', function(){
                         _p.trigger( 'update_checked_show_status', [ _acIns ] );
+                        _p.trigger( 'fixed_checkAll_status', [ _acIns ] );
                     });
 
                     _acIns._model.layoutPopup().delegate( 'input[schecktype=all]', 'change', function( _evt ){
@@ -391,14 +397,100 @@
                             _acIns._model.layoutPopup().find( 'input[schecktype=item]' ).prop( 'checked', _sp.prop( 'checked' ) );
 
                         _p.trigger( 'update_checked_status', [ _acIns ] );
+                        _p.trigger( 'fixed_checkAll_status', [ _acIns ] );
                     });
 
                     _selector.on( 'cacItemClickHanlder', function( _evt, _sp, _acIns){
                         JC.f.safeTimeout( function(){
-                            _p.trigger( 'update_checked_status', [ _acIns ] );
-                        }, _acIns, 'adfasdfasdf', 1 );
+                            //_p.trigger( 'update_checked_status', [ _acIns ] );
+                            var _ckItem = _sp.find( 'input[schecktype=item]' ), _d;
+                            if( !_ckItem.length ) return;
+                            _d = { item: _ckItem };
+                            _p.trigger( 'update_list_item', [ _ckItem, _acIns ] );
+                            _p.trigger( 'item_checked', [ _d, _d.item.prop( 'checked' ) ] );
+                            _p.trigger( 'fixed_checkAll_status', [ _acIns ] );
+
+                        }, _acIns, 'adfasdfasdf', 50 );
                     });
                 });
+
+                _p.on( 'fixed_checkAll_status', function( _evt, _acIns ){
+                    var _checked = true;
+                    _acIns._model.layoutPopup().find( 'input[schecktype=item]' ).each( function( _evt ){
+                        var _sp = $( this );
+                        if( !_sp.prop( 'checked' ) ){
+                            _checked = false;
+                            return false;
+                        }
+                    });
+
+                    _acIns._model.layoutPopup().find( 'input[schecktype=all]' ).prop( 'checked', _checked );
+                });
+
+                _p.on( 'update_list_item', function( _evt, _sp, _acIns ){
+                    var _d = { item: _sp };
+                    if( !_d.item.length ) return;
+
+                    var _selector = _acIns.selector(), _box = _p._model.macAddtionBox( _selector ), _boxList, _sitem, _isAdd;
+                    if( !( _box && _box.length ) ) return;
+                    _boxList = _box.find( '.js_macAddtionBoxList' );
+                    if( !( _boxList && _boxList.length ) ) return;
+
+                    if( _p._model.macAddtionBoxWithId( _selector ) ){
+                        _sitem = $( JC.f.printf( '#macAddtionBoxItemId_{0}_{1}', _p._model.insCount(), _d.item.val() ) );
+                    }else{
+                        _sitem = _boxList.find( _p._model.macAddtionBoxItemSelector( _acIns.selector() ) + '[data-id='+ _d.item.val() +']' );
+                    }
+
+                    if( _d.item.prop( 'checked' ) ){
+                        if( !_sitem.length ){
+                            _p.trigger( 'add_list_item', [ _d.item, _acIns, _box, _boxList ] );
+                            _isAdd = true;
+                        }
+                    }else{
+                        _sitem.length && _sitem.remove();
+                    }
+
+                    JC.f.safeTimeout( function(){
+                        //if( !_acIns._model.layoutPopup().is( ':visible' ) ) return;
+                        _isAdd && _p.trigger( 'sort_list_item', [ _boxList, _acIns ] );
+                    }, _p, 'SORT_LIST_ITEM', 1000 );
+                });
+
+                _p.on( 'update_checked_status', function( _evt, _acIns, _preventRecursive ){
+                    if( !_acIns ) return;
+                    var _selector = _acIns.selector(), _box = _p._model.macAddtionBox( _selector ), _boxList, _acIns;
+                    if( !( _box && _box.length ) ) return;
+                    _boxList = _box.find( '.js_macAddtionBoxList' );
+                    if( !( _boxList && _boxList.length ) ) return;
+
+                    var _popupItems = _acIns._model.layoutPopup().find( 'input[schecktype=item]' )
+                        , _popupItemAll = _acIns._model.layoutPopup().find( 'input[schecktype=all]' )
+                        , _listItems = _boxList.find( _p._model.macAddtionBoxItemSelector( _acIns.selector() ) )
+                        ;
+
+
+                    //JC.log( _popupItems.length, _popupItemAll.length, _listItems.length );
+                    if( !_popupItems.length ) return;
+
+                    var _listItemsObj = {}, _popupItemsObj= {};
+
+                    _listItems.each( function(){
+                        var _listSp = $( this );
+                        _listItemsObj[ _listSp.attr( 'data-id' ) ] = {
+                            item: _listSp
+                        };
+
+                    });
+
+                    _popupItems.each( function( _ix ){
+                        var _sp = $( this ), _sitem;
+                        _p.trigger( 'update_list_item', [ _sp, _acIns ] );
+                    });
+
+                    !_preventRecursive && _p.trigger( 'update_list_box_status', [ _acIns ] );
+                });
+
 
                 _p.on( 'update_checked_show_status', function( _evt, _acIns ){
                     if( !_acIns ) return;
@@ -427,80 +519,6 @@
                             _p.trigger( 'item_checked', [ _popupItemsObj[ _listSp.attr( 'data-id' ) ], true ] );
                         }
                     });
-
-                    _popupItems.each( function(){
-                        var _sp = $( this );
-                        if( !_sp.prop( 'checked' ) ){
-                            _allChecked = false; 
-                        }
-                    });
-
-                    _popupItemAll.prop( 'checked', _allChecked );
-                });
-
-                _p.on( 'item_checked', function( _evt, _data, _checked ){
-                    _checked 
-                        ? JC.f.getJqParent( _data.item, 'li' ).addClass( 'macDisable' )
-                        : JC.f.getJqParent( _data.item, 'li' ).removeClass( 'macDisable' );
-                    _data.item.prop( 'checked', _checked );
-                });
-
-                _p.on( 'update_checked_status', function( _evt, _acIns, _preventRecursive ){
-                    if( !_acIns ) return;
-                    var _selector = _acIns.selector(), _box = _p._model.macAddtionBox( _selector ), _boxList, _acIns;
-                    if( !( _box && _box.length ) ) return;
-                    _boxList = _box.find( '.js_macAddtionBoxList' );
-                    if( !( _boxList && _boxList.length ) ) return;
-
-                    var _popupItems = _acIns._model.layoutPopup().find( 'input[schecktype=item]' )
-                        , _popupItemAll = _acIns._model.layoutPopup().find( 'input[schecktype=all]' )
-                        , _listItems = _boxList.find( _p._model.macAddtionBoxItemSelector( _acIns.selector() ) )
-                        ;
-
-                    //JC.log( _popupItems.length, _popupItemAll.length, _listItems.length );
-                    if( !_popupItems.length ) return;
-
-                    var _allChecked = true, _listItemsObj = {}, _popupItemsObj= {};
-
-                    _listItems.each( function(){
-                        var _listSp = $( this );
-                        _listItemsObj[ _listSp.attr( 'data-id' ) ] = {
-                            item: _listSp
-                        };
-
-                    });
-
-                    var _isAdd;
-
-                    _popupItems.each( function(){
-                        var _sp = $( this ), _sitem;
-                        if( !_sp.prop( 'checked' ) ){
-                            _allChecked = false; 
-                        }
-                        _popupItemsObj[ _sp.val() ] = { item: _sp };
-
-                        _p.trigger( 'item_checked', [ _popupItemsObj[ _sp.val() ], _sp.prop( 'checked' ) ] );
-
-                            _sitem = _boxList.find( _p._model.macAddtionBoxItemSelector( _acIns.selector() ) + '[data-id='+ _sp.val() +']' );
-
-                        if( _sp.prop( 'checked' ) ){
-                            if( !_sitem.length ){
-                                _p.trigger( 'add_list_item', [ _sp, _acIns, _box, _boxList ] );
-                                _isAdd = true;
-                            }
-                        }else{
-                            _sitem.length && _sitem.remove();
-                        }
-                    });
-
-                    _popupItemAll.prop( 'checked', _allChecked );
-                    !_preventRecursive && _p.trigger( 'update_list_box_status', [ _acIns ] );
-
-                    JC.f.safeTimeout( function(){
-                        //if( !_acIns._model.layoutPopup().is( ':visible' ) ) return;
-                        _isAdd && _p.trigger( 'sort_list_item', [ _boxList, _acIns ] );
-                    }, _p, 'SORT_LIST_ITEM', 1000 );
-                    //JC.log( _allChecked, new Date().getTime() );
                 });
 
                 _p.on( 'sort_list_item', function( _evt, _boxList, _acIns ){
@@ -528,11 +546,18 @@
                         , _label = _pnt.attr( 'data-label' )
                         ;
 
-                        _item = $( JC.f.printf( _tpl, _id, _label ) );
+                        _item = $( JC.f.printf( _tpl, _id, _label, _p._model.insCount() ) );
                         _item.appendTo( _boxList );
                         _item.attr( 'data-id', _id );
                         _item.attr( 'data-label', _label );
                         _box.show();
+                });
+
+                _p.on( 'item_checked', function( _evt, _data, _checked ){
+                    _checked 
+                        ? JC.f.getJqParent( _data.item, 'li' ).addClass( 'macDisable' )
+                        : JC.f.getJqParent( _data.item, 'li' ).removeClass( 'macDisable' );
+                    _data.item.prop( 'checked', _checked );
                 });
 
             }
@@ -549,6 +574,18 @@
         init:
             function(){
                 //JC.log( 'MultiAutoComplete.Model.init:', new Date().getTime() );
+                this.insCount( MultiAutoComplete.insCount++ );
+            }
+
+        , insCount:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._insCount = _setter );
+                return this._insCount;
+            }
+
+        , macAddtionBoxWithId:
+            function( _selector ){
+                return JC.f.parseBool( _selector.attr( 'macAddtionBoxWithId' ) );
             }
 
         , macAddtionItemAddCallback: function( _selector ){ return this.callbackProp( _selector, 'macAddtionItemAddCallback' ); }
@@ -671,7 +708,7 @@
                     ;
                 if( !_url ) return;
 
-                _p.ajax_random( _selector ) && ( _url = JC.f.addUrlParams( _url, { rnd: new Date().getTime() } ) );
+                _p.ajax_random( _selector ) && ( _url = JC.f.addUrlParams( _url, { rnd: 0 } ) );
 
                 _prevSelector = _p.prevSelector( _selector );
 
@@ -685,12 +722,17 @@
                     _url = JC.f.printf( _url, _parentId );
                 }
 
-                $.get( _url ).done( function( _text ){
-                    //JC.log( _text );
-                    var _data = $.parseJSON( _text );
+                if( _url in MultiAutoComplete.AJAX_CACHE ){
+                    _p.trigger( 'ajax_done', [ MultiAutoComplete.AJAX_CACHE[ _url ], _selector, '', _noTriggerAllUpdated ] );
+                }else{
+                    $.get( _url ).done( function( _text ){
+                        //JC.log( _text );
+                        var _data = $.parseJSON( _text );
+                        MultiAutoComplete.AJAX_CACHE[ _url ] = _data;
+                        _p.trigger( 'ajax_done', [ _data, _selector, _text, _noTriggerAllUpdated ] );
+                    });
+                }
 
-                    _p.trigger( 'ajax_done', [ _data, _selector, _text, _noTriggerAllUpdated ] );
-                });
             }
 
         , ajax_random:

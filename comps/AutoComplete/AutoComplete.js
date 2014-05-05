@@ -1118,8 +1118,9 @@ return _json;
                     _p.hide();
                     _p._model.popup().html( JC.f.printf( '<li class="AC_noData">{0}</li>', _p._model.cacNoDataText() ) );
                 } else {
+                    var _tpl = _p._model.listItemTpl();
                     for ( ; _i < _data.length; _i++ ) {
-                        _view.push( JC.f.printf( _p._model.listItemTpl()
+                        _view.push( JC.f.printf( _tpl
                                     , _data[_i].id
                                     , _data[_i].label
                                     , _i
