@@ -69,6 +69,9 @@
  *      <dt>bclDisplay = bool</dt>
  *      <dd>指定 bclHideTarget 是否显示</dd>
  *
+ *      <dt>bclDelimiter = string, default = "||"</dt>
+ *      <dd>bclDisplay 和 bclDisable 多值分隔符</dd>
+ *
  *      <dt>bclHideTargetSub = selector</dt>
  *      <dd>根据 trigger 的 checked 状态 显示或者隐藏 bclHideTargetSub node</dd>
  * </dl>
@@ -327,9 +330,22 @@
                 return _r;
             }
 
+        , bclDelimiter: 
+            function( _trigger ){ 
+                var _r = '||';
+                this.selector().is( '[bclDelimiter]' ) && ( _r = this.selector().attr( 'bclDelimiter' ) );
+                _trigger && _trigger.is( '[bclDelimiter]' ) && ( _r = _trigger.attr( 'bclDelimiter' ) );
+                return _r;
+            }
+
+        , delimiterItems: 
+            function( _item, _trigger ){ 
+                return _item.split( this.bclDelimiter( _trigger ) );  
+            }
+
         , bclDisplay:
             function( _triggerItem ){
-                var _r = false, _selectedItem;
+                var _r = false, _selectedItem, _p = this;
                 _triggerItem && ( _triggerItem = $( _triggerItem ) );
                 if( !( _triggerItem && _triggerItem.length ) ) return _r;
 
@@ -338,7 +354,7 @@
                     if( !_selectedItem.length ) return _r;
                     if( !( _triggerItem.is('[bclDisplay]') || _selectedItem.is( '[bclDisplay]' ) ) ){
                         if( _triggerItem.is( '[bclDisable]' ) ){
-                            _r = _triggerItem.attr('bclDisable') == _triggerItem.val();
+                            _r = _p.delimiterItems( _triggerItem.attr('bclDisable'), _triggerItem ).indexOf( _triggerItem.val() ) > -1;
                         }
                         if( _selectedItem.is( '[bclDisable]' ) ){
                             _r = JC.f.parseBool( _selectedItem.attr( 'bclDisable' ) );
@@ -346,7 +362,7 @@
 
                     }else{
                         if( _triggerItem.is( '[bclDisplay]' ) ){
-                            _r = _triggerItem.attr('bclDisplay') == _triggerItem.val();
+                            _r = _p.delimiterItems( _triggerItem.attr('bclDisplay'), _triggerItem ).indexOf( _triggerItem.val() ) > -1;
                         }
                         if( _selectedItem.is( '[bclDisplay]' ) ){
                             _r = JC.f.parseBool( _selectedItem.attr( 'bclDisplay' ) );

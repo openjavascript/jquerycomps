@@ -311,6 +311,11 @@
             return _r;
         };
 
+    DragSelect.AR_IX = 
+        function( _ar, _ix, _def ){
+            return _ar[ _ix ] || _ar[ 0 ] || _def || &#x27;&#x27;;
+        };
+
     JC.BaseMVC.build( DragSelect );
 
     JC.f.extendObject( DragSelect.prototype, {
@@ -325,6 +330,84 @@
 
                 _p.on( &#x27;inited&#x27;, function(){
                 });
+
+                $.each( _p._model.itemsClassAr(), function( _IX, _ITEM_CLASS ){
+
+                    var _selectClass = DragSelect.AR_IX( _p._model.selectClassAr(), _IX )
+                        , _unselectClass = DragSelect.AR_IX( _p._model.unselectClassAr(), _IX )
+                        ;
+                    JC.log( _IX, _ITEM_CLASS, _selectClass, _unselectClass );
+
+                    _p.selector().delegate( _ITEM_CLASS, &#x27;click&#x27;, function( _evt ){
+                        JC.log( &#x27;click&#x27;, JC.f.ts(), _ITEM_CLASS );
+                    });
+
+                    _p.selector().delegate( _ITEM_CLASS, &#x27;mousedown&#x27;, function( _evt ){
+                        var _sp = $( this );
+                        _p._model.clearCache();
+                        _p._model.selectReady( _IX, true );
+                        _p._bindActionEvent( _IX );
+                        _p._model.prevItem( null );
+                        _p._model.countKey( true );
+                        _p.trigger( &#x27;item_find&#x27;, [ _sp, _IX ] );
+                        //_p._model.prevItem( _sp );
+                        JC.log( &#x27;mousedown&#x27;, _IX, _ITEM_CLASS, JC.f.ts() );
+                    });
+
+
+                    _p.selector().delegate( _ITEM_CLASS, &#x27;mouseover&#x27;, function( _evt ){
+                        if( !_p._model.selectReady( _IX ) ) return;
+                        JC.log( &#x27;mouseover&#x27;, _IX, _ITEM_CLASS );
+                        var _sp = $( this ), _count;
+                        if( !_sp.data( _p._model.countKey() ) ){
+                            _sp.data( _p._model.countKey(),  DragSelect.Model.UNI_COUNT++ )
+                        }else{
+                            _count = _sp.data( _p._model.countKey() );
+                            if( ( DragSelect.Model.UNI_COUNT - 2 ) == _count &amp;&amp; _p._model.prevItem() ){
+                                _p._model.prevItem().data( _p._model.countKey(), 0 );
+                                _p.trigger( &#x27;unselect_item&#x27;, [ _p._model.prevItem(), _IX ] );
+                            }
+                        }
+                        _p.trigger( &#x27;item_find&#x27;, [ _sp, _IX ] );
+
+                        //_p._model.prevItem( _sp );
+                        //_p.trigger( &#x27;item_find&#x27;, [ _sp ] );
+                        JC.log( _sp.data( _p._model.countKey() ) );
+                    });
+
+                    _p.on( &#x27;item_find&#x27;, function( _evt, _sp, _ix ){
+                        if( _ix !== _IX ) return;
+                       
+                        if( _sp.hasClass( _selectClass ) ){
+                            _p.trigger( &#x27;unselect_item&#x27;, [ _sp, _ix ] );
+                        }else{
+                            _p.trigger( &#x27;select_item&#x27;, [ _sp, _ix ] );
+                        }
+                    });
+
+                    _p.on( &#x27;select_item&#x27;, function( _evt, _sp, _ix ){
+                        JC.log( _IX, _ix, &#x27;select_item&#x27;, JC.f.ts() )
+                        if( _ix !== _IX ) return;
+                        _sp = $( _sp );
+
+                        _selectClass &amp;&amp; _sp.addClass( _selectClass );
+
+                        _unselectClass &amp;&amp; _sp.removeClass( _unselectClass );
+                    });
+
+                    _p.on( &#x27;unselect_item&#x27;, function( _evt, _sp, _ix ){
+                        JC.log( _IX, _ix, &#x27;unselect_item&#x27;, JC.f.ts() )
+                        if( _ix !== _IX ) return;
+                        if( _ix !== _IX ) return;
+                        _sp = $( _sp );
+
+                        _selectClass &amp;&amp; _sp.removeClass( _selectClass );
+                        _unselectClass &amp;&amp; _sp.addClass( _unselectClass );
+                    });
+
+                });
+
+                return;
             }
 
         , _inited:
@@ -332,13 +415,86 @@
                 JC.log( &#x27;DragSelect _inited&#x27;, new Date().getTime() );
                 this.trigger( &#x27;inited&#x27; );
             }
+
+        , _bindActionEvent:
+            function( _IX ){
+                var _p = this;
+
+                _jwin.off( &#x27;mouseup&#x27;, _upEvent );
+
+                _jwin.on( &#x27;mouseup&#x27;, _upEvent );
+
+                function _upEvent( _evt ){
+                    JC.log( &#x27;upevent&#x27;, JC.f.ts() );
+                    _p._model.selectReady( _IX, false );
+                    _jwin.off( &#x27;mouseup&#x27;, _upEvent );
+                }
+            }
     });
 
     DragSelect.Model._instanceName = &#x27;JCDragSelect&#x27;;
+    DragSelect.Model.UNI_COUNT = 1;
+
     JC.f.extendObject( DragSelect.Model.prototype, {
         init:
             function(){
                 JC.log( &#x27;DragSelect.Model.init:&#x27;, new Date().getTime() );
+            }
+
+        , prevItem:
+            function( _setter ){
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._prevItem = _setter );
+                return this._prevItem;
+            }
+
+        , countKey:
+            function( _new ){
+                var _p = this;
+                ( !_p._countKey || _new ) &amp;&amp; ( _p._countKey = &#x27;CDS_&#x27; + new Date().getTime() );
+                return _p._countKey;
+            }
+
+        , selectReady: 
+            function( _IX, _setter ){
+                !this._selectReady &amp;&amp; ( this._selectReady = {} );
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._selectReady[ _IX ] = _setter );
+                return this._selectReady[ _IX ];
+            }
+
+        , items: function(){ return this.selectorProp( &#x27;cdsItems&#x27;); }
+        , itemsClass: function(){ return this.attrProp( &#x27;cdsItems&#x27;); }
+        , selectClass: function(){ return this.attrProp( &#x27;cdsSelectClass&#x27;); }
+        , unselectClass: function(){ return this.attrProp( &#x27;cdsUnselectClass&#x27;); }
+
+        , itemsAr:
+            function(){
+                !this._itemsAr &amp;&amp; ( this._itemsAr = this.items().split( this.itemDelimiter() ) );
+                return this._itemsAr;
+            }
+
+        , itemsClassAr:
+            function(){
+                !this._itemsClassAr &amp;&amp; ( this._itemsClassAr = this.itemsClass().split( this.itemDelimiter() ) );
+                return this._itemsClassAr;
+            }
+
+        , selectClassAr:
+            function(){
+                !this._selectClassAr &amp;&amp; ( this._selectClassAr = this.selectClass().split( this.itemDelimiter() ) );
+                return this._selectClassAr;
+            }
+
+        , unselectClassAr:
+            function(){
+                !this._unselectClassAr &amp;&amp; ( this._unselectClassAr = this.unselectClass().split( this.itemDelimiter() ) );
+                return this._unselectClassAr;
+            }
+
+        , itemDelimiter: function(){ return this.attrProp( &#x27;cdsItemDelimiter&#x27; ) || &#x27;||&#x27;; }
+
+        , clearCache:
+            function(){
+                this._relativeParent = null;
             }
     });
 
@@ -350,12 +506,7 @@
     });
 
     _jdoc.ready( function(){
-        var _insAr = 0;
-        DragSelect.autoInit
-            &amp;&amp; ( _insAr = DragSelect.init() )
-            &amp;&amp; $( &#x27;&lt;h2&gt;DragSelect total ins: &#x27; 
-                + _insAr.length + &#x27;&lt;br/&gt;&#x27; + new Date().getTime() + &#x27;&lt;/h2&gt;&#x27; ).appendTo( document.body )
-            ;
+        DragSelect.autoInit &amp;&amp; DragSelect.init();
     });
 
     return JC.DragSelect;
@@ -368,6 +519,7 @@
         , window
     )
 );
+
 
     </pre>
 </div>
