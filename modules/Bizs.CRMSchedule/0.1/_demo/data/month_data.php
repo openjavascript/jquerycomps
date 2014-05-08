@@ -20,17 +20,18 @@
         for( $i = 0, $j = count( $ls ); $i < $j; $i++ ){
             $item = $ls[ $i ];
 
-            $tmp_date = new DateTime( $date . '-01' );
+            $tmp_date = strtotime( $date . '-01' );
 
             $position_date = array();
 
             for( $k = 0; $k < 28; $k ++ ){
-                $position_date[ $tmp_date->format( 'Y-m-d' ) ] = array(
+                $position_date[ date( 'Y-m-d', $tmp_date ) ] = array(
                     'status' => $k % 6
                     , 'company' => $k % 6 != 0 ? '中文company ' . $k : ''
                );
                 //date_add( $tmp_date, date_interval_create_from_date_string('1 days'));
-                $tmp_date->add( new DateInterval( 'P1D') );
+                //$tmp_date->add( new DateInterval( 'P1D') );
+		$tmp_date = strtotime( '+1 day', $tmp_date );
             }
 
             array_push( $r['data']['list_data'], array(
