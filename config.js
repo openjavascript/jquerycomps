@@ -65,6 +65,7 @@ requirejs.config( {
         , 'JC.Tree': 'modules/JC.Tree/0.1/Tree'
         , 'JC.Lazyload': 'modules/JC.Lazyload/0.1/Lazyload'
         , 'JC.Scrollbar': 'modules/JC.Scrollbar/0.2/Scrollbar'
+		, 'JC.Paginator': 'modules/JC.Paginator/0.1/Paginator'
 
         //, 'JC.Panel': 'modules/JC.Panel/0.1/Panel'
         , 'JC.Panel': 'modules/JC.Panel/0.2/Panel'
