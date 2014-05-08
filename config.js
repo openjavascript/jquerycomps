@@ -48,6 +48,7 @@ requirejs.config( {
         , 'JC.LunarCalendar.nationalHolidays': 'modules/JC.LunarCalendar/0.1/LunarCalendar.nationalHolidays'
 
         , 'JC.NumericStepper': 'modules/JC.NumericStepper/0.1/NumericStepper'
+        , 'JC.Paginator': 'modules/JC.Paginator/0.1/Paginator'
 
         , 'JC.Slider': 'modules/JC.Slider/0.1/Slider'
         , 'JC.StepControl': 'modules/JC.StepControl/0.1/StepControl'

@@ -1221,7 +1221,7 @@
                         _status == CRMSchedule.STATUS_CAN_SELECT && ( _hasCanSelect = true );
                         _status == CRMSchedule.STATUS_LOCKED && ( _hasLocked = true );
 
-                        if( _posDate.getTime() < _now.getTime() ){
+                        if( _posDate.getTime() < _now.getTime() || _posDate.getTime() > _p._model.initDate().edate.getTime() ){
                             if( _status === 0 ) _class = '';
                             _outdateClass = 'js_bccOutdate';
                         }

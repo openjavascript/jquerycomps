@@ -107,6 +107,8 @@
             
                 <li><a href="../classes/JC.NumericStepper.html">JC.NumericStepper</a></li>
             
+                <li><a href="../classes/JC.Paginator.html">JC.Paginator</a></li>
+            
                 <li><a href="../classes/JC.Panel.html">JC.Panel</a></li>
             
                 <li><a href="../classes/JC.Panel.Model.html">JC.Panel.Model</a></li>
@@ -296,6 +298,9 @@
  *
  *      &lt;dt&gt;bclDisplay = bool&lt;/dt&gt;
  *      &lt;dd&gt;指定 bclHideTarget 是否显示&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;bclDelimiter = string, default = &quot;||&quot;&lt;/dt&gt;
+ *      &lt;dd&gt;bclDisplay 和 bclDisable 多值分隔符&lt;/dd&gt;
  *
  *      &lt;dt&gt;bclHideTargetSub = selector&lt;/dt&gt;
  *      &lt;dd&gt;根据 trigger 的 checked 状态 显示或者隐藏 bclHideTargetSub node&lt;/dd&gt;
@@ -555,9 +560,22 @@
                 return _r;
             }
 
+        , bclDelimiter: 
+            function( _trigger ){ 
+                var _r = &#x27;||&#x27;;
+                this.selector().is( &#x27;[bclDelimiter]&#x27; ) &amp;&amp; ( _r = this.selector().attr( &#x27;bclDelimiter&#x27; ) );
+                _trigger &amp;&amp; _trigger.is( &#x27;[bclDelimiter]&#x27; ) &amp;&amp; ( _r = _trigger.attr( &#x27;bclDelimiter&#x27; ) );
+                return _r;
+            }
+
+        , delimiterItems: 
+            function( _item, _trigger ){ 
+                return _item.split( this.bclDelimiter( _trigger ) );  
+            }
+
         , bclDisplay:
             function( _triggerItem ){
-                var _r = false, _selectedItem;
+                var _r = false, _selectedItem, _p = this;
                 _triggerItem &amp;&amp; ( _triggerItem = $( _triggerItem ) );
                 if( !( _triggerItem &amp;&amp; _triggerItem.length ) ) return _r;
 
@@ -566,7 +584,7 @@
                     if( !_selectedItem.length ) return _r;
                     if( !( _triggerItem.is(&#x27;[bclDisplay]&#x27;) || _selectedItem.is( &#x27;[bclDisplay]&#x27; ) ) ){
                         if( _triggerItem.is( &#x27;[bclDisable]&#x27; ) ){
-                            _r = _triggerItem.attr(&#x27;bclDisable&#x27;) == _triggerItem.val();
+                            _r = _p.delimiterItems( _triggerItem.attr(&#x27;bclDisable&#x27;), _triggerItem ).indexOf( _triggerItem.val() ) &gt; -1;
                         }
                         if( _selectedItem.is( &#x27;[bclDisable]&#x27; ) ){
                             _r = JC.f.parseBool( _selectedItem.attr( &#x27;bclDisable&#x27; ) );
@@ -574,7 +592,7 @@
 
                     }else{
                         if( _triggerItem.is( &#x27;[bclDisplay]&#x27; ) ){
-                            _r = _triggerItem.attr(&#x27;bclDisplay&#x27;) == _triggerItem.val();
+                            _r = _p.delimiterItems( _triggerItem.attr(&#x27;bclDisplay&#x27;), _triggerItem ).indexOf( _triggerItem.val() ) &gt; -1;
                         }
                         if( _selectedItem.is( &#x27;[bclDisplay]&#x27; ) ){
                             _r = JC.f.parseBool( _selectedItem.attr( &#x27;bclDisplay&#x27; ) );
