@@ -127,7 +127,7 @@
                             _count = _sp.data( _p._model.countKey() );
                             if( ( DragSelect.Model.UNI_COUNT - 2 ) == _count && _p._model.prevItem() ){
                                 _p._model.prevItem().data( _p._model.countKey(), 0 );
-                                _p.trigger( 'unselect_item', _p._model.prevItem(), _IX );
+                                _p.trigger( 'unselect_item', [ _p._model.prevItem(), _IX ] );
                             }
                         }
                         _p.trigger( 'item_find', [ _sp, _IX ] );

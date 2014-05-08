@@ -14,19 +14,19 @@
     $end_date = isset( $_REQUEST['end_date'] ) ? $_REQUEST['end_date'] : '';
 
     if( $id && $start_date && $end_date ){
-        $start_date = new DateTime( $start_date );
-        $end_date = new DateTime( $end_date );
+        $start_date = strtotime( $start_date );
+        $end_date = strtotime( $end_date );
 
         $position_date = array();
         $count = 0;
 
-        while( $start_date->getTimestamp() < $end_date->getTimestamp() ){
-            $position_date[ $start_date->format( 'Y-m-d' ) ] = array(
+        while( $start_date  < $end_date ){
+            $position_date[ date( 'Y-m-d', $start_date ) ] = array(
                 'status' => $count % 6
                 , 'company' => $count % 6 != 0 ? '中文company ' . $count : ''
             );
 
-            $start_date->add( new DateInterval( 'P1D') );
+	    $start_date = strtotime( '+1 day', $start_date );
             $count++;
         }
 
