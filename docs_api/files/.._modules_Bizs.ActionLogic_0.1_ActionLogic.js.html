@@ -524,26 +524,44 @@
                 /**
                  * ajax 执行操作
                  */
-                _p.on( &#x27;AjaxAction&#x27;, function( _evt, _url ){
+                _p.on( &#x27;AjaxAction&#x27;, function( _evt, _url, _rdata, _rmethod ){
                     if( !_url ) return;
                     _p._model.balRandom() 
                         &amp;&amp; ( _url = JC.f.addUrlParams( _url, { &#x27;rnd&#x27;: new Date().getTime() } ) );
+
+                    _rmethod = _p._model.balAjaxType() || _rmethod;
+                    _rdata = _rdata || _p._model.balRequestData();
                     
                     if( _p._model.balRequestData() ){
-                        $[ _p._model.balAjaxType() ]( _url, _p._model.balRequestData() ).done( innerDone );
+                        $[ _rmethod ]( _url, _rdata ).done( innerDone );
                     }else{
-                        $[ _p._model.balAjaxType() ]( _url ).done( innerDone );
+                        $[ _rmethod ]( _url ).done( innerDone );
                     }
 
                     function innerDone( _d ){
-                        try{ _d = $.parseJSON( _d ); }catch(ex){}
+                        _p.trigger( &#x27;AjaxActionDone&#x27;, [ _d, _url ] );
+                    }
+                });
 
-                        if( _p._model.balCallback() ){
-                            _p._model.balCallback().call( _p.selector(), _d, _p );
-                        }else{
-                            if( _d &amp;&amp; typeof _d != &#x27;string&#x27; &amp;&amp; &#x27;errorno&#x27; in _d ){
-                                if( _d.errorno ){
-                                    _p.trigger( &#x27;ShowError&#x27;, [ _d.errmsg || &#x27;操作失败, 请重试!&#x27;, 1 ] );
+                _p.on( &#x27;AjaxActionDone&#x27;, function( _evt, _d, _url ){
+                    try{ _d = $.parseJSON( _d ); }catch(ex){}
+
+                    if( _p._model.balCallback() ){
+                        _p._model.balCallback().call( _p.selector(), _d, _p );
+                    }else{
+                        if( _d &amp;&amp; typeof _d != &#x27;string&#x27; &amp;&amp; &#x27;errorno&#x27; in _d ){
+                            if( _d.errorno ){
+                                _p.trigger( &#x27;ShowError&#x27;, [ _d.errmsg || &#x27;操作失败, 请重试!&#x27;, 1 ] );
+                            }else{
+
+                                if( _d.data 
+                                    &amp;&amp; _d.data.balAction
+                                    &amp;&amp; _d.data.balAction.url
+                                    &amp;&amp; _d.data.balAction.msg
+                                    &amp;&amp; _d.data.balAction.type
+                                    &amp;&amp; _d.data.balAction.type.toLowerCase() == &#x27;ajaxaction&#x27;
+                                ){
+                                    _p.trigger( &#x27;AjaxAction_Custom_Confirm&#x27;, [ _d ] );
                                 }else{
                                     _p.trigger( &#x27;ShowSuccess&#x27;, 
                                                 [ 
@@ -559,16 +577,46 @@
                                                 ]
                                     );
                                 }
-                            }else{
-                                var _msg = JC.f.printf( 
-                                        &#x27;服务端错误, 无法解析返回数据: &lt;p class=&quot;auExtErr&quot; style=&quot;color:red&quot;&gt;{0}&lt;/p&gt;&#x27;
-                                            , _d.replace( /&lt;/g, &#x27;&amp;lt;&#x27; ).replace( /&gt;/g, &#x27;&amp;gt;&#x27; )
-                                            );
-                                JC.Dialog.alert( _msg, 1 );
                             }
+                        }else{
+                            var _msg = JC.f.printf( 
+                                    &#x27;服务端错误, 无法解析返回数据: &lt;p class=&quot;auExtErr&quot; style=&quot;color:red&quot;&gt;{0}&lt;/p&gt;&#x27;
+                                        , _d.replace( /&lt;/g, &#x27;&amp;lt;&#x27; ).replace( /&gt;/g, &#x27;&amp;gt;&#x27; )
+                                        );
+                            JC.Dialog.alert( _msg, 1 );
                         }
                     }
                 });
+
+                _p.on( &#x27;AjaxAction_Custom_Confirm&#x27;, function( _evt, _d ){
+                    if( !_d ) return;
+                    _p.trigger( &#x27;ShowConfirm&#x27;, 
+                        [
+                            _d.data.balAction.msg
+                            , 2
+                            , function(){
+                                _p.trigger( &#x27;AjaxAction&#x27;, [ 
+                                        _d.data.balAction.url
+                                        , _d.data.balAction.ajaxData
+                                        , _d.data.balAction.ajaxMethod
+                                    ] );
+                            }
+                            , function(){
+                                var _rurl = _p._model.balDoneUrl();
+                                    _rurl = _d.data.balAction.returnurl || _rurl;
+                                _rurl &amp;&amp; ( location.href = _rurl );
+                            }
+                            , function( _panel ){
+                                if( _d.data.balAction.btnText ){
+                                    $.each( _d.data.balAction.btnText, function( _ix, _item ){
+                                        _panel.find( JC.f.printf( &#x27;button[eventtype={0}]&#x27;, _ix ) ).html( _item );
+                                    });
+                                }
+                            }
+                        ]
+                    );
+                });
+
                 _p.on( &#x27;RemoveElementAction&#x27;, function( _evt ){
 
                     if( _p._model.balDoneRemoveSelector() ){
@@ -613,19 +661,23 @@
                 /**
                  * 处理二次确认
                  */
-                _p.on(&#x27;ShowConfirm&#x27;, function( _evt, _msg, _status, _cb ){
+                _p.on(&#x27;ShowConfirm&#x27;, function( _evt, _msg, _status, _cb, _cancelCb, _eventCb ){
                     var _panel;
                     switch( _p._model.balConfirmPopupType() ){
                         case &#x27;dialog.confirm&#x27;:
                             {
                                 _panel = JC.Dialog.confirm( _msg, _status || 1 );
                                 _cb &amp;&amp; _panel.on(&#x27;confirm&#x27;, function(){ _cb() } );
+                                _cancelCb &amp;&amp; _panel.on(&#x27;cancel&#x27;, function(){ _cancelCb() } );
+                                _eventCb &amp;&amp; _eventCb( _panel );
                                 break;
                             }
                         default:
                             {
                                 _panel = JC.confirm( _msg, _p._model.selector(), _status || 1 );
                                 _cb &amp;&amp; _panel.on(&#x27;confirm&#x27;, function(){ _cb() } );
+                                _cancelCb &amp;&amp; _panel.on(&#x27;cancel&#x27;, function(){ _cancelCb() } );
+                                _eventCb &amp;&amp; _eventCb( _panel );
                                 break;
                             }
                     }
