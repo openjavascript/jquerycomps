@@ -18,6 +18,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Dialog.mask",
         "JC.Dialog.msgbox",
         "JC.Drag",
+        "JC.DragSelect",
         "JC.Fixed",
         "JC.Form",
         "JC.FormFillUrl",
@@ -58,6 +59,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.MultiDate",
         "window.Bizs.MultiSelect",
         "window.Bizs.MultiUpload",
+        "window.Bizs.MultiselectPanel",
         "window.Bizs.TaskViewer"
     ],
     "modules": [],

@@ -87,6 +87,8 @@
             
                 <li><a href="../classes/JC.Drag.html">JC.Drag</a></li>
             
+                <li><a href="../classes/JC.DragSelect.html">JC.DragSelect</a></li>
+            
                 <li><a href="../classes/JC.f.html">JC.f</a></li>
             
                 <li><a href="../classes/JC.Fixed.html">JC.Fixed</a></li>
@@ -178,6 +180,8 @@
                 <li><a href="../classes/window.Bizs.MultiDate.html">window.Bizs.MultiDate</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiSelect.html">window.Bizs.MultiSelect</a></li>
+            
+                <li><a href="../classes/window.Bizs.MultiselectPanel.html">window.Bizs.MultiselectPanel</a></li>
             
                 <li><a href="../classes/window.Bizs.MultiUpload.html">window.Bizs.MultiUpload</a></li>
             
@@ -534,7 +538,7 @@
             _ar = _url.split(&#x27;?&#x27;)[1].split(&#x27;&amp;&#x27;);
             for( i = 0; i &lt; _ar.length; i++ ){
                 _items = _ar[i].split(&#x27;=&#x27;);
-                _items[0] = _items[0].replace(/^\s+|\s+$/g, &#x27;&#x27;);
+                _items[0] = decodeURIComponent( _items[0] || &#x27;&#x27; ).replace(/^\s+|\s+$/g, &#x27;&#x27;);
                 if( _items[0].toLowerCase() == _key.toLowerCase() ){
                     _r = filterXSS( _items[1] || &#x27;&#x27; );
                     break;
@@ -565,6 +569,7 @@
             if( _params.length ){
                 for( i = 0, j = _params.length; i &lt; j; i++ ){
                     _items = _params[i].split(&#x27;=&#x27;);
+                    _items[0] = decodeURIComponent( _items[0] ) || &#x27;&#x27;;
                     if( _items[0].trim() == _key ){
                         _r.push( filterXSS( _items[1] || &#x27;&#x27; ) );
                     }

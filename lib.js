@@ -9905,7 +9905,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
             _ar = _url.split('?')[1].split('&');
             for( i = 0; i < _ar.length; i++ ){
                 _items = _ar[i].split('=');
-                _items[0] = _items[0].replace(/^\s+|\s+$/g, '');
+                _items[0] = decodeURIComponent( _items[0] || '' ).replace(/^\s+|\s+$/g, '');
                 if( _items[0].toLowerCase() == _key.toLowerCase() ){
                     _r = filterXSS( _items[1] || '' );
                     break;
@@ -9936,6 +9936,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
             if( _params.length ){
                 for( i = 0, j = _params.length; i < j; i++ ){
                     _items = _params[i].split('=');
+                    _items[0] = decodeURIComponent( _items[0] ) || '';
                     if( _items[0].trim() == _key ){
                         _r.push( filterXSS( _items[1] || '' ) );
                     }
@@ -11847,6 +11848,31 @@ window.Bizs = window.Bizs || {};
                 _selector
                     && _selector.is( '[' + _key + ']' ) 
                     && ( _r = JC.f.parentSelector( _selector, _selector.attr( _key ) ) );
+
+                return _r;
+            }
+        /**
+         * 获取 脚本模板 jquery 选择器
+         * @method  scriptTplProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  bool
+         */
+        , scriptTplProp:
+            function( _selector, _key ){
+                var _r = '', _tmp;
+                if( typeof _key == 'undefined' ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector && ( _selector = $( _selector ) );
+                }
+
+                _selector
+                    && _selector.is( '[' + _key + ']' ) 
+                    && ( _tmp = JC.f.parentSelector( _selector, _selector.attr( _key ) ) )
+                    && _tmp.length 
+                    && ( _r = JC.f.scriptContent( _tmp ) );
 
                 return _r;
             }

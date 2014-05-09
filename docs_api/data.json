@@ -161,6 +161,17 @@
                 "window.Bizs": 1
             }
         },
+        "../bizs/MultiselectPanel/MultiselectPanel.js": {
+            "name": "../bizs/MultiselectPanel/MultiselectPanel.js",
+            "modules": {},
+            "classes": {
+                "window.Bizs.MultiselectPanel": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.Bizs": 1
+            }
+        },
         "../bizs/TaskViewer/TaskViewer.js": {
             "name": "../bizs/TaskViewer/TaskViewer.js",
             "modules": {},
@@ -314,6 +325,17 @@
             "modules": {},
             "classes": {
                 "JC.Drag": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
+        "../comps/DragSelect/DragSelect.js": {
+            "name": "../comps/DragSelect/DragSelect.js",
+            "modules": {},
+            "classes": {
+                "JC.DragSelect": 1
             },
             "fors": {},
             "namespaces": {
@@ -962,6 +984,30 @@
                 "\n<xmp><div class=\"js_bizMultiUpload\"\n   bmuBoxSelector=\"|.uploadItemBox\"\n   bmuTplSelector=\"|script\"\n   bmuItemDelegate=\">\"\n   bmuRemoveDelegate=\".js_removeUploadItem\"\n   bmuRemoveItemParentSelector=\"(\"\n   bmuAjaxUploadSelector=\"|.js_compAjaxUpload\"\n   bmuItemLimit=\"2\"\n   >\n   <div>\n       <input type=\"hidden\" class=\"ipt ipt-w180 js_compAjaxUpload\" value=\"\"\n           cauStyle=\"w1\"\n           cauButtonText=\"上传资质文件\"\n           cauUrl=\"../_demo/data/handler.php\"\n           cauFileExt=\".jpg, .jpeg, .png, .gif\"\n           cauFileName=\"file\"\n           cauValueKey=\"url\"\n           cauLabelKey=\"name\"\n           cauProgressBox=\"/span.AUProgressBox\"\n           />\n           <span class=\"AUProgressBox\" style=\"display:none;\">\n               <button type=\"button\" class=\"AUProgress\"><div class=\"AUPercent\"></div></button>\n               <button type=\"button\" class=\"AUCancelProgress\"></button>\n           </span>\n           .jpg, .jpeg, .png, .gif\n           (最多上传2个)\n   </div>\n   <dl class=\"uploadItemBox\">\n   </dl>\n   <script type=\"text/template\">\n       <dd class=\"js_multiUploadItem\">\n           <input type=\"hidden\" name=\"file[]\" value=\"{0}\" class=\"js_multiUploadHidden\" />\n           <a href=\"{0}\" target=\"_blank\"><label class=\"js_multiUploadLabel\">{1}</label></a>\n           <button type=\"button\" class=\"AURemove js_removeUploadItem\"></button>\n       </dd>\n   </script>\n</div></xmp>"
             ]
         },
+        "window.Bizs.MultiselectPanel": {
+            "name": "window.Bizs.MultiselectPanel",
+            "shortname": "window.Bizs.MultiselectPanel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.Bizs",
+            "file": "../bizs/MultiselectPanel/MultiselectPanel.js",
+            "line": 2,
+            "description": "二级分类复选弹框\n\n <p><b>require</b>:\n     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n </p>\n\n <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.MultiselectPanel.html' target='_blank'>API docs</a>\n     | <a href='../../modules/Bizs.MultiselectPanel/0.1/_demo' target='_blank'>demo link</a></p>\n \n <h2>页面只要引用本脚本, 默认会自动处理 [input|button] class=\"js_bizMultiselectPanel\" </h2>\n\n <h2>共用的 HTML attribute</h2>\n <dl>\n   <dt>bmspUrl = url</dt>\n   <dd>获取一级分类数据的URL<dd>\n\n   <dt>bmspChildUrl = url</dt>\n   <dd>获取子级分类数据的URL, \"{0}\" 代表父级ID<dd>\n\n   <dt>bmspPopupHideButton = bool, default = false</dt>\n   <dd>显示弹框的时候, 是否遮盖触发源标签</dd>\n\n   <dt>bmspPanel = selector</dt>\n   <dd>显示内容的弹框</dd>\n\n   <dt>bmspPanelBoxSelector = selector</dt>\n   <dd>弹框里显示分类内容的容器</dd>\n\n   <dt>bmspTopTpl = script selector</dt>\n   <dd>一级分类的脚本模板</dd>\n\n   <dt>bmspChildTpl = script selector</dt>\n   <dd>子级分类的脚本模板</dd>\n\n   <dt>bmspOpenClass = css class name</dt>\n   <dd>展开子级分类的样式</dd>\n\n   <dt>bmspCloseClass = css class name</dt>\n   <dd>关闭子级分类的样式</dd>\n\n   <dt>bmspNoItemText = string</dt>\n   <dd>没有选择内容时的提示文本</dd>\n\n   <dt>bmspHasItemText = string</dt>\n   <dd>有选择内容时的提示文本, \"{0}\" 代表选择的数量</dd>\n\n   <dt>bmspSaveTopIdSelector = selector</dt>\n   <dd>保存一级分类ID的选择器</dd>\n </dl> \n\n <h2>URL 回填的 HTML attribute</h2>\n <dl>\n   <dt>bmspAutoFillTopKey = url arg name</dt>\n   <dd>回填一级分类的URL识别name</dd>\n\n   <dt>bmspAutoFillChildKey = url arg name</dt>\n   <dd>回填子级分类的URL识别name</dd>\n </dl>\n\n <h2>数据 回填的 HTML attribute</h2>\n <dl>\n     <dt>bmspDefaultFillData = json data name, <b>window 变量域</b></dt>\n     <dd>初始化的数据变量名<pre>\nwindow.testData = { \"parents\": [ 1, 2, 3 ], \"children\": [4, 5, 6, 7, 8 ] };\n</pre></dd>\n </dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2014-05-09",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team"
+        },
         "window.Bizs.TaskViewer": {
             "name": "window.Bizs.TaskViewer",
             "shortname": "window.Bizs.TaskViewer",
@@ -1203,6 +1249,33 @@
             "author": "qiushaowei <suches@btbtd.org> | 75 Team",
             "example": [
                 "\n       <h2>拖动示例</h2>\n       <div class=\"JCDrag dragStyle1 js_compDrag\" dragBeginCb=\"dragBeginCb\">\n           normal drag \n           , dragBeginCb=\"dragBeginCb\"\n       </div>\n\n       <h2>拖放示例</h2>\n       <table>\n           <tr>\n               <td>\n                   <div class=\"js_compDrag\" \n                       dropFor=\"(table div.js_compDrag\" \n                       dropSwap=\"true\" \n                       dropDoneCb=\"dropDoneCbAllow\"\n                       >\n                       dropDoneCb=\"dropDoneCbAllow\"\n                   </div>\n               </td>\n               <td>\n                   <div class=\"js_compDrag\" \n                       dropFor=\"(table div.js_compDrag\" \n                       dropSwap=\"true\" \n                       dropDoneCb=\"dropDoneCbBan\"\n                       > \n                       dropDoneCb=\"dropDoneCbBan\"\n                   </div>\n               </td>\n           </tr>\n       </table>"
+            ]
+        },
+        "JC.DragSelect": {
+            "name": "JC.DragSelect",
+            "shortname": "JC.DragSelect",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../comps/DragSelect/DragSelect.js",
+            "line": 2,
+            "description": "组件用途简述\n\n <p><b>require</b>:\n     <a href=\"widnow.jQuery.html\">jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n </p>\n\n <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.DragSelect.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.DragSelect/0.1/_demo' target='_blank'>demo link</a></p>\n \n <h2>页面只要引用本脚本, 默认会处理 div class=\"js_compDragSelect\"</h2>\n\n <h2>可用的 HTML attribute</h2>\n\n <dl>\n     <dt></dt>\n     <dd><dd>\n </dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2014-05-09",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n       <h2>JC.DragSelect 示例</h2>"
             ]
         },
         "JC.Fixed": {
@@ -1681,7 +1754,7 @@
             "extension_for": [],
             "namespace": "JC.Panel",
             "file": "../comps/Panel/Panel.default.js",
-            "line": 682,
+            "line": 685,
             "description": "存储 Panel 的基础数据类\n<br /><b>这个类为 Panel 的私有类</b>",
             "is_constructor": 1,
             "params": [
@@ -1727,7 +1800,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/Panel/Panel.default.js",
-            "line": 1071,
+            "line": 1090,
             "description": "隐藏或者清除所有 Panel\n<h2>使用这个方法应当谨慎, 容易为DOM造成垃圾Panel</h2>\n<br /><b>注意</b>: 这是个方法, 写成class是为了方便生成文档",
             "is_constructor": 1,
             "static": 1,
@@ -1752,7 +1825,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../comps/Panel/Panel.default.js",
-            "line": 1094,
+            "line": 1113,
             "description": "隐藏 或 从DOM清除所有 JC.alert/JC.confirm\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>",
             "static": 1,
             "is_constructor": 1,
@@ -3551,6 +3624,27 @@
             "namespace": "window.Bizs"
         },
         {
+            "file": "../bizs/MultiselectPanel/MultiselectPanel.js",
+            "line": 99,
+            "description": "初始化可识别的 MultiselectPanel 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of MultiselectPanelInstance"
+            },
+            "class": "window.Bizs.MultiselectPanel",
+            "namespace": "window.Bizs"
+        },
+        {
             "file": "../bizs/TaskViewer/TaskViewer.js",
             "line": 51,
             "description": "获取或设置 TaskViewer 的实例",
@@ -5127,6 +5221,30 @@
         {
             "file": "../comps/BaseMVC/BaseMVC.js",
             "line": 444,
+            "description": "获取 脚本模板 jquery 选择器",
+            "itemtype": "method",
+            "name": "scriptTplProp",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()",
+                    "type": "Selector|string"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "bool"
+            },
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 469,
             "description": "获取 selector 属性的 json 数据",
             "itemtype": "method",
             "name": "jsonProp",
@@ -5151,7 +5269,7 @@
         },
         {
             "file": "../comps/BaseMVC/BaseMVC.js",
-            "line": 468,
+            "line": 493,
             "description": "判断 _selector 是否具体某种特征",
             "itemtype": "method",
             "name": "is",
@@ -5175,14 +5293,14 @@
         },
         {
             "file": "../comps/BaseMVC/BaseMVC.js",
-            "line": 497,
+            "line": 522,
             "description": "使用 jquery on 为 controler 绑定事件",
             "class": "JC.BaseMVC.Model",
             "namespace": "JC"
         },
         {
             "file": "../comps/BaseMVC/BaseMVC.js",
-            "line": 505,
+            "line": 530,
             "description": "使用 jquery trigger 触发 controler 绑定事件",
             "class": "JC.BaseMVC.Model",
             "namespace": "JC"
@@ -6523,6 +6641,27 @@
             "itemtype": "event",
             "name": "JCTriggerDrag",
             "class": "JC.Drag",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/DragSelect/DragSelect.js",
+            "line": 52,
+            "description": "初始化可识别的 DragSelect 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of DragSelectInstance"
+            },
+            "class": "JC.DragSelect",
             "namespace": "JC"
         },
         {
@@ -9335,7 +9474,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 594,
+            "line": 597,
             "description": "Panel 显示前会触发的事件<br/>\n这个事件在用户调用 _panelInstance.show() 时触发",
             "itemtype": "event",
             "name": "beforeshow",
@@ -9348,7 +9487,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 602,
+            "line": 605,
             "description": "显示Panel时会触发的事件",
             "itemtype": "event",
             "name": "show",
@@ -9361,7 +9500,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 609,
+            "line": 612,
             "description": "Panel 隐藏前会触发的事件<br/>\n<br />这个事件在用户调用 _panelInstance.hide() 时触发",
             "itemtype": "event",
             "name": "beforehide",
@@ -9374,7 +9513,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 617,
+            "line": 620,
             "description": "Panel 隐藏时会触发的事件<br/>\n<br />这个事件在用户调用 _panelInstance.hide() 时触发",
             "itemtype": "event",
             "name": "hide",
@@ -9387,7 +9526,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 625,
+            "line": 628,
             "description": "Panel 关闭前会触发的事件<br/>\n这个事件在用户调用 _panelInstance.close() 时触发",
             "itemtype": "event",
             "name": "beforeclose",
@@ -9400,7 +9539,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 636,
+            "line": 639,
             "description": "关闭事件",
             "itemtype": "event",
             "name": "close",
@@ -9413,7 +9552,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 646,
+            "line": 649,
             "description": "Panel 居中显示前会触发的事件<br/>\n这个事件在用户调用 _panelInstance.center() 时触发",
             "itemtype": "event",
             "name": "beforecenter",
@@ -9426,7 +9565,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 654,
+            "line": 657,
             "description": "Panel 居中后会触发的事件",
             "itemtype": "event",
             "name": "center",
@@ -9439,7 +9578,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 661,
+            "line": 664,
             "description": "Panel 点击确认按钮触发的事件",
             "itemtype": "event",
             "name": "confirm",
@@ -9452,7 +9591,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 671,
+            "line": 674,
             "description": "Panel 点击确取消按钮触发的事件",
             "itemtype": "event",
             "name": "cancel",
@@ -9465,7 +9604,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 694,
+            "line": 697,
             "description": "panel 的 HTML 对象或者字符串\n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "selector",
@@ -9475,7 +9614,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 701,
+            "line": 704,
             "description": "header 内容 \n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "headers",
@@ -9485,7 +9624,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 708,
+            "line": 711,
             "description": "body 内容\n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "bodys",
@@ -9495,7 +9634,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 715,
+            "line": 718,
             "description": "footers 内容\n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "footers",
@@ -9505,7 +9644,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 722,
+            "line": 725,
             "description": "panel 初始化后的 selector 对象",
             "itemtype": "property",
             "name": "panel",
@@ -9515,7 +9654,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 728,
+            "line": 731,
             "description": "存储用户事件和默认事件的对象",
             "itemtype": "property",
             "name": "_events",
@@ -9527,7 +9666,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 739,
+            "line": 742,
             "description": "Model 初始化方法",
             "itemtype": "method",
             "name": "_init",
@@ -9542,7 +9681,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 772,
+            "line": 786,
             "description": "添加事件方法",
             "itemtype": "method",
             "name": "addEvent",
@@ -9563,7 +9702,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 788,
+            "line": 802,
             "description": "获取事件方法",
             "itemtype": "method",
             "name": "getEvent",
@@ -9583,7 +9722,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 841,
+            "line": 855,
             "description": "Panel的基础数据类, see <a href='JC.Panel.Model.html'>Panel.Model</a>",
             "itemtype": "property",
             "name": "_model",
@@ -9595,7 +9734,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 848,
+            "line": 862,
             "description": "默认模板",
             "prototype": "_tpl",
             "type": "string",
@@ -9606,7 +9745,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 860,
+            "line": 874,
             "description": "View 的初始方法",
             "itemtype": "method",
             "name": "_init",
@@ -9616,7 +9755,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 884,
+            "line": 898,
             "description": "设置Panel的显示位置基于 _src 的左右上下",
             "itemtype": "method",
             "name": "positionWith",
@@ -9631,7 +9770,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 921,
+            "line": 937,
             "description": "显示 Panel",
             "itemtype": "method",
             "name": "show",
@@ -9639,7 +9778,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 930,
+            "line": 946,
             "description": "focus button",
             "itemtype": "method",
             "name": "focus button",
@@ -9647,7 +9786,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 941,
+            "line": 957,
             "description": "隐藏 Panel",
             "itemtype": "method",
             "name": "hide",
@@ -9655,7 +9794,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 949,
+            "line": 965,
             "description": "关闭 Panel",
             "itemtype": "method",
             "name": "close",
@@ -9663,7 +9802,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 958,
+            "line": 974,
             "description": "获取 Panel 的 selector 对象",
             "itemtype": "method",
             "name": "getPanel",
@@ -9674,7 +9813,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 970,
+            "line": 986,
             "description": "获取或设置Panel的 header 内容, see <a href='JC.Panel.html#method_header'>Panel.header</a>",
             "itemtype": "method",
             "name": "getHeader",
@@ -9692,7 +9831,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 990,
+            "line": 1006,
             "description": "获取或设置Panel的 body 内容, see <a href='JC.Panel.html#method_body'>Panel.body</a>",
             "itemtype": "method",
             "name": "getBody",
@@ -9710,7 +9849,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 1006,
+            "line": 1022,
             "description": "获取或设置Panel的 footer 内容, see <a href='JC.Panel.html#method_footer'>Panel.footer</a>",
             "itemtype": "method",
             "name": "getFooter",
@@ -9728,7 +9867,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 1026,
+            "line": 1042,
             "description": "居中显示 Panel",
             "itemtype": "method",
             "name": "center",
@@ -9736,7 +9875,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 1058,
+            "line": 1077,
             "description": "Panel 的默认模板",
             "access": "private",
             "tagname": "",
@@ -9744,7 +9883,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 1116,
+            "line": 1135,
             "description": "监听Panel的所有点击事件\n<br />如果事件源有 eventtype 属性, 则会触发eventtype的事件类型",
             "itemtype": "event",
             "name": "Panel click",
@@ -9755,7 +9894,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 1169,
+            "line": 1188,
             "description": "从 HTML 属性 自动执行 popup",
             "attr": "{function}  panelcancelcallback cancel  回调",
             "class": "JC.hideAllPopup",
@@ -9763,7 +9902,7 @@
         },
         {
             "file": "../comps/Panel/Panel.default.js",
-            "line": 1211,
+            "line": 1230,
             "description": "隐藏关闭按钮",
             "class": "JC.hideAllPopup",
             "namespace": "JC"
@@ -10262,14 +10401,14 @@
         },
         {
             "file": "../comps/Placeholder/Placeholder.js",
-            "line": 302,
+            "line": 301,
             "description": "设置 控件 光标位置\nx@btbtd.org  2012-3-1",
             "class": "JC.Placeholder",
             "namespace": "JC"
         },
         {
             "file": "../comps/Placeholder/Placeholder.js",
-            "line": 339,
+            "line": 338,
             "description": "inject jquery show, hide func, for Placeholder change event",
             "class": "JC.Placeholder",
             "namespace": "JC"
@@ -15479,7 +15618,7 @@
         },
         {
             "file": "../common.js",
-            "line": 348,
+            "line": 349,
             "description": "删除URL参数\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "delUrlParam",
@@ -15506,7 +15645,7 @@
         },
         {
             "file": "../common.js",
-            "line": 378,
+            "line": 379,
             "description": "批量删除URL参数\n<br /><b>require:</b> delUrlParam",
             "itemtype": "method",
             "name": "delUrlParams",
@@ -15533,7 +15672,7 @@
         },
         {
             "file": "../common.js",
-            "line": 394,
+            "line": 395,
             "description": "提示需要 HTTP 环境",
             "itemtype": "method",
             "name": "httpRequire",
@@ -15552,7 +15691,7 @@
         },
         {
             "file": "../common.js",
-            "line": 409,
+            "line": 410,
             "description": "删除 URL 的锚点\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "removeUrlSharp",
@@ -15581,7 +15720,7 @@
         },
         {
             "file": "../common.js",
-            "line": 431,
+            "line": 432,
             "description": "重载页面\n<br /><b>require:</b> removeUrlSharp, addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "reloadPage",
@@ -15607,7 +15746,7 @@
         },
         {
             "file": "../common.js",
-            "line": 452,
+            "line": 453,
             "description": "取小数点的N位\n<br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题",
             "itemtype": "method",
             "name": "parseFinance",
@@ -15631,7 +15770,7 @@
         },
         {
             "file": "../common.js",
-            "line": 467,
+            "line": 468,
             "description": "js 附加字串函数",
             "itemtype": "method",
             "name": "padChar",
@@ -15660,7 +15799,7 @@
         },
         {
             "file": "../common.js",
-            "line": 483,
+            "line": 484,
             "description": "格式化日期为 YYYY-mm-dd 格式\n<br /><b>require</b>: pad\\_char\\_f",
             "itemtype": "method",
             "name": "formatISODate",
@@ -15684,7 +15823,7 @@
         },
         {
             "file": "../common.js",
-            "line": 497,
+            "line": 498,
             "description": "从 ISODate 字符串解析日期对象",
             "itemtype": "method",
             "name": "parseISODate",
@@ -15703,7 +15842,7 @@
         },
         {
             "file": "../common.js",
-            "line": 515,
+            "line": 516,
             "description": "从日期字符串解析日期对象\n<br />兼容 JC.Calendar 日期格式",
             "itemtype": "method",
             "name": "parseDate",
@@ -15733,7 +15872,7 @@
         },
         {
             "file": "../common.js",
-            "line": 539,
+            "line": 540,
             "description": "获取不带 时分秒的 日期对象",
             "itemtype": "method",
             "name": "pureDate",
@@ -15751,7 +15890,7 @@
         },
         {
             "file": "../common.js",
-            "line": 551,
+            "line": 552,
             "description": "克隆日期对象",
             "itemtype": "method",
             "name": "cloneDate",
@@ -15771,7 +15910,7 @@
         },
         {
             "file": "../common.js",
-            "line": 559,
+            "line": 560,
             "description": "判断两个日期是否为同一天",
             "itemtype": "method",
             "name": "isSameDay",
@@ -15796,7 +15935,7 @@
         },
         {
             "file": "../common.js",
-            "line": 571,
+            "line": 572,
             "description": "判断两个日期是否为同一月份",
             "itemtype": "method",
             "name": "isSameMonth",
@@ -15821,7 +15960,7 @@
         },
         {
             "file": "../common.js",
-            "line": 584,
+            "line": 585,
             "description": "判断两个日期是否为同一季度",
             "itemtype": "method",
             "name": "isSameWeek",
@@ -15846,7 +15985,7 @@
         },
         {
             "file": "../common.js",
-            "line": 615,
+            "line": 616,
             "description": "判断两个日期是否为同一季度",
             "itemtype": "method",
             "name": "isSameSeason",
@@ -15871,7 +16010,7 @@
         },
         {
             "file": "../common.js",
-            "line": 647,
+            "line": 648,
             "description": "判断两个日期是否为同一年",
             "itemtype": "method",
             "name": "isSameSeason",
@@ -15896,7 +16035,7 @@
         },
         {
             "file": "../common.js",
-            "line": 659,
+            "line": 660,
             "description": "取一年中所有的星期, 及其开始结束日期",
             "itemtype": "method",
             "name": "weekOfYear",
@@ -15920,13 +16059,13 @@
         },
         {
             "file": "../common.js",
-            "line": 671,
+            "line": 672,
             "description": "元旦开始的第一个星期一开始的一周为政治经济上的第一周",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 696,
+            "line": 697,
             "description": "取一年中所有的季度, 及其开始结束日期",
             "itemtype": "method",
             "name": "seasonOfYear",
@@ -15945,7 +16084,7 @@
         },
         {
             "file": "../common.js",
-            "line": 733,
+            "line": 734,
             "description": "取得一个月份中最大的一天",
             "itemtype": "method",
             "name": "maxDayOfMonth",
@@ -15965,7 +16104,7 @@
         },
         {
             "file": "../common.js",
-            "line": 746,
+            "line": 747,
             "description": "取当前脚本标签的 src路径",
             "itemtype": "method",
             "name": "scriptPath",
@@ -15978,7 +16117,7 @@
         },
         {
             "file": "../common.js",
-            "line": 758,
+            "line": 759,
             "description": "缓动函数, 动画效果为按时间缓动 \n<br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval",
             "itemtype": "method",
             "name": "easyEffect",
@@ -16020,7 +16159,7 @@
         },
         {
             "file": "../common.js",
-            "line": 811,
+            "line": 812,
             "description": "把输入值转换为布尔值",
             "itemtype": "method",
             "name": "parseBool",
@@ -16039,7 +16178,7 @@
         },
         {
             "file": "../common.js",
-            "line": 830,
+            "line": 831,
             "description": "绑定或清除 mousewheel 事件",
             "itemtype": "method",
             "name": "mousewheelEvent",
@@ -16065,7 +16204,7 @@
         },
         {
             "file": "../common.js",
-            "line": 854,
+            "line": 855,
             "description": "获取 selector 的指定父级标签",
             "itemtype": "method",
             "name": "getJqParent",
@@ -16090,7 +16229,7 @@
         },
         {
             "file": "../common.js",
-            "line": 880,
+            "line": 881,
             "description": "扩展 jquery 选择器\n<br />扩展起始字符的 '/' 符号为 jquery 父节点选择器\n<br />扩展起始字符的 '|' 符号为 jquery 子节点选择器\n<br />扩展起始字符的 '(' 符号为 jquery 父节点查找识别符( getJqParent )",
             "itemtype": "method",
             "name": "parentSelector",
@@ -16120,7 +16259,7 @@
         },
         {
             "file": "../common.js",
-            "line": 948,
+            "line": 949,
             "description": "获取脚本模板的内容",
             "itemtype": "method",
             "name": "scriptContent",
@@ -16139,7 +16278,7 @@
         },
         {
             "file": "../common.js",
-            "line": 963,
+            "line": 964,
             "description": "取函数名 ( 匿名函数返回空 )",
             "itemtype": "method",
             "name": "funcName",
@@ -16158,7 +16297,7 @@
         },
         {
             "file": "../common.js",
-            "line": 978,
+            "line": 979,
             "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar\n         , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
@@ -16174,91 +16313,91 @@
         },
         {
             "file": "../common.js",
-            "line": 1003,
+            "line": 1004,
             "description": "联动下拉框",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1007,
+            "line": 1008,
             "description": "日历组件",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1011,
+            "line": 1012,
             "description": "双日历组件",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1015,
+            "line": 1016,
             "description": "全选反选",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1019,
+            "line": 1020,
             "description": "Ajax 上传",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1023,
+            "line": 1024,
             "description": "占位符",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1027,
+            "line": 1028,
             "description": "表格冻结",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1031,
+            "line": 1032,
             "description": "拖曳",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1035,
+            "line": 1036,
             "description": "图片裁切",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1041,
+            "line": 1042,
             "description": "disable / enable",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1045,
+            "line": 1046,
             "description": "表单提交逻辑",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1049,
+            "line": 1050,
             "description": "格式化金额",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1053,
+            "line": 1054,
             "description": "自动完成",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1058,
+            "line": 1059,
             "description": "排期日期展示",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1063,
+            "line": 1064,
             "description": "URL 占位符识别功能\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "urlDetect",
@@ -16280,7 +16419,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1104,
+            "line": 1105,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -16303,13 +16442,13 @@
         },
         {
             "file": "../common.js",
-            "line": 1168,
+            "line": 1169,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1186,
+            "line": 1187,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -16343,7 +16482,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1236,
+            "line": 1237,
             "description": "日期格式化 (具体格式请查看 PHP Date Formats)",
             "itemtype": "method",
             "name": "dateFormat",
@@ -16367,7 +16506,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1311,
+            "line": 1312,
             "description": "扩展对象属性",
             "itemtype": "method",
             "name": "extendObject",
@@ -16396,7 +16535,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1333,
+            "line": 1334,
             "description": "timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行",
             "itemtype": "method",
             "name": "safeTimeout",
@@ -16430,7 +16569,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1354,
+            "line": 1355,
             "description": "URL 请求时, 获取对URL参数进行编码的函数",
             "itemtype": "method",
             "name": "encoder",
@@ -16450,7 +16589,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1372,
+            "line": 1373,
             "description": "深度克隆对象",
             "itemtype": "method",
             "name": "cloneObject",
@@ -16624,6 +16763,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../bizs/MultiselectPanel/MultiselectPanel.js:2"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../bizs/TaskViewer/TaskViewer.js:2"
         },
         {
@@ -16684,6 +16827,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../comps/DragSelect/DragSelect.js:2"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../comps/Fixed/Fixed.js:6"
         },
         {
@@ -16740,27 +16887,27 @@
         },
         {
             "message": "unknown tag: prototype",
-            "line": " ../comps/Panel/Panel.default.js:848"
+            "line": " ../comps/Panel/Panel.default.js:862"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/Panel.default.js:1169"
+            "line": " ../comps/Panel/Panel.default.js:1188"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/Panel.default.js:1169"
+            "line": " ../comps/Panel/Panel.default.js:1188"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/Panel.default.js:1169"
+            "line": " ../comps/Panel/Panel.default.js:1188"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/Panel.default.js:1169"
+            "line": " ../comps/Panel/Panel.default.js:1188"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../comps/Panel/Panel.default.js:1169"
+            "line": " ../comps/Panel/Panel.default.js:1188"
         },
         {
             "message": "unknown tag: version",
@@ -16944,11 +17091,11 @@
         },
         {
             "message": "unknown tag: require",
-            "line": " ../common.js:854"
+            "line": " ../common.js:855"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../common.js:880"
+            "line": " ../common.js:881"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -17072,11 +17219,11 @@
         },
         {
             "message": "Missing item type\n使用 jquery on 为 controler 绑定事件",
-            "line": " ../comps/BaseMVC/BaseMVC.js:497"
+            "line": " ../comps/BaseMVC/BaseMVC.js:522"
         },
         {
             "message": "Missing item type\n使用 jquery trigger 触发 controler 绑定事件",
-            "line": " ../comps/BaseMVC/BaseMVC.js:505"
+            "line": " ../comps/BaseMVC/BaseMVC.js:530"
         },
         {
             "message": "Missing item type\n保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",
@@ -17252,19 +17399,19 @@
         },
         {
             "message": "Missing item type\n默认模板",
-            "line": " ../comps/Panel/Panel.default.js:848"
+            "line": " ../comps/Panel/Panel.default.js:862"
         },
         {
             "message": "Missing item type\nPanel 的默认模板",
-            "line": " ../comps/Panel/Panel.default.js:1058"
+            "line": " ../comps/Panel/Panel.default.js:1077"
         },
         {
             "message": "Missing item type\n从 HTML 属性 自动执行 popup",
-            "line": " ../comps/Panel/Panel.default.js:1169"
+            "line": " ../comps/Panel/Panel.default.js:1188"
         },
         {
             "message": "Missing item type\n隐藏关闭按钮",
-            "line": " ../comps/Panel/Panel.default.js:1211"
+            "line": " ../comps/Panel/Panel.default.js:1230"
         },
         {
             "message": "Missing item type\n这个判断是为了向后兼容 JC 0.1\n使用 requirejs 的项目可以移除这段判断代码",
@@ -17276,11 +17423,11 @@
         },
         {
             "message": "Missing item type\n设置 控件 光标位置\nx@btbtd.org  2012-3-1",
-            "line": " ../comps/Placeholder/Placeholder.js:302"
+            "line": " ../comps/Placeholder/Placeholder.js:301"
         },
         {
             "message": "Missing item type\ninject jquery show, hide func, for Placeholder change event",
-            "line": " ../comps/Placeholder/Placeholder.js:339"
+            "line": " ../comps/Placeholder/Placeholder.js:338"
         },
         {
             "message": "Missing item type\nPopTips显示前的回调",
@@ -17436,67 +17583,67 @@
         },
         {
             "message": "Missing item type\n元旦开始的第一个星期一开始的一周为政治经济上的第一周",
-            "line": " ../common.js:671"
+            "line": " ../common.js:672"
         },
         {
             "message": "Missing item type\n联动下拉框",
-            "line": " ../common.js:1003"
+            "line": " ../common.js:1004"
         },
         {
             "message": "Missing item type\n日历组件",
-            "line": " ../common.js:1007"
+            "line": " ../common.js:1008"
         },
         {
             "message": "Missing item type\n双日历组件",
-            "line": " ../common.js:1011"
+            "line": " ../common.js:1012"
         },
         {
             "message": "Missing item type\n全选反选",
-            "line": " ../common.js:1015"
+            "line": " ../common.js:1016"
         },
         {
             "message": "Missing item type\nAjax 上传",
-            "line": " ../common.js:1019"
+            "line": " ../common.js:1020"
         },
         {
             "message": "Missing item type\n占位符",
-            "line": " ../common.js:1023"
+            "line": " ../common.js:1024"
         },
         {
             "message": "Missing item type\n表格冻结",
-            "line": " ../common.js:1027"
+            "line": " ../common.js:1028"
         },
         {
             "message": "Missing item type\n拖曳",
-            "line": " ../common.js:1031"
+            "line": " ../common.js:1032"
         },
         {
             "message": "Missing item type\n图片裁切",
-            "line": " ../common.js:1035"
+            "line": " ../common.js:1036"
         },
         {
             "message": "Missing item type\ndisable / enable",
-            "line": " ../common.js:1041"
+            "line": " ../common.js:1042"
         },
         {
             "message": "Missing item type\n表单提交逻辑",
-            "line": " ../common.js:1045"
+            "line": " ../common.js:1046"
         },
         {
             "message": "Missing item type\n格式化金额",
-            "line": " ../common.js:1049"
+            "line": " ../common.js:1050"
         },
         {
             "message": "Missing item type\n自动完成",
-            "line": " ../common.js:1053"
+            "line": " ../common.js:1054"
         },
         {
             "message": "Missing item type\n排期日期展示",
-            "line": " ../common.js:1058"
+            "line": " ../common.js:1059"
         },
         {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../common.js:1168"
+            "line": " ../common.js:1169"
         },
         {
             "message": "Missing item type\nFor feature detection",
