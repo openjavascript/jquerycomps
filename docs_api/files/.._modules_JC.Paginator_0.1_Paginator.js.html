@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../modules/JC.Paginator/0.1/Paginator.js - jquery components</title>
+    <title>..\modules\JC.Paginator\0.1\Paginator.js - jquery components</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -21,7 +21,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="../jc_logo.png" title="jquery components"></h1>
+                <h1><img src="..\jc_logo.png" title="jquery components"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -236,13 +236,13 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../modules/JC.Paginator/0.1/Paginator.js</h1>
+                        <h1 class="file-heading">File: ..\modules\JC.Paginator\0.1\Paginator.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
  ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
 /**
- * Paginator 
+ * Paginator 分页
  * &lt;p&gt;
  *      &lt;b&gt;require&lt;/b&gt;: 
  *          &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
@@ -257,7 +257,24 @@
  *
  *
  * &lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
- *
+ * &lt;dl&gt;
+ * &lt;dt&gt;paginatorUiTpl&lt;/dt&gt;
+ * &lt;dd&gt;定义分页的模板&lt;/dd&gt;
+ * &lt;dt&gt;paginatorui&lt;/dt&gt;
+ * &lt;dd&gt;css selector, 指定分页的模板内容将放到哪个容器里面&lt;/dd&gt;
+ * &lt;dt&gt;paginatorcontent&lt;/dt&gt;
+ * &lt;dd&gt;css selector, 指定取回来的数据将放到哪个容器里面&lt;/dd&gt;
+ * &lt;dt&gt;totalrecords&lt;/dt&gt;
+ * &lt;dd&gt;num, 共多少条记录，必填项&lt;/dd&gt;
+ * &lt;dt&gt;perpage&lt;/dt&gt;
+ * &lt;dd&gt;num, 每页显示多少条记录，默认10条&lt;/dd&gt;
+ * &lt;dt&gt;paginatortype&lt;/dt&gt;
+ * &lt;dd&gt;&#x27;static|ajax&#x27;，分页类型，ajax分页还是静态分页(静态分页，后端一次性将数据铺好)。默认为ajax&lt;/dd&gt;
+ * &lt;dt&gt;paginatorurl&lt;/dt&gt;
+ * &lt;dd&gt;ajax请求数据的接口&lt;/dd&gt;
+ * &lt;dt&gt;needInit&lt;/dt&gt;
+ * &lt;dd&gt;true|false, 是否需要初始化，即第一页的数据是否由ajax请求，默认为false(后端直接铺好数据)&lt;/dd&gt;
+ * &lt;/dl&gt;
  *
  * @namespace JC
  * @class Paginator
@@ -331,6 +348,8 @@
         _initHanlderEvent: function () {
             var p = this,
                 $selector = p._model.selector();
+
+            if (!p._model.totalRecords()) return;
 
             p._model.requestUrl = p._model.url();
             p._view.paginatedView();

@@ -1,6 +1,6 @@
  ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
- * Paginator 
+ * Paginator 分页
  * <p>
  *      <b>require</b>: 
  *          <a href='window.jQuery.html'>jQuery</a>
@@ -15,7 +15,24 @@
  *
  *
  * <h2>可用的 HTML attribute</h2>
- *
+ * <dl>
+ * <dt>paginatorUiTpl</dt>
+ * <dd>定义分页的模板</dd>
+ * <dt>paginatorui</dt>
+ * <dd>css selector, 指定分页的模板内容将放到哪个容器里面</dd>
+ * <dt>paginatorcontent</dt>
+ * <dd>css selector, 指定取回来的数据将放到哪个容器里面</dd>
+ * <dt>totalrecords</dt>
+ * <dd>num, 共多少条记录，必填项</dd>
+ * <dt>perpage</dt>
+ * <dd>num, 每页显示多少条记录，默认10条</dd>
+ * <dt>paginatortype</dt>
+ * <dd>'static|ajax'，分页类型，ajax分页还是静态分页(静态分页，后端一次性将数据铺好)。默认为ajax</dd>
+ * <dt>paginatorurl</dt>
+ * <dd>ajax请求数据的接口</dd>
+ * <dt>needInit</dt>
+ * <dd>true|false, 是否需要初始化，即第一页的数据是否由ajax请求，默认为false(后端直接铺好数据)</dd>
+ * </dl>
  *
  * @namespace JC
  * @class Paginator
@@ -89,6 +106,8 @@
         _initHanlderEvent: function () {
             var p = this,
                 $selector = p._model.selector();
+
+            if (!p._model.totalRecords()) return;
 
             p._model.requestUrl = p._model.url();
             p._view.paginatedView();
