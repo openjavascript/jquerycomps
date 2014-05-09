@@ -171,7 +171,7 @@
     CRMSchedule.STATUS_ONLINE       = '3';
     CRMSchedule.STATUS_NOT_ONLINE   = '4';
     CRMSchedule.STATUS_LOCKED       = '5';
-    CRMSchedule.STATUS_SELECTED     = '999';
+    CRMSchedule.STATUS_SELECTED     = '6';
 
     CRMSchedule.CLASS_CAN_SELECT    = 'js_pos_canSelect';
     CRMSchedule.CLASS_ORDERED       = 'js_pos_ordered';
@@ -188,7 +188,7 @@
         , '3'                       : CRMSchedule.CLASS_ONLINE
         , '4'                       : CRMSchedule.CLASS_NOT_ONLINE
         , '5'                       : CRMSchedule.CLASS_LOCKED
-        , '999'                     : CRMSchedule.CLASS_SELECTED
+        , '6'                       : CRMSchedule.CLASS_SELECTED
     };
 
     CRMSchedule.CLASS_MAP = {

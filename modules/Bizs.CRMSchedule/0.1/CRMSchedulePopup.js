@@ -137,7 +137,7 @@
                                 _selector.attr( 'title', _name );
 
                                 if( _startDate.getTime() < _now.getTime() ){
-                                    if( _status == 0 ){
+                                    if( _status == 0 || _status == 6 || _status == 5 ){
                                     }else{
                                         _selector.addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );
                                     }

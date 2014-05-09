@@ -442,6 +442,31 @@
                 return _r;
             }
         /**
+         * 获取 脚本模板 jquery 选择器
+         * @method  scriptTplProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  bool
+         */
+        , scriptTplProp:
+            function( _selector, _key ){
+                var _r = '', _tmp;
+                if( typeof _key == 'undefined' ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector && ( _selector = $( _selector ) );
+                }
+
+                _selector
+                    && _selector.is( '[' + _key + ']' ) 
+                    && ( _tmp = JC.f.parentSelector( _selector, _selector.attr( _key ) ) )
+                    && _tmp.length 
+                    && ( _r = JC.f.scriptContent( _tmp ) );
+
+                return _r;
+            }
+        /**
          * 获取 selector 属性的 json 数据
          * @method  jsonProp
          * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()

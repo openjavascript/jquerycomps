@@ -307,7 +307,7 @@
             _ar = _url.split('?')[1].split('&');
             for( i = 0; i < _ar.length; i++ ){
                 _items = _ar[i].split('=');
-                _items[0] = _items[0].replace(/^\s+|\s+$/g, '');
+                _items[0] = decodeURIComponent( _items[0] || '' ).replace(/^\s+|\s+$/g, '');
                 if( _items[0].toLowerCase() == _key.toLowerCase() ){
                     _r = filterXSS( _items[1] || '' );
                     break;
@@ -338,6 +338,7 @@
             if( _params.length ){
                 for( i = 0, j = _params.length; i < j; i++ ){
                     _items = _params[i].split('=');
+                    _items[0] = decodeURIComponent( _items[0] ) || '';
                     if( _items[0].trim() == _key ){
                         _r.push( filterXSS( _items[1] || '' ) );
                     }

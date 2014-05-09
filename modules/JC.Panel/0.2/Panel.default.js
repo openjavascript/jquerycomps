@@ -590,6 +590,9 @@
             function( _setterSelector ){
                 return this._model.triggerSelector( _setterSelector );
             }
+
+        , offsetTop: function( _setter ){ return this._model.offsetTop( _setter ); }
+        , offsetLeft: function( _setter ){ return this._model.offsetLeft( _setter ); }
     }
     /**
      * Panel 显示前会触发的事件<br/>
@@ -762,6 +765,17 @@
                 setTimeout( function(){ Panel.ignoreClick = false; }, 1 );
                 return this;
             }
+        , offsetTop:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._offsetTop = _setter );
+                return this._offsetTop || 0;
+            }
+
+        , offsetLeft:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._offsetLeft = _setter );
+                return this._offsetLeft|| 0;
+            }
         , triggerSelector:
             function( _setterSelector ){
                 typeof _setterSelector != 'undefined' 
@@ -907,6 +921,8 @@
                             }
                     }
                 }
+                _y += this._model.offsetTop();
+                _x += this._model.offsetLeft();
 
                 var _maxY = _stop + _wheight - _lheight, _minY = _stop;
                 if( _y > _maxY ) _y = _soffset.top - _lheight - 1;
@@ -1049,6 +1065,9 @@
                 }
 
                 if( _y < _scrtop || _y < 0 ) _y = _scrtop;
+
+                _y += this._model.offsetTop();
+                _x += this._model.offsetLeft();
 
                 _layout.css( {left: _x+'px', top: _y+'px'} );
 
