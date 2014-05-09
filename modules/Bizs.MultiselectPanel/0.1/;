@@ -91,17 +91,8 @@
                 });
 
                 var _panel = new JC.Panel( _p._model.panel() );
-                    _p._model.panelIns( _panel );
-
                     _panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
-
-                    _panel.on( 'hide', function(){
-                        _p.trigger( 'updateStatus' );
-                    });
-
-                    _panel.on( 'beforeshow', function(){
-                        JC.hideAllPanel();
-                    });
+                    _p._model.panelIns( _panel );
 
                 if( _p._model.popupHideButton() ){
                     _panel.offsetTop( -_p.selector().prop( 'offsetHeight' ) - 1 );
@@ -121,8 +112,6 @@
 
                 _p.on( 'updateChild', function( _evt, _id, _data, _d ){
                     _p._view.buildChild( _id, _data );
-                    var _pCk = _p._model.getCkItem( _id );
-                    _p._view.topCk( _id, _pCk.prop( 'checked' ) );
                 });
 
                 _panel.layout().delegate( '.' + _p._model.openClass(), 'click', function( _evt ){
@@ -139,25 +128,6 @@
                     var _sp = $( this ), _id = _sp.data('id');
                     _sp.addClass( _p._model.openClass() ).removeClass( _p._model.closeClass() );
                     _p._view.hideChild( _id );
-                });
-
-                _panel.layout().delegate( 'input.js_bmspTopCk', 'change', function( _evt ){
-                    var _sp = $( this ), _id = _sp.val();
-                    _p._view.topCk( _id, _sp.prop( 'checked' ) );
-                });
-
-                _panel.layout().delegate( 'input.js_bmspChildCk', 'change', function( _evt ){
-                    var _sp = $( this ), _id = _sp.val(), _parentid = _sp.data( 'parentid' );
-                    _p._view.childCk( _parentid, _id );
-                });
-
-                _p.on( 'updateStatus', function( _evt ){
-                    var _cked = _panel.find( 'input.js_bmspCkItem:checked' );
-                    if( _cked.length ){
-                        _p.selector().val( JC.f.printf( _p._model.hasItemText(), _cked.length ) );
-                    }else{
-                        _p.selector().val( _p._model.noItemText() );
-                    }
                 });
 
             }
@@ -188,7 +158,7 @@
         , panelBoxSelector: function(){ return this.selectorProp( 'bmspPanelBoxSelector' ); }
         , topTpl: function(){ return this.scriptTplProp( 'bmspTopTpl' ) }
         , childTpl: function(){ return this.scriptTplProp( 'bmspChildTpl' ) }
-        , childBox: function( _selector ){ return _selector.find( '.js_bmspChildBox' ); } 
+        , childBoxSelector: function(){ return this.selectorProp( 'bmspChildBoxSelector' ); } 
 
         , openClass: function(){ return this.attrProp( 'bmspOpenClass' ); } 
         , closeClass: function(){ return this.attrProp( 'bmspCloseClass' ); } 
@@ -221,16 +191,8 @@
             }
 
         , getChildBox: function( _id ){
-            return this.panelIns().find( JC.f.printf( '.js_bmspChildBox[data-id={0}]', _id ) );
+            return this.panelIns().find( JC.f.printf( '[data-childBox={0}]', _id ) );
         }
-
-        , getCkItem: function( _id ){
-             return this.panelIns().find( JC.f.printf( 'input.js_bmspCkItem[value={0}]', _id ) );
-        }
-
-        , noItemText: function(){ return this.attrProp( 'bmspNoItemText' ); }
-        , hasItemText: function(){ return this.attrProp( 'bmspHasItemText' ); }
-
     });
 
     JC.f.extendObject( MultiselectPanel.View.prototype, {
@@ -263,7 +225,7 @@
                     ;
 
                 $.each( _data, function( _ix, _item ){
-                    _r.push( JC.f.printf( _tpl, _item[0], _item[1], _id ) );
+                    _r.push( JC.f.printf( _tpl, _item[0], _item[1] ) );
                 });
 
                 _box.html( _r.join('') );
@@ -278,35 +240,10 @@
             function( _id ){
                 this._model.getChildBox( _id ).hide();
             }
-
-        , topCk:
-            function( _id, _checked ){
-                var _childBox = this._model.getChildBox( _id );
-                _childBox.find( 'input.js_bmspChildCk' ).prop( 'checked', _checked );
-            }
-
-        , childCk:
-            function( _parentid, _id ){
-                var _p = this
-                    , _childBox = this._model.getChildBox( _parentid )
-                    , _allCk = _p._model.getCkItem( _parentid )
-                    ;
-                if( _childBox.find( 'input.js_bmspChildCk:not(:checked)' ).length ){
-                    _allCk.prop( 'checked', false );
-                }else{
-                    _allCk.prop( 'checked', true );
-                }
-            }
     });
 
     _jdoc.ready( function(){
-        _jdoc.delegate( 'input.js_bizMultiselectPanel', 'click focus', function( _evt ){
-            var _sp = $( this ), _ins;
-            if( !JC.BaseMVC.getInstance( _sp, Bizs.MultiselectPanel ) ){
-                _ins = new Bizs.MultiselectPanel( _sp );
-                _ins._model.panelIns().show( _sp );
-            }
-        });
+        MultiselectPanel.autoInit && MultiselectPanel.init();
     });
 
     return Bizs.MultiselectPanel;

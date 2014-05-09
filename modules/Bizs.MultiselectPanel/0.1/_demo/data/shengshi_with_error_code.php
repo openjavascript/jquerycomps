@@ -1,4 +1,6 @@
 <?php
+    //exit('ttttttttttttttttttttest');
+
     $jsonstr = file_get_contents( 'SHENGSHI.js' );
     $jsonstr = preg_replace( '/^.*?\=/', '', $jsonstr );
     $jsonstr = preg_replace( '/\;[\s]*$/', '', $jsonstr );
