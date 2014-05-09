@@ -179,6 +179,17 @@
                 "window.Bizs": 1
             }
         },
+        "../modules/Bizs.MultiselectPanel/0.1/MultiselectPanel.js": {
+            "name": "../modules/Bizs.MultiselectPanel/0.1/MultiselectPanel.js",
+            "modules": {},
+            "classes": {
+                "window.Bizs.MultiselectPanel": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.Bizs": 1
+            }
+        },
         "../modules/Bizs.TaskViewer/0.1/TaskViewer.js": {
             "name": "../modules/Bizs.TaskViewer/0.1/TaskViewer.js",
             "modules": {},
@@ -1115,6 +1126,33 @@
                 "\n<xmp><div class=\"js_bizMultiUpload\"\n   bmuBoxSelector=\"|.uploadItemBox\"\n   bmuTplSelector=\"|script\"\n   bmuItemDelegate=\">\"\n   bmuRemoveDelegate=\".js_removeUploadItem\"\n   bmuRemoveItemParentSelector=\"(\"\n   bmuAjaxUploadSelector=\"|.js_compAjaxUpload\"\n   bmuItemLimit=\"2\"\n   >\n   <div>\n       <input type=\"hidden\" class=\"ipt ipt-w180 js_compAjaxUpload\" value=\"\"\n           cauStyle=\"w1\"\n           cauButtonText=\"上传资质文件\"\n           cauUrl=\"../_demo/data/handler.php\"\n           cauFileExt=\".jpg, .jpeg, .png, .gif\"\n           cauFileName=\"file\"\n           cauValueKey=\"url\"\n           cauLabelKey=\"name\"\n           cauProgressBox=\"/span.AUProgressBox\"\n           />\n           <span class=\"AUProgressBox\" style=\"display:none;\">\n               <button type=\"button\" class=\"AUProgress\"><div class=\"AUPercent\"></div></button>\n               <button type=\"button\" class=\"AUCancelProgress\"></button>\n           </span>\n           .jpg, .jpeg, .png, .gif\n           (最多上传2个)\n   </div>\n   <dl class=\"uploadItemBox\">\n   </dl>\n   <script type=\"text/template\">\n       <dd class=\"js_multiUploadItem\">\n           <input type=\"hidden\" name=\"file[]\" value=\"{0}\" class=\"js_multiUploadHidden\" />\n           <a href=\"{0}\" target=\"_blank\"><label class=\"js_multiUploadLabel\">{1}</label></a>\n           <button type=\"button\" class=\"AURemove js_removeUploadItem\"></button>\n       </dd>\n   </script>\n</div></xmp>"
             ]
         },
+        "window.Bizs.MultiselectPanel": {
+            "name": "window.Bizs.MultiselectPanel",
+            "shortname": "window.Bizs.MultiselectPanel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.Bizs",
+            "file": "../modules/Bizs.MultiselectPanel/0.1/MultiselectPanel.js",
+            "line": 2,
+            "description": "组件用途简述\n\n <p><b>require</b>:\n     <a href=\"widnow.jQuery.html\">jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n </p>\n\n <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.MultiselectPanel.html' target='_blank'>API docs</a>\n     | <a href='../../modules/Bizs.MultiselectPanel/0.1/_demo' target='_blank'>demo link</a></p>\n \n <h2>页面只要引用本脚本, 默认会自动处理 div class=\"js_bizMultiselectPanel\" </h2>\n\n <h2>可用的 HTML attribute</h2>\n\n <dl>\n     <dt></dt>\n     <dd><dd>\n </dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2013-12-13",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n       <h2>Bizs.MultiselectPanel 示例</h2>"
+            ]
+        },
         "window.Bizs.TaskViewer": {
             "name": "window.Bizs.TaskViewer",
             "shortname": "window.Bizs.TaskViewer",
@@ -1939,7 +1977,7 @@
             "extension_for": [],
             "namespace": "JC.Panel",
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 682,
+            "line": 685,
             "description": "存储 Panel 的基础数据类\n<br /><b>这个类为 Panel 的私有类</b>",
             "is_constructor": 1,
             "params": [
@@ -1985,7 +2023,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 1071,
+            "line": 1090,
             "description": "隐藏或者清除所有 Panel\n<h2>使用这个方法应当谨慎, 容易为DOM造成垃圾Panel</h2>\n<br /><b>注意</b>: 这是个方法, 写成class是为了方便生成文档",
             "is_constructor": 1,
             "static": 1,
@@ -2010,7 +2048,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 1094,
+            "line": 1113,
             "description": "隐藏 或 从DOM清除所有 JC.alert/JC.confirm\n<br /><b>注意, 这是个方法, 写 @class 属性是为了生成文档</b>",
             "static": 1,
             "is_constructor": 1,
@@ -3916,6 +3954,27 @@
             "itemtype": "event",
             "name": "CheckItemLimit",
             "class": "window.Bizs.MultiUpload",
+            "namespace": "window.Bizs"
+        },
+        {
+            "file": "../modules/Bizs.MultiselectPanel/0.1/MultiselectPanel.js",
+            "line": 52,
+            "description": "初始化可识别的 MultiselectPanel 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of MultiselectPanelInstance"
+            },
+            "class": "window.Bizs.MultiselectPanel",
             "namespace": "window.Bizs"
         },
         {
@@ -9931,7 +9990,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 594,
+            "line": 597,
             "description": "Panel 显示前会触发的事件<br/>\n这个事件在用户调用 _panelInstance.show() 时触发",
             "itemtype": "event",
             "name": "beforeshow",
@@ -9944,7 +10003,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 602,
+            "line": 605,
             "description": "显示Panel时会触发的事件",
             "itemtype": "event",
             "name": "show",
@@ -9957,7 +10016,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 609,
+            "line": 612,
             "description": "Panel 隐藏前会触发的事件<br/>\n<br />这个事件在用户调用 _panelInstance.hide() 时触发",
             "itemtype": "event",
             "name": "beforehide",
@@ -9970,7 +10029,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 617,
+            "line": 620,
             "description": "Panel 隐藏时会触发的事件<br/>\n<br />这个事件在用户调用 _panelInstance.hide() 时触发",
             "itemtype": "event",
             "name": "hide",
@@ -9983,7 +10042,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 625,
+            "line": 628,
             "description": "Panel 关闭前会触发的事件<br/>\n这个事件在用户调用 _panelInstance.close() 时触发",
             "itemtype": "event",
             "name": "beforeclose",
@@ -9996,7 +10055,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 636,
+            "line": 639,
             "description": "关闭事件",
             "itemtype": "event",
             "name": "close",
@@ -10009,7 +10068,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 646,
+            "line": 649,
             "description": "Panel 居中显示前会触发的事件<br/>\n这个事件在用户调用 _panelInstance.center() 时触发",
             "itemtype": "event",
             "name": "beforecenter",
@@ -10022,7 +10081,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 654,
+            "line": 657,
             "description": "Panel 居中后会触发的事件",
             "itemtype": "event",
             "name": "center",
@@ -10035,7 +10094,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 661,
+            "line": 664,
             "description": "Panel 点击确认按钮触发的事件",
             "itemtype": "event",
             "name": "confirm",
@@ -10048,7 +10107,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 671,
+            "line": 674,
             "description": "Panel 点击确取消按钮触发的事件",
             "itemtype": "event",
             "name": "cancel",
@@ -10061,7 +10120,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 694,
+            "line": 697,
             "description": "panel 的 HTML 对象或者字符串\n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "selector",
@@ -10071,7 +10130,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 701,
+            "line": 704,
             "description": "header 内容 \n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "headers",
@@ -10081,7 +10140,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 708,
+            "line": 711,
             "description": "body 内容\n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "bodys",
@@ -10091,7 +10150,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 715,
+            "line": 718,
             "description": "footers 内容\n<br /> 这是初始化时的原始数据",
             "itemtype": "property",
             "name": "footers",
@@ -10101,7 +10160,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 722,
+            "line": 725,
             "description": "panel 初始化后的 selector 对象",
             "itemtype": "property",
             "name": "panel",
@@ -10111,7 +10170,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 728,
+            "line": 731,
             "description": "存储用户事件和默认事件的对象",
             "itemtype": "property",
             "name": "_events",
@@ -10123,7 +10182,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 739,
+            "line": 742,
             "description": "Model 初始化方法",
             "itemtype": "method",
             "name": "_init",
@@ -10138,7 +10197,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 772,
+            "line": 786,
             "description": "添加事件方法",
             "itemtype": "method",
             "name": "addEvent",
@@ -10159,7 +10218,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 788,
+            "line": 802,
             "description": "获取事件方法",
             "itemtype": "method",
             "name": "getEvent",
@@ -10179,7 +10238,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 841,
+            "line": 855,
             "description": "Panel的基础数据类, see <a href='JC.Panel.Model.html'>Panel.Model</a>",
             "itemtype": "property",
             "name": "_model",
@@ -10191,7 +10250,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 848,
+            "line": 862,
             "description": "默认模板",
             "prototype": "_tpl",
             "type": "string",
@@ -10202,7 +10261,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 860,
+            "line": 874,
             "description": "View 的初始方法",
             "itemtype": "method",
             "name": "_init",
@@ -10212,7 +10271,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 884,
+            "line": 898,
             "description": "设置Panel的显示位置基于 _src 的左右上下",
             "itemtype": "method",
             "name": "positionWith",
@@ -10227,7 +10286,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 921,
+            "line": 937,
             "description": "显示 Panel",
             "itemtype": "method",
             "name": "show",
@@ -10235,7 +10294,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 930,
+            "line": 946,
             "description": "focus button",
             "itemtype": "method",
             "name": "focus button",
@@ -10243,7 +10302,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 941,
+            "line": 957,
             "description": "隐藏 Panel",
             "itemtype": "method",
             "name": "hide",
@@ -10251,7 +10310,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 949,
+            "line": 965,
             "description": "关闭 Panel",
             "itemtype": "method",
             "name": "close",
@@ -10259,7 +10318,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 958,
+            "line": 974,
             "description": "获取 Panel 的 selector 对象",
             "itemtype": "method",
             "name": "getPanel",
@@ -10270,7 +10329,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 970,
+            "line": 986,
             "description": "获取或设置Panel的 header 内容, see <a href='JC.Panel.html#method_header'>Panel.header</a>",
             "itemtype": "method",
             "name": "getHeader",
@@ -10288,7 +10347,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 990,
+            "line": 1006,
             "description": "获取或设置Panel的 body 内容, see <a href='JC.Panel.html#method_body'>Panel.body</a>",
             "itemtype": "method",
             "name": "getBody",
@@ -10306,7 +10365,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 1006,
+            "line": 1022,
             "description": "获取或设置Panel的 footer 内容, see <a href='JC.Panel.html#method_footer'>Panel.footer</a>",
             "itemtype": "method",
             "name": "getFooter",
@@ -10324,7 +10383,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 1026,
+            "line": 1042,
             "description": "居中显示 Panel",
             "itemtype": "method",
             "name": "center",
@@ -10332,7 +10391,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 1058,
+            "line": 1077,
             "description": "Panel 的默认模板",
             "access": "private",
             "tagname": "",
@@ -10340,7 +10399,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 1116,
+            "line": 1135,
             "description": "监听Panel的所有点击事件\n<br />如果事件源有 eventtype 属性, 则会触发eventtype的事件类型",
             "itemtype": "event",
             "name": "Panel click",
@@ -10351,7 +10410,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 1169,
+            "line": 1188,
             "description": "从 HTML 属性 自动执行 popup",
             "attr": "{function}  panelcancelcallback cancel  回调",
             "class": "JC.hideAllPopup",
@@ -10359,7 +10418,7 @@
         },
         {
             "file": "../modules/JC.Panel/0.2/Panel.default.js",
-            "line": 1211,
+            "line": 1230,
             "description": "隐藏关闭按钮",
             "class": "JC.hideAllPopup",
             "namespace": "JC"
@@ -18460,7 +18519,7 @@
         },
         {
             "file": "../config.js",
-            "line": 116,
+            "line": 117,
             "description": "取当前脚本标签的 src路径",
             "static": 1,
             "return": {
@@ -18905,6 +18964,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../modules/Bizs.MultiselectPanel/0.1/MultiselectPanel.js:2"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../modules/Bizs.TaskViewer/0.1/TaskViewer.js:2"
         },
         {
@@ -19041,27 +19104,27 @@
         },
         {
             "message": "unknown tag: prototype",
-            "line": " ../modules/JC.Panel/0.2/Panel.default.js:848"
+            "line": " ../modules/JC.Panel/0.2/Panel.default.js:862"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1169"
+            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1188"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1169"
+            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1188"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1169"
+            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1188"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1169"
+            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1188"
         },
         {
             "message": "unknown tag: attr",
-            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1169"
+            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1188"
         },
         {
             "message": "unknown tag: version",
@@ -19733,19 +19796,19 @@
         },
         {
             "message": "Missing item type\n默认模板",
-            "line": " ../modules/JC.Panel/0.2/Panel.default.js:848"
+            "line": " ../modules/JC.Panel/0.2/Panel.default.js:862"
         },
         {
             "message": "Missing item type\nPanel 的默认模板",
-            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1058"
+            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1077"
         },
         {
             "message": "Missing item type\n从 HTML 属性 自动执行 popup",
-            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1169"
+            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1188"
         },
         {
             "message": "Missing item type\n隐藏关闭按钮",
-            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1211"
+            "line": " ../modules/JC.Panel/0.2/Panel.default.js:1230"
         },
         {
             "message": "Missing item type\n这个判断是为了向后兼容 JC 0.1\n使用 requirejs 的项目可以移除这段判断代码",
@@ -20429,7 +20492,7 @@
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
-            "line": " ../config.js:116"
+            "line": " ../config.js:117"
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",

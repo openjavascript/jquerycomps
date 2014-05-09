@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../modules/JC.Calendar/0.3/Calendar.season.js - jquery components</title>
+    <title>../modules/Bizs.MultiselectPanel/0.1/MultiselectPanel.js - jquery components</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -236,226 +236,148 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../modules/JC.Calendar/0.3/Calendar.season.js</h1>
+                        <h1 class="file-heading">File: ../modules/Bizs.MultiselectPanel/0.1/MultiselectPanel.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.Calendar.date&#x27; ], function(){
-    //
-    /// SEASON CODE
-    //
+ ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Panel&#x27; ], function(){
+/**
+ * 组件用途简述
+ *
+ *  &lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
+ *      &lt;a href=&quot;widnow.jQuery.html&quot;&gt;jQuery&lt;/a&gt;
+ *      , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+ *  &lt;/p&gt;
+ *
+ *  &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
+ *      | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/Bizs.MultiselectPanel.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
+ *      | &lt;a href=&#x27;../../modules/Bizs.MultiselectPanel/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+ *  
+ *  &lt;h2&gt;页面只要引用本脚本, 默认会自动处理 div class=&quot;js_bizMultiselectPanel&quot; &lt;/h2&gt;
+ *
+ *  &lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
+ *
+ *  &lt;dl&gt;
+ *      &lt;dt&gt;&lt;/dt&gt;
+ *      &lt;dd&gt;&lt;dd&gt;
+ *  &lt;/dl&gt; 
+ *
+ * @namespace   window.Bizs
+ * @class       MultiselectPanel
+ * @extends     JC.BaseMVC
+ * @constructor
+ * @param   {selector|string}   _selector   
+ * @version dev 0.1 2013-12-13
+ * @author  qiushaowei &lt;suches@btbtd.org&gt; | 75 Team
+ * @example
+        &lt;h2&gt;Bizs.MultiselectPanel 示例&lt;/h2&gt;
+ */
+    var _jdoc = $( document ), _jwin = $( window );
+
+    Bizs.MultiselectPanel = MultiselectPanel;
+
+    function MultiselectPanel( _selector ){
+        _selector &amp;&amp; ( _selector = $( _selector ) );
+
+        if( JC.BaseMVC.getInstance( _selector, MultiselectPanel ) ) 
+            return JC.BaseMVC.getInstance( _selector, MultiselectPanel );
+
+        JC.BaseMVC.getInstance( _selector, MultiselectPanel, this );
+
+        this._model = new MultiselectPanel.Model( _selector );
+        this._view = new MultiselectPanel.View( this._model );
+
+        this._init();
+
+        JC.log( MultiselectPanel.Model._instanceName, &#x27;all inited&#x27;, new Date().getTime() );
+    }
     /**
-     * 自定义周弹框的模板HTML
-     * @for         JC.Calendar
-     * @property    seasonTpl
-     * @type        string
-     * @default     empty
+     * 初始化可识别的 MultiselectPanel 实例
+     * @method  init
+     * @param   {selector}      _selector
      * @static
+     * @return  {Array of MultiselectPanelInstance}
      */
-    JC.Calendar.seasonTpl = &#x27;&#x27;;
+    MultiselectPanel.init =
+        function( _selector ){
+            var _r = [];
+            _selector = $( _selector || document );
 
-    function SeasonModel( _selector ){
-        this._selector = _selector;
-    }
-    JC.Calendar.SeasonModel = SeasonModel;
-    
-    function SeasonView( _model ){
-        this._model = _model;
-    }
-    JC.Calendar.SeasonView = SeasonView;
-
-    JC.Calendar.clone( SeasonModel, SeasonView );
-
-
-    JC.f.extendObject( SeasonModel.prototype, {
-        layout: 
-            function(){
-                var _r = $(&#x27;#UXCCalendar_season&#x27;);
-
-                if( !_r.length ){
-                    _r = $( JC.Calendar.seasonTpl || this.tpl ).hide();
-                    _r.attr(&#x27;id&#x27;, &#x27;UXCCalendar_season&#x27;).hide().appendTo( document.body );
-                 }
-                return _r;
-            }
-
-        , tpl:
-            [
-            &#x27;&lt;div id=&quot;UXCCalendar_season&quot; class=&quot;UXCCalendar UXCCalendar_week UXCCalendar_season&quot; &gt;&#x27;
-            ,&#x27;    &lt;div class=&quot;UHeader&quot;&gt;&#x27;
-            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UNextYear&quot;&gt;&amp;nbsp;&amp;gt;&amp;gt;&amp;nbsp;&lt;/button&gt;&#x27;
-            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UButton UPreYear&quot;&gt;&amp;nbsp;&amp;lt;&amp;lt;&amp;nbsp;&lt;/button&gt;&#x27;
-            ,&#x27;        &lt;select class=&quot;UYear&quot; style=&quot;&quot;&gt;&lt;/select&gt;&#x27;
-            ,&#x27;    &lt;/div&gt;&#x27;
-            ,&#x27;    &lt;table class=&quot;UTable UTableBorder&quot;&gt;&#x27;
-            ,&#x27;        &lt;tbody&gt;&lt;/tbody&gt;&#x27;
-            ,&#x27;    &lt;/table&gt;&#x27;
-            ,&#x27;    &lt;div class=&quot;UFooter&quot;&gt;&#x27;
-            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UConfirm&quot;&gt;确定&lt;/button&gt;&#x27;
-            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UClear&quot;&gt;清空&lt;/button&gt;&#x27;
-            ,&#x27;        &lt;button type=&quot;button&quot; class=&quot;UCancel&quot;&gt;取消&lt;/button&gt;&#x27;
-            ,&#x27;    &lt;/div&gt;&#x27;
-            ,&#x27;&lt;/div&gt;&#x27;
-            ].join(&#x27;&#x27;)
-
-        , month: 
-            function(){
-                var _r = 0, _tmp, _date;
-                ( _tmp = this.layout().find(&#x27;td.cur a[dstart]&#x27;) ).length
-                    &amp;&amp; ( _date = new Date() )
-                    &amp;&amp; (
-                            _date.setTime( _tmp.attr(&#x27;dstart&#x27;) )
-                            , _r = _date.getMonth()
-                       )
-                    ;
-                return _r;
-            }
-
-        , selectedDate:
-            function(){
-                var _r, _tmp, _item;
-                _tmp = this.layout().find(&#x27;td.cur&#x27;);
-                _tmp.length 
-                    &amp;&amp; !_tmp.hasClass( &#x27;unable&#x27; )
-                    &amp;&amp; ( _item = _tmp.find(&#x27;a[dstart]&#x27;) )
-                    &amp;&amp; ( 
-                            _r = { &#x27;start&#x27;: new Date(), &#x27;end&#x27;: new Date() }
-                            , _r.start.setTime( _item.attr(&#x27;dstart&#x27;) ) 
-                            , _r.end.setTime( _item.attr(&#x27;dend&#x27;) ) 
-                        )
-                    ;
-                return _r;
-            }
-    });
-
-    JC.f.extendObject( SeasonView.prototype, {
-
-        _buildBody:
-            function( _dateo ){
-                var _p = this
-                    , _date = _dateo.date
-                    , _layout = _p._model.layout()
-                    , today = new Date( new Date().getFullYear(), new Date().getMonth(), new Date().getDate() ).getTime()
-                    , nextCount = 0
-                    , _ls = [], _class, _data, _title, _sdate, _edate, _year = _date.getFullYear()
-                    , _rows = 4
-                    , ipt = JC.Calendar.lastIpt
-                    , currentcanselect = JC.f.parseBool( ipt.attr(&#x27;currentcanselect&#x27;) )
-                    , _minvalue = _dateo.minvalue ? JC.f.cloneDate( _dateo.minvalue ) : null
-                    , _maxvalue = _dateo.maxvalue ? JC.f.cloneDate( _dateo.maxvalue ) : null
-                    , _m
-                    ;
-
-                    if( _maxvalue &amp;&amp; currentcanselect ){
-                       var _m = _maxvalue.getMonth() + 1, _md;
-
-                        if( _m % 3 !== 0 ){
-                            _maxvalue.setDate( 1 );
-                            _maxvalue.setMonth( _m + ( 3 - ( _m % 3 ) - 1 ) );
-                        }
-                        _maxvalue.setDate( JC.f.maxDayOfMonth( _maxvalue ) );
-                    }
-
-                    if( _minvalue &amp;&amp; currentcanselect ){
-                        _m = _minvalue.getMonth() + 1, _md;
-
-                        _minvalue.setDate( 1 );
-                        _minvalue.setMonth( _minvalue.getMonth() - ( 3 - _m % 3 ) );
-                        //_minvalue.setDate( JC.f.maxDayOfMonth( _minvalue ) );
-                    }
-
-                    //JC.log( JC.f.formatISODate( _minvalue ), JC.f.formatISODate( _maxvalue ) );
-
-                    _ls.push(&#x27;&lt;tr&gt;&#x27;);
-                    for( var i = 1, j = 4; i &lt;= j; i++ ){
-                        _sdate = new Date( _year, i * 3 - 3, 1 ); 
-                        _edate = new Date( _year, i * 3 - 1, 1 );
-                        _edate.setDate( JC.f.maxDayOfMonth( _edate ) );
-
-                        var _cnUnit = JC.Calendar.cnUnit.charAt( i % 10 );
-                        i &gt; 10 &amp;&amp; ( _cnUnit = &quot;十&quot; + _cnUnit );
-
-                        _title = JC.f.printf( &quot;{0}年 第{1}季度\n开始日期: {2} (周{4})\n结束日期: {3} (周{5})&quot;
-                                    , _year
-                                    , JC.Calendar.getCnNum( i )
-                                    , JC.f.formatISODate( _sdate )
-                                    , JC.f.formatISODate( _edate )
-                                    , JC.Calendar.cnWeek.charAt( _sdate.getDay() % 7 )
-                                    , JC.Calendar.cnWeek.charAt( _edate.getDay() % 7 )
-                                    );
-
-                        _class = [];
-
-                        if( _minvalue &amp;&amp; _sdate.getTime() &lt; _minvalue.getTime() ) 
-                            _class.push( &#x27;unable&#x27; );
-                        if( _maxvalue &amp;&amp; _edate.getTime() &gt; _maxvalue.getTime() ){
-                            _class.push( &#x27;unable&#x27; );
-                        }
-
-                        if( _date.getTime() &gt;= _sdate.getTime() &amp;&amp; _date.getTime() &lt;= _edate.getTime() ) _class.push( &#x27;cur&#x27; );
-                        if( today &gt;= _sdate.getTime() &amp;&amp; today &lt;= _edate.getTime() ) _class.push( &#x27;today&#x27; );
-
-                        _ls.push( JC.f.printf( &#x27;&lt;td class=&quot;{0}&quot;&gt;&lt;a href=&quot;javascript:&quot; title=&quot;{1}&quot;&#x27;+
-                                        &#x27; dstart=&quot;{3}&quot; dend=&quot;{4}&quot; month=&quot;{5}&quot; season=&quot;{5}&quot; &gt;{2}季度&lt;/a&gt;&lt;/td&gt;&#x27;
-                                    , _class.join(&#x27; &#x27;)
-                                    , _title
-                                    , _cnUnit
-                                    , _sdate.getTime()
-                                    , _edate.getTime()
-                                    , i
-                                ));
-                        if( i % 2 === 0 &amp;&amp; i != j ) _ls.push( &#x27;&lt;/tr&gt;&lt;tr&gt;&#x27; );
-                    }
-                    _ls.push(&#x27;&lt;/tr&gt;&#x27;); 
-     
-                    _layout.find(&#x27;table.UTableBorder tbody&#x27; ).html( $( _ls.join(&#x27;&#x27;) ) );
-            }
-
-        , updateSelected: 
-            function( _userSelectedItem ){
-                var _p = this, _dstart, _dend, _tmp;
-                if( !_userSelectedItem ){
-                    _tmp = this._model.selectedDate();
-                    _tmp &amp;&amp; ( _dstart = _tmp.start, _dend = _tmp.end );
+            if( _selector.length ){
+                if( _selector.hasClass( &#x27;js_bizMultiselectPanel&#x27; )  ){
+                    _r.push( new MultiselectPanel( _selector ) );
                 }else{
-                    _userSelectedItem = $( _userSelectedItem );
-                    _tmp = JC.f.getJqParent( _userSelectedItem, &#x27;td&#x27; );
-                    if( _tmp &amp;&amp; _tmp.hasClass(&#x27;unable&#x27;) ) return;
-                    _dstart = new Date(); _dend = new Date();
-                    _dstart.setTime( _userSelectedItem.attr(&#x27;dstart&#x27;) );
-                    _dend.setTime( _userSelectedItem.attr(&#x27;dend&#x27;) );
+                    _selector.find( &#x27;input.js_bizMultiselectPanel, span.js_bizMultiselectPanel&#x27; ).each( function(){
+                        _r.push( new MultiselectPanel( this ) );
+                    });
                 }
-                if( !( _dstart &amp;&amp; _dend ) ) return;
+            }
+            return _r;
+        };
 
-                /*
-                _p._model.selector().val( JC.f.printf( &#x27;{0} 至 {1}&#x27;, JC.f.formatISODate( _dstart ), JC.f.formatISODate( _dend ) ) );
-                */
-                _p._model.selector().val( _p._model.fullFormat( _p._model.dateFormat( _dstart ), _p._model.dateFormat( _dend ) ) );
-                /*
-                if( _userSelectedItem ){
-                    _p._model.selector().val( _p._model.selector().val().replace( /YQ/g, 
-                        _userSelectedItem.attr( &#x27;season&#x27; )
-                    ));
+    JC.BaseMVC.build( MultiselectPanel );
+
+    JC.f.extendObject( MultiselectPanel.prototype, {
+        _beforeInit:
+            function(){
+                JC.log( &#x27;MultiselectPanel _beforeInit&#x27;, new Date().getTime() );
+            }
+
+        , _initHanlderEvent:
+            function(){
+                var _p = this;
+
+                _p.on( &#x27;inited&#x27;, function(){
+                    _p.trigger( &#x27;init_top&#x27; );
+                });
+
+                var _panel = new JC.Panel( _p._model.panel() );
+                    _panel.on( &#x27;close&#x27;, function( _evt, _panel ){ _panel.hide(); return false; });
+
+                if( _p._model.popupHideButton() ){
+                    _panel.offsetTop( -_p.selector().prop( &#x27;offsetHeight&#x27; ) - 1 );
                 }
-                */
-                $(_p).trigger( &#x27;TriggerEvent&#x27;, [ JC.Calendar.Model.UPDATE, &#x27;season&#x27;, _dstart, _dend ] );
 
-                JC.Calendar.hide();
+                _p.selector().on( &#x27;click&#x27;, function( _evt ){
+                    _panel.show( _p.selector() );
+                });
+
+                _p.on( &#x27;init_top&#x27;, function( _evt ){
+                });
+            }
+
+        , _inited:
+            function(){
+                JC.log( &#x27;MultiselectPanel _inited&#x27;, new Date().getTime() );
+                this.trigger( &#x27;inited&#x27; );
             }
     });
 
-    $(document).delegate( [ &#x27;input[datatype=season]&#x27;, &#x27;input[multidate=season]&#x27; ].join(), &#x27;focus&#x27; 
-    , function($evt){
-            Calendar.pickDate( this );
-    });
-    $(document).delegate( [ &#x27;button[datatype=season]&#x27;, &#x27;button[multidate=season]&#x27; ].join(), &#x27;click&#x27; , function($evt){
-            Calendar.pickDate( this );
-    });
-    $(document).delegate( [ &#x27;textarea[datatype=season]&#x27;, &#x27;textarea[multidate=season]&#x27; ].join(), &#x27;click&#x27; , function($evt){
-            Calendar.pickDate( this );
+    MultiselectPanel.Model._instanceName = &#x27;JCMultiselectPanel&#x27;;
+    JC.f.extendObject( MultiselectPanel.Model.prototype, {
+        init:
+            function(){
+                JC.log( &#x27;MultiselectPanel.Model.init:&#x27;, new Date().getTime() );
+            }
+
+        , url: function(){ return this.attrProp( &#x27;bmspUrl&#x27; ); }
+        , childUrl: function(){ return this.attrProp( &#x27;bmspChildUrl&#x27; ); }
+        , panel: function(){ return this.selectorProp( &#x27;bmspPanel&#x27;); }
+        , popupHideButton: function(){ return this.boolProp( &#x27;bmspPopupHideButton&#x27;); }
     });
 
-    return JC.Calendar;
+    JC.f.extendObject( MultiselectPanel.View.prototype, {
+        init:
+            function(){
+                JC.log( &#x27;MultiselectPanel.View.init:&#x27;, new Date().getTime() );
+            }
+    });
+
+    _jdoc.ready( function(){
+        MultiselectPanel.autoInit &amp;&amp; MultiselectPanel.init();
+    });
+
+    return Bizs.MultiselectPanel;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
         function ( _name, _require, _cb ) { 
             typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );
