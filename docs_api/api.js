@@ -26,6 +26,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Lazyload",
         "JC.LunarCalendar",
         "JC.NumericStepper",
+        "JC.Paginator",
         "JC.Panel",
         "JC.Placeholder",
         "JC.PopTips",
