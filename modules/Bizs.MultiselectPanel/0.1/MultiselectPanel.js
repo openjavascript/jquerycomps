@@ -1,25 +1,73 @@
-//TODO: 初始化改为响应式, 需要考虑查询初始化
  ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
 /**
- * 组件用途简述
+ * 二级分类复选弹框
  *
  *  <p><b>require</b>:
- *      <a href="widnow.jQuery.html">jQuery</a>
- *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      , <a href='JC.Panel.html'>JC.Panel</a>
  *  </p>
  *
  *  <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  *      | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.MultiselectPanel.html' target='_blank'>API docs</a>
  *      | <a href='../../modules/Bizs.MultiselectPanel/0.1/_demo' target='_blank'>demo link</a></p>
  *  
- *  <h2>页面只要引用本脚本, 默认会自动处理 div class="js_bizMultiselectPanel" </h2>
+ *  <h2>页面只要引用本脚本, 默认会自动处理 [input|button] class="js_bizMultiselectPanel" </h2>
  *
- *  <h2>可用的 HTML attribute</h2>
- *
+ *  <h2>共用的 HTML attribute</h2>
  *  <dl>
- *      <dt></dt>
- *      <dd><dd>
+ *    <dt>bmspUrl = url</dt>
+ *    <dd>获取一级分类数据的URL<dd>
+ *
+ *    <dt>bmspChildUrl = url</dt>
+ *    <dd>获取子级分类数据的URL, "{0}" 代表父级ID<dd>
+ *
+ *    <dt>bmspPopupHideButton = bool, default = false</dt>
+ *    <dd>显示弹框的时候, 是否遮盖触发源标签</dd>
+ *
+ *    <dt>bmspPanel = selector</dt>
+ *    <dd>显示内容的弹框</dd>
+ *
+ *    <dt>bmspPanelBoxSelector = selector</dt>
+ *    <dd>弹框里显示分类内容的容器</dd>
+ *
+ *    <dt>bmspTopTpl = script selector</dt>
+ *    <dd>一级分类的脚本模板</dd>
+ *
+ *    <dt>bmspChildTpl = script selector</dt>
+ *    <dd>子级分类的脚本模板</dd>
+ *
+ *    <dt>bmspOpenClass = css class name</dt>
+ *    <dd>展开子级分类的样式</dd>
+ *
+ *    <dt>bmspCloseClass = css class name</dt>
+ *    <dd>关闭子级分类的样式</dd>
+ *
+ *    <dt>bmspNoItemText = string</dt>
+ *    <dd>没有选择内容时的提示文本</dd>
+ *
+ *    <dt>bmspHasItemText = string</dt>
+ *    <dd>有选择内容时的提示文本, "{0}" 代表选择的数量</dd>
+ *
+ *    <dt>bmspSaveTopIdSelector = selector</dt>
+ *    <dd>保存一级分类ID的选择器</dd>
  *  </dl> 
+ *
+ *  <h2>URL 回填的 HTML attribute</h2>
+ *  <dl>
+ *    <dt>bmspAutoFillTopKey = url arg name</dt>
+ *    <dd>回填一级分类的URL识别name</dd>
+ *
+ *    <dt>bmspAutoFillChildKey = url arg name</dt>
+ *    <dd>回填子级分类的URL识别name</dd>
+ *  </dl>
+ *
+ *  <h2>数据 回填的 HTML attribute</h2>
+ *  <dl>
+ *      <dt>bmspDefaultFillData = json data name, <b>window 变量域</b></dt>
+ *      <dd>初始化的数据变量名<pre>
+window.testData = { "parents": [ 1, 2, 3 ], "children": [4, 5, 6, 7, 8 ] };
+</pre></dd>
+ *  </dl>
  *
  * @namespace   window.Bizs
  * @class       MultiselectPanel
@@ -28,8 +76,6 @@
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2014-05-09
  * @author  qiushaowei <suches@btbtd.org> | 75 Team
- * @example
-        <h2>Bizs.MultiselectPanel 示例</h2>
  */
     var _jdoc = $( document ), _jwin = $( window );
 
@@ -66,7 +112,7 @@
                 if( _selector.hasClass( 'js_bizMultiselectPanel' )  ){
                     _r.push( new MultiselectPanel( _selector ) );
                 }else{
-                    _selector.find( 'input.js_bizMultiselectPanel, span.js_bizMultiselectPanel' ).each( function(){
+                    _selector.find( 'input.js_bizMultiselectPanel, button.js_bizMultiselectPanel' ).each( function(){
                         _r.push( new MultiselectPanel( this ) );
                     });
                 }
@@ -235,7 +281,7 @@
                 typeof _setter != 'undefined' && ( this._panelIns = _setter );
                 return this._panelIns;
             }
-        , panelBoxSelector: function(){ return this.selectorProp( 'bmspPanelBoxSelector' ); }
+        , panelBoxSelector: function(){ return this.panelIns().find( this.attrProp( 'bmspPanelBoxSelector' ) || 'js_bmspPanelBox' ); }
         , topTpl: function(){ return this.scriptTplProp( 'bmspTopTpl' ) }
         , childTpl: function(){ return this.scriptTplProp( 'bmspChildTpl' ) }
         , childBox: function( _selector ){ return _selector.find( '.js_bmspChildBox' ); } 

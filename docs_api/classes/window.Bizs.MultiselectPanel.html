@@ -142,24 +142,60 @@
             Extends <a href="../classes/JC.BaseMVC.html" class="crosslink">JC.BaseMVC</a>
         </div>
         <div class="foundat">
-            Defined in: <a href="../files/.._modules_Bizs.MultiselectPanel_0.1_MultiselectPanel.js.html#l3"><code>..&#x2F;modules&#x2F;Bizs.MultiselectPanel&#x2F;0.1&#x2F;MultiselectPanel.js:3</code></a>
+            Defined in: <a href="../files/.._modules_Bizs.MultiselectPanel_0.1_MultiselectPanel.js.html#l2"><code>..&#x2F;modules&#x2F;Bizs.MultiselectPanel&#x2F;0.1&#x2F;MultiselectPanel.js:2</code></a>
         </div>
 </div>
 <div class="box intro">
-    <p>组件用途简述</p>
+    <p>二级分类复选弹框</p>
  <p><b>require</b>:
-     <a href="widnow.jQuery.html">jQuery</a>
-     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     , <a href='JC.Panel.html'>JC.Panel</a>
  </p>
  <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.MultiselectPanel.html' target='_blank'>API docs</a>
      | <a href='../../modules/Bizs.MultiselectPanel/0.1/_demo' target='_blank'>demo link</a></p>
- <h2>页面只要引用本脚本, 默认会自动处理 div class=&quot;js_bizMultiselectPanel&quot; </h2>
- <h2>可用的 HTML attribute</h2>
+ <h2>页面只要引用本脚本, 默认会自动处理 [input|button] class=&quot;js_bizMultiselectPanel&quot; </h2>
+<p> <h2>共用的 HTML attribute</h2>
  <dl>
-     <dt></dt>
-     <dd><dd>
- </dl>
+   <dt>bmspUrl = url</dt>
+   <dd>获取一级分类数据的URL<dd></p>
+<p>   <dt>bmspChildUrl = url</dt>
+   <dd>获取子级分类数据的URL, &quot;{0}&quot; 代表父级ID<dd></p>
+<p>   <dt>bmspPopupHideButton = bool, default = false</dt>
+   <dd>显示弹框的时候, 是否遮盖触发源标签</dd></p>
+<p>   <dt>bmspPanel = selector</dt>
+   <dd>显示内容的弹框</dd></p>
+<p>   <dt>bmspPanelBoxSelector = selector</dt>
+   <dd>弹框里显示分类内容的容器</dd></p>
+<p>   <dt>bmspTopTpl = script selector</dt>
+   <dd>一级分类的脚本模板</dd></p>
+<p>   <dt>bmspChildTpl = script selector</dt>
+   <dd>子级分类的脚本模板</dd></p>
+<p>   <dt>bmspOpenClass = css class name</dt>
+   <dd>展开子级分类的样式</dd></p>
+<p>   <dt>bmspCloseClass = css class name</dt>
+   <dd>关闭子级分类的样式</dd></p>
+<p>   <dt>bmspNoItemText = string</dt>
+   <dd>没有选择内容时的提示文本</dd></p>
+<p>   <dt>bmspHasItemText = string</dt>
+   <dd>有选择内容时的提示文本, &quot;{0}&quot; 代表选择的数量</dd></p>
+<p>   <dt>bmspSaveTopIdSelector = selector</dt>
+   <dd>保存一级分类ID的选择器</dd>
+ </dl> </p>
+<p> <h2>URL 回填的 HTML attribute</h2>
+ <dl>
+   <dt>bmspAutoFillTopKey = url arg name</dt>
+   <dd>回填一级分类的URL识别name</dd></p>
+<p>   <dt>bmspAutoFillChildKey = url arg name</dt>
+   <dd>回填子级分类的URL识别name</dd>
+ </dl></p>
+<p> <h2>数据 回填的 HTML attribute</h2>
+ <dl>
+     <dt>bmspDefaultFillData = json data name, <b>window 变量域</b></dt>
+     <dd>初始化的数据变量名<pre>
+window.testData = { &quot;parents&quot;: [ 1, 2, 3 ], &quot;children&quot;: [4, 5, 6, 7, 8 ] };
+</pre></dd>
+ </dl></p>
 </div>
     <div class="constructor">
         <h2>Constructor</h2>
@@ -175,7 +211,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_Bizs.MultiselectPanel_0.1_MultiselectPanel.js.html#l3"><code>..&#x2F;modules&#x2F;Bizs.MultiselectPanel&#x2F;0.1&#x2F;MultiselectPanel.js:3</code></a>
+        <a href="../files/.._modules_Bizs.MultiselectPanel_0.1_MultiselectPanel.js.html#l2"><code>..&#x2F;modules&#x2F;Bizs.MultiselectPanel&#x2F;0.1&#x2F;MultiselectPanel.js:2</code></a>
         </p>
     </div>
     <div class="description">
@@ -190,12 +226,6 @@
                     </div>
                 </li>
             </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>   &lt;h2&gt;Bizs.MultiselectPanel 示例&lt;/h2&gt;</code></pre>
-            </div>
         </div>
 </div>
     </div>
@@ -329,7 +359,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_Bizs.MultiselectPanel_0.1_MultiselectPanel.js.html#l53"><code>..&#x2F;modules&#x2F;Bizs.MultiselectPanel&#x2F;0.1&#x2F;MultiselectPanel.js:53</code></a>
+        <a href="../files/.._modules_Bizs.MultiselectPanel_0.1_MultiselectPanel.js.html#l99"><code>..&#x2F;modules&#x2F;Bizs.MultiselectPanel&#x2F;0.1&#x2F;MultiselectPanel.js:99</code></a>
         </p>
     </div>
     <div class="description">
