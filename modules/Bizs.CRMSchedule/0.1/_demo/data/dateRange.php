@@ -22,8 +22,8 @@
 
         while( $start_date  < $end_date ){
             $position_date[ date( 'Y-m-d', $start_date ) ] = array(
-                'status' => $count % 6
-                , 'company' => $count % 6 != 0 ? '中文company ' . $count : ''
+                'status' => $count % 7
+                , 'company' => $count % 7 != 0 ? '中文company ' . $count : ''
             );
 
 	    $start_date = strtotime( '+1 day', $start_date );

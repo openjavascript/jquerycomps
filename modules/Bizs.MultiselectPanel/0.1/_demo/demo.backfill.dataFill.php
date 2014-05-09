@@ -1,4 +1,25 @@
-<!doctype html>
+<?php
+    $trade = null;
+    $area= null;
+
+    if( isset( $_REQUEST[ 'tradeTop' ] ) ){
+        $trade = array( 'parents' => explode( ',', $_REQUEST['tradeTop'] ) );
+
+        if( isset( $_REQUEST[ 'tradeSub' ] ) ){
+            $trade[ 'children' ] = $_REQUEST[ 'tradeSub' ];
+        }
+    }
+
+    if( isset( $_REQUEST[ 'areaTop' ] ) ){
+        $area = array( 'parents' => explode( ',', $_REQUEST['areaTop'] ) );
+
+        if( isset( $_REQUEST[ 'areaSub' ] ) ){
+            $area[ 'children' ] = $_REQUEST[ 'areaSub' ];
+        }
+    }
+
+
+?><!doctype html>
 <html>
 <head>
 <meta charset=utf-8 />
@@ -56,12 +77,26 @@
 
             return _r;
         }
+
+<?php
+    if( $trade ){
+        $tradeData = json_encode( $trade );
+        echo "      window.defaultTradeData = $tradeData;";
+    }
+
+    if( $area ){
+        $areaData = json_encode( $area );
+        echo "\n      window.defaultAreaData = $areaData;";
+    }
+
+?>
+
     </script>
 </head>    
 <body>
     <h2>Bizs.MultiselectPanel - 示例</h2>
 
-   <form action="?" method="GET"
+   <form action="?" method="POST"
        class="js_bizsFormLogic"
        formAfterProcess="bmsp_formAfterProcess"
        >
@@ -85,9 +120,8 @@
                     bmspNoItemText="请选择"
                     bmspHasItemText="已选择 ({0})"
 
-                    bmspAutoFillTopKey="tradeTop"
-                    bmspAutoFillChildKey="tradeSub[]"
                     bmspSaveTopIdSelector="/input.js_tradeTop"
+                    bmspDefaultFillData="defaultTradeData"
                     />
                     <input type="hidden" name="tradeTop" value="" class="js_tradeTop" />
 
@@ -139,9 +173,8 @@
                     bmspNoItemText="请选择"
                     bmspHasItemText="已选择 ({0})"
 
-                    bmspAutoFillTopKey="areaTop"
-                    bmspAutoFillChildKey="areaSub[]"
                     bmspSaveTopIdSelector="/input.js_areaTop"
+                    bmspDefaultFillData="defaultAreaData"
                     />
                     <input type="hidden" name="areaTop" value="" class="js_areaTop" />
 

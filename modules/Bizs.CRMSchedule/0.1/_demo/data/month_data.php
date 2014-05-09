@@ -26,8 +26,8 @@
 
             for( $k = 0; $k < 28; $k ++ ){
                 $position_date[ date( 'Y-m-d', $tmp_date ) ] = array(
-                    'status' => $k % 6
-                    , 'company' => $k % 6 != 0 ? '中文company ' . $k : ''
+                    'status' => $k % 7
+                    , 'company' => $k % 7 != 0 ? '中文company ' . $k : ''
                );
                 //date_add( $tmp_date, date_interval_create_from_date_string('1 days'));
                 //$tmp_date->add( new DateInterval( 'P1D') );

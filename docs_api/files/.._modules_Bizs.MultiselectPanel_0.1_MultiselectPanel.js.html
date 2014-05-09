@@ -338,12 +338,21 @@
                     _panel.on( &#x27;close&#x27;, function( _evt, _panel ){ _panel.hide(); return false; });
 
                     _panel.on( &#x27;hide&#x27;, function(){
-                        _p.trigger( &#x27;updateStatus&#x27; );
+                        JC.f.safeTimeout( function(){
+                            _p.trigger( &#x27;updateStatus&#x27; );
+                        }, _p.selector(), &#x27;HIDE_PANEL&#x27;, 50 );
                     });
 
                     _panel.on( &#x27;beforeshow&#x27;, function(){
                         JC.hideAllPanel();
                     });
+
+                    _panel.layout().on( &#x27;click&#x27;, function( _evt ){
+                        JC.f.safeTimeout( function(){
+                            _p.trigger( &#x27;saveParentId&#x27; );
+                        }, _p.selector(), &#x27;HIDE_PANEL&#x27;, 50 );
+                    });
+
 
                 if( _p._model.popupHideButton() ){
                     _panel.offsetTop( -_p.selector().prop( &#x27;offsetHeight&#x27; ) - 1 );
@@ -355,10 +364,12 @@
 
                 _p.on( &#x27;init_top&#x27;, function( _evt ){
                     _p._model.initTop();
+                    _p.trigger( &#x27;saveParentId&#x27; );
                 });
 
                 _p.on( &#x27;updateTop&#x27;, function( _evt, _data, _d ){
                     _p._view.buildTop( _data );
+                    _p.trigger( &#x27;saveParentId&#x27; );
                 });
 
                 _p.on( &#x27;updateChild&#x27;, function( _evt, _id, _data, _d ){
@@ -371,6 +382,10 @@
                     var _sp = $( this ), _id = _sp.data(&#x27;id&#x27;);
                     _sp.addClass( _p._model.closeClass() ).removeClass( _p._model.openClass() );
                     _p._view.showChild( _id );
+                    _p.trigger( &#x27;initChildBox&#x27;, [ _id ] );
+                });
+
+                _p.on( &#x27;initChildBox&#x27;, function( _evt, _id ){
                     if( !_p._model.getChildBox( _id ).data( &#x27;inited&#x27; ) ){
                         _p._model.getChildBox( _id ).data( &#x27;inited&#x27;, true );
                         _p._model.initChild( _id );
@@ -386,6 +401,8 @@
                 _panel.layout().delegate( &#x27;input.js_bmspTopCk&#x27;, &#x27;change&#x27;, function( _evt ){
                     var _sp = $( this ), _id = _sp.val();
                     _p._view.topCk( _id, _sp.prop( &#x27;checked&#x27; ) );
+
+                    _sp.prop( &#x27;checked&#x27; ) &amp;&amp; _p.trigger( &#x27;initChildBox&#x27;, [ _id ] );
                 });
 
                 _panel.layout().delegate( &#x27;input.js_bmspChildCk&#x27;, &#x27;change&#x27;, function( _evt ){
@@ -394,12 +411,45 @@
                 });
 
                 _p.on( &#x27;updateStatus&#x27;, function( _evt ){
-                    var _cked = _panel.find( &#x27;input.js_bmspCkItem:checked&#x27; );
+                    var _cked = _panel.find( &#x27;input.js_bmspChildCk:checked&#x27; );
                     if( _cked.length ){
                         _p.selector().val( JC.f.printf( _p._model.hasItemText(), _cked.length ) );
                     }else{
                         _p.selector().val( _p._model.noItemText() );
                     }
+
+                    _p.trigger( &#x27;saveParentId&#x27; );
+                });
+
+                _p.on( &#x27;saveParentId&#x27;, function( _evt ){
+                    var _idSelector = _p._model.saveTopIdSelector();
+                    if( _idSelector &amp;&amp; _idSelector.length ){
+                        var _pCk = _p._model.panelIns().find( &#x27;input.js_bmspTopCk:checked&#x27; )
+                            , _cCk = _p._model.panelIns().find( &#x27;input.js_bmspChildCk:checked&#x27; )
+                            , _tmp = {}
+                            , _r = []
+                            ;
+
+                        _pCk.each( function(){
+                            var _id = $( this ).val();
+
+                            if( !( _id in _tmp ) ){
+                                _r.push( _id );
+                            }
+                            _tmp[ _id ] = &#x27;&#x27;;
+                        });
+
+                        _cCk.each( function(){
+                            var _id = $( this ).data( &#x27;parentid&#x27; );
+                            if( !( _id in _tmp ) ){
+                                _r.push( _id );
+                            }
+                            _tmp[ _id ] = &#x27;&#x27;;
+                        });
+
+                        _idSelector.val( _r.join(&#x27;,&#x27;) );
+                    }
+                    
                 });
 
             }
@@ -438,6 +488,8 @@
         , openSelector: function(){ return this.selectorProp( &#x27;.&#x27; + this.openClass() ); } 
         , closeSelector: function(){ return this.selectorProp( &#x27;.&#x27; + this.closeClass() ); } 
 
+        , saveTopIdSelector: function(){ return this.selectorProp( &#x27;bmspSaveTopIdSelector&#x27;); }
+
         , initTop:
             function(){
                 var _p = this, _data;
@@ -464,6 +516,10 @@
 
         , getChildBox: function( _id ){
             return this.panelIns().find( JC.f.printf( &#x27;.js_bmspChildBox[data-id={0}]&#x27;, _id ) );
+        }
+
+        , getIcon: function( _id ){
+            return this.panelIns().find( JC.f.printf( &#x27;.js_bmspIcon[data-id={0}]&#x27;, _id ) );
         }
 
         , getCkItem: function( _id ){
@@ -541,15 +597,95 @@
             }
     });
 
+    _jwin.on( &#x27;BMSP_AUTO_FILL_DEFAULT_DATA&#x27;, function( _evt, _sp ){
+        var _topKey, _childKey, _data;
+        if( !( _sp &amp;&amp; _sp.length 
+                &amp;&amp; _sp.attr( &#x27;bmspDefaultFillData&#x27; ) 
+                &amp;&amp; ( _data = window[ _sp.attr( &#x27;bmspDefaultFillData&#x27; ) ] ) ) 
+                &amp;&amp; _data.parents
+        ){
+            return;
+        }
+        _jwin.trigger( &#x27;BMSP_AUTO_FILL&#x27;, [ _sp, _data.parents, _data.children ] );
+    });
+
+    _jwin.on( &#x27;BMSP_AUTO_FILL_URL_DATA&#x27;, function( _evt, _sp ){
+        var _topKey, _childKey;
+
+        if( !( _sp.attr( &#x27;bmspAutoFillTopKey&#x27; ) 
+                &amp;&amp; ( _topKey = JC.f.getUrlParams( _sp.attr( &#x27;bmspAutoFillTopKey&#x27; ) ) ) &amp;&amp; _topKey.length ) 
+        ){
+            return;
+        }
+        _topKey = decodeURIComponent( _topKey ).split( &#x27;,&#x27; );
+        _childKey = JC.f.getUrlParams( _sp.attr( &#x27;bmspAutoFillChildKey&#x27; ) );
+
+        _jwin.trigger( &#x27;BMSP_AUTO_FILL&#x27;, [ _sp, _topKey, _childKey ] );
+    });
+
+    _jwin.on( &#x27;BMSP_AUTO_FILL&#x27;, function( _evt, _sp, _topKey, _childKey ){
+        if( !( _sp &amp;&amp; _sp.length &amp;&amp; _topKey &amp;&amp; _topKey.length ) ) return;
+        var _cTopKey, _ins;
+        _ins = JC.BaseMVC.getInstance( _sp, Bizs.MultiselectPanel ) || new Bizs.MultiselectPanel( _sp );
+        _cTopKey = _topKey.slice();
+        _ins.on( &#x27;updateTop&#x27;, function(){
+            if( _topKey.length ){
+                var _id = _topKey.shift();
+                _ins.trigger( &#x27;initChildBox&#x27;, [ _id ] )
+                _ins._model.getIcon( _id ).trigger( &#x27;click&#x27; );
+
+                _ins.on( &#x27;updateChild&#x27;, function(){
+                    if( _topKey.length ){
+                        _id = _topKey.shift();
+                        _ins.trigger( &#x27;initChildBox&#x27;, [ _id ] );
+                        _ins._model.getIcon( _id ).trigger( &#x27;click&#x27; );
+                    }else if( _cTopKey.length ){
+                        if( _childKey &amp;&amp; _childKey.length ){
+                            _childKey &amp;&amp; _childKey.length 
+                                &amp;&amp; $.each( _childKey, function( _ix, _item ){
+                                    _ins._model.getCkItem( _item ).prop( &#x27;checked&#x27;, true );
+                                });
+
+                            $.each( _cTopKey, function( _ix, _item ){
+                                _ins._view.childCk( _item );
+                            });
+
+                            _ins.trigger( &#x27;updateStatus&#x27; );
+                        }
+                        _cTopKey = [];
+                    }
+                });
+            }
+        });
+
+    });
+
     _jdoc.ready( function(){
-        _jdoc.delegate( &#x27;input.js_bizMultiselectPanel&#x27;, &#x27;click focus&#x27;, function( _evt ){
+
+        //Bizs.MultiselectPanel.autoInit &amp;&amp; Bizs.MultiselectPanel.init();
+
+        _jdoc.delegate( &#x27;input.js_bizMultiselectPanel&#x27;, &#x27;click&#x27;, function( _evt ){
             var _sp = $( this ), _ins;
             if( !JC.BaseMVC.getInstance( _sp, Bizs.MultiselectPanel ) ){
                 _ins = new Bizs.MultiselectPanel( _sp );
                 _ins._model.panelIns().show( _sp );
             }
         });
+
+        //return;
+
+        $( &#x27;input.js_bizMultiselectPanel&#x27; ).each( function(){
+            var _sp = $( this )
+
+            if( _sp.attr( &#x27;bmspDefaultFillData&#x27; ) &amp;&amp; window[ _sp.attr( &#x27;bmspDefaultFillData&#x27; ) ] ){
+                _jwin.trigger( &#x27;BMSP_AUTO_FILL_DEFAULT_DATA&#x27;, [ _sp ] );
+            }else if( _sp.attr( &#x27;bmspAutoFillTopKey&#x27; ) ){
+                _jwin.trigger( &#x27;BMSP_AUTO_FILL_URL_DATA&#x27;, [ _sp ] );
+            }
+        });
+
     });
+
 
     return Bizs.MultiselectPanel;
 });}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 

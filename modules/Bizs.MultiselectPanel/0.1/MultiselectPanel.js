@@ -96,12 +96,21 @@
                     _panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
 
                     _panel.on( 'hide', function(){
-                        _p.trigger( 'updateStatus' );
+                        JC.f.safeTimeout( function(){
+                            _p.trigger( 'updateStatus' );
+                        }, _p.selector(), 'HIDE_PANEL', 50 );
                     });
 
                     _panel.on( 'beforeshow', function(){
                         JC.hideAllPanel();
                     });
+
+                    _panel.layout().on( 'click', function( _evt ){
+                        JC.f.safeTimeout( function(){
+                            _p.trigger( 'saveParentId' );
+                        }, _p.selector(), 'HIDE_PANEL', 50 );
+                    });
+
 
                 if( _p._model.popupHideButton() ){
                     _panel.offsetTop( -_p.selector().prop( 'offsetHeight' ) - 1 );
@@ -113,10 +122,12 @@
 
                 _p.on( 'init_top', function( _evt ){
                     _p._model.initTop();
+                    _p.trigger( 'saveParentId' );
                 });
 
                 _p.on( 'updateTop', function( _evt, _data, _d ){
                     _p._view.buildTop( _data );
+                    _p.trigger( 'saveParentId' );
                 });
 
                 _p.on( 'updateChild', function( _evt, _id, _data, _d ){
@@ -129,6 +140,10 @@
                     var _sp = $( this ), _id = _sp.data('id');
                     _sp.addClass( _p._model.closeClass() ).removeClass( _p._model.openClass() );
                     _p._view.showChild( _id );
+                    _p.trigger( 'initChildBox', [ _id ] );
+                });
+
+                _p.on( 'initChildBox', function( _evt, _id ){
                     if( !_p._model.getChildBox( _id ).data( 'inited' ) ){
                         _p._model.getChildBox( _id ).data( 'inited', true );
                         _p._model.initChild( _id );
@@ -144,6 +159,8 @@
                 _panel.layout().delegate( 'input.js_bmspTopCk', 'change', function( _evt ){
                     var _sp = $( this ), _id = _sp.val();
                     _p._view.topCk( _id, _sp.prop( 'checked' ) );
+
+                    _sp.prop( 'checked' ) && _p.trigger( 'initChildBox', [ _id ] );
                 });
 
                 _panel.layout().delegate( 'input.js_bmspChildCk', 'change', function( _evt ){
@@ -152,12 +169,45 @@
                 });
 
                 _p.on( 'updateStatus', function( _evt ){
-                    var _cked = _panel.find( 'input.js_bmspCkItem:checked' );
+                    var _cked = _panel.find( 'input.js_bmspChildCk:checked' );
                     if( _cked.length ){
                         _p.selector().val( JC.f.printf( _p._model.hasItemText(), _cked.length ) );
                     }else{
                         _p.selector().val( _p._model.noItemText() );
                     }
+
+                    _p.trigger( 'saveParentId' );
+                });
+
+                _p.on( 'saveParentId', function( _evt ){
+                    var _idSelector = _p._model.saveTopIdSelector();
+                    if( _idSelector && _idSelector.length ){
+                        var _pCk = _p._model.panelIns().find( 'input.js_bmspTopCk:checked' )
+                            , _cCk = _p._model.panelIns().find( 'input.js_bmspChildCk:checked' )
+                            , _tmp = {}
+                            , _r = []
+                            ;
+
+                        _pCk.each( function(){
+                            var _id = $( this ).val();
+
+                            if( !( _id in _tmp ) ){
+                                _r.push( _id );
+                            }
+                            _tmp[ _id ] = '';
+                        });
+
+                        _cCk.each( function(){
+                            var _id = $( this ).data( 'parentid' );
+                            if( !( _id in _tmp ) ){
+                                _r.push( _id );
+                            }
+                            _tmp[ _id ] = '';
+                        });
+
+                        _idSelector.val( _r.join(',') );
+                    }
+                    
                 });
 
             }
@@ -196,6 +246,8 @@
         , openSelector: function(){ return this.selectorProp( '.' + this.openClass() ); } 
         , closeSelector: function(){ return this.selectorProp( '.' + this.closeClass() ); } 
 
+        , saveTopIdSelector: function(){ return this.selectorProp( 'bmspSaveTopIdSelector'); }
+
         , initTop:
             function(){
                 var _p = this, _data;
@@ -222,6 +274,10 @@
 
         , getChildBox: function( _id ){
             return this.panelIns().find( JC.f.printf( '.js_bmspChildBox[data-id={0}]', _id ) );
+        }
+
+        , getIcon: function( _id ){
+            return this.panelIns().find( JC.f.printf( '.js_bmspIcon[data-id={0}]', _id ) );
         }
 
         , getCkItem: function( _id ){
@@ -299,15 +355,95 @@
             }
     });
 
+    _jwin.on( 'BMSP_AUTO_FILL_DEFAULT_DATA', function( _evt, _sp ){
+        var _topKey, _childKey, _data;
+        if( !( _sp && _sp.length 
+                && _sp.attr( 'bmspDefaultFillData' ) 
+                && ( _data = window[ _sp.attr( 'bmspDefaultFillData' ) ] ) ) 
+                && _data.parents
+        ){
+            return;
+        }
+        _jwin.trigger( 'BMSP_AUTO_FILL', [ _sp, _data.parents, _data.children ] );
+    });
+
+    _jwin.on( 'BMSP_AUTO_FILL_URL_DATA', function( _evt, _sp ){
+        var _topKey, _childKey;
+
+        if( !( _sp.attr( 'bmspAutoFillTopKey' ) 
+                && ( _topKey = JC.f.getUrlParams( _sp.attr( 'bmspAutoFillTopKey' ) ) ) && _topKey.length ) 
+        ){
+            return;
+        }
+        _topKey = decodeURIComponent( _topKey ).split( ',' );
+        _childKey = JC.f.getUrlParams( _sp.attr( 'bmspAutoFillChildKey' ) );
+
+        _jwin.trigger( 'BMSP_AUTO_FILL', [ _sp, _topKey, _childKey ] );
+    });
+
+    _jwin.on( 'BMSP_AUTO_FILL', function( _evt, _sp, _topKey, _childKey ){
+        if( !( _sp && _sp.length && _topKey && _topKey.length ) ) return;
+        var _cTopKey, _ins;
+        _ins = JC.BaseMVC.getInstance( _sp, Bizs.MultiselectPanel ) || new Bizs.MultiselectPanel( _sp );
+        _cTopKey = _topKey.slice();
+        _ins.on( 'updateTop', function(){
+            if( _topKey.length ){
+                var _id = _topKey.shift();
+                _ins.trigger( 'initChildBox', [ _id ] )
+                _ins._model.getIcon( _id ).trigger( 'click' );
+
+                _ins.on( 'updateChild', function(){
+                    if( _topKey.length ){
+                        _id = _topKey.shift();
+                        _ins.trigger( 'initChildBox', [ _id ] );
+                        _ins._model.getIcon( _id ).trigger( 'click' );
+                    }else if( _cTopKey.length ){
+                        if( _childKey && _childKey.length ){
+                            _childKey && _childKey.length 
+                                && $.each( _childKey, function( _ix, _item ){
+                                    _ins._model.getCkItem( _item ).prop( 'checked', true );
+                                });
+
+                            $.each( _cTopKey, function( _ix, _item ){
+                                _ins._view.childCk( _item );
+                            });
+
+                            _ins.trigger( 'updateStatus' );
+                        }
+                        _cTopKey = [];
+                    }
+                });
+            }
+        });
+
+    });
+
     _jdoc.ready( function(){
-        _jdoc.delegate( 'input.js_bizMultiselectPanel', 'click focus', function( _evt ){
+
+        //Bizs.MultiselectPanel.autoInit && Bizs.MultiselectPanel.init();
+
+        _jdoc.delegate( 'input.js_bizMultiselectPanel', 'click', function( _evt ){
             var _sp = $( this ), _ins;
             if( !JC.BaseMVC.getInstance( _sp, Bizs.MultiselectPanel ) ){
                 _ins = new Bizs.MultiselectPanel( _sp );
                 _ins._model.panelIns().show( _sp );
             }
         });
+
+        //return;
+
+        $( 'input.js_bizMultiselectPanel' ).each( function(){
+            var _sp = $( this )
+
+            if( _sp.attr( 'bmspDefaultFillData' ) && window[ _sp.attr( 'bmspDefaultFillData' ) ] ){
+                _jwin.trigger( 'BMSP_AUTO_FILL_DEFAULT_DATA', [ _sp ] );
+            }else if( _sp.attr( 'bmspAutoFillTopKey' ) ){
+                _jwin.trigger( 'BMSP_AUTO_FILL_URL_DATA', [ _sp ] );
+            }
+        });
+
     });
+
 
     return Bizs.MultiselectPanel;
 });}( typeof define === 'function' && define.amd ? define : 

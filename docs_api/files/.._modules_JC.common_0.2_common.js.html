@@ -549,7 +549,7 @@
             _ar = _url.split(&#x27;?&#x27;)[1].split(&#x27;&amp;&#x27;);
             for( i = 0; i &lt; _ar.length; i++ ){
                 _items = _ar[i].split(&#x27;=&#x27;);
-                _items[0] = _items[0].replace(/^\s+|\s+$/g, &#x27;&#x27;);
+                _items[0] = decodeURIComponent( _items[0] || &#x27;&#x27; ).replace(/^\s+|\s+$/g, &#x27;&#x27;);
                 if( _items[0].toLowerCase() == _key.toLowerCase() ){
                     _r = filterXSS( _items[1] || &#x27;&#x27; );
                     break;
@@ -580,6 +580,7 @@
             if( _params.length ){
                 for( i = 0, j = _params.length; i &lt; j; i++ ){
                     _items = _params[i].split(&#x27;=&#x27;);
+                    _items[0] = decodeURIComponent( _items[0] ) || &#x27;&#x27;;
                     if( _items[0].trim() == _key ){
                         _r.push( filterXSS( _items[1] || &#x27;&#x27; ) );
                     }
