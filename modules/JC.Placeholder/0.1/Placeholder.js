@@ -261,7 +261,6 @@
 
                 _holder.css( { 'left': _offset.left + 'px'
                                 , 'top': _offset.top + 1 + 'px' 
-                                , 'line-height': _h + 'px' 
                             } );
 
                 _holder.show();
