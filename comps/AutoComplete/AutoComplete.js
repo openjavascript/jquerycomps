@@ -1122,7 +1122,7 @@ return _json;
                     for ( ; _i < _data.length; _i++ ) {
                         _view.push( JC.f.printf( _tpl
                                     , _data[_i].id
-                                    , _data[_i].label
+                                    , JC.f.filterXSS( _data[_i].label || '' )
                                     , _i
                                     , _i === 0 ? AutoComplete.Model.CLASS_ACTIVE : ''
                                     ) );
