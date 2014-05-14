@@ -135,6 +135,34 @@
                 return FU;
             }
         /**
+         * 通知父级已经初始化完毕
+         * @method  noticeReady
+         * @param   {string}    _type
+         */
+        , noticeReady:
+            function( _type ){
+                if( !FU.parent() ) return FU;
+                _type = FU.type( _type );
+
+                FU.parent() 
+                    && FU.parent().jEventHost.trigger( 'ready', FU.info( { 'type': _type } ) );
+                return FU;
+            }
+        /**
+         * 通知子级有数据交互
+         * @method  noticeChildData
+         * @param   {json}      _params
+         * @param   {string}    _type
+         */
+        , noticeChildData:
+            function( _params, _type ){
+                if( !(_params) ) return FU;
+                _params.type = FU.type( _type ) || _params.type;
+
+                FU.info().jEventHost.trigger( 'childData', FU.info( _params ) );
+                return FU;
+            }
+        /**
          * 通知父级关闭窗口
          * @method  noticeClose
          * @param   {string}    _type
@@ -160,6 +188,8 @@
                         , 'bodyWidth': _body.width()
                         , 'bodyHeight': _body.height()
                         , 'id': FU.id()
+                        , 'eventHost': FU.eventHost
+                        , 'jEventHost': $( FU.eventHost )
                     };
 
                 _ext && ( _r = JC.f.extendObject( _r, _ext ) );
@@ -374,6 +404,16 @@
     };
 
     FU._id = location.href + '_' + new Date().getTime();
+
+
+    if( FU.parent() ){
+        FU.parent().FrameUtil.subscribeEvent( 'childData', function( _evt, _params ){
+            if( !( _params.id === FU._id ) ) return;
+            FU.noticeChildData( _params );
+        });
+
+        setTimeout( function(){ FU.noticeReady(); }, 1 );
+    }
 
     JC.f.safeTimeout( function(){
 
