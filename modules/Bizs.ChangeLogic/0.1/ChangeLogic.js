@@ -149,13 +149,16 @@
                     _item = $( _item );
                     _p._view.change( _item );
 
-                    _p._model.bclChangeCleanTarget() 
-                        && _p._model.bclChangeCleanTarget().each( function(){
-                            $( this ).html( '' );
-                        });
+                    if( _p._model.ready() ){
+                        _p._model.bclChangeCleanTarget() 
+                            && _p._model.bclChangeCleanTarget().each( function(){
+                                $( this ).html( '' );
+                            });
+                    }
                 });
 
                 ( _tmp = _p._model.bclTrigger( true ) ) && _tmp.trigger( 'change');
+                _p._model.ready( true );
 
                 return _p;
             }    
@@ -254,6 +257,12 @@
         init:
             function(){
                 return this;
+            }
+
+        , ready:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._ready = _setter );
+                return this._ready;
             }
 
         , selector: function(){ return this._selector; }
