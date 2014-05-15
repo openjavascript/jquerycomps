@@ -449,6 +449,18 @@
     }
     CRMSchedule.ALL_CLASS = _tmp.join( &#x27; &#x27; );
 
+    CRMSchedule.defaultDataBuild = 
+        function( _data ){
+            var _t = [];
+            _data.company &amp;&amp; (          _t.push( &#x27;    广告主名称: &#x27; + _data.company ) );
+            _data.agencyName &amp;&amp; (       _t.push( &#x27;代理公司名称: &#x27; + _data.agencyName ) );
+            _data.departmentName &amp;&amp; (   _t.push( &#x27;部门团队名称: &#x27; + _data.departmentName ) );
+            _data.createUserName &amp;&amp; (   _t.push( &#x27;      提交人: &#x27; + _data.createUserName ) );
+            _data.statusName &amp;&amp; (       _t.push( &#x27;预订任务状态: &#x27; + _data.statusName ) );
+            _data.title = _t.join( &#x27;\n&#x27; );
+            return _data;
+        };
+
     JC.BaseMVC.build( CRMSchedule );
 
     JC.f.extendObject( CRMSchedule.prototype, {
@@ -471,6 +483,7 @@
                 _p.on( &#x27;update_layout&#x27;, function( _evt, _d, _displayDate, _isReady ){
                     if( !_d ) return;
 
+                    _d = Bizs.CRMSchedule.defaultDataBuild( _d );
                     _p._view.update( _d, _displayDate, _isReady );
                 });
 
@@ -1441,6 +1454,7 @@
                             , _class
                             , _styleClass = &#x27;&#x27;
                             , _outdateClass = &#x27;&#x27;
+                            , _title = &#x27;&#x27;
                             ;
 
                         k === 31 &amp;&amp; ( _styleClass = &quot;js_bccDataRowLastCell&quot; );
@@ -1456,6 +1470,9 @@
                             _name = _item.position_date[ _sPosDate ].company || &#x27;&#x27;;
                             _shortName = byteString( _name, 6 );
 
+                            CRMSchedule.defaultDataBuild( _item.position_date[ _sPosDate ] );
+                            _title = _item.position_date[ _sPosDate ].title || &#x27;&#x27;;
+
                             bytelen( _name ) &gt; 6 &amp;&amp; ( _shortName += &#x27;...&#x27; );
                         }
 
@@ -1469,10 +1486,11 @@
                             _outdateClass = &#x27;js_bccOutdate&#x27;;
                         }
 
-                        _days.push( JC.f.printf( &#x27;&lt;td class=&quot;js_bccDateItem {7} {0} {5} js_bccDateCol_{6}&quot; title=&quot;{3}\n{1}&quot; &#x27; 
+                        _days.push( JC.f.printf( &#x27;&lt;td class=&quot;js_bccDateItem {7} {0} {5} js_bccDateCol_{6}&quot; title=&quot;{8}&quot; &#x27; 
                                     +&#x27; data-id=&quot;{2}&quot; data-date=&quot;{3}&quot; data-colCount=&quot;{6}&quot;&gt;&#x27; 
                                     +&#x27;&lt;div&gt;{4}&lt;/div&gt;&lt;/td&gt;&#x27;
-                                    , _class, _name, _item.id, _sPosDate, _shortName, _styleClass, k, _outdateClass ) );
+                                    , _class, _name, _item.id, _sPosDate, _shortName
+                                    , _styleClass, k, _outdateClass, _title ) );
                     }
 
                     if( _p._model.actionType() == &#x27;lock&#x27; || _p._model.actionType() == &#x27;edit&#x27; ){

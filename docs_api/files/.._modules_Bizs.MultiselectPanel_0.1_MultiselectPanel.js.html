@@ -517,6 +517,7 @@ window.testData = { &quot;parents&quot;: [ 1, 2, 3 ], &quot;children&quot;: [4, 
         , url: function(){ return this.attrProp( &#x27;bmspUrl&#x27; ); }
         , childUrl: function(){ return this.attrProp( &#x27;bmspChildUrl&#x27; ); }
         , popupHideButton: function(){ return this.boolProp( &#x27;bmspPopupHideButton&#x27;); }
+        , noDataFillSelf: function(){ return this.boolProp( &#x27;bmspNoDataFillSelf&#x27;); }
         , panel: function(){ return this.selectorProp( &#x27;bmspPanel&#x27;); }
         , panelIns: 
             function( _setter ){
@@ -605,6 +606,13 @@ window.testData = { &quot;parents&quot;: [ 1, 2, 3 ], &quot;children&quot;: [4, 
                     , _tpl = _p._model.childTpl()
                     , _r = []
                     ;
+
+               if( _p._model.noDataFillSelf() ){
+                   if( _data &amp;&amp; !_data.length ){
+                       var _pCk = _p._model.getCkItem( _id ), _label = _pCk.data( &#x27;label&#x27; ) || &#x27;&#x27;;
+                       _data.push( [ _id, _label ] );
+                   }
+               }
 
                 $.each( _data, function( _ix, _item ){
                     _r.push( JC.f.printf( _tpl, _item[0], _item[1], _id ) );
