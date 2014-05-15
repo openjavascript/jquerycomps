@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel', 'Bizs.CRMSchedulePopup' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel', 'Bizs.CRMSchedulePopup', 'JC.Tips' ], function(){
 /**
  * CRM 排期日期选择组件
  *
@@ -208,14 +208,15 @@
     CRMSchedule.ALL_CLASS = _tmp.join( ' ' );
 
     CRMSchedule.defaultDataBuild = 
-        function( _data ){
+        function( _data, _sdate ){
             var _t = [];
-            _data.company && (          _t.push( '    广告主名称: ' + _data.company ) );
-            _data.agencyName && (       _t.push( '代理公司名称: ' + _data.agencyName ) );
-            _data.departmentName && (   _t.push( '部门团队名称: ' + _data.departmentName ) );
-            _data.createUserName && (   _t.push( '      提交人: ' + _data.createUserName ) );
-            _data.statusName && (       _t.push( '预订任务状态: ' + _data.statusName ) );
-            _data.title = _t.join( '\n' );
+    _data.company && (          _t.push( '广告主名称　: ' + _data.company ) );
+    _data.agencyName && (       _t.push( '代理公司名称: ' + _data.agencyName ) );
+    _data.departmentName && (   _t.push( '部门团队名称: ' + _data.departmentName ) );
+    _data.createUserName && (   _t.push( '提交人　　　: ' + _data.createUserName ) );
+    _data.statusName && (       _t.push( '预订任务状态: ' + _data.statusName ) );
+    _sdate && (                 _t.push( '日期　　　　: ' + _sdate ) );
+    _data.title = _t.join( '\n' );
             return _data;
         };
 
@@ -241,8 +242,12 @@
                 _p.on( 'update_layout', function( _evt, _d, _displayDate, _isReady ){
                     if( !_d ) return;
 
-                    _d = Bizs.CRMSchedule.defaultDataBuild( _d );
+                    _d = Bizs.CRMSchedule.defaultDataBuild( _d, _displayDate );
                     _p._view.update( _d, _displayDate, _isReady );
+                });
+
+                _p.on( 'layout_inited', function(){
+                    JC.Tips && JC.Tips.init( _p.selector().find( '[title]' ) );
                 });
 
                 _p.on( 'show_msg', function( _evt, _msg, _sp, _status ){
@@ -1058,7 +1063,16 @@
         , monthDataUrl: function(){ return this.attrProp( 'bccMonthDataUrl' ); }
 
         , dateRangeUrl: function(){ return this.attrProp( 'bccDateRangeUrl' ); }
-        
+
+        , availableDate:
+            function(){
+                var _r = JC.f.pureDate()
+
+                this.attrProp( 'bccAvailableDate' )
+                    && ( _r = JC.f.pureDate( JC.f.dateDetect( this.attrProp( 'bccAvailableDate' ) ) ) );
+
+                return _r;
+            }
     });
 
     JC.f.extendObject( CRMSchedule.View.prototype, {
@@ -1181,7 +1195,7 @@
                     , _tpl = _p._model.rowTpl()
                     , _tmpTpl
                     , _ckAll = ''
-                    , _now = JC.f.pureDate()
+                    , _now = _p._model.availableDate()
                     ;
 
 
@@ -1224,12 +1238,13 @@
                         }
 
                         if( _sPosDate in _item.position_date ){
+
+                            CRMSchedule.defaultDataBuild( _item.position_date[ _sPosDate ], _sPosDate );
+                            _title = _item.position_date[ _sPosDate ].title || '';
+
                             _status = _item.position_date[ _sPosDate ].status;
                             _name = _item.position_date[ _sPosDate ].company || '';
-                            _shortName = byteString( _name, 6 );
-
-                            CRMSchedule.defaultDataBuild( _item.position_date[ _sPosDate ] );
-                            _title = _item.position_date[ _sPosDate ].title || '';
+                            _shortName = byteString( _title.trim(), 6 );
 
                             bytelen( _name ) > 6 && ( _shortName += '...' );
                         }

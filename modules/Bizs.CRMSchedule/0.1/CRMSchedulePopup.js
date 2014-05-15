@@ -107,7 +107,7 @@
                     if( !( _startDate && _endDate ) ) return;
                     _startDate = JC.f.cloneDate( _startDate );
                     if( _data && !_data.errorno ){
-                        var _item, _date, _now = JC.f.pureDate();
+                        var _item, _date, _now = _p._model.schIns()._model.availableDate();
                         _data 
                             && _data.data 
                             && _data.data.list_data
@@ -134,7 +134,7 @@
                                     _status = _item.position_date[ _date ].status;
                                     _name = _item.position_date[ _date ].company;
                                     _p.trigger( 'update_item_status', [ _item.id, _date, _status, _item ] );
-                                    _title = Bizs.CRMSchedule.defaultDataBuild( _item.position_date[ _date ] ).title || ''; 
+                                    _title = Bizs.CRMSchedule.defaultDataBuild( _item.position_date[ _date ], _date ).title || ''; 
                                 }
                                 _selector.attr( 'title', _title );
 
@@ -261,6 +261,7 @@
                 _p.on( 'data_inited', function( _evt ){
                     _p.trigger( 'fill_selected_items' );
                     _p._model.schIns().trigger( 'update_check_status' );
+                    JC.Tips && JC.Tips.init( _p._model.panelIns().find( '[title]' ) );
                 });
 
                 _p.on( 'fill_selected_items', function( _evt ){
