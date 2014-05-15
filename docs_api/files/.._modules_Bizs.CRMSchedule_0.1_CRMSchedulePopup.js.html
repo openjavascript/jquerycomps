@@ -358,6 +358,7 @@
                                                 , _item.id
                                                 , _date
                                             )
+                                , _title
                                 ;
                             //JC.log( _selector );
 
@@ -367,8 +368,9 @@
                                     _status = _item.position_date[ _date ].status;
                                     _name = _item.position_date[ _date ].company;
                                     _p.trigger( &#x27;update_item_status&#x27;, [ _item.id, _date, _status, _item ] );
+                                    _title = Bizs.CRMSchedule.defaultDataBuild( _item.position_date[ _date ] ).title || &#x27;&#x27;; 
                                 }
-                                _selector.attr( &#x27;title&#x27;, _name );
+                                _selector.attr( &#x27;title&#x27;, _title );
 
                                 if( _startDate.getTime() &lt; _now.getTime() ){
                                     if( _status == 0 || _status == 6 || _status == 5 ){
@@ -518,8 +520,8 @@
                                 ;
 
                             if( _posItem.length ){
-                                if( !( _posItem.hasClass( CRMSchedule.CLASS_CAN_SELECT ) 
-                                        || _posItem.hasClass( CRMSchedule.CLASS_SELECTED ) ) ){
+                                if( !( _posItem.hasClass( Bizs.CRMSchedule.CLASS_CAN_SELECT ) 
+                                        || _posItem.hasClass( Bizs.CRMSchedule.CLASS_SELECTED ) ) ){
                                     _dates.splice( i, 1 );
                                 }else{
                                     _posItem.removeClass( Bizs.CRMSchedule.ALL_CLASS )

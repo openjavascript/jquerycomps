@@ -25,13 +25,22 @@
             $position_date = array();
 
             for( $k = 0; $k < 28; $k ++ ){
-                $position_date[ date( 'Y-m-d', $tmp_date ) ] = array(
+                $tmpKey = date( 'Y-m-d', $tmp_date );
+                $position_date[ $tmpKey ] = array(
                     'status' => $k % 7
                     , 'company' => $k % 7 != 0 ? '中文company ' . $k : ''
                );
+                $position_date[ $tmpKey ][ 'departmentName' ] = '部门团队名称';
+                $position_date[ $tmpKey ][ 'createUserName' ] = '提交人';
+
+                if( $k % 2 ){
+                    $position_date[ $tmpKey ][ 'agencyName' ] = '代理公司名称';
+                }else{
+                    $position_date[ $tmpKey ][ 'statusName' ] = '预订任务状态';
+                }
                 //date_add( $tmp_date, date_interval_create_from_date_string('1 days'));
                 //$tmp_date->add( new DateInterval( 'P1D') );
-		$tmp_date = strtotime( '+1 day', $tmp_date );
+                $tmp_date = strtotime( '+1 day', $tmp_date );
             }
 
             array_push( $r['data']['list_data'], array(

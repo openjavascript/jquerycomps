@@ -207,6 +207,18 @@
     }
     CRMSchedule.ALL_CLASS = _tmp.join( ' ' );
 
+    CRMSchedule.defaultDataBuild = 
+        function( _data ){
+            var _t = [];
+            _data.company && (          _t.push( '    广告主名称: ' + _data.company ) );
+            _data.agencyName && (       _t.push( '代理公司名称: ' + _data.agencyName ) );
+            _data.departmentName && (   _t.push( '部门团队名称: ' + _data.departmentName ) );
+            _data.createUserName && (   _t.push( '      提交人: ' + _data.createUserName ) );
+            _data.statusName && (       _t.push( '预订任务状态: ' + _data.statusName ) );
+            _data.title = _t.join( '\n' );
+            return _data;
+        };
+
     JC.BaseMVC.build( CRMSchedule );
 
     JC.f.extendObject( CRMSchedule.prototype, {
@@ -229,6 +241,7 @@
                 _p.on( 'update_layout', function( _evt, _d, _displayDate, _isReady ){
                     if( !_d ) return;
 
+                    _d = Bizs.CRMSchedule.defaultDataBuild( _d );
                     _p._view.update( _d, _displayDate, _isReady );
                 });
 
@@ -1199,6 +1212,7 @@
                             , _class
                             , _styleClass = ''
                             , _outdateClass = ''
+                            , _title = ''
                             ;
 
                         k === 31 && ( _styleClass = "js_bccDataRowLastCell" );
@@ -1214,6 +1228,9 @@
                             _name = _item.position_date[ _sPosDate ].company || '';
                             _shortName = byteString( _name, 6 );
 
+                            CRMSchedule.defaultDataBuild( _item.position_date[ _sPosDate ] );
+                            _title = _item.position_date[ _sPosDate ].title || '';
+
                             bytelen( _name ) > 6 && ( _shortName += '...' );
                         }
 
@@ -1227,10 +1244,11 @@
                             _outdateClass = 'js_bccOutdate';
                         }
 
-                        _days.push( JC.f.printf( '<td class="js_bccDateItem {7} {0} {5} js_bccDateCol_{6}" title="{3}\n{1}" ' 
+                        _days.push( JC.f.printf( '<td class="js_bccDateItem {7} {0} {5} js_bccDateCol_{6}" title="{8}" ' 
                                     +' data-id="{2}" data-date="{3}" data-colCount="{6}">' 
                                     +'<div>{4}</div></td>'
-                                    , _class, _name, _item.id, _sPosDate, _shortName, _styleClass, k, _outdateClass ) );
+                                    , _class, _name, _item.id, _sPosDate, _shortName
+                                    , _styleClass, k, _outdateClass, _title ) );
                     }
 
                     if( _p._model.actionType() == 'lock' || _p._model.actionType() == 'edit' ){

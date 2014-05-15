@@ -275,6 +275,7 @@ window.testData = { "parents": [ 1, 2, 3 ], "children": [4, 5, 6, 7, 8 ] };
         , url: function(){ return this.attrProp( 'bmspUrl' ); }
         , childUrl: function(){ return this.attrProp( 'bmspChildUrl' ); }
         , popupHideButton: function(){ return this.boolProp( 'bmspPopupHideButton'); }
+        , noDataFillSelf: function(){ return this.boolProp( 'bmspNoDataFillSelf'); }
         , panel: function(){ return this.selectorProp( 'bmspPanel'); }
         , panelIns: 
             function( _setter ){
@@ -363,6 +364,13 @@ window.testData = { "parents": [ 1, 2, 3 ], "children": [4, 5, 6, 7, 8 ] };
                     , _tpl = _p._model.childTpl()
                     , _r = []
                     ;
+
+               if( _p._model.noDataFillSelf() ){
+                   if( _data && !_data.length ){
+                       var _pCk = _p._model.getCkItem( _id ), _label = _pCk.data( 'label' ) || '';
+                       _data.push( [ _id, _label ] );
+                   }
+               }
 
                 $.each( _data, function( _ix, _item ){
                     _r.push( JC.f.printf( _tpl, _item[0], _item[1], _id ) );

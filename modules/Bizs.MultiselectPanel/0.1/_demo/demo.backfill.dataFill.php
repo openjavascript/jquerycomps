@@ -138,7 +138,7 @@
                 <script type="text/template" class="js_bmspTopTpl">
                     <dl data-id="{0}" class="js_bmspTopBox">
                         <dt>
-                            <label><input type="checkbox" value="{0}" class="js_bmspCkItem js_bmspTopCk"> {1}</label>  
+                            <label><input type="checkbox" value="{0}" class="js_bmspCkItem js_bmspTopCk" data-lable="{1}"> {1}</label>  
                             <span class="js_bmspIcon js_bmspIconOpen" data-id="{0}"></span>
                         </dt>
                         <dd style="">
@@ -149,7 +149,8 @@
 
                 <script type="text/template" class="js_bmspChildTpl">
                     <li><label>
-                        <input type="checkbox" value="{0}" name="tradeSub[]" data-parentid="{2}" class="js_bmspCkItem js_bmspChildCk js_tradeSub"> {1}
+                        <input type="checkbox" value="{0}" name="tradeSub[]" class="js_bmspCkItem js_bmspChildCk js_tradeSub" 
+                        data-parentid="{2}" data-label="{1}"> {1}
                     </label></li>
                 </script>
 
@@ -175,6 +176,7 @@
 
                     bmspSaveTopIdSelector="/input.js_areaTop"
                     bmspDefaultFillData="defaultAreaData"
+                    bmspNoDataFillSelf="true"
                     />
                     <input type="hidden" name="areaTop" value="" class="js_areaTop" />
 
@@ -191,7 +193,7 @@
                 <script type="text/template" class="js_bmspTopTpl">
                     <dl data-id="{0}" class="js_bmspTopBox">
                         <dt>
-                            <label><input type="checkbox" value="{0}" class="js_bmspCkItem js_bmspTopCk"> {1}</label>  
+                            <label><input type="checkbox" value="{0}" class="js_bmspCkItem js_bmspTopCk" data-label="{1}"> {1}</label>  
                             <span class="js_bmspIcon js_bmspIconOpen" data-id="{0}"></span>
                         </dt>
                         <dd style="">
@@ -202,7 +204,8 @@
 
                 <script type="text/template" class="js_bmspChildTpl">
                     <li><label>
-                        <input type="checkbox" value="{0}" name="areaSub[]" data-parentid="{2}" class="js_bmspCkItem js_bmspChildCk js_areaSub"> {1}
+                        <input type="checkbox" value="{0}" name="areaSub[]" class="js_bmspCkItem js_bmspChildCk js_areaSub" 
+                        data-parentid="{2}" data-label="{1}"> {1}
                     </label></li>
                 </script>
             </dd>

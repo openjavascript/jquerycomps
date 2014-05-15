@@ -21,12 +21,23 @@
         $count = 0;
 
         while( $start_date  < $end_date ){
-            $position_date[ date( 'Y-m-d', $start_date ) ] = array(
+
+            $tmpKey = date( 'Y-m-d', $start_date );
+            $position_date[ $tmpKey ] = array(
                 'status' => $count % 7
                 , 'company' => $count % 7 != 0 ? '中文company ' . $count : ''
-            );
+           );
+            $position_date[ $tmpKey ][ 'departmentName' ] = '部门团队名称';
+            $position_date[ $tmpKey ][ 'createUserName' ] = '提交人';
 
-	    $start_date = strtotime( '+1 day', $start_date );
+            if( $count % 2 ){
+                $position_date[ $tmpKey ][ 'agencyName' ] = '代理公司名称';
+            }else{
+                $position_date[ $tmpKey ][ 'statusName' ] = '预订任务状态';
+            }
+
+
+            $start_date = strtotime( '+1 day', $start_date );
             $count++;
         }
 
