@@ -68,32 +68,29 @@
     <dl class="defDl">
         <dt></dt>
         <dd>
-            <div class="js_compDragSelect" 
-                cdsItems="
-                    td.js_dataItem      
-                    ||td.js_cdsSelecteClass  
-                    ||td.js_pos_canSelect   
-                    ||td.js_pos_selected
-                    ||td.js_pos_locked  
-                    ||td.js_pos_unlocked" 
-                cdsSelectClass="    
-                    js_cdsSelecteClass  
-                    ||js_dataItem           
-                    ||js_pos_selected       
-                    ||js_pos_canSelect  
-                    ||js_pos_unlocked   
-                    ||js_pos_locked"
-                cdsUnselectClass="  
-                    js_dataItem         
-                    ||js_cdsSelecteClass    
-                    ||js_pos_canSelect      
-                    ||js_pos_selected   
-                    ||js_pos_locked     
-                    ||js_pos_unlocked"
-
-                cdsItemDelimiter="||"
-
-                >
+            <div class="js_compDragSelect" cdsConfig="/script.js_cdsConfig" >
+                <script type="text/template" class="js_cdsConfig">
+                    {
+                        "td.js_pos_canSelect": {
+                            "selectedClass": "js_pos_selected"
+                        }
+                        , "td.js_pos_selected": {
+                            "selectedClass": "js_pos_selected"
+                        }
+                        , "td.js_pos_locked": {
+                            "selectedClass": "js_pos_unlocked"
+                        }
+                        , "td.js_pos_unlocked": {
+                            "selectedClass": "js_pos_locked"
+                        }
+                        , "td.js_dataItem": {
+                            "selectedClass": "js_cdsSelecteClass"
+                        }
+                        , "td.js_cdsSelecteClass": {
+                            "selectedClass": "js_dataItem"
+                        }
+                    }
+                </script>
                 <table cellspacing='0' style="width:50%" class="unselectable" unselectable="on">
                     <thead>
                         <tr>

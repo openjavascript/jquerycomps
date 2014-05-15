@@ -73,6 +73,15 @@
             return _r;
         };
 
+    DragSelect.RECT =
+        function(){
+            if( !( DragSelect._RECT && DragSelect._RECT.length ) ){
+                DragSelect._RECT = $( '<div class="js_compDragSelect_rect" style="display:none;"></div>' );
+                DragSelect._RECT.appendTo( document.body );
+            }
+            return DragSelect._RECT;
+        }
+
     DragSelect.AR_IX = 
         function( _ar, _ix, _def ){
             return _ar[ _ix ] || _ar[ 0 ] || _def || '';
@@ -93,97 +102,36 @@
                 _p.on( 'inited', function(){
                 });
 
-                $.each( _p._model.itemsClassAr(), function( _IX, _TYPE ){
-
-                    var _selectClass = DragSelect.AR_IX( _p._model.selectClassAr(), _IX )
-                        , _unselectClass = DragSelect.AR_IX( _p._model.unselectClassAr(), _IX )
-                        ;
-                    //JC.log( _IX, _TYPE, _selectClass, _unselectClass );
-
-                    _p.selector().delegate( _TYPE, 'click', function( _evt ){
-                        //JC.log( 'click', JC.f.ts(), _TYPE );
-                    });
-
-                    _p.selector().delegate( _TYPE, 'mousedown', function( _evt ){
-                        var _sp = $( this );
-                        _jwin.off( 'mouseup', _upEvent );
-                        _p._model.clearCache();
-                        _p._model.selectReady( _IX, true );
-                        _p.trigger( 'item_find', [ _sp, _IX, _TYPE, _selectClass, _unselectClass ] );
-                        _jwin.on( 'mouseup', _upEvent );
-                        JC.log( 'mousedown', _IX, _TYPE, JC.f.ts() );
-                    });
-
-                    _p.selector().delegate( _TYPE, 'mouseover', function( _evt ){
-                        if( !_p._model.selectReady( _IX ) ) return;
-                        var _sp = $( this );
-                        _p.trigger( 'item_find', [ _sp, _IX, _TYPE, _selectClass, _unselectClass ] );
-                    });
-
-                    function _upEvent( _evt ){
-                        //JC.log( 'upevent', JC.f.ts() );
-                        _p._model.selectReady( _IX, false );
-                        _jwin.off( 'mouseup', _upEvent );
-                        _p.trigger( 'select_done', [ _IX, _TYPE, _selectClass, _unselectClass ] );
-                    }
+                /*
+                _p.selector().delegate( _TYPE, 'click', function( _evt ){
                 });
 
-                _p.on( 'init_count', function( _evt, _sp, _ix, _TYPE, _selectClass, _unselectClass ){
-                    _sp = $( _sp );
-                    var _count;
-                    if( !_sp.data( _p._model.countKey() ) ){
-                        _sp.data( _p._model.countKey(),  DragSelect.Model.UNI_COUNT++ )
-                    }else{
-                        _count = _sp.data( _p._model.countKey() );
-                        if( ( DragSelect.Model.UNI_COUNT - 2 ) == _count && _p._model.prevItem() ){
-                            _p._model.prevItem().data( _p._model.countKey(), 0 );
-                            _p.trigger( 'unselect_item', [ _p._model.prevItem(), _ix, _TYPE, _selectClass, _unselectClass ] );
-                        }
-                    }
+                _p.selector().delegate( _TYPE, 'mousedown', function( _evt ){
+                    var _sp = $( this );
+                    _jwin.off( 'mousemove', _moveEvent );
+                    _jwin.off( 'mouseup', _upEvent );
+                    _p._model.clearCache();
+                    _jwin.on( 'mousemove', _moveEvent );
+                    _jwin.on( 'mouseup', _upEvent );
+                    JC.log( 'mousedown', _IX, _TYPE, JC.f.ts() );
+
+                    _p._view.showRect( _evt );
                 });
 
-                _p.on( 'item_find', function( _evt, _sp, _ix, _TYPE, _selectClass, _unselectClass ){
-                    _sp = $( _sp );
-                    _p.trigger( 'init_count', [ _sp, _ix ] );
-                   
-                    if( _sp.hasClass( _selectClass ) ){
-                        _p.trigger( 'unselect_item', [ _sp, _ix, _TYPE, _selectClass, _unselectClass ] );
-                    }else{
-                        _p.trigger( 'select_item', [ _sp, _ix, _TYPE, _selectClass, _unselectClass ] );
-                    }
-                });
+                function _moveEvent( _evt ){
+                    if( !DragSelect.RECT().is( ':visible' ) ) return;
+                    _p._view.updateRect( _evt );
+                    _p._model.selectReady( _IX, false );
+                }
 
-                _p.on( 'select_item', function( _evt, _sp, _ix, _TYPE, _selectClass, _unselectClass ){
-                    //JC.log( _IX, _ix, 'select_item', JC.f.ts() )
-                    _sp = $( _sp );
-
-                    _selectClass && _sp.addClass( _selectClass );
-
-                    _unselectClass && _sp.removeClass( _unselectClass );
-                    _p._model.findedItems( _sp, _TYPE );
-                });
-
-                _p.on( 'unselect_item', function( _evt, _sp, _ix, _TYPE, _selectClass, _unselectClass ){
-                    //JC.log( _IX, _ix, 'unselect_item', JC.f.ts() )
-                    _sp = $( _sp );
-
-                    _selectClass && _sp.removeClass( _selectClass );
-                    _unselectClass && _sp.addClass( _unselectClass );
-
-                    _p._model.findedItems( _sp, _TYPE );
-                });
-
-                _p.on( 'select_done', function( _evt, _ix, _TYPE, _selectClass, _unselectClass ){
-                    JC.log( 'select_done', JC.f.ts() );
-                    var _findedItems = _p._model.fixFindedItems( _TYPE, _selectClass, _unselectClass );
-                    _p.trigger( 'process_select', [ _findedItems, _ix, _TYPE, _selectClass, _unselectClass ] );
-                });
-
-                _p.on( 'process_select', function( _evt, _items, _ix, _TYPE, _selectClass, _unselectClass ){
-                    JC.log( 'process_select', JC.f.ts() );
-                    JC.dir( _items );
-                });
+                function _upEvent( _evt ){
+                    _p._view.hideRect( _evt );
+                    _jwin.off( 'mousemove', _moveEvent );
+                    _jwin.off( 'mouseup', _upEvent );
+                }
+                */
             }
+
 
         , _inited:
             function(){
@@ -201,89 +149,20 @@
             function(){
                 //JC.log( 'DragSelect.Model.init:', new Date().getTime() );
             }
-    
-        , findedItems:
-            function( _item, _type, _returnAll ){
-                var _p = this;
 
-                if( _item && _type ){
-                    !_p._findedItems && ( _p._findedItems = {}, _p._findedItems[ _type ] = {} );
-                    !_p._findedItems[ _type ] && ( _p._findedItems[ _type ] = {  } );
-                    var _key = _item.data( _p.countKey() );
-
-                    _p._findedItems[ _type ][ _key ] = _item;
-                }
-                if( !_returnAll && _type ){
-                    return _p._findedItems[ _type ];
-                }else{
-                    return _p._findedItems;
-                }
+        , offset:
+            function( _evt ){
+                var _r = {
+                        'x': _evt.pageX
+                        , 'y': _evt.pageY
+                };
+                return _r;
             }
 
-        , fixFindedItems:
-            function( _type, _selectClass, _unselectClass ){
-                var _p = this, _items = _p.findedItems( null, _type );
-
-                $.each( _items, function( _ix, _item ){
-                    if( !_item.hasClass( _selectClass ) ){
-                        delete _items.select[ _ix ];
-                    }
-                });
-                return _items;
-            }
-
-        , clearFindedItems: function(){ this._findedItems = {}; }
-
-        , prevItem:
+        , downPoint:
             function( _setter ){
-                typeof _setter != 'undefined' && ( this._prevItem = _setter );
-                return this._prevItem;
-            }
-
-        , countKey:
-            function( _new ){
-                var _p = this;
-                ( !_p._countKey || _new ) && ( _p._countKey = 'CDS_' + new Date().getTime() );
-                return _p._countKey;
-            }
-
-        , selectReady: 
-            function( _IX, _setter ){
-                !this._selectReady && ( this._selectReady = {} );
-                typeof _setter != 'undefined' && ( this._selectReady[ _IX ] = _setter );
-                return this._selectReady[ _IX ];
-            }
-
-        , items: function(){ return this.selectorProp( 'cdsItems'); }
-        , itemsClass: function(){ return this.attrProp( 'cdsItems'); }
-        , selectClass: function(){ return this.attrProp( 'cdsSelectClass'); }
-        , unselectClass: function(){ return this.attrProp( 'cdsUnselectClass'); }
-
-        , processAr: 
-            function( _key, _ar ){
-                var _p = this;
-                !_p[ _key ]
-                    && ( 
-                        _p[ _key ] = _ar.split( _p.itemDelimiter() ) 
-                        , $.each( _p[ _key ], function( _ix, _item ){ _p[_key][ _ix ] = $.trim( _item ); } )
-                    );
-                return _p[ _key ];
-            }
-
-        , itemsAr: function(){ return this.processAr( '_itemsAr', this.items() ); }
-        , itemsClassAr: function(){ return this.processAr( '_itemsClassAr', this.itemsClass() ); }
-        , selectClassAr: function(){ return this.processAr( '_selectClassAr', this.selectClass() ); }
-        , unselectClassAr: function(){ return this.processAr( '_unselectClassAr', this.unselectClass() ); }
-
-        , itemDelimiter: function(){ return this.attrProp( 'cdsItemDelimiter' ) || '||'; }
-
-        , clearCache:
-            function(){
-                var _p = this;
-                _p.prevItem( null );
-                _p._relativeParent = null;
-                _p.clearFindedItems();
-                _p.countKey( true );
+                typeof _setter != 'undefined' && ( this._downPoint = _setter );
+                return this._downPoint;
             }
     });
 
@@ -292,7 +171,68 @@
             function(){
                 //JC.log( 'DragSelect.View.init:', new Date().getTime() );
             }
+
+        , showRect:
+            function( _evt ){
+                var _p = this;
+                _p._model.downPoint( _p._model.offset( _evt ) );
+                DragSelect.RECT().css( { 'left': '-9999px' } ).show();
+            }
+
+        , updateRect:
+            function( _evt ){
+                var _p = this
+                    , _downPoint = _p._model.downPoint()
+                    , _newPoint = _p._model.offset( _evt )
+                    , _rect = DragSelect.RECT()
+                    , _size
+                    ;
+                if( !_downPoint ) return;
+                _size = pointToRect( _downPoint, _newPoint );
+                _rect.css( _size );
+            }
+
+        , hideRect:
+            function( _evt ){
+                var _p = this
+                    , _downPoint = _p._model.downPoint()
+                    , _newPoint = _p._model.offset( _evt )
+                    , _rect = DragSelect.RECT()
+                    , _size
+                    ;
+                DragSelect.RECT().hide();
+
+                if( !_downPoint ) return;
+                _size = pointToRect( _downPoint, _newPoint );
+                _rect.css( _size );
+            }
     });
+
+    function pointToRect( _p1, _p2 ){
+        var _r = { 'x': 0, 'y': 0, 'width': 0, 'height': 0 };
+
+        if( _p1 && _p2 ){
+            if( _p1.x < _p2.x ){
+                _r.x = _p1.x;
+                _r.width = _p2.x - _p1.x;
+            }else{
+                _r.x = _p2.x;
+                _r.width = _p1.x - _p2.x;
+            }
+
+            if( _p1.y < _p2.y ){
+                _r.y = _p1.y;
+                _r.height = _p2.y - _p1.y;
+            }else{
+                _r.y = _p2.y;
+                _r.height = _p1.y - _p2.y;
+            }
+            _r.left = _r.x;
+            _r.top = _r.y;
+        }
+
+        return _r;
+    }
 
     _jdoc.ready( function(){
         DragSelect.autoInit && DragSelect.init();
