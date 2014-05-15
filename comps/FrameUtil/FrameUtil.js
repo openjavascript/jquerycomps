@@ -135,6 +135,21 @@
                 return FU;
             }
         /**
+         * 通知父级刷新页面
+         * @method  noticeReload
+         * @param   {string}    _url
+         * @param   {string}    _type
+         */
+        , noticeReload:
+            function( _url, _type ){
+                if( !FU.parent() ) return FU;
+                _type = FU.type( _type );
+
+                FU.parent().jEventHost.trigger( 'reload', FU.info( { 'url': _url, 'type': _type } ) );
+                return FU;
+            }
+
+        /**
          * 通知父级已经初始化完毕
          * @method  noticeReady
          * @param   {string}    _type
@@ -440,6 +455,11 @@
                 }
             });
         }
+
+        JC.FrameUtil.subscribeEvent( 'reload', function( _evt, _params ){
+            var _url = _params.url || location.href;
+            JC.f.reloadPage( _url );
+        });
 
     }, null, 'JCFrameUtilInit', 200 );
 

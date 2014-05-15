@@ -86,6 +86,7 @@
         , "safeTimeout": safeTimeout
         , "encoder": encoder
         , "fixPath": fixPath
+        , "arrayId": arrayId
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -131,6 +132,25 @@
             _url = _url.replace( /[\/]+/g, '/' );
         }
         return _url;
+    }
+    /**
+     * 一维数组去重
+     * @method  arrayId
+     * @param   {Array}     _ar
+     * @return Array
+     * @static
+     */
+    function arrayId( _ar ){
+        var _r = [], _k = {};
+        
+        for( var i = 0, j = _ar.length; i < j; i++ ){
+            if( !(_ar[i] in _k) ){
+                _r.push( _ar[i] );
+                _k[ _ar[i] ] = _ar[i];
+            }
+        }
+        
+        return _r;
     }
     /**
      * 把函数的参数转为数组
@@ -510,7 +530,12 @@
             _r = new Date( _datestr.slice( 0, 4 )
                             , parseInt( _datestr.slice( 4, 6 ), 10 ) - 1
                             , parseInt( _datestr.slice( 6 ), 10 ) );
+        }else if( _datestr.length === 6 ){
+            _r = new Date( _datestr.slice( 0, 4 )
+                            , parseInt( _datestr.slice( 4, 6 ), 10 ) - 1
+                            , 1 );
         }
+
         return _r;
     }
     /**

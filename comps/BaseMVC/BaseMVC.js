@@ -39,9 +39,6 @@
             function(){
                 var _p = this;
 
-                _p._beforeInit();
-                _p._initHanlderEvent();
-
                 $( [ _p._view, _p._model ] ).on('BindEvent', function( _evt, _evtName, _cb ){
                     _p.on( _evtName, _cb );
                 });
@@ -50,6 +47,9 @@
                     var _data = JC.f.sliceArgs( arguments ).slice( 2 );
                     _p.trigger( _evtName, _data );
                 });
+
+                _p._beforeInit();
+                _p._initHanlderEvent();
 
                 _p._model.init();
                 _p._view && _p._view.init();
