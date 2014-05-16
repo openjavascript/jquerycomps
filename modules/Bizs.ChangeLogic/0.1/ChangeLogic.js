@@ -157,7 +157,10 @@
                     }
                 });
 
-                ( _tmp = _p._model.bclTrigger( true ) ) && _tmp.trigger( 'change');
+                ( _tmp = _p._model.bclTrigger( true ) ) 
+                    && !_tmp.prop( 'disabled' )
+                    && _tmp.trigger( 'change');
+
                 _p._model.ready( true );
 
                 return _p;
