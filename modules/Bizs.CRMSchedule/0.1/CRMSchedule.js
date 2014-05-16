@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel', 'Bizs.CRMSchedulePopup' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel', 'Bizs.CRMSchedulePopup', 'JC.Tips' ], function(){
 /**
  * CRM 排期日期选择组件
  *
@@ -208,14 +208,15 @@
     CRMSchedule.ALL_CLASS = _tmp.join( ' ' );
 
     CRMSchedule.defaultDataBuild = 
-        function( _data ){
+        function( _data, _sdate ){
             var _t = [];
-            _data.company && (          _t.push( '    广告主名称: ' + _data.company ) );
-            _data.agencyName && (       _t.push( '代理公司名称: ' + _data.agencyName ) );
-            _data.departmentName && (   _t.push( '部门团队名称: ' + _data.departmentName ) );
-            _data.createUserName && (   _t.push( '      提交人: ' + _data.createUserName ) );
-            _data.statusName && (       _t.push( '预订任务状态: ' + _data.statusName ) );
-            _data.title = _t.join( '\n' );
+    _data.company && (          _t.push( '广告主名称　: ' + _data.company ) );
+    _data.agencyName && (       _t.push( '代理公司名称: ' + _data.agencyName ) );
+    _data.departmentName && (   _t.push( '部门团队名称: ' + _data.departmentName ) );
+    _data.createUserName && (   _t.push( '提交人　　　: ' + _data.createUserName ) );
+    _data.statusName && (       _t.push( '预订任务状态: ' + _data.statusName ) );
+    _sdate && _t.length && (                 _t.push( '日期　　　　: ' + _sdate ) );
+    _data.title = _t.join( '\n' );
             return _data;
         };
 
@@ -241,8 +242,12 @@
                 _p.on( 'update_layout', function( _evt, _d, _displayDate, _isReady ){
                     if( !_d ) return;
 
-                    _d = Bizs.CRMSchedule.defaultDataBuild( _d );
+                    _d = Bizs.CRMSchedule.defaultDataBuild( _d, _displayDate );
                     _p._view.update( _d, _displayDate, _isReady );
+                });
+
+                _p.on( 'layout_inited', function(){
+                    JC.Tips && JC.Tips.init( _p.selector().find( '[title]' ) );
                 });
 
                 _p.on( 'show_msg', function( _evt, _msg, _sp, _status ){
@@ -475,28 +480,29 @@
                 _p.selector().delegate( 'td.js_pos_canSelect', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
                     if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
-                        _p.trigger( 'lockup', [ _id, _date, _p._model.lockupDateUrl(), _sp, function(){
-                            _sp.removeClass( CRMSchedule.ALL_CLASS )
-                            .addClass( CRMSchedule.CLASS_LOCKED );
-                            _p.trigger( 'update_check_item_status', [ JC.f.getJqParent( _sp, 'tr' ).find( 'input.js_bccCkAll' ) ] );
-                        }] );
+
+                    _p.trigger( 'lockup', [ _id, _date, _p._model.lockupDateUrl(), _sp, function(){
+                        _sp.removeClass( CRMSchedule.ALL_CLASS )
+                        .addClass( CRMSchedule.CLASS_LOCKED );
+                        _p.trigger( 'update_check_item_status', [ JC.f.getJqParent( _sp, 'tr' ).find( 'input.js_bccCkAll' ) ] );
+                    }] );
 
                 });
 
                 _p.selector().delegate( 'td.js_pos_locked', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
                     if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
-                        _p.trigger( 'unlock', [ _id, _date, _p._model.unlockDateUrl(), _sp, function(){
-                            _sp.removeClass( CRMSchedule.ALL_CLASS )
-                            .addClass( CRMSchedule.CLASS_CAN_SELECT );
-                            _p.trigger( 'update_check_item_status', [ JC.f.getJqParent( _sp, 'tr' ).find( 'input.js_bccCkAll' ) ] );
-                        }] );
+
+                    _p.trigger( 'unlock', [ _id, _date, _p._model.unlockDateUrl(), _sp, function(){
+                        _sp.removeClass( CRMSchedule.ALL_CLASS )
+                        .addClass( CRMSchedule.CLASS_CAN_SELECT );
+                        _p.trigger( 'update_check_item_status', [ JC.f.getJqParent( _sp, 'tr' ).find( 'input.js_bccCkAll' ) ] );
+                    }] );
 
                 });
 
                 _p.selector().delegate( 'input.js_bccCkAll', 'change', function( _evt ){
-                    var _sp = $( this ), _tr, _date = [], _items;
-                    if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
+                    var _sp = $( this ), _tr, _date = [], _items, _findItems = [];
 
                     JC.f.safeTimeout( function(){
                         _tr = JC.f.getJqParent( _sp, 'tr' );
@@ -504,25 +510,35 @@
                             _items = _tr.find( 'td.js_pos_canSelect' );
                             _items.each( function( _ix, _item ){
                                 _item = $( _item );
+                                if( Bizs.CRMSchedule.outdateCheck( _item ) ) return;
                                 _date.push( _item.attr( 'data-date' ) );
+                                _findItems.push( _item );
                             });
+                            if( !_date.length ) return;
                             _p.trigger( 'lockup', [ _tr.attr( 'data-id' ), _date.join(','), _p._model.lockupDateUrl(), _sp
                                 , function( _data, _id, _date ){
-                                    _items.removeClass( CRMSchedule.ALL_CLASS )
-                                        .addClass( CRMSchedule.CLASS_LOCKED )
-                                        ;
+                                    $.each( _findItems, function( _ix, _item ){
+                                        _item.removeClass( CRMSchedule.ALL_CLASS )
+                                            .addClass( CRMSchedule.CLASS_LOCKED )
+                                            ;
+                                        });
                                 }]);
                         }else{
                             _items = _tr.find( 'td.js_pos_locked' );
                             _items.each( function( _ix, _item ){
                                 _item = $( _item );
+                                 if( Bizs.CRMSchedule.outdateCheck( _item ) ) return;
                                 _date.push( _item.attr( 'data-date' ) );
+                                _findItems.push( _item );
                             });
+                            if( !_date.length ) return;
                             _p.trigger( 'unlock', [ _tr.attr( 'data-id' ), _date.join(','), _p._model.unlockDateUrl(), _sp
                                 , function( _data, _id, _date ){
-                                    _items.removeClass( CRMSchedule.ALL_CLASS )
-                                        .addClass( CRMSchedule.CLASS_CAN_SELECT )
-                                        ;
+                                    $.each( _findItems, function( _ix, _item ){
+                                        _item.removeClass( CRMSchedule.ALL_CLASS )
+                                            .addClass( CRMSchedule.CLASS_CAN_SELECT )
+                                            ;
+                                        });
                                 }] );
                         }
                     }, _sp, 'LOCK_CK_ALL', 200 );
@@ -711,8 +727,7 @@
                 });
 
                 _p.selector().delegate( 'input.js_bccCkAll', 'change', function( _evt ){
-                    var _sp = $( this ), _tr, _date = [], _items;
-                    if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
+                    var _sp = $( this ), _tr, _date = [], _items, _findItems = [];
 
                     JC.f.safeTimeout( function(){
                         _tr = JC.f.getJqParent( _sp, 'tr' );
@@ -720,25 +735,39 @@
                             _items = _tr.find( 'td.js_pos_canSelect' );
                             _items.each( function( _ix, _item ){
                                 _item = $( _item );
+                                if( Bizs.CRMSchedule.outdateCheck( _item ) ) return;
                                 _date.push( _item.attr( 'data-date' ) );
+                                _findItems.push( _item );
                             });
-                            _p.trigger( 'select_item', [ _tr.attr( 'data-id' ), _date.join(','), _sp
+
+                            if( !_date.length ) return;
+
+                          _p.trigger( 'select_item', [ _tr.attr( 'data-id' ), _date.join(','), _sp
                                 , function( _id, _date ){
-                                    _items.removeClass( CRMSchedule.ALL_CLASS )
-                                        .addClass( CRMSchedule.CLASS_SELECTED )
-                                        ;
+                                    $.each( _findItems, function( _ix, _item ){
+                                        _item.removeClass( CRMSchedule.ALL_CLASS )
+                                            .addClass( CRMSchedule.CLASS_SELECTED )
+                                            ;
+                                    });
                                 }, 10 ]);
                         }else{
                             _items = _tr.find( 'td.js_pos_selected' );
                             _items.each( function( _ix, _item ){
                                 _item = $( _item );
+                                if( Bizs.CRMSchedule.outdateCheck( _item ) ) return;
                                 _date.push( _item.attr( 'data-date' ) );
+                                _findItems.push( _item );
                             });
+
+                            if( !_date.length ) return;
+
                             _p.trigger( 'unselect_item', [ _tr.attr( 'data-id' ), _date.join(','), _sp
                                 , function( _id, _date ){
-                                    _items.removeClass( CRMSchedule.ALL_CLASS )
-                                        .addClass( CRMSchedule.CLASS_CAN_SELECT )
-                                        ;
+                                    $.each( _findItems, function( _ix, _item ){
+                                       _item.removeClass( CRMSchedule.ALL_CLASS )
+                                            .addClass( CRMSchedule.CLASS_CAN_SELECT )
+                                            ;
+                                    });
                                 }, 10 ] );
                         }
                     }, _sp, 'SELECT_CK_ALL', 200 );
@@ -1058,7 +1087,16 @@
         , monthDataUrl: function(){ return this.attrProp( 'bccMonthDataUrl' ); }
 
         , dateRangeUrl: function(){ return this.attrProp( 'bccDateRangeUrl' ); }
-        
+
+        , availableDate:
+            function(){
+                var _r = JC.f.pureDate()
+
+                this.attrProp( 'bccAvailableDate' )
+                    && ( _r = JC.f.pureDate( JC.f.dateDetect( this.attrProp( 'bccAvailableDate' ) ) ) );
+
+                return _r;
+            }
     });
 
     JC.f.extendObject( CRMSchedule.View.prototype, {
@@ -1181,7 +1219,7 @@
                     , _tpl = _p._model.rowTpl()
                     , _tmpTpl
                     , _ckAll = ''
-                    , _now = JC.f.pureDate()
+                    , _now = _p._model.availableDate()
                     ;
 
 
@@ -1224,12 +1262,18 @@
                         }
 
                         if( _sPosDate in _item.position_date ){
+
+                            CRMSchedule.defaultDataBuild( _item.position_date[ _sPosDate ], _sPosDate );
+                            _title = _item.position_date[ _sPosDate ].title || '';
+
                             _status = _item.position_date[ _sPosDate ].status;
                             _name = _item.position_date[ _sPosDate ].company || '';
-                            _shortName = byteString( _name, 6 );
-
-                            CRMSchedule.defaultDataBuild( _item.position_date[ _sPosDate ] );
-                            _title = _item.position_date[ _sPosDate ].title || '';
+                            _shortName = byteString( 
+                                                    _item.position_date[ _sPosDate ].company
+                                                    || _item.position_date[ _sPosDate ].agencyName
+                                                    ||_item.position_date[ _sPosDate ].departmentName
+                                                    || '' 
+                                                , 6 );
 
                             bytelen( _name ) > 6 && ( _shortName += '...' );
                         }
@@ -1240,11 +1284,17 @@
                         _status == CRMSchedule.STATUS_LOCKED && ( _hasLocked = true );
 
                         if( _posDate.getTime() < _now.getTime() || _posDate.getTime() > _p._model.initDate().edate.getTime() ){
-                            if( _status === 0 ) _class = '';
+                            switch( _status ){
+                                case 0:
+                                case 5:
+                                case 6:
+                                    //_class = '';
+                                    break;
+                            }
                             _outdateClass = 'js_bccOutdate';
                         }
 
-                        _days.push( JC.f.printf( '<td class="js_bccDateItem {7} {0} {5} js_bccDateCol_{6}" title="{8}" ' 
+                        _days.push( JC.f.printf( '<td class="js_bccDateItem {0} {5} js_bccDateCol_{6} {7}" title="{8}" ' 
                                     +' data-id="{2}" data-date="{3}" data-colCount="{6}">' 
                                     +'<div>{4}</div></td>'
                                     , _class, _name, _item.id, _sPosDate, _shortName
@@ -1350,7 +1400,15 @@
 
     CRMSchedule.outdateCheck =
         function( _selector ){
-            return _selector.hasClass( 'js_bccOutdate' );
+            var _r = false;
+            if( _selector.attr( 'data-date' ) ){
+                var _dt = JC.f.pureDate( JC.f.parseISODate( _selector.attr( 'data-date' ) ) )
+                    , _md = JC.f.pureDate( JC.f.dateDetect( 'now, 1d' ) )
+                    ;
+                JC.log( _selector.attr( 'data-date' ), _dt.getTime(), _md.getTime() );
+                if( _dt.getTime() < _md.getTime() ) _r = true;
+            }
+            return _r;
         }
 
     function byteString( _s, _len ){

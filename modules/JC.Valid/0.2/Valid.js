@@ -975,6 +975,7 @@ function (){
                 var _r = false;
                 _item.is( '[subdatatype]' )
                     && /hidden/i.test( _item.attr( 'subdatatype' ) ) 
+                    && _item.parent().is( ':visible' )
                     && ( _r = true )
                     ;
                 return _r;

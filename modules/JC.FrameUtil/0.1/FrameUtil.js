@@ -196,12 +196,13 @@
         , info:
             function( _ext ){
                 var _body = $( document.body )
+                    , _vs = JC.f.docSize()
                     , _r = { 
                         '$': $
-                        , 'width': document.documentElement.offsetWidth
-                        , 'height': document.documentElement.offsetHeight
-                        , 'bodyWidth': _body.width()
-                        , 'bodyHeight': _body.height()
+                        , 'width': _vs.width
+                        , 'height': _vs.height
+                        , 'bodyWidth': _vs.bodyWidth
+                        , 'bodyHeight': _vs.bodyHeight
                         , 'id': FU.id()
                         , 'eventHost': FU.eventHost
                         , 'jEventHost': $( FU.eventHost )
@@ -254,14 +255,17 @@
                     var _cwin = _frame.prop( 'contentWindow' )
                         , _cdoc = _frame.prop( 'contentDocument' )
                         , _type = JC.f.getUrlParam( _frame.attr('src') || '', 'jsAction' ) || _cwin.name || ''
+                        , _vs = JC.f.docSize( _cdoc )
                         ;
 
                     _r = { 
                         '$': _cwin.$
-                        , 'width': _cdoc.documentElement.offsetWidth
-                        , 'height': _cdoc.documentElement.offsetHeight
-                        , 'bodyWidth': 0
-                        , 'bodyHeight': 0
+                        , 'width': _vs.width
+                        , 'height': _vs.height
+                        , 'bodyWidth': _vs.bodyWidth
+                        , 'bodyHeight': _vs.bodyHeight
+                        , 'docWidth': _vs.docWidth
+                        , 'docHeight': _vs.docHeight
                         , 'win': _cwin
                         , 'doc': _cdoc
                         , 'type': _type
@@ -334,6 +338,8 @@
                 _finfo = FU.frameInfo( _frame );
                 if( !_finfo.height ) return FU;
                 _frame.css( FU.cssFromSizePattern( FU.childSizePattern, _finfo ) );
+                _frame.css( 'height', _finfo.height + 'px' );
+                //JC.log( _frame.attr( 'name' ), _finfo.height, _finfo.bodyHeight );
                 return FU;
             }
         /**
