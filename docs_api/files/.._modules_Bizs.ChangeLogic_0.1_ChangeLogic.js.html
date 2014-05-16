@@ -399,7 +399,10 @@
                     }
                 });
 
-                ( _tmp = _p._model.bclTrigger( true ) ) &amp;&amp; _tmp.trigger( &#x27;change&#x27;);
+                ( _tmp = _p._model.bclTrigger( true ) ) 
+                    &amp;&amp; !_tmp.prop( &#x27;disabled&#x27; )
+                    &amp;&amp; _tmp.trigger( &#x27;change&#x27;);
+
                 _p._model.ready( true );
 
                 return _p;
