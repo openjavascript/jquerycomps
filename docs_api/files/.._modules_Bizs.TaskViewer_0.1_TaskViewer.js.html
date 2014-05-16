@@ -444,7 +444,7 @@
         },
 
         buildHeaderTpl: function (l) {
-            var cnWeek = &#x27;一二三四五六日&#x27;,
+            var cnWeek = &#x27;日一二三四五六&#x27;,
                 i = 0,
                 tpl = &#x27;&lt;tr&gt;&lt;th class=&quot;COMP_task_view_counter&quot;&gt;已选天数&lt;/th&gt;&lt;th style=&quot;width:80px; height:30px; padding:0!important;&quot;&gt;&#x27;
                             + &#x27;&lt;div class=&quot;COMP_task_view_slash&quot;&gt;&#x27;
@@ -488,10 +488,10 @@
                 month = d.getMonth();
                 maxDay = JC.f.maxDayOfMonth(d);
                 placeholder = &#x27;&#x27;;
-                day = new Date(year, month, 1).getDay() - 1;      
+                day = new Date(year, month, 1).getDay();      
                 while(day--) {
-                    if( day &lt;= 0 ) break;
                     placeholder += &#x27;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&#x27;
+                    if( day &lt;= 0 ) break;
                 }
                 tpl += &#x27;&lt;tr class=&quot;&#x27; + key + &#x27;&quot;&gt;&lt;td class=&quot;COMP_task_view_counter&quot;&gt;&amp;nbsp;&lt;/td&gt;&lt;td class=&quot;COMP_task_view_date&quot;&gt;&#x27; + year + &#x27;年&#x27; + (month + 1) + &#x27;月&#x27; +&#x27;&lt;/td&gt;&#x27; + placeholder;
                 for ( i = 1; i &lt;= maxDay; i++) {

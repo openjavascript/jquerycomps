@@ -141,8 +141,9 @@
                                 if( _startDate.getTime() < _now.getTime() ){
                                     if( _status == 0 || _status == 6 || _status == 5 ){
                                     }else{
-                                        _selector.addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );
+                                        //_selector.addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );
                                     }
+                                    _selector.addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );
                                     _selector.addClass( 'js_bccOutdate' );
                                 }else{
                                     _selector.addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );

@@ -330,6 +330,7 @@
         , &quot;encoder&quot;: encoder
         , &quot;fixPath&quot;: fixPath
         , &quot;arrayId&quot;: arrayId
+        , &quot;docSize&quot;: docSize
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -1681,6 +1682,36 @@
 
         return _outObj;
     }
+    /**
+     * 获取 document 的 相关大小
+     * @method  docSize
+     * @param   {document}    _doc
+     * @return  Object
+     * @static
+     */
+    function docSize( _doc ){
+        _doc = _doc || document;
+        var _r = {
+            width: 0, height: 0, docWidth: 0, docHeight: 0, bodyWidth: 0, bodyHeight: 0, scrollWidth: 0, scrollHeight: 0
+        };
+
+        _r.docWidth = _doc.documentElement.offsetWidth;
+        _r.docHeight = _doc.documentElement.offsetHeight;
+
+        _doc.body &amp;&amp; (
+            _r.bodyWidth = _doc.body.offsetWidth
+            , _r.bodyHeight = _doc.body.offsetHeight
+        );
+
+        _r.scrollWidth = _doc.documentElement.scrollWidth
+        _r.scrollHeight = _doc.documentElement.scrollHeight
+
+        _r.width = Math.max( _r.docWidth, _r.bodyWidth, _r.scrollHeight );
+        _r.height = Math.max( _r.docHeight, _r.bodyHeight, _r.scrollHeight );
+
+        return _r;
+    }
+
 
     return JC.f;
 

@@ -240,7 +240,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Panel&#x27;, &#x27;Bizs.CRMSchedulePopup&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Panel&#x27;, &#x27;Bizs.CRMSchedulePopup&#x27;, &#x27;JC.Tips&#x27; ], function(){
 /**
  * CRM 排期日期选择组件
  *
@@ -450,14 +450,15 @@
     CRMSchedule.ALL_CLASS = _tmp.join( &#x27; &#x27; );
 
     CRMSchedule.defaultDataBuild = 
-        function( _data ){
+        function( _data, _sdate ){
             var _t = [];
-            _data.company &amp;&amp; (          _t.push( &#x27;    广告主名称: &#x27; + _data.company ) );
-            _data.agencyName &amp;&amp; (       _t.push( &#x27;代理公司名称: &#x27; + _data.agencyName ) );
-            _data.departmentName &amp;&amp; (   _t.push( &#x27;部门团队名称: &#x27; + _data.departmentName ) );
-            _data.createUserName &amp;&amp; (   _t.push( &#x27;      提交人: &#x27; + _data.createUserName ) );
-            _data.statusName &amp;&amp; (       _t.push( &#x27;预订任务状态: &#x27; + _data.statusName ) );
-            _data.title = _t.join( &#x27;\n&#x27; );
+    _data.company &amp;&amp; (          _t.push( &#x27;广告主名称　: &#x27; + _data.company ) );
+    _data.agencyName &amp;&amp; (       _t.push( &#x27;代理公司名称: &#x27; + _data.agencyName ) );
+    _data.departmentName &amp;&amp; (   _t.push( &#x27;部门团队名称: &#x27; + _data.departmentName ) );
+    _data.createUserName &amp;&amp; (   _t.push( &#x27;提交人　　　: &#x27; + _data.createUserName ) );
+    _data.statusName &amp;&amp; (       _t.push( &#x27;预订任务状态: &#x27; + _data.statusName ) );
+    _sdate &amp;&amp; _t.length &amp;&amp; (                 _t.push( &#x27;日期　　　　: &#x27; + _sdate ) );
+    _data.title = _t.join( &#x27;\n&#x27; );
             return _data;
         };
 
@@ -483,8 +484,12 @@
                 _p.on( &#x27;update_layout&#x27;, function( _evt, _d, _displayDate, _isReady ){
                     if( !_d ) return;
 
-                    _d = Bizs.CRMSchedule.defaultDataBuild( _d );
+                    _d = Bizs.CRMSchedule.defaultDataBuild( _d, _displayDate );
                     _p._view.update( _d, _displayDate, _isReady );
+                });
+
+                _p.on( &#x27;layout_inited&#x27;, function(){
+                    JC.Tips &amp;&amp; JC.Tips.init( _p.selector().find( &#x27;[title]&#x27; ) );
                 });
 
                 _p.on( &#x27;show_msg&#x27;, function( _evt, _msg, _sp, _status ){
@@ -717,28 +722,29 @@
                 _p.selector().delegate( &#x27;td.js_pos_canSelect&#x27;, &#x27;click&#x27;, function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( &#x27;data-id&#x27; ), _date = _sp.attr( &#x27;data-date&#x27; );
                     if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
-                        _p.trigger( &#x27;lockup&#x27;, [ _id, _date, _p._model.lockupDateUrl(), _sp, function(){
-                            _sp.removeClass( CRMSchedule.ALL_CLASS )
-                            .addClass( CRMSchedule.CLASS_LOCKED );
-                            _p.trigger( &#x27;update_check_item_status&#x27;, [ JC.f.getJqParent( _sp, &#x27;tr&#x27; ).find( &#x27;input.js_bccCkAll&#x27; ) ] );
-                        }] );
+
+                    _p.trigger( &#x27;lockup&#x27;, [ _id, _date, _p._model.lockupDateUrl(), _sp, function(){
+                        _sp.removeClass( CRMSchedule.ALL_CLASS )
+                        .addClass( CRMSchedule.CLASS_LOCKED );
+                        _p.trigger( &#x27;update_check_item_status&#x27;, [ JC.f.getJqParent( _sp, &#x27;tr&#x27; ).find( &#x27;input.js_bccCkAll&#x27; ) ] );
+                    }] );
 
                 });
 
                 _p.selector().delegate( &#x27;td.js_pos_locked&#x27;, &#x27;click&#x27;, function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( &#x27;data-id&#x27; ), _date = _sp.attr( &#x27;data-date&#x27; );
                     if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
-                        _p.trigger( &#x27;unlock&#x27;, [ _id, _date, _p._model.unlockDateUrl(), _sp, function(){
-                            _sp.removeClass( CRMSchedule.ALL_CLASS )
-                            .addClass( CRMSchedule.CLASS_CAN_SELECT );
-                            _p.trigger( &#x27;update_check_item_status&#x27;, [ JC.f.getJqParent( _sp, &#x27;tr&#x27; ).find( &#x27;input.js_bccCkAll&#x27; ) ] );
-                        }] );
+
+                    _p.trigger( &#x27;unlock&#x27;, [ _id, _date, _p._model.unlockDateUrl(), _sp, function(){
+                        _sp.removeClass( CRMSchedule.ALL_CLASS )
+                        .addClass( CRMSchedule.CLASS_CAN_SELECT );
+                        _p.trigger( &#x27;update_check_item_status&#x27;, [ JC.f.getJqParent( _sp, &#x27;tr&#x27; ).find( &#x27;input.js_bccCkAll&#x27; ) ] );
+                    }] );
 
                 });
 
                 _p.selector().delegate( &#x27;input.js_bccCkAll&#x27;, &#x27;change&#x27;, function( _evt ){
-                    var _sp = $( this ), _tr, _date = [], _items;
-                    if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
+                    var _sp = $( this ), _tr, _date = [], _items, _findItems = [];
 
                     JC.f.safeTimeout( function(){
                         _tr = JC.f.getJqParent( _sp, &#x27;tr&#x27; );
@@ -746,25 +752,35 @@
                             _items = _tr.find( &#x27;td.js_pos_canSelect&#x27; );
                             _items.each( function( _ix, _item ){
                                 _item = $( _item );
+                                if( Bizs.CRMSchedule.outdateCheck( _item ) ) return;
                                 _date.push( _item.attr( &#x27;data-date&#x27; ) );
+                                _findItems.push( _item );
                             });
+                            if( !_date.length ) return;
                             _p.trigger( &#x27;lockup&#x27;, [ _tr.attr( &#x27;data-id&#x27; ), _date.join(&#x27;,&#x27;), _p._model.lockupDateUrl(), _sp
                                 , function( _data, _id, _date ){
-                                    _items.removeClass( CRMSchedule.ALL_CLASS )
-                                        .addClass( CRMSchedule.CLASS_LOCKED )
-                                        ;
+                                    $.each( _findItems, function( _ix, _item ){
+                                        _item.removeClass( CRMSchedule.ALL_CLASS )
+                                            .addClass( CRMSchedule.CLASS_LOCKED )
+                                            ;
+                                        });
                                 }]);
                         }else{
                             _items = _tr.find( &#x27;td.js_pos_locked&#x27; );
                             _items.each( function( _ix, _item ){
                                 _item = $( _item );
+                                 if( Bizs.CRMSchedule.outdateCheck( _item ) ) return;
                                 _date.push( _item.attr( &#x27;data-date&#x27; ) );
+                                _findItems.push( _item );
                             });
+                            if( !_date.length ) return;
                             _p.trigger( &#x27;unlock&#x27;, [ _tr.attr( &#x27;data-id&#x27; ), _date.join(&#x27;,&#x27;), _p._model.unlockDateUrl(), _sp
                                 , function( _data, _id, _date ){
-                                    _items.removeClass( CRMSchedule.ALL_CLASS )
-                                        .addClass( CRMSchedule.CLASS_CAN_SELECT )
-                                        ;
+                                    $.each( _findItems, function( _ix, _item ){
+                                        _item.removeClass( CRMSchedule.ALL_CLASS )
+                                            .addClass( CRMSchedule.CLASS_CAN_SELECT )
+                                            ;
+                                        });
                                 }] );
                         }
                     }, _sp, &#x27;LOCK_CK_ALL&#x27;, 200 );
@@ -953,8 +969,7 @@
                 });
 
                 _p.selector().delegate( &#x27;input.js_bccCkAll&#x27;, &#x27;change&#x27;, function( _evt ){
-                    var _sp = $( this ), _tr, _date = [], _items;
-                    if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
+                    var _sp = $( this ), _tr, _date = [], _items, _findItems = [];
 
                     JC.f.safeTimeout( function(){
                         _tr = JC.f.getJqParent( _sp, &#x27;tr&#x27; );
@@ -962,25 +977,39 @@
                             _items = _tr.find( &#x27;td.js_pos_canSelect&#x27; );
                             _items.each( function( _ix, _item ){
                                 _item = $( _item );
+                                if( Bizs.CRMSchedule.outdateCheck( _item ) ) return;
                                 _date.push( _item.attr( &#x27;data-date&#x27; ) );
+                                _findItems.push( _item );
                             });
-                            _p.trigger( &#x27;select_item&#x27;, [ _tr.attr( &#x27;data-id&#x27; ), _date.join(&#x27;,&#x27;), _sp
+
+                            if( !_date.length ) return;
+
+                          _p.trigger( &#x27;select_item&#x27;, [ _tr.attr( &#x27;data-id&#x27; ), _date.join(&#x27;,&#x27;), _sp
                                 , function( _id, _date ){
-                                    _items.removeClass( CRMSchedule.ALL_CLASS )
-                                        .addClass( CRMSchedule.CLASS_SELECTED )
-                                        ;
+                                    $.each( _findItems, function( _ix, _item ){
+                                        _item.removeClass( CRMSchedule.ALL_CLASS )
+                                            .addClass( CRMSchedule.CLASS_SELECTED )
+                                            ;
+                                    });
                                 }, 10 ]);
                         }else{
                             _items = _tr.find( &#x27;td.js_pos_selected&#x27; );
                             _items.each( function( _ix, _item ){
                                 _item = $( _item );
+                                if( Bizs.CRMSchedule.outdateCheck( _item ) ) return;
                                 _date.push( _item.attr( &#x27;data-date&#x27; ) );
+                                _findItems.push( _item );
                             });
+
+                            if( !_date.length ) return;
+
                             _p.trigger( &#x27;unselect_item&#x27;, [ _tr.attr( &#x27;data-id&#x27; ), _date.join(&#x27;,&#x27;), _sp
                                 , function( _id, _date ){
-                                    _items.removeClass( CRMSchedule.ALL_CLASS )
-                                        .addClass( CRMSchedule.CLASS_CAN_SELECT )
-                                        ;
+                                    $.each( _findItems, function( _ix, _item ){
+                                       _item.removeClass( CRMSchedule.ALL_CLASS )
+                                            .addClass( CRMSchedule.CLASS_CAN_SELECT )
+                                            ;
+                                    });
                                 }, 10 ] );
                         }
                     }, _sp, &#x27;SELECT_CK_ALL&#x27;, 200 );
@@ -1300,7 +1329,16 @@
         , monthDataUrl: function(){ return this.attrProp( &#x27;bccMonthDataUrl&#x27; ); }
 
         , dateRangeUrl: function(){ return this.attrProp( &#x27;bccDateRangeUrl&#x27; ); }
-        
+
+        , availableDate:
+            function(){
+                var _r = JC.f.pureDate()
+
+                this.attrProp( &#x27;bccAvailableDate&#x27; )
+                    &amp;&amp; ( _r = JC.f.pureDate( JC.f.dateDetect( this.attrProp( &#x27;bccAvailableDate&#x27; ) ) ) );
+
+                return _r;
+            }
     });
 
     JC.f.extendObject( CRMSchedule.View.prototype, {
@@ -1423,7 +1461,7 @@
                     , _tpl = _p._model.rowTpl()
                     , _tmpTpl
                     , _ckAll = &#x27;&#x27;
-                    , _now = JC.f.pureDate()
+                    , _now = _p._model.availableDate()
                     ;
 
 
@@ -1466,12 +1504,18 @@
                         }
 
                         if( _sPosDate in _item.position_date ){
+
+                            CRMSchedule.defaultDataBuild( _item.position_date[ _sPosDate ], _sPosDate );
+                            _title = _item.position_date[ _sPosDate ].title || &#x27;&#x27;;
+
                             _status = _item.position_date[ _sPosDate ].status;
                             _name = _item.position_date[ _sPosDate ].company || &#x27;&#x27;;
-                            _shortName = byteString( _name, 6 );
-
-                            CRMSchedule.defaultDataBuild( _item.position_date[ _sPosDate ] );
-                            _title = _item.position_date[ _sPosDate ].title || &#x27;&#x27;;
+                            _shortName = byteString( 
+                                                    _item.position_date[ _sPosDate ].company
+                                                    || _item.position_date[ _sPosDate ].agencyName
+                                                    ||_item.position_date[ _sPosDate ].departmentName
+                                                    || &#x27;&#x27; 
+                                                , 6 );
 
                             bytelen( _name ) &gt; 6 &amp;&amp; ( _shortName += &#x27;...&#x27; );
                         }
@@ -1482,11 +1526,17 @@
                         _status == CRMSchedule.STATUS_LOCKED &amp;&amp; ( _hasLocked = true );
 
                         if( _posDate.getTime() &lt; _now.getTime() || _posDate.getTime() &gt; _p._model.initDate().edate.getTime() ){
-                            if( _status === 0 ) _class = &#x27;&#x27;;
+                            switch( _status ){
+                                case 0:
+                                case 5:
+                                case 6:
+                                    //_class = &#x27;&#x27;;
+                                    break;
+                            }
                             _outdateClass = &#x27;js_bccOutdate&#x27;;
                         }
 
-                        _days.push( JC.f.printf( &#x27;&lt;td class=&quot;js_bccDateItem {7} {0} {5} js_bccDateCol_{6}&quot; title=&quot;{8}&quot; &#x27; 
+                        _days.push( JC.f.printf( &#x27;&lt;td class=&quot;js_bccDateItem {0} {5} js_bccDateCol_{6} {7}&quot; title=&quot;{8}&quot; &#x27; 
                                     +&#x27; data-id=&quot;{2}&quot; data-date=&quot;{3}&quot; data-colCount=&quot;{6}&quot;&gt;&#x27; 
                                     +&#x27;&lt;div&gt;{4}&lt;/div&gt;&lt;/td&gt;&#x27;
                                     , _class, _name, _item.id, _sPosDate, _shortName
@@ -1592,7 +1642,15 @@
 
     CRMSchedule.outdateCheck =
         function( _selector ){
-            return _selector.hasClass( &#x27;js_bccOutdate&#x27; );
+            var _r = false;
+            if( _selector.attr( &#x27;data-date&#x27; ) ){
+                var _dt = JC.f.pureDate( JC.f.parseISODate( _selector.attr( &#x27;data-date&#x27; ) ) )
+                    , _md = JC.f.pureDate( JC.f.dateDetect( &#x27;now, 1d&#x27; ) )
+                    ;
+                JC.log( _selector.attr( &#x27;data-date&#x27; ), _dt.getTime(), _md.getTime() );
+                if( _dt.getTime() &lt; _md.getTime() ) _r = true;
+            }
+            return _r;
         }
 
     function byteString( _s, _len ){

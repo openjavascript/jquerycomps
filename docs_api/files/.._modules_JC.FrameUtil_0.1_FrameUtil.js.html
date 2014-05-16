@@ -438,12 +438,13 @@
         , info:
             function( _ext ){
                 var _body = $( document.body )
+                    , _vs = JC.f.docSize()
                     , _r = { 
                         &#x27;$&#x27;: $
-                        , &#x27;width&#x27;: document.documentElement.offsetWidth
-                        , &#x27;height&#x27;: document.documentElement.offsetHeight
-                        , &#x27;bodyWidth&#x27;: _body.width()
-                        , &#x27;bodyHeight&#x27;: _body.height()
+                        , &#x27;width&#x27;: _vs.width
+                        , &#x27;height&#x27;: _vs.height
+                        , &#x27;bodyWidth&#x27;: _vs.bodyWidth
+                        , &#x27;bodyHeight&#x27;: _vs.bodyHeight
                         , &#x27;id&#x27;: FU.id()
                         , &#x27;eventHost&#x27;: FU.eventHost
                         , &#x27;jEventHost&#x27;: $( FU.eventHost )
@@ -496,14 +497,17 @@
                     var _cwin = _frame.prop( &#x27;contentWindow&#x27; )
                         , _cdoc = _frame.prop( &#x27;contentDocument&#x27; )
                         , _type = JC.f.getUrlParam( _frame.attr(&#x27;src&#x27;) || &#x27;&#x27;, &#x27;jsAction&#x27; ) || _cwin.name || &#x27;&#x27;
+                        , _vs = JC.f.docSize( _cdoc )
                         ;
 
                     _r = { 
                         &#x27;$&#x27;: _cwin.$
-                        , &#x27;width&#x27;: _cdoc.documentElement.offsetWidth
-                        , &#x27;height&#x27;: _cdoc.documentElement.offsetHeight
-                        , &#x27;bodyWidth&#x27;: 0
-                        , &#x27;bodyHeight&#x27;: 0
+                        , &#x27;width&#x27;: _vs.width
+                        , &#x27;height&#x27;: _vs.height
+                        , &#x27;bodyWidth&#x27;: _vs.bodyWidth
+                        , &#x27;bodyHeight&#x27;: _vs.bodyHeight
+                        , &#x27;docWidth&#x27;: _vs.docWidth
+                        , &#x27;docHeight&#x27;: _vs.docHeight
                         , &#x27;win&#x27;: _cwin
                         , &#x27;doc&#x27;: _cdoc
                         , &#x27;type&#x27;: _type
@@ -576,6 +580,8 @@
                 _finfo = FU.frameInfo( _frame );
                 if( !_finfo.height ) return FU;
                 _frame.css( FU.cssFromSizePattern( FU.childSizePattern, _finfo ) );
+                _frame.css( &#x27;height&#x27;, _finfo.height + &#x27;px&#x27; );
+                //JC.log( _frame.attr( &#x27;name&#x27; ), _finfo.height, _finfo.bodyHeight );
                 return FU;
             }
         /**

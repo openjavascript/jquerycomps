@@ -349,7 +349,7 @@
                     if( !( _startDate &amp;&amp; _endDate ) ) return;
                     _startDate = JC.f.cloneDate( _startDate );
                     if( _data &amp;&amp; !_data.errorno ){
-                        var _item, _date, _now = JC.f.pureDate();
+                        var _item, _date, _now = _p._model.schIns()._model.availableDate();
                         _data 
                             &amp;&amp; _data.data 
                             &amp;&amp; _data.data.list_data
@@ -376,15 +376,16 @@
                                     _status = _item.position_date[ _date ].status;
                                     _name = _item.position_date[ _date ].company;
                                     _p.trigger( &#x27;update_item_status&#x27;, [ _item.id, _date, _status, _item ] );
-                                    _title = Bizs.CRMSchedule.defaultDataBuild( _item.position_date[ _date ] ).title || &#x27;&#x27;; 
+                                    _title = Bizs.CRMSchedule.defaultDataBuild( _item.position_date[ _date ], _date ).title || &#x27;&#x27;; 
                                 }
                                 _selector.attr( &#x27;title&#x27;, _title );
 
                                 if( _startDate.getTime() &lt; _now.getTime() ){
                                     if( _status == 0 || _status == 6 || _status == 5 ){
                                     }else{
-                                        _selector.addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );
+                                        //_selector.addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );
                                     }
+                                    _selector.addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );
                                     _selector.addClass( &#x27;js_bccOutdate&#x27; );
                                 }else{
                                     _selector.addClass( Bizs.CRMSchedule.STATUS_CODE_MAP[ _status ] );
@@ -503,6 +504,7 @@
                 _p.on( &#x27;data_inited&#x27;, function( _evt ){
                     _p.trigger( &#x27;fill_selected_items&#x27; );
                     _p._model.schIns().trigger( &#x27;update_check_status&#x27; );
+                    JC.Tips &amp;&amp; JC.Tips.init( _p._model.panelIns().find( &#x27;[title]&#x27; ) );
                 });
 
                 _p.on( &#x27;fill_selected_items&#x27;, function( _evt ){
