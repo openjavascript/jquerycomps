@@ -178,6 +178,11 @@
                     }
 
                 });
+
+                _p.on( 'data_inited', function( _evt ){
+                    JC.Tips && JC.Tips.init( _p._model.panelIns().find( '[title]' ) );
+                });
+
             }
 
         , _initLockHandler:
@@ -262,7 +267,6 @@
                 _p.on( 'data_inited', function( _evt ){
                     _p.trigger( 'fill_selected_items' );
                     _p._model.schIns().trigger( 'update_check_status' );
-                    JC.Tips && JC.Tips.init( _p._model.panelIns().find( '[title]' ) );
                 });
 
                 _p.on( 'fill_selected_items', function( _evt ){
