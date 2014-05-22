@@ -9716,6 +9716,21 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
      */
     !String.prototype.trim && ( String.prototype.trim = function(){ return $.trim( this ); } );
     /**
+     * 兼容 低版本 ie Array 的 indexOf 方法
+     */
+    !Array.prototype.indexOf 
+        && ( Array.prototype.indexOf =
+            function( _v ){
+                var _r = -1;
+                $.each( this, function( _ix, _item ){
+                    if( _item == _v ){
+                        _r = _ix;
+                        return false;
+                    }
+                });
+                return _r;
+            });
+    /**
      * 全局 css z-index 控制属性
      * <br /> <b>注意</b>: 这个变量是 window.ZINDEX_COUNT
      * @property    ZINDEX_COUNT
