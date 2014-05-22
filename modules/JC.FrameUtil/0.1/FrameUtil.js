@@ -206,6 +206,7 @@
                         , 'id': FU.id()
                         , 'eventHost': FU.eventHost
                         , 'jEventHost': $( FU.eventHost )
+                        , 'FrameUtil': FU
                     };
 
                 _ext && ( _r = JC.f.extendObject( _r, _ext ) );
@@ -232,10 +233,10 @@
                         , 'win': window.parent
                         , 'jwin': window.parent.$( window.parent )
                         , 'JC': window.parent.JC
-                        , 'FrameUtil': window.parent.JC.FrameUtil
                         , 'eventHost': window.parent.JC.FrameUtil.eventHost
                         , 'jEventHost': window.parent.$( window.parent.JC.FrameUtil.eventHost )
                         , 'id': window.parent.JC.FrameUtil.id()
+                        , 'FrameUtil': window.parent.JC.FrameUtil
                     };
                 }
 
