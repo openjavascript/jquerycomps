@@ -350,7 +350,7 @@
 
                         if( !_item ) return;
 
-                        while( _startDate.getTime() &lt; _endDate ){
+                        while( _startDate.getTime() &lt;= _endDate ){
                             _date = JC.f.formatISODate( _startDate );
                             var _status = 0
                                 , _name = &#x27;&#x27;
@@ -358,7 +358,7 @@
                                                 , _item.id
                                                 , _date
                                             )
-                                , _title
+                                , _title = &#x27;&#x27;
                                 ;
                             //JC.log( _selector );
 
@@ -686,6 +686,15 @@
 
                 _selector = $( _tpl );
                 _panelIns = _p._model.panelIns( JC.Dialog( _selector ) );
+                _panelIns.on( &#x27;beforeshow&#x27;, function( _evt  ){
+                    if( window.parent &amp;&amp; window.parent != window ){
+                        setTimeout( function(){
+                            var _top = window.parent.$( window.parent.document ).scrollTop() ;
+
+                            _panelIns.layout().css( { &#x27;top&#x27;: _top } );
+                        }, 100 );
+                    }
+                });
                 _panelIns.on( &#x27;show&#x27;, function(){
                     _p.trigger( &#x27;layout_inited&#x27;, [ JC.f.cloneDate( _currentDate ) ] );
                 });
