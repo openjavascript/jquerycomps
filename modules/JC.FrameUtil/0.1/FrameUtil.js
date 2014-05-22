@@ -273,7 +273,7 @@
                         , 'id': ''
                     };
 
-                    _cdoc.body 
+                    _cdoc && _cdoc.body 
                         && (
                             _r.bodyWidth = _cdoc.body.offsetWidth
                             , _r.bodyHeight = _cdoc.body.offsetHeight
