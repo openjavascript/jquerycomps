@@ -412,6 +412,11 @@
                     }
 
                 });
+
+                _p.on( &#x27;data_inited&#x27;, function( _evt ){
+                    JC.Tips &amp;&amp; JC.Tips.init( _p._model.panelIns().find( &#x27;[title]&#x27; ) );
+                });
+
             }
 
         , _initLockHandler:
@@ -496,7 +501,6 @@
                 _p.on( &#x27;data_inited&#x27;, function( _evt ){
                     _p.trigger( &#x27;fill_selected_items&#x27; );
                     _p._model.schIns().trigger( &#x27;update_check_status&#x27; );
-                    JC.Tips &amp;&amp; JC.Tips.init( _p._model.panelIns().find( &#x27;[title]&#x27; ) );
                 });
 
                 _p.on( &#x27;fill_selected_items&#x27;, function( _evt ){
