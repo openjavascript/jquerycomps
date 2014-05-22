@@ -783,6 +783,7 @@
             }
         , sugurl:
             function( _word ){
+                _word = encodeURIComponent( _word );
                 this.selector().is(&#x27;[sugurl]&#x27;) 
                     &amp;&amp; ( this._sugurl = this.selector().attr(&#x27;sugurl&#x27;) );
                 !this.selector().is(&#x27;[sugurl]&#x27;) &amp;&amp; ( this._sugurl = &#x27;?word={0}&amp;callback={1}&#x27; );
