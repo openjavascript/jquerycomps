@@ -412,6 +412,7 @@ return _json;
 
                 _p.on( AutoComplete.Model.UPDATE, function( _evt, _json, _cb ){
                     _p._model.initPopupData( _json );
+
                     _p._view.build( _json );
                     _cb && _cb.call( _p, _json );
                 });
@@ -874,6 +875,8 @@ return _json;
                                                         , AutoComplete.Model.AJAX_CACHE[ _url ]
                                                         , _cb
                                                     ] ); 
+                    _p.clearCache();
+                    _p.trigger( AutoComplete.Model.UPDATE_LIST );
                 });
             }
 
