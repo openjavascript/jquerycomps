@@ -30,14 +30,14 @@
             });
             return _json;
         }
-        requirejs( [ 'JC.AutoComplete' ], function( AutoComplete ){
+        requirejs( [ 'JC.AutoComplete', 'Bizs.FormLogic' ], function( AutoComplete ){
         });
     </script>
 </head>
 <body>
 <h2>JC.AutoComplete 示例</h2>
 <h3>自动生成列表弹框, Ajax 数据 [ cacAjaxDataUrl ]</h3>
-<form action="?" method="get">
+<form action="?" method="get" class="js_bizsFormLogic">
     <div class="ui-sug-mod">
         <input name="ac" type="text" class="ui-sug-ipt js_compAutoComplete" value="" 
             autocomplete="off" 
@@ -52,7 +52,11 @@
 
             cacPreventEnter="true" 
             />
-        &nbsp;cacIdSelector: <input type="text" class="js_bindItem" value="" />
+        &nbsp;cacIdSelector: <input type="text" class="js_bindItem" name="bindId" value="" />
+    </div>
+    <div>
+        <button type="submit">submit</button>
+        <a href="?back">back</a>
     </div>
 </form>
 </body>
