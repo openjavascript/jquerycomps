@@ -1048,7 +1048,50 @@
                 var _layout = this.getPanel(), _lw = _layout.width(), _lh = _layout.height()
                     , _x, _y, _winw = $(window).width(), _winh = $(window).height()
                     , _scrleft = $(document).scrollLeft(), _scrtop = $(document).scrollTop()
+                    , _iframe
                     ;
+
+                if( window.parent && window.parent != window ){
+                    try{
+                        var _pnt = window.parent
+                            , _p$ = _pnt.window.$
+                            , _pwin = _pnt.window
+                            , _pdoc = _pnt.document
+                            , _pjwin = _p$( _pwin )
+                            , _pjdoc = _p$( _pdoc )
+                            ;
+                        window.PANEL_WIN_ID = 'frame' + JC.f.ts();
+
+                        _pjdoc.find( 'iframe' ).each( function(){
+                            var _sp = _p$( this )
+                                , _src = _sp.attr( 'src' )
+                                , _absSrc = JC.f.relativePath( _src, _pwin.location.href ).trim()
+                                , _url = ( location.href + '' ).trim()
+                                ;
+                            if( _url.indexOf( _absSrc ) > -1 
+                                && _sp.prop( 'contentWindow' ).PANEL_WIN_ID == window.PANEL_WIN_ID
+                            ){
+                                _iframe = _sp;
+                                return false;
+                            }
+                        });
+
+                        if( _iframe && _iframe.length ){
+                            var _rvs = rectVeiwportSize( 
+                                    selectorToRectangle( _iframe, _p$ ) 
+                                    , docViewport( _pjwin, _pjdoc, _p$ )
+                                );
+                            //JC.dir( _rvs );
+                            _winw = _rvs.width;
+                            _winh = _rvs.height;
+                            _scrtop = _rvs.rect.height - _winh;
+                            if( _scrtop > ( _rvs.viewport.maxY ) ){
+                                _scrtop = _rvs.viewport.y + _rvs.rect.y;
+                            }
+                            //JC.log( _winw, _winh, _scrtop  );
+                        }
+                    }catch(ex){}
+                }
 
                 _layout.css( {'left': '-9999px', 'top': '-9999px'} ).show();
                 _x = (_winw - _lw) / 2 + _scrleft; 
@@ -1185,6 +1228,80 @@
         , 'panel': null
         , 'dialog': null
     };
+    function rectVeiwportSize( _rect, _vp ){
+        !_vp && ( _vp = docViewport() );
+        var _r = { width: 0, height: 0 }
+            , _beginX = 0, _beginY = 0
+            ;
+
+        //JC.log( JSON.stringify( _rect ), '\n', JSON.stringify( _vp ) );
+
+        if( _rect.y < _vp.y && _rect.maxY > _vp.maxY ){
+            _r.height = _vp.height;
+        }else if( _rect.y < _vp.y && _rect.maxY < _vp.maxY ){
+            _r.height = _vp.height - ( _vp.maxY - _rect.maxY );
+        }else if( _rect.y > _vp.y && _rect.maxY > _vp.maxY ){
+            _r.height = _vp.maxY - _rect.y;
+        }else if( _rect.y > _vp.y && _rect.maxY < _vp.maxY ){
+            _r.height = _rect.height;
+        }
+    
+        if( _rect.x < _vp.x && _rect.maxX > _vp.maxX ){
+            _r.width = _vp.width;
+        }else if( _rect.x < _vp.x && _rect.maxX < _vp.maxX ){
+            _r.width = _vp.width - ( _vp.maxX - _rect.maxX );
+        }else if( _rect.x > _vp.x && _rect.maxX > _vp.maxX ){
+            _r.width = _vp.maxX - _rect.x;
+        }else if( _rect.x > _vp.x && _rect.maxX < _vp.maxX ){
+            _r.width = _rect.width;
+        }
+    
+        _r.realWidth = _r.width;
+        _r.realHeight = _r.height;
+        _r.width < 0 && ( _r.width = 0 );
+        _r.height < 0 && ( _r.height = 0 );
+        _r.rect = _rect;
+        _r.viewport = _vp;
+
+        return _r;
+    }
+    /**
+     * 返回选择器的 矩形 位置
+     */
+    function selectorToRectangle( _selector, $ ){
+        $ = $ || window.$;
+        _selector = $( _selector );
+        var _offset = _selector.offset()
+            , _w = _selector.prop('offsetWidth')
+            , _h = _selector.prop('offsetHeight');
+
+        return {
+            x: _offset.left
+            , y: _offset.top
+            , width: _w
+            , height: _h
+            , maxX: _offset.left + _w
+            , maxY: _offset.top + _h
+        }
+    }
+    function docViewport( _win, _doc, $ ){
+        $ = $ || window.$;
+        _win = $( _win || window );
+        _doc = $( _doc || document );
+        var _r = { 
+            width: _win.width()
+            , height: _win.height()
+            , scrollTop: _doc.scrollTop()
+            , scrollLeft: _doc.scrollLeft()
+        };
+
+        _r.x = _r.scrollLeft;
+        _r.y = _r.scrollTop;
+        _r.maxX = _r.x + _r.width;
+        _r.maxY = _r.y + _r.height;
+        return _r;
+    }
+
     /**
      * 从 HTML 属性 自动执行 popup 
      * @attr    {string}    paneltype           弹框类型, 
@@ -1314,3 +1431,4 @@
         , window
     )
 );
+

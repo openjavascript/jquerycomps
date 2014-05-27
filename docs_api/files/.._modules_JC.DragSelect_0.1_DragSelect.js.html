@@ -318,15 +318,19 @@
     DragSelect.RECT =
         function(){
             if( !( DragSelect._RECT &amp;&amp; DragSelect._RECT.length ) ){
-                DragSelect._RECT = $( &#x27;&lt;div class=&quot;js_compDragSelect_rect&quot; style=&quot;display:none;&quot;&gt;&lt;/div&gt;&#x27; );
+                DragSelect._RECT = $( DragSelect.RECT_TPL );
                 DragSelect._RECT.appendTo( document.body );
             }
             return DragSelect._RECT;
         }
+    DragSelect.RECT_TPL = &#x27;&lt;div class=&quot;js_compDragSelect_rect&quot; style=&quot;display:none;&quot;&gt;&lt;/div&gt;&#x27; ;
 
-    DragSelect.AR_IX = 
-        function( _ar, _ix, _def ){
-            return _ar[ _ix ] || _ar[ 0 ] || _def || &#x27;&#x27;;
+    DragSelect.DEFAULT_MOUSEUP =
+        function( _evt ){
+        };
+
+    DragSelect.DEFAULT_MOUSEMOVE = 
+        function( _evt ){
         };
 
     JC.BaseMVC.build( DragSelect );
@@ -339,41 +343,41 @@
 
         , _initHanlderEvent:
             function(){
-                var _p = this;
+                var _p = this, _ditems;
 
                 _p.on( &#x27;inited&#x27;, function(){
+                    _ditems = _p._model.delegateItems();
+                    if( !_ditems.length ) return;
+
+                    JC.log( _ditems );
+
+                    _p.selector().delegate( &#x27;encodeURIComponent&#x27;, &#x27;mousedown&#x27;, function( _evt ){
+                        var _sp = $( this );
+                        JC.log( _sp.html(), JC.f.ts() );
+
+                        _p.trigger( &#x27;SELECT_START&#x27;, [ _sp, _evt ] );
+                    });
                 });
 
-                /*
-                _p.selector().delegate( _TYPE, &#x27;click&#x27;, function( _evt ){
+                _p.on( &#x27;SELECT_START&#x27;, function( _evt, _sp, _srcEvt ){
+                    _p.trigger( &#x27;CLEAR_EVENT&#x27; );
+                    _p.trigger( &#x27;BIND_EVENT&#x27; );
                 });
 
-                _p.selector().delegate( _TYPE, &#x27;mousedown&#x27;, function( _evt ){
-                    var _sp = $( this );
-                    _jwin.off( &#x27;mousemove&#x27;, _moveEvent );
-                    _jwin.off( &#x27;mouseup&#x27;, _upEvent );
-                    _p._model.clearCache();
-                    _jwin.on( &#x27;mousemove&#x27;, _moveEvent );
-                    _jwin.on( &#x27;mouseup&#x27;, _upEvent );
-                    JC.log( &#x27;mousedown&#x27;, _IX, _TYPE, JC.f.ts() );
-
-                    _p._view.showRect( _evt );
+                _p.on( &#x27;SELECT_END&#x27;, function( _evt, _sp, _srcEvt ){
+                    _p.trigger( &#x27;CLEAR_EVENT&#x27; );
                 });
 
-                function _moveEvent( _evt ){
-                    if( !DragSelect.RECT().is( &#x27;:visible&#x27; ) ) return;
-                    _p._view.updateRect( _evt );
-                    _p._model.selectReady( _IX, false );
-                }
+                _p.on( &#x27;BIND_EVENT&#x27;, function( _evt ){
+                    _jwin.on( &#x27;mousemove&#x27;, DragSelect.DEFAULT_MOUSEMOVE );
+                    _jwin.on( &#x27;mouseup&#x27;, DragSelect.DEFAULT_MOUSEUP );
+                });
 
-                function _upEvent( _evt ){
-                    _p._view.hideRect( _evt );
-                    _jwin.off( &#x27;mousemove&#x27;, _moveEvent );
-                    _jwin.off( &#x27;mouseup&#x27;, _upEvent );
-                }
-                */
+                _p.on( &#x27;CLEAR_EVENT&#x27;, function( _evt ){
+                    _jwin.off( &#x27;mousemove&#x27;, DragSelect.DEFAULT_MOUSEMOVE );
+                    _jwin.off( &#x27;mouseup&#x27;, DragSelect.DEFAULT_MOUSEUP );
+                });
             }
-
 
         , _inited:
             function(){
@@ -390,6 +394,23 @@
         init:
             function(){
                 //JC.log( &#x27;DragSelect.Model.init:&#x27;, new Date().getTime() );
+            }
+
+        , config:
+            function(){
+                if( !this._config ){
+                    this._config = $.parseJSON( JC.f.scriptContent( this.selectorProp( &#x27;cdsConfig&#x27; ) ) );
+                }
+                return this._config;
+            }
+
+        , delegateItems:
+            function(){
+                var _r = [];
+                $.each( this.config(), function( _k, _item ){
+                    _r.push ( _k );
+                });
+                return _r;
             }
 
         , offset:

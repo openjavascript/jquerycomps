@@ -76,15 +76,19 @@
     DragSelect.RECT =
         function(){
             if( !( DragSelect._RECT && DragSelect._RECT.length ) ){
-                DragSelect._RECT = $( '<div class="js_compDragSelect_rect" style="display:none;"></div>' );
+                DragSelect._RECT = $( DragSelect.RECT_TPL );
                 DragSelect._RECT.appendTo( document.body );
             }
             return DragSelect._RECT;
         }
+    DragSelect.RECT_TPL = '<div class="js_compDragSelect_rect" style="display:none;"></div>' ;
 
-    DragSelect.AR_IX = 
-        function( _ar, _ix, _def ){
-            return _ar[ _ix ] || _ar[ 0 ] || _def || '';
+    DragSelect.DEFAULT_MOUSEUP =
+        function( _evt ){
+        };
+
+    DragSelect.DEFAULT_MOUSEMOVE = 
+        function( _evt ){
         };
 
     JC.BaseMVC.build( DragSelect );
@@ -97,41 +101,41 @@
 
         , _initHanlderEvent:
             function(){
-                var _p = this;
+                var _p = this, _ditems;
 
                 _p.on( 'inited', function(){
+                    _ditems = _p._model.delegateItems();
+                    if( !_ditems.length ) return;
+
+                    JC.log( _ditems );
+
+                    _p.selector().delegate( 'encodeURIComponent', 'mousedown', function( _evt ){
+                        var _sp = $( this );
+                        JC.log( _sp.html(), JC.f.ts() );
+
+                        _p.trigger( 'SELECT_START', [ _sp, _evt ] );
+                    });
                 });
 
-                /*
-                _p.selector().delegate( _TYPE, 'click', function( _evt ){
+                _p.on( 'SELECT_START', function( _evt, _sp, _srcEvt ){
+                    _p.trigger( 'CLEAR_EVENT' );
+                    _p.trigger( 'BIND_EVENT' );
                 });
 
-                _p.selector().delegate( _TYPE, 'mousedown', function( _evt ){
-                    var _sp = $( this );
-                    _jwin.off( 'mousemove', _moveEvent );
-                    _jwin.off( 'mouseup', _upEvent );
-                    _p._model.clearCache();
-                    _jwin.on( 'mousemove', _moveEvent );
-                    _jwin.on( 'mouseup', _upEvent );
-                    JC.log( 'mousedown', _IX, _TYPE, JC.f.ts() );
-
-                    _p._view.showRect( _evt );
+                _p.on( 'SELECT_END', function( _evt, _sp, _srcEvt ){
+                    _p.trigger( 'CLEAR_EVENT' );
                 });
 
-                function _moveEvent( _evt ){
-                    if( !DragSelect.RECT().is( ':visible' ) ) return;
-                    _p._view.updateRect( _evt );
-                    _p._model.selectReady( _IX, false );
-                }
+                _p.on( 'BIND_EVENT', function( _evt ){
+                    _jwin.on( 'mousemove', DragSelect.DEFAULT_MOUSEMOVE );
+                    _jwin.on( 'mouseup', DragSelect.DEFAULT_MOUSEUP );
+                });
 
-                function _upEvent( _evt ){
-                    _p._view.hideRect( _evt );
-                    _jwin.off( 'mousemove', _moveEvent );
-                    _jwin.off( 'mouseup', _upEvent );
-                }
-                */
+                _p.on( 'CLEAR_EVENT', function( _evt ){
+                    _jwin.off( 'mousemove', DragSelect.DEFAULT_MOUSEMOVE );
+                    _jwin.off( 'mouseup', DragSelect.DEFAULT_MOUSEUP );
+                });
             }
-
 
         , _inited:
             function(){
@@ -148,6 +152,23 @@
         init:
             function(){
                 //JC.log( 'DragSelect.Model.init:', new Date().getTime() );
+            }
+
+        , config:
+            function(){
+                if( !this._config ){
+                    this._config = $.parseJSON( JC.f.scriptContent( this.selectorProp( 'cdsConfig' ) ) );
+                }
+                return this._config;
+            }
+
+        , delegateItems:
+            function(){
+                var _r = [];
+                $.each( this.config(), function( _k, _item ){
+                    _r.push ( _k );
+                });
+                return _r;
             }
 
         , offset:
