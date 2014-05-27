@@ -52,6 +52,13 @@
             JC.FrameUtil.autoNoticeSize();
         });
 
+        function formBeforeProcess(){
+            var _form = $( this );
+            if( !JC.Valid.check( _form ) ){
+                JC.Dialog.msgbox( '请检查内容！', 2 );
+            }
+        }
+
         function formAjaxDone( _json, _submitButton, _ins ){
             var _form = $(this);
             JC.log( 'custom formAjaxDone', new Date().getTime() );
@@ -83,10 +90,11 @@
                         class="js_bizsFormLogic"
                         formType="ajax"
                         formAjaxDone="formAjaxDone"
+                        formBeforeProcess="formBeforeProcess"
                     >
                     <dl>
                         <dd>
-                            文件框: <input type="text" name="text" reqmsg="文本框" value="test" />
+                            文件框: <input type="text" name="text" reqmsg="文本框" value="" />
                         </dd>
                         <dd>
                             日期: <input type="text" name="date" datatype="date" reqmsg="日期" value="2013-05-20" />

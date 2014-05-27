@@ -564,7 +564,7 @@ window.parent
                 _p.on( FormLogic.Model.PROCESS_DONE, function(){
                     _p._model.formSubmitDisable() 
                         && _p.selector().find('input[type=submit], button[type=submit]').each( function(){
-                            $( this ).prop('disabled', true);
+                            !_p._model.formIgnoreStatus() && $( this ).prop('disabled', true);
                         });
                 });
 
@@ -604,7 +604,7 @@ window.parent
 
                 _p.on( FormLogic.Model.ENABLE_SUBMIT, function(){
                     _p.selector().find('input[type=submit], button[type=submit]').each( function(){
-                        $( this ).prop('disabled', false );
+                    	 !_p._model.formIgnoreStatus() && $( this ).prop('disabled', false );
                     });
                 });
 
@@ -708,6 +708,11 @@ window.parent
                         );
                 }
             }
+    
+    	, formIgnoreStatus:
+    		function(){
+    			return this.boolProp( 'formIgnoreStatus');
+    		}
 
         , checkDataValid:
             function(){

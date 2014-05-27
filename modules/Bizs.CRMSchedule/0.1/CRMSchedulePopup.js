@@ -456,6 +456,7 @@
 
                 _selector = $( _tpl );
                 _panelIns = _p._model.panelIns( JC.Dialog( _selector ) );
+                /*
                 _panelIns.on( 'beforeshow', function( _evt  ){
                     if( window.parent && window.parent != window ){
                         setTimeout( function(){
@@ -465,6 +466,7 @@
                         }, 100 );
                     }
                 });
+                */
                 _panelIns.on( 'show', function(){
                     _p.trigger( 'layout_inited', [ JC.f.cloneDate( _currentDate ) ] );
                 });
