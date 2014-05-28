@@ -92,6 +92,9 @@
 }</pre>
      *      </dd>
      *
+     *      <dt>validHidden = bool, default = false</dt>
+     *      <dd>是否验证隐藏的控件</dd>
+     *
      *      <dt>datatype: 常用数据类型</dt>
      *      <dd><b>n:</b> 检查是否为正确的数字</dd>
      *      <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>
@@ -919,10 +922,6 @@ function (){
                 }
                 return _r.toLowerCase().replace(/\-.*/, '');
             }
-        , isAvalible: 
-            function( _item ){
-                return ( _item.is(':visible') || this.isValidHidden( _item ) ) && !_item.is('[disabled]');
-            }
         , isForm:
             function( _item ){
                 var _r;
@@ -970,6 +969,11 @@ function (){
                 _item.is( '[validmsg]' ) && ( _r = JC.f.parseBool( _item.attr('validmsg') ) );
                 return _r;
             }
+        , isAvalible: 
+            function( _item ){
+                return ( _item.is(':visible') || this.isValidHidden( _item ) ) && !_item.is('[disabled]');
+            }
+
         , isValidHidden:
             function( _item ){
                 var _r = false;
@@ -978,6 +982,11 @@ function (){
                     && _item.parent().is( ':visible' )
                     && ( _r = true )
                     ;
+
+                _item.is( '[validHidden]' ) 
+                    && ( _r = JC.f.parseBool( _item.attr( 'validHidden' ) || 'false' ) )
+                    ;
+
                 return _r;
             }
         , validitemcallback: 
@@ -1113,7 +1122,7 @@ function (){
                 _min && ( _len < _min ) && ( _r = false );
                 _max && ( _len > _max ) && ( _r = false );
 
-                JC.log( 'lengthValid: ', _min, _max, _r, _val.length );
+                //JC.log( 'lengthValid: ', _min, _max, _r, _val.length );
 
                 !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
 
@@ -1241,7 +1250,7 @@ function (){
                     }
                     if( _fromNEl && _fromNEl.length || _toNEl && _toNEl.length ){
 
-                        JC.log( 'nrange', _fromNEl.length, _toNEl.length );
+                        //JC.log( 'nrange', _fromNEl.length, _toNEl.length );
 
                         _toNEl.val( $.trim( _toNEl.val() ) );
                         _fromNEl.val( $.trim( _fromNEl.val() ) );
@@ -1253,7 +1262,7 @@ function (){
 
                             _r && ( +_fromNEl.val() ) > ( +_toNEl.val() ) && ( _r = false );
                             
-                            JC.log( 'nrange:', +_fromNEl.val(), +_toNEl.val(), _r );
+                            //JC.log( 'nrange:', +_fromNEl.val(), +_toNEl.val(), _r );
 
                             _r && $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _fromNEl ] );
                             _r && $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _toNEl ] );
@@ -1354,7 +1363,7 @@ function (){
                     }
                     if( _fromDateEl && _fromDateEl.length || _toDateEl && _toDateEl.length ){
 
-                        JC.log( 'daterange', _fromDateEl.length, _toDateEl.length );
+                        //JC.log( 'daterange', _fromDateEl.length, _toDateEl.length );
 
                         _toDateEl.val( $.trim( _toDateEl.val() ) );
                         _fromDateEl.val( $.trim( _fromDateEl.val() ) );
@@ -1766,7 +1775,7 @@ function (){
                 if( !_pattern ) _pattern = $.trim(_item.attr('datatype')).replace(/^reg(?:\-|)/i, '');
 
                 _pattern.replace( /^\/([\s\S]*)\/([\w]{0,3})$/, function( $0, $1, $2 ){
-                    JC.log( $1, $2 );
+                    //JC.log( $1, $2 );
                     _r = new RegExp( $1, $2 || '' ).test( _item.val() );
                 });
 
@@ -1795,7 +1804,7 @@ function (){
         , vcode:
             function( _item ){
                 var _p = this, _r, _len = parseInt( $.trim(_item.attr('datatype')).replace( /^vcode(?:\-|)/i, '' ), 10 ) || 4; 
-                JC.log( 'vcodeValid: ' + _len );
+                //JC.log( 'vcodeValid: ' + _len );
                 _r = new RegExp( '^[0-9a-zA-Z]{'+_len+'}$' ).test( _item.val() );
                 !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
@@ -2004,7 +2013,7 @@ function (){
                     , _KEY = "ReconfirmValidTime"
                     , _typeKey = 'reconfirm'
                     ;
-                JC.log( _typeKey, new Date().getTime() );
+                //JC.log( _typeKey, new Date().getTime() );
 
                 _p.isDatatarget( _item, _typeKey ) && (_target = _p.datatarget( _item, _typeKey ) );
                 !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item, _typeKey ) );
@@ -2098,7 +2107,7 @@ function (){
                     , _dt = _p.parseDatatype( _item )
                     , _typeKey = 'alternative'
                     ;
-                JC.log( _typeKey, new Date().getTime() );
+                //JC.log( _typeKey, new Date().getTime() );
 
                 _p.isDatatarget( _item, _typeKey ) && (_target = _p.datatarget( _item, _typeKey ) );
                 !( _target && _target.length ) && ( _target = _p.samesubtypeitems( _item, _typeKey ) );
@@ -2265,7 +2274,7 @@ function (){
                                 || JC.f.parseBool( _sp.attr('processDisabled' ) ) 
                                 )
                         ){
-                            if( !_sp.is(':visible') ) return;
+                            if( !( _sp.is(':visible') || _p.isValidHidden( _sp ) ) ) return;
                         }else{
                             if( ! _p.isAvalible( _sp ) ) return;
                         }
@@ -2290,7 +2299,7 @@ function (){
                         $.each( _items, function( _six, _sitem ){
                             var _tmpV, _ignore = JC.f.parseBool( _sitem.attr('uniqueIgnoreEmpty') );
                             _tmpV = $(_sitem).val().trim();
-                            _ignore && !_tmpV && _sitem.is(':visible') && ( _ignoreEmpty = true );
+                            _ignore && !_tmpV && ( _sitem.is(':visible') || _p.isValidHidden( _sitem ) ) && ( _ignoreEmpty = true );
                             _tmpAr.push( _tmpV );
                         });
                         var _pureVal = _tmpAr.join(''), _compareVal = _tmpAr.join('####');
@@ -2353,7 +2362,7 @@ function (){
                 if( !Valid.isFormValid ) return _r;
                 if( !_item.is( '[datavalid]') ) return _r;
 
-                JC.log( 'datavalid', new Date().getTime() ); 
+                //JC.log( 'datavalid', new Date().getTime() ); 
 
                 _r = JC.f.parseBool( _item.attr('datavalid') );
 
@@ -2485,7 +2494,7 @@ function (){
                 }
 
                 !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'reqmsg' ] );
-                JC.log( 'regmsgValid: ' + _r );
+                //JC.log( 'regmsgValid: ' + _r );
                 return _r;
             }
         , sametypeitems:
@@ -2566,14 +2575,14 @@ function (){
                     , _finderKey = _type + 'finder';
                     ;
 
-                JC.log( _item.attr('name') + ', ' + _item.val() );
+                //JC.log( _item.attr('name') + ', ' + _item.val() );
 
                 if( _item.is( '[datatarget]' ) ){
                     _items = JC.f.parentSelector( _item, _item.attr('datatarget') );                    
                     _tmp = [];
                     _items.each( function(){
                         var _sp = $(this);
-                            _sp.is(':visible')
+                            ( _sp.is(':visible') || _p.isValidHidden( _sp ) )
                             && !_sp.prop('disabled')
                             && _tmp.push( _sp );
                     });
@@ -2592,7 +2601,7 @@ function (){
                         var _sp = $(this);
                         var _re = new RegExp( _type, 'i' );
                         _re.test( _sp.attr('datatype') ) 
-                            && _sp.is(':visible')
+                            && ( _sp.is(':visible') || _p.isValidHidden( _sp ) )
                             && !_sp.prop('disabled')
                             && _items.push( _sp );
                     });
@@ -2753,7 +2762,7 @@ function (){
                     }
                     !_msg.trim() && ( _msg = "&nbsp;" );
                     _errEm.html( _msg ).css('display', _p._model.validemdisplaytype( _item ) );
-                    JC.log( 'error:', _msg );
+                    //JC.log( 'error:', _msg );
                 });
 
                 return this;
@@ -2849,7 +2858,7 @@ function (){
                 if( _item && ( _item = $( _item ) ).length 
                         && ( _item.is('[focusmsg]') || ( _msgAttr && _item.is( '[' + _msgAttr + ']') ) )
                     ){
-                    JC.log( 'focusmsg', new Date().getTime() );
+                    //JC.log( 'focusmsg', new Date().getTime() );
 
                     var _r, _p = this
                         , _focusmsgem = _p._model.findFocusEle( _item )
@@ -2963,7 +2972,7 @@ function (){
             return;
         }
         _p.data('HID_CHANGE_CHECK', new Date().getTime() );
-        JC.log( 'hidden val', new Date().getTime(), _p.val() );
+        //JC.log( 'hidden val', new Date().getTime(), _p.val() );
         Valid.checkTimeout( $(this) );
     });
     /**
@@ -3075,7 +3084,7 @@ function (){
         });
 
         _sp.on( 'blur', function( _evt, _ignoreProcess ){
-            JC.log( 'datavalid', new Date().getTime() );
+            //JC.log( 'datavalid', new Date().getTime() );
             if( _ignoreProcess ) return;
             _sp.trigger( 'DataValidVerify' );
         });

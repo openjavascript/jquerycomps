@@ -334,6 +334,9 @@
 }&lt;/pre&gt;
      *      &lt;/dd&gt;
      *
+     *      &lt;dt&gt;validHidden = bool, default = false&lt;/dt&gt;
+     *      &lt;dd&gt;是否验证隐藏的控件&lt;/dd&gt;
+     *
      *      &lt;dt&gt;datatype: 常用数据类型&lt;/dt&gt;
      *      &lt;dd&gt;&lt;b&gt;n:&lt;/b&gt; 检查是否为正确的数字&lt;/dd&gt;
      *      &lt;dd&gt;&lt;b&gt;n-i.f:&lt;/b&gt; 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99&lt;/dd&gt;
@@ -1161,10 +1164,6 @@ function (){
                 }
                 return _r.toLowerCase().replace(/\-.*/, &#x27;&#x27;);
             }
-        , isAvalible: 
-            function( _item ){
-                return ( _item.is(&#x27;:visible&#x27;) || this.isValidHidden( _item ) ) &amp;&amp; !_item.is(&#x27;[disabled]&#x27;);
-            }
         , isForm:
             function( _item ){
                 var _r;
@@ -1212,6 +1211,11 @@ function (){
                 _item.is( &#x27;[validmsg]&#x27; ) &amp;&amp; ( _r = JC.f.parseBool( _item.attr(&#x27;validmsg&#x27;) ) );
                 return _r;
             }
+        , isAvalible: 
+            function( _item ){
+                return ( _item.is(&#x27;:visible&#x27;) || this.isValidHidden( _item ) ) &amp;&amp; !_item.is(&#x27;[disabled]&#x27;);
+            }
+
         , isValidHidden:
             function( _item ){
                 var _r = false;
@@ -1220,6 +1224,11 @@ function (){
                     &amp;&amp; _item.parent().is( &#x27;:visible&#x27; )
                     &amp;&amp; ( _r = true )
                     ;
+
+                _item.is( &#x27;[validHidden]&#x27; ) 
+                    &amp;&amp; ( _r = JC.f.parseBool( _item.attr( &#x27;validHidden&#x27; ) || &#x27;false&#x27; ) )
+                    ;
+
                 return _r;
             }
         , validitemcallback: 
@@ -1355,7 +1364,7 @@ function (){
                 _min &amp;&amp; ( _len &lt; _min ) &amp;&amp; ( _r = false );
                 _max &amp;&amp; ( _len &gt; _max ) &amp;&amp; ( _r = false );
 
-                JC.log( &#x27;lengthValid: &#x27;, _min, _max, _r, _val.length );
+                //JC.log( &#x27;lengthValid: &#x27;, _min, _max, _r, _val.length );
 
                 !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
 
@@ -1483,7 +1492,7 @@ function (){
                     }
                     if( _fromNEl &amp;&amp; _fromNEl.length || _toNEl &amp;&amp; _toNEl.length ){
 
-                        JC.log( &#x27;nrange&#x27;, _fromNEl.length, _toNEl.length );
+                        //JC.log( &#x27;nrange&#x27;, _fromNEl.length, _toNEl.length );
 
                         _toNEl.val( $.trim( _toNEl.val() ) );
                         _fromNEl.val( $.trim( _fromNEl.val() ) );
@@ -1495,7 +1504,7 @@ function (){
 
                             _r &amp;&amp; ( +_fromNEl.val() ) &gt; ( +_toNEl.val() ) &amp;&amp; ( _r = false );
                             
-                            JC.log( &#x27;nrange:&#x27;, +_fromNEl.val(), +_toNEl.val(), _r );
+                            //JC.log( &#x27;nrange:&#x27;, +_fromNEl.val(), +_toNEl.val(), _r );
 
                             _r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _fromNEl ] );
                             _r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _toNEl ] );
@@ -1596,7 +1605,7 @@ function (){
                     }
                     if( _fromDateEl &amp;&amp; _fromDateEl.length || _toDateEl &amp;&amp; _toDateEl.length ){
 
-                        JC.log( &#x27;daterange&#x27;, _fromDateEl.length, _toDateEl.length );
+                        //JC.log( &#x27;daterange&#x27;, _fromDateEl.length, _toDateEl.length );
 
                         _toDateEl.val( $.trim( _toDateEl.val() ) );
                         _fromDateEl.val( $.trim( _fromDateEl.val() ) );
@@ -2008,7 +2017,7 @@ function (){
                 if( !_pattern ) _pattern = $.trim(_item.attr(&#x27;datatype&#x27;)).replace(/^reg(?:\-|)/i, &#x27;&#x27;);
 
                 _pattern.replace( /^\/([\s\S]*)\/([\w]{0,3})$/, function( $0, $1, $2 ){
-                    JC.log( $1, $2 );
+                    //JC.log( $1, $2 );
                     _r = new RegExp( $1, $2 || &#x27;&#x27; ).test( _item.val() );
                 });
 
@@ -2037,7 +2046,7 @@ function (){
         , vcode:
             function( _item ){
                 var _p = this, _r, _len = parseInt( $.trim(_item.attr(&#x27;datatype&#x27;)).replace( /^vcode(?:\-|)/i, &#x27;&#x27; ), 10 ) || 4; 
-                JC.log( &#x27;vcodeValid: &#x27; + _len );
+                //JC.log( &#x27;vcodeValid: &#x27; + _len );
                 _r = new RegExp( &#x27;^[0-9a-zA-Z]{&#x27;+_len+&#x27;}$&#x27; ).test( _item.val() );
                 !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
@@ -2246,7 +2255,7 @@ function (){
                     , _KEY = &quot;ReconfirmValidTime&quot;
                     , _typeKey = &#x27;reconfirm&#x27;
                     ;
-                JC.log( _typeKey, new Date().getTime() );
+                //JC.log( _typeKey, new Date().getTime() );
 
                 _p.isDatatarget( _item, _typeKey ) &amp;&amp; (_target = _p.datatarget( _item, _typeKey ) );
                 !( _target &amp;&amp; _target.length ) &amp;&amp; ( _target = _p.samesubtypeitems( _item, _typeKey ) );
@@ -2340,7 +2349,7 @@ function (){
                     , _dt = _p.parseDatatype( _item )
                     , _typeKey = &#x27;alternative&#x27;
                     ;
-                JC.log( _typeKey, new Date().getTime() );
+                //JC.log( _typeKey, new Date().getTime() );
 
                 _p.isDatatarget( _item, _typeKey ) &amp;&amp; (_target = _p.datatarget( _item, _typeKey ) );
                 !( _target &amp;&amp; _target.length ) &amp;&amp; ( _target = _p.samesubtypeitems( _item, _typeKey ) );
@@ -2507,7 +2516,7 @@ function (){
                                 || JC.f.parseBool( _sp.attr(&#x27;processDisabled&#x27; ) ) 
                                 )
                         ){
-                            if( !_sp.is(&#x27;:visible&#x27;) ) return;
+                            if( !( _sp.is(&#x27;:visible&#x27;) || _p.isValidHidden( _sp ) ) ) return;
                         }else{
                             if( ! _p.isAvalible( _sp ) ) return;
                         }
@@ -2532,7 +2541,7 @@ function (){
                         $.each( _items, function( _six, _sitem ){
                             var _tmpV, _ignore = JC.f.parseBool( _sitem.attr(&#x27;uniqueIgnoreEmpty&#x27;) );
                             _tmpV = $(_sitem).val().trim();
-                            _ignore &amp;&amp; !_tmpV &amp;&amp; _sitem.is(&#x27;:visible&#x27;) &amp;&amp; ( _ignoreEmpty = true );
+                            _ignore &amp;&amp; !_tmpV &amp;&amp; ( _sitem.is(&#x27;:visible&#x27;) || _p.isValidHidden( _sitem ) ) &amp;&amp; ( _ignoreEmpty = true );
                             _tmpAr.push( _tmpV );
                         });
                         var _pureVal = _tmpAr.join(&#x27;&#x27;), _compareVal = _tmpAr.join(&#x27;####&#x27;);
@@ -2595,7 +2604,7 @@ function (){
                 if( !Valid.isFormValid ) return _r;
                 if( !_item.is( &#x27;[datavalid]&#x27;) ) return _r;
 
-                JC.log( &#x27;datavalid&#x27;, new Date().getTime() ); 
+                //JC.log( &#x27;datavalid&#x27;, new Date().getTime() ); 
 
                 _r = JC.f.parseBool( _item.attr(&#x27;datavalid&#x27;) );
 
@@ -2727,7 +2736,7 @@ function (){
                 }
 
                 !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, &#x27;reqmsg&#x27; ] );
-                JC.log( &#x27;regmsgValid: &#x27; + _r );
+                //JC.log( &#x27;regmsgValid: &#x27; + _r );
                 return _r;
             }
         , sametypeitems:
@@ -2808,14 +2817,14 @@ function (){
                     , _finderKey = _type + &#x27;finder&#x27;;
                     ;
 
-                JC.log( _item.attr(&#x27;name&#x27;) + &#x27;, &#x27; + _item.val() );
+                //JC.log( _item.attr(&#x27;name&#x27;) + &#x27;, &#x27; + _item.val() );
 
                 if( _item.is( &#x27;[datatarget]&#x27; ) ){
                     _items = JC.f.parentSelector( _item, _item.attr(&#x27;datatarget&#x27;) );                    
                     _tmp = [];
                     _items.each( function(){
                         var _sp = $(this);
-                            _sp.is(&#x27;:visible&#x27;)
+                            ( _sp.is(&#x27;:visible&#x27;) || _p.isValidHidden( _sp ) )
                             &amp;&amp; !_sp.prop(&#x27;disabled&#x27;)
                             &amp;&amp; _tmp.push( _sp );
                     });
@@ -2834,7 +2843,7 @@ function (){
                         var _sp = $(this);
                         var _re = new RegExp( _type, &#x27;i&#x27; );
                         _re.test( _sp.attr(&#x27;datatype&#x27;) ) 
-                            &amp;&amp; _sp.is(&#x27;:visible&#x27;)
+                            &amp;&amp; ( _sp.is(&#x27;:visible&#x27;) || _p.isValidHidden( _sp ) )
                             &amp;&amp; !_sp.prop(&#x27;disabled&#x27;)
                             &amp;&amp; _items.push( _sp );
                     });
@@ -2995,7 +3004,7 @@ function (){
                     }
                     !_msg.trim() &amp;&amp; ( _msg = &quot;&amp;nbsp;&quot; );
                     _errEm.html( _msg ).css(&#x27;display&#x27;, _p._model.validemdisplaytype( _item ) );
-                    JC.log( &#x27;error:&#x27;, _msg );
+                    //JC.log( &#x27;error:&#x27;, _msg );
                 });
 
                 return this;
@@ -3091,7 +3100,7 @@ function (){
                 if( _item &amp;&amp; ( _item = $( _item ) ).length 
                         &amp;&amp; ( _item.is(&#x27;[focusmsg]&#x27;) || ( _msgAttr &amp;&amp; _item.is( &#x27;[&#x27; + _msgAttr + &#x27;]&#x27;) ) )
                     ){
-                    JC.log( &#x27;focusmsg&#x27;, new Date().getTime() );
+                    //JC.log( &#x27;focusmsg&#x27;, new Date().getTime() );
 
                     var _r, _p = this
                         , _focusmsgem = _p._model.findFocusEle( _item )
@@ -3205,7 +3214,7 @@ function (){
             return;
         }
         _p.data(&#x27;HID_CHANGE_CHECK&#x27;, new Date().getTime() );
-        JC.log( &#x27;hidden val&#x27;, new Date().getTime(), _p.val() );
+        //JC.log( &#x27;hidden val&#x27;, new Date().getTime(), _p.val() );
         Valid.checkTimeout( $(this) );
     });
     /**
@@ -3317,7 +3326,7 @@ function (){
         });
 
         _sp.on( &#x27;blur&#x27;, function( _evt, _ignoreProcess ){
-            JC.log( &#x27;datavalid&#x27;, new Date().getTime() );
+            //JC.log( &#x27;datavalid&#x27;, new Date().getTime() );
             if( _ignoreProcess ) return;
             _sp.trigger( &#x27;DataValidVerify&#x27; );
         });
