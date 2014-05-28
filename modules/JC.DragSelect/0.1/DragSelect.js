@@ -81,15 +81,40 @@
             }
             return DragSelect._RECT;
         }
-    DragSelect.RECT_TPL = '<div class="js_compDragSelect_rect" style="display:none;"></div>' ;
+    DragSelect.RECT_TPL = '<div class="js_compDragSelect_rect" style="display:none;position:absolute;left: -9999px;"></div>' ;
 
     DragSelect.DEFAULT_MOUSEUP =
         function( _evt ){
+            var _d = DragSelect.DRAG_DATA();
+            if( !_d ) return;
+            var _p = _d.ins;
+            //JC.log( 'up', JC.f.ts() );
+            _p.trigger( 'SELECT_DONE', [ _p._model.offset( _evt ) ] );
         };
 
     DragSelect.DEFAULT_MOUSEMOVE = 
         function( _evt ){
+            var _d = DragSelect.DRAG_DATA();
+            if( !_d ) return;
+            var _p = _d.ins
+                , _newPoint = _p._model.offset( _evt )
+                ;
+            //JC.log( 'move', JC.f.ts() );
+            _p._view.updateRect( _newPoint );
         };
+
+    DragSelect.DEFAULT_SELECT_EVENT = 
+        function(){
+            return false;
+        };
+
+    DragSelect.DRAG_DATA =
+        function( _setter ){
+            typeof _setter != 'undefined' && ( DragSelect._DRAG_DATA = _setter );
+            return DragSelect._DRAG_DATA;
+        };
+
+    DragSelect.MIN_RECT = { width: 20, height: 20 };
 
     JC.BaseMVC.build( DragSelect );
 
@@ -107,33 +132,73 @@
                     _ditems = _p._model.delegateItems();
                     if( !_ditems.length ) return;
 
-                    JC.log( _ditems );
+                    _p.selector().delegate( _ditems.join(','), 'click', function( _evt ){
+                        JC.log( 'click', JC.f.ts() );
+                    });
 
-                    _p.selector().delegate( 'encodeURIComponent', 'mousedown', function( _evt ){
-                        var _sp = $( this );
-                        JC.log( _sp.html(), JC.f.ts() );
-
-                        _p.trigger( 'SELECT_START', [ _sp, _evt ] );
+                    $.each( _ditems, function( _k, _item ){
+                        _p.selector().delegate( _item, 'mousedown', function( _evt ){
+                            var _sp = $( this );
+                            _p.trigger( 'SELECT_START', [ _sp, _evt, _item ] );
+                        });
                     });
                 });
 
-                _p.on( 'SELECT_START', function( _evt, _sp, _srcEvt ){
+                _p.on( 'SELECT_START', function( _evt, _sp, _srcEvt, _type ){
+                    var _d;
                     _p.trigger( 'CLEAR_EVENT' );
+                    _d = _p._model.initDragData( _sp, _type );
+                    if( !_d ) return;
+                    _d.ins = _p;
+                    _d.downPoint = _p._model.offset( _srcEvt );
+                    _p._view.showRect();
                     _p.trigger( 'BIND_EVENT' );
                 });
 
-                _p.on( 'SELECT_END', function( _evt, _sp, _srcEvt ){
-                    _p.trigger( 'CLEAR_EVENT' );
-                });
-
                 _p.on( 'BIND_EVENT', function( _evt ){
-                    _jwin.on( 'mousemove', DragSelect.DEFAULT_MOUSEMOVE );
-                    _jwin.on( 'mouseup', DragSelect.DEFAULT_MOUSEUP );
+                    _jdoc.on( 'mousemove', DragSelect.DEFAULT_MOUSEMOVE );
+                    _jdoc.on( 'mouseup', DragSelect.DEFAULT_MOUSEUP );
+
+                    !_p._model.disableUnselectable() 
+                        && _jdoc.on( 'selectstart', DragSelect.DEFAULT_SELECT_EVENT );
                 });
 
                 _p.on( 'CLEAR_EVENT', function( _evt ){
-                    _jwin.off( 'mousemove', DragSelect.DEFAULT_MOUSEMOVE );
-                    _jwin.off( 'mouseup', DragSelect.DEFAULT_MOUSEUP );
+                    _jdoc.off( 'mousemove', DragSelect.DEFAULT_MOUSEMOVE );
+                    _jdoc.off( 'mouseup', DragSelect.DEFAULT_MOUSEUP );
+                    _jdoc.off( 'selectstart', DragSelect.DEFAULT_SELECT_EVENT );
+                    _p.trigger( 'CLEAR_DATA' );
+                });
+
+                _p.on( 'SELECT_DONE', function( _evt, _newPoint ){
+                    _p._view.updateRect( _newPoint );
+                    var _rectSize = selectorToRectangle( DragSelect.RECT() );
+
+                    if( _p._model.rectIsOutsize( _rectSize ) ){
+                    }else{
+                        _p.trigger( 'PROCESSS_SELECT', [ _rectSize, DragSelect.DRAG_DATA() ] );
+                    }
+                    _p._view.hideRect();
+                    _p.trigger( 'CLEAR_EVENT' );
+                });
+
+                _p.on( 'PROCESSS_SELECT', function( _evt,_rectSize, _params ){
+                    if( !DragSelect.RECT().is( ':visible' ) ) return;
+                    var _selectedItems = _p._model.getSelectItems( _rectSize, _p._model.items( _params.type ) );
+                    if( !_selectedItems.length ) return;
+                    if( _params.data ){
+                        $.each( _selectedItems, function( _k, _item ){
+                            _params.data.addClass && _item.addClass( _params.data.addClass );
+                            _params.data.removeClass && _item.removeClass( _params.data.removeClass );
+                        });
+                        _params.data.callback && _params.data.callback.call( _p, _selectedItems, _params.type );
+                    }
+                    _p._model.commonCallback() && _p._model.commonCallback().call( _p, _selectedItems, _params.type );
+                    //JC.log( 'PROCESSS_SELECT', _selectedItems.length );
+                });
+
+                _p.on( 'CLEAR_DATA', function( _evt ){
+                    DragSelect.DRAG_DATA( null );
                 });
             }
 
@@ -154,10 +219,50 @@
                 //JC.log( 'DragSelect.Model.init:', new Date().getTime() );
             }
 
+        , disableUnselectable: function(){ return this.boolProp( 'cdsDisableUnselectable' ); }
+
+        , items:
+            function( _type ){
+                return this.selector().find( _type );
+            }
+
+        , getSelectItems:
+            function( _rect, _items ){
+                var _r = [];
+
+                //JC.dir( _rect );
+
+                $.each( _items, function( _k, _item ){
+                    _item = $( _item );
+                    var _itemRect = selectorToRectangle( _item );
+                    if( intersectRect( _rect, _itemRect ) ){
+                        //JC.dir( _itemRect )
+                        _r.push( _item );
+                    }
+                });
+
+                return _r;
+            }
+
+        , commonCallback:
+            function(){
+                var _r = this.config().commonCallback || this.callbackProp( 'cdsCommonCallback' );
+                return _r;
+            }
+
+        , initDragData:
+            function( _selector, _k ){
+                var _p = this
+                    , _itemData = _p.config()[ _k ]
+                    ;
+                if( !_itemData ) return;
+                return DragSelect.DRAG_DATA( { type: _k, data: _itemData } );
+            }
+
         , config:
             function(){
                 if( !this._config ){
-                    this._config = $.parseJSON( JC.f.scriptContent( this.selectorProp( 'cdsConfig' ) ) );
+                    this._config = eval( '(' + ( JC.f.scriptContent( this.selectorProp( 'cdsConfig' ) ) ) + ')' );
                 }
                 return this._config;
             }
@@ -180,10 +285,30 @@
                 return _r;
             }
 
-        , downPoint:
-            function( _setter ){
-                typeof _setter != 'undefined' && ( this._downPoint = _setter );
-                return this._downPoint;
+        , checkMinRect:
+            function(){
+            }
+
+        , rectMinWidth: function(){ return this.intProp( 'cdsRectMinWidth' ); }
+        , rectMinHeight: function(){ return this.intProp( 'cdsRectMinHeight' ); }
+
+        , rectMinSize:
+            function(){
+                var _p = this;
+                return {
+                    width: _p.rectMinWidth() || DragSelect.MIN_RECT.width
+                    , height: _p.rectMinHeight() || DragSelect.MIN_RECT.height
+                };
+            }
+
+        , rectIsOutsize:
+            function( _rectSize ){
+                var _p = this, _r, _minSize = _p.rectMinSize();
+                _minSize.width > _rectSize.width 
+                    && _minSize.height > _rectSize.height
+                    && ( _r = true ) 
+                    ;
+                return _r;
             }
     });
 
@@ -194,17 +319,15 @@
             }
 
         , showRect:
-            function( _evt ){
-                var _p = this;
-                _p._model.downPoint( _p._model.offset( _evt ) );
+            function(){
                 DragSelect.RECT().css( { 'left': '-9999px' } ).show();
             }
 
         , updateRect:
-            function( _evt ){
+            function( _newPoint ){
+                if( !( DragSelect.DRAG_DATA() && DragSelect.RECT().is( ':visible' ) ) ) return;
                 var _p = this
-                    , _downPoint = _p._model.downPoint()
-                    , _newPoint = _p._model.offset( _evt )
+                    , _downPoint = DragSelect.DRAG_DATA().downPoint
                     , _rect = DragSelect.RECT()
                     , _size
                     ;
@@ -214,20 +337,23 @@
             }
 
         , hideRect:
-            function( _evt ){
+            function(){
                 var _p = this
-                    , _downPoint = _p._model.downPoint()
-                    , _newPoint = _p._model.offset( _evt )
-                    , _rect = DragSelect.RECT()
-                    , _size
                     ;
                 DragSelect.RECT().hide();
-
-                if( !_downPoint ) return;
-                _size = pointToRect( _downPoint, _newPoint );
-                _rect.css( _size );
             }
     });
+    /**
+     * 判断两个矩形是否有交集
+     */
+    function intersectRect( r1, r2 ) {
+        return !(
+                    r2.x > ( r1.x + r1.width ) || 
+                    ( r2.x + r2.width ) < r1.x || 
+                    r2.y > ( r1.y + r1.height ) ||
+                    ( r2.y + r2.height ) < r1.y
+                );
+    }
 
     function pointToRect( _p1, _p2 ){
         var _r = { 'x': 0, 'y': 0, 'width': 0, 'height': 0 };
@@ -254,7 +380,22 @@
 
         return _r;
     }
+    /**
+     * 返回选择器的 矩形 位置
+     */
+    function selectorToRectangle( _selector ){
+        _selector = $( _selector );
+        var _offset = _selector.offset()
+            , _w = _selector.prop('offsetWidth')
+            , _h = _selector.prop('offsetHeight');
 
+        return {
+            x: _offset.left
+            , y: _offset.top
+            , width: _w
+            , height: _h
+        }
+    }
     _jdoc.ready( function(){
         DragSelect.autoInit && DragSelect.init();
     });

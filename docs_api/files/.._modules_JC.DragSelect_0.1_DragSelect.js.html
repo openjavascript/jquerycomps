@@ -323,15 +323,40 @@
             }
             return DragSelect._RECT;
         }
-    DragSelect.RECT_TPL = &#x27;&lt;div class=&quot;js_compDragSelect_rect&quot; style=&quot;display:none;&quot;&gt;&lt;/div&gt;&#x27; ;
+    DragSelect.RECT_TPL = &#x27;&lt;div class=&quot;js_compDragSelect_rect&quot; style=&quot;display:none;position:absolute;left: -9999px;&quot;&gt;&lt;/div&gt;&#x27; ;
 
     DragSelect.DEFAULT_MOUSEUP =
         function( _evt ){
+            var _d = DragSelect.DRAG_DATA();
+            if( !_d ) return;
+            var _p = _d.ins;
+            //JC.log( &#x27;up&#x27;, JC.f.ts() );
+            _p.trigger( &#x27;SELECT_DONE&#x27;, [ _p._model.offset( _evt ) ] );
         };
 
     DragSelect.DEFAULT_MOUSEMOVE = 
         function( _evt ){
+            var _d = DragSelect.DRAG_DATA();
+            if( !_d ) return;
+            var _p = _d.ins
+                , _newPoint = _p._model.offset( _evt )
+                ;
+            //JC.log( &#x27;move&#x27;, JC.f.ts() );
+            _p._view.updateRect( _newPoint );
         };
+
+    DragSelect.DEFAULT_SELECT_EVENT = 
+        function(){
+            return false;
+        };
+
+    DragSelect.DRAG_DATA =
+        function( _setter ){
+            typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( DragSelect._DRAG_DATA = _setter );
+            return DragSelect._DRAG_DATA;
+        };
+
+    DragSelect.MIN_RECT = { width: 20, height: 20 };
 
     JC.BaseMVC.build( DragSelect );
 
@@ -349,33 +374,73 @@
                     _ditems = _p._model.delegateItems();
                     if( !_ditems.length ) return;
 
-                    JC.log( _ditems );
+                    _p.selector().delegate( _ditems.join(&#x27;,&#x27;), &#x27;click&#x27;, function( _evt ){
+                        JC.log( &#x27;click&#x27;, JC.f.ts() );
+                    });
 
-                    _p.selector().delegate( &#x27;encodeURIComponent&#x27;, &#x27;mousedown&#x27;, function( _evt ){
-                        var _sp = $( this );
-                        JC.log( _sp.html(), JC.f.ts() );
-
-                        _p.trigger( &#x27;SELECT_START&#x27;, [ _sp, _evt ] );
+                    $.each( _ditems, function( _k, _item ){
+                        _p.selector().delegate( _item, &#x27;mousedown&#x27;, function( _evt ){
+                            var _sp = $( this );
+                            _p.trigger( &#x27;SELECT_START&#x27;, [ _sp, _evt, _item ] );
+                        });
                     });
                 });
 
-                _p.on( &#x27;SELECT_START&#x27;, function( _evt, _sp, _srcEvt ){
+                _p.on( &#x27;SELECT_START&#x27;, function( _evt, _sp, _srcEvt, _type ){
+                    var _d;
                     _p.trigger( &#x27;CLEAR_EVENT&#x27; );
+                    _d = _p._model.initDragData( _sp, _type );
+                    if( !_d ) return;
+                    _d.ins = _p;
+                    _d.downPoint = _p._model.offset( _srcEvt );
+                    _p._view.showRect();
                     _p.trigger( &#x27;BIND_EVENT&#x27; );
                 });
 
-                _p.on( &#x27;SELECT_END&#x27;, function( _evt, _sp, _srcEvt ){
-                    _p.trigger( &#x27;CLEAR_EVENT&#x27; );
-                });
-
                 _p.on( &#x27;BIND_EVENT&#x27;, function( _evt ){
-                    _jwin.on( &#x27;mousemove&#x27;, DragSelect.DEFAULT_MOUSEMOVE );
-                    _jwin.on( &#x27;mouseup&#x27;, DragSelect.DEFAULT_MOUSEUP );
+                    _jdoc.on( &#x27;mousemove&#x27;, DragSelect.DEFAULT_MOUSEMOVE );
+                    _jdoc.on( &#x27;mouseup&#x27;, DragSelect.DEFAULT_MOUSEUP );
+
+                    !_p._model.disableUnselectable() 
+                        &amp;&amp; _jdoc.on( &#x27;selectstart&#x27;, DragSelect.DEFAULT_SELECT_EVENT );
                 });
 
                 _p.on( &#x27;CLEAR_EVENT&#x27;, function( _evt ){
-                    _jwin.off( &#x27;mousemove&#x27;, DragSelect.DEFAULT_MOUSEMOVE );
-                    _jwin.off( &#x27;mouseup&#x27;, DragSelect.DEFAULT_MOUSEUP );
+                    _jdoc.off( &#x27;mousemove&#x27;, DragSelect.DEFAULT_MOUSEMOVE );
+                    _jdoc.off( &#x27;mouseup&#x27;, DragSelect.DEFAULT_MOUSEUP );
+                    _jdoc.off( &#x27;selectstart&#x27;, DragSelect.DEFAULT_SELECT_EVENT );
+                    _p.trigger( &#x27;CLEAR_DATA&#x27; );
+                });
+
+                _p.on( &#x27;SELECT_DONE&#x27;, function( _evt, _newPoint ){
+                    _p._view.updateRect( _newPoint );
+                    var _rectSize = selectorToRectangle( DragSelect.RECT() );
+
+                    if( _p._model.rectIsOutsize( _rectSize ) ){
+                    }else{
+                        _p.trigger( &#x27;PROCESSS_SELECT&#x27;, [ _rectSize, DragSelect.DRAG_DATA() ] );
+                    }
+                    _p._view.hideRect();
+                    _p.trigger( &#x27;CLEAR_EVENT&#x27; );
+                });
+
+                _p.on( &#x27;PROCESSS_SELECT&#x27;, function( _evt,_rectSize, _params ){
+                    if( !DragSelect.RECT().is( &#x27;:visible&#x27; ) ) return;
+                    var _selectedItems = _p._model.getSelectItems( _rectSize, _p._model.items( _params.type ) );
+                    if( !_selectedItems.length ) return;
+                    if( _params.data ){
+                        $.each( _selectedItems, function( _k, _item ){
+                            _params.data.addClass &amp;&amp; _item.addClass( _params.data.addClass );
+                            _params.data.removeClass &amp;&amp; _item.removeClass( _params.data.removeClass );
+                        });
+                        _params.data.callback &amp;&amp; _params.data.callback.call( _p, _selectedItems, _params.type );
+                    }
+                    _p._model.commonCallback() &amp;&amp; _p._model.commonCallback().call( _p, _selectedItems, _params.type );
+                    //JC.log( &#x27;PROCESSS_SELECT&#x27;, _selectedItems.length );
+                });
+
+                _p.on( &#x27;CLEAR_DATA&#x27;, function( _evt ){
+                    DragSelect.DRAG_DATA( null );
                 });
             }
 
@@ -396,10 +461,50 @@
                 //JC.log( &#x27;DragSelect.Model.init:&#x27;, new Date().getTime() );
             }
 
+        , disableUnselectable: function(){ return this.boolProp( &#x27;cdsDisableUnselectable&#x27; ); }
+
+        , items:
+            function( _type ){
+                return this.selector().find( _type );
+            }
+
+        , getSelectItems:
+            function( _rect, _items ){
+                var _r = [];
+
+                //JC.dir( _rect );
+
+                $.each( _items, function( _k, _item ){
+                    _item = $( _item );
+                    var _itemRect = selectorToRectangle( _item );
+                    if( intersectRect( _rect, _itemRect ) ){
+                        //JC.dir( _itemRect )
+                        _r.push( _item );
+                    }
+                });
+
+                return _r;
+            }
+
+        , commonCallback:
+            function(){
+                var _r = this.config().commonCallback || this.callbackProp( &#x27;cdsCommonCallback&#x27; );
+                return _r;
+            }
+
+        , initDragData:
+            function( _selector, _k ){
+                var _p = this
+                    , _itemData = _p.config()[ _k ]
+                    ;
+                if( !_itemData ) return;
+                return DragSelect.DRAG_DATA( { type: _k, data: _itemData } );
+            }
+
         , config:
             function(){
                 if( !this._config ){
-                    this._config = $.parseJSON( JC.f.scriptContent( this.selectorProp( &#x27;cdsConfig&#x27; ) ) );
+                    this._config = eval( &#x27;(&#x27; + ( JC.f.scriptContent( this.selectorProp( &#x27;cdsConfig&#x27; ) ) ) + &#x27;)&#x27; );
                 }
                 return this._config;
             }
@@ -422,10 +527,30 @@
                 return _r;
             }
 
-        , downPoint:
-            function( _setter ){
-                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._downPoint = _setter );
-                return this._downPoint;
+        , checkMinRect:
+            function(){
+            }
+
+        , rectMinWidth: function(){ return this.intProp( &#x27;cdsRectMinWidth&#x27; ); }
+        , rectMinHeight: function(){ return this.intProp( &#x27;cdsRectMinHeight&#x27; ); }
+
+        , rectMinSize:
+            function(){
+                var _p = this;
+                return {
+                    width: _p.rectMinWidth() || DragSelect.MIN_RECT.width
+                    , height: _p.rectMinHeight() || DragSelect.MIN_RECT.height
+                };
+            }
+
+        , rectIsOutsize:
+            function( _rectSize ){
+                var _p = this, _r, _minSize = _p.rectMinSize();
+                _minSize.width &gt; _rectSize.width 
+                    &amp;&amp; _minSize.height &gt; _rectSize.height
+                    &amp;&amp; ( _r = true ) 
+                    ;
+                return _r;
             }
     });
 
@@ -436,17 +561,15 @@
             }
 
         , showRect:
-            function( _evt ){
-                var _p = this;
-                _p._model.downPoint( _p._model.offset( _evt ) );
+            function(){
                 DragSelect.RECT().css( { &#x27;left&#x27;: &#x27;-9999px&#x27; } ).show();
             }
 
         , updateRect:
-            function( _evt ){
+            function( _newPoint ){
+                if( !( DragSelect.DRAG_DATA() &amp;&amp; DragSelect.RECT().is( &#x27;:visible&#x27; ) ) ) return;
                 var _p = this
-                    , _downPoint = _p._model.downPoint()
-                    , _newPoint = _p._model.offset( _evt )
+                    , _downPoint = DragSelect.DRAG_DATA().downPoint
                     , _rect = DragSelect.RECT()
                     , _size
                     ;
@@ -456,20 +579,23 @@
             }
 
         , hideRect:
-            function( _evt ){
+            function(){
                 var _p = this
-                    , _downPoint = _p._model.downPoint()
-                    , _newPoint = _p._model.offset( _evt )
-                    , _rect = DragSelect.RECT()
-                    , _size
                     ;
                 DragSelect.RECT().hide();
-
-                if( !_downPoint ) return;
-                _size = pointToRect( _downPoint, _newPoint );
-                _rect.css( _size );
             }
     });
+    /**
+     * 判断两个矩形是否有交集
+     */
+    function intersectRect( r1, r2 ) {
+        return !(
+                    r2.x &gt; ( r1.x + r1.width ) || 
+                    ( r2.x + r2.width ) &lt; r1.x || 
+                    r2.y &gt; ( r1.y + r1.height ) ||
+                    ( r2.y + r2.height ) &lt; r1.y
+                );
+    }
 
     function pointToRect( _p1, _p2 ){
         var _r = { &#x27;x&#x27;: 0, &#x27;y&#x27;: 0, &#x27;width&#x27;: 0, &#x27;height&#x27;: 0 };
@@ -496,7 +622,22 @@
 
         return _r;
     }
+    /**
+     * 返回选择器的 矩形 位置
+     */
+    function selectorToRectangle( _selector ){
+        _selector = $( _selector );
+        var _offset = _selector.offset()
+            , _w = _selector.prop(&#x27;offsetWidth&#x27;)
+            , _h = _selector.prop(&#x27;offsetHeight&#x27;);
 
+        return {
+            x: _offset.left
+            , y: _offset.top
+            , width: _w
+            , height: _h
+        }
+    }
     _jdoc.ready( function(){
         DragSelect.autoInit &amp;&amp; DragSelect.init();
     });

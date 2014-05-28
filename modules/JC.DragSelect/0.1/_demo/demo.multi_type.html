@@ -52,6 +52,7 @@
         }
     </style>
     <link href='../../../JC.DragSelect/0.1/res/default/style.css' rel='stylesheet' />
+    <link href='../../../JC.DragSelect/0.1/res/default/test.css' rel='stylesheet' />
 
     <script src="../../../../lib.js"></script>
     <script src="../../../../config.js"></script>
@@ -68,30 +69,52 @@
     <dl class="defDl">
         <dt></dt>
         <dd>
-            <div class="js_compDragSelect" cdsConfig="/script.js_cdsConfig" style="display:inline" >
+            <div class="js_compDragSelect" cdsConfig="/script.js_cdsConfig" style="display:inline" 
+                >
                 <script type="text/template" class="js_cdsConfig">
                     {
                         "td.js_pos_canSelect": {
-                            "selectedClass": "js_pos_selected"
+                            "addClass": "js_pos_selected"
+                            , "removeClass": "js_pos_canSelect"
+                            , "callback": 
+                                function( _items, _type ){
+                                    var _ins = this;
+                                    JC.log( 'callback, td.js_pos_canSelect:', _type, _items.length );
+                                }
                         }
                         , "td.js_pos_selected": {
-                            "selectedClass": "js_pos_selected"
+                            "addClass": "js_pos_canSelect"
+                            , "removeClass": "js_pos_selected"
+                            , "callback": 
+                                function( _items, _type ){
+                                    var _ins = this;
+                                    JC.log( 'callback, td.js_pos_selected:', _type, _items.length );
+                                }
                         }
                         , "td.js_pos_locked": {
-                            "selectedClass": "js_pos_unlocked"
+                            "addClass": "js_pos_unlocked"
+                            , "removeClass": "js_pos_locked"
                         }
                         , "td.js_pos_unlocked": {
-                            "selectedClass": "js_pos_locked"
+                            "addClass": "js_pos_locked"
+                            , "removeClass": "js_pos_unlocked"
                         }
                         , "td.js_dataItem": {
-                            "selectedClass": "js_cdsSelecteClass"
+                            "addClass": "js_cdsSelecteClass"
+                            , "removeClass": "js_dataItem"
                         }
                         , "td.js_cdsSelecteClass": {
-                            "selectedClass": "js_dataItem"
+                            "addClass": "js_dataItem"
+                            , "removeClass": "js_cdsSelecteClass"
                         }
+                        , "commonCallback":
+                            function( _items, _type ){
+                                var _ins = this;
+                                JC.log( 'js_compDragSelect commonCallback', _items.length, JC.f.ts() );
+                            }
                     }
                 </script>
-                <table cellspacing='0' style="width:50%" class="unselectable" unselectable="on">
+                <table cellspacing='0' style="width:50%">
                     <thead>
                         <tr>
                             <th>col 1</th>
