@@ -101,6 +101,7 @@
                 ;
             //JC.log( 'move', JC.f.ts() );
             _p._view.updateRect( _newPoint );
+            _p.trigger( 'SELECT_MOVE', [ _newPoint ] );
         };
 
     DragSelect.DEFAULT_SELECT_EVENT = 
@@ -147,6 +148,7 @@
                 _p.on( 'SELECT_START', function( _evt, _sp, _srcEvt, _type ){
                     var _d;
                     _p.trigger( 'CLEAR_EVENT' );
+                    _p.trigger( 'REMOVE_ALL_REALTIME_EFFECT' );
                     _d = _p._model.initDragData( _sp, _type );
                     if( !_d ) return;
                     _d.ins = _p;
@@ -167,6 +169,11 @@
                     _jdoc.off( 'mousemove', DragSelect.DEFAULT_MOUSEMOVE );
                     _jdoc.off( 'mouseup', DragSelect.DEFAULT_MOUSEUP );
                     _jdoc.off( 'selectstart', DragSelect.DEFAULT_SELECT_EVENT );
+
+                    DragSelect.DRAG_DATA()
+                        && DragSelect.DRAG_DATA().data
+                        && DragSelect.DRAG_DATA().data.realtimeClass
+                        && _p.trigger( 'REMOVE_REALTIME_EFFECT', DragSelect.DRAG_DATA().data.realtimeClass );
                     _p.trigger( 'CLEAR_DATA' );
                 });
 
@@ -197,6 +204,37 @@
                     //JC.log( 'PROCESSS_SELECT', _selectedItems.length );
                 });
 
+                _p.on( 'SELECT_MOVE', function( _evt, _newPoint ){
+                    if( _p._model.realtimeEffect() ){
+                        _p.trigger( 'REALTIME_EFFECT', [ _newPoint ] );
+                    }
+                });
+
+                _p.on( 'REALTIME_EFFECT', function( _evt, _newPoint ){
+                    if( !DragSelect.RECT().is( ':visible' ) ) return;
+                    if( !( DragSelect.DRAG_DATA() && DragSelect.DRAG_DATA().data.realtimeClass ) ) return;
+                    var _rectSize = selectorToRectangle( DragSelect.RECT() )
+                        , _params = DragSelect.DRAG_DATA()
+                        ;
+
+                    _p.trigger( 'REMOVE_REALTIME_EFFECT', _params.data.realtimeClass );
+
+                    var _selectedItems = _p._model.getSelectItems( _rectSize, _p._model.items( _params.type ) );
+                    JC.log( 'REALTIME_EFFECT', _selectedItems.length );
+                    $.each( _selectedItems, function( _k, _item ){
+                        _item.addClass( _params.data.realtimeClass );
+                    });
+                    _p._model.preRealtimeItems( _selectedItems );
+                });
+
+                _p.on( 'REMOVE_REALTIME_EFFECT', function( _evt, _class ){
+                    _p._model.preRealtimeItems() && _class
+                        && $.each( _p._model.preRealtimeItems(), function( _ix, _item ){ _item.removeClass( _class ); } );
+                });
+
+                _p.on( 'REMOVE_ALL_REALTIME_EFFECT', function(){
+                });
+
                 _p.on( 'CLEAR_DATA', function( _evt ){
                     DragSelect.DRAG_DATA( null );
                 });
@@ -225,6 +263,14 @@
             function( _type ){
                 return this.selector().find( _type );
             }
+
+        , preRealtimeItems:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._preRealtimeItems = _setter );
+                return this._preRealtimeItems;
+            }
+
+        , realtimeEffect: function(){ return this.boolProp( 'cdsRealtimeEffect' ); }
 
         , getSelectItems:
             function( _rect, _items ){
