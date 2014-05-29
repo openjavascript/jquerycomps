@@ -242,11 +242,10 @@
     <pre class="code prettyprint linenums">
 ;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
 /**
- * 组件用途简述
+ * DOM标签拖动选择
  *
  *  &lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
- *      &lt;a href=&quot;widnow.jQuery.html&quot;&gt;jQuery&lt;/a&gt;
- *      , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+ *      &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
  *  &lt;/p&gt;
  *
  *  &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
@@ -258,8 +257,62 @@
  *  &lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
  *
  *  &lt;dl&gt;
- *      &lt;dt&gt;&lt;/dt&gt;
- *      &lt;dd&gt;&lt;dd&gt;
+ *      &lt;dt&gt;cdsConfig = script selector&lt;/dt&gt;
+ *      &lt;dd&gt;拖动内容的配置
+&lt;xmp&gt;&lt;script type=&quot;text/template&quot; class=&quot;js_cdsConfig&quot;&gt;&lt;/xmp&gt;&lt;pre&gt;
+    {
+        &quot;items&quot;: {                                      //响应选择动作的选择器列表
+            &quot;td.js_pos_canSelect&quot;: {                        //响应选择动作的选择器
+                &quot;addClass&quot;: &quot;js_pos_selected&quot;               //选取到的内容 添加的 class
+                , &quot;removeClass&quot;: &quot;js_pos_canSelect&quot;         //选取到的内容 清除的 class
+                , &quot;callback&quot;:                               //选中内容后的回调
+                    function( _items, _type ){
+                        var _ins = this;
+                        JC.log( &#x27;callback, td.js_pos_canSelect:&#x27;, _type, _items.length );
+                    }
+            }
+            , &quot;td.js_pos_selected&quot;: {
+                &quot;addClass&quot;: &quot;js_pos_canSelect&quot;
+                , &quot;removeClass&quot;: &quot;js_pos_selected&quot;
+                , &quot;callback&quot;: 
+                    function( _items, _type ){
+                        var _ins = this;
+                        JC.log( &#x27;callback, td.js_pos_selected:&#x27;, _type, _items.length );
+                    }
+            }
+        }
+        , &quot;realtimeClass&quot;: &quot;js_cdsRealtimeEffect&quot;   //实时显示选取内容的 CSS 样式名
+        , &quot;commonCallback&quot;:                         //选中内容的全局回调
+            function( _items, _type ){
+                var _ins = this;
+                JC.log( &#x27;js_compDragSelect commonCallback&#x27;, _items.length, JC.f.ts() );
+            }
+    }
+&lt;/pre&gt;&lt;xmp&gt;&lt;/script&gt;&lt;/xmp&gt;
+ *      &lt;dd&gt;
+ *
+ *      &lt;dt&gt;cdsRealtimeEffect = bool, default = false&lt;/dt&gt;
+ *      &lt;dd&gt;是否实时显示选中内容的状态&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;cdsRealtimeClass = CSS class name&lt;/dt&gt;
+ *      &lt;dd&gt;显示选中内容的 CSS 样式名&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;cdsCommonCallback = function&lt;/dt&gt;
+ *      &lt;dd&gt;选中内容的全局回调
+&lt;pre&gt;function cdsCommonCallback( _items, _type ){
+    var _ins = this;
+    JC.log( &#x27;js_compDragSelect commonCallback&#x27;, _items.length, JC.f.ts() );
+}&lt;/pre&gt;
+ *      &lt;/dd&gt;
+ *
+ *      &lt;dt&gt;cdsRectMinWidth = int, default = 20&lt;/dt&gt;
+ *      &lt;dd&gt;响应选取时，最小拖动宽度&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;cdsRectMinHeight= int, default = 20&lt;/dt&gt;
+ *      &lt;dd&gt;响应选取时，最小拖动高度&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;cdsEnableTextSelectable = bool, default = false&lt;/dt&gt;
+ *      &lt;dd&gt;选取内容式，是否启用文本选取&lt;/dd&gt;
  *  &lt;/dl&gt; 
  *
  * @namespace   JC
@@ -267,10 +320,8 @@
  * @extends     JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
- * @version dev 0.1 2014-05-09
+ * @version dev 0.1 2014-05-29
  * @author  qiushaowei &lt;suches@btbtd.org&gt; | 75 Team
- * @example
-        &lt;h2&gt;JC.DragSelect 示例&lt;/h2&gt;
  */
     var _jdoc = $( document ), _jwin = $( window );
 
@@ -343,6 +394,7 @@
                 ;
             //JC.log( &#x27;move&#x27;, JC.f.ts() );
             _p._view.updateRect( _newPoint );
+            _p.trigger( &#x27;SELECT_MOVE&#x27;, [ _newPoint ] );
         };
 
     DragSelect.DEFAULT_SELECT_EVENT = 
@@ -370,6 +422,11 @@
             function(){
                 var _p = this, _ditems;
 
+                if( !_p._model.config() ) {
+                    JC.log( &#x27;JC.DragSelect config data not found!&#x27; );
+                    return;
+                }
+
                 _p.on( &#x27;inited&#x27;, function(){
                     _ditems = _p._model.delegateItems();
                     if( !_ditems.length ) return;
@@ -389,6 +446,7 @@
                 _p.on( &#x27;SELECT_START&#x27;, function( _evt, _sp, _srcEvt, _type ){
                     var _d;
                     _p.trigger( &#x27;CLEAR_EVENT&#x27; );
+                    _p.trigger( &#x27;REMOVE_ALL_REALTIME_EFFECT&#x27; );
                     _d = _p._model.initDragData( _sp, _type );
                     if( !_d ) return;
                     _d.ins = _p;
@@ -401,7 +459,7 @@
                     _jdoc.on( &#x27;mousemove&#x27;, DragSelect.DEFAULT_MOUSEMOVE );
                     _jdoc.on( &#x27;mouseup&#x27;, DragSelect.DEFAULT_MOUSEUP );
 
-                    !_p._model.disableUnselectable() 
+                    !_p._model.enableTextSelectable() 
                         &amp;&amp; _jdoc.on( &#x27;selectstart&#x27;, DragSelect.DEFAULT_SELECT_EVENT );
                 });
 
@@ -409,6 +467,8 @@
                     _jdoc.off( &#x27;mousemove&#x27;, DragSelect.DEFAULT_MOUSEMOVE );
                     _jdoc.off( &#x27;mouseup&#x27;, DragSelect.DEFAULT_MOUSEUP );
                     _jdoc.off( &#x27;selectstart&#x27;, DragSelect.DEFAULT_SELECT_EVENT );
+
+                    _p._model.realtimeEffect() &amp;&amp; _p.trigger( &#x27;REMOVE_ALL_REALTIME_EFFECT&#x27; );
                     _p.trigger( &#x27;CLEAR_DATA&#x27; );
                 });
 
@@ -439,9 +499,58 @@
                     //JC.log( &#x27;PROCESSS_SELECT&#x27;, _selectedItems.length );
                 });
 
+                _p.on( &#x27;SELECT_MOVE&#x27;, function( _evt, _newPoint ){
+                    if( _p._model.realtimeEffect() ){
+                        _p.trigger( &#x27;REALTIME_EFFECT&#x27;, [ _newPoint ] );
+                    }
+                });
+
+                _p.on( &#x27;REALTIME_EFFECT&#x27;, function( _evt, _newPoint ){
+                    if( !DragSelect.RECT().is( &#x27;:visible&#x27; ) ) return;
+                    if( !_p._model.realtimeClass( DragSelect.DRAG_DATA().data ) ) return;
+
+                    var _rectSize = selectorToRectangle( DragSelect.RECT() )
+                        , _params = DragSelect.DRAG_DATA()
+                        , _realtimeClass= _p._model.realtimeClass( DragSelect.DRAG_DATA().data )
+                        ;
+
+                    _p.trigger( &#x27;REMOVE_REALTIME_EFFECT&#x27;, _realtimeClass );
+
+                    if( _p._model.rectIsOutsize( _rectSize ) ){
+                        _p._model.preRealtimeItems( [] );
+                        return;
+                    }
+
+                    var _selectedItems = _p._model.getSelectItems( _rectSize, _p._model.items( _params.type ) );
+                    $.each( _selectedItems, function( _k, _item ){
+                        _item.addClass( _realtimeClass );
+                    });
+                    _p._model.preRealtimeItems( _selectedItems );
+                });
+
+                _p.on( &#x27;REMOVE_REALTIME_EFFECT&#x27;, function( _evt, _class, _items ){
+                    _items = _items || _p._model.preRealtimeItems();
+                    _items &amp;&amp; _class
+                        &amp;&amp; $.each( _items, function( _ix, _item ){ _item.removeClass( _class ); } );
+                });
+
+                _p.on( &#x27;REMOVE_ALL_REALTIME_EFFECT&#x27;, function(){
+                    _p._model.realtimeClass() &amp;&amp; _p._model.allItems().removeClass( _p._model.realtimeClass() );
+                    $.each( _p._model.config(), function( _k, _item ){
+                        _item.data 
+                            &amp;&amp; _item.data.realtimeClass 
+                            &amp;&amp; _p._model.items( _k ).removeClass( _items.data.realtimeClass );
+                    });
+                });
+
                 _p.on( &#x27;CLEAR_DATA&#x27;, function( _evt ){
                     DragSelect.DRAG_DATA( null );
                 });
+            }
+        
+        , clearCache:
+            function(){
+                this.trigger( &#x27;CLEAR_DATA&#x27; );
             }
 
         , _inited:
@@ -459,14 +568,57 @@
         init:
             function(){
                 //JC.log( &#x27;DragSelect.Model.init:&#x27;, new Date().getTime() );
+                this._itemsCache = {};
             }
 
-        , disableUnselectable: function(){ return this.boolProp( &#x27;cdsDisableUnselectable&#x27; ); }
+        , enableTextSelectable: 
+            function(){ 
+                return this.boolProp( &#x27;cdsEnableTextSelectable&#x27; );
+            }
+
+        , realtimeClass:
+            function( _data ){
+                var _r = this.config().realtimeClass || this.attrProp( &#x27;cdsRealtimeClass&#x27; );
+                _data &amp;&amp; _data.realtimeClass &amp;&amp; ( _r = _data.realtimeClass );
+                return _r || &#x27;&#x27;;
+            }
 
         , items:
             function( _type ){
-                return this.selector().find( _type );
+                var _r;
+                /*
+                if( this.enableCache() ){
+                    !this._itemsCache[ _type ] &amp;&amp; ( this._itemsCache[ _type ] = this.selector().find( _type ) );
+                    _r = this._itemsCache[ _type ];
+                }
+                */
+                !_r &amp;&amp; ( _r =  this.selector().find( _type ) );
+
+                return _r;
             }
+
+        , allItems:
+            function(){
+                var _r;
+                /*
+                if( this.enableCache() ){
+                    !this._allItems &amp;&amp; ( this._allItems = this.selector().find( this.delegateItems().join(&#x27;,&#x27;) ) );
+                    _r = this._allItems;
+                }
+                */
+                !_r &amp;&amp; ( _r =  this.selector().find( this.delegateItems().join(&#x27;,&#x27;) ) );
+                return _r;
+            }
+
+        , enableCache: function(){ return this.boolProp( &#x27;cdsEnableCache&#x27; ); }
+
+        , preRealtimeItems:
+            function( _setter ){
+                typeof _setter != &#x27;undefined&#x27; &amp;&amp; ( this._preRealtimeItems = _setter );
+                return this._preRealtimeItems;
+            }
+
+        , realtimeEffect: function(){ return this.boolProp( &#x27;cdsRealtimeEffect&#x27; ); }
 
         , getSelectItems:
             function( _rect, _items ){
@@ -495,7 +647,7 @@
         , initDragData:
             function( _selector, _k ){
                 var _p = this
-                    , _itemData = _p.config()[ _k ]
+                    , _itemData = _p.config().items[ _k ]
                     ;
                 if( !_itemData ) return;
                 return DragSelect.DRAG_DATA( { type: _k, data: _itemData } );
@@ -512,7 +664,7 @@
         , delegateItems:
             function(){
                 var _r = [];
-                $.each( this.config(), function( _k, _item ){
+                $.each( this.config().items, function( _k, _item ){
                     _r.push ( _k );
                 });
                 return _r;

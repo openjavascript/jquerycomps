@@ -1431,7 +1431,7 @@
             "namespace": "JC",
             "file": "../modules/JC.DragSelect/0.1/DragSelect.js",
             "line": 2,
-            "description": "组件用途简述\n\n <p><b>require</b>:\n     <a href=\"widnow.jQuery.html\">jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n </p>\n\n <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.DragSelect.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.DragSelect/0.1/_demo' target='_blank'>demo link</a></p>\n \n <h2>页面只要引用本脚本, 默认会处理 div class=\"js_compDragSelect\"</h2>\n\n <h2>可用的 HTML attribute</h2>\n\n <dl>\n     <dt></dt>\n     <dd><dd>\n </dl>",
+            "description": "DOM标签拖动选择\n\n <p><b>require</b>:\n     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n </p>\n\n <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.DragSelect.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.DragSelect/0.1/_demo' target='_blank'>demo link</a></p>\n \n <h2>页面只要引用本脚本, 默认会处理 div class=\"js_compDragSelect\"</h2>\n\n <h2>可用的 HTML attribute</h2>\n\n <dl>\n     <dt>cdsConfig = script selector</dt>\n     <dd>拖动内容的配置\n<xmp><script type=\"text/template\" class=\"js_cdsConfig\"></xmp><pre>\n   {\n       \"items\": {                                      //响应选择动作的选择器列表\n           \"td.js_pos_canSelect\": {                        //响应选择动作的选择器\n               \"addClass\": \"js_pos_selected\"               //选取到的内容 添加的 class\n               , \"removeClass\": \"js_pos_canSelect\"         //选取到的内容 清除的 class\n               , \"callback\":                               //选中内容后的回调\n                   function( _items, _type ){\n                       var _ins = this;\n                       JC.log( 'callback, td.js_pos_canSelect:', _type, _items.length );\n                   }\n           }\n           , \"td.js_pos_selected\": {\n               \"addClass\": \"js_pos_canSelect\"\n               , \"removeClass\": \"js_pos_selected\"\n               , \"callback\": \n                   function( _items, _type ){\n                       var _ins = this;\n                       JC.log( 'callback, td.js_pos_selected:', _type, _items.length );\n                   }\n           }\n       }\n       , \"realtimeClass\": \"js_cdsRealtimeEffect\"   //实时显示选取内容的 CSS 样式名\n       , \"commonCallback\":                         //选中内容的全局回调\n           function( _items, _type ){\n               var _ins = this;\n               JC.log( 'js_compDragSelect commonCallback', _items.length, JC.f.ts() );\n           }\n   }\n</pre><xmp></script></xmp>\n     <dd>\n\n     <dt>cdsRealtimeEffect = bool, default = false</dt>\n     <dd>是否实时显示选中内容的状态</dd>\n\n     <dt>cdsRealtimeClass = CSS class name</dt>\n     <dd>显示选中内容的 CSS 样式名</dd>\n\n     <dt>cdsCommonCallback = function</dt>\n     <dd>选中内容的全局回调\n<pre>function cdsCommonCallback( _items, _type ){\n   var _ins = this;\n   JC.log( 'js_compDragSelect commonCallback', _items.length, JC.f.ts() );\n}</pre>\n     </dd>\n\n     <dt>cdsRectMinWidth = int, default = 20</dt>\n     <dd>响应选取时，最小拖动宽度</dd>\n\n     <dt>cdsRectMinHeight= int, default = 20</dt>\n     <dd>响应选取时，最小拖动高度</dd>\n\n     <dt>cdsEnableTextSelectable = bool, default = false</dt>\n     <dd>选取内容式，是否启用文本选取</dd>\n </dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -1441,11 +1441,8 @@
                     "type": "Selector|string"
                 }
             ],
-            "version": "dev 0.1 2014-05-09",
-            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
-            "example": [
-                "\n       <h2>JC.DragSelect 示例</h2>"
-            ]
+            "version": "dev 0.1 2014-05-29",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team"
         },
         "JC.Fixed": {
             "name": "JC.Fixed",
@@ -7030,7 +7027,7 @@
         },
         {
             "file": "../modules/JC.DragSelect/0.1/DragSelect.js",
-            "line": 52,
+            "line": 103,
             "description": "初始化可识别的 DragSelect 实例",
             "itemtype": "method",
             "name": "init",
@@ -7051,14 +7048,14 @@
         },
         {
             "file": "../modules/JC.DragSelect/0.1/DragSelect.js",
-            "line": 346,
+            "line": 498,
             "description": "判断两个矩形是否有交集",
             "class": "JC.DragSelect",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.DragSelect/0.1/DragSelect.js",
-            "line": 383,
+            "line": 535,
             "description": "返回选择器的 矩形 位置",
             "class": "JC.DragSelect",
             "namespace": "JC"
@@ -19839,11 +19836,11 @@
         },
         {
             "message": "Missing item type\n判断两个矩形是否有交集",
-            "line": " ../modules/JC.DragSelect/0.1/DragSelect.js:346"
+            "line": " ../modules/JC.DragSelect/0.1/DragSelect.js:498"
         },
         {
             "message": "Missing item type\n返回选择器的 矩形 位置",
-            "line": " ../modules/JC.DragSelect/0.1/DragSelect.js:383"
+            "line": " ../modules/JC.DragSelect/0.1/DragSelect.js:535"
         },
         {
             "message": "Missing item type\n按比例缩放图片\n<br />返回: { width: int, height: int }",

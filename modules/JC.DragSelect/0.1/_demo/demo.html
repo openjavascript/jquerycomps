@@ -61,6 +61,11 @@
 
         requirejs( [ 'JC.DragSelect' ], function(){
         });
+
+        function cdsCommonCallback( _items, _type ){
+            var _ins = this;
+            JC.log( 'js_compDragSelect commonCallback', _items.length, JC.f.ts() );
+        }
     </script>
 </head>    
 <body>
@@ -69,22 +74,34 @@
     <dl class="defDl">
         <dt></dt>
         <dd>
-            <div class="js_compDragSelect" cdsConfig="/script.js_cdsConfig" >
+            <div class="js_compDragSelect" 
+                cdsConfig="/script.js_cdsConfig" 
+                cdsRealtimeEffect="true" 
+                cdsRealtimeClass="js_cdsRealtimeEffect" 
+                cdsCommonCallback="cdsCommonCallback" 
+                >
                 <script type="text/template" class="js_cdsConfig">
                     {
-                        "td.js_dataItem": {
-                            "addClass": "js_cdsSelecteClass"
-                            , "removeClass": "js_dataItem"
-                        }
-                        , "td.js_cdsSelecteClass": {
-                            "addClass": "js_dataItem"
-                            , "removeClass": "js_cdsSelecteClass"
-                        }
-                        , "commonCallback":
-                            function( _items, _type ){
-                                var _ins = this;
-                                JC.log( 'js_compDragSelect commonCallback', _items.length, JC.f.ts() );
+                        "items": {
+                            "td.js_pos_canSelect": {
+                                "addClass": "js_pos_selected"
+                                , "removeClass": "js_pos_canSelect"
+                                , "callback": 
+                                    function( _items, _type ){
+                                        var _ins = this;
+                                        JC.log( 'callback, td.js_pos_canSelect:', _type, _items.length );
+                                    }
                             }
+                            , "td.js_pos_selected": {
+                                "addClass": "js_pos_canSelect"
+                                , "removeClass": "js_pos_selected"
+                                , "callback": 
+                                    function( _items, _type ){
+                                        var _ins = this;
+                                        JC.log( 'callback, td.js_pos_selected:', _type, _items.length );
+                                    }
+                            }
+                        }
                     }
                 </script>
                 <table cellspacing='0' style="width:50%" class="unselectable" unselectable="on">
@@ -104,208 +121,208 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                         <tr>
-                            <td class="js_dataItem">1</td>
-                            <td class="js_dataItem">2</td>
-                            <td class="js_dataItem">3</td>
-                            <td class="js_dataItem">4</td>
-                            <td class="js_dataItem">5</td>
-                            <td class="js_dataItem">6</td>
-                            <td class="js_dataItem">7</td>
-                            <td class="js_dataItem">8</td>
-                            <td class="js_dataItem">9</td>
-                            <td class="js_dataItem">10</td>
+                            <td class="js_pos_canSelect">1</td>
+                            <td class="js_pos_canSelect">2</td>
+                            <td class="js_pos_canSelect">3</td>
+                            <td class="js_pos_canSelect">4</td>
+                            <td class="js_pos_canSelect">5</td>
+                            <td class="js_pos_canSelect">6</td>
+                            <td class="js_pos_canSelect">7</td>
+                            <td class="js_pos_canSelect">8</td>
+                            <td class="js_pos_canSelect">9</td>
+                            <td class="js_pos_canSelect">10</td>
                         </tr>
                     </tbody>
                 </table>

@@ -146,10 +146,9 @@
         </div>
 </div>
 <div class="box intro">
-    <p>组件用途简述</p>
+    <p>DOM标签拖动选择</p>
  <p><b>require</b>:
-     <a href="widnow.jQuery.html">jQuery</a>
-     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  </p>
  <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.DragSelect.html' target='_blank'>API docs</a>
@@ -157,8 +156,56 @@
  <h2>页面只要引用本脚本, 默认会处理 div class=&quot;js_compDragSelect&quot;</h2>
  <h2>可用的 HTML attribute</h2>
  <dl>
-     <dt></dt>
-     <dd><dd>
+     <dt>cdsConfig = script selector</dt>
+     <dd>拖动内容的配置
+<xmp><script type="text/template" class="js_cdsConfig"></xmp><pre>
+   {
+       &quot;items&quot;: {                                      //响应选择动作的选择器列表
+           &quot;td.js_pos_canSelect&quot;: {                        //响应选择动作的选择器
+               &quot;addClass&quot;: &quot;js_pos_selected&quot;               //选取到的内容 添加的 class
+               , &quot;removeClass&quot;: &quot;js_pos_canSelect&quot;         //选取到的内容 清除的 class
+               , &quot;callback&quot;:                               //选中内容后的回调
+                   function( _items, _type ){
+                       var _ins = this;
+                       JC.log( &#39;callback, td.js_pos_canSelect:&#39;, _type, _items.length );
+                   }
+           }
+           , &quot;td.js_pos_selected&quot;: {
+               &quot;addClass&quot;: &quot;js_pos_canSelect&quot;
+               , &quot;removeClass&quot;: &quot;js_pos_selected&quot;
+               , &quot;callback&quot;: 
+                   function( _items, _type ){
+                       var _ins = this;
+                       JC.log( &#39;callback, td.js_pos_selected:&#39;, _type, _items.length );
+                   }
+           }
+       }
+       , &quot;realtimeClass&quot;: &quot;js_cdsRealtimeEffect&quot;   //实时显示选取内容的 CSS 样式名
+       , &quot;commonCallback&quot;:                         //选中内容的全局回调
+           function( _items, _type ){
+               var _ins = this;
+               JC.log( &#39;js_compDragSelect commonCallback&#39;, _items.length, JC.f.ts() );
+           }
+   }
+</pre><xmp></script></xmp>
+     <dd>
+     <dt>cdsRealtimeEffect = bool, default = false</dt>
+     <dd>是否实时显示选中内容的状态</dd>
+     <dt>cdsRealtimeClass = CSS class name</dt>
+     <dd>显示选中内容的 CSS 样式名</dd>
+     <dt>cdsCommonCallback = function</dt>
+     <dd>选中内容的全局回调
+<pre>function cdsCommonCallback( _items, _type ){
+   var _ins = this;
+   JC.log( &#39;js_compDragSelect commonCallback&#39;, _items.length, JC.f.ts() );
+}</pre>
+     </dd>
+     <dt>cdsRectMinWidth = int, default = 20</dt>
+     <dd>响应选取时，最小拖动宽度</dd>
+     <dt>cdsRectMinHeight= int, default = 20</dt>
+     <dd>响应选取时，最小拖动高度</dd>
+     <dt>cdsEnableTextSelectable = bool, default = false</dt>
+     <dd>选取内容式，是否启用文本选取</dd>
  </dl>
 </div>
     <div class="constructor">
@@ -190,12 +237,6 @@
                     </div>
                 </li>
             </ul>
-        </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>   &lt;h2&gt;JC.DragSelect 示例&lt;/h2&gt;</code></pre>
-            </div>
         </div>
 </div>
     </div>
@@ -329,7 +370,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.DragSelect_0.1_DragSelect.js.html#l52"><code>..&#x2F;modules&#x2F;JC.DragSelect&#x2F;0.1&#x2F;DragSelect.js:52</code></a>
+        <a href="../files/.._modules_JC.DragSelect_0.1_DragSelect.js.html#l103"><code>..&#x2F;modules&#x2F;JC.DragSelect&#x2F;0.1&#x2F;DragSelect.js:103</code></a>
         </p>
     </div>
     <div class="description">
