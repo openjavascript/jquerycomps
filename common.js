@@ -11,7 +11,9 @@
      */
     window.JC = window.JC || {};
     JC.log = function(){ JC.debug && console.log( sliceArgs( arguments ).join(' ') ); };
-    JC.dir = function( _obj ){ JC.debug && console.dir( _obj ); };
+    JC.dir = function(){ 
+        JC.debug && $.each( sliceArgs( arguments ), function( _ix, _item ){ console.dir( _item )} );
+    };
 
     JC.PATH = JC.PATH || scriptPath();
 
