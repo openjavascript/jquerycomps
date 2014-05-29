@@ -472,10 +472,6 @@
                 return _r;
             }
 
-        , checkMinRect:
-            function(){
-            }
-
         , rectMinWidth: function(){ return this.intProp( 'cdsRectMinWidth' ); }
         , rectMinHeight: function(){ return this.intProp( 'cdsRectMinHeight' ); }
 
