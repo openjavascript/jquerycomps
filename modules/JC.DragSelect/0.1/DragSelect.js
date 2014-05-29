@@ -279,7 +279,7 @@
 
                 _p.on( 'PROCESSS_SELECT', function( _evt,_rectSize, _params ){
                     if( !DragSelect.RECT().is( ':visible' ) ) return;
-                    var _selectedItems = _p._model.getSelectItems( _rectSize, _p._model.items( _params.type ) );
+                    var _selectedItems = _p._model.getSelectItems( _rectSize, _params.type );
                     if( !_selectedItems.length ) return;
                     if( _params.data ){
                         $.each( _selectedItems, function( _k, _item ){
@@ -314,7 +314,7 @@
                         return;
                     }
 
-                    var _selectedItems = _p._model.getSelectItems( _rectSize, _p._model.items( _params.type ) );
+                    var _selectedItems = _p._model.getSelectItems( _rectSize, _params.type );
                     $.each( _selectedItems, function( _k, _item ){
                         _item.addClass( _realtimeClass );
                     });
@@ -414,16 +414,12 @@
         , realtimeEffect: function(){ return this.boolProp( 'cdsRealtimeEffect' ); }
 
         , getSelectItems:
-            function( _rect, _items ){
-                var _r = [];
-
-                //JC.dir( _rect );
-
+            function( _rect, _type ){
+                var _p = this, _r = [], _items = _p.items( _type );
                 $.each( _items, function( _k, _item ){
                     _item = $( _item );
                     var _itemRect = selectorToRectangle( _item );
                     if( intersectRect( _rect, _itemRect ) ){
-                        //JC.dir( _itemRect )
                         _r.push( _item );
                     }
                 });
