@@ -123,7 +123,12 @@
             }
             return _r;
         };
-
+    /**
+     * 用于显示选取范围的矩形
+     * @method RECT
+     * @static
+     * @return selector
+     */
     DragSelect.RECT =
         function(){
             if( !( DragSelect._RECT && DragSelect._RECT.length ) ){
@@ -132,8 +137,19 @@
             }
             return DragSelect._RECT;
         }
+    /**
+     * 用于显示选取范围的矩形模板
+     * @property RECT_TPL
+     * @type    string
+     * @default     <div class="js_compDragSelect_rect" style="display:none;position:absolute;left: -9999px;"></div>
+     * @static
+     */
     DragSelect.RECT_TPL = '<div class="js_compDragSelect_rect" style="display:none;position:absolute;left: -9999px;"></div>' ;
-
+    /**
+     * 默认 mouseup 事件
+     * @method DEFAULT_MOUSEUP
+     * @static
+     */
     DragSelect.DEFAULT_MOUSEUP =
         function( _evt ){
             var _d = DragSelect.DRAG_DATA();
@@ -142,7 +158,11 @@
             //JC.log( 'up', JC.f.ts() );
             _p.trigger( 'SELECT_DONE', [ _p._model.offset( _evt ) ] );
         };
-
+    /**
+     * 默认 mousemove 事件
+     * @method DEFAULT_MOUSEMOVE
+     * @static
+     */
     DragSelect.DEFAULT_MOUSEMOVE = 
         function( _evt ){
             var _d = DragSelect.DRAG_DATA();
@@ -154,18 +174,33 @@
             _p._view.updateRect( _newPoint );
             _p.trigger( 'SELECT_MOVE', [ _newPoint ] );
         };
-
+    /**
+     * 默认 selectstart 事件
+     * @method DEFAULT_SELECT_EVENT
+     * @static
+     */
     DragSelect.DEFAULT_SELECT_EVENT = 
         function(){
             return false;
         };
-
+    /**
+     * 获取当前拖动的相关数据
+     * @method DRAG_DATA
+     * @static
+     * @return object
+     */
     DragSelect.DRAG_DATA =
         function( _setter ){
             typeof _setter != 'undefined' && ( DragSelect._DRAG_DATA = _setter );
             return DragSelect._DRAG_DATA;
         };
-
+    /**
+     * 最小拖动范围, 小于这个范围将不予处理
+     * @property MIN_RECT
+     * @type        object
+     * @default     width: 20, height: 20
+     * @static
+     */
     DragSelect.MIN_RECT = { width: 20, height: 20 };
 
     JC.BaseMVC.build( DragSelect );
@@ -190,7 +225,7 @@
                     if( !_ditems.length ) return;
 
                     _p.selector().delegate( _ditems.join(','), 'click', function( _evt ){
-                        JC.log( 'click', JC.f.ts() );
+                        //JC.log( 'click', JC.f.ts() );
                     });
 
                     $.each( _ditems, function( _k, _item ){
