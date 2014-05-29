@@ -61,11 +61,6 @@
 
         requirejs( [ 'JC.DragSelect' ], function(){
         });
-
-        function cdsCommonCallback( _items, _type ){
-            var _ins = this;
-            JC.log( 'js_compDragSelect commonCallback', _items.length, JC.f.ts() );
-        }
     </script>
 </head>    
 <body>
@@ -74,34 +69,26 @@
     <dl class="defDl">
         <dt></dt>
         <dd>
-            <div class="js_compDragSelect" 
-                cdsConfig="/script.js_cdsConfig" 
-                cdsRealtimeEffect="true" 
-                cdsRealtimeClass="js_cdsRealtimeEffect" 
-                cdsCommonCallback="cdsCommonCallback" 
-                >
+            <div class="js_compDragSelect" cdsConfig="/script.js_cdsConfig" cdsRealtimeEffect="true" cdsEnableCache="true" >
                 <script type="text/template" class="js_cdsConfig">
                     {
                         "items": {
                             "td.js_pos_canSelect": {
                                 "addClass": "js_pos_selected"
                                 , "removeClass": "js_pos_canSelect"
-                                , "callback": 
-                                    function( _items, _type ){
-                                        var _ins = this;
-                                        JC.log( 'callback, td.js_pos_canSelect:', _type, _items.length );
-                                    }
+                                , "realtimeClass": "js_cdsRealtimeEffect"
                             }
                             , "td.js_pos_selected": {
                                 "addClass": "js_pos_canSelect"
                                 , "removeClass": "js_pos_selected"
-                                , "callback": 
-                                    function( _items, _type ){
-                                        var _ins = this;
-                                        JC.log( 'callback, td.js_pos_selected:', _type, _items.length );
-                                    }
                             }
                         }
+                        , "commonCallback":
+                            function( _items, _type ){
+                                var _ins = this;
+                                JC.log( 'js_compDragSelect commonCallback', _items.length, JC.f.ts() );
+                            }
+                        , "realtimeClass": "js_cdsRealtimeEffect"
                     }
                 </script>
                 <table cellspacing='0' style="width:50%" class="unselectable" unselectable="on">

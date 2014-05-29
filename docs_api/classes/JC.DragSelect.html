@@ -142,10 +142,9 @@
         </div>
 </div>
 <div class="box intro">
-    <p>组件用途简述</p>
+    <p>DOM标签拖动选择</p>
  <p><b>require</b>:
-     <a href="widnow.jQuery.html">jQuery</a>
-     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  </p>
  <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.DragSelect.html' target='_blank'>API docs</a>
@@ -153,8 +152,56 @@
  <h2>页面只要引用本脚本, 默认会处理 div class=&quot;js_compDragSelect&quot;</h2>
  <h2>可用的 HTML attribute</h2>
  <dl>
-     <dt></dt>
-     <dd><dd>
+     <dt>cdsConfig = script selector</dt>
+     <dd>拖动内容的配置
+<xmp><script type="text/template" class="js_cdsConfig"></xmp><pre>
+   {
+       &quot;items&quot;: {                                      //响应选择动作的选择器列表
+           &quot;td.js_pos_canSelect&quot;: {                        //响应选择动作的选择器
+               &quot;addClass&quot;: &quot;js_pos_selected&quot;               //选取到的内容 添加的 class
+               , &quot;removeClass&quot;: &quot;js_pos_canSelect&quot;         //选取到的内容 清除的 class
+               , &quot;callback&quot;:                               //选中内容后的回调
+                   function( _items, _type ){
+                       var _ins = this;
+                       JC.log( &#39;callback, td.js_pos_canSelect:&#39;, _type, _items.length );
+                   }
+           }
+           , &quot;td.js_pos_selected&quot;: {
+               &quot;addClass&quot;: &quot;js_pos_canSelect&quot;
+               , &quot;removeClass&quot;: &quot;js_pos_selected&quot;
+               , &quot;callback&quot;: 
+                   function( _items, _type ){
+                       var _ins = this;
+                       JC.log( &#39;callback, td.js_pos_selected:&#39;, _type, _items.length );
+                   }
+           }
+       }
+       , &quot;realtimeClass&quot;: &quot;js_cdsRealtimeEffect&quot;   //实时显示选取内容的 CSS 样式名
+       , &quot;commonCallback&quot;:                         //选中内容的全局回调
+           function( _items, _type ){
+               var _ins = this;
+               JC.log( &#39;js_compDragSelect commonCallback&#39;, _items.length, JC.f.ts() );
+           }
+   }
+</pre><xmp></script></xmp>
+     <dd>
+     <dt>cdsRealtimeEffect = bool, default = false</dt>
+     <dd>是否实时显示选中内容的状态</dd>
+     <dt>cdsRealtimeClass = CSS class name</dt>
+     <dd>显示选中内容的 CSS 样式名</dd>
+     <dt>cdsCommonCallback = function</dt>
+     <dd>选中内容的全局回调
+<pre>function cdsCommonCallback( _items, _type ){
+   var _ins = this;
+   JC.log( &#39;js_compDragSelect commonCallback&#39;, _items.length, JC.f.ts() );
+}</pre>
+     </dd>
+     <dt>cdsRectMinWidth = int, default = 20</dt>
+     <dd>响应选取时，最小拖动宽度</dd>
+     <dt>cdsRectMinHeight= int, default = 20</dt>
+     <dd>响应选取时，最小拖动高度</dd>
+     <dt>cdsEnableTextSelectable = bool, default = false</dt>
+     <dd>选取内容式，是否启用文本选取</dd>
  </dl>
 </div>
     <div class="constructor">
@@ -187,18 +234,13 @@
                 </li>
             </ul>
         </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre class="code prettyprint"><code>   &lt;h2&gt;JC.DragSelect 示例&lt;/h2&gt;</code></pre>
-            </div>
-        </div>
 </div>
     </div>
 <div id="classdocs" class="tabview">
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
     <div>
         <div id="index" class="api-class-tabpanel index">
@@ -219,17 +261,50 @@
                                 <a href="#method__initHanlderEvent">_initHanlderEvent</a>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_DEFAULT_MOUSEMOVE">DEFAULT_MOUSEMOVE</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_DEFAULT_MOUSEUP">DEFAULT_MOUSEUP</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_DEFAULT_SELECT_EVENT">DEFAULT_SELECT_EVENT</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_DRAG_DATA">DRAG_DATA</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_init">init</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_on">on</a>
                             </li>
+                            <li class="index-item method">
+                                <a href="#method_RECT">RECT</a>
+                                    <span class="flag static">static</span>
+                            </li>
                             <li class="index-item method inherited">
                                 <a href="#method_selector">selector</a>
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_trigger">trigger</a>
+                            </li>
+                    </ul>
+                </div>
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+                    <ul class="index-list properties extends">
+                            <li class="index-item property">
+                                <a href="#property_MIN_RECT">MIN_RECT</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_RECT_TPL">RECT_TPL</a>
+                                    <span class="flag static">static</span>
                             </li>
                     </ul>
                 </div>
@@ -309,6 +384,71 @@
         <p>内部事件初始化方法</p>
     </div>
 </div>
+                    <div id="method_DEFAULT_MOUSEMOVE" class="method item">
+    <h3 class="name"><code>DEFAULT_MOUSEMOVE</code></h3>
+        <span class="paren">()</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.DragSelect_0.1_DragSelect.js.html#l161"><code>..&#x2F;modules&#x2F;JC.DragSelect&#x2F;0.1&#x2F;DragSelect.js:161</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>默认 mousemove 事件</p>
+    </div>
+</div>
+                    <div id="method_DEFAULT_MOUSEUP" class="method item">
+    <h3 class="name"><code>DEFAULT_MOUSEUP</code></h3>
+        <span class="paren">()</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.DragSelect_0.1_DragSelect.js.html#l148"><code>..&#x2F;modules&#x2F;JC.DragSelect&#x2F;0.1&#x2F;DragSelect.js:148</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>默认 mouseup 事件</p>
+    </div>
+</div>
+                    <div id="method_DEFAULT_SELECT_EVENT" class="method item">
+    <h3 class="name"><code>DEFAULT_SELECT_EVENT</code></h3>
+        <span class="paren">()</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.DragSelect_0.1_DragSelect.js.html#l177"><code>..&#x2F;modules&#x2F;JC.DragSelect&#x2F;0.1&#x2F;DragSelect.js:177</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>默认 selectstart 事件</p>
+    </div>
+</div>
+                    <div id="method_DRAG_DATA" class="method item">
+    <h3 class="name"><code>DRAG_DATA</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.DragSelect_0.1_DragSelect.js.html#l186"><code>..&#x2F;modules&#x2F;JC.DragSelect&#x2F;0.1&#x2F;DragSelect.js:186</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取当前拖动的相关数据</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    <p>object</p>
+            </div>
+        </div>
+</div>
                     <div id="method_init" class="method item">
     <h3 class="name"><code>init</code></h3>
         <div class="args">
@@ -325,7 +465,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.DragSelect_0.1_DragSelect.js.html#l52"><code>..&#x2F;modules&#x2F;JC.DragSelect&#x2F;0.1&#x2F;DragSelect.js:52</code></a>
+        <a href="../files/.._modules_JC.DragSelect_0.1_DragSelect.js.html#l103"><code>..&#x2F;modules&#x2F;JC.DragSelect&#x2F;0.1&#x2F;DragSelect.js:103</code></a>
         </p>
     </div>
     <div class="description">
@@ -397,6 +537,29 @@
             </div>
         </div>
 </div>
+                    <div id="method_RECT" class="method item">
+    <h3 class="name"><code>RECT</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.DragSelect_0.1_DragSelect.js.html#l126"><code>..&#x2F;modules&#x2F;JC.DragSelect&#x2F;0.1&#x2F;DragSelect.js:126</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>用于显示选取范围的矩形</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    <p>selector</p>
+            </div>
+        </div>
+</div>
                     <div id="method_selector" class="method item inherited">
     <h3 class="name"><code>selector</code></h3>
         <span class="paren">()</span>
@@ -457,6 +620,39 @@
                     <p>BaseMVCInstance</p>
             </div>
         </div>
+</div>
+            </div>
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+                    <div id="property_MIN_RECT" class="property item">
+    <h3 class="name"><code>MIN_RECT</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.DragSelect_0.1_DragSelect.js.html#l197"><code>..&#x2F;modules&#x2F;JC.DragSelect&#x2F;0.1&#x2F;DragSelect.js:197</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>最小拖动范围, 小于这个范围将不予处理</p>
+    </div>
+        <p><strong>Default:</strong> width: 20, height: 20</p>
+</div>
+                    <div id="property_RECT_TPL" class="property item">
+    <h3 class="name"><code>RECT_TPL</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.DragSelect_0.1_DragSelect.js.html#l140"><code>..&#x2F;modules&#x2F;JC.DragSelect&#x2F;0.1&#x2F;DragSelect.js:140</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>用于显示选取范围的矩形模板</p>
+    </div>
+        <p><strong>Default:</strong> &lt;div class=&quot;js_compDragSelect_rect&quot; style=&quot;display:none;position:absolute;left: -9999px;&quot;&gt;&lt;/div&gt;</p>
 </div>
             </div>
     </div>
