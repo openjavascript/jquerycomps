@@ -79,8 +79,8 @@
                                 "addClass": "js_pos_selected"
                                 , "removeClass": "js_pos_canSelect"
                                 , "callback": 
-                                    function( _items, _type ){
-                                        var _ins = this;
+                                    function( _items, _type, _ins ){
+                                        var _selector = this;
                                         JC.log( 'callback, td.js_pos_canSelect:', _type, _items.length );
                                     }
                             }
@@ -88,8 +88,8 @@
                                 "addClass": "js_pos_canSelect"
                                 , "removeClass": "js_pos_selected"
                                 , "callback": 
-                                    function( _items, _type ){
-                                        var _ins = this;
+                                    function( _items, _type, _ins ){
+                                        var _selector = this;
                                         JC.log( 'callback, td.js_pos_selected:', _type, _items.length );
                                     }
                             }
@@ -113,10 +113,10 @@
 
                         , "realtimeClass": "js_cdsRealtimeEffect"
 
-                        , "commonCallback":
-                            function( _items, _type ){
-                                var _ins = this;
-                                JC.log( 'js_compDragSelect commonCallback', _items.length, JC.f.ts() );
+                        , "callback":
+                            function( _items, _type, _ins ){
+                                var _selector = this;
+                                JC.log( 'js_compDragSelect callback', _items.length, JC.f.ts() );
                             }
                     }
                 </script>

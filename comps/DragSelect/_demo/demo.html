@@ -61,10 +61,21 @@
         JC.use( [ 'JC.DragSelect' ], function(){
         });
 
-        function cdsCommonCallback( _items, _type ){
-            var _ins = this;
-            JC.log( 'js_compDragSelect commonCallback', _items.length, JC.f.ts() );
+        function cdsCallback( _items, _type, _ins ){
+            var _selector = this;
+            JC.log( 'cdsCallback', _items.length, JC.f.ts() );
         }
+
+        function cdsSelectCallback( _items, _type, _ins ){
+            var _selector = this;
+            JC.log( 'cdsSelectCallback', _items.length, JC.f.ts() );
+        }
+
+        function cdsUnselectCallback( _items, _type, _ins ){
+            var _selector = this;
+            JC.log( 'cdsUnselectCallback', _items.length, JC.f.ts() );
+        }
+
     </script>
 </head>    
 <body>
@@ -77,7 +88,7 @@
                 cdsConfig="/script.js_cdsConfig" 
                 cdsRealtimeEffect="true" 
                 cdsRealtimeClass="js_cdsRealtimeEffect" 
-                cdsCommonCallback="cdsCommonCallback" 
+                cdsCallback="cdsCallback" 
                 >
                 <script type="text/template" class="js_cdsConfig">
                     {
@@ -85,20 +96,12 @@
                             "td.js_pos_canSelect": {
                                 "addClass": "js_pos_selected"
                                 , "removeClass": "js_pos_canSelect"
-                                , "callback": 
-                                    function( _items, _type ){
-                                        var _ins = this;
-                                        JC.log( 'callback, td.js_pos_canSelect:', _type, _items.length );
-                                    }
+                                , "callback": cdsSelectCallback
                             }
                             , "td.js_pos_selected": {
                                 "addClass": "js_pos_canSelect"
                                 , "removeClass": "js_pos_selected"
-                                , "callback": 
-                                    function( _items, _type ){
-                                        var _ins = this;
-                                        JC.log( 'callback, td.js_pos_selected:', _type, _items.length );
-                                    }
+                                , "callback": cdsUnselectCallback
                             }
                         }
                     }

@@ -256,8 +256,8 @@
                 &quot;addClass&quot;: &quot;js_pos_selected&quot;               //选取到的内容 添加的 class
                 , &quot;removeClass&quot;: &quot;js_pos_canSelect&quot;         //选取到的内容 清除的 class
                 , &quot;callback&quot;:                               //选中内容后的回调
-                    function( _items, _type ){
-                        var _ins = this;
+                    function( _items, _type, _ins ){
+                        var _selector = this;
                         JC.log( &#x27;callback, td.js_pos_canSelect:&#x27;, _type, _items.length );
                     }
             }
@@ -265,17 +265,17 @@
                 &quot;addClass&quot;: &quot;js_pos_canSelect&quot;
                 , &quot;removeClass&quot;: &quot;js_pos_selected&quot;
                 , &quot;callback&quot;: 
-                    function( _items, _type ){
-                        var _ins = this;
+                    function( _items, _type, _ins ){
+                        var _selector = this;
                         JC.log( &#x27;callback, td.js_pos_selected:&#x27;, _type, _items.length );
                     }
             }
         }
         , &quot;realtimeClass&quot;: &quot;js_cdsRealtimeEffect&quot;   //实时显示选取内容的 CSS 样式名
-        , &quot;commonCallback&quot;:                         //选中内容的全局回调
-            function( _items, _type ){
-                var _ins = this;
-                JC.log( &#x27;js_compDragSelect commonCallback&#x27;, _items.length, JC.f.ts() );
+        , &quot;callback&quot;:                         //选中内容的全局回调
+            function( _items, _type, _ins ){
+                var _selector = this;
+                JC.log( &#x27;js_compDragSelect callback&#x27;, _items.length, JC.f.ts() );
             }
     }
 &lt;/pre&gt;&lt;xmp&gt;&lt;/script&gt;&lt;/xmp&gt;
@@ -287,11 +287,24 @@
  *      &lt;dt&gt;cdsRealtimeClass = CSS class name&lt;/dt&gt;
  *      &lt;dd&gt;显示选中内容的 CSS 样式名&lt;/dd&gt;
  *
- *      &lt;dt&gt;cdsCommonCallback = function&lt;/dt&gt;
+ *      &lt;dt&gt;cdsCallback = function&lt;/dt&gt;
  *      &lt;dd&gt;选中内容的全局回调
-&lt;pre&gt;function cdsCommonCallback( _items, _type ){
-    var _ins = this;
-    JC.log( &#x27;js_compDragSelect commonCallback&#x27;, _items.length, JC.f.ts() );
+&lt;pre&gt;function cdsCallback( _items, _type, _ins ){
+    var _selector = this;
+    JC.log( &#x27;js_compDragSelect callback&#x27;, _items.length, JC.f.ts() );
+}&lt;/pre&gt;
+ *      &lt;/dd&gt;
+ *
+ *      &lt;dt&gt;cdsItemFilter = function&lt;/dt&gt;
+ *      &lt;dd&gt;选取内容时的过滤函数, 返回 false 将忽略 _item
+&lt;pre&gt;function cdsItemFilter( _item, _type, _itemData, _configData ){
+    var _selector = this
+        , _r = true
+        //, _minDate = JC.f.pureDate( JC.f.dateDetect( &#x27;now,1d&#x27; ) )
+        //, _itemDate = JC.f.parseISODate( _item.data( &#x27;date&#x27; ) )
+        ;
+    //_itemDate.getTime() &lt; _minDate.getTime() &amp;&amp; ( _r = false );
+    return _r;
 }&lt;/pre&gt;
  *      &lt;/dd&gt;
  *
@@ -511,16 +524,16 @@
 
                 _p.on( &#x27;PROCESSS_SELECT&#x27;, function( _evt,_rectSize, _params ){
                     if( !DragSelect.RECT().is( &#x27;:visible&#x27; ) ) return;
-                    var _selectedItems = _p._model.getSelectItems( _rectSize, _p._model.items( _params.type ) );
+                    var _selectedItems = _p._model.getSelectItems( _rectSize, _params.type );
                     if( !_selectedItems.length ) return;
                     if( _params.data ){
                         $.each( _selectedItems, function( _k, _item ){
                             _params.data.addClass &amp;&amp; _item.addClass( _params.data.addClass );
                             _params.data.removeClass &amp;&amp; _item.removeClass( _params.data.removeClass );
                         });
-                        _params.data.callback &amp;&amp; _params.data.callback.call( _p, _selectedItems, _params.type );
+                        _params.data.callback &amp;&amp; _params.data.callback.call( _p.selector(), _selectedItems, _params.type, _p );
                     }
-                    _p._model.commonCallback() &amp;&amp; _p._model.commonCallback().call( _p, _selectedItems, _params.type );
+                    _p._model.callback() &amp;&amp; _p._model.callback().call( _p.selector(), _selectedItems, _params.type, _p );
                     //JC.log( &#x27;PROCESSS_SELECT&#x27;, _selectedItems.length );
                 });
 
@@ -546,7 +559,7 @@
                         return;
                     }
 
-                    var _selectedItems = _p._model.getSelectItems( _rectSize, _p._model.items( _params.type ) );
+                    var _selectedItems = _p._model.getSelectItems( _rectSize, _params.type );
                     $.each( _selectedItems, function( _k, _item ){
                         _item.addClass( _realtimeClass );
                     });
@@ -646,16 +659,15 @@
         , realtimeEffect: function(){ return this.boolProp( &#x27;cdsRealtimeEffect&#x27; ); }
 
         , getSelectItems:
-            function( _rect, _items ){
-                var _r = [];
-
-                //JC.dir( _rect );
-
+            function( _rect, _type ){
+                var _p = this, _r = [], _items = _p.items( _type ), _filter;
                 $.each( _items, function( _k, _item ){
                     _item = $( _item );
                     var _itemRect = selectorToRectangle( _item );
                     if( intersectRect( _rect, _itemRect ) ){
-                        //JC.dir( _itemRect )
+                        if( _filter = _p.itemFilter( _type ) ){
+                            if( _filter.call( _p.selector(), _item, _type, _p.config().items[ _type ], _p.config() ) === false ) return;
+                        }
                         _r.push( _item );
                     }
                 });
@@ -663,9 +675,23 @@
                 return _r;
             }
 
-        , commonCallback:
+        , itemFilter:
+            function( _type ){
+                var _r = this.callbackProp( &#x27;cdsItemFilter&#x27; );
+
+                this.config().itemFilter &amp;&amp; ( _r = this.config().itemFilter );
+
+                this.config().items 
+                    &amp;&amp; this.config().items[ _type ]
+                    &amp;&amp; this.config().items[ _type ].itemFilter
+                    &amp;&amp; ( _r = ( this.config().items[ _type ].itemFilter ) )
+                    ;
+                return _r;
+            }
+
+        , callback:
             function(){
-                var _r = this.config().commonCallback || this.callbackProp( &#x27;cdsCommonCallback&#x27; );
+                var _r = this.config().callback || this.callbackProp( &#x27;cdsCallback&#x27; );
                 return _r;
             }
 
@@ -702,10 +728,6 @@
                         , &#x27;y&#x27;: _evt.pageY
                 };
                 return _r;
-            }
-
-        , checkMinRect:
-            function(){
             }
 
         , rectMinWidth: function(){ return this.intProp( &#x27;cdsRectMinWidth&#x27; ); }
@@ -816,7 +838,9 @@
         }
     }
     _jdoc.ready( function(){
-        DragSelect.autoInit &amp;&amp; DragSelect.init();
+        JC.f.safeTimeout( function(){
+            DragSelect.autoInit &amp;&amp; DragSelect.init();
+        }, null, &#x27;INIT_DRAG_SELECT&#x27;, 200 );
     });
 
     return JC.DragSelect;
