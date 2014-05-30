@@ -30,13 +30,15 @@
             JC.debug = true;
 
             var CRMSchedule_LIST_DATA = {
-                list_data: [ 
+                "start_date": "2011-03-03"
+                , "end_date": "2016-08-09"
+                , "display_date": "2015-06"
+                , "list_data": [ 
                     { "name": "pos1", "id": "1"
                         , "parent": [ { "name": "parent1", "id": "11" },  { "name": "parent2", "id": "22" } ] 
                         , "position_date": { 
                             "2014-04-01": { "status": 1, "company": "company 1" }
                             , "2014-04-02": { "status": 2  }
-                            , "2014-05-21": { "status": 6  }
                         }
                     } 
 
@@ -75,7 +77,6 @@
             };
 
             requirejs( [ 'Bizs.CRMSchedule' ], function(){
-                JC.Tips.autoInit = false;
             });
 
         </script>
@@ -111,42 +112,28 @@
                                 bccMonthDataUrl="./data/month_data.php?date={1}&id={0}"
                                 bccDateRangeUrl="./data/dateRange.php?id={0}&start_date={1}&end_date={2}"
 
-                                bccActionType="edit"
-                                bccSaveSelectBox="/div.js_bccSaveSelectBox"
-                                bccSaveSelectItemTpl="script.js_bccSaveSelectItemTpl"
-                                bccSaveSelectItemClass=".js_bccSaveSelectItem"
-                                bccDataLabelItemTpl="script.js_bccDataLabelItemTpl"
-                                bccAvailableDate="now, 1d"
+                                bccActionType="lock"
+                                bccLockupDateUrl="./data/lock.php?action=lockup&id={0}&date={1}"
+                                bccUnlockDateUrl="./data/lock.php?action=unlock&&id={0}&date={1}"
+                                bccLockupIdUrl="./data/lock.php?action=lockup&date={1}&id={0}"
+                                bccUnlockIdUrl="./data/lock.php?action=unlock&date={1}&id={0}"
 
                                 cdsConfig="/script.js_cdsConfig" 
                                 cdsRealtimeEffect="true" 
                                 >
                             </div>
 
-                            <div style="display:none" class="js_bccSaveSelectBox">
-                                <input type="hidden" name="selectedPos[1]" value="2014-05-21" class="js_bccSaveSelectItem" data-id="1" />
-                            </div>
-                            <script type="text/template" class="js_bccSaveSelectItemTpl">
-                                <input type="hidden" name="selectedPos[{0}]" value="" class="js_bccSaveSelectItem" data-id="{0}" />
-                            </script>
-
                             <script type="text/template" class="js_cdsConfig">
                                 {
                                     "items": {
                                         "td.js_pos_canSelect": {
-                                            "addClass": "js_pos_selected"
-                                            , "removeClass": "js_pos_canSelect"
-                                            , "callback": Bizs.CRMSchedule.DRAG_EDIT_SELECT_CALLBACK
+                                            "callback": Bizs.CRMSchedule.DRAG_LOCK_SELECT_CALLBACK
                                         }
-                                        , "td.js_pos_selected": {
-                                            "addClass": "js_pos_canSelect"
-                                            , "removeClass": "js_pos_selected"
-                                            , "callback": Bizs.CRMSchedule.DRAG_EDIT_UNSELECT_CALLBACK
+                                        , "td.js_pos_locked": {
+                                            "callback": Bizs.CRMSchedule.DRAG_UNLOCK_SELECT_CALLBACK
                                         }
                                     }
-                                    , "callback": Bizs.CRMSchedule.DRAG_EDIT_CALLBACK
-                                    , "itemFilter": Bizs.CRMSchedule.DRAG_EDIT_ITEM_FILTER
-
+                                    , "itemFilter": Bizs.CRMSchedule.DRAG_LOCK_ITEM_FILTER
                                     , "realtimeClass": "js_cdsRealtimeEffect"
                                 }
                             </script>
@@ -184,11 +171,8 @@
 </script>
 
 <script type="text/template" class="js_bccDateNavTpl">
-    <div class="js_bccDataLabelBox">{0}</div>
-</script>
-
-<script type="text/template" class="js_bccDataLabelItemTpl">
-    <button type="button" class="js_bccDataLabelItem {2}" value="{0}">{1}</button>
+    <button type="button" class="xdate_btn js_bccPrevMonth">&lt;</button>&nbsp;<select class="xdate_select js_bccYearSelect">{0}</select>
+    <select class="xdate_select js_bccMonthSelect">{1}</select>&nbsp;<button type="button" class="xdate_btn js_bccNextMonth">&gt;</button>
 </script>
 
 <script type="text/template" class="js_bccRowTpl">
@@ -204,7 +188,7 @@
 <script type="text/template" class="js_bccPopupTpl">
     <div class="UPanel UPanelLocation">
         <div class="UPContent">
-            <div class="hd"><h3>预订当月及未来三个月的资源 </h3></div>
+            <div class="hd"><h3>资源预订查询</h3></div>
             <div class="bd">
                 <div class="Panel-top">位置：{0} - {1} - {2}</div>
                 <ul class="location-type">
@@ -219,6 +203,8 @@
                 </ul>
                 <div class="Panel-Ldate js_bccPopupDateBox">
                     {3}
+                    <a href="javascript:;" class="btn-arr-left js_bccPopupPrev" style="display:none;"></a>
+                    <a href="javascript:;" class="btn-arr-right js_bccPopupNext" style="display:none;"></a>
                 </div>
             </div>
             <span class="close" eventtype="close"></span>

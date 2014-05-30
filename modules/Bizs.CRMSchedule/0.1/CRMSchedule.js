@@ -1,10 +1,12 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel', 'Bizs.CRMSchedulePopup', 'JC.Tips' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel', 'Bizs.CRMSchedulePopup', 'JC.Tips', 'JC.DragSelect' ], function(){
 /**
  * CRM 排期日期选择组件
  *
  *<p><b>require</b>:
  *   <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *   , <a href='JC.Panel.html'>JC.Panel</a>
+ *   , <a href='JC.Tips.html'>JC.Tips</a>
+ *   , <a href='JC.DragSelect.html'>JC.DragSelect</a>
  *   , <label>Bizs.CRMSchedulePopup</label>
  *</p>
  *
@@ -662,8 +664,8 @@
                 _p.on( 'update_check_item_status', function( _evt, _ckItem ){
                     _ckItem = $( _ckItem );
                     var _tr = JC.f.getJqParent( _ckItem, 'tr' )
-                        , js_pos_canSelect = _tr.find( 'td.js_pos_canSelect' )
-                        , js_pos_locked = _tr.find( 'td.js_pos_locked' )
+                        , js_pos_canSelect = _tr.find( 'td.js_pos_canSelect:not(.js_bccOutdate)' )
+                        , js_pos_locked = _tr.find( 'td.js_pos_locked:not(.js_bccOutdate)' )
                         ;
 
                     if( !( js_pos_canSelect.length || js_pos_locked.length ) ){
@@ -835,8 +837,8 @@
                 _p.on( 'update_check_item_status', function( _evt, _ckItem ){
                     _ckItem = $( _ckItem );
                     var _tr = JC.f.getJqParent( _ckItem, 'tr' )
-                        , js_pos_canSelect = _tr.find( 'td.js_pos_canSelect' )
-                        , js_pos_selected = _tr.find( 'td.js_pos_selected' )
+                        , js_pos_canSelect = _tr.find( 'td.js_pos_canSelect:not(.js_bccOutdate)' )
+                        , js_pos_selected = _tr.find( 'td.js_pos_selected:not(.js_bccOutdate)' )
                         ;
 
                     if( !( js_pos_canSelect.length || js_pos_selected.length ) ){
@@ -853,7 +855,7 @@
 
                 _p.on( 'fill_selected_items', function( _evt ){
                     var _selectedItems = _p._model.saveSelectItems();
-                    JC.log( 'fill_selected_items', _selectedItems.length );
+                    //JC.log( 'fill_selected_items', _selectedItems.length );
 
                     _selectedItems.each( function( _ix, _item ){
                         _item = $( _item );
@@ -1405,7 +1407,7 @@
                 var _dt = JC.f.pureDate( JC.f.parseISODate( _selector.attr( 'data-date' ) ) )
                     , _md = JC.f.pureDate( JC.f.dateDetect( 'now, 1d' ) )
                     ;
-                JC.log( _selector.attr( 'data-date' ), _dt.getTime(), _md.getTime() );
+                //JC.log( _selector.attr( 'data-date' ), _dt.getTime(), _md.getTime() );
                 if( _dt.getTime() < _md.getTime() ) _r = true;
             }
             return _r;
@@ -1425,6 +1427,140 @@
     function bytelen( _s ){
         return _s.replace(/[^\x00-\xff]/g,"11").length;
     }
+
+    CRMSchedule.DRAG_EDIT_ITEM_FILTER =
+        function( _item, _type, _itemData, _configData ){
+            var _selector = this
+                , _r = true
+                , _minDate = JC.f.pureDate( JC.f.dateDetect( 'now,1d' ) )
+                , _itemDate = JC.f.parseISODate( _item.data( 'date' ) )
+                ;
+            _itemDate.getTime() < _minDate.getTime() && ( _r = false );
+            return _r;
+        };
+
+    CRMSchedule.DRAG_EDIT_CALLBACK=
+        function( _items, _type, _ins ){
+            var _selector = this
+                , _csIns = JC.BaseMVC.getInstance( _selector, Bizs.CRMSchedule )
+                , _tr
+                ;
+            if( !_csIns ) return;
+
+            jQuery( _items ).each( function(){
+                var _sp = $( this );
+                _csIns.trigger( 'update_check_item_status', [ JC.f.getJqParent( _sp, 'tr' ).find( 'input.js_bccCkAll' ) ] );
+            });
+
+            JC.log( 'cdsCallback', _items.length, JC.f.ts() );
+        };
+
+    CRMSchedule.DRAG_EDIT_SELECT_CALLBACK =
+        function( _items, _type, _ins ){
+            var _selector = this
+                , _csIns = JC.BaseMVC.getInstance( _selector, Bizs.CRMSchedule )
+                , _data = CRMSchedule.DRAG_ITEMS_GET_EDIT_DATA( _items );
+
+            if( !( _csIns && _data ) ) return;
+
+            JC.log( 'cdsSelectCallback', _items.length, JC.f.ts() );
+            $.each( _data, function( _k, _item ){
+                _csIns._model.addSelectValue( _k, _item.join(',') );
+            });
+        };
+
+    CRMSchedule.DRAG_EDIT_UNSELECT_CALLBACK =
+        function( _items, _type, _ins ){
+            var _selector = this
+                , _csIns = JC.BaseMVC.getInstance( _selector, Bizs.CRMSchedule )
+                , _data = CRMSchedule.DRAG_ITEMS_GET_EDIT_DATA( _items );
+
+            if( !( _csIns && _data ) ) return;
+
+            JC.log( 'cdsUnselectCallback', _items.length, JC.f.ts() );
+            $.each( _data, function( _k, _item ){
+                _csIns._model.removeSelectValue( _k, _item.join(',') );
+            });
+        };
+
+    CRMSchedule.DRAG_ITEMS_GET_EDIT_DATA =
+        function( _items ){
+            var _r = {};
+            $.each( _items, function( _k, _item ){
+                var _id = _item.data( 'id' ), _date = _item.data( 'date' );
+                !( _id in _r ) && ( _r[ _id ] = [] );
+                _r[ _id ].push( _date );
+            });
+            return _r;
+        };
+
+    CRMSchedule.DRAG_LOCK_ITEM_FILTER =
+        function( _item, _type, _itemData, _configData ){
+            var _selector = this
+                , _r = true
+                , _minDate = JC.f.pureDate()
+                , _itemDate = JC.f.parseISODate( _item.data( 'date' ) )
+                ;
+            _itemDate.getTime() < _minDate.getTime() && ( _r = false );
+            return _r;
+        };
+
+    CRMSchedule.DRAG_ITEMS_GET_LOCK_DATA =
+        function( _items ){
+            var _r = { id: [], date: [] }, _idTmp = {}, _dateTmp = {};
+            $.each( _items, function( _k, _item ){
+                var _id = _item.data( 'id' ), _date = _item.data( 'date' );
+                if( !( _id in _idTmp ) ){
+                    _r.id.push( _id );
+                    _idTmp[ _id ] = _id;
+                }
+                if( !( _date in _dateTmp ) ){
+                    _r.date.push( _date );
+                    _dateTmp[ _date ] = _date;
+                }
+            });
+            return _r;
+        };
+
+    CRMSchedule.DRAG_LOCK_SELECT_CALLBACK =
+        function( _items, _type, _ins ){
+            var _selector = this
+                , _csIns = JC.BaseMVC.getInstance( _selector, Bizs.CRMSchedule )
+                , _data = CRMSchedule.DRAG_ITEMS_GET_LOCK_DATA( _items )
+                , _url
+                ;
+
+            if( !( _csIns && _data && _data.id.length && _data.date.length ) ) return;
+            _url = _csIns._model.lockupIdUrl();
+            //JC.log( 'DRAG_LOCK_SELECT_CALLBACK', JC.f.ts(), _data.id.join(','), _data.date.join(','), _url );
+            _csIns.trigger( 'lockup', [ _data.id.join(','), _data.date.join(','), _url, null, function( _rdata, _id, _date, _sp ){
+                $.each( _items, function( _k, _item ){
+                    _item.addClass( 'js_pos_locked' );
+                    _item.removeClass( 'js_pos_canSelect' );
+                });
+                CRMSchedule.DRAG_EDIT_CALLBACK.call( _selector, _items, _type, _ins );
+            }]);
+        };
+
+    CRMSchedule.DRAG_UNLOCK_SELECT_CALLBACK =
+        function( _items, _type, _ins ){
+            var _selector = this
+                , _csIns = JC.BaseMVC.getInstance( _selector, Bizs.CRMSchedule )
+                , _data = CRMSchedule.DRAG_ITEMS_GET_LOCK_DATA( _items )
+                , _url
+                ;
+
+            if( !( _csIns && _data && _data.id.length && _data.date.length ) ) return;
+            _url = _csIns._model.unlockIdUrl();
+            JC.log( 'DRAG_LOCK_UNSELECT_CALLBACK', JC.f.ts(), _data.id.join(','), _data.date.join(','), _url );
+            _csIns.trigger( 'unlock', [ _data.id.join(','), _data.date.join(','), _url, null, function( _rdata, _id, _date, _sp ){
+                $.each( _items, function( _k, _item ){
+                    _item.addClass( 'js_pos_canSelect' );
+                    _item.removeClass( 'js_pos_locked' );
+                });
+                CRMSchedule.DRAG_EDIT_CALLBACK.call( _selector, _items, _type, _ins );
+            }]);
+        };
 
     _jdoc.ready( function(){
         JC.f.safeTimeout( function(){
