@@ -69,7 +69,7 @@
     <dl class="defDl">
         <dt></dt>
         <dd>
-            <div class="js_compDragSelect" cdsConfig="/script.js_cdsConfig" cdsRealtimeEffect="true" cdsEnableCache="true" >
+            <div class="js_compDragSelect" cdsConfig="/script.js_cdsConfig" cdsRealtimeEffect="true" >
                 <script type="text/template" class="js_cdsConfig">
                     {
                         "items": {
@@ -83,10 +83,10 @@
                                 , "removeClass": "js_pos_selected"
                             }
                         }
-                        , "commonCallback":
-                            function( _items, _type ){
-                                var _ins = this;
-                                JC.log( 'js_compDragSelect commonCallback', _items.length, JC.f.ts() );
+                        , "callback":
+                            function( _items, _type, _ins ){
+                                var _selector = this;
+                                JC.log( 'js_compDragSelect callback', _items.length, JC.f.ts() );
                             }
                         , "realtimeClass": "js_cdsRealtimeEffect"
                     }
