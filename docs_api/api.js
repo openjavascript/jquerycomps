@@ -58,6 +58,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.MultiAutoComplete",
         "window.Bizs.MultiDate",
         "window.Bizs.MultiSelect",
+        "window.Bizs.MultiSelectTree",
         "window.Bizs.MultiUpload",
         "window.Bizs.MultiselectPanel",
         "window.Bizs.TaskViewer"

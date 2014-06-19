@@ -183,6 +183,8 @@
             
                 <li><a href="../classes/window.Bizs.MultiselectPanel.html">window.Bizs.MultiselectPanel</a></li>
             
+                <li><a href="../classes/window.Bizs.MultiSelectTree.html">window.Bizs.MultiSelectTree</a></li>
+            
                 <li><a href="../classes/window.Bizs.MultiUpload.html">window.Bizs.MultiUpload</a></li>
             
                 <li><a href="../classes/window.Bizs.TaskViewer.html">window.Bizs.TaskViewer</a></li>
@@ -326,6 +328,9 @@
      *
      *      &lt;dt&gt;validHidden = bool, default = false&lt;/dt&gt;
      *      &lt;dd&gt;是否验证隐藏的控件&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;rangeCanEqual = bool, default = true&lt;/dt&gt;
+     *      &lt;dd&gt;nrange 和 daterange 的开始值和结束值是否可以相等&lt;/dd&gt;
      *
      *      &lt;dt&gt;datatype: 常用数据类型&lt;/dt&gt;
      *      &lt;dd&gt;&lt;b&gt;n:&lt;/b&gt; 检查是否为正确的数字&lt;/dd&gt;
@@ -1461,7 +1466,7 @@ function (){
          */
         , nrange:
             function( _item ){
-                var _p = this, _r = _p.n( _item ), _min, _max, _fromNEl, _toNEl, _items;
+                var _p = this, _r = _p.n( _item ), _min, _max, _fromNEl, _toNEl, _items, _tmp;
 
                 if( _r ){
                     if( _item.is( &#x27;[fromNEl]&#x27; ) ) {
@@ -1493,7 +1498,12 @@ function (){
                             _r &amp;&amp; ( _r = _p.n( _fromNEl, true ) );
 
                             _r &amp;&amp; ( +_fromNEl.val() ) &gt; ( +_toNEl.val() ) &amp;&amp; ( _r = false );
-                            
+
+                            _r &amp;&amp; ( _tmp = _fromNEl.attr( &#x27;rangeCanEqual&#x27; ) || _toNEl.attr( &#x27;rangeCanEqual&#x27; ) )
+                                &amp;&amp; !JC.f.parseBool( _tmp )
+                                &amp;&amp; ( JC.f.parseFinance( _fromNEl.val(), 10 ) === JC.f.parseFinance( _toNEl.val(), 10 ) )
+                                &amp;&amp; ( _r = false );
+                                ;
                             //JC.log( &#x27;nrange:&#x27;, +_fromNEl.val(), +_toNEl.val(), _r );
 
                             _r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _fromNEl ] );
@@ -1508,6 +1518,7 @@ function (){
 
                 return _r;
             }
+
         /**
          * 检查是否为合法的日期,
          * &lt;br /&gt;日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD
@@ -1574,7 +1585,7 @@ function (){
          */
         , daterange:
             function( _item ){
-                var _p = this, _r = _p.d( _item ), _min, _max, _fromDateEl, _toDateEl, _items;
+                var _p = this, _r = _p.d( _item ), _min, _max, _fromDateEl, _toDateEl, _items, _tmp;
 
                 if( _r ){
                     if( _item.is( &#x27;[fromDateEl]&#x27; ) ) {
@@ -1608,6 +1619,13 @@ function (){
                             _r &amp;&amp; _min &amp;&amp; _max 
                                &amp;&amp; _min.getTime() &gt; _max.getTime() 
                                &amp;&amp; ( _r = false );
+
+                            _r &amp;&amp; ( _tmp = _fromDateEl.attr( &#x27;rangeCanEqual&#x27; ) || _toDateEl.attr( &#x27;rangeCanEqual&#x27; ) )
+                                &amp;&amp; !JC.f.parseBool( _tmp )
+                                &amp;&amp; _min &amp;&amp; _max
+                                &amp;&amp; _min.getTime() == _max.getTime()
+                                &amp;&amp; ( _r = false );
+                                ;
 
                             _r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _fromDateEl ] );
                             _r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _toDateEl ] );

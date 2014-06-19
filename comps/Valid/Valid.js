@@ -95,6 +95,9 @@
      *      <dt>validHidden = bool, default = false</dt>
      *      <dd>是否验证隐藏的控件</dd>
      *
+     *      <dt>rangeCanEqual = bool, default = true</dt>
+     *      <dd>nrange 和 daterange 的开始值和结束值是否可以相等</dd>
+     *
      *      <dt>datatype: 常用数据类型</dt>
      *      <dd><b>n:</b> 检查是否为正确的数字</dd>
      *      <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>
@@ -1229,7 +1232,7 @@ function (){
          */
         , nrange:
             function( _item ){
-                var _p = this, _r = _p.n( _item ), _min, _max, _fromNEl, _toNEl, _items;
+                var _p = this, _r = _p.n( _item ), _min, _max, _fromNEl, _toNEl, _items, _tmp;
 
                 if( _r ){
                     if( _item.is( '[fromNEl]' ) ) {
@@ -1261,7 +1264,12 @@ function (){
                             _r && ( _r = _p.n( _fromNEl, true ) );
 
                             _r && ( +_fromNEl.val() ) > ( +_toNEl.val() ) && ( _r = false );
-                            
+
+                            _r && ( _tmp = _fromNEl.attr( 'rangeCanEqual' ) || _toNEl.attr( 'rangeCanEqual' ) )
+                                && !JC.f.parseBool( _tmp )
+                                && ( JC.f.parseFinance( _fromNEl.val(), 10 ) === JC.f.parseFinance( _toNEl.val(), 10 ) )
+                                && ( _r = false );
+                                ;
                             //JC.log( 'nrange:', +_fromNEl.val(), +_toNEl.val(), _r );
 
                             _r && $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _fromNEl ] );
@@ -1276,6 +1284,7 @@ function (){
 
                 return _r;
             }
+
         /**
          * 检查是否为合法的日期,
          * <br />日期格式为 YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD
@@ -1342,7 +1351,7 @@ function (){
          */
         , daterange:
             function( _item ){
-                var _p = this, _r = _p.d( _item ), _min, _max, _fromDateEl, _toDateEl, _items;
+                var _p = this, _r = _p.d( _item ), _min, _max, _fromDateEl, _toDateEl, _items, _tmp;
 
                 if( _r ){
                     if( _item.is( '[fromDateEl]' ) ) {
@@ -1376,6 +1385,13 @@ function (){
                             _r && _min && _max 
                                && _min.getTime() > _max.getTime() 
                                && ( _r = false );
+
+                            _r && ( _tmp = _fromDateEl.attr( 'rangeCanEqual' ) || _toDateEl.attr( 'rangeCanEqual' ) )
+                                && !JC.f.parseBool( _tmp )
+                                && _min && _max
+                                && _min.getTime() == _max.getTime()
+                                && ( _r = false );
+                                ;
 
                             _r && $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _fromDateEl ] );
                             _r && $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _toDateEl ] );
