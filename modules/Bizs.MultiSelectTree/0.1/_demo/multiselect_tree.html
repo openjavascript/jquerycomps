@@ -12,7 +12,7 @@
 <script>
     JC.debug = 1;
 
-    requirejs( [ 'JC.Tree' ], function( Tree ){
+    requirejs( [ 'Bizs.MultiSelectTree' ], function(){
         var treeData = {
             data: {"23":[["28","\u9500\u552e\u4e8c\u7ec4"],["24","\u552e\u524d\u5ba1\u6838\u7ec4"]],
 				   "24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],
@@ -23,8 +23,8 @@
 		var _tree_element = $('#tree_box');
 		
 		
-        var _tree = new JC.Tree(_tree_element , treeData );
-		_tree.init_multiSelect(getSelected);
+       var _mst = new Bizs.MultiSelectTree(_tree_element , treeData, getSelected );
+           _mst.init();
 		
 		var leafData = {
 			"25" : [["123","A"],["124","B"]],
@@ -34,7 +34,7 @@
 			"30" : [["131","I"],["132","J"]],
 			"31" : [["133","K"],["134","L"]]
 		};
-		function getSelected(selectedArray){
+		function getSelected(selectedArray, _tree){
 			var html = '';
 			var parent;
 			for(var i=0;i<selectedArray.length;i++){
