@@ -1131,7 +1131,7 @@
             "namespace": "JC",
             "file": "../comps/AutoComplete/AutoComplete.js",
             "line": 4,
-            "description": "AutoComplete 文本框内容输入提示\n<br />响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 AutoComplete 实例\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>\n| <a href='../../comps/AutoComplete/_demo' target='_blank'>demo link</a></p>\n\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>cacPopup = selector, optional</dt>\n     <dd>显式指定用于显示数据列表的弹框, 如不指定, 载入数据时会自己生成 popup node</dd>\n\n     <dt>cacPreventEnter = bool, default = false</dt>\n     <dd>文本框按回车键时, 是否阻止默认行为, 防止提交表单</dd>\n\n     <dt>cacLabelKey = string, default = data-label</dt>\n     <dd>用于显示 label 的HTML属性</dd>\n\n     <dt>cacIdKey = string, default= data-id</dt>\n     <dd>用于显示 ID 的HTML属性</dd>\n\n     <dt>cacIdSelector = selector</dt>\n     <dd>用于保存 ID 值的 node</dd>\n\n     <dt>cacIdVal = string, optional</dt>\n     <dd>用于初始化的默认ID, 如果 cacIdVal 为空将尝试读取 cacIdSelector 的值</dd>\n\n     <dt>cacStrictData = bool, default = false</dt>\n     <dd>是否验证已填内容的合法性<br />仅在 cacIdSelector 和 cacIdKey 显式声明时有效</dd>\n\n     <dt>cacAjaxDataUrl = url</dt>\n     <dd>\n         获取 数据的 AJAX 接口\n         <dl>\n             <dt>数据格式</dt>\n             <dd>\n                 [ { \"id\": \"id value\", \"label\": \"label value\" }, ... ]\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>cacDataFilter = callback</dt>\n     <dd>\n         <dl>\n             <dt>如果 数据接口获取的数据不是默认格式, \n                 可以使用这个属性定义一个数据过滤函数, 把数据转换为合适的格式\n             </dt>\n             <dd>\n<pre>function cacDataFilter( _json ){\nif( _json.data && _json.data.length ){\n   _json = _json.data;\n}\n\n$.each( _json, function( _ix, _item ){\n   _item.length &&\n       ( _json[ _ix ] = { 'id': _item[0], 'label': _item[1] } )\n       ;\n});\nreturn _json;\n}</pre>\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>cacBoxWidth = int</dt>\n     <dd>定义 popup 的宽度, 如果没有显式定义, 将使用 selector 的宽度</dd>\n\n     <dt>cacCasesensitive = bool, default = false</dt>\n     <dd>是否区分英文大小写</dd>\n\n     <dt>cacSubItemsSelector = selector string, default = \"&gt; li\"\n     <dd>popup 查找数据项的选择器语法</dd>\n\n     <dt>cacNoDataText = string, default = \"数据加载中, 请稍候...\"</dt>\n     <dd>加载数据时的默认提示文字</dd>\n\n     <dt>cacValidCheckTimeout = int, default = 1</dt>\n     <dd>定义 JC.Valid blur 时执行 check 的时间间隔, 主要为防止点击列表时已经 Valid.check 的问题</dd>\n\n     <dt>cacFixHtmlEntity = bool</dt>\n     <dd>是否将 HTML实体 转为 html</dd>\n\n     <dt>cacMultiSelect = bool, default = false</dt>\n     <dd>是否为多选模式</dd>\n\n     <dt>cacListItemTpl= selector</dt>\n     <dd>指定项内容的模板</dd>\n\n     <dt>cacListAll = bool</dt>\n     <dd>popup是否显示所有内容</dd>\n\n     <dt>cacDisableSelectedBlur = bool</dt>\n     <dd>在文本框里按方向键选择项内容并按回车键时, 是否禁止触发 blur事件</dd>\n</dl>",
+            "description": "AutoComplete 文本框内容输入提示\n<br />响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 AutoComplete 实例\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>\n| <a href='../../comps/AutoComplete/_demo' target='_blank'>demo link</a></p>\n\n<h2>可用的 HTML attribute</h2>\n<dl>\n     <dt>cacPopup = selector, optional</dt>\n     <dd>显式指定用于显示数据列表的弹框, 如不指定, 载入数据时会自己生成 popup node</dd>\n\n     <dt>cacPreventEnter = bool, default = false</dt>\n     <dd>文本框按回车键时, 是否阻止默认行为, 防止提交表单</dd>\n\n     <dt>cacLabelKey = string, default = data-label</dt>\n     <dd>用于显示 label 的HTML属性</dd>\n\n     <dt>cacIdKey = string, default= data-id</dt>\n     <dd>用于显示 ID 的HTML属性</dd>\n\n     <dt>cacIdSelector = selector</dt>\n     <dd>用于保存 ID 值的 node</dd>\n\n     <dt>cacIdVal = string, optional</dt>\n     <dd>用于初始化的默认ID, 如果 cacIdVal 为空将尝试读取 cacIdSelector 的值</dd>\n\n     <dt>cacStrictData = bool, default = false</dt>\n     <dd>是否验证已填内容的合法性<br />仅在 cacIdSelector 和 cacIdKey 显式声明时有效</dd>\n\n     <dt>cacAjaxDataUrl = url</dt>\n     <dd>\n         获取 数据的 AJAX 接口\n         <dl>\n             <dt>数据格式</dt>\n             <dd>\n                 [ { \"id\": \"id value\", \"label\": \"label value\" }, ... ]\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>cacDataFilter = callback</dt>\n     <dd>\n         <dl>\n             <dt>如果 数据接口获取的数据不是默认格式, \n                 可以使用这个属性定义一个数据过滤函数, 把数据转换为合适的格式\n             </dt>\n             <dd>\n<pre>function cacDataFilter( _json ){\nif( _json.data && _json.data.length ){\n   _json = _json.data;\n}\n\n$.each( _json, function( _ix, _item ){\n   _item.length &&\n       ( _json[ _ix ] = { 'id': _item[0], 'label': _item[1] } )\n       ;\n});\nreturn _json;\n}</pre>\n             </dd>\n         </dl>\n     </dd>\n\n     <dt>cacBoxWidth = int</dt>\n     <dd>定义 popup 的宽度, 如果没有显式定义, 将使用 selector 的宽度</dd>\n\n     <dt>cacCasesensitive = bool, default = false</dt>\n     <dd>是否区分英文大小写</dd>\n\n     <dt>cacSubItemsSelector = selector string, default = \"&gt; li\"\n     <dd>popup 查找数据项的选择器语法</dd>\n\n     <dt>cacNoDataText = string, default = \"数据加载中, 请稍候...\"</dt>\n     <dd>加载数据时的默认提示文字</dd>\n\n     <dt>cacValidCheckTimeout = int, default = 1</dt>\n     <dd>定义 JC.Valid blur 时执行 check 的时间间隔, 主要为防止点击列表时已经 Valid.check 的问题</dd>\n\n     <dt>cacFixHtmlEntity = bool</dt>\n     <dd>是否将 HTML实体 转为 html</dd>\n\n     <dt>cacMultiSelect = bool, default = false</dt>\n     <dd>是否为多选模式</dd>\n\n     <dt>cacListItemTpl= selector</dt>\n     <dd>指定项内容的模板</dd>\n\n     <dt>cacListAll = bool</dt>\n     <dd>popup是否显示所有内容</dd>\n\n     <dt>cacDisableSelectedBlur = bool</dt>\n     <dd>在文本框里按方向键选择项内容并按回车键时, 是否禁止触发 blur事件</dd>\n\n     <dt>cacNoCache = bool, default = false</dt>\n     <dd>AJAX 获取数据式，是否缓存 AJAX 数据</dd>\n</dl>",
             "is_constructor": 1,
             "params": [
                 {
@@ -4035,7 +4035,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 155,
+            "line": 158,
             "description": "获取或设置 AutoComplete 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -4056,7 +4056,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 171,
+            "line": 174,
             "description": "初始化可识别的 AutoComplete 实例",
             "itemtype": "method",
             "name": "init",
@@ -4077,7 +4077,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 194,
+            "line": 197,
             "description": "更新原始数据",
             "itemtype": "method",
             "name": "update",
@@ -4103,7 +4103,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 209,
+            "line": 212,
             "description": "使用 ajax 接口更新原始数据",
             "itemtype": "method",
             "name": "ajaxUpdate",
@@ -4134,7 +4134,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 225,
+            "line": 228,
             "description": "定义全局数据过滤函数",
             "itemtype": "method",
             "name": "dataFilter",
@@ -4155,7 +4155,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 233,
+            "line": 236,
             "description": "是否将 HTML实体 转为 html",
             "itemtype": "property",
             "name": "fixHtmlEntity",
@@ -4167,21 +4167,33 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 320,
+            "line": 244,
+            "description": "AJAX 获取数据式，是否缓存 AJAX 数据",
+            "itemtype": "property",
+            "name": "AJAX_NO_CACHE",
+            "type": "bool",
+            "default": "false",
+            "static": 1,
+            "class": "JC.AutoComplete",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/AutoComplete/AutoComplete.js",
+            "line": 331,
             "description": "点击列表时, 阻止冒泡",
             "class": "JC.AutoComplete",
             "namespace": "JC"
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 406,
+            "line": 417,
             "description": "响应 li 点击时, 更新对应的内容",
             "class": "JC.AutoComplete",
             "namespace": "JC"
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 547,
+            "line": 558,
             "description": "获取 绑定的 id node",
             "itemtype": "method",
             "name": "idSelector",
@@ -4194,7 +4206,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 553,
+            "line": 564,
             "description": "获取/设置 id 值",
             "itemtype": "method",
             "name": "idVal",
@@ -4214,7 +4226,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 564,
+            "line": 575,
             "description": "使用 ajax 接口更新原始数据",
             "itemtype": "method",
             "name": "ajaxUpdate",
@@ -4235,7 +4247,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 575,
+            "line": 586,
             "description": "显示数据列表",
             "itemtype": "method",
             "name": "show",
@@ -4244,7 +4256,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 588,
+            "line": 599,
             "description": "隐藏数据列表",
             "itemtype": "method",
             "name": "hide",
@@ -4253,7 +4265,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 597,
+            "line": 608,
             "description": "获取数据列表 node",
             "itemtype": "method",
             "name": "popup",
@@ -4266,7 +4278,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 606,
+            "line": 617,
             "description": "更新原始数据",
             "itemtype": "method",
             "name": "update",
@@ -4282,7 +4294,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 625,
+            "line": 636,
             "description": "清除 selector 和 idSelector 的默认值",
             "itemtype": "method",
             "name": "clear",
@@ -4291,7 +4303,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 634,
+            "line": 645,
             "description": "清除所有数据",
             "itemtype": "method",
             "name": "clearAll",
@@ -4300,7 +4312,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 645,
+            "line": 656,
             "description": "校正数据列表的显示位置",
             "itemtype": "method",
             "name": "fixPosition",
@@ -4309,7 +4321,7 @@
         },
         {
             "file": "../comps/AutoComplete/AutoComplete.js",
-            "line": 763,
+            "line": 774,
             "description": "验证 key && id 是否正确\n仅在 cacStrictData 为真的时候进行验证",
             "class": "JC.AutoComplete",
             "namespace": "JC"
@@ -17449,15 +17461,15 @@
         },
         {
             "message": "Missing item type\n点击列表时, 阻止冒泡",
-            "line": " ../comps/AutoComplete/AutoComplete.js:320"
+            "line": " ../comps/AutoComplete/AutoComplete.js:331"
         },
         {
             "message": "Missing item type\n响应 li 点击时, 更新对应的内容",
-            "line": " ../comps/AutoComplete/AutoComplete.js:406"
+            "line": " ../comps/AutoComplete/AutoComplete.js:417"
         },
         {
             "message": "Missing item type\n验证 key && id 是否正确\n仅在 cacStrictData 为真的时候进行验证",
-            "line": " ../comps/AutoComplete/AutoComplete.js:763"
+            "line": " ../comps/AutoComplete/AutoComplete.js:774"
         },
         {
             "message": "Missing item type\n判断下拉框的option里是否有给定的值",
