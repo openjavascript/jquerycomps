@@ -312,6 +312,9 @@
 		},
 		&quot;update&quot; : function(_evt){
 			var target = $(_evt.target);
+			if(target[0].nodeName.toLowerCase() !== &#x27;input&#x27;){
+				return;
+			}  
 			if(target[0].checked){
 				var child = target.parent().next().find(&#x27;input.js_checkbox&#x27;);
 				for(var i=0;i&lt;child.length;i++){
