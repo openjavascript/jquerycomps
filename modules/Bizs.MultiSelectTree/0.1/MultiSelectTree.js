@@ -68,6 +68,9 @@
 		},
 		"update" : function(_evt){
 			var target = $(_evt.target);
+			if(target[0].nodeName.toLowerCase() !== 'input'){
+				return;
+			}  
 			if(target[0].checked){
 				var child = target.parent().next().find('input.js_checkbox');
 				for(var i=0;i<child.length;i++){
