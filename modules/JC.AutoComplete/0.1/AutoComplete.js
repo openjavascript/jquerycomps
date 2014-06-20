@@ -99,6 +99,9 @@ return _json;
      *
      *      <dt>cacDisableSelectedBlur = bool</dt>
      *      <dd>在文本框里按方向键选择项内容并按回车键时, 是否禁止触发 blur事件</dd>
+     *
+     *      <dt>cacNoCache = bool, default = false</dt>
+     *      <dd>AJAX 获取数据式，是否缓存 AJAX 数据</dd>
      * </dl>
      * @namespace JC
      * @class AutoComplete
@@ -238,6 +241,14 @@ return _json;
      * @static
      */
     AutoComplete.fixHtmlEntity = true;
+    /**
+     * AJAX 获取数据式，是否缓存 AJAX 数据
+     * @property    AJAX_NO_CACHE
+     * @type        bool
+     * @default     false
+     * @static
+     */
+    AutoComplete.AJAX_NO_CACHE = false;
 
     AutoComplete.hideAllPopup =
         function(){
@@ -855,12 +866,18 @@ return _json;
                 return _result;
             }
 
+        , noCache: function(){ 
+            var _r = AutoComplete.AJAX_NO_CACHE;
+            this.is( '[cacNoCache]' ) && ( _r = this.boolProp( 'cacNoCache' ) );
+            return _r;
+        }
+
         , ajaxData:
             function( _url, _cb ){
                 var _p = this, _url = _url || _p.attrProp( 'cacAjaxDataUrl' );
                 if( !_url ) return;
 
-                if( _url in AutoComplete.Model.AJAX_CACHE ){
+                if( !_p.noCache() &&( _url in AutoComplete.Model.AJAX_CACHE ) ){
                     $( _p ).trigger( 'TriggerEvent'
                             , [ AutoComplete.Model.UPDATE, AutoComplete.Model.AJAX_CACHE[ _url ], _cb ] 
                             ); 
