@@ -35,6 +35,11 @@
                 //return false;
             }
 
+            function formResetCallback( _evt, _ins ){
+                var _form = $( this );
+                JC.log( 'formResetCallback', JC.f.ts() );
+            }
+
         </script>
     </head>    
     <body>
@@ -84,6 +89,7 @@
                             formType="get"
                             formBeforeProcess="formBeforeProcess"
                             formAfterProcess="formAfterProcess"
+                            formResetCallback="formResetCallback"
                         >
                         <dl>
                             <dd>
@@ -128,6 +134,7 @@
                             formBeforeProcess="formBeforeProcess"
                             formAfterProcess="formAfterProcess"
                             formConfirmPopupType="popup"
+                            formResetCallback="formResetCallback"
                         >
                         <dl>
                             <dd>
@@ -152,7 +159,7 @@
                                 <button type="submit" formConfirmPopupType="dialog" 
                                                         formSubmitConfirm="确定要提交吗?" >submit - popup</button>
 
-                                <button type="reset" formResetConfirm="确定要重置吗111111?"  >reset</button>
+                                <button type="reset" formResetConfirm="确定要重置吗111111?">reset</button>
                                 <button type="reset" formResetConfirm="确定要重置吗111111?" formResetUrl="?"  >reset - url</button>
                                 <a href="?">back</a>
                             </dd>
