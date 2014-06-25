@@ -166,6 +166,14 @@ window.parent
      *          <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配
      *          <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>
      *      </dd>
+     *
+     *      <dt>formResetCallback = callback</dt>
+     *      <dd>表单重置后的回调
+<pre>function formResetCallback( _evt, _ins ){
+    var _form = $(this);
+    JC.log( 'formResetCallback', JC.f.ts() );
+}</pre>
+     *
      * </dl>
      *
      * <h2>reset button 可用的 html 属性</h2>
@@ -184,6 +192,7 @@ window.parent
      *
      *      <dt>formPopupCloseMs = int, default = 2000</dt>
      *      <dd>msgbox 弹框的显示时间</dd>
+     *      </dd>
      * </dl>
      *
      * <h2>普通 [a | button] 可用的 html 属性</h2>
@@ -594,11 +603,12 @@ window.parent
 
                 _p.selector().on('reset', function( _evt ){
                     if( _p.selector().data( FormLogic.Model.RESET_CONFIRM_BUTTON ) ){
-                        _p.trigger( FormLogic.Model.EVT_RESET );
+                        _p.trigger( FormLogic.Model.EVT_RESET, [ _evt ] );
                         return _p._model.prevent( _evt );
                     }else{
                         _p._view.reset();
                         _p.trigger( FormLogic.Model.ENABLE_SUBMIT );
+                        _p.trigger( 'FORM_RESET', [ _evt ] );
                     }
                 });
 
@@ -608,7 +618,7 @@ window.parent
                     });
                 });
 
-                _p.on( FormLogic.Model.EVT_RESET, function( _evt ){
+                _p.on( FormLogic.Model.EVT_RESET, function( _evt, _srcEvt ){
                     var _btn = _p.selector().data( FormLogic.Model.RESET_CONFIRM_BUTTON )
                         ;
                     _btn && ( _btn = $( _btn ) );
@@ -627,13 +637,19 @@ window.parent
                         _p.selector().trigger( 'reset' );
                         _p._view.reset();
                         _p.trigger( FormLogic.Model.ENABLE_SUBMIT );
+                        _p.trigger( 'FORM_RESET', [ _srcEvt ] );
                     });
 
                     _popup.on('close', function(){
                         _p.selector().data( FormLogic.Model.RESET_CONFIRM_BUTTON, null );
                     });
                 });
-                
+
+                _p.on( 'FORM_RESET', function( _evt, _srcEvt ){
+                    JC.f.safeTimeout( function(){
+                        _p._model.formResetCallback() && _p._model.formResetCallback().call( _p.selector(), _srcEvt, _p );
+                    }, _p, 'asdfawerasdfase_reset', 100 );
+                });
             }
         , _inited:
             function(){
@@ -962,8 +978,6 @@ window.parent
 
                 return JC.f.urlDetect( _r );
             }
-
-
         , formBeforeProcess: function(){ return this.callbackProp( 'formBeforeProcess' ); }
         , formAfterProcess: function(){ return this.callbackProp( 'formAfterProcess' ); }
         , formProcessError: 
@@ -971,6 +985,8 @@ window.parent
                 var _r = this.callbackProp( 'formProcessError' ) || FormLogic.processErrorCb;
                 return _r;
             }
+
+        , formResetCallback: function(){ return this.callbackProp( 'formResetCallback'); }
 
         , prevent: function( _evt ){ _evt && _evt.preventDefault(); return false; }
 

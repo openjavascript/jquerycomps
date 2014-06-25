@@ -466,7 +466,7 @@ function (){
                         for( i = 0, j = _item[0].length; i < j; i++ ){
                             var _sitem = $(_item[0][i]);
                             if( !_p._model.isValid( _sitem ) ) continue;
-                            if( _isIgnoreForm && !_sitem.val().trim() ) continue;
+                            if( _isIgnoreForm && ! ( _sitem.val() || '' ).trim() ) continue;
                             !_p.parse( _sitem ) && ( _r = false );
                             if( _errorabort && !_r ) break;
                         }
@@ -2361,7 +2361,7 @@ function (){
 
                 !_r && _errLs.length && $.each( _errLs, function( _ix, _sitem ){ 
                     _sitem = $( _sitem );
-                    var _sv = _sitem.val().trim();
+                    var _sv = ( _sitem.val() || '' ).trim();
                     if( _isReturn ) return false;
                     if( ! _sv ) return;
                     //JC.log('yyyyyyyyyyyyy', _sitem.data('JCValidStatus'), new Date().getTime() );
