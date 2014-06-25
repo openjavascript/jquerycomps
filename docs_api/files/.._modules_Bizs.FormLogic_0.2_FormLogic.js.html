@@ -402,6 +402,14 @@ window.parent
      *          &lt;br /&gt;&lt;b&gt;注意:&lt;/b&gt; 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配
      *          &lt;br /&gt;&lt;b&gt;注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证&lt;/b&gt;
      *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;formResetCallback = callback&lt;/dt&gt;
+     *      &lt;dd&gt;表单重置后的回调
+&lt;pre&gt;function formResetCallback( _evt, _ins ){
+    var _form = $(this);
+    JC.log( &#x27;formResetCallback&#x27;, JC.f.ts() );
+}&lt;/pre&gt;
+     *
      * &lt;/dl&gt;
      *
      * &lt;h2&gt;reset button 可用的 html 属性&lt;/h2&gt;
@@ -420,6 +428,7 @@ window.parent
      *
      *      &lt;dt&gt;formPopupCloseMs = int, default = 2000&lt;/dt&gt;
      *      &lt;dd&gt;msgbox 弹框的显示时间&lt;/dd&gt;
+     *      &lt;/dd&gt;
      * &lt;/dl&gt;
      *
      * &lt;h2&gt;普通 [a | button] 可用的 html 属性&lt;/h2&gt;
@@ -830,11 +839,12 @@ window.parent
 
                 _p.selector().on(&#x27;reset&#x27;, function( _evt ){
                     if( _p.selector().data( FormLogic.Model.RESET_CONFIRM_BUTTON ) ){
-                        _p.trigger( FormLogic.Model.EVT_RESET );
+                        _p.trigger( FormLogic.Model.EVT_RESET, [ _evt ] );
                         return _p._model.prevent( _evt );
                     }else{
                         _p._view.reset();
                         _p.trigger( FormLogic.Model.ENABLE_SUBMIT );
+                        _p.trigger( &#x27;FORM_RESET&#x27;, [ _evt ] );
                     }
                 });
 
@@ -844,7 +854,7 @@ window.parent
                     });
                 });
 
-                _p.on( FormLogic.Model.EVT_RESET, function( _evt ){
+                _p.on( FormLogic.Model.EVT_RESET, function( _evt, _srcEvt ){
                     var _btn = _p.selector().data( FormLogic.Model.RESET_CONFIRM_BUTTON )
                         ;
                     _btn &amp;&amp; ( _btn = $( _btn ) );
@@ -863,13 +873,19 @@ window.parent
                         _p.selector().trigger( &#x27;reset&#x27; );
                         _p._view.reset();
                         _p.trigger( FormLogic.Model.ENABLE_SUBMIT );
+                        _p.trigger( &#x27;FORM_RESET&#x27;, [ _srcEvt ] );
                     });
 
                     _popup.on(&#x27;close&#x27;, function(){
                         _p.selector().data( FormLogic.Model.RESET_CONFIRM_BUTTON, null );
                     });
                 });
-                
+
+                _p.on( &#x27;FORM_RESET&#x27;, function( _evt, _srcEvt ){
+                    JC.f.safeTimeout( function(){
+                        _p._model.formResetCallback() &amp;&amp; _p._model.formResetCallback().call( _p.selector(), _srcEvt, _p );
+                    }, _p, &#x27;asdfawerasdfase_reset&#x27;, 100 );
+                });
             }
         , _inited:
             function(){
@@ -1198,8 +1214,6 @@ window.parent
 
                 return JC.f.urlDetect( _r );
             }
-
-
         , formBeforeProcess: function(){ return this.callbackProp( &#x27;formBeforeProcess&#x27; ); }
         , formAfterProcess: function(){ return this.callbackProp( &#x27;formAfterProcess&#x27; ); }
         , formProcessError: 
@@ -1207,6 +1221,8 @@ window.parent
                 var _r = this.callbackProp( &#x27;formProcessError&#x27; ) || FormLogic.processErrorCb;
                 return _r;
             }
+
+        , formResetCallback: function(){ return this.callbackProp( &#x27;formResetCallback&#x27;); }
 
         , prevent: function( _evt ){ _evt &amp;&amp; _evt.preventDefault(); return false; }
 
