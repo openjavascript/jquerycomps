@@ -1288,6 +1288,14 @@ function parseYearDate( _dateStr ){
                 _r.minvalue &amp;&amp; ( _r.minvalue = JC.f.pureDate( _r.minvalue ) );
                 _r.maxvalue &amp;&amp; ( _r.maxvalue = JC.f.pureDate( _r.maxvalue ) );
 
+                _r.date &amp;&amp; _r.minvalue 
+                    &amp;&amp; _r.minvalue.getTime() &gt; _r.date.getTime()
+                    &amp;&amp; ( _r.date = JC.f.cloneDate( _r.minvalue ) );
+
+                _r.date &amp;&amp; _r.maxvalue
+                    &amp;&amp; _r.maxvalue.getTime() &lt; _r.date.getTime()
+                    &amp;&amp; ( _r.date = JC.f.cloneDate( _r.maxvalue) );
+
                 return _r;
             }
         , defaultSingleSelectDate:
@@ -1734,6 +1742,7 @@ function parseYearDate( _dateStr ){
 
                 var _dateo = this._model.layoutDate(), _date;
                 if( _dateo.minvalue || _dateo.maxvalue ){
+
                     var _fixYear;
                     _date = JC.f.cloneDate( _dateo.date );
                     _date.setFullYear( _date.getFullYear() + _offset );
@@ -1761,6 +1770,7 @@ function parseYearDate( _dateStr ){
                             _fixYear = true;
                         }
                     }
+
                     if( !_fixYear ) _date = null;
                     else {
                     }
