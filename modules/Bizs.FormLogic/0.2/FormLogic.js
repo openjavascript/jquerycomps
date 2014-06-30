@@ -1093,9 +1093,10 @@ window.parent
                     var _v = _item.val().trim(), _status = _item.attr('datavalid');
                     if( !( _v && _status ) ) return;
 
-                    if( JC.f.parseBool( _item.attr( _status ) ) ) return;
+                    if( JC.f.parseBool( _status ) ) return;
 
-                    JC.msgbox( _p._model.datavalidFormLogicMsg( _item ), _item, 2 );
+                    //JC.msgbox( _p._model.datavalidFormLogicMsg( _item ), _item, 2 );
+                    JC.Dialog.msgbox( _p._model.datavalidFormLogicMsg( _item ), 2 );
 
                     JC.f.safeTimeout( function(){
                         _item.trigger( 'blur' );

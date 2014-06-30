@@ -40,7 +40,7 @@
     <body>
 
         <dl class="defdl">
-            <dt>Bizs.FormLogic, get form example 1</dt>
+            <dt>Bizs.FormLogic, post form example 1</dt>
             <dd>
                 <dl>
                     <form action="./data/handler.php" method="POST" target="postIframe"
@@ -76,7 +76,7 @@
         </dl>
 
         <dl class="defdl">
-            <dt>Bizs.FormLogic, get form example 2</dt>
+            <dt>Bizs.FormLogic, post form example 2</dt>
             <dd>
                 <dl>
                     <form action="./data/handler.php" method="POST" target="postIframe"
@@ -118,7 +118,7 @@
         </dl>
 
         <dl class="defdl">
-            <dt>Bizs.FormLogic, get form example 3</dt>
+            <dt>Bizs.FormLogic, post form example 3</dt>
             <dd>
                 <dl>
                     <form action="./data/handler.php" method="POST" target="postIframe"
@@ -129,8 +129,30 @@
                         >
                         <dl>
                             <dd>
-                                文件框: <input type="text" name="text" reqmsg="文本框" value="test3" />
+                            文件框: <input type="text" name="text" reqmsg="文本框" value="test3"
+                                reqmsg="内容" 
+                                subdatatype="unique,datavalid" 
+                                uniquedatatarget="(dl input"
+                                uniquemsg="内容不能重复"
+
+                                datavalidmsg="内容不存在" 
+                                datavalidurl="./data/handler.php?key={0}"
+
+                                autocomplete="off" 
+                                sugurl="http://sug.so.360.cn/suggest/word?callback={1}&encodein=utf-8&encodeout=utf-8&word={0}"
+                                sugneedscripttag="true"
+                                sugselectedcallback="sugselectedcallback1"
+                                sugoffsetleft="0"
+                                sugoffsettop="3"
+                                sugoffsetwidth="2"
+                            />
                             </dd>
+                            <dd>
+                            文件框: <input type="text" name="text" reqmsg="文本框" value=""
+                                reqmsg="内容" 
+                            />
+                            </dd>
+
                             <dd>
                                 日期: <input type="text" name="date" datatype="date" reqmsg="日期" value="2015-05-20" />
                                 <em class="error"></em>
@@ -146,7 +168,7 @@
                             </dd>
                             <dd>
                                 <input type="hidden" name="getform" value="1" />
-                                <button type="submit" formSubmitConfirm="确定要提交吗?" >submit - dialog</button>
+                                <button type="submit" >submit - dialog</button>
                                 <button type="submit" formConfirmPopupType="dialog" 
                                                         formSubmitConfirm="确定要提交吗?" >submit - popup</button>
 
