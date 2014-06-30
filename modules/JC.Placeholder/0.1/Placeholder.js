@@ -213,7 +213,7 @@
         , placeholder:
             function(){
                 if( !this._placeholder ){
-                    this._placeholder = $( JC.f.printf( '<div class="{0}"></div>'
+                    this._placeholder = $( JC.f.printf( '<div class="{0}" style="display:none;"></div>'
                                 , this.className() 
                             ) )
                             .appendTo( this.placeholderBox() );
@@ -247,7 +247,7 @@
                     , _v = _p._model.selector().val().trim()
                     , _holder = _p._model.placeholder()
                     ;
-                if( _v ){
+                if( _v || !_p.selector().is( ':visible' ) ){
                     _holder.hide();
                     return;
                 }
