@@ -356,7 +356,7 @@
      *      &lt;dd&gt;&lt;b&gt;minute:&lt;/b&gt; 是否为正确的时间, hh:mm&lt;/dd&gt;
      *      &lt;dd&gt;
      *          &lt;b&gt;bankcard:&lt;/b&gt; 是否为正确的银行卡
-     *          &lt;br /&gt;格式为: 12 ~ 22 位数字
+     *          &lt;br /&gt;格式为: 12 ~ 25 位数字
      *      &lt;/dd&gt;
      *      &lt;dd&gt;
      *          &lt;b&gt;cnname:&lt;/b&gt; 中文姓名
@@ -1693,7 +1693,7 @@ function (){
                     ;
                      _item.val( _v );
                 var _dig = _v.replace( /[^\d]/g, &#x27;&#x27; )
-                    , _r = /^[0-9](?:[\d]{21}|[\d]{20}|[\d]{19}|[\d]{18}|[\d]{17}|[\d]{16}|[\d]{15}|[\d]{14}|[\d]{13}|[\d]{12}|[\d]{11}|)$/.test( _dig )
+                    , _r = /^[0-9](?:[\d]{24}|[\d]{23}|[\d]{22}|[\d]{21}|[\d]{20}|[\d]{19}|[\d]{18}|[\d]{17}|[\d]{16}|[\d]{15}|[\d]{14}|[\d]{13}|[\d]{12}|[\d]{11}|)$/.test( _dig )
                     ;
                     /^[0]+$/.test( _dig ) &amp;&amp; ( _r = false );
                     !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );

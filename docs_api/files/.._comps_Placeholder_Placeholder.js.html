@@ -447,7 +447,7 @@
         , placeholder:
             function(){
                 if( !this._placeholder ){
-                    this._placeholder = $( JC.f.printf( &#x27;&lt;div class=&quot;{0}&quot;&gt;&lt;/div&gt;&#x27;
+                    this._placeholder = $( JC.f.printf( &#x27;&lt;div class=&quot;{0}&quot; style=&quot;display:none;&quot;&gt;&lt;/div&gt;&#x27;
                                 , this.className() 
                             ) )
                             .appendTo( this.placeholderBox() );
@@ -481,7 +481,7 @@
                     , _v = _p._model.selector().val().trim()
                     , _holder = _p._model.placeholder()
                     ;
-                if( _v ){
+                if( _v || !_p.selector().is( &#x27;:visible&#x27; ) ){
                     _holder.hide();
                     return;
                 }
