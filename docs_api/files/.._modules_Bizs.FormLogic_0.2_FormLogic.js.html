@@ -933,6 +933,8 @@ window.parent
     FormLogic.Model.AJAX_DONE = &quot;AjaxDone&quot;;
     FormLogic.Model.ENABLE_SUBMIT = &quot;EnableSubmit&quot;;
 
+    FormLogic.Model.SHOW_DATA_VALID_ERROR = true;
+
     JC.f.extendObject( FormLogic.Model.prototype, {
         init:
             function(){
@@ -959,6 +961,16 @@ window.parent
                                 JC.f.addUrlParams( this.attr( &#x27;formAjaxAction&#x27; ), { &#x27;callback&#x27;: this.jsonpKey() } ) )
                         );
                 }
+            }
+
+        , showDataValidError:
+            function( _item ){
+                var _p = this, _r = FormLogic.Model.SHOW_DATA_VALID_ERROR;
+
+                _p.selector().is( &#x27;[formShowDataValidError]&#x27; ) &amp;&amp; ( _r = JC.f.parseBool( _p.attrProp( &#x27;formShowDataValidError&#x27; ) ) );
+                _item &amp;&amp; _item.is( &#x27;[formShowDataValidError]&#x27; ) &amp;&amp; ( _r = JC.f.parseBool( _item.attr( &#x27;formShowDataValidError&#x27; ) ) );
+
+                return _r;
             }
     
     	, formIgnoreStatus:
@@ -1331,12 +1343,15 @@ window.parent
 
                     if( JC.f.parseBool( _status ) ) return;
 
-                    //JC.msgbox( _p._model.datavalidFormLogicMsg( _item ), _item, 2 );
-                    JC.Dialog.msgbox( _p._model.datavalidFormLogicMsg( _item ), 2 );
+                    if( _p._model.showDataValidError( _item ) ){
+                        //JC.msgbox( _p._model.datavalidFormLogicMsg( _item ), _item, 2 );
+                        JC.Dialog.msgbox( _p._model.datavalidFormLogicMsg( _item ), 2 );
 
-                    JC.f.safeTimeout( function(){
-                        _item.trigger( &#x27;blur&#x27; );
-                    }, _item, &#x27;FORMLOGIC_DATAVALID&#x27;, 10 );
+                        JC.f.safeTimeout( function(){
+                            _item.trigger( &#x27;blur&#x27; );
+                        }, _item, &#x27;FORMLOGIC_DATAVALID&#x27;, 10 );
+                    }
+                    return false;
                 });
             }
 
