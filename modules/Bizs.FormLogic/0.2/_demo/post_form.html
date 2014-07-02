@@ -22,6 +22,7 @@
 
             requirejs( [ 'JC.Calendar', 'Bizs.FormLogic', 'plugins.json2' ]
             , function( Calendar, FormLogic ){
+                FormLogic.Model.SHOW_DATA_VALID_ERROR = false;
             });
 
             function formBeforeProcess( _evt, _ins ){
@@ -136,7 +137,7 @@
                                 uniquemsg="内容不能重复"
 
                                 datavalidmsg="内容不存在" 
-                                datavalidurl="./data/handler.php?key={0}"
+                                datavalidurl="./data/handler.php?key={0}&errorno=1"
 
                                 autocomplete="off" 
                                 sugurl="http://sug.so.360.cn/suggest/word?callback={1}&encodein=utf-8&encodeout=utf-8&word={0}"
