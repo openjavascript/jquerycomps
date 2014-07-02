@@ -697,6 +697,8 @@ window.parent
     FormLogic.Model.AJAX_DONE = "AjaxDone";
     FormLogic.Model.ENABLE_SUBMIT = "EnableSubmit";
 
+    FormLogic.Model.SHOW_DATA_VALID_ERROR = true;
+
     JC.f.extendObject( FormLogic.Model.prototype, {
         init:
             function(){
@@ -723,6 +725,16 @@ window.parent
                                 JC.f.addUrlParams( this.attr( 'formAjaxAction' ), { 'callback': this.jsonpKey() } ) )
                         );
                 }
+            }
+
+        , showDataValidError:
+            function( _item ){
+                var _p = this, _r = FormLogic.Model.SHOW_DATA_VALID_ERROR;
+
+                _p.selector().is( '[formShowDataValidError]' ) && ( _r = JC.f.parseBool( _p.attrProp( 'formShowDataValidError' ) ) );
+                _item && _item.is( '[formShowDataValidError]' ) && ( _r = JC.f.parseBool( _item.attr( 'formShowDataValidError' ) ) );
+
+                return _r;
             }
     
     	, formIgnoreStatus:
@@ -1095,12 +1107,15 @@ window.parent
 
                     if( JC.f.parseBool( _status ) ) return;
 
-                    //JC.msgbox( _p._model.datavalidFormLogicMsg( _item ), _item, 2 );
-                    JC.Dialog.msgbox( _p._model.datavalidFormLogicMsg( _item ), 2 );
+                    if( _p._model.showDataValidError( _item ) ){
+                        //JC.msgbox( _p._model.datavalidFormLogicMsg( _item ), _item, 2 );
+                        JC.Dialog.msgbox( _p._model.datavalidFormLogicMsg( _item ), 2 );
 
-                    JC.f.safeTimeout( function(){
-                        _item.trigger( 'blur' );
-                    }, _item, 'FORMLOGIC_DATAVALID', 10 );
+                        JC.f.safeTimeout( function(){
+                            _item.trigger( 'blur' );
+                        }, _item, 'FORMLOGIC_DATAVALID', 10 );
+                    }
+                    return false;
                 });
             }
 
