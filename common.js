@@ -1242,6 +1242,7 @@
         !_len && ( _len = 3 );
         typeof _floatLen == 'undefined' && ( _floatLen = 2 );
         !_splitSymbol && ( _splitSymbol = ',' );
+        var _isNegative = false, _r;
 
         typeof _number == 'number' && ( _number = parseFinance( _number, _floatLen ) );
         if( typeof _number == 'string' ){
@@ -1252,6 +1253,8 @@
 
         if( !_number ) return _def;
         _number += ''; 
+
+        /^\-/.test( _number ) && ( _isNegative = true );
 
         _number = _number.replace( /[^\d\.]/g, '' );
 
@@ -1274,8 +1277,10 @@
         }else{
             _parts.length > 1 && _parts.pop();
         }
+        _r = _parts.join('.');
+        _isNegative && ( _r = '-' + _r );
 
-        return _parts.join('.');
+        return _r;
     }
     /**
      * 日期格式化 (具体格式请查看 PHP Date Formats)
