@@ -439,7 +439,13 @@
                     if( _p._model.macAddtionBoxWithId( _selector ) ){
                         _sitem = $( JC.f.printf( '#macAddtionBoxItemId_{0}_{1}', _p._model.insCount(), _d.item.val() ) );
                     }else{
-                        _sitem = _boxList.find( _p._model.macAddtionBoxItemSelector( _acIns.selector() ) + '[data-id='+ _d.item.val() +']' );
+                        _sitem = [];
+                        _boxList.find( _p._model.macAddtionBoxItemSelector( _acIns.selector() ) + '[data-id]' ).each( function(){
+                            if( $( this ).data( 'id' ) == _d.item.val() ){
+                                _sitem.push( this );
+                            }
+                        });
+                        _sitem = jQuery( _sitem );
                     }
 
                     if( _d.item.prop( 'checked' ) ){

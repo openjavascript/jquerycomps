@@ -675,7 +675,13 @@
                     if( _p._model.macAddtionBoxWithId( _selector ) ){
                         _sitem = $( JC.f.printf( &#x27;#macAddtionBoxItemId_{0}_{1}&#x27;, _p._model.insCount(), _d.item.val() ) );
                     }else{
-                        _sitem = _boxList.find( _p._model.macAddtionBoxItemSelector( _acIns.selector() ) + &#x27;[data-id=&#x27;+ _d.item.val() +&#x27;]&#x27; );
+                        _sitem = [];
+                        _boxList.find( _p._model.macAddtionBoxItemSelector( _acIns.selector() ) + &#x27;[data-id]&#x27; ).each( function(){
+                            if( $( this ).data( &#x27;id&#x27; ) == _d.item.val() ){
+                                _sitem.push( this );
+                            }
+                        });
+                        _sitem = jQuery( _sitem );
                     }
 
                     if( _d.item.prop( &#x27;checked&#x27; ) ){

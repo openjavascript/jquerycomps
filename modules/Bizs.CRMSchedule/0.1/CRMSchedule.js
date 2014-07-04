@@ -1225,98 +1225,100 @@
                     ;
 
 
-                for( var i = 0, j = _d.list_data.length; i < j; i++ ){
-                    var _item = _d.list_data[ i ]
-                        , _parent1 = '', _parent2 = ''
-                        , _parent1_id = '', _parent2_id = ''
-                        , _days = []
-                        , _ckAll = ''
-                        , _hasCanSelect
-                        , _hasLocked
-                        ;
-
-                    if( _item.parent ){
-                        _item.parent[0] 
-                            && ( _parent1 = _item.parent[0].name, _parent1_id = _item.parent[0].id );
-
-                        _item.parent[1] 
-                            && ( _parent2 = _item.parent[1].name, _parent2_id = _item.parent[1].id );
-                    }
-
-                    for( var k = 1; k <= 31; k++ ){
-                        var _posDate = new Date( _date.getFullYear(), _date.getMonth(), k )
-                            , _sPosDate = JC.f.formatISODate( _posDate )
-                            , _status = 0
-                            , _name = ''
-                            , _shortName = ''
-                            , _class
-                            , _styleClass = ''
-                            , _outdateClass = ''
-                            , _title = ''
+                if( _d.list_data ){
+                    for( var i = 0, j = _d.list_data.length; i < j; i++ ){
+                        var _item = _d.list_data[ i ]
+                            , _parent1 = '', _parent2 = ''
+                            , _parent1_id = '', _parent2_id = ''
+                            , _days = []
+                            , _ckAll = ''
+                            , _hasCanSelect
+                            , _hasLocked
                             ;
 
-                        k === 31 && ( _styleClass = "js_bccDataRowLastCell" );
+                        if( _item.parent ){
+                            _item.parent[0] 
+                                && ( _parent1 = _item.parent[0].name, _parent1_id = _item.parent[0].id );
 
-                        if( k > _maxDay ){
-                            _days.push( JC.f.printf( '<td class="js_bccDateItem xnocursor {0}"><div>&nbsp;</div></td>'
-                                        , _styleClass ) );
-                            break;
+                            _item.parent[1] 
+                                && ( _parent2 = _item.parent[1].name, _parent2_id = _item.parent[1].id );
                         }
 
-                        if( _sPosDate in _item.position_date ){
+                        for( var k = 1; k <= 31; k++ ){
+                            var _posDate = new Date( _date.getFullYear(), _date.getMonth(), k )
+                                , _sPosDate = JC.f.formatISODate( _posDate )
+                                , _status = 0
+                                , _name = ''
+                                , _shortName = ''
+                                , _class
+                                , _styleClass = ''
+                                , _outdateClass = ''
+                                , _title = ''
+                                ;
 
-                            CRMSchedule.defaultDataBuild( _item.position_date[ _sPosDate ], _sPosDate );
-                            _title = _item.position_date[ _sPosDate ].title || '';
+                            k === 31 && ( _styleClass = "js_bccDataRowLastCell" );
 
-                            _status = _item.position_date[ _sPosDate ].status;
-                            _name = _item.position_date[ _sPosDate ].company || '';
-                            _shortName = byteString( 
-                                                    _item.position_date[ _sPosDate ].company
-                                                    || _item.position_date[ _sPosDate ].agencyName
-                                                    ||_item.position_date[ _sPosDate ].departmentName
-                                                    || '' 
-                                                , 6 );
-
-                            bytelen( _name ) > 6 && ( _shortName += '...' );
-                        }
-
-                        _class = CRMSchedule.STATUS_CODE_MAP[ _status ] || 0;
-
-                        _status == CRMSchedule.STATUS_CAN_SELECT && ( _hasCanSelect = true );
-                        _status == CRMSchedule.STATUS_LOCKED && ( _hasLocked = true );
-
-                        if( _posDate.getTime() < _now.getTime() || _posDate.getTime() > _p._model.initDate().edate.getTime() ){
-                            switch( _status ){
-                                case 0:
-                                case 5:
-                                case 6:
-                                    //_class = '';
-                                    break;
+                            if( k > _maxDay ){
+                                _days.push( JC.f.printf( '<td class="js_bccDateItem xnocursor {0}"><div>&nbsp;</div></td>'
+                                            , _styleClass ) );
+                                break;
                             }
-                            _outdateClass = 'js_bccOutdate';
+
+                            if( _sPosDate in _item.position_date ){
+
+                                CRMSchedule.defaultDataBuild( _item.position_date[ _sPosDate ], _sPosDate );
+                                _title = _item.position_date[ _sPosDate ].title || '';
+
+                                _status = _item.position_date[ _sPosDate ].status;
+                                _name = _item.position_date[ _sPosDate ].company || '';
+                                _shortName = byteString( 
+                                                        _item.position_date[ _sPosDate ].company
+                                                        || _item.position_date[ _sPosDate ].agencyName
+                                                        ||_item.position_date[ _sPosDate ].departmentName
+                                                        || '' 
+                                                    , 6 );
+
+                                bytelen( _name ) > 6 && ( _shortName += '...' );
+                            }
+
+                            _class = CRMSchedule.STATUS_CODE_MAP[ _status ] || 0;
+
+                            _status == CRMSchedule.STATUS_CAN_SELECT && ( _hasCanSelect = true );
+                            _status == CRMSchedule.STATUS_LOCKED && ( _hasLocked = true );
+
+                            if( _posDate.getTime() < _now.getTime() || _posDate.getTime() > _p._model.initDate().edate.getTime() ){
+                                switch( _status ){
+                                    case 0:
+                                    case 5:
+                                    case 6:
+                                        //_class = '';
+                                        break;
+                                }
+                                _outdateClass = 'js_bccOutdate';
+                            }
+
+                            _days.push( JC.f.printf( '<td class="js_bccDateItem {0} {5} js_bccDateCol_{6} {7}" title="{8}" ' 
+                                        +' data-id="{2}" data-date="{3}" data-colCount="{6}">' 
+                                        +'<div>{4}</div></td>'
+                                        , _class, _name, _item.id, _sPosDate, _shortName
+                                        , _styleClass, k, _outdateClass, _title ) );
                         }
 
-                        _days.push( JC.f.printf( '<td class="js_bccDateItem {0} {5} js_bccDateCol_{6} {7}" title="{8}" ' 
-                                    +' data-id="{2}" data-date="{3}" data-colCount="{6}">' 
-                                    +'<div>{4}</div></td>'
-                                    , _class, _name, _item.id, _sPosDate, _shortName
-                                    , _styleClass, k, _outdateClass, _title ) );
+                        if( _p._model.actionType() == 'lock' || _p._model.actionType() == 'edit' ){
+                            _ckAll = '<div><input type="checkbox" class="js_bccCkAll" data-id="{0}" style="display:none" /></div>';
+                        }
+                        _ckAll = JC.f.printf( _ckAll, _item.id );
+
+                        _tmpTpl = JC.f.printf( _tpl
+                                                , _parent1, _parent2
+                                                , _item.name, _days.join('') 
+                                                , _parent1_id, _parent2_id
+                                                , _item.id
+                                                , _ckAll, i
+                                            );
+
+                        _r.push( _tmpTpl );
                     }
-
-                    if( _p._model.actionType() == 'lock' || _p._model.actionType() == 'edit' ){
-                        _ckAll = '<div><input type="checkbox" class="js_bccCkAll" data-id="{0}" style="display:none" /></div>';
-                    }
-                    _ckAll = JC.f.printf( _ckAll, _item.id );
-
-                    _tmpTpl = JC.f.printf( _tpl
-                                            , _parent1, _parent2
-                                            , _item.name, _days.join('') 
-                                            , _parent1_id, _parent2_id
-                                            , _item.id
-                                            , _ckAll, i
-                                        );
-
-                    _r.push( _tmpTpl );
                 }
 
                 return _r.join('');
