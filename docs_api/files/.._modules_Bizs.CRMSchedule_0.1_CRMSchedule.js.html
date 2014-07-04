@@ -1469,98 +1469,100 @@
                     ;
 
 
-                for( var i = 0, j = _d.list_data.length; i &lt; j; i++ ){
-                    var _item = _d.list_data[ i ]
-                        , _parent1 = &#x27;&#x27;, _parent2 = &#x27;&#x27;
-                        , _parent1_id = &#x27;&#x27;, _parent2_id = &#x27;&#x27;
-                        , _days = []
-                        , _ckAll = &#x27;&#x27;
-                        , _hasCanSelect
-                        , _hasLocked
-                        ;
-
-                    if( _item.parent ){
-                        _item.parent[0] 
-                            &amp;&amp; ( _parent1 = _item.parent[0].name, _parent1_id = _item.parent[0].id );
-
-                        _item.parent[1] 
-                            &amp;&amp; ( _parent2 = _item.parent[1].name, _parent2_id = _item.parent[1].id );
-                    }
-
-                    for( var k = 1; k &lt;= 31; k++ ){
-                        var _posDate = new Date( _date.getFullYear(), _date.getMonth(), k )
-                            , _sPosDate = JC.f.formatISODate( _posDate )
-                            , _status = 0
-                            , _name = &#x27;&#x27;
-                            , _shortName = &#x27;&#x27;
-                            , _class
-                            , _styleClass = &#x27;&#x27;
-                            , _outdateClass = &#x27;&#x27;
-                            , _title = &#x27;&#x27;
+                if( _d.list_data ){
+                    for( var i = 0, j = _d.list_data.length; i &lt; j; i++ ){
+                        var _item = _d.list_data[ i ]
+                            , _parent1 = &#x27;&#x27;, _parent2 = &#x27;&#x27;
+                            , _parent1_id = &#x27;&#x27;, _parent2_id = &#x27;&#x27;
+                            , _days = []
+                            , _ckAll = &#x27;&#x27;
+                            , _hasCanSelect
+                            , _hasLocked
                             ;
 
-                        k === 31 &amp;&amp; ( _styleClass = &quot;js_bccDataRowLastCell&quot; );
+                        if( _item.parent ){
+                            _item.parent[0] 
+                                &amp;&amp; ( _parent1 = _item.parent[0].name, _parent1_id = _item.parent[0].id );
 
-                        if( k &gt; _maxDay ){
-                            _days.push( JC.f.printf( &#x27;&lt;td class=&quot;js_bccDateItem xnocursor {0}&quot;&gt;&lt;div&gt;&amp;nbsp;&lt;/div&gt;&lt;/td&gt;&#x27;
-                                        , _styleClass ) );
-                            break;
+                            _item.parent[1] 
+                                &amp;&amp; ( _parent2 = _item.parent[1].name, _parent2_id = _item.parent[1].id );
                         }
 
-                        if( _sPosDate in _item.position_date ){
+                        for( var k = 1; k &lt;= 31; k++ ){
+                            var _posDate = new Date( _date.getFullYear(), _date.getMonth(), k )
+                                , _sPosDate = JC.f.formatISODate( _posDate )
+                                , _status = 0
+                                , _name = &#x27;&#x27;
+                                , _shortName = &#x27;&#x27;
+                                , _class
+                                , _styleClass = &#x27;&#x27;
+                                , _outdateClass = &#x27;&#x27;
+                                , _title = &#x27;&#x27;
+                                ;
 
-                            CRMSchedule.defaultDataBuild( _item.position_date[ _sPosDate ], _sPosDate );
-                            _title = _item.position_date[ _sPosDate ].title || &#x27;&#x27;;
+                            k === 31 &amp;&amp; ( _styleClass = &quot;js_bccDataRowLastCell&quot; );
 
-                            _status = _item.position_date[ _sPosDate ].status;
-                            _name = _item.position_date[ _sPosDate ].company || &#x27;&#x27;;
-                            _shortName = byteString( 
-                                                    _item.position_date[ _sPosDate ].company
-                                                    || _item.position_date[ _sPosDate ].agencyName
-                                                    ||_item.position_date[ _sPosDate ].departmentName
-                                                    || &#x27;&#x27; 
-                                                , 6 );
-
-                            bytelen( _name ) &gt; 6 &amp;&amp; ( _shortName += &#x27;...&#x27; );
-                        }
-
-                        _class = CRMSchedule.STATUS_CODE_MAP[ _status ] || 0;
-
-                        _status == CRMSchedule.STATUS_CAN_SELECT &amp;&amp; ( _hasCanSelect = true );
-                        _status == CRMSchedule.STATUS_LOCKED &amp;&amp; ( _hasLocked = true );
-
-                        if( _posDate.getTime() &lt; _now.getTime() || _posDate.getTime() &gt; _p._model.initDate().edate.getTime() ){
-                            switch( _status ){
-                                case 0:
-                                case 5:
-                                case 6:
-                                    //_class = &#x27;&#x27;;
-                                    break;
+                            if( k &gt; _maxDay ){
+                                _days.push( JC.f.printf( &#x27;&lt;td class=&quot;js_bccDateItem xnocursor {0}&quot;&gt;&lt;div&gt;&amp;nbsp;&lt;/div&gt;&lt;/td&gt;&#x27;
+                                            , _styleClass ) );
+                                break;
                             }
-                            _outdateClass = &#x27;js_bccOutdate&#x27;;
+
+                            if( _sPosDate in _item.position_date ){
+
+                                CRMSchedule.defaultDataBuild( _item.position_date[ _sPosDate ], _sPosDate );
+                                _title = _item.position_date[ _sPosDate ].title || &#x27;&#x27;;
+
+                                _status = _item.position_date[ _sPosDate ].status;
+                                _name = _item.position_date[ _sPosDate ].company || &#x27;&#x27;;
+                                _shortName = byteString( 
+                                                        _item.position_date[ _sPosDate ].company
+                                                        || _item.position_date[ _sPosDate ].agencyName
+                                                        ||_item.position_date[ _sPosDate ].departmentName
+                                                        || &#x27;&#x27; 
+                                                    , 6 );
+
+                                bytelen( _name ) &gt; 6 &amp;&amp; ( _shortName += &#x27;...&#x27; );
+                            }
+
+                            _class = CRMSchedule.STATUS_CODE_MAP[ _status ] || 0;
+
+                            _status == CRMSchedule.STATUS_CAN_SELECT &amp;&amp; ( _hasCanSelect = true );
+                            _status == CRMSchedule.STATUS_LOCKED &amp;&amp; ( _hasLocked = true );
+
+                            if( _posDate.getTime() &lt; _now.getTime() || _posDate.getTime() &gt; _p._model.initDate().edate.getTime() ){
+                                switch( _status ){
+                                    case 0:
+                                    case 5:
+                                    case 6:
+                                        //_class = &#x27;&#x27;;
+                                        break;
+                                }
+                                _outdateClass = &#x27;js_bccOutdate&#x27;;
+                            }
+
+                            _days.push( JC.f.printf( &#x27;&lt;td class=&quot;js_bccDateItem {0} {5} js_bccDateCol_{6} {7}&quot; title=&quot;{8}&quot; &#x27; 
+                                        +&#x27; data-id=&quot;{2}&quot; data-date=&quot;{3}&quot; data-colCount=&quot;{6}&quot;&gt;&#x27; 
+                                        +&#x27;&lt;div&gt;{4}&lt;/div&gt;&lt;/td&gt;&#x27;
+                                        , _class, _name, _item.id, _sPosDate, _shortName
+                                        , _styleClass, k, _outdateClass, _title ) );
                         }
 
-                        _days.push( JC.f.printf( &#x27;&lt;td class=&quot;js_bccDateItem {0} {5} js_bccDateCol_{6} {7}&quot; title=&quot;{8}&quot; &#x27; 
-                                    +&#x27; data-id=&quot;{2}&quot; data-date=&quot;{3}&quot; data-colCount=&quot;{6}&quot;&gt;&#x27; 
-                                    +&#x27;&lt;div&gt;{4}&lt;/div&gt;&lt;/td&gt;&#x27;
-                                    , _class, _name, _item.id, _sPosDate, _shortName
-                                    , _styleClass, k, _outdateClass, _title ) );
+                        if( _p._model.actionType() == &#x27;lock&#x27; || _p._model.actionType() == &#x27;edit&#x27; ){
+                            _ckAll = &#x27;&lt;div&gt;&lt;input type=&quot;checkbox&quot; class=&quot;js_bccCkAll&quot; data-id=&quot;{0}&quot; style=&quot;display:none&quot; /&gt;&lt;/div&gt;&#x27;;
+                        }
+                        _ckAll = JC.f.printf( _ckAll, _item.id );
+
+                        _tmpTpl = JC.f.printf( _tpl
+                                                , _parent1, _parent2
+                                                , _item.name, _days.join(&#x27;&#x27;) 
+                                                , _parent1_id, _parent2_id
+                                                , _item.id
+                                                , _ckAll, i
+                                            );
+
+                        _r.push( _tmpTpl );
                     }
-
-                    if( _p._model.actionType() == &#x27;lock&#x27; || _p._model.actionType() == &#x27;edit&#x27; ){
-                        _ckAll = &#x27;&lt;div&gt;&lt;input type=&quot;checkbox&quot; class=&quot;js_bccCkAll&quot; data-id=&quot;{0}&quot; style=&quot;display:none&quot; /&gt;&lt;/div&gt;&#x27;;
-                    }
-                    _ckAll = JC.f.printf( _ckAll, _item.id );
-
-                    _tmpTpl = JC.f.printf( _tpl
-                                            , _parent1, _parent2
-                                            , _item.name, _days.join(&#x27;&#x27;) 
-                                            , _parent1_id, _parent2_id
-                                            , _item.id
-                                            , _ckAll, i
-                                        );
-
-                    _r.push( _tmpTpl );
                 }
 
                 return _r.join(&#x27;&#x27;);
