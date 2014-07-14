@@ -49,6 +49,8 @@
 
         JC.log( CompExampleMoreAdvance.Model._instanceName, 'all inited', new Date().getTime() );
     }
+
+    JC.PureMVC.build( CompExampleMoreAdvance, JC.SelectorMVC );
     /**
      * 初始化可识别的 CompExampleMoreAdvance 实例
      * @method  init
@@ -72,8 +74,6 @@
             }
             return _r;
         };
-
-    JC.PureMVC.build( CompExampleMoreAdvance, JC.SelectorMVC );
 
     JC.f.extendObject( CompExampleMoreAdvance.prototype, {
         _beforeInit:

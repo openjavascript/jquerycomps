@@ -15,7 +15,7 @@
         , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload'
         , 'JC.AutoChecked': 'modules/JC.AutoChecked/3.0/AutoChecked'
         , 'JC.AutoSelect': 'modules/JC.AutoSelect/0.2/AutoSelect'
-        , 'JC.AutoComplete': 'modules/JC.AutoComplete/0.1/AutoComplete'
+        , 'JC.AutoComplete': 'modules/JC.AutoComplete/3.0/AutoComplete'
 
         , 'JC.Calendar': 'modules/JC.Calendar/0.2/Calendar'
 
@@ -32,7 +32,7 @@
         , 'JC.Placeholder': 'modules/JC.Placeholder/0.1/Placeholder'
         , 'JC.Valid': 'modules/JC.Valid/0.2/Valid'
 
-        , 'Bizs.ActionLogic': 'modules/Bizs.ActionLogic/0.1/ActionLogic'
+        , 'Bizs.ActionLogic': 'modules/Bizs.ActionLogic/3.0/ActionLogic'
         , 'Bizs.AutoSelectComplete': 'modules/Bizs.AutoSelectComplete//0.1/AutoSelectComplete'
         , 'Bizs.DisableLogic': 'modules/Bizs.DisableLogic/0.1/DisableLogic'
         , 'Bizs.CommonModify': 'modules/Bizs.CommonModify/0.1/CommonModify'

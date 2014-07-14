@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
     /**
      * 全选/反选
      * <p><b>require</b>: 
@@ -96,11 +96,12 @@
 
         JC.log( 'AutoChecked init', new Date().getTime() );
 
-        this._model = new Model( _selector );
-        this._view = new View( this._model );
+        this._model = new AutoChecked.Model( _selector );
+        this._view = new AutoChecked.View( this._model );
 
         this._init();
     }
+    JC.PureMVC.build( AutoChecked, JC.SelectorMVC );
     /**
      * 初始化 _selector 的所有 input[checktype][checkfor]
      * @method  init
@@ -123,7 +124,7 @@
             });
         };
     
-    AutoChecked.prototype = {
+    JC.f.extendObject( AutoChecked.prototype, {
         _init:
             function(){
                 var _p = this;
@@ -202,7 +203,7 @@
          * @return  AutoCheckedInstance
          */
         , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
-    }
+    });
     /**
      * 获取或设置 AutoChecked 的实例
      * @method getInstance
@@ -235,16 +236,12 @@
             return _r;
         };
     
-    function Model( _selector ){
-        this._selector = _selector;
-    }
+    AutoChecked.Model.isParentSelectorRe = /^[\/\|<\(]/;
+    AutoChecked.Model.parentSelectorRe = /[^\/\|<\(]/g;
+    AutoChecked.Model.childSelectorRe = /[\/\|<\(]/g;
+    AutoChecked.Model.parentNodeRe = /^[<\(]/;
 
-    Model.isParentSelectorRe = /^[\/\|<\(]/;
-    Model.parentSelectorRe = /[^\/\|<\(]/g;
-    Model.childSelectorRe = /[\/\|<\(]/g;
-    Model.parentNodeRe = /^[<\(]/;
-
-    Model.prototype = {
+    JC.f.extendObject( AutoChecked.Model.prototype, {
         init:
             function(){
                 return this;
@@ -273,18 +270,18 @@
 
         , selector: function(){ return this._selector; }
 
-        , isParentSelector: function(){ return Model.isParentSelectorRe.test( this.selector().attr( 'checkfor' ) ); }
+        , isParentSelector: function(){ return AutoChecked.Model.isParentSelectorRe.test( this.selector().attr( 'checkfor' ) ); }
 
         , delegateSelector:
             function(){
                 var _r = this.selector().attr('checkfor'), _tmp;
                 if( this.isParentSelector() ){
-                    if( Model.parentNodeRe.test( this.checkfor() ) ){
+                    if( AutoChecked.Model.parentNodeRe.test( this.checkfor() ) ){
                         this.checkfor().replace( /[\s]([\s\S]+)/, function( $0, $1 ){
                             _r = $1;
                         });
                     }else{
-                        _r = this.checkfor().replace( Model.childSelectorRe, '' );
+                        _r = this.checkfor().replace( AutoChecked.Model.childSelectorRe, '' );
                     }
                 }
                 return _r;
@@ -294,12 +291,12 @@
             function(){
                 var _p = this, _r = $(document), _tmp;
                 if( this.isParentSelector() ){
-                    if( Model.parentNodeRe.test( this.checkfor() ) ){
+                    if( AutoChecked.Model.parentNodeRe.test( this.checkfor() ) ){
                         this.checkfor().replace( /^([^\s]+)/, function( $0, $1 ){
                             _r = JC.f.parentSelector( _p.selector(), $1 );
                         });
                     }else{
-                        _tmp = this.checkfor().replace( Model.parentSelectorRe, '' );
+                        _tmp = this.checkfor().replace( AutoChecked.Model.parentSelectorRe, '' );
                         _r = JC.f.parentSelector( _p.selector(), _tmp );
                     }
                 }
@@ -326,13 +323,9 @@
                 }
                 return _r;
             }
-    };
+    });
     
-    function View( _model ){
-        this._model = _model;
-    }
-    
-    View.prototype = {
+    JC.f.extendObject( AutoChecked.View.prototype, {
         init:
             function() {
                 return this;
@@ -391,7 +384,7 @@
                     && $(_item).trigger( _triggerEvent )
                     ;
             }
-    };
+    });
  
     $(document).ready( function( _evt ){
         AutoChecked.init( $(document) );

@@ -175,7 +175,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
 
     JC.PureMVC.build( CommonModify, JC.SelectorMVC );
     
-    CommonModify.prototype = {
+    JC.f.extendObject( CommonModify.prototype, {
         _initHanlderEvent:
             function(){
                 var _p = this;
@@ -213,7 +213,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                 }
             }
         , cmitem: function(){ return this._model.cmitem(); }
-    }
+    });
     /**
      * 获取或设置 CommonModify 的实例
      * @method getInstance
@@ -252,7 +252,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
     CommonModify.delCallback = null;
     
 
-    CommonModify.Model.prototype = {
+    JC.f.extendObject( CommonModify.Model.prototype, {
         init:
             function(){
                 return this;
@@ -397,7 +397,7 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
                 var _r = this.selector().attr('cmappendtype') || 'after';
                 return _r;
             }
-    };
+    });
     
     JC.f.extendObject( CommonModify.View.prototype, {
         init:

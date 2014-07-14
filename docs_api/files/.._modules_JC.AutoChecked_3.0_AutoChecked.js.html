@@ -238,7 +238,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.SelectorMVC&#x27; ], function(){
     /**
      * 全选/反选
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
@@ -336,11 +336,12 @@
 
         JC.log( &#x27;AutoChecked init&#x27;, new Date().getTime() );
 
-        this._model = new Model( _selector );
-        this._view = new View( this._model );
+        this._model = new AutoChecked.Model( _selector );
+        this._view = new AutoChecked.View( this._model );
 
         this._init();
     }
+    JC.PureMVC.build( AutoChecked, JC.SelectorMVC );
     /**
      * 初始化 _selector 的所有 input[checktype][checkfor]
      * @method  init
@@ -363,7 +364,7 @@
             });
         };
     
-    AutoChecked.prototype = {
+    JC.f.extendObject( AutoChecked.prototype, {
         _init:
             function(){
                 var _p = this;
@@ -442,7 +443,7 @@
          * @return  AutoCheckedInstance
          */
         , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
-    }
+    });
     /**
      * 获取或设置 AutoChecked 的实例
      * @method getInstance
@@ -475,16 +476,12 @@
             return _r;
         };
     
-    function Model( _selector ){
-        this._selector = _selector;
-    }
+    AutoChecked.Model.isParentSelectorRe = /^[\/\|&lt;\(]/;
+    AutoChecked.Model.parentSelectorRe = /[^\/\|&lt;\(]/g;
+    AutoChecked.Model.childSelectorRe = /[\/\|&lt;\(]/g;
+    AutoChecked.Model.parentNodeRe = /^[&lt;\(]/;
 
-    Model.isParentSelectorRe = /^[\/\|&lt;\(]/;
-    Model.parentSelectorRe = /[^\/\|&lt;\(]/g;
-    Model.childSelectorRe = /[\/\|&lt;\(]/g;
-    Model.parentNodeRe = /^[&lt;\(]/;
-
-    Model.prototype = {
+    JC.f.extendObject( AutoChecked.Model.prototype, {
         init:
             function(){
                 return this;
@@ -513,18 +510,18 @@
 
         , selector: function(){ return this._selector; }
 
-        , isParentSelector: function(){ return Model.isParentSelectorRe.test( this.selector().attr( &#x27;checkfor&#x27; ) ); }
+        , isParentSelector: function(){ return AutoChecked.Model.isParentSelectorRe.test( this.selector().attr( &#x27;checkfor&#x27; ) ); }
 
         , delegateSelector:
             function(){
                 var _r = this.selector().attr(&#x27;checkfor&#x27;), _tmp;
                 if( this.isParentSelector() ){
-                    if( Model.parentNodeRe.test( this.checkfor() ) ){
+                    if( AutoChecked.Model.parentNodeRe.test( this.checkfor() ) ){
                         this.checkfor().replace( /[\s]([\s\S]+)/, function( $0, $1 ){
                             _r = $1;
                         });
                     }else{
-                        _r = this.checkfor().replace( Model.childSelectorRe, &#x27;&#x27; );
+                        _r = this.checkfor().replace( AutoChecked.Model.childSelectorRe, &#x27;&#x27; );
                     }
                 }
                 return _r;
@@ -534,12 +531,12 @@
             function(){
                 var _p = this, _r = $(document), _tmp;
                 if( this.isParentSelector() ){
-                    if( Model.parentNodeRe.test( this.checkfor() ) ){
+                    if( AutoChecked.Model.parentNodeRe.test( this.checkfor() ) ){
                         this.checkfor().replace( /^([^\s]+)/, function( $0, $1 ){
                             _r = JC.f.parentSelector( _p.selector(), $1 );
                         });
                     }else{
-                        _tmp = this.checkfor().replace( Model.parentSelectorRe, &#x27;&#x27; );
+                        _tmp = this.checkfor().replace( AutoChecked.Model.parentSelectorRe, &#x27;&#x27; );
                         _r = JC.f.parentSelector( _p.selector(), _tmp );
                     }
                 }
@@ -566,13 +563,9 @@
                 }
                 return _r;
             }
-    };
+    });
     
-    function View( _model ){
-        this._model = _model;
-    }
-    
-    View.prototype = {
+    JC.f.extendObject( AutoChecked.View.prototype, {
         init:
             function() {
                 return this;
@@ -631,7 +624,7 @@
                     &amp;&amp; $(_item).trigger( _triggerEvent )
                     ;
             }
-    };
+    });
  
     $(document).ready( function( _evt ){
         AutoChecked.init( $(document) );

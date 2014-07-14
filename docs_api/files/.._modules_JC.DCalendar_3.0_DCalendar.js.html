@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../config_3.0.js - jquery components</title>
+    <title>../modules/JC.DCalendar/3.0/DCalendar.js - jquery components</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -234,136 +234,34 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../config_3.0.js</h1>
+                        <h1 class="file-heading">File: ../modules/JC.DCalendar/3.0/DCalendar.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(){
-window.JC = window.JC || {log:function(){}};
-JC.PATH = JC.PATH || scriptPath();
-/**
- * requirejs config.js for JC Project
- */
-window.requirejs &amp;&amp; 
-requirejs.config( {
-    baseUrl: JC.PATH
-    , urlArgs: &#x27;v=20140714&#x27;
-    , paths: {
-        &#x27;JC.common&#x27;: &#x27;modules/JC.common/0.2/common&#x27;
-        , &#x27;JC.PureMVC&#x27;: &#x27;modules/JC.PureMVC/0.1/PureMVC&#x27;
-        , &#x27;JC.SelectorMVC&#x27;: &#x27;modules/JC.SelectorMVC/3.0/SelectorMVC&#x27;
+;(function(define, _win) { &#x27;use strict&#x27;; 
+    define( [ &#x27;JC.DCalendar.date&#x27;
+            ], function(){
+    /**
+     * �����ж���Ϊ���������� JC 0.1
+     * ʹ�� requirejs ����Ŀ�����Ƴ������жϴ���
+     */
+    JC.use 
+        &amp;&amp; JC.PATH
+        &amp;&amp; JC.use([ 
+                JC.PATH + &#x27;comps/DCalendar/DCalendar.date.js&#x27;
+            ].join())
+        ;
 
-        , &#x27;JC.BaseMVC&#x27;: &#x27;modules/JC.BaseMVC/0.1/BaseMVC&#x27;
-
-        , &#x27;JC.AjaxUpload&#x27;: &#x27;modules/JC.AjaxUpload/3.0/AjaxUpload&#x27;
-        , &#x27;JC.AutoChecked&#x27;: &#x27;modules/JC.AutoChecked/3.0/AutoChecked&#x27;
-        , &#x27;JC.AutoSelect&#x27;: &#x27;modules/JC.AutoSelect/0.2/AutoSelect&#x27;
-        , &#x27;JC.AutoComplete&#x27;: &#x27;modules/JC.AutoComplete/3.0/AutoComplete&#x27;
-
-        //, &#x27;JC.Calendar&#x27;: &#x27;modules/JC.Calendar/0.2/Calendar&#x27;
-        , &#x27;JC.Calendar&#x27;: &#x27;modules/JC.Calendar/0.3/Calendar&#x27;
-        , &#x27;JC.Calendar.date&#x27;: &#x27;modules/JC.Calendar/0.3/Calendar.date&#x27;
-        , &#x27;JC.Calendar.week&#x27;: &#x27;modules/JC.Calendar/0.3/Calendar.week&#x27;
-        , &#x27;JC.Calendar.month&#x27;: &#x27;modules/JC.Calendar/0.3/Calendar.month&#x27;
-        , &#x27;JC.Calendar.season&#x27;: &#x27;modules/JC.Calendar/0.3/Calendar.season&#x27;
-        , &#x27;JC.Calendar.year&#x27;: &#x27;modules/JC.Calendar/0.3/Calendar.year&#x27;
-        , &#x27;JC.Calendar.monthday&#x27;: &#x27;modules/JC.Calendar/0.3/Calendar.monthday&#x27;
-
-        , &#x27;JC.DCalendar&#x27;: &#x27;modules/JC.DCalendar/3.0/DCalendar&#x27;
-        , &#x27;JC.DCalendar.date&#x27;: &#x27;modules/JC.DCalendar/3.0/DCalendar.date&#x27;
-
-        , &#x27;JC.Drag&#x27;: &#x27;modules/JC.Drag/3.0/Drag&#x27;
-        , &#x27;JC.DragSelect&#x27;: &#x27;modules/JC.DragSelect/3.0/DragSelect&#x27;
-
-        , &#x27;JC.Form&#x27;: &#x27;modules/JC.Form/0.2/Form&#x27;
-        , &#x27;JC.Fixed&#x27;: &#x27;modules/JC.Fixed/0.1/Fixed&#x27;
-
-        , &#x27;JC.FormFillUrl&#x27;: &#x27;modules/JC.FormFillUrl/3.0/FormFillUrl&#x27;
-        , &#x27;JC.FrameUtil&#x27;: &#x27;modules/JC.FrameUtil/0.1/FrameUtil&#x27;
-
-        , &#x27;JC.ImageCutter&#x27;: &#x27;modules/JC.ImageCutter/0.1/ImageCutter&#x27;
-
-        , &#x27;JC.LunarCalendar&#x27;: &#x27;modules/JC.LunarCalendar/0.1/LunarCalendar&#x27; , &#x27;JC.LunarCalendar.default&#x27;: &#x27;modules/JC.LunarCalendar/0.1/LunarCalendar.default&#x27;
-        , &#x27;JC.LunarCalendar.getFestival&#x27;: &#x27;modules/JC.LunarCalendar/0.1/LunarCalendar.getFestival&#x27;
-        , &#x27;JC.LunarCalendar.gregorianToLunar&#x27;: &#x27;modules/JC.LunarCalendar/0.1/LunarCalendar.gregorianToLunar&#x27;
-        , &#x27;JC.LunarCalendar.nationalHolidays&#x27;: &#x27;modules/JC.LunarCalendar/0.1/LunarCalendar.nationalHolidays&#x27;
-
-        , &#x27;JC.NumericStepper&#x27;: &#x27;modules/JC.NumericStepper/0.1/NumericStepper&#x27;
-        , &#x27;JC.Paginator&#x27;: &#x27;modules/JC.Paginator/0.1/Paginator&#x27;
-
-        , &#x27;JC.Slider&#x27;: &#x27;modules/JC.Slider/0.1/Slider&#x27;
-        , &#x27;JC.StepControl&#x27;: &#x27;modules/JC.StepControl/0.1/StepControl&#x27;
-        , &#x27;JC.Suggest&#x27;: &#x27;modules/JC.Suggest/0.1/Suggest&#x27;
-        , &#x27;JC.Tab&#x27;: &#x27;modules/JC.Tab/0.1/Tab&#x27;
-        , &#x27;JC.TableFreeze&#x27;: &#x27;modules/JC.TableFreeze/0.2/TableFreeze&#x27;
-        , &#x27;JC.TableSort&#x27;: &#x27;modules/JC.TableSort/0.1/TableSort&#x27;
-        , &#x27;JC.Selectable&#x27;: &#x27;modules/JC.SelectAble/dev/Selectable&#x27;
-        , &#x27;JC.Tips&#x27;: &#x27;modules/JC.Tips/0.1/Tips&#x27;
-        , &#x27;JC.Tree&#x27;: &#x27;modules/JC.Tree/0.1/Tree&#x27;
-        , &#x27;JC.Lazyload&#x27;: &#x27;modules/JC.Lazyload/0.1/Lazyload&#x27;
-        , &#x27;JC.Scrollbar&#x27;: &#x27;modules/JC.Scrollbar/0.1/Scrollbar&#x27;
-
-        //, &#x27;JC.Panel&#x27;: &#x27;modules/JC.Panel/0.1/Panel&#x27;
-        , &#x27;JC.Panel&#x27;: &#x27;modules/JC.Panel/0.2/Panel&#x27;
-        , &#x27;JC.Panel.default&#x27;: &#x27;modules/JC.Panel/0.2/Panel.default&#x27;
-        , &#x27;JC.Panel.popup&#x27;: &#x27;modules/JC.Panel/0.2/Panel.popup&#x27;
-        , &#x27;JC.Dialog&#x27;: &#x27;modules/JC.Panel/0.2/Dialog&#x27;
-        , &#x27;JC.Dialog.popup&#x27;: &#x27;modules/JC.Panel/0.2/Dialog.popup&#x27;
-
-        , &#x27;JC.Placeholder&#x27;: &#x27;modules/JC.Placeholder/0.1/Placeholder&#x27;
-        , &#x27;JC.PopTips&#x27;: &#x27;modules/JC.PopTips/0.1/PopTips&#x27;
-        , &#x27;JC.Valid&#x27;: &#x27;modules/JC.Valid/0.2/Valid&#x27;
-
-        , &#x27;Bizs.ActionLogic&#x27;: &#x27;modules/Bizs.ActionLogic/3.0/ActionLogic&#x27;
-        , &#x27;Bizs.AutoSelectComplete&#x27;: &#x27;modules/Bizs.AutoSelectComplete/3.0/AutoSelectComplete&#x27;
-
-        , &#x27;Bizs.ChangeLogic&#x27;: &#x27;modules/Bizs.ChangeLogic/0.1/ChangeLogic&#x27;
-        , &#x27;Bizs.DisableLogic&#x27;: &#x27;modules/Bizs.DisableLogic/0.1/DisableLogic&#x27;
-        , &#x27;Bizs.DropdownTree&#x27;: &#x27;modules/Bizs.DropdownTree/0.1/DropdownTree&#x27;
-
-        , &#x27;Bizs.CommonModify&#x27;: &#x27;modules/Bizs.CommonModify/3.0/CommonModify&#x27;
-
-        , &#x27;Bizs.FormLogic&#x27;: &#x27;modules/Bizs.FormLogic/3.0/FormLogic&#x27;
-        , &#x27;Bizs.KillISPCache&#x27;: &#x27;modules/Bizs.KillISPCache/0.1/KillISPCache&#x27;
-        , &#x27;Bizs.MoneyTips&#x27;: &#x27;modules/Bizs.MoneyTips/0.1/MoneyTips&#x27;
-
-        , &#x27;Bizs.MultiAutoComplete&#x27;: &#x27;modules/Bizs.MultiAutoComplete/0.1/MultiAutoComplete&#x27;
-
-        , &#x27;Bizs.MultiDate&#x27;: &#x27;modules/Bizs.MultiDate/0.1/MultiDate&#x27;
-        , &#x27;Bizs.MultiSelect&#x27;: &#x27;modules/Bizs.MultiSelect/0.1/MultiSelect&#x27;
-        , &#x27;Bizs.MultiselectPanel&#x27;: &#x27;modules/Bizs.MultiselectPanel/0.1/MultiselectPanel&#x27;
-        , &#x27;Bizs.MultiSelectTree&#x27;: &#x27;modules/Bizs.MultiSelectTree/0.1/MultiSelectTree&#x27;
-        , &#x27;Bizs.DMultiDate&#x27;: &#x27;modules/Bizs.DMultiDate/0.1/DMultiDate&#x27;
-        , &#x27;Bizs.MultiUpload&#x27;: &#x27;modules/Bizs.MultiUpload/0.1/MultiUpload&#x27;
-        , &#x27;Bizs.TaskViewer&#x27;: &#x27;modules/Bizs.TaskViewer/0.1/TaskViewer&#x27;
-
-        , &#x27;Bizs.CRMSchedule&#x27;: &#x27;modules/Bizs.CRMSchedule/0.1/CRMSchedule&#x27;
-        , &#x27;Bizs.CRMSchedulePopup&#x27;: &#x27;modules/Bizs.CRMSchedule/0.1/CRMSchedulePopup&#x27;
-
-        , &#x27;plugins.jquery.form&#x27;: &#x27;plugins/jquery.form/3.36.0/jquery.form&#x27;
-        , &#x27;plugins.jquery.rate&#x27;: &#x27;plugins/jquery.rate/2.5.2/jquery.rate&#x27;
-        , &#x27;plugins.requirejs.domReady&#x27;: &#x27;plugins/requirejs.domReady/2.0.1/domReady&#x27;
-        , &#x27;plugins.JSON2&#x27;: &#x27;plugins/JSON/2/JSON&#x27;
-        , &#x27;plugins.json2&#x27;: &#x27;plugins/JSON/2/JSON&#x27;
-        , &#x27;plugins.Aes&#x27;: &#x27;plugins/Aes/0.1/Aes&#x27;
-        , &#x27;plugins.Base64&#x27;: &#x27;plugins/Base64/0.1/Base64&#x27;
-        , &#x27;plugins.md5&#x27;: &#x27;plugins/md5/0.1/md5&#x27;
-
-        , &#x27;SWFUpload&#x27;: &#x27;modules/SWFUpload/2.5.0/SWFUpload&#x27;
-    }
-});
-/**
- * 取当前脚本标签的 src路径 
- * @static
- * @return  {string} 脚本所在目录的完整路径
- */
-function scriptPath(){
-    var _sc = document.getElementsByTagName(&#x27;script&#x27;), _sc = _sc[ _sc.length - 1 ], _path = _sc.getAttribute(&#x27;src&#x27;);
-    if( /\//.test( _path ) ){ _path = _path.split(&#x27;/&#x27;); _path.pop(); _path = _path.join(&#x27;/&#x27;) + &#x27;/&#x27;; }
-    else if( /\\/.test( _path ) ){ _path = _path.split(&#x27;\\&#x27;); _path.pop(); _path = _path.join(&#x27;\\&#x27;) + &#x27;/&#x27;; }
-    return _path;
-}
-}());
+    return JC.DCalendar;
+});}( typeof define === &#x27;function&#x27; &amp;&amp; define.amd ? define : 
+        function ( _name, _require, _cb ) { 
+            typeof _name == &#x27;function&#x27; &amp;&amp; ( _cb = _name );
+            typeof _require == &#x27;function&#x27; &amp;&amp; ( _cb = _require ); 
+            _cb &amp;&amp; _cb(); 
+        }
+        , window
+    )
+);
 
     </pre>
 </div>

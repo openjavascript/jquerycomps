@@ -18,7 +18,7 @@ requirejs.config( {
         , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/3.0/AjaxUpload'
         , 'JC.AutoChecked': 'modules/JC.AutoChecked/3.0/AutoChecked'
         , 'JC.AutoSelect': 'modules/JC.AutoSelect/0.2/AutoSelect'
-        , 'JC.AutoComplete': 'modules/JC.AutoComplete/0.1/AutoComplete'
+        , 'JC.AutoComplete': 'modules/JC.AutoComplete/3.0/AutoComplete'
 
         //, 'JC.Calendar': 'modules/JC.Calendar/0.2/Calendar'
         , 'JC.Calendar': 'modules/JC.Calendar/0.3/Calendar'
@@ -29,11 +29,11 @@ requirejs.config( {
         , 'JC.Calendar.year': 'modules/JC.Calendar/0.3/Calendar.year'
         , 'JC.Calendar.monthday': 'modules/JC.Calendar/0.3/Calendar.monthday'
 
-        , 'JC.DCalendar': 'modules/JC.DCalendar/0.1/DCalendar'
-        , 'JC.DCalendar.date': 'modules/JC.DCalendar/0.1/DCalendar.date'
+        , 'JC.DCalendar': 'modules/JC.DCalendar/3.0/DCalendar'
+        , 'JC.DCalendar.date': 'modules/JC.DCalendar/3.0/DCalendar.date'
 
-        , 'JC.Drag': 'modules/JC.Drag/0.1/Drag'
-        , 'JC.DragSelect': 'modules/JC.DragSelect/0.1/DragSelect'
+        , 'JC.Drag': 'modules/JC.Drag/3.0/Drag'
+        , 'JC.DragSelect': 'modules/JC.DragSelect/3.0/DragSelect'
 
         , 'JC.Form': 'modules/JC.Form/0.2/Form'
         , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
@@ -74,8 +74,8 @@ requirejs.config( {
         , 'JC.PopTips': 'modules/JC.PopTips/0.1/PopTips'
         , 'JC.Valid': 'modules/JC.Valid/0.2/Valid'
 
-        , 'Bizs.ActionLogic': 'modules/Bizs.ActionLogic/0.1/ActionLogic'
-        , 'Bizs.AutoSelectComplete': 'modules/Bizs.AutoSelectComplete//0.1/AutoSelectComplete'
+        , 'Bizs.ActionLogic': 'modules/Bizs.ActionLogic/3.0/ActionLogic'
+        , 'Bizs.AutoSelectComplete': 'modules/Bizs.AutoSelectComplete/3.0/AutoSelectComplete'
 
         , 'Bizs.ChangeLogic': 'modules/Bizs.ChangeLogic/0.1/ChangeLogic'
         , 'Bizs.DisableLogic': 'modules/Bizs.DisableLogic/0.1/DisableLogic'

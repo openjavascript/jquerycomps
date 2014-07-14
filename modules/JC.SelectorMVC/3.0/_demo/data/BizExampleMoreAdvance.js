@@ -49,6 +49,9 @@
 
         JC.log( BizExampleMoreAdvance.Model._instanceName, 'all inited', new Date().getTime() );
     }
+
+    JC.PureMVC.build( BizExampleMoreAdvance, JC.SelectorMVC );
+
     /**
      * 初始化可识别的 BizExampleMoreAdvance 实例
      * @method  init
@@ -72,8 +75,6 @@
             }
             return _r;
         };
-
-    JC.PureMVC.build( BizExampleMoreAdvance, JC.SelectorMVC );
 
     JC.f.extendObject( BizExampleMoreAdvance.prototype, {
         _beforeInit:
