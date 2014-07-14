@@ -287,7 +287,6 @@
     JC.f.extendObject( Tips.Model.prototype, {
         /**
          * 初始化 tips 模型类
-         * @method  _init
          * @private
          * @static
          */
@@ -314,7 +313,6 @@
             }
         /**
          * 获取/更新 tips 显示内容
-         * @method  data
          * @param   {bool}  _update     是否更新 tips 数据
          * @return  string
          */
@@ -325,7 +323,6 @@
             }
         /**
          * 更新 tips 数据
-         * @method  update
          */
         , update: 
             function(){
@@ -338,7 +335,6 @@
             }
         /**
          * 判断 selector 是否初始化过 Tips 功能
-         * @method  isInited
          * @param   {bool}  _setter
          * @return  bool
          */
@@ -413,7 +409,6 @@
     JC.f.extendObject( Tips.View.prototype, {
         /**
          * 初始化 Tips 视图类
-         * @method  _init
          * @private
          */
         init:
@@ -462,7 +457,6 @@
             }
         /**
          * 隐藏 Tips
-         * @method  hide
          */
         , hide: function(){ 
             this.layout().hide(); 
@@ -470,7 +464,6 @@
         }
         /**
          * 获取 Tips 外观的 选择器
-         * @method  layout
          * @param   {bool}  _update     是否更新 Tips 数据
          * @return  selector
          */
@@ -501,7 +494,6 @@
     /**
      * 鼠标移动到 Tips 触发源的触发事件
      * @namespace   JC.Tips
-     * @method  tipMouseenter
      * @param   {event}     _evt
      * @private
      * @static
@@ -533,7 +525,6 @@
     /**
      * Tips 的默认模板
      * @namespace   JC.Tips
-     * @property    _defTpl
      * @type        string  
      * @private
      */
