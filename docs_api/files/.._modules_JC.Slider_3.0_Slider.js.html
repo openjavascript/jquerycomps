@@ -236,7 +236,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.SelectorMVC&#x27; ], function(){
     JC.Slider = Slider;
     /**
      * Slider 划动菜单类
@@ -374,6 +374,7 @@
          * 初始化数据模型
          */
         this._model = new Slider.Model( _layout );
+        this._model._layout = _layout;
         /**
          * 初始化视图模型( 根据不同的滚动方向, 初始化不同的视图类 )
          */
@@ -640,12 +641,31 @@
         };
     
     JC.f.extendObject( Slider.Model.prototype, {
+        init:
+            function(){
+
+                this._layout = $( this._selector );
+
+                this.subitems();
+                this.totalpage();
+
+                JC.log( JC.f.printf(&#x27;w:{0}, h:{1}, iw:{2}, ih:{3}, dr:{4}, si:{6}, hi:{5}, totalpage:{7}&#x27;
+                            , this.width(), this.height()
+                            , this.itemwidth(), this.itemheight()
+                            , this.direction(), this.howmanyitem()
+                            , this.subitems().length
+                            , this.totalpage()
+                ));
+
+
+                return this;
+            }
         /**
          * 保存 layout 的引用 
          * @type    selector
          * @private
          */
-        _layout: _layout;
+        , _layout: null
         /**
          * 自动移动的方向
          * &lt;br /&gt; true = 向右|向下, false = 向左|向上
@@ -659,34 +679,20 @@
          * @type    interval
          * @private
          */
-        , _interval
+        , _interval: null
         /**
          * 自动滚动时的 timeout 引用
          * @type    timeout
          * @private
          */
-        , _timeout
+        , _timeout: null
 
         /**
          * 内部初始化方法
          * @private
          * @return Slider.Model
          */
-        , _init:
-            function(){
-                this.subitems();
-                this.totalpage();
 
-                JC.log( JC.f.printf(&#x27;w:{0}, h:{1}, iw:{2}, ih:{3}, dr:{4}, si:{6}, hi:{5}, totalpage:{7}&#x27;
-                            , this.width(), this.height()
-                            , this.itemwidth(), this.itemheight()
-                            , this.direction(), this.howmanyitem()
-                            , this.subitems().length
-                            , this.totalpage()
-                ));
-
-                return this;
-            }
         /**
          * 获取 slider 外观的 selector
          * @return selector
@@ -975,12 +981,10 @@
                             )
                             / ( this._model.totalpage() - 1 );
             this._itemspace = parseInt( this._itemspace );
-
-            this._init();
         };
 
-    JC.f.extendObject( HorizontalView.prototype, {
-        _init:
+    JC.f.extendObject( Slider.HorizontalView.prototype, {
+        init:
             function() {
                 this.setPagePosition( this._model.pointer() );
 
@@ -1101,11 +1105,10 @@
             this._model = _model;
             this._slider = _slider;
             this._itemspace = 0;
-            this._init();
         };
 
-    JC.f.extendObject( VerticalView.prototype, {
-        _init:
+    JC.f.extendObject( Slider.VerticalView.prototype, {
+        init:
             function() {
                 this.setPagePosition( this._model.pointer() );
                 return this;
