@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>../modules/JC.Tree/0.1/Tree.js - jquery components</title>
+    <title>../modules/JC.Tree/3.0/Tree.js - jquery components</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -224,24 +224,24 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: ../modules/JC.Tree/0.1/Tree.js</h1>
+                        <h1 class="file-heading">File: ../modules/JC.Tree/3.0/Tree.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.SelectorMVC&#x27; ], function(){
     window.Tree = JC.Tree = Tree;
     /**
      * 树菜单类 JC.Tree
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
-     *      &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
-     *      , &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
+     *      &lt;a href=&#x27;JC.SelectorMVC.html&#x27;&gt;JC.SelectorMVC&lt;/a&gt;
      * &lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Tree.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
-     * | &lt;a href=&#x27;../../modules/JC.Tree/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     * | &lt;a href=&#x27;../../modules/JC.Tree/3.0/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      * @namespace JC
      * @class Tree
      * @constructor
+     * @extends JC.SelectorMVC
      * @param   {selector}          _selector   树要显示的选择器
      * @param   {object}            _data       树菜单的数据
      * @version dev 0.1
@@ -286,15 +286,62 @@
          * @type    JC.Tree.Model
          * @private
          */
-        this._model = new Model( _container, _data );
+        this._model = new Tree.Model( _container, _data );
         /**
          * 树的视图模型引用
          * @property    _view
          * @type    JC.Tree.View
          * @private
          */
-        this._view = new View( this._model );
+        this._view = new Tree.View( this._model );
     }
+
+    /**
+     * 树的数据模型类
+     * @namespace   JC.Tree
+     * @class   Model
+     * @constructor
+     */
+    Tree.Model = 
+        function( _container, _data ){
+            /**
+             * 树要展示的容器
+             * @property    _container
+             * @type    selector
+             * @private
+             */
+            this._selector = this._container = _container;
+            /**
+             * 展现树需要的数据
+             * @property    _data
+             * @type    object
+             * @private
+             */
+            this._data = _data;
+            /**
+             * 树的随机ID前缀
+             * @property    _id
+             * @type    string
+             * @private
+             */
+            this._id = JC.f.printf( &#x27;tree_{0}_{1}_&#x27;, new Date().getTime(), Model._insCount++ );
+            /**
+             * 树当前的高亮节点
+             * @property    _highlight
+             * @type    selector
+             * @private
+             */
+            this._highlight;
+            /**
+             * 保存树的所有绑定事件
+             * @property    _events
+             * @type    object
+             * @private
+             */
+            this._events = {};
+        };
+
+    JC.PureMVC.build( Tree, JC.SelectorMVC );
     /**
      * 从选择器获取 树的 实例, 如果实例有限, 加以判断可避免重复初始化
      * @method  getInstance
@@ -339,16 +386,16 @@
      */
     Tree.dataFilter;
     
-    Tree.prototype = {
+    JC.f.extendObject( Tree.prototype, {
         /**
          * 初始化树
          * &lt;br /&gt; 实例化树后, 需要显式调用该方法初始化树的可视状态
-         * @method  init
+         * @method  _inited
          * @example
                 var _tree = new JC.Tree( $(&#x27;#tree_box&#x27;), treeData );
                 _tree.init();
          */
-        init:
+        _inited:
             function(){
                 this._view.init();
                 this._view.treeRoot().data( Tree.Model._instanceName, this );
@@ -436,7 +483,7 @@
             function(){
                 return this.selectedItem.apply( this, JC.f.sliceArgs( arguments ) );
             }
-    };
+    });
 
     Tree.Model = Model;
     Tree.View = View;
@@ -476,61 +523,15 @@
             });
      */
 
-    /**
-     * 树的数据模型类
-     * @namespace   JC.Tree
-     * @class   Model
-     * @constructor
-     */
-    function Model( _container, _data ){
-        /**
-         * 树要展示的容器
-         * @property    _container
-         * @type    selector
-         * @private
-         */
-        this._container = _container;
-        /**
-         * 展现树需要的数据
-         * @property    _data
-         * @type    object
-         * @private
-         */
-        this._data = _data;
-        /**
-         * 树的随机ID前缀
-         * @property    _id
-         * @type    string
-         * @private
-         */
-        this._id = JC.f.printf( &#x27;tree_{0}_{1}_&#x27;, new Date().getTime(), Model._insCount++ );
-        /**
-         * 树当前的高亮节点
-         * @property    _highlight
-         * @type    selector
-         * @private
-         */
-        this._highlight;
-        /**
-         * 保存树的所有绑定事件
-         * @property    _events
-         * @type    object
-         * @private
-         */
-        this._events = {};
-        
-        this._init();
-    }
-
     Model._insCount = 1;
     
-    Model.prototype = {
+    JC.f.extendObject( Tree.Model.prototype, {
         /**
          * 树模型类内部初始化方法
          * @method  _init
          * @private
          */
-        _init:
+        init:
             function(){
                 Tree.dataFilter &amp;&amp; ( this._data = Tree.dataFilter( this._data ) );
                 return this;
@@ -615,28 +616,9 @@
                 _highlight &amp;&amp; ( this._highlight = $( _highlight ) );
                 return this._highlight;
             }
-    };
-    /**
-     * 树的视图模型类
-     */
-    function View( _model ){
-        /**
-         * 树的数据模型引用
-         * @property    _model
-         * @type    JC.Tree.Model
-         * @private
-         */
-        this._model = _model;
-        /**
-         * 树生成后的根节点
-         * @property    _treeRoot
-         * @type    selector
-         * @private
-         */
-        this._treeRoot;
-    }
+    });
     
-    View.prototype = {
+    JC.f.extendObject( Tree.View.prototype, {
         /**
          * 初始化树的可视状态
          * @method  init 
@@ -856,7 +838,7 @@
                 
             }
 
-    };
+    });
     /**
      * 树的最后的 hover 节点
      * &lt;br /&gt;树的 hover 是全局属性, 页面上的所有树只会有一个当前 hover

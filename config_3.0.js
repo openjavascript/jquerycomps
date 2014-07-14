@@ -63,7 +63,7 @@ requirejs.config( {
         , 'JC.Tab': 'modules/JC.Tab/3.0/Tab'
         , 'JC.TableFreeze': 'modules/JC.TableFreeze/3.0/TableFreeze'
         , 'JC.Tips': 'modules/JC.Tips/3.0/Tips'
-        , 'JC.Tree': 'modules/JC.Tree/0.1/Tree'
+        , 'JC.Tree': 'modules/JC.Tree/3.0/Tree'
 
         //, 'JC.Panel': 'modules/JC.Panel/0.1/Panel'
         , 'JC.Panel': 'modules/JC.Panel/0.2/Panel'

@@ -686,8 +686,8 @@
                 "JC.Tips": 1
             }
         },
-        "../modules/JC.Tree/0.1/Tree.js": {
-            "name": "../modules/JC.Tree/0.1/Tree.js",
+        "../modules/JC.Tree/3.0/Tree.js": {
+            "name": "../modules/JC.Tree/3.0/Tree.js",
             "modules": {},
             "classes": {
                 "JC.Tree": 1,
@@ -2435,10 +2435,11 @@
             "plugin_for": [],
             "extension_for": [],
             "namespace": "JC.Tree",
-            "file": "../modules/JC.Tree/0.1/Tree.js",
+            "file": "../modules/JC.Tree/3.0/Tree.js",
             "line": 3,
-            "description": "树菜单类 JC.Tree\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Tree.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Tree/0.1/_demo' target='_blank'>demo link</a></p>",
+            "description": "树菜单类 JC.Tree\n<p><b>require</b>: \n     <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Tree.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.Tree/3.0/_demo' target='_blank'>demo link</a></p>",
             "is_constructor": 1,
+            "extends": "JC.SelectorMVC",
             "params": [
                 {
                     "name": "_selector",
@@ -2467,8 +2468,8 @@
             "plugin_for": [],
             "extension_for": [],
             "namespace": "JC.Tree",
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 249,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 69,
             "description": "树的数据模型类",
             "is_constructor": 1
         },
@@ -13026,7 +13027,7 @@
             "namespace": "JC.Tips"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
+            "file": "../modules/JC.Tree/3.0/Tree.js",
             "line": 53,
             "description": "树的数据模型引用",
             "itemtype": "property",
@@ -13038,7 +13039,7 @@
             "namespace": "JC"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
+            "file": "../modules/JC.Tree/3.0/Tree.js",
             "line": 60,
             "description": "树的视图模型引用",
             "itemtype": "property",
@@ -13050,8 +13051,68 @@
             "namespace": "JC"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 68,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 77,
+            "description": "树要展示的容器",
+            "itemtype": "property",
+            "name": "_container",
+            "type": "selector",
+            "access": "private",
+            "tagname": "",
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
+        },
+        {
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 84,
+            "description": "展现树需要的数据",
+            "itemtype": "property",
+            "name": "_data",
+            "type": "object",
+            "access": "private",
+            "tagname": "",
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
+        },
+        {
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 91,
+            "description": "树的随机ID前缀",
+            "itemtype": "property",
+            "name": "_id",
+            "type": "string",
+            "access": "private",
+            "tagname": "",
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
+        },
+        {
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 98,
+            "description": "树当前的高亮节点",
+            "itemtype": "property",
+            "name": "_highlight",
+            "type": "selector",
+            "access": "private",
+            "tagname": "",
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
+        },
+        {
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 105,
+            "description": "保存树的所有绑定事件",
+            "itemtype": "property",
+            "name": "_events",
+            "type": "object",
+            "access": "private",
+            "tagname": "",
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
+        },
+        {
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 115,
             "description": "从选择器获取 树的 实例, 如果实例有限, 加以判断可避免重复初始化",
             "itemtype": "method",
             "name": "getInstance",
@@ -13067,12 +13128,12 @@
                 "description": "",
                 "type": "JC.Tree Instance|undefined"
             },
-            "class": "JC.Tree",
-            "namespace": "JC"
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 80,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 127,
             "description": "树的数据过滤函数\n<br /> 如果树的初始数据格式不符合要求, 可通过该属性定义函数进行数据修正",
             "itemtype": "property",
             "name": "dataFilter",
@@ -13082,24 +13143,24 @@
             "example": [
                 "\n           JC.Tree.dataFilter =\n           function( _data ){\n               var _r = {};\n\n               if( _data ){\n                   if( _data.root.length > 2 ){\n                       _data.root.shift();\n                       _r.root = _data.root;\n                    }\n                   _r.data = {};\n                   for( var k in _data.data ){\n                       _r.data[ k ] = [];\n                       for( var i = 0, j = _data.data[k].length; i < j; i++ ){\n                           if( _data.data[k][i].length < 3 ) continue;\n                           _data.data[k][i].shift();\n                           _r.data[k].push( _data.data[k][i] );\n                       }\n                   }\n               }\n               return _r;\n           };"
             ],
-            "class": "JC.Tree",
-            "namespace": "JC"
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 113,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 160,
             "description": "初始化树\n<br /> 实例化树后, 需要显式调用该方法初始化树的可视状态",
             "itemtype": "method",
-            "name": "init",
+            "name": "_inited",
             "example": [
                 "\n               var _tree = new JC.Tree( $('#tree_box'), treeData );\n               _tree.init();"
             ],
-            "class": "JC.Tree",
-            "namespace": "JC"
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 127,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 174,
             "description": "展开树到某个具体节点, 或者展开树的所有节点",
             "itemtype": "method",
             "name": "open",
@@ -13110,12 +13171,12 @@
                     "type": "String|int"
                 }
             ],
-            "class": "JC.Tree",
-            "namespace": "JC"
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 142,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 189,
             "description": "关闭某个节点, 或者关闭整个树",
             "itemtype": "method",
             "name": "close",
@@ -13126,12 +13187,12 @@
                     "type": "String|int"
                 }
             ],
-            "class": "JC.Tree",
-            "namespace": "JC"
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 157,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 204,
             "description": "获取树的 ID 前缀\n<br />每个树都会有自己的随机ID前缀",
             "itemtype": "method",
             "name": "idPrefix",
@@ -13139,12 +13200,12 @@
                 "description": "树的ID前缀",
                 "type": "String"
             },
-            "class": "JC.Tree",
-            "namespace": "JC"
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 164,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 211,
             "description": "获取树的节点 label",
             "itemtype": "method",
             "name": "getItem",
@@ -13155,12 +13216,12 @@
                     "type": "String|int"
                 }
             ],
-            "class": "JC.Tree",
-            "namespace": "JC"
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 175,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 222,
             "description": "绑定树内部事件\n<br /><b>注意:</b> 所有事件名最终会被转换成小写",
             "itemtype": "method",
             "name": "on",
@@ -13176,12 +13237,12 @@
                     "type": "Function"
                 }
             ],
-            "class": "JC.Tree",
-            "namespace": "JC"
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 188,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 235,
             "description": "获取树的某类事件类型的所有回调",
             "itemtype": "method",
             "name": "event",
@@ -13196,12 +13257,12 @@
                 "description": "",
                 "type": "Array"
             },
-            "class": "JC.Tree",
-            "namespace": "JC"
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 195,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 242,
             "description": "获取或设置树的高亮节点",
             "itemtype": "method",
             "name": "selectedItem",
@@ -13215,12 +13276,12 @@
             "return": {
                 "description": "selector"
             },
-            "class": "JC.Tree",
-            "namespace": "JC"
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 215,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 262,
             "description": "树节点的点击事件",
             "itemtype": "event",
             "name": "click",
@@ -13234,12 +13295,12 @@
             "example": [
                 "\n           _tree.on('click', function( _evt ){\n               var _p = $(this);\n               JC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );\n           });"
             ],
-            "class": "JC.Tree",
-            "namespace": "JC"
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 226,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 273,
             "description": "树节点的展现事件",
             "itemtype": "event",
             "name": "RenderLabel",
@@ -13258,12 +13319,12 @@
             "example": [
                 "\n           _tree.on('RenderLabel', function( _data ){\n               var _node = $(this);\n               _node.html( JC.f.printf( '<a href=\"javascript:\" dataid=\"{0}\">{1}</a>', _data[0], _data[1] ) );\n           });"
             ],
-            "class": "JC.Tree",
-            "namespace": "JC"
+            "class": "JC.Tree.Model",
+            "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 238,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 285,
             "description": "树文件夹的点击事件",
             "itemtype": "event",
             "name": "FolderClick",
@@ -13277,72 +13338,12 @@
             "example": [
                 "\n           _tree.on('FolderClick', function( _evt ){\n               var _p = $(this);\n               alert( 'folder click' );\n           });"
             ],
-            "class": "JC.Tree",
-            "namespace": "JC"
-        },
-        {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 256,
-            "description": "树要展示的容器",
-            "itemtype": "property",
-            "name": "_container",
-            "type": "selector",
-            "access": "private",
-            "tagname": "",
             "class": "JC.Tree.Model",
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 263,
-            "description": "展现树需要的数据",
-            "itemtype": "property",
-            "name": "_data",
-            "type": "object",
-            "access": "private",
-            "tagname": "",
-            "class": "JC.Tree.Model",
-            "namespace": "JC.Tree"
-        },
-        {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 270,
-            "description": "树的随机ID前缀",
-            "itemtype": "property",
-            "name": "_id",
-            "type": "string",
-            "access": "private",
-            "tagname": "",
-            "class": "JC.Tree.Model",
-            "namespace": "JC.Tree"
-        },
-        {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 277,
-            "description": "树当前的高亮节点",
-            "itemtype": "property",
-            "name": "_highlight",
-            "type": "selector",
-            "access": "private",
-            "tagname": "",
-            "class": "JC.Tree.Model",
-            "namespace": "JC.Tree"
-        },
-        {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 284,
-            "description": "保存树的所有绑定事件",
-            "itemtype": "property",
-            "name": "_events",
-            "type": "object",
-            "access": "private",
-            "tagname": "",
-            "class": "JC.Tree.Model",
-            "namespace": "JC.Tree"
-        },
-        {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 298,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 299,
             "description": "树模型类内部初始化方法",
             "itemtype": "method",
             "name": "_init",
@@ -13352,8 +13353,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 308,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 309,
             "description": "获取树所要展示的容器",
             "itemtype": "method",
             "name": "container",
@@ -13364,8 +13365,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 314,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 315,
             "description": "获取节点将要显示的ID",
             "itemtype": "method",
             "name": "id",
@@ -13383,8 +13384,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 321,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 322,
             "description": "获取树的随机ID前缀",
             "itemtype": "method",
             "name": "idPrefix",
@@ -13395,8 +13396,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 327,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 328,
             "description": "获取树的原始数据",
             "itemtype": "method",
             "name": "data",
@@ -13407,8 +13408,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 333,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 334,
             "description": "获取树生成后的根节点",
             "itemtype": "method",
             "name": "root",
@@ -13419,8 +13420,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 339,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 340,
             "description": "获取ID的具体节点",
             "itemtype": "method",
             "name": "child",
@@ -13438,8 +13439,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 346,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 347,
             "description": "判断原始数据的某个ID是否有子级节点",
             "itemtype": "method",
             "name": "hasChild",
@@ -13457,8 +13458,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 353,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 354,
             "description": "获取树的某类绑定事件的所有回调",
             "itemtype": "method",
             "name": "event",
@@ -13477,8 +13478,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 364,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 365,
             "description": "添加树内部事件",
             "itemtype": "method",
             "name": "addEvent",
@@ -13498,8 +13499,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 376,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 377,
             "description": "获取或设置树的高亮节点\n<br /><b>注意:</b> 这个只是数据层面的设置, 不会影响视觉效果",
             "itemtype": "method",
             "name": "highlight",
@@ -13517,39 +13518,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 389,
-            "description": "树的视图模型类",
-            "class": "JC.Tree.Model",
-            "namespace": "JC.Tree"
-        },
-        {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 393,
-            "description": "树的数据模型引用",
-            "itemtype": "property",
-            "name": "_model",
-            "type": "JC.Tree.Model",
-            "access": "private",
-            "tagname": "",
-            "class": "JC.Tree.Model",
-            "namespace": "JC.Tree"
-        },
-        {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 400,
-            "description": "树生成后的根节点",
-            "itemtype": "property",
-            "name": "_treeRoot",
-            "type": "selector",
-            "access": "private",
-            "tagname": "",
-            "class": "JC.Tree.Model",
-            "namespace": "JC.Tree"
-        },
-        {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 410,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 392,
             "description": "初始化树的可视状态",
             "itemtype": "method",
             "name": "init",
@@ -13557,8 +13527,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 420,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 402,
             "description": "获取或设置树生成后的根节点",
             "itemtype": "method",
             "name": "treeRoot",
@@ -13576,8 +13546,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 431,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 413,
             "description": "处理树的展现效果",
             "itemtype": "method",
             "name": "_process",
@@ -13599,8 +13569,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 452,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 434,
             "description": "初始化树根节点",
             "itemtype": "method",
             "name": "_initRoot",
@@ -13610,8 +13580,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 482,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 464,
             "description": "初始化树的文件夹节点",
             "itemtype": "method",
             "name": "_initFolder",
@@ -13638,8 +13608,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 507,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 489,
             "description": "初始化树的文件节点",
             "itemtype": "method",
             "name": "_initFile",
@@ -13666,8 +13636,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 528,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 510,
             "description": "初始化树的节点标签",
             "itemtype": "method",
             "name": "_initLabel",
@@ -13687,8 +13657,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 552,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 534,
             "description": "展开树的所有节点",
             "itemtype": "method",
             "name": "openAll",
@@ -13696,8 +13666,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 563,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 545,
             "description": "关闭树的所有节点",
             "itemtype": "method",
             "name": "closeAll",
@@ -13705,8 +13675,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 575,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 557,
             "description": "展开树到具体节点",
             "itemtype": "method",
             "name": "open",
@@ -13721,8 +13691,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 611,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 593,
             "description": "关闭树的具体节点",
             "itemtype": "method",
             "name": "close",
@@ -13737,8 +13707,8 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 630,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 612,
             "description": "树的最后的 hover 节点\n<br />树的 hover 是全局属性, 页面上的所有树只会有一个当前 hover",
             "itemtype": "property",
             "name": "lastHover",
@@ -13748,15 +13718,15 @@
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 646,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 628,
             "description": "捕获树文件标签的点击事件",
             "class": "JC.Tree.Model",
             "namespace": "JC.Tree"
         },
         {
-            "file": "../modules/JC.Tree/0.1/Tree.js",
-            "line": 672,
+            "file": "../modules/JC.Tree/3.0/Tree.js",
+            "line": 654,
             "description": "捕获树文件夹图标的点击事件",
             "class": "JC.Tree.Model",
             "namespace": "JC.Tree"
@@ -18866,11 +18836,11 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../modules/JC.Tree/0.1/Tree.js:3"
+            "line": " ../modules/JC.Tree/3.0/Tree.js:3"
         },
         {
             "message": "unknown tag: date",
-            "line": " ../modules/JC.Tree/0.1/Tree.js:3"
+            "line": " ../modules/JC.Tree/3.0/Tree.js:3"
         },
         {
             "message": "unknown tag: version",
@@ -19817,16 +19787,12 @@
             "line": " ../modules/JC.Tips/3.0/Tips.js:532"
         },
         {
-            "message": "Missing item type\n树的视图模型类",
-            "line": " ../modules/JC.Tree/0.1/Tree.js:389"
-        },
-        {
             "message": "Missing item type\n捕获树文件标签的点击事件",
-            "line": " ../modules/JC.Tree/0.1/Tree.js:646"
+            "line": " ../modules/JC.Tree/3.0/Tree.js:628"
         },
         {
             "message": "Missing item type\n捕获树文件夹图标的点击事件",
-            "line": " ../modules/JC.Tree/0.1/Tree.js:672"
+            "line": " ../modules/JC.Tree/3.0/Tree.js:654"
         },
         {
             "message": "Missing item type\n兼容函数式使用",

@@ -26,7 +26,7 @@
         , 'JC.Suggest': 'modules/JC.Suggest/3.0/Suggest'
         , 'JC.Tab': 'modules/JC.Tab/3.0/Tab'
         , 'JC.Tips': 'modules/JC.Tips/3.0/Tips'
-        , 'JC.Tree': 'modules/JC.Tree/0.1/Tree'
+        , 'JC.Tree': 'modules/JC.Tree/3.0/Tree'
 
         , 'JC.Panel': 'modules/JC.Panel/0.1/Panel'
         , 'JC.Placeholder': 'modules/JC.Placeholder/3.0/Placeholder'
