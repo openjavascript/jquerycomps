@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lazyload demo</title>
+    <link href='../../../../modules/JC.Lazyload/3.0/res/default/style.css' rel='stylesheet' />
+    <style>
+       *{
+            margin: 0; padding: 0;
+        }
+        ul{
+            width: 1170px;
+            overflow: visible;
+        }
+        li{
+            display: inline-block;
+            width: 400px;
+            height: 400px;
+            vertical-align: middle;
+            border:1px solid #eee;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            background:#eee url(http://p16.qhimg.com/t01350025706569e893.gif) 50% 50% no-repeat;
+            
+        }
+
+        li img{
+            width: 100%;
+            height: 100%;
+        }
+       
+
+    </style>
+</head>
+<body>
+    <h2>手动初始化</h2>
+    <div class="js_compLazyLoad" lazydatasource=".lazy-data"  >
+    </div>
+    <script src="../../../../lib.js"></script>
+    <script src="../../../../config_3.0.js"></script>
+    <script>
+        JC.debug = true;
+        requirejs( [ 'JC.Lazyload' ], function(){
+        });
+
+        $.get('../_demo/data/imglist_load.php').done( function (r) {
+            r = $.parseJSON(r);
+            var i,
+                datalist = r.data,
+                l = datalist.length,
+                tpl = ['<ul>'],
+                str = '';
+
+            for(i = 0; i < l; i++ ) {
+                str = '<li><img data-original="'  + datalist[i] + '" alt="" class="lazy-data" /></li>'
+                tpl.push(str);
+            }
+
+            tpl.push('</ul>');
+            $('.js_compLazyLoad').html(tpl.join(' '));
+            
+            JC.Lazyload && JC.Lazyload( '.js_compLazyLoad' );
+        });
+
+        
+    </script>
+</body>
+</html>

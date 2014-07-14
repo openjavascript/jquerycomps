@@ -22,14 +22,14 @@
         , 'JC.Form': 'modules/JC.Form/0.1/Form'
         , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
         , 'JC.LunarCalendar': 'modules/JC.LunarCalendar/0.1/LunarCalendar'
-        , 'JC.Slider': 'modules/JC.Slider/0.1/Slider'
+        , 'JC.Slider': 'modules/JC.Slider/3.0/Slider'
         , 'JC.Suggest': 'modules/JC.Suggest/0.1/Suggest'
         , 'JC.Tab': 'modules/JC.Tab/0.1/Tab'
         , 'JC.Tips': 'modules/JC.Tips/0.1/Tips'
         , 'JC.Tree': 'modules/JC.Tree/0.1/Tree'
 
         , 'JC.Panel': 'modules/JC.Panel/0.1/Panel'
-        , 'JC.Placeholder': 'modules/JC.Placeholder/0.1/Placeholder'
+        , 'JC.Placeholder': 'modules/JC.Placeholder/3.0/Placeholder'
         , 'JC.Valid': 'modules/JC.Valid/0.2/Valid'
 
         , 'Bizs.ActionLogic': 'modules/Bizs.ActionLogic/3.0/ActionLogic'

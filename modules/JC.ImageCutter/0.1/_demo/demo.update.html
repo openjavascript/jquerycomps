@@ -82,7 +82,7 @@
             $( document ).delegate( 'input.js_newImage', 'change', function( _evt ){
                 var _rdo = $( this )
                     , _selector = $( 'div.js_compImageCutter ' )
-                    , _ins = JC.BaseMVC.getInstance( _selector, JC.ImageCutter )
+                    , _ins = JC.SelectorMVC.getInstance( _selector, JC.ImageCutter )
                     ;
                 _rdo.val().trim() && _ins && _ins.update( _rdo.val().trim() );
             });
@@ -90,7 +90,7 @@
             $( document ).delegate( 'button.js_clean', 'click', function( _evt ){
                 var _rdo = $( this )
                     , _selector = $( 'div.js_compImageCutter ' )
-                    , _ins = JC.BaseMVC.getInstance( _selector, JC.ImageCutter )
+                    , _ins = JC.SelectorMVC.getInstance( _selector, JC.ImageCutter )
                     ;
                 _ins && _ins.clean();
                 $( 'input.js_newImage' ).prop( 'checked', false );

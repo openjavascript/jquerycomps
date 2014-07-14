@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lazyload demo</title>
+    <link href='../../../../modules/JC.Lazyload/3.0/res/default/style.css' rel='stylesheet' />
+    <link href='../../../../modules/JC.Tab/0.1/res/default/style.css' rel='stylesheet' />
+    <style>
+       *{
+            margin: 0; padding: 0;
+        }
+        /*ul{
+            width: 1170px;
+            overflow: visible;
+        }
+        li{
+            display: inline-block;
+            width: 400px;
+            height: 400px;
+            vertical-align: middle;
+            border:1px solid #eee;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            background:#eee url(http://p16.qhimg.com/t01350025706569e893.gif) 50% 50% no-repeat;
+            
+        }
+
+        li img{
+            width: 100%;
+            height: 100%;
+        }*/
+       
+     body{ width: 680px; margin: 20px auto; }
+        .cclear{zoom:1;}
+        .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+        .error{ color: red; }
+        input.error, select.error, textarea.error{ 
+            background-color: #fce1e1;
+            border: 1px solid #da9797;
+            box-shadow: 0 none;
+        }
+        input[type=text], input[type=password]{ width: 200px; }
+
+        dl.def > dd{
+            margin: 10px 0;
+        }
+
+        dl.def > dd > button {
+        }
+    </style>
+</head>
+<body>
+
+     <div class="le-tabview js_autoTab" 
+        tablabels="|ul.js_tabLabel > li > a" 
+        tabcontainers="|div.js_tabContent > div" 
+        tabactiveclass="active" 
+        tablabelparent="li" 
+        tabactivecallback="tabactive" 
+        tabchangecallback="tabchange"
+        >
+        <ul class="le-tabs js_tabLabel">
+            <li class="active"><a href="javascript:">电视剧</a></li>
+            <li><a href="javascript:">电影</a></li>
+            <li><a href="javascript:">综艺</a></li>
+            <li><a href="javascript:">热点</a></li>
+        </ul>
+        <div class="views js_tabContent">
+            <div class="view-item active">1. 集地议送能拿距还杨雷火，永鲜提只风超洋轻绿动视落清各只江执口。</div>
+            <div class="view-item">2. 相送黄血富打万念却烟会华它表本雷烟形烟消卷效难标否标滑固小实。<img id="1" data-original="http://p16.qhimg.com/t01c3b13c61d565dd1d.jpg" alt="" class="lazy-data"></div>
+            <div class="view-item">3. 理往局背剧养认被站推简沉形括於穿短，精白自没路绿往优八益是入。<img id="3" data-original="http://p17.qhimg.com/t016c41d2759a160c7a.jpg" alt="" class="lazy-data"></div>
+            <div class="view-item">4. 鲁杆格滑那双来班五材实死听顶脱本续克修先课丝另乡型茶父报孔图。<img id="5"  data-original="http://p16.qhimg.com/t01feb8ced821e4e58a.jpg" alt=""  class="lazy-data"></div>
+        </div>
+    </div>
+
+    <script src="../../../../lib.js"></script>
+    <script src="../../../../config_3.0.js"></script>
+    <script>
+        JC.debug = true;
+        requirejs( [ 'JC.Lazyload', 'JC.Tab' ], function(){
+        });
+
+        function tabactive(_ins, _r ) {
+            
+        }
+    </script>
+</body>
+</html>

@@ -49,6 +49,8 @@
 
         JC.log( StepControl.Model._instanceName, 'all inited', new Date().getTime() );
     }
+
+    JC.PureMVC.build( StepControl, JC.SelectorMVC );
     /**
      * 初始化可识别的 StepControl 实例
      * @method  init
@@ -72,8 +74,6 @@
             }
             return _r;
         };
-
-    JC.SelectorMVC.build( StepControl );
 
     JC.f.extendObject( StepControl.prototype, {
         _beforeInit:

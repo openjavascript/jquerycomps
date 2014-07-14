@@ -25,7 +25,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2</em>
+            <em>API Docs for: 3.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -126,8 +126,6 @@
                 <li><a href="../classes/JC.SelectorMVC.html">JC.SelectorMVC</a></li>
             
                 <li><a href="../classes/JC.Slider.html">JC.Slider</a></li>
-            
-                <li><a href="../classes/JC.Slider.Model.html">JC.Slider.Model</a></li>
             
                 <li><a href="../classes/JC.StepControl.html">JC.StepControl</a></li>
             
@@ -406,6 +404,8 @@
 
         JC.log( ImageCutter.Model._instanceName, &#x27;all inited&#x27;, new Date().getTime() );
     }
+
+    JC.PureMVC.build( ImageCutter, JC.SelectorMVC );
     /**
      * 初始化可识别的 ImageCutter 实例
      * @method  init
@@ -657,7 +657,7 @@
 
     ImageCutter.defaultMouseenter =
         function( _evt ){
-            var _sp = $( this ), _ins = SelectorMVC.getInstance( _sp, ImageCutter );
+            var _sp = $( this ), _ins = JC.SelectorMVC.getInstance( _sp, ImageCutter );
             if( !_ins ) return;
             ImageCutter._currentIns = _ins;
             //JC.log( &#x27;ImageCutter.defaultMouseenter&#x27;, new Date().getTime() );
@@ -668,8 +668,6 @@
             ImageCutter._currentIns = null;
             //JC.log( &#x27;ImageCutter.defaultMouseleave&#x27;, new Date().getTime() );
         };
-
-    JC.SelectorMVC.build( ImageCutter );
 
     JC.f.extendObject( ImageCutter.prototype, {
         _beforeInit:

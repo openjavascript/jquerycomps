@@ -47,21 +47,24 @@ requirejs.config( {
         , 'JC.LunarCalendar.getFestival': 'modules/JC.LunarCalendar/0.1/LunarCalendar.getFestival'
         , 'JC.LunarCalendar.gregorianToLunar': 'modules/JC.LunarCalendar/0.1/LunarCalendar.gregorianToLunar'
         , 'JC.LunarCalendar.nationalHolidays': 'modules/JC.LunarCalendar/0.1/LunarCalendar.nationalHolidays'
+        , 'JC.Lazyload': 'modules/JC.Lazyload/3.0/Lazyload'
 
-        , 'JC.NumericStepper': 'modules/JC.NumericStepper/0.1/NumericStepper'
-        , 'JC.Paginator': 'modules/JC.Paginator/0.1/Paginator'
+        , 'JC.NumericStepper': 'modules/JC.NumericStepper/3.0/NumericStepper'
+        , 'JC.Paginator': 'modules/JC.Paginator/3.0/Paginator'
+        , 'JC.Placeholder': 'modules/JC.Placeholder/3.0/Placeholder'
+        , 'JC.PopTips': 'modules/JC.PopTips/3.0/PopTips'
 
-        , 'JC.Slider': 'modules/JC.Slider/0.1/Slider'
-        , 'JC.StepControl': 'modules/JC.StepControl/0.1/StepControl'
+        , 'JC.Scrollbar': 'modules/JC.Scrollbar/3.0/Scrollbar'
+        , 'JC.Slider': 'modules/JC.Slider/3.0/Slider'
+        , 'JC.StepControl': 'modules/JC.StepControl/3.0/StepControl'
         , 'JC.Suggest': 'modules/JC.Suggest/0.1/Suggest'
+        , 'JC.Selectable': 'modules/JC.SelectAble/dev/Selectable'
+
         , 'JC.Tab': 'modules/JC.Tab/0.1/Tab'
         , 'JC.TableFreeze': 'modules/JC.TableFreeze/0.2/TableFreeze'
         , 'JC.TableSort': 'modules/JC.TableSort/0.1/TableSort'
-        , 'JC.Selectable': 'modules/JC.SelectAble/dev/Selectable'
         , 'JC.Tips': 'modules/JC.Tips/0.1/Tips'
         , 'JC.Tree': 'modules/JC.Tree/0.1/Tree'
-        , 'JC.Lazyload': 'modules/JC.Lazyload/0.1/Lazyload'
-        , 'JC.Scrollbar': 'modules/JC.Scrollbar/0.1/Scrollbar'
 
         //, 'JC.Panel': 'modules/JC.Panel/0.1/Panel'
         , 'JC.Panel': 'modules/JC.Panel/0.2/Panel'
@@ -70,8 +73,6 @@ requirejs.config( {
         , 'JC.Dialog': 'modules/JC.Panel/0.2/Dialog'
         , 'JC.Dialog.popup': 'modules/JC.Panel/0.2/Dialog.popup'
 
-        , 'JC.Placeholder': 'modules/JC.Placeholder/0.1/Placeholder'
-        , 'JC.PopTips': 'modules/JC.PopTips/0.1/PopTips'
         , 'JC.Valid': 'modules/JC.Valid/0.2/Valid'
 
         , 'Bizs.ActionLogic': 'modules/Bizs.ActionLogic/3.0/ActionLogic'

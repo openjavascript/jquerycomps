@@ -166,6 +166,8 @@
 
         JC.log( ImageCutter.Model._instanceName, 'all inited', new Date().getTime() );
     }
+
+    JC.PureMVC.build( ImageCutter, JC.SelectorMVC );
     /**
      * 初始化可识别的 ImageCutter 实例
      * @method  init
@@ -417,7 +419,7 @@
 
     ImageCutter.defaultMouseenter =
         function( _evt ){
-            var _sp = $( this ), _ins = SelectorMVC.getInstance( _sp, ImageCutter );
+            var _sp = $( this ), _ins = JC.SelectorMVC.getInstance( _sp, ImageCutter );
             if( !_ins ) return;
             ImageCutter._currentIns = _ins;
             //JC.log( 'ImageCutter.defaultMouseenter', new Date().getTime() );
@@ -428,8 +430,6 @@
             ImageCutter._currentIns = null;
             //JC.log( 'ImageCutter.defaultMouseleave', new Date().getTime() );
         };
-
-    JC.SelectorMVC.build( ImageCutter );
 
     JC.f.extendObject( ImageCutter.prototype, {
         _beforeInit:

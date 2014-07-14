@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>JC Project - JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 80px;
+            }
+
+            dl.def{
+                margin: 30px 0;
+            }
+
+            dl.def > dd{
+                margin: 20px auto;
+            }
+
+            dt {
+                font-weight: bold;
+                margin: 10px 0;
+            }
+
+            .hslide_list dd{ display: none; }
+
+            .hslide_list dd, .hslide_list dd img{
+                width: 160px;
+                height: 230px;
+            }
+
+            .slider_one_item dd, .slider_one_item dd img{
+                width: 820px;
+                height: 230px;
+             }
+        </style>
+        <link href='../../../../modules/JC.Slider/3.0/res/hslider/style.css' rel='stylesheet' />
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config_3.0.js"></script>
+        <script>
+            JC.debug = true;
+            requirejs( [ 'JC.Slider' ], function( Slider ){
+            });
+
+            function sliderinitedcb(){
+                var _sliderIns = this;
+
+                JC.log( 'sliderinitedcb', new Date().getTime() );
+
+                _sliderIns.on('outmin', function(){
+                    JC.log( 'slider outmin' );
+                }).on('outmax', function(){
+                    JC.log( 'slider outmax' );
+                }).on('movedone', function( _evt, _oldpointer, _newpointer){
+                    JC.log( 'slider movedone', _evt, _oldpointer, _newpointer );
+                }).on('beforemove', function( _evt, _oldpointer, _newpointer ){
+                    JC.log( 'slider beforemove', _evt, _oldpointer, _newpointer );
+                });
+            }
+        </script>
+    </head>    
+    <body>
+        <dl class="def">
+            <dt>水平 Slider 功能演示</dt>
+            <dd>
+            <h3>no loop</h3>
+            <table class="hslide_wra">
+                <tr>
+                    <td class="hslide_left">
+                        <a href="javascript:" hidefocus="true" style="outline:none;" class="js_slideleft">左边滚动</a>
+                    </td>
+                    <td class="hslide_mid">
+                        <dl 
+                            style="width:820px; height: 230px; margin:0 5px;"
+                            class="hslide_list clearfix js_slideList js_autoSlider" 
+                            slidersubitems="> dd" sliderleft="a.js_slideleft" sliderright="a.js_slideright" 
+                            sliderwidth="820" slideritemwidth="160"
+                            sliderdirection="horizontal" sliderhowmanyitem="5"
+                            sliderloop="false" sliderdurationms="300"
+                            sliderinitedcb="sliderinitedcb"
+                            >
+                            <dd style="display: block; left: 0px; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春0"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 165px; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春1"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 330px; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春2"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 495px; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春3"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 660px; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春4"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 0; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春5"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 0; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春6"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 0; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春7"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 0; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春8"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 0; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春9"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 0; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春10"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 0; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春11"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 0; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春12"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 0; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春13"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 0; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春14"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 0; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春15"> 
+                                </span>
+                            </a>
+                            </dd>
+                            <dd style="display: block; left: 0; " class="tipsItem">
+                            <a href="http://v.ku6.com/film/index_106123.html?from=my" target="_blank"> 
+                                <span class="pc">
+                                    <img alt="立春" src="data/images/lichun.jpg" title="立春16"> 
+                                </span>
+                            </a>
+                            </dd>
+                        </dl>
+                    </td>
+                    <td class="hslide_right">
+                        <a href="javascript:" hidefocus="true" style="outline:none;" class="js_slideright">右边滚动</a>
+                    </td>
+                </tr>
+            </table>
+            </dd>
+        </dl>
+    </body>
+</html>
+
