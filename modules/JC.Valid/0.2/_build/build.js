@@ -23,9 +23,9 @@
         , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
         , 'JC.LunarCalendar': 'modules/JC.LunarCalendar/0.1/LunarCalendar'
         , 'JC.Slider': 'modules/JC.Slider/3.0/Slider'
-        , 'JC.Suggest': 'modules/JC.Suggest/0.1/Suggest'
-        , 'JC.Tab': 'modules/JC.Tab/0.1/Tab'
-        , 'JC.Tips': 'modules/JC.Tips/0.1/Tips'
+        , 'JC.Suggest': 'modules/JC.Suggest/3.0/Suggest'
+        , 'JC.Tab': 'modules/JC.Tab/3.0/Tab'
+        , 'JC.Tips': 'modules/JC.Tips/3.0/Tips'
         , 'JC.Tree': 'modules/JC.Tree/0.1/Tree'
 
         , 'JC.Panel': 'modules/JC.Panel/0.1/Panel'

@@ -57,13 +57,12 @@ requirejs.config( {
         , 'JC.Scrollbar': 'modules/JC.Scrollbar/3.0/Scrollbar'
         , 'JC.Slider': 'modules/JC.Slider/3.0/Slider'
         , 'JC.StepControl': 'modules/JC.StepControl/3.0/StepControl'
-        , 'JC.Suggest': 'modules/JC.Suggest/0.1/Suggest'
+        , 'JC.Suggest': 'modules/JC.Suggest/3.0/Suggest'
         , 'JC.Selectable': 'modules/JC.SelectAble/dev/Selectable'
 
-        , 'JC.Tab': 'modules/JC.Tab/0.1/Tab'
-        , 'JC.TableFreeze': 'modules/JC.TableFreeze/0.2/TableFreeze'
-        , 'JC.TableSort': 'modules/JC.TableSort/0.1/TableSort'
-        , 'JC.Tips': 'modules/JC.Tips/0.1/Tips'
+        , 'JC.Tab': 'modules/JC.Tab/3.0/Tab'
+        , 'JC.TableFreeze': 'modules/JC.TableFreeze/3.0/TableFreeze'
+        , 'JC.Tips': 'modules/JC.Tips/3.0/Tips'
         , 'JC.Tree': 'modules/JC.Tree/0.1/Tree'
 
         //, 'JC.Panel': 'modules/JC.Panel/0.1/Panel'

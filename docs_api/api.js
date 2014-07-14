@@ -34,7 +34,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Suggest",
         "JC.Tab",
         "JC.TableFreeze",
-        "JC.TableSort",
         "JC.Tips",
         "JC.Tree",
         "JC.Valid",
