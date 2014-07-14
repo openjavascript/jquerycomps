@@ -1,10 +1,10 @@
-;(function (define, _win) { 'use strict'; define(['JC.BaseMVC'], function () {
+;(function (define, _win) { 'use strict'; define(['JC.SelectorMVC'], function () {
 /**
  * TableSort 表格列排序功能
  *
  * @namespace JC
  * @class TableSort
- * @extends JC.BaseMVC
+ * @extends JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-11-25
@@ -69,7 +69,7 @@
         return _r;
     };
 
-    BaseMVC.build(TableSort);
+    SelectorMVC.build(TableSort);
 
     JC.f.extendObject(TableSort.prototype, {
         _beforeInit: function () {

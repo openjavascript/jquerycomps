@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC', 'JC.Panel' ], function(){
 /**
  * <h2>node 点击操作逻辑</h2>
  * 应用场景
@@ -8,7 +8,7 @@
  * <br/>点击后执行 AJAX 操作
  * <p><b>require</b>: 
  *      <a href='window.jQuery.html'>jQuery</a>
- *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  *      , <a href='JC.Panel.html'>JC.Panel</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -108,7 +108,7 @@
  *
  * @namespace   window.Bizs
  * @class       ActionLogic
- * @extends         JC.BaseMVC
+ * @extends         JC.SelectorMVC
  * @constructor
  * @version dev 0.1 2013-09-17
  * @author  qiushaowei   <suches@btbtd.org> | 75 Team
@@ -550,7 +550,7 @@
             }
     };
 
-    JC.BaseMVC.buildModel( ActionLogic );
+    JC.SelectorMVC.buildModel( ActionLogic );
     ActionLogic.Model.SHOW_PANEL = 'ShowPanel';
     ActionLogic.Model.DATA_PANEL = 'DataPanel';
     ActionLogic.Model.prototype = {
@@ -657,13 +657,13 @@
             }
     }
 
-    JC.BaseMVC.buildView( ActionLogic );
+    JC.SelectorMVC.buildView( ActionLogic );
     ActionLogic.View.prototype = {
         init:
             function(){
             }
     };
-    JC.BaseMVC.build( ActionLogic );
+    JC.SelectorMVC.build( ActionLogic );
 
     $(document).ready( function(){
         $( document ).delegate( [

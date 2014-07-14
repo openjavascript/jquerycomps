@@ -1,9 +1,9 @@
-;(function (define, _win) { 'use strict'; define(['JC.BaseMVC'], function () {
+;(function (define, _win) { 'use strict'; define(['JC.SelectorMVC'], function () {
 /** 模拟滚动条组件，组件会自动初始化带有class为js_compScrollbar的标签
  * <p>
  *      <b>require:</b>
  *      <a href='window.jQuery.html'>jQuery</a>
- *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *          , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Scrollbar.html' target='_blank'>API docs</a>
@@ -36,7 +36,7 @@
  *
  * @namespace JC
  * @class Scrollbar
- * @extends JC.BaseMVC
+ * @extends JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2014-03-17
@@ -97,7 +97,7 @@
         return _r;
     };
 
-    BaseMVC.build(Scrollbar);
+    SelectorMVC.build(Scrollbar);
 
     JC.f.extendObject(Scrollbar.prototype, {
         _beforeInit: function () {

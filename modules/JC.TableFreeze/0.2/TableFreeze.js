@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+ ;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
 
 //Todo: IE下resize，缩小窗口时tr的高度每一行隔了一像素。
 //Todo: 鼠标hover效果性能优化
@@ -9,7 +9,7 @@
  *<p><b>require</b>:
  *   <a href="widnow.jQuery.html">jQuery</a>
  *   , <a href="JC.common.html">JC.common</a>
- *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *   , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  *</p>
  *
  *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -81,7 +81,7 @@
  *
  * @namespace JC
  * @class TableFreeze
- * @extends JC.BaseMVC
+ * @extends JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-11-25
@@ -250,7 +250,7 @@
         return _r;
     };
 
-    BaseMVC.build( TableFreeze );
+    SelectorMVC.build( TableFreeze );
 
     JC.f.extendObject( TableFreeze.prototype, {
         _beforeInit: function () {

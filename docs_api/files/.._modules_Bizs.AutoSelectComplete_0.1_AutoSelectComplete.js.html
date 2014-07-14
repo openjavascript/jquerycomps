@@ -47,10 +47,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/DEV.JC.AjaxUpload.html">DEV.JC.AjaxUpload</a></li>
-            
-                <li><a href="../classes/DEV.JC.ImageCutter.html">DEV.JC.ImageCutter</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -60,10 +56,6 @@
                 <li><a href="../classes/JC.AutoComplete.html">JC.AutoComplete</a></li>
             
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
-            
-                <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
-            
-                <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -127,7 +119,11 @@
             
                 <li><a href="../classes/JC.PopTips.html">JC.PopTips</a></li>
             
+                <li><a href="../classes/JC.PureMVC.html">JC.PureMVC</a></li>
+            
                 <li><a href="../classes/JC.Scrollbar.html">JC.Scrollbar</a></li>
+            
+                <li><a href="../classes/JC.SelectorMVC.html">JC.SelectorMVC</a></li>
             
                 <li><a href="../classes/JC.Slider.html">JC.Slider</a></li>
             
@@ -244,14 +240,14 @@
     <pre class="code prettyprint linenums">
 //TODO: 文本框 自动添加 autocomplete=&quot;off&quot;, 防止表单的默认提示
 //列表项 添加 title 属性
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.AutoComplete&#x27;, &#x27;JC.AutoSelect&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.SelectorMVC&#x27;, &#x27;JC.AutoComplete&#x27;, &#x27;JC.AutoSelect&#x27; ], function(){
     /**
      * &lt;h2&gt;结合 JC.AutoSelect 与 JC.AutoComplete 综合使用的一个业务逻辑&lt;/h2&gt;
      * &lt;br /&gt;应用场景: CRM 多级广告位最后一级因为内容较多, 用户使用传统的下拉框选择比较不便
      * &lt;br /&gt;这个业务组件结合 JC.AutoSelect 和 JC.AutoComplete 提供一种简便的可输入解决方案
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
      *      &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
-     *      , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+     *      , &lt;a href=&#x27;JC.SelectorMVC.html&#x27;&gt;JC.SelectorMVC&lt;/a&gt;
      *      , &lt;a href=&#x27;JC.AutoComplete.html&#x27;&gt;JC.AutoComplete&lt;/a&gt;
      *      , &lt;a href=&#x27;JC.AutoSelect.html&#x27;&gt;JC.AutoSelect&lt;/a&gt;
      * &lt;/p&gt;
@@ -425,7 +421,7 @@
             }
     };
 
-    BaseMVC.buildModel( AutoSelectComplete );
+    SelectorMVC.buildModel( AutoSelectComplete );
 
     AutoSelectComplete.Model._instanceName = &#x27;AutoSelectComplete&#x27;;
     AutoSelectComplete.Model.INS_COUNT = 1;
@@ -498,7 +494,7 @@
             }
     };
 
-    BaseMVC.buildView( AutoSelectComplete );
+    SelectorMVC.buildView( AutoSelectComplete );
     AutoSelectComplete.View.prototype = {
         init:
             function(){
@@ -506,7 +502,7 @@
             }
     };
 
-    BaseMVC.build( AutoSelectComplete, &#x27;Bizs&#x27; );
+    SelectorMVC.build( AutoSelectComplete, &#x27;Bizs&#x27; );
 
     window[ AutoSelectComplete.Model.DATA_FILTER_NAME ] =
         function ( _json ){

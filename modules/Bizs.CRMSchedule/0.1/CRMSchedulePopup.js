@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
 /**
  * CRMSchedule 的弹框
  * @version dev 0.1 2013-12-13
@@ -14,7 +14,7 @@
 
         _selector && ( _selector = $( _selector ) );
 
-        JC.BaseMVC.getInstance( _selector, CRMSchedulePopup, this );
+        JC.SelectorMVC.getInstance( _selector, CRMSchedulePopup, this );
 
         this._model = new CRMSchedulePopup.Model( _selector );
         this._model.schIns( _schIns );
@@ -35,7 +35,7 @@
             _setter && ( CRMSchedulePopup.INS = _setter );
         };
 
-    JC.BaseMVC.build( CRMSchedulePopup );
+    JC.SelectorMVC.build( CRMSchedulePopup );
 
     JC.f.extendObject( CRMSchedulePopup.prototype, {
         _beforeInit:

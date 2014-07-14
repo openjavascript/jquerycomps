@@ -47,10 +47,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/DEV.JC.AjaxUpload.html">DEV.JC.AjaxUpload</a></li>
-            
-                <li><a href="../classes/DEV.JC.ImageCutter.html">DEV.JC.ImageCutter</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -60,10 +56,6 @@
                 <li><a href="../classes/JC.AutoComplete.html">JC.AutoComplete</a></li>
             
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
-            
-                <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
-            
-                <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -127,7 +119,11 @@
             
                 <li><a href="../classes/JC.PopTips.html">JC.PopTips</a></li>
             
+                <li><a href="../classes/JC.PureMVC.html">JC.PureMVC</a></li>
+            
                 <li><a href="../classes/JC.Scrollbar.html">JC.Scrollbar</a></li>
+            
+                <li><a href="../classes/JC.SelectorMVC.html">JC.SelectorMVC</a></li>
             
                 <li><a href="../classes/JC.Slider.html">JC.Slider</a></li>
             
@@ -248,7 +244,7 @@
  *
  *&lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
  *   &lt;a href=&quot;widnow..jQuery.html&quot;&gt;jQuery&lt;/a&gt;
- *   , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+ *   , &lt;a href=&#x27;JC.SelectorMVC.html&#x27;&gt;JC.SelectorMVC&lt;/a&gt;
  *   , &lt;a href=&#x27;JC.AjaxUpload.html&#x27;&gt;JC.AjaxUpload&lt;/a&gt;
  *&lt;/p&gt;
  *
@@ -300,7 +296,7 @@
  *
  * @namespace window.Bizs
  * @class MultiUpload
- * @extends JC.BaseMVC
+ * @extends JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-12-13
@@ -351,10 +347,10 @@
     function MultiUpload( _selector ){
         _selector &amp;&amp; ( _selector = $( _selector ) );
 
-        if( JC.BaseMVC.getInstance( _selector, MultiUpload ) ) 
-            return JC.BaseMVC.getInstance( _selector, MultiUpload );
+        if( JC.SelectorMVC.getInstance( _selector, MultiUpload ) ) 
+            return JC.SelectorMVC.getInstance( _selector, MultiUpload );
 
-        JC.BaseMVC.getInstance( _selector, MultiUpload, this );
+        JC.SelectorMVC.getInstance( _selector, MultiUpload, this );
 
         this._model = new MultiUpload.Model( _selector );
         this._view = new MultiUpload.View( this._model );
@@ -387,7 +383,7 @@
             return _r;
         };
 
-    BaseMVC.build( MultiUpload );
+    SelectorMVC.build( MultiUpload );
 
     JC.f.extendObject( MultiUpload.prototype, {
         _beforeInit:
@@ -528,7 +524,7 @@
 
                 this.bmuAjaxUploadSelector() 
                     &amp;&amp; this.bmuAjaxUploadSelector().length
-                    &amp;&amp; ( _r = JC.BaseMVC.getInstance( this.bmuAjaxUploadSelector(), JC.AjaxUpload ) )
+                    &amp;&amp; ( _r = JC.SelectorMVC.getInstance( this.bmuAjaxUploadSelector(), JC.AjaxUpload ) )
                     ;
 
                 return _r;

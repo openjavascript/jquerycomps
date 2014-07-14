@@ -1,4 +1,4 @@
-;(function (define, _win) { 'use strict'; define(['JC.BaseMVC'], function () {
+;(function (define, _win) { 'use strict'; define(['JC.SelectorMVC'], function () {
 //Todo:  支持tab的click事件加载
 //Todo: 替换图片src之前需要回调
 /**
@@ -6,7 +6,7 @@
  * <p>
  *      <b>require</b>: 
  *          <a href='window.jQuery.html'>jQuery</a>
- *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *          , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.LazyLoad.html' target='_blank'>API docs</a>
@@ -60,7 +60,7 @@
  * 
  * @namespace JC
  * @class Lazyload
- * @extends JC.BaseMVC
+ * @extends JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2014-02-13
@@ -128,7 +128,7 @@
 
     Lazyload.DataFilter;
 
-    BaseMVC.build(Lazyload);
+    SelectorMVC.build(Lazyload);
 
     JC.f.extendObject(Lazyload.prototype, {
         _beforeInit: function () {

@@ -4,7 +4,7 @@
  *
  *<p><b>require</b>:
  *   <a href="widnow..jQuery.html">jQuery</a>
- *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *   , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  *   , <a href='JC.AjaxUpload.html'>JC.AjaxUpload</a>
  *</p>
  *
@@ -56,7 +56,7 @@
  *
  * @namespace window.Bizs
  * @class MultiUpload
- * @extends JC.BaseMVC
+ * @extends JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-12-13
@@ -107,10 +107,10 @@
     function MultiUpload( _selector ){
         _selector && ( _selector = $( _selector ) );
 
-        if( JC.BaseMVC.getInstance( _selector, MultiUpload ) ) 
-            return JC.BaseMVC.getInstance( _selector, MultiUpload );
+        if( JC.SelectorMVC.getInstance( _selector, MultiUpload ) ) 
+            return JC.SelectorMVC.getInstance( _selector, MultiUpload );
 
-        JC.BaseMVC.getInstance( _selector, MultiUpload, this );
+        JC.SelectorMVC.getInstance( _selector, MultiUpload, this );
 
         this._model = new MultiUpload.Model( _selector );
         this._view = new MultiUpload.View( this._model );
@@ -143,7 +143,7 @@
             return _r;
         };
 
-    BaseMVC.build( MultiUpload );
+    SelectorMVC.build( MultiUpload );
 
     JC.f.extendObject( MultiUpload.prototype, {
         _beforeInit:
@@ -284,7 +284,7 @@
 
                 this.bmuAjaxUploadSelector() 
                     && this.bmuAjaxUploadSelector().length
-                    && ( _r = JC.BaseMVC.getInstance( this.bmuAjaxUploadSelector(), JC.AjaxUpload ) )
+                    && ( _r = JC.SelectorMVC.getInstance( this.bmuAjaxUploadSelector(), JC.AjaxUpload ) )
                     ;
 
                 return _r;

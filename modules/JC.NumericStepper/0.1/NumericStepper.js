@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+ ;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
 /**
  * 数值加减
  * <br />响应式初始化
@@ -6,7 +6,7 @@
  *<p><b>require</b>:
  *   <a href="widnow.jQuery.html">jQuery</a>
  *   , <a href="JC.common.html">JC.common</a>
- *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *   , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  *</p>
  *
  *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -60,7 +60,7 @@
  *
  * @namespace   JC
  * @class       NumericStepper
- * @extends     JC.BaseMVC
+ * @extends     JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2014-01-18
@@ -85,10 +85,10 @@
     function NumericStepper( _selector ){
         _selector && ( _selector = $( _selector ) );
 
-        if( JC.BaseMVC.getInstance( _selector, NumericStepper ) ) 
-            return JC.BaseMVC.getInstance( _selector, NumericStepper );
+        if( JC.SelectorMVC.getInstance( _selector, NumericStepper ) ) 
+            return JC.SelectorMVC.getInstance( _selector, NumericStepper );
 
-        JC.BaseMVC.getInstance( _selector, NumericStepper, this );
+        JC.SelectorMVC.getInstance( _selector, NumericStepper, this );
 
         this._model = new NumericStepper.Model( _selector );
         this._view = new NumericStepper.View( this._model );
@@ -145,7 +145,7 @@
         };
     NumericStepper._currentIns;
 
-    JC.BaseMVC.build( NumericStepper );
+    JC.SelectorMVC.build( NumericStepper );
 
     JC.f.extendObject( NumericStepper.prototype, {
         _beforeInit:
@@ -173,7 +173,7 @@
 
                         _jwin.on( 'mouseup', NumericStepper.defaultMouseUp );
                     }), _p._model.cnsMinusButton().each( function(){ 
-                        BaseMVC.getInstance( $( this ), NumericStepper, _p );
+                        SelectorMVC.getInstance( $( this ), NumericStepper, _p );
                     } ) );
 
                 _p._model.cnsPlusButton() 
@@ -192,7 +192,7 @@
 
                         _jwin.on( 'mouseup', NumericStepper.defaultMouseUp );
                     }), _p._model.cnsPlusButton().each( function(){ 
-                        BaseMVC.getInstance( $( this ), NumericStepper, _p );
+                        SelectorMVC.getInstance( $( this ), NumericStepper, _p );
                     } ) );
 
                 _p.on( NumericStepper.Model.CALC, function( _evt, _type ){
@@ -352,12 +352,12 @@
     });
 
     $( document ).delegate( 'div.js_compNumericStepper, span.js_compNumericStepper', 'mouseenter', function( _evt ){
-        var _p = $( this ), _ins = JC.BaseMVC.getInstance( _p, NumericStepper );
+        var _p = $( this ), _ins = JC.SelectorMVC.getInstance( _p, NumericStepper );
         !_ins && ( new NumericStepper( _p ) );
     });
 
     $( document ).delegate( 'div.js_compNumericStepper .cnsIcon, span.js_compNumericStepper .cnsIcon', 'click', function( _evt ){
-        var _p = $( this ), _ins = JC.BaseMVC.getInstance( _p, NumericStepper );
+        var _p = $( this ), _ins = JC.SelectorMVC.getInstance( _p, NumericStepper );
 
         if( !_ins ){
             var _pnt = JC.f.getJqParent( _p, '.js_compNumericStepper' );

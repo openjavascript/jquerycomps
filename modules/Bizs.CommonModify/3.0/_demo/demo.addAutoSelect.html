@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            dt { font-weight: bold; margin: 10px auto; }
+            dd { line-height: 24px; }
+        </style>
+        <link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config_3.0.js"></script>
+        <script>
+            JC.debug = true;
+            
+            requirejs( 
+                [ 'JC.Calendar', 'JC.Valid', 'JC.AutoSelect'
+                    , 'Bizs.CommonModify' ]
+                , function( Calendar, Valid, AutoSelect, CommonModify ){
+                }
+            );
+
+            COUNT = 1;
+
+            function cmdonecallback( _ins ){
+                var _trigger = $(this);
+                JC.log( 'cmdonecallback', new Date().getTime() );
+            }
+
+            function cmaddcallback( _ins, _newItem ){
+                var _trigger = $(this);
+                JC.log( 'cmaddcallback', new Date().getTime() );
+            }
+
+            function cmdelcallback( _ins ){
+                JC.log( 'cmdelcallback', new Date().getTime() );
+            }
+
+            function cmtplfiltercallback( _tpl ){
+                var _trigger = $(this);
+                JC.log( 'cmtplfiltercallback', new Date().getTime() );
+                _tpl = JC.f.printf( _tpl, COUNT++ );
+
+                return _tpl;
+            }
+        </script>
+    </head>    
+    <body>
+
+        <dl class="defdl">
+            <dt> CommonModify 添加删除演示 示例1 </dt>
+            <dd>
+               <table>
+                     <tr>
+                        <td>
+                            <label class="gray">甲方主体：</label>
+                        </td>
+                        <td>
+                            <input type="text" name="test[0]" class="ipt ipt-w320" />&nbsp;
+                                <a href="javascript:" 
+                                class="green js_autoCommonModify" 
+                                cmtemplate="#addMainFirstPartyTpl"
+                                cmitem="(dd"
+                                cmappendtype="appendTo"
+                                cmaction="add"
+                                cmdonecallback="cmdonecallback"
+                                cmtplfiltercallback="cmtplfiltercallback"
+                            >+ 添加</a>
+                            <em class="error"></em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>日期</td>
+                        <td>
+                            <input type="text" datatype="date" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>地区:</td>
+                        <td>
+                <select name="select2_1" defaultselect="" selecturl="../../../../modules/JC.AutoSelect/0.2/_demo/data/shengshi.php?id=0" selecttarget="/select:eq(1)"><option value="-1" defaultoption="">请选择</option></select>
+                <select name="select2_2" selecturl="../../../../modules/JC.AutoSelect/0.2/_demo/data/shengshi.php?id={0}" selecttarget="/select:last"><option value="-1" defaultoption="">请选择</option></select>
+                <select name="select2_3" selecturl="../../../../modules/JC.AutoSelect/0.2/_demo/data/shengshi.php?id={0}"><option value="-1" defaultoption="">请选择</option></select>
+
+                        </td>
+                    </tr>
+                </table>
+            </dd>
+<dd>
+            </dd>
+        </dl>
+
+        <script type="text/template" id="addMainFirstPartyTpl" >
+         <table>
+         <tr>
+            <td>
+                <label class="gray">甲方主体：</label>
+            </td>
+            <td>
+                <input type="text" name="test[{0}]" class="ipt ipt-w320" />
+                <a href="javascript:" 
+                    class="green js_autoCommonModify" 
+                    cmtemplate="#addMainFirstPartyTpl"
+                    cmitem="(dd"
+                    cmaction="add"
+                    cmappendtype="appendTo"
+                    cmdonecallback="cmdonecallback"
+                    cmaddcallback="cmaddcallback"
+                    cmtplfiltercallback="cmtplfiltercallback"
+                >+ 添加</a>
+                <a href="javascript:" class="red js_autoCommonModify"
+                    cmtemplate="#addMainFirstPartyTpl"
+                    cmitem="(table"
+                    cmaction="del"
+                    cmdonecallback="cmdonecallback"
+                    cmdelcallback="cmdelcallback"
+                >+ 删除</a>
+                <em class="error"></em>
+            </td>
+        </tr>
+        <tr>
+            <td>日期</td>
+            <td>
+                <input type="text" datatype="date" />
+            </td>
+        </tr>
+        <tr>
+            <td>地区:</td>
+            <td>
+    <select name="select2_1" defaultselect="" selecturl="../../../../modules/JC.AutoSelect/0.2/_demo/data/shengshi.php?id=0" selecttarget="/select:eq(1)"><option value="-1" defaultoption="">请选择</option></select>
+    <select name="select2_2" selecturl="../../../../modules/JC.AutoSelect/0.2/_demo/data/shengshi.php?id=<0>" selecttarget="/select:last"><option value="-1" defaultoption="">请选择</option></select>
+    <select name="select2_3" selecturl="../../../../modules/JC.AutoSelect/0.2/_demo/data/shengshi.php?id=<0>"><option value="-1" defaultoption="">请选择</option></select>
+
+            </td>
+        </tr>
+        <tr>
+            <td>生效日期</td>
+            <td>
+                <div class="js_bizsDisableLogic" dltrigger="|input[type=radio]" dltarget="|input.js_disableItem" dldonecallback="dldonecallback" dldisablecallback="dldisablecallback" dlenablecallback="dlenablecallback">
+                    <label>
+                        <input type="radio" name="discount" checked="" dldisable="true">自本协议签订之日起10日内生效
+                    </label> <br>
+                    <label>
+                        <input type="radio" name="discount" dldisable="false">生效时间点
+                    </label>
+                    <input type="text" class="ipt js_disableItem" datatype="date" value="" disabled="disabled"><input type="button" class="UXCCalendar_btn">
+                </div>
+            </td>
+        </tr>
+        </table>
+        </script>
+
+
+
+
+    </body>
+</html>
+

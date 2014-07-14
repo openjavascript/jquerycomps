@@ -1,10 +1,10 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Calendar' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC', 'JC.Calendar' ], function(){
     window.Bizs.MultiDate = MultiDate;
     /**
      * MultiDate 复合日历业务逻辑
      * <p><b>require</b>: 
      *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
      *      , <a href='JC.Calendar.html'>JC.Calendar</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -155,7 +155,7 @@
         };
 
 
-    BaseMVC.buildModel( MultiDate );
+    SelectorMVC.buildModel( MultiDate );
     MultiDate.Model._instanceName = 'MultiDate';
 
     MultiDate.Model._inscount = 1;
@@ -297,7 +297,7 @@
 
     };
 
-    BaseMVC.buildView( MultiDate );
+    SelectorMVC.buildView( MultiDate );
     MultiDate.View.prototype = {
         init:
             function() {
@@ -313,7 +313,7 @@
             }
     };
 
-    BaseMVC.build( MultiDate, 'Bizs' );
+    SelectorMVC.build( MultiDate, 'Bizs' );
 
     $(document).ready( function(){
         $('select.js_autoMultidate').each( function(){

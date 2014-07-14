@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
 /**
  * <h2 style="color:red">这个应用将不再维护, 请使用 <a href='window.Bizs.ChangeLogic.html' style="color:red">Bizs.ChangeLogic</a> </h2>
  * <h2>Form Control禁用启用逻辑</h2>
@@ -8,7 +8,7 @@
  * <br/>checkbox / select 也可使用( 带change事件的标签 )
  * <p><b>require</b>: 
  *      <a href='window.jQuery.html'>jQuery</a>
- *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.DisableLogic.html' target='_blank'>API docs</a>

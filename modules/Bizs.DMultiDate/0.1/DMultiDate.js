@@ -1,11 +1,11 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Calendar' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC', 'JC.Calendar' ], function(){
     window.Bizs.DMultiDate = DMultiDate;
     /**
      * DMultiDate 复合日历业务逻辑
      * <br/> Dom 加载后会自动加载页面上所有.js_autoDMultiDate的标签
      * <p><b>require</b>: 
      *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
      *      , <a href='JC.Calendar.html'>JC.Calendar</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -501,7 +501,7 @@
         return _r;
     };
 
-    BaseMVC.buildModel( DMultiDate );
+    SelectorMVC.buildModel( DMultiDate );
     DMultiDate.Model._instanceName = 'DMultiDate';
     DMultiDate.Model._inscount = 1;
     DMultiDate.Model._defaultMaxvalue = '';
@@ -695,14 +695,14 @@
 
     };
 
-    BaseMVC.buildView( DMultiDate );
+    SelectorMVC.buildView( DMultiDate );
     DMultiDate.View.prototype = {
         init: function () {
             return this;
         }
     };
 
-    BaseMVC.build( DMultiDate, 'Bizs' );
+    SelectorMVC.build( DMultiDate, 'Bizs' );
 
     $(document).ready( function(){
         $('.js_autoDMultiDate').each( function(){

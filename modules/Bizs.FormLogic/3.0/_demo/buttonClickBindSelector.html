@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            dt { font-weight: bold; margin: 10px auto; }
+            dd { line-height: 24px; }
+        </style>
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Panel/0.1/res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config_3.0.js"></script>
+        <script>
+            JC.debug = true;
+
+            requirejs( [ 'JC.Calendar', 'Bizs.FormLogic', 'plugins.json2' ]
+            , function( Calendar, FormLogic ){
+            });
+
+            function formBeforeProcess( _evt, _ins ){
+                var _form = $(this);
+                JC.log( 'formBeforeProcess', new Date().getTime() );
+                //return false;
+            }
+
+            function formProcessError( _evt, _ins ){
+                var _form = $(this);
+                JC.log( 'formProcessError', new Date().getTime() );
+                //return false;
+            }
+
+            function formAfterProcess( _evt, _ins ){
+                var _form = $(this);
+                JC.log( 'formAfterProcess', new Date().getTime() );
+                //return false;
+            }
+
+            function formAjaxDone( _json, _submitButton, _ins ){
+                var _form = $(this);
+                JC.log( 'custom formAjaxDone', new Date().getTime() );
+
+                if( _json.errorno ){
+                    _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );
+                }else{
+                    _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){
+                        JC.f.reloadPage( "?donetype=custom" );
+                    });
+                }
+            };
+
+        </script>
+    </head>    
+    <body>
+        <dl class="defdl">
+            <dt>Bizs.FormLogic, buttonClickBindSelector</dt>
+            <dd>
+                <dl>
+                    <form action="./data/handler.php" method="GET" target="iframe1"
+                            class="js_bizsFormLogic"
+                            formAjaxDoneAction="?donetype=system&CaseTest=T"
+                            formSubmitDisable="false"
+                        >
+                        <dl>
+                            <dd>
+                                文件框: <input type="text" name="text" reqmsg="文本框" value="test" />
+                            </dd>
+                            <dd>
+                                日期: <input type="text" name="date" datatype="date" reqmsg="日期" value="2013-05-20" />
+                                <em class="error"></em>
+                            </dd>
+                            <dd>
+                                下拉框:
+                                    <select name="dropdown" reqmsg="下拉框" >
+                                        <option value="">请选择</option>
+                                        <option value="1" selected>条件1</option>
+                                        <option value="2">条件2</option>
+                                        <option value="3">条件3</option>
+                                    </select>
+                            </dd>
+                            <dd>
+                                return url:
+                                    <input type="text" name="url" value="?test1=1&amp;test2=2" />
+                            </dd>
+                            <dd>
+                                <input type="hidden" name="getform" value="1" />
+                                <input type="hidden" name="submit_type" value="1" class="js_submitType" />
+                                <button type="submit" value="1" buttonClickBindSelector="/input.js_submitType">submit</button>
+                                <button type="submit" value="2" buttonClickBindSelector="/input.js_submitType">save</button>
+                                <button type="submit" value="3" buttonClickBindSelector="/input.js_submitType">other</button>
+                                <button type="reset">reset</button>
+                                <button type="button" buttonReturnUrl="?btntest=1" >cancel</button>
+                                <a href="?">back</a>
+                            </dd>
+                        </dl>
+                        <iframe src="about:blank" name="iframe1" width="500" height="200" ></iframe>
+                    </form>
+                </dl>
+            </dd>
+        </dl>
+    </body>
+</html>
+

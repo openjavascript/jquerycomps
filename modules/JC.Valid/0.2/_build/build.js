@@ -10,10 +10,10 @@
     , removeCombined: false
     , paths: {
         'JC.common': 'modules/JC.common/0.2/common'
-        , 'JC.BaseMVC': 'modules/JC.BaseMVC/0.1/BaseMVC'
+        , 'JC.SelectorMVC': 'modules/JC.SelectorMVC/0.1/SelectorMVC'
 
         , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload'
-        , 'JC.AutoChecked': 'modules/JC.AutoChecked/0.1/AutoChecked'
+        , 'JC.AutoChecked': 'modules/JC.AutoChecked/3.0/AutoChecked'
         , 'JC.AutoSelect': 'modules/JC.AutoSelect/0.2/AutoSelect'
         , 'JC.AutoComplete': 'modules/JC.AutoComplete/0.1/AutoComplete'
 

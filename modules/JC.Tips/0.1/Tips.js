@@ -41,7 +41,7 @@
      * @date    2013-06-23
      * @example
             <script src="../../../lib.js"></script>
-            <script src="../../../config.js"></script>
+            <script src="../../../config_3.0.js"></script>
             <script>
                 requirejs( [ 'JC.Tips' ], function(){
                     //默认是自动初始化, 也就是只要导入 JC.Tips 就会自己初始化 带 title/tipsData 属性的标签
@@ -180,7 +180,7 @@
      * @static
      * @example
             <script src="../../../lib.js"></script>
-            <script src="../../../config.js"></script>
+            <script src="../../../config_3.0.js"></script>
             <script>
                 requirejs( [ 'JC.Tips' ], function(){
                     JC.Tips.autoInit = false;

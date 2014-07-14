@@ -77,7 +77,7 @@
             </style>
             <link href='../../Slider/res/hslider/style.css' rel='stylesheet' />
             <script src="../../../lib.js"></script>
-            <script src="../../../config.js"></script>
+            <script src="../../../config_3.0.js"></script>
             <script>
                 JC.debug = true;
                 requirejs( [ 'JC.Slider' ] );

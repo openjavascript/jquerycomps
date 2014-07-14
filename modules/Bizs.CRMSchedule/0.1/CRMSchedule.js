@@ -1,9 +1,9 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel', 'Bizs.CRMSchedulePopup', 'JC.Tips', 'JC.DragSelect' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC', 'JC.Panel', 'Bizs.CRMSchedulePopup', 'JC.Tips', 'JC.DragSelect' ], function(){
 /**
  * CRM 排期日期选择组件
  *
  *<p><b>require</b>:
- *   <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *   <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  *   , <a href='JC.Panel.html'>JC.Panel</a>
  *   , <a href='JC.Tips.html'>JC.Tips</a>
  *   , <a href='JC.DragSelect.html'>JC.DragSelect</a>
@@ -100,7 +100,7 @@
  *
  * @namespace   window.Bizs
  * @class       CRMSchedule
- * @extends     JC.BaseMVC
+ * @extends     JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2014-04-26 
@@ -113,10 +113,10 @@
     function CRMSchedule( _selector ){
         _selector && ( _selector = $( _selector ) );
 
-        if( JC.BaseMVC.getInstance( _selector, CRMSchedule ) ) 
-            return JC.BaseMVC.getInstance( _selector, CRMSchedule );
+        if( JC.SelectorMVC.getInstance( _selector, CRMSchedule ) ) 
+            return JC.SelectorMVC.getInstance( _selector, CRMSchedule );
 
-        JC.BaseMVC.getInstance( _selector, CRMSchedule, this );
+        JC.SelectorMVC.getInstance( _selector, CRMSchedule, this );
 
         this._model = new CRMSchedule.Model( _selector );
         this._view = new CRMSchedule.View( this._model );
@@ -222,7 +222,7 @@
             return _data;
         };
 
-    JC.BaseMVC.build( CRMSchedule );
+    JC.SelectorMVC.build( CRMSchedule );
 
     JC.f.extendObject( CRMSchedule.prototype, {
         _beforeInit:
@@ -1444,7 +1444,7 @@
     CRMSchedule.DRAG_EDIT_CALLBACK=
         function( _items, _type, _ins ){
             var _selector = this
-                , _csIns = JC.BaseMVC.getInstance( _selector, Bizs.CRMSchedule )
+                , _csIns = JC.SelectorMVC.getInstance( _selector, Bizs.CRMSchedule )
                 , _tr
                 ;
             if( !_csIns ) return;
@@ -1460,7 +1460,7 @@
     CRMSchedule.DRAG_EDIT_SELECT_CALLBACK =
         function( _items, _type, _ins ){
             var _selector = this
-                , _csIns = JC.BaseMVC.getInstance( _selector, Bizs.CRMSchedule )
+                , _csIns = JC.SelectorMVC.getInstance( _selector, Bizs.CRMSchedule )
                 , _data = CRMSchedule.DRAG_ITEMS_GET_EDIT_DATA( _items );
 
             if( !( _csIns && _data ) ) return;
@@ -1474,7 +1474,7 @@
     CRMSchedule.DRAG_EDIT_UNSELECT_CALLBACK =
         function( _items, _type, _ins ){
             var _selector = this
-                , _csIns = JC.BaseMVC.getInstance( _selector, Bizs.CRMSchedule )
+                , _csIns = JC.SelectorMVC.getInstance( _selector, Bizs.CRMSchedule )
                 , _data = CRMSchedule.DRAG_ITEMS_GET_EDIT_DATA( _items );
 
             if( !( _csIns && _data ) ) return;
@@ -1527,7 +1527,7 @@
     CRMSchedule.DRAG_LOCK_SELECT_CALLBACK =
         function( _items, _type, _ins ){
             var _selector = this
-                , _csIns = JC.BaseMVC.getInstance( _selector, Bizs.CRMSchedule )
+                , _csIns = JC.SelectorMVC.getInstance( _selector, Bizs.CRMSchedule )
                 , _data = CRMSchedule.DRAG_ITEMS_GET_LOCK_DATA( _items )
                 , _url
                 ;
@@ -1547,7 +1547,7 @@
     CRMSchedule.DRAG_UNLOCK_SELECT_CALLBACK =
         function( _items, _type, _ins ){
             var _selector = this
-                , _csIns = JC.BaseMVC.getInstance( _selector, Bizs.CRMSchedule )
+                , _csIns = JC.SelectorMVC.getInstance( _selector, Bizs.CRMSchedule )
                 , _data = CRMSchedule.DRAG_ITEMS_GET_LOCK_DATA( _items )
                 , _url
                 ;

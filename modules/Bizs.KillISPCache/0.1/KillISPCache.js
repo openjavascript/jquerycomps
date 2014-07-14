@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
     /**
      * 应用场景
      * <br /><b>ISP 缓存问题 引起的用户串号</b>
@@ -6,7 +6,7 @@
      * <br /><b>这是个单例类</b>
      * <p><b>require</b>: 
      *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.KillISPCache.html' target='_blank'>API docs</a>
@@ -21,7 +21,7 @@
      * </dl>
      * @namespace       window.Bizs
      * @class           KillISPCache
-     * @extends         JC.BaseMVC
+     * @extends         JC.SelectorMVC
      * @constructor 
      * @version dev 0.1 2013-09-07
      * @author  qiushaowei   <suches@btbtd.org> | 75 Team
@@ -129,7 +129,7 @@
             return KillISPCache.getInstance().ignoreSelector( _selector );
         };
 
-    JC.BaseMVC.buildModel( KillISPCache );
+    JC.SelectorMVC.buildModel( KillISPCache );
 
     KillISPCache.Model.prototype = {
         init:
@@ -256,7 +256,7 @@
 
     };
 
-    JC.BaseMVC.build( KillISPCache, 'Bizs' );
+    JC.SelectorMVC.build( KillISPCache, 'Bizs' );
 
     $(document).ready( function(){
         setTimeout( function(){

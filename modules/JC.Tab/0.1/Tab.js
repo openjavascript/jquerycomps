@@ -56,7 +56,7 @@
      * @example
             <link href='../../../modules/JC.Tab/res/default/style.css' rel='stylesheet' />
             <script src="../../../lib.js"></script>
-            <script src="../../../config.js"></script>
+            <script src="../../../config_3.0.js"></script>
             <script>
                 JC.debug = 1;
 

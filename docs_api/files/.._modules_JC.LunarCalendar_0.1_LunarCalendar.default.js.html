@@ -47,10 +47,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/DEV.JC.AjaxUpload.html">DEV.JC.AjaxUpload</a></li>
-            
-                <li><a href="../classes/DEV.JC.ImageCutter.html">DEV.JC.ImageCutter</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -60,10 +56,6 @@
                 <li><a href="../classes/JC.AutoComplete.html">JC.AutoComplete</a></li>
             
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
-            
-                <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
-            
-                <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -127,7 +119,11 @@
             
                 <li><a href="../classes/JC.PopTips.html">JC.PopTips</a></li>
             
+                <li><a href="../classes/JC.PureMVC.html">JC.PureMVC</a></li>
+            
                 <li><a href="../classes/JC.Scrollbar.html">JC.Scrollbar</a></li>
+            
+                <li><a href="../classes/JC.SelectorMVC.html">JC.SelectorMVC</a></li>
             
                 <li><a href="../classes/JC.Slider.html">JC.Slider</a></li>
             
@@ -242,7 +238,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.SelectorMVC&#x27; ], function(){
     ///
     /// TODO: 添加事件响应机制
     ///
@@ -252,7 +248,7 @@
      * &lt;br /&gt;全局访问请使用 JC.LunarCalendar 或 LunarCalendar
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
      *      &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
-     *      , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+     *      , &lt;a href=&#x27;JC.SelectorMVC.html&#x27;&gt;JC.SelectorMVC&lt;/a&gt;
      * &lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.LunarCalendar.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
@@ -306,10 +302,10 @@
         !(_selector &amp;&amp; _selector.length) &amp;&amp; ( _selector = $(document.body) );
         !_date &amp;&amp; ( _date = new Date() );
 
-        if( JC.BaseMVC.getInstance( _selector, LunarCalendar ) ) 
-            return JC.BaseMVC.getInstance( _selector, LunarCalendar );
+        if( JC.SelectorMVC.getInstance( _selector, LunarCalendar ) ) 
+            return JC.SelectorMVC.getInstance( _selector, LunarCalendar );
  
-        JC.BaseMVC.getInstance( _selector, LunarCalendar, this );
+        JC.SelectorMVC.getInstance( _selector, LunarCalendar, this );
 
         JC.log( &#x27;LunarCalendar.constructor&#x27; );
         /**
@@ -621,7 +617,7 @@
         function( _data ){
             if( !_data ) return;
             $(&#x27;div.UXCLunarCalendar&#x27;).each( function(){
-                var _p = $(this), _ins = JC.BaseMVC.getInstance( _p, LunarCalendar ), _tmp;
+                var _p = $(this), _ins = JC.SelectorMVC.getInstance( _p, LunarCalendar ), _tmp;
                 var _min = 0, _max = 3000000000000;
                 if( _ins.getContainer().is(&#x27;[nopreviousfestivals]&#x27;) ){
                     _min = new Date( _ins.getDate().getFullYear(), _ins.getDate().getMonth(), 1 ).getTime();
@@ -813,14 +809,14 @@
          * @method  {string}    on
          * @param   {string}    _evtName
          * @param   {function}  _cb
-         * @return  BaseMVCInstance
+         * @return  SelectorMVCInstance
          */
         , on: function( _evtName, _cb ){ $(this).on(_evtName, _cb ); return this;}
         /**
          * 使用 jquery trigger 触发绑定事件
          * @method  {string}    trigger
          * @param   {string}    _evtName
-         * @return  BaseMVCInstance
+         * @return  SelectorMVCInstance
          */
         , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
     }
@@ -1246,7 +1242,7 @@
     $(document).delegate( &#x27;div.UXCLunarCalendar button.UPreYear&#x27;, &#x27;click&#x27;, function(){
         var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
         if( !_selector.length ) return;
-        var _ins = JC.BaseMVC.getInstance( _selector, LunarCalendar );
+        var _ins = JC.SelectorMVC.getInstance( _selector, LunarCalendar );
         _ins &amp;&amp; _ins.preYear();
     });
     /**
@@ -1255,7 +1251,7 @@
     $(document).delegate( &#x27;div.UXCLunarCalendar button.UPreMonth&#x27;, &#x27;click&#x27;, function(){
         var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
         if( !_selector.length ) return;
-        var _ins = JC.BaseMVC.getInstance( _selector, LunarCalendar );
+        var _ins = JC.SelectorMVC.getInstance( _selector, LunarCalendar );
         _ins &amp;&amp; _ins.preMonth();
     });
     /**
@@ -1264,7 +1260,7 @@
     $(document).delegate( &#x27;div.UXCLunarCalendar button.UNextMonth&#x27;, &#x27;click&#x27;, function(){
         var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
         if( !_selector.length ) return;
-        var _ins = JC.BaseMVC.getInstance( _selector, LunarCalendar );
+        var _ins = JC.SelectorMVC.getInstance( _selector, LunarCalendar );
         _ins &amp;&amp; _ins.nextMonth();
     });
     /**
@@ -1273,7 +1269,7 @@
     $(document).delegate( &#x27;div.UXCLunarCalendar button.UNextYear&#x27;, &#x27;click&#x27;, function(){
         var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
         if( !_selector.length ) return;
-        var _ins = JC.BaseMVC.getInstance( _selector, LunarCalendar );
+        var _ins = JC.SelectorMVC.getInstance( _selector, LunarCalendar );
         _ins &amp;&amp; _ins.nextYear();
     });
     /**
@@ -1283,7 +1279,7 @@
         _evt.stopPropagation();
         var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
         if( !_selector.length ) return;
-        var _ins = JC.BaseMVC.getInstance( _selector, LunarCalendar );
+        var _ins = JC.SelectorMVC.getInstance( _selector, LunarCalendar );
         if( _ins.isHideControl() ) return;
         var _date = _ins.getDate(), _year = _date.getFullYear();
         var _start = _date.getFullYear() - LunarCalendar.defaultYearSpan
@@ -1305,7 +1301,7 @@
         _evt.stopPropagation();
         var _p = $(this), _selector = _p.parents( &#x27;div.UXCLunarCalendar&#x27; );
         if( !_selector.length ) return;
-        var _ins = JC.BaseMVC.getInstance( _selector, LunarCalendar );
+        var _ins = JC.SelectorMVC.getInstance( _selector, LunarCalendar );
         if( !_ins ) return;
         if( _ins.isHideControl() ) return;
         var _date = _ins.getDate(), _year = _date.getFullYear();
@@ -1318,7 +1314,7 @@
      */
     $(document).delegate( &#x27;div.UXCLunarCalendar select.UYearList&#x27;, &#x27;change&#x27;, function(){
         var _p = $(this), _layout = _p.parents( &#x27;div.UXCLunarCalendar&#x27; ), _ins, _date;
-        _ins = JC.BaseMVC.getInstance( _layout, LunarCalendar );
+        _ins = JC.SelectorMVC.getInstance( _layout, LunarCalendar );
         if( !_ins ) return;
         _date = _ins.getDate();
 
@@ -1330,7 +1326,7 @@
      */
     $(document).delegate( &#x27;div.UXCLunarCalendar select.UMonthList&#x27;, &#x27;change&#x27;, function(){
         var _p = $(this), _layout = _p.parents( &#x27;div.UXCLunarCalendar&#x27; ), _ins, _date;
-        _ins = JC.BaseMVC.getInstance( _layout, LunarCalendar );
+        _ins = JC.SelectorMVC.getInstance( _layout, LunarCalendar );
         if( !_ins ) return;
         _date = _ins.getDate();
 
@@ -1346,7 +1342,7 @@
         if( _p.hasClass(&#x27;unable&#x27;) ) return;
         var _itema = _p.find(&#x27;&gt; a&#x27;)
             , _curtime = _itema.attr(&#x27;date&#x27;)
-            , _ins = JC.BaseMVC.getInstance( _selector, LunarCalendar )
+            , _ins = JC.SelectorMVC.getInstance( _selector, LunarCalendar )
             , _curDate
             ;
         if( !( _curtime &amp;&amp; _ins ) ) return;

@@ -1,11 +1,11 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Tree' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC', 'JC.Tree' ], function(){
 /**
  * 树菜单 形式模拟下拉框
  *
  *<p><b>require</b>:
  *   <a href="widnow.jQuery.html">jQuery</a>
  *   , <a href="JC.common.html">JC.common</a>
- *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *   , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  *</p>
  *
  *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -51,7 +51,7 @@
  *
  * @namespace window.Bizs
  * @class DropdownTree
- * @extends JC.BaseMVC
+ * @extends JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-12-13
@@ -69,10 +69,10 @@
     function DropdownTree( _selector ){
         _selector && ( _selector = $( _selector ) );
 
-        if( JC.BaseMVC.getInstance( _selector, DropdownTree ) ) 
-            return JC.BaseMVC.getInstance( _selector, DropdownTree );
+        if( JC.SelectorMVC.getInstance( _selector, DropdownTree ) ) 
+            return JC.SelectorMVC.getInstance( _selector, DropdownTree );
 
-        JC.BaseMVC.getInstance( _selector, DropdownTree, this );
+        JC.SelectorMVC.getInstance( _selector, DropdownTree, this );
 
         this._model = new DropdownTree.Model( _selector );
         this._view = new DropdownTree.View( this._model );
@@ -105,7 +105,7 @@
             return _r;
         };
 
-    BaseMVC.build( DropdownTree );
+    SelectorMVC.build( DropdownTree );
 
     JC.f.extendObject( DropdownTree.prototype, {
         _beforeInit:
@@ -336,7 +336,7 @@
      * @param   {selector}  _triggerSelector
      * @example
             $( 'div.js_bizDropdownTree' ).each( function(){
-                var _ins = JC.BaseMVC.getInstance( $(this), Bizs.DropdownTree );
+                var _ins = JC.SelectorMVC.getInstance( $(this), Bizs.DropdownTree );
                     _ins 
                         && _ins.on( 'DropdownTreeSelected', function( _evt, _id, _name, _triggerSelector ){
                             JC.log( [ _evt, _id, _name ] );
@@ -380,7 +380,7 @@
         var _p = $(this), _ins;
 
         JC.f.safeTimeout( function(){
-            _ins = JC.BaseMVC.getInstance( _p, DropdownTree );
+            _ins = JC.SelectorMVC.getInstance( _p, DropdownTree );
             !_ins && ( _ins = new DropdownTree( _p ) );
             _ins.toggle();
             JC.log( 'div.js_bizDropdownTree click', new Date().getTime() );
@@ -389,7 +389,7 @@
 
     $(document).click( function(){
         $( 'div.js_bizDropdownTree' ).each( function(){
-            var _ins = JC.BaseMVC.getInstance( $(this), DropdownTree );
+            var _ins = JC.SelectorMVC.getInstance( $(this), DropdownTree );
                 _ins && _ins.hide();
         });
     });

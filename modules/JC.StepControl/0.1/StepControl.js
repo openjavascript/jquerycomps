@@ -1,4 +1,4 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Valid' ], function(){
+ ;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC', 'JC.Valid' ], function(){
 /**
  * 组件用途简述
  *
@@ -22,7 +22,7 @@
  *
  * @namespace   JC
  * @class       StepControl
- * @extends     JC.BaseMVC
+ * @extends     JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-12-13
@@ -37,10 +37,10 @@
     function StepControl( _selector ){
         _selector && ( _selector = $( _selector ) );
 
-        if( JC.BaseMVC.getInstance( _selector, StepControl ) ) 
-            return JC.BaseMVC.getInstance( _selector, StepControl );
+        if( JC.SelectorMVC.getInstance( _selector, StepControl ) ) 
+            return JC.SelectorMVC.getInstance( _selector, StepControl );
 
-        JC.BaseMVC.getInstance( _selector, StepControl, this );
+        JC.SelectorMVC.getInstance( _selector, StepControl, this );
 
         this._model = new StepControl.Model( _selector );
         this._view = new StepControl.View( this._model );
@@ -73,7 +73,7 @@
             return _r;
         };
 
-    JC.BaseMVC.build( StepControl );
+    JC.SelectorMVC.build( StepControl );
 
     JC.f.extendObject( StepControl.prototype, {
         _beforeInit:

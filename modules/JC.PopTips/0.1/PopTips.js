@@ -1,10 +1,10 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+ ;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
 /**
  * PopTips 带箭头的气泡提示框功能
  * <p>
  *      <b>require</b>: 
  *          <a href='window.jQuery.html'>jQuery</a>
- *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *          , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.PopTips.html' target='_blank'>API docs</a>
@@ -101,7 +101,7 @@
  *
  * @namespace JC
  * @class PopTips
- * @extends JC.BaseMVC
+ * @extends JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-12-13
@@ -195,7 +195,7 @@
       
     },
 
-    BaseMVC.build( PopTips );
+    SelectorMVC.build( PopTips );
 
     JC.f.extendObject( PopTips.prototype, {
         _beforeInit: function () {

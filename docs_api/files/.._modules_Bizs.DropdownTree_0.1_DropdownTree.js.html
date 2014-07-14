@@ -47,10 +47,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/DEV.JC.AjaxUpload.html">DEV.JC.AjaxUpload</a></li>
-            
-                <li><a href="../classes/DEV.JC.ImageCutter.html">DEV.JC.ImageCutter</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -60,10 +56,6 @@
                 <li><a href="../classes/JC.AutoComplete.html">JC.AutoComplete</a></li>
             
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
-            
-                <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
-            
-                <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -127,7 +119,11 @@
             
                 <li><a href="../classes/JC.PopTips.html">JC.PopTips</a></li>
             
+                <li><a href="../classes/JC.PureMVC.html">JC.PureMVC</a></li>
+            
                 <li><a href="../classes/JC.Scrollbar.html">JC.Scrollbar</a></li>
+            
+                <li><a href="../classes/JC.SelectorMVC.html">JC.SelectorMVC</a></li>
             
                 <li><a href="../classes/JC.Slider.html">JC.Slider</a></li>
             
@@ -242,14 +238,14 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Tree&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.SelectorMVC&#x27;, &#x27;JC.Tree&#x27; ], function(){
 /**
  * 树菜单 形式模拟下拉框
  *
  *&lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
  *   &lt;a href=&quot;widnow.jQuery.html&quot;&gt;jQuery&lt;/a&gt;
  *   , &lt;a href=&quot;JC.common.html&quot;&gt;JC.common&lt;/a&gt;
- *   , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+ *   , &lt;a href=&#x27;JC.SelectorMVC.html&#x27;&gt;JC.SelectorMVC&lt;/a&gt;
  *&lt;/p&gt;
  *
  *&lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
@@ -295,7 +291,7 @@
  *
  * @namespace window.Bizs
  * @class DropdownTree
- * @extends JC.BaseMVC
+ * @extends JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-12-13
@@ -313,10 +309,10 @@
     function DropdownTree( _selector ){
         _selector &amp;&amp; ( _selector = $( _selector ) );
 
-        if( JC.BaseMVC.getInstance( _selector, DropdownTree ) ) 
-            return JC.BaseMVC.getInstance( _selector, DropdownTree );
+        if( JC.SelectorMVC.getInstance( _selector, DropdownTree ) ) 
+            return JC.SelectorMVC.getInstance( _selector, DropdownTree );
 
-        JC.BaseMVC.getInstance( _selector, DropdownTree, this );
+        JC.SelectorMVC.getInstance( _selector, DropdownTree, this );
 
         this._model = new DropdownTree.Model( _selector );
         this._view = new DropdownTree.View( this._model );
@@ -349,7 +345,7 @@
             return _r;
         };
 
-    BaseMVC.build( DropdownTree );
+    SelectorMVC.build( DropdownTree );
 
     JC.f.extendObject( DropdownTree.prototype, {
         _beforeInit:
@@ -580,7 +576,7 @@
      * @param   {selector}  _triggerSelector
      * @example
             $( &#x27;div.js_bizDropdownTree&#x27; ).each( function(){
-                var _ins = JC.BaseMVC.getInstance( $(this), Bizs.DropdownTree );
+                var _ins = JC.SelectorMVC.getInstance( $(this), Bizs.DropdownTree );
                     _ins 
                         &amp;&amp; _ins.on( &#x27;DropdownTreeSelected&#x27;, function( _evt, _id, _name, _triggerSelector ){
                             JC.log( [ _evt, _id, _name ] );
@@ -624,7 +620,7 @@
         var _p = $(this), _ins;
 
         JC.f.safeTimeout( function(){
-            _ins = JC.BaseMVC.getInstance( _p, DropdownTree );
+            _ins = JC.SelectorMVC.getInstance( _p, DropdownTree );
             !_ins &amp;&amp; ( _ins = new DropdownTree( _p ) );
             _ins.toggle();
             JC.log( &#x27;div.js_bizDropdownTree click&#x27;, new Date().getTime() );
@@ -633,7 +629,7 @@
 
     $(document).click( function(){
         $( &#x27;div.js_bizDropdownTree&#x27; ).each( function(){
-            var _ins = JC.BaseMVC.getInstance( $(this), DropdownTree );
+            var _ins = JC.SelectorMVC.getInstance( $(this), DropdownTree );
                 _ins &amp;&amp; _ins.hide();
         });
     });

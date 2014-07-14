@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
 //Todo:对于已选中的数据，自动铺出数据列表，展示数据
 /**
  * 模拟多选下拉框
@@ -61,7 +61,7 @@ return _json;
  *
  * @namespace window.Bizs
  * @class MultiSelect
- * @extends JC.BaseMVC
+ * @extends JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2014-02-20
@@ -109,10 +109,10 @@ return _json;
     function MultiSelect( _selector ){
         _selector && ( _selector = $( _selector ) );
 
-        if( JC.BaseMVC.getInstance( _selector, MultiSelect ) ) 
-            return JC.BaseMVC.getInstance( _selector, MultiSelect );
+        if( JC.SelectorMVC.getInstance( _selector, MultiSelect ) ) 
+            return JC.SelectorMVC.getInstance( _selector, MultiSelect );
 
-        JC.BaseMVC.getInstance( _selector, MultiSelect, this );
+        JC.SelectorMVC.getInstance( _selector, MultiSelect, this );
 
         this._model = new MultiSelect.Model( _selector );
         this._view = new MultiSelect.View( this._model );
@@ -154,7 +154,7 @@ return _json;
      */
     MultiSelect.dataFilter;
 
-    BaseMVC.build( MultiSelect );
+    SelectorMVC.build( MultiSelect );
 
     JC.f.extendObject( MultiSelect.prototype, {
         _beforeInit: function () {
@@ -332,7 +332,7 @@ return _json;
             _ins;
  
         JC.f.safeTimeout( function(){
-            _ins = JC.BaseMVC.getInstance( _p, MultiSelect );
+            _ins = JC.SelectorMVC.getInstance( _p, MultiSelect );
             !_ins && ( _ins = new MultiSelect( _p ) );
             _ins.show();
         }, _p, 'bizMultiSelectClick', 50 );
@@ -342,7 +342,7 @@ return _json;
     doc.on('mousedown', function () {
         JC.f.safeTimeout( function(){
             $('.js_bizMultiSelect').each( function(){
-                var _ins = JC.BaseMVC.getInstance( $(this), MultiSelect );
+                var _ins = JC.SelectorMVC.getInstance( $(this), MultiSelect );
                     _ins && _ins.hide();
             });
         }, null, 'CLOSE_MULTI_SELECT')
@@ -350,7 +350,7 @@ return _json;
     } );
 
     doc.delegate('.SELECTCloseBtn', 'mousedown', function () {
-        var _ins = JC.BaseMVC.getInstance( JC.f.getJqParent($(this), '.js_bizMultiSelect'), MultiSelect );
+        var _ins = JC.SelectorMVC.getInstance( JC.f.getJqParent($(this), '.js_bizMultiSelect'), MultiSelect );
         _ins && _ins.hide();
     });
 

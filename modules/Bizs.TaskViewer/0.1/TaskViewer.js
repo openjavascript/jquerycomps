@@ -1,11 +1,11 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
     /**
      * TaskViewer 日历任务展示面板
      *
      *<p><b>require</b>:
      *   <a href="widnow.jQuery.html">jQuery</a>
      *   , <a href="JC.common.html">JC.common</a>
-     *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *   , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
      *</p>
      *
      *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -27,7 +27,7 @@
      *
      * @namespace window.Bizs
      * @class TaskViewer
-     * @extends JC.BaseMVC
+     * @extends JC.SelectorMVC
      * @constructor
      * @param   {selector|string}   _selector   
      * @version 0.1 2014-04-17
@@ -89,7 +89,7 @@
         return _r;
     };
 
-    BaseMVC.build( TaskViewer, 'Bizs' );
+    SelectorMVC.build( TaskViewer, 'Bizs' );
     
     JC.f.extendObject( TaskViewer.prototype, {
         _beforeInit: function () {

@@ -47,10 +47,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/DEV.JC.AjaxUpload.html">DEV.JC.AjaxUpload</a></li>
-            
-                <li><a href="../classes/DEV.JC.ImageCutter.html">DEV.JC.ImageCutter</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -60,10 +56,6 @@
                 <li><a href="../classes/JC.AutoComplete.html">JC.AutoComplete</a></li>
             
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
-            
-                <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
-            
-                <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -127,7 +119,11 @@
             
                 <li><a href="../classes/JC.PopTips.html">JC.PopTips</a></li>
             
+                <li><a href="../classes/JC.PureMVC.html">JC.PureMVC</a></li>
+            
                 <li><a href="../classes/JC.Scrollbar.html">JC.Scrollbar</a></li>
+            
+                <li><a href="../classes/JC.SelectorMVC.html">JC.SelectorMVC</a></li>
             
                 <li><a href="../classes/JC.Slider.html">JC.Slider</a></li>
             
@@ -242,7 +238,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.SelectorMVC&#x27; ], function(){
 //Todo:对于已选中的数据，自动铺出数据列表，展示数据
 /**
  * 模拟多选下拉框
@@ -305,7 +301,7 @@ return _json;
  *
  * @namespace window.Bizs
  * @class MultiSelect
- * @extends JC.BaseMVC
+ * @extends JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2014-02-20
@@ -353,10 +349,10 @@ return _json;
     function MultiSelect( _selector ){
         _selector &amp;&amp; ( _selector = $( _selector ) );
 
-        if( JC.BaseMVC.getInstance( _selector, MultiSelect ) ) 
-            return JC.BaseMVC.getInstance( _selector, MultiSelect );
+        if( JC.SelectorMVC.getInstance( _selector, MultiSelect ) ) 
+            return JC.SelectorMVC.getInstance( _selector, MultiSelect );
 
-        JC.BaseMVC.getInstance( _selector, MultiSelect, this );
+        JC.SelectorMVC.getInstance( _selector, MultiSelect, this );
 
         this._model = new MultiSelect.Model( _selector );
         this._view = new MultiSelect.View( this._model );
@@ -398,7 +394,7 @@ return _json;
      */
     MultiSelect.dataFilter;
 
-    BaseMVC.build( MultiSelect );
+    SelectorMVC.build( MultiSelect );
 
     JC.f.extendObject( MultiSelect.prototype, {
         _beforeInit: function () {
@@ -576,7 +572,7 @@ return _json;
             _ins;
  
         JC.f.safeTimeout( function(){
-            _ins = JC.BaseMVC.getInstance( _p, MultiSelect );
+            _ins = JC.SelectorMVC.getInstance( _p, MultiSelect );
             !_ins &amp;&amp; ( _ins = new MultiSelect( _p ) );
             _ins.show();
         }, _p, &#x27;bizMultiSelectClick&#x27;, 50 );
@@ -586,7 +582,7 @@ return _json;
     doc.on(&#x27;mousedown&#x27;, function () {
         JC.f.safeTimeout( function(){
             $(&#x27;.js_bizMultiSelect&#x27;).each( function(){
-                var _ins = JC.BaseMVC.getInstance( $(this), MultiSelect );
+                var _ins = JC.SelectorMVC.getInstance( $(this), MultiSelect );
                     _ins &amp;&amp; _ins.hide();
             });
         }, null, &#x27;CLOSE_MULTI_SELECT&#x27;)
@@ -594,7 +590,7 @@ return _json;
     } );
 
     doc.delegate(&#x27;.SELECTCloseBtn&#x27;, &#x27;mousedown&#x27;, function () {
-        var _ins = JC.BaseMVC.getInstance( JC.f.getJqParent($(this), &#x27;.js_bizMultiSelect&#x27;), MultiSelect );
+        var _ins = JC.SelectorMVC.getInstance( JC.f.getJqParent($(this), &#x27;.js_bizMultiSelect&#x27;), MultiSelect );
         _ins &amp;&amp; _ins.hide();
     });
 

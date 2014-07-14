@@ -1,0 +1,466 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            dt { font-weight: bold; margin: 10px auto; }
+            dd { line-height: 24px; }
+
+            dl table
+            {  
+              background-color: #FFFFFF !important;
+              border-collapse: collapse;
+              border: 1px solid #999999;
+            }
+
+            dl table td
+            , dl table th
+            {  
+              border-top: 1px solid #999999;
+              border-right: 1px solid #999999; 
+              border-collapse: collapse;
+              padding: 2px;
+            }
+
+            .green{ color: green; }
+            .red{ color: red; }
+        </style>
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Panel/0.1/res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config_3.0.js"></script>
+        <script>
+            JC.debug = true;
+
+            requirejs( [ 'JC.Calendar', 'Bizs.FormLogic', 'Bizs.CommonModify' ], function(){
+
+            });
+
+            /**
+             * 表单提交时未检查前的回调
+             */
+            function formBeforeProcessMonthDay( _evt, _ins ){
+                var _form = $(this);
+                JC.log( 'formBeforeProcess', new Date().getTime() );
+            }
+
+            /**
+             * 表单提交时检查通过后的回调
+             */
+            function formAfterProcessMonthDay( _evt, _ins ){
+                var _form = $(this);
+                JC.log( 'formAfterProcess', new Date().getTime() );
+                //return false;
+                if( checkRepeatMonthDay().length ) {
+                    return false;
+                }
+            }
+            /**
+             * 检查一个位置是否重复添加了叠加的日期段
+             */
+            function checkRepeatMonthDay( _selector ){
+                var _r = [], _inputLs, _box;
+                _selector = $( _selector || 'dl.js_monthDayLs' );
+                if( !_selector.length ) return _r;
+                var _errMsg = '排期时间段不能包含其他排期时间段', _errMsgkey = 'extendMsg';
+
+                _selector.each( function(){
+                    _box = $(this);
+                    var _data = []
+                    , _subBox = _box.find('> dd')
+                    , _pushed = false
+                    , _errLs = []
+                    , _corLs = []
+                    ;
+                    
+                    if( _subBox.length < 2 ) return;
+
+                    _subBox.each( function(){
+                        var _dl = $(this)
+                        , _start, _end
+                        , _startVal, _endVal
+                        , _startTime, _endTime
+                        , _subData
+                        ;
+                        _inputLs = _dl.find('input[datatype=daterange]');
+                        _start = $( _inputLs[0] ), _end = $( _inputLs[1] );
+                        _startVal = _start.val().trim(), _endVal = _end.val().trim();
+
+                        if( !( _startVal && _endVal ) ) return;
+
+                        _startTime = JC.f.parseISODate( _startVal ).getTime();
+                        _endTime = JC.f.parseISODate( _endVal ).getTime();
+
+
+                        _subData = {
+                            'startSelector': _start
+                            , 'endSelector': _end
+                            , 'startTime': _startTime
+                            , 'endTime': _endTime
+                            , 'pushErr': false
+                        };
+                        if( _startTime > _endTime ) return;
+                        _corLs.push( _subData );
+
+                        $.each( _data, function( _ix, _compaItem ){
+                            var _isSame = false;
+
+                            if( _compaItem.startTime >= _subData.startTime && _compaItem.startTime <= _subData.endTime ){
+                                _isSame = true;
+                            }else if( _compaItem.endTime >= _subData.startTime && _compaItem.endTime <= _subData.endTime ){
+                                _isSame = true;
+                            }else if( _subData.startTime >= _compaItem.startTime && _subData.startTime <= _compaItem.endTime ){
+                                _isSame = true;
+                            }else if( _subData.endTime >= _compaItem.startTime && _subData.endTime <= _compaItem.endTime ){
+                                _isSame = true;
+                            }
+
+                            if( _isSame ){
+                                if( ! _compaItem.pushErr ){
+                                    _compaItem.pushErr = true;
+                                    _errLs.push( _compaItem );
+                                }
+                                _subData.pushErr = true;
+                                _errLs.push( _subData );
+                            }
+                        });
+
+                        _data.push( _subData );
+                     });
+
+                     _errLs.length && _r.push( _errLs );
+
+                    $.each( _corLs, function( _ix, _item ){
+                        JC.Valid.setValid( _item.startSelector );
+                        JC.Valid.setValid( _item.endSelector );
+                    });
+
+                    $.each( _errLs, function( _ix, _item ){
+                        _item.startSelector.attr( _errMsgkey, _errMsg );
+                        _item.endSelector.attr( _errMsgkey, _errMsg );
+                        JC.Valid.setError( _item.startSelector, _errMsgkey, true );
+                        JC.Valid.setError( _item.endSelector, _errMsgkey, true );
+                    });
+
+                });
+
+                return _r;
+            }
+
+            var TPL_COUNT = 1000;
+            function deleteFilterSubPrice( _tpl ){
+                return JC.f.printf( _tpl, TPL_COUNT++ );
+            }
+            /**
+             * 添加 多选日期控件的回调
+             */
+            function addMonthDayCallabck( _ins, _newItem ){
+                return;
+            }
+            /**
+             * 添加位置后的回调 
+             */
+            function addPositionCallback( _ins, _newItem ){
+                _newItem.each( function(){
+                    var _tmp = $(this), _ipt = _tmp.find('input[multidate=monthday]');
+                    if( !_ipt.length ) return;
+                    addMonthDayCallabck( _ins, JC.f.getJqParent( _ipt, 'dd' ) );
+                    //alert( JC.f.getJqParent( _ipt, 'dd' ).html() );
+                    return false;
+                });
+            }
+
+            $(document).delegate('dl.js_monthDayLs input[datatype=daterange]', 'blur', function(){
+                if( $(this).is('[ignoreprocess]') ) return;
+                window.fixMontdayTimeout && clearTimeout( window.fixMontdayTimeout );
+                window.fixMontdayTimeout = setTimeout( function(){ checkRepeatMonthDay() }, 200 );
+            });
+
+        </script>
+    </head>    
+    <body>
+
+        <dl class="defdl">
+            <dt>Bizs.MonthDay, example 1</dt>
+            <dd>
+
+            <form action="./data/handler.php" method="POST" 
+                class="js_autoFormLogic" 
+                formType="ajax" 
+                formAjaxDoneAction="?donetype=ajax" 
+                formBeforeProcess="formBeforeProcessMonthDay"
+                formAfterProcess="formAfterProcessMonthDay"
+                >
+                <div class="tit-1">排期详情：</div>
+                <div class="ht10"></div>
+                <div class="frm-list">
+                    <table border="0" cellspacing="0" cellpadding="0" width="980">
+                        <tbody>
+                            <tr>
+                                <th width="150px">
+                                    <label><span class="gray">位置：</span></label>
+                                </th>
+                                <td>
+                                    <select class="sel sel-w126" name="">
+                                        <option value="">可选位置</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label><span class="gray">总价：</span></label> 
+                                </th>
+                                <td>
+                                    <input type="text" class="ipt" name="" value="1"
+                                    datatype="n-8.2" 
+                                    maxvalue="99999999.99" 
+                                    minvalue="0.01" 
+                                    errmsg="金额范围0.01~99999999.99" 
+                                    reqmsg="总价"
+                                    /> 
+                                    <em class="error"></em>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label><span class="gray">折扣：</span></label>
+                                </th>
+                                <td>
+                                    <input type="text" class="ipt" name="" value="1"
+                                    reqmsg="折扣" 
+                                    errmsg="请填写正确的数值范围" 
+                                    focusmsg="数值范围： 0~100" 
+                                    datatype="n-3.2" 
+                                    minvalue="0" 
+                                    maxvalue="100"
+                                    >&nbsp; %
+
+                                    <em class="error"></em>
+                                    <em class="focusmsg"></em>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label>
+                                        <span class="gray">折后价格：</span>
+                                    </label>
+                                </th>
+                                <td>
+                                    sdf 元
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label>
+                                        <span class="gray">选择排期：</span>
+                                    </label>
+                                </th>
+                                <td>
+<dl class="js_monthDayLs">
+    <dd>
+        <input type="text" 
+        placeholder="开始日期" 
+        datatype="daterange" 
+        reqmsg="开始日期" 
+        errmsg="开始日期不能大于结束日期" 
+        /> - 
+        <input type="text" 
+        placeholder="结束日期" 
+        datatype="daterange" 
+        reqmsg="结束日期" 
+        errmsg="开始日期不能大于结束日期" 
+        />
+        <a href="javascript:;" class="green js_autoCommonModify" 
+            cmitem="(dl" 
+            cmappendtype="appendTo"
+            cmaction="add"
+            cmtemplate="#monthDayLsTpl"
+            cmaddcallback="addMonthDayCallabck"
+        >+ 添加</a>
+        <em class="error"></em>
+    </dd>
+</dl>
+                                    <em class="error"></em>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label>
+                                        <span class="gray">广告形式：</span>
+                                    </label>
+                                </th>
+                                <td>
+                                    <input type="text" class="ipt ipt-w320" name="" value="test" reqmsg="广告形式">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td>
+                                    <a href="javascript:;" class="green js_autoCommonModify" 
+                                        cmtemplate="#positionTpl" 
+                                        cmitem="(tr" 
+                                        cmtplfiltercallback="deleteFilterSubPrice" 
+                                        cmaction="add"
+                                        cmaddcallback="addPositionCallback"
+                                    >+ 添加位置</a>
+                                    <em class="erro"></em>
+                                </td>
+                            </tr>
+                            <tr><th><label><span class="gray">所有位置总价格：</span></label></th><td>asdff 元</td></tr><tr><th><label><span class="gray">上下线邮件确认：</span></label></th><td><div class="add-list"><p><input type="file" class="file-1">&nbsp;</p></div></td></tr><tr><th></th><td><button type="submit" class="btn btn-1">提交</button>&nbsp;&nbsp;<button type="button" class="btn btn-2">取消</button></td></tr></tbody></table></div></form>
+
+            </dd>
+        </dl>
+
+        <script id="monthDayLsTpl" type="text/template" >
+            <dd>
+                <input type="text" 
+                placeholder="开始日期" 
+                datatype="daterange" 
+                reqmsg="开始日期" 
+                errmsg="开始日期不能大于结束日期" 
+                /><input type="button" class="UXCCalendar_btn" /> - 
+                <input type="text" 
+                placeholder="结束日期" 
+                datatype="daterange" 
+                reqmsg="结束日期" 
+                errmsg="开始日期不能大于结束日期" 
+                /><input type="button" class="UXCCalendar_btn" />
+
+                <a href="javascript:;" class="green js_autoCommonModify" 
+                    cmitem="(dl" 
+                    cmappendtype="appendTo"
+                    cmaction="add"
+                    cmtemplate="#monthDayLsTpl"
+                    cmaddcallback="addMonthDayCallabck"
+                >+ 添加</a>
+                <a href="javascript:;" class="red js_autoCommonModify" 
+                    cmitem="(dd" 
+                    cmaction="del"
+                >+ 删除</a>
+                <em class="error"></em>
+            </dd>
+        </script>
+
+        <script id="positionTpl" type="text/template" >
+            <tr class="js_item_{0}">
+                <td colspan="2">
+                    <div class="line"></div>
+                </td>
+            </tr>
+            <tr  class="js_item_{0}">
+                <th>
+                    <label><span class="gray">位置：</span></label>
+                </th>
+                <td>
+                    <select class="sel sel-w126" name="">
+                        <option value="">可选位置</option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="js_item_{0}" >
+                <th>
+                    <label><span class="gray">总价：</span></label> 
+                </th>
+                <td>
+                    <input type="text" class="ipt" name=""
+                    datatype="n-8.2"
+                    maxvalue="99999999.99"
+                    minvalue="0.01"
+                    errmsg="金额范围0.01~99999999.99"
+                    reqmsg="总价"
+                    >
+                    <em class="error"></em>
+                </td>
+            </tr>
+            <tr class="js_item_{0}" >
+                <th>
+                    <label><span class="gray">折扣：</span></label>
+                </th>
+                <td>
+                    <input type="text" class="ipt" name="" 
+                    reqmsg="折扣" 
+                    errmsg="请填写正确的数值范围" 
+                    focusmsg="数值范围： 0~100" 
+                    datatype="n-3.2" 
+                    minvalue="0" 
+                    maxvalue="100"
+                    reqmsg="折扣">&nbsp; %
+                    <em class="error" ></em>
+                    <em class="focusmsg"></em>
+                </td>
+            </tr>
+            <tr class="js_item_{0}" >
+                <th>
+                    <label>
+                        <span class="gray">折后价格：</span>
+                    </label>
+                </th>
+                <td>
+                    sdf 元
+                </td>
+            </tr>
+            <tr class="js_item_{0}" >
+                <th>
+                    <label>
+                        <span class="gray"></span>
+                    </label>
+                </th>
+                <td >
+                    <dl class="js_monthDayLs">
+                        <dd>
+                            <input type="text" 
+                            placeholder="开始日期" 
+                            datatype="daterange" 
+                            reqmsg="开始日期" 
+                            errmsg="开始日期不能大于结束日期" 
+                            /><input type="button" class="UXCCalendar_btn" /> - 
+                            <input type="text" 
+                            placeholder="结束日期" 
+                            datatype="daterange" 
+                            reqmsg="结束日期" 
+                            errmsg="开始日期不能大于结束日期" 
+                            /><input type="button" class="UXCCalendar_btn" />
+                        </dd>
+                 </dl>
+                </td>
+            </tr>
+            <tr class="js_item_{0}">
+                <th>
+                    <label>
+                        <span class="gray">广告形式：</span>
+                    </label>
+                </th>
+                <td >
+                    <input type="text" class="ipt ipt-w320" name=""
+                    reqmsg="广告形式"
+                    errmsg="最大长度120个字符"
+                    maxlength="120">
+                    <em class="error"></em>
+                </td>
+            </tr>
+            <tr class="js_item_{0}">
+                <th></th>
+                <td >
+                    <a href="javascript:;" class="green js_autoCommonModify"
+                        cmtemplate="#positionTpl"
+                        cmitem="(tr"
+                            cmtplfiltercallback="deleteFilterSubPrice"
+                            cmaction="add">+ 添加位置</a> &nbsp;
+                        <a href="javascript:;" class="red js_autoCommonModify"
+                            cmtemplate="#positionTpl"
+                            cmitem="tr.js_item_{0}"
+                            cmaction="del">- 删除位置</a>
+                    </td>
+                </tr>
+            </script>
+
+        </body>
+    </html>
+

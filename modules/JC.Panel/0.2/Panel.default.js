@@ -110,7 +110,7 @@
      * @date    2013-06-04
      * @example
             <script src="../../../lib.js"></script>
-            <script src="../../../config.js"></script>
+            <script src="../../../config_3.0.js"></script>
             <script>
                 var btnstr = [
                     '<div style="text-align:center" class="UButton">'

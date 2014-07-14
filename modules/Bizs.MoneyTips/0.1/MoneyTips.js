@@ -1,13 +1,13 @@
 //TODO: 提供静态格式化方法
 //TODO: 提供 页面载入时, 指定 class 进行格式化支持
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
 /**
  * <h2>金额格式化 业务逻辑</h2>
  * <br/>应用场景
  * <br/>用户在文本框输入金额时, 在指定的 node 显示以逗号分隔的金额
  * <p><b>require</b>: 
  *      <a href='window.jQuery.html'>jQuery</a>
- *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.MoneyTips.html' target='_blank'>API docs</a>
@@ -36,7 +36,7 @@
  *
  * @namespace   window.Bizs
  * @class       MoneyTips
- * @extends     JC.BaseMVC
+ * @extends     JC.SelectorMVC
  * @constructor
  * @version dev 0.1 2013-11-21
  * @author  qiushaowei   <suches@btbtd.org> | 75 Team
@@ -198,7 +198,7 @@
             }
     };
 
-    BaseMVC.buildModel( MoneyTips );
+    SelectorMVC.buildModel( MoneyTips );
     MoneyTips.Model._instanceName = 'MoneyTips';
     MoneyTips.Model.prototype = {
         init:
@@ -225,7 +225,7 @@
             }
     };
 
-    BaseMVC.buildView( MoneyTips );
+    SelectorMVC.buildView( MoneyTips );
     MoneyTips.View.prototype = {
         init:
             function(){
@@ -254,7 +254,7 @@
             }
     };
 
-    BaseMVC.build( MoneyTips, 'Bizs' );
+    SelectorMVC.build( MoneyTips, 'Bizs' );
 
     $(document).ready( function(){
         var _insAr = 0;

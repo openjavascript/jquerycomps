@@ -1,13 +1,13 @@
 //TODO: 文本框 自动添加 autocomplete="off", 防止表单的默认提示
 //列表项 添加 title 属性
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.AutoComplete', 'JC.AutoSelect' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC', 'JC.AutoComplete', 'JC.AutoSelect' ], function(){
     /**
      * <h2>结合 JC.AutoSelect 与 JC.AutoComplete 综合使用的一个业务逻辑</h2>
      * <br />应用场景: CRM 多级广告位最后一级因为内容较多, 用户使用传统的下拉框选择比较不便
      * <br />这个业务组件结合 JC.AutoSelect 和 JC.AutoComplete 提供一种简便的可输入解决方案
      * <p><b>require</b>: 
      *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
      *      , <a href='JC.AutoComplete.html'>JC.AutoComplete</a>
      *      , <a href='JC.AutoSelect.html'>JC.AutoSelect</a>
      * </p>
@@ -181,7 +181,7 @@
             }
     };
 
-    BaseMVC.buildModel( AutoSelectComplete );
+    SelectorMVC.buildModel( AutoSelectComplete );
 
     AutoSelectComplete.Model._instanceName = 'AutoSelectComplete';
     AutoSelectComplete.Model.INS_COUNT = 1;
@@ -254,7 +254,7 @@
             }
     };
 
-    BaseMVC.buildView( AutoSelectComplete );
+    SelectorMVC.buildView( AutoSelectComplete );
     AutoSelectComplete.View.prototype = {
         init:
             function(){
@@ -262,7 +262,7 @@
             }
     };
 
-    BaseMVC.build( AutoSelectComplete, 'Bizs' );
+    SelectorMVC.build( AutoSelectComplete, 'Bizs' );
 
     window[ AutoSelectComplete.Model.DATA_FILTER_NAME ] =
         function ( _json ){

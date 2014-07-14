@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
 /**
  * 响应式 Drag and Drop 功能
  * <br />对 [ div | button ].js_compDrag 生效
@@ -6,7 +6,7 @@
  *<p><b>require</b>:
  *   <a href="widnow.jQuery.html">jQuery</a>
  *   , <a href="JC.common.html">JC.common</a>
- *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *   , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  *</p>
  *
  *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -113,7 +113,7 @@
  *
  * @namespace   JC
  * @class       Drag
- * @extends     JC.BaseMVC
+ * @extends     JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-12-26
@@ -155,10 +155,10 @@
     function Drag( _selector ){
         _selector && ( _selector = $( _selector ) );
 
-        if( JC.BaseMVC.getInstance( _selector, Drag ) ) 
-            return JC.BaseMVC.getInstance( _selector, Drag );
+        if( JC.SelectorMVC.getInstance( _selector, Drag ) ) 
+            return JC.SelectorMVC.getInstance( _selector, Drag );
 
-        JC.BaseMVC.getInstance( _selector, Drag, this );
+        JC.SelectorMVC.getInstance( _selector, Drag, this );
 
         this._model = new Drag.Model( _selector );
         this._view = new Drag.View( this._model );
@@ -168,7 +168,7 @@
         JC.log( Drag.Model._instanceName, 'inited', new Date().getTime() );
     }
 
-    JC.BaseMVC.build( Drag );
+    JC.SelectorMVC.build( Drag );
 
     JC.f.extendObject( Drag.prototype, {
         _beforeInit:
@@ -939,13 +939,13 @@
     */
 
     _jdoc.delegate( 'div.js_compDrag, button.js_compDrag', 'mouseenter', function( _evt ){
-        var _p = $( this ), _ins = JC.BaseMVC.getInstance( $(this), JC.Drag );
+        var _p = $( this ), _ins = JC.SelectorMVC.getInstance( $(this), JC.Drag );
         if( _p.is( '[' + Drag.Model.IGNORE_DRAG + ']' ) ) return
-        !_ins && ( _ins = new JC.Drag( _p ) ) && JC.BaseMVC.getInstance( _p, JC.Drag, _ins );
+        !_ins && ( _ins = new JC.Drag( _p ) ) && JC.SelectorMVC.getInstance( _p, JC.Drag, _ins );
     });
 
     _jdoc.delegate( 'div.js_compDrag, button.js_compDrag', 'mousedown', function( _evt ){
-        var _p = $( this ), _ins = JC.BaseMVC.getInstance( _p, Drag );
+        var _p = $( this ), _ins = JC.SelectorMVC.getInstance( _p, Drag );
         if( _p.is( '[' + Drag.Model.IGNORE_DRAG + ']' ) ) return
         !_ins && ( _ins = new Drag( _p ) ) && _ins.trigger( Drag.Model.TRIGGER_DRAG, [ _evt ] );
         return false;

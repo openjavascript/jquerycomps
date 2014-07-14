@@ -1,10 +1,10 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+ ;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
 /**
  * Paginator 分页
  * <p>
  *      <b>require</b>: 
  *          <a href='window.jQuery.html'>jQuery</a>
- *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *          , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Paginator.html' target='_blank'>API docs</a>
@@ -36,7 +36,7 @@
  *
  * @namespace JC
  * @class Paginator
- * @extends JC.BaseMVC
+ * @extends JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2014-05-05
@@ -96,7 +96,7 @@
         return _r;
     };
 
-    BaseMVC.build( Paginator );
+    SelectorMVC.build( Paginator );
 
     JC.f.extendObject( Paginator.prototype, {
         _beforeInit: function () {

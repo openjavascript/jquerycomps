@@ -1,9 +1,9 @@
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
+ ;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC', 'JC.Panel' ], function(){
 /**
  * 二级分类复选弹框
  *
  *  <p><b>require</b>:
- *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  *      , <a href='JC.Panel.html'>JC.Panel</a>
  *  </p>
  *
@@ -71,7 +71,7 @@ window.testData = { "parents": [ 1, 2, 3 ], "children": [4, 5, 6, 7, 8 ] };
  *
  * @namespace   window.Bizs
  * @class       MultiselectPanel
- * @extends     JC.BaseMVC
+ * @extends     JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2014-05-09
@@ -84,10 +84,10 @@ window.testData = { "parents": [ 1, 2, 3 ], "children": [4, 5, 6, 7, 8 ] };
     function MultiselectPanel( _selector ){
         _selector && ( _selector = $( _selector ) );
 
-        if( JC.BaseMVC.getInstance( _selector, MultiselectPanel ) ) 
-            return JC.BaseMVC.getInstance( _selector, MultiselectPanel );
+        if( JC.SelectorMVC.getInstance( _selector, MultiselectPanel ) ) 
+            return JC.SelectorMVC.getInstance( _selector, MultiselectPanel );
 
-        JC.BaseMVC.getInstance( _selector, MultiselectPanel, this );
+        JC.SelectorMVC.getInstance( _selector, MultiselectPanel, this );
 
         this._model = new MultiselectPanel.Model( _selector );
         this._view = new MultiselectPanel.View( this._model );
@@ -120,7 +120,7 @@ window.testData = { "parents": [ 1, 2, 3 ], "children": [4, 5, 6, 7, 8 ] };
             return _r;
         };
 
-    JC.BaseMVC.build( MultiselectPanel );
+    JC.SelectorMVC.build( MultiselectPanel );
 
     JC.f.extendObject( MultiselectPanel.prototype, {
         _beforeInit:
@@ -438,7 +438,7 @@ window.testData = { "parents": [ 1, 2, 3 ], "children": [4, 5, 6, 7, 8 ] };
     _jwin.on( 'BMSP_AUTO_FILL', function( _evt, _sp, _topKey, _childKey ){
         if( !( _sp && _sp.length && _topKey && _topKey.length ) ) return;
         var _cTopKey, _ins;
-        _ins = JC.BaseMVC.getInstance( _sp, Bizs.MultiselectPanel ) || new Bizs.MultiselectPanel( _sp );
+        _ins = JC.SelectorMVC.getInstance( _sp, Bizs.MultiselectPanel ) || new Bizs.MultiselectPanel( _sp );
         _cTopKey = _topKey.slice();
         _ins.on( 'updateTop', function(){
             if( _topKey.length ){
@@ -478,7 +478,7 @@ window.testData = { "parents": [ 1, 2, 3 ], "children": [4, 5, 6, 7, 8 ] };
 
         _jdoc.delegate( 'input.js_bizMultiselectPanel', 'click', function( _evt ){
             var _sp = $( this ), _ins;
-            if( !JC.BaseMVC.getInstance( _sp, Bizs.MultiselectPanel ) ){
+            if( !JC.SelectorMVC.getInstance( _sp, Bizs.MultiselectPanel ) ){
                 _ins = new Bizs.MultiselectPanel( _sp );
                 _ins._model.panelIns().show( _sp );
             }

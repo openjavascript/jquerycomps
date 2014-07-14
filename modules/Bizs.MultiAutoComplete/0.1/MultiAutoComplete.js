@@ -55,7 +55,7 @@
  *
  * @namespace   window.Bizs
  * @class       MultiAutoComplete
- * @extends     JC.BaseMVC
+ * @extends     JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-12-13
@@ -165,10 +165,10 @@
     function MultiAutoComplete( _selector ){
         _selector && ( _selector = $( _selector ) );
 
-        if( JC.BaseMVC.getInstance( _selector, MultiAutoComplete ) ) 
-            return JC.BaseMVC.getInstance( _selector, MultiAutoComplete );
+        if( JC.SelectorMVC.getInstance( _selector, MultiAutoComplete ) ) 
+            return JC.SelectorMVC.getInstance( _selector, MultiAutoComplete );
 
-        JC.BaseMVC.getInstance( _selector, MultiAutoComplete, this );
+        JC.SelectorMVC.getInstance( _selector, MultiAutoComplete, this );
 
         this._model = new MultiAutoComplete.Model( _selector );
         this._view = new MultiAutoComplete.View( this._model );
@@ -205,7 +205,7 @@
 
     MultiAutoComplete.ajaxRandom = true;
 
-    JC.BaseMVC.build( MultiAutoComplete );
+    JC.SelectorMVC.build( MultiAutoComplete );
 
     JC.f.extendObject( MultiAutoComplete.prototype, {
         _beforeInit:
@@ -239,7 +239,7 @@
                     _p._model.each( function( _selector ){
                         var _acIns;
                         _selector.hasClass( 'js_compAutoComplete' )
-                            && !( _acIns = JC.BaseMVC.getInstance( _selector, JC.AutoComplete ) )
+                            && !( _acIns = JC.SelectorMVC.getInstance( _selector, JC.AutoComplete ) )
                             && ( _acIns = new JC.AutoComplete( _selector ) )
                             ;
 
@@ -276,7 +276,7 @@
                 });
 
                 _p.on( 'update', function( _evt, _data, _selector, _text, _noTriggerAllUpdated ){
-                    var _acIns = JC.BaseMVC.getInstance( _selector, JC.AutoComplete )
+                    var _acIns = JC.SelectorMVC.getInstance( _selector, JC.AutoComplete )
                         , _nextSelector
                         , _macDefaultValue
                         ;
@@ -343,7 +343,7 @@
                     if( !( _box && _box.length ) ) return;
                     _boxList = _box.find( '.js_macAddtionBoxList' );
                     if( !( _boxList && _boxList.length ) ) return;
-                    _acIns = JC.BaseMVC.getInstance( _selector, JC.AutoComplete );
+                    _acIns = JC.SelectorMVC.getInstance( _selector, JC.AutoComplete );
 
                     _box.delegate( '.js_macClearAddtionList', 'click', function( _evt ){
                         JC.confirm( '是否清空内容', this, 2, function( _evt ){
@@ -618,7 +618,7 @@
             function( _selector ){
                 var _p = this
                     , _nextSelector = _p.nextSelector( _selector )
-                    , _acIns = JC.BaseMVC.getInstance( _selector, JC.AutoComplete )
+                    , _acIns = JC.SelectorMVC.getInstance( _selector, JC.AutoComplete )
                     ;
 
                 _acIns && _acIns.clearAll();

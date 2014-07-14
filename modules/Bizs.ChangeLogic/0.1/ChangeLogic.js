@@ -1,5 +1,5 @@
 //TODO: 完善 select 的相关判断逻辑
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
 /**
  * <h2>input[type=radio|type=checkbox], select change 事件的响应逻辑</h2>
  * <br/>应用场景</br>
@@ -8,7 +8,7 @@
  * <br/>checkbox / select 也可使用( 带change事件的标签 )
  * <p><b>require</b>: 
  *      <a href='window.jQuery.html'>jQuery</a>
- *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.ChangeLogic.html' target='_blank'>API docs</a>

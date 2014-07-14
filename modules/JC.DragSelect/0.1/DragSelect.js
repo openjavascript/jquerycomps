@@ -1,9 +1,9 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
 /**
  * DOM标签拖动选择
  *
  *  <p><b>require</b>:
- *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  *  </p>
  *
  *  <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -88,7 +88,7 @@
  *
  * @namespace   JC
  * @class       DragSelect
- * @extends     JC.BaseMVC
+ * @extends     JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2014-05-29
@@ -101,10 +101,10 @@
     function DragSelect( _selector ){
         _selector && ( _selector = $( _selector ) );
 
-        if( JC.BaseMVC.getInstance( _selector, DragSelect ) ) 
-            return JC.BaseMVC.getInstance( _selector, DragSelect );
+        if( JC.SelectorMVC.getInstance( _selector, DragSelect ) ) 
+            return JC.SelectorMVC.getInstance( _selector, DragSelect );
 
-        JC.BaseMVC.getInstance( _selector, DragSelect, this );
+        JC.SelectorMVC.getInstance( _selector, DragSelect, this );
 
         this._model = new DragSelect.Model( _selector );
         this._view = new DragSelect.View( this._model );
@@ -216,7 +216,7 @@
      */
     DragSelect.MIN_RECT = { width: 20, height: 20 };
 
-    JC.BaseMVC.build( DragSelect );
+    JC.SelectorMVC.build( DragSelect );
 
     JC.f.extendObject( DragSelect.prototype, {
         _beforeInit:

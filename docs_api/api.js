@@ -1,14 +1,10 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "DEV.JC.AjaxUpload",
-        "DEV.JC.ImageCutter",
         "JC.AjaxUpload",
         "JC.AutoChecked",
         "JC.AutoComplete",
         "JC.AutoSelect",
-        "JC.BaseMVC",
-        "JC.BaseMVC.Model",
         "JC.Calendar",
         "JC.DCalendar",
         "JC.Dialog",
@@ -30,7 +26,9 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Panel",
         "JC.Placeholder",
         "JC.PopTips",
+        "JC.PureMVC",
         "JC.Scrollbar",
+        "JC.SelectorMVC",
         "JC.Slider",
         "JC.StepControl",
         "JC.Suggest",

@@ -1,17 +1,17 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
 /**
  * Placeholder 占位符提示功能
  * <p>
  *      <b>require</b>: 
  *          <a href='window.jQuery.html'>jQuery</a>
- *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *          , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Placeholder.html' target='_blank'>API docs</a>
  * | <a href='../../modules/JC.Placeholder/0.1/_demo' target='_blank'>demo link</a></p>
  * @namespace JC
  * @class Placeholder
- * @extends JC.BaseMVC
+ * @extends JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1
@@ -188,7 +188,7 @@
             }
     };
 
-    BaseMVC.buildModel( Placeholder );
+    SelectorMVC.buildModel( Placeholder );
     Placeholder.Model._instanceName = 'Placeholder';
     Placeholder.Model._boxId = 'XPlaceHolderBox';
 
@@ -234,7 +234,7 @@
             }
     };
 
-    BaseMVC.buildView( Placeholder );
+    SelectorMVC.buildView( Placeholder );
     Placeholder.View.prototype = {
         init:
             function(){
@@ -283,7 +283,7 @@
             }
     };
 
-    BaseMVC.build( Placeholder );
+    SelectorMVC.build( Placeholder );
     
     $.event.special.placeholder_remove = {
         remove: 

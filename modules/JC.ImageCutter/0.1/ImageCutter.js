@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.SelectorMVC' ], function(){
 /**
  * 图片裁切组件
  * <br />借助 PHP GD 库进行图片裁切( 不仅限于 PHP GD )
@@ -6,7 +6,7 @@
  *<p><b>require</b>:
  *   <a href="widnow.jQuery.html">jQuery</a>
  *   , <a href="JC.common.html">JC.common</a>
- *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *   , <a href='JC.SelectorMVC.html'>JC.SelectorMVC</a>
  *</p>
  *
  *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -119,7 +119,7 @@
  *
  * @namespace   JC
  * @class       ImageCutter
- * @extends     JC.BaseMVC
+ * @extends     JC.SelectorMVC
  * @constructor
  * @param   {selector|string}   _selector   
  * @version dev 0.1 2013-12-13
@@ -154,10 +154,10 @@
     function ImageCutter( _selector ){
         _selector && ( _selector = $( _selector ) );
 
-        if( JC.BaseMVC.getInstance( _selector, ImageCutter ) ) 
-            return JC.BaseMVC.getInstance( _selector, ImageCutter );
+        if( JC.SelectorMVC.getInstance( _selector, ImageCutter ) ) 
+            return JC.SelectorMVC.getInstance( _selector, ImageCutter );
 
-        JC.BaseMVC.getInstance( _selector, ImageCutter, this );
+        JC.SelectorMVC.getInstance( _selector, ImageCutter, this );
 
         this._model = new ImageCutter.Model( _selector );
         this._view = new ImageCutter.View( this._model );
@@ -417,7 +417,7 @@
 
     ImageCutter.defaultMouseenter =
         function( _evt ){
-            var _sp = $( this ), _ins = BaseMVC.getInstance( _sp, ImageCutter );
+            var _sp = $( this ), _ins = SelectorMVC.getInstance( _sp, ImageCutter );
             if( !_ins ) return;
             ImageCutter._currentIns = _ins;
             //JC.log( 'ImageCutter.defaultMouseenter', new Date().getTime() );
@@ -429,7 +429,7 @@
             //JC.log( 'ImageCutter.defaultMouseleave', new Date().getTime() );
         };
 
-    JC.BaseMVC.build( ImageCutter );
+    JC.SelectorMVC.build( ImageCutter );
 
     JC.f.extendObject( ImageCutter.prototype, {
         _beforeInit:

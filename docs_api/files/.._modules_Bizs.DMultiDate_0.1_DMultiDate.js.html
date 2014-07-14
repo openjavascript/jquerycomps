@@ -47,10 +47,6 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/DEV.JC.AjaxUpload.html">DEV.JC.AjaxUpload</a></li>
-            
-                <li><a href="../classes/DEV.JC.ImageCutter.html">DEV.JC.ImageCutter</a></li>
-            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -60,10 +56,6 @@
                 <li><a href="../classes/JC.AutoComplete.html">JC.AutoComplete</a></li>
             
                 <li><a href="../classes/JC.AutoSelect.html">JC.AutoSelect</a></li>
-            
-                <li><a href="../classes/JC.BaseMVC.html">JC.BaseMVC</a></li>
-            
-                <li><a href="../classes/JC.BaseMVC.Model.html">JC.BaseMVC.Model</a></li>
             
                 <li><a href="../classes/JC.Calendar.html">JC.Calendar</a></li>
             
@@ -127,7 +119,11 @@
             
                 <li><a href="../classes/JC.PopTips.html">JC.PopTips</a></li>
             
+                <li><a href="../classes/JC.PureMVC.html">JC.PureMVC</a></li>
+            
                 <li><a href="../classes/JC.Scrollbar.html">JC.Scrollbar</a></li>
+            
+                <li><a href="../classes/JC.SelectorMVC.html">JC.SelectorMVC</a></li>
             
                 <li><a href="../classes/JC.Slider.html">JC.Slider</a></li>
             
@@ -242,14 +238,14 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;JC.Calendar&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.SelectorMVC&#x27;, &#x27;JC.Calendar&#x27; ], function(){
     window.Bizs.DMultiDate = DMultiDate;
     /**
      * DMultiDate 复合日历业务逻辑
      * &lt;br/&gt; Dom 加载后会自动加载页面上所有.js_autoDMultiDate的标签
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
      *      &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
-     *      , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+     *      , &lt;a href=&#x27;JC.SelectorMVC.html&#x27;&gt;JC.SelectorMVC&lt;/a&gt;
      *      , &lt;a href=&#x27;JC.Calendar.html&#x27;&gt;JC.Calendar&lt;/a&gt;
      * &lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
@@ -745,7 +741,7 @@
         return _r;
     };
 
-    BaseMVC.buildModel( DMultiDate );
+    SelectorMVC.buildModel( DMultiDate );
     DMultiDate.Model._instanceName = &#x27;DMultiDate&#x27;;
     DMultiDate.Model._inscount = 1;
     DMultiDate.Model._defaultMaxvalue = &#x27;&#x27;;
@@ -939,14 +935,14 @@
 
     };
 
-    BaseMVC.buildView( DMultiDate );
+    SelectorMVC.buildView( DMultiDate );
     DMultiDate.View.prototype = {
         init: function () {
             return this;
         }
     };
 
-    BaseMVC.build( DMultiDate, &#x27;Bizs&#x27; );
+    SelectorMVC.build( DMultiDate, &#x27;Bizs&#x27; );
 
     $(document).ready( function(){
         $(&#x27;.js_autoDMultiDate&#x27;).each( function(){
