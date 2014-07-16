@@ -31,6 +31,7 @@ requirejs.config( {
         , 'JC.Calendar.season': 'modules/JC.Calendar/0.3/Calendar.season'
         , 'JC.Calendar.year': 'modules/JC.Calendar/0.3/Calendar.year'
         , 'JC.Calendar.monthday': 'modules/JC.Calendar/0.3/Calendar.monthday'
+        , 'JC.Cover' : 'modules/JC.Cover/0.1/Cover'
 
         , 'JC.DCalendar': 'modules/JC.DCalendar/0.1/DCalendar'
         , 'JC.DCalendar.date': 'modules/JC.DCalendar/0.1/DCalendar.date'
