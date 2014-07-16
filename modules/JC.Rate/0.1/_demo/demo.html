@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Rate Demo</title>
+        <style type="text/css">
+            body { padding: 0; margin: 0; }
+            .star-wrap { margin: 100px 0 100px  800px; }
+        </style>
+        <link href='../res/default/style.css' rel='stylesheet' />
+    </head>
+    <body>
+        <div class="star-wrap">
+            <h2>Default:</h2>
+            <div class="js_compRate" ></div>
+            <h2>Score:</h2>
+            <div class="js_compRate" totalnum="7" score="3" maxscore="7"></div>
+            <h2>Half Star:</h2>
+            <div class="js_compRate" totalnum="10" score="13" maxscore="21" minScore="0" half="true"></div>
+            <h2>Cancel:</h2>
+            <div class="js_compRate" score="3" cancel="true"></div>
+            <h2>ReadOnly:</h2>
+            <div class="js_compRate" score="3" readonly="true"></div>
+            <h2>Title:</h2>
+            <div class="js_compRate" score="3" hints="1分,2分,3分,4分,5分"></div>
+            <h2>Click Callback:</h2>
+            <div class="js_compRate" score="3" clickcallback="clickCallback">
+                <input id="score-input" ReadOnly type="text" />
+            </div>
+            <h2>Inited Callback:</h2>
+            <div class="js_compRate" score="3" readonly="true" hints="1分,2分,3分,4分,5分" initedcallback="initedCallback">
+                <input id="score-input2" ReadOnly type="text" />
+            </div>
+
+        </div>
+        <script src="../../../../lib.js"></script>
+	    <script src="../../../../config.js"></script>
+        <script>
+            JC.debug = true;
+
+            requirejs( [ 'JC.Rate' ], function(){
+            });
+
+            function initedCallback() {
+                $( '#score-input2' ).val( arguments[0].children( 'input[ name = \'score\' ]' ).attr( 'value' ) + '分' );
+            }
+
+            function clickCallback() {
+                var star = arguments[0];
+                if( star.hasClass( 'rate-score' ) ){
+                    $( '#score-input' ).val( star.attr( 'title' ) );
+                }
+            }
+
+        </script>
+    </body>
+</html>
+
