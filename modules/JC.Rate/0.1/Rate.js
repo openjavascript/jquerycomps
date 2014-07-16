@@ -42,7 +42,13 @@
  * @version dev 0.1 2014-07-16
  * @author  pengjunkai <pengjunkai@360.cn> | 75 Team
  * @example
-        <h2>JC.Rate 示例</h2>
+        <div class="js_compRate" score="3" clickcallback="clickCallback">
+            <input id="score-input" ReadOnly type="text" />
+        </div>
+        <h2>Inited Callback:</h2>
+        <div class="js_compRate" score="3" readonly="true" hints="1分,2分,3分,4分,5分" initedcallback="initedCallback">
+            <input id="score-input2" ReadOnly type="text" />
+        </div>
  */
     var _jdoc = $( document ), _jwin = $( window );
 
