@@ -244,12 +244,14 @@
         , getMaxScore:
             function() {
                 var maxScore = this.attrProp( 'maxscore' );
-                return maxScore == '' ? 5 : parseInt( maxScore );
+                //return maxScore == '' ? 5 : parseInt( maxScore );
+                return parseInt( maxScore ) || 5;
             }
         , getMinScore:
             function() {
                 var minScore = this.attrProp( 'minscore' );
-                return minScore == '' ? 0 : parseInt( minScore );
+                //return minScore == '' ? 0 : parseInt( minScore );
+                return parseInt( minScore ) || 0;
             }
        /**
         * 根据选中的星星个数，计算出当前分数( 结果会保留两位小数 )
@@ -283,7 +285,7 @@
         */
         , getMarkScore:
             function() {
-                var score = $( this._selector ).children( 'input[ type = \'hidden\' ]' ).attr('value');
+                var score = $( this._selector ).children( 'input[ type = "hidden" ]' ).attr('value');
                 return parseInt( typeof score == 'undefined' ? 0 : score );
             }
         /**
@@ -357,7 +359,7 @@
                     hintsLen = hints.length,
                     wrapStyle = 'cursor: pointer; font-size: 12px; width: ',
                     wrapWidth = ( totalNum > 0 ? totalNum * 22 : 0 ) + ( cancelFlag ? 20 : 0 ),
-                    imgHtml = '<img src=\'http://p0.qhimg.com/d/inn/0f5ac496/pixel.gif\' />';
+                    imgHtml = '<img src = "http://p0.qhimg.com/d/inn/0f5ac496/pixel.gif" />';
                 _selector && ( _selector = $( _selector ) );
                 _selector.attr( 'style', wrapStyle + wrapWidth + 'px;' );
                 cancelFlag && _selector.prepend( $( imgHtml ).attr( 'class', 'rate-cancel cancel-off' ) );
@@ -369,9 +371,9 @@
                     _selector.append( img );
                     img.after( '&nbsp;' );
                 }
-                _selector.append( $( '<input type=\'hidden\' name=\'score\' />' ) );
+                _selector.append( $( '<input type = "hidden" name = "score" />' ) );
                 if(initScore > 0) {
-                    _selector.children( 'input[ type = \'hidden\' ]' ).attr( 'value', initScore );
+                    _selector.children( 'input[ type = "hidden" ]' ).attr( 'value', initScore );
                     _p.lightStar( _model.scoreToStarNum( initScore ) );
                 }
             }
@@ -393,7 +395,7 @@
                 var _p = this,
                     _model = _p._model,
                     cancelFlag = _model.getCancelFlag();
-                cancelFlag && _p.lightCancel(false);
+                cancelFlag && _p.lightCancel( false );
                 if( !target || typeof target != 'number' || target < 0 ) {
                     _model.selector().children( '.rate-score' )
                         .removeClass( 'star-on' ).addClass( 'star-off' );
@@ -445,7 +447,7 @@
             function() {
                 var _p = this,
                     _model = _p._model;
-                _model.selector().children( 'input[ type = \'hidden\' ]' )
+                _model.selector().children( 'input[ type = "hidden" ]' )
                     .attr( 'value', _model.getMinScore() );
             }
         /**
@@ -472,7 +474,7 @@
         , rememberScore:
             function(score) {
                 var _p = this;
-                _p._model.selector().children( 'input[ type=\'hidden\' ]' ).attr( 'value', score );
+                _p._model.selector().children( 'input[ type = "hidden" ]' ).attr( 'value', score );
             }
     });
 
