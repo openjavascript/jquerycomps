@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JC.AutoComplete - jquery components</title>
+    <title>JC.Rate - jquery components</title>
     <link rel="stylesheet" href="../assets/css/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -138,97 +138,46 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>JC.AutoComplete Class</h1>
+                        <h1>JC.Rate Class</h1>
 <div class="box meta">
+        <div class="extends">
+            Extends <a href="../classes/JC.BaseMVC.html" class="crosslink">JC.BaseMVC</a>
+        </div>
         <div class="foundat">
-            Defined in: <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l4"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:4</code></a>
+            Defined in: <a href="../files/.._modules_JC.Rate_0.1_Rate.js.html#l2"><code>..&#x2F;modules&#x2F;JC.Rate&#x2F;0.1&#x2F;Rate.js:2</code></a>
         </div>
 </div>
 <div class="box intro">
-    <p>AutoComplete 文本框内容输入提示
-<br />响应式初始化, 当光标焦点 foucs 到 文本框时, 会检查是否需要自动初始化 AutoComplete 实例</p>
-<p><b>require</b>: 
-     <a href='window.jQuery.html'>jQuery</a>
-     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+    <p>JC.Rate 星形评分组件</p>
+<p><b>require</b>:
+    <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
 </p>
 <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AutoComplete.html' target='_blank'>API docs</a>
-| <a href='../../modules/JC.AutoComplete/0.1/_demo' target='_blank'>demo link</a></p>
-<p><h2>可用的 HTML attribute</h2></p>
+    | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Rate.html' target='_blank'>API docs</a>
+    | <a href='../../modules/JC.Rate/0.1/_demo' target='_blank'>demo link</a></p>
+<h2>页面只要引用本脚本, 默认会处理 div class=&quot;js_compRate&quot;</h2>
+<h2>可用的 HTML attribute</h2>
 <dl>
-     <dt>cacPopup = selector, optional</dt>
-     <dd>显式指定用于显示数据列表的弹框, 如不指定, 载入数据时会自己生成 popup node</dd>
-     <dt>cacPreventEnter = bool, default = false</dt>
-     <dd>文本框按回车键时, 是否阻止默认行为, 防止提交表单</dd>
-     <dt>cacLabelKey = string, default = data-label</dt>
-     <dd>用于显示 label 的HTML属性</dd>
-     <dt>cacIdKey = string, default= data-id</dt>
-     <dd>用于显示 ID 的HTML属性</dd>
-     <dt>cacIdSelector = selector</dt>
-     <dd>用于保存 ID 值的 node</dd>
-     <dt>cacIdVal = string, optional</dt>
-     <dd>用于初始化的默认ID, 如果 cacIdVal 为空将尝试读取 cacIdSelector 的值</dd>
-     <dt>cacStrictData = bool, default = false</dt>
-     <dd>是否验证已填内容的合法性<br />仅在 cacIdSelector 和 cacIdKey 显式声明时有效</dd>
-     <dt>cacAjaxDataUrl = url</dt>
-     <dd>
-         获取 数据的 AJAX 接口
-         <dl>
-             <dt>数据格式</dt>
-             <dd>
-                 [ { &quot;id&quot;: &quot;id value&quot;, &quot;label&quot;: &quot;label value&quot; }, ... ]
-             </dd>
-         </dl>
-     </dd>
-     <dt>cacDataFilter = callback</dt>
-     <dd>
-         <dl>
-             <dt>如果 数据接口获取的数据不是默认格式, 
-                 可以使用这个属性定义一个数据过滤函数, 把数据转换为合适的格式
-             </dt>
-             <dd>
-<pre>function cacDataFilter( _json ){
-if( _json.data &amp;&amp; _json.data.length ){
-   _json = _json.data;
-}
-$.each( _json, function( _ix, _item ){
-   _item.length &amp;&amp;
-       ( _json[ _ix ] = { &#39;id&#39;: _item[0], &#39;label&#39;: _item[1] } )
-       ;
-});
-return _json;
+    <dt>totalnum = int, default = 5</dt>
+    <dd>文字说明<dd>
+    <dt>maxscore = int, default = 5</dt>
+    <dd>文字说明<dd>
+    <dt>clickCallback = function</dt>
+    <dd>文字说明
+<pre>function clickCallback() {
+  var star = arguments[0];
+  if( star.hasClass( &#39;rate-score&#39; ) ){
+      $( &#39;#score-input&#39; ).val( star.attr( &#39;title&#39; ) );
+  }
 }</pre>
-             </dd>
-         </dl>
-     </dd>
-     <dt>cacBoxWidth = int</dt>
-     <dd>定义 popup 的宽度, 如果没有显式定义, 将使用 selector 的宽度</dd>
-     <dt>cacCasesensitive = bool, default = false</dt>
-     <dd>是否区分英文大小写</dd>
-     <dt>cacSubItemsSelector = selector string, default = &quot;&gt; li&quot;
-     <dd>popup 查找数据项的选择器语法</dd>
-     <dt>cacNoDataText = string, default = &quot;数据加载中, 请稍候...&quot;</dt>
-     <dd>加载数据时的默认提示文字</dd>
-     <dt>cacValidCheckTimeout = int, default = 1</dt>
-     <dd>定义 JC.Valid blur 时执行 check 的时间间隔, 主要为防止点击列表时已经 Valid.check 的问题</dd>
-     <dt>cacFixHtmlEntity = bool</dt>
-     <dd>是否将 HTML实体 转为 html</dd>
-     <dt>cacMultiSelect = bool, default = false</dt>
-     <dd>是否为多选模式</dd>
-     <dt>cacListItemTpl= selector</dt>
-     <dd>指定项内容的模板</dd>
-     <dt>cacListAll = bool</dt>
-     <dd>popup是否显示所有内容</dd>
-     <dt>cacDisableSelectedBlur = bool</dt>
-     <dd>在文本框里按方向键选择项内容并按回车键时, 是否禁止触发 blur事件</dd>
-     <dt>cacNoCache = bool, default = false</dt>
-     <dd>AJAX 获取数据式，是否缓存 AJAX 数据</dd>
+    </dd>
+    <dt>补充其他属性的说明...</dt>
 </dl>
 </div>
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_JC.AutoComplete" class="method item">
-    <h3 class="name"><code>JC.AutoComplete</code></h3>
+        <div id="method_JC.Rate" class="method item">
+    <h3 class="name"><code>JC.Rate</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
@@ -239,7 +188,7 @@ return _json;
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l4"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:4</code></a>
+        <a href="../files/.._modules_JC.Rate_0.1_Rate.js.html#l2"><code>..&#x2F;modules&#x2F;JC.Rate&#x2F;0.1&#x2F;Rate.js:2</code></a>
         </p>
     </div>
     <div class="description">
@@ -258,31 +207,7 @@ return _json;
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
-                <pre class="code prettyprint"><code>   &lt;div class=&quot;ui-sug-mod&quot;&gt;
-       &lt;input name=&quot;ac&quot; type=&quot;text&quot; class=&quot;ui-sug-ipt js_compAutoComplete&quot; value=&quot;&quot; 
-           autocomplete=&quot;off&quot; 
-           cacPopup=&quot;/ul.js_compAutoCompleteBox&quot;
-           cacLabelKey=&quot;data-label&quot;
-           cacIdKey=&quot;data-id&quot;
-           cacPreventEnter=&quot;true&quot; 
-           /&gt;
-       &lt;div style=&quot;height:200px&quot;&gt;&lt;/div&gt;
-       &lt;ul class=&quot;AC_box js_compAutoCompleteBox&quot; style=&quot;display:none;&quot;&gt;
-           &lt;li data-id=&quot;9&quot; data-label=&quot;yy语音&quot;&gt;yy语音&lt;/li&gt;
-           &lt;li data-id=&quot;10&quot; data-label=&quot;yy直播&quot;&gt;yy直播&lt;/li&gt;
-           &lt;li data-id=&quot;11&quot; data-label=&quot;yy频道设计&quot;&gt;yy频道设计&lt;/li&gt;
-           &lt;li data-id=&quot;12&quot; data-label=&quot;yy网页版&quot;&gt;yy网页版&lt;/li&gt;
-           &lt;li data-id=&quot;13&quot; data-label=&quot;youku&quot;&gt;youku&lt;/li&gt;
-           &lt;li data-id=&quot;14&quot; data-label=&quot;yeah&quot;&gt;yeah&lt;/li&gt;
-           &lt;li data-id=&quot;15&quot; data-label=&quot;yahoo&quot;&gt;yahoo&lt;/li&gt;
-           &lt;li data-id=&quot;09&quot; data-label=&quot;YY语音&quot;&gt;YY语音&lt;/li&gt;
-           &lt;li data-id=&quot;010&quot; data-label=&quot;YY直播&quot;&gt;YY直播&lt;/li&gt;
-           &lt;li data-id=&quot;011&quot; data-label=&quot;YY频道设计&quot;&gt;YY频道设计&lt;/li&gt;
-           &lt;li data-id=&quot;012&quot; data-label=&quot;YY网页版&quot;&gt;YY网页版&lt;/li&gt;
-           &lt;li data-id=&quot;013&quot; data-label=&quot;YOUKU&quot;&gt;YOUKU&lt;/Li&gt;
-           &lt;li data-id=&quot;014&quot; data-label=&quot;YEAH&quot;&gt;YEAH&lt;/LI&gt;
-       &lt;/ul&gt;
-   &lt;/div&gt;</code></pre>
+                <pre class="code prettyprint"><code>  &lt;h2&gt;JC.Rate 示例&lt;/h2&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -291,260 +216,99 @@ return _json;
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
-            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
     <div>
         <div id="index" class="api-class-tabpanel index">
             <h2 class="off-left">Item Index</h2>
                 <div class="index-section methods">
                     <h3>Methods</h3>
-                    <ul class="index-list methods">
-                            <li class="index-item method">
-                                <a href="#method_ajaxUpdate">ajaxUpdate</a>
+                    <ul class="index-list methods extends">
+                            <li class="index-item method private inherited">
+                                <a href="#method__beforeInit">_beforeInit</a>
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method__init">_init</a>
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method__inited">_inited</a>
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method__initHanlderEvent">_initHanlderEvent</a>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_ajaxUpdate">ajaxUpdate</a>
+                                <a href="#method_changeStarClass">changeStarClass</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_clear">clear</a>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_clearAll">clearAll</a>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_dataFilter">dataFilter</a>
+                                <a href="#method_countHalfStar">countHalfStar</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_fixPosition">fixPosition</a>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_getInstance">getInstance</a>
+                                <a href="#method_getCurScore">getCurScore</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_hide">hide</a>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_idSelector">idSelector</a>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_idVal">idVal</a>
+                                <a href="#method_getMarkScore">getMarkScore</a>
+                                    <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_init">init</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_popup">popup</a>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_show">show</a>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_update">update</a>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_update">update</a>
+                                <a href="#method_initScore">initScore</a>
                                     <span class="flag static">static</span>
                             </li>
-                    </ul>
-                </div>
-                <div class="index-section properties">
-                    <h3>Properties</h3>
-                    <ul class="index-list properties">
-                            <li class="index-item property">
-                                <a href="#property_AJAX_NO_CACHE">AJAX_NO_CACHE</a>
+                            <li class="index-item method">
+                                <a href="#method_lightCancel">lightCancel</a>
                                     <span class="flag static">static</span>
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_fixHtmlEntity">fixHtmlEntity</a>
+                            <li class="index-item method">
+                                <a href="#method_lightStar">lightStar</a>
                                     <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_on">on</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_rememberScore">rememberScore</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_round">round</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_scoreToStarNum">scoreToStarNum</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_selector">selector</a>
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_trigger">trigger</a>
                             </li>
                     </ul>
                 </div>
         </div>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
-                    <div id="method_ajaxUpdate" class="method item">
-    <h3 class="name"><code>ajaxUpdate</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_url</code>
-                </li>
-                <li class="arg">
-                        <code>_cb</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l575"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:575</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>使用 ajax 接口更新原始数据</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_url</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    <div class="param-description">
-                    </div>
-                </li>
-                <li class="param">
-                        <code class="param-name">_cb</code>
-                        <span class="type">Callback</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method_ajaxUpdate" class="method item">
-    <h3 class="name"><code>ajaxUpdate</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_selector</code>
-                </li>
-                <li class="arg">
-                        <code>_url</code>
-                </li>
-                <li class="arg">
-                        <code>_cb</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="returns-inline">
-            <span class="type">AutoCompleteInstance</span>
-        </span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l212"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:212</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>使用 ajax 接口更新原始数据</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_selector</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-                <li class="param">
-                        <code class="param-name">_url</code>
-                        <span class="type">Url string</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-                <li class="param">
-                        <code class="param-name">_cb</code>
-                        <span class="type">Callback</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                        <span class="type">AutoCompleteInstance</span>:
-            </div>
-        </div>
-</div>
-                    <div id="method_clear" class="method item">
-    <h3 class="name"><code>clear</code></h3>
+                    <div id="method__beforeInit" class="method item private inherited">
+    <h3 class="name"><code>_beforeInit</code></h3>
         <span class="paren">()</span>
+        <span class="flag private">private</span>
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l636"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:636</code></a>
+                <p>Inherited from
+                <a href="../classes/JC.BaseMVC.html#method__beforeInit">JC.BaseMVC</a>:
+        <a href="../files/.._modules_JC.BaseMVC_0.1_BaseMVC.js.html#l61"><code>..&#x2F;modules&#x2F;JC.BaseMVC&#x2F;0.1&#x2F;BaseMVC.js:61</code></a>
         </p>
     </div>
     <div class="description">
-        <p>清除 selector 和 idSelector 的默认值</p>
+        <p>初始化之前调用的方法</p>
     </div>
 </div>
-                    <div id="method_clearAll" class="method item">
-    <h3 class="name"><code>clearAll</code></h3>
-        <span class="paren">()</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l645"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:645</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>清除所有数据</p>
-    </div>
-</div>
-                    <div id="method_dataFilter" class="method item">
-    <h3 class="name"><code>dataFilter</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_json</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="returns-inline">
-            <span class="type">Json</span>
-        </span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l228"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:228</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>定义全局数据过滤函数</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_json</code>
-                        <span class="type">Json</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                        <span class="type">Json</span>:
-            </div>
-        </div>
-</div>
-                    <div id="method_fixPosition" class="method item">
-    <h3 class="name"><code>fixPosition</code></h3>
-        <span class="paren">()</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l656"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:656</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>校正数据列表的显示位置</p>
-    </div>
-</div>
-                    <div id="method_getInstance" class="method item">
-    <h3 class="name"><code>getInstance</code></h3>
+                    <div id="method__init" class="method item private inherited">
+    <h3 class="name"><code>_init</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
@@ -552,18 +316,15 @@ return _json;
                 </li>
             </ul><span class="paren">)</span>
         </div>
-        <span class="returns-inline">
-            <span class="type">AutoCompleteInstance</span>
-        </span>
-        <span class="flag static">static</span>
+        <span class="flag private">private</span>
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l158"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:158</code></a>
+                <p>Inherited from
+                <a href="../classes/JC.BaseMVC.html#method__init">JC.BaseMVC</a>:
+        <a href="../files/.._modules_JC.BaseMVC_0.1_BaseMVC.js.html#l32"><code>..&#x2F;modules&#x2F;JC.BaseMVC&#x2F;0.1&#x2F;BaseMVC.js:32</code></a>
         </p>
     </div>
     <div class="description">
-        <p>获取或设置 AutoComplete 的实例</p>
+        <p>内部初始化方法</p>
     </div>
         <div class="params">
             <h4>Parameters:</h4>
@@ -576,75 +337,103 @@ return _json;
                 </li>
             </ul>
         </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                        <span class="type">AutoCompleteInstance</span>:
-            </div>
-        </div>
 </div>
-                    <div id="method_hide" class="method item">
-    <h3 class="name"><code>hide</code></h3>
+                    <div id="method__inited" class="method item private inherited">
+    <h3 class="name"><code>_inited</code></h3>
         <span class="paren">()</span>
+        <span class="flag private">private</span>
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l599"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:599</code></a>
+                <p>Inherited from
+                <a href="../classes/JC.BaseMVC.html#method__inited">JC.BaseMVC</a>:
+        <a href="../files/.._modules_JC.BaseMVC_0.1_BaseMVC.js.html#l77"><code>..&#x2F;modules&#x2F;JC.BaseMVC&#x2F;0.1&#x2F;BaseMVC.js:77</code></a>
         </p>
     </div>
     <div class="description">
-        <p>隐藏数据列表</p>
+        <p>内部初始化完毕时, 调用的方法</p>
     </div>
 </div>
-                    <div id="method_idSelector" class="method item">
-    <h3 class="name"><code>idSelector</code></h3>
+                    <div id="method__initHanlderEvent" class="method item private inherited">
+    <h3 class="name"><code>_initHanlderEvent</code></h3>
         <span class="paren">()</span>
-        <span class="returns-inline">
-            <span class="type">Selector</span>
-        </span>
+        <span class="flag private">private</span>
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l558"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:558</code></a>
+                <p>Inherited from
+                <a href="../classes/JC.BaseMVC.html#method__initHanlderEvent">JC.BaseMVC</a>:
+        <a href="../files/.._modules_JC.BaseMVC_0.1_BaseMVC.js.html#l69"><code>..&#x2F;modules&#x2F;JC.BaseMVC&#x2F;0.1&#x2F;BaseMVC.js:69</code></a>
         </p>
     </div>
     <div class="description">
-        <p>获取 绑定的 id node</p>
+        <p>内部事件初始化方法</p>
     </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                        <span class="type">Selector</span>:
-            </div>
-        </div>
 </div>
-                    <div id="method_idVal" class="method item">
-    <h3 class="name"><code>idVal</code></h3>
+                    <div id="method_changeStarClass" class="method item">
+    <h3 class="name"><code>changeStarClass</code></h3>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>_id</code>
+                        <code>obj</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
         <span class="returns-inline">
-            <span class="type">Id string</span>
+            <span class="type"></span>
         </span>
+        <span class="flag static">static</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l564"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:564</code></a>
+        <a href="../files/.._modules_JC.Rate_0.1_Rate.js.html#l445"><code>..&#x2F;modules&#x2F;JC.Rate&#x2F;0.1&#x2F;Rate.js:445</code></a>
         </p>
     </div>
     <div class="description">
-        <p>获取/设置 id 值</p>
+        <p>处理星星class更改的方法</p>
     </div>
         <div class="params">
             <h4>Parameters:</h4>
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">_id</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <code class="param-name">obj</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    <div class="param-description">
+                        <pre><code>     {string}    className</code></pre>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+            </div>
+        </div>
+</div>
+                    <div id="method_countHalfStar" class="method item">
+    <h3 class="name"><code>countHalfStar</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>e</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">Number of starNum</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Rate_0.1_Rate.js.html#l306"><code>..&#x2F;modules&#x2F;JC.Rate&#x2F;0.1&#x2F;Rate.js:306</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>在支持半颗星的时候 计算星星数</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">e</code>
+                        <span class="type">Event</span>
                     <div class="param-description">
                     </div>
                 </li>
@@ -653,7 +442,70 @@ return _json;
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                        <span class="type">Id string</span>:
+                        <span class="type">Number of starNum</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_getCurScore" class="method item">
+    <h3 class="name"><code>getCurScore</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>target</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">Number of score</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Rate_0.1_Rate.js.html#l248"><code>..&#x2F;modules&#x2F;JC.Rate&#x2F;0.1&#x2F;Rate.js:248</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>根据选中的星星个数，计算出当前分数( 结果会保留两位小数 )</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">target</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Number of score</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_getMarkScore" class="method item">
+    <h3 class="name"><code>getMarkScore</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type">Number of score</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Rate_0.1_Rate.js.html#l271"><code>..&#x2F;modules&#x2F;JC.Rate&#x2F;0.1&#x2F;Rate.js:271</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取记录的分数</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Number of score</span>:
             </div>
         </div>
 </div>
@@ -667,17 +519,17 @@ return _json;
             </ul><span class="paren">)</span>
         </div>
         <span class="returns-inline">
-            <span class="type">Array of AutoCompleteInstance</span>
+            <span class="type">Array of RateInstance</span>
         </span>
         <span class="flag static">static</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l174"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:174</code></a>
+        <a href="../files/.._modules_JC.Rate_0.1_Rate.js.html#l67"><code>..&#x2F;modules&#x2F;JC.Rate&#x2F;0.1&#x2F;Rate.js:67</code></a>
         </p>
     </div>
     <div class="description">
-        <p>初始化可识别的 AutoComplete 实例</p>
+        <p>初始化可识别的 Rate 实例</p>
     </div>
         <div class="params">
             <h4>Parameters:</h4>
@@ -693,112 +545,60 @@ return _json;
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                        <span class="type">Array of AutoCompleteInstance</span>:
+                        <span class="type">Array of RateInstance</span>:
             </div>
         </div>
 </div>
-                    <div id="method_popup" class="method item">
-    <h3 class="name"><code>popup</code></h3>
+                    <div id="method_initScore" class="method item">
+    <h3 class="name"><code>initScore</code></h3>
         <span class="paren">()</span>
         <span class="returns-inline">
-            <span class="type">Selector</span>
-        </span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l608"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:608</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>获取数据列表 node</p>
-    </div>
-        <div class="returns">
-            <h4>Returns:</h4>
-            <div class="returns-description">
-                        <span class="type">Selector</span>:
-            </div>
-        </div>
-</div>
-                    <div id="method_show" class="method item">
-    <h3 class="name"><code>show</code></h3>
-        <span class="paren">()</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l586"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:586</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>显示数据列表</p>
-    </div>
-</div>
-                    <div id="method_update" class="method item">
-    <h3 class="name"><code>update</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_json</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l617"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:617</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>更新原始数据</p>
-    </div>
-        <div class="params">
-            <h4>Parameters:</h4>
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">_json</code>
-                        <span class="type">Json</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-            </ul>
-        </div>
-</div>
-                    <div id="method_update" class="method item">
-    <h3 class="name"><code>update</code></h3>
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>_selector</code>
-                </li>
-                <li class="arg">
-                        <code>_data</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-        <span class="returns-inline">
-            <span class="type">AutoCompleteInstance</span>
+            <span class="type"></span>
         </span>
         <span class="flag static">static</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l197"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:197</code></a>
+        <a href="../files/.._modules_JC.Rate_0.1_Rate.js.html#l431"><code>..&#x2F;modules&#x2F;JC.Rate&#x2F;0.1&#x2F;Rate.js:431</code></a>
         </p>
     </div>
     <div class="description">
-        <p>更新原始数据</p>
+        <p>清除标记的分数为默认最小分数</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+            </div>
+        </div>
+</div>
+                    <div id="method_lightCancel" class="method item">
+    <h3 class="name"><code>lightCancel</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>flag</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Rate_0.1_Rate.js.html#l415"><code>..&#x2F;modules&#x2F;JC.Rate&#x2F;0.1&#x2F;Rate.js:415</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>清除按钮动态变化方法</p>
     </div>
         <div class="params">
             <h4>Parameters:</h4>
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">_selector</code>
-                        <span class="type">Selector</span>
-                    <div class="param-description">
-                    </div>
-                </li>
-                <li class="param">
-                        <code class="param-name">_data</code>
-                        <span class="type">Json</span>
+                        <code class="param-name">flag</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
                     <div class="param-description">
                     </div>
                 </li>
@@ -807,42 +607,276 @@ return _json;
         <div class="returns">
             <h4>Returns:</h4>
             <div class="returns-description">
-                        <span class="type">AutoCompleteInstance</span>:
             </div>
         </div>
 </div>
+                    <div id="method_lightStar" class="method item">
+    <h3 class="name"><code>lightStar</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>target</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Rate_0.1_Rate.js.html#l378"><code>..&#x2F;modules&#x2F;JC.Rate&#x2F;0.1&#x2F;Rate.js:378</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>星星动态变化方法</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">target</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
             </div>
-            <div id="properties" class="api-class-tabpanel">
-                <h2 class="off-left">Properties</h2>
-                    <div id="property_AJAX_NO_CACHE" class="property item">
-    <h3 class="name"><code>AJAX_NO_CACHE</code></h3>
-    <span class="type">Bool</span>
-        <span class="flag static">static</span>
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l244"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:244</code></a>
-        </p>
-    </div>
-    <div class="description">
-        <p>AJAX 获取数据式，是否缓存 AJAX 数据</p>
-    </div>
-        <p><strong>Default:</strong> false</p>
+        </div>
 </div>
-                    <div id="property_fixHtmlEntity" class="property item">
-    <h3 class="name"><code>fixHtmlEntity</code></h3>
-    <span class="type">Bool</span>
+                    <div id="method_on" class="method item inherited">
+    <h3 class="name"><code>on</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_evtName</code>
+                </li>
+                <li class="arg">
+                        <code>_cb</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/JC.BaseMVC.html#method_on">JC.BaseMVC</a>:
+        <a href="../files/.._modules_JC.BaseMVC_0.1_BaseMVC.js.html#l91"><code>..&#x2F;modules&#x2F;JC.BaseMVC&#x2F;0.1&#x2F;BaseMVC.js:91</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>使用 jquery on 绑定事件</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_evtName</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_cb</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    <p>BaseMVCInstance</p>
+            </div>
+        </div>
+</div>
+                    <div id="method_rememberScore" class="method item">
+    <h3 class="name"><code>rememberScore</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>score</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
         <span class="flag static">static</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AutoComplete_0.1_AutoComplete.js.html#l236"><code>..&#x2F;modules&#x2F;JC.AutoComplete&#x2F;0.1&#x2F;AutoComplete.js:236</code></a>
+        <a href="../files/.._modules_JC.Rate_0.1_Rate.js.html#l459"><code>..&#x2F;modules&#x2F;JC.Rate&#x2F;0.1&#x2F;Rate.js:459</code></a>
         </p>
     </div>
     <div class="description">
-        <p>是否将 HTML实体 转为 html</p>
+        <p>记录当前选中的分数</p>
     </div>
-        <p><strong>Default:</strong> true</p>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">score</code>
+                        <span class="type">Munber</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+            </div>
+        </div>
+</div>
+                    <div id="method_round" class="method item">
+    <h3 class="name"><code>round</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>number</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Rate_0.1_Rate.js.html#l320"><code>..&#x2F;modules&#x2F;JC.Rate&#x2F;0.1&#x2F;Rate.js:320</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>浮点数 四舍五入</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">number</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    <div class="param-description">
+                        <pre><code>     {number} fractionDigits</code></pre>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_scoreToStarNum" class="method item">
+    <h3 class="name"><code>scoreToStarNum</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>score</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">Number of starNum</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Rate_0.1_Rate.js.html#l283"><code>..&#x2F;modules&#x2F;JC.Rate&#x2F;0.1&#x2F;Rate.js:283</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>根据分数计算对应星星的个数</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">score</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Number of starNum</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_selector" class="method item inherited">
+    <h3 class="name"><code>selector</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/JC.BaseMVC.html#method_selector">JC.BaseMVC</a>:
+        <a href="../files/.._modules_JC.BaseMVC_0.1_BaseMVC.js.html#l85"><code>..&#x2F;modules&#x2F;JC.BaseMVC&#x2F;0.1&#x2F;BaseMVC.js:85</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取 显示 BaseMVC 的触发源选择器, 比如 a 标签</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    <p>selector</p>
+            </div>
+        </div>
+</div>
+                    <div id="method_trigger" class="method item inherited">
+    <h3 class="name"><code>trigger</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_evtName</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/JC.BaseMVC.html#method_trigger">JC.BaseMVC</a>:
+        <a href="../files/.._modules_JC.BaseMVC_0.1_BaseMVC.js.html#l99"><code>..&#x2F;modules&#x2F;JC.BaseMVC&#x2F;0.1&#x2F;BaseMVC.js:99</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>使用 jquery trigger 触发绑定事件</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_evtName</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    <p>BaseMVCInstance</p>
+            </div>
+        </div>
 </div>
             </div>
     </div>

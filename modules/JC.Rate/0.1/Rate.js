@@ -1,24 +1,37 @@
-
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
- *  JC.rate 星形评分组件
+ *  JC.Rate 星形评分组件
  *
  *  <p><b>require</b>:
- *      <a href="widnow.jQuery.html">jQuery</a>
- *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *  </p>
  *
  *  <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  *      | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Rate.html' target='_blank'>API docs</a>
  *      | <a href='../../modules/JC.Rate/0.1/_demo' target='_blank'>demo link</a></p>
  *  
- *  <h2>页面只要引用本脚本, 默认会处理 div class="js_compCompExampleMoreAdvance"</h2>
+ *  <h2>页面只要引用本脚本, 默认会处理 div class="js_compRate"</h2>
  *
  *  <h2>可用的 HTML attribute</h2>
  *
  *  <dl>
- *      <dt></dt>
- *      <dd><dd>
+ *      <dt>totalnum = int, default = 5</dt>
+ *      <dd>文字说明<dd>
+ *
+ *      <dt>maxscore = int, default = 5</dt>
+ *      <dd>文字说明<dd>
+ *
+ *      <dt>clickCallback = function</dt>
+ *      <dd>文字说明
+<pre>function clickCallback() {
+    var star = arguments[0];
+    if( star.hasClass( 'rate-score' ) ){
+        $( '#score-input' ).val( star.attr( 'title' ) );
+    }
+}</pre>
+ *      </dd>
+ *
+ *      <dt>补充其他属性的说明...</dt>
  *  </dl> 
  *
  * @namespace   JC
@@ -26,8 +39,8 @@
  * @extends     JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
- * @version dev 0.1 2013-12-13
- * @author  qiushaowei <suches@btbtd.org> | 75 Team
+ * @version dev 0.1 2014-07-16
+ * @author  pengjunkai <pengjunkai@360.cn> | 75 Team
  * @example
         <h2>JC.Rate 示例</h2>
  */
@@ -38,10 +51,10 @@
     function Rate( _selector ){
         _selector && ( _selector = $( _selector ) );
 
-        if( Rate.getInstance( _selector) ) 
-            return Rate.getInstance( _selector, Rate );
+        if( JC.BaseMVC.getInstance( _selector, Rate ) ) 
+            return JC.BaseMVC.getInstance( _selector, Rate );
 
-        Rate.getInstance( _selector, this );
+        JC.BaseMVC.getInstance( _selector, Rate, this );
 
         this._model = new Rate.Model( _selector );
         this._view = new Rate.View( this._model );
@@ -50,22 +63,6 @@
 
         JC.log( Rate.Model._instanceName, 'all inited', new Date().getTime() );
     }
-
-    /**
-     * 获取或设置 Rate 的实例
-     * @method  getInstance
-     * @param   {selector}      _selector
-     * @static
-     * @return  {PopTipsInstance}
-     */
-    Rate.getInstance = function ( _selector, _setter ) {
-        if( typeof _selector == 'string' && !/</.test( _selector ) ) 
-            _selector = $(_selector);
-        if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
-        typeof _setter != 'undefined' && _selector.data( Rate.Model._instanceName, _setter );
-
-        return _selector.data( Rate.Model._instanceName );
-    };
 
     /**
      * 初始化可识别的 Rate 实例
@@ -96,7 +93,7 @@
     JC.f.extendObject( Rate.prototype, {
         _beforeInit:
             function(){
-                JC.log( 'Rate _beforeInit', new Date().getTime() );
+                //JC.log( 'Rate _beforeInit', new Date().getTime() );
             }
 
         , _initHanlderEvent:
@@ -117,8 +114,7 @@
                         _model.getInitedCallback().call( _p, _p.selector() );
                 } );
                 
-                var readOnly = _model.getReadOnly();
-                if( readOnly ){ return; }
+                if( _model.getReadOnly() ){ return; }
 
                 var halfFlag = _model.getHalfFlag();
                 if( halfFlag ){
@@ -167,7 +163,7 @@
 
         , _inited:
             function() {
-                JC.log( 'Rate _inited', new Date().getTime() );
+                //JC.log( 'Rate _inited', new Date().getTime() );
                 this.trigger( 'rateinited' );
             }
     });
@@ -176,7 +172,7 @@
     JC.f.extendObject( Rate.Model.prototype, {
         init:
             function() {
-                JC.log( 'Rate.Model.init:', new Date().getTime() );
+                //JC.log( 'Rate.Model.init:', new Date().getTime() );
             }
         , isInited: 
             function( _setter ) { 
@@ -186,22 +182,26 @@
         , getTotalNum:
             function() {
                 var totalNum = this.attrProp( 'totalnum' );
-                return totalNum == '' ? 5 : parseInt( totalNum );
+                //return totalNum == '' ? 5 : parseInt( totalNum );
+                return parseInt( totalNum ) || 5;
             }
         , getHalfFlag:
             function() {
-                var halfFlag = this.boolProp( 'half' );
-                return ( typeof halfFlag == 'undefined' ) ? false : halfFlag;
+                //var halfFlag = this.boolProp( 'half' );
+                //return ( typeof halfFlag == 'undefined' ) ? false : halfFlag;
+                return this.boolProp( 'half' );
             }
         , getCancelFlag:
             function() {
-                var cancelFlag = this.boolProp( 'cancel' );
-                return ( typeof cancelFlag == 'undefined' ) ? false : cancelFlag;
+                //var cancelFlag = this.boolProp( 'cancel' );
+                //return ( typeof cancelFlag == 'undefined' ) ? false : cancelFlag;
+                return this.boolProp( 'cancel' );
             }
         , getReadOnly:
             function() {
-                var readOnly = this.boolProp( 'readonly' );
-                return ( typeof readOnly == 'undefined' ) ? false : readOnly;
+                //var readOnly = this.boolProp( 'readonly' );
+                //return ( typeof readOnly == 'undefined' ) ? false : readOnly;
+                return this.boolProp( 'readonly' );
             }
         , getHints:
             function() {
@@ -339,7 +339,7 @@
     JC.f.extendObject( Rate.View.prototype, {
         init:
             function() {
-                JC.log( 'Rate.View.init:', new Date().getTime() );
+                //JC.log( 'Rate.View.init:', new Date().getTime() );
                 var _p = this,
                     _model = _p._model,
                     _array = [],
@@ -372,7 +372,7 @@
     
         , update:
             function() {
-                JC.log( 'Rate.View.update:', new Date().getTime() );
+                //JC.log( 'Rate.View.update:', new Date().getTime() );
                 var _p = this;  
             }
         /**
@@ -474,8 +474,8 @@
         var _insAr = 0;
         Rate.autoInit
             && ( _insAr = Rate.init() )
-            && $( '<h2>Rate total ins: ' 
-                + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
+            //&& $( '<h2>Rate total ins: ' 
+            //    + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
             ;
     });
 
@@ -489,3 +489,14 @@
         , window
     )
 );
+/*
+ 
+   review qiushaowei 2014-07-16
+    
+        html 内容可以这样写
+               'input[ type=\'hidden\' ]' 
+               该为
+                    'input[ type="hidden" ]'  or "input[ type='hidden' ]"
+
+ 
+ */
