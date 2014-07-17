@@ -46,7 +46,7 @@
             <input id="score-input" ReadOnly type="text" />
         </span>
         <h2>Inited Callback:</h2>
-        <span class="js_compRate" score="3" readonly="true" hints="1分,2分,3分,4分,5分" initedcallback="initedCallback">
+        <span class="js_compRate" score="3" readonly="true" hints="1分,2分,3分,4分,5分">
             <input id="score-input2" ReadOnly type="text" />
         </span>
  */
@@ -243,13 +243,6 @@
                     return defualHints;
                 }
             }
-        , getInitedCallback:
-            function() {
-                var _p = this,
-                _selector = _p.selector(),
-                _key = 'initedCallback';
-                return _p.callbackProp( _selector, _key );
-            }
         , getClickCallback:
             function() {
                 var _p = this,
@@ -279,7 +272,6 @@
         * 根据选中的星星个数，计算出当前分数( 结果会保留两位小数 )
         * @method  getCurScore
         * @param   {selector}   target
-        * @static
         * @return  {number of score}
         */
         , getCurScore:
@@ -302,7 +294,6 @@
         * 获取记录的分数
         * @method  getMarkScore
         * @param   
-        * @static
         * @return  {number of score}
         */
         , getMarkScore:
@@ -315,7 +306,6 @@
         * 根据分数计算对应星星的个数
         * @method  scoreToStarNum
         * @param   {number}     score
-        * @static
         * @return  {number of starNum}
         */
         , scoreToStarNum:
@@ -338,7 +328,6 @@
         * 在支持半颗星的时候 计算星星数
         * @method  countHalfStar
         * @param   {event}     e
-        * @static
         * @return  {number of starNum}
         */
         , countHalfStar:
@@ -353,7 +342,6 @@
         * @method  round
         * @param   {number} number  
         *          {number} fractionDigits
-        * @static
         * @return  {number}
         */
         , round:
@@ -443,7 +431,6 @@
         * 星星动态变化方法
         * @method  lightStar
         * @param   {number}    target
-        * @static
         * @return  
         */
         , lightStar:
@@ -480,7 +467,6 @@
         * 清除按钮动态变化方法
         * @method  lightCancel
         * @param   {boolean}    flag
-        * @static
         * @return  
         */
         , lightCancel:
@@ -498,7 +484,6 @@
         * 清除标记的分数为默认最小分数
         * @method  initScore
         * @param   
-        * @static
         * @return  
         */
         , initScore:
@@ -513,7 +498,6 @@
         * @method  changeStarClass
         * @param   {object}    obj      
         *          {string}    className
-        * @static
         * @return  
         */
         , changeStarClass: 
@@ -527,7 +511,6 @@
         * 记录当前选中的分数
         * @method  rememberScore
         * @param   {munber}    score
-        * @static
         * @return  
         */
         , rememberScore:
@@ -536,6 +519,18 @@
                 _p._model.selector().children( 'input[ type=\'hidden\' ]' ).val( score );
             }
     });
+
+    /**
+     * JC.Rate 初始化后 selector 触发的事件
+     * @event  rateinited 
+     * @param   {Event}         _evt
+     * @param   {RateInstance}  _rateIns
+     * @example
+<pre>$( document ).delegate( 'span.js_rateInitedEvent', 'rateinited', function( _evt, _rateIns ){
+    var _selector = $( this );
+    JC.log( 'rateinited event' );
+});</pre>
+     */
 
     _jdoc.ready( function(){
         var _insAr = 0;
@@ -577,5 +572,7 @@
 
             style 和 class 俩个属性不要用 .attr 函数操作, 改为 .css() 和 .removeClass(), .addClass()
                 用 .attr 操作这俩个属性有可能覆盖 动态添加的 内容
+
+            YUI 注释需有分清 @static 关键词的用途
  
  */

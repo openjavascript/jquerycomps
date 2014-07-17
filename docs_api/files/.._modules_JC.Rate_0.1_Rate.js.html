@@ -256,7 +256,7 @@
  *      | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Rate.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
  *      | &lt;a href=&#x27;../../modules/JC.Rate/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
  *  
- *  &lt;h2&gt;页面只要引用本脚本, 默认会处理 div class=&quot;js_compRate&quot;&lt;/h2&gt;
+ *  &lt;h2&gt;页面只要引用本脚本, 默认会处理 span class=&quot;js_compRate&quot;&lt;/h2&gt;
  *
  *  &lt;h2&gt;可用的 HTML attribute&lt;/h2&gt;
  *
@@ -288,13 +288,13 @@
  * @version dev 0.1 2014-07-16
  * @author  pengjunkai &lt;pengjunkai@360.cn&gt; | 75 Team
  * @example
-        &lt;div class=&quot;js_compRate&quot; score=&quot;3&quot; clickcallback=&quot;clickCallback&quot;&gt;
+        &lt;span class=&quot;js_compRate&quot; score=&quot;3&quot; clickcallback=&quot;clickCallback&quot;&gt;
             &lt;input id=&quot;score-input&quot; ReadOnly type=&quot;text&quot; /&gt;
-        &lt;/div&gt;
+        &lt;/span&gt;
         &lt;h2&gt;Inited Callback:&lt;/h2&gt;
-        &lt;div class=&quot;js_compRate&quot; score=&quot;3&quot; readonly=&quot;true&quot; hints=&quot;1分,2分,3分,4分,5分&quot; initedcallback=&quot;initedCallback&quot;&gt;
+        &lt;span class=&quot;js_compRate&quot; score=&quot;3&quot; readonly=&quot;true&quot; hints=&quot;1分,2分,3分,4分,5分&quot;&gt;
             &lt;input id=&quot;score-input2&quot; ReadOnly type=&quot;text&quot; /&gt;
-        &lt;/div&gt;
+        &lt;/span&gt;
  */
     var _jdoc = $( document ), _jwin = $( window );
 
@@ -332,7 +332,11 @@
                 if( _selector.hasClass( &#x27;js_compRate&#x27; )  ){
                     _r.push( new Rate( _selector ) );
                 }else{
-                    _selector.find( &#x27;div.js_compRate&#x27; ).each( function(){
+                    /**
+                     * div 改为 span | label
+                     * 避免换行问题
+                     */
+                    _selector.find( &#x27;span.js_compRate, label.js_compRate&#x27; ).each( function(){
                         _r.push( new Rate( this ) );
                     });
                 }
@@ -355,12 +359,12 @@
                     _view = _p._view,
                     _children = _model.selector();
 
-                _p.on( &#x27;rateinited&#x27;, function( _evt ) {
+                _p.on( Rate.Model.INITED, function( _evt ) {
                     if( _model.isInited() ){ return; }
                     _view.update(_p);
 
                     //_p.trigger( &#x27;initedCallback&#x27; );
-                    _p.notification( &#x27;rateinited&#x27;, [ _p ] );
+                    _p.notification( Rate.Model.INITED, [ _p ] );
                 } );
 
                 /*
@@ -378,26 +382,34 @@
                         var target = $( e.target );
                         if( target.hasClass( &#x27;rate-score&#x27; ) ) {
                             var halfNum = _p._model.countHalfStar( e );
-                            _view.lightStar( halfNum );
+                            _p.trigger( Rate.Model.LIGHT_STAR, halfNum );
                         } else if( target.hasClass( &#x27;rate-cancel&#x27; ) ) {
-                            _view.lightCancel( true );
+                            _p.trigger( Rate.Model.LIGHT_CANCEL, true );
                         }
                     } );
                 } else {
                     _children.on( &#x27;mouseover&#x27;, function( e ) {
                         var target = $( e.target );
                         if( target.hasClass( &#x27;rate-score&#x27; ) ) {
-                            _view.lightStar( target.prevAll( &#x27;.rate-score&#x27; ).length + 1 );
+                            _p.trigger( Rate.Model.LIGHT_STAR, target.prevAll( &#x27;.rate-score&#x27; ).length + 1 );
                         } else if( target.hasClass( &#x27;rate-cancel&#x27; ) ) {
-                            _view.lightCancel( true );
+                            _p.trigger( Rate.Model.LIGHT_CANCEL, true );
                         }
                     } );
                 }
 
+                _p.on( Rate.Model.LIGHT_STAR, function( _evt, _num ){
+                    _view.lightStar( _num );
+                });
+
+                _p.on( Rate.Model.LIGHT_CANCEL, function( _evt, _isCancel ){
+                    _view.lightCancel( _isCancel );
+                });
+
                 _children.on( &#x27;mouseleave&#x27;, function( e ) {
                     var markScore = _model.getMarkScore(),
                         markStarNum = _model.scoreToStarNum( markScore );
-                     _view.lightStar( markStarNum );
+                        _p.trigger( Rate.Model.LIGHT_STAR, markStarNum );
                 } );
 
                 _children.on( &#x27;click&#x27;, function( e ) {
@@ -405,7 +417,7 @@
                     if( target.hasClass( &#x27;rate-score&#x27; ) ) {
                         _view.rememberScore( _model.getCurScore( target ) );
                     } else if( target.hasClass( &#x27;rate-cancel&#x27; ) ) {
-                        _view.lightStar( -1 );
+                        _p.trigger( Rate.Model.LIGHT_STAR, -1 );
                         _view.initScore();
                     }
                     target.trigger( &#x27;clickCallback&#x27; );
@@ -420,11 +432,16 @@
         , _inited:
             function() {
                 //JC.log( &#x27;Rate _inited&#x27;, new Date().getTime() );
-                this.trigger( &#x27;rateinited&#x27; );
+                this.trigger( Rate.Model.INITED );
             }
     });
 
     Rate.Model._instanceName = &#x27;JCRate&#x27;;
+
+    Rate.Model.INITED = &#x27;rateinited&#x27;;
+    Rate.Model.LIGHT_STAR = &#x27;light_start&#x27;;
+    Rate.Model.LIGHT_CANCEL = &#x27;LIGHT_CANCEL&#x27;;
+
     JC.f.extendObject( Rate.Model.prototype, {
         init:
             function() {
@@ -437,9 +454,9 @@
             }
         , getTotalNum:
             function() {
-                var totalNum = this.attrProp( &#x27;totalnum&#x27; );
+                //var totalNum = this.attrProp( &#x27;totalnum&#x27; );
                 //return totalNum == &#x27;&#x27; ? 5 : parseInt( totalNum );
-                return parseInt( totalNum ) || 5;
+                return this.intProp( &#x27;totalnum&#x27; ) || 5;
             }
         , getHalfFlag:
             function() {
@@ -467,17 +484,10 @@
                     defualLen = defualHints.length,
                     customHints = [];
                 if( typeof hints != &#x27;undefined&#x27; &amp;&amp; hints != &#x27;&#x27; ) {
-                    return hints.split( &#x27;,&#x27; );
+                    return hints.trim().split( &#x27;,&#x27; );
                 } else {
                     return defualHints;
                 }
-            }
-        , getInitedCallback:
-            function() {
-                var _p = this,
-                _selector = _p.selector(),
-                _key = &#x27;initedCallback&#x27;;
-                return _p.callbackProp( _selector, _key );
             }
         , getClickCallback:
             function() {
@@ -493,19 +503,21 @@
             }
         , getMaxScore:
             function() {
-                var maxScore = this.attrProp( &#x27;maxscore&#x27; );
-                return maxScore == &#x27;&#x27; ? 5 : parseInt( maxScore );
+                //var maxScore = this.attrProp( &#x27;maxscore&#x27; );
+                //return maxScore == &#x27;&#x27; ? 5 : parseInt( maxScore );
+                return this.intProp( &#x27;maxScore&#x27; ) || 5 ;
             }
         , getMinScore:
             function() {
-                var minScore = this.attrProp( &#x27;minscore&#x27; );
-                return minScore == &#x27;&#x27; ? 0 : parseInt( minScore );
+                //var minScore = this.attrProp( &#x27;minscore&#x27; );
+                //return minScore == &#x27;&#x27; ? 0 : parseInt( minScore );
+                return this.intProp( &#x27;minScore&#x27; ) || 0;
             }
+        , hiddenName: function(){ return this.attrProp( &#x27;hiddenName&#x27; ) || &#x27;score&#x27;; }
        /**
         * 根据选中的星星个数，计算出当前分数( 结果会保留两位小数 )
         * @method  getCurScore
         * @param   {selector}   target
-        * @static
         * @return  {number of score}
         */
         , getCurScore:
@@ -528,19 +540,18 @@
         * 获取记录的分数
         * @method  getMarkScore
         * @param   
-        * @static
         * @return  {number of score}
         */
         , getMarkScore:
             function() {
-                var score = $( this._selector ).children( &#x27;input[ type = \&#x27;hidden\&#x27; ]&#x27; ).attr(&#x27;value&#x27;);
+                //var score = $( this._selector ).children( &#x27;input[ type = \&#x27;hidden\&#x27; ]&#x27; ).attr(&#x27;value&#x27;);
+                var score = $( this._selector ).children( &#x27;input[ type = \&#x27;hidden\&#x27; ]&#x27; ).val();
                 return parseInt( typeof score == &#x27;undefined&#x27; ? 0 : score );
             }
         /**
         * 根据分数计算对应星星的个数
         * @method  scoreToStarNum
         * @param   {number}     score
-        * @static
         * @return  {number of starNum}
         */
         , scoreToStarNum:
@@ -563,7 +574,6 @@
         * 在支持半颗星的时候 计算星星数
         * @method  countHalfStar
         * @param   {event}     e
-        * @static
         * @return  {number of starNum}
         */
         , countHalfStar:
@@ -578,7 +588,6 @@
         * @method  round
         * @param   {number} number  
         *          {number} fractionDigits
-        * @static
         * @return  {number}
         */
         , round:
@@ -605,12 +614,24 @@
                     initScore = _model.getInitScore(),
                     hints = _model.getHints(),
                     hintsLen = hints.length,
-                    wrapStyle = &#x27;cursor: pointer; font-size: 12px; width: &#x27;,
+                    //wrapStyle = &#x27;cursor: pointer; font-size: 12px; width: &#x27;,
                     wrapWidth = ( totalNum &gt; 0 ? totalNum * 22 : 0 ) + ( cancelFlag ? 20 : 0 ),
-                    imgHtml = &#x27;&lt;img src=\&#x27;http://p0.qhimg.com/d/inn/0f5ac496/pixel.gif\&#x27; /&gt;&#x27;;
+                    imgHtml = &#x27;&lt;img src=&quot;http://p0.qhimg.com/d/inn/0f5ac496/pixel.gif&quot; class=&quot;{0}&quot; title=&quot;{1}&quot;  /&gt;&#x27;;
+
                 _selector &amp;&amp; ( _selector = $( _selector ) );
-                _selector.attr( &#x27;style&#x27;, wrapStyle + wrapWidth + &#x27;px;&#x27; );
+
+                /**
+                 * 直接操作 style 属性可能会 覆盖用户原来的样式
+                 */
+                //_selector.attr( &#x27;style&#x27;, wrapStyle + wrapWidth + &#x27;px;&#x27; );
+                _selector.css( {
+                    &#x27;cursor&#x27;: &#x27;pointer&#x27;
+                    , &#x27;font-size&#x27;: &#x27;12px&#x27;
+                    , &#x27;width&#x27;: wrapWidth + &#x27;px&#x27;
+                });
                 cancelFlag &amp;&amp; _selector.prepend( $( imgHtml ).attr( &#x27;class&#x27;, &#x27;rate-cancel cancel-off&#x27; ) );
+
+                /*
                 for( var i = 0; i&lt;totalNum; i++ ) {
                     var img = $( imgHtml ).attr( &#x27;class&#x27;, &#x27;rate-score star-off&#x27; );
                     if( i &lt; hintsLen &amp;&amp; hints[ i ] != &#x27;&#x27; ){
@@ -619,9 +640,31 @@
                     _selector.append( img );
                     img.after( &#x27;&amp;nbsp;&#x27; );
                 }
-                _selector.append( $( &#x27;&lt;input type=\&#x27;hidden\&#x27; name=\&#x27;score\&#x27; /&gt;&#x27; ) );
+                */
+                /**
+                 * 避免频繁操作 DOM
+                 */
+                var _tmp = [], _tmpStr, _tmpTitle;
+                for( var i = 0; i&lt;totalNum; i++ ) {
+                    _tmpTitle = &#x27;&#x27;
+                    if( i &lt; hintsLen &amp;&amp; hints[ i ] != &#x27;&#x27; ){
+                        _tmpTitle = hints[ i ];
+                    }
+                    _tmpStr = JC.f.printf( 
+                        imgHtml, &#x27;rate-score star-off&#x27;, _tmpTitle
+                     );
+                    _tmp.push( _tmpStr, &#x27;&amp;nbsp;&#x27; );
+                }
+
+                _tmp.push( 
+                    JC.f.printf( &#x27;&lt;input type=&quot;hidden&quot; name=&quot;{0}&quot; class=&quot;js_rateHidden&quot; /&gt;&#x27;
+                    , _p._model.hiddenName() ) 
+                );
+                _selector.append( _tmp.join(&#x27;&#x27; ) );
+
                 if(initScore &gt; 0) {
-                    _selector.children( &#x27;input[ type = \&#x27;hidden\&#x27; ]&#x27; ).attr( &#x27;value&#x27;, initScore );
+                    //_selector.children( &#x27;input[ type = &quot;hidden&quot; ]&#x27; ).attr( &#x27;value&#x27;, initScore );
+                    _selector.children( &#x27;input[ type = &quot;hidden&quot; ]&#x27; ).val( initScore );
                     _p.lightStar( _model.scoreToStarNum( initScore ) );
                 }
             }
@@ -629,13 +672,11 @@
         , update:
             function() {
                 //JC.log( &#x27;Rate.View.update:&#x27;, new Date().getTime() );
-                var _p = this;  
             }
         /**
         * 星星动态变化方法
         * @method  lightStar
         * @param   {number}    target
-        * @static
         * @return  
         */
         , lightStar:
@@ -672,7 +713,6 @@
         * 清除按钮动态变化方法
         * @method  lightCancel
         * @param   {boolean}    flag
-        * @static
         * @return  
         */
         , lightCancel:
@@ -680,15 +720,16 @@
                 var _p = this,
                     _model = _p._model,
                     selector = _model.selector(),
-                    target = selector.children( &#x27;.rate-cancel&#x27; ),
-                    className = &#x27; rate-cancel cancel-&#x27; + ( flag ? &#x27;on&#x27; : &#x27;off&#x27; ) + &#x27; &#x27;;
-                target.attr( &#x27;class&#x27;, className );
+                    target = selector.children( &#x27;.rate-cancel&#x27; )
+                    , className = &#x27; rate-cancel cancel-&#x27; + ( flag ? &#x27;on&#x27; : &#x27;off&#x27; ) + &#x27; &#x27;
+                    ;
+                //target.attr( &#x27;class&#x27;, className );
+                target.removeClass(  &#x27;cancel-on cancel-off&#x27; ).addClass( className );
             }
         /**
         * 清除标记的分数为默认最小分数
         * @method  initScore
         * @param   
-        * @static
         * @return  
         */
         , initScore:
@@ -696,35 +737,46 @@
                 var _p = this,
                     _model = _p._model;
                 _model.selector().children( &#x27;input[ type = \&#x27;hidden\&#x27; ]&#x27; )
-                    .attr( &#x27;value&#x27;, _model.getMinScore() );
+                    .val( _model.getMinScore() );
             }
         /**
         * 处理星星class更改的方法
         * @method  changeStarClass
         * @param   {object}    obj      
         *          {string}    className
-        * @static
         * @return  
         */
         , changeStarClass: 
             function( obj, className ) {
                 if( obj.hasClass( className ) ) { return; }
                 var classStr = &#x27;rate-score &#x27; + className + &#x27; &#x27;;
-                obj.attr(&#x27;class&#x27;, classStr);
+                //obj.attr(&#x27;class&#x27;, classStr);
+                obj.removeClass( &#x27;star-on star-off star-half&#x27; ).addClass( classStr );
             }
         /**
         * 记录当前选中的分数
         * @method  rememberScore
         * @param   {munber}    score
-        * @static
         * @return  
         */
         , rememberScore:
             function(score) {
                 var _p = this;
-                _p._model.selector().children( &#x27;input[ type=\&#x27;hidden\&#x27; ]&#x27; ).attr( &#x27;value&#x27;, score );
+                _p._model.selector().children( &#x27;input[ type=\&#x27;hidden\&#x27; ]&#x27; ).val( score );
             }
     });
+
+    /**
+     * JC.Rate 初始化后 selector 触发的事件
+     * @event  rateinited 
+     * @param   {Event}         _evt
+     * @param   {RateInstance}  _rateIns
+     * @example
+&lt;pre&gt;$( document ).delegate( &#x27;span.js_rateInitedEvent&#x27;, &#x27;rateinited&#x27;, function( _evt, _rateIns ){
+    var _selector = $( this );
+    JC.log( &#x27;rateinited event&#x27; );
+});&lt;/pre&gt;
+     */
 
     _jdoc.ready( function(){
         var _insAr = 0;
@@ -747,13 +799,27 @@
 );
 /*
  
-   review qiushaowei 2014-07-16
-    
-        html 内容可以这样写
-               &#x27;input[ type=\&#x27;hidden\&#x27; ]&#x27; 
-               该为
-                    &#x27;input[ type=&quot;hidden&quot; ]&#x27;  or &quot;input[ type=&#x27;hidden&#x27; ]&quot;
+   review qiushaowei 
+       2014-07-16
+            html 内容可以这样写
+                   &#x27;input[ type=\&#x27;hidden\&#x27; ]&#x27; 
+                   该为
+                        &#x27;input[ type=&quot;hidden&quot; ]&#x27;  or &quot;input[ type=&#x27;hidden&#x27; ]&quot;
 
+            把 &lt;img src=&quot;http://p0.qhimg.com/d/inn/0f5ac496/pixel.gif&quot; class=&quot;{0}&quot; title=&quot;{1}&quot;  /&gt;
+                改为 button 标签, 避免浪费一个 http 请求
+
+        2014-07-17
+            所有自定义事件名改为常量
+                Rate.Model.INITED = &#x27;rateinited&#x27;;
+            
+            回调函数改为事件响应
+                _p.notification
+
+            style 和 class 俩个属性不要用 .attr 函数操作, 改为 .css() 和 .removeClass(), .addClass()
+                用 .attr 操作这俩个属性有可能覆盖 动态添加的 内容
+
+            YUI 注释需有分清 @static 关键词的用途
  
  */
 
