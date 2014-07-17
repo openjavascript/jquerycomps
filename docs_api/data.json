@@ -1386,7 +1386,7 @@
             "extension_for": [],
             "namespace": "JC",
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 215,
+            "line": 227,
             "description": "MVC Model 类( <b>仅供扩展用</b> )\n<br />这个类默认已经包含在lib.js里面, 不需要显式引用\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.Model.html' target='_blank'>API docs</a>\n| <a href='../../modules/JC.BaseMVC/0.1/_demo' target='_blank'>demo link</a></p>\n<p><b>see also</b>: <a href='JC.BaseMVC.html'>JC.BaseMVC</a></p>",
             "is_constructor": 1,
             "params": [
@@ -5297,6 +5297,11 @@
                     "name": "_evtName",
                     "description": "",
                     "type": "String"
+                },
+                {
+                    "name": "_args",
+                    "description": "",
+                    "type": "*|Array"
                 }
             ],
             "return": {
@@ -5308,6 +5313,27 @@
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
             "line": 107,
+            "description": "通知选择器有新事件\n<br />JC 组件以后不会在 HTML 属性里放回调, 改为触发 selector 的事件",
+            "itemtype": "method",
+            "name": "notification",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_args",
+                    "description": "",
+                    "type": "*|Array"
+                }
+            ],
+            "class": "JC.BaseMVC",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
+            "line": 119,
             "description": "获取或设置组件实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -5338,7 +5364,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 132,
+            "line": 144,
             "description": "是否自动初始化",
             "itemtype": "property",
             "name": "autoInit",
@@ -5350,7 +5376,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 140,
+            "line": 152,
             "description": "复制 BaseMVC 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "build",
@@ -5367,7 +5393,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 158,
+            "line": 170,
             "description": "复制 _inClass 的所有方法到 _outClass",
             "itemtype": "method",
             "name": "buildClass",
@@ -5389,7 +5415,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 187,
+            "line": 199,
             "description": "为 _outClass 生成一个通用 Model 类",
             "itemtype": "method",
             "name": "buildModel",
@@ -5406,7 +5432,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 200,
+            "line": 212,
             "description": "为 _outClass 生成一个通用 View 类",
             "itemtype": "method",
             "name": "buildView",
@@ -5423,14 +5449,14 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 210,
+            "line": 222,
             "description": "初始化 BaseMVC Model 类 和 View 类",
             "class": "JC.BaseMVC",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 230,
+            "line": 242,
             "description": "设置 selector 实例引用的 data 属性名",
             "itemtype": "property",
             "name": "_instanceName",
@@ -5444,7 +5470,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 244,
+            "line": 256,
             "description": "使用 jquery on 为 controler 绑定事件",
             "itemtype": "method",
             "name": "on",
@@ -5466,7 +5492,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 255,
+            "line": 267,
             "description": "使用 jquery trigger 触发 controler 绑定事件",
             "itemtype": "method",
             "name": "trigger",
@@ -5476,6 +5502,11 @@
                     "name": "_evtName",
                     "description": "",
                     "type": "String"
+                },
+                {
+                    "name": "_args",
+                    "description": "",
+                    "type": "*|Array"
                 }
             ],
             "class": "JC.BaseMVC.Model",
@@ -5483,7 +5514,28 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 267,
+            "line": 281,
+            "description": "通知选择器有新事件",
+            "itemtype": "method",
+            "name": "notification",
+            "params": [
+                {
+                    "name": "_evtName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "_args",
+                    "description": "",
+                    "type": "*|Array"
+                }
+            ],
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
+            "line": 293,
             "description": "初始化的 jq 选择器",
             "itemtype": "method",
             "name": "selector",
@@ -5502,7 +5554,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 278,
+            "line": 304,
             "description": "读取 int 属性的值",
             "itemtype": "method",
             "name": "intProp",
@@ -5526,7 +5578,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 299,
+            "line": 325,
             "description": "读取 float 属性的值",
             "itemtype": "method",
             "name": "floatProp",
@@ -5550,7 +5602,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 320,
+            "line": 346,
             "description": "读取 string 属性的值",
             "itemtype": "method",
             "name": "stringProp",
@@ -5574,7 +5626,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 338,
+            "line": 364,
             "description": "读取 html 属性值\n<br />这个跟 stringProp 的区别是不会强制转换为小写",
             "itemtype": "method",
             "name": "attrProp",
@@ -5598,7 +5650,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 361,
+            "line": 387,
             "description": "读取 boolean 属性的值",
             "itemtype": "method",
             "name": "boolProp",
@@ -5628,7 +5680,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 387,
+            "line": 413,
             "description": "读取 callback 属性的值",
             "itemtype": "method",
             "name": "callbackProp",
@@ -5653,7 +5705,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 410,
+            "line": 436,
             "description": "获取与属性名匹配的 window 变量",
             "itemtype": "method",
             "name": "windowProp",
@@ -5678,7 +5730,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 421,
+            "line": 447,
             "description": "获取 selector 属性的 jquery 选择器",
             "itemtype": "method",
             "name": "selectorProp",
@@ -5702,7 +5754,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 444,
+            "line": 470,
             "description": "获取 脚本模板 jquery 选择器",
             "itemtype": "method",
             "name": "scriptTplProp",
@@ -5726,7 +5778,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 469,
+            "line": 495,
             "description": "获取 selector 属性的 json 数据",
             "itemtype": "method",
             "name": "jsonProp",
@@ -5751,7 +5803,7 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 493,
+            "line": 519,
             "description": "判断 _selector 是否具体某种特征",
             "itemtype": "method",
             "name": "is",
@@ -5775,14 +5827,14 @@
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 522,
+            "line": 548,
             "description": "使用 jquery on 为 controler 绑定事件",
             "class": "JC.BaseMVC.Model",
             "namespace": "JC"
         },
         {
             "file": "../modules/JC.BaseMVC/0.1/BaseMVC.js",
-            "line": 530,
+            "line": 556,
             "description": "使用 jquery trigger 触发 controler 绑定事件",
             "class": "JC.BaseMVC.Model",
             "namespace": "JC"
@@ -11294,7 +11346,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 254,
+            "line": 258,
             "description": "根据选中的星星个数，计算出当前分数( 结果会保留两位小数 )",
             "itemtype": "method",
             "name": "getCurScore",
@@ -11315,7 +11367,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 277,
+            "line": 281,
             "description": "获取记录的分数",
             "itemtype": "method",
             "name": "getMarkScore",
@@ -11330,7 +11382,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 289,
+            "line": 293,
             "description": "根据分数计算对应星星的个数",
             "itemtype": "method",
             "name": "scoreToStarNum",
@@ -11351,7 +11403,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 312,
+            "line": 316,
             "description": "在支持半颗星的时候 计算星星数",
             "itemtype": "method",
             "name": "countHalfStar",
@@ -11372,7 +11424,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 326,
+            "line": 330,
             "description": "浮点数 四舍五入",
             "itemtype": "method",
             "name": "round",
@@ -11393,7 +11445,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 384,
+            "line": 388,
             "description": "星星动态变化方法",
             "itemtype": "method",
             "name": "lightStar",
@@ -11413,7 +11465,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 421,
+            "line": 425,
             "description": "清除按钮动态变化方法",
             "itemtype": "method",
             "name": "lightCancel",
@@ -11433,7 +11485,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 437,
+            "line": 441,
             "description": "清除标记的分数为默认最小分数",
             "itemtype": "method",
             "name": "initScore",
@@ -11447,7 +11499,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 451,
+            "line": 455,
             "description": "处理星星class更改的方法",
             "itemtype": "method",
             "name": "changeStarClass",
@@ -11467,7 +11519,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 465,
+            "line": 469,
             "description": "记录当前选中的分数",
             "itemtype": "method",
             "name": "rememberScore",
@@ -19550,7 +19602,7 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:215"
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:227"
         },
         {
             "message": "unknown tag: version",
@@ -19686,11 +19738,11 @@
         },
         {
             "message": "param name/type/descript missing",
-            "line": " ../modules/JC.Rate/0.1/Rate.js:277"
+            "line": " ../modules/JC.Rate/0.1/Rate.js:281"
         },
         {
             "message": "param name/type/descript missing",
-            "line": " ../modules/JC.Rate/0.1/Rate.js:437"
+            "line": " ../modules/JC.Rate/0.1/Rate.js:441"
         },
         {
             "message": "unknown tag: version",
@@ -20130,15 +20182,15 @@
         },
         {
             "message": "Missing item type\n初始化 BaseMVC Model 类 和 View 类",
-            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:210"
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:222"
         },
         {
             "message": "Missing item type\n使用 jquery on 为 controler 绑定事件",
-            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:522"
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:548"
         },
         {
             "message": "Missing item type\n使用 jquery trigger 触发 controler 绑定事件",
-            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:530"
+            "line": " ../modules/JC.BaseMVC/0.1/BaseMVC.js:556"
         },
         {
             "message": "Missing item type\n保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",
