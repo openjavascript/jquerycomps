@@ -5,34 +5,39 @@
         <title>Rate Demo</title>
         <style type="text/css">
             body { padding: 0; margin: 0; }
-            .star-wrap { margin: 50px 300px 100px; }
+            .star-wrap { margin: 50px 200px 100px; }
+
+            .css_test img{
+                margin: auto 5px;
+            }
         </style>
         <link href='../res/default/style.css' rel='stylesheet' />
     </head>
     <body>
         <div class="star-wrap">
             <h2>Default:</h2>
-            <div class="js_compRate" ></div>
+            <span class="js_compRate" ></span>
             <h2>Score:</h2>
-            <div class="js_compRate" totalnum="7" score="3" maxscore="7"></div>
+            <span class="js_compRate" totalnum="7" score="3" maxscore="7" style="display:inline"></span> text after 
             <h2>Half Star:</h2>
-            <div class="js_compRate" totalnum="10" score="13" maxscore="21" minScore="0" half="true"></div>
+            <span class="js_compRate css_test" totalnum="10" score="13" maxscore="21" minScore="0" half="true"></span>
             <h2>Cancel:</h2>
-            <div class="js_compRate" score="3" cancel="true"></div>
+            <span class="js_compRate" score="3" cancel="true"></span>
             <h2>ReadOnly:</h2>
-            <div class="js_compRate" score="3" readonly="true"></div>
+            <span class="js_compRate" score="3" readonly="true"></span>
             <h2>Title:</h2>
-            <div class="js_compRate" score="3" hints="1分,2分,3分,4分,5分"></div>
+            <span class="js_compRate" score="3" hints="1分,2分,3分,4分,5分"></span>
             <h2>Click Callback:</h2>
-            <div class="js_compRate" score="3" clickcallback="clickCallback">
+            <span class="js_compRate" score="3" clickcallback="clickCallback">
                 <input id="score-input" ReadOnly type="text" />
-            </div>
+            </span>
             <h2>Inited Callback:</h2>
-            <div class="js_compRate js_rateInitedEvent" score="3" readonly="true" hints="1分,2分,3分,4分,5分">
+            <span class="js_compRate js_rateInitedEvent" score="3" readonly="true" hints="1分,2分,3分,4分,5分">
                 <input id="score-input2" ReadOnly type="text" />
-            </div>
+            </span>
 
         </div>
+
         <script src="../../../../lib.js"></script>
 	    <script src="../../../../config.js"></script>
         <script>
@@ -41,7 +46,7 @@
             requirejs( [ 'JC.Rate' ], function(){
             });
 
-            $( document ).delegate( 'div.js_rateInitedEvent', 'rateinited', function( _evt, _rateIns ){
+            $( document ).delegate( 'span.js_rateInitedEvent', 'rateinited', function( _evt, _rateIns ){
                 var _selector = $( this );
                 JC.log( 'rateinited event' );
                 $( '#score-input2' ).val( _selector.children( 'input[ name = \'score\' ]' ).attr( 'value' ) + '分' );

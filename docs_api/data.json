@@ -2298,7 +2298,7 @@
             "namespace": "JC",
             "file": "../modules/JC.Rate/0.1/Rate.js",
             "line": 2,
-            "description": "JC.Rate 星形评分组件\n\n<p><b>require</b>:\n    <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n    | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Rate.html' target='_blank'>API docs</a>\n    | <a href='../../modules/JC.Rate/0.1/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本脚本, 默认会处理 div class=\"js_compRate\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n    <dt>totalnum = int, default = 5</dt>\n    <dd>文字说明<dd>\n\n    <dt>maxscore = int, default = 5</dt>\n    <dd>文字说明<dd>\n\n    <dt>clickCallback = function</dt>\n    <dd>文字说明\n<pre>function clickCallback() {\n  var star = arguments[0];\n  if( star.hasClass( 'rate-score' ) ){\n      $( '#score-input' ).val( star.attr( 'title' ) );\n  }\n}</pre>\n    </dd>\n\n    <dt>补充其他属性的说明...</dt>\n</dl>",
+            "description": "JC.Rate 星形评分组件\n\n<p><b>require</b>:\n    <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n    | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Rate.html' target='_blank'>API docs</a>\n    | <a href='../../modules/JC.Rate/0.1/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本脚本, 默认会处理 span class=\"js_compRate\"</h2>\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n    <dt>totalnum = int, default = 5</dt>\n    <dd>文字说明<dd>\n\n    <dt>maxscore = int, default = 5</dt>\n    <dd>文字说明<dd>\n\n    <dt>clickCallback = function</dt>\n    <dd>文字说明\n<pre>function clickCallback() {\n  var star = arguments[0];\n  if( star.hasClass( 'rate-score' ) ){\n      $( '#score-input' ).val( star.attr( 'title' ) );\n  }\n}</pre>\n    </dd>\n\n    <dt>补充其他属性的说明...</dt>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -2311,7 +2311,7 @@
             "version": "dev 0.1 2014-07-16",
             "author": "pengjunkai <pengjunkai@360.cn> | 75 Team",
             "example": [
-                "\n      <div class=\"js_compRate\" score=\"3\" clickcallback=\"clickCallback\">\n          <input id=\"score-input\" ReadOnly type=\"text\" />\n      </div>\n      <h2>Inited Callback:</h2>\n      <div class=\"js_compRate\" score=\"3\" readonly=\"true\" hints=\"1分,2分,3分,4分,5分\" initedcallback=\"initedCallback\">\n          <input id=\"score-input2\" ReadOnly type=\"text\" />\n      </div>"
+                "\n      <span class=\"js_compRate\" score=\"3\" clickcallback=\"clickCallback\">\n          <input id=\"score-input\" ReadOnly type=\"text\" />\n      </span>\n      <h2>Inited Callback:</h2>\n      <span class=\"js_compRate\" score=\"3\" readonly=\"true\" hints=\"1分,2分,3分,4分,5分\">\n          <input id=\"score-input2\" ReadOnly type=\"text\" />\n      </span>"
             ]
         },
         "JC.Scrollbar": {
@@ -11346,7 +11346,14 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 258,
+            "line": 89,
+            "description": "div 改为 span | label\n避免换行问题",
+            "class": "JC.Rate",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Rate/0.1/Rate.js",
+            "line": 271,
             "description": "根据选中的星星个数，计算出当前分数( 结果会保留两位小数 )",
             "itemtype": "method",
             "name": "getCurScore",
@@ -11357,22 +11364,6 @@
                     "type": "Selector"
                 }
             ],
-            "static": 1,
-            "return": {
-                "description": "",
-                "type": "Number of score"
-            },
-            "class": "JC.Rate",
-            "namespace": "JC"
-        },
-        {
-            "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 281,
-            "description": "获取记录的分数",
-            "itemtype": "method",
-            "name": "getMarkScore",
-            "params": [],
-            "static": 1,
             "return": {
                 "description": "",
                 "type": "Number of score"
@@ -11383,6 +11374,20 @@
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
             "line": 293,
+            "description": "获取记录的分数",
+            "itemtype": "method",
+            "name": "getMarkScore",
+            "params": [],
+            "return": {
+                "description": "",
+                "type": "Number of score"
+            },
+            "class": "JC.Rate",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Rate/0.1/Rate.js",
+            "line": 305,
             "description": "根据分数计算对应星星的个数",
             "itemtype": "method",
             "name": "scoreToStarNum",
@@ -11393,7 +11398,6 @@
                     "type": "Number"
                 }
             ],
-            "static": 1,
             "return": {
                 "description": "",
                 "type": "Number of starNum"
@@ -11403,7 +11407,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 316,
+            "line": 327,
             "description": "在支持半颗星的时候 计算星星数",
             "itemtype": "method",
             "name": "countHalfStar",
@@ -11414,7 +11418,6 @@
                     "type": "Event"
                 }
             ],
-            "static": 1,
             "return": {
                 "description": "",
                 "type": "Number of starNum"
@@ -11424,7 +11427,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 330,
+            "line": 340,
             "description": "浮点数 四舍五入",
             "itemtype": "method",
             "name": "round",
@@ -11435,7 +11438,6 @@
                     "type": "Number"
                 }
             ],
-            "static": 1,
             "return": {
                 "description": "",
                 "type": "Number"
@@ -11445,7 +11447,21 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 388,
+            "line": 377,
+            "description": "直接操作 style 属性可能会 覆盖用户原来的样式",
+            "class": "JC.Rate",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Rate/0.1/Rate.js",
+            "line": 398,
+            "description": "避免频繁操作 DOM",
+            "class": "JC.Rate",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Rate/0.1/Rate.js",
+            "line": 430,
             "description": "星星动态变化方法",
             "itemtype": "method",
             "name": "lightStar",
@@ -11456,7 +11472,6 @@
                     "type": "Number"
                 }
             ],
-            "static": 1,
             "return": {
                 "description": ""
             },
@@ -11465,7 +11480,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 425,
+            "line": 466,
             "description": "清除按钮动态变化方法",
             "itemtype": "method",
             "name": "lightCancel",
@@ -11476,7 +11491,6 @@
                     "type": "Boolean"
                 }
             ],
-            "static": 1,
             "return": {
                 "description": ""
             },
@@ -11485,12 +11499,11 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 441,
+            "line": 483,
             "description": "清除标记的分数为默认最小分数",
             "itemtype": "method",
             "name": "initScore",
             "params": [],
-            "static": 1,
             "return": {
                 "description": ""
             },
@@ -11499,7 +11512,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 455,
+            "line": 496,
             "description": "处理星星class更改的方法",
             "itemtype": "method",
             "name": "changeStarClass",
@@ -11510,7 +11523,6 @@
                     "type": "Object"
                 }
             ],
-            "static": 1,
             "return": {
                 "description": ""
             },
@@ -11519,7 +11531,7 @@
         },
         {
             "file": "../modules/JC.Rate/0.1/Rate.js",
-            "line": 469,
+            "line": 510,
             "description": "记录当前选中的分数",
             "itemtype": "method",
             "name": "rememberScore",
@@ -11530,10 +11542,33 @@
                     "type": "Munber"
                 }
             ],
-            "static": 1,
             "return": {
                 "description": ""
             },
+            "class": "JC.Rate",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.Rate/0.1/Rate.js",
+            "line": 523,
+            "description": "JC.Rate 初始化后 selector 触发的事件",
+            "itemtype": "event",
+            "name": "rateinited",
+            "params": [
+                {
+                    "name": "_evt",
+                    "description": "",
+                    "type": "Event"
+                },
+                {
+                    "name": "_rateIns",
+                    "description": "",
+                    "type": "RateInstance"
+                }
+            ],
+            "example": [
+                "\n<pre>$( document ).delegate( 'span.js_rateInitedEvent', 'rateinited', function( _evt, _rateIns ){\n   var _selector = $( this );\n   JC.log( 'rateinited event' );\n});</pre>"
+            ],
             "class": "JC.Rate",
             "namespace": "JC"
         },
@@ -19738,11 +19773,11 @@
         },
         {
             "message": "param name/type/descript missing",
-            "line": " ../modules/JC.Rate/0.1/Rate.js:281"
+            "line": " ../modules/JC.Rate/0.1/Rate.js:293"
         },
         {
             "message": "param name/type/descript missing",
-            "line": " ../modules/JC.Rate/0.1/Rate.js:441"
+            "line": " ../modules/JC.Rate/0.1/Rate.js:483"
         },
         {
             "message": "unknown tag: version",
@@ -20451,6 +20486,18 @@
         {
             "message": "Missing item type\nPopTips隐藏后的回调",
             "line": " ../modules/JC.PopTips/0.1/PopTips.js:637"
+        },
+        {
+            "message": "Missing item type\ndiv 改为 span | label\n避免换行问题",
+            "line": " ../modules/JC.Rate/0.1/Rate.js:89"
+        },
+        {
+            "message": "Missing item type\n直接操作 style 属性可能会 覆盖用户原来的样式",
+            "line": " ../modules/JC.Rate/0.1/Rate.js:377"
+        },
+        {
+            "message": "Missing item type\n避免频繁操作 DOM",
+            "line": " ../modules/JC.Rate/0.1/Rate.js:398"
         },
         {
             "message": "Missing item type\n初始化数据模型",
