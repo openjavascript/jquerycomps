@@ -315,7 +315,7 @@
 
         this._init();
 
-        JC.log( Rate.Model._instanceName, &#x27;all inited&#x27;, new Date().getTime() );
+        //JC.log( Rate.Model._instanceName, &#x27;all inited&#x27;, new Date().getTime() );
     }
 
     /**
@@ -360,13 +360,17 @@
                 _p.on( &#x27;rateinited&#x27;, function( _evt ) {
                     if( _model.isInited() ){ return; }
                     _view.update(_p);
-                    _p.trigger( &#x27;initedCallback&#x27; );
+
+                    //_p.trigger( &#x27;initedCallback&#x27; );
+                    _p.notification( &#x27;rateinited&#x27;, [ _p ] );
                 } );
 
+                /*
                 _p.on( &#x27;initedCallback&#x27;, function( e ) {
                     _model.getInitedCallback() &amp;&amp;
                         _model.getInitedCallback().call( _p, _p.selector() );
                 } );
+                */
                 
                 if( _model.getReadOnly() ){ return; }
 
