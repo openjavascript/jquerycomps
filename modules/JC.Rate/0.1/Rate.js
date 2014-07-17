@@ -565,11 +565,17 @@
                    该为
                         'input[ type="hidden" ]'  or "input[ type='hidden' ]"
 
+            把 <img src="http://p0.qhimg.com/d/inn/0f5ac496/pixel.gif" class="{0}" title="{1}"  />
+                改为 button 标签, 避免浪费一个 http 请求
+
         2014-07-17
             所有自定义事件名改为常量
                 Rate.Model.INITED = 'rateinited';
             
             回调函数改为事件响应
                 _p.notification
+
+            style 和 class 俩个属性不要用 .attr 函数操作, 改为 .css() 和 .removeClass(), .addClass()
+                用 .attr 操作这俩个属性有可能覆盖 动态添加的 内容
  
  */
