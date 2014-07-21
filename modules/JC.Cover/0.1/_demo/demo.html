@@ -76,9 +76,9 @@
         <div class="js_compCover js_coverCoveredEvent js_coverClickedEvent" itemwidth="120" itemborder="2">
             <ul>
                 <li mod="2" boxcol="2" boxrow="2" showtype="img" itemcnt="http://i8.hexunimg.cn/2014-07-18/166749474.jpg" covertitle="习近平巴西国会演讲"></li>
-                <li mod="2" boxcol="2" coverdir="0" showtype="img" itemcnt="img/002.gif" covertitle="MH17被击落" cntlink="http://world.haiwainet.cn/n/2014/0718/c345793-20865815.html"></li>
-                <li covertitle="北京暴雨" coverdir="3" showtype="img" itemcnt="img/003.gif" cntlink="http://news.hexun.com/2014-07-18/166749432.html" ></li>
-                <li covertitle="博导诱奸女学生事件" coverdir="1" showtype="img" itemcnt="img/004.gif" cntlink="http://legal.dbw.cn/system/2014/07/16/055857632.shtml" ></li>
+                <li mod="2" boxcol="2" coverdir="0" showtype="img" itemcnt="img/002.gif" covertitle="MH17被击落"></li>
+                <li covertitle="北京暴雨" coverdir="3" showtype="img" itemcnt="img/003.gif" ></li>
+                <li covertitle="博导诱奸女学生事件" coverdir="1" showtype="img" itemcnt="img/004.gif" ></li>
             </ul>
         </div>
         <h2>Mix:</h2>
@@ -101,14 +101,14 @@
             requirejs( [ 'JC.Cover' ], function(){
             });
 
-            $( document ).delegate( "div.js_coverCoveredEvent", "coverCallback", function( _evt, _coverIns ) {
+            $( document ).delegate( "div.js_coverCoveredEvent", "coverCovered", function( _evt, _targetBox, _coverIns ) {
                 JC.log( 'item covered' );
-                JC.log( 'cover : ' + _coverIns.attr( 'covertitle' ) );
+                JC.log( 'cover : ' + _targetBox.attr( 'covertitle' ) );
             } );
 
-            $( document ).delegate( "div.js_coverClickedEvent", "clickCallback", function( _evt, _coverIns ) {
+            $( document ).delegate( "div.js_coverClickedEvent", "coverClicked", function( _evt, _targetBox, _coverIns ) {
                 JC.log( 'item clicked' );
-                JC.log( 'click : ' + _coverIns.attr( 'covertitle' ) );
+                JC.log( 'click : ' + _targetBox.attr( 'covertitle' ) );
             } );
         </script>
     </body>
