@@ -342,12 +342,7 @@
     });
 
     _jdoc.ready( function(){
-        var _insAr = 0;
-        Cover.autoInit
-              && ( _insAr = Cover.init() )
-        //    && $( '<h2>Cover total ins: ' 
-        //        + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
-            ;
+        Cover.autoInit && Cover.init();
     });
 
     return JC.Cover;
@@ -362,5 +357,16 @@
 );
 /*
    review qiushaowei 
-    
+        
+        2014-07-21
+                covertitle 属性可以去掉
+                    默认的展现内容写在 li 标签里面
+
+                添加一个获取 脚本模板 内容的属性, 比如 itemScriptCnt="/script"( 使用 JC.f.parentSelector 获取脚本选择器 )
+                    如果模板内容含有 html tag 的时候, 会比较方便
+
+                初始化 Cover 功能应该最小粒度
+                        一个Cover示例只处理一个 li
+                        Cover 功能不要涉及布局逻辑, 布局逻辑应该由用户自己处理
+                
  */
