@@ -49,7 +49,7 @@
         <h2>Title:</h2>
         <span class="js_compRate" score="3" hints="1分,2分,3分,4分,5分"></span>
         <h2>Click Callback:</h2>
-        <span class="js_compRate js_rateClickedEvent" score="3" clickcallback="clickCallback">
+        <span class="js_compRate js_rateClickedEvent" score="3">
             <input id="score-input" ReadOnly type="text" />
         </span>
  */
@@ -98,11 +98,7 @@
     JC.BaseMVC.build( Rate );
 
     JC.f.extendObject( Rate.prototype, {
-        _beforeInit:
-            function(){
-            }
-
-        , _initHanlderEvent:
+        _initHanlderEvent:
             function(){
                 var _p = this,
                     _model = _p._model,
@@ -111,7 +107,7 @@
 
                 _p.on( _Model.INITED, function( _evt ) {
                     if( _model.isInited() ){ return; }
-                    _view.update(_p);
+                    //_view.update(_p);
                     _p.notification( _Model.INITED, [ _p ] );
                 } );
                 
@@ -161,7 +157,7 @@
                         _p.trigger( _Model.LIGHT_STAR, -1 );
                         _view.initScore();
                     }
-                    _p.notification( _Model.CLICKED, [ $( e.target ) ] );
+                    _p.notification( _Model.CLICKED, [ $( e.target ), _p ] );
                 } );
             }
 
@@ -182,34 +178,34 @@
     
     /**
      * JC.Rate 初始化后 selector 触发的事件
-     * @event  rateinited 
+     * @event  rateInited 
      * @param   {Event}         _evt
      * @param   {RateInstance}  _rateIns
      * @example
     <pre>
-    $( document ).delegate( 'span.js_rateInitedEvent', 'rateinited', function( _evt, _rateIns ){
+    $( document ).delegate( 'span.js_rateInitedEvent', 'rateInited', function( _evt, _rateIns ){
         var _selector = $( this );
-        JC.log( 'rateinited event' );
+        JC.log( 'rateInited event' );
     });
     </pre>
      */
-    _Model.INITED = 'rateinited';
+    _Model.INITED = 'rateInited';
     
     /**
      * JC.Rate 点击后 selector 触发的事件
      * 返回触发点击事件的元素
-     * @event   clickCallback
+     * @event   rateClicked
      * @param   {Event}         _evt
      * @param   {RateInstance}  _rateIns
      * @example
     <pre>
-    $( document ).delegate( 'span.js_rateClickedEvent', 'clickCallback', function( _evt, _rateIns ) {
+    $( document ).delegate( 'span.js_rateClickedEvent', 'rateClicked', function( _evt, _rateIns ) {
      	var star = _rateIns;
         JC.log( 'rate clicked' );
     } );
     </pre>
      */
-    _Model.CLICKED = 'clickCallback';
+    _Model.CLICKED = 'rateClicked';
 
     JC.f.extendObject( _Model.prototype, {
         init:
@@ -249,13 +245,15 @@
                     return defualHints;
                 }
             }
-        , getClickCallback:
+        /*
+        , getrateClicked:
             function() {
                 var _p = this,
                     _selector = _p.selector(),
-                    _key = 'clickCallback';
+                    _key = 'rateClicked';
                 return _p.callbackProp( _selector, _key );
             }
+        */
         , getInitScore: 
             function() {
                 var score = this.floatProp( 'score' );
@@ -272,7 +270,6 @@
         , hiddenName: function(){ return this.attrProp( 'hiddenName' ) || 'score'; }
        /**
         * 根据选中的星星个数，计算出当前分数( 结果会保留两位小数 )
-        * @method  getCurScore
         * @param   {selector}   target
         * @return  {number of score}
         */
@@ -294,8 +291,6 @@
             }
         /**
         * 获取记录的分数
-        * @method  getMarkScore
-        * @param   
         * @return  {number of score}
         */
         , getMarkScore:
@@ -305,7 +300,6 @@
             }
         /**
         * 根据分数计算对应星星的个数
-        * @method  scoreToStarNum
         * @param   {number}     score
         * @return  {number of starNum}
         */
@@ -327,7 +321,6 @@
             }
         /**
         * 在支持半颗星的时候 计算星星数
-        * @method  countHalfStar
         * @param   {event}     e
         * @return  {number of starNum}
         */
@@ -340,7 +333,6 @@
             }
         /**
         * 浮点数 四舍五入
-        * @method  round
         * @param   {number} number  
         *          {number} fractionDigits
         * @return  {number}
@@ -397,15 +389,14 @@
                     _p.lightStar( _model.scoreToStarNum( initScore ) );
                 }
             }
-    
+        /*
         , update:
             function() {
             }
+        */
         /**
         * 星星动态变化方法
-        * @method  lightStar
         * @param   {number}    target
-        * @return  
         */
         , lightStar:
             function( target ) {
@@ -439,9 +430,7 @@
             }
         /**
         * 清除按钮动态变化方法
-        * @method  lightCancel
         * @param   {boolean}    flag
-        * @return  
         */
         , lightCancel:
             function( flag ) {
@@ -456,9 +445,6 @@
             }
         /**
         * 清除标记的分数为默认最小分数
-        * @method  initScore
-        * @param   
-        * @return  
         */
         , initScore:
             function() {
@@ -469,10 +455,8 @@
             }
         /**
         * 处理星星class更改的方法
-        * @method  changeStarClass
         * @param   {object}    obj      
         *          {string}    className
-        * @return  
         */
         , changeStarClass: 
             function( obj, className ) {
@@ -482,9 +466,7 @@
             }
         /**
         * 记录当前选中的分数
-        * @method  rememberScore
         * @param   {munber}    score
-        * @return  
         */
         , rememberScore:
             function(score) {
@@ -494,12 +476,7 @@
     });
 
     _jdoc.ready( function(){
-        var _insAr = 0;
-        Rate.autoInit
-            && ( _insAr = Rate.init() )
-            //&& $( '<h2>Rate total ins: ' 
-            //    + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
-            ;
+        Rate.autoInit && Rate.init();
     });
 
     return JC.Rate;
@@ -526,7 +503,7 @@
 
         2014-07-17
             所有自定义事件名改为常量
-                Rate.Model.INITED = 'rateinited';
+                Rate.Model.INITED = 'rateInited';
             
             回调函数改为事件响应
                 _p.notification
@@ -535,5 +512,9 @@
                 用 .attr 操作这俩个属性有可能覆盖 动态添加的 内容
 
             YUI 注释需有分清 @static 关键词的用途
+
+        2014-07-21
+            
+            写注释的时候, Model 和 View 不需要写 @property 和 @method 这俩个属性
  
  */
