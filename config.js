@@ -49,6 +49,8 @@ requirejs.config( {
 
         , 'JC.NumericStepper': 'modules/JC.NumericStepper/0.1/NumericStepper'
         , 'JC.Paginator': 'modules/JC.Paginator/0.1/Paginator'
+        
+        , 'JC.Rate': 'modules/JC.Rate/0.1/Rate'
 
         , 'JC.Slider': 'modules/JC.Slider/0.1/Slider'
         , 'JC.StepControl': 'modules/JC.StepControl/0.1/StepControl'

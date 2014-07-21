@@ -100,9 +100,21 @@
          * 使用 jquery trigger 触发绑定事件
          * @method  {string}    trigger
          * @param   {string}    _evtName
+         * @param   {*|Array}   _args      
          * @return  BaseMVCInstance
          */
         , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
+        /**
+         * 通知选择器有新事件
+         * <br />JC 组件以后不会在 HTML 属性里放回调, 改为触发 selector 的事件
+         * @method  notification
+         * @param   {string}    _evtName
+         * @param   {*|Array}   _args      
+         */
+        , notification:
+            function( _evtName, _args ){
+                this._model.notification( _evtName, _args );
+            }
     }
     /**
      * 获取或设置组件实例
@@ -256,13 +268,27 @@
          * 使用 jquery trigger 触发 controler 绑定事件
          * @method  {string}    trigger
          * @param   {string}    _evtName
+         * @param   {*|Array}   _args      
          */
         , trigger:
             function( _evtName, _args ){
                 _args = _args || [];
+                !jQuery.isArray( _args ) && ( _args = [ _args ] );
                 _args.unshift( _evtName );
                 $( this ).trigger( 'TriggerEvent', _args );
                 return this;
+            }
+        /**
+         * 通知选择器有新事件
+         * @method  notification
+         * @param   {string}    _evtName
+         * @param   {*|Array}   _args      
+         */
+        , notification:
+            function( _evtName, _args ){
+                this.selector() 
+                    && this.selector().length 
+                    && this.selector().trigger( _evtName, _args );
             }
         /**
          * 初始化的 jq 选择器
@@ -533,9 +559,14 @@
         , trigger:
             function( _evtName, _args ){
                 _args = _args || [];
+                !jQuery.isArray( _args ) && ( _args = [ _args ] );
                 _args.unshift( _evtName );
                 $( this ).trigger( 'TriggerEvent', _args );
                 return this;
+            }
+        , notification:
+            function( _evtName, _args ){
+                this._model.notification( _evtName, _args );
             }
     });
 
