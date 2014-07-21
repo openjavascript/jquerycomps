@@ -47,7 +47,7 @@
 
         this._init();
 
-        JC.log( Cover.Model._instanceName, 'all inited', new Date().getTime() );
+        //JC.log( Cover.Model._instanceName, 'all inited', new Date().getTime() );
     }
     /**
      * 初始化可识别的 Cover 实例
@@ -78,7 +78,6 @@
     JC.f.extendObject( Cover.prototype, {
         _beforeInit:
             function() {
-                JC.log( 'Cover _beforeInit', new Date().getTime() );
             }
 
         , _initHanlderEvent:
@@ -92,34 +91,46 @@
                 });
                 _selector.on( 'mouseover', function( e ) {
                     var cnt = $( e.target );
-                    if( cnt.hasClass( 'cover-cnt' ) ){
+                    if( cnt.hasClass( _Model.COVER_CNT ) ){
                         _view.coverItem( cnt.next() );
+                        _p.notification( _Model.COVERED, [ cnt.parent( '.' + _Model.COVER_BOX ) ] );
                     }
                 } );
                 _selector.on( 'mouseleave', 'li', function( e ) {
                     var target = $( e.target );
-                    !target.is( 'li' ) && ( target = target.parent( '.cover-box' ) );
-                    _view.coverBack( target.children( '.cover-cover' ) );
+                    !target.is( 'li' ) && ( target = target.parent( '.' + _Model.COVER_BOX ) );
+                    _view.coverBack( target.children( '.' + _Model.COVER_COVER ) );
                 } );
                 _selector.on( 'click', 'li', function( e ) {
                     var target = $( e.target );
-                    !target.is( 'li' ) && ( target = target.parent( '.cover-box' ) );
+                    !target.is( 'li' ) && ( target = target.parent( '.' + _Model.COVER_BOX ) );
                     _view.link( target );
+                    _p.notification( _Model.CLICKED, [target] );
                 } );
             }
 
         , _inited:
             function(){
-                JC.log( 'Cover _inited', new Date().getTime() );
                 this.trigger( 'inited' );
             }
     });
+    
+    var _Model = Cover.Model;
+    /* Static Var */
+    _Model.COVER_CNT = 'cover-cnt';
+    _Model.COVER_COVER = 'cover-cover';
+    _Model.COVER_BOX = 'cover-box';
+    _Model.COVER_BG = 'cover-itembg';
+    _Model.COVER_MOD = 'cover-mod';
+    _Model.ANIMATE_SPEED = 200;
+    _Model._instanceName = 'JCCover';
 
-    Cover.Model._instanceName = 'JCCover';
-    JC.f.extendObject( Cover.Model.prototype, {
+    /* Static Event */
+    _Model.COVERED = 'coverCallback';
+    _Model.CLICKED = 'clickCallback';
+    JC.f.extendObject( _Model.prototype, {
         init:
             function() {
-                JC.log( 'Cover.Model.init:', new Date().getTime() );
             }
         , getItemCol:
             function() {
@@ -144,7 +155,7 @@
                 var itemCnt = item.attr( 'itemcnt' );
                 return ( typeof itemCnt == 'undefined' ) ? '' : itemCnt;
             }
-        , getCoverTitle:/* 去掉undefind */
+        , getCoverTitle:
             function( item ) {
                 var coverTitle = item.attr( 'covertitle' );
                 return ( typeof coverTitle == 'undefined' ) ? '' : coverTitle;
@@ -178,7 +189,6 @@
     JC.f.extendObject( Cover.View.prototype, {
         init:
             function() {
-                JC.log( 'Cover.View.init:', new Date().getTime() );
                 var _p = this, item,
                     _model = _p._model,
                     _selector = _model.selector(),
@@ -195,29 +205,23 @@
                         boxCol = _model.getBoxCol( item ),
                         boxRow = _model.getBoxRow( item ),
                         coverTitle = _model.getCoverTitle( item );
-                    var boxClass = ' cover-box cover-mod' + itemMod + ' ';
-                    item.addClass( boxClass ).css( 'border-width', border + 'px' );
-                    var itemCntStyle = '';
-                    itemCntStyle += ( item[0].clientWidth > 0 ? '' : 
-                        ' width: ' + ( boxCol * itemwidth - border * 2 ) + 'px; '  
-                        ) + ( item[0].clientHeight > 0  ? '' : 
-                        ' height: ' + ( boxRow * itemwidth - border * 2 ) + 'px; ' );
-                    var itemClass = ' cover-cnt ';
-                    var itemContent = '';
-                     if( showType == 'title' ) {
-                        itemContent = '<button class="' + itemClass + '" style="' + itemCntStyle + '">'
-                            + itemCnt + '</button>';
-                    } else if( showType == 'img' ){
-                        itemCntStyle += ' background: url( ' + itemCnt + ') no-repeat; ';
-                        itemContent = '<button class="' + itemClass + '" style="' + itemCntStyle 
-                            + '"></button>';
+                    item.addClass( _Model.COVER_BOX + ' ' + _Model.COVER_MOD + itemMod )
+                        .css( 'border-width', border + 'px' );
+                    
+                    var itemContent = '<button class=" {0} " style=" {1} ">{2}</button>',
+                        itemCntStyle = JC.f.printf( 'width: {0}px; height: {1}px; ', 
+                            boxCol * itemwidth - border * 2, boxRow * itemwidth - border * 2 ),
+                        itemCntText = '';
+                    if( showType == 'title' ) {
+                        itemCntText = itemCnt;
+                    } else if( showType == 'img' ) {
+                        itemCntStyle += 'background: url( ' + itemCnt + ') no-repeat;';
                     }
-                    itemContent = $( itemContent )
-                        .addClass( ' cover-itembg' + ( ( i&1 ) == 0 ? '1 ' : '2 ' ) );
-                    item.append( itemContent );
-                    item.append( '<button class="cover-cover">' + 
+                    itemContent = JC.f.printf( itemContent, _Model.COVER_CNT + ' ' + 
+                        _Model.COVER_BG + ( ( i & 1 ) == 0 ? '1 ' : '2 ' ), itemCntStyle, itemCntText );
+                    item.append( itemContent + '<button class="' + _Model.COVER_COVER + '">' + 
                         ( coverTitle == '' ? itemCnt : coverTitle ) + '</button>' );
-                    _p.putCover( itemContent, coverDir);
+                    _p.putCover( item.children( '.' + _Model.COVER_CNT ), coverDir );
                 } );
             }
         , putCover: 
@@ -242,30 +246,29 @@
             }
         , coverItem:
             function( cover ) {
-                var speed = 200;/* 提出去 */
-                cover.stop(false, true).animate( { top : '0', left : '0' }, speed);
+                cover.stop( false, true ).animate( { top : '0', left : '0' }, 
+                    _Model.ANIMATE_SPEED );
             }
         , coverBack:
             function( cover ) {
-                var speed = 200;/* 提出去 */
-                cover.stop(false, true).animate( { top : cover.attr( 'covertop' ) + 'px',
-                    left : cover.attr( 'coverleft' ) + 'px' }, speed);
+                cover.stop( false, true ).animate( { top : cover.attr( 'covertop' ) + 'px',
+                    left : cover.attr( 'coverleft' ) + 'px' }, _Model.ANIMATE_SPEED );
             }
         , link:
             function( target ) {
                 var _p = this,
                     _model = _p._model,
                     link = _model.getCntLink( target );
-                link != '' && window.open(link);
+                link != '' && window.open( link );
             }
     });
 
     _jdoc.ready( function(){
         var _insAr = 0;
         Cover.autoInit
-            && ( _insAr = Cover.init() )
-            && $( '<h2>Cover total ins: ' 
-                + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
+              && ( _insAr = Cover.init() )
+        //    && $( '<h2>Cover total ins: ' 
+        //        + _insAr.length + '<br/>' + new Date().getTime() + '</h2>' ).appendTo( document.body )
             ;
     });
 

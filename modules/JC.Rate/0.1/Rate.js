@@ -113,12 +113,12 @@
                     _view = _p._view,
                     _children = _model.selector();
 
-                _p.on( Rate.Model.INITED, function( _evt ) {
+                _p.on( _Model.INITED, function( _evt ) {
                     if( _model.isInited() ){ return; }
                     _view.update(_p);
 
                     //_p.trigger( 'initedCallback' );
-                    _p.notification( Rate.Model.INITED, [ _p ] );
+                    _p.notification( _Model.INITED, [ _p ] );
                 } );
 
                 /*
@@ -136,34 +136,34 @@
                         var target = $( e.target );
                         if( target.hasClass( 'rate-score' ) ) {
                             var halfNum = _p._model.countHalfStar( e );
-                            _p.trigger( Rate.Model.LIGHT_STAR, halfNum );
+                            _p.trigger( _Model.LIGHT_STAR, halfNum );
                         } else if( target.hasClass( 'rate-cancel' ) ) {
-                            _p.trigger( Rate.Model.LIGHT_CANCEL, true );
+                            _p.trigger( _Model.LIGHT_CANCEL, true );
                         }
                     } );
                 } else {
                     _children.on( 'mouseover', function( e ) {
                         var target = $( e.target );
                         if( target.hasClass( 'rate-score' ) ) {
-                            _p.trigger( Rate.Model.LIGHT_STAR, target.prevAll( '.rate-score' ).length + 1 );
+                            _p.trigger( _Model.LIGHT_STAR, target.prevAll( '.rate-score' ).length + 1 );
                         } else if( target.hasClass( 'rate-cancel' ) ) {
-                            _p.trigger( Rate.Model.LIGHT_CANCEL, true );
+                            _p.trigger( _Model.LIGHT_CANCEL, true );
                         }
                     } );
                 }
 
-                _p.on( Rate.Model.LIGHT_STAR, function( _evt, _num ){
+                _p.on( _Model.LIGHT_STAR, function( _evt, _num ){
                     _view.lightStar( _num );
                 });
 
-                _p.on( Rate.Model.LIGHT_CANCEL, function( _evt, _isCancel ){
+                _p.on( _Model.LIGHT_CANCEL, function( _evt, _isCancel ){
                     _view.lightCancel( _isCancel );
                 });
 
                 _children.on( 'mouseleave', function( e ) {
                     var markScore = _model.getMarkScore(),
                         markStarNum = _model.scoreToStarNum( markScore );
-                        _p.trigger( Rate.Model.LIGHT_STAR, markStarNum );
+                        _p.trigger( _Model.LIGHT_STAR, markStarNum );
                 } );
 
                 _children.on( 'click', function( e ) {
@@ -171,35 +171,31 @@
                     if( target.hasClass( 'rate-score' ) ) {
                         _view.rememberScore( _model.getCurScore( target ) );
                     } else if( target.hasClass( 'rate-cancel' ) ) {
-                        _p.trigger( Rate.Model.LIGHT_STAR, -1 );
+                        _p.trigger( _Model.LIGHT_STAR, -1 );
                         _view.initScore();
                     }
-                    target.trigger( 'clickCallback' );
-                } );
-
-                _children.on( 'clickCallback', function( e ) {
-                    _model.getClickCallback() &&
-                        _model.getClickCallback().call( _p, $( e.target ) );
+                    _p.notification( _Model.CLICKED, [ $( e.target ) ] );
                 } );
             }
 
         , _inited:
             function() {
-                //JC.log( 'Rate _inited', new Date().getTime() );
-                this.trigger( Rate.Model.INITED );
+                this.trigger( _Model.INITED );
             }
     });
 
-    Rate.Model._instanceName = 'JCRate';
+    var _Model = Rate.Model;
+    _Model._instanceName = 'JCRate';
+    _Model.INITED = 'rateinited';
+    _Model.CLICKED = 'clickCallback';
+    _Model.LIGHT_STAR = 'light_start';
+    _Model.LIGHT_CANCEL = 'LIGHT_CANCEL';
+    _Model.RATE_HIDDEN = 'js_rateHidden';
+    _Model.DEFULT_HINTS = ['较差', '一般', '不错', '很好', '非常棒'];
 
-    Rate.Model.INITED = 'rateinited';
-    Rate.Model.LIGHT_STAR = 'light_start';
-    Rate.Model.LIGHT_CANCEL = 'LIGHT_CANCEL';
-
-    JC.f.extendObject( Rate.Model.prototype, {
+    JC.f.extendObject( _Model.prototype, {
         init:
             function() {
-                //JC.log( 'Rate.Model.init:', new Date().getTime() );
             }
         , isInited: 
             function( _setter ) { 
@@ -208,33 +204,25 @@
             }
         , getTotalNum:
             function() {
-                //var totalNum = this.attrProp( 'totalnum' );
-                //return totalNum == '' ? 5 : parseInt( totalNum );
                 return this.intProp( 'totalnum' ) || 5;
             }
         , getHalfFlag:
             function() {
-                //var halfFlag = this.boolProp( 'half' );
-                //return ( typeof halfFlag == 'undefined' ) ? false : halfFlag;
                 return this.boolProp( 'half' );
             }
         , getCancelFlag:
             function() {
-                //var cancelFlag = this.boolProp( 'cancel' );
-                //return ( typeof cancelFlag == 'undefined' ) ? false : cancelFlag;
                 return this.boolProp( 'cancel' );
             }
         , getReadOnly:
             function() {
-                //var readOnly = this.boolProp( 'readonly' );
-                //return ( typeof readOnly == 'undefined' ) ? false : readOnly;
                 return this.boolProp( 'readonly' );
             }
         , getHints:
             function() {
                 var hints = this.attrProp( 'hints' ),
                     totalNum = this.getTotalNum(),
-                    defualHints = ['较差', '一般', '不错', '很好', '非常棒'],
+                    defualHints = _Model.DEFULT_HINTS,
                     defualLen = defualHints.length,
                     customHints = [];
                 if( typeof hints != 'undefined' && hints != '' ) {
@@ -246,8 +234,8 @@
         , getClickCallback:
             function() {
                 var _p = this,
-                _selector = _p.selector(),
-                _key = 'clickCallback';
+                    _selector = _p.selector(),
+                    _key = 'clickCallback';
                 return _p.callbackProp( _selector, _key );
             }
         , getInitScore: 
@@ -257,14 +245,10 @@
             }
         , getMaxScore:
             function() {
-                //var maxScore = this.attrProp( 'maxscore' );
-                //return maxScore == '' ? 5 : parseInt( maxScore );
                 return this.intProp( 'maxScore' ) || 5 ;
             }
         , getMinScore:
             function() {
-                //var minScore = this.attrProp( 'minscore' );
-                //return minScore == '' ? 0 : parseInt( minScore );
                 return this.intProp( 'minScore' ) || 0;
             }
         , hiddenName: function(){ return this.attrProp( 'hiddenName' ) || 'score'; }
@@ -298,8 +282,7 @@
         */
         , getMarkScore:
             function() {
-                //var score = $( this._selector ).children( 'input[ type = \'hidden\' ]' ).attr('value');
-                var score = $( this._selector ).children( 'input[ type = \'hidden\' ]' ).val();
+                var score = $( this._selector ).children( '.' + _Model.RATE_HIDDEN ).val();
                 return parseInt( typeof score == 'undefined' ? 0 : score );
             }
         /**
@@ -358,7 +341,6 @@
     JC.f.extendObject( Rate.View.prototype, {
         init:
             function() {
-                //JC.log( 'Rate.View.init:', new Date().getTime() );
                 var _p = this,
                     _model = _p._model,
                     _array = [],
@@ -368,37 +350,13 @@
                     initScore = _model.getInitScore(),
                     hints = _model.getHints(),
                     hintsLen = hints.length,
-                    //wrapStyle = 'cursor: pointer; font-size: 12px; width: ',
-                    wrapWidth = ( totalNum > 0 ? totalNum * 22 : 0 ) + ( cancelFlag ? 20 : 0 ),
-                    imgHtml = '<img src="http://p0.qhimg.com/d/inn/0f5ac496/pixel.gif" class="{0}" title="{1}"  />';
+                    imgHtml = '<button class="{0}" title="{1}"  />';
 
                 _selector && ( _selector = $( _selector ) );
-
-                /**
-                 * 直接操作 style 属性可能会 覆盖用户原来的样式
-                 */
-                //_selector.attr( 'style', wrapStyle + wrapWidth + 'px;' );
-                _selector.css( {
-                    'cursor': 'pointer'
-                    , 'font-size': '12px'
-                    , 'width': wrapWidth + 'px'
-                });
+                _selector.css( { 'cursor': 'pointer' , 'font-size': '12px' });
                 cancelFlag && _selector.prepend( $( imgHtml ).attr( 'class', 'rate-cancel cancel-off' ) );
-
-                /*
-                for( var i = 0; i<totalNum; i++ ) {
-                    var img = $( imgHtml ).attr( 'class', 'rate-score star-off' );
-                    if( i < hintsLen && hints[ i ] != '' ){
-                        img.attr( 'title', hints[ i ] );
-                    }
-                    _selector.append( img );
-                    img.after( '&nbsp;' );
-                }
-                */
-                /**
-                 * 避免频繁操作 DOM
-                 */
                 var _tmp = [], _tmpStr, _tmpTitle;
+
                 for( var i = 0; i<totalNum; i++ ) {
                     _tmpTitle = ''
                     if( i < hintsLen && hints[ i ] != '' ){
@@ -411,21 +369,19 @@
                 }
 
                 _tmp.push( 
-                    JC.f.printf( '<input type="hidden" name="{0}" class="js_rateHidden" />'
+                    JC.f.printf( '<input type="hidden" name="{0}" class="' + _Model.RATE_HIDDEN + '" />'
                     , _p._model.hiddenName() ) 
                 );
-                _selector.append( _tmp.join('' ) );
+                _selector.append( _tmp.join( '' ) );
 
                 if(initScore > 0) {
-                    //_selector.children( 'input[ type = "hidden" ]' ).attr( 'value', initScore );
-                    _selector.children( 'input[ type = "hidden" ]' ).val( initScore );
+                    _selector.children( '.' + _Model.RATE_HIDDEN ).val( initScore );
                     _p.lightStar( _model.scoreToStarNum( initScore ) );
                 }
             }
     
         , update:
             function() {
-                //JC.log( 'Rate.View.update:', new Date().getTime() );
             }
         /**
         * 星星动态变化方法
@@ -490,7 +446,7 @@
             function() {
                 var _p = this,
                     _model = _p._model;
-                _model.selector().children( 'input[ type = \'hidden\' ]' )
+                _model.selector().children( '.' + _Model.RATE_HIDDEN )
                     .val( _model.getMinScore() );
             }
         /**
@@ -504,7 +460,6 @@
             function( obj, className ) {
                 if( obj.hasClass( className ) ) { return; }
                 var classStr = 'rate-score ' + className + ' ';
-                //obj.attr('class', classStr);
                 obj.removeClass( 'star-on star-off star-half' ).addClass( classStr );
             }
         /**
@@ -516,7 +471,7 @@
         , rememberScore:
             function(score) {
                 var _p = this;
-                _p._model.selector().children( 'input[ type=\'hidden\' ]' ).val( score );
+                _p._model.selector().children( '.' + _Model.RATE_HIDDEN ).val( score );
             }
     });
 

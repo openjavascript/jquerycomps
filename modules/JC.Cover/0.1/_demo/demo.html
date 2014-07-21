@@ -5,7 +5,7 @@
         <title>Cover Demo</title>
         <style type="text/css">
             body { padding: 0; margin: 0; }
-            .cover-wrap { margin: 100px 0 100px  700px; }
+            .cover-wrap { margin: 100px 0 100px 300px; }
         </style>
         <link href='../res/default/style.css' rel='stylesheet' />
     </head>
@@ -56,6 +56,15 @@
                 <li covertitle="博导诱奸女学生事件" coverdir="1" showtype="img" itemcnt="img/004.gif" cntlink="http://legal.dbw.cn/system/2014/07/16/055857632.shtml" ></li>
             </ul>
         </div>
+        <h2>Event Callback:</h2>
+        <div class="js_compCover js_coverCoveredEvent js_coverClickedEvent" itemwidth="120" itemborder="2">
+            <ul>
+                <li mod="2" boxcol="2" boxrow="2" showtype="img" itemcnt="http://i8.hexunimg.cn/2014-07-18/166749474.jpg" covertitle="习近平巴西国会演讲"></li>
+                <li mod="2" boxcol="2" coverdir="0" showtype="img" itemcnt="img/002.gif" covertitle="MH17被击落" cntlink="http://world.haiwainet.cn/n/2014/0718/c345793-20865815.html"></li>
+                <li covertitle="北京暴雨" coverdir="3" showtype="img" itemcnt="img/003.gif" cntlink="http://news.hexun.com/2014-07-18/166749432.html" ></li>
+                <li covertitle="博导诱奸女学生事件" coverdir="1" showtype="img" itemcnt="img/004.gif" cntlink="http://legal.dbw.cn/system/2014/07/16/055857632.shtml" ></li>
+            </ul>
+        </div>
         <h2>Mix:</h2>
         <div class="js_compCover" itemcol="4" itemwidth="80" itemborder="1" style="">
             <ul>
@@ -76,6 +85,15 @@
             requirejs( [ 'JC.Cover' ], function(){
             });
 
+            $( document ).delegate( "div.js_coverCoveredEvent", "coverCallback", function( _evt, _rateIns ) {
+                console.log( 'item covered' );
+                console.log( 'cover : ' + _rateIns.attr( 'covertitle' ) );
+            } );
+
+            $( document ).delegate( "div.js_coverClickedEvent", "clickCallback", function( _evt, _rateIns ) {
+                console.log( 'item clicked' );
+                console.log( 'click : ' + _rateIns.attr( 'covertitle' ) );
+            } );
         </script>
     </body>
 </html>

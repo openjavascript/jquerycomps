@@ -28,7 +28,7 @@
             <h2>Title:</h2>
             <span class="js_compRate" score="3" hints="1分,2分,3分,4分,5分"></span>
             <h2>Click Callback:</h2>
-            <span class="js_compRate" score="3" clickcallback="clickCallback">
+            <span class="js_compRate js_rateClickedEvent" score="3" clickcallback="clickCallback">
                 <input id="score-input" ReadOnly type="text" />
             </span>
             <h2>Inited Callback:</h2>
@@ -49,16 +49,24 @@
             $( document ).delegate( 'span.js_rateInitedEvent', 'rateinited', function( _evt, _rateIns ){
                 var _selector = $( this );
                 JC.log( 'rateinited event' );
-                $( '#score-input2' ).val( _selector.children( 'input[ name = \'score\' ]' ).attr( 'value' ) + '分' );
+                $( '#score-input2' ).val( _selector.children( 'input[ name = "score" ]' ).attr( 'value' ) + '分' );
             });
 
-            function clickCallback() {
+            $( document ).delegate( 'span.js_rateClickedEvent', 'clickCallback', function( _evt, _rateIns ) {
+            	var star = _rateIns;
+            	JC.log( 'rate clicked' );
+                if( star.hasClass( 'rate-score' ) ){
+                    $( '#score-input' ).val( star.attr( 'title' ) );
+                }
+            } );
+
+            /*function clickCallback() {
                 JC.log( 'clickCallback', JC.f.ts() );
                 var star = arguments[0];
                 if( star.hasClass( 'rate-score' ) ){
                     $( '#score-input' ).val( star.attr( 'title' ) );
                 }
-            }
+            }*/
 
         </script>
     </body>
