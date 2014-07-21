@@ -23,15 +23,24 @@
  *
  *      <dt>borderwidth = int, default = 0</dt>
  *      <dd>设置基本格边框宽度，默认无边框<dd>
+ *      
+ *      <dt>boxcol = int default = 1</dt>
+ *      <dd>设置内容格宽度所占基本格宽度的倍数</dd>
+ *
+ *      <dt>boxrow = int default = 1</dt>
+ *      <dd>设置内容格高度所占基本格高度的倍数</dd>
  *
  *      <dt>itemcnt = string, default = ""</dt>
- *      <dd>设置基本格内显示的内容，若 'showtype' 属性设置为 'img' 时，该字段表示图片链接的URL地址</dd>
+ *      <dd>设置内容格内显示的内容，若 'showtype' 属性设置为 'img' 时，该字段表示图片链接的URL地址</dd>
+ *
+ *      <dt>cntlink = string default = ""</dt>
+ *      <dd>设置内容格点击时链接的URL地址，为空的时候代表不进行跳转</dd>
  *
  *      <dt>covertitle = string, default = ""</dt>
- *      <dd>设置基本格遮罩显示的内容</dd>
+ *      <dd>设置内容格遮罩显示的内容</dd>
  *
- *      <dt>showtype = string, default = 'title'</dt>
- *      <dd>设置基本格内展示的内容模式，可选项有：'title' 和 'img'</dd>
+ *      <dt>showtype = string, default = "title"</dt>
+ *      <dd>设置内容格内展示的内容模式，可选项有：'title' 和 'img'</dd>
  *
  *      <dt>coverdir = int, default = 2</dt>
  *      <dd>设置遮罩出现的方向，可选项有：0-上、1-右、2-下、3-左</dd>
@@ -287,7 +296,7 @@
                     var itemContent = '<button class=" {0} " style=" {1} ">{2}</button>',
                         itemCntStyle = JC.f.printf( 'width: {0}px; height: {1}px; ', 
                             boxCol * itemwidth - border * 2, boxRow * itemwidth - border * 2 ),
-                        itemCntText = '';
+                        itemCntText = '&nbsp;';
                     if( showType == 'title' ) {
                         itemCntText = itemCnt;
                     } else if( showType == 'img' ) {
