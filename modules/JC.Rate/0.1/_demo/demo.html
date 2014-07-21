@@ -52,8 +52,8 @@
                 $( '#score-input2' ).val( _selector.children( 'input[ name = "score" ]' ).attr( 'value' ) + '分' );
             });
 
-            $( document ).delegate( 'span.js_rateClickedEvent', 'rateClicked', function( _evt, _rateIns ) {
-            	var star = _rateIns;
+            $( document ).delegate( 'span.js_rateClickedEvent', 'rateClicked', function( _evt, _target, _rateIns ) {
+            	var star = _target;
             	JC.log( 'rate clicked' );
                 if( star.hasClass( 'rate-score' ) ){
                     $( '#score-input' ).val( star.attr( 'title' ) );

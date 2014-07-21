@@ -107,7 +107,6 @@
 
                 _p.on( _Model.INITED, function( _evt ) {
                     if( _model.isInited() ){ return; }
-                    //_view.update(_p);
                     _p.notification( _Model.INITED, [ _p ] );
                 } );
                 
@@ -199,8 +198,8 @@
      * @param   {RateInstance}  _rateIns
      * @example
     <pre>
-    $( document ).delegate( 'span.js_rateClickedEvent', 'rateClicked', function( _evt, _rateIns ) {
-     	var star = _rateIns;
+    $( document ).delegate( 'span.js_rateClickedEvent', 'rateClicked', function( _evt, _target, _rateIns ) {
+     	var star = _target;
         JC.log( 'rate clicked' );
     } );
     </pre>
@@ -245,15 +244,6 @@
                     return defualHints;
                 }
             }
-        /*
-        , getrateClicked:
-            function() {
-                var _p = this,
-                    _selector = _p.selector(),
-                    _key = 'rateClicked';
-                return _p.callbackProp( _selector, _key );
-            }
-        */
         , getInitScore: 
             function() {
                 var score = this.floatProp( 'score' );
@@ -389,11 +379,6 @@
                     _p.lightStar( _model.scoreToStarNum( initScore ) );
                 }
             }
-        /*
-        , update:
-            function() {
-            }
-        */
         /**
         * 星星动态变化方法
         * @param   {number}    target
@@ -489,32 +474,4 @@
         , window
     )
 );
-/*
- 
-   review qiushaowei 
-       2014-07-16
-            html 内容可以这样写
-                   'input[ type=\'hidden\' ]' 
-                   该为
-                        'input[ type="hidden" ]'  or "input[ type='hidden' ]"
 
-            把 <img src="http://p0.qhimg.com/d/inn/0f5ac496/pixel.gif" class="{0}" title="{1}"  />
-                改为 button 标签, 避免浪费一个 http 请求
-
-        2014-07-17
-            所有自定义事件名改为常量
-                Rate.Model.INITED = 'rateInited';
-            
-            回调函数改为事件响应
-                _p.notification
-
-            style 和 class 俩个属性不要用 .attr 函数操作, 改为 .css() 和 .removeClass(), .addClass()
-                用 .attr 操作这俩个属性有可能覆盖 动态添加的 内容
-
-            YUI 注释需有分清 @static 关键词的用途
-
-        2014-07-21
-            
-            写注释的时候, Model 和 View 不需要写 @property 和 @method 这俩个属性
- 
- */

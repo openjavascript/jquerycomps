@@ -102,8 +102,6 @@
         this._view = new Cover.View( this._model );
 
         this._init();
-
-        //JC.log( Cover.Model._instanceName, 'all inited', new Date().getTime() );
     }
     /**
      * 初始化可识别的 Cover 实例
@@ -149,7 +147,7 @@
                     var cnt = $( e.target );
                     if( cnt.hasClass( _Model.COVER_CNT ) ){
                         _view.coverItem( cnt.next() );
-                        _p.notification( _Model.COVERED, [ cnt.parent( '.' + _Model.COVER_BOX ) ] );
+                        _p.notification( _Model.COVERED, [ cnt.parent( '.' + _Model.COVER_BOX ), _p ] );
                     }
                 } );
                 _selector.on( 'mouseleave', 'li', function( e ) {
@@ -161,7 +159,7 @@
                     var target = $( e.target );
                     !target.is( 'li' ) && ( target = target.parent( '.' + _Model.COVER_BOX ) );
                     _view.link( target );
-                    _p.notification( _Model.CLICKED, [target] );
+                    _p.notification( _Model.CLICKED, [ target, _p ] );
                 } );
             }
 
@@ -185,33 +183,33 @@
 
     /**
      * JC.Cover hover后遮罩遮挡后 selector 触发的事件
-     * @event  coverCallback 
+     * @event  coverCovered
      * @param   {Event}         _evt
      * @param   {CoverInstance}  _coverIns
      * @example
     <pre>
-    $( document ).delegate( "div.js_coverCoveredEvent", "coverCallback", function( _evt, _coverIns ) {
+    $( document ).delegate( "div.js_coverCoveredEvent", "coverCovered", function( _evt, _targetBox, _coverIns ) {
         JC.log( 'item covered' );
-        JC.log( 'cover : ' + _coverIns.attr( 'covertitle' ) );
+        JC.log( 'cover : ' + _targetBox.attr( 'covertitle' ) );
     } );
     </pre>
      */
-    _Model.COVERED = 'coverCallback';
+    _Model.COVERED = 'coverCovered';
 
     /**
      * JC.Cover 点击后 selector 触发的事件
-     * @event  clickCallback 
+     * @event  coverClicked
      * @param   {Event}         _evt
      * @param   {coverInstance}  _coverIns
      * @example
     <pre>
-    $( document ).delegate( "div.js_coverClickedEvent", "clickCallback", function( _evt, _coverIns ) {
+    $( document ).delegate( "div.js_coverClickedEvent", "coverClicked", function( _evt, _targetBox, _coverIns ) {
         JC.log( 'item clicked' );
-        JC.log( 'click : ' + _coverIns.attr( 'covertitle' ) );
+        JC.log( 'click : ' + _targetBox.attr( 'covertitle' ) );
     } );
     </pre>
      */
-    _Model.CLICKED = 'clickCallback';
+    _Model.CLICKED = 'coverClicked';
 
     JC.f.extendObject( _Model.prototype, {
         init:
@@ -227,33 +225,27 @@
             }
         , getItemMod:
             function( item ) {
-                var itemCol = item.attr( 'mod' );
-                return ( typeof itemCol == 'undefined' ) ? 1 : parseInt( itemCol );
+                return this.intProp( item, 'mod' ) || 1;
             }
         , getShowType:
             function( item ) {
-                var showType = item.attr( 'showtype' );
-                return ( typeof showType == 'undefined' ) ? 'title' : showType;
+                return this.attrProp( item, 'showtype' ) || 'title';
             }
         , getItemCnt:
             function( item ) {
-                var itemCnt = item.attr( 'itemcnt' );
-                return ( typeof itemCnt == 'undefined' ) ? '' : itemCnt;
+                return this.attrProp( item, 'itemcnt' );
             }
         , getCoverTitle:
             function( item ) {
-                var coverTitle = item.attr( 'covertitle' );
-                return ( typeof coverTitle == 'undefined' ) ? '' : coverTitle;
+                return this.attrProp( item, 'covertitle' );
             }
         , getCoverDir:
             function( item ) {
-                var coverDir = item.attr( 'coverdir' );
-                return ( typeof coverDir == 'undefined' ) ? 2 : parseInt( coverDir );
+                return this.intProp( item, 'coverdir' ) || 2;
             }
         , getCntLink:
             function( item ) {
-                var cntLink = item.attr( 'cntlink' );
-                return ( typeof cntLink == 'undefined' ) ? '' : cntLink;
+                return this.attrProp( item, 'cntlink' );
             }
         , getItemBorder:
             function() {
@@ -261,13 +253,11 @@
             }
         , getBoxCol:
             function( item ) {
-                var boxCol = item.attr( 'boxcol' );
-                return ( typeof boxCol == 'undefined' ) ? 1 : parseInt( boxCol ); 
+                return this.intProp( item, 'boxcol' ) || 1;
             }
         , getBoxRow:
             function( item ) {
-                var boxRow = item.attr( 'boxrow' );
-                return ( typeof boxRow == 'undefined' ) ? 1 : parseInt( boxRow ); 
+                return this.intProp( item, 'boxrow' ) || 1;
             }
     });
 
