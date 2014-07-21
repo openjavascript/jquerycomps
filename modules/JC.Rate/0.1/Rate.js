@@ -16,22 +16,26 @@
  *
  *  <dl>
  *      <dt>totalnum = int, default = 5</dt>
- *      <dd>文字说明<dd>
+ *      <dd>显示分数所用的总星星数量<dd>
  *
  *      <dt>maxscore = int, default = 5</dt>
- *      <dd>文字说明<dd>
+ *      <dd>最大分数上限，支持浮点数<dd>
  *
- *      <dt>clickCallback = function</dt>
- *      <dd>文字说明
-<pre>function clickCallback() {
-    var star = arguments[0];
-    if( star.hasClass( 'rate-score' ) ){
-        $( '#score-input' ).val( star.attr( 'title' ) );
-    }
-}</pre>
- *      </dd>
+ *      <dt>minscore = int, default = 5</dt>
+ *      <dd>最小分数下限，支持浮点数<dd>
+ *      
+ *      <dt>score = int, default = 0</dt>
+ *      <dd>默认分数<dd>
+ *      
+ *      <dt>half = boolean, default = false</dt>
+ *      <dd>星星是否支持显示半颗星</dd>
+ *      
+ *      <dt>cancel = boolean, default = false</dt>
+ *      <dd>是否需要清零按钮</dd>
  *
- *      <dt>补充其他属性的说明...</dt>
+ *      <dt>hints = string, default = '较差,一般,不错,很好,非常棒'</dt>
+ *      <dd>鼠标hover时，显示的title，以分号隔开</dd>
+
  *  </dl> 
  *
  * @namespace   JC
@@ -42,12 +46,11 @@
  * @version dev 0.1 2014-07-16
  * @author  pengjunkai <pengjunkai@360.cn> | 75 Team
  * @example
-        <span class="js_compRate" score="3" clickcallback="clickCallback">
+        <h2>Title:</h2>
+        <span class="js_compRate" score="3" hints="1分,2分,3分,4分,5分"></span>
+        <h2>Click Callback:</h2>
+        <span class="js_compRate js_rateClickedEvent" score="3" clickcallback="clickCallback">
             <input id="score-input" ReadOnly type="text" />
-        </span>
-        <h2>Inited Callback:</h2>
-        <span class="js_compRate" score="3" readonly="true" hints="1分,2分,3分,4分,5分">
-            <input id="score-input2" ReadOnly type="text" />
         </span>
  */
     var _jdoc = $( document ), _jwin = $( window );
@@ -66,8 +69,6 @@
         this._view = new Rate.View( this._model );
 
         this._init();
-
-        //JC.log( Rate.Model._instanceName, 'all inited', new Date().getTime() );
     }
 
     /**
@@ -86,10 +87,6 @@
                 if( _selector.hasClass( 'js_compRate' )  ){
                     _r.push( new Rate( _selector ) );
                 }else{
-                    /**
-                     * div 改为 span | label
-                     * 避免换行问题
-                     */
                     _selector.find( 'span.js_compRate, label.js_compRate' ).each( function(){
                         _r.push( new Rate( this ) );
                     });
@@ -103,7 +100,6 @@
     JC.f.extendObject( Rate.prototype, {
         _beforeInit:
             function(){
-                //JC.log( 'Rate _beforeInit', new Date().getTime() );
             }
 
         , _initHanlderEvent:
@@ -116,17 +112,8 @@
                 _p.on( _Model.INITED, function( _evt ) {
                     if( _model.isInited() ){ return; }
                     _view.update(_p);
-
-                    //_p.trigger( 'initedCallback' );
                     _p.notification( _Model.INITED, [ _p ] );
                 } );
-
-                /*
-                _p.on( 'initedCallback', function( e ) {
-                    _model.getInitedCallback() &&
-                        _model.getInitedCallback().call( _p, _p.selector() );
-                } );
-                */
                 
                 if( _model.getReadOnly() ){ return; }
 
@@ -186,12 +173,43 @@
 
     var _Model = Rate.Model;
     _Model._instanceName = 'JCRate';
-    _Model.INITED = 'rateinited';
-    _Model.CLICKED = 'clickCallback';
     _Model.LIGHT_STAR = 'light_start';
     _Model.LIGHT_CANCEL = 'LIGHT_CANCEL';
     _Model.RATE_HIDDEN = 'js_rateHidden';
     _Model.DEFULT_HINTS = ['较差', '一般', '不错', '很好', '非常棒'];
+
+    /* Event */
+    
+    /**
+     * JC.Rate 初始化后 selector 触发的事件
+     * @event  rateinited 
+     * @param   {Event}         _evt
+     * @param   {RateInstance}  _rateIns
+     * @example
+    <pre>
+    $( document ).delegate( 'span.js_rateInitedEvent', 'rateinited', function( _evt, _rateIns ){
+        var _selector = $( this );
+        JC.log( 'rateinited event' );
+    });
+    </pre>
+     */
+    _Model.INITED = 'rateinited';
+    
+    /**
+     * JC.Rate 点击后 selector 触发的事件
+     * 返回触发点击事件的元素
+     * @event   clickCallback
+     * @param   {Event}         _evt
+     * @param   {RateInstance}  _rateIns
+     * @example
+    <pre>
+    $( document ).delegate( 'span.js_rateClickedEvent', 'clickCallback', function( _evt, _rateIns ) {
+     	var star = _rateIns;
+        JC.log( 'rate clicked' );
+    } );
+    </pre>
+     */
+    _Model.CLICKED = 'clickCallback';
 
     JC.f.extendObject( _Model.prototype, {
         init:
@@ -474,18 +492,6 @@
                 _p._model.selector().children( '.' + _Model.RATE_HIDDEN ).val( score );
             }
     });
-
-    /**
-     * JC.Rate 初始化后 selector 触发的事件
-     * @event  rateinited 
-     * @param   {Event}         _evt
-     * @param   {RateInstance}  _rateIns
-     * @example
-<pre>$( document ).delegate( 'span.js_rateInitedEvent', 'rateinited', function( _evt, _rateIns ){
-    var _selector = $( this );
-    JC.log( 'rateinited event' );
-});</pre>
-     */
 
     _jdoc.ready( function(){
         var _insAr = 0;

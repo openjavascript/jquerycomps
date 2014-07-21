@@ -66,7 +66,7 @@
             </ul>
         </div>
         <h2>Mix:</h2>
-        <div class="js_compCover" itemcol="4" itemwidth="80" itemborder="1" style="">
+        <div class="js_compCover" itemcol="4" itemwidth="80" itemborder="1">
             <ul>
                 <li mod="2" coverdir="0" boxcol="2" boxrow="2" showtype='img' itemcnt="img/001.jpg" covertitle="习近平巴西国会演讲" cntlink="http://news.hexun.com/2014-07-18/166749473.html"></li>
                 <li mod="1" boxcol="2" itemcnt="李克强听取企业意见" covertitle="点击查看"></li>
@@ -85,14 +85,14 @@
             requirejs( [ 'JC.Cover' ], function(){
             });
 
-            $( document ).delegate( "div.js_coverCoveredEvent", "coverCallback", function( _evt, _rateIns ) {
-                console.log( 'item covered' );
-                console.log( 'cover : ' + _rateIns.attr( 'covertitle' ) );
+            $( document ).delegate( "div.js_coverCoveredEvent", "coverCallback", function( _evt, _coverIns ) {
+                JC.log( 'item covered' );
+                JC.log( 'cover : ' + _coverIns.attr( 'covertitle' ) );
             } );
 
-            $( document ).delegate( "div.js_coverClickedEvent", "clickCallback", function( _evt, _rateIns ) {
-                console.log( 'item clicked' );
-                console.log( 'click : ' + _rateIns.attr( 'covertitle' ) );
+            $( document ).delegate( "div.js_coverClickedEvent", "clickCallback", function( _evt, _coverIns ) {
+                JC.log( 'item clicked' );
+                JC.log( 'click : ' + _coverIns.attr( 'covertitle' ) );
             } );
         </script>
     </body>

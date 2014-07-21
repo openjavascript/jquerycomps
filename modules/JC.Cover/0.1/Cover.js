@@ -3,8 +3,7 @@
  * 组件用途简述
  *
  *  <p><b>require</b>:
- *      <a href="widnow.jQuery.html">jQuery</a>
- *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *  </p>
  *
  *  <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -16,8 +15,30 @@
  *  <h2>可用的 HTML attribute</h2>
  *
  *  <dl>
- *      <dt></dt>
- *      <dd><dd>
+ *      <dt>itemcol = int, default = 4</dt>
+ *      <dd>设置一行可以容纳的基本格数量<dd>
+ *      
+ *      <dt>itemwidth = int, default = 70</dt>
+ *      <dd>设置基本格宽度<dd>
+ *
+ *      <dt>borderwidth = int, default = 0</dt>
+ *      <dd>设置基本格边框宽度，默认无边框<dd>
+ *
+ *      <dt>itemcnt = string, default = ""</dt>
+ *      <dd>设置基本格内显示的内容，若 'showtype' 属性设置为 'img' 时，该字段表示图片链接的URL地址</dd>
+ *
+ *      <dt>covertitle = string, default = ""</dt>
+ *      <dd>设置基本格遮罩显示的内容</dd>
+ *
+ *      <dt>showtype = string, default = 'title'</dt>
+ *      <dd>设置基本格内展示的内容模式，可选项有：'title' 和 'img'</dd>
+ *
+ *      <dt>coverdir = int, default = 2</dt>
+ *      <dd>设置遮罩出现的方向，可选项有：0-上、1-右、2-下、3-左</dd>
+ *
+ *      <dt>mod = int, default = 1</dt>
+ *      <dd>设置遮罩显示模式，数值越大字号越大</dd>
+
  *  </dl> 
  *
  * @namespace   JC
@@ -25,10 +46,36 @@
  * @extends     JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
- * @version dev 0.1 2013-12-13
- * @author  qiushaowei <suches@btbtd.org> | 75 Team
+ * @version dev 0.1 2014-07-21
+ * @author  pengjunkai <pengjunkai@360.cn> | 75 Team
  * @example
-        <h2>JC.Cover 示例</h2>
+        <h2>Default:</h2>
+        <div class="js_compCover" itemborder="1">
+            <ul>
+                <li itemcnt="习近平巴西国会演讲"></li>
+                <li itemcnt="李克强听取企业意见"></li>
+                <li itemcnt="副县长辞官"></li>
+                <li itemcnt="古巨基结婚"></li>
+                <li itemcnt="毛小兵被双开"></li>
+                <li itemcnt="张田欣赵智勇降级"></li>
+                <li itemcnt="MH17被击落"></li>
+                <li itemcnt="北京暴雨"></li>
+            </ul>
+        </div>
+        <h2>Custom Table Design:</h2>
+        <div class="js_compCover" itemwidth="90" itemborder="2" itemcol="3">
+            <ul>
+                <li itemcnt="习近平巴西国会演讲"></li>
+                <li itemcnt="李克强听取企业意见"></li>
+                <li itemcnt="副县长辞官"></li>
+                <li coverdir="3" itemcnt="古巨基结婚"></li>
+                <li coverdir="3" itemcnt="毛小兵被双开"></li>
+                <li coverdir="3" itemcnt="张田欣赵智勇降级"></li>
+                <li coverdir="0" itemcnt="MH17被击落"></li>
+                <li coverdir="0" itemcnt="北京暴雨"></li>
+                <li coverdir="0" itemcnt="博导诱奸女生事件"></li>
+            </ul>
+        </div>
  */
     var _jdoc = $( document ), _jwin = $( window );
 
@@ -116,7 +163,7 @@
     });
     
     var _Model = Cover.Model;
-    /* Static Var */
+    /* Var */
     _Model.COVER_CNT = 'cover-cnt';
     _Model.COVER_COVER = 'cover-cover';
     _Model.COVER_BOX = 'cover-box';
@@ -125,9 +172,38 @@
     _Model.ANIMATE_SPEED = 200;
     _Model._instanceName = 'JCCover';
 
-    /* Static Event */
+    /* Event */
+
+    /**
+     * JC.Cover hover后遮罩遮挡后 selector 触发的事件
+     * @event  coverCallback 
+     * @param   {Event}         _evt
+     * @param   {CoverInstance}  _coverIns
+     * @example
+    <pre>
+    $( document ).delegate( "div.js_coverCoveredEvent", "coverCallback", function( _evt, _coverIns ) {
+        JC.log( 'item covered' );
+        JC.log( 'cover : ' + _coverIns.attr( 'covertitle' ) );
+    } );
+    </pre>
+     */
     _Model.COVERED = 'coverCallback';
+
+    /**
+     * JC.Cover 点击后 selector 触发的事件
+     * @event  clickCallback 
+     * @param   {Event}         _evt
+     * @param   {coverInstance}  _coverIns
+     * @example
+    <pre>
+    $( document ).delegate( "div.js_coverClickedEvent", "clickCallback", function( _evt, _coverIns ) {
+        JC.log( 'item clicked' );
+        JC.log( 'click : ' + _coverIns.attr( 'covertitle' ) );
+    } );
+    </pre>
+     */
     _Model.CLICKED = 'clickCallback';
+
     JC.f.extendObject( _Model.prototype, {
         init:
             function() {
@@ -224,6 +300,13 @@
                     _p.putCover( item.children( '.' + _Model.COVER_CNT ), coverDir );
                 } );
             }
+        /**
+        * 初始化遮罩
+        * @method  putCover
+        * @param   {number}    target
+        *          {number}    dir
+        * @return  
+        */
         , putCover: 
             function( target, dir ) {
                 var width = target[ 0 ].offsetWidth,
@@ -239,10 +322,6 @@
                 }
                 cover.attr( 'covertop', top ).attr( 'coverleft', left )
                     .css( { 'top' : top + 'px', 'left' : left + 'px' } );
-            }
-        , itemInit:
-            function() {
-                
             }
         , coverItem:
             function( cover ) {
