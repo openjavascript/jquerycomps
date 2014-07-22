@@ -229,7 +229,6 @@
             }
         /**
         * 初始化遮罩
-        * @method  putCover
         * @param   {number}    target
         *          {number}    dir
         * @return  
