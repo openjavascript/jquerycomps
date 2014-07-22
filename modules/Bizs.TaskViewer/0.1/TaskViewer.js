@@ -214,7 +214,7 @@
 
             for ( i = 0; i < l; i++ ) {
                 
-                if ( i % 7 === 5 || i % 7 === 6 ) {
+                if ( i % 7 === 0 || i % 7 === 6 ) {
                     style = 'weekend';
                 }  else {
                     style = '';
