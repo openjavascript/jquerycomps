@@ -17,18 +17,23 @@
  * <h2>可用的 HTML attribute</h2>
  *
  * <dl>
- *    <dt>content = string </dt>
- *    <dd>
- *       <p>声明气泡提示的内容，如果需要提示html内容那么用<b>htmlContent</b>属性<br>
- *       如果没有设置则去查找title属性，如果title也没有设置，<br/>
-         则将触发元素的text作为提示内容。</p>
- *    </dd>
- *
  *    <dt>htmlContent</dt>
  *    <dd>
  *       <p>声明气泡提示的内容支持脚本模板<br>
  *        如果有设置该属性那么会优先选用htmlContent提供的内容
  *       </p>
+ *    </dd>
+ *
+ *    <dt>ajaxContent</dt>
+ *    <dd>
+ *       <p>声明气泡提示的ajax 模板</p>
+ *    </dd>
+ *
+ *    <dt>content = string </dt>
+ *    <dd>
+ *       <p>声明气泡提示的内容，如果需要提示html内容那么用<b>htmlContent</b>属性<br>
+ *       如果没有设置则去查找title属性，如果title也没有设置，<br/>
+         则将触发元素的text作为提示内容。</p>
  *    </dd>
  *
  *    <dt>theme = yellow | blue | white | green, <a href="../../modules/JC.PopTips/0.1/res/default/style.html" target="_blank">查看</a> </dt>
@@ -263,6 +268,18 @@
 
             }
 
+            _p.on( 'update_layout', function( _evt, _html ){
+                var _json;
+                try{
+                    _json = $.parseJSON( _html );
+                    if( _json && 'errorno' in _json && !_json.errorno && _json.data ){
+                        _html = _json.data;
+                    }
+                }catch( _ex ){
+                }
+                _p._model.layout().find( '.js_cpt_ajax_ph' ).html( _html );
+            });
+
             if ( _p._model.triggerType() == 'click' ) {
                 _p._model.selector().on('click', function ( _evt ) {
                     if ( _p._model.layout().is(':visible') ) {
@@ -347,6 +364,15 @@
             return _r;
         },
 
+        ajaxContent: function () {
+            var _p = this;
+            this.is( '[ajaxContent]' ) &&
+                $.get( this.attrProp( 'ajaxContent' ) ).done( 
+                    function( _r ){
+                        _p.trigger( 'update_layout', [ _r ] );
+                    });
+        },
+
         arrowPosition: function () {
             var _r = this.stringProp('arrowPosition');
 
@@ -406,6 +432,14 @@
                         , _p.htmlContents()
                         , 'style="width:' + _p.layoutWidth() + ';height:' + _p.layoutHeight() + ';"' ) )
                         .appendTo( this.layoutBox() );
+                } else if ( this.is( '[ajaxContent]' ) ) {
+                    this._layout = $( JC.f.printf( _tpl
+                        , _p.theme()
+                        , _p.arrowPosition()
+                        , '<div class="js_cpt_ajax_ph">加载中...</div>'
+                        , 'style="width:' + _p.layoutWidth() + ';height:' + _p.layoutHeight() + ';"' ) )
+                        .appendTo( this.layoutBox() );
+                    _p.ajaxContent();
                 } else {
                     this._layout = $( JC.f.printf( _tpl
                         , _p.theme()
