@@ -16,8 +16,10 @@
  *
  *  <dl>
  *      <dt>covercnt = string, default = ""</dt>
- *      <dd>遮罩显示的内容，covertype="title"时，显示由
- *      直接显示内容；covertype="selector"时，显示由select指向的内容<dd>
+ *      <dd>遮罩显示的文本内容<dd>
+ *
+ *      <dt>coverselectorcnt = string, default = ""</dt>
+ *      <dd>遮罩显示的内容，显示由select指向的html</dd>
  *      
  *      <dt>coverlink = string, default = ""</dt>
  *      <dd>点击cover时，跳转的地址URL<dd>
@@ -190,13 +192,22 @@
             }
         , getCoverCnt :
             function() {
-                var coverCnt = this.attrProp( 'covercnt' );
+                return this.attrProp( 'covercnt' );
                 var _ele = JC.f.parentSelector( this._selector, coverCnt );
                 if( _ele.length > 0 ) {
                     return _ele.html();
                 } else {
                     return coverCnt;
                 }
+            }
+        , getCoverSelectorCnt : 
+            function() {
+                var coverSelectorCnt = this.attrProp( 'coverselectorcnt' );
+                var _ele = JC.f.parentSelector( this._selector, coverSelectorCnt );
+                if( _ele.length > 0 ) {
+                    return _ele.html();
+                }
+                return '';
             }
         , getCoverLink :
             function() {
@@ -211,19 +222,19 @@
     JC.f.extendObject( Cover.View.prototype, {
         init:
             function() {
-                var _p = this,
-                    _model = _p._model,
-                    cover = '',
+                var _p = this, 
+                    _model = _p._model, cover = '',
                     coverLink = _model.getCoverLink(),
                     item = $( _model.selector() ), 
                     cover = '<button class="{0}" style="{1}" {2}>{3}</button>',
+                    coverCnt = _model.getCoverCnt() || _model.getCoverSelectorCnt(),
                     cntStyle = _model.getCoverPointer() ? ' cursor : pointer; ' : '',
                     itemStyle = { 'overflow' : 'hidden' };
                 coverLink = coverLink ? ' linkurl="' + coverLink + '" ' : '';
                 item.css( 'position' ) == 'static' && ( itemStyle['position'] = 'relative' );
                 item.css( itemStyle );
                 item.append( JC.f.printf( cover, 
-                    _Model.COVER_COVER, cntStyle, coverLink, _model.getCoverCnt() ) );
+                    _Model.COVER_COVER, cntStyle, coverLink, coverCnt ) );
                 _p.putCover( item, _model.getCoverDir() );
             }
         /**
