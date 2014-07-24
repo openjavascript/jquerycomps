@@ -246,7 +246,7 @@
                     top = 0;
                     left = ( dir == 1 ) ? width : parseInt( '-' + width );
                 }
-                cover.attr( 'covertop', top ).attr( 'coverleft', left )
+                cover.data( 'covertop', top ).data( 'coverleft', left )
                     .css( {
                         'top' : top + 'px',
                         'left' : left + 'px',
@@ -261,8 +261,8 @@
             }
         , coverBack:
             function( cover ) {
-                cover.stop( false, true ).animate( { top : cover.attr( 'covertop' ) + 'px',
-                    left : cover.attr( 'coverleft' ) + 'px' }, _Model.ANIMATE_SPEED );
+                cover.stop( false, true ).animate( { top : cover.data( 'covertop' ) + 'px',
+                    left : cover.data( 'coverleft' ) + 'px' }, _Model.ANIMATE_SPEED );
             }
         , link:
             function( target ) {
