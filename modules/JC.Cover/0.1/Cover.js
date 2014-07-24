@@ -19,14 +19,14 @@
  *      <dd>遮罩显示的内容，covertype="title"时，显示由
  *      直接显示内容；covertype="selector"时，显示由select指向的内容<dd>
  *      
- *      <dt>covertype = string, default = "title"</dt>
- *      <dd>遮罩显示内容的类型<dd>
- *
  *      <dt>coverlink = string, default = ""</dt>
  *      <dd>点击cover时，跳转的地址URL<dd>
  *      
  *      <dt>coverpointer = boolean default = false</dt>
  *      <dd>遮罩是否显示手型</dd>
+ *
+ *      <dt>coverdir = int default = 2</dt>
+ *      <dd>遮罩遮盖方向，0-上、1-右、2-下、9-左</dd>
  *  </dl> 
  *
  * @namespace   JC
@@ -78,6 +78,7 @@
                         _r.push( new Cover( this ) );
                     });
                 }
+                _selector.trigger( 'mouseenter' );
             }
             return _r;
         };
@@ -183,16 +184,18 @@
             }
         , getCoverDir :
             function() {
-                return this.attrProp( 'coverdir' );
+                var _dir = this.attrProp( 'coverdir' );
+                if( _dir == '' || _dir > 3 || _dir < 0 ) { _dir = 2; }
+                return parseInt( _dir );
             }
         , getCoverCnt :
             function() {
-                var covertype = this.getCoverType(),
-                    coverCnt = this.attrProp( 'covercnt' );
-                if( covertype == 'title' ) {
+                var coverCnt = this.attrProp( 'covercnt' );
+                var _ele = JC.f.parentSelector( this._selector, coverCnt );
+                if( _ele.length > 0 ) {
+                    return _ele.html();
+                } else {
                     return coverCnt;
-                } else if( covertype == 'selector' ) {
-                    return JC.f.parentSelector( this._selector, coverCnt ).html();
                 }
             }
         , getCoverLink :
@@ -202,10 +205,6 @@
         , getCoverPointer :
             function() {
                 return this.boolProp( 'coverpointer' );
-            }
-        , getCoverType :
-            function() {
-                return this.attrProp( 'covertype' ) || 'title';
             }
     });
 
@@ -266,14 +265,21 @@
             }
         , link:
             function( target ) {
-                
                 var linkurl = target.attr( 'linkurl' );
                 ( typeof linkurl != 'undefined' ) && window.open( linkurl );
             }
     });
 
     _jdoc.ready( function(){
-        Cover.autoInit && Cover.init();
+        //Cover.autoInit && Cover.init();
+        $( document ).delegate( '.js_compCover', 'mouseenter', function( _e ) {
+            var _t = $( _e.target ),
+                _selector = _t.hasClass( 'js_compCover' ) ? 
+                    _t : _t.parent( '.js_compCover' );
+            if( !JC.BaseMVC.getInstance( _selector, Cover ) ){
+                Cover.init( _selector );
+            }
+        } );
     });
 
     return JC.Cover;
