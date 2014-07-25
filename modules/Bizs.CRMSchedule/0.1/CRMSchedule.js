@@ -688,6 +688,7 @@
 
                 _p.selector().delegate( 'td.js_pos_canSelect', 'click', function( _evt ){
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
+                    //JC.log( 'CRMSchedule click' );
                     if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
                         _p.trigger( 'select_item', [ _id, _date, _sp, function(){
                             _sp.removeClass( CRMSchedule.ALL_CLASS )
