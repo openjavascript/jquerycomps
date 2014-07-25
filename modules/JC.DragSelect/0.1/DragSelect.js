@@ -243,6 +243,7 @@
 
                     $.each( _ditems, function( _k, _item ){
                         _p.selector().delegate( _item, 'mousedown', function( _evt ){
+                            //JC.log( 'DragSelect mousedown', JC.f.ts() );
                             var _sp = $( this );
                             _p.trigger( 'SELECT_START', [ _sp, _evt, _item ] );
                         });
@@ -283,6 +284,8 @@
                     var _rectSize = selectorToRectangle( DragSelect.RECT() );
 
                     if( _p._model.rectIsOutsize( _rectSize ) ){
+                        _p.trigger( 'PROCESSS_SELECT', [ _rectSize, DragSelect.DRAG_DATA() ] );
+                        //JC.log( 'DragSelect click', JC.f.ts() );
                     }else{
                         _p.trigger( 'PROCESSS_SELECT', [ _rectSize, DragSelect.DRAG_DATA() ] );
                     }
