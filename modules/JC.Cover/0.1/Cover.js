@@ -40,14 +40,6 @@
  * @author  pengjunkai <pengjunkai@360.cn> | 75 Team
  * @example
         <h2>Default:</h2>
-<<<<<<< HEAD
-        <div class="js_compCover" covercnt="test" coverpointer="true" 
-            coverlink="http://www.so.com" style="height: 200px; width: 200px; background: red;">
-        </div>
-        <h2>Some Text:</h2>
-        <div class="js_compCover" covercnt="Cover Text" coverdir="1" coverpointer="true" 
-            coverlink="http://www.so.com" style="height: 200px; width: 200px; background: red;">Some Text</div>
-=======
         <div class="js_compCover" style="height: 200px; width: 200px; background: red;"
             covercnt="test" coverpointer="true" coverlink="http://www.so.com"
         ></div>
@@ -56,7 +48,6 @@
         <div class="js_compCover" style="height: 200px; width: 200px; background: red;"
             covercnt="Cover Text" coverdir="1" coverpointer="true" coverlink="http://www.so.com"
         >Some Text</div>
->>>>>>> 034f688f3ff49ef9b1906be7056a9add4a7310cd
  */
     var _jdoc = $( document ), _jwin = $( window );
 
@@ -315,18 +306,4 @@
         , window
     )
 );
-/*
-   review qiushaowei 
-        
-        2014-07-21
-                covertitle 属性可以去掉
-                    默认的展现内容写在 li 标签里面
 
-                添加一个获取 脚本模板 内容的属性, 比如 itemScriptCnt="/script"( 使用 JC.f.parentSelector 获取脚本选择器 )
-                    如果模板内容含有 html tag 的时候, 会比较方便
-
-                初始化 Cover 功能应该最小粒度
-                        一个Cover示例只处理一个 li
-                        Cover 功能不要涉及布局逻辑, 布局逻辑应该由用户自己处理
-                
- */
