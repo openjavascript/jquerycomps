@@ -778,11 +778,11 @@ function parseYearDate( _dateStr ){
     Calendar.setPosition = Calendar.position;
     /**
      * 初始化日历组件的触发按钮
-     * @method  _logic.initTrigger
+     * @method  init
      * @param   {selector}      _selector   
      * @private
      */
-    Calendar.initTrigger = 
+    Calendar.init = Calendar.initTrigger = 
         function( _selector ){
            _selector.each( function(){
                 var _p = $(this)
