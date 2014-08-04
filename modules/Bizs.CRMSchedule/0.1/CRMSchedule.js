@@ -480,6 +480,7 @@
                 var _p = this;
 
                 _p.selector().delegate( 'td.js_pos_canSelect', 'click', function( _evt ){
+                    if( _p.selector().hasClass( 'js_compDragSelect' ) ) return;
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
                     if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
 
@@ -492,6 +493,7 @@
                 });
 
                 _p.selector().delegate( 'td.js_pos_locked', 'click', function( _evt ){
+                    if( _p.selector().hasClass( 'js_compDragSelect' ) ) return;
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
                     if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
 
@@ -687,6 +689,7 @@
                 var _p = this;
 
                 _p.selector().delegate( 'td.js_pos_canSelect', 'click', function( _evt ){
+                    if( _p.selector().hasClass( 'js_compDragSelect' ) ) return;
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
                     //JC.log( 'CRMSchedule click' );
                     if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
@@ -698,6 +701,7 @@
                 });
 
                 _p.selector().delegate( 'td.js_pos_selected', 'click', function( _evt ){
+                    if( _p.selector().hasClass( 'js_compDragSelect' ) ) return;
                     var _sp = $( this ), _id = _sp.attr( 'data-id' ), _date = _sp.attr( 'data-date' );
                     if( Bizs.CRMSchedule.outdateCheck( _sp ) ) return;
                         _p.trigger( 'unselect_item', [ _id, _date, _sp, function(){
