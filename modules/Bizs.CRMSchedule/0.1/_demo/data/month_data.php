@@ -27,8 +27,8 @@
             for( $k = 0; $k < 28; $k ++ ){
                 $tmpKey = date( 'Y-m-d', $tmp_date );
                 $position_date[ $tmpKey ] = array(
-                    'status' => $k % 7
-                    , 'company' => $k % 7 != 0 ? '中文company ' . $k : ''
+                    'status' => $k % 8
+                    , 'company' => $k % 8 != 0 ? '中文company ' . $k : ''
                );
                 $position_date[ $tmpKey ][ 'departmentName' ] = '部门团队名称';
                 $position_date[ $tmpKey ][ 'createUserName' ] = '提交人';

@@ -24,8 +24,8 @@
 
             $tmpKey = date( 'Y-m-d', $start_date );
             $position_date[ $tmpKey ] = array(
-                'status' => $count % 7
-                , 'company' => $count % 7 != 0 ? '中文company ' . $count : ''
+                'status' => $count % 8
+                , 'company' => $count % 8 != 0 ? '中文company ' . $count : ''
            );
             $position_date[ $tmpKey ][ 'departmentName' ] = '部门团队名称';
             $position_date[ $tmpKey ][ 'createUserName' ] = '提交人';
