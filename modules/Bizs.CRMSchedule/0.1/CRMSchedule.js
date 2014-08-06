@@ -157,6 +157,7 @@
             已上线      : js_pos_online
             未上线      : js_pos_notOnline
             已锁定      : js_pos_locked
+            待审核      : js_pos_preVerify
 
 
     类型对照( 默认类型为 0 )
@@ -166,6 +167,8 @@
             已上线      : 3
             未上线      : 4
             已锁定      : 5
+            已选择      : 6
+            待审核      : 7
     */
     CRMSchedule.STATUS_CAN_SELECT   = '0';
     CRMSchedule.STATUS_ORDERED      = '1';
@@ -174,6 +177,7 @@
     CRMSchedule.STATUS_NOT_ONLINE   = '4';
     CRMSchedule.STATUS_LOCKED       = '5';
     CRMSchedule.STATUS_SELECTED     = '6';
+    CRMSchedule.STATUS_PRE_VERIFY   = '7';
 
     CRMSchedule.CLASS_CAN_SELECT    = 'js_pos_canSelect';
     CRMSchedule.CLASS_ORDERED       = 'js_pos_ordered';
@@ -182,6 +186,7 @@
     CRMSchedule.CLASS_NOT_ONLINE    = 'js_pos_notOnline';
     CRMSchedule.CLASS_LOCKED        = 'js_pos_locked';
     CRMSchedule.CLASS_SELECTED      = 'js_pos_selected';
+    CRMSchedule.CLASS_PRE_VERIFY    = 'js_pos_preVerify';
 
     CRMSchedule.STATUS_CODE_MAP = {
         '0'                         : CRMSchedule.CLASS_CAN_SELECT
@@ -191,6 +196,7 @@
         , '4'                       : CRMSchedule.CLASS_NOT_ONLINE
         , '5'                       : CRMSchedule.CLASS_LOCKED
         , '6'                       : CRMSchedule.CLASS_SELECTED
+        , '7'                       : CRMSchedule.CLASS_PRE_VERIFY
     };
 
     CRMSchedule.CLASS_MAP = {
@@ -201,6 +207,7 @@
         , 'js_pos_notOnline'        : CRMSchedule.STATUS_NOT_ONLINE
         , 'js_pos_locked'           : CRMSchedule.STATUS_LOCKED
         , 'js_pos_selected'         : CRMSchedule.STATUS_SELECTED
+        , 'js_pos_preVerify'        : CRMSchedule.STATUS_PRE_VERIFY
     };
 
     var _tmp = [];
