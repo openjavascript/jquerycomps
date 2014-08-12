@@ -1,6 +1,6 @@
 ;(function(define, _win) { 'use strict'; define( [], function(){
-    window.JWIN = $( window );
-    window.JDOC = $( document );
+    window.JWIN = window.JWIN || $( window );
+    window.JDOC = window.JDOC || $( document );
     /**
      * 如果 console 不可用, 生成一个模拟的 console 对象
      */
