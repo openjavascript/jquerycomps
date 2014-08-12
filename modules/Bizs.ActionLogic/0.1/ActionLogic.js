@@ -26,6 +26,8 @@
  *              <dd>panel: 弹框</dd>
  *              <dd>link: 链接跳转</dd>
  *              <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>
+ *              <dd>ec: 展开或收起(expand and contract)</dd>
+ *              <dd>hit_value: 点击赋值</dd>
  *          </dl>
  *      </dd>
  *
@@ -105,6 +107,26 @@
  *      <dt>balDoneRemoveSelector = selector</dt>
  *      <dd>ajax 操作完成后要删除的 node</dd>
  * </dl>
+ * <h2>balType = ec( expand and contract) 可用的 HTML 属性</h2>
+ * <dl>
+ *      <dt>balTarget = selector</dt>
+ *      <dd>显示/隐藏的选择器</dd>
+ *
+ *      <dt>balExpandWord = string, default = "展开"</dt>
+ *      <dt>balExpandClass= string, default = "js_ecExpand"</dt>
+ *
+ *      <dt>balContractWord = string, default = "收起"</dt>
+ *      <dt>balContractClass = string, default = "js_ecContract"</dt>
+ * </dl>
+ * <h2>balType = hit_value 可用的 HTML 属性</h2>
+ * <dl>
+ *      <dt>balTarget = selector</dt>
+ *      <dd>显示/隐藏的选择器</dd>
+ *
+ *      <dt>balValue = string, default = ""</dt>
+ *      <dd>赋给 balTarget 的值</dd>
+ * </dl>
+
  *
  * @namespace   window.Bizs
  * @class       ActionLogic
@@ -545,6 +567,35 @@
                             }
                             break;
                         }
+
+                    case 'ec'://expand and contract
+                        {
+                            var _target = _p._model.balTarget();
+                            if( !_target ) return;
+                            
+                            if( _target.is( ':visible' ) ){
+                                _target.hide();
+                                _p.selector()
+                                    .html(  _p._model.balExpandWord() )
+                                    .addClass( _p._model.balExpandClass() )
+                                    .removeClass( _p._model.balContractClass() )
+                                    ;
+                            }else{
+                                _target.show();
+                                _p.selector()
+                                    .html(  _p._model.balContractWord() )
+                                    .addClass( _p._model.balContractClass() )
+                                    .removeClass( _p._model.balExpandClass() )
+                                    ;
+                            }
+                        }
+
+                    case 'hit_value':
+                        {
+                            var _target = _p._model.balTarget();
+                            if( !_target ) return;
+                            _target.val( _p._model.balValue() );
+                        }
                 }
                 return this;
             }
@@ -557,6 +608,21 @@
         init:
             function(){
             }
+
+        , balTarget:
+            function(  ){
+                var _r;
+                this.is( '[balTarget]' ) && ( _r = this.selectorProp( 'balTarget' ) );
+                return _r;
+            }
+
+        , balValue: function(){ return this.attrProp( 'balValue' ) || ''; }
+
+        , balExpandWord: function(){ return this.attrProp( 'balExpandWord' ) || '展开'; }
+        , balExpandClass: function(){ return this.attrProp( 'balExpandClass' ) || 'js_ecExpand'; }
+
+        , balContractWord: function(){ return this.attrProp( 'balContractWord' ) || '收起'; }
+        , balContractClass: function(){ return this.attrProp( 'balContractClass' ) || 'js_ecContract'; }
 
         , unHtmlEntity:
             function( _html ){
