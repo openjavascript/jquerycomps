@@ -82,7 +82,7 @@
  *      <dt>balSuccessPopupType = string, default = msgbox</dt>
  *      <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>
  *
- *      <dt>balCallback = function</dt>
+ *      <dt>balCallback = function, <b>window 变量域</b></dt>
  *      <dd>
  *          操作完成后的回调
 <pre>function ajaxDelCallback( _d, _ins ){
@@ -106,6 +106,7 @@
  *
  *      <dt>balDoneRemoveSelector = selector</dt>
  *      <dd>ajax 操作完成后要删除的 node</dd>
+
  * </dl>
  * <h2>balType = ec( expand and contract) 可用的 HTML 属性</h2>
  * <dl>
@@ -126,7 +127,14 @@
  *      <dt>balValue = string, default = ""</dt>
  *      <dd>赋给 balTarget 的值</dd>
  * </dl>
-
+ * <h2>balType = remove_element 可用的 HTML 属性</h2>
+ * <dl>
+ *      <dt>balDoneRemoveSelector = selector</dt>
+ *      <dd>点击操作完成后要删除的 node</dd>
+ *
+ *      <dt>balDoneBeforeRemoveCallback= function, <b>window 变量域</b></dt>
+ *      <dd>删除前的回调</dd>
+ * </dl>
  *
  * @namespace   window.Bizs
  * @class       ActionLogic
@@ -210,6 +218,7 @@
             _selector &&
                 $( _selector ).find( [  
                                         'a.js_bizsActionLogic'
+                                        , 'span.js_bizsActionLogic'
                                         , 'input.js_bizsActionLogic'
                                         , 'button.js_bizsActionLogic'
                                     ].join() ).on( 'click', function( _evt ){
@@ -402,10 +411,12 @@
                 });
 
                 _p.on( 'RemoveElementAction', function( _evt ){
-
-                    if( _p._model.balDoneRemoveSelector() ){
-                        _p._model.balDoneRemoveSelector()
-                            && _p._model.balDoneRemoveSelector().remove();
+                    var _list = _p._model.balDoneRemoveSelector(); 
+                    if( _p.selector().is( '[balDoneRemoveSelector]' ) ){
+                        _p._model.balDoneBeforeRemoveCallback() 
+                            && _list && _list.length
+                            && _p._model.balDoneBeforeRemoveCallback().call( _p.selector(), _list, _p );
+                        try{ _list.remove(); }catch( ex ){}
                     }else{
                         _p.selector().remove();
                     }
@@ -696,6 +707,10 @@
             function(){
                 return this.selectorProp( 'balDoneRemoveSelector' );
             }
+        , balDoneBeforeRemoveCallback:
+            function(){
+                return this.callbackProp( 'balDoneBeforeRemoveCallback' );
+            }
         , balConfirmMsg:
             function(){
                 var _r = '确定要执行吗?';
@@ -734,6 +749,7 @@
     $(document).ready( function(){
         $( document ).delegate( [
                                     'a.js_bizsActionLogic'
+                                    , 'span.js_bizsActionLogic'
                                     , 'input.js_bizsActionLogic'
                                     , 'button.js_bizsActionLogic'
                                 ].join(), 'click', function( _evt ){

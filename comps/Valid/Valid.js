@@ -305,6 +305,24 @@ function (){
      *              </dd>
      *          </dl>
      *      </dd>
+     *
+     *      <dd>
+     *          <dl>
+     *              <dt>ucheck: 用户自定义验证</dt>
+     *              <dd><b>ucheckmsg:</b> 验证出错的提示信息</dd>
+     *              <dd><b>ucheckCallback:</b> 用于验证的函数 <b>window变量域</b>
+     *
+<pre>function ucheck_n( _item ){
+    var _r = false, _v = JC.f.parseFinance( _item.val() );
+
+    if( _v === 0 || ( _v >= 30 && _v >= 50 ) ){
+        _r = true;
+    }
+    return _r;
+}</pre>
+     *              </dd>
+     *          </dl>
+     *      </dd>
      * </dl>
      * @namespace JC
      * @class Valid
@@ -2251,6 +2269,21 @@ function (){
                     _target.trigger('blur');
                 }
 
+                return _r;
+            }
+        , ucheck:
+            function( _item ){
+                var _r = true, _p = this;
+                this.ucheckCallback( _item ) && ( _r = this.ucheckCallback( _item )( _item ) );
+                !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'ucheckmsg', true ] );
+                return _r;
+            }
+        , ucheckCallback:
+            function( _item ){
+                var _r;
+                if( _item && _item.length && _item.is( '[ucheckCallback]' ) ){
+                    _r = window[ _item.attr( 'ucheckCallback' ) ];
+                }
                 return _r;
             }
         /**
