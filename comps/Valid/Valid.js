@@ -483,14 +483,12 @@ function (){
                             ;
                         for( i = 0, j = _item[0].length; i < j; i++ ){
                             var _sitem = $(_item[0][i]);
-                            if( !_p._model.isValid( _sitem ) ) continue;
                             if( _isIgnoreForm && ! ( _sitem.val() || '' ).trim() ) continue;
                             !_p.parse( _sitem ) && ( _r = false );
                             if( _errorabort && !_r ) break;
                         }
                     }
                     else if( Valid.isFormControl( _item ) ) {
-                        if( !_p._model.isValid( _item ) ) return;
                         !_p.parse( _item ) && ( _r = false );
                     }
                     else{
@@ -976,8 +974,13 @@ function (){
         , isAutoTrim:
             function( _item ){
                 _item = $( _item );
-                var _r = Valid.autoTrim, _form = JC.f.getJqParent( _item, 'form' );
+                /*
+                //取form 的时候, 影响性能
+                var _r = Valid.autoTrim, _form = $( _item.prop( 'form' ) );
                 _form && _form.length && _form.is( '[validautotrim]' ) && ( _r = JC.f.parseBool( _form.attr('validautotrim') ) );
+                _item.is( '[validautotrim]' ) && ( _r = JC.f.parseBool( _item.attr('validautotrim') ) );
+                */
+                var _r = Valid.autoTrim;
                 _item.is( '[validautotrim]' ) && ( _r = JC.f.parseBool( _item.attr('validautotrim') ) );
                 return _r;
             }
