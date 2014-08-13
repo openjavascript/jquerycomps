@@ -322,7 +322,7 @@
  *      &lt;dt&gt;balSuccessPopupType = string, default = msgbox&lt;/dt&gt;
  *      &lt;dd&gt;错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox&lt;/dd&gt;
  *
- *      &lt;dt&gt;balCallback = function&lt;/dt&gt;
+ *      &lt;dt&gt;balCallback = function, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dt&gt;
  *      &lt;dd&gt;
  *          操作完成后的回调
 &lt;pre&gt;function ajaxDelCallback( _d, _ins ){
@@ -346,6 +346,7 @@
  *
  *      &lt;dt&gt;balDoneRemoveSelector = selector&lt;/dt&gt;
  *      &lt;dd&gt;ajax 操作完成后要删除的 node&lt;/dd&gt;
+
  * &lt;/dl&gt;
  * &lt;h2&gt;balType = ec( expand and contract) 可用的 HTML 属性&lt;/h2&gt;
  * &lt;dl&gt;
@@ -366,7 +367,14 @@
  *      &lt;dt&gt;balValue = string, default = &quot;&quot;&lt;/dt&gt;
  *      &lt;dd&gt;赋给 balTarget 的值&lt;/dd&gt;
  * &lt;/dl&gt;
-
+ * &lt;h2&gt;balType = remove_element 可用的 HTML 属性&lt;/h2&gt;
+ * &lt;dl&gt;
+ *      &lt;dt&gt;balDoneRemoveSelector = selector&lt;/dt&gt;
+ *      &lt;dd&gt;点击操作完成后要删除的 node&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;balDoneBeforeRemoveCallback= function, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dt&gt;
+ *      &lt;dd&gt;删除前的回调&lt;/dd&gt;
+ * &lt;/dl&gt;
  *
  * @namespace   window.Bizs
  * @class       ActionLogic
@@ -450,6 +458,7 @@
             _selector &amp;&amp;
                 $( _selector ).find( [  
                                         &#x27;a.js_bizsActionLogic&#x27;
+                                        , &#x27;span.js_bizsActionLogic&#x27;
                                         , &#x27;input.js_bizsActionLogic&#x27;
                                         , &#x27;button.js_bizsActionLogic&#x27;
                                     ].join() ).on( &#x27;click&#x27;, function( _evt ){
@@ -642,10 +651,12 @@
                 });
 
                 _p.on( &#x27;RemoveElementAction&#x27;, function( _evt ){
-
-                    if( _p._model.balDoneRemoveSelector() ){
-                        _p._model.balDoneRemoveSelector()
-                            &amp;&amp; _p._model.balDoneRemoveSelector().remove();
+                    var _list = _p._model.balDoneRemoveSelector(); 
+                    if( _p.selector().is( &#x27;[balDoneRemoveSelector]&#x27; ) ){
+                        _p._model.balDoneBeforeRemoveCallback() 
+                            &amp;&amp; _list &amp;&amp; _list.length
+                            &amp;&amp; _p._model.balDoneBeforeRemoveCallback().call( _p.selector(), _list, _p );
+                        try{ _list.remove(); }catch( ex ){}
                     }else{
                         _p.selector().remove();
                     }
@@ -936,6 +947,10 @@
             function(){
                 return this.selectorProp( &#x27;balDoneRemoveSelector&#x27; );
             }
+        , balDoneBeforeRemoveCallback:
+            function(){
+                return this.callbackProp( &#x27;balDoneBeforeRemoveCallback&#x27; );
+            }
         , balConfirmMsg:
             function(){
                 var _r = &#x27;确定要执行吗?&#x27;;
@@ -974,6 +989,7 @@
     $(document).ready( function(){
         $( document ).delegate( [
                                     &#x27;a.js_bizsActionLogic&#x27;
+                                    , &#x27;span.js_bizsActionLogic&#x27;
                                     , &#x27;input.js_bizsActionLogic&#x27;
                                     , &#x27;button.js_bizsActionLogic&#x27;
                                 ].join(), &#x27;click&#x27;, function( _evt ){

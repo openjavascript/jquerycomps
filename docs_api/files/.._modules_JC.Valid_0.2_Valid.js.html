@@ -545,6 +545,24 @@ function (){
      *              &lt;/dd&gt;
      *          &lt;/dl&gt;
      *      &lt;/dd&gt;
+     *
+     *      &lt;dd&gt;
+     *          &lt;dl&gt;
+     *              &lt;dt&gt;ucheck: 用户自定义验证&lt;/dt&gt;
+     *              &lt;dd&gt;&lt;b&gt;ucheckmsg:&lt;/b&gt; 验证出错的提示信息&lt;/dd&gt;
+     *              &lt;dd&gt;&lt;b&gt;ucheckCallback:&lt;/b&gt; 用于验证的函数 &lt;b&gt;window变量域&lt;/b&gt;
+     *
+&lt;pre&gt;function ucheck_n( _item ){
+    var _r = false, _v = JC.f.parseFinance( _item.val() );
+
+    if( _v === 0 || ( _v &gt;= 30 &amp;&amp; _v &gt;= 50 ) ){
+        _r = true;
+    }
+    return _r;
+}&lt;/pre&gt;
+     *              &lt;/dd&gt;
+     *          &lt;/dl&gt;
+     *      &lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
      * @class Valid
@@ -2491,6 +2509,21 @@ function (){
                     _target.trigger(&#x27;blur&#x27;);
                 }
 
+                return _r;
+            }
+        , ucheck:
+            function( _item ){
+                var _r = true, _p = this;
+                this.ucheckCallback( _item ) &amp;&amp; ( _r = this.ucheckCallback( _item )( _item ) );
+                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, &#x27;ucheckmsg&#x27;, true ] );
+                return _r;
+            }
+        , ucheckCallback:
+            function( _item ){
+                var _r;
+                if( _item &amp;&amp; _item.length &amp;&amp; _item.is( &#x27;[ucheckCallback]&#x27; ) ){
+                    _r = window[ _item.attr( &#x27;ucheckCallback&#x27; ) ];
+                }
                 return _r;
             }
         /**
