@@ -1254,7 +1254,7 @@
             if( _number.split('.').length > 2 ) return _def;
         }
 
-        if( !_number ) return _def;
+        _number = _number || 0;
         _number += ''; 
 
         /^\-/.test( _number ) && ( _isNegative = true );
