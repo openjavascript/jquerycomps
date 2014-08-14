@@ -120,7 +120,11 @@
                 var _item = $(this)
                     , _v
                     , _subOutputSelector = JC.f.parentSelector( _item, _item.attr( 'bmtFormatOutput' ) )
+                    , _floatLen = 2
                     ;
+
+                _item.is( '[floatLen]' ) && ( _floatLen = parseInt( _item.attr( 'floatLen' ) ) || 0 );
+
                 !( _subOutputSelector && _subOutputSelector.length ) && ( _subOutputSelector = _item );
                 _outputSelector && _outputSelector.length && ( _subOutputSelector = _outputSelector );
                 !( _subOutputSelector && _subOutputSelector.length ) && ( _subOutputSelector = _item );
@@ -130,15 +134,29 @@
                 }else{
                     _v = _item.html().trim();
                 }
+                _v = _v || 0;
 
                 if( 'value' in _subOutputSelector[0] ){
-                    _subOutputSelector.val( JC.f.moneyFormat( _v ) );
+                    _subOutputSelector.val( JC.f.moneyFormat( _v, 3, _floatLen ) );
                 }else{
-                    _subOutputSelector.html( JC.f.moneyFormat( _v ) );
+                    _subOutputSelector.html( JC.f.moneyFormat( _v, 3, _floatLen ) );
                 }
             });
 
             return _selector;
+        };
+
+    MoneyTips.getFloatLen = 
+        function( _item ){
+            var _r = 0;
+            _item && ( _item = $( _item ) );
+            _item 
+                && _item.length 
+                && _item.is( '[floatLen]' )
+                && ( _r = parseInt( _item.attr( 'floatLen' ) ) || 0 )
+                ;
+
+            return _r;
         };
 
     MoneyTips.prototype = {
@@ -171,11 +189,15 @@
                     _dt.replace( /n\-[\d]+\.([\d]+)/, function( $0, $1 ){
                         _floatLen = parseInt( $1 ) || _floatLen;
                     });
+                    if( _p.selector().is( '[floatLen]' ) ){
+                        _floatLen = MoneyTips.getFloatLen( _p.selector() );
+                    }
 
                     if( isNaN( _number ) || !_number ) {
                         _p._view.update();
                         return;
                     }
+                    !_number && ( _number = 0 );
                     _formated = JC.f.moneyFormat( _v, 3, _floatLen );
                     _p._view.update( _formated );
                 });
