@@ -42,6 +42,12 @@
                 //return false;
             }
 
+            function formBeforeSubmit( _evt, _ins ){
+                var _form = $(this);
+                JC.log( 'formBeforeSubmit', new Date().getTime() );
+                //return false;
+            }
+
             function formAjaxDone( _json, _submitButton, _ins ){
                 var _form = $(this);
                 JC.log( 'custom formAjaxDone', new Date().getTime() );
@@ -67,6 +73,7 @@
                             class="js_bizsFormLogic"
                             formType="ajax"
                             formAjaxDoneAction="?donetype=system&CaseTest=T"
+                            formBeforeSubmit="formBeforeSubmit"
                         >
                         <dl>
                             <dd>
