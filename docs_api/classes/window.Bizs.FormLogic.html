@@ -174,30 +174,39 @@
      <dd>表单提交后, 是否禁用提交按钮</dd>
      <dt>formResetAfterSubmit = bool, default = true</dt>
      <dd>表单提交后, 是否重置内容</dd>
-     <dt>formBeforeProcess = function</dt>
+     <dt>formBeforeProcess = function, <b>window 变量域</b/></dt>
      <dd>
-         表单开始提交时且没开始验证时, 触发的回调, <b>window 变量域</b>
+         表单开始提交时且没开始验证时, 触发的回调
 <pre>function formBeforeProcess( _evt, _ins ){
    var _form = $(this);
    JC.log( &#39;formBeforeProcess&#39;, new Date().getTime() );
    //return false;
 }</pre>
      </dd>
-     <dt>formProcessError = function</dt>
+     <dt>formProcessError = function, <b>window 变量域</b></dt>
      <dd>
-         提交时, 验证未通过时, 触发的回调, <b>window 变量域</b>
+         提交时, 验证未通过时, 触发的回调
 <pre>function formProcessError( _evt, _ins ){
    var _form = $(this);
    JC.log( &#39;formProcessError&#39;, new Date().getTime() );
    //return false;
 }</pre>
      </dd>
-     <dt>formAfterProcess = function</dt>
+     <dt>formAfterProcess = function, <b>window 变量域</b></dt>
      <dd>
-         表单开始提交时且验证通过后, 触发的回调, <b>window 变量域</b>
+         表单开始提交时且验证通过后, 触发的回调
 <pre>function formAfterProcess( _evt, _ins ){
    var _form = $(this);
    JC.log( &#39;formAfterProcess&#39;, new Date().getTime() );
+   //return false;
+}</pre>
+     </dd>
+     <dt>formBeforeSubmit = function, <b>window 变量域</b></dt>
+     <dd>
+         表单开始发送数据到服务器之前的回调
+<pre>function formBeforeSubmit( _evt, _ins ){
+   var _form = $(this);
+   JC.log( &#39;formBeforeSubmit&#39;, new Date().getTime() );
    //return false;
 }</pre>
      </dd>
@@ -577,7 +586,7 @@ window.parent
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l318"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:318</code></a>
+        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l328"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:328</code></a>
         </p>
     </div>
     <div class="description">
@@ -617,7 +626,7 @@ window.parent
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l336"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:336</code></a>
+        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l346"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:346</code></a>
         </p>
     </div>
     <div class="description">
@@ -810,7 +819,7 @@ window.parent
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l399"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:399</code></a>
+        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l409"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:409</code></a>
         </p>
     </div>
     <div class="description">
@@ -827,7 +836,7 @@ window.parent
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l357"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:357</code></a>
+        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l367"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:367</code></a>
         </p>
     </div>
     <div class="description">
@@ -842,7 +851,7 @@ window.parent
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l365"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:365</code></a>
+        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l375"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:375</code></a>
         </p>
     </div>
     <div class="description">
@@ -859,7 +868,7 @@ window.parent
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l391"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:391</code></a>
+        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l401"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:401</code></a>
         </p>
     </div>
     <div class="description">
@@ -874,7 +883,7 @@ window.parent
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l383"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:383</code></a>
+        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l393"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:393</code></a>
         </p>
     </div>
     <div class="description">
@@ -889,7 +898,7 @@ window.parent
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l375"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:375</code></a>
+        <a href="../files/.._modules_Bizs.FormLogic_0.2_FormLogic.js.html#l385"><code>..&#x2F;modules&#x2F;Bizs.FormLogic&#x2F;0.2&#x2F;FormLogic.js:385</code></a>
         </p>
     </div>
     <div class="description">

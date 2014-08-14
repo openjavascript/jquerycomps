@@ -275,9 +275,9 @@
      *      &lt;dt&gt;formResetAfterSubmit = bool, default = true&lt;/dt&gt;
      *      &lt;dd&gt;表单提交后, 是否重置内容&lt;/dd&gt;
      *
-     *      &lt;dt&gt;formBeforeProcess = function&lt;/dt&gt;
+     *      &lt;dt&gt;formBeforeProcess = function, &lt;b&gt;window 变量域&lt;/b/&gt;&lt;/dt&gt;
      *      &lt;dd&gt;
-     *          表单开始提交时且没开始验证时, 触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;
+     *          表单开始提交时且没开始验证时, 触发的回调
 &lt;pre&gt;function formBeforeProcess( _evt, _ins ){
     var _form = $(this);
     JC.log( &#x27;formBeforeProcess&#x27;, new Date().getTime() );
@@ -285,9 +285,9 @@
 }&lt;/pre&gt;
      *      &lt;/dd&gt;
      *
-     *      &lt;dt&gt;formProcessError = function&lt;/dt&gt;
+     *      &lt;dt&gt;formProcessError = function, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dt&gt;
      *      &lt;dd&gt;
-     *          提交时, 验证未通过时, 触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;
+     *          提交时, 验证未通过时, 触发的回调
 &lt;pre&gt;function formProcessError( _evt, _ins ){
     var _form = $(this);
     JC.log( &#x27;formProcessError&#x27;, new Date().getTime() );
@@ -295,12 +295,22 @@
 }&lt;/pre&gt;
      *      &lt;/dd&gt;
      *
-     *      &lt;dt&gt;formAfterProcess = function&lt;/dt&gt;
+     *      &lt;dt&gt;formAfterProcess = function, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dt&gt;
      *      &lt;dd&gt;
-     *          表单开始提交时且验证通过后, 触发的回调, &lt;b&gt;window 变量域&lt;/b&gt;
+     *          表单开始提交时且验证通过后, 触发的回调
 &lt;pre&gt;function formAfterProcess( _evt, _ins ){
     var _form = $(this);
     JC.log( &#x27;formAfterProcess&#x27;, new Date().getTime() );
+    //return false;
+}&lt;/pre&gt;
+     *      &lt;/dd&gt;
+     *
+     *      &lt;dt&gt;formBeforeSubmit = function, &lt;b&gt;window 变量域&lt;/b&gt;&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          表单开始发送数据到服务器之前的回调
+&lt;pre&gt;function formBeforeSubmit( _evt, _ins ){
+    var _form = $(this);
+    JC.log( &#x27;formBeforeSubmit&#x27;, new Date().getTime() );
     //return false;
 }&lt;/pre&gt;
      *      &lt;/dd&gt;
@@ -714,14 +724,15 @@ window.parent
                         return _p._model.prevent( _evt );
                     }
 
-                    _p.trigger( FormLogic.Model.PROCESS_DONE );
 
-                    /*
-                    if( _type == FormLogic.Model.AJAX ){
-                        _p.trigger( FormLogic.Model.EVT_AJAX_SUBMIT );
-                        return _p._model.prevent( _evt );
+
+                    if( _p._model.formBeforeSubmit() ){
+                        if( _p._model.formBeforeSubmit().call( _p.selector(), _evt, _p ) === false ){
+                            return _p._model.prevent( _evt );
+                        }
                     }
-                    */
+
+                    _p.trigger( FormLogic.Model.PROCESS_DONE );
                 });
 
                 _p.on( FormLogic.Model.INITED, function( _evt ){
@@ -810,7 +821,7 @@ window.parent
                 /**
                  * 表单内容验证通过后, 开始提交前的处理事件
                  */
-                _p.on( FormLogic.Model.PROCESS_DONE, function(){
+                _p.on( FormLogic.Model.PROCESS_DONE, function( _evt ){
                     _p._model.formSubmitDisable() 
                         &amp;&amp; _p.selector().find(&#x27;input[type=submit], button[type=submit]&#x27;).each( function(){
                             !_p._model.formIgnoreStatus() &amp;&amp; $( this ).prop(&#x27;disabled&#x27;, true);
@@ -927,7 +938,6 @@ window.parent
 
     FormLogic.Model.EVT_CONFIRM = &quot;ConfirmEvent&quot;
     FormLogic.Model.EVT_RESET = &quot;ResetEvent&quot;
-    FormLogic.Model.EVT_AJAX_SUBMIT = &quot;AjaxSubmit&quot;
     FormLogic.Model.INS_COUNT = 1;
 
     FormLogic.Model.PROCESS_DONE = &quot;ProcessDone&quot;;
@@ -1232,6 +1242,7 @@ window.parent
             }
         , formBeforeProcess: function(){ return this.callbackProp( &#x27;formBeforeProcess&#x27; ); }
         , formAfterProcess: function(){ return this.callbackProp( &#x27;formAfterProcess&#x27; ); }
+        , formBeforeSubmit: function(){ return this.callbackProp( &#x27;formBeforeSubmit&#x27; ); }
         , formProcessError: 
             function(){ 
                 var _r = this.callbackProp( &#x27;formProcessError&#x27; ) || FormLogic.processErrorCb;
