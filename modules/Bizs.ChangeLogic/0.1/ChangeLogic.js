@@ -116,7 +116,7 @@
         if( ChangeLogic.getInstance( _selector ) ) return ChangeLogic.getInstance( _selector );
         ChangeLogic.getInstance( _selector, this );
 
-        JC.log( 'Bizs.ChangeLogic:', new Date().getTime() );
+        //JC.log( 'Bizs.ChangeLogic:', new Date().getTime() );
 
         this._model = new Model( _selector );
         this._view = new View( this._model );
@@ -144,7 +144,7 @@
                 _p._view.init();
 
                 _p._model.bclTrigger().on('change', function(_evt){
-                    JC.log( 'bclTrigger change', new Date().getTime() );
+                    //JC.log( 'bclTrigger change', new Date().getTime() );
                     _p.trigger( 'item_change', [ $(this), _evt ] );
                 });
 
@@ -549,7 +549,7 @@
 
                 $( _p ).trigger( 'TriggerEvent', [ 'ChangeDone', _triggerItem ] );
 
-                JC.log( 'ChangeLogic view change', new Date().getTime(), _isDisable );
+                //JC.log( 'ChangeLogic view change', new Date().getTime(), _isDisable );
             }
     };
 
