@@ -136,6 +136,8 @@
                                 }
                             });
                         }
+
+                        _p._model.urlFilter() && ( _url = _p._model.urlFilter()( _url ) );
                         
                         location.href = _url;
                 });
@@ -146,7 +148,7 @@
                         , _curType = JC.f.getUrlParam( _p._model.typeName() ) || _defaultType
                         , _items = _p._model.items();
                         ;
-                    JC.log( _defalutSortName, _defaultType, _curType );
+                    //JC.log( _defalutSortName, _defaultType, _curType );
                     if( !( _items &&  _items.length ) ) return;
 
                     $.each( _items, function( _k, _item ){
@@ -161,7 +163,7 @@
                         }else{
                             _class = _p._model.classEnum()[ _p._model.typeIndexAt( _defaultType ) ];
                         }
-                        JC.log( _k, _item, _class );
+                        //JC.log( _k, _item, _class );
 
                         if( _class ){
                             _item.removeClass( _p._model.classEnum().concat( _p._model.curClassEnum() ).join( ' ' ) );
@@ -184,6 +186,8 @@
             function(){
                 //JC.log( 'ServerSort.Model.init:', new Date().getTime() );
             }
+
+        , urlFilter: function(){ return this.callbackProp( 'cssUrlFilter' ); }
         
         , typeIndexAt:
             function( _type ){
