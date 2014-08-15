@@ -1,23 +1,57 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
- * 组件用途简述
+ * 数据库全表排序逻辑
  *
  *  <p><b>require</b>:
- *      <a href="widnow.jQuery.html">jQuery</a>
- *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *  </p>
  *
  *  <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  *      | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.ServerSort.html' target='_blank'>API docs</a>
  *      | <a href='../../modules/JC.ServerSort/0.1/_demo' target='_blank'>demo link</a></p>
  *  
- *  <h2>页面只要引用本脚本, 默认会处理 div class="js_compServerSort"</h2>
+ *  <h2>页面只要引用本脚本, 默认会处理 [div|tr] class="js_compServerSort"</h2>
  *
  *  <h2>可用的 HTML attribute</h2>
  *
  *  <dl>
- *      <dt></dt>
- *      <dd><dd>
+ *      <dt>cssUrl = url, default = location.href</dt>
+ *      <dd>要翻页的URL<dd>
+ *
+ *      <dt>cssSortName = string, default = sortby</dt>
+ *      <dd>排序的字段名<dd>
+ *
+ *      <dt>cssTypeName = string, default = sorttype</dt>
+ *      <dd>排序的类型名: desc, asc<dd>
+ *
+ *      <dt>cssItems = selector, default = |a[sortName]</dt>
+ *      <dd>排序的具体字段选择器<dd>
+ *
+ *      <dt>cssTypeEnum = string, default = desc,asc</dt>
+ *      <dd>排序的种类<dd>
+ *
+ *      <dt>cssClassEnum = string, default = js_cssDesc,js_cssAsc</dt>
+ *      <dd>显示排序样式的 CSS class<dd>
+ *
+ *      <dt>cssCurClassEnum= string, default = js_cssDesc_cur,js_cssAsc_cur</dt>
+ *      <dd>显示当前排序字段样式的 CSS class<dd>
+ *
+ *      <dt>cssResetUrlParams = string, default=page</dt>
+ *      <dd>页面跳转时, 要重置的 URL 参数<dd>
+ *
+ *      <dt>cssUrlFilter = function, <b>window 变量域</b></dt>
+ *      <dd>页面跳转前, 过滤 url 的回调
+<pre>function urlFilter( _url ){
+    _url = JC.f.addUrlParams( _url, { rnd: JC.f.ts() } );
+    return _url;
+}</pre>
+ *      <dd>
+ *
+ *      <dt>cssDefaultSortName = string, default = first item[sortName]</dt>
+ *      <dd>默认排序字段</dd>
+ *
+ *      <dt>cssDefaultType = string, default = desc</dt>
+ *      <dd>默认排序类型</dd>
  *  </dl> 
  *
  * @namespace   JC
@@ -28,7 +62,46 @@
  * @version 2014-08-15
  * @author  qiushaowei <suches@btbtd.org> | 75 Team
  * @example
-        <h2>JC.ServerSort 示例</h2>
+        <table class="data-table" width="90%">
+            <thead>
+                <tr class="js_compServerSort"
+                    cssUrl="URL"
+                    cssSortName="sortby"
+                    cssTypeName="sorttype"
+                    cssItems="|a[sortName]"
+                    cssTypeEnum="desc,asc"
+                    cssClassEnum="js_cssDesc,js_cssAsc"
+                    cssCurClassEnum="js_cssDesc_cur,js_cssAsc_cur"
+                    cssResetUrlParams="pz,page"
+                    cssUrlFilter="urlFilter"
+                    >
+                    <th><a href="javascript:;" sortName="order">序号</a></th>
+                    <th><a href="javascript:;" sortName="keyword">关键词</a></th>
+                    <th><a href="javascript:;" sortName="dpv">日均PV</a></th>
+                    <th><a href="javascript:;" sortName="irate">行业添加率</a></th>
+                    <th><a href="javascript:;" sortName="dprice">平均出价</a></th>
+                    <th><a href="javascript:;" sortName="drate">日均点击率</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2</td>
+                    <td>关键词</td>
+                    <td>1000</td>
+                    <td>1000</td>
+                    <td>20.00</td>
+                    <td>3000</td>
+                </tr>
+                <tr class="even">
+                    <td>1</td>
+                    <td>关键词</td>
+                    <td>1000</td>
+                    <td>1000</td>
+                    <td>20.00</td>
+                    <td>3000</td>
+                </tr>
+            </tbody>
+        </table>
  */
     var _jdoc = $( document ), _jwin = $( window );
 
@@ -204,7 +277,7 @@
         , resetUrlParams:
             function(){
                 if( !this._resetUrlParams ){
-                    this._resetUrlParams = ( this.attrProp( 'cssResetUrlParams' ) ).replace( /[\s]+/g, '' );
+                    this._resetUrlParams = ( this.attrProp( 'cssResetUrlParams' ) || 'page' ).replace( /[\s]+/g, '' );
                     this._resetUrlParams && ( this._resetUrlParams = this._resetUrlParams.split(',') )
                 }
                 return this._resetUrlParams;
@@ -245,15 +318,16 @@
         , items: 
             function(){ 
                 if( typeof this._items == 'undefined' ){
-                    this._items = this.selectorProp( 'cssItems' ) || null;
+                    var _selector = this.attrProp( 'cssItems' ) || '|a[sortName]';
+                    this._items = JC.f.parentSelector( this.selector(), _selector ) || null;
                 }
                 return this._items;
             }
 
         , url: function(){ return JC.f.urlDetect( this.attrProp( 'cssUrl' ) || 'URL' ); }
 
-        , sortName: function(){ return this.attrProp( 'cssSortName' ) || 'sortName'; }
-        , typeName: function(){ return this.attrProp( 'cssTypeName' ) || 'sortType'; }
+        , sortName: function(){ return this.attrProp( 'cssSortName' ) || 'sortby'; }
+        , typeName: function(){ return this.attrProp( 'cssTypeName' ) || 'sorttype'; }
 
         , typeEnum: 
             function(){ 
