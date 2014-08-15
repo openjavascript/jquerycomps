@@ -30,6 +30,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.PopTips",
         "JC.Rate",
         "JC.Scrollbar",
+        "JC.ServerSort",
         "JC.Slider",
         "JC.StepControl",
         "JC.Suggest",

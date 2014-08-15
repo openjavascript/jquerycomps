@@ -611,6 +611,17 @@
                 "JC": 1
             }
         },
+        "../modules/JC.ServerSort/0.1/ServerSort.js": {
+            "name": "../modules/JC.ServerSort/0.1/ServerSort.js",
+            "modules": {},
+            "classes": {
+                "JC.ServerSort": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../modules/JC.Slider/0.1/Slider.js": {
             "name": "../modules/JC.Slider/0.1/Slider.js",
             "modules": {},
@@ -2235,6 +2246,33 @@
             ],
             "version": "dev 0.1 2014-03-17",
             "author": "zuojing   <zuojing1013@gmail.com> | 75 Team"
+        },
+        "JC.ServerSort": {
+            "name": "JC.ServerSort",
+            "shortname": "JC.ServerSort",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../modules/JC.ServerSort/0.1/ServerSort.js",
+            "line": 2,
+            "description": "数据库全表排序逻辑\n\n <p><b>require</b>:\n     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n </p>\n\n <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.ServerSort.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.ServerSort/0.1/_demo' target='_blank'>demo link</a></p>\n \n <h2>页面只要引用本脚本, 默认会处理 [div|tr] class=\"js_compServerSort\"</h2>\n\n <h2>可用的 HTML attribute</h2>\n\n <dl>\n     <dt>cssUrl = url, default = location.href</dt>\n     <dd>要翻页的URL<dd>\n\n     <dt>cssSortName = string, default = sortby</dt>\n     <dd>排序的字段名<dd>\n\n     <dt>cssTypeName = string, default = sorttype</dt>\n     <dd>排序的类型名: desc, asc<dd>\n\n     <dt>cssItems = selector, default = |a[sortName]</dt>\n     <dd>排序的具体字段选择器<dd>\n\n     <dt>cssTypeEnum = string, default = desc,asc</dt>\n     <dd>排序的种类<dd>\n\n     <dt>cssClassEnum = string, default = js_cssDesc,js_cssAsc</dt>\n     <dd>显示排序样式的 CSS class<dd>\n\n     <dt>cssCurClassEnum= string, default = js_cssDesc_cur,js_cssAsc_cur</dt>\n     <dd>显示当前排序字段样式的 CSS class<dd>\n\n     <dt>cssResetUrlParams = string, default=page</dt>\n     <dd>页面跳转时, 要重置的 URL 参数<dd>\n\n     <dt>cssUrlFilter = function, <b>window 变量域</b></dt>\n     <dd>页面跳转前, 过滤 url 的回调\n<pre>function urlFilter( _url ){\n   _url = JC.f.addUrlParams( _url, { rnd: JC.f.ts() } );\n   return _url;\n}</pre>\n     <dd>\n\n     <dt>cssDefaultSortName = string, default = first item[sortName]</dt>\n     <dd>默认排序字段</dd>\n\n     <dt>cssDefaultType = string, default = desc</dt>\n     <dd>默认排序类型</dd>\n </dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "2014-08-15",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n       <table class=\"data-table\" width=\"90%\">\n           <thead>\n               <tr class=\"js_compServerSort\"\n                   cssUrl=\"URL\"\n                   cssSortName=\"sortby\"\n                   cssTypeName=\"sorttype\"\n                   cssItems=\"|a[sortName]\"\n                   cssTypeEnum=\"desc,asc\"\n                   cssClassEnum=\"js_cssDesc,js_cssAsc\"\n                   cssCurClassEnum=\"js_cssDesc_cur,js_cssAsc_cur\"\n                   cssResetUrlParams=\"pz,page\"\n                   cssUrlFilter=\"urlFilter\"\n                   >\n                   <th><a href=\"javascript:;\" sortName=\"order\">序号</a></th>\n                   <th><a href=\"javascript:;\" sortName=\"keyword\">关键词</a></th>\n                   <th><a href=\"javascript:;\" sortName=\"dpv\">日均PV</a></th>\n                   <th><a href=\"javascript:;\" sortName=\"irate\">行业添加率</a></th>\n                   <th><a href=\"javascript:;\" sortName=\"dprice\">平均出价</a></th>\n                   <th><a href=\"javascript:;\" sortName=\"drate\">日均点击率</a></th>\n               </tr>\n           </thead>\n           <tbody>\n               <tr>\n                   <td>2</td>\n                   <td>关键词</td>\n                   <td>1000</td>\n                   <td>1000</td>\n                   <td>20.00</td>\n                   <td>3000</td>\n               </tr>\n               <tr class=\"even\">\n                   <td>1</td>\n                   <td>关键词</td>\n                   <td>1000</td>\n                   <td>1000</td>\n                   <td>20.00</td>\n                   <td>3000</td>\n               </tr>\n           </tbody>\n       </table>"
+            ]
         },
         "JC.Slider": {
             "name": "JC.Slider",
@@ -11336,6 +11374,27 @@
             "namespace": "JC"
         },
         {
+            "file": "../modules/JC.ServerSort/0.1/ServerSort.js",
+            "line": 125,
+            "description": "初始化可识别的 ServerSort 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of ServerSortInstance"
+            },
+            "class": "JC.ServerSort",
+            "namespace": "JC"
+        },
+        {
             "file": "../modules/JC.Slider/0.1/Slider.js",
             "line": 135,
             "description": "初始化数据模型",
@@ -18823,7 +18882,7 @@
         },
         {
             "file": "../config.js",
-            "line": 116,
+            "line": 117,
             "description": "取当前脚本标签的 src路径",
             "static": 1,
             "return": {
@@ -19429,6 +19488,10 @@
         {
             "message": "unknown tag: version",
             "line": " ../modules/JC.Scrollbar/0.1/Scrollbar.js:2"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../modules/JC.ServerSort/0.1/ServerSort.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -20784,7 +20847,7 @@
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
-            "line": " ../config.js:116"
+            "line": " ../config.js:117"
         },
         {
             "message": "Missing item type",

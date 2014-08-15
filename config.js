@@ -53,6 +53,7 @@ requirejs.config( {
         
         , 'JC.Rate': 'modules/JC.Rate/0.1/Rate'
 
+        , 'JC.ServerSort': 'modules/JC.ServerSort/0.1/ServerSort'
         , 'JC.Slider': 'modules/JC.Slider/0.1/Slider'
         , 'JC.StepControl': 'modules/JC.StepControl/0.1/StepControl'
         , 'JC.Suggest': 'modules/JC.Suggest/0.1/Suggest'
