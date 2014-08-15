@@ -56,6 +56,9 @@
  *
  *      <dt>bclChangeCleanTarget = selector</dt>
  *      <dd>radio change 的时候, 清除目标选择器的 html 内容</dd>
+ *
+ *      <dt>bclTriggerChangeOnInit = bool, default = true</dt>
+ *      <dd>初始化实例时, 是否触发 change 事件</dd>
  * </dl>
  *
  * <h2>trigger 的 HTML 属性</h2>
@@ -113,7 +116,7 @@
         if( ChangeLogic.getInstance( _selector ) ) return ChangeLogic.getInstance( _selector );
         ChangeLogic.getInstance( _selector, this );
 
-        JC.log( 'Bizs.ChangeLogic:', new Date().getTime() );
+        //JC.log( 'Bizs.ChangeLogic:', new Date().getTime() );
 
         this._model = new Model( _selector );
         this._view = new View( this._model );
@@ -141,7 +144,7 @@
                 _p._view.init();
 
                 _p._model.bclTrigger().on('change', function(_evt){
-                    JC.log( 'bclTrigger change', new Date().getTime() );
+                    //JC.log( 'bclTrigger change', new Date().getTime() );
                     _p.trigger( 'item_change', [ $(this), _evt ] );
                 });
 
@@ -157,9 +160,11 @@
                     }
                 });
 
-                ( _tmp = _p._model.bclTrigger( true ) ) 
-                    && !_tmp.prop( 'disabled' )
-                    && _tmp.trigger( 'change');
+                if( _p._model.bclTriggerChangeOnInit() ){
+                    ( _tmp = _p._model.bclTrigger( true ) ) 
+                        && !_tmp.prop( 'disabled' )
+                        && _tmp.trigger( 'change');
+                }
 
                 _p._model.ready( true );
 
@@ -282,6 +287,16 @@
                         }
                     });
                 }
+                return _r;
+            }
+
+        , bclTriggerChangeOnInit:
+            function(){
+                var _r = true, _p = this;
+
+                _p.selector().is( '[bclTriggerChangeOnInit] ' ) 
+                    && ( _r = JC.f.parseBool( _p.selector().attr( 'bclTriggerChangeOnInit' ) ) );
+
                 return _r;
             }
 
@@ -534,7 +549,7 @@
 
                 $( _p ).trigger( 'TriggerEvent', [ 'ChangeDone', _triggerItem ] );
 
-                JC.log( 'ChangeLogic view change', new Date().getTime(), _isDisable );
+                //JC.log( 'ChangeLogic view change', new Date().getTime(), _isDisable );
             }
     };
 

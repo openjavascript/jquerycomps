@@ -296,6 +296,9 @@
  *
  *      &lt;dt&gt;bclChangeCleanTarget = selector&lt;/dt&gt;
  *      &lt;dd&gt;radio change 的时候, 清除目标选择器的 html 内容&lt;/dd&gt;
+ *
+ *      &lt;dt&gt;bclTriggerChangeOnInit = bool, default = true&lt;/dt&gt;
+ *      &lt;dd&gt;初始化实例时, 是否触发 change 事件&lt;/dd&gt;
  * &lt;/dl&gt;
  *
  * &lt;h2&gt;trigger 的 HTML 属性&lt;/h2&gt;
@@ -353,7 +356,7 @@
         if( ChangeLogic.getInstance( _selector ) ) return ChangeLogic.getInstance( _selector );
         ChangeLogic.getInstance( _selector, this );
 
-        JC.log( &#x27;Bizs.ChangeLogic:&#x27;, new Date().getTime() );
+        //JC.log( &#x27;Bizs.ChangeLogic:&#x27;, new Date().getTime() );
 
         this._model = new Model( _selector );
         this._view = new View( this._model );
@@ -381,7 +384,7 @@
                 _p._view.init();
 
                 _p._model.bclTrigger().on(&#x27;change&#x27;, function(_evt){
-                    JC.log( &#x27;bclTrigger change&#x27;, new Date().getTime() );
+                    //JC.log( &#x27;bclTrigger change&#x27;, new Date().getTime() );
                     _p.trigger( &#x27;item_change&#x27;, [ $(this), _evt ] );
                 });
 
@@ -397,9 +400,11 @@
                     }
                 });
 
-                ( _tmp = _p._model.bclTrigger( true ) ) 
-                    &amp;&amp; !_tmp.prop( &#x27;disabled&#x27; )
-                    &amp;&amp; _tmp.trigger( &#x27;change&#x27;);
+                if( _p._model.bclTriggerChangeOnInit() ){
+                    ( _tmp = _p._model.bclTrigger( true ) ) 
+                        &amp;&amp; !_tmp.prop( &#x27;disabled&#x27; )
+                        &amp;&amp; _tmp.trigger( &#x27;change&#x27;);
+                }
 
                 _p._model.ready( true );
 
@@ -522,6 +527,16 @@
                         }
                     });
                 }
+                return _r;
+            }
+
+        , bclTriggerChangeOnInit:
+            function(){
+                var _r = true, _p = this;
+
+                _p.selector().is( &#x27;[bclTriggerChangeOnInit] &#x27; ) 
+                    &amp;&amp; ( _r = JC.f.parseBool( _p.selector().attr( &#x27;bclTriggerChangeOnInit&#x27; ) ) );
+
                 return _r;
             }
 
@@ -774,7 +789,7 @@
 
                 $( _p ).trigger( &#x27;TriggerEvent&#x27;, [ &#x27;ChangeDone&#x27;, _triggerItem ] );
 
-                JC.log( &#x27;ChangeLogic view change&#x27;, new Date().getTime(), _isDisable );
+                //JC.log( &#x27;ChangeLogic view change&#x27;, new Date().getTime(), _isDisable );
             }
     };
 
