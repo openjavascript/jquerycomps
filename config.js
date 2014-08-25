@@ -41,6 +41,7 @@ requirejs.config( {
 
         , 'JC.Form': 'modules/JC.Form/0.2/Form'
         , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
+        , 'JC.FlowChart': 'modules/JC.FlowChart/0.1/FlowChart'
 
         , 'JC.FormFillUrl': 'modules/JC.FormFillUrl/0.1/FormFillUrl'
         , 'JC.FrameUtil': 'modules/JC.FrameUtil/0.1/FrameUtil'
@@ -117,6 +118,8 @@ requirejs.config( {
         , 'plugins.md5': 'plugins/md5/0.1/md5'
 
         , 'SWFUpload': 'modules/SWFUpload/2.5.0/SWFUpload'
+        , 'swfupload': 'modules/SWFUpload/2.5.0/SWFUpload'
+        , 'Raphael': 'modules/Raphael/latest/raphael'
     }
 });
 /**
