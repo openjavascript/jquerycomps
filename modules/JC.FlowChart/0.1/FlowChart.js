@@ -117,35 +117,76 @@
                 return this._data;
             }
 
-        , initTreeData:
+        , initGrid:
             function(){
                 var _p = this;
-                _p._parentData = {};
-                _p._childData = {};
-                if( !_p.data() ) return;
+                _p._grid = { data: [], idColumnIndex: {}, row: {}, idMap: {}, columnIndexMap: {}, maxColumn: 0 };
 
-                $.each( _p.data().data, function( _k, _item ){
-                    $.each( _item.pid, function( _sk, _sitem ){
-                        if( !( _sitem in _p._childData ) ){
-                            _p._childData[ _sitem ] = []; 
-                        }
-                        _p._childData[ _sitem ].push( _item );
-                    });
+                _p.initIdColumnIndex( _p.data(), _p.data().id, 0 );
+                _p.initColumnIndexMap();
 
-                    if( !( _k in _p._parentData ) ){
-                        _p._parentData[ _k ] = [];
-                    }
-                    $.each( _item.pid, function( _sk, _sitem ){
-                    });
-                });
-
-                JC.dir( _p._childData );
+                //JC.dir( _p.gridColumn() );
+                //JC.dir( _p.gridIdMap() );
+                //JC.dir( _p.gridIdColumnIndexMap() );
+                //JC.log( _p.gridMaxColumn() );
             }
 
-        , parentData: function(){ return this._parentData; }
-        , childData: function(){ return this._childData; }
+        , grid: function(){ return this._grid; }
 
-        , root: function(){ return this.data().root; }
+        , gridIdColumnIndex: function(){ return this.grid().idColumnIndex; }
+        , gridIdColumnIndexMap: function(){ return this.grid().columnIndexMap; }
+        , gridRow: function(){ return this.grid().row; }
+        , gridIdMap: function(){ return this.grid().idMap; }
+
+        , gridMaxColumn:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this.grid().maxColumn = _setter );
+                return this.grid().maxColumn;
+            }
+
+        , initColumnIndexMap:
+            function(){
+                var _p = this;
+                $.each( _p.gridIdColumnIndex(), function( _k, _item ){
+                    if( _item.index in _p.gridIdColumnIndexMap() ){
+                        _p.gridIdColumnIndexMap()[ _item.index ].push( _item );
+                    }else{
+                        _p.gridIdColumnIndexMap()[ _item.index ] = [ _item ];
+                    }
+                });
+            }
+
+        , initIdColumnIndex:
+            function( _data, _id, _ix, _processSelf ){
+                var _p = this, _childIx = _ix + 1, _targetNodeIx = _childIx + 1;
+                //JC.log( _ix, _data.name, _id, JC.f.ts() );
+                _data.id = _id;
+
+                _p.gridIdColumnIndex()[ _id ] = {
+                    index: _ix
+                    , data: _data
+                };
+                _p.gridIdMap()[ _id ] = _data;
+
+                _ix > _p.gridMaxColumn() && _p.gridMaxColumn( _ix );
+
+                if( _data.nodes && _data.nodes.data && _data.nodes.data.length ){
+                    var _targetNodes = {};
+                    $.each( _data.nodes.data, function( _k, _item ){
+                        _p.initIdColumnIndex( _item, _item.id, _childIx );
+                        if( ( 'targetNode' in _item ) && _item.targetNode in _p.data().targetNodes  ){
+                            _targetNodes[ _item.targetNode ] = _item.targetNode;
+                        }
+                    });
+
+                    $.each( _targetNodes, function( _k, _item ){
+                        _p.initIdColumnIndex( _p.data().targetNodes[ _k ], _k, _targetNodeIx, true );
+                    });
+                }
+                if( _processSelf && ( 'targetNode' in _data ) && ( _data.targetNode in _p.data().targetNodes ) ){
+                    _p.initIdColumnIndex( _p.data().targetNodes[ _data.targetNode ], _data.targetNode, _childIx, true );
+                }
+            }
     });
 
     JC.f.extendObject( FlowChart.View.prototype, {
@@ -157,9 +198,12 @@
         , draw:
             function(){
                 var _p = this;
-                _p._model.initTreeData();
+                if( !( _p._model.data() && _p._model.data().name ) ) return;
+
+                _p._model.initGrid();
+
                 _p.buildLayout();
-                _p.buildTree();
+                _p.buildRoot();
             }
 
         , buildLayout:
@@ -173,26 +217,11 @@
         , layout: function(){ return this._layout; }
         , box: function(){ return this._box; }
 
-        , buildTree:
-            function(){
-                var _p = this;
-
-                _p.buildRoot();
-                _p.buildChild( _p._model.root().id );
-
-                /*
-                var _t = $( '<div style="width:42px; height: 42px; left: 100px; top: 100px;position:absolute;"></div>' );
-                _t.appendTo( 'body' );
-                var _r = new Raphael( _t[0], 30, 32 );
-                    _r.JCTriangle( 30, { 'stroke-width': 0, 'fill': '#ccc' } ).rotate( 180 );
-                */
-            }
-
         , buildRoot:
             function(){
                 var _p = this, _w, _h, _offset, _radius, _diameter;
 
-                _p._root = $( JC.f.printf( '<span style="cursor:default;">{0}</span>', _p._model.root().name ) );
+                _p._root = $( JC.f.printf( '<span style="cursor:default;">{0}</span>', _p._model.data().name ) );
                 _p._root.appendTo( _p.box() );
                 _w = _p._root.width();
                 _h = _p._root.height();
@@ -205,10 +234,6 @@
                 _p._rootBg = new Raphael( _p.box()[0], _diameter + 2, _diameter + 2 );
                 _p._rootBg.circle( _radius, _radius, _radius ).attr( { 'stroke-width': 0, 'fill': '#ccc' } );
                 _p._root.css( { 'position': 'absolute', top: ( _diameter - _radius ) / 2 , left: ( _diameter - _w ) / 2 } );
-            }
-
-        , buildChild:
-            function( _id ){
             }
     });
 

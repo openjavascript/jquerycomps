@@ -29,12 +29,58 @@
                 <div class="js_compFlowChart" data-FlowChart="|script">
                     <script type="text/template">
                         {
-                            root: { "id": 0, "name": "提交"  }
-                            , data: {
-                                "1": { "name": "资质审核", "pid": [ 0 ] }
-                                , "2": { "name": "法务预核", "pid": [ 1 ] }
-                                , "3": { "name": "渠道管理层", "pid": [ 1 ] }
-                                , "4": { "name": "管理层", "pid": [ 2, 3 ] }
+                            name: '提交'
+                            , id: 1
+                            , nodes: {
+                                data: [
+                                    {
+                                        name: '资质审核'
+                                        , id: 2
+                                        , nodes: {
+                                            data: [
+                                                {
+                                                    name: '服务审核'
+                                                    , id: 3
+                                                    , targetNode: 5
+                                                }
+                                                , {
+                                                    name: '渠道管理层'
+                                                    , id: 4
+                                                    , targetNode: 5
+                                                }
+                                            ]
+                                        }
+                                    }
+                                    , {
+                                        name: '资质审核1'
+                                        , id: 6
+                                        , nodes: {
+                                            data: [
+                                                {
+                                                    name: '服务审核1'
+                                                    , id: 7
+                                                    , targetNode: 9
+                                                }
+                                                , {
+                                                    name: '渠道管理层1'
+                                                    , id: 8
+                                                    , targetNode: 9
+                                                }
+                                            ]
+                                        }
+                                    }
+
+                                ]
+                            }
+                            , targetNodes: {
+                                '5': {
+                                    name: '管理层'
+                                }
+                                , '9': {
+                                    name: '管理层1'
+                                    , targetNode: 5
+                                }
+
                             }
                         }
                     </script>
