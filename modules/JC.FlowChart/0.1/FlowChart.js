@@ -120,13 +120,14 @@
         , initGrid:
             function(){
                 var _p = this;
-                _p._grid = { data: [], idColumnIndex: {}, row: {}, idMap: {}, columnIndexMap: {}, maxColumn: 0 };
+                _p._grid = { data: [], idColumnIndex: {}, row: {}, idMap: {}, columnIndexMap: {}, maxColumn: 0, rowIndexPad: 0 };
 
                 _p.initIdColumnIndex( _p.data(), _p.data().id, 0 );
                 _p.initColumnIndexMap();
+                _p.initRowIndex();
 
                 //JC.dir( _p.gridColumn() );
-                //JC.dir( _p.gridIdMap() );
+                JC.dir( _p.gridIdColumnIndexMap() );
                 //JC.dir( _p.gridIdColumnIndexMap() );
                 //JC.log( _p.gridMaxColumn() );
             }
@@ -138,20 +139,46 @@
         , gridRow: function(){ return this.grid().row; }
         , gridIdMap: function(){ return this.grid().idMap; }
 
+        , initRowIndex:
+            function(){
+                var _p = this;
+
+                for( var i = 0; i <= _p.gridMaxColumn(); i++ ){
+                    //JC.log( i, JC.f.ts() );
+                    var _rowList = _p.gridIdColumnIndexMap()[ i ]
+                        , _preList = _p.gridIdColumnIndexMap()[ i - 1 ]
+                        , _len = _rowList.length
+                        ;
+                    $.each( _rowList, function( _k, _item ){
+                        if( i === 0 ){
+                            _item.rowIndex = 0;
+                            return;
+                        }
+                    });
+                    JC.log( i, _len, JC.f.ts() );
+                }
+            }
+
         , gridMaxColumn:
             function( _setter ){
                 typeof _setter != 'undefined' && ( this.grid().maxColumn = _setter );
                 return this.grid().maxColumn;
             }
 
+        , gridRowIndexPad:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this.grid().rowIndexPad = _setter );
+                return this.grid().rowIndexPad;
+            }
+
         , initColumnIndexMap:
             function(){
                 var _p = this;
                 $.each( _p.gridIdColumnIndex(), function( _k, _item ){
-                    if( _item.index in _p.gridIdColumnIndexMap() ){
-                        _p.gridIdColumnIndexMap()[ _item.index ].push( _item );
+                    if( _item.columnIndex in _p.gridIdColumnIndexMap() ){
+                        _p.gridIdColumnIndexMap()[ _item.columnIndex ].push( _item );
                     }else{
-                        _p.gridIdColumnIndexMap()[ _item.index ] = [ _item ];
+                        _p.gridIdColumnIndexMap()[ _item.columnIndex ] = [ _item ];
                     }
                 });
             }
@@ -161,9 +188,10 @@
                 var _p = this, _childIx = _ix + 1, _targetNodeIx = _childIx + 1;
                 //JC.log( _ix, _data.name, _id, JC.f.ts() );
                 _data.id = _id;
+                _data.pid = _data.pid || [];
 
                 _p.gridIdColumnIndex()[ _id ] = {
-                    index: _ix
+                    columnIndex: _ix
                     , data: _data
                 };
                 _p.gridIdMap()[ _id ] = _data;
@@ -173,9 +201,15 @@
                 if( _data.nodes && _data.nodes.data && _data.nodes.data.length ){
                     var _targetNodes = {};
                     $.each( _data.nodes.data, function( _k, _item ){
-                        _p.initIdColumnIndex( _item, _item.id, _childIx );
+                        _item.pid = _item.pid || [];
+                        _item.pid.push( _id );
+
+                        _p.initIdColumnIndex( _item, _item.id, _childIx, false, _id );
                         if( ( 'targetNode' in _item ) && _item.targetNode in _p.data().targetNodes  ){
                             _targetNodes[ _item.targetNode ] = _item.targetNode;
+
+                            _p.data().targetNodes[ _item.targetNode ].pid = _p.data().targetNodes[ _item.targetNode ].pid || [];
+                            _p.data().targetNodes[ _item.targetNode ].pid.push( _item.id );
                         }
                     });
 
@@ -184,6 +218,8 @@
                     });
                 }
                 if( _processSelf && ( 'targetNode' in _data ) && ( _data.targetNode in _p.data().targetNodes ) ){
+                    _p.data().targetNodes[ _data.targetNode ].pid = _p.data().targetNodes[ _data.targetNode ].pid || [];
+                    _p.data().targetNodes[ _data.targetNode ].pid.push( _id );
                     _p.initIdColumnIndex( _p.data().targetNodes[ _data.targetNode ], _data.targetNode, _childIx, true );
                 }
             }
