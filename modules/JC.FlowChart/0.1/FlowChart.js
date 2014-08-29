@@ -120,14 +120,22 @@
         , initGrid:
             function(){
                 var _p = this;
-                _p._grid = { data: [], idColumnIndex: {}, row: {}, idMap: {}, columnIndexMap: {}, maxColumn: 0, rowIndexPad: 0 };
+                _p._grid = { 
+                    data: []
+                    , idColumnIndex: {}
+                    , row: {}
+                    , idMap: {}
+                    , columnIndexMap: {}
+                    , maxColumn: 0
+                    , rowIndexPad: 0
+                    , offsetRowIndex: 10000 
+                };
 
                 _p.initIdColumnIndex( _p.data(), _p.data().id, 0 );
                 _p.initColumnIndexMap();
                 _p.initRowIndex();
 
-                //JC.dir( _p.gridColumn() );
-                JC.dir( _p.gridIdColumnIndexMap() );
+                //JC.dir( _p.gridIdColumnIndex() );
                 //JC.dir( _p.gridIdColumnIndexMap() );
                 //JC.log( _p.gridMaxColumn() );
             }
@@ -138,6 +146,9 @@
         , gridIdColumnIndexMap: function(){ return this.grid().columnIndexMap; }
         , gridRow: function(){ return this.grid().row; }
         , gridIdMap: function(){ return this.grid().idMap; }
+        , gridOffsetRowIndex: function(){ return this.grid().offsetRowIndex; }
+        , gridHeight: function(){ return 30; }
+        , gridWidth: function(){ return 200; }
 
         , initRowIndex:
             function(){
@@ -148,14 +159,45 @@
                     var _rowList = _p.gridIdColumnIndexMap()[ i ]
                         , _preList = _p.gridIdColumnIndexMap()[ i - 1 ]
                         , _len = _rowList.length
+                        , _preLen = _preList ? _preList.length : 0
                         ;
+                    //JC.dir( _rowList );
+
+                   /**
+                    * 这里的逻辑认为 起始节点 和 结束节点都只有一个
+                    */
+                   if( i === 0 || i === _p.gridMaxColumn() ){
+                        $.each( _rowList, function( _k, _item ){
+                            _item.rowIndex = _p.gridOffsetRowIndex();
+                        });
+                        continue;
+                    }
+
+                   var _minRowIndex = _p.gridOffsetRowIndex()
+                       , _maxRowIndex = _p.gridOffsetRowIndex()
+                       , _itemIndexLen = 1
+                       , _startIndex = _p.gridOffsetRowIndex()
+                       ;
+                   if( _rowList.length > 1 ){
+                       _itemIndexLen = _rowList.length * 2;
+                   }
+                   _startIndex = _startIndex - Math.floor( _itemIndexLen / 2 );
+                   if( _rowList.length % 2 === 0 ){
+                       _startIndex += 1;
+                   }
+
                     $.each( _rowList, function( _k, _item ){
-                        if( i === 0 ){
-                            _item.rowIndex = 0;
-                            return;
-                        }
+                        $.each( _item.pid, function( _sk, _sitem ){
+                            var _tmpItem = _p.gridIdMap()[ _sitem ];
+                            //JC.log( _k, _sk, _tmpItem.rowIndex, JC.f.ts() );
+                            _tmpItem.rowIndex < _minRowIndex && ( _minRowIndex = _tmpItem.rowIndex );
+                            _tmpItem.rowIndex > _maxRowIndex && ( _maxRowIndex = _tmpItem.rowIndex );
+                        });
+                        _item.rowIndex = _startIndex + _k * 2;
                     });
-                    JC.log( i, _len, JC.f.ts() );
+                    //JC.log( _minRowIndex, _maxRowIndex, JC.f.ts() );
+
+                    //JC.log( JC.f.printf( 'i: {0}, len: {1}, preLen: {2}', i, _len, _preLen ), JC.f.ts() );
                 }
             }
 
@@ -189,11 +231,8 @@
                 //JC.log( _ix, _data.name, _id, JC.f.ts() );
                 _data.id = _id;
                 _data.pid = _data.pid || [];
-
-                _p.gridIdColumnIndex()[ _id ] = {
-                    columnIndex: _ix
-                    , data: _data
-                };
+                _data.columnIndex = _ix;
+                _p.gridIdColumnIndex()[ _id ] = _data;
                 _p.gridIdMap()[ _id ] = _data;
 
                 _ix > _p.gridMaxColumn() && _p.gridMaxColumn( _ix );
@@ -239,7 +278,33 @@
                 _p._model.initGrid();
 
                 _p.buildLayout();
-                _p.buildRoot();
+
+                _p.drawGrid();
+            }
+
+        , drawGrid:
+            function(){
+                var _p = this, _sx = 0, _sy = 0;
+                for( var i = 0; i < _p._model.gridMaxColumn(); i++ ){
+                    var _rowList = _p._model.gridIdColumnIndexMap()[ i ]
+                        ;
+                    $.each( _rowList, function( _k, _item ){
+                        var _rowIx = _p._model.gridOffsetRowIndex() - _item.rowIndex
+                            , _x = _sx, _y = _sy
+                            ;
+                        //JC.log( _itemX, _itemY );
+                        _x += i * _p._model.gridWidth();
+                        _y += _rowIx * _p._model.gridHeight();
+
+                        JC.log( _x, _y );
+                        var _node = $( JC.f.printf( 
+                                '<div class="" style="position:absolute; left: {1}px; top: {2}px;white-space:pre;">{0}</div>'
+                                , _item.name 
+                                , _x, _y
+                            ) );
+                        _node.appendTo( _p.box() );
+                    });
+                }
             }
 
         , buildLayout:
