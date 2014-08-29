@@ -285,7 +285,7 @@
         , drawGrid:
             function(){
                 var _p = this, _sx = 0, _sy = 0;
-                for( var i = 0; i < _p._model.gridMaxColumn(); i++ ){
+                for( var i = 0; i <= _p._model.gridMaxColumn(); i++ ){
                     var _rowList = _p._model.gridIdColumnIndexMap()[ i ]
                         ;
                     $.each( _rowList, function( _k, _item ){
