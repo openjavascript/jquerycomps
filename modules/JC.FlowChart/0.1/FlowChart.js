@@ -1,5 +1,5 @@
 /**
- * 支持 多对多 关系( 目前只支持 一对多关系 )
+ * 支持 多对多 关系( 目前只支持 一对多 和 多对一 )
  */
  ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'Raphael' ], function(){
 /**
@@ -142,9 +142,10 @@
                 _p.fixRowIndexOneChild();
 
                 _p.createItems();
+                _p.calcRealPosition();
 
                 //JC.dir( _p.gridIdColumnIndex() );
-                //JC.dir( _p.gridIdColumnIndexMap() );
+                JC.dir( _p.gridIdColumnIndexMap() );
                 //JC.log( _p.gridMaxColumn() );
             }
 
@@ -153,12 +154,19 @@
         , gridIdColumnIndex: function(){ return this.grid().idColumnIndex; }
         , gridIdColumnIndexMap: function(){ return this.grid().columnIndexMap; }
         , gridRow: function(){ return this.grid().row; }
-        , gridIdMap: function(){ return this.grid().idMap; }
+        , gridIdMap: 
+            function( _id ){ 
+                if( typeof _id != 'undefined' ){
+                    return this.grid().idMap[ _id ];
+                }
+                return this.grid().idMap; 
+            }
         , gridOffsetRowIndex: function(){ return this.grid().offsetRowIndex; }
         , gridHeight: function(){ return 40; }
         , gridWidth: function(){ return 120; }
         , lineWidth: function(){ return 75; }
-        , sublineWidth: function(){ return 40; }
+        , childLineWidth: function(){ return 40; }
+        , parentLineWidth: function(){ return 25; }
 
         , createItems:
             function(){
@@ -190,6 +198,54 @@
                 }
             }
 
+        , calcRealPosition:
+            function(){
+                var _p = this, _sx = 0, _sy = 0, _countX = 0;
+                _p._columnX = [];
+                _p._minX = _sx;
+                _p._maxX = 0;
+                _p._minY = 0;
+                _p._maxY = 0;
+
+                for( var i = 0; i <= _p.gridMaxColumn(); i++ ){
+                    var _rowList = _p.gridIdColumnIndexMap()[ i ]
+                        ;
+
+                    $.each( _rowList, function( _k, _item ){
+                        var _x = _sx, _y = _sy
+                            ;
+                        _x += _countX;
+                        _y += _item.rowIndex * _p.gridHeight();
+
+                        _y < _p._minY && ( _p._minY = _y );
+                        ( _y + _p.gridHeight() / 2 ) > _p._maxY && ( _p._maxY = Math.ceil( _y + _p.gridHeight() / 2 ) );
+
+                        _item.x = _x;
+                        _item.y = _y;
+                    });
+
+                    _p._maxX = _sx + _countX + _p.columnWidth( i );
+
+                    _p._columnX.push( _sx + _countX );
+                    _countX += Math.max( _p.gridWidth(), _p.columnWidth( i ) ) + _p.lineWidth();
+                    if( _p.listHasChildline( _rowList ) ){
+                        _countX += _p.childLineWidth();
+                    }
+
+                    if( _p.listHasParentline( _rowList ) ){
+                        _countX += _p.parentLineWidth();
+                    }
+                }
+
+                //JC.log( _p._minX, _p._maxX, _p._minY, _p._maxY );
+
+            }
+
+        , minX: function(){ return this._minX; }
+        , minY: function(){ return this._minY; }
+        , maxX: function(){ return this._maxX; }
+        , maxY: function(){ return this._maxY; }
+
         , items: function(){ return this._items; }
         , item: 
             function( _id ){ 
@@ -202,10 +258,19 @@
                 }
                 return this._columnWidth;
             }
+        , columnX: 
+            function( _ix ){
+                if( typeof _ix != undefined ){
+                    return this._columnX[ _ix ] || 0;
+                }
+                return this._columnX;
+            }
+
 
         , fixRowIndexOneChild:
             function(){
                 var _p = this, _sx = 0, _sy = 0;
+
                 for( var i = 1; i < _p.gridMaxColumn(); i++ ){
                     var _rowList = _p.gridIdColumnIndexMap()[ i ]
                         , _tmp
@@ -405,14 +470,19 @@
             function(){
                 var _p = this;
                 _p._layout = $( '<div class="js_compFlowChartLayout"></div>' );
-                _p._box = $( '<div class="js_compFlowChartBox"></div>' );
+                _p._raphaelPlaceholder = $( '<div class="js_compFlowChartRaphael" style="position: absolute;"></div>' );
+                _p._box = $( '<div class="js_compFlowChartBox" style=""></div>' );
+                _p._raphaelPlaceholder.appendTo( _p.selector() );
                 _p._box.appendTo( _p._layout );
                 _p._layout.appendTo( _p.selector() );
             }
         , layout: function(){ return this._layout; }
         , box: function(){ return this._box; }
+        , raphaelPlaceholder: function(){ return this._raphaelPlaceholder; }
+        , width: function(){ return Math.abs( this._maxX - this._minX ); }
+        , height: function(){ return Math.abs( this._maxY - this._minY + 5 ); }
 
-        , listHasSubline:
+        , listHasChildline:
             function( _list ){
                 var _r = false;
                 $.each( _list, function( _k, _item ){
@@ -456,6 +526,13 @@
 
                 _p._model.buildLayout();
                 _p._model.initGrid();
+                _p._model.layout().css( { 
+                    'margin-top': Math.abs( _p._model.minY() ) + 'px' 
+                    , 'height': Math.abs( _p._model.maxY() - _p._model.minY() ) / 2 + _p._model.gridHeight() / 2 + 'px'
+                } );
+                _p._model.raphaelPlaceholder().css( { 
+                    'margin-top': -Math.abs( _p._model.minY() ) + 'px' 
+                } );
 
                 _p.showGrid();
                 _p.showLine();
@@ -467,33 +544,67 @@
 
         , showLine:
             function(){
+                var _p = this, _rh, _raphael, _y = Math.abs( _p._model.minY() );
+                _rh = _raphael = Raphael( _p._model.raphaelPlaceholder()[0], _p._model.width(), _p._model.height() );
+
+                for( var i = 0; i <= _p._model.gridMaxColumn(); i++ ){
+                    var _rowList = _p._model.gridIdColumnIndexMap()[ i ]
+                        , _hasChildline = _p._model.listHasChildline( _rowList )
+                        , _hasParentline = _p._model.listHasParentline( _rowList )
+                        , _columnX = _p._model.columnX( i )
+                        , _columnWidth = _p._model.columnWidth( i )
+                        , _startX = _columnX + _columnWidth
+                        , _realStartX
+                        , _lineWidth = _p._model.lineWidth()
+                        ;
+
+                    if( _hasChildline ){
+                        _lineWidth += _p._model.parentLineWidth();
+                    }
+
+                    if( _hasParentline ){
+                        _lineWidth += _p._model.childLineWidth();
+                    }
+
+                    //JC.log( i, _columnX, _columnWidth, _startX );
+
+                    $.each( _rowList, function( _k, _item ){
+                        var _node = _p._model.item( _item.id )
+                            , _pid = _item.pid
+                            , _nodes = _item.nodes
+                            , _subitem
+                            , _realStartX = _columnX + _node.outerWidth()
+                            , _realY = _item.y + _node.outerHeight() / 2 + 1
+                            ;
+                        if( !( _pid && _nodes ) ) return; 
+
+                        if( _nodes && _nodes.length ){
+                            if( _nodes.length === 1 ){
+                                _subitem = _nodes[0];
+                                _rh.path( JC.f.printf( 
+                                    '{0}M{1} {2}L{3} {4}'
+                                    , '', _realStartX, _realY + _y, _subitem.x, _realY + _y
+                                )).attr( { 'stroke': '#ccc' } );
+                            }
+                        }
+                    });
+                }
+
             }
 
         , showGrid:
             function(){
-                var _p = this, _sx = 0, _sy = 0, _countX = 0;
-                JC.log( _p._model._columnWidth );
+                var _p = this;
                 for( var i = 0; i <= _p._model.gridMaxColumn(); i++ ){
                     var _rowList = _p._model.gridIdColumnIndexMap()[ i ]
                         ;
-
                     $.each( _rowList, function( _k, _item ){
-                        var _x = _sx, _y = _sy
+                        var _node = _p._model.item( _item.id )
                             ;
-                        _x += _countX;
-                        _y += _item.rowIndex * _p._model.gridHeight();
-                        //JC.dir( _item );
-                        //JC.log( i, _k, _p._model.gridWidth(), _p._model.columnWidth( i ) );
-
-                        var _node = _p._model.item( _item.id );
                         _node.css({
-                            'left': _x + 'px', 'top': _y + 'px'
+                            'left': _item.x + 'px', 'top': _item.y + 'px'
                         });
                     });
-                    _countX += Math.max( _p._model.gridWidth(), _p._model.columnWidth( i ) ) + _p._model.lineWidth();
-                    if( _p._model.listHasSubline( _rowList ) || _p._model.listHasParentline( _rowList ) ){
-                        _countX += _p._model.sublineWidth();
-                    }
                 }
             }
     });
