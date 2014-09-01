@@ -1,3 +1,6 @@
+/**
+ * 支持 多对多 关系( 目前只支持 一对多关系 )
+ */
  ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'Raphael' ], function(){
 /**
  * 组件用途简述
@@ -136,23 +139,137 @@
                 _p.initRowIndex();
                 _p.fixRowIndex();
                 _p.fixRowIndexMultiChild();
+                _p.fixRowIndexOneChild();
+
+                _p.createItems();
 
                 //JC.dir( _p.gridIdColumnIndex() );
                 //JC.dir( _p.gridIdColumnIndexMap() );
                 //JC.log( _p.gridMaxColumn() );
             }
 
-        , fixRowIndexMultiChild:
+        , grid: function(){ return this._grid; }
+
+        , gridIdColumnIndex: function(){ return this.grid().idColumnIndex; }
+        , gridIdColumnIndexMap: function(){ return this.grid().columnIndexMap; }
+        , gridRow: function(){ return this.grid().row; }
+        , gridIdMap: function(){ return this.grid().idMap; }
+        , gridOffsetRowIndex: function(){ return this.grid().offsetRowIndex; }
+        , gridHeight: function(){ return 40; }
+        , gridWidth: function(){ return 120; }
+        , lineWidth: function(){ return 75; }
+        , sublineWidth: function(){ return 40; }
+
+        , createItems:
             function(){
                 var _p = this, _sx = 0, _sy = 0;
+                _p._items = {};
+                _p._columnWidth = [];
                 for( var i = 0; i <= _p.gridMaxColumn(); i++ ){
                     var _rowList = _p.gridIdColumnIndexMap()[ i ]
+                        , _maxWidth = _p.gridWidth()
                         ;
                     $.each( _rowList, function( _k, _item ){
+                        var _html = JC.f.printf( 
+                                '<div class="js_fcItem" style="position:absolute; left: -1000px;">{0}</div>'
+                                , _item.name 
+                            )  
+                            , _node = $( _html )
+                            , _tmpWidth
+                            ;
+                        _node.appendTo( _p.box() );
+                        _p._items[ _item.id ] = _node;
+                        _tmpWidth = _node.outerWidth();
+                        _tmpWidth > _maxWidth && ( _maxWidth = _tmpWidth );
+                        //JC.log( _html );
+                    });
+                    if( i === 0 ){
+                        _maxWidth = Math.ceil( _p._items[ _p.data().id ].width() + 30 );
+                    }
+                    _p._columnWidth.push( _maxWidth );
+                }
+            }
+
+        , items: function(){ return this._items; }
+        , item: 
+            function( _id ){ 
+                return this._items[ _id ]; 
+            }
+        , columnWidth: 
+            function( _ix ){
+                if( typeof _ix != undefined ){
+                    return this._columnWidth[ _ix ] || 0;
+                }
+                return this._columnWidth;
+            }
+
+        , fixRowIndexOneChild:
+            function(){
+                var _p = this, _sx = 0, _sy = 0;
+                for( var i = 1; i < _p.gridMaxColumn(); i++ ){
+                    var _rowList = _p.gridIdColumnIndexMap()[ i ]
+                        , _tmp
+                        ;
+                    $.each( _rowList, function( _k, _item ){
+                        if( _item.nodes && _item.nodes && _item.nodes.length === 1 && !_item.isFixOne ){
+                            _maxIndex = _item.rowIndex;
+                            _item.isFixOne = true;
+                            var _tmpNodes = _item.nodes
+                                , _maxIndex = _item.rowIndex
+                                ;
+                            while( _tmpNodes && _tmpNodes.length ){
+                                _tmpNodes[0].rowIndex > _maxIndex && ( _maxIndex = _tmpNodes[0].rowIndex );
+                                _tmpNodes[0].isFixOne = true;
+                                if( _tmpNodes[0].nodes && _tmpNodes[0].nodes.length === 1 ){
+                                    _tmpNodes = _tmpNodes[0].nodes[0];
+                                }else{
+                                    break;
+                                }
+                            }
+
+                            _item.rowIndex = _maxIndex;
+                        } else if( _item.isFixOne && _item.pid && _item.pid === 1 ){
+                            _item.rowIndex = _p.gridIdMap( _item.pid[0].rowIndex );
+                        } else if( _item.targetNode 
+                            && ( _tmp = _p.gridIdMap()[ _item.targetNode ] )
+                            && _tmp.pid
+                            && _tmp.pid.length === 1
+                            ){
+                            _tmp.rowIndex = _item.rowIndex;
+                            _tmp.isFixOne = true;
+                        }
                     });
                 }
             }
 
+        , fixRowIndexMultiChild:
+            function(){
+                var _p = this, _sx = 0, _sy = 0, _first, _last, _spaceIx, _ix;
+                for( var i = 1; i < _p.gridMaxColumn(); i++ ){
+                    var _rowList = _p.gridIdColumnIndexMap()[ i ]
+                        ;
+                    $.each( _rowList, function( _k, _item ){
+
+                        if( _item.pid && _item.pid.length > 1 ){
+                            _first = _p.gridIdMap(  )[ arrayFirst( _item.pid ) ];
+                            _last = _p.gridIdMap(  )[ arrayLast( _item.pid ) ];
+                            _spaceIx = _last.rowIndex - _first.rowIndex;
+                            _ix = _first.rowIndex + Math.ceil( Math.abs( _spaceIx ) / 2 );
+                            //JC.log( _item.name, arrayFirst( _item.pid ), arrayLast( _item.pid ), _first.rowIndex, _last.rowIndex, _spaceIx, _ix );
+                            _item.rowIndex = _ix;
+                        }
+
+                        if( _item.nodes && _item.nodes.length > 1 ){
+                            _first = arrayFirst( _item.nodes );
+                            _last = arrayLast( _item.nodes );
+                            _spaceIx = _last.rowIndex - _first.rowIndex;
+                            _ix = _first.rowIndex + Math.ceil( Math.abs( _spaceIx ) / 2 );
+                            //JC.log( _item.name, _first.rowIndex, _last.rowIndex, _spaceIx, _ix );
+                            _item.rowIndex = _ix;
+                        }
+                    });
+                }
+            }
 
         , fixRowIndex:
             function(){
@@ -167,16 +284,6 @@
                     });
                 }
             }
-
-        , grid: function(){ return this._grid; }
-
-        , gridIdColumnIndex: function(){ return this.grid().idColumnIndex; }
-        , gridIdColumnIndexMap: function(){ return this.grid().columnIndexMap; }
-        , gridRow: function(){ return this.grid().row; }
-        , gridIdMap: function(){ return this.grid().idMap; }
-        , gridOffsetRowIndex: function(){ return this.grid().offsetRowIndex; }
-        , gridHeight: function(){ return 30; }
-        , gridWidth: function(){ return 200; }
 
         , initRowIndex:
             function(){
@@ -268,9 +375,9 @@
 
                 _ix > _p.gridMaxColumn() && _p.gridMaxColumn( _ix );
 
-                if( _data.nodes && _data.nodes.data && _data.nodes.data.length ){
+                if( _data.nodes && _data.nodes.length ){
                     var _targetNodes = {};
-                    $.each( _data.nodes.data, function( _k, _item ){
+                    $.each( _data.nodes, function( _k, _item ){
                         _item.pid = _item.pid || [];
                         _item.pid.push( _id );
 
@@ -293,50 +400,6 @@
                     _p.initIdColumnIndex( _p.data().targetNodes[ _data.targetNode ], _data.targetNode, _childIx, true );
                 }
             }
-    });
-
-    JC.f.extendObject( FlowChart.View.prototype, {
-        init:
-            function(){
-                //JC.log( 'FlowChart.View.init:', new Date().getTime() );
-            }
-
-        , draw:
-            function(){
-                var _p = this;
-                if( !( _p._model.data() && _p._model.data().name ) ) return;
-
-                _p._model.initGrid();
-
-                _p.buildLayout();
-
-                _p.drawGrid();
-            }
-
-        , drawGrid:
-            function(){
-                var _p = this, _sx = 0, _sy = 0;
-                for( var i = 0; i <= _p._model.gridMaxColumn(); i++ ){
-                    var _rowList = _p._model.gridIdColumnIndexMap()[ i ]
-                        ;
-                    $.each( _rowList, function( _k, _item ){
-                        var _x = _sx, _y = _sy
-                            ;
-                        _x += i * _p._model.gridWidth();
-                        _y += _item.rowIndex * _p._model.gridHeight();
-                        JC.dir( _item );
-
-                        var _node = $( JC.f.printf( 
-                                '<div class="" style="position:absolute; left: {1}px; top: {2}px;white-space:pre;">{0},id:{3},pid:{4}</div>'
-                                , _item.name 
-                                , _x, _y
-                                , _item.id
-                                , _item.pid
-                            ) );
-                        _node.appendTo( _p.box() );
-                    });
-                }
-            }
 
         , buildLayout:
             function(){
@@ -349,25 +412,103 @@
         , layout: function(){ return this._layout; }
         , box: function(){ return this._box; }
 
-        , buildRoot:
+        , listHasSubline:
+            function( _list ){
+                var _r = false;
+                $.each( _list, function( _k, _item ){
+                    if( ( _item.nodes && _item.nodes.length > 1 ) ){
+                        _r = true;
+                        return false;
+                    }
+                });
+                return _r;
+            }
+
+        , listHasParentline:
+            function( _list ){
+                var _r = false, _tmp = {};
+                $.each( _list, function( _k, _item ){
+                    if( _item.targetNode in _tmp ){
+                        _r = true;
+                        return false;
+                    }
+                    if( _item.targetNode && !( _item.targetNode in _tmp ) ){
+                        _tmp[ _item.targetNode ] = 1;
+                    }
+                });
+                return _r;
+            }
+
+    });
+
+    JC.f.extendObject( FlowChart.View.prototype, {
+        init:
             function(){
-                var _p = this, _w, _h, _offset, _radius, _diameter;
+                //JC.log( 'FlowChart.View.init:', new Date().getTime() );
+            }
 
-                _p._root = $( JC.f.printf( '<span style="cursor:default;">{0}</span>', _p._model.data().name ) );
-                _p._root.appendTo( _p.box() );
-                _w = _p._root.width();
-                _h = _p._root.height();
-                _offset = _p._root.position();
-                _radius = Math.max( _w, _h ) / 2 + 4;
-                _diameter = _radius * 2;
+        , draw:
+            function(){
+                var _p = this, _st, _et;
+                if( !( _p._model.data() && _p._model.data().name ) ) return;
 
-                //JC.log( _w, _h, _offset.left, _offset.top );
+                _st = JC.f.ts();
 
-                _p._rootBg = new Raphael( _p.box()[0], _diameter + 2, _diameter + 2 );
-                _p._rootBg.circle( _radius, _radius, _radius ).attr( { 'stroke-width': 0, 'fill': '#ccc' } );
-                _p._root.css( { 'position': 'absolute', top: ( _diameter - _radius ) / 2 , left: ( _diameter - _w ) / 2 } );
+                _p._model.buildLayout();
+                _p._model.initGrid();
+
+                _p.showGrid();
+                _p.showLine();
+
+                _et = JC.f.ts();
+
+                JC.log( 'time span:', _et - _st );
+            }
+
+        , showLine:
+            function(){
+            }
+
+        , showGrid:
+            function(){
+                var _p = this, _sx = 0, _sy = 0, _countX = 0;
+                JC.log( _p._model._columnWidth );
+                for( var i = 0; i <= _p._model.gridMaxColumn(); i++ ){
+                    var _rowList = _p._model.gridIdColumnIndexMap()[ i ]
+                        ;
+
+                    $.each( _rowList, function( _k, _item ){
+                        var _x = _sx, _y = _sy
+                            ;
+                        _x += _countX;
+                        _y += _item.rowIndex * _p._model.gridHeight();
+                        //JC.dir( _item );
+                        //JC.log( i, _k, _p._model.gridWidth(), _p._model.columnWidth( i ) );
+
+                        var _node = _p._model.item( _item.id );
+                        _node.css({
+                            'left': _x + 'px', 'top': _y + 'px'
+                        });
+                    });
+                    _countX += Math.max( _p._model.gridWidth(), _p._model.columnWidth( i ) ) + _p._model.lineWidth();
+                    if( _p._model.listHasSubline( _rowList ) || _p._model.listHasParentline( _rowList ) ){
+                        _countX += _p._model.sublineWidth();
+                    }
+                }
             }
     });
+
+    function arrayFirst( _a ){
+        var _r;
+        _a && _a.length && ( _r = _a[0] );
+        return _r;
+    }
+
+    function arrayLast( _a ){
+        var _r;
+        _a && _a.length && ( _r = _a[ _a.length - 1] );
+        return _r;
+    }
 
     function distanceAngleToPoint( _distance, _angle){
         var _radian = _angle * Math.PI / 180;					
