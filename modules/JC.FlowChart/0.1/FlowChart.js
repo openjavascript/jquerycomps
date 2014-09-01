@@ -293,8 +293,10 @@
                             }
 
                             _item.rowIndex = _maxIndex;
-                        } else if( _item.isFixOne && _item.pid && _item.pid === 1 ){
-                            _item.rowIndex = _p.gridIdMap( _item.pid[0].rowIndex );
+                        } else if( _item.isFixOne && _item.pid && _item.pid.length === 1 ){
+                            _item.rowIndex = _p.gridIdMap( _item.pid[0]).rowIndex;
+                        } else if( _item.pid && _item.pid.length === 1 && _p.gridIdMap( _item.pid[0] ).nodes.length === 1 ){
+                            _item.rowIndex = _p.gridIdMap( _item.pid[0]).rowIndex;
                         } else if( _item.targetNode 
                             && ( _tmp = _p.gridIdMap()[ _item.targetNode ] )
                             && _tmp.pid
