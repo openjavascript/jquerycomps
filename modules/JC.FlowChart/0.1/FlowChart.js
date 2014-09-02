@@ -34,6 +34,7 @@
         <h2>JC.FlowChart 示例</h2>
  */
     var _jdoc = $( document ), _jwin = $( window );
+    var isIE = !!window.ActiveXObject;
 
     JC.FlowChart = FlowChart;
 
@@ -138,8 +139,8 @@
                 _p.initColumnIndexMap();
                 _p.initRowIndex();
                 _p.fixRowIndex();
-                _p.fixRowIndexMultiChild();
                 _p.fixRowIndexOneChild();
+                _p.fixRowIndexMultiChild();
 
                 _p.createItems();
                 _p.calcRealPosition();
@@ -222,6 +223,7 @@
 
                         _item.x = _x;
                         _item.y = _y;
+                        //JC.log( i, _item.name, _x, _y, _item.rowIndex );
                     });
 
                     _p._maxX = _sx + _countX + _p.columnWidth( i );
@@ -273,6 +275,7 @@
 
                 for( var i = 1; i < _p.gridMaxColumn(); i++ ){
                     var _rowList = _p.gridIdColumnIndexMap()[ i ]
+                        , _rowLen = _rowList.length
                         , _tmp
                         ;
                     $.each( _rowList, function( _k, _item ){
@@ -281,6 +284,7 @@
                             _item.isFixOne = true;
                             var _tmpNodes = _item.nodes
                                 , _maxIndex = _item.rowIndex
+                                , _tmpCount = _k + 1
                                 ;
                             while( _tmpNodes && _tmpNodes.length ){
                                 _tmpNodes[0].rowIndex > _maxIndex && ( _maxIndex = _tmpNodes[0].rowIndex );
@@ -293,6 +297,10 @@
                             }
 
                             _item.rowIndex = _maxIndex;
+                            while( _tmpCount < _rowLen ){
+                                _rowList[ _tmpCount ].rowIndex = _maxIndex + ( _tmpCount - _k );
+                                _tmpCount++;
+                            }
                         } else if( _item.isFixOne && _item.pid && _item.pid.length === 1 ){
                             _item.rowIndex = _p.gridIdMap( _item.pid[0]).rowIndex;
                         } else if( _item.pid && _item.pid.length === 1 && _p.gridIdMap( _item.pid[0] ).nodes.length === 1 ){
@@ -340,16 +348,28 @@
 
         , fixRowIndex:
             function(){
-                var _p = this, _sx = 0, _sy = 0;
+                var _p = this, _sx = 0, _sy = 0, _minY = 0;
                 for( var i = 0; i <= _p.gridMaxColumn(); i++ ){
                     var _rowList = _p.gridIdColumnIndexMap()[ i ]
                         ;
                     $.each( _rowList, function( _k, _item ){
-                        var _rowIx = _p.gridOffsetRowIndex() - _item.rowIndex
+                        var _rowIx = _item.rowIndex - _p.gridOffsetRowIndex()
                             ;
                         _item.rowIndex = _rowIx;
+                        _rowIx < _minY && ( _minY = _rowIx );
                     });
                 }
+                if( _minY < 0 ){
+                    _minY = Math.abs( _minY );
+                    for( var i = 0; i <= _p.gridMaxColumn(); i++ ){
+                        var _rowList = _p.gridIdColumnIndexMap()[ i ]
+                            ;
+                        $.each( _rowList, function( _k, _item ){
+                            _item.rowIndex += _minY;
+                        });
+                    }
+                }
+
             }
 
         , initRowIndex:
@@ -364,6 +384,8 @@
                         , _preLen = _preList ? _preList.length : 0
                         ;
                     //JC.dir( _rowList );
+                    //
+                    _preList && ( _preList = _preList.slice().reverse() );
 
                    /**
                     * 这里的逻辑认为 起始节点 和 结束节点都只有一个
@@ -384,25 +406,24 @@
                        _itemIndexLen = _rowList.length * 2;
                    }
                    _startIndex = _startIndex - Math.floor( _itemIndexLen / 2 );
-                   /*
-                   if( _rowList.length % 2 === 0 ){
-                       _startIndex += 1;
-                   }else{
-                   }*/
                    _startIndex += 1;
 
                     $.each( _rowList, function( _k, _item ){
+                        _item.rowIndex = _startIndex + _k * 2;
+                        //JC.log( _item.name, _item.rowIndex );
+                        /*
+                        if( i === 1 ){
+                            JC.log( _k, _item.name, _item.rowIndex );
+                        }
+                        */
+                        /*
                         $.each( _item.pid, function( _sk, _sitem ){
                             var _tmpItem = _p.gridIdMap()[ _sitem ];
-                            //JC.log( _k, _sk, _tmpItem.rowIndex, JC.f.ts() );
                             _tmpItem.rowIndex < _minRowIndex && ( _minRowIndex = _tmpItem.rowIndex );
                             _tmpItem.rowIndex > _maxRowIndex && ( _maxRowIndex = _tmpItem.rowIndex );
                         });
-                        _item.rowIndex = _startIndex + _k * 2;
+                        */
                     });
-                    //JC.log( _minRowIndex, _maxRowIndex, JC.f.ts() );
-
-                    //JC.log( JC.f.printf( 'i: {0}, len: {1}, preLen: {2}', i, _len, _preLen ), JC.f.ts() );
                 }
             }
 
@@ -423,7 +444,7 @@
                 var _p = this;
                 $.each( _p.gridIdColumnIndex(), function( _k, _item ){
                     if( _item.columnIndex in _p.gridIdColumnIndexMap() ){
-                        _p.gridIdColumnIndexMap()[ _item.columnIndex ].unshift( _item );
+                        _p.gridIdColumnIndexMap()[ _item.columnIndex ].push( _item );
                     }else{
                         _p.gridIdColumnIndexMap()[ _item.columnIndex ] = [ _item ];
                     }
@@ -546,8 +567,9 @@
 
         , showLine:
             function(){
-                var _p = this, _rh, _raphael, _y = Math.abs( _p._model.minY() );
+                var _p = this, _rh, _raphael, _y = Math.abs( _p._model.minY() ), _ypad = 0;
                 _rh = _raphael = Raphael( _p._model.raphaelPlaceholder()[0], _p._model.width(), _p._model.height() );
+                !isIE && ( _ypad = 1 );
 
                 var _lineStyle = {
                         'stroke': '#E1E1E1', 'stroke-width': 2
@@ -562,7 +584,9 @@
                         , _hasChildline = _p._model.listHasChildline( _rowList )
                         , _hasParentline = _p._model.listHasParentline( _rowList )
                         , _columnX = _p._model.columnX( i )
+                        , _preColumnX = _p._model.columnX( i - 1 )
                         , _columnWidth = _p._model.columnWidth( i )
+                        , _preColumnWidth = _p._model.columnWidth( i - 1 )
                         , _startX = _columnX + _columnWidth
                         , _realStartX
                         , _lineWidth = _p._model.lineWidth()
@@ -588,71 +612,120 @@
                             , _realY
                             , _fitem, _litem
                             , _fnode, _lnode
-                            , _sx, _sy
+                            , _ex, _sx, _sy, _ey
+                            , _tmpX
+                            , _midY
+                            , _tmpY, _tmpY1, _tmpY2
+                            , _endX 
+                            , _sdata, _snode
+                            , _path
                             ;
 
                         if( !( _pid || _nodes ) ) return; 
 
                         if(  _pid && _pid.length > 1 ){
 
-                            _realStartX = _columnX + _columnWidth + _p._model.parentLineWidth();
+                            _realStartX = _preColumnX + _preColumnWidth;
 
                             _fitem = _p._model.gridIdMap( arrayFirst( _pid ) );
                             _litem = _p._model.gridIdMap( arrayLast( _pid ) );
                             _fnode = _p._model.item( _fitem.id );
                             _lnode = _p._model.item( _litem.id );
 
-                            _rh.path( JC.f.printf( 
-                                '{0}M{1} {2}L{3} {4}'
-                                , ''
-                                , _fitem.x + _fnode.outerWidth(), _fitem.y + Math.abs( _p._model.minY() ) +  _fnode.outerHeight() / 2 + 1
-                                , _item.x, _item.y + Math.abs( _p._model.minY() ) + _node.outerHeight() / 2 + 1
-                            )).attr( _lineStyle );
+                            _midY = _item.y + Math.abs( _p._model.minY() ) + _node.outerHeight() / 2 + _ypad;
+                            _tmpY1 = _fitem.y + Math.abs( _p._model.minY() ) +  _fnode.outerHeight() / 2 + _ypad;
+                            _tmpY2 = _litem.y + Math.abs( _p._model.minY() ) +  _lnode.outerHeight() / 2 + _ypad;
+
+                            _endX =  _item.x - 18;
 
                             _rh.path( JC.f.printf( 
-                                '{0}M{1} {2}L{3} {4}'
+                                '{0}M{1} {2}L{3} {4}M{5} {6}L{7} {8}'
                                 , ''
-                                , _litem.x + _fnode.outerWidth(), _litem.y + Math.abs( _p._model.minY() ) +  _lnode.outerHeight() / 2 + 1
-                                , _item.x, _item.y + Math.abs( _p._model.minY() ) + _node.outerHeight() / 2 + 1
+                                , _realStartX, _tmpY1
+                                , _realStartX, _tmpY2
+                                , _realStartX, _midY
+                                , _endX, _midY
                             )).attr( _lineStyle );
 
+                            $.each( _pid, function( _sk, _sitem ){
+                                _sdata = _p._model.gridIdMap( _sitem );
+                                _snode = _p._model.item( _sdata.id );
+                                _tmpY = _sdata.y + Math.abs( _p._model.minY() ) +  _snode.outerHeight() / 2 + _ypad;
+
+                                _rh.path( JC.f.printf( 
+                                    '{0}M{1} {2}L{3} {4}'
+                                    , ''
+                                    , _sdata.x, _tmpY
+                                    , _realStartX, _tmpY
+                                )).attr( _lineStyle );
+                            });
+
+                            _rh.JCTriangle( 16, _endX, _midY, _iconStyle );
                         }
 
                         if( _nodes && _nodes.length ){
                             if( _nodes.length > 1 ){
-                                _realStartX = _columnX + _columnWidth + _p._model.childLineWidth();
+
+                                _sx = _item.x + _node.outerWidth();
 
                                 _fitem = arrayFirst( _nodes );
                                 _litem = arrayLast( _nodes );
                                 _fnode = _p._model.item( _fitem.id );
                                 _lnode = _p._model.item( _litem.id );
 
-                                _rh.path( JC.f.printf( 
-                                    '{0}M{1} {2}L{3} {4}'
-                                    , ''
-                                    , _fitem.x, _fitem.y + Math.abs( _p._model.minY() ) +  _fnode.outerHeight() / 2 + 1
-                                    , _item.x + _node.outerWidth(), _item.y + Math.abs( _p._model.minY() ) + _node.outerHeight() / 2 + 1
-                                )).attr( _lineStyle );
+                                //JC.log( _item.id, _fitem.name, _litem.name );
+
+                                _ex = _fitem.x;
+                                _realStartX = _ex - _p._model.childLineWidth();
+
+                                _midY = _item.y + Math.abs( _p._model.minY() ) + _node.outerHeight() / 2 + _ypad;
 
                                 _rh.path( JC.f.printf( 
                                     '{0}M{1} {2}L{3} {4}'
                                     , ''
-                                    , _litem.x, _litem.y + Math.abs( _p._model.minY() ) +  _lnode.outerHeight() / 2 + 1
-                                    , _item.x + _node.outerWidth(), _item.y + Math.abs( _p._model.minY() ) + _node.outerHeight() / 2 + 1
+                                    , _sx, _midY
+                                    , _realStartX - 18, _midY
                                 )).attr( _lineStyle );
+
+                                _rh.JCTriangle( 16, _realStartX - 18, _midY, _iconStyle );
+
+                                _tmpY1 = _fitem.y + Math.abs( _p._model.minY() ) +  _fnode.outerHeight() / 2 + _ypad;
+                                _tmpY2 = _litem.y + Math.abs( _p._model.minY() ) +  _lnode.outerHeight() / 2 + _ypad;
+
+                                _endX =  _item.x - 18;
+
+                                _rh.path( JC.f.printf( 
+                                    '{0}M{1} {2}L{3} {4}'
+                                    , ''
+                                    , _realStartX, _tmpY1
+                                    , _realStartX, _tmpY2
+                                )).attr( _lineStyle );
+
+                                $.each( _nodes, function( _sk, _sitem ){
+                                    _sdata = _sitem;
+                                    _snode = _p._model.item( _sdata.id );
+                                    _tmpY = _sdata.y + Math.abs( _p._model.minY() ) +  _snode.outerHeight() / 2 + _ypad;
+
+                                    _rh.path( JC.f.printf( 
+                                        '{0}M{1} {2}L{3} {4}'
+                                        , ''
+                                        , _realStartX, _tmpY
+                                        , _sdata.x, _tmpY
+                                    )).attr( _lineStyle );
+                                });
 
                             }
 
                             if( _nodes.length === 1 ){
                                 _realStartX = _columnX + _node.outerWidth();
-                                _realY = _item.y + _node.outerHeight() / 2 + 1;
+                                _realY = _item.y + _node.outerHeight() / 2;
 
                                 _subitem = _nodes[0];
                                 _rh.path( JC.f.printf( 
                                     '{0}M{1} {2}L{3} {4}'
-                                    , '', _realStartX, _realY + _y, _subitem.x - 20, _realY + _y
+                                    , '', _realStartX, _realY + _y, _subitem.x - 18, _realY + _y + _ypad
                                 )).attr( _lineStyle );
-                                _rh.JCTriangle( 16, _subitem.x - 20, _realY + _y, _iconStyle );
+                                _rh.JCTriangle( 16, _subitem.x - 18, _realY + _y + _ypad, _iconStyle );
                             }
                         }
                     });
