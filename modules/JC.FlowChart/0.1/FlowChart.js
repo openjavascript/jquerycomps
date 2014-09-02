@@ -137,6 +137,7 @@
 
                 _p.initIdColumnIndex( _p.data(), _p.data().id, 0 );
                 _p.initColumnIndexMap();
+                JC.dir( _p.gridIdColumnIndexMap() );
                 _p.initRowIndex();
                 _p.fixRowIndex();
                 _p.fixRowIndexOneChild();
@@ -146,7 +147,7 @@
                 _p.calcRealPosition();
 
                 //JC.dir( _p.gridIdColumnIndex() );
-                JC.dir( _p.gridIdColumnIndexMap() );
+                //JC.dir( _p.gridIdColumnIndexMap() );
                 //JC.log( _p.gridMaxColumn() );
             }
 
@@ -410,19 +411,6 @@
 
                     $.each( _rowList, function( _k, _item ){
                         _item.rowIndex = _startIndex + _k * 2;
-                        //JC.log( _item.name, _item.rowIndex );
-                        /*
-                        if( i === 1 ){
-                            JC.log( _k, _item.name, _item.rowIndex );
-                        }
-                        */
-                        /*
-                        $.each( _item.pid, function( _sk, _sitem ){
-                            var _tmpItem = _p.gridIdMap()[ _sitem ];
-                            _tmpItem.rowIndex < _minRowIndex && ( _minRowIndex = _tmpItem.rowIndex );
-                            _tmpItem.rowIndex > _maxRowIndex && ( _maxRowIndex = _tmpItem.rowIndex );
-                        });
-                        */
                     });
                 }
             }
@@ -455,6 +443,9 @@
             function( _data, _id, _ix, _processSelf ){
                 var _p = this, _childIx = _ix + 1, _targetNodeIx = _childIx + 1;
                 //JC.log( _ix, _data.name, _id, JC.f.ts() );
+                if( ( 'columnIndex' in _data ) && _ix < _data.columnIndex ){
+                    _ix = _data.columnIndex;
+                }
                 _data.id = _id;
                 _data.pid = _data.pid || [];
                 _data.columnIndex = _ix;
@@ -550,11 +541,7 @@
                 _p._model.buildLayout();
                 _p._model.initGrid();
                 _p._model.layout().css( { 
-                    'margin-top': Math.abs( _p._model.minY() ) + 'px' 
-                    , 'height': Math.abs( _p._model.maxY() - _p._model.minY() ) / 2 + _p._model.gridHeight() / 2 + 'px'
-                } );
-                _p._model.raphaelPlaceholder().css( { 
-                    'margin-top': -Math.abs( _p._model.minY() ) + 'px' 
+                    'height': Math.abs( _p._model.maxY() ) + 'px'
                 } );
 
                 _p.showGrid();
@@ -625,7 +612,7 @@
 
                         if(  _pid && _pid.length > 1 ){
 
-                            _realStartX = _preColumnX + _preColumnWidth;
+                            _realStartX = _preColumnX + _preColumnWidth + _p._model.parentLineWidth();
 
                             _fitem = _p._model.gridIdMap( arrayFirst( _pid ) );
                             _litem = _p._model.gridIdMap( arrayLast( _pid ) );
