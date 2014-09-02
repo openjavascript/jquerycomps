@@ -549,6 +549,14 @@
                 var _p = this, _rh, _raphael, _y = Math.abs( _p._model.minY() );
                 _rh = _raphael = Raphael( _p._model.raphaelPlaceholder()[0], _p._model.width(), _p._model.height() );
 
+                var _lineStyle = {
+                        'stroke': '#E1E1E1', 'stroke-width': 2
+                    }
+                    , _iconStyle = {
+                        'stroke': '#E1E1E1', 'stroke-width': 2, 'fill': '#F2F2F2'
+                    }
+                    ;
+
                 for( var i = 0; i <= _p._model.gridMaxColumn(); i++ ){
                     var _rowList = _p._model.gridIdColumnIndexMap()[ i ]
                         , _hasChildline = _p._model.listHasChildline( _rowList )
@@ -560,12 +568,12 @@
                         , _lineWidth = _p._model.lineWidth()
                         ;
 
-                    if( _hasChildline ){
-                        _lineWidth += _p._model.parentLineWidth();
-                    }
-
                     if( _hasParentline ){
                         _lineWidth += _p._model.childLineWidth();
+                    }
+
+                    if( _hasChildline ){
+                        _lineWidth += _p._model.parentLineWidth();
                     }
 
                     //JC.log( i, _columnX, _columnWidth, _startX );
@@ -575,18 +583,76 @@
                             , _pid = _item.pid
                             , _nodes = _item.nodes
                             , _subitem
-                            , _realStartX = _columnX + _node.outerWidth()
-                            , _realY = _item.y + _node.outerHeight() / 2 + 1
+                            , _realStartX
+                            , _realY
+                            , _fitem, _litem
+                            , _fnode, _lnode
+                            , _xpad = 0
+                            , _sx, _sy
                             ;
-                        if( !( _pid && _nodes ) ) return; 
+
+                        if( !( _pid || _nodes ) ) return; 
+
+                        if(  _pid && _pid.length > 1 ){
+
+                            _realStartX = _columnX + _columnWidth + _p._model.parentLineWidth();
+
+                            _fitem = _p._model.gridIdMap( arrayFirst( _pid ) );
+                            _litem = _p._model.gridIdMap( arrayLast( _pid ) );
+                            _fnode = _p._model.item( _fitem.id );
+                            _lnode = _p._model.item( _litem.id );
+
+                            _rh.path( JC.f.printf( 
+                                '{0}M{1} {2}L{3} {4}'
+                                , ''
+                                , _fitem.x + _fnode.outerWidth(), _fitem.y + Math.abs( _p._model.minY() ) +  _fnode.outerHeight() / 2 + 1
+                                , _item.x, _item.y + Math.abs( _p._model.minY() ) + _node.outerHeight() / 2 + 1
+                            )).attr( _lineStyle );
+
+                            _rh.path( JC.f.printf( 
+                                '{0}M{1} {2}L{3} {4}'
+                                , ''
+                                , _litem.x + _fnode.outerWidth(), _litem.y + Math.abs( _p._model.minY() ) +  _lnode.outerHeight() / 2 + 1
+                                , _item.x, _item.y + Math.abs( _p._model.minY() ) + _node.outerHeight() / 2 + 1
+                            )).attr( _lineStyle );
+
+                        }
 
                         if( _nodes && _nodes.length ){
+                            if( _nodes.length > 1 ){
+                                _realStartX = _columnX + _columnWidth + _p._model.childLineWidth();
+
+                                _fitem = arrayFirst( _nodes );
+                                _litem = arrayLast( _nodes );
+                                _fnode = _p._model.item( _fitem.id );
+                                _lnode = _p._model.item( _litem.id );
+
+                                _rh.path( JC.f.printf( 
+                                    '{0}M{1} {2}L{3} {4}'
+                                    , ''
+                                    , _fitem.x, _fitem.y + Math.abs( _p._model.minY() ) +  _fnode.outerHeight() / 2 + 1
+                                    , _item.x + _node.outerWidth(), _item.y + Math.abs( _p._model.minY() ) + _node.outerHeight() / 2 + 1
+                                )).attr( _lineStyle );
+
+                                _rh.path( JC.f.printf( 
+                                    '{0}M{1} {2}L{3} {4}'
+                                    , ''
+                                    , _litem.x, _litem.y + Math.abs( _p._model.minY() ) +  _lnode.outerHeight() / 2 + 1
+                                    , _item.x + _node.outerWidth(), _item.y + Math.abs( _p._model.minY() ) + _node.outerHeight() / 2 + 1
+                                )).attr( _lineStyle );
+
+                            }
+
                             if( _nodes.length === 1 ){
+                                _realStartX = _columnX + _node.outerWidth();
+                                _realY = _item.y + _node.outerHeight() / 2 + 1;
+
                                 _subitem = _nodes[0];
                                 _rh.path( JC.f.printf( 
                                     '{0}M{1} {2}L{3} {4}'
-                                    , '', _realStartX, _realY + _y, _subitem.x, _realY + _y
-                                )).attr( { 'stroke': '#ccc' } );
+                                    , '', _realStartX, _realY + _y, _subitem.x - 20, _realY + _y
+                                )).attr( _lineStyle );
+                                _rh.JCTriangle( 16, _subitem.x - 20, _realY + _y, _iconStyle );
                             }
                         }
                     });
@@ -632,10 +698,12 @@
     }
 
     Raphael.fn.JCTriangle =
-        function( _sideLength, _params, _x, _y ){
+        function( _sideLength, _x, _y, _params, _offsetAngle ){
+            !_sideLength && ( _sideLength = 16 );
             !_x && ( _x = 0 );
             !_y && ( _y = _sideLength / 2 );
             _y += 1;
+            typeof _offsetAngle == 'undefined' && ( _offsetAngle = 180 );
 
             var _p1 = distanceAngleToPoint( _sideLength, 330 )
                 , _p2 = distanceAngleToPoint( _sideLength, 30 )
@@ -648,8 +716,8 @@
                 _p2.x = parseInt( _p2.x + _x );
                 _p2.y = parseInt( _p2.y + _y );
 
-                document.title = [ _p1.x, _p1.y, _p2.x, _p2.y ];
-                JC.log( document.title );
+                //document.title = [ _p1.x, _p1.y, _p2.x, _p2.y ];
+                //JC.log( document.title );
 
             var _r = this.path(
                 JC.f.printf( 
@@ -660,6 +728,7 @@
                     , _p2.x, _p2.y
                 )
             );
+            _r.rotate( _offsetAngle );
             _params && _r.attr( _params );
             return _r;
         };
