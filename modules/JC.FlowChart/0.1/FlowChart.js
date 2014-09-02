@@ -91,11 +91,11 @@
 
                 _p.on( 'inited', function(){
 
-                    if( !_p._model.data() ) return;
+                    if( !_p._model.chartData() ) return;
                     _p._view.draw();
                 });
 
-                //JC.dir( _p._model.data() );
+                //JC.dir( _p._model.chartData() );
             }
 
         , _inited:
@@ -121,6 +121,11 @@
                 return this._data;
             }
 
+        , chartData:
+            function(){
+                return this.data().chart;
+            }
+
         , initGrid:
             function(){
                 var _p = this;
@@ -135,7 +140,7 @@
                     , offsetRowIndex: 10000 
                 };
 
-                _p.initIdColumnIndex( _p.data(), _p.data().id, 0 );
+                _p.initIdColumnIndex( _p.chartData(), _p.chartData().id, 0 );
                 _p.initColumnIndexMap();
                 JC.dir( _p.gridIdColumnIndexMap() );
                 _p.initRowIndex();
@@ -194,7 +199,7 @@
                         //JC.log( _html );
                     });
                     if( i === 0 ){
-                        _maxWidth = Math.ceil( _p._items[ _p.data().id ].width() + 30 );
+                        _maxWidth = Math.ceil( _p._items[ _p.chartData().id ].width() + 30 );
                     }
                     _p._columnWidth.push( _maxWidth );
                 }
@@ -461,22 +466,22 @@
                         _item.pid.push( _id );
 
                         _p.initIdColumnIndex( _item, _item.id, _childIx, false, _id );
-                        if( ( 'targetNode' in _item ) && _item.targetNode in _p.data().targetNodes  ){
+                        if( ( 'targetNode' in _item ) && _item.targetNode in _p.chartData().targetNodes  ){
                             _targetNodes[ _item.targetNode ] = _item.targetNode;
 
-                            _p.data().targetNodes[ _item.targetNode ].pid = _p.data().targetNodes[ _item.targetNode ].pid || [];
-                            _p.data().targetNodes[ _item.targetNode ].pid.push( _item.id );
+                            _p.chartData().targetNodes[ _item.targetNode ].pid = _p.chartData().targetNodes[ _item.targetNode ].pid || [];
+                            _p.chartData().targetNodes[ _item.targetNode ].pid.push( _item.id );
                         }
                     });
 
                     $.each( _targetNodes, function( _k, _item ){
-                        _p.initIdColumnIndex( _p.data().targetNodes[ _k ], _k, _targetNodeIx, true );
+                        _p.initIdColumnIndex( _p.chartData().targetNodes[ _k ], _k, _targetNodeIx, true );
                     });
                 }
-                if( _processSelf && ( 'targetNode' in _data ) && ( _data.targetNode in _p.data().targetNodes ) ){
-                    _p.data().targetNodes[ _data.targetNode ].pid = _p.data().targetNodes[ _data.targetNode ].pid || [];
-                    _p.data().targetNodes[ _data.targetNode ].pid.push( _id );
-                    _p.initIdColumnIndex( _p.data().targetNodes[ _data.targetNode ], _data.targetNode, _childIx, true );
+                if( _processSelf && ( 'targetNode' in _data ) && ( _data.targetNode in _p.chartData().targetNodes ) ){
+                    _p.chartData().targetNodes[ _data.targetNode ].pid = _p.chartData().targetNodes[ _data.targetNode ].pid || [];
+                    _p.chartData().targetNodes[ _data.targetNode ].pid.push( _id );
+                    _p.initIdColumnIndex( _p.chartData().targetNodes[ _data.targetNode ], _data.targetNode, _childIx, true );
                 }
             }
 
@@ -534,7 +539,7 @@
         , draw:
             function(){
                 var _p = this, _st, _et;
-                if( !( _p._model.data() && _p._model.data().name ) ) return;
+                if( !( _p._model.chartData() && _p._model.chartData().name ) ) return;
 
                 _st = JC.f.ts();
 
