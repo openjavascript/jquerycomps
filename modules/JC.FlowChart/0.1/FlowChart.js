@@ -566,6 +566,7 @@
                         , _startX = _columnX + _columnWidth
                         , _realStartX
                         , _lineWidth = _p._model.lineWidth()
+                        , _xpad = 0
                         ;
 
                     if( _hasParentline ){
@@ -587,7 +588,6 @@
                             , _realY
                             , _fitem, _litem
                             , _fnode, _lnode
-                            , _xpad = 0
                             , _sx, _sy
                             ;
 
