@@ -7,7 +7,7 @@
  *
  *  <p><b>require</b>:
  *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
- *      , <a href='Raphael.html'>RaphaelJS</a>
+ *      , <a href='window.Raphael.html'>RaphaelJS</a>
  *  </p>
  *
  *  <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -132,6 +132,7 @@
                 _p._grid = { 
                     data: []
                     , idColumnIndex: {}
+                    , idColumnIndexList: []
                     , row: {}
                     , idMap: {}
                     , columnIndexMap: {}
@@ -140,9 +141,8 @@
                     , offsetRowIndex: 10000 
                 };
 
-                _p.initIdColumnIndex( _p.chartData(), _p.chartData().id, 0 );
+                _p.initIdColumnIndex( _p.chartData(), _p.chartData().id, 0, 0, 0 );
                 _p.initColumnIndexMap();
-                JC.dir( _p.gridIdColumnIndexMap() );
                 _p.initRowIndex();
                 _p.fixRowIndex();
                 _p.fixRowIndexOneChild();
@@ -152,13 +152,14 @@
                 _p.calcRealPosition();
 
                 //JC.dir( _p.gridIdColumnIndex() );
-                //JC.dir( _p.gridIdColumnIndexMap() );
+                JC.dir( _p.gridIdColumnIndexMap() );
                 //JC.log( _p.gridMaxColumn() );
             }
 
         , grid: function(){ return this._grid; }
 
         , gridIdColumnIndex: function(){ return this.grid().idColumnIndex; }
+        , gridIdColumnIndexList: function(){ return this.grid().idColumnIndexList; }
         , gridIdColumnIndexMap: function(){ return this.grid().columnIndexMap; }
         , gridRow: function(){ return this.grid().row; }
         , gridIdMap: 
@@ -186,7 +187,7 @@
                         ;
                     $.each( _rowList, function( _k, _item ){
                         var _html = JC.f.printf( 
-                                '<div class="js_fcItem" style="position:absolute; left: -1000px;">{0}</div>'
+                                '<div class="js_cfcItem" style="position:absolute; left: -1000px;">{0}</div>'
                                 , _item.name 
                             )  
                             , _node = $( _html )
@@ -416,7 +417,9 @@
 
                     $.each( _rowList, function( _k, _item ){
                         _item.rowIndex = _startIndex + _k * 2;
+                        //JC.log( i, _k, _item.rowIndex );
                     });
+                    //JC.log( i, _startIndex );
                 }
             }
 
@@ -435,7 +438,19 @@
         , initColumnIndexMap:
             function(){
                 var _p = this;
+
+                /*
+                JC.dir( _p.gridIdColumnIndexList() );
+                $.each( _p.gridIdColumnIndexList(), function( _k, _item ){
+                    JC.log( _item.columnIndex, _k );
+                });
+
+                JC.dir( _p.gridIdColumnIndex() );
                 $.each( _p.gridIdColumnIndex(), function( _k, _item ){
+                    JC.log( _item.columnIndex, _k );
+                });
+                */
+                $.each( _p.gridIdColumnIndexList(), function( _k, _item ){
                     if( _item.columnIndex in _p.gridIdColumnIndexMap() ){
                         _p.gridIdColumnIndexMap()[ _item.columnIndex ].push( _item );
                     }else{
@@ -445,17 +460,24 @@
             }
 
         , initIdColumnIndex:
-            function( _data, _id, _ix, _processSelf ){
+            function( _data, _id, _ix, _processSelf, _count ){
                 var _p = this, _childIx = _ix + 1, _targetNodeIx = _childIx + 1;
                 //JC.log( _ix, _data.name, _id, JC.f.ts() );
                 if( ( 'columnIndex' in _data ) && _ix < _data.columnIndex ){
                     _ix = _data.columnIndex;
                 }
+
+                if( !( _id in _p.gridIdMap() ) ){
+                    _p.gridIdColumnIndexList().push( _data );
+                }
+
                 _data.id = _id;
                 _data.pid = _data.pid || [];
                 _data.columnIndex = _ix;
                 _p.gridIdColumnIndex()[ _id ] = _data;
                 _p.gridIdMap()[ _id ] = _data;
+                _data.zindex = _count++;
+
 
                 _ix > _p.gridMaxColumn() && _p.gridMaxColumn( _ix );
 
@@ -465,35 +487,38 @@
                         _item.pid = _item.pid || [];
                         _item.pid.push( _id );
 
-                        _p.initIdColumnIndex( _item, _item.id, _childIx, false, _id );
                         if( ( 'targetNode' in _item ) && _item.targetNode in _p.chartData().targetNodes  ){
                             _targetNodes[ _item.targetNode ] = _item.targetNode;
 
                             _p.chartData().targetNodes[ _item.targetNode ].pid = _p.chartData().targetNodes[ _item.targetNode ].pid || [];
                             _p.chartData().targetNodes[ _item.targetNode ].pid.push( _item.id );
                         }
+                        _p.initIdColumnIndex( _item, _item.id, _childIx, false, _count );
                     });
 
                     $.each( _targetNodes, function( _k, _item ){
-                        _p.initIdColumnIndex( _p.chartData().targetNodes[ _k ], _k, _targetNodeIx, true );
+                        _p.initIdColumnIndex( _p.chartData().targetNodes[ _k ], _k, _targetNodeIx, true, _count );
                     });
-                }
+                }              
+
                 if( _processSelf && ( 'targetNode' in _data ) && ( _data.targetNode in _p.chartData().targetNodes ) ){
                     _p.chartData().targetNodes[ _data.targetNode ].pid = _p.chartData().targetNodes[ _data.targetNode ].pid || [];
                     _p.chartData().targetNodes[ _data.targetNode ].pid.push( _id );
-                    _p.initIdColumnIndex( _p.chartData().targetNodes[ _data.targetNode ], _data.targetNode, _childIx, true );
+                    _p.initIdColumnIndex( _p.chartData().targetNodes[ _data.targetNode ], _data.targetNode, _childIx, true, _count  );
                 }
             }
 
         , buildLayout:
             function(){
                 var _p = this;
-                _p._layout = $( '<div class="js_compFlowChartLayout"></div>' );
-                _p._raphaelPlaceholder = $( '<div class="js_compFlowChartRaphael" style="position: absolute;"></div>' );
-                _p._box = $( '<div class="js_compFlowChartBox" style=""></div>' );
-                _p._raphaelPlaceholder.appendTo( _p.selector() );
+                _p._container = $( '<div class="js_cfcContainer"></div>' );
+                _p._layout = $( '<div class="js_cfcLayout"></div>' );
+                _p._raphaelPlaceholder = $( '<div class="js_cfcRaphael" style="position: absolute;"></div>' );
+                _p._box = $( '<div class="js_cfcBox" style=""></div>' );
+                _p._raphaelPlaceholder.appendTo( _p._layout );
                 _p._box.appendTo( _p._layout );
-                _p._layout.appendTo( _p.selector() );
+                _p._layout.appendTo( _p._container );
+                _p._container.appendTo( _p.selector() );
             }
         , layout: function(){ return this._layout; }
         , box: function(){ return this._box; }
@@ -615,44 +640,55 @@
 
                         if( !( _pid || _nodes ) ) return; 
 
-                        if(  _pid && _pid.length > 1 ){
-
-                            _realStartX = _preColumnX + _preColumnWidth + _p._model.parentLineWidth();
-
+                        if(  _pid && _pid.length  ){
                             _fitem = _p._model.gridIdMap( arrayFirst( _pid ) );
-                            _litem = _p._model.gridIdMap( arrayLast( _pid ) );
                             _fnode = _p._model.item( _fitem.id );
-                            _lnode = _p._model.item( _litem.id );
 
-                            _midY = _item.y + Math.abs( _p._model.minY() ) + _node.outerHeight() / 2 + _ypad;
-                            _tmpY1 = _fitem.y + Math.abs( _p._model.minY() ) +  _fnode.outerHeight() / 2 + _ypad;
-                            _tmpY2 = _litem.y + Math.abs( _p._model.minY() ) +  _lnode.outerHeight() / 2 + _ypad;
+                            if( _pid.length > 1 ){
+                                _realStartX = _preColumnX + _preColumnWidth + _p._model.parentLineWidth();
+                                _litem = _p._model.gridIdMap( arrayLast( _pid ) );
+                                _lnode = _p._model.item( _litem.id );
 
-                            _endX =  _item.x - 18;
+                                _midY = _item.y + Math.abs( _p._model.minY() ) + _node.outerHeight() / 2 + _ypad;
+                                _tmpY1 = _fitem.y + Math.abs( _p._model.minY() ) +  _fnode.outerHeight() / 2 + _ypad;
+                                _tmpY2 = _litem.y + Math.abs( _p._model.minY() ) +  _lnode.outerHeight() / 2 + _ypad;
 
-                            _rh.path( JC.f.printf( 
-                                '{0}M{1} {2}L{3} {4}M{5} {6}L{7} {8}'
-                                , ''
-                                , _realStartX, _tmpY1
-                                , _realStartX, _tmpY2
-                                , _realStartX, _midY
-                                , _endX, _midY
-                            )).attr( _lineStyle );
+                                _endX =  _item.x - 18;
 
-                            $.each( _pid, function( _sk, _sitem ){
-                                _sdata = _p._model.gridIdMap( _sitem );
-                                _snode = _p._model.item( _sdata.id );
-                                _tmpY = _sdata.y + Math.abs( _p._model.minY() ) +  _snode.outerHeight() / 2 + _ypad;
+                                _rh.path( JC.f.printf( 
+                                    '{0}M{1} {2}L{3} {4}M{5} {6}L{7} {8}'
+                                    , ''
+                                    , _realStartX, _tmpY1
+                                    , _realStartX, _tmpY2
+                                    , _realStartX, _midY
+                                    , _endX, _midY
+                                )).attr( _lineStyle );
+
+                                $.each( _pid, function( _sk, _sitem ){
+                                    _sdata = _p._model.gridIdMap( _sitem );
+                                    _snode = _p._model.item( _sdata.id );
+                                    _tmpY = _sdata.y + Math.abs( _p._model.minY() ) +  _snode.outerHeight() / 2 + _ypad;
+
+                                    _rh.path( JC.f.printf( 
+                                        '{0}M{1} {2}L{3} {4}'
+                                        , ''
+                                        , _sdata.x, _tmpY
+                                        , _realStartX, _tmpY
+                                    )).attr( _lineStyle );
+                                });
+
+                                _rh.JCTriangle( 16, _endX, _midY, _iconStyle );
+                            }else if( _fitem && _pid.length === 1 && ( 'targetNode' in _fitem ) ){
+                                _realStartX = _preColumnX + _fnode.outerWidth();
+                                _realY = _fitem.y + _fnode.outerHeight() / 2;
+                                _item.y = _fitem.y;
 
                                 _rh.path( JC.f.printf( 
                                     '{0}M{1} {2}L{3} {4}'
-                                    , ''
-                                    , _sdata.x, _tmpY
-                                    , _realStartX, _tmpY
+                                    , '', _realStartX, _realY + _ypad, _item.x - 18, _realY + _ypad
                                 )).attr( _lineStyle );
-                            });
-
-                            _rh.JCTriangle( 16, _endX, _midY, _iconStyle );
+                                _rh.JCTriangle( 16, _item.x - 18, _realY + _ypad, _iconStyle );
+                            }
                         }
 
                         if( _nodes && _nodes.length ){
@@ -715,7 +751,7 @@
                                 _subitem = _nodes[0];
                                 _rh.path( JC.f.printf( 
                                     '{0}M{1} {2}L{3} {4}'
-                                    , '', _realStartX, _realY + _y, _subitem.x - 18, _realY + _y + _ypad
+                                    , '', _realStartX, _realY + _y + _ypad, _subitem.x - 18, _realY + _y + _ypad
                                 )).attr( _lineStyle );
                                 _rh.JCTriangle( 16, _subitem.x - 18, _realY + _y + _ypad, _iconStyle );
                             }
@@ -780,9 +816,6 @@
 
                 _p2.x = parseInt( _p2.x + _x );
                 _p2.y = parseInt( _p2.y + _y );
-
-                //document.title = [ _p1.x, _p1.y, _p2.x, _p2.y ];
-                //JC.log( document.title );
 
             var _r = this.path(
                 JC.f.printf( 
