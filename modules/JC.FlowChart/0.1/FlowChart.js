@@ -24,8 +24,57 @@
  *  <h2>可用的 HTML attribute</h2>
  *
  *  <dl>
- *      <dt></dt>
- *      <dd><dd>
+ *      <dt>data-FlowChart = script json data</dt>
+ *      <dd>流程图数据
+ *          <dl>
+ *              <dt>数据说明</dt>
+ *              <dd>数据按节点关系分为两大类: 一对多, 多对一</dd>
+ *              <dd>
+ *                  <dl>
+ *                      <dt>一对多数据</dt>
+ *                      <dd>一对多数据存放于字段: nodes, nodes 数据类型为数组</dd>
+ *                      <dd>nodes 字段位于数据节点里</dd>
+ *                  </dl>
+ *                  <dl>
+ *                      <dt>多对一数据</dt>
+ *                      <dd>多对一数据存放于字段: targetNodes, targetNodes 数据类型为对象</dd>
+ *                      <dd>targetNodes 字段为全局节点</dd>
+ *                  </dl>
+ *              </dd>
+ *          </dl>
+ *          <dl>
+ *              <dt>数据字段说明</dt>
+ *              <dd>
+ *                  <dl>
+ *                      <dt>chart = object</dt>
+ *                      <dd>图表数据</dd>
+ *
+ *                      <dt>name = string</dt>
+ *                      <dd>节点名</dd>
+ *
+ *                      <dt>id = string</dt>
+ *                      <dd>节点唯一标识符</dd>
+ *
+ *                      <dt>nodes = array</dt>
+ *                      <dd>一对多数据的子节点, 该字段位于父节点里面</dd>
+ *
+ *                      <dt>targetNodes = object</dt>
+ *                      <dd>多对一数据的子节点, 该字段为全局字段, 节点位置 chart.targetNodes</dd>
+ *
+ *                      <dt>status = string, default = 0</dt>
+ *                      <dd>
+ *                          节点状态
+ *                          <br/>根据 status 显示为不同的样式
+ *                          <br/>默认有0 ~ 10, 共11 种状态
+ *                          <br/>由status 产生的 css class: js_cfcItemStatus_N, js_cfcItemTips_N ( N 代表 status )
+ *                      </dd>
+ *
+ *                      <dt>tipsHtml = string</dt>
+ *                      <dd>鼠标划过节点时, 显示的tips内容, 支持html内容</dd>
+ *                  </dl>
+ *              </dd>
+ *          </dl>
+ *      <dd>
  *  </dl> 
  *
  * @namespace   JC
@@ -33,15 +82,115 @@
  * @extends     JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
- * @version dev 0.1 2013-12-13
+ * @version dev 0.1 2014-09-03
  * @author  qiushaowei <suches@btbtd.org> | 75 Team
  * @example
-        <h2>JC.FlowChart 示例</h2>
+<pre>
+    &lt;div class="js_compFlowChart" data-FlowChart="|script">
+        &lt;script type="text/template">
+            {
+                chart: {
+                    name: '提交'
+                    , id: 1
+                    , nodes: [
+                            {
+                                name: '资质审核'
+                                , id: 2
+                                , status: 1
+                                , tipsHtml: 'username 1'
+                                , nodes: [
+                                    {
+                                        name: '服务审核'
+                                        , id: 3
+                                        , targetNode: 5
+                                        , status: 2
+                                        , tipsHtml: 'username 2'
+                                    }
+                                    , {
+                                        name: '渠道管理层'
+                                        , id: 4
+                                        , status: 3
+                                        , tipsHtml: 'username 3'
+                                    }
+                                ]
+                            }
+                            , {
+                                name: '资质审核1'
+                                , id: 6
+                                , status: 4
+                                , tipsHtml: 'username 4'
+                                , nodes: [
+                                    {
+                                        name: '服务审核1'
+                                        , id: 7
+                                        , targetNode: 9
+                                        , status: 5
+                                        , tipsHtml: 'username 5'
+                                    }
+                                    , {
+                                        name: '渠道管理层1'
+                                        , id: 8
+                                        , targetNode: 9
+                                        , status: 6
+                                        , tipsHtml: 'username 6'
+                                    }
+                                ]
+                            }
+                            , {
+                                name: '资质审核2'
+                                , id: 10
+                                , status: 7
+                                , tipsHtml: 'username 7'
+                                , nodes: [
+                                    {
+                                        name: '服务审核2'
+                                        , id: 11
+                                        , status: 8
+                                        , tipsHtml: 'username 8'
+                                        , nodes: [
+                                            {
+                                                name: '管理层2'
+                                                , id: 12
+                                                , targetNode: 5
+                                                , status: 9
+                                                , tipsHtml: 'username 9'
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                            , {
+                                name: '资质审核3'
+                                , id: 15
+                                , status: 10
+                                , tipsHtml: 'username 10'
+                            }
+                    ]
+                    , targetNodes: {
+                        '5': {
+                            name: '管理层'
+                        }
+                        , '9': {
+                            name: '管理层1'
+                            , targetNode: 5
+                        }
+                    }
+                }
+            }
+        &lt;/script>
+    &lt;/div>
+</pre>
+
  */
     var _jdoc = $( document ), _jwin = $( window );
     var isIE = !!window.ActiveXObject;
 
     JC.FlowChart = FlowChart;
+
+    if( JC.use ){
+        !window.Raphael && ( JC.use( 'plugins.raphael' ) );
+        !JC.PopTips && ( JC.use( 'JC.PopTips' ) );
+    }
 
     function FlowChart( _selector ){
         _selector && ( _selector = $( _selector ) );
