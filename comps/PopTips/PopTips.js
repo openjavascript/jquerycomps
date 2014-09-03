@@ -84,6 +84,16 @@
  *    <dd>
  *        声明提示框的高度，默认自适应
  *    </dd>
+ * 
+ *    <dt>popTipsMinWidth= num, default = auto</dt>
+ *    <dd>
+ *        声明提示框的最小宽度，默认自适应
+ *    </dd>
+ *
+ *    <dt>popTipsMinHeight = num, default = auto</dt>
+ *    <dd>
+ *        声明提示框的最小高度，默认自适应
+ *    </dd>
  *
  *    <dt>beforeShowCallback = function</dt>
  *    <dd>
@@ -109,8 +119,9 @@
  * @extends JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
+ * @version dev 0.2 2014-09-03
  * @version dev 0.1 2013-12-13
- * @author  zuojing   <zuojing1013@gmail.com> | 75 Team
+ * @author  zuojing   <zuojing1013@gmail.com>, qiushaowei <qiushaowei@360.cn> | 75 Team
  * @example
 	<span class="js_compPopTips" style="margin-top:50px; margin-left:200px; display:inline-block;"  
 		content="1.这个tip显示在右边<br>2.古希腊学者亚里士多<br>3.古希腊学者亚里士多<br>4.古希腊学者亚里士多"  
@@ -325,7 +336,7 @@
 
         baseTpl: '<div class="CPT CPT_{0}" style="position:absolute;display:none;">'
             +   '<div class="CPT_shadow">'
-            +       '<div class="CPT_container">'
+            +       '<div class="CPT_container" style="min-width:{4}; min-height: {5}">'
             +           '<div class="CPT_arrow CPT_arrow_{1}">'
             +               '<em></em>'
             +               '<span></span>'
@@ -430,14 +441,18 @@
                         , _p.theme()
                         , _p.arrowPosition()
                         , _p.htmlContents()
-                        , 'style="width:' + _p.layoutWidth() + ';height:' + _p.layoutHeight() + ';"' ) )
+                        , 'style="width:' + _p.layoutWidth() + ';height:' + _p.layoutHeight() + ';"' 
+                        , _p.layoutMinWidth(), _p.layoutMinHeight()
+                        ) )
                         .appendTo( this.layoutBox() );
                 } else if ( this.is( '[ajaxContent]' ) ) {
                     this._layout = $( JC.f.printf( _tpl
                         , _p.theme()
                         , _p.arrowPosition()
                         , '<div class="js_cpt_ajax_ph">加载中...</div>'
-                        , 'style="width:' + _p.layoutWidth() + ';height:' + _p.layoutHeight() + ';"' ) )
+                        , 'style="width:' + _p.layoutWidth() + ';height:' + _p.layoutHeight() + ';"' 
+                        , _p.layoutMinWidth(), _p.layoutMinHeight()
+                        ) )
                         .appendTo( this.layoutBox() );
                     _p.ajaxContent();
                 } else {
@@ -445,7 +460,9 @@
                         , _p.theme()
                         , _p.arrowPosition()
                         , _p.contents()
-                        , 'style="width:' + _p.layoutWidth() + ';height:' + _p.layoutHeight() + ';"' ) )
+                        , 'style="width:' + _p.layoutWidth() + ';height:' + _p.layoutHeight() + ';"' 
+                        , _p.layoutMinWidth(), _p.layoutMinHeight()
+                        ) )
                         .appendTo( this.layoutBox() );
                 }
                 
@@ -464,6 +481,13 @@
             return _r;
         },
 
+        layoutMinWidth: function () {
+            var _r = this.intProp('popTipsMinWidth');
+            _r && ( _r = _r + 'px' );
+            !_r && ( _r = 'auto' );
+            return _r;
+        },
+
         layoutHeight: function () {
            var _r = this.intProp('popTipsHeight');
 
@@ -472,6 +496,15 @@
 
            return _r;
         },
+
+        layoutMinHeight: function () {
+           var _r = this.intProp('popTipsMinHeight');
+           _r && ( _r = _r + 'px' );
+           !_r && ( _r = 'auto' );
+
+           return _r;
+        },
+
 
         layoutBox: function () {
             var _r = $('#' + PopTips.Model._boxId );

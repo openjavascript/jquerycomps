@@ -20,6 +20,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Drag",
         "JC.DragSelect",
         "JC.Fixed",
+        "JC.FlowChart",
         "JC.Form",
         "JC.FormFillUrl",
         "JC.FrameUtil",
@@ -62,7 +63,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.MultiSelectTree",
         "window.Bizs.MultiUpload",
         "window.Bizs.MultiselectPanel",
-        "window.Bizs.TaskViewer"
+        "window.Bizs.TaskViewer",
+        "window.Raphael"
     ],
     "modules": [],
     "allModules": []

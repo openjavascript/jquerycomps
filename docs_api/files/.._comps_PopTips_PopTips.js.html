@@ -93,6 +93,8 @@
             
                 <li><a href="../classes/JC.Fixed.html">JC.Fixed</a></li>
             
+                <li><a href="../classes/JC.FlowChart.html">JC.FlowChart</a></li>
+            
                 <li><a href="../classes/JC.Form.html">JC.Form</a></li>
             
                 <li><a href="../classes/JC.FormFillUrl.html">JC.FormFillUrl</a></li>
@@ -190,6 +192,8 @@
                 <li><a href="../classes/window.Bizs.MultiUpload.html">window.Bizs.MultiUpload</a></li>
             
                 <li><a href="../classes/window.Bizs.TaskViewer.html">window.Bizs.TaskViewer</a></li>
+            
+                <li><a href="../classes/window.Raphael.html">window.Raphael</a></li>
             
             </ul>
 
@@ -320,6 +324,16 @@
  *    &lt;dd&gt;
  *        声明提示框的高度，默认自适应
  *    &lt;/dd&gt;
+ * 
+ *    &lt;dt&gt;popTipsMinWidth= num, default = auto&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *        声明提示框的最小宽度，默认自适应
+ *    &lt;/dd&gt;
+ *
+ *    &lt;dt&gt;popTipsMinHeight = num, default = auto&lt;/dt&gt;
+ *    &lt;dd&gt;
+ *        声明提示框的最小高度，默认自适应
+ *    &lt;/dd&gt;
  *
  *    &lt;dt&gt;beforeShowCallback = function&lt;/dt&gt;
  *    &lt;dd&gt;
@@ -345,8 +359,9 @@
  * @extends JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
+ * @version dev 0.2 2014-09-03
  * @version dev 0.1 2013-12-13
- * @author  zuojing   &lt;zuojing1013@gmail.com&gt; | 75 Team
+ * @author  zuojing   &lt;zuojing1013@gmail.com&gt;, qiushaowei &lt;qiushaowei@360.cn&gt; | 75 Team
  * @example
 	&lt;span class=&quot;js_compPopTips&quot; style=&quot;margin-top:50px; margin-left:200px; display:inline-block;&quot;  
 		content=&quot;1.这个tip显示在右边&lt;br&gt;2.古希腊学者亚里士多&lt;br&gt;3.古希腊学者亚里士多&lt;br&gt;4.古希腊学者亚里士多&quot;  
@@ -561,7 +576,7 @@
 
         baseTpl: &#x27;&lt;div class=&quot;CPT CPT_{0}&quot; style=&quot;position:absolute;display:none;&quot;&gt;&#x27;
             +   &#x27;&lt;div class=&quot;CPT_shadow&quot;&gt;&#x27;
-            +       &#x27;&lt;div class=&quot;CPT_container&quot;&gt;&#x27;
+            +       &#x27;&lt;div class=&quot;CPT_container&quot; style=&quot;min-width:{4}; min-height: {5}&quot;&gt;&#x27;
             +           &#x27;&lt;div class=&quot;CPT_arrow CPT_arrow_{1}&quot;&gt;&#x27;
             +               &#x27;&lt;em&gt;&lt;/em&gt;&#x27;
             +               &#x27;&lt;span&gt;&lt;/span&gt;&#x27;
@@ -666,14 +681,18 @@
                         , _p.theme()
                         , _p.arrowPosition()
                         , _p.htmlContents()
-                        , &#x27;style=&quot;width:&#x27; + _p.layoutWidth() + &#x27;;height:&#x27; + _p.layoutHeight() + &#x27;;&quot;&#x27; ) )
+                        , &#x27;style=&quot;width:&#x27; + _p.layoutWidth() + &#x27;;height:&#x27; + _p.layoutHeight() + &#x27;;&quot;&#x27; 
+                        , _p.layoutMinWidth(), _p.layoutMinHeight()
+                        ) )
                         .appendTo( this.layoutBox() );
                 } else if ( this.is( &#x27;[ajaxContent]&#x27; ) ) {
                     this._layout = $( JC.f.printf( _tpl
                         , _p.theme()
                         , _p.arrowPosition()
                         , &#x27;&lt;div class=&quot;js_cpt_ajax_ph&quot;&gt;加载中...&lt;/div&gt;&#x27;
-                        , &#x27;style=&quot;width:&#x27; + _p.layoutWidth() + &#x27;;height:&#x27; + _p.layoutHeight() + &#x27;;&quot;&#x27; ) )
+                        , &#x27;style=&quot;width:&#x27; + _p.layoutWidth() + &#x27;;height:&#x27; + _p.layoutHeight() + &#x27;;&quot;&#x27; 
+                        , _p.layoutMinWidth(), _p.layoutMinHeight()
+                        ) )
                         .appendTo( this.layoutBox() );
                     _p.ajaxContent();
                 } else {
@@ -681,7 +700,9 @@
                         , _p.theme()
                         , _p.arrowPosition()
                         , _p.contents()
-                        , &#x27;style=&quot;width:&#x27; + _p.layoutWidth() + &#x27;;height:&#x27; + _p.layoutHeight() + &#x27;;&quot;&#x27; ) )
+                        , &#x27;style=&quot;width:&#x27; + _p.layoutWidth() + &#x27;;height:&#x27; + _p.layoutHeight() + &#x27;;&quot;&#x27; 
+                        , _p.layoutMinWidth(), _p.layoutMinHeight()
+                        ) )
                         .appendTo( this.layoutBox() );
                 }
                 
@@ -700,6 +721,13 @@
             return _r;
         },
 
+        layoutMinWidth: function () {
+            var _r = this.intProp(&#x27;popTipsMinWidth&#x27;);
+            _r &amp;&amp; ( _r = _r + &#x27;px&#x27; );
+            !_r &amp;&amp; ( _r = &#x27;auto&#x27; );
+            return _r;
+        },
+
         layoutHeight: function () {
            var _r = this.intProp(&#x27;popTipsHeight&#x27;);
 
@@ -708,6 +736,15 @@
 
            return _r;
         },
+
+        layoutMinHeight: function () {
+           var _r = this.intProp(&#x27;popTipsMinHeight&#x27;);
+           _r &amp;&amp; ( _r = _r + &#x27;px&#x27; );
+           !_r &amp;&amp; ( _r = &#x27;auto&#x27; );
+
+           return _r;
+        },
+
 
         layoutBox: function () {
             var _r = $(&#x27;#&#x27; + PopTips.Model._boxId );

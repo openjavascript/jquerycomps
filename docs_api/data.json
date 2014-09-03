@@ -364,6 +364,17 @@
                 "JC": 1
             }
         },
+        "../comps/FlowChart/FlowChart.js": {
+            "name": "../comps/FlowChart/FlowChart.js",
+            "modules": {},
+            "classes": {
+                "JC.FlowChart": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../comps/Form/Form.js": {
             "name": "../comps/Form/Form.js",
             "modules": {},
@@ -667,6 +678,38 @@
             "fors": {},
             "namespaces": {
                 "JC": 1
+            }
+        },
+        "../plugins/rate/spec/lib/jasmine.js": {
+            "name": "../plugins/rate/spec/lib/jasmine.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "../plugins/SWFUpload.js": {
+            "name": "../plugins/SWFUpload.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "../plugins/aes.js": {
+            "name": "../plugins/aes.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "../plugins/raphael.js": {
+            "name": "../plugins/raphael.js",
+            "modules": {},
+            "classes": {
+                "window.Raphael": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window": 1
             }
         },
         "../JC.js": {
@@ -1345,6 +1388,33 @@
             "date": "2013-08-18",
             "example": [
                 ""
+            ]
+        },
+        "JC.FlowChart": {
+            "name": "JC.FlowChart",
+            "shortname": "JC.FlowChart",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../comps/FlowChart/FlowChart.js",
+            "line": 5,
+            "description": "<dl>\n     <dt>JC 流程图</dt>\n     <dd style=\"\">一对多关系</dd>\n     <dd>多对一关系</dd>\n     <dd style=\"color:#ccc;text-decoration: line-through;\">多对多关系</dd>\n</dl>\n <p><b>require</b>:\n     <a href='window.Raphael.html'>RaphaelJS</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.PopTips.html'>JC.PopTips</a>\n </p>\n\n <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc.openjavascript.org/docs_api/classes/JC.FlowChart.html' target='_blank'>API docs</a>\n     | <a href='../../comps/FlowChart/_demo' target='_blank'>demo link</a></p>\n \n <h2>页面只要引用本脚本, 默认会处理 div class=\"js_compFlowChart\"</h2>\n\n <h2>可用的 HTML attribute</h2>\n\n <dl>\n     <dt>data-FlowChart = script json data</dt>\n     <dd>流程图数据\n         <dl>\n             <dt>数据说明</dt>\n             <dd>数据按节点关系分为两大类: 一对多, 多对一</dd>\n             <dd>\n                 <dl>\n                     <dt>一对多数据</dt>\n                     <dd>一对多数据存放于字段: nodes, nodes 数据类型为数组</dd>\n                     <dd>nodes 字段位于数据节点里</dd>\n                 </dl>\n                 <dl>\n                     <dt>多对一数据</dt>\n                     <dd>多对一数据存放于字段: targetNodes, targetNodes 数据类型为对象</dd>\n                     <dd>targetNodes 字段为全局节点</dd>\n                 </dl>\n             </dd>\n         </dl>\n         <dl>\n             <dt>数据字段说明</dt>\n             <dd>\n                 <dl>\n                     <dt>chart = object</dt>\n                     <dd>图表数据</dd>\n\n                     <dt>name = string</dt>\n                     <dd>节点名</dd>\n\n                     <dt>id = string</dt>\n                     <dd>节点唯一标识符</dd>\n\n                     <dt>nodes = array</dt>\n                     <dd>一对多数据的子节点, 该字段位于父节点里面</dd>\n\n                     <dt>targetNodes = object</dt>\n                     <dd>多对一数据的子节点, 该字段为全局字段, 节点位置 chart.targetNodes</dd>\n\n                     <dt>status = string, default = 0</dt>\n                     <dd>\n                         节点状态\n                         <br/>根据 status 显示为不同的样式\n                         <br/>默认有0 ~ 10, 共11 种状态\n                         <br/>由status 产生的 css class: js_cfcItemStatus_N, js_cfcItemTips_N ( N 代表 status )\n                     </dd>\n\n                     <dt>tipsHtml = string</dt>\n                     <dd>鼠标划过节点时, 显示的tips内容, 支持html内容</dd>\n                 </dl>\n             </dd>\n         </dl>\n     <dd>\n </dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2014-09-03",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n<pre>\n   &lt;div class=\"js_compFlowChart\" data-FlowChart=\"|script\">\n       &lt;script type=\"text/template\">\n           {\n               chart: {\n                   name: '提交'\n                   , id: 1\n                   , nodes: [\n                           {\n                               name: '资质审核'\n                               , id: 2\n                               , status: 1\n                               , tipsHtml: 'username 1'\n                               , nodes: [\n                                   {\n                                       name: '服务审核'\n                                       , id: 3\n                                       , targetNode: 5\n                                       , status: 2\n                                       , tipsHtml: 'username 2'\n                                   }\n                                   , {\n                                       name: '渠道管理层'\n                                       , id: 4\n                                       , status: 3\n                                       , tipsHtml: 'username 3'\n                                   }\n                               ]\n                           }\n                           , {\n                               name: '资质审核1'\n                               , id: 6\n                               , status: 4\n                               , tipsHtml: 'username 4'\n                               , nodes: [\n                                   {\n                                       name: '服务审核1'\n                                       , id: 7\n                                       , targetNode: 9\n                                       , status: 5\n                                       , tipsHtml: 'username 5'\n                                   }\n                                   , {\n                                       name: '渠道管理层1'\n                                       , id: 8\n                                       , targetNode: 9\n                                       , status: 6\n                                       , tipsHtml: 'username 6'\n                                   }\n                               ]\n                           }\n                           , {\n                               name: '资质审核2'\n                               , id: 10\n                               , status: 7\n                               , tipsHtml: 'username 7'\n                               , nodes: [\n                                   {\n                                       name: '服务审核2'\n                                       , id: 11\n                                       , status: 8\n                                       , tipsHtml: 'username 8'\n                                       , nodes: [\n                                           {\n                                               name: '管理层2'\n                                               , id: 12\n                                               , targetNode: 5\n                                               , status: 9\n                                               , tipsHtml: 'username 9'\n                                           }\n                                       ]\n                                   }\n                               ]\n                           }\n                           , {\n                               name: '资质审核3'\n                               , id: 15\n                               , status: 10\n                               , tipsHtml: 'username 10'\n                           }\n                   ]\n                   , targetNodes: {\n                       '5': {\n                           name: '管理层'\n                       }\n                       , '9': {\n                           name: '管理层1'\n                           , targetNode: 5\n                       }\n                   }\n               }\n           }\n       &lt;/script>\n   &lt;/div>\n</pre>\n"
             ]
         },
         "JC.Form": {
@@ -2051,7 +2121,7 @@
             "namespace": "JC",
             "file": "../comps/PopTips/PopTips.js",
             "line": 2,
-            "description": "PopTips 带箭头的气泡提示框功能\n<p>\n     <b>require</b>: \n         <a href='.jQuery.html'>jQuery</a>\n         , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.PopTips.html' target='_blank'>API docs</a>\n| <a href='../../comps/PopTips/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化span|em|a|b为class=\"js_compPoptips\"的提示气泡</h2>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>htmlContent</dt>\n   <dd>\n      <p>声明气泡提示的内容支持脚本模板<br>\n       如果有设置该属性那么会优先选用htmlContent提供的内容\n      </p>\n   </dd>\n\n   <dt>ajaxContent</dt>\n   <dd>\n      <p>声明气泡提示的ajax 模板</p>\n   </dd>\n\n   <dt>content = string </dt>\n   <dd>\n      <p>声明气泡提示的内容，如果需要提示html内容那么用<b>htmlContent</b>属性<br>\n      如果没有设置则去查找title属性，如果title也没有设置，<br/>\n        则将触发元素的text作为提示内容。</p>\n   </dd>\n\n   <dt>theme = yellow | blue | white | green, <a href=\"../../modules/JC.PopTips/0.1/res/default/style.html\" target=\"_blank\">查看</a> </dt>\n   <dd>\n      气泡主题，提供黄色、蓝色、白色、绿色四种样式，默认为 yellow.\n      <p><b>yellow：</b>黄色<br/>\n      <b>blue：</b>蓝色<br/>\n      <b>white：</b>白色<br/>\n      <b>green：</b>绿色</p>\n   </dd>\n\n   <dt>triggerType = hover | click</dt>\n   <dd>\n       触发方式: 支持hover和click\n       <p>默认为hover</p>\n   </dd>\n\n   <dt>arrowPosition = left | right | top | bottom</dt>\n   <dd>\n       声明箭头的方向，默认值为left\n       <p><b>left:</b>箭头向左（提示框在触发元素的右边）如果右边空间不够，提示框自动显示在左边，如果左边空间不够，提示框显示在上方，如果上方空间，提示框显示到下方<br/>\n       <b>right:</b>箭头向右（提示框在触发元素的左边）如果左边空间不够，提示框自动显示在右边，如果右边空间不够，提示框显示在上方，如果上方空间，提示框显示到下方<br/>\n       <b>top:</b>箭头向上（提示框在触发元素的下边）如果下边不够，提示框自动显示到上边<br/>\n       <b>bottom:</b>箭头向下（提示框在触发元素的上边）如果上边不够，提示框自动显示到下边</p>    \n   </dd>\n\n   <dt>arrowPositionOffset = left | right | top , <a href=\"../../modules/JC.PopTips/0.1/res/default/style.html#pos\" target=\"_blank\">查看</a></dt>\n   <dd>\n       声明箭头在提示框的位置，默认居中\n       <p>如果arrowPosition = left | right, arrowPositionOffset可以设置为top</p>\n       <p>如果arrowPosition = top | bottom, arrowPositionOffset可以设置为left | right</p>\n   </dd>\n\n   <dt>offsetXY = num,num</dt>\n   <dd>\n       声明提示框相对于当前位置的偏移位置(x 坐标，y 坐标)，默认值为0\n       <p>x < 0，往左偏移，x > 0 往右偏移 <br/>\n        y < 0, 往上偏移，y > 0 往下偏移 <br/>\n        两个数值以<b>逗号</b>分隔，如果只写一个值表示 y 坐标为0。</p>\n   </dd>\n\n   <dt>popTipsWidth = num</dt>\n   <dd>\n       声明提示框的宽度，默认自适应\n   </dd>\n\n   <dt>popTipsHeight = num</dt>\n   <dd>\n       声明提示框的高度，默认自适应\n   </dd>\n\n   <dt>beforeShowCallback = function</dt>\n   <dd>\n       气泡显示前, 触发的回调, <b>window 变量域</b>\n<pre>function beforeShowCallback( _selector ){\n   var _ins = this;\n   JC.log( 'beforeShowCallback', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>afterHideCallback = function</dt>\n   <dd>\n       气泡隐藏后, 触发的回调, <b>window 变量域</b>\n<pre>function afterHideCallback( _selector ){\n   var _ins = this;\n   JC.log( 'afterHideCallback', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
+            "description": "PopTips 带箭头的气泡提示框功能\n<p>\n     <b>require</b>: \n         <a href='.jQuery.html'>jQuery</a>\n         , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.PopTips.html' target='_blank'>API docs</a>\n| <a href='../../comps/PopTips/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化span|em|a|b为class=\"js_compPoptips\"的提示气泡</h2>\n<p></p>\n\n\n<h2>可用的 HTML attribute</h2>\n\n<dl>\n   <dt>htmlContent</dt>\n   <dd>\n      <p>声明气泡提示的内容支持脚本模板<br>\n       如果有设置该属性那么会优先选用htmlContent提供的内容\n      </p>\n   </dd>\n\n   <dt>ajaxContent</dt>\n   <dd>\n      <p>声明气泡提示的ajax 模板</p>\n   </dd>\n\n   <dt>content = string </dt>\n   <dd>\n      <p>声明气泡提示的内容，如果需要提示html内容那么用<b>htmlContent</b>属性<br>\n      如果没有设置则去查找title属性，如果title也没有设置，<br/>\n        则将触发元素的text作为提示内容。</p>\n   </dd>\n\n   <dt>theme = yellow | blue | white | green, <a href=\"../../modules/JC.PopTips/0.1/res/default/style.html\" target=\"_blank\">查看</a> </dt>\n   <dd>\n      气泡主题，提供黄色、蓝色、白色、绿色四种样式，默认为 yellow.\n      <p><b>yellow：</b>黄色<br/>\n      <b>blue：</b>蓝色<br/>\n      <b>white：</b>白色<br/>\n      <b>green：</b>绿色</p>\n   </dd>\n\n   <dt>triggerType = hover | click</dt>\n   <dd>\n       触发方式: 支持hover和click\n       <p>默认为hover</p>\n   </dd>\n\n   <dt>arrowPosition = left | right | top | bottom</dt>\n   <dd>\n       声明箭头的方向，默认值为left\n       <p><b>left:</b>箭头向左（提示框在触发元素的右边）如果右边空间不够，提示框自动显示在左边，如果左边空间不够，提示框显示在上方，如果上方空间，提示框显示到下方<br/>\n       <b>right:</b>箭头向右（提示框在触发元素的左边）如果左边空间不够，提示框自动显示在右边，如果右边空间不够，提示框显示在上方，如果上方空间，提示框显示到下方<br/>\n       <b>top:</b>箭头向上（提示框在触发元素的下边）如果下边不够，提示框自动显示到上边<br/>\n       <b>bottom:</b>箭头向下（提示框在触发元素的上边）如果上边不够，提示框自动显示到下边</p>    \n   </dd>\n\n   <dt>arrowPositionOffset = left | right | top , <a href=\"../../modules/JC.PopTips/0.1/res/default/style.html#pos\" target=\"_blank\">查看</a></dt>\n   <dd>\n       声明箭头在提示框的位置，默认居中\n       <p>如果arrowPosition = left | right, arrowPositionOffset可以设置为top</p>\n       <p>如果arrowPosition = top | bottom, arrowPositionOffset可以设置为left | right</p>\n   </dd>\n\n   <dt>offsetXY = num,num</dt>\n   <dd>\n       声明提示框相对于当前位置的偏移位置(x 坐标，y 坐标)，默认值为0\n       <p>x < 0，往左偏移，x > 0 往右偏移 <br/>\n        y < 0, 往上偏移，y > 0 往下偏移 <br/>\n        两个数值以<b>逗号</b>分隔，如果只写一个值表示 y 坐标为0。</p>\n   </dd>\n\n   <dt>popTipsWidth = num</dt>\n   <dd>\n       声明提示框的宽度，默认自适应\n   </dd>\n\n   <dt>popTipsHeight = num</dt>\n   <dd>\n       声明提示框的高度，默认自适应\n   </dd>\n\n   <dt>popTipsMinWidth= num, default = auto</dt>\n   <dd>\n       声明提示框的最小宽度，默认自适应\n   </dd>\n\n   <dt>popTipsMinHeight = num, default = auto</dt>\n   <dd>\n       声明提示框的最小高度，默认自适应\n   </dd>\n\n   <dt>beforeShowCallback = function</dt>\n   <dd>\n       气泡显示前, 触发的回调, <b>window 变量域</b>\n<pre>function beforeShowCallback( _selector ){\n   var _ins = this;\n   JC.log( 'beforeShowCallback', new Date().getTime() );\n}</pre>\n   </dd>\n\n   <dt>afterHideCallback = function</dt>\n   <dd>\n       气泡隐藏后, 触发的回调, <b>window 变量域</b>\n<pre>function afterHideCallback( _selector ){\n   var _ins = this;\n   JC.log( 'afterHideCallback', new Date().getTime() );\n}</pre>\n   </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -2062,7 +2132,7 @@
                 }
             ],
             "version": "dev 0.1 2013-12-13",
-            "author": "zuojing   <zuojing1013@gmail.com> | 75 Team",
+            "author": "zuojing   <zuojing1013@gmail.com>, qiushaowei <qiushaowei@360.cn> | 75 Team",
             "example": [
                 "\n\t<span class=\"js_compPopTips\" style=\"margin-top:50px; margin-left:200px; display:inline-block;\"  \n\t\tcontent=\"1.这个tip显示在右边<br>2.古希腊学者亚里士多<br>3.古希腊学者亚里士多<br>4.古希腊学者亚里士多\"  \n\t\ttheme=\"yellow\" \n\t\tarrowposition=\"left\"\n\t\ttriggerType=\"click\"\n\t\t>\n\t\t<span>古希腊学者亚里士多德曾编<br>\n\t\t\t写过全面讲述当时学问的讲义，<br>\n\t\t\t被西方奉为“百科全书之父”，<br>\n\t\t\t中国汉朝初年的《尔雅》，<br>\n\t\t\t是中国百科全书性质著作的渊源。</span>\n\t</span>"
             ]
@@ -2432,6 +2502,20 @@
             "static": 1,
             "version": "0.1,  2013-05-22",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
+        },
+        "window.Raphael": {
+            "name": "window.Raphael",
+            "shortname": "window.Raphael",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window",
+            "file": "../plugins/raphael.js",
+            "line": 1,
+            "description": "Raphaël 2.1.2 - JavaScript Vector Library \n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://raphaeljs.com/reference.html' target='_blank'>API docs</a>\n| <a href='http://raphaeljs.com/' target='_blank'>demo</a>",
+            "version": "2.1.2"
         },
         ".Bizs": {
             "name": ".Bizs",
@@ -7075,6 +7159,41 @@
             "namespace": "JC"
         },
         {
+            "file": "../comps/FlowChart/FlowChart.js",
+            "line": 1,
+            "description": "支持 多对多 关系( 目前只支持 一对多 和 多对一 )",
+            "class": "JC.FlowChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FlowChart/FlowChart.js",
+            "line": 210,
+            "description": "初始化可识别的 FlowChart 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of FlowChartInstance"
+            },
+            "class": "JC.FlowChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FlowChart/FlowChart.js",
+            "line": 582,
+            "description": "这里的逻辑认为 起始节点 和 结束节点都只有一个",
+            "class": "JC.FlowChart",
+            "namespace": "JC"
+        },
+        {
             "file": "../comps/Form/Form.js",
             "line": 26,
             "description": "禁用按钮一定时间, 默认为1秒\n<br />这个方法已停止维护\n, 请使用 <a href=\"../../docs_api/classes/window.Bizs.ActionLogic.html#method_disableButton\">Bizs.ActionLogic.disableButton</a>",
@@ -10723,7 +10842,7 @@
         },
         {
             "file": "../comps/PopTips/PopTips.js",
-            "line": 144,
+            "line": 155,
             "description": "获取或设置 PopTips 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -10744,7 +10863,7 @@
         },
         {
             "file": "../comps/PopTips/PopTips.js",
-            "line": 159,
+            "line": 170,
             "description": "初始化可识别的 PopTips 实例",
             "itemtype": "method",
             "name": "init",
@@ -10765,7 +10884,7 @@
         },
         {
             "file": "../comps/PopTips/PopTips.js",
-            "line": 305,
+            "line": 316,
             "description": "更新 PopTips 状态",
             "itemtype": "method",
             "name": "update",
@@ -10774,14 +10893,14 @@
         },
         {
             "file": "../comps/PopTips/PopTips.js",
-            "line": 660,
+            "line": 693,
             "description": "PopTips显示前的回调",
             "class": "JC.PopTips",
             "namespace": "JC"
         },
         {
             "file": "../comps/PopTips/PopTips.js",
-            "line": 671,
+            "line": 704,
             "description": "PopTips隐藏后的回调",
             "class": "JC.PopTips",
             "namespace": "JC"
@@ -15483,6 +15602,1383 @@
             "namespace": "JC"
         },
         {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 3,
+            "description": "Top level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 10,
+            "access": "private",
+            "tagname": "",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 17,
+            "description": "Use <code>jasmine.undefined</code> instead of <code>undefined</code>, since <code>undefined</code> is just\na plain old variable and may be redefined by somebody else.",
+            "access": "private",
+            "tagname": "",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 25,
+            "description": "Show diagnostic messages in the console if set to true",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 31,
+            "description": "Default interval in milliseconds for event loop yields (e.g. to allow network activity or to refresh the screen with the HTML-based runner). Small values here may result in slow test running. Zero means no updates until all tests have completed.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 37,
+            "description": "Default timeout interval in milliseconds for waitsFor() blocks.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 50,
+            "description": "Allows for bound functions to be compared.  Internal use only.",
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "base",
+                    "description": "bound 'this' for the function",
+                    "type": "Object"
+                },
+                {
+                    "name": "name",
+                    "description": "function to find",
+                    "type": "Function"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 114,
+            "description": "Getter for the Jasmine environment. Ensures one gets created",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 122,
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 132,
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 142,
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 152,
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "typeName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 163,
+            "description": "Pretty printer for expecations.  Takes any object and turns it into a human-readable string.",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "an object to be outputted",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 175,
+            "description": "Returns true if the object is a DOM Node.",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "object to check",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 185,
+            "description": "Returns a matchable 'generic' object of the class type.  For use in expecations of type when values don't matter.",
+            "example": [
+                "\n// don't care about which function is passed in, as long as it's a function\nexpect(mySpy).toHaveBeenCalledWith(jasmine.any(Function));"
+            ],
+            "params": [
+                {
+                    "name": "clazz",
+                    "description": "",
+                    "type": "Class"
+                }
+            ],
+            "return": {
+                "description": "matchable object of the type clazz"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 199,
+            "description": "Returns a matchable subset of a JSON object. For use in expectations when you don't care about all of the\nattributes on the object.",
+            "example": [
+                "\n// don't care about any other attributes than foo.\nexpect(mySpy).toHaveBeenCalledWith(jasmine.objectContaining({foo: \"bar\"});"
+            ],
+            "params": [
+                {
+                    "name": "sample",
+                    "description": "sample",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "matchable object for the sample"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 214,
+            "description": "Jasmine Spies are test doubles that can act as stubs, spies, fakes or when used in an expecation, mocks.\n\nSpies should be created in test setup, before expectations.  They can then be checked, using the standard Jasmine\nexpectation syntax. Spies can be checked if they were called or not and what the calling params were.\n\nA Spy has the following fields: wasCalled, callCount, mostRecentCall, and argsForCall (see docs).\n\nSpies are torn down at the end of every spec.\n\nNote: Do <b>not</b> call new jasmine.Spy() directly - a spy must be created using spyOn, jasmine.createSpy or jasmine.createSpyObj.",
+            "example": [
+                "\n// a stub\nvar myStub = jasmine.createSpy('myStub');  // can be used anywhere\n\n// spy example\nvar foo = {\n  not: function(bool) { return !bool; }\n}\n\n// actual foo.not will not be called, execution stops\nspyOn(foo, 'not');\n\n// foo.not spied upon, execution will continue to implementation\nspyOn(foo, 'not').andCallThrough();\n\n// fake example\nvar foo = {\n  not: function(bool) { return !bool; }\n}\n\n// foo.not(val) will return val\nspyOn(foo, 'not').andCallFake(function(value) {return value;});\n\n// mock example\nfoo.not(7 == 7);\nexpect(foo.not).toHaveBeenCalled();\nexpect(foo.not).toHaveBeenCalledWith(true);"
+            ],
+            "is_constructor": 1,
+            "see": [
+                "spyOn",
+                "jasmine.createSpy",
+                "jasmine.createSpyObj"
+            ],
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 259,
+            "description": "The name of the spy, if provided.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 263,
+            "description": "Is this Object a spy?",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 267,
+            "description": "The actual function this spy stubs.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 272,
+            "description": "Tracking of the most recent call to the spy.",
+            "example": [
+                "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy.mostRecentCall.args = [1, 2];"
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 281,
+            "description": "Holds arguments for each call to the spy, indexed by call count",
+            "example": [
+                "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy(7, 8);\nmySpy.mostRecentCall.args = [7, 8];\nmySpy.argsForCall[0] = [1, 2];\nmySpy.argsForCall[1] = [7, 8];"
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 295,
+            "description": "Tells a spy to call through to the actual implemenatation.",
+            "example": [
+                "\nvar foo = {\n  bar: function() { // do some stuff }\n}\n\n// defining a spy on an existing property: foo.bar\nspyOn(foo, 'bar').andCallThrough();"
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 311,
+            "description": "For setting the return value of a spy.",
+            "example": [
+                "\n// defining a spy from scratch: foo() returns 'baz'\nvar foo = jasmine.createSpy('spy on foo').andReturn('baz');\n\n// defining a spy on an existing property: foo.bar() returns 'baz'\nspyOn(foo, 'bar').andReturn('baz');"
+            ],
+            "params": [
+                {
+                    "name": "value",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 330,
+            "description": "For throwing an exception when a spy is called.",
+            "example": [
+                "\n// defining a spy from scratch: foo() throws an exception w/ message 'ouch'\nvar foo = jasmine.createSpy('spy on foo').andThrow('baz');\n\n// defining a spy on an existing property: foo.bar() throws an exception w/ message 'ouch'\nspyOn(foo, 'bar').andThrow('baz');"
+            ],
+            "params": [
+                {
+                    "name": "exceptionMsg",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 349,
+            "description": "Calls an alternate implementation when a spy is called.",
+            "example": [
+                "\nvar baz = function() {\n  // do some stuff, return something\n}\n// defining a spy from scratch: foo() calls the function baz\nvar foo = jasmine.createSpy('spy on foo').andCall(baz);\n\n// defining a spy on an existing property: foo.bar() calls an anonymnous function\nspyOn(foo, 'bar').andCall(function() { return 'baz';} );"
+            ],
+            "params": [
+                {
+                    "name": "fakeFunc",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 369,
+            "description": "Resets all of a spy's the tracking variables so that it can be used again.",
+            "example": [
+                "\nspyOn(foo, 'bar');\n\nfoo.bar();\n\nexpect(foo.bar.callCount).toEqual(1);\n\nfoo.bar.reset();\n\nexpect(foo.bar.callCount).toEqual(0);"
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 415,
+            "description": "Determines whether an object is a spy.",
+            "params": [
+                {
+                    "name": "putativeSpy",
+                    "description": "",
+                    "type": "jasmine.Spy|Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 425,
+            "description": "Creates a more complicated spy: an Object that has every property a function that is a spy.  Used for stubbing something\nlarge in one call.",
+            "params": [
+                {
+                    "name": "baseName",
+                    "description": "name of spy class",
+                    "type": "String"
+                },
+                {
+                    "name": "methodNames",
+                    "description": "array of names of methods to make spies",
+                    "type": "Array"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 443,
+            "description": "All parameters are pretty-printed and concatenated together, then written to the current spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 453,
+            "description": "Function that installs a spy on an existing object's method name.  Used within a Spec to create a spy.",
+            "example": [
+                "\n// spy example\nvar foo = {\n  not: function(bool) { return !bool; }\n}\nspyOn(foo, 'not'); // actual foo.not will not be called, execution stops"
+            ],
+            "see": [
+                "jasmine.createSpy"
+            ],
+            "params": [
+                {
+                    "name": "obj",
+                    "description": ""
+                },
+                {
+                    "name": "methodName",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "a Jasmine spy that can be chained with all spy methods"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 473,
+            "description": "Creates a Jasmine spec that will be added to the current suite.\n\n// TODO: pending tests",
+            "example": [
+                "\nit('should be true', function() {\n  expect(true).toEqual(true);\n});"
+            ],
+            "params": [
+                {
+                    "name": "desc",
+                    "description": "description of this specification",
+                    "type": "String"
+                },
+                {
+                    "name": "func",
+                    "description": "defines the preconditions and expectations of the spec",
+                    "type": "Function"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 491,
+            "description": "Creates a <em>disabled</em> Jasmine spec.\n\nA convenience method that allows existing specs to be disabled temporarily during development.",
+            "params": [
+                {
+                    "name": "desc",
+                    "description": "description of this specification",
+                    "type": "String"
+                },
+                {
+                    "name": "func",
+                    "description": "defines the preconditions and expectations of the spec",
+                    "type": "Function"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 504,
+            "description": "Starts a chain for a Jasmine expectation.\n\nIt is passed an Object that is the actual value and should chain to one of the many\njasmine.Matchers functions.",
+            "params": [
+                {
+                    "name": "actual",
+                    "description": "Actual value to test against and expected value",
+                    "type": "Object"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 517,
+            "description": "Defines part of a jasmine spec.  Used in cominbination with waits or waitsFor in asynchrnous specs.",
+            "params": [
+                {
+                    "name": "func",
+                    "description": "Function that defines part of a jasmine spec.",
+                    "type": "Function"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 527,
+            "description": "Waits a fixed time period before moving to the next block.",
+            "deprecated": true,
+            "deprecationMessage": "Use waitsFor() instead",
+            "params": [
+                {
+                    "name": "timeout",
+                    "description": "milliseconds to wait",
+                    "type": "Number"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 538,
+            "description": "Waits for the latchFunction to return true before proceeding to the next block.",
+            "params": [
+                {
+                    "name": "latchFunction",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "optional_timeoutMessage",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "optional_timeout",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 550,
+            "description": "A function that is called before each spec in a suite.\n\nUsed for spec setup, including validating assumptions.",
+            "params": [
+                {
+                    "name": "beforeEachFunction",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 562,
+            "description": "A function that is called after each spec in a suite.\n\nUsed for restoring any state that is hijacked during spec execution.",
+            "params": [
+                {
+                    "name": "afterEachFunction",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 574,
+            "description": "Defines a suite of specifications.\n\nStores the description and all defined specs in the Jasmine environment as one suite of specs. Variables declared\nare accessible by calls to beforeEach, it, and afterEach. Describe blocks can be nested, allowing for specialization\nof setup in some tests.",
+            "example": [
+                "\n// TODO: a simple suite\n\n// TODO: a simple suite with a nested describe block"
+            ],
+            "params": [
+                {
+                    "name": "description",
+                    "description": "A string, usually the class under test.",
+                    "type": "String"
+                },
+                {
+                    "name": "specDefinitions",
+                    "description": "function that defines several specs.",
+                    "type": "Function"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 594,
+            "description": "Disables a suite of specifications.  Used to disable some suites in a file, or files, temporarily during development.",
+            "params": [
+                {
+                    "name": "description",
+                    "description": "A string, usually the class under test.",
+                    "type": "String"
+                },
+                {
+                    "name": "specDefinitions",
+                    "description": "function that defines several specs.",
+                    "type": "Function"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 633,
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 638,
+            "description": "Declare that a child class inherit it's prototype from the parent class.",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "childClass",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "parentClass",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 646,
+            "access": "private",
+            "tagname": "",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 700,
+            "description": "Environment for Jasmine",
+            "is_constructor": 1,
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 738,
+            "return": {
+                "description": "an object containing jasmine version build info, if set."
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 749,
+            "return": {
+                "description": "string containing jasmine version build info, if set."
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 766,
+            "return": {
+                "description": "a sequential integer starting at 0"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 773,
+            "return": {
+                "description": "a sequential integer starting at 0"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 780,
+            "description": "Register a reporter to receive status updates from Jasmine.",
+            "params": [
+                {
+                    "name": "reporter",
+                    "description": "An object which will receive status updates.",
+                    "type": "jasmine.Reporter"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 977,
+            "is_constructor": 1,
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1008,
+            "description": "Blocks are functions with executable code that make up a spec.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "func",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "spec",
+                    "description": "",
+                    "type": "jasmine.Spec"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1030,
+            "is_constructor": 1,
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1132,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "actual",
+                    "description": ""
+                },
+                {
+                    "name": "spec",
+                    "description": "",
+                    "type": "jasmine.Spec"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1209,
+            "description": "toBe: compares the actual to the expected using ===",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1217,
+            "description": "toNotBe: compares the actual to the expected using !==",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "as of 1.0. Use not.toBe() instead.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1226,
+            "description": "toEqual: compares the actual to the expected using common sense equality. Handles Objects, Arrays, etc.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1235,
+            "description": "toNotEqual: compares the actual to the expected using the ! of jasmine.Matchers.toEqual",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "as of 1.0. Use not.toEqual() instead.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1244,
+            "description": "Matcher that compares the actual to the expected using a regular expression.  Constructs a RegExp, so takes\na pattern or a String.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1254,
+            "description": "Matcher that compares the actual to the expected using the boolean inverse of jasmine.Matchers.toMatch",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "as of 1.0. Use not.toMatch() instead.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1263,
+            "description": "Matcher that compares the actual to jasmine.undefined.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1270,
+            "description": "Matcher that compares the actual to jasmine.undefined.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1277,
+            "description": "Matcher that compares the actual to null.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1284,
+            "description": "Matcher that boolean not-nots the actual.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1292,
+            "description": "Matcher that boolean nots the actual.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1300,
+            "description": "Matcher that checks to see if the actual, a Jasmine spy, was called.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1322,
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1325,
+            "description": "Matcher that checks to see if the actual, a Jasmine spy, was not called.",
+            "deprecated": true,
+            "deprecationMessage": "Use expect(xxx).not.toHaveBeenCalled() instead",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1349,
+            "description": "Matcher that checks to see if the actual, a Jasmine spy, was called with a set of parameters.",
+            "example": [
+                "\n"
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1378,
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1381,
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1398,
+            "description": "Matcher that checks that the expected item is an element in the actual Array.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1407,
+            "description": "Matcher that checks that the expected item is NOT an element in the actual Array.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "as of 1.0. Use not.toContain() instead.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1425,
+            "description": "Matcher that checks that the expected item is equal to the actual item\nup to a given level of decimal precision (default 2).",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "precision",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1442,
+            "description": "Matcher that checks that the expected exception was thrown by the actual.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1619,
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1715,
+            "is_constructor": 1,
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1750,
+            "description": "Holds results for a set of Jasmine spec. Allows for the results array to hold another jasmine.NestedResults",
+            "is_constructor": 1,
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1756,
+            "description": "The total count of results",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1760,
+            "description": "Number of passed results",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1764,
+            "description": "Number of failed results",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1768,
+            "description": "Was this suite/spec skipped?",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1772,
+            "ignore": "",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1778,
+            "description": "Roll up the result counts.",
+            "params": [
+                {
+                    "name": "result",
+                    "description": ""
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1789,
+            "description": "Adds a log message.",
+            "params": [
+                {
+                    "name": "values",
+                    "description": "Array of message parts which will be concatenated later."
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1797,
+            "description": "Getter for the results: message & results.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1804,
+            "description": "Adds a result, tracking counts (total, passed, & failed)",
+            "params": [
+                {
+                    "name": "result",
+                    "description": "",
+                    "type": "jasmine.ExpectationResult|jasmine.NestedResults"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1824,
+            "return": {
+                "description": "True if <b>everything</b> below passed",
+                "type": "Boolean"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1830,
+            "description": "Base class for pretty printing for expectation results.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 1837,
+            "description": "Formats a value in a nice, human-readable string.",
+            "params": [
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 2052,
+            "description": "Runner",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 2129,
+            "description": "Internal representation of a Jasmine specification, or test.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "suite",
+                    "description": "",
+                    "type": "jasmine.Suite"
+                },
+                {
+                    "name": "description",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 2168,
+            "description": "All parameters are pretty-printed and concatenated together, then written to the spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 2191,
+            "params": [
+                {
+                    "name": "result",
+                    "description": "",
+                    "type": "jasmine.ExpectationResult"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 2204,
+            "description": "Waits a fixed time period before moving to the next block.",
+            "deprecated": true,
+            "deprecationMessage": "Use waitsFor() instead",
+            "params": [
+                {
+                    "name": "timeout",
+                    "description": "milliseconds to wait",
+                    "type": "Number"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 2216,
+            "description": "Waits for the latchFunction to return true before proceeding to the next block.",
+            "params": [
+                {
+                    "name": "latchFunction",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "optional_timeoutMessage",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "optional_timeout",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 2372,
+            "description": "Internal representation of a Jasmine suite.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "description",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "specDefinitions",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "parentSuite",
+                    "description": "",
+                    "type": "jasmine.Suite"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/rate/spec/lib/jasmine.js",
+            "line": 2469,
+            "description": "A block which waits for some condition to become true, with timeout.",
+            "is_constructor": 1,
+            "extends": "jasmine.Block",
+            "params": [
+                {
+                    "name": "env",
+                    "description": "The Jasmine environment.",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "timeout",
+                    "description": "The maximum time in milliseconds to wait for the condition to become true.",
+                    "type": "Number"
+                },
+                {
+                    "name": "latchFunction",
+                    "description": "A function which returns true when the desired condition has been met.",
+                    "type": "Function"
+                },
+                {
+                    "name": "message",
+                    "description": "The message to display if the desired condition hasn't been met within the given time period.",
+                    "type": "String"
+                },
+                {
+                    "name": "spec",
+                    "description": "The Jasmine spec.",
+                    "type": "jasmine.Spec"
+                }
+            ],
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/SWFUpload.js",
+            "line": 1,
+            "description": "SWFUpload: http://www.swfupload.org, http://swfupload.googlecode.com\n\nmmSWFUpload 1.0: Flash upload dialog - http://profandesign.se/swfupload/,  http://www.vinterwebb.se/\n\nSWFUpload is (c) 2006-2007 Lars Huring, Olov Nilzén and Mammon Media and is released under the MIT License:\nhttp://www.opensource.org/licenses/mit-license.php\n\nSWFUpload 2 is (c) 2007-2008 Jake Roberts and is released under the MIT License:\nhttp://www.opensource.org/licenses/mit-license.php\n\nSWFObject v2.2 <http://code.google.com/p/swfobject/> \n\tis released under the MIT License <http://www.opensource.org/licenses/mit-license.php>",
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/aes.js",
+            "line": 8,
+            "description": "AES Cipher function: encrypt 'input' state with Rijndael algorithm\n  applies Nr rounds (10/12/14) using key schedule w for 'add round key' stage",
+            "params": [
+                {
+                    "name": "input",
+                    "description": "16-byte (128-bit) input state array",
+                    "type": "Number[]"
+                },
+                {
+                    "name": "w",
+                    "description": "Key schedule as 2D byte-array (Nr+1 x Nb bytes)",
+                    "type": "Number[][]"
+                }
+            ],
+            "return": {
+                "description": "Encrypted output state array",
+                "type": "Number[]"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/aes.js",
+            "line": 41,
+            "description": "Perform Key Expansion to generate a Key Schedule",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "Key as 16/24/32-byte array",
+                    "type": "Number[]"
+                }
+            ],
+            "return": {
+                "description": "Expanded key schedule as 2D byte-array (Nr+1 x Nb bytes)",
+                "type": "Number[][]"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/aes.js",
+            "line": 171,
+            "description": "Encrypt a text using AES encryption in Counter mode of operation\n\nUnicode multi-byte character safe",
+            "params": [
+                {
+                    "name": "plaintext",
+                    "description": "Source text to be encrypted",
+                    "type": "String"
+                },
+                {
+                    "name": "password",
+                    "description": "The password to use to generate a key",
+                    "type": "String"
+                },
+                {
+                    "name": "nBits",
+                    "description": "Number of bits to be used in the key (128, 192, or 256)",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Encrypted text",
+                "type": "String"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/aes.js",
+            "line": 248,
+            "description": "Decrypt a text encrypted by AES in counter mode of operation",
+            "params": [
+                {
+                    "name": "ciphertext",
+                    "description": "Source text to be encrypted",
+                    "type": "String"
+                },
+                {
+                    "name": "password",
+                    "description": "The password to use to generate a key",
+                    "type": "String"
+                },
+                {
+                    "name": "nBits",
+                    "description": "Number of bits to be used in the key (128, 192, or 256)",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Decrypted text",
+                "type": "String"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/aes.js",
+            "line": 323,
+            "description": "Encode string into Base64, as defined by RFC 4648 [http://tools.ietf.org/html/rfc4648]\n(instance method extending String object). As per RFC 4648, no newlines are added.",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "The string to be encoded as base-64",
+                    "type": "String"
+                },
+                {
+                    "name": "utf8encode",
+                    "description": "Flag to indicate whether str is Unicode string to be encoded \n  to UTF8 before conversion to base64; otherwise string is assumed to be 8-bit characters",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "Base64-encoded string",
+                "type": "String"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/aes.js",
+            "line": 366,
+            "description": "Decode string from Base64, as defined by RFC 4648 [http://tools.ietf.org/html/rfc4648]\n(instance method extending String object). As per RFC 4648, newlines are not catered for.",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "The string to be decoded from base-64",
+                    "type": "String"
+                },
+                {
+                    "name": "utf8decode",
+                    "description": "Flag to indicate whether str is Unicode string to be decoded \n  from UTF8 after conversion from base64",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "decoded string",
+                "type": "String"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/aes.js",
+            "line": 413,
+            "description": "Encode multi-byte Unicode string into utf-8 multiple single-byte characters \n(BMP / basic multilingual plane only)\n\nChars in range U+0080 - U+07FF are encoded in 2 chars, U+0800 - U+FFFF in 3 chars",
+            "params": [
+                {
+                    "name": "strUni",
+                    "description": "Unicode string to be encoded as UTF-8",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "encoded string",
+                "type": "String"
+            },
+            "class": "window.Raphael"
+        },
+        {
+            "file": "../plugins/aes.js",
+            "line": 440,
+            "description": "Decode utf-8 encoded string back into multi-byte Unicode characters",
+            "params": [
+                {
+                    "name": "strUtf",
+                    "description": "UTF-8 string to be decoded back to Unicode",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "decoded string",
+                "type": "String"
+            },
+            "class": "window.Raphael"
+        },
+        {
             "file": "../JC.js",
             "line": 46,
             "description": "JC组件库所在路径",
@@ -17220,6 +18716,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../comps/FlowChart/FlowChart.js:5"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../comps/Form/Form.js:2"
         },
         {
@@ -17293,6 +18793,10 @@
         {
             "message": "unknown tag: date",
             "line": " ../comps/Placeholder/Placeholder.js:2"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../comps/PopTips/PopTips.js:2"
         },
         {
             "message": "unknown tag: version",
@@ -17453,6 +18957,126 @@
         {
             "message": "unknown tag: attr",
             "line": " ../comps/Valid/Valid.js:1867"
+        },
+        {
+            "message": "unknown tag: ignore",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:50"
+        },
+        {
+            "message": "unknown tag: ignore",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:122"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:122"
+        },
+        {
+            "message": "unknown tag: ignore",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:132"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:132"
+        },
+        {
+            "message": "unknown tag: ignore",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:142"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:142"
+        },
+        {
+            "message": "unknown tag: ignore",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:152"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:152"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:163"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:175"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:185"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:199"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:415"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:453"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:738"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:749"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:766"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:773"
+        },
+        {
+            "message": "unknown tag: ignore",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1772"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1824"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/aes.js:8"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/aes.js:41"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/aes.js:171"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/aes.js:248"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/aes.js:323"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/aes.js:366"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/aes.js:413"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " ../plugins/aes.js:440"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../plugins/raphael.js:1"
         },
         {
             "message": "unknown tag: date",
@@ -17719,6 +19343,14 @@
             "line": " ../comps/DragSelect/DragSelect.js:592"
         },
         {
+            "message": "Missing item type\n支持 多对多 关系( 目前只支持 一对多 和 多对一 )",
+            "line": " ../comps/FlowChart/FlowChart.js:1"
+        },
+        {
+            "message": "Missing item type\n这里的逻辑认为 起始节点 和 结束节点都只有一个",
+            "line": " ../comps/FlowChart/FlowChart.js:582"
+        },
+        {
             "message": "Missing item type\n按比例缩放图片\n<br />返回: { width: int, height: int }",
             "line": " ../comps/ImageCutter/ImageCutter.js:1745"
         },
@@ -17824,11 +19456,11 @@
         },
         {
             "message": "Missing item type\nPopTips显示前的回调",
-            "line": " ../comps/PopTips/PopTips.js:660"
+            "line": " ../comps/PopTips/PopTips.js:693"
         },
         {
             "message": "Missing item type\nPopTips隐藏后的回调",
-            "line": " ../comps/PopTips/PopTips.js:671"
+            "line": " ../comps/PopTips/PopTips.js:704"
         },
         {
             "message": "Missing item type\n初始化数据模型",
@@ -17949,6 +19581,434 @@
         {
             "message": "Missing item type\n初始化 subdatatype = datavalid 相关事件",
             "line": " ../comps/Valid/Valid.js:3031"
+        },
+        {
+            "message": "Missing item type\nTop level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:3"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:10"
+        },
+        {
+            "message": "Missing item type\nUse <code>jasmine.undefined</code> instead of <code>undefined</code>, since <code>undefined</code> is just\na plain old variable and may be redefined by somebody else.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:17"
+        },
+        {
+            "message": "Missing item type\nShow diagnostic messages in the console if set to true",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:25"
+        },
+        {
+            "message": "Missing item type\nDefault interval in milliseconds for event loop yields (e.g. to allow network activity or to refresh the screen with the HTML-based runner). Small values here may result in slow test running. Zero means no updates until all tests have completed.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:31"
+        },
+        {
+            "message": "Missing item type\nDefault timeout interval in milliseconds for waitsFor() blocks.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:37"
+        },
+        {
+            "message": "Missing item type\nAllows for bound functions to be compared.  Internal use only.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:50"
+        },
+        {
+            "message": "Missing item type\nGetter for the Jasmine environment. Ensures one gets created",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:114"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:122"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:132"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:142"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:152"
+        },
+        {
+            "message": "Missing item type\nPretty printer for expecations.  Takes any object and turns it into a human-readable string.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:163"
+        },
+        {
+            "message": "Missing item type\nReturns true if the object is a DOM Node.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:175"
+        },
+        {
+            "message": "Missing item type\nReturns a matchable 'generic' object of the class type.  For use in expecations of type when values don't matter.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:185"
+        },
+        {
+            "message": "Missing item type\nReturns a matchable subset of a JSON object. For use in expectations when you don't care about all of the\nattributes on the object.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:199"
+        },
+        {
+            "message": "Missing item type\nJasmine Spies are test doubles that can act as stubs, spies, fakes or when used in an expecation, mocks.\n\nSpies should be created in test setup, before expectations.  They can then be checked, using the standard Jasmine\nexpectation syntax. Spies can be checked if they were called or not and what the calling params were.\n\nA Spy has the following fields: wasCalled, callCount, mostRecentCall, and argsForCall (see docs).\n\nSpies are torn down at the end of every spec.\n\nNote: Do <b>not</b> call new jasmine.Spy() directly - a spy must be created using spyOn, jasmine.createSpy or jasmine.createSpyObj.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:214"
+        },
+        {
+            "message": "Missing item type\nThe name of the spy, if provided.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:259"
+        },
+        {
+            "message": "Missing item type\nIs this Object a spy?",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:263"
+        },
+        {
+            "message": "Missing item type\nThe actual function this spy stubs.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:267"
+        },
+        {
+            "message": "Missing item type\nTracking of the most recent call to the spy.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:272"
+        },
+        {
+            "message": "Missing item type\nHolds arguments for each call to the spy, indexed by call count",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:281"
+        },
+        {
+            "message": "Missing item type\nTells a spy to call through to the actual implemenatation.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:295"
+        },
+        {
+            "message": "Missing item type\nFor setting the return value of a spy.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:311"
+        },
+        {
+            "message": "Missing item type\nFor throwing an exception when a spy is called.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:330"
+        },
+        {
+            "message": "Missing item type\nCalls an alternate implementation when a spy is called.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:349"
+        },
+        {
+            "message": "Missing item type\nResets all of a spy's the tracking variables so that it can be used again.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:369"
+        },
+        {
+            "message": "Missing item type\nDetermines whether an object is a spy.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:415"
+        },
+        {
+            "message": "Missing item type\nCreates a more complicated spy: an Object that has every property a function that is a spy.  Used for stubbing something\nlarge in one call.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:425"
+        },
+        {
+            "message": "Missing item type\nAll parameters are pretty-printed and concatenated together, then written to the current spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:443"
+        },
+        {
+            "message": "Missing item type\nFunction that installs a spy on an existing object's method name.  Used within a Spec to create a spy.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:453"
+        },
+        {
+            "message": "Missing item type\nCreates a Jasmine spec that will be added to the current suite.\n\n// TODO: pending tests",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:473"
+        },
+        {
+            "message": "Missing item type\nCreates a <em>disabled</em> Jasmine spec.\n\nA convenience method that allows existing specs to be disabled temporarily during development.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:491"
+        },
+        {
+            "message": "Missing item type\nStarts a chain for a Jasmine expectation.\n\nIt is passed an Object that is the actual value and should chain to one of the many\njasmine.Matchers functions.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:504"
+        },
+        {
+            "message": "Missing item type\nDefines part of a jasmine spec.  Used in cominbination with waits or waitsFor in asynchrnous specs.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:517"
+        },
+        {
+            "message": "Missing item type\nWaits a fixed time period before moving to the next block.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:527"
+        },
+        {
+            "message": "Missing item type\nWaits for the latchFunction to return true before proceeding to the next block.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:538"
+        },
+        {
+            "message": "Missing item type\nA function that is called before each spec in a suite.\n\nUsed for spec setup, including validating assumptions.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:550"
+        },
+        {
+            "message": "Missing item type\nA function that is called after each spec in a suite.\n\nUsed for restoring any state that is hijacked during spec execution.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:562"
+        },
+        {
+            "message": "Missing item type\nDefines a suite of specifications.\n\nStores the description and all defined specs in the Jasmine environment as one suite of specs. Variables declared\nare accessible by calls to beforeEach, it, and afterEach. Describe blocks can be nested, allowing for specialization\nof setup in some tests.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:574"
+        },
+        {
+            "message": "Missing item type\nDisables a suite of specifications.  Used to disable some suites in a file, or files, temporarily during development.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:594"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:633"
+        },
+        {
+            "message": "Missing item type\nDeclare that a child class inherit it's prototype from the parent class.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:638"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:646"
+        },
+        {
+            "message": "Missing item type\nEnvironment for Jasmine",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:700"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:738"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:749"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:766"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:773"
+        },
+        {
+            "message": "Missing item type\nRegister a reporter to receive status updates from Jasmine.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:780"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:977"
+        },
+        {
+            "message": "Missing item type\nBlocks are functions with executable code that make up a spec.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1008"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1030"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1132"
+        },
+        {
+            "message": "Missing item type\ntoBe: compares the actual to the expected using ===",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1209"
+        },
+        {
+            "message": "Missing item type\ntoNotBe: compares the actual to the expected using !==",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1217"
+        },
+        {
+            "message": "Missing item type\ntoEqual: compares the actual to the expected using common sense equality. Handles Objects, Arrays, etc.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1226"
+        },
+        {
+            "message": "Missing item type\ntoNotEqual: compares the actual to the expected using the ! of jasmine.Matchers.toEqual",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1235"
+        },
+        {
+            "message": "Missing item type\nMatcher that compares the actual to the expected using a regular expression.  Constructs a RegExp, so takes\na pattern or a String.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1244"
+        },
+        {
+            "message": "Missing item type\nMatcher that compares the actual to the expected using the boolean inverse of jasmine.Matchers.toMatch",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1254"
+        },
+        {
+            "message": "Missing item type\nMatcher that compares the actual to jasmine.undefined.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1263"
+        },
+        {
+            "message": "Missing item type\nMatcher that compares the actual to jasmine.undefined.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1270"
+        },
+        {
+            "message": "Missing item type\nMatcher that compares the actual to null.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1277"
+        },
+        {
+            "message": "Missing item type\nMatcher that boolean not-nots the actual.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1284"
+        },
+        {
+            "message": "Missing item type\nMatcher that boolean nots the actual.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1292"
+        },
+        {
+            "message": "Missing item type\nMatcher that checks to see if the actual, a Jasmine spy, was called.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1300"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1322"
+        },
+        {
+            "message": "Missing item type\nMatcher that checks to see if the actual, a Jasmine spy, was not called.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1325"
+        },
+        {
+            "message": "Missing item type\nMatcher that checks to see if the actual, a Jasmine spy, was called with a set of parameters.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1349"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1378"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1381"
+        },
+        {
+            "message": "Missing item type\nMatcher that checks that the expected item is an element in the actual Array.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1398"
+        },
+        {
+            "message": "Missing item type\nMatcher that checks that the expected item is NOT an element in the actual Array.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1407"
+        },
+        {
+            "message": "Missing item type\nMatcher that checks that the expected item is equal to the actual item\nup to a given level of decimal precision (default 2).",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1425"
+        },
+        {
+            "message": "Missing item type\nMatcher that checks that the expected exception was thrown by the actual.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1442"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1619"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1715"
+        },
+        {
+            "message": "Missing item type\nHolds results for a set of Jasmine spec. Allows for the results array to hold another jasmine.NestedResults",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1750"
+        },
+        {
+            "message": "Missing item type\nThe total count of results",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1756"
+        },
+        {
+            "message": "Missing item type\nNumber of passed results",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1760"
+        },
+        {
+            "message": "Missing item type\nNumber of failed results",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1764"
+        },
+        {
+            "message": "Missing item type\nWas this suite/spec skipped?",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1768"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1772"
+        },
+        {
+            "message": "Missing item type\nRoll up the result counts.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1778"
+        },
+        {
+            "message": "Missing item type\nAdds a log message.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1789"
+        },
+        {
+            "message": "Missing item type\nGetter for the results: message & results.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1797"
+        },
+        {
+            "message": "Missing item type\nAdds a result, tracking counts (total, passed, & failed)",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1804"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1824"
+        },
+        {
+            "message": "Missing item type\nBase class for pretty printing for expectation results.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1830"
+        },
+        {
+            "message": "Missing item type\nFormats a value in a nice, human-readable string.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:1837"
+        },
+        {
+            "message": "Missing item type\nRunner",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:2052"
+        },
+        {
+            "message": "Missing item type\nInternal representation of a Jasmine specification, or test.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:2129"
+        },
+        {
+            "message": "Missing item type\nAll parameters are pretty-printed and concatenated together, then written to the spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:2168"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:2191"
+        },
+        {
+            "message": "Missing item type\nWaits a fixed time period before moving to the next block.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:2204"
+        },
+        {
+            "message": "Missing item type\nWaits for the latchFunction to return true before proceeding to the next block.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:2216"
+        },
+        {
+            "message": "Missing item type\nInternal representation of a Jasmine suite.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:2372"
+        },
+        {
+            "message": "Missing item type\nA block which waits for some condition to become true, with timeout.",
+            "line": " ../plugins/rate/spec/lib/jasmine.js:2469"
+        },
+        {
+            "message": "Missing item type\nSWFUpload: http://www.swfupload.org, http://swfupload.googlecode.com\n\nmmSWFUpload 1.0: Flash upload dialog - http://profandesign.se/swfupload/,  http://www.vinterwebb.se/\n\nSWFUpload is (c) 2006-2007 Lars Huring, Olov Nilzén and Mammon Media and is released under the MIT License:\nhttp://www.opensource.org/licenses/mit-license.php\n\nSWFUpload 2 is (c) 2007-2008 Jake Roberts and is released under the MIT License:\nhttp://www.opensource.org/licenses/mit-license.php\n\nSWFObject v2.2 <http://code.google.com/p/swfobject/> \n\tis released under the MIT License <http://www.opensource.org/licenses/mit-license.php>",
+            "line": " ../plugins/SWFUpload.js:1"
+        },
+        {
+            "message": "Missing item type\nAES Cipher function: encrypt 'input' state with Rijndael algorithm\n  applies Nr rounds (10/12/14) using key schedule w for 'add round key' stage",
+            "line": " ../plugins/aes.js:8"
+        },
+        {
+            "message": "Missing item type\nPerform Key Expansion to generate a Key Schedule",
+            "line": " ../plugins/aes.js:41"
+        },
+        {
+            "message": "Missing item type\nEncrypt a text using AES encryption in Counter mode of operation\n\nUnicode multi-byte character safe",
+            "line": " ../plugins/aes.js:171"
+        },
+        {
+            "message": "Missing item type\nDecrypt a text encrypted by AES in counter mode of operation",
+            "line": " ../plugins/aes.js:248"
+        },
+        {
+            "message": "Missing item type\nEncode string into Base64, as defined by RFC 4648 [http://tools.ietf.org/html/rfc4648]\n(instance method extending String object). As per RFC 4648, no newlines are added.",
+            "line": " ../plugins/aes.js:323"
+        },
+        {
+            "message": "Missing item type\nDecode string from Base64, as defined by RFC 4648 [http://tools.ietf.org/html/rfc4648]\n(instance method extending String object). As per RFC 4648, newlines are not catered for.",
+            "line": " ../plugins/aes.js:366"
+        },
+        {
+            "message": "Missing item type\nEncode multi-byte Unicode string into utf-8 multiple single-byte characters \n(BMP / basic multilingual plane only)\n\nChars in range U+0080 - U+07FF are encoded in 2 chars, U+0800 - U+FFFF in 3 chars",
+            "line": " ../plugins/aes.js:413"
+        },
+        {
+            "message": "Missing item type\nDecode utf-8 encoded string back into multi-byte Unicode characters",
+            "line": " ../plugins/aes.js:440"
         },
         {
             "message": "Missing item type\nUXC 是 JC 的别名\n<br />存在这个变量是为了向后兼容\n<br />20130804 之前的命名空间是 UXC, 这个命名空间在一段时间后将会清除, 请使用 JC 命名空间\n<p><b>see</b>: <a href='window.JC.html'>JC</a></p>",
