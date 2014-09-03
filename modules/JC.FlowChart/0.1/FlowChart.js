@@ -69,17 +69,8 @@
  *                          <br/>由status 产生的 css class: js_cfcItemStatus_N, js_cfcItemTips_N ( N 代表 status )
  *                      </dd>
  *
- *                      <dt></dt>
- *                      <dd></dd>
- *
- *                      <dt></dt>
- *                      <dd></dd>
- *
- *                      <dt></dt>
- *                      <dd></dd>
- *
- *                      <dt></dt>
- *                      <dd></dd>
+ *                      <dt>tipsHtml = string</dt>
+ *                      <dd>鼠标划过节点时, 显示的tips内容, 支持html内容</dd>
  *                  </dl>
  *              </dd>
  *          </dl>
@@ -91,7 +82,7 @@
  * @extends     JC.BaseMVC
  * @constructor
  * @param   {selector|string}   _selector   
- * @version dev 0.1 2013-12-13
+ * @version dev 0.1 2014-09-03
  * @author  qiushaowei <suches@btbtd.org> | 75 Team
  * @example
 <pre>
