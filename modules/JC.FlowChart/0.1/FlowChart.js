@@ -517,8 +517,9 @@
                         , _nextList = _p.gridIdColumnIndexMap()[ i + 1 ]
                         ;
                     $.each( _rowList, function( _k, _item ){
-                        var _preItem = _rowList[ _k - 1 ]
+                        var _preItem = _rowList[ _k - 1 ], _tmpIx, _tmpSpaceIx, _fix
                             , _nextItem = _rowList[ _k + 1 ];
+                            ;
 
                         if( _item.pid && _item.pid.length > 1 ){
                             _first = _p.gridIdMap(  )[ arrayFirst( _item.pid ) ];
@@ -534,47 +535,37 @@
                             _last = arrayLast( _item.nodes );
                             _spaceIx = _last.rowIndex - _first.rowIndex;
                             _ix = _first.rowIndex + Math.ceil( Math.abs( _spaceIx ) / 2 );
-                            //JC.log( _item.name, _first.rowIndex, _last.rowIndex, _spaceIx, _ix );
-                            //_item.rowIndex = _ix;
+
                             if( _preItem && _ix <= _preItem.rowIndex ){
+                                _tmpIx = _ix;
                                 _ix = _preItem.rowIndex + 2;
-                                _p.plusNext( _rowList, _k + 1, _ix );
-                                var _fix = false, _count = _ix - 1;
-                                $.each( _nextList, function( _sk, _sitem ){
-                                    if( _sitem.id === _first.id ){
-                                        _fix = true;
-                                    }
-                                    if( _fix ){
-                                        _sitem.rowIndex =  _count;
-                                        _count += 1;
-                                    }
-                                });
-                            }
-                            if( _nextItem && _ix >= _nextItem.rowIndex ){
-                                _ix = _nextItem.rowIndex + 2;
-                                _p.plusNext( _rowList, _k + 1, _ix );
-                                var _fix = false, _count = _ix - 1;
-                                $.each( _nextList, function( _sk, _sitem ){
-                                    if( _sitem.id === _first.id ){
-                                        _fix = true;
-                                    }
-                                    if( _fix ){
-                                        _sitem.rowIndex =  _count;
-                                        _count += 1;
-                                    }
-                                });
+                                _tmpSpaceIx = _ix - _tmpIx;
+
+                                if( _nextList ){
+                                    $.each( _nextList, function( _sk, _sitem ){
+                                        if( _sitem.id === _first.id ){
+                                            _fix = true;
+                                        }
+
+                                        if( _fix ){
+                                            _sitem.rowIndex += _tmpSpaceIx;
+                                        }
+                                    });
+                                }
                             }
 
+                            if( _nextItem && _ix >= _nextItem.rowIndex ){
+                                _tmpIx = _ix;
+                                for( var j = _k + 1; j < _rowList.length; j++ ){
+                                    _tmpIx += 2;
+                                    _rowList[ j ] && ( _rowList[ j ].rowIndex = _tmpIx );
+                                }
+                            }
+
+                            //JC.log( _item.name, _first.rowIndex, _last.rowIndex, _spaceIx, _ix );
                             _item.rowIndex = _ix;
                         }
                     });
-                }
-            }
-
-        , plusNext:
-            function( _list, _startIx, _offsetX ){
-                for( ; _startIx < _list.length; _startIx++ ){
-                    _list[ _startIx ].rowIndex = _offsetX += 2;
                 }
             }
 
