@@ -10,8 +10,9 @@
  *      <dd style="color:#ccc;text-decoration: line-through;">多对多关系</dd>
  * </dl>
  *  <p><b>require</b>:
- *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
- *      , <a href='window.Raphael.html'>RaphaelJS</a>
+ *      <a href='window.Raphael.html'>RaphaelJS</a>
+ *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *      , <a href='JC.PopTips.html'>JC.PopTips</a>
  *  </p>
  *
  *  <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -180,6 +181,26 @@
         , childLineWidth: function(){ return 40; }
         , parentLineWidth: function(){ return 25; }
 
+        , itemHtmlPattern:
+            function( _item ){
+                var _r = '{0}';
+                ( 'tipsHtml' in _item )
+                    && _item.tipsHtml
+                    && ( _r = this.tipsTpl() );
+                return _r;
+            }
+
+        , tipsTpl:
+            function(){
+
+                if( !this._tipsTpl ){
+                    this._tipsTpl = FlowChart.TIPS_TPL;
+                    this._tipsTpl = this.scriptTplProp( 'cfcTipsTpl' ) || this._tipsTpl;
+                }
+
+                return this._tipsTpl;
+            }
+
         , createItems:
             function(){
                 var _p = this, _sx = 0, _sy = 0;
@@ -190,29 +211,10 @@
                         , _maxWidth = _p.gridWidth()
                         ;
                     $.each( _rowList, function( _k, _item ){
-                        var _tmpHtml = 
-                            [
-                                "<span class=\"js_compPopTips\" style=\"display:inline-block;\""
-                                ,"htmlContent=\"|script\""
-                                ,"theme=\"white\""
-                                ,"arrowposition=\"bottom\""
-                                ,"triggerType=\"hover\""
-                                ,"offsetXY=\"0,-4\""
-                                ,"popTipsMinWidth=\"100\""
-                                ,"popTipsMinHeight=\"50\""
-                                ,">"
-                                ,"<span>"
-                                , _item.name
-                                ,"</span>"
-                                ,"<script type=\"text/template\">"
-                                , '<span style="text-decoration: underline;">test html</span>'
-                                ,"<\/script>"
-                                ,"</span>"
-                            ].join('');
-
-                        var _html = JC.f.printf( 
+                        var _itemHtmlPatter = JC.f.printf( _p.itemHtmlPattern( _item ), _item.name, _item.tipsHtml, _p.getStatus( _item ) )
+                            , _html = JC.f.printf( 
                                 '<div class="js_cfcItem js_cfcItemStatus_{1}" style="position:absolute; left: -1000px;">{0}</div>'
-                                , _tmpHtml
+                                , _itemHtmlPatter
                                 , _p.getStatus( _item )
                             )  
                             , _node = $( _html )
@@ -801,6 +803,22 @@
                 }
             }
     });
+
+    FlowChart.TIPS_TPL =
+        [
+            '<span class="js_compPopTips" style="display:inline-block;"'
+            ,'htmlContent="|script"'
+            ,'theme="white"'
+            ,'arrowposition="bottom"'
+            ,'triggerType="hover"'
+            ,'offsetXY="0,-4"'
+            ,'popTipsMinWidth="100"'
+            ,'popTipsMinHeight="50"'
+            ,'>'
+            ,'<span>{0}</span>'
+            ,'<script type="text/template"><div class="js_cfcItemTips js_cfcItemTips_{2}">{1}</div><\/script>'
+            ,'</span>'
+        ].join('');
 
     function arrayFirst( _a ){
         var _r;
