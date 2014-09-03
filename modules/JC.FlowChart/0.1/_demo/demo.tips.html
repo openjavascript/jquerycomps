@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            dt { font-weight: bold; margin: 10px auto; }
+            dd { line-height: 24px; }
+        </style>
+        <link href='../../../../modules/JC.PopTips/0.1/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.FlowChart/0.1/res/default/style.css' rel='stylesheet' />
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config.js"></script>
+        <script>
+            JC.debug = true;
+            requirejs( [ 'JC.FlowChart' ], function( FlowChart ){
+            });
+        </script>
+    </head>    
+    <body>
+
+        <dl class="defdl">
+            <dt>JC.FlowChart - 示例</dt>
+            <dd>
+                <h2>before text</h2>
+                <div style="width:100%">
+                    <div class="js_compFlowChart" data-FlowChart="|script">
+                        <script type="text/template">
+                            {
+                                chart: {
+                                    name: '提交'
+                                    , id: 1
+                                    , nodes: [
+                                            {
+                                                name: '资质审核'
+                                                , id: 2
+                                                , status: 1
+                                                , tipsHtml: 'username 1'
+                                                , nodes: [
+                                                    {
+                                                        name: '服务审核'
+                                                        , id: 3
+                                                        , targetNode: 5
+                                                        , status: 2
+                                                        , tipsHtml: 'username 2'
+                                                    }
+                                                    , {
+                                                        name: '渠道管理层'
+                                                        , id: 4
+                                                        , status: 3
+                                                        , tipsHtml: 'username 3'
+                                                    }
+                                                ]
+                                            }
+                                            , {
+                                                name: '资质审核1'
+                                                , id: 6
+                                                , status: 4
+                                                , tipsHtml: 'username 4'
+                                                , nodes: [
+                                                    {
+                                                        name: '服务审核1'
+                                                        , id: 7
+                                                        , targetNode: 9
+                                                        , status: 5
+                                                        , tipsHtml: 'username 5'
+                                                    }
+                                                    , {
+                                                        name: '渠道管理层1'
+                                                        , id: 8
+                                                        , targetNode: 9
+                                                        , status: 6
+                                                        , tipsHtml: 'username 6'
+                                                    }
+                                                ]
+                                            }
+                                            , {
+                                                name: '资质审核2'
+                                                , id: 10
+                                                , status: 7
+                                                , tipsHtml: 'username 7'
+                                                , nodes: [
+                                                    {
+                                                        name: '服务审核2'
+                                                        , id: 11
+                                                        , status: 8
+                                                        , tipsHtml: 'username 8'
+                                                        , nodes: [
+                                                            {
+                                                                name: '管理层2'
+                                                                , id: 12
+                                                                , targetNode: 5
+                                                                , status: 9
+                                                                , tipsHtml: 'username 9'
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                            , {
+                                                name: '资质审核3'
+                                                , id: 15
+                                                , status: 10
+                                                , tipsHtml: 'username 10'
+                                            }
+                                    ]
+                                    , targetNodes: {
+                                        '5': {
+                                            name: '管理层'
+                                        }
+                                        , '9': {
+                                            name: '管理层1'
+                                            , targetNode: 5
+                                        }
+                                    }
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+                <h2>after text</h2>
+            </dd>
+        </dl>
+
+    </body>
+</html>
+
