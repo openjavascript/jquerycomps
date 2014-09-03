@@ -989,40 +989,41 @@
         }
     }
 
-    Raphael.fn.JCTriangle =
-        function( _sideLength, _x, _y, _params, _offsetAngle ){
-            !_sideLength && ( _sideLength = 16 );
-            !_x && ( _x = 0 );
-            !_y && ( _y = _sideLength / 2 );
-            _y += 1;
-            typeof _offsetAngle == 'undefined' && ( _offsetAngle = 180 );
-
-            var _p1 = distanceAngleToPoint( _sideLength, 330 )
-                , _p2 = distanceAngleToPoint( _sideLength, 30 )
-                , _p3 = distanceAngleToPoint( _sideLength, 120 )
-                ;
-
-                _p1.x = parseInt( _p1.x +  _x );
-                _p1.y = parseInt( _p1.y + _y );
-
-                _p2.x = parseInt( _p2.x + _x );
-                _p2.y = parseInt( _p2.y + _y );
-
-            var _r = this.path(
-                JC.f.printf( 
-                    '{0}M{1} {2}L{3} {4}L{5} {6}L{1} {2}Z'
-                    , ''
-                    , _x, _y 
-                    , _p1.x, _p1.y
-                    , _p2.x, _p2.y
-                )
-            );
-            _r.rotate( _offsetAngle );
-            _params && _r.attr( _params );
-            return _r;
-        };
-
     _jdoc.ready( function(){
+
+        Raphael.fn.JCTriangle =
+            function( _sideLength, _x, _y, _params, _offsetAngle ){
+                !_sideLength && ( _sideLength = 16 );
+                !_x && ( _x = 0 );
+                !_y && ( _y = _sideLength / 2 );
+                _y += 1;
+                typeof _offsetAngle == 'undefined' && ( _offsetAngle = 180 );
+
+                var _p1 = distanceAngleToPoint( _sideLength, 330 )
+                    , _p2 = distanceAngleToPoint( _sideLength, 30 )
+                    , _p3 = distanceAngleToPoint( _sideLength, 120 )
+                    ;
+
+                    _p1.x = parseInt( _p1.x +  _x );
+                    _p1.y = parseInt( _p1.y + _y );
+
+                    _p2.x = parseInt( _p2.x + _x );
+                    _p2.y = parseInt( _p2.y + _y );
+
+                var _r = this.path(
+                    JC.f.printf( 
+                        '{0}M{1} {2}L{3} {4}L{5} {6}L{1} {2}Z'
+                        , ''
+                        , _x, _y 
+                        , _p1.x, _p1.y
+                        , _p2.x, _p2.y
+                    )
+                );
+                _r.rotate( _offsetAngle );
+                _params && _r.attr( _params );
+                return _r;
+            };
+
         FlowChart.autoInit && FlowChart.init();
     });
 
