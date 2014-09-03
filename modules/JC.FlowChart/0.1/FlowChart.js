@@ -520,6 +520,7 @@
                         var _preItem = _rowList[ _k - 1 ], _tmpIx, _tmpSpaceIx, _fix
                             , _nextItem = _rowList[ _k + 1 ];
                             ;
+                            var _oldIx = _item.rowIndex;
 
                         if( _item.pid && _item.pid.length > 1 ){
                             _first = _p.gridIdMap(  )[ arrayFirst( _item.pid ) ];
@@ -564,9 +565,37 @@
 
                             //JC.log( _item.name, _first.rowIndex, _last.rowIndex, _spaceIx, _ix );
                             _item.rowIndex = _ix;
+
+                            if( _oldIx !== _ix ){
+                                _p.plusParent( i - 1, _item.pid, _ix - _oldIx );
+                            }
                         }
                     });
                 }
+            }
+
+        , plusParent: 
+            function( _colIx, _pid, _offsetIx ){
+                var _p = this, _nextPid;
+                if( _colIx < 1 ) return;
+                if( !( _pid && _pid.length ) ) return;
+
+                var _rowList = _p.gridIdColumnIndexMap()[ _colIx ], _fix;
+                if( !( _rowList && _rowList.length ) ) return;
+                $.each( _rowList, function( _k, _item ){
+                    if( !_fix ){
+                        if( _item.id == _pid[0] ){
+                            _fix = true;
+                            _pid = _item.pid
+                        }
+                    }
+                    if( _fix ){
+                        _item.rowIndex += _offsetIx;
+                    }
+                });
+
+                _p.plusParent( _colIx - 1, _nextPid, _offsetIx );
+
             }
 
         , fixRowIndex:
