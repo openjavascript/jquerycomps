@@ -301,6 +301,7 @@
                 _p.fixRowIndex();
                 _p.fixRowIndexOneChild();
                 _p.fixRowIndexMultiChild();
+                _p.fixRowIndexMultiChild();
 
                 _p.createItems();
                 _p.calcRealPosition();
@@ -540,7 +541,7 @@
                             if( _preItem && _ix <= _preItem.rowIndex ){
                                 _needFix = true;
                                 _tmpIx = _ix;
-                                _ix = _preItem.rowIndex + 2;
+                                _ix = _item.rowIndex;
                                 _tmpSpaceIx = _ix - _tmpIx;
 
                                 if( _nextList ){
@@ -556,20 +557,16 @@
                                 }
                             }
 
-                            if( _nextItem && _ix >= _nextItem.rowIndex ){
-                                _tmpIx = _ix;
+                            if( _tmpSpaceIx ){
                                 _needFix = true;
                                 for( var j = _k + 1; j < _rowList.length; j++ ){
-                                    _tmpIx += 2;
-                                    _rowList[ j ] && ( _rowList[ j ].rowIndex = _tmpIx );
+                                    _rowList[ j ] && ( _rowList[ j ].rowIndex += _tmpSpaceIx  );
                                 }
                             }
-
-                            //JC.log( _item.name, _first.rowIndex, _last.rowIndex, _spaceIx, _ix );
                             _item.rowIndex = _ix;
 
-                            if( _needFix && _oldIx !== _ix ){
-                                _p.plusParent( i - 1, _item.pid, _ix - _oldIx );
+                            if( _needFix && _tmpSpaceIx ){
+                                _p.plusParent( i - 1, _item.pid, _tmpSpaceIx );
                             }
                         }
                     });
