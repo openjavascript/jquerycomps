@@ -9605,8 +9605,10 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
      */
     !window.console && ( window.console = { 
         log: function(){ window.status = sliceArgs( arguments ).join(' '); }
-         , dir: function(){} 
     });
+    !console.dir && (
+        console.dir = function(){}
+    );
     /**
      * 声明主要命名空间, 方便迁移
      */

@@ -2428,7 +2428,7 @@
             "namespace": "JC",
             "file": "../comps/Valid/Valid.js",
             "line": 6,
-            "description": "<b>表单验证</b> (单例模式)\n<br />全局访问请使用 JC.Valid 或 Valid\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>\n| <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>\n<h2>Form 的可用 html attribute</h2>\n<dl>\n     <dt>errorabort = bool, default = true</dt>\n     <dd>\n         查检Form Control时, 如果发生错误是否继续检查下一个\n         <br />true: 继续检查, false, 停止检查下一个\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 表单所有控件的 em  CSS display 显示类型\n     </dd>\n\n     <dt>ignoreAutoCheckEvent = bool, default = false</dt>\n     <dd>是否禁用 自动 check 事件( focus, blur, change )</dd>\n</dl>\n<h2>Form Control的可用 html attribute</h2>\n<dl>\n     <dt>reqmsg = 错误提示</dt>\n     <dd>值不能为空, class=error errormsg</dd>\n\n     <dt>errmsg = 错误提示</dt>\n     <dd>格式错误, 但不验证为空的值, class=error errormsg</dd>\n\n     <dt>focusmsg = 控件获得焦点的提示信息</dt>\n     <dd>\n         这个只作提示用, class=focusmsg\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>emel = selector</dt>\n     <dd>显示错误信息的selector</dd>\n\n     <dt>validel = selector</dt>\n     <dd>显示正确信息的selector</dd>\n\n     <dt>focusel = selector</dt>\n     <dd>显示提示信息的selector</dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 em 的 CSS display 显示类型\n     </dd>\n\n     <dt>ignoreprocess = bool, default = false</dt>\n     <dd>验证表单控件时, 是否忽略</dd>\n\n     <dt>minlength = int(最小长度)</dt>\n     <dd>验证内容的最小长度, 但不验证为空的值</dd>\n\n     <dt>maxlength = int(最大长度)</dt>\n     <dd>验证内容的最大长度, 但不验证为空的值</dd>\n\n     <dt>minvalue = number|ISO date(最小值)</dt>\n     <dd>验证内容的最小值, 但不验证为空的值</dd>\n\n     <dt>maxvalue = number|ISO date(最大值)</dt>\n     <dd>验证内容的最大值, 但不验证为空的值</dd>\n\n     <dt>validitemcallback = function</dt>\n     <dd>\n         对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>\n<pre>function validItemCallback( &#95;selector, &#95;isValid ){\n}</pre>\n     </dd>\n\n     <dt>validHidden = bool, default = false</dt>\n     <dd>是否验证隐藏的控件</dd>\n\n     <dt>rangeCanEqual = bool, default = true</dt>\n     <dd>nrange 和 daterange 的开始值和结束值是否可以相等</dd>\n\n     <dt>datatype: 常用数据类型</dt>\n     <dd><b>n:</b> 检查是否为正确的数字</dd>\n     <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>\n     <dd>\n         <b>nrange:</b> 检查两个control的数值范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>d:</b> 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD</dd>\n     <dd>\n         <b>daterange:</b> 检查两个control的日期范围\n         <dl>\n             <dd>html attr <b>fromDateEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toDateEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 daterange, 按顺序定为 fromDateEl, toDateEl</dd>\n         </dl>\n     </dd>\n     <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>\n     <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>\n     <dd>\n         <b>bankcard:</b> 是否为正确的银行卡\n         <br />格式为: 12 ~ 25 位数字\n     </dd>\n     <dd>\n         <b>cnname:</b> 中文姓名\n         <br>格式: 汉字和大小写字母\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>enname:</b> 英文姓名\n         <br>格式: 大小写字母 + 空格\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>allname:</b> cnname | enname\n         <br />中文姓名和英文姓名的复合验证\n     </dd>\n     <dd>\n         <b>username:</b> 注册用户名\n         <br>格式: a-zA-Z0-9_-\n         <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30\n     </dd>\n     <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>\n     <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\\d]{9}</dd>\n     <dd><b>mobile:</b> mobilecode 的别名</dd>\n     <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>\n     <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>\n     <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>\n     <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>\n     <dd><b>phonezone:</b> 电话区号, 3~4位数字. phonezone-n,m 可指定位数长度</dd>\n     <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>\n     <dd><b>countrycode:</b> 地区代码, [+]1~6位数字</dd>\n     <dd><b>mobilephone:</b> mobilecode | phone</dd>\n     <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>\n     <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>\n     <dd>\n         <b>vcode:</b> 验证码, 0-9a-zA-Z, 长度 默认为4\n         <br />可通过 vcode-[\\d], 指定验证码长度\n     </dd>\n     <dd>\n         <b>text:</b> 显示声明检查的内容为文本类型\n         <br />默认就是 text, 没有特殊原因其实不用显示声明\n     </dd>\n     <dd>\n         <b>bytetext:</b> 声明按字节检查文本长度\n         <br /> ASCII 算一个字符, 非 ASCII 算两个字符\n     </dd>\n     <dd><b>url:</b> URL 格式, ftp, http, https</dd>\n     <dd><b>domain:</b> 匹配域名, 宽松模式, 允许匹配 http(s), 且结尾允许匹配反斜扛(/)</dd>\n     <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>\n     <dd><b>email:</b> 电子邮件</dd>\n     <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>\n     <dd><b>taxcode:</b> 纳税人识别号, 长度: 15, 18, 20 </dd>\n\n     <dd>\n         <dl>\n             <dt>checkbox: 默认需要至少选中N 个 checkbox</dt>\n             <dd>\n                 默认必须选中一个 checkbox\n                 <br > 如果需要选中N个, 用这种格式 checkbox-n, checkbox-3 = 必须选中三个\n                 <br > datatarget: 声明所有 checkbox 的选择器\n             </dd>\n         </dl>\n     </dd>\n\n     <dd>\n         <dl>\n             <dt>file: 判断文件扩展名</dt>\n             <dd>属性名(文件扩展名列表): fileext</dd>\n             <dd>格式: .ext[, .ext]</dd>\n             <dd>\n<xmp>   <input type=\"file\" \n   reqmsg=\"文件\" \n   errmsg=\"允许上传的文件类型: .gif, .jpg, .jpeg, .png\"\n   datatype=\"file\" \n   fileext=\".gif, .jpg, .jpeg, .png\" \n   />\n   <label>.gif, .jpg, .jpeg, .png</label>\n   <em class=\"error\"></em>\n   <em class=\"validmsg\"></em>\n</xmp>\n                   </dd>\n         </dl>\n     </dd>\n\n     <dt>subdatatype: 特殊数据类型, 以逗号分隔多个属性</dt>\n     <dd>\n         <dl>\n             <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>\n             <dd><b>alternativedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>alternativemsg:</b> N 选一的错误提示</dd>\n\n             <dd>\n                 <b>alternativeReqTarget:</b> 为 alternative node 指定一个不能为空的 node\n                 <br /><b>请使用 subdatatype = reqtarget</b>, 这个附加属性将弃除\n             </dd>\n             <dd><b>alternativeReqmsg:</b> alternativeReqTarget 目标 node 的html属性, 错误时显示的提示信息</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reqtarget: 如果 selector 的值非空, 那么 datatarget 的值也不能为空</dt>\n             <dd><b>datatarget:</b> 显式指定 目标 target</dd>\n             <dd><b>reqTargetDatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reqtargetmsg:</b> target node 用于显示错误提示的 html 属性</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reconfirm: N 个 Control 的值必须保持一致</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>\n             <dd><b>reconfirmdatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>unique: N 个 Control 的值必须保持唯一性, 不能有重复</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=unique]</dd>\n             <dd><b>uniquedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>\n             <dd><b>uniqueIgnoreCase:</b> 是否忽略大小写</dd>\n             <dd><b>uniqueIgnoreEmpty:</b> 是否忽略空的值, 如果组中有空值也会被忽略</dd>\n             <dd><b>processDisabled:</b> 是否处理 disabled 但 visible 的node</dd>\n             <dd>unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )</dt>\n             <dd><b>datavalidMsg:</b> 值不合法时的提示信息</dd>\n             <dd>\n                 <b>datavalidUrl:</b> 验证内容正确与否的 url api\n                 <p>{\"errorno\":0,\"errmsg\":\"\"}</p>\n                 errorno: 0( 正确 ), 非0( 错误 )\n                 <p>datavalidurl=\"./data/handler.php?key={0}\"</p>\n                 {0} 代表 value\n             </dd>\n             <dd>\n                 <b>datavalidCheckCallback:</b> 验证内容正确与否的回调(优先级比 datavalidUrl 高)\n<pre>window.datavalidCheckCallback =\nfunction (){\n   var _r = { 'errorno': 1, errmsg:'验证码错误' }, _sp = $( this ), _v = _sp.val().trim().toLowerCase();\n\n   if( _v && _v === window.CHECK_CODE ){\n       _r.errorno = 0;\n   }\n\n   return _r;\n};<pre>\n             </dd>\n             <dd><b>datavalidNoCache:</b> 是否禁止缓存, default = false</dd>\n             <dd><b>datavalidAjaxType:</b> ajax 请求类型, default = get</dd>\n             <dd><b>datavalidRequestData:</b> ajax 请求数据, json data</dd>\n             <dd>\n                 <b>datavalidCallback:</b> 请求 datavalidUrl 后调用的回调\n<pre>function datavalidCallback( _json ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n                 <b>datavalidKeyupCallback:</b> 每次 keyup 的回调\n<pre>function datavalidKeyupCallback( _evt ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n             <dd>\n                 <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调\n<pre>function datavalidUrlFilter( _url ){\n   var _selector = $(this);\n   _url = JC.f.addUrlParams( _url, { 'xtest': 'customData' } );\n   return _url;\n});</pre>\n             </dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>hidden: 验证隐藏域的值</dt>\n             <dd>\n                 有些特殊情况需要验证隐藏域的值, 请使用 subdatatype=\"hidden\"\n             </dd>\n         </dl>\n     </dd>\n\n     <dd>\n         <dl>\n             <dt>ucheck: 用户自定义验证</dt>\n             <dd><b>ucheckmsg:</b> 验证出错的提示信息</dd>\n             <dd><b>ucheckCallback:</b> 用于验证的函数 <b>window变量域</b>\n\n<pre>function ucheck_n( _item ){\n   var _r = false, _v = JC.f.parseFinance( _item.val() );\n\n   if( _v === 0 || ( _v >= 30 && _v >= 50 ) ){\n       _r = true;\n   }\n   return _r;\n}</pre>\n             </dd>\n         </dl>\n     </dd>\n</dl>",
+            "description": "<b>表单验证</b> (单例模式)\n<br />全局访问请使用 JC.Valid 或 Valid\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Valid.html' target='_blank'>API docs</a>\n| <a href='../../comps/Valid/_demo/' target='_blank'>demo link</a></p>\n<h2>Form 的可用 html attribute</h2>\n<dl>\n     <dt>errorabort = bool, default = true</dt>\n     <dd>\n         查检Form Control时, 如果发生错误是否继续检查下一个\n         <br />true: 继续检查, false, 停止检查下一个\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 表单所有控件的 em  CSS display 显示类型\n     </dd>\n\n     <dt>ignoreAutoCheckEvent = bool, default = false</dt>\n     <dd>是否禁用 自动 check 事件( focus, blur, change )</dd>\n</dl>\n<h2>Form Control的可用 html attribute</h2>\n<dl>\n     <dt>reqmsg = 错误提示</dt>\n     <dd>值不能为空, class=error errormsg</dd>\n\n     <dt>errmsg = 错误提示</dt>\n     <dd>格式错误, 但不验证为空的值, class=error errormsg</dd>\n\n     <dt>focusmsg = 控件获得焦点的提示信息</dt>\n     <dd>\n         这个只作提示用, class=focusmsg\n     </dd>\n\n     <dt>validmsg = bool | string</dt>\n     <dd>\n         内容填写正确时显示的 提示信息, class=validmsg\n         <br />如果 = 0, false, 将不显示提示信息\n         <br />如果 = 1, true, 将不显示提示文本\n     </dd>\n\n     <dt>emel = selector</dt>\n     <dd>显示错误信息的selector</dd>\n\n     <dt>validel = selector</dt>\n     <dd>显示正确信息的selector</dd>\n\n     <dt>focusel = selector</dt>\n     <dd>显示提示信息的selector</dd>\n\n     <dt>validemdisplaytype = string, default = inline</dt>\n     <dd>\n         设置 em 的 CSS display 显示类型\n     </dd>\n\n     <dt>ignoreprocess = bool, default = false</dt>\n     <dd>验证表单控件时, 是否忽略</dd>\n\n     <dt>minlength = int(最小长度)</dt>\n     <dd>验证内容的最小长度, 但不验证为空的值</dd>\n\n     <dt>maxlength = int(最大长度)</dt>\n     <dd>验证内容的最大长度, 但不验证为空的值</dd>\n\n     <dt>minvalue = number|ISO date(最小值)</dt>\n     <dd>验证内容的最小值, 但不验证为空的值</dd>\n\n     <dt>maxvalue = number|ISO date(最大值)</dt>\n     <dd>验证内容的最大值, 但不验证为空的值</dd>\n\n     <dt>validitemcallback = function</dt>\n     <dd>\n         对一个 control 作检查后的回调, 无论正确与否都会触发, <b>window 变量域</b>\n<pre>function validItemCallback( &#95;selector, &#95;isValid ){\n}</pre>\n     </dd>\n\n     <dt>validHidden = bool, default = false</dt>\n     <dd>是否验证隐藏的控件</dd>\n\n     <dt>rangeCanEqual = bool, default = true</dt>\n     <dd>nrange 和 daterange 的开始值和结束值是否可以相等</dd>\n\n     <dt>datatype: 常用数据类型</dt>\n     <dd><b>n:</b> 检查是否为正确的数字</dd>\n     <dd><b>n-i.f:</b> 检查数字格式是否附件要求, i[整数位数], f[浮点数位数], n-7.2 = 0.00 ~ 9999999.99</dd>\n     <dd>\n         <b>nrange:</b> 检查两个control的数值范围\n         <dl>\n             <dd>html attr <b>fromNEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toNEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromNEl, toNEl, 默认是从父节点下面找到 nrange, 按顺序定为 fromNEl, toNEl</dd>\n         </dl>\n     </dd>\n     <dd><b>d:</b> 检查是否为正确的日期, YYYYMMDD, YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD</dd>\n     <dd>\n         <b>daterange:</b> 检查两个control的日期范围\n         <dl>\n             <dd>html attr <b>fromDateEl:</b> 指定开始的 control</dd>\n             <dd>html attr <b>toDateEl:</b> 指定结束的 control</dd>\n             <dd>如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 daterange, 按顺序定为 fromDateEl, toDateEl</dd>\n         </dl>\n     </dd>\n     <dd><b>time:</b> 是否为正确的时间, hh:mm:ss</dd>\n     <dd><b>minute:</b> 是否为正确的时间, hh:mm</dd>\n     <dd>\n         <b>bankcard:</b> 是否为正确的银行卡\n         <br />格式为: 9 ~ 25 位数字\n     </dd>\n     <dd>\n         <b>cnname:</b> 中文姓名\n         <br>格式: 汉字和大小写字母\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>enname:</b> 英文姓名\n         <br>格式: 大小写字母 + 空格\n         <br>规则: 长度 2-32个字节, 非 ASCII 算2个字节\n     </dd>\n     <dd>\n         <b>allname:</b> cnname | enname\n         <br />中文姓名和英文姓名的复合验证\n     </dd>\n     <dd>\n         <b>username:</b> 注册用户名\n         <br>格式: a-zA-Z0-9_-\n         <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30\n     </dd>\n     <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>\n     <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\\d]{9}</dd>\n     <dd><b>mobile:</b> mobilecode 的别名</dd>\n     <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>\n     <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>\n     <dd><b>phone:</b> 带区号的电话号码, [区号][空格|空白|-]7~8位电话号码</dd>\n     <dd><b>phoneall:</b> 带国家代码, 区号, 分机号的电话号码, [+国家代码][区号][空格|空白|-]7~8位电话号码#1~6位</dd>\n     <dd><b>phonezone:</b> 电话区号, 3~4位数字. phonezone-n,m 可指定位数长度</dd>\n     <dd><b>phoneext:</b> 电话分机号, 1~6位数字</dd>\n     <dd><b>countrycode:</b> 地区代码, [+]1~6位数字</dd>\n     <dd><b>mobilephone:</b> mobilecode | phone</dd>\n     <dd><b>mobilephoneall:</b> mobilezonecode | phoneall</dd>\n     <dd><b>reg:</b> 自定义正则校验, /正则规则/[igm]</dd>\n     <dd>\n         <b>vcode:</b> 验证码, 0-9a-zA-Z, 长度 默认为4\n         <br />可通过 vcode-[\\d], 指定验证码长度\n     </dd>\n     <dd>\n         <b>text:</b> 显示声明检查的内容为文本类型\n         <br />默认就是 text, 没有特殊原因其实不用显示声明\n     </dd>\n     <dd>\n         <b>bytetext:</b> 声明按字节检查文本长度\n         <br /> ASCII 算一个字符, 非 ASCII 算两个字符\n     </dd>\n     <dd><b>url:</b> URL 格式, ftp, http, https</dd>\n     <dd><b>domain:</b> 匹配域名, 宽松模式, 允许匹配 http(s), 且结尾允许匹配反斜扛(/)</dd>\n     <dd><b>stricdomain:</b> 匹配域名, 严格模式, 不允许匹配 http(s), 且结尾不允许匹配反斜扛(/)</dd>\n     <dd><b>email:</b> 电子邮件</dd>\n     <dd><b>zipcode:</b> 邮政编码, 0~6位数字</dd>\n     <dd><b>taxcode:</b> 纳税人识别号, 长度: 15, 18, 20 </dd>\n\n     <dd>\n         <dl>\n             <dt>checkbox: 默认需要至少选中N 个 checkbox</dt>\n             <dd>\n                 默认必须选中一个 checkbox\n                 <br > 如果需要选中N个, 用这种格式 checkbox-n, checkbox-3 = 必须选中三个\n                 <br > datatarget: 声明所有 checkbox 的选择器\n             </dd>\n         </dl>\n     </dd>\n\n     <dd>\n         <dl>\n             <dt>file: 判断文件扩展名</dt>\n             <dd>属性名(文件扩展名列表): fileext</dd>\n             <dd>格式: .ext[, .ext]</dd>\n             <dd>\n<xmp>   <input type=\"file\" \n   reqmsg=\"文件\" \n   errmsg=\"允许上传的文件类型: .gif, .jpg, .jpeg, .png\"\n   datatype=\"file\" \n   fileext=\".gif, .jpg, .jpeg, .png\" \n   />\n   <label>.gif, .jpg, .jpeg, .png</label>\n   <em class=\"error\"></em>\n   <em class=\"validmsg\"></em>\n</xmp>\n                   </dd>\n         </dl>\n     </dd>\n\n     <dt>subdatatype: 特殊数据类型, 以逗号分隔多个属性</dt>\n     <dd>\n         <dl>\n             <dt>alternative: N 个 Control 必须至少有一个非空的值</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=alternative]</dd>\n             <dd><b>alternativedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>alternativemsg:</b> N 选一的错误提示</dd>\n\n             <dd>\n                 <b>alternativeReqTarget:</b> 为 alternative node 指定一个不能为空的 node\n                 <br /><b>请使用 subdatatype = reqtarget</b>, 这个附加属性将弃除\n             </dd>\n             <dd><b>alternativeReqmsg:</b> alternativeReqTarget 目标 node 的html属性, 错误时显示的提示信息</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reqtarget: 如果 selector 的值非空, 那么 datatarget 的值也不能为空</dt>\n             <dd><b>datatarget:</b> 显式指定 目标 target</dd>\n             <dd><b>reqTargetDatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reqtargetmsg:</b> target node 用于显示错误提示的 html 属性</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>reconfirm: N 个 Control 的值必须保持一致</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=reconfirm]</dd>\n             <dd><b>reconfirmdatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>reconfirmmsg:</b> 值不一致时的错误提示</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>unique: N 个 Control 的值必须保持唯一性, 不能有重复</dt>\n             <dd><b>datatarget:</b> 显式指定同一组 control, 默认在父级下查找[subdatatype=unique]</dd>\n             <dd><b>uniquedatatarget:</b> 与 datatarget相同, 区别是优先级高于 datatarget</dd>\n             <dd><b>uniquemsg:</b> 值有重复的提示信息</dd>\n             <dd><b>uniqueIgnoreCase:</b> 是否忽略大小写</dd>\n             <dd><b>uniqueIgnoreEmpty:</b> 是否忽略空的值, 如果组中有空值也会被忽略</dd>\n             <dd><b>processDisabled:</b> 是否处理 disabled 但 visible 的node</dd>\n             <dd>unique-n 可以指定 N 个为一组的匹配, unique-2 = 2个一组, unique-3: 三个一组</dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>datavalid: 判断 control 的值是否合法( 通过HTTP请求验证 )</dt>\n             <dd><b>datavalidMsg:</b> 值不合法时的提示信息</dd>\n             <dd>\n                 <b>datavalidUrl:</b> 验证内容正确与否的 url api\n                 <p>{\"errorno\":0,\"errmsg\":\"\"}</p>\n                 errorno: 0( 正确 ), 非0( 错误 )\n                 <p>datavalidurl=\"./data/handler.php?key={0}\"</p>\n                 {0} 代表 value\n             </dd>\n             <dd>\n                 <b>datavalidCheckCallback:</b> 验证内容正确与否的回调(优先级比 datavalidUrl 高)\n<pre>window.datavalidCheckCallback =\nfunction (){\n   var _r = { 'errorno': 1, errmsg:'验证码错误' }, _sp = $( this ), _v = _sp.val().trim().toLowerCase();\n\n   if( _v && _v === window.CHECK_CODE ){\n       _r.errorno = 0;\n   }\n\n   return _r;\n};<pre>\n             </dd>\n             <dd><b>datavalidNoCache:</b> 是否禁止缓存, default = false</dd>\n             <dd><b>datavalidAjaxType:</b> ajax 请求类型, default = get</dd>\n             <dd><b>datavalidRequestData:</b> ajax 请求数据, json data</dd>\n             <dd>\n                 <b>datavalidCallback:</b> 请求 datavalidUrl 后调用的回调\n<pre>function datavalidCallback( _json ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n                 <b>datavalidKeyupCallback:</b> 每次 keyup 的回调\n<pre>function datavalidKeyupCallback( _evt ){\n   var _selector = $(this);\n});</pre>\n             </dd>\n             <dd>\n                 <b>datavalidUrlFilter:</b> 请求数据前对 url 进行操作的回调\n<pre>function datavalidUrlFilter( _url ){\n   var _selector = $(this);\n   _url = JC.f.addUrlParams( _url, { 'xtest': 'customData' } );\n   return _url;\n});</pre>\n             </dd>\n         </dl>\n     </dd>\n     <dd>\n         <dl>\n             <dt>hidden: 验证隐藏域的值</dt>\n             <dd>\n                 有些特殊情况需要验证隐藏域的值, 请使用 subdatatype=\"hidden\"\n             </dd>\n         </dl>\n     </dd>\n\n     <dd>\n         <dl>\n             <dt>ucheck: 用户自定义验证</dt>\n             <dd><b>ucheckmsg:</b> 验证出错的提示信息</dd>\n             <dd><b>ucheckCallback:</b> 用于验证的函数 <b>window变量域</b>\n\n<pre>function ucheck_n( _item ){\n   var _r = false, _v = JC.f.parseFinance( _item.val() );\n\n   if( _v === 0 || ( _v >= 30 && _v >= 50 ) ){\n       _r = true;\n   }\n   return _r;\n}</pre>\n             </dd>\n         </dl>\n     </dd>\n</dl>",
             "static": 1,
             "version": "0.1,  2013-05-22",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
@@ -2476,7 +2476,7 @@
             "extension_for": [],
             "namespace": "",
             "file": "../common.js",
-            "line": 23,
+            "line": 25,
             "description": "JC.f 是 JC.common 的别名\n<br />具体使用请见 <a href='JC.common.html'>JC.common</a></p>",
             "static": 1
         },
@@ -2490,7 +2490,7 @@
             "extension_for": [],
             "namespace": "",
             "file": "../common.js",
-            "line": 29,
+            "line": 31,
             "description": "JC 组件通用静态方法和属性 ( JC.common, <b>别名: JC.f</b> )\n<br />所有 JC 组件都会依赖这个静态类\n<p><b>require</b>: <a href='.jQuery.html'>jQuery</a></p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.common.html' target='_blank'>API docs</a>",
             "static": 1,
             "version": "dev 0.1 2013-07-04",
@@ -15680,31 +15680,31 @@
         },
         {
             "file": "../common.js",
-            "line": 11,
+            "line": 13,
             "description": "声明主要命名空间, 方便迁移",
             "class": "JC.f"
         },
         {
             "file": "../common.js",
-            "line": 96,
+            "line": 98,
             "description": "判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 119,
+            "line": 121,
             "description": "jquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 123,
+            "line": 125,
             "description": "兼容 低版本 ie Array 的 indexOf 方法",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 138,
+            "line": 140,
             "description": "全局 css z-index 控制属性\n<br /> <b>注意</b>: 这个变量是 window.ZINDEX_COUNT",
             "itemtype": "property",
             "name": "ZINDEX_COUNT",
@@ -15715,7 +15715,7 @@
         },
         {
             "file": "../common.js",
-            "line": 156,
+            "line": 158,
             "description": "一维数组去重",
             "itemtype": "method",
             "name": "arrayId",
@@ -15734,7 +15734,7 @@
         },
         {
             "file": "../common.js",
-            "line": 175,
+            "line": 177,
             "description": "把函数的参数转为数组",
             "itemtype": "method",
             "name": "sliceArgs",
@@ -15753,7 +15753,7 @@
         },
         {
             "file": "../common.js",
-            "line": 189,
+            "line": 191,
             "description": "取 URL 的 host name",
             "itemtype": "method",
             "name": "urlHostName",
@@ -15772,7 +15772,7 @@
         },
         {
             "file": "../common.js",
-            "line": 205,
+            "line": 207,
             "description": "把 URL 相对路径 转换为 绝对路径",
             "itemtype": "method",
             "name": "relativePath",
@@ -15796,7 +15796,7 @@
         },
         {
             "file": "../common.js",
-            "line": 233,
+            "line": 235,
             "description": "按格式输出字符串",
             "itemtype": "method",
             "name": "printf",
@@ -15818,7 +15818,7 @@
         },
         {
             "file": "../common.js",
-            "line": 249,
+            "line": 251,
             "description": "按格式输出字符串",
             "itemtype": "method",
             "name": "printKey",
@@ -15845,7 +15845,7 @@
         },
         {
             "file": "../common.js",
-            "line": 267,
+            "line": 269,
             "description": "判断URL中是否有某个get参数",
             "itemtype": "method",
             "name": "hasUrlParam",
@@ -15872,7 +15872,7 @@
         },
         {
             "file": "../common.js",
-            "line": 289,
+            "line": 291,
             "description": "添加URL参数\n<br /><b>require:</b> delUrlParam, filterXSS",
             "itemtype": "method",
             "name": "addUrlParams",
@@ -15899,7 +15899,7 @@
         },
         {
             "file": "../common.js",
-            "line": 315,
+            "line": 317,
             "description": "xss 过滤函数",
             "itemtype": "method",
             "name": "filterXSS",
@@ -15918,7 +15918,7 @@
         },
         {
             "file": "../common.js",
-            "line": 330,
+            "line": 332,
             "description": "取URL参数的值\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "getUrlParam",
@@ -15945,7 +15945,7 @@
         },
         {
             "file": "../common.js",
-            "line": 358,
+            "line": 360,
             "description": "取URL参数的值, 这个方法返回数组\n<br />与 getUrlParam 的区别是可以获取 checkbox 的所有值\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "getUrlParams",
@@ -15972,7 +15972,7 @@
         },
         {
             "file": "../common.js",
-            "line": 389,
+            "line": 391,
             "description": "删除URL参数\n<br /><b>require:</b> filterXSS",
             "itemtype": "method",
             "name": "delUrlParam",
@@ -15999,7 +15999,7 @@
         },
         {
             "file": "../common.js",
-            "line": 419,
+            "line": 421,
             "description": "批量删除URL参数\n<br /><b>require:</b> delUrlParam",
             "itemtype": "method",
             "name": "delUrlParams",
@@ -16026,7 +16026,7 @@
         },
         {
             "file": "../common.js",
-            "line": 435,
+            "line": 437,
             "description": "提示需要 HTTP 环境",
             "itemtype": "method",
             "name": "httpRequire",
@@ -16045,7 +16045,7 @@
         },
         {
             "file": "../common.js",
-            "line": 450,
+            "line": 452,
             "description": "删除 URL 的锚点\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "removeUrlSharp",
@@ -16074,7 +16074,7 @@
         },
         {
             "file": "../common.js",
-            "line": 472,
+            "line": 474,
             "description": "重载页面\n<br /><b>require:</b> removeUrlSharp, addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "reloadPage",
@@ -16100,7 +16100,7 @@
         },
         {
             "file": "../common.js",
-            "line": 493,
+            "line": 495,
             "description": "取小数点的N位\n<br />JS 解析 浮点数的时候，经常出现各种不可预知情况，这个函数就是为了解决这个问题",
             "itemtype": "method",
             "name": "parseFinance",
@@ -16124,7 +16124,7 @@
         },
         {
             "file": "../common.js",
-            "line": 508,
+            "line": 510,
             "description": "js 附加字串函数",
             "itemtype": "method",
             "name": "padChar",
@@ -16153,7 +16153,7 @@
         },
         {
             "file": "../common.js",
-            "line": 524,
+            "line": 526,
             "description": "格式化日期为 YYYY-mm-dd 格式\n<br /><b>require</b>: pad\\_char\\_f",
             "itemtype": "method",
             "name": "formatISODate",
@@ -16177,7 +16177,7 @@
         },
         {
             "file": "../common.js",
-            "line": 538,
+            "line": 540,
             "description": "从 ISODate 字符串解析日期对象",
             "itemtype": "method",
             "name": "parseISODate",
@@ -16196,7 +16196,7 @@
         },
         {
             "file": "../common.js",
-            "line": 561,
+            "line": 563,
             "description": "从日期字符串解析日期对象\n<br />兼容 JC.Calendar 日期格式",
             "itemtype": "method",
             "name": "parseDate",
@@ -16226,7 +16226,7 @@
         },
         {
             "file": "../common.js",
-            "line": 585,
+            "line": 587,
             "description": "获取不带 时分秒的 日期对象",
             "itemtype": "method",
             "name": "pureDate",
@@ -16244,7 +16244,7 @@
         },
         {
             "file": "../common.js",
-            "line": 597,
+            "line": 599,
             "description": "克隆日期对象",
             "itemtype": "method",
             "name": "cloneDate",
@@ -16264,7 +16264,7 @@
         },
         {
             "file": "../common.js",
-            "line": 605,
+            "line": 607,
             "description": "判断两个日期是否为同一天",
             "itemtype": "method",
             "name": "isSameDay",
@@ -16289,7 +16289,7 @@
         },
         {
             "file": "../common.js",
-            "line": 617,
+            "line": 619,
             "description": "判断两个日期是否为同一月份",
             "itemtype": "method",
             "name": "isSameMonth",
@@ -16314,7 +16314,7 @@
         },
         {
             "file": "../common.js",
-            "line": 630,
+            "line": 632,
             "description": "判断两个日期是否为同一季度",
             "itemtype": "method",
             "name": "isSameWeek",
@@ -16339,7 +16339,7 @@
         },
         {
             "file": "../common.js",
-            "line": 661,
+            "line": 663,
             "description": "判断两个日期是否为同一季度",
             "itemtype": "method",
             "name": "isSameSeason",
@@ -16364,7 +16364,7 @@
         },
         {
             "file": "../common.js",
-            "line": 693,
+            "line": 695,
             "description": "判断两个日期是否为同一年",
             "itemtype": "method",
             "name": "isSameSeason",
@@ -16389,7 +16389,7 @@
         },
         {
             "file": "../common.js",
-            "line": 705,
+            "line": 707,
             "description": "取一年中所有的星期, 及其开始结束日期",
             "itemtype": "method",
             "name": "weekOfYear",
@@ -16413,13 +16413,13 @@
         },
         {
             "file": "../common.js",
-            "line": 717,
+            "line": 719,
             "description": "元旦开始的第一个星期一开始的一周为政治经济上的第一周",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 742,
+            "line": 744,
             "description": "取一年中所有的季度, 及其开始结束日期",
             "itemtype": "method",
             "name": "seasonOfYear",
@@ -16438,7 +16438,7 @@
         },
         {
             "file": "../common.js",
-            "line": 779,
+            "line": 781,
             "description": "取得一个月份中最大的一天",
             "itemtype": "method",
             "name": "maxDayOfMonth",
@@ -16458,7 +16458,7 @@
         },
         {
             "file": "../common.js",
-            "line": 792,
+            "line": 794,
             "description": "取当前脚本标签的 src路径",
             "itemtype": "method",
             "name": "scriptPath",
@@ -16471,7 +16471,7 @@
         },
         {
             "file": "../common.js",
-            "line": 804,
+            "line": 806,
             "description": "缓动函数, 动画效果为按时间缓动 \n<br />这个函数只考虑递增, 你如果需要递减的话, 在回调里用 _maxVal - _stepval",
             "itemtype": "method",
             "name": "easyEffect",
@@ -16513,7 +16513,7 @@
         },
         {
             "file": "../common.js",
-            "line": 857,
+            "line": 859,
             "description": "把输入值转换为布尔值",
             "itemtype": "method",
             "name": "parseBool",
@@ -16532,7 +16532,7 @@
         },
         {
             "file": "../common.js",
-            "line": 876,
+            "line": 878,
             "description": "绑定或清除 mousewheel 事件",
             "itemtype": "method",
             "name": "mousewheelEvent",
@@ -16558,7 +16558,7 @@
         },
         {
             "file": "../common.js",
-            "line": 900,
+            "line": 902,
             "description": "获取 selector 的指定父级标签",
             "itemtype": "method",
             "name": "getJqParent",
@@ -16583,7 +16583,7 @@
         },
         {
             "file": "../common.js",
-            "line": 926,
+            "line": 928,
             "description": "扩展 jquery 选择器\n<br />扩展起始字符的 '/' 符号为 jquery 父节点选择器\n<br />扩展起始字符的 '|' 符号为 jquery 子节点选择器\n<br />扩展起始字符的 '(' 符号为 jquery 父节点查找识别符( getJqParent )",
             "itemtype": "method",
             "name": "parentSelector",
@@ -16613,7 +16613,7 @@
         },
         {
             "file": "../common.js",
-            "line": 994,
+            "line": 996,
             "description": "获取脚本模板的内容",
             "itemtype": "method",
             "name": "scriptContent",
@@ -16632,7 +16632,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1009,
+            "line": 1011,
             "description": "取函数名 ( 匿名函数返回空 )",
             "itemtype": "method",
             "name": "funcName",
@@ -16651,7 +16651,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1024,
+            "line": 1026,
             "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar\n         , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
@@ -16667,91 +16667,91 @@
         },
         {
             "file": "../common.js",
-            "line": 1049,
+            "line": 1051,
             "description": "联动下拉框",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1053,
+            "line": 1055,
             "description": "日历组件",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1057,
+            "line": 1059,
             "description": "双日历组件",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1061,
+            "line": 1063,
             "description": "全选反选",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1065,
+            "line": 1067,
             "description": "Ajax 上传",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1069,
+            "line": 1071,
             "description": "占位符",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1073,
+            "line": 1075,
             "description": "表格冻结",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1077,
+            "line": 1079,
             "description": "拖曳",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1081,
+            "line": 1083,
             "description": "图片裁切",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1087,
+            "line": 1089,
             "description": "disable / enable",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1091,
+            "line": 1093,
             "description": "表单提交逻辑",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1095,
+            "line": 1097,
             "description": "格式化金额",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1099,
+            "line": 1101,
             "description": "自动完成",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1104,
+            "line": 1106,
             "description": "排期日期展示",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1109,
+            "line": 1111,
             "description": "URL 占位符识别功能\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "urlDetect",
@@ -16773,7 +16773,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1150,
+            "line": 1152,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -16796,13 +16796,13 @@
         },
         {
             "file": "../common.js",
-            "line": 1214,
+            "line": 1216,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1232,
+            "line": 1234,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -16836,7 +16836,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1287,
+            "line": 1289,
             "description": "日期格式化 (具体格式请查看 PHP Date Formats)",
             "itemtype": "method",
             "name": "dateFormat",
@@ -16860,7 +16860,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1362,
+            "line": 1364,
             "description": "扩展对象属性",
             "itemtype": "method",
             "name": "extendObject",
@@ -16889,7 +16889,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1384,
+            "line": 1386,
             "description": "timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行",
             "itemtype": "method",
             "name": "safeTimeout",
@@ -16923,7 +16923,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1405,
+            "line": 1407,
             "description": "URL 请求时, 获取对URL参数进行编码的函数",
             "itemtype": "method",
             "name": "encoder",
@@ -16943,7 +16943,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1423,
+            "line": 1425,
             "description": "深度克隆对象",
             "itemtype": "method",
             "name": "cloneObject",
@@ -16962,7 +16962,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1466,
+            "line": 1468,
             "description": "获取 document 的 相关大小",
             "itemtype": "method",
             "name": "docSize",
@@ -17464,19 +17464,19 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../common.js:29"
+            "line": " ../common.js:31"
         },
         {
             "message": "unknown tag: version",
-            "line": " ../common.js:29"
+            "line": " ../common.js:31"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../common.js:900"
+            "line": " ../common.js:902"
         },
         {
             "message": "unknown tag: require",
-            "line": " ../common.js:926"
+            "line": " ../common.js:928"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -17964,83 +17964,83 @@
         },
         {
             "message": "Missing item type\n声明主要命名空间, 方便迁移",
-            "line": " ../common.js:11"
+            "line": " ../common.js:13"
         },
         {
             "message": "Missing item type\n判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数",
-            "line": " ../common.js:96"
+            "line": " ../common.js:98"
         },
         {
             "message": "Missing item type\njquery 1.9.1 默认 string 没有 trim 方法, 这里对 string 原型添加一个默认的 trim 方法",
-            "line": " ../common.js:119"
+            "line": " ../common.js:121"
         },
         {
             "message": "Missing item type\n兼容 低版本 ie Array 的 indexOf 方法",
-            "line": " ../common.js:123"
+            "line": " ../common.js:125"
         },
         {
             "message": "Missing item type\n元旦开始的第一个星期一开始的一周为政治经济上的第一周",
-            "line": " ../common.js:717"
+            "line": " ../common.js:719"
         },
         {
             "message": "Missing item type\n联动下拉框",
-            "line": " ../common.js:1049"
+            "line": " ../common.js:1051"
         },
         {
             "message": "Missing item type\n日历组件",
-            "line": " ../common.js:1053"
+            "line": " ../common.js:1055"
         },
         {
             "message": "Missing item type\n双日历组件",
-            "line": " ../common.js:1057"
+            "line": " ../common.js:1059"
         },
         {
             "message": "Missing item type\n全选反选",
-            "line": " ../common.js:1061"
+            "line": " ../common.js:1063"
         },
         {
             "message": "Missing item type\nAjax 上传",
-            "line": " ../common.js:1065"
+            "line": " ../common.js:1067"
         },
         {
             "message": "Missing item type\n占位符",
-            "line": " ../common.js:1069"
+            "line": " ../common.js:1071"
         },
         {
             "message": "Missing item type\n表格冻结",
-            "line": " ../common.js:1073"
+            "line": " ../common.js:1075"
         },
         {
             "message": "Missing item type\n拖曳",
-            "line": " ../common.js:1077"
+            "line": " ../common.js:1079"
         },
         {
             "message": "Missing item type\n图片裁切",
-            "line": " ../common.js:1081"
+            "line": " ../common.js:1083"
         },
         {
             "message": "Missing item type\ndisable / enable",
-            "line": " ../common.js:1087"
+            "line": " ../common.js:1089"
         },
         {
             "message": "Missing item type\n表单提交逻辑",
-            "line": " ../common.js:1091"
+            "line": " ../common.js:1093"
         },
         {
             "message": "Missing item type\n格式化金额",
-            "line": " ../common.js:1095"
+            "line": " ../common.js:1097"
         },
         {
             "message": "Missing item type\n自动完成",
-            "line": " ../common.js:1099"
+            "line": " ../common.js:1101"
         },
         {
             "message": "Missing item type\n排期日期展示",
-            "line": " ../common.js:1104"
+            "line": " ../common.js:1106"
         },
         {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../common.js:1214"
+            "line": " ../common.js:1216"
         },
         {
             "message": "Missing item type\nFor feature detection",
