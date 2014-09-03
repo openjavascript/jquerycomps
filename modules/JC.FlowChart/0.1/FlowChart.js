@@ -520,7 +520,7 @@
                         var _preItem = _rowList[ _k - 1 ], _tmpIx, _tmpSpaceIx, _fix
                             , _nextItem = _rowList[ _k + 1 ];
                             ;
-                            var _oldIx = _item.rowIndex;
+                            var _oldIx = _item.rowIndex, _needFix;
 
                         if( _item.pid && _item.pid.length > 1 ){
                             _first = _p.gridIdMap(  )[ arrayFirst( _item.pid ) ];
@@ -538,6 +538,7 @@
                             _ix = _first.rowIndex + Math.ceil( Math.abs( _spaceIx ) / 2 );
 
                             if( _preItem && _ix <= _preItem.rowIndex ){
+                                _needFix = true;
                                 _tmpIx = _ix;
                                 _ix = _preItem.rowIndex + 2;
                                 _tmpSpaceIx = _ix - _tmpIx;
@@ -557,6 +558,7 @@
 
                             if( _nextItem && _ix >= _nextItem.rowIndex ){
                                 _tmpIx = _ix;
+                                _needFix = true;
                                 for( var j = _k + 1; j < _rowList.length; j++ ){
                                     _tmpIx += 2;
                                     _rowList[ j ] && ( _rowList[ j ].rowIndex = _tmpIx );
@@ -566,7 +568,7 @@
                             //JC.log( _item.name, _first.rowIndex, _last.rowIndex, _spaceIx, _ix );
                             _item.rowIndex = _ix;
 
-                            if( _oldIx !== _ix ){
+                            if( _needFix && _oldIx !== _ix ){
                                 _p.plusParent( i - 1, _item.pid, _ix - _oldIx );
                             }
                         }
