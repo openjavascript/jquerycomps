@@ -1,10 +1,14 @@
 /**
  * 支持 多对多 关系( 目前只支持 一对多 和 多对一 )
  */
- ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'Raphael' ], function(){
+ ;(function(define, _win) { 'use strict'; define( [ 'Raphael', 'JC.BaseMVC', 'JC.PopTips' ], function(){
 /**
- * 组件用途简述
- *
+ * <dl>
+ *      <dt>JC 流程图</dt>
+ *      <dd style="">一对多关系</dd>
+ *      <dd>多对一关系</dd>
+ *      <dd style="color:#ccc;text-decoration: line-through;">多对多关系</dd>
+ * </dl>
  *  <p><b>require</b>:
  *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *      , <a href='window.Raphael.html'>RaphaelJS</a>
@@ -186,17 +190,40 @@
                         , _maxWidth = _p.gridWidth()
                         ;
                     $.each( _rowList, function( _k, _item ){
+                        var _tmpHtml = 
+                            [
+                                "<span class=\"js_compPopTips\" style=\"display:inline-block;\""
+                                ,"htmlContent=\"|script\""
+                                ,"theme=\"white\""
+                                ,"arrowposition=\"bottom\""
+                                ,"triggerType=\"hover\""
+                                ,"offsetXY=\"0,-4\""
+                                ,"popTipsMinWidth=\"100\""
+                                ,"popTipsMinHeight=\"50\""
+                                ,">"
+                                ,"<span>"
+                                , _item.name
+                                ,"</span>"
+                                ,"<script type=\"text/template\">"
+                                , '<span style="text-decoration: underline;">test html</span>'
+                                ,"<\/script>"
+                                ,"</span>"
+                            ].join('');
+
                         var _html = JC.f.printf( 
-                                '<div class="js_cfcItem" style="position:absolute; left: -1000px;">{0}</div>'
-                                , _item.name 
+                                '<div class="js_cfcItem js_cfcItemStatus_{1}" style="position:absolute; left: -1000px;">{0}</div>'
+                                , _tmpHtml
+                                , _p.getStatus( _item )
                             )  
                             , _node = $( _html )
                             , _tmpWidth
                             ;
                         _node.appendTo( _p.box() );
+                        _node.data( 'nodeData', _item );
                         _p._items[ _item.id ] = _node;
                         _tmpWidth = _node.outerWidth();
                         _tmpWidth > _maxWidth && ( _maxWidth = _tmpWidth );
+
                         //JC.log( _html );
                     });
                     if( i === 0 ){
@@ -204,6 +231,13 @@
                     }
                     _p._columnWidth.push( _maxWidth );
                 }
+            }
+
+        , getStatus:
+            function( _itemData ){
+                var _r = 0;
+                ( 'status' in _itemData ) && ( _r = _itemData.status );
+                return _r;
             }
 
         , calcRealPosition:
@@ -438,18 +472,6 @@
         , initColumnIndexMap:
             function(){
                 var _p = this;
-
-                /*
-                JC.dir( _p.gridIdColumnIndexList() );
-                $.each( _p.gridIdColumnIndexList(), function( _k, _item ){
-                    JC.log( _item.columnIndex, _k );
-                });
-
-                JC.dir( _p.gridIdColumnIndex() );
-                $.each( _p.gridIdColumnIndex(), function( _k, _item ){
-                    JC.log( _item.columnIndex, _k );
-                });
-                */
                 $.each( _p.gridIdColumnIndexList(), function( _k, _item ){
                     if( _item.columnIndex in _p.gridIdColumnIndexMap() ){
                         _p.gridIdColumnIndexMap()[ _item.columnIndex ].push( _item );
@@ -576,6 +598,8 @@
 
                 _p.showGrid();
                 _p.showLine();
+
+                JC.PopTips.init( _p.selector() );
 
                 _et = JC.f.ts();
 
