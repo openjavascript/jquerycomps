@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>360 75 team</title>
+<style type='text/css'>
+    *{ margin: 0; padding: 0; }
+    body{ width: 600px; margin: 20px auto 20px; background:#ececec; }
+    dl dd{ margin: 10px 0; }
+</style>
+<link href='../../../../modules/JC.Tips/0.1/res/default/style.css' rel='stylesheet' />
+<link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+<script src="../../../../lib.js"></script>
+<script src="../../../../config.js"></script>
+<script>
+    JC.debug = true; 
+    
+    requirejs( [ 'JC.Tips', 'JC.Calendar', 'plugins.json2' ]
+    , function( Tips, Calendar ){
+        JC.Tips.autoInit = false;
+
+        JC.Calendar.layoutInitedCallback = 
+            function( _layout ){
+                JC.Tips.init( _layout.find('[title]') );
+            };
+
+        JC.Calendar.layoutHideCallback = 
+            function( _lastIpt ){
+                JC.Tips.hide();
+            };
+
+        var today = new Date();
+        var maxDate = today;
+
+        $( 'input.testitem' ).val( JC.f.formatISODate( today ) ).attr('maxvalue', JC.f.formatISODate( maxDate ) );
+
+    });
+
+    function calendarshow(){
+        var _p = $(this);
+        JC.log( 'calendarshow', _p.val() );
+    }
+
+    function calendarhide(){
+        var _p = $(this);
+        JC.log( 'calendarhide', _p.val() );
+    }
+    
+    function calendarlayoutchange(){
+        var _p = $(this);
+        JC.log( 'calendarlayoutchange', _p.val() );
+    }
+
+    function calendarclear(){
+        var _p = $(this);
+        JC.log( 'calendarclear', _p.val() );
+    }
+
+    function calendarclear(){
+        var _p = $(this);
+        JC.log( 'calendarclear', _p.val() );
+    }
+
+    function calendarcancel(){
+        var _p = $(this);
+        JC.log( 'calendarcancel', _p.val() );
+    }
+
+    function calendarupdate( _start, _end ){
+        var _p = $(this);
+        JC.log( 'calendarupdate', JC.f.printf( 'val:{0}, start:{1}, end:{2}', _p.val(), _start, _end ) );
+    }
+
+    function calendarupdatemultiselect( _data ){
+        var _p = $(this);
+        JC.log( 'calendarupdatemultiselect:'
+            , JC.f.printf( 'val:{0}, data:{1}', _p.val(), JSON.stringify( _data ) ) );
+    }
+</script>
+</head>    
+<body>
+    <br /><br /><br /><br /><br /><br />
+    <form action='' method='get'>
+        <dl>
+            <dt>JC.Calendar 示例, 如果没有特别声明, 默认type 都为 date</dt>
+            <dd>
+            <input type="text" name="date4" value="" size="60"
+                multidate="month" 
+                multiselect="true" 
+
+                calendarshow="calendarshow"
+                calendarhide="calendarhide"
+                calendarlayoutchange="calendarlayoutchange"
+                calendarclear="calendarclear"
+                calendarcancel="calendarcancel"
+                calendarupdate="calendarupdate"
+                calendarupdatemultiselect="calendarupdatemultiselect"
+                /> month, multiselect=true
+            </dd>
+            <dd>
+                <button type="button" value="" 
+                    datatype="date" 
+                    calendarshow="calendarshow"
+                    calendarhide="calendarhide"
+                    calendarlayoutchange="calendarlayoutchange"
+                    calendarclear="calendarclear"
+                    calendarcancel="calendarcancel"
+                    calendarupdate="calendarupdate"
+                    >pick date button</button>
+                <button type="button" value="2013-01-11" 
+                    datatype="week"
+                    calendarshow="calendarshow"
+                    calendarhide="calendarhide"
+                    calendarlayoutchange="calendarlayoutchange"
+                    calendarclear="calendarclear"
+                    calendarcancel="calendarcancel"
+                    calendarupdate="calendarupdate"
+                    >pick week button</button>
+                <button type="button" value="2013-02-02" 
+                    datatype="month"
+                    multiselect="true" 
+                    calendarshow="calendarshow"
+                    calendarhide="calendarhide"
+                    calendarlayoutchange="calendarlayoutchange"
+                    calendarclear="calendarclear"
+                    calendarcancel="calendarcancel"
+                    calendarupdate="calendarupdate"
+                    >pick month button</button>
+                <button type="button" value="2013-03-03" 
+                    datatype="season"
+                    calendarshow="calendarshow"
+                    calendarhide="calendarhide"
+                    calendarlayoutchange="calendarlayoutchange"
+                    calendarclear="calendarclear"
+                    calendarcancel="calendarcancel"
+                    calendarupdate="calendarupdate"
+                    >pick season button</button>
+            </dd>
+        </dl>
+    </form>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+</body>
+</html>
+
