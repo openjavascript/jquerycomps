@@ -187,6 +187,11 @@
 
     JC.FlowChart = FlowChart;
 
+    if( JC.use ){
+        !window.Raphael && ( JC.use( 'plugins.raphael' ) );
+        !JC.PopTips && ( JC.use( 'JC.PopTips' ) );
+    }
+
     function FlowChart( _selector ){
         _selector && ( _selector = $( _selector ) );
 
