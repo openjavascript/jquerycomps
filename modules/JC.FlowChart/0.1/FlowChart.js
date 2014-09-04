@@ -280,6 +280,11 @@
                 return this.data().chart;
             }
 
+        , colorsData:
+            function(){
+                return this.data().colors;
+            }
+
         , initGrid:
             function(){
                 var _p = this;
@@ -652,7 +657,6 @@
                 }
             }
 
-
         , fixItemParentDataAndNext:
             function( _item, _spaceY, _isRealY ){
                 var _p = this, _nextSpaceY, _newIx;
@@ -714,8 +718,6 @@
                 }
 
             }
-
-
 
         , initRowIndex:
             function(){
@@ -882,6 +884,39 @@
                 return _r;
             }
 
+        , colors:
+            function(){
+                var _p = this;
+
+                if( !_p._colors ){
+                    _p._colors = _p._buildInColors;
+
+                    if( _p.colorsData() ){
+                        $.each( _p.colorsData(), function( _k, _item ){
+                            if( _k in _p._colors ){
+                                if( $.isPlainObject( _item ) ){
+                                    JC.f.extendObject( _p._colors[ _k ], _item );
+                                }
+                            }else{
+                                _p._colors[ _k ] = _item;
+                            }
+                        });
+                    }
+                    JC.dir( _p._colors );
+                }
+
+                return _p._colors;
+            }
+
+        , _buildInColors: {
+            line: {
+                 'stroke': '#E1E1E1', 'stroke-width': 2
+            }
+            , icon: {
+                'stroke': '#E1E1E1', 'stroke-width': 2, 'fill': '#F2F2F2'
+            }
+        }
+
     });
 
     JC.f.extendObject( FlowChart.View.prototype, {
@@ -918,14 +953,6 @@
                 var _p = this, _rh, _raphael, _y = Math.abs( _p._model.minY() ), _ypad = 0;
                 _rh = _raphael = Raphael( _p._model.raphaelPlaceholder()[0], _p._model.width(), _p._model.height() );
                 !isIE && ( _ypad = 1 );
-
-                var _lineStyle = {
-                        'stroke': '#E1E1E1', 'stroke-width': 2
-                    }
-                    , _iconStyle = {
-                        'stroke': '#E1E1E1', 'stroke-width': 2, 'fill': '#F2F2F2'
-                    }
-                    ;
 
                 for( var i = 0; i <= _p._model.gridMaxColumn(); i++ ){
                     var _rowList = _p._model.gridIdColumnIndexMap()[ i ]
@@ -993,7 +1020,7 @@
                                     , _realStartX, _tmpY2
                                     , _realStartX, _midY
                                     , _endX, _midY
-                                )).attr( _lineStyle );
+                                )).attr( _p._model.colors().line );
 
                                 $.each( _pid, function( _sk, _sitem ){
                                     _sdata = _p._model.gridIdMap( _sitem );
@@ -1005,10 +1032,10 @@
                                         , ''
                                         , _sdata.x, _tmpY
                                         , _realStartX, _tmpY
-                                    )).attr( _lineStyle );
+                                    )).attr( _p._model.colors().line );
                                 });
 
-                                _rh.JCTriangle( 16, _endX, _midY, _iconStyle );
+                                _rh.JCTriangle( 16, _endX, _midY, _p._model.colors().icon );
                             }else if( _fitem && _pid.length === 1 && ( 'targetNode' in _fitem ) ){
                                 _realStartX = _preColumnX + _fnode.outerWidth();
                                 _realY = _fitem.y + _fnode.outerHeight() / 2;
@@ -1017,8 +1044,8 @@
                                 _rh.path( JC.f.printf( 
                                     '{0}M{1} {2}L{3} {4}'
                                     , '', _realStartX, _realY + _ypad, _item.x - 18, _realY + _ypad
-                                )).attr( _lineStyle );
-                                _rh.JCTriangle( 16, _item.x - 18, _realY + _ypad, _iconStyle );
+                                )).attr( _p._model.colors().line );
+                                _rh.JCTriangle( 16, _item.x - 18, _realY + _ypad, _p._model.colors().icon );
                             }
                         }
 
@@ -1044,9 +1071,9 @@
                                     , ''
                                     , _sx, _midY
                                     , _realStartX - 18, _midY
-                                )).attr( _lineStyle );
+                                )).attr( _p._model.colors().line );
 
-                                _rh.JCTriangle( 16, _realStartX - 18, _midY, _iconStyle );
+                                _rh.JCTriangle( 16, _realStartX - 18, _midY, _p._model.colors().icon );
 
                                 _tmpY1 = _fitem.y + Math.abs( _p._model.minY() ) +  _fnode.outerHeight() / 2 + _ypad;
                                 _tmpY2 = _litem.y + Math.abs( _p._model.minY() ) +  _lnode.outerHeight() / 2 + _ypad;
@@ -1058,7 +1085,7 @@
                                     , ''
                                     , _realStartX, _tmpY1
                                     , _realStartX, _tmpY2
-                                )).attr( _lineStyle );
+                                )).attr( _p._model.colors().line );
 
                                 $.each( _nodes, function( _sk, _sitem ){
                                     _sdata = _sitem;
@@ -1070,7 +1097,7 @@
                                         , ''
                                         , _realStartX, _tmpY
                                         , _sdata.x, _tmpY
-                                    )).attr( _lineStyle );
+                                    )).attr( _p._model.colors().line );
                                 });
 
                             }
@@ -1083,8 +1110,8 @@
                                 _rh.path( JC.f.printf( 
                                     '{0}M{1} {2}L{3} {4}'
                                     , '', _realStartX, _realY + _y + _ypad, _subitem.x - 18, _realY + _y + _ypad
-                                )).attr( _lineStyle );
-                                _rh.JCTriangle( 16, _subitem.x - 18, _realY + _y + _ypad, _iconStyle );
+                                )).attr( _p._model.colors().line );
+                                _rh.JCTriangle( 16, _subitem.x - 18, _realY + _y + _ypad, _p._model.colors().icon );
                             }
                         }
                     });
@@ -1116,7 +1143,6 @@
             ,'theme="white"'
             ,'arrowposition="bottom"'
             ,'triggerType="hover"'
-            ,'offsetXY="0,-4"'
             ,'popTipsMinWidth="100"'
             ,'popTipsMinHeight="50"'
             ,'>'
