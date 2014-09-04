@@ -389,22 +389,26 @@
                         , _maxWidth = _p.gridWidth()
                         ;
                     $.each( _rowList, function( _k, _item ){
-                        var _itemHtmlPatter = JC.f.printf( _p.itemHtmlPattern( _item ), _item.name, _item.tipsHtml, _p.getStatus( _item ) )
-                            , _html = JC.f.printf( 
-                                '<div class="js_cfcItem js_cfcItemStatus_{1}" style="position:absolute; left: -1000px;">{0}</div>'
-                                , _itemHtmlPatter
-                                , _p.getStatus( _item )
-                            )  
-                            , _node = $( _html )
+                        var _html, _itemHtmlPatter;
+
+                       _html = JC.f.printf( 
+                            '<div class=" ">{0}</div>'
+                            , _item.name
+                            , _p.getStatus( _item )
+                        );
+
+                        _itemHtmlPatter = JC.f.printf( _p.itemHtmlPattern( _item ), _html, _item.tipsHtml, _p.getStatus( _item ) );
+
+                        var _node = $( _itemHtmlPatter )
                             , _tmpWidth
                             ;
+                        _node.addClass( JC.f.printf( 'js_cfcItem js_cfcItemStatus_{0}', _p.getStatus( _item ) ) );
+                        _node.css( { 'position': 'absolute' } );
                         _node.appendTo( _p.box() );
                         _node.data( 'nodeData', _item );
                         _p._items[ _item.id ] = _node;
-                        _tmpWidth = _node.outerWidth();
+                        _tmpWidth = _node.width();
                         _tmpWidth > _maxWidth && ( _maxWidth = _tmpWidth );
-
-                        //JC.log( _html );
                     });
                     if( i === 0 ){
                         _maxWidth = Math.ceil( _p._items[ _p.chartData().id ].width() + 30 );
@@ -653,7 +657,7 @@
             function( _item, _spaceY, _isRealY ){
                 var _p = this, _nextSpaceY, _newIx;
                 if( !( _item && _item.pid && _item.pid.length ) ) return;
-                var _pitem = _p.gridIdMap( item.pid.first() )
+                var _pitem = _p.gridIdMap( _item.pid.first() )
                     , _fdata, _ldata, _midY
                     ;
                 if( !( _pitem ) ) return;
