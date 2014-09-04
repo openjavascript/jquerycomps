@@ -501,6 +501,8 @@
 
                     if( !_p._model.chartData() ) return;
                     _p._view.draw();
+
+                    _p.notification( JC.FlowChart.Model.INITED, [ _p, _p._model.data() ] );
                 });
 
                 //JC.dir( _p._model.chartData() );
@@ -514,6 +516,11 @@
     });
 
     FlowChart.Model._instanceName = &#x27;JCFlowChart&#x27;;
+
+    FlowChart.Model.INITED =           &#x27;cfc_inited&#x27;
+    FlowChart.Model.ITEM_INITED =           &#x27;cfc_dataInited&#x27;
+    FlowChart.Model.BEFORE_INIT_ITEM =      &#x27;cfc_beforeInitItem&#x27;
+
     JC.f.extendObject( FlowChart.Model.prototype, {
         init:
             function(){
@@ -573,7 +580,7 @@
                 _p.calcRealPosition();
 
                 //JC.dir( _p.gridIdColumnIndex() );
-                JC.dir( _p.gridIdColumnIndexMap() );
+                //JC.dir( _p.gridIdColumnIndexMap() );
                 //JC.log( _p.gridMaxColumn() );
             }
 
@@ -648,7 +655,10 @@
                         , _maxWidth = _p.gridWidth()
                         ;
                     $.each( _rowList, function( _k, _item ){
-                        var _html, _itemHtmlPatter;
+                        var _html, _itemHtmlPatter
+                            ;
+                        
+                        _p.notification( JC.FlowChart.Model.BEFORE_INIT_ITEM, [ _item, _rowList, _p.data() ] );
 
                        _html = JC.f.printf( 
                             &#x27;&lt;div class=&quot; &quot;&gt;{0}&lt;/div&gt;&#x27;
@@ -1156,7 +1166,7 @@
                             }
                         });
                     }
-                    JC.dir( _p._colors );
+                    //JC.dir( _p._colors );
                 }
 
                 return _p._colors;
@@ -1199,7 +1209,7 @@
 
                 _et = JC.f.ts();
 
-                JC.log( &#x27;time span:&#x27;, _et - _st );
+                //JC.log( &#x27;time span:&#x27;, _et - _st );
             }
 
         , showLine:
@@ -1385,6 +1395,7 @@
                         _node.css({
                             &#x27;left&#x27;: _item.x + &#x27;px&#x27;, &#x27;top&#x27;: _item.y + &#x27;px&#x27;
                         });
+                        _p.notification( JC.FlowChart.Model.ITEM_INITED, [ _node, _item, _rowList, _p._model.data() ] );
                     });
                 }
             }
@@ -1448,7 +1459,9 @@
                 return _r;
             };
 
-        FlowChart.autoInit &amp;&amp; FlowChart.init();
+        JC.f.safeTimeout( function(){
+            FlowChart.autoInit &amp;&amp; FlowChart.init();
+        }, null, &#x27;JCFlowChart_INIT&#x27;, 1);
     });
 
     return JC.FlowChart;
