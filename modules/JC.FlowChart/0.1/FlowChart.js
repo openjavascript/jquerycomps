@@ -300,6 +300,7 @@
                 _p.initRowIndex();
 
                 _p.fixNodesRowIndex();
+                _p.fixTargetNodesRowIndex();
                 _p.fixRealRowIndex();
 
                 _p.fixFistLastRowIndex();
@@ -466,6 +467,22 @@
         , fixFistLastRowIndex:
             function(){
                 var _p = this;
+
+                _p._maxRowY = 0;
+
+
+                for( var i = 0; i < _p.gridMaxColumn(); i++ ){
+                    var _rowList = _p.gridIdColumnIndexMap()[ i ]
+                        , _nextList = _p.gridIdColumnIndexMap()[ i + 1 ]
+                        ;
+                    $.each( _rowList, function( _k, _item ){
+                        _item.rowIndex > _p._maxRowY && ( _p._maxRowY = _item.rowIndex );
+                    });
+
+                }
+
+
+                if( !( _p._maxRowY ) ) return;
                 if( !( _p._maxRowY && _p.gridMaxColumn() > 0 ) ) return;
                 var _cY = Math.ceil( _p._maxRowY / 2 );
                 var _fcol = _p.gridIdColumnIndexMap()[0]
@@ -480,8 +497,6 @@
         , fixNodesRowIndex:
             function(){
                 var _p = this;
-                _p._minRowY = 0;
-                _p._maxRowY = 1;
 
                 for( var i = 0; i < _p.gridMaxColumn(); i++ ){
                     var _rowList = _p.gridIdColumnIndexMap()[ i ]
@@ -519,11 +534,22 @@
                                     _p.fixItemDataAndNext( _item, _spaceY );
                                     _p.fixItemParentDataAndNext( _item, _spaceY );
                                 }else if( _ldata.next && _maxY >= _ldata.next.rowIndex ){
-                                    JC.log( _item.name, _ldata.next.name, _maxY, _ldata.next.rowIndex );
-                                    //_p.fixItemDataAndNext( _ldata.next, _maxY - _ldata.rowIndex );
+                                    _p.fixItemDataAndNext( _fdata, _maxY - _ldata.rowIndex );
+                                }else{
+                                    //_p.fixItemDataAndNext( _fdata, _maxY - _ldata.rowIndex );
+                                    //JC.log( _item.name, _fdata.name, _ldata.name, _spaceY );
+                                    _p.fixItemDataAndNext( _fdata, _spaceY );
                                 }
-                                //_item.rowIndex += _spaceY;
                             }else{
+                                _fdata = arrayFirst( _nodes );
+                                if( _item.rowIndex === _fdata.rowIndex ) return;
+                                _maxY = Math.max( _item.rowIndex, _fdata.rowIndex );
+                                if( _item.rowIndex > _fdata.rowIndex ){
+                                    _p.fixItemDataAndNext( _fdata, _item.rowIndex - _fdata.rowIndex );
+                                }else{
+                                    _p.fixItemDataAndNext( _item, _fdata.rowIndex - _item.rowIndex );
+                                    _p.fixItemParentDataAndNext( _item, _fdata.rowIndex, true );
+                                }
                             }
                         }
                     });
@@ -531,14 +557,62 @@
                 }
             }
 
-        , fixItemParentDataAndNext:
-            function( _item, _spaceY ){
+        , fixTargetNodesRowIndex:
+            function(){
                 var _p = this;
+
+                for( var i = 0; i < _p.gridMaxColumn(); i++ ){
+                    var _rowList = _p.gridIdColumnIndexMap()[ i ]
+                        , _nextList = _p.gridIdColumnIndexMap()[ i + 1 ]
+                        ;
+                    $.each( _rowList, function( _k, _item ){
+                        var _preItem = _rowList[ _k - 1 ]
+                            , _nextItem = _rowList[ _k + 1 ]
+                            , _oldIx = _item.rowIndex
+                            , _nodes = _item.nodes
+                            , _pid = _item.pid
+                            , _fdata, _ldata
+                            , _fitem, _litem
+                            , _midY 
+                            , _spaceY
+                            , _minY, _maxY
+                            ;
+
+                        if( _pid && _pid.length ){
+                            if( _pid.length > 1 ){
+                                _fdata = _p.gridIdMap( arrayFirst( _pid ) );
+                                _ldata = _p.gridIdMap( arrayLast( _pid ) );
+
+                                _midY = _fdata.rowIndex + Math.ceil( _ldata.rowIndex - _fdata.rowIndex ) / 2
+
+                                if( _item.prev && _item.prev.rowIndex >= _midY ){
+                                }else if( _item.next && _item.next.rowIndex <= _midY ){
+                                    _p.fixItemDataAndNext( _item, _midY - _item.rowIndex );
+                                }else{
+                                    _item.rowIndex = _midY;
+                                }
+                            }
+                         }
+                    });
+
+                }
+            }
+
+
+        , fixItemParentDataAndNext:
+            function( _item, _spaceY, _isRealY ){
+                var _p = this, _nextSpaceY;
                 if( !( _item && _item.pid && _item.pid.length ) ) return;
                 var _pitem = _p.gridIdMap( arrayFirst( _item.pid ) );
                 if( !( _pitem ) ) return;
-                _p.fixItemDataAndNext( _pitem, _spaceY );
-                _p.fixItemParentDataAndNext( _pitem, _spaceY );
+                if( _isRealY ){
+                    _nextSpaceY = _spaceY - _pitem.rowIndex;
+                    _p.fixItemDataAndNext( _pitem, _nextSpaceY );
+                    _p.fixItemParentDataAndNext( _pitem, _spaceY, _isRealY );
+                }else{
+                    _p.fixItemDataAndNext( _pitem, _spaceY );
+                    _p.fixItemParentDataAndNext( _pitem, _spaceY, _isRealY );
+                }
             }
 
         , fixItemDataAndNext:
