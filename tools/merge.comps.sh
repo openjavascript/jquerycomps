@@ -7,16 +7,16 @@ echo "sleep done";
 
 sh -c "node nodejs_merge.js";
 
-sleep 1s;
+#sleep 1s;
 
-sh -c "cd $dir && tar -cvpzf tmp.tgz lib.js"
-rm $dir/lib.js
+#sh -c "cd $dir && tar -cvpzf tmp.tgz lib.js"
+#rm $dir/lib.js
 
 sleep 1s;
 
 sh -c "cd $cur_dir && sh generate_api_docs.sh";
 
-sh -c "cd $dir && tar -xvpzf tmp.tgz -C .";
+#sh -c "cd $dir && tar -xvpzf tmp.tgz -C .";
 
-rm $dir/tmp.tgz
+#rm $dir/tmp.tgz
 
