@@ -13,6 +13,22 @@
         </style>
         <link href='../../../../modules/JC.PopTips/0.1/res/default/style.css' rel='stylesheet' />
         <link href='../../../../modules/JC.FlowChart/0.1/res/default/style.css' rel='stylesheet' />
+        <style>
+            .js_compFlowChart .js_cfcItemStatus_0{
+                color: #41e2e6; 
+                background: white;
+            }
+
+            .js_compFlowChart .js_cfcItemStatus_1{
+                color: #c3e2a4;
+                background: white;
+            }
+
+            .js_compFlowChart .js_cfcItemStatus_2{
+                color: #ff06b3;
+                background: white;
+            }
+        </style>
         <script src="../../../../lib.js"></script>
         <script src="../../../../config.js"></script>
         <script>
@@ -30,7 +46,15 @@
                 <div class="js_compFlowChart" data-FlowChart="|script">
                     <script type="text/template">
                         {
-                            chart: {
+                            colors: {
+                                line: {
+                                     'stroke': '#dbb8fd', 'stroke-width': 2
+                                }
+                                , icon: {
+                                    'stroke': '#dbb8fd', 'stroke-width': 2, 'fill': '#dbb8fd'
+                                }
+                            }
+                            , chart: {
                                 name: '提交'
                                 , id: 1
                                 , nodes: [
@@ -50,7 +74,7 @@
                                                 , {
                                                     name: '渠道管理层'
                                                     , id: 4
-                                                    , status: 3
+                                                    , status: 2
                                                     , tipsHtml: 'username 3'
                                                 }
                                             ]
@@ -58,43 +82,41 @@
                                         , {
                                             name: '资质审核1'
                                             , id: 6
-                                            , status: 4
+                                            , status: 1
                                             , tipsHtml: 'username 4'
                                             , nodes: [
                                                 {
                                                     name: '服务审核1'
                                                     , id: 7
                                                     , targetNode: 9
-                                                    , status: 5
+                                                    , status: 2
                                                     , tipsHtml: 'username 5'
                                                 }
                                                 , {
                                                     name: '渠道管理层1'
                                                     , id: 8
                                                     , targetNode: 9
-                                                    , status: 6
-                                                    , tipsHtml: 'username 6'
+                                                    , status: 0
                                                 }
                                             ]
                                         }
                                         , {
                                             name: '资质审核2'
                                             , id: 10
-                                            , status: 7
+                                            , status: 1
                                             , tipsHtml: 'username 7'
                                             , nodes: [
                                                 {
                                                     name: '服务审核2'
                                                     , id: 11
-                                                    , status: 8
+                                                    , status: 2
                                                     , tipsHtml: 'username 8'
                                                     , nodes: [
                                                         {
                                                             name: '管理层2'
                                                             , id: 12
                                                             , targetNode: 5
-                                                            , status: 9
-                                                            , tipsHtml: 'username 9'
+                                                            , status: 0
                                                         }
                                                     ]
                                                 }
@@ -103,7 +125,7 @@
                                         , {
                                             name: '资质审核3'
                                             , id: 15
-                                            , status: 10
+                                            , status: 1
                                             , tipsHtml: 'username 10'
                                         }
                                 ]
