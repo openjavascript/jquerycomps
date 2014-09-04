@@ -519,15 +519,15 @@
                 _ldata.rowIndex = _cy;
 
                 if( _fdata.nodes && _fdata.nodes.length ){
-                    _first = arrayFirst( _fdata.nodes );
-                    _last = arrayLast( _fdata.nodes );
+                    _first = _fdata.nodes.first();
+                    _last = _fdata.nodes.last();
                     if( _cy < _first.rowIndex || _cy > _last.rowIndex ){
                         _fdata.rowIndex = _first.rowIndex + Math.ceil( ( _last.rowIndex - _first.rowIndex ) / 2 );
                     }
                 }
                 if( _ldata.pid && _ldata.pid.length ){
-                    _first = arrayFirst( _ldata.pid );
-                    _last = arrayLast( _ldata.pid );
+                    _first = _ldata.pid.first();
+                    _last = _ldata.pid.last();
                     if( _cy < _first.rowIndex || _cy > _last.rowIndex ){
                         _ldata.rowIndex = _first.rowIndex + Math.ceil( ( _last.rowIndex - _first.rowIndex ) / 2 );
                     }
@@ -558,8 +558,8 @@
 
                         if( _nodes && _nodes.length ){
                             if( _nodes.length > 1 ){
-                                _fdata = arrayFirst( _nodes );
-                                _ldata = arrayLast( _nodes );
+                                _fdata = _nodes.first();
+                                _ldata = _nodes.last();
                                 _midY = _fdata.rowIndex + Math.ceil( _ldata.rowIndex - _fdata.rowIndex ) / 2;
                                 _spaceY = _oldIx - _midY;
                                 _minY = _fdata.rowIndex + _spaceY;
@@ -582,7 +582,7 @@
                                     _p.fixItemDataAndNext( _fdata, _spaceY );
                                 }
                             }else{
-                                _fdata = arrayFirst( _nodes );
+                                _fdata = _nodes.first();
                                 if( _item.rowIndex === _fdata.rowIndex ) return;
                                 _maxY = Math.max( _item.rowIndex, _fdata.rowIndex );
                                 if( _item.rowIndex > _fdata.rowIndex ){
@@ -621,8 +621,8 @@
 
                         if( _pid && _pid.length ){
                             if( _pid.length > 1 ){
-                                _fdata = _p.gridIdMap( arrayFirst( _pid ) );
-                                _ldata = _p.gridIdMap( arrayLast( _pid ) );
+                                _fdata = _p.gridIdMap( _pid.first() );
+                                _ldata = _p.gridIdMap( _pid.last() );
 
                                 _midY = _fdata.rowIndex + Math.ceil( _ldata.rowIndex - _fdata.rowIndex ) / 2
 
@@ -633,7 +633,7 @@
                                     _item.rowIndex = _midY;
                                 }
                             }else{
-                                _fdata = _p.gridIdMap( arrayFirst( _pid ) );
+                                _fdata = _p.gridIdMap( _pid.first() );
                                 if( _fdata.targetNode ){
                                     if( _item.next && _fdata.rowIndex >= _item.next.rowIndex ){
                                         _p.fixItemDataAndNext( _item, _fdata.rowIndex - _item.rowIndex );
@@ -653,7 +653,7 @@
             function( _item, _spaceY, _isRealY ){
                 var _p = this, _nextSpaceY, _newIx;
                 if( !( _item && _item.pid && _item.pid.length ) ) return;
-                var _pitem = _p.gridIdMap( arrayFirst( _item.pid ) )
+                var _pitem = _p.gridIdMap( item.pid.first() )
                     , _fdata, _ldata, _midY
                     ;
                 if( !( _pitem ) ) return;
@@ -968,12 +968,12 @@
                         if( !( _pid || _nodes ) ) return; 
 
                         if(  _pid && _pid.length  ){
-                            _fitem = _p._model.gridIdMap( arrayFirst( _pid ) );
+                            _fitem = _p._model.gridIdMap( _pid.first() );
                             _fnode = _p._model.item( _fitem.id );
 
                             if( _pid.length > 1 ){
                                 _realStartX = _preColumnX + _preColumnWidth + _p._model.parentLineWidth();
-                                _litem = _p._model.gridIdMap( arrayLast( _pid ) );
+                                _litem = _p._model.gridIdMap( _pid.last() );
                                 _lnode = _p._model.item( _litem.id );
 
                                 _midY = _item.y + Math.abs( _p._model.minY() ) + _node.outerHeight() / 2 + _ypad;
@@ -1023,8 +1023,8 @@
 
                                 _sx = _item.x + _node.outerWidth();
 
-                                _fitem = arrayFirst( _nodes );
-                                _litem = arrayLast( _nodes );
+                                _fitem = _nodes.first();
+                                _litem = _nodes.last();
                                 _fnode = _p._model.item( _fitem.id );
                                 _lnode = _p._model.item( _litem.id );
 
@@ -1120,18 +1120,6 @@
             ,'<script type="text/template"><div class="js_cfcItemTips js_cfcItemTips_{2}">{1}</div><\/script>'
             ,'</span>'
         ].join('');
-
-    function arrayFirst( _a ){
-        var _r;
-        _a && _a.length && ( _r = _a[0] );
-        return _r;
-    }
-
-    function arrayLast( _a ){
-        var _r;
-        _a && _a.length && ( _r = _a[ _a.length - 1] );
-        return _r;
-    }
 
     function distanceAngleToPoint( _distance, _angle){
         var _radian = _angle * Math.PI / 180;					
