@@ -695,7 +695,7 @@
 
     /**
      * 判断两个日期是否为同一年
-     * @method  isSameSeason
+     * @method  isSameYear
      * @static
      * @param   {Date}  _d1     需要判断的日期1
      * @param   {Date}  _d2     需要判断的日期2

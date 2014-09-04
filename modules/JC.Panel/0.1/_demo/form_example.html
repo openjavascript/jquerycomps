@@ -1,0 +1,526 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>suches template</title>
+<style type='text/css'>
+    body{ width: 680px; margin: 20px auto; }
+    .cclear{zoom:1;}
+    .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+    .error{ color: red; }
+    input.error, select.error, textarea.error{ 
+        background-color: #fce1e1;
+        border: 1px solid #da9797;
+        box-shadow: 0 none;
+    }
+    input[type=text], input[type=password]{ width: 200px; }
+
+    input, select, textarea {
+        border: 1px solid #b9b9b9
+    }
+
+    input, select {
+        height: 23px;
+        line-height: 23px;
+    }
+    input[type=checkbox]{
+        height: auto;
+        line-height: auto;
+    }
+
+    dl{
+        margin-bottom: 220px;
+    }
+
+    dl.def > dd{
+        margin: 10px 0;
+    }
+
+    dl.def > dd > button {
+    }
+
+</style>
+<link href='../../../../modules/JC.Panel/0.1/res/default/style.css' rel='stylesheet' />
+<link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+<link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
+<script src="../../../../lib.js"></script>
+<script src="../../../../config.js"></script>
+<script>
+    JC.debug = true; 
+
+    requirejs( [ 'JC.Panel', 'JC.Valid', 'JC.Form', 'JC.Calendar'
+        , 'Bizs.CommonModify', 'plugins.jquery.form' ]
+        , function( Panel, Valid, JCForm, Calendar, CommonModify ){
+            $('button.dom_panel').on( 'click', function( _evt ){
+                JC.hideAllPanel( 1 );
+                /**
+                 * 注意, 如果是从DOM读取模板的话, 
+                 * 需要做个判断, 是否之前初始化过, 否则会导致重复初始化
+                 *
+                 * 如果需要重复使用的话, 还需要对 close 事件做一次重载, 避免关闭时从DOM清除
+                 *      panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
+                 *      //如果要强制从DOM清除, 可以调用 panel.dispose();
+                 */
+
+                var panel = JC.Panel.getInstance( $('div.dom_panel') ); 
+                if( !panel ){
+                    panel = new JC.Panel( $('div.dom_panel') ); 
+
+                    panel.find('form').ajaxForm( {
+                        beforeSubmit:
+                            function(formData, jqForm, options){
+                                if( !JC.Valid.check( jqForm ) ) return false;
+                            }
+                        , success:
+                            function( responseText, statusText ){
+                                JC.log( responseText, '\n\n', statusText );
+                                panel.close();
+                            }
+                    });
+
+                    panel.on( 'confirm', function( _evt, _panel ){
+                        JC.log( 'dom confirm' );
+                        return false;
+                    });
+
+                    panel.on( 'cancel', function( _evt, _panel ){
+                        JC.log( 'dom cancel' );
+                    });
+
+                    panel.on( 'beforeshow', function( _evt, _panel ){
+                        JC.log( 'beforeshow' );
+                        _panel.find('form').resetForm();
+                        JC.Valid.clearError( _panel.find('form') );
+                    });
+
+                    panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
+                }
+                panel.show( this ); //让Panel显示在 this 的上方或下方
+            });
+            /**
+             * 从字符串创建弹框问题会少很多, 每次都是创建新的, 每次关闭都会从DOM 清除
+             */
+            $('button.string_panel').on( 'click', function( _evt ){
+                JC.hideAllPanel( 1 );
+                var panel = new JC.Panel( JC.f.scriptContent( $('#scritpTpl') ), 'string panel' ), _fm;
+                    _fm = panel.find('form');
+                    _fm.ajaxForm( {
+                        beforeSubmit:
+                            function(formData, jqForm, options){
+                                if( !JC.Valid.check( jqForm ) ) {
+                                    JC.msgbox( '请检查内容', _fm.find( 'button[type=submit]' ), 1 );
+                                    return false;
+                                }
+                            }
+                        , success:
+                            function( responseText, statusText ){
+                                JC.log( responseText, '\n\n', statusText );
+                                panel.close();
+                            }
+                    });
+
+                    panel.on( 'confirm', function( _evt, _panel ){
+                        JC.log( 'dom confirm' );
+                        return false;
+                    });
+
+                    panel.on( 'cancel', function( _evt, _panel ){
+                        JC.log( 'dom cancel' );
+                    });
+
+                    panel.show( this );
+            });
+
+
+            $('button.dialog_dom_panel').on( 'click', function( _evt ){
+                /**
+                 * 注意, 如果是从DOM读取模板的话, 
+                 * 需要做个判断, 是否之前初始化过, 否则会导致重复初始化
+                 *
+                 * 如果需要重复使用的话, 还需要对 close 事件做一次重载, 避免关闭时从DOM清除
+                 *      panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
+                 *      //如果要强制从DOM清除, 可以调用 panel.dispose();
+                 */
+                JC.hideAllPanel( 1 );
+                if( !Panel.getInstance( $('div.dialog_dom_panel') ) ){
+                    var panel = JC.Dialog( $('div.dialog_dom_panel'), 'dialog dom panel' ); 
+
+                    panel.find('form').ajaxForm( {
+                        beforeSubmit:
+                            function(formData, jqForm, options){
+                                if( !JC.Valid.check( jqForm ) ) return false;
+                            }
+                        , success:
+                            function( responseText, statusText ){
+                                JC.log( responseText, '\n\n', statusText );
+                                panel.close();
+                            }
+                    });
+
+                    panel.on( 'confirm', function( _evt, _panel ){
+                        JC.log( 'dom confirm' );
+                        return false;
+                    });
+
+                    panel.on( 'cancel', function( _evt, _panel ){
+                        JC.log( 'dom cancel' );
+                    });
+
+                    panel.on( 'beforeshow', function( _evt, _panel ){
+                        JC.log( 'beforeshow' );
+                        _panel.find('form').resetForm();
+                        JC.Valid.clearError( _panel.find('form') );
+                    });
+
+                    panel.on( 'close', function( _evt, _panel ){ _panel.hide(); return false; });
+                }else{
+                    JC.Dialog( $('div.dialog_dom_panel') );
+                }
+            });
+            /**
+             * 从字符串创建弹框问题会少很多, 每次都是创建新的, 每次关闭都会从DOM 清除
+             */
+            $('button.dialog_string_panel').on( 'click', function( _evt ){
+                JC.hideAllPanel( 1 );
+                var panel = JC.Dialog( JC.f.scriptContent( $('#scritpTpl') ), 'dialog string panel' ); 
+                    panel.find('form').ajaxForm( {
+                        beforeSubmit:
+                            function(formData, jqForm, options){
+                                if( !JC.Valid.check( jqForm ) ) return false;
+                            }
+                        , success:
+                            function( responseText, statusText ){
+                                JC.log( responseText, '\n\n', statusText );
+                                panel.close();
+                            }
+                    });
+
+                    panel.on( 'confirm', function( _evt, _panel ){
+                        JC.log( 'dom confirm' );
+                        return false;
+                    });
+
+                    panel.on( 'cancel', function( _evt, _panel ){
+                        JC.log( 'dom cancel' );
+                    });
+            });
+
+        }
+    );
+
+    function userHideAllPanel(){
+        JC.hideAllPanel();
+        $('div.UPanelString').remove();
+    }
+</script>
+
+</head>    
+<body>
+
+    <br /><br /><br /><br /><br /><br />
+    <dl class="def">
+        <dt>JC.Panel Form 示例</dt>
+        <dd>
+            <button type="button" class="dom_panel">dom form</button>
+            <button type="button" class="string_panel">string form</button>
+        </dd>
+    </dl>
+
+    <dl class="def">
+        <dt>JC.Dialog Form 示例</dt>
+        <dd>
+            <button type="button" class="dialog_dom_panel">dialog dom form</button>
+            <button type="button" class="dialog_string_panel">dialog string form</button>
+        </dd>
+    </dl>
+
+<div class="UPanel dom_panel" style="display:none; width: 600px;" >
+    <form action="./data/test.php" method="POST" >
+    <div class="UPContent">
+        <div class="hd">dom panel</div>
+        <div class="bd">
+            <dl>
+                <dt>form test</dt>
+                <dd>
+                    文本框: <input type="text" name="txt1" value="" reqmsg="内容" />
+                </dd>
+                <dd>
+                下拉框: <select name="sle1" reqmsg="内容" >
+                            <option value="">请选择</option>
+                            <option value="1">value 1</option>
+                            <option value="2">value 2</option>
+                            <option value="3">value 3</option>
+                            <option value="4">value 4</option>
+                        </select>
+                </dd>
+            </dl>
+             <dl class="def">
+                <dd>
+                    <label >
+                        <input type='checkbox' datatype="checkbox" value='1' name='' />
+                        checkall1_1
+                    </label>
+                    <label >
+                        <input type='checkbox' datatype="checkbox" value='2' name='' checked />
+                        checkall1_4
+                    </label>
+                    <label >
+                        <input type='checkbox' datatype="checkbox" value='3' name='' />
+                        checkall1_5
+                    </label>
+                    <em class="error"></em>
+                </dd>
+            </dl>
+
+            <div style="text-align:center" class="UButton">
+                <button type="submit" eventtype="confirm">确定</button>
+                <button type="button" eventtype="cancel">取消</button>
+            </div>
+        </div>
+        <div class="ft">test footer</div>
+        <span class="close" eventtype="close"></span>
+    </div><!--end UPContent-->
+    </form>
+</div>
+
+<div class="UPanel dialog_dom_panel" style="display:none; width: 600px;" >
+    <form action="./data/test.php" method="POST" >
+    <div class="UPContent">
+        <div class="hd">dom panel</div>
+        <div class="bd">
+            <dl>
+                <dt>form test</dt>
+                <dd>
+                    文本框: <input type="text" name="txt1" value="" reqmsg="内容" />
+                </dd>
+                <dd>
+                下拉框: <select name="sle1" reqmsg="内容" >
+                            <option value="">请选择</option>
+                            <option value="1">value 1</option>
+                            <option value="2">value 2</option>
+                            <option value="3">value 3</option>
+                            <option value="4">value 4</option>
+                        </select>
+                </dd>
+            </dl>
+            <div style="text-align:center" class="UButton">
+                <button type="submit" eventtype="confirm">确定</button>
+                <button type="button" eventtype="cancel">取消</button>
+            </div>
+        </div>
+        <div class="ft">test footer</div>
+        <span class="close" eventtype="close"></span>
+    </div><!--end UPContent-->
+    </form>
+</div>
+
+<script type="text/template" id="scritpTpl">
+<div class="UPanel UPanelString" style="display:none; width: 600px;" >    
+    <form action="./data/test.php" method="POST" >    
+        <div class="UPContent">        
+            <div class="hd">dom panel</div>        
+            <div class="bd">            
+                <dl>                
+                    <dt><h2>form test</h2></dt>                
+                    <dd>
+                       <table>
+                           <tr>
+                               <td>文本框:</td> 
+                               <td>
+                                    <input type="text" name="txt1" value="" reqmsg="内容" />                
+                               </td>
+                           </tr>
+                            <tr>
+                                <td>
+                                    <label class="gray">甲方主体：</label>
+                                </td>
+                                <td>
+                                    <input type="text" name="test[0]" class="ipt ipt-w320" reqmsg="甲方主体" />&nbsp;
+                                        <a href="javascript:" 
+                                        class="green js_autoCommonModify" 
+                                        cmtemplate="#addMainFirstPartyTpl"
+                                        cmitem="<dd"
+                                        cmappendtype="appendTo"
+                                        cmaction="add"
+                                        cmdonecallback="cmdonecallback"
+                                        cmtplfiltercallback="cmtplfiltercallback"
+                                    >+ 添加</a>
+                                    <em class="error"></em>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>日期</td>
+                                <td>
+                                    <input type="text" datatype="date" reqmsg="日期" />
+                                    <em class="error"></em>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>地区:</td>
+                                <td>
+                                    <select name="select2_1" 
+                                        reqmsg="地区"
+                                        selecttriggerinitchange="false"
+                                        defaultselect="" 
+                                        selecturl="../../../../modules/JC.AutoSelect/0.2/_demo/data/shengshi.php?id=0" 
+                                        selecttarget="/select:eq(1)">
+                                        <option value="" defaultoption="">请选择</option>
+                                    </select>
+                                    <select name="select2_2" 
+                                        selecturl="../../../../modules/JC.AutoSelect/0.2/_demo/data/shengshi.php?id={0}" 
+                                        selecttarget="/select:last">
+                                        <option value="" defaultoption="">请选择</option>
+                                    </select>
+                                    <select name="select2_3" 
+                                        selecturl="../../../../modules/JC.AutoSelect/0.2/_demo/data/shengshi.php?id={0}">
+                                        <option value="" defaultoption="">请选择</option>
+                                    </select>
+                                    <em class="error"></em>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <input type='checkbox'  checktype="all" checkfor="<tr input[type=checkbox]"> 
+                                        全选
+                                    </label>
+                                    <label>
+                                        <input type='checkbox' checktype="inverse" checkfor="<tr input[type=checkbox]" checkall="<tr input[checktype=all]">
+                                        反选
+                                    </label>
+                                </td>
+                                <td>
+                                     <dl class="def">
+                                        <dd>
+                                            <label>
+                                                <input type='checkbox' datatype="checkbox" />
+                                                checkall1_1
+                                            </label>
+                                            <label >
+                                                <input type='checkbox' datatype="checkbox" />
+                                                checkall1_4
+                                            </label>
+                                            <label >
+                                                <input type='checkbox' datatype="checkbox" />
+                                                checkall1_5
+                                            </label>
+                                            <em class="error"></em>
+                                        </dd>
+                                    </dl>
+                                </td>
+                            </tr>
+                        </table>
+                    </dd>
+                </dl>            
+                <div style="text-align:center" class="UButton">                
+                    <button type="submit" eventtype="confirm">确定</button>                
+                    <button type="button" eventtype="cancel">取消</button>            
+                </div>        
+            </div>        
+            <div class="ft">test footer</div>        
+            <span class="close" eventtype="close"></span>    
+        </div>
+        <!--end UPContent-->    
+    </form>
+</div>
+</script>
+
+<script type="text/template" id="addMainFirstPartyTpl" >
+ <table>
+     <tr>
+        <td>
+            <label class="gray">甲方主体：</label>
+        </td>
+        <td>
+            <input type="text" name="test[{0}]" class="ipt ipt-w320" reqmsg="甲方主体" />&nbsp;
+            <a href="javascript:" 
+                class="green js_autoCommonModify" 
+                cmtemplate="#addMainFirstPartyTpl"
+                cmitem="<dd"
+                cmaction="add"
+                cmappendtype="appendTo"
+                cmdonecallback="cmdonecallback"
+                cmaddcallback="cmaddcallback"
+                cmtplfiltercallback="cmtplfiltercallback"
+            >+ 添加</a>
+            <a href="javascript:" class="red js_autoCommonModify"
+                cmtemplate="#addMainFirstPartyTpl"
+                cmitem="<table"
+                cmaction="del"
+                cmdonecallback="cmdonecallback"
+                cmdelcallback="cmdelcallback"
+            >+ 删除</a>
+            <em class="error"></em>
+        </td>
+    </tr>
+    <tr>
+        <td>日期</td>
+        <td>
+            <input type="text" datatype="date" reqmsg="日期" />
+            <em class="error"></em>
+        </td>
+    </tr>
+    <tr>
+        <td>地区:</td>
+        <td>
+            <select name="select2_1" 
+                reqmsg="地区"
+                selecttriggerinitchange="false"
+                defaultselect="" 
+                selecturl="../../../../modules/JC.AutoSelect/0.2/_demo/data/shengshi.php?id=0" 
+                selecttarget="/select:eq(1)">
+                <option value="" defaultoption="">请选择</option>
+            </select>
+            <select name="select2_2" 
+                selecturl="../../../../modules/JC.AutoSelect/0.2/_demo/data/shengshi.php?id={0}" 
+                selecttarget="/select:last">
+                <option value="" defaultoption="">请选择</option>
+            </select>
+            <select name="select2_3" 
+                selecturl="../../../../modules/JC.AutoSelect/0.2/_demo/data/shengshi.php?id={0}">
+                <option value="" defaultoption="">请选择</option>
+            </select>
+            <em class="error"></em>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label>
+                <input type='checkbox'  checktype="all" checkfor="<tr input[type=checkbox]"> 
+                全选
+            </label>
+            <label>
+                <input type='checkbox' checktype="inverse" checkfor="<tr input[type=checkbox]" checkall="<tr input[checktype=all]">
+                反选
+            </label>
+        </td>
+        <td>
+             <dl class="def">
+                <dd>
+                    <label >
+                        <input type='checkbox' datatype="checkbox" value='1' name='' />
+                        checkall1_1
+                    </label>
+                    <label >
+                        <input type='checkbox' datatype="checkbox" value='2' name='' checked />
+                        checkall1_4
+                    </label>
+                    <label >
+                        <input type='checkbox' datatype="checkbox" value='3' name='' />
+                        checkall1_5
+                    </label>
+                    <em class="error"></em>
+                </dd>
+            </dl>
+        </td>
+    </tr>
+</table>
+</script>
+
+
+    <div style="height:3000px"></div>
+
+</body>
+</html>
+
