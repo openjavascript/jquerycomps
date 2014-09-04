@@ -45,10 +45,8 @@
  *          <dl>
  *              <dt>数据字段说明</dt>
  *              <dd>
+ *                  <h2>图表数据 - chart 字段</h2>
  *                  <dl>
- *                      <dt>chart = object</dt>
- *                      <dd>图表数据</dd>
- *
  *                      <dt>name = string</dt>
  *                      <dd>节点名</dd>
  *
@@ -71,6 +69,16 @@
  *
  *                      <dt>tipsHtml = string</dt>
  *                      <dd>鼠标划过节点时, 显示的tips内容, 支持html内容</dd>
+ *                  </dl>
+ *                  <h2>线条与图标颜色 - colors 字段</h2>
+ *                  <dl>
+ *                      <dt>line = raphael object, default: { 'stroke': '#E1E1E1', 'stroke-width': 2 } </dt>
+ *                      <dd>背景线颜色</dd>
+ *
+ *                      <dt>icon = raphael object, default: { 'stroke': '#E1E1E1', 'stroke-width': 2, 'fill': '#F2F2F2' } </dt>
+ *                      <dd>图标颜色</dd>
+ *
+ *                      <dt>如果要自定义节点颜色 或者 tips 颜色, 请使用 css 定义: js_cfcItemStatus_N, js_cfcItemTips_N ( N 代表 status ) </dt>
  *                  </dl>
  *              </dd>
  *          </dl>
