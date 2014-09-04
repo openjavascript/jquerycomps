@@ -297,10 +297,15 @@
 
                 _p.initIdColumnIndex( _p.chartData(), _p.chartData().id, 0, 0, 0 );
                 _p.initColumnIndexMap();
+
+                _p.fixLastColumn();
+
                 _p.initRowIndex();
 
                 _p.fixNodesRowIndex();
                 _p.fixTargetNodesRowIndex();
+                /*
+                */
                 _p.fixRealRowIndex();
 
                 _p.fixFistLastRowIndex();
@@ -311,6 +316,27 @@
                 //JC.dir( _p.gridIdColumnIndex() );
                 JC.dir( _p.gridIdColumnIndexMap() );
                 //JC.log( _p.gridMaxColumn() );
+            }
+
+        , fixLastColumn:
+            function(){
+                var _p = this
+                    , _max = _p.gridMaxColumn()
+                    , _list
+                    ;
+                if( _max < 1 ) return;
+                _list = _p.gridIdColumnIndexMap()[ _max ];
+                if( _list.length < 2 ) return;
+                for( var i = _list.length - 1; i >= 0; i-- ){
+                    var _item = _list[i];
+                    if( !( _item.nodes && _item.nodes.length ) && ( _item.pid && _item.pid.length > 1 ) ){
+                        _list.splice( i, 1 );
+                        _item.columnIndex = _max + 1;
+                        _p.gridMaxColumn( _item.columnIndex );
+                        _p.gridIdColumnIndexMap()[ _p.gridMaxColumn() ] = [ _item ];
+                        break;
+                    }
+                }
             }
 
         , grid: function(){ return this._grid; }
@@ -470,7 +496,6 @@
 
                 _p._maxRowY = 0;
 
-
                 for( var i = 0; i < _p.gridMaxColumn(); i++ ){
                     var _rowList = _p.gridIdColumnIndexMap()[ i ]
                         , _nextList = _p.gridIdColumnIndexMap()[ i + 1 ]
@@ -481,16 +506,32 @@
 
                 }
 
-
                 if( !( _p._maxRowY ) ) return;
                 if( !( _p._maxRowY && _p.gridMaxColumn() > 0 ) ) return;
-                var _cY = Math.ceil( _p._maxRowY / 2 );
-                var _fcol = _p.gridIdColumnIndexMap()[0]
+                var _cy = Math.ceil( _p._maxRowY / 2 )
+                    , _fcol = _p.gridIdColumnIndexMap()[0]
                     , _lcol = _p.gridIdColumnIndexMap()[ _p.gridMaxColumn() ]
+                    , _first, _last
                     ;
                 if( !( _fcol.length === 1 && _lcol.length === 1 ) ) return;
-                _fcol[0].rowIndex = _cY;
-                _lcol[0].rowIndex = _cY;
+                var _fdata = _fcol[0], _ldata = _lcol[0];
+                _fdata.rowIndex = _cy;
+                _ldata.rowIndex = _cy;
+
+                if( _fdata.nodes && _fdata.nodes.length ){
+                    _first = arrayFirst( _fdata.nodes );
+                    _last = arrayLast( _fdata.nodes );
+                    if( _cy < _first.rowIndex || _cy > _last.rowIndex ){
+                        _fdata.rowIndex = _first.rowIndex + Math.ceil( ( _last.rowIndex - _first.rowIndex ) / 2 );
+                    }
+                }
+                if( _ldata.pid && _ldata.pid.length ){
+                    _first = arrayFirst( _ldata.pid );
+                    _last = arrayLast( _ldata.pid );
+                    if( _cy < _first.rowIndex || _cy > _last.rowIndex ){
+                        _ldata.rowIndex = _first.rowIndex + Math.ceil( ( _last.rowIndex - _first.rowIndex ) / 2 );
+                    }
+                }
 
             }
 
@@ -591,6 +632,15 @@
                                 }else{
                                     _item.rowIndex = _midY;
                                 }
+                            }else{
+                                _fdata = _p.gridIdMap( arrayFirst( _pid ) );
+                                if( _fdata.targetNode ){
+                                    if( _item.next && _fdata.rowIndex >= _item.next.rowIndex ){
+                                        _p.fixItemDataAndNext( _item, _fdata.rowIndex - _item.rowIndex );
+                                    }else{
+                                        _item.rowIndex = _fdata.rowIndex;
+                                    }
+                                }
                             }
                          }
                     });
@@ -601,14 +651,26 @@
 
         , fixItemParentDataAndNext:
             function( _item, _spaceY, _isRealY ){
-                var _p = this, _nextSpaceY;
+                var _p = this, _nextSpaceY, _newIx;
                 if( !( _item && _item.pid && _item.pid.length ) ) return;
-                var _pitem = _p.gridIdMap( arrayFirst( _item.pid ) );
+                var _pitem = _p.gridIdMap( arrayFirst( _item.pid ) )
+                    , _fdata, _ldata, _midY
+                    ;
                 if( !( _pitem ) ) return;
                 if( _isRealY ){
-                    _nextSpaceY = _spaceY - _pitem.rowIndex;
-                    _p.fixItemDataAndNext( _pitem, _nextSpaceY );
-                    _p.fixItemParentDataAndNext( _pitem, _spaceY, _isRealY );
+                    if( _pitem.nodes.length > 1 ){
+                        _fdata = _pitem.nodes.first();
+                        _ldata = _pitem.nodes.last();
+                        _midY = _fdata.rowIndex + Math.ceil( ( _ldata.rowIndex - _fdata.rowIndex ) / 2 );
+
+                        _p.fixItemDataAndNext( _pitem, _midY - _pitem.rowIndex );
+                        _p.fixItemParentDataAndNext( _pitem, _spaceY, _isRealY );
+                    }else{
+                        _nextSpaceY = _spaceY - _pitem.rowIndex;
+                        _newIx = _nextSpaceY + _pitem.rowIndex;
+                        _p.fixItemDataAndNext( _pitem, _nextSpaceY );
+                        _p.fixItemParentDataAndNext( _pitem, _spaceY, _isRealY );
+                    }
                 }else{
                     _p.fixItemDataAndNext( _pitem, _spaceY );
                     _p.fixItemParentDataAndNext( _pitem, _spaceY, _isRealY );

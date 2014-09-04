@@ -138,6 +138,23 @@
                 });
                 return _r;
             });
+
+    !Array.prototype.first 
+        && ( Array.prototype.first = 
+            function(){
+                var _r;
+                this.length && ( _r = this[0] );
+                return _r;
+        });
+
+    !Array.prototype.last
+        && ( Array.prototype.last = 
+            function(){
+                var _r;
+                this.length && ( _r = this[ this.length - 1] );
+                return _r;
+        });
+
     /**
      * 全局 css z-index 控制属性
      * <br /> <b>注意</b>: 这个变量是 window.ZINDEX_COUNT
