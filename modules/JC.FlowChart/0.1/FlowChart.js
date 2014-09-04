@@ -298,14 +298,11 @@
                 _p.initIdColumnIndex( _p.chartData(), _p.chartData().id, 0, 0, 0 );
                 _p.initColumnIndexMap();
                 _p.initRowIndex();
-                _p.fixRowIndex();
-                _p.fixRowIndexOneChild();
-                _p.fixRowIndexMultiChild();
-                _p.fixRowIndexMultiChild();
+
+                _p.fixNodesRowIndex();
+                _p.fixRealRowIndex();
+
                 _p.fixFistLastRowIndex();
-
-                JC.log(  'xxxxxxx', _p._minRowY, _p._maxRowY);
-
 
                 _p.createItems();
                 _p.calcRealPosition();
@@ -480,147 +477,79 @@
 
             }
 
-        , fixRowIndexOneChild:
+        , fixNodesRowIndex:
             function(){
-                var _p = this, _sx = 0, _sy = 0;
-
-                for( var i = 1; i < _p.gridMaxColumn(); i++ ){
-                    var _rowList = _p.gridIdColumnIndexMap()[ i ]
-                        , _rowLen = _rowList.length
-                        , _tmp
-                        ;
-                    $.each( _rowList, function( _k, _item ){
-                        if( _item.nodes && _item.nodes && _item.nodes.length === 1 && !_item.isFixOne ){
-                            _maxIndex = _item.rowIndex;
-                            _item.isFixOne = true;
-                            var _tmpNodes = _item.nodes
-                                , _maxIndex = _item.rowIndex
-                                , _tmpCount = _k + 1
-                                ;
-                            while( _tmpNodes && _tmpNodes.length ){
-                                _tmpNodes[0].rowIndex > _maxIndex && ( _maxIndex = _tmpNodes[0].rowIndex );
-                                _tmpNodes[0].isFixOne = true;
-                                if( _tmpNodes[0].nodes && _tmpNodes[0].nodes.length === 1 ){
-                                    _tmpNodes = _tmpNodes[0].nodes[0];
-                                }else{
-                                    break;
-                                }
-                            }
-
-                            _item.rowIndex = _maxIndex;
-                            while( _tmpCount < _rowLen ){
-                                _rowList[ _tmpCount ].rowIndex = _maxIndex + ( _tmpCount - _k );
-                                _tmpCount++;
-                            }
-                        } else if( _item.isFixOne && _item.pid && _item.pid.length === 1 ){
-                            _item.rowIndex = _p.gridIdMap( _item.pid[0]).rowIndex;
-                        } else if( _item.pid && _item.pid.length === 1 && _p.gridIdMap( _item.pid[0] ).nodes.length === 1 ){
-                            _item.rowIndex = _p.gridIdMap( _item.pid[0]).rowIndex;
-                        } else if( _item.targetNode 
-                            && ( _tmp = _p.gridIdMap()[ _item.targetNode ] )
-                            && _tmp.pid
-                            && _tmp.pid.length === 1
-                            ){
-                            _tmp.rowIndex = _item.rowIndex;
-                            _tmp.isFixOne = true;
-                        }
-                    });
-                }
-            }
-
-        , fixRowIndexMultiChild:
-            function(){
-                var _p = this, _sx = 0, _sy = 0, _first, _last, _spaceIx, _ix;
+                var _p = this;
                 _p._minRowY = 0;
                 _p._maxRowY = 1;
-                for( var i = 1; i < _p.gridMaxColumn(); i++ ){
+
+                for( var i = 0; i < _p.gridMaxColumn(); i++ ){
                     var _rowList = _p.gridIdColumnIndexMap()[ i ]
                         , _nextList = _p.gridIdColumnIndexMap()[ i + 1 ]
                         ;
                     $.each( _rowList, function( _k, _item ){
-                        var _preItem = _rowList[ _k - 1 ], _tmpIx, _tmpSpaceIx, _fix
-                            , _nextItem = _rowList[ _k + 1 ];
+                        var _preItem = _rowList[ _k - 1 ]
+                            , _nextItem = _rowList[ _k + 1 ]
+                            , _oldIx = _item.rowIndex
+                            , _nodes = _item.nodes
+                            , _pid = _item.pid
+                            , _fdata, _ldata
+                            , _fitem, _litem
+                            , _midY 
+                            , _spaceY
+                            , _minY, _maxY
                             ;
-                            var _oldIx = _item.rowIndex, _needFix;
 
-                        if( _item.pid && _item.pid.length > 1 ){
-                            _first = _p.gridIdMap(  )[ arrayFirst( _item.pid ) ];
-                            _last = _p.gridIdMap(  )[ arrayLast( _item.pid ) ];
-                            _spaceIx = _last.rowIndex - _first.rowIndex;
-                            _ix = _first.rowIndex + Math.ceil( Math.abs( _spaceIx ) / 2 );
-                            //JC.log( _item.name, arrayFirst( _item.pid ), arrayLast( _item.pid ), _first.rowIndex, _last.rowIndex, _spaceIx, _ix );
-                            _item.rowIndex = _ix;
-                        }
-
-                        if( _item.nodes && _item.nodes.length > 1 ){
-                            _first = arrayFirst( _item.nodes );
-                            _last = arrayLast( _item.nodes );
-                            _spaceIx = _last.rowIndex - _first.rowIndex;
-                            _ix = _first.rowIndex + Math.ceil( Math.abs( _spaceIx ) / 2 );
-
-                            if( _preItem && _ix <= _preItem.rowIndex ){
-                                _needFix = true;
-                                _tmpIx = _ix;
-                                _ix = _item.rowIndex;
-                                _tmpSpaceIx = _ix - _tmpIx;
-
-                                if( _nextList ){
-                                    $.each( _nextList, function( _sk, _sitem ){
-                                        if( _sitem.id === _first.id ){
-                                            _fix = true;
-                                        }
-
-                                        if( _fix ){
-                                            _sitem.rowIndex += _tmpSpaceIx;
-                                        }
-                                    });
+                        if( _nodes && _nodes.length ){
+                            if( _nodes.length > 1 ){
+                                _fdata = arrayFirst( _nodes );
+                                _ldata = arrayLast( _nodes );
+                                _midY = _fdata.rowIndex + Math.ceil( _ldata.rowIndex - _fdata.rowIndex ) / 2;
+                                _spaceY = _oldIx - _midY;
+                                _minY = _fdata.rowIndex + _spaceY;
+                                _maxY = _ldata.rowIndex + _spaceY;
+                                if( _spaceY === 0 ) {
+                                    return;
                                 }
-                            }
-
-                            if( _tmpSpaceIx ){
-                                _needFix = true;
-                                for( var j = _k + 1; j < _rowList.length; j++ ){
-                                    _rowList[ j ] && ( _rowList[ j ].rowIndex += _tmpSpaceIx  );
+                                if( _fdata.prev && _minY <= _fdata.prev.rowIndex ){
+                                    _spaceY = _fdata.prev.rowIndex + 1 - _minY;
+                                    _minY += _spaceY;
+                                    _maxY += _spaceY;
+                                    _p.fixItemDataAndNext( _fdata, _minY - _fdata.rowIndex );
+                                    _p.fixItemDataAndNext( _item, _spaceY );
+                                    _p.fixItemParentDataAndNext( _item, _spaceY );
+                                }else if( _ldata.next && _maxY >= _ldata.next.rowIndex ){
+                                    JC.log( _item.name, _ldata.next.name, _maxY, _ldata.next.rowIndex );
+                                    //_p.fixItemDataAndNext( _ldata.next, _maxY - _ldata.rowIndex );
                                 }
+                                //_item.rowIndex += _spaceY;
+                            }else{
                             }
-                            _item.rowIndex = _ix;
-
-                            if( _needFix && _tmpSpaceIx ){
-                                _p.plusParent( i - 1, _item.pid, _tmpSpaceIx );
-                            }
-                        }
-                        if( _item.rowIndex > _p._maxRowY ){
-                            _p._maxRowY= _item.rowIndex;
                         }
                     });
+
                 }
             }
 
-        , plusParent: 
-            function( _colIx, _pid, _offsetIx ){
-                var _p = this, _nextPid;
-                if( _colIx < 1 ) return;
-                if( !( _pid && _pid.length ) ) return;
-
-                var _rowList = _p.gridIdColumnIndexMap()[ _colIx ], _fix;
-                if( !( _rowList && _rowList.length ) ) return;
-                $.each( _rowList, function( _k, _item ){
-                    if( !_fix ){
-                        if( _item.id == _pid[0] ){
-                            _fix = true;
-                            _pid = _item.pid
-                        }
-                    }
-                    if( _fix ){
-                        _item.rowIndex += _offsetIx;
-                    }
-                });
-
-                _p.plusParent( _colIx - 1, _nextPid, _offsetIx );
-
+        , fixItemParentDataAndNext:
+            function( _item, _spaceY ){
+                var _p = this;
+                if( !( _item && _item.pid && _item.pid.length ) ) return;
+                var _pitem = _p.gridIdMap( arrayFirst( _item.pid ) );
+                if( !( _pitem ) ) return;
+                _p.fixItemDataAndNext( _pitem, _spaceY );
+                _p.fixItemParentDataAndNext( _pitem, _spaceY );
             }
 
-        , fixRowIndex:
+        , fixItemDataAndNext:
+            function( _node, _spaceY ){
+                while( _node ){
+                    _node.rowIndex += _spaceY;
+                    _node = _node.next;
+                }
+            }
+
+        , fixRealRowIndex:
             function(){
                 var _p = this, _sx = 0, _sy = 0, _minY = 0;
                 for( var i = 0; i <= _p.gridMaxColumn(); i++ ){
@@ -645,6 +574,8 @@
                 }
 
             }
+
+
 
         , initRowIndex:
             function(){
@@ -679,7 +610,7 @@
                    if( _rowList.length > 1 ){
                        _itemIndexLen = _rowList.length * 2;
                    }
-                   _startIndex = _startIndex - Math.floor( _itemIndexLen / 2 );
+                   _startIndex = _startIndex - Math.ceil( _itemIndexLen / 2 );
                    _startIndex += 1;
 
                     $.each( _rowList, function( _k, _item ){
@@ -707,7 +638,10 @@
                 var _p = this;
                 $.each( _p.gridIdColumnIndexList(), function( _k, _item ){
                     if( _item.columnIndex in _p.gridIdColumnIndexMap() ){
+                        var _prev = _p.gridIdColumnIndexMap()[ _item.columnIndex ][ _p.gridIdColumnIndexMap()[ _item.columnIndex ].length - 1 ];
                         _p.gridIdColumnIndexMap()[ _item.columnIndex ].push( _item );
+                        _item.prev = _prev;
+                        _prev.next = _item;
                     }else{
                         _p.gridIdColumnIndexMap()[ _item.columnIndex ] = [ _item ];
                     }
