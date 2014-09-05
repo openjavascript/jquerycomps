@@ -1512,7 +1512,27 @@
 
         return _r;
     }
-
+    /**
+     * 获取 window 的 相关大小
+     * @method  winSize
+     * @param   {window}    _win,  default = window
+     * @return  Object
+     * @static
+     */
+    function winSize( _win ){
+        _win = $( _win || window );
+        var _r = {
+                width: _win.width()
+                , height: _win.height()
+                , scrollLeft: _win.scrollTop()
+                , scrollTop: _win.scrollLeft()
+            };
+        _r.viewportX = _r.scrollLeft;
+        _r.maxViewportX = _r.scrollLeft + _r.scrollWidth;
+        _r.viewportY = _r.scrollTop;
+        _r.maxViewportY = _r.scrollTop + _r.scrollHeight;
+        return _r;
+    }
 
     return JC.f;
 
