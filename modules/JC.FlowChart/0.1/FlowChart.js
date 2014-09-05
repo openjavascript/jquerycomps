@@ -278,7 +278,7 @@
 <pre>
 $( document ).delegate( 
     'div.js_compFlowChart'
-    , 'cfc_inited'
+    , JC.FlowChart&#46;Model.INITED
     , function( _evt, _ins, _chartData ){
         JC.log( 'js_compFlowChart inited' );
     }
@@ -293,7 +293,7 @@ $( document ).delegate(
 <pre>
 $( document ).delegate( 
     'div.js_compFlowChart'
-    , 'cfc_nodeInited'
+    , JC.FlowChart&#46;Model.ITEM_INITED
     , function( _evt, _domNode, _itemData, _listData, _chartData ){
         JC.log( _domNode.prop( 'nodeName' ) );
     }
@@ -309,7 +309,7 @@ $( document ).delegate(
 <pre>
 $( document ).delegate( 
     'div.js_compFlowChart'
-    , 'cfc_beforeInitItem'
+    , JC.FlowChart&#46;Model.BEFORE_INIT_ITEM
     , function( _evt, _itemData, _listData, _chartData ){
         if( _itemData.tipsHtml ){
             _itemData.tipsHtml += '   <b>test</b>';
