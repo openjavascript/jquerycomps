@@ -183,9 +183,8 @@
          <dl>
              <dt>数据字段说明</dt>
              <dd>
+                 <h2>图表数据 - chart 字段</h2>
                  <dl>
-                     <dt>chart = object</dt>
-                     <dd>图表数据</dd>
                      <dt>name = string</dt>
                      <dd>节点名</dd>
                      <dt>id = string</dt>
@@ -203,6 +202,14 @@
                      </dd>
                      <dt>tipsHtml = string</dt>
                      <dd>鼠标划过节点时, 显示的tips内容, 支持html内容</dd>
+                 </dl>
+                 <h2>线条与图标颜色 - colors 字段</h2>
+                 <dl>
+                     <dt>line = raphael object, default: { &#39;stroke&#39;: &#39;#E1E1E1&#39;, &#39;stroke-width&#39;: 2 } </dt>
+                     <dd>背景线颜色</dd>
+                     <dt>icon = raphael object, default: { &#39;stroke&#39;: &#39;#E1E1E1&#39;, &#39;stroke-width&#39;: 2, &#39;fill&#39;: &#39;#F2F2F2&#39; } </dt>
+                     <dd>图标颜色</dd>
+                     <dt>如果要自定义节点颜色 或者 tips 颜色, 请使用 css 定义: js_cfcItemStatus_N, js_cfcItemTips_N ( N 代表 status ) </dt>
                  </dl>
              </dd>
          </dl>
@@ -345,6 +352,7 @@
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab events"><a href="#events">Events</a></li>
     </ul>
     <div>
         <div id="index" class="api-class-tabpanel index">
@@ -379,6 +387,20 @@
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_trigger">trigger</a>
+                            </li>
+                    </ul>
+                </div>
+                <div class="index-section events">
+                    <h3>Events</h3>
+                    <ul class="index-list events extends">
+                            <li class="index-item event">
+                                <a href="#event_cfc_beforeInitItem">cfc_beforeInitItem</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_cfc_inited">cfc_inited</a>
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_cfc_nodeInited">cfc_nodeInited</a>
                             </li>
                     </ul>
                 </div>
@@ -474,7 +496,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_FlowChart_FlowChart.js.html#l210"><code>..&#x2F;comps&#x2F;FlowChart&#x2F;FlowChart.js:210</code></a>
+        <a href="../files/.._comps_FlowChart_FlowChart.js.html#l218"><code>..&#x2F;comps&#x2F;FlowChart&#x2F;FlowChart.js:218</code></a>
         </p>
     </div>
     <div class="description">
@@ -653,6 +675,94 @@
             <h4>Returns:</h4>
             <div class="returns-description">
                     <p>BaseMVCInstance</p>
+            </div>
+        </div>
+</div>
+            </div>
+            <div id="events" class="api-class-tabpanel">
+                <h2 class="off-left">Events</h2>
+                    <div id="event_cfc_beforeInitItem" class="events item">
+    <h3 class="name"><code>cfc_beforeInitItem</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_FlowChart_FlowChart.js.html#l304"><code>..&#x2F;comps&#x2F;FlowChart&#x2F;FlowChart.js:304</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>dom节点初始化前的事件
+<br />节点如果有特殊显示需求的话, 可以从这个事件进行相关操作</p>
+    </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre>
+$( document ).delegate( 
+   'div.js_compFlowChart'
+   , JC.FlowChart&#46;Model.BEFORE_INIT_ITEM
+   , function( _evt, _itemData, _listData, _chartData ){
+       if( _itemData.tipsHtml ){
+           _itemData.tipsHtml += '   <b>test</b>';
+       }
+       _itemData.name = JC.f.printf( '~{0}~', _itemData.name );
+   }
+);
+</pre>
+            </div>
+        </div>
+</div>
+                    <div id="event_cfc_inited" class="events item">
+    <h3 class="name"><code>cfc_inited</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_FlowChart_FlowChart.js.html#l274"><code>..&#x2F;comps&#x2F;FlowChart&#x2F;FlowChart.js:274</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>初始化后 selector 触发的事件</p>
+    </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre>
+$( document ).delegate( 
+   'div.js_compFlowChart'
+   , JC.FlowChart&#46;Model.INITED
+   , function( _evt, _ins, _chartData ){
+       JC.log( 'js_compFlowChart inited' );
+   }
+);
+</pre>
+            </div>
+        </div>
+</div>
+                    <div id="event_cfc_nodeInited" class="events item">
+    <h3 class="name"><code>cfc_nodeInited</code></h3>
+    <span class="type"></span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_FlowChart_FlowChart.js.html#l289"><code>..&#x2F;comps&#x2F;FlowChart&#x2F;FlowChart.js:289</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>dom 节点初始化后 触发的事件</p>
+    </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre>
+$( document ).delegate( 
+   'div.js_compFlowChart'
+   , JC.FlowChart&#46;Model.ITEM_INITED
+   , function( _evt, _domNode, _itemData, _listData, _chartData ){
+       JC.log( _domNode.prop( 'nodeName' ) );
+   }
+);
+</pre>
             </div>
         </div>
 </div>

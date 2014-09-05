@@ -45,10 +45,8 @@
  *          <dl>
  *              <dt>数据字段说明</dt>
  *              <dd>
+ *                  <h2>图表数据 - chart 字段</h2>
  *                  <dl>
- *                      <dt>chart = object</dt>
- *                      <dd>图表数据</dd>
- *
  *                      <dt>name = string</dt>
  *                      <dd>节点名</dd>
  *
@@ -71,6 +69,16 @@
  *
  *                      <dt>tipsHtml = string</dt>
  *                      <dd>鼠标划过节点时, 显示的tips内容, 支持html内容</dd>
+ *                  </dl>
+ *                  <h2>线条与图标颜色 - colors 字段</h2>
+ *                  <dl>
+ *                      <dt>line = raphael object, default: { 'stroke': '#E1E1E1', 'stroke-width': 2 } </dt>
+ *                      <dd>背景线颜色</dd>
+ *
+ *                      <dt>icon = raphael object, default: { 'stroke': '#E1E1E1', 'stroke-width': 2, 'fill': '#F2F2F2' } </dt>
+ *                      <dd>图标颜色</dd>
+ *
+ *                      <dt>如果要自定义节点颜色 或者 tips 颜色, 请使用 css 定义: js_cfcItemStatus_N, js_cfcItemTips_N ( N 代表 status ) </dt>
  *                  </dl>
  *              </dd>
  *          </dl>
@@ -247,6 +255,8 @@
 
                     if( !_p._model.chartData() ) return;
                     _p._view.draw();
+
+                    _p.notification( JC.FlowChart.Model.INITED, [ _p, _p._model.data() ] );
                 });
 
                 //JC.dir( _p._model.chartData() );
@@ -260,6 +270,57 @@
     });
 
     FlowChart.Model._instanceName = 'JCFlowChart';
+
+    /**
+     * 初始化后 selector 触发的事件
+     * @event   cfc_inited
+     * @example
+<pre>
+$( document ).delegate( 
+    'div.js_compFlowChart'
+    , JC.FlowChart&#46;Model.INITED
+    , function( _evt, _ins, _chartData ){
+        JC.log( 'js_compFlowChart inited' );
+    }
+);
+</pre>
+     */
+    FlowChart.Model.INITED =           'cfc_inited'
+    /**
+     * dom 节点初始化后 触发的事件
+     * @event   cfc_nodeInited
+     * @example
+<pre>
+$( document ).delegate( 
+    'div.js_compFlowChart'
+    , JC.FlowChart&#46;Model.ITEM_INITED
+    , function( _evt, _domNode, _itemData, _listData, _chartData ){
+        JC.log( _domNode.prop( 'nodeName' ) );
+    }
+);
+</pre>
+     */
+    FlowChart.Model.ITEM_INITED =           'cfc_nodeInited'
+    /**
+     * dom节点初始化前的事件
+     * <br />节点如果有特殊显示需求的话, 可以从这个事件进行相关操作
+     * @event   cfc_beforeInitItem
+     * @example
+<pre>
+$( document ).delegate( 
+    'div.js_compFlowChart'
+    , JC.FlowChart&#46;Model.BEFORE_INIT_ITEM
+    , function( _evt, _itemData, _listData, _chartData ){
+        if( _itemData.tipsHtml ){
+            _itemData.tipsHtml += '   <b>test</b>';
+        }
+        _itemData.name = JC.f.printf( '~{0}~', _itemData.name );
+    }
+);
+</pre>
+     */
+    FlowChart.Model.BEFORE_INIT_ITEM =      'cfc_beforeInitItem'
+
     JC.f.extendObject( FlowChart.Model.prototype, {
         init:
             function(){
@@ -278,6 +339,11 @@
         , chartData:
             function(){
                 return this.data().chart;
+            }
+
+        , colorsData:
+            function(){
+                return this.data().colors;
             }
 
         , initGrid:
@@ -314,7 +380,7 @@
                 _p.calcRealPosition();
 
                 //JC.dir( _p.gridIdColumnIndex() );
-                JC.dir( _p.gridIdColumnIndexMap() );
+                //JC.dir( _p.gridIdColumnIndexMap() );
                 //JC.log( _p.gridMaxColumn() );
             }
 
@@ -389,22 +455,29 @@
                         , _maxWidth = _p.gridWidth()
                         ;
                     $.each( _rowList, function( _k, _item ){
-                        var _itemHtmlPatter = JC.f.printf( _p.itemHtmlPattern( _item ), _item.name, _item.tipsHtml, _p.getStatus( _item ) )
-                            , _html = JC.f.printf( 
-                                '<div class="js_cfcItem js_cfcItemStatus_{1}" style="position:absolute; left: -1000px;">{0}</div>'
-                                , _itemHtmlPatter
-                                , _p.getStatus( _item )
-                            )  
-                            , _node = $( _html )
+                        var _html, _itemHtmlPatter
+                            ;
+                        
+                        _p.notification( JC.FlowChart.Model.BEFORE_INIT_ITEM, [ _item, _rowList, _p.data() ] );
+
+                       _html = JC.f.printf( 
+                            '<div class=" ">{0}</div>'
+                            , _item.name
+                            , _p.getStatus( _item )
+                        );
+
+                        _itemHtmlPatter = JC.f.printf( _p.itemHtmlPattern( _item ), _html, _item.tipsHtml, _p.getStatus( _item ) );
+
+                        var _node = $( _itemHtmlPatter )
                             , _tmpWidth
                             ;
+                        _node.addClass( JC.f.printf( 'js_cfcItem js_cfcItemStatus_{0}', _p.getStatus( _item ) ) );
+                        _node.css( { 'position': 'absolute' } );
                         _node.appendTo( _p.box() );
                         _node.data( 'nodeData', _item );
                         _p._items[ _item.id ] = _node;
-                        _tmpWidth = _node.outerWidth();
+                        _tmpWidth = _node.width();
                         _tmpWidth > _maxWidth && ( _maxWidth = _tmpWidth );
-
-                        //JC.log( _html );
                     });
                     if( i === 0 ){
                         _maxWidth = Math.ceil( _p._items[ _p.chartData().id ].width() + 30 );
@@ -519,15 +592,15 @@
                 _ldata.rowIndex = _cy;
 
                 if( _fdata.nodes && _fdata.nodes.length ){
-                    _first = arrayFirst( _fdata.nodes );
-                    _last = arrayLast( _fdata.nodes );
+                    _first = _fdata.nodes.first();
+                    _last = _fdata.nodes.last();
                     if( _cy < _first.rowIndex || _cy > _last.rowIndex ){
                         _fdata.rowIndex = _first.rowIndex + Math.ceil( ( _last.rowIndex - _first.rowIndex ) / 2 );
                     }
                 }
                 if( _ldata.pid && _ldata.pid.length ){
-                    _first = arrayFirst( _ldata.pid );
-                    _last = arrayLast( _ldata.pid );
+                    _first = _ldata.pid.first();
+                    _last = _ldata.pid.last();
                     if( _cy < _first.rowIndex || _cy > _last.rowIndex ){
                         _ldata.rowIndex = _first.rowIndex + Math.ceil( ( _last.rowIndex - _first.rowIndex ) / 2 );
                     }
@@ -558,8 +631,8 @@
 
                         if( _nodes && _nodes.length ){
                             if( _nodes.length > 1 ){
-                                _fdata = arrayFirst( _nodes );
-                                _ldata = arrayLast( _nodes );
+                                _fdata = _nodes.first();
+                                _ldata = _nodes.last();
                                 _midY = _fdata.rowIndex + Math.ceil( _ldata.rowIndex - _fdata.rowIndex ) / 2;
                                 _spaceY = _oldIx - _midY;
                                 _minY = _fdata.rowIndex + _spaceY;
@@ -582,7 +655,7 @@
                                     _p.fixItemDataAndNext( _fdata, _spaceY );
                                 }
                             }else{
-                                _fdata = arrayFirst( _nodes );
+                                _fdata = _nodes.first();
                                 if( _item.rowIndex === _fdata.rowIndex ) return;
                                 _maxY = Math.max( _item.rowIndex, _fdata.rowIndex );
                                 if( _item.rowIndex > _fdata.rowIndex ){
@@ -621,8 +694,8 @@
 
                         if( _pid && _pid.length ){
                             if( _pid.length > 1 ){
-                                _fdata = _p.gridIdMap( arrayFirst( _pid ) );
-                                _ldata = _p.gridIdMap( arrayLast( _pid ) );
+                                _fdata = _p.gridIdMap( _pid.first() );
+                                _ldata = _p.gridIdMap( _pid.last() );
 
                                 _midY = _fdata.rowIndex + Math.ceil( _ldata.rowIndex - _fdata.rowIndex ) / 2
 
@@ -633,7 +706,7 @@
                                     _item.rowIndex = _midY;
                                 }
                             }else{
-                                _fdata = _p.gridIdMap( arrayFirst( _pid ) );
+                                _fdata = _p.gridIdMap( _pid.first() );
                                 if( _fdata.targetNode ){
                                     if( _item.next && _fdata.rowIndex >= _item.next.rowIndex ){
                                         _p.fixItemDataAndNext( _item, _fdata.rowIndex - _item.rowIndex );
@@ -648,12 +721,11 @@
                 }
             }
 
-
         , fixItemParentDataAndNext:
             function( _item, _spaceY, _isRealY ){
                 var _p = this, _nextSpaceY, _newIx;
                 if( !( _item && _item.pid && _item.pid.length ) ) return;
-                var _pitem = _p.gridIdMap( arrayFirst( _item.pid ) )
+                var _pitem = _p.gridIdMap( _item.pid.first() )
                     , _fdata, _ldata, _midY
                     ;
                 if( !( _pitem ) ) return;
@@ -710,8 +782,6 @@
                 }
 
             }
-
-
 
         , initRowIndex:
             function(){
@@ -878,6 +948,39 @@
                 return _r;
             }
 
+        , colors:
+            function(){
+                var _p = this;
+
+                if( !_p._colors ){
+                    _p._colors = _p._buildInColors;
+
+                    if( _p.colorsData() ){
+                        $.each( _p.colorsData(), function( _k, _item ){
+                            if( _k in _p._colors ){
+                                if( $.isPlainObject( _item ) ){
+                                    JC.f.extendObject( _p._colors[ _k ], _item );
+                                }
+                            }else{
+                                _p._colors[ _k ] = _item;
+                            }
+                        });
+                    }
+                    //JC.dir( _p._colors );
+                }
+
+                return _p._colors;
+            }
+
+        , _buildInColors: {
+            line: {
+                 'stroke': '#E1E1E1', 'stroke-width': 2
+            }
+            , icon: {
+                'stroke': '#E1E1E1', 'stroke-width': 2, 'fill': '#F2F2F2'
+            }
+        }
+
     });
 
     JC.f.extendObject( FlowChart.View.prototype, {
@@ -906,7 +1009,7 @@
 
                 _et = JC.f.ts();
 
-                JC.log( 'time span:', _et - _st );
+                //JC.log( 'time span:', _et - _st );
             }
 
         , showLine:
@@ -914,14 +1017,6 @@
                 var _p = this, _rh, _raphael, _y = Math.abs( _p._model.minY() ), _ypad = 0;
                 _rh = _raphael = Raphael( _p._model.raphaelPlaceholder()[0], _p._model.width(), _p._model.height() );
                 !isIE && ( _ypad = 1 );
-
-                var _lineStyle = {
-                        'stroke': '#E1E1E1', 'stroke-width': 2
-                    }
-                    , _iconStyle = {
-                        'stroke': '#E1E1E1', 'stroke-width': 2, 'fill': '#F2F2F2'
-                    }
-                    ;
 
                 for( var i = 0; i <= _p._model.gridMaxColumn(); i++ ){
                     var _rowList = _p._model.gridIdColumnIndexMap()[ i ]
@@ -968,12 +1063,12 @@
                         if( !( _pid || _nodes ) ) return; 
 
                         if(  _pid && _pid.length  ){
-                            _fitem = _p._model.gridIdMap( arrayFirst( _pid ) );
+                            _fitem = _p._model.gridIdMap( _pid.first() );
                             _fnode = _p._model.item( _fitem.id );
 
                             if( _pid.length > 1 ){
                                 _realStartX = _preColumnX + _preColumnWidth + _p._model.parentLineWidth();
-                                _litem = _p._model.gridIdMap( arrayLast( _pid ) );
+                                _litem = _p._model.gridIdMap( _pid.last() );
                                 _lnode = _p._model.item( _litem.id );
 
                                 _midY = _item.y + Math.abs( _p._model.minY() ) + _node.outerHeight() / 2 + _ypad;
@@ -989,7 +1084,7 @@
                                     , _realStartX, _tmpY2
                                     , _realStartX, _midY
                                     , _endX, _midY
-                                )).attr( _lineStyle );
+                                )).attr( _p._model.colors().line );
 
                                 $.each( _pid, function( _sk, _sitem ){
                                     _sdata = _p._model.gridIdMap( _sitem );
@@ -1001,10 +1096,10 @@
                                         , ''
                                         , _sdata.x, _tmpY
                                         , _realStartX, _tmpY
-                                    )).attr( _lineStyle );
+                                    )).attr( _p._model.colors().line );
                                 });
 
-                                _rh.JCTriangle( 16, _endX, _midY, _iconStyle );
+                                _rh.JCTriangle( 16, _endX, _midY, _p._model.colors().icon );
                             }else if( _fitem && _pid.length === 1 && ( 'targetNode' in _fitem ) ){
                                 _realStartX = _preColumnX + _fnode.outerWidth();
                                 _realY = _fitem.y + _fnode.outerHeight() / 2;
@@ -1013,8 +1108,8 @@
                                 _rh.path( JC.f.printf( 
                                     '{0}M{1} {2}L{3} {4}'
                                     , '', _realStartX, _realY + _ypad, _item.x - 18, _realY + _ypad
-                                )).attr( _lineStyle );
-                                _rh.JCTriangle( 16, _item.x - 18, _realY + _ypad, _iconStyle );
+                                )).attr( _p._model.colors().line );
+                                _rh.JCTriangle( 16, _item.x - 18, _realY + _ypad, _p._model.colors().icon );
                             }
                         }
 
@@ -1023,8 +1118,8 @@
 
                                 _sx = _item.x + _node.outerWidth();
 
-                                _fitem = arrayFirst( _nodes );
-                                _litem = arrayLast( _nodes );
+                                _fitem = _nodes.first();
+                                _litem = _nodes.last();
                                 _fnode = _p._model.item( _fitem.id );
                                 _lnode = _p._model.item( _litem.id );
 
@@ -1040,9 +1135,9 @@
                                     , ''
                                     , _sx, _midY
                                     , _realStartX - 18, _midY
-                                )).attr( _lineStyle );
+                                )).attr( _p._model.colors().line );
 
-                                _rh.JCTriangle( 16, _realStartX - 18, _midY, _iconStyle );
+                                _rh.JCTriangle( 16, _realStartX - 18, _midY, _p._model.colors().icon );
 
                                 _tmpY1 = _fitem.y + Math.abs( _p._model.minY() ) +  _fnode.outerHeight() / 2 + _ypad;
                                 _tmpY2 = _litem.y + Math.abs( _p._model.minY() ) +  _lnode.outerHeight() / 2 + _ypad;
@@ -1054,7 +1149,7 @@
                                     , ''
                                     , _realStartX, _tmpY1
                                     , _realStartX, _tmpY2
-                                )).attr( _lineStyle );
+                                )).attr( _p._model.colors().line );
 
                                 $.each( _nodes, function( _sk, _sitem ){
                                     _sdata = _sitem;
@@ -1066,7 +1161,7 @@
                                         , ''
                                         , _realStartX, _tmpY
                                         , _sdata.x, _tmpY
-                                    )).attr( _lineStyle );
+                                    )).attr( _p._model.colors().line );
                                 });
 
                             }
@@ -1079,8 +1174,8 @@
                                 _rh.path( JC.f.printf( 
                                     '{0}M{1} {2}L{3} {4}'
                                     , '', _realStartX, _realY + _y + _ypad, _subitem.x - 18, _realY + _y + _ypad
-                                )).attr( _lineStyle );
-                                _rh.JCTriangle( 16, _subitem.x - 18, _realY + _y + _ypad, _iconStyle );
+                                )).attr( _p._model.colors().line );
+                                _rh.JCTriangle( 16, _subitem.x - 18, _realY + _y + _ypad, _p._model.colors().icon );
                             }
                         }
                     });
@@ -1100,6 +1195,7 @@
                         _node.css({
                             'left': _item.x + 'px', 'top': _item.y + 'px'
                         });
+                        _p.notification( JC.FlowChart.Model.ITEM_INITED, [ _node, _item, _rowList, _p._model.data() ] );
                     });
                 }
             }
@@ -1112,7 +1208,6 @@
             ,'theme="white"'
             ,'arrowposition="bottom"'
             ,'triggerType="hover"'
-            ,'offsetXY="0,-4"'
             ,'popTipsMinWidth="100"'
             ,'popTipsMinHeight="50"'
             ,'>'
@@ -1120,18 +1215,6 @@
             ,'<script type="text/template"><div class="js_cfcItemTips js_cfcItemTips_{2}">{1}</div><\/script>'
             ,'</span>'
         ].join('');
-
-    function arrayFirst( _a ){
-        var _r;
-        _a && _a.length && ( _r = _a[0] );
-        return _r;
-    }
-
-    function arrayLast( _a ){
-        var _r;
-        _a && _a.length && ( _r = _a[ _a.length - 1] );
-        return _r;
-    }
 
     function distanceAngleToPoint( _distance, _angle){
         var _radian = _angle * Math.PI / 180;					
@@ -1176,7 +1259,9 @@
                 return _r;
             };
 
-        FlowChart.autoInit && FlowChart.init();
+        JC.f.safeTimeout( function(){
+            FlowChart.autoInit && FlowChart.init();
+        }, null, 'JCFlowChart_INIT', 1);
     });
 
     return JC.FlowChart;
