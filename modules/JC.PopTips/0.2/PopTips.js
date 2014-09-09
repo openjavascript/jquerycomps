@@ -529,8 +529,8 @@
                 },
                 _lw = _p.layout().outerWidth(),
                 _lh = _p.layout().outerHeight();
-            JC.log( _lh, _lw, _arrowPosition, JC.f.ts() );
-            JC.log( _p.layout().html() );
+            //JC.log( _lh, _lw, _arrowPosition, JC.f.ts() );
+            //JC.log( _p.layout().html() );
             
             switch ( _arrowPosition ) {
                 case 'top':
@@ -583,7 +583,6 @@
 
             _offset = _p.calcPosOffset( _newAP );
             _p.changeArrow( _now );
-            JC.dir( _offset );
             
             if ( ( _now === 'top'  ) 
                 || ( _now === 'bottom' ) ) {
@@ -686,7 +685,7 @@
                         _newAP = 'bottom';
                         _now = 'bottom';
                         _afterChangePos = _p.changePosition(_newAP, _now);
-                        JC.dir( _afterChangePos );
+                        //JC.dir( _afterChangePos );
 
                         if ( _afterChangePos.top < _winSize.viewportY ) {
                             _newAP = 'top';
