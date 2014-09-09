@@ -9693,6 +9693,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         , "fixPath": fixPath
         , "arrayId": arrayId
         , "docSize": docSize
+        , "winSize": winSize
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -11110,7 +11111,27 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
         return _r;
     }
-
+    /**
+     * 获取 window 的 相关大小
+     * @method  winSize
+     * @param   {window}    _win,  default = window
+     * @return  Object
+     * @static
+     */
+    function winSize( _win ){
+        _win = $( _win || window );
+        var _r = {
+                width: _win.width()
+                , height: _win.height()
+                , scrollLeft: _win.scrollLeft()
+                , scrollTop: _win.scrollTop()
+            };
+        _r.viewportX = _r.scrollLeft;
+        _r.maxViewportX = _r.scrollLeft + _r.width;
+        _r.viewportY = _r.scrollTop;
+        _r.maxViewportY = _r.scrollTop + _r.height;
+        return _r;
+    }
 
     return JC.f;
 

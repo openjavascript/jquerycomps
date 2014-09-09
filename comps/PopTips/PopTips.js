@@ -3,8 +3,7 @@
  * PopTips 带箭头的气泡提示框功能
  * <p>
  *      <b>require</b>: 
- *          <a href='.jQuery.html'>jQuery</a>
- *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *          <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.PopTips.html' target='_blank'>API docs</a>
@@ -203,7 +202,7 @@
 
             if( !_ins ) return;
 
-            if ( _ins._model.layout().is(':visible') ) {
+            if ( _ins._model.layout().is(':visible') && _ins._model.layout().offset().left >= -200 ) {
                 _ins.update();
             }
 
@@ -465,6 +464,7 @@
                         ) )
                         .appendTo( this.layoutBox() );
                 }
+                this._layout.css( { 'left': '-10000px' } ).show();
                 
             }
 
@@ -529,6 +529,8 @@
                 },
                 _lw = _p.layout().outerWidth(),
                 _lh = _p.layout().outerHeight();
+            //JC.log( _lh, _lw, _arrowPosition, JC.f.ts() );
+            //JC.log( _p.layout().html() );
             
             switch ( _arrowPosition ) {
                 case 'top':
@@ -565,10 +567,13 @@
             return _r;
         },
 
+        /**
+         * 设置 left top 之后, 获取高度不准确
+         */
         offSet: function ( _offset ) {
             this.layout().css({
-                top: _offset.top,
-                left: _offset.left
+                top: _offset.top + 'px',
+                left: _offset.left + 'px'
             });
         },
 
@@ -594,6 +599,7 @@
         },
 
         setPosition: function ( _offset, _arrowPosition ) {
+
             var _p = this,
                 _newAP,
                 _now,
@@ -607,28 +613,32 @@
                 _tipsMaxPosX = _offset.width + _offset.left,
                 _tipsMaxPosY = _offset.top + _offset.height,
                 _baseP = _p.arrowPositionOffset(),
-                _afterChangePos ;
-
-            _p.offSet( _offset );
+                //_baseP = '',
+                _afterChangePos,
+                _winSize = JC.f.winSize(),
+                _fixed
+                ;
 
             _baseP && ( _baseP = '_' + _baseP );
+            
 
             if ( _arrowPosition === 'bottom'  ) { 
-                if ( _offset.top < 0 ) {
+                if ( _offset.top < _winSize.viewportY ) {
                     _newAP = 'top';
                     _now = 'top' + _baseP;
                     _p.changePosition( _newAP, _now );
+                    _fixed = true;
                 } else {
                     _p.changeArrow( "bottom" + _baseP );
                 }
             }
-
 
             if ( _arrowPosition === 'top'  ) {
                 if( _viewMaxY < _tipsMaxPosY ) {
                     _newAP = 'bottom';
                     _now = 'bottom' + _baseP;
                     _afterChangePos = _p.changePosition( _newAP, _now );
+                    _fixed = true;
                 } else  {
                     _p.changeArrow( 'top' + _baseP );
                 }
@@ -636,18 +646,19 @@
             }
 
             if ( _arrowPosition === 'right' ) {
-                if ( _offset.left < 0 ) {
+                if ( _offset.left < _winSize.viewportX ) {
                     _newAP = 'left';
                     _now = 'left' + _baseP;
                     _afterChangePos = _p.changePosition(_newAP, _now);
                     _tipsMaxPosX = _afterChangePos.width + _afterChangePos.left;
+                    _fixed = true;
 
                     if ( _viewMaxX < _tipsMaxPosX ) {
                         _newAP = 'bottom';
                         _now = 'bottom';
                         _afterChangePos = _p.changePosition(_newAP, _now);
 
-                        if ( _afterChangePos.top < 0 ) {
+                        if ( _afterChangePos.top < _winSize.viewportY ) {
                             _newAP = 'top';
                             _now = 'top';
                             _afterChangePos = _p.changePosition(_newAP, _now);
@@ -668,13 +679,15 @@
                     _newAP = 'right';
                     _now = 'right' + _baseP;
                     _afterChangePos = _p.changePosition(_newAP, _now);
+                    _fixed = true;
 
-                    if ( _afterChangePos.left < 0 ) {
+                    if ( _afterChangePos.left < _winSize.viewportX ) {
                         _newAP = 'bottom';
                         _now = 'bottom';
                         _afterChangePos = _p.changePosition(_newAP, _now);
+                        //JC.dir( _afterChangePos );
 
-                        if ( _afterChangePos.top < 0 ) {
+                        if ( _afterChangePos.top < _winSize.viewportY ) {
                             _newAP = 'top';
                             _now = 'top';
                             _afterChangePos = _p.changePosition(_newAP, _now);
@@ -688,6 +701,8 @@
                     _p.changeArrow('left' + _baseP);
                 }
             }
+
+            !_fixed && _p.offSet( _offset );
         },
 
         /**
@@ -728,10 +743,58 @@
                     height: _selector.prop('offsetHeight')
                 },
                 _arrowPosition = _p._model.arrowPosition(),
-                _cal;
+                _revertArrow = _arrowPosition, 
+                _offset, _revertOffset;
 
-            _cal = _p._model.calcPosOffset(_arrowPosition, _pos );
-            _p._model.setPosition( _cal, _arrowPosition );
+            switch( _arrowPosition ){
+                case 'left': _revertArrow = 'right'; break;
+                case 'right': _revertArrow = 'left'; break;
+                case 'top': _revertArrow = 'bottom'; break;
+                case 'bottom': _revertArrow = 'top'; break;
+            }
+
+            _offset = _p._model.calcPosOffset(_arrowPosition, JC.f.cloneObject( _pos ) );
+            //JC.log( _arrowPosition, _revertArrow );
+
+            var _newAP,
+                _now,
+                _win = $(window),
+                _viewportHeight = _win.outerHeight(),
+                _viewportWidth = _win.outerWidth(),
+                _scrollTop = _win.scrollTop(),
+                _scrollLeft = _win.scrollLeft(),
+                _viewMaxX = _viewportWidth + _scrollLeft,
+                _viewMaxY = _viewportHeight + _scrollTop,
+                _tipsMaxPosX = _offset.width + _offset.left,
+                _tipsMaxPosY = _offset.top + _offset.height,
+                _baseP = _p._model.arrowPositionOffset(),
+                _afterChangePos,
+                _winSize = JC.f.winSize()
+                ;
+
+                ;
+            if( _tipsMaxPosX > _winSize.maxViewportX ){
+                _arrowPosition = 'right';
+                _offset = _p._model.calcPosOffset(_arrowPosition, JC.f.cloneObject( _pos ) );
+            }
+
+            if( _offset.left < _winSize.viewportX ){
+                _arrowPosition = 'left';
+                _offset = _p._model.calcPosOffset(_arrowPosition, JC.f.cloneObject( _pos ) );
+                //JC.dir( _offset );
+            }
+
+            if( _offset.top < _winSize.viewportX ){
+                _arrowPosition = 'top';
+                _offset = _p._model.calcPosOffset(_arrowPosition, JC.f.cloneObject( _pos ) );
+            }
+            
+            if( _tipsMaxPosY > _winSize.maxViewportY ){
+                _arrowPosition = 'bottom';
+                _offset = _p._model.calcPosOffset(_arrowPosition, JC.f.cloneObject( _pos ) );
+            }
+
+            _p._model.setPosition( _offset, _arrowPosition );
 
             _p._model.layout().data('CPopTipsIns', _p);
         },
@@ -739,14 +802,14 @@
         show: function () {
             var _p = this;
 
-            _p._model.layout().show();
+            //_p._model.layout().show();
             
         },
 
         hide: function () {
             var _p = this;
 
-            _p._model.layout().hide();
+            _p._model.layout().css( { left: '-10000px' } );
             
 
             _p._model.afterHideCallback() && _p._model.afterHideCallback().call( _p, _p.selector() );
