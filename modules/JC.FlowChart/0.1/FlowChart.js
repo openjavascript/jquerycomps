@@ -271,8 +271,54 @@
 
     FlowChart.Model._instanceName = 'JCFlowChart';
 
+    /**
+     * 初始化后 selector 触发的事件
+     * @event   cfc_inited
+     * @example
+<pre>
+$( document ).delegate( 
+    'div.js_compFlowChart'
+    , JC.FlowChart&#46;Model.INITED
+    , function( _evt, _ins, _chartData ){
+        JC.log( 'js_compFlowChart inited' );
+    }
+);
+</pre>
+     */
     FlowChart.Model.INITED =           'cfc_inited'
-    FlowChart.Model.ITEM_INITED =           'cfc_dataInited'
+    /**
+     * dom 节点初始化后 触发的事件
+     * @event   cfc_nodeInited
+     * @example
+<pre>
+$( document ).delegate( 
+    'div.js_compFlowChart'
+    , JC.FlowChart&#46;Model.ITEM_INITED
+    , function( _evt, _domNode, _itemData, _listData, _chartData ){
+        JC.log( _domNode.prop( 'nodeName' ) );
+    }
+);
+</pre>
+     */
+    FlowChart.Model.ITEM_INITED =           'cfc_nodeInited'
+    /**
+     * dom节点初始化前的事件
+     * <br />节点如果有特殊显示需求的话, 可以从这个事件进行相关操作
+     * @event   cfc_beforeInitItem
+     * @example
+<pre>
+$( document ).delegate( 
+    'div.js_compFlowChart'
+    , JC.FlowChart&#46;Model.BEFORE_INIT_ITEM
+    , function( _evt, _itemData, _listData, _chartData ){
+        if( _itemData.tipsHtml ){
+            _itemData.tipsHtml += '   <b>test</b>';
+        }
+        _itemData.name = JC.f.printf( '~{0}~', _itemData.name );
+    }
+);
+</pre>
+     */
     FlowChart.Model.BEFORE_INIT_ITEM =      'cfc_beforeInitItem'
 
     JC.f.extendObject( FlowChart.Model.prototype, {

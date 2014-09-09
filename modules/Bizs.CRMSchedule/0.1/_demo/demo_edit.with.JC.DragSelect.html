@@ -75,6 +75,19 @@
             };
 
             requirejs( [ 'Bizs.CRMSchedule' ], function(){
+                CRMSchedule.defaultDataBuild = 
+                    function( _data, _sdate ){
+                        var _t = [];
+                        _data.company && (          _t.push( '广告主名称　: ' + _data.company ) );
+                        _data.agencyName && (       _t.push( '代理公司名称: ' + _data.agencyName ) );
+                        _data.departmentName && (   _t.push( '部门团队名称: ' + _data.departmentName ) );
+                        _data.createUserName && (   _t.push( '提交人　　　: ' + _data.createUserName ) );
+                        _data.statusName && (       _t.push( '预订任务状态: ' + _data.statusName ) );
+                        _sdate && _t.length && (    _t.push( '日期　　　　: ' + _sdate ) );
+                        _data.title = _t.join( '\n' );
+                        return _data;
+                    };
+
                 JC.Tips.autoInit = false;
             });
 

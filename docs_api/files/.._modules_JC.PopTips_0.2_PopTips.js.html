@@ -249,12 +249,11 @@
  * PopTips 带箭头的气泡提示框功能
  * &lt;p&gt;
  *      &lt;b&gt;require&lt;/b&gt;: 
- *          &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
- *          , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+ *      &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
  * &lt;/p&gt;
  * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
  * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.PopTips.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
- * | &lt;a href=&#x27;../../modules/JC.PopTips/0.1/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+ * | &lt;a href=&#x27;../../modules/JC.PopTips/0.2/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
  *
  * &lt;h2&gt;页面只要引用本文件, 默认会自动初始化span|em|a|b为class=&quot;js_compPoptips&quot;的提示气泡&lt;/h2&gt;
  * &lt;p&gt;&lt;/p&gt;
@@ -449,7 +448,7 @@
 
             if( !_ins ) return;
 
-            if ( _ins._model.layout().is(&#x27;:visible&#x27;) ) {
+            if ( _ins._model.layout().is(&#x27;:visible&#x27;) &amp;&amp; _ins._model.layout().offset().left &gt;= -200 ) {
                 _ins.update();
             }
 
@@ -711,6 +710,7 @@
                         ) )
                         .appendTo( this.layoutBox() );
                 }
+                this._layout.css( { &#x27;left&#x27;: &#x27;-10000px&#x27; } ).show();
                 
             }
 
@@ -775,6 +775,8 @@
                 },
                 _lw = _p.layout().outerWidth(),
                 _lh = _p.layout().outerHeight();
+            //JC.log( _lh, _lw, _arrowPosition, JC.f.ts() );
+            //JC.log( _p.layout().html() );
             
             switch ( _arrowPosition ) {
                 case &#x27;top&#x27;:
@@ -811,10 +813,13 @@
             return _r;
         },
 
+        /**
+         * 设置 left top 之后, 获取高度不准确
+         */
         offSet: function ( _offset ) {
             this.layout().css({
-                top: _offset.top,
-                left: _offset.left
+                top: _offset.top + &#x27;px&#x27;,
+                left: _offset.left + &#x27;px&#x27;
             });
         },
 
@@ -840,6 +845,7 @@
         },
 
         setPosition: function ( _offset, _arrowPosition ) {
+
             var _p = this,
                 _newAP,
                 _now,
@@ -853,28 +859,32 @@
                 _tipsMaxPosX = _offset.width + _offset.left,
                 _tipsMaxPosY = _offset.top + _offset.height,
                 _baseP = _p.arrowPositionOffset(),
-                _afterChangePos ;
-
-            _p.offSet( _offset );
+                //_baseP = &#x27;&#x27;,
+                _afterChangePos,
+                _winSize = JC.f.winSize(),
+                _fixed
+                ;
 
             _baseP &amp;&amp; ( _baseP = &#x27;_&#x27; + _baseP );
+            
 
             if ( _arrowPosition === &#x27;bottom&#x27;  ) { 
-                if ( _offset.top &lt; 0 ) {
+                if ( _offset.top &lt; _winSize.viewportY ) {
                     _newAP = &#x27;top&#x27;;
                     _now = &#x27;top&#x27; + _baseP;
                     _p.changePosition( _newAP, _now );
+                    _fixed = true;
                 } else {
                     _p.changeArrow( &quot;bottom&quot; + _baseP );
                 }
             }
-
 
             if ( _arrowPosition === &#x27;top&#x27;  ) {
                 if( _viewMaxY &lt; _tipsMaxPosY ) {
                     _newAP = &#x27;bottom&#x27;;
                     _now = &#x27;bottom&#x27; + _baseP;
                     _afterChangePos = _p.changePosition( _newAP, _now );
+                    _fixed = true;
                 } else  {
                     _p.changeArrow( &#x27;top&#x27; + _baseP );
                 }
@@ -882,18 +892,19 @@
             }
 
             if ( _arrowPosition === &#x27;right&#x27; ) {
-                if ( _offset.left &lt; 0 ) {
+                if ( _offset.left &lt; _winSize.viewportX ) {
                     _newAP = &#x27;left&#x27;;
                     _now = &#x27;left&#x27; + _baseP;
                     _afterChangePos = _p.changePosition(_newAP, _now);
                     _tipsMaxPosX = _afterChangePos.width + _afterChangePos.left;
+                    _fixed = true;
 
                     if ( _viewMaxX &lt; _tipsMaxPosX ) {
                         _newAP = &#x27;bottom&#x27;;
                         _now = &#x27;bottom&#x27;;
                         _afterChangePos = _p.changePosition(_newAP, _now);
 
-                        if ( _afterChangePos.top &lt; 0 ) {
+                        if ( _afterChangePos.top &lt; _winSize.viewportY ) {
                             _newAP = &#x27;top&#x27;;
                             _now = &#x27;top&#x27;;
                             _afterChangePos = _p.changePosition(_newAP, _now);
@@ -914,13 +925,15 @@
                     _newAP = &#x27;right&#x27;;
                     _now = &#x27;right&#x27; + _baseP;
                     _afterChangePos = _p.changePosition(_newAP, _now);
+                    _fixed = true;
 
-                    if ( _afterChangePos.left &lt; 0 ) {
+                    if ( _afterChangePos.left &lt; _winSize.viewportX ) {
                         _newAP = &#x27;bottom&#x27;;
                         _now = &#x27;bottom&#x27;;
                         _afterChangePos = _p.changePosition(_newAP, _now);
+                        //JC.dir( _afterChangePos );
 
-                        if ( _afterChangePos.top &lt; 0 ) {
+                        if ( _afterChangePos.top &lt; _winSize.viewportY ) {
                             _newAP = &#x27;top&#x27;;
                             _now = &#x27;top&#x27;;
                             _afterChangePos = _p.changePosition(_newAP, _now);
@@ -934,6 +947,8 @@
                     _p.changeArrow(&#x27;left&#x27; + _baseP);
                 }
             }
+
+            !_fixed &amp;&amp; _p.offSet( _offset );
         },
 
         /**
@@ -974,10 +989,58 @@
                     height: _selector.prop(&#x27;offsetHeight&#x27;)
                 },
                 _arrowPosition = _p._model.arrowPosition(),
-                _cal;
+                _revertArrow = _arrowPosition, 
+                _offset, _revertOffset;
 
-            _cal = _p._model.calcPosOffset(_arrowPosition, _pos );
-            _p._model.setPosition( _cal, _arrowPosition );
+            switch( _arrowPosition ){
+                case &#x27;left&#x27;: _revertArrow = &#x27;right&#x27;; break;
+                case &#x27;right&#x27;: _revertArrow = &#x27;left&#x27;; break;
+                case &#x27;top&#x27;: _revertArrow = &#x27;bottom&#x27;; break;
+                case &#x27;bottom&#x27;: _revertArrow = &#x27;top&#x27;; break;
+            }
+
+            _offset = _p._model.calcPosOffset(_arrowPosition, JC.f.cloneObject( _pos ) );
+            //JC.log( _arrowPosition, _revertArrow );
+
+            var _newAP,
+                _now,
+                _win = $(window),
+                _viewportHeight = _win.outerHeight(),
+                _viewportWidth = _win.outerWidth(),
+                _scrollTop = _win.scrollTop(),
+                _scrollLeft = _win.scrollLeft(),
+                _viewMaxX = _viewportWidth + _scrollLeft,
+                _viewMaxY = _viewportHeight + _scrollTop,
+                _tipsMaxPosX = _offset.width + _offset.left,
+                _tipsMaxPosY = _offset.top + _offset.height,
+                _baseP = _p._model.arrowPositionOffset(),
+                _afterChangePos,
+                _winSize = JC.f.winSize()
+                ;
+
+                ;
+            if( _tipsMaxPosX &gt; _winSize.maxViewportX ){
+                _arrowPosition = &#x27;right&#x27;;
+                _offset = _p._model.calcPosOffset(_arrowPosition, JC.f.cloneObject( _pos ) );
+            }
+
+            if( _offset.left &lt; _winSize.viewportX ){
+                _arrowPosition = &#x27;left&#x27;;
+                _offset = _p._model.calcPosOffset(_arrowPosition, JC.f.cloneObject( _pos ) );
+                //JC.dir( _offset );
+            }
+
+            if( _offset.top &lt; _winSize.viewportX ){
+                _arrowPosition = &#x27;top&#x27;;
+                _offset = _p._model.calcPosOffset(_arrowPosition, JC.f.cloneObject( _pos ) );
+            }
+            
+            if( _tipsMaxPosY &gt; _winSize.maxViewportY ){
+                _arrowPosition = &#x27;bottom&#x27;;
+                _offset = _p._model.calcPosOffset(_arrowPosition, JC.f.cloneObject( _pos ) );
+            }
+
+            _p._model.setPosition( _offset, _arrowPosition );
 
             _p._model.layout().data(&#x27;CPopTipsIns&#x27;, _p);
         },
@@ -985,14 +1048,14 @@
         show: function () {
             var _p = this;
 
-            _p._model.layout().show();
+            //_p._model.layout().show();
             
         },
 
         hide: function () {
             var _p = this;
 
-            _p._model.layout().hide();
+            _p._model.layout().css( { left: &#x27;-10000px&#x27; } );
             
 
             _p._model.afterHideCallback() &amp;&amp; _p._model.afterHideCallback().call( _p, _p.selector() );
