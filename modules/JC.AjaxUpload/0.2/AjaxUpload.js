@@ -464,6 +464,8 @@
         ,'</span>'
         ].join('');
 
+    AjaxUpload.Model.THEME = 'default';
+
     JC.f.extendObject( AjaxUpload.Model.prototype, {
         init:
             function(){
@@ -839,6 +841,12 @@
                 return _r;
             }
 
+        , cauTheme:
+            function(){
+                var _r = this.attrProp( 'cauTheme' ) || AjaxUpload.Model.THEME;
+                return _r;
+            }
+
         , initButtonStyle:
             function( _r ){
                 if( !_r ) return;
@@ -853,7 +861,7 @@
                 switch( _p.cauStyle() ){
                     case 'g1':
                         {
-                            _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
+                            _r.button_image_url = JC.f.printf( '{0}res/{1}/g_61x27.png', _p.cauRoot(), _p.cauTheme() );
                             _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#ffffff; text-align: center; }' );
                             break;
                         }
@@ -861,7 +869,7 @@
                         {
                             _r.button_text_top_padding = "4";
                             _r.button_height = _p.cauButtonHeight( 26 );
-                            _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
+                            _r.button_image_url = JC.f.printf( '{0}res/{1}/g_61x27.png', _p.cauRoot(), _p.cauTheme() );
                             _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#ffffff; text-align: center; }' );
                             break;
                         }
@@ -869,7 +877,7 @@
                         {
                             _r.button_text_top_padding = "6";
                             _r.button_height = _p.cauButtonHeight( 28 );
-                            _r.button_image_url = JC.f.printf( '{0}res/default/g_61x27.png', _p.cauRoot() );
+                            _r.button_image_url = JC.f.printf( '{0}res/{1}/g_61x27.png', _p.cauRoot(), _p.cauTheme() );
                             _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#ffffff; text-align: center; }' );
                             break;
                         }
@@ -884,7 +892,7 @@
                         {
                             _r.button_text_top_padding = "4";
                             _r.button_height = _p.cauButtonHeight( 26 );
-                            _r.button_image_url = JC.f.printf( '{0}res/default/w_61x27.png', _p.cauRoot() );
+                            _r.button_image_url = JC.f.printf( '{0}res/{1}/w_61x27.png', _p.cauRoot(), _p.cauTheme() );
                             _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#000000; text-align: center; }' );
                             break;
                         }
@@ -892,7 +900,7 @@
                         {
                             _r.button_text_top_padding = "6";
                             _r.button_height = _p.cauButtonHeight( 28 );
-                            _r.button_image_url = JC.f.printf( '{0}res/default/w_61x27.png', _p.cauRoot() );
+                            _r.button_image_url = JC.f.printf( '{0}res/{1}/w_61x27.png', _p.cauRoot(), _p.cauTheme() );
                             _r.button_text_style = _p.cauButtonStyle( '.uFont{ color:#000000; text-align: center; }' );
                             break;
                         }
