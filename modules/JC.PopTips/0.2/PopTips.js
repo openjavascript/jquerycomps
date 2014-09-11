@@ -37,7 +37,7 @@
  *
  *    <dt>theme = yellow | blue | white | green, <a href="../../modules/JC.PopTips/0.1/res/default/style.html" target="_blank">查看</a> </dt>
  *    <dd>
- *       气泡主题，提供黄色、蓝色、白色、绿色四种样式，默认为 yellow.
+ *       气泡主题，提供黄色、蓝色、白色、绿色四种样式，默认为 blue.
  *       <p><b>yellow：</b>黄色<br/>
  *       <b>blue：</b>蓝色<br/>
  *       <b>white：</b>白色<br/>
@@ -124,7 +124,7 @@
  * @example
 	<span class="js_compPopTips" style="margin-top:50px; margin-left:200px; display:inline-block;"  
 		content="1.这个tip显示在右边<br>2.古希腊学者亚里士多<br>3.古希腊学者亚里士多<br>4.古希腊学者亚里士多"  
-		theme="yellow" 
+		theme="blue" 
 		arrowposition="left"
 		triggerType="click"
 		>
@@ -349,7 +349,7 @@
         theme: function () {
             var _r = this.stringProp('theme');
             
-            !_r && ( _r = 'yellow' );
+            !_r && ( _r = 'blue' );
 
             return _r;
 
