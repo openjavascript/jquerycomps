@@ -292,12 +292,11 @@
 
             if ( _p._model.triggerType() == 'click' ) {
                 _p._model.selector().on('click', function ( _evt ) {
-                    if ( _p._model.layout().is(':visible') ) {
+                    if ( _p._model.layout().is(':visible') && _p._model.layout().offset().left >= -200 ) {
                         _p._view.hide();
                     } else {
                         _p._view.update();
                         _p._view.show();
-                        
                     }
                 });
             }
