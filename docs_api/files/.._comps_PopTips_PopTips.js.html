@@ -532,12 +532,11 @@
 
             if ( _p._model.triggerType() == &#x27;click&#x27; ) {
                 _p._model.selector().on(&#x27;click&#x27;, function ( _evt ) {
-                    if ( _p._model.layout().is(&#x27;:visible&#x27;) ) {
+                    if ( _p._model.layout().is(&#x27;:visible&#x27;) &amp;&amp; _p._model.layout().offset().left &gt;= -200 ) {
                         _p._view.hide();
                     } else {
                         _p._view.update();
                         _p._view.show();
-                        
                     }
                 });
             }
