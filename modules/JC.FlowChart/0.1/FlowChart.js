@@ -373,14 +373,14 @@ $( document ).delegate(
                 /*
                 */
                 _p.fixRealRowIndex();
+                _p.fixFirstLastRowIndex();
 
-                _p.fixFistLastRowIndex();
 
                 _p.createItems();
                 _p.calcRealPosition();
 
                 //JC.dir( _p.gridIdColumnIndex() );
-                //JC.dir( _p.gridIdColumnIndexMap() );
+                JC.dir( _p.gridIdColumnIndexMap() );
                 //JC.log( _p.gridMaxColumn() );
             }
 
@@ -563,7 +563,7 @@ $( document ).delegate(
                 return this._columnX;
             }
 
-        , fixFistLastRowIndex:
+        , fixFirstLastRowIndex:
             function(){
                 var _p = this;
 
@@ -588,21 +588,26 @@ $( document ).delegate(
                     ;
                 if( !( _fcol.length === 1 && _lcol.length === 1 ) ) return;
                 var _fdata = _fcol[0], _ldata = _lcol[0];
-                _fdata.rowIndex = _cy;
-                _ldata.rowIndex = _cy;
 
-                if( _fdata.nodes && _fdata.nodes.length ){
-                    _first = _fdata.nodes.first();
-                    _last = _fdata.nodes.last();
-                    if( _cy < _first.rowIndex || _cy > _last.rowIndex ){
-                        _fdata.rowIndex = _first.rowIndex + Math.ceil( ( _last.rowIndex - _first.rowIndex ) / 2 );
+                if(  _ldata.nodes && _ldata.nodes.length > 1 ){
+                    _fdata.rowIndex = _cy;
+                    if( _fdata.nodes && _fdata.nodes.length ){
+                        _first = _fdata.nodes.first();
+                        _last = _fdata.nodes.last();
+                        if( _cy < _first.rowIndex || _cy > _last.rowIndex ){
+                            _fdata.rowIndex = _first.rowIndex + Math.ceil( ( _last.rowIndex - _first.rowIndex ) / 2 );
+                        }
                     }
                 }
-                if( _ldata.pid && _ldata.pid.length ){
-                    _first = _ldata.pid.first();
-                    _last = _ldata.pid.last();
-                    if( _cy < _first.rowIndex || _cy > _last.rowIndex ){
-                        _ldata.rowIndex = _first.rowIndex + Math.ceil( ( _last.rowIndex - _first.rowIndex ) / 2 );
+
+                if(  _ldata.pid && _ldata.pid.length > 1 ){
+                    _ldata.rowIndex = _cy;
+                    if( _ldata.pid && _ldata.pid.length ){
+                        _first = _ldata.pid.first();
+                        _last = _ldata.pid.last();
+                        if( _cy < _first.rowIndex || _cy > _last.rowIndex ){
+                            _ldata.rowIndex = _first.rowIndex + Math.ceil( ( _last.rowIndex - _first.rowIndex ) / 2 );
+                        }
                     }
                 }
 
@@ -612,7 +617,7 @@ $( document ).delegate(
             function(){
                 var _p = this;
 
-                for( var i = 0; i < _p.gridMaxColumn(); i++ ){
+                for( var i = 0; i <= _p.gridMaxColumn(); i++ ){
                     var _rowList = _p.gridIdColumnIndexMap()[ i ]
                         , _nextList = _p.gridIdColumnIndexMap()[ i + 1 ]
                         ;
@@ -675,7 +680,7 @@ $( document ).delegate(
             function(){
                 var _p = this;
 
-                for( var i = 0; i < _p.gridMaxColumn(); i++ ){
+                for( var i = 0; i <= _p.gridMaxColumn(); i++ ){
                     var _rowList = _p.gridIdColumnIndexMap()[ i ]
                         , _nextList = _p.gridIdColumnIndexMap()[ i + 1 ]
                         ;
@@ -701,6 +706,7 @@ $( document ).delegate(
 
                                 if( _item.prev && _item.prev.rowIndex >= _midY ){
                                 }else if( _item.next && _item.next.rowIndex <= _midY ){
+                                    JC.log( _item.name, _item.id );
                                     _p.fixItemDataAndNext( _item, _midY - _item.rowIndex );
                                 }else{
                                     _item.rowIndex = _midY;
@@ -801,7 +807,7 @@ $( document ).delegate(
                    /**
                     * 这里的逻辑认为 起始节点 和 结束节点都只有一个
                     */
-                   if( i === 0 || i === _p.gridMaxColumn() ){
+                   if( i === 0 ){
                         $.each( _rowList, function( _k, _item ){
                             _item.rowIndex = _p.gridOffsetRowIndex();
                         });
