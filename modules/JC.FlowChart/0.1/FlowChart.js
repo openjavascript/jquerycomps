@@ -374,7 +374,7 @@ $( document ).delegate(
                 */
                 _p.fixRealRowIndex();
 
-                _p.fixFistLastRowIndex();
+                _p.fixFirstLastRowIndex();
 
                 _p.createItems();
                 _p.calcRealPosition();
@@ -563,7 +563,7 @@ $( document ).delegate(
                 return this._columnX;
             }
 
-        , fixFistLastRowIndex:
+        , fixFirstLastRowIndex:
             function(){
                 var _p = this;
 
@@ -801,12 +801,13 @@ $( document ).delegate(
                    /**
                     * 这里的逻辑认为 起始节点 和 结束节点都只有一个
                     */
-                   if( i === 0 || i === _p.gridMaxColumn() ){
+                   if( i === 0 ){
                         $.each( _rowList, function( _k, _item ){
                             _item.rowIndex = _p.gridOffsetRowIndex();
                         });
                         continue;
                     }
+
 
                    var _minRowIndex = _p.gridOffsetRowIndex()
                        , _maxRowIndex = _p.gridOffsetRowIndex()

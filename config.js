@@ -117,6 +117,8 @@ requirejs.config( {
         , 'plugins.Aes': 'plugins/Aes/0.1/Aes'
         , 'plugins.Base64': 'plugins/Base64/0.1/Base64'
         , 'plugins.md5': 'plugins/md5/0.1/md5'
+        , 'plugins.swfobject': 'plugins/SWFObject/2.2/SWFObject'
+        , 'swfobject': 'plugins/SWFObject/2.2/SWFObject'
 
         , 'SWFUpload': 'modules/SWFUpload/2.5.0/SWFUpload'
         , 'swfupload': 'modules/SWFUpload/2.5.0/SWFUpload'
