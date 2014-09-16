@@ -300,6 +300,7 @@
  *    &lt;dd&gt;
  *          排期表的操作类型: lock(锁定), edit(编辑), query(查询)
  *    &lt;/dd&gt;
+ *
  *&lt;/dl&gt; 
  *
  *&lt;h2&gt;锁定模式(lock) 可用的 HTML attribute&lt;/h2&gt;
@@ -465,13 +466,13 @@
     CRMSchedule.defaultDataBuild = 
         function( _data, _sdate ){
             var _t = [];
-    _data.company &amp;&amp; (          _t.push( &#x27;广告主名称　: &#x27; + _data.company ) );
-    _data.agencyName &amp;&amp; (       _t.push( &#x27;代理公司名称: &#x27; + _data.agencyName ) );
-    _data.departmentName &amp;&amp; (   _t.push( &#x27;部门团队名称: &#x27; + _data.departmentName ) );
-    _data.createUserName &amp;&amp; (   _t.push( &#x27;提交人　　　: &#x27; + _data.createUserName ) );
-    _data.statusName &amp;&amp; (       _t.push( &#x27;预订任务状态: &#x27; + _data.statusName ) );
-    _sdate &amp;&amp; _t.length &amp;&amp; (                 _t.push( &#x27;日期　　　　: &#x27; + _sdate ) );
-    _data.title = _t.join( &#x27;\n&#x27; );
+                _data.company &amp;&amp; (          _t.push( &#x27;广告主名称　: &#x27; + _data.company ) );
+                _data.agencyName &amp;&amp; (       _t.push( &#x27;代理公司名称: &#x27; + _data.agencyName ) );
+                _data.departmentName &amp;&amp; (   _t.push( &#x27;部门团队名称: &#x27; + _data.departmentName ) );
+                _data.createUserName &amp;&amp; (   _t.push( &#x27;提交人　　　: &#x27; + _data.createUserName ) );
+                _data.statusName &amp;&amp; (       _t.push( &#x27;预订任务状态: &#x27; + _data.statusName ) );
+                _sdate &amp;&amp; _t.length &amp;&amp; (                 _t.push( &#x27;日期　　　　: &#x27; + _sdate ) );
+                _data.title = _t.join( &#x27;\n&#x27; );
             return _data;
         };
 
@@ -1357,6 +1358,16 @@
 
                 return _r;
             }
+
+        , dateLabelLength:
+            function(){
+                var _p = this, _r = 4;
+                _p.initData() 
+                    &amp;&amp; ( &#x27;dateLabelLength&#x27; in _p.initData() )
+                    &amp;&amp; ( _r = _p.initData().dateLabelLength );
+                return _r;
+            }
+
     });
 
     JC.f.extendObject( CRMSchedule.View.prototype, {
@@ -1452,7 +1463,7 @@
                     , _tmpDate = JC.f.cloneDate( _initDate.sdate )
                     ;
 
-                for( var i = 0; i &lt; 4; i++ ){
+                for( var i = 0; i &lt; _p._model.dateLabelLength(); i++ ){
                     var _currentClass = &#x27;&#x27;;
                     if( _tmpDate.getMonth() === _currentMonth ){
                         _currentClass = &#x27;js_bccCurrentDataLabelItem&#x27;;

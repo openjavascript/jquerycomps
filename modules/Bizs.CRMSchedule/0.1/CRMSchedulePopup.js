@@ -365,7 +365,7 @@
             function( _date ){
                 _date = JC.f.cloneDate( _date );
                 _date.setDate( 1 );
-                _date.setMonth( _date.getMonth() + 4 );
+                _date.setMonth( _date.getMonth() + this.schIns()._model.dateLabelLength() );
                 _date.setDate( 0 );
 
                 if( _date.getTime() > this.maxdate().getTime() ){
@@ -477,7 +477,7 @@
                 var _r = [];
                 _date = JC.f.cloneDate( _date );
 
-                for( var i = 0, j = 4, _tpl, _dates; i < j; i++ ){
+                for( var i = 0, j = this._model.schIns()._model.dateLabelLength(), _tpl, _dates; i < j; i++ ){
                     _dates = JC.f.dateFormat( _date, 'YY年 MM月' );
 
                     _tpl = JC.f.printf( _ctpl, _dates, this.calendarRowHtml( _date ) );
