@@ -364,7 +364,9 @@ $( document ).delegate(
                 _p.initIdColumnIndex( _p.chartData(), _p.chartData().id, 0, 0, 0 );
                 _p.initColumnIndexMap();
 
+                _p.initColumnRelationship();
                 _p.fixLastColumn();
+                _p.initColumnRelationship();
 
                 _p.initRowIndex();
 
@@ -706,7 +708,7 @@ $( document ).delegate(
 
                                 if( _item.prev && _item.prev.rowIndex >= _midY ){
                                 }else if( _item.next && _item.next.rowIndex <= _midY ){
-                                    JC.log( _item.name, _item.id );
+                                    JC.log( _item.name, _item.id, _item.next.name, _item.next.id );
                                     _p.fixItemDataAndNext( _item, _midY - _item.rowIndex );
                                 }else{
                                     _item.rowIndex = _midY;
@@ -850,15 +852,27 @@ $( document ).delegate(
                 var _p = this;
                 $.each( _p.gridIdColumnIndexList(), function( _k, _item ){
                     if( _item.columnIndex in _p.gridIdColumnIndexMap() ){
-                        var _prev = _p.gridIdColumnIndexMap()[ _item.columnIndex ][ _p.gridIdColumnIndexMap()[ _item.columnIndex ].length - 1 ];
                         _p.gridIdColumnIndexMap()[ _item.columnIndex ].push( _item );
-                        _item.prev = _prev;
-                        _prev.next = _item;
                     }else{
                         _p.gridIdColumnIndexMap()[ _item.columnIndex ] = [ _item ];
                     }
                 });
             }
+
+        , initColumnRelationship:
+            function(){
+                var _p = this;
+                $.each( _p.gridIdColumnIndexMap(), function( _ix, _list ){
+                    $.each( _list, function( _k, _item ){
+                        var _prev = _list[ _k - 1 ]
+                            ;
+                        _item.prev = _prev;
+                        _prev && ( _prev.next = _item );
+                        _item.next = null;
+                    });
+                 });
+            }
+
 
         , initIdColumnIndex:
             function( _data, _id, _ix, _processSelf, _count ){
