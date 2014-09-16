@@ -54,6 +54,7 @@
  *    <dd>
  *          排期表的操作类型: lock(锁定), edit(编辑), query(查询)
  *    </dd>
+ *
  *</dl> 
  *
  *<h2>锁定模式(lock) 可用的 HTML attribute</h2>
@@ -219,13 +220,13 @@
     CRMSchedule.defaultDataBuild = 
         function( _data, _sdate ){
             var _t = [];
-    _data.company && (          _t.push( '广告主名称　: ' + _data.company ) );
-    _data.agencyName && (       _t.push( '代理公司名称: ' + _data.agencyName ) );
-    _data.departmentName && (   _t.push( '部门团队名称: ' + _data.departmentName ) );
-    _data.createUserName && (   _t.push( '提交人　　　: ' + _data.createUserName ) );
-    _data.statusName && (       _t.push( '预订任务状态: ' + _data.statusName ) );
-    _sdate && _t.length && (                 _t.push( '日期　　　　: ' + _sdate ) );
-    _data.title = _t.join( '\n' );
+                _data.company && (          _t.push( '广告主名称　: ' + _data.company ) );
+                _data.agencyName && (       _t.push( '代理公司名称: ' + _data.agencyName ) );
+                _data.departmentName && (   _t.push( '部门团队名称: ' + _data.departmentName ) );
+                _data.createUserName && (   _t.push( '提交人　　　: ' + _data.createUserName ) );
+                _data.statusName && (       _t.push( '预订任务状态: ' + _data.statusName ) );
+                _sdate && _t.length && (                 _t.push( '日期　　　　: ' + _sdate ) );
+                _data.title = _t.join( '\n' );
             return _data;
         };
 
@@ -1111,6 +1112,16 @@
 
                 return _r;
             }
+
+        , dateLabelLength:
+            function(){
+                var _p = this, _r = 4;
+                _p.initData() 
+                    && ( 'dateLabelLength' in _p.initData() )
+                    && ( _r = _p.initData().dateLabelLength );
+                return _r;
+            }
+
     });
 
     JC.f.extendObject( CRMSchedule.View.prototype, {
@@ -1206,7 +1217,7 @@
                     , _tmpDate = JC.f.cloneDate( _initDate.sdate )
                     ;
 
-                for( var i = 0; i < 4; i++ ){
+                for( var i = 0; i < _p._model.dateLabelLength(); i++ ){
                     var _currentClass = '';
                     if( _tmpDate.getMonth() === _currentMonth ){
                         _currentClass = 'js_bccCurrentDataLabelItem';

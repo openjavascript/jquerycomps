@@ -16,6 +16,7 @@ requirejs.config( {
 
         , 'DEV.JC.ImageCutter': 'modules/JC.ImageCutter/dev/ImageCutter'
         , 'DEV.JC.AjaxUpload': 'modules/JC.AjaxUpload/dev/AjaxUpload'
+        , 'DEV.JC.Suggest': 'modules/JC.Suggest/dev/Suggest'
 
         //, 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload'
         , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.2/AjaxUpload'
