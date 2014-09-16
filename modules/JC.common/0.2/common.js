@@ -1376,6 +1376,12 @@
             .replace( /M/g, function( $0 ){
                 return _monthShortName[ _date.getMonth() ];          
             })
+            .replace( /HH/g, padChar( _date.getHours() ) )
+            .replace( /h/g, _date.getHours() )
+            .replace( /NN/g, padChar( _date.getMinutes() ) )
+            .replace( /n/g, _date.getMinutes() )
+            .replace( /SS/g, padChar( _date.getSeconds() ) )
+            .replace( /s/g, _date.getSeconds() )
             ;
 
         return _r;
