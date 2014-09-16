@@ -444,8 +444,12 @@
                     , _schIns = _p._model.schIns(), _panelIns
                     , _currentDate = _p._model.currentDate( JC.f.cloneDate( _schIns._model.currentDate() ) )
                     //, _currentDate = _p._model.currentDate( new Date( 2011, 1, 1 ) )
-                    , _calendarHtml = _p.calendarHtml( _ctpl, _currentDate )
                     ;
+                if( _p._model.schIns()._model.actionType() == 'edit' ){
+                    _currentDate = _p._model.currentDate( JC.f.cloneDate( _schIns._model.initDate().sdate ) )
+                }
+
+                var _calendarHtml = _p.calendarHtml( _ctpl, _currentDate );
 
                 _tpl = JC.f.printf( _tpl 
                     , _p._model.pos1Data().label
