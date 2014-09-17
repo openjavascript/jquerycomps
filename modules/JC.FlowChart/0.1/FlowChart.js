@@ -572,47 +572,22 @@ $( document ).delegate(
                 _p._maxRowY = 0;
 
                 for( var i = 0; i < _p.gridMaxColumn(); i++ ){
-                    var _rowList = _p.gridIdColumnIndexMap()[ i ]
-                        , _nextList = _p.gridIdColumnIndexMap()[ i + 1 ]
-                        ;
+                    var _rowList = _p.gridIdColumnIndexMap()[ i ];
                     $.each( _rowList, function( _k, _item ){
                         _item.rowIndex > _p._maxRowY && ( _p._maxRowY = _item.rowIndex );
                     });
-
                 }
 
-                if( !( _p._maxRowY ) ) return;
-                if( !( _p._maxRowY && _p.gridMaxColumn() > 0 ) ) return;
-                var _cy = Math.ceil( _p._maxRowY / 2 )
-                    , _fcol = _p.gridIdColumnIndexMap()[0]
-                    , _lcol = _p.gridIdColumnIndexMap()[ _p.gridMaxColumn() ]
+                var _fcol = _p.gridIdColumnIndexMap()[0]
                     , _first, _last
                     ;
-                if( !( _fcol.length === 1 && _lcol.length === 1 ) ) return;
-                var _fdata = _fcol[0], _ldata = _lcol[0];
-
-                if(  _ldata.nodes && _ldata.nodes.length > 1 ){
-                    _fdata.rowIndex = _cy;
-                    if( _fdata.nodes && _fdata.nodes.length ){
-                        _first = _fdata.nodes.first();
-                        _last = _fdata.nodes.last();
-                        if( _cy < _first.rowIndex || _cy > _last.rowIndex ){
-                            _fdata.rowIndex = _first.rowIndex + Math.ceil( ( _last.rowIndex - _first.rowIndex ) / 2 );
-                        }
-                    }
+                if( !( _fcol && _fcol.length ) ) return;
+                var _fdata = _fcol[0];
+                if(  _fdata.nodes && _fdata.nodes.length ){
+                    _first = _fdata.nodes.first();
+                    _last = _fdata.nodes.last();
+                    _fdata.rowIndex = _first.rowIndex + ( _last.rowIndex - _first.rowIndex ) / 2;
                 }
-
-                if(  _ldata.pid && _ldata.pid.length > 1 ){
-                    _ldata.rowIndex = _cy;
-                    if( _ldata.pid && _ldata.pid.length ){
-                        _first = _ldata.pid.first();
-                        _last = _ldata.pid.last();
-                        if( _cy < _first.rowIndex || _cy > _last.rowIndex ){
-                            _ldata.rowIndex = _first.rowIndex + Math.ceil( ( _last.rowIndex - _first.rowIndex ) / 2 );
-                        }
-                    }
-                }
-
             }
 
         , fixNodesRowIndex:
