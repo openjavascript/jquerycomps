@@ -1,10 +1,11 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'plugins.json2' ], function(){
     window.Suggest = JC.Suggest = Suggest;
+    JC.use && !window.JSON && JC.use( 'plugins.json2' );
     /**
      * Suggest 关键词补全提示类
      * <p><b>require</b>: 
-     *      <a href='.jQuery.html'>jQuery</a>
-     *      , <a href='JC.common.html'>JC.common</a>
+     *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      , <a href='javascript:;'>JSON 2</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Suggest.html' target='_blank'>API docs</a>
@@ -35,7 +36,7 @@
      *          <br />{0}=关键词, {1}=回调名称
      *      </dd>
      *
-     *      <dt>sugqueryinterval: int, default = 200</dt>
+     *      <dt>sugqueryinterval: int, default = 300</dt>
      *      <dd>
      *          设置用户输入内容时, 响应的间隔, 避免不必要的请求
      *      </dd>
@@ -76,15 +77,19 @@
      *
      *      <dt>sugprevententer: bool, default = false</dt>
      *      <dd>回车时, 是否阻止默认事件, 为真将阻止表单提交事件</dd>
+     *
+     *      <dt>sugIdSelector = selector</dt>
+     *      <dd>
+     *          保存 id 的选择器( 只有关键词为 json格式的时候才会生效, { id: 'string', name: 'string' } )
+     *      </dd>
      * </dl>
      * @namespace JC
      * @class Suggest
      * @constructor
      * @param   {selector|string}   _selector   
-     * @version dev 0.1
+     * @version dev 0.2
      * @author  qiushaowei   <suches@btbtd.org> | 75 Team
-     * @date    2013-08-11
-     * @example
+     * @date    2014-09-17
      */
     function Suggest( _selector ){
         _selector && ( _selector = $(_selector) );
@@ -92,279 +97,10 @@
         Suggest.getInstance( _selector, this );
         Suggest._allIns.push( this );
 
-        this._model = new Model( _selector );
-        this._view = new View( this._model );
+        this._model = new Suggest.Model( _selector );
+        this._view = new Suggest.View( this._model );
 
         this._init();
-    }
-    
-    Suggest.prototype = {
-        _init:
-            function(){
-                var _p = this;
-
-                $( [ _p._view, _p._model ] ).on('BindEvent', function( _evt, _evtName, _cb ){
-                    _p.on( _evtName, _cb );
-                });
-
-                $( [ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName, _data ){
-                    _p.trigger( _evtName, [ _data ] );
-                });
-
-                _p._view.init();
-                _p._model.init();
-
-                _p.selector().attr( 'autocomplete', 'off' );
-
-                _p._initActionEvent();
-
-                _p.trigger( 'SuggestInited' );
-                 
-                return _p;
-            }    
-        /**
-         *
-         *  suggest_so({ "p" : true,
-              "q" : "shinee",
-              "s" : [ "shinee 综艺",
-                  "shinee美好的一天",
-                  "shinee hello baby",
-                  "shinee吧",
-                  "shinee泰民",
-                  "shinee fx",
-                  "shinee快乐大本营",
-                  "shinee钟铉车祸",
-                  "shinee年下男的约会",
-                  "shinee dream girl"
-                ]
-            });
-         */
-        , update: 
-            function( _evt, _data ){
-                var _p = this;
-                typeof _data == 'undefined' && ( _data = _evt );
-
-                if( _p._model.sugdatafilter() ){
-                    _data = _p._model.sugdatafilter().call( this, _data );
-                }
-
-                if( _data && _data.q ){
-                    _p._model.cache( _data.q, _data );
-                }
-
-                this._view.update( _data );
-            }
-        /**
-         * 显示 Suggest 
-         * @method  show
-         * @return  SuggestInstance
-         */
-        , show: function(){ this._view.show(); return this; }
-        /**
-         * 隐藏 Suggest
-         * @method  hide
-         * @return  SuggestInstance
-         */
-        , hide: function(){ this._view.hide(); return this; }
-        /**
-         * 获取 显示 Suggest 的触发源选择器, 比如 a 标签
-         * @method  selector
-         * @return  selector
-         */ 
-        , selector: function(){ return this._model.selector(); }
-        /**
-         * 获取 Suggest 外观的 选择器
-         * @method  layout
-         * @return  selector
-         */
-        , layout: function(){ return this._model.layout(); }
-        /**
-         * 使用 jquery on 绑定事件
-         * @method  {string}    on
-         * @param   {string}    _evtName
-         * @param   {function}  _cb
-         * @return  SuggestInstance
-         */
-        , on: function( _evtName, _cb ){ $(this).on(_evtName, _cb ); return this;}
-        /**
-         * 使用 jquery trigger 绑定事件
-         * @method  {string}    trigger
-         * @param   {string}    _evtName
-         * @return  SuggestInstance
-         */
-        , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
-        , _initActionEvent:
-            function(){
-                var _p = this;
-
-                _p.on( 'SuggestUpdate', _p.update );
-                _p.on( 'SuggestInited', function( _evt ){
-                    if( _p._model.suginitedcallback() ){
-                        _p._model.suginitedcallback().call( _p );
-                    }
-                });
-
-                _p._model.selector().on('keyup', function( _evt ){
-                    var _sp = $(this)
-                        , _val = _sp.val().trim()
-                        , _keycode = _evt.keyCode
-                        , _ignoreTime = _sp.data('IgnoreTime')
-                        ;
-
-                    if( _ignoreTime && ( new Date().getTime() - _ignoreTime ) < 300 ){
-                        //document.title = _ignoreTime;
-                        return;
-                    }
-                    
-
-                    JC.log( 'keyup', _val, new Date().getTime(), _keycode );
-
-                    if( _keycode ){
-                        switch( _keycode ){
-                            case 38://up
-                            case 40://down
-                                {
-                                    _evt.preventDefault();
-                                }
-                            case 37:
-                            case 39:
-                                {
-                                    return;
-                                }
-                            case 27:
-                                {
-                                    _p.hide();
-                                    return;
-                                }
-                        }
-                    }
-
-                    if( !_val ){
-                        _p.update();
-                        return;
-                    }
-
-                    if( !_p._model.layout().is(':visible') ){
-                        if( _p._model.cache( _val ) ){
-                            _p.update( _p._model.cache( _val ) );
-                            return;
-                        }
-                    }
-
-                    if( _p._model.preValue === _val ){
-                        return;
-                    }
-                    _p._model.preValue = _val;
-
-                    if( _p._model.cache( _val ) ){
-                        _p.update( _p._model.cache( _val ) );
-                        return;
-                    }
-
-                    JC.log( _val );
-
-                    if( _p._model.sugqueryinterval() ){
-                        if( _p._model.timeout ){
-                            clearTimeout( _p._model.timeout );
-                        }
-                        _p._model.timeout =
-                            setTimeout( function(){
-                                _p._model.getData( _val );
-                            }, _p._model.sugqueryinterval() );
-                    }else{
-                        _p._model.getData( _val );
-                    }
-                });
-
-                _p._model.selector().on('blur', function( _evt ){
-                    _p._model.timeout && clearTimeout( _p._model.timeout );
-                });
-
-                _p._model.selector().on('keydown', function( _evt ){
-                   var _keycode = _evt.keyCode
-                        , _sp = $(this)
-                        , _keyindex
-                        , _isBackward
-                        , _items = _p._model.items()
-                        , _item
-                        ;
-                    _keycode == 38 && ( _isBackward = true );
-                    JC.log( 'keyup', new Date().getTime(), _keycode );
-
-                    switch( _keycode ){
-                        case 38://up
-                        case 40://down
-                            {
-                                _keyindex = _p._model.nextIndex( _isBackward );
-
-                                if( _keyindex >= 0 && _keyindex < _items.length ){
-                                    _evt.preventDefault();
-                                    _item = $(_items[_keyindex]);
-                                    _p._model.selectedIdentifier( _item );
-                                    _p.selector().val( _p._model.getKeyword( _item ) );
-                                    return;
-                                }
-                                break;
-                            }
-                        case 9://tab
-                            {
-                                _p.hide();
-                                return;
-                            }
-                        case 13://回车
-                            {
-                                var _tmpSelectedItem;
-                                if( _p._model.layout().is( ':visible' ) 
-                                        && ( _tmpSelectedItem = _p._model.layout().find( 'dd.active') ) && _tmpSelectedItem.length ){
-                                    _p.trigger('SuggestSelected', [ _tmpSelectedItem, _p._model.getKeyword( _tmpSelectedItem ) ]);
-                                }
-
-                                _p.hide();
-                                _sp.data( 'IgnoreTime', new Date().getTime() );
-
-                                _p._model.sugprevententer() && _evt.preventDefault();
-                                break;
-                            }
-                    }
-                });
-
-                $( _p._model.layout() ).delegate( '.js_sugItem', 'mouseenter', function(_evt){
-                    _p._model.selectedIdentifier( $(this), true );
-                });
-
-                $( _p._model.layout() ).delegate( '.js_sugItem', 'mouseleave', function(_evt){
-                    $(this).removeClass('active');
-                });
-
-                _p.selector().on( 'click', function(_evt){
-                    _evt.stopPropagation();
-                    _p.selector().trigger( 'keyup' );
-                    Suggest._hideOther( _p );
-                });
-
-                _p.on( 'SuggestSelected', function( _evt, _sp, _keyword ){
-                    _p._model.sugselectedcallback() && _p._model.sugselectedcallback().call( _p, _keyword );
-                });
-
-                $( _p._model.layout() ).delegate( '.js_sugItem', 'click', function(_evt){
-                    var _sp = $(this), _keyword = _p._model.getKeyword( _sp );
-                    _p.selector().val( _keyword );
-                    _p.hide();
-                    
-                    _p.trigger('SuggestSelected', [_sp, _keyword ]);
-                    JC.f.safeTimeout( function(){
-                        _p.selector().trigger( 'blur' );
-                    }, null, 'SuggestItemClick', 300);
-                });
-
-                if( _p._model.sugautoposition() ){
-                    $(window).on('resize', function(){
-                        if( _p._model.layout().is(':visible') ){
-                            _p._view.show();
-                        }
-                    });
-                }
-            }
     }
     /**
      * 获取或设置 Suggest 的实例
@@ -376,12 +112,7 @@
      */
     Suggest.getInstance =
         function( _selector, _setter ){
-            if( typeof _selector == 'string' && !/</.test( _selector ) ) 
-                    _selector = $(_selector);
-            if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
-            typeof _setter != 'undefined' && _selector.data( 'SuggestInstace', _setter );
-
-            return _selector.data('SuggestInstace');
+            return JC.BaseMVC.getInstance( _selector, Suggest, _setter );
         };
     /**
      * 判断 selector 是否可以初始化 Suggest
@@ -454,15 +185,328 @@
                 }
             }
         };
+
     
-    function Model( _selector ){
-        this._selector = _selector;
-        this._id = 'Suggest_' + new Date().getTime();
-    }
+    JC.f.extendObject( Suggest.prototype, {
+        _initHanlderEvent:
+            function(){
+                var _p = this;
+
+                $( [ _p._view, _p._model ] ).on('BindEvent', function( _evt, _evtName, _cb ){
+                    _p.on( _evtName, _cb );
+                });
+
+                $( [ _p._view, _p._model ] ).on('TriggerEvent', function( _evt, _evtName, _data ){
+                    _p.trigger( _evtName, [ _data ] );
+                });
+
+                _p._view.init();
+                _p._model.init();
+
+                _p.selector().attr( 'autocomplete', 'off' );
+
+                _p._initActionEvent();
+
+                _p.trigger( 'SuggestInited' );
+                 
+                return _p;
+            }    
+        /**
+         *
+         *  suggest_so({ "p" : true,
+              "q" : "shinee",
+              "s" : [ "shinee 综艺",
+                  "shinee美好的一天",
+                  "shinee hello baby",
+                  "shinee吧",
+                  "shinee泰民",
+                  "shinee fx",
+                  "shinee快乐大本营",
+                  "shinee钟铉车祸",
+                  "shinee年下男的约会",
+                  "shinee dream girl"
+                ]
+            });
+         */
+        , update: 
+            function( _evt, _data ){
+                var _p = this;
+                typeof _data == 'undefined' && ( _data = _evt );
+
+                if( _p._model.sugdatafilter() ){
+                    _data = _p._model.sugdatafilter().call( this, _data );
+                }
+
+                if( _data && _data.q ){
+                    _p._model.cache( _data.q, _data );
+                }
+
+                this._view.update( _data );
+                _p.trigger( 'sug_detect_id', _data );
+            }
+        /**
+         * 显示 Suggest 
+         * @method  show
+         * @return  SuggestInstance
+         */
+        , show: function(){ this._view.show(); return this; }
+        /**
+         * 隐藏 Suggest
+         * @method  hide
+         * @return  SuggestInstance
+         */
+        , hide: function(){ this._view.hide(); return this; }
+        /**
+         * 获取 显示 Suggest 的触发源选择器, 比如 a 标签
+         * @method  selector
+         * @return  selector
+         */ 
+        , selector: function(){ return this._model.selector(); }
+        /**
+         * 获取 Suggest 外观的 选择器
+         * @method  layout
+         * @return  selector
+         */
+        , layout: function(){ return this._model.layout(); }
+        /**
+         * 使用 jquery on 绑定事件
+         * @method  {string}    on
+         * @param   {string}    _evtName
+         * @param   {function}  _cb
+         * @return  SuggestInstance
+         */
+        , on: function( _evtName, _cb ){ $(this).on(_evtName, _cb ); return this;}
+        /**
+         * 使用 jquery trigger 绑定事件
+         * @method  {string}    trigger
+         * @param   {string}    _evtName
+         * @return  SuggestInstance
+         */
+        , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
+        , _initActionEvent:
+            function(){
+                var _p = this;
+
+                _p.on( 'SuggestUpdate', _p.update );
+                _p.on( 'SuggestInited', function( _evt ){
+                    if( _p._model.suginitedcallback() ){
+                        _p._model.suginitedcallback().call( _p );
+                    }
+                });
+
+                _p._model.selector().on('keyup', function( _evt, _showPopup ){
+                    var _sp = $(this)
+                        , _val = _sp.val().trim()
+                        , _keycode = _evt.keyCode
+                        , _ignoreTime = _sp.data('IgnoreTime')
+                        ;
+
+                    if( _keycode ){
+                        switch( _keycode ){
+                            case 38://up
+                            case 40://down
+                                {
+                                    _evt.preventDefault();
+                                }
+                            case 37:
+                            case 39:
+                                {
+                                    return;
+                                }
+                            case 27:
+                                {
+                                    _p.hide();
+                                    return;
+                                }
+                        }
+                    }
+
+                    if( !_val ){
+                        _p.update();
+                        _p.trigger( 'update_id_selector' );
+                        return;
+                    }
+
+                    if( !_p._model.layout().is(':visible') ){
+                        if( _p._model.cache( _val ) ){
+                            _p.update( _p._model.cache( _val ) );
+                            return;
+                        }
+                    }
+
+                    if( _p._model.preValue === _val && !_showPopup ){
+                        return;
+                    }
+                    _p._model.preValue = _val;
+
+                    if( _p._model.initValue ){
+                        _p._model.initValue = '';
+                    }else{
+                        !_showPopup && _p.trigger( 'update_id_selector' );
+                    }
+
+                    if( _p._model.cache( _val ) ){
+                        _p.update( _p._model.cache( _val ) );
+                        return;
+                    }
+
+                    if( _p._model.sugqueryinterval() ){
+                        JC.f.safeTimeout( function(){
+                            _p._model.getData( _val );
+                        }, _p, 'clearSugInterval', _p._model.sugqueryinterval() );
+                    }else{
+                        _p._model.getData( _val );
+                    }
+
+                });
+
+                _p._model.selector().on('blur', function( _evt ){
+                    _p._model.timeout && clearTimeout( _p._model.timeout );
+                });
+
+                _p._model.selector().on('keydown', function( _evt ){
+                   var _keycode = _evt.keyCode
+                        , _sp = $(this)
+                        , _keyindex
+                        , _isBackward
+                        , _items = _p._model.items()
+                        , _item
+                        ;
+                    _keycode == 38 && ( _isBackward = true );
+                    JC.log( 'keyup', new Date().getTime(), _keycode );
+
+                    switch( _keycode ){
+                        case 38://up
+                        case 40://down
+                            {
+                                _keyindex = _p._model.nextIndex( _isBackward );
+
+                                if( _keyindex >= 0 && _keyindex < _items.length ){
+                                    _evt.preventDefault();
+                                    _item = $(_items[_keyindex]);
+                                    _p._model.selectedIdentifier( _item );
+                                    _p.selector().val( _p._model.getKeyword( _item ) );
+                                    return;
+                                }
+                                break;
+                            }
+                        case 9://tab
+                            {
+                                _p.hide();
+                                return;
+                            }
+                        case 13://回车
+                            {
+                                var _tmpSelectedItem;
+                                if( _p._model.layout().is( ':visible' ) 
+                                        && ( _tmpSelectedItem = _p._model.layout().find( 'dd.active') ) && _tmpSelectedItem.length ){
+                                    _p.trigger('SuggestSelected', [ _tmpSelectedItem, _p._model.getKeyword( _tmpSelectedItem ) ]);
+                                }
+
+                                _p.hide();
+                                _sp.data( 'IgnoreTime', new Date().getTime() );
+
+                                _p._model.sugprevententer() && _evt.preventDefault();
+                                break;
+                            }
+                    }
+                });
+
+                $( _p._model.layout() ).delegate( '.js_sugItem', 'mouseenter', function(_evt){
+                    _p._model.selectedIdentifier( $(this), true );
+                });
+
+                $( _p._model.layout() ).delegate( '.js_sugItem', 'mouseleave', function(_evt){
+                    $(this).removeClass('active');
+                });
+
+                _p.selector().on( 'click', function(_evt){
+                    _evt.stopPropagation();
+                    _p.selector().trigger( 'keyup', true );
+                    Suggest._hideOther( _p );
+                });
+
+                _p.on( 'SuggestSelected', function( _evt, _sp, _keyword ){
+                    _p._model.sugselectedcallback() && _p._model.sugselectedcallback().call( _p, _keyword );
+                });
+
+                $( _p._model.layout() ).delegate( '.js_sugItem', 'click', function(_evt){
+                    var _sp = $(this), _keyword = _p._model.getKeyword( _sp );
+                    _p.selector().val( _keyword );
+                    _p.hide();
+
+                    _p._model.preValue = _keyword;
+                    
+                    _p.trigger('SuggestSelected', [_sp, _keyword ]);
+                    JC.f.safeTimeout( function(){
+                        _p.selector().trigger( 'blur' );
+                    }, null, 'SuggestItemClick', 300);
+
+                    _p.trigger( 'update_id_selector', [ _sp ] );
+                });
+
+                _p.on( 'update_id_selector', function( _evt, _sp ){
+                    if( !( _p._model.idSelector() && _p._model.idSelector().length ) ) return;
+
+                    if( !_sp ){
+                        _p._model.idSelector().val( '' );
+                    }else{
+                        if( !_sp.is( '[data-id]' ) ) return;
+                        _p._model.idSelector().val( _sp.data( 'id' ) );
+                    }
+                });
+
+                _p.on( 'sug_detect_id', function( _evt, _data ){
+                    if( !( _p._model.idSelector() && _p._model.idSelector().length ) ) return;
+                    JC.dir( _data );
+                    if( !_data ) return;
+                    var _q = _data.q, _find = [];
+                    $.each( _data.s, function( _k, _item ){
+                        if( !$.isPlainObject( _item ) ) return;
+                        if( _item.name === _q || _item.value === _q ){
+                            _find.push( _item );
+                        }
+                    });
+                    JC.log( _find.length );
+                    if( !_find.length ) return;
+                    if( _find.length > 1 ){
+                        if( _p._model.idSelector().val() ){
+                            var _hasItem;
+                            $.each( _find, function( _k, _item ){
+                                if( _item.id == _p._model.idSelector().val() ){
+                                    _hasItem = true;
+                                    return false;
+                                }
+                            });
+                            if( !_hasItem ){
+                                _p._model.idSelector().val( _find.first().id );
+                            }
+                        }else{
+                            _p._model.idSelector().val( _find.first().id );
+                        }
+                    }else{
+                        _p._model.idSelector().val( _find.first().id );
+                    }
+                });
+
+                if( _p._model.sugautoposition() ){
+                    $(window).on('resize', function(){
+                        if( _p._model.layout().is(':visible') ){
+                            _p._view.show();
+                        }
+                    });
+                }
+            }
+    });
     
-    Model.prototype = {
+    JC.BaseMVC.build( Suggest );
+    Suggest.Model._instanceName = 'SuggestInstace';
+    
+    JC.f.extendObject( Suggest.Model.prototype, {
         init:
             function(){
+                this._id = 'Suggest_' + new Date().getTime();
+                this.initValue = this.selector().val().trim();
                 return this;
             }
 
@@ -612,7 +656,7 @@
             function(){
                 this.selector().is('[sugqueryinterval]') 
                     && ( this._sugqueryinterval = parseInt( this.selector().attr('sugqueryinterval') ) );
-                this._sugqueryinterval = this._sugqueryinterval || 200;
+                this._sugqueryinterval = this._sugqueryinterval || 300;
                 return this._sugqueryinterval;
             }
         , sugprevententer:
@@ -680,13 +724,17 @@
                     && ( _r = JC.f.parentSelector( this.selector(), this.selector().attr('sugplaceholder') ) );
                 return _r;
             }
-    };
+
+        , idSelector:
+            function(){
+                var _r;
+                this.is( '[sugIdSelector]' ) 
+                    && ( _r = JC.f.parentSelector( this.selector(), this.attrProp( 'sugIdSelector' ) ) );
+                return _r;
+            }
+    });
     
-    function View( _model ){
-        this._model = _model;
-    }
-    
-    View.prototype = {
+    JC.f.extendObject( Suggest.View.prototype, {
         init:
             function() {
                 return this;
@@ -726,7 +774,7 @@
             }
         , update:
             function( _data ){
-                var _p = this, _ls = [], _query, _tmp, _text, _subtagname = _p._model.sugsubtagname();
+                var _p = this, _ls = [], _query, _tmp, _text, _subtagname = _p._model.sugsubtagname(), _item;
 
                 if( !( _data && _data.s && _data.s.length ) ){
                     _p.hide();
@@ -734,7 +782,16 @@
                 }
 
                 for( var i = 0, j = _data.s.length; i < j; i++ ){
-                    _tmp = _data.s[i], _text = _tmp, _query = _data.q || '';
+                    _tmp = _data.s[i];
+                    var _itemData = [];
+                    if( typeof _tmp === 'object' ){
+                         $.each( _tmp, function( _k, _sitem ){
+                             _itemData.push( JC.f.printf( 'data-{0}="{1}"', _k, encodeURIComponent( _sitem ) ) );
+                         });
+                         _tmp = _tmp.name || _tmp.value || _tmp.id;
+                    }
+                    _text = _tmp;
+                    _query = _data.q || '';
 
                     _text = _text.replace( _query, JC.f.printf( '<b>{0}</b>', _query ) );
                     /*
@@ -744,9 +801,10 @@
                     }
                     else _query = '';
                     */
-                    _ls.push( JC.f.printf('<{4} keyword="{2}" keyindex="{3}" class="js_sugItem">{1}</{4}>'
+                    _ls.push( JC.f.printf('<{4} keyword="{2}" keyindex="{3}" class="js_sugItem" {5} >{1}</{4}>'
                                 , _query, _text, encodeURIComponent( _tmp ), i
                                 , _subtagname
+                                , _itemData.join( ' ' )
                             ));
                 }
 
@@ -765,7 +823,7 @@
                 this._model.layout().find( '.js_sugItem' ).removeClass('active'); 
                 $(this).trigger( 'TriggerEvent', ['SuggestReset'] );
             }
-    };
+    });
 
     /**
      * 初始化完后的事件

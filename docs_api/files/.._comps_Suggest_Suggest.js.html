@@ -238,13 +238,14 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.common&#x27; ], function(){
+;(function(define, _win) { &#x27;use strict&#x27;; define( [ &#x27;JC.BaseMVC&#x27;, &#x27;plugins.json2&#x27; ], function(){
     window.Suggest = JC.Suggest = Suggest;
+    JC.use &amp;&amp; !window.JSON &amp;&amp; JC.use( &#x27;plugins.json2&#x27; );
     /**
      * Suggest 关键词补全提示类
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
-     *      &lt;a href=&#x27;.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
-     *      , &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
+     *      &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+     *      , &lt;a href=&#x27;javascript:;&#x27;&gt;JSON 2&lt;/a&gt;
      * &lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Suggest.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
@@ -275,7 +276,7 @@
      *          &lt;br /&gt;{0}=关键词, {1}=回调名称
      *      &lt;/dd&gt;
      *
-     *      &lt;dt&gt;sugqueryinterval: int, default = 200&lt;/dt&gt;
+     *      &lt;dt&gt;sugqueryinterval: int, default = 300&lt;/dt&gt;
      *      &lt;dd&gt;
      *          设置用户输入内容时, 响应的间隔, 避免不必要的请求
      *      &lt;/dd&gt;
@@ -316,15 +317,19 @@
      *
      *      &lt;dt&gt;sugprevententer: bool, default = false&lt;/dt&gt;
      *      &lt;dd&gt;回车时, 是否阻止默认事件, 为真将阻止表单提交事件&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;sugIdSelector = selector&lt;/dt&gt;
+     *      &lt;dd&gt;
+     *          保存 id 的选择器( 只有关键词为 json格式的时候才会生效, { id: &#x27;string&#x27;, name: &#x27;string&#x27; } )
+     *      &lt;/dd&gt;
      * &lt;/dl&gt;
      * @namespace JC
      * @class Suggest
      * @constructor
      * @param   {selector|string}   _selector   
-     * @version dev 0.1
+     * @version dev 0.2
      * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 Team
-     * @date    2013-08-11
-     * @example
+     * @date    2014-09-17
      */
     function Suggest( _selector ){
         _selector &amp;&amp; ( _selector = $(_selector) );
@@ -332,279 +337,10 @@
         Suggest.getInstance( _selector, this );
         Suggest._allIns.push( this );
 
-        this._model = new Model( _selector );
-        this._view = new View( this._model );
+        this._model = new Suggest.Model( _selector );
+        this._view = new Suggest.View( this._model );
 
         this._init();
-    }
-    
-    Suggest.prototype = {
-        _init:
-            function(){
-                var _p = this;
-
-                $( [ _p._view, _p._model ] ).on(&#x27;BindEvent&#x27;, function( _evt, _evtName, _cb ){
-                    _p.on( _evtName, _cb );
-                });
-
-                $( [ _p._view, _p._model ] ).on(&#x27;TriggerEvent&#x27;, function( _evt, _evtName, _data ){
-                    _p.trigger( _evtName, [ _data ] );
-                });
-
-                _p._view.init();
-                _p._model.init();
-
-                _p.selector().attr( &#x27;autocomplete&#x27;, &#x27;off&#x27; );
-
-                _p._initActionEvent();
-
-                _p.trigger( &#x27;SuggestInited&#x27; );
-                 
-                return _p;
-            }    
-        /**
-         *
-         *  suggest_so({ &quot;p&quot; : true,
-              &quot;q&quot; : &quot;shinee&quot;,
-              &quot;s&quot; : [ &quot;shinee 综艺&quot;,
-                  &quot;shinee美好的一天&quot;,
-                  &quot;shinee hello baby&quot;,
-                  &quot;shinee吧&quot;,
-                  &quot;shinee泰民&quot;,
-                  &quot;shinee fx&quot;,
-                  &quot;shinee快乐大本营&quot;,
-                  &quot;shinee钟铉车祸&quot;,
-                  &quot;shinee年下男的约会&quot;,
-                  &quot;shinee dream girl&quot;
-                ]
-            });
-         */
-        , update: 
-            function( _evt, _data ){
-                var _p = this;
-                typeof _data == &#x27;undefined&#x27; &amp;&amp; ( _data = _evt );
-
-                if( _p._model.sugdatafilter() ){
-                    _data = _p._model.sugdatafilter().call( this, _data );
-                }
-
-                if( _data &amp;&amp; _data.q ){
-                    _p._model.cache( _data.q, _data );
-                }
-
-                this._view.update( _data );
-            }
-        /**
-         * 显示 Suggest 
-         * @method  show
-         * @return  SuggestInstance
-         */
-        , show: function(){ this._view.show(); return this; }
-        /**
-         * 隐藏 Suggest
-         * @method  hide
-         * @return  SuggestInstance
-         */
-        , hide: function(){ this._view.hide(); return this; }
-        /**
-         * 获取 显示 Suggest 的触发源选择器, 比如 a 标签
-         * @method  selector
-         * @return  selector
-         */ 
-        , selector: function(){ return this._model.selector(); }
-        /**
-         * 获取 Suggest 外观的 选择器
-         * @method  layout
-         * @return  selector
-         */
-        , layout: function(){ return this._model.layout(); }
-        /**
-         * 使用 jquery on 绑定事件
-         * @method  {string}    on
-         * @param   {string}    _evtName
-         * @param   {function}  _cb
-         * @return  SuggestInstance
-         */
-        , on: function( _evtName, _cb ){ $(this).on(_evtName, _cb ); return this;}
-        /**
-         * 使用 jquery trigger 绑定事件
-         * @method  {string}    trigger
-         * @param   {string}    _evtName
-         * @return  SuggestInstance
-         */
-        , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
-        , _initActionEvent:
-            function(){
-                var _p = this;
-
-                _p.on( &#x27;SuggestUpdate&#x27;, _p.update );
-                _p.on( &#x27;SuggestInited&#x27;, function( _evt ){
-                    if( _p._model.suginitedcallback() ){
-                        _p._model.suginitedcallback().call( _p );
-                    }
-                });
-
-                _p._model.selector().on(&#x27;keyup&#x27;, function( _evt ){
-                    var _sp = $(this)
-                        , _val = _sp.val().trim()
-                        , _keycode = _evt.keyCode
-                        , _ignoreTime = _sp.data(&#x27;IgnoreTime&#x27;)
-                        ;
-
-                    if( _ignoreTime &amp;&amp; ( new Date().getTime() - _ignoreTime ) &lt; 300 ){
-                        //document.title = _ignoreTime;
-                        return;
-                    }
-                    
-
-                    JC.log( &#x27;keyup&#x27;, _val, new Date().getTime(), _keycode );
-
-                    if( _keycode ){
-                        switch( _keycode ){
-                            case 38://up
-                            case 40://down
-                                {
-                                    _evt.preventDefault();
-                                }
-                            case 37:
-                            case 39:
-                                {
-                                    return;
-                                }
-                            case 27:
-                                {
-                                    _p.hide();
-                                    return;
-                                }
-                        }
-                    }
-
-                    if( !_val ){
-                        _p.update();
-                        return;
-                    }
-
-                    if( !_p._model.layout().is(&#x27;:visible&#x27;) ){
-                        if( _p._model.cache( _val ) ){
-                            _p.update( _p._model.cache( _val ) );
-                            return;
-                        }
-                    }
-
-                    if( _p._model.preValue === _val ){
-                        return;
-                    }
-                    _p._model.preValue = _val;
-
-                    if( _p._model.cache( _val ) ){
-                        _p.update( _p._model.cache( _val ) );
-                        return;
-                    }
-
-                    JC.log( _val );
-
-                    if( _p._model.sugqueryinterval() ){
-                        if( _p._model.timeout ){
-                            clearTimeout( _p._model.timeout );
-                        }
-                        _p._model.timeout =
-                            setTimeout( function(){
-                                _p._model.getData( _val );
-                            }, _p._model.sugqueryinterval() );
-                    }else{
-                        _p._model.getData( _val );
-                    }
-                });
-
-                _p._model.selector().on(&#x27;blur&#x27;, function( _evt ){
-                    _p._model.timeout &amp;&amp; clearTimeout( _p._model.timeout );
-                });
-
-                _p._model.selector().on(&#x27;keydown&#x27;, function( _evt ){
-                   var _keycode = _evt.keyCode
-                        , _sp = $(this)
-                        , _keyindex
-                        , _isBackward
-                        , _items = _p._model.items()
-                        , _item
-                        ;
-                    _keycode == 38 &amp;&amp; ( _isBackward = true );
-                    JC.log( &#x27;keyup&#x27;, new Date().getTime(), _keycode );
-
-                    switch( _keycode ){
-                        case 38://up
-                        case 40://down
-                            {
-                                _keyindex = _p._model.nextIndex( _isBackward );
-
-                                if( _keyindex &gt;= 0 &amp;&amp; _keyindex &lt; _items.length ){
-                                    _evt.preventDefault();
-                                    _item = $(_items[_keyindex]);
-                                    _p._model.selectedIdentifier( _item );
-                                    _p.selector().val( _p._model.getKeyword( _item ) );
-                                    return;
-                                }
-                                break;
-                            }
-                        case 9://tab
-                            {
-                                _p.hide();
-                                return;
-                            }
-                        case 13://回车
-                            {
-                                var _tmpSelectedItem;
-                                if( _p._model.layout().is( &#x27;:visible&#x27; ) 
-                                        &amp;&amp; ( _tmpSelectedItem = _p._model.layout().find( &#x27;dd.active&#x27;) ) &amp;&amp; _tmpSelectedItem.length ){
-                                    _p.trigger(&#x27;SuggestSelected&#x27;, [ _tmpSelectedItem, _p._model.getKeyword( _tmpSelectedItem ) ]);
-                                }
-
-                                _p.hide();
-                                _sp.data( &#x27;IgnoreTime&#x27;, new Date().getTime() );
-
-                                _p._model.sugprevententer() &amp;&amp; _evt.preventDefault();
-                                break;
-                            }
-                    }
-                });
-
-                $( _p._model.layout() ).delegate( &#x27;.js_sugItem&#x27;, &#x27;mouseenter&#x27;, function(_evt){
-                    _p._model.selectedIdentifier( $(this), true );
-                });
-
-                $( _p._model.layout() ).delegate( &#x27;.js_sugItem&#x27;, &#x27;mouseleave&#x27;, function(_evt){
-                    $(this).removeClass(&#x27;active&#x27;);
-                });
-
-                _p.selector().on( &#x27;click&#x27;, function(_evt){
-                    _evt.stopPropagation();
-                    _p.selector().trigger( &#x27;keyup&#x27; );
-                    Suggest._hideOther( _p );
-                });
-
-                _p.on( &#x27;SuggestSelected&#x27;, function( _evt, _sp, _keyword ){
-                    _p._model.sugselectedcallback() &amp;&amp; _p._model.sugselectedcallback().call( _p, _keyword );
-                });
-
-                $( _p._model.layout() ).delegate( &#x27;.js_sugItem&#x27;, &#x27;click&#x27;, function(_evt){
-                    var _sp = $(this), _keyword = _p._model.getKeyword( _sp );
-                    _p.selector().val( _keyword );
-                    _p.hide();
-                    
-                    _p.trigger(&#x27;SuggestSelected&#x27;, [_sp, _keyword ]);
-                    JC.f.safeTimeout( function(){
-                        _p.selector().trigger( &#x27;blur&#x27; );
-                    }, null, &#x27;SuggestItemClick&#x27;, 300);
-                });
-
-                if( _p._model.sugautoposition() ){
-                    $(window).on(&#x27;resize&#x27;, function(){
-                        if( _p._model.layout().is(&#x27;:visible&#x27;) ){
-                            _p._view.show();
-                        }
-                    });
-                }
-            }
     }
     /**
      * 获取或设置 Suggest 的实例
@@ -616,12 +352,7 @@
      */
     Suggest.getInstance =
         function( _selector, _setter ){
-            if( typeof _selector == &#x27;string&#x27; &amp;&amp; !/&lt;/.test( _selector ) ) 
-                    _selector = $(_selector);
-            if( !(_selector &amp;&amp; _selector.length ) || ( typeof _selector == &#x27;string&#x27; ) ) return;
-            typeof _setter != &#x27;undefined&#x27; &amp;&amp; _selector.data( &#x27;SuggestInstace&#x27;, _setter );
-
-            return _selector.data(&#x27;SuggestInstace&#x27;);
+            return JC.BaseMVC.getInstance( _selector, Suggest, _setter );
         };
     /**
      * 判断 selector 是否可以初始化 Suggest
@@ -694,15 +425,328 @@
                 }
             }
         };
+
     
-    function Model( _selector ){
-        this._selector = _selector;
-        this._id = &#x27;Suggest_&#x27; + new Date().getTime();
-    }
+    JC.f.extendObject( Suggest.prototype, {
+        _initHanlderEvent:
+            function(){
+                var _p = this;
+
+                $( [ _p._view, _p._model ] ).on(&#x27;BindEvent&#x27;, function( _evt, _evtName, _cb ){
+                    _p.on( _evtName, _cb );
+                });
+
+                $( [ _p._view, _p._model ] ).on(&#x27;TriggerEvent&#x27;, function( _evt, _evtName, _data ){
+                    _p.trigger( _evtName, [ _data ] );
+                });
+
+                _p._view.init();
+                _p._model.init();
+
+                _p.selector().attr( &#x27;autocomplete&#x27;, &#x27;off&#x27; );
+
+                _p._initActionEvent();
+
+                _p.trigger( &#x27;SuggestInited&#x27; );
+                 
+                return _p;
+            }    
+        /**
+         *
+         *  suggest_so({ &quot;p&quot; : true,
+              &quot;q&quot; : &quot;shinee&quot;,
+              &quot;s&quot; : [ &quot;shinee 综艺&quot;,
+                  &quot;shinee美好的一天&quot;,
+                  &quot;shinee hello baby&quot;,
+                  &quot;shinee吧&quot;,
+                  &quot;shinee泰民&quot;,
+                  &quot;shinee fx&quot;,
+                  &quot;shinee快乐大本营&quot;,
+                  &quot;shinee钟铉车祸&quot;,
+                  &quot;shinee年下男的约会&quot;,
+                  &quot;shinee dream girl&quot;
+                ]
+            });
+         */
+        , update: 
+            function( _evt, _data ){
+                var _p = this;
+                typeof _data == &#x27;undefined&#x27; &amp;&amp; ( _data = _evt );
+
+                if( _p._model.sugdatafilter() ){
+                    _data = _p._model.sugdatafilter().call( this, _data );
+                }
+
+                if( _data &amp;&amp; _data.q ){
+                    _p._model.cache( _data.q, _data );
+                }
+
+                this._view.update( _data );
+                _p.trigger( &#x27;sug_detect_id&#x27;, _data );
+            }
+        /**
+         * 显示 Suggest 
+         * @method  show
+         * @return  SuggestInstance
+         */
+        , show: function(){ this._view.show(); return this; }
+        /**
+         * 隐藏 Suggest
+         * @method  hide
+         * @return  SuggestInstance
+         */
+        , hide: function(){ this._view.hide(); return this; }
+        /**
+         * 获取 显示 Suggest 的触发源选择器, 比如 a 标签
+         * @method  selector
+         * @return  selector
+         */ 
+        , selector: function(){ return this._model.selector(); }
+        /**
+         * 获取 Suggest 外观的 选择器
+         * @method  layout
+         * @return  selector
+         */
+        , layout: function(){ return this._model.layout(); }
+        /**
+         * 使用 jquery on 绑定事件
+         * @method  {string}    on
+         * @param   {string}    _evtName
+         * @param   {function}  _cb
+         * @return  SuggestInstance
+         */
+        , on: function( _evtName, _cb ){ $(this).on(_evtName, _cb ); return this;}
+        /**
+         * 使用 jquery trigger 绑定事件
+         * @method  {string}    trigger
+         * @param   {string}    _evtName
+         * @return  SuggestInstance
+         */
+        , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
+        , _initActionEvent:
+            function(){
+                var _p = this;
+
+                _p.on( &#x27;SuggestUpdate&#x27;, _p.update );
+                _p.on( &#x27;SuggestInited&#x27;, function( _evt ){
+                    if( _p._model.suginitedcallback() ){
+                        _p._model.suginitedcallback().call( _p );
+                    }
+                });
+
+                _p._model.selector().on(&#x27;keyup&#x27;, function( _evt, _showPopup ){
+                    var _sp = $(this)
+                        , _val = _sp.val().trim()
+                        , _keycode = _evt.keyCode
+                        , _ignoreTime = _sp.data(&#x27;IgnoreTime&#x27;)
+                        ;
+
+                    if( _keycode ){
+                        switch( _keycode ){
+                            case 38://up
+                            case 40://down
+                                {
+                                    _evt.preventDefault();
+                                }
+                            case 37:
+                            case 39:
+                                {
+                                    return;
+                                }
+                            case 27:
+                                {
+                                    _p.hide();
+                                    return;
+                                }
+                        }
+                    }
+
+                    if( !_val ){
+                        _p.update();
+                        _p.trigger( &#x27;update_id_selector&#x27; );
+                        return;
+                    }
+
+                    if( !_p._model.layout().is(&#x27;:visible&#x27;) ){
+                        if( _p._model.cache( _val ) ){
+                            _p.update( _p._model.cache( _val ) );
+                            return;
+                        }
+                    }
+
+                    if( _p._model.preValue === _val &amp;&amp; !_showPopup ){
+                        return;
+                    }
+                    _p._model.preValue = _val;
+
+                    if( _p._model.initValue ){
+                        _p._model.initValue = &#x27;&#x27;;
+                    }else{
+                        !_showPopup &amp;&amp; _p.trigger( &#x27;update_id_selector&#x27; );
+                    }
+
+                    if( _p._model.cache( _val ) ){
+                        _p.update( _p._model.cache( _val ) );
+                        return;
+                    }
+
+                    if( _p._model.sugqueryinterval() ){
+                        JC.f.safeTimeout( function(){
+                            _p._model.getData( _val );
+                        }, _p, &#x27;clearSugInterval&#x27;, _p._model.sugqueryinterval() );
+                    }else{
+                        _p._model.getData( _val );
+                    }
+
+                });
+
+                _p._model.selector().on(&#x27;blur&#x27;, function( _evt ){
+                    _p._model.timeout &amp;&amp; clearTimeout( _p._model.timeout );
+                });
+
+                _p._model.selector().on(&#x27;keydown&#x27;, function( _evt ){
+                   var _keycode = _evt.keyCode
+                        , _sp = $(this)
+                        , _keyindex
+                        , _isBackward
+                        , _items = _p._model.items()
+                        , _item
+                        ;
+                    _keycode == 38 &amp;&amp; ( _isBackward = true );
+                    JC.log( &#x27;keyup&#x27;, new Date().getTime(), _keycode );
+
+                    switch( _keycode ){
+                        case 38://up
+                        case 40://down
+                            {
+                                _keyindex = _p._model.nextIndex( _isBackward );
+
+                                if( _keyindex &gt;= 0 &amp;&amp; _keyindex &lt; _items.length ){
+                                    _evt.preventDefault();
+                                    _item = $(_items[_keyindex]);
+                                    _p._model.selectedIdentifier( _item );
+                                    _p.selector().val( _p._model.getKeyword( _item ) );
+                                    return;
+                                }
+                                break;
+                            }
+                        case 9://tab
+                            {
+                                _p.hide();
+                                return;
+                            }
+                        case 13://回车
+                            {
+                                var _tmpSelectedItem;
+                                if( _p._model.layout().is( &#x27;:visible&#x27; ) 
+                                        &amp;&amp; ( _tmpSelectedItem = _p._model.layout().find( &#x27;dd.active&#x27;) ) &amp;&amp; _tmpSelectedItem.length ){
+                                    _p.trigger(&#x27;SuggestSelected&#x27;, [ _tmpSelectedItem, _p._model.getKeyword( _tmpSelectedItem ) ]);
+                                }
+
+                                _p.hide();
+                                _sp.data( &#x27;IgnoreTime&#x27;, new Date().getTime() );
+
+                                _p._model.sugprevententer() &amp;&amp; _evt.preventDefault();
+                                break;
+                            }
+                    }
+                });
+
+                $( _p._model.layout() ).delegate( &#x27;.js_sugItem&#x27;, &#x27;mouseenter&#x27;, function(_evt){
+                    _p._model.selectedIdentifier( $(this), true );
+                });
+
+                $( _p._model.layout() ).delegate( &#x27;.js_sugItem&#x27;, &#x27;mouseleave&#x27;, function(_evt){
+                    $(this).removeClass(&#x27;active&#x27;);
+                });
+
+                _p.selector().on( &#x27;click&#x27;, function(_evt){
+                    _evt.stopPropagation();
+                    _p.selector().trigger( &#x27;keyup&#x27;, true );
+                    Suggest._hideOther( _p );
+                });
+
+                _p.on( &#x27;SuggestSelected&#x27;, function( _evt, _sp, _keyword ){
+                    _p._model.sugselectedcallback() &amp;&amp; _p._model.sugselectedcallback().call( _p, _keyword );
+                });
+
+                $( _p._model.layout() ).delegate( &#x27;.js_sugItem&#x27;, &#x27;click&#x27;, function(_evt){
+                    var _sp = $(this), _keyword = _p._model.getKeyword( _sp );
+                    _p.selector().val( _keyword );
+                    _p.hide();
+
+                    _p._model.preValue = _keyword;
+                    
+                    _p.trigger(&#x27;SuggestSelected&#x27;, [_sp, _keyword ]);
+                    JC.f.safeTimeout( function(){
+                        _p.selector().trigger( &#x27;blur&#x27; );
+                    }, null, &#x27;SuggestItemClick&#x27;, 300);
+
+                    _p.trigger( &#x27;update_id_selector&#x27;, [ _sp ] );
+                });
+
+                _p.on( &#x27;update_id_selector&#x27;, function( _evt, _sp ){
+                    if( !( _p._model.idSelector() &amp;&amp; _p._model.idSelector().length ) ) return;
+
+                    if( !_sp ){
+                        _p._model.idSelector().val( &#x27;&#x27; );
+                    }else{
+                        if( !_sp.is( &#x27;[data-id]&#x27; ) ) return;
+                        _p._model.idSelector().val( _sp.data( &#x27;id&#x27; ) );
+                    }
+                });
+
+                _p.on( &#x27;sug_detect_id&#x27;, function( _evt, _data ){
+                    if( !( _p._model.idSelector() &amp;&amp; _p._model.idSelector().length ) ) return;
+                    JC.dir( _data );
+                    if( !_data ) return;
+                    var _q = _data.q, _find = [];
+                    $.each( _data.s, function( _k, _item ){
+                        if( !$.isPlainObject( _item ) ) return;
+                        if( _item.name === _q || _item.value === _q ){
+                            _find.push( _item );
+                        }
+                    });
+                    JC.log( _find.length );
+                    if( !_find.length ) return;
+                    if( _find.length &gt; 1 ){
+                        if( _p._model.idSelector().val() ){
+                            var _hasItem;
+                            $.each( _find, function( _k, _item ){
+                                if( _item.id == _p._model.idSelector().val() ){
+                                    _hasItem = true;
+                                    return false;
+                                }
+                            });
+                            if( !_hasItem ){
+                                _p._model.idSelector().val( _find.first().id );
+                            }
+                        }else{
+                            _p._model.idSelector().val( _find.first().id );
+                        }
+                    }else{
+                        _p._model.idSelector().val( _find.first().id );
+                    }
+                });
+
+                if( _p._model.sugautoposition() ){
+                    $(window).on(&#x27;resize&#x27;, function(){
+                        if( _p._model.layout().is(&#x27;:visible&#x27;) ){
+                            _p._view.show();
+                        }
+                    });
+                }
+            }
+    });
     
-    Model.prototype = {
+    JC.BaseMVC.build( Suggest );
+    Suggest.Model._instanceName = &#x27;SuggestInstace&#x27;;
+    
+    JC.f.extendObject( Suggest.Model.prototype, {
         init:
             function(){
+                this._id = &#x27;Suggest_&#x27; + new Date().getTime();
+                this.initValue = this.selector().val().trim();
                 return this;
             }
 
@@ -852,7 +896,7 @@
             function(){
                 this.selector().is(&#x27;[sugqueryinterval]&#x27;) 
                     &amp;&amp; ( this._sugqueryinterval = parseInt( this.selector().attr(&#x27;sugqueryinterval&#x27;) ) );
-                this._sugqueryinterval = this._sugqueryinterval || 200;
+                this._sugqueryinterval = this._sugqueryinterval || 300;
                 return this._sugqueryinterval;
             }
         , sugprevententer:
@@ -920,13 +964,17 @@
                     &amp;&amp; ( _r = JC.f.parentSelector( this.selector(), this.selector().attr(&#x27;sugplaceholder&#x27;) ) );
                 return _r;
             }
-    };
+
+        , idSelector:
+            function(){
+                var _r;
+                this.is( &#x27;[sugIdSelector]&#x27; ) 
+                    &amp;&amp; ( _r = JC.f.parentSelector( this.selector(), this.attrProp( &#x27;sugIdSelector&#x27; ) ) );
+                return _r;
+            }
+    });
     
-    function View( _model ){
-        this._model = _model;
-    }
-    
-    View.prototype = {
+    JC.f.extendObject( Suggest.View.prototype, {
         init:
             function() {
                 return this;
@@ -966,7 +1014,7 @@
             }
         , update:
             function( _data ){
-                var _p = this, _ls = [], _query, _tmp, _text, _subtagname = _p._model.sugsubtagname();
+                var _p = this, _ls = [], _query, _tmp, _text, _subtagname = _p._model.sugsubtagname(), _item;
 
                 if( !( _data &amp;&amp; _data.s &amp;&amp; _data.s.length ) ){
                     _p.hide();
@@ -974,7 +1022,16 @@
                 }
 
                 for( var i = 0, j = _data.s.length; i &lt; j; i++ ){
-                    _tmp = _data.s[i], _text = _tmp, _query = _data.q || &#x27;&#x27;;
+                    _tmp = _data.s[i];
+                    var _itemData = [];
+                    if( typeof _tmp === &#x27;object&#x27; ){
+                         $.each( _tmp, function( _k, _sitem ){
+                             _itemData.push( JC.f.printf( &#x27;data-{0}=&quot;{1}&quot;&#x27;, _k, encodeURIComponent( _sitem ) ) );
+                         });
+                         _tmp = _tmp.name || _tmp.value || _tmp.id;
+                    }
+                    _text = _tmp;
+                    _query = _data.q || &#x27;&#x27;;
 
                     _text = _text.replace( _query, JC.f.printf( &#x27;&lt;b&gt;{0}&lt;/b&gt;&#x27;, _query ) );
                     /*
@@ -984,9 +1041,10 @@
                     }
                     else _query = &#x27;&#x27;;
                     */
-                    _ls.push( JC.f.printf(&#x27;&lt;{4} keyword=&quot;{2}&quot; keyindex=&quot;{3}&quot; class=&quot;js_sugItem&quot;&gt;{1}&lt;/{4}&gt;&#x27;
+                    _ls.push( JC.f.printf(&#x27;&lt;{4} keyword=&quot;{2}&quot; keyindex=&quot;{3}&quot; class=&quot;js_sugItem&quot; {5} &gt;{1}&lt;/{4}&gt;&#x27;
                                 , _query, _text, encodeURIComponent( _tmp ), i
                                 , _subtagname
+                                , _itemData.join( &#x27; &#x27; )
                             ));
                 }
 
@@ -1005,7 +1063,7 @@
                 this._model.layout().find( &#x27;.js_sugItem&#x27; ).removeClass(&#x27;active&#x27;); 
                 $(this).trigger( &#x27;TriggerEvent&#x27;, [&#x27;SuggestReset&#x27;] );
             }
-    };
+    });
 
     /**
      * 初始化完后的事件
