@@ -629,6 +629,7 @@ $( document ).delegate(
                             , _oldIx = _item.rowIndex
                             , _nodes = _item.nodes
                             , _pid = _item.pid
+                            , _pitem = _p.gridIdMap( _pid ) || {}
                             , _fdata, _ldata
                             , _fitem, _litem
                             , _midY 
@@ -667,9 +668,12 @@ $( document ).delegate(
                                 _maxY = Math.max( _item.rowIndex, _fdata.rowIndex );
                                 if( _item.rowIndex > _fdata.rowIndex ){
                                     _p.fixItemDataAndNext( _fdata, _item.rowIndex - _fdata.rowIndex );
-                                }else{
+                                }else if( _item.rowIndex < _fdata.rowIndex ){
                                     _p.fixItemDataAndNext( _item, _fdata.rowIndex - _item.rowIndex );
-                                    _p.fixItemParentDataAndNext( _item, _fdata.rowIndex, true );
+                                    var _newIx = _item.rowIndex;
+                                    _p.fixItemParentDataAndNext( _item, _newIx - _oldIx );
+                                    JC.log( _item.name, _item.id, JC.f.ts(), _pitem.name, _pitem.id  );
+                                }else{
                                 }
                             }
                         }
@@ -737,24 +741,8 @@ $( document ).delegate(
                     , _fdata, _ldata, _midY
                     ;
                 if( !( _pitem ) ) return;
-                if( _isRealY ){
-                    if( _pitem.nodes.length > 1 ){
-                        _fdata = _pitem.nodes.first();
-                        _ldata = _pitem.nodes.last();
-                        _midY = _fdata.rowIndex + Math.ceil( ( _ldata.rowIndex - _fdata.rowIndex ) / 2 );
-
-                        _p.fixItemDataAndNext( _pitem, _midY - _pitem.rowIndex );
-                        _p.fixItemParentDataAndNext( _pitem, _spaceY, _isRealY );
-                    }else{
-                        _nextSpaceY = _spaceY - _pitem.rowIndex;
-                        _newIx = _nextSpaceY + _pitem.rowIndex;
-                        _p.fixItemDataAndNext( _pitem, _nextSpaceY );
-                        _p.fixItemParentDataAndNext( _pitem, _spaceY, _isRealY );
-                    }
-                }else{
-                    _p.fixItemDataAndNext( _pitem, _spaceY );
-                    _p.fixItemParentDataAndNext( _pitem, _spaceY, _isRealY );
-                }
+                _p.fixItemDataAndNext( _pitem, _spaceY );
+                _p.fixItemParentDataAndNext( _pitem, _spaceY, _isRealY );
             }
 
         , fixItemDataAndNext:
