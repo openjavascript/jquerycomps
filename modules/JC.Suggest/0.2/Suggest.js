@@ -1,13 +1,15 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'plugins.json2' ], function(){
     window.Suggest = JC.Suggest = Suggest;
+    JC.use && !window.JSON && JC.use( 'plugins.json2' );
     /**
      * Suggest 关键词补全提示类
      * <p><b>require</b>: 
      *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      , <a href='javascript:;'>JSON 2</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Suggest.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Suggest/dev/_demo' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Suggest/0.2/_demo' target='_blank'>demo link</a></p>
      * <h2>可用的 HTML attribute</h2>
      * <dl>
      *      <dt>sugwidth: int</dt>
@@ -75,15 +77,19 @@
      *
      *      <dt>sugprevententer: bool, default = false</dt>
      *      <dd>回车时, 是否阻止默认事件, 为真将阻止表单提交事件</dd>
+     *
+     *      <dt>sugIdSelector = selector</dt>
+     *      <dd>
+     *          保存 id 的选择器( 只有关键词为 json格式的时候才会生效, { id: 'string', name: 'string' } )
+     *      </dd>
      * </dl>
-     * @namespace DEV.JC
+     * @namespace JC
      * @class Suggest
      * @constructor
      * @param   {selector|string}   _selector   
-     * @version dev 0.1
+     * @version dev 0.2
      * @author  qiushaowei   <suches@btbtd.org> | 75 Team
-     * @date    2013-08-11
-     * @example
+     * @date    2014-09-17
      */
     function Suggest( _selector ){
         _selector && ( _selector = $(_selector) );
