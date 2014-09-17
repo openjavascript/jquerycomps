@@ -47,7 +47,7 @@
 
             requirejs( [ 'DEV.JC.Suggest', 'plugins.json2' ], function( Suggest ){
                 setTimeout( function(){
-                    $('input.sug_input').first().focus();
+                    //$('input.sug_input').first().focus();
                 }, 500);
             });
 
@@ -93,10 +93,12 @@
                             sugneedscripttag="true"
                             sugselectedcallback="sugselectedcallback1"
                             sugdatafilter="sugdatafilter"
+                            sugIdSelector="(form input.js_kid"
                         />
                     </div>
                     <input type="submit" id="search-button" value="搜索一下" onmouseover="this.className='hover'" onmousedown="this.className='mousedown'" onmouseout="this.className=''" class="">
                     <dl class="sug_layout js_sugLayout1 test1" style="display:none;"></dl>
+                    <input type="text" value="" class="js_kid" />
                 </div>
             </form>
             </dd>
@@ -117,10 +119,13 @@
                             sugurl="./data/json_data.php?callback={1}&encodein=utf-8&encodeout=utf-8&word={0}"
                             sugneedscripttag="true"
                             sugselectedcallback="sugselectedcallback2"
+                            sugIdSelector="(form input.js_kid"
+                            value="a"
                         />
                     </div>
                     <input type="submit" id="search-button" value="搜索一下" onmouseover="this.className='hover'" onmousedown="this.className='mousedown'" onmouseout="this.className=''" class="">
                     <dl class="sug_layout js_sugLayout2 test2" style="display:none;"></dl>
+                    <input type="text" value="0" class="js_kid" />
                 </div>
             </form>
             </dd>

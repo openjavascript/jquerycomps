@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'plugins.json2' ], function(){
     window.Suggest = JC.Suggest = Suggest;
     /**
      * Suggest 关键词补全提示类
@@ -236,6 +236,7 @@
                 }
 
                 this._view.update( _data );
+
             }
         /**
          * 显示 Suggest 
@@ -324,6 +325,7 @@
 
                     if( !_val ){
                         _p.update();
+                        _p.trigger( 'update_id_selector' );
                         return;
                     }
 
@@ -339,12 +341,16 @@
                     }
                     _p._model.preValue = _val;
 
+                    if( _p._model.initValue ){
+                        _p._model.initValue = '';
+                    }else{
+                        _p.trigger( 'update_id_selector' );
+                    }
+
                     if( _p._model.cache( _val ) ){
                         _p.update( _p._model.cache( _val ) );
                         return;
                     }
-
-                    JC.log( _val );
 
                     if( _p._model.sugqueryinterval() ){
                         if( _p._model.timeout ){
@@ -357,6 +363,7 @@
                     }else{
                         _p._model.getData( _val );
                     }
+
                 });
 
                 _p._model.selector().on('blur', function( _evt ){
@@ -433,11 +440,26 @@
                     var _sp = $(this), _keyword = _p._model.getKeyword( _sp );
                     _p.selector().val( _keyword );
                     _p.hide();
+
+                    _p._model.preValue = _keyword;
                     
                     _p.trigger('SuggestSelected', [_sp, _keyword ]);
                     JC.f.safeTimeout( function(){
                         _p.selector().trigger( 'blur' );
                     }, null, 'SuggestItemClick', 300);
+
+                    _p.trigger( 'update_id_selector', [ _sp ] );
+                });
+
+                _p.on( 'update_id_selector', function( _evt, _sp ){
+                    if( !_p._model.idSelector() && _p._model.idSelector().length ) return;
+
+                    if( !_sp ){
+                        _p._model.idSelector().val( '' );
+                    }else{
+                        if( !_sp.is( '[data-id]' ) ) return;
+                        _p._model.idSelector().val( _sp.data( 'id' ) );
+                    }
                 });
 
                 if( _p._model.sugautoposition() ){
@@ -457,6 +479,7 @@
         init:
             function(){
                 this._id = 'Suggest_' + new Date().getTime();
+                this.initValue = this.selector().val().trim();
                 return this;
             }
 
@@ -674,6 +697,14 @@
                     && ( _r = JC.f.parentSelector( this.selector(), this.selector().attr('sugplaceholder') ) );
                 return _r;
             }
+
+        , idSelector:
+            function(){
+                var _r;
+                this.is( '[sugIdSelector]' ) 
+                    && ( _r = JC.f.parentSelector( this.selector(), this.attrProp( 'sugIdSelector' ) ) );
+                return _r;
+            }
     });
     
     JC.f.extendObject( Suggest.View.prototype, {
@@ -716,7 +747,7 @@
             }
         , update:
             function( _data ){
-                var _p = this, _ls = [], _query, _tmp, _text, _subtagname = _p._model.sugsubtagname();
+                var _p = this, _ls = [], _query, _tmp, _text, _subtagname = _p._model.sugsubtagname(), _item;
 
                 if( !( _data && _data.s && _data.s.length ) ){
                     _p.hide();
@@ -724,7 +755,16 @@
                 }
 
                 for( var i = 0, j = _data.s.length; i < j; i++ ){
-                    _tmp = _data.s[i], _text = _tmp, _query = _data.q || '';
+                    _tmp = _data.s[i];
+                    var _itemData = [];
+                    if( typeof _tmp === 'object' ){
+                         $.each( _tmp, function( _k, _sitem ){
+                             _itemData.push( JC.f.printf( 'data-{0}="{1}"', _k, encodeURIComponent( _sitem ) ) );
+                         });
+                         _tmp = _tmp.name || _tmp.value || _tmp.id;
+                    }
+                    _text = _tmp;
+                    _query = _data.q || '';
 
                     _text = _text.replace( _query, JC.f.printf( '<b>{0}</b>', _query ) );
                     /*
@@ -734,9 +774,10 @@
                     }
                     else _query = '';
                     */
-                    _ls.push( JC.f.printf('<{4} keyword="{2}" keyindex="{3}" class="js_sugItem">{1}</{4}>'
+                    _ls.push( JC.f.printf('<{4} keyword="{2}" keyindex="{3}" class="js_sugItem" {5} >{1}</{4}>'
                                 , _query, _text, encodeURIComponent( _tmp ), i
                                 , _subtagname
+                                , _itemData.join( ' ' )
                             ));
                 }
 
