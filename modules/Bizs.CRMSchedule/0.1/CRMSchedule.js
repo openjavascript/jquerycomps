@@ -1051,7 +1051,7 @@
                     _sdate.setDate( 1 );
 
                     _edate = JC.f.cloneDate( _sdate );
-                    _edate.setMonth( _edate.getMonth() + 4 );
+                    _edate.setMonth( _edate.getMonth() + _p.dateLabelLength() );
                     _edate.setDate( 0 );
 
                     _cdate = JC.f.cloneDate( _sdate );
