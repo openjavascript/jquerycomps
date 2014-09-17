@@ -1,9 +1,9 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
     window.Suggest = JC.Suggest = Suggest;
     /**
      * Suggest 关键词补全提示类
      * <p><b>require</b>: 
-     *      <a href='JC.common.html'>JC.common</a>
+     *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Suggest.html' target='_blank'>API docs</a>
@@ -91,14 +91,98 @@
         Suggest.getInstance( _selector, this );
         Suggest._allIns.push( this );
 
-        this._model = new Model( _selector );
-        this._view = new View( this._model );
+        this._model = new Suggest.Model( _selector );
+        this._view = new Suggest.View( this._model );
 
         this._init();
     }
+    /**
+     * 获取或设置 Suggest 的实例
+     * @method getInstance
+     * @param   {selector}              _selector
+     * @param   {SuggestInstace|null}   _setter
+     * @static
+     * @return  {Suggest instance}
+     */
+    Suggest.getInstance =
+        function( _selector, _setter ){
+            return JC.BaseMVC.getInstance( _selector, Suggest, _setter );
+        };
+    /**
+     * 判断 selector 是否可以初始化 Suggest
+     * @method  isSuggest
+     * @param   {selector}      _selector
+     * @static
+     * @return  bool
+     */
+    Suggest.isSuggest =
+        function( _selector ){
+            var _r;
+            _selector 
+                && ( _selector = $(_selector) ).length 
+                && ( _r = _selector.is( '[sugurl]' ) || _selector.is( 'sugstaticdatacb' ) );
+            return _r;
+        };
+    /**
+     * 设置 Suggest 是否需要自动初始化
+     * @property    autoInit
+     * @type        bool
+     * @default     true
+     * @static
+     */
+    Suggest.autoInit = true;
+    /**
+     * 自定义列表显示模板
+     * @property    layoutTpl
+     * @type        string
+     * @default     empty
+     * @static
+     */
+    Suggest.layoutTpl = '';
+    /**
+     * Suggest 返回列表的内容是否只使用
+     * @property    layoutTpl
+     * @type        string
+     * @default     empty
+     * @static
+     */
+    Suggest.layoutTpl = '';
+    /**
+     * 数据过滤回调
+     * @property    dataFilter
+     * @type        function
+     * @default     undefined
+     * @static
+     */
+    Suggest.dataFilter;
+    /**
+     * 保存所有初始化过的实例
+     * @property    _allIns
+     * @type        array
+     * @default     []
+     * @private
+     * @static
+     */
+    Suggest._allIns = [];
+    /**
+     * 隐藏其他 Suggest 显示列表
+     * @method      _hideOther
+     * @param       {SuggestInstance}       _ins
+     * @private
+     * @static
+     */
+    Suggest._hideOther =
+        function( _ins ){
+            for( var i = 0, j = Suggest._allIns.length; i < j; i++ ){
+                if( Suggest._allIns[i]._model._id != _ins._model._id ){
+                    Suggest._allIns[i].hide();
+                }
+            }
+        };
+
     
-    Suggest.prototype = {
-        _init:
+    JC.f.extendObject( Suggest.prototype, {
+        _initHanlderEvent:
             function(){
                 var _p = this;
 
@@ -364,104 +448,15 @@
                     });
                 }
             }
-    }
-    /**
-     * 获取或设置 Suggest 的实例
-     * @method getInstance
-     * @param   {selector}              _selector
-     * @param   {SuggestInstace|null}   _setter
-     * @static
-     * @return  {Suggest instance}
-     */
-    Suggest.getInstance =
-        function( _selector, _setter ){
-            if( typeof _selector == 'string' && !/</.test( _selector ) ) 
-                    _selector = $(_selector);
-            if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return;
-            typeof _setter != 'undefined' && _selector.data( 'SuggestInstace', _setter );
-
-            return _selector.data('SuggestInstace');
-        };
-    /**
-     * 判断 selector 是否可以初始化 Suggest
-     * @method  isSuggest
-     * @param   {selector}      _selector
-     * @static
-     * @return  bool
-     */
-    Suggest.isSuggest =
-        function( _selector ){
-            var _r;
-            _selector 
-                && ( _selector = $(_selector) ).length 
-                && ( _r = _selector.is( '[sugurl]' ) || _selector.is( 'sugstaticdatacb' ) );
-            return _r;
-        };
-    /**
-     * 设置 Suggest 是否需要自动初始化
-     * @property    autoInit
-     * @type        bool
-     * @default     true
-     * @static
-     */
-    Suggest.autoInit = true;
-    /**
-     * 自定义列表显示模板
-     * @property    layoutTpl
-     * @type        string
-     * @default     empty
-     * @static
-     */
-    Suggest.layoutTpl = '';
-    /**
-     * Suggest 返回列表的内容是否只使用
-     * @property    layoutTpl
-     * @type        string
-     * @default     empty
-     * @static
-     */
-    Suggest.layoutTpl = '';
-    /**
-     * 数据过滤回调
-     * @property    dataFilter
-     * @type        function
-     * @default     undefined
-     * @static
-     */
-    Suggest.dataFilter;
-    /**
-     * 保存所有初始化过的实例
-     * @property    _allIns
-     * @type        array
-     * @default     []
-     * @private
-     * @static
-     */
-    Suggest._allIns = [];
-    /**
-     * 隐藏其他 Suggest 显示列表
-     * @method      _hideOther
-     * @param       {SuggestInstance}       _ins
-     * @private
-     * @static
-     */
-    Suggest._hideOther =
-        function( _ins ){
-            for( var i = 0, j = Suggest._allIns.length; i < j; i++ ){
-                if( Suggest._allIns[i]._model._id != _ins._model._id ){
-                    Suggest._allIns[i].hide();
-                }
-            }
-        };
+    });
     
-    function Model( _selector ){
-        this._selector = _selector;
-        this._id = 'Suggest_' + new Date().getTime();
-    }
+    JC.BaseMVC.build( Suggest );
+    Suggest.Model._instanceName = 'SuggestInstace';
     
-    Model.prototype = {
+    JC.f.extendObject( Suggest.Model.prototype, {
         init:
             function(){
+                this._id = 'Suggest_' + new Date().getTime();
                 return this;
             }
 
@@ -679,13 +674,9 @@
                     && ( _r = JC.f.parentSelector( this.selector(), this.selector().attr('sugplaceholder') ) );
                 return _r;
             }
-    };
+    });
     
-    function View( _model ){
-        this._model = _model;
-    }
-    
-    View.prototype = {
+    JC.f.extendObject( Suggest.View.prototype, {
         init:
             function() {
                 return this;
@@ -764,7 +755,7 @@
                 this._model.layout().find( '.js_sugItem' ).removeClass('active'); 
                 $(this).trigger( 'TriggerEvent', ['SuggestReset'] );
             }
-    };
+    });
 
     /**
      * 初始化完后的事件
