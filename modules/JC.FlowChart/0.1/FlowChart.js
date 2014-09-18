@@ -514,7 +514,7 @@ $( document ).delegate(
                         _y += _item.rowIndex * _p.gridHeight();
 
                         _y < _p._minY && ( _p._minY = _y );
-                        ( _y + _p.gridHeight() / 2 ) > _p._maxY && ( _p._maxY = Math.ceil( _y + _p.gridHeight() / 2 ) );
+                        ( _y + _p.gridHeight() / 2 ) > _p._maxY && ( _p._maxY = ( _y + _p.gridHeight() / 2 ) );
 
                         _item.x = _x;
                         _item.y = _y;
@@ -620,7 +620,7 @@ $( document ).delegate(
                             if( _nodes.length > 1 ){
                                 _fdata = _nodes.first();
                                 _ldata = _nodes.last();
-                                _midY = _fdata.rowIndex + Math.ceil( _ldata.rowIndex - _fdata.rowIndex ) / 2;
+                                _midY = _fdata.rowIndex + ( _ldata.rowIndex - _fdata.rowIndex ) / 2;
                                 _spaceY = _oldIx - _midY;
                                 _minY = _fdata.rowIndex + _spaceY;
                                 _maxY = _ldata.rowIndex + _spaceY;
@@ -692,7 +692,7 @@ $( document ).delegate(
                                 _fdata = _p.gridIdMap( _pid.first() );
                                 _ldata = _p.gridIdMap( _pid.last() );
 
-                                _midY = _fdata.rowIndex + Math.ceil( _ldata.rowIndex - _fdata.rowIndex ) / 2
+                                _midY = _fdata.rowIndex + ( _ldata.rowIndex - _fdata.rowIndex ) / 2
 
                                 if( _item.prev && _item.prev.rowIndex >= _midY ){
                                 }else if( _item.next && _item.next.rowIndex <= _midY ){
@@ -811,7 +811,7 @@ $( document ).delegate(
                    if( _rowList.length > 1 ){
                        _itemIndexLen = _rowList.length * 2;
                    }
-                   _startIndex = _startIndex - Math.ceil( _itemIndexLen / 2 );
+                   _startIndex = _startIndex - ( _itemIndexLen / 2 );
                    _startIndex += 1;
 
                     $.each( _rowList, function( _k, _item ){
