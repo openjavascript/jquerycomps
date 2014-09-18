@@ -377,7 +377,6 @@ $( document ).delegate(
                 _p.fixRealRowIndex();
                 _p.fixFirstLastRowIndex();
 
-
                 _p.createItems();
                 _p.calcRealPosition();
 
@@ -570,6 +569,7 @@ $( document ).delegate(
                 var _p = this;
 
                 _p._maxRowY = 0;
+                if( _p.gridMaxColumn() < 2 ) return;
 
                 for( var i = 0; i < _p.gridMaxColumn(); i++ ){
                     var _rowList = _p.gridIdColumnIndexMap()[ i ];
@@ -580,14 +580,18 @@ $( document ).delegate(
 
                 var _fcol = _p.gridIdColumnIndexMap()[0]
                     , _first, _last
+                    , _lcol = _p.gridIdColumnIndexMap()[ _p.gridMaxColumn() - 1]
                     ;
-                if( !( _fcol && _fcol.length ) ) return;
-                var _fdata = _fcol[0];
-                if(  _fdata.nodes && _fdata.nodes.length ){
-                    _first = _fdata.nodes.first();
-                    _last = _fdata.nodes.last();
-                    _fdata.rowIndex = _first.rowIndex + ( _last.rowIndex - _first.rowIndex ) / 2;
+                if( _fcol && _fcol.length ){
+                    var _fdata = _fcol[0];
+                    if(  _fdata.nodes && _fdata.nodes.length ){
+                        _first = _fdata.nodes.first();
+                        _last = _fdata.nodes.last();
+                        _fdata.rowIndex = _first.rowIndex + ( _last.rowIndex - _first.rowIndex ) / 2;
+                    }
                 }
+
+
             }
 
         , fixNodesRowIndex:
@@ -639,16 +643,21 @@ $( document ).delegate(
                                 }
                             }else{
                                 _fdata = _nodes.first();
+                                //JC.log( _item.name, _item.id, JC.f.ts(), _item.rowIndex, _fdata.rowIndex, _fdata.name );
                                 if( _item.rowIndex === _fdata.rowIndex ) return;
+                                    //JC.log( 1 );
                                 _maxY = Math.max( _item.rowIndex, _fdata.rowIndex );
                                 if( _item.rowIndex > _fdata.rowIndex ){
+                                    //JC.log( 2 );
                                     _p.fixItemDataAndNext( _fdata, _item.rowIndex - _fdata.rowIndex );
                                 }else if( _item.rowIndex < _fdata.rowIndex ){
+                                    //JC.log( 3 );
                                     _p.fixItemDataAndNext( _item, _fdata.rowIndex - _item.rowIndex );
                                     var _newIx = _item.rowIndex;
                                     _p.fixItemParentDataAndNext( _item, _newIx - _oldIx );
-                                    JC.log( _item.name, _item.id, JC.f.ts(), _pitem.name, _pitem.id  );
+                                    //JC.log( _item.name, _item.id, JC.f.ts(), _pitem.name, _pitem.id  );
                                 }else{
+                                    //JC.log( 4 );
                                 }
                             }
                         }
@@ -687,18 +696,23 @@ $( document ).delegate(
 
                                 if( _item.prev && _item.prev.rowIndex >= _midY ){
                                 }else if( _item.next && _item.next.rowIndex <= _midY ){
-                                    JC.log( _item.name, _item.id, _item.next.name, _item.next.id );
+                                    //JC.log( _item.name, _item.id, _item.next.name, _item.next.id );
                                     _p.fixItemDataAndNext( _item, _midY - _item.rowIndex );
                                 }else{
+                                    _spaceY = _midY - _item.rowIndex;
                                     _item.rowIndex = _midY;
+                                    _p.fixItemChildDataAndNext( _item, _spaceY );
                                 }
                             }else{
                                 _fdata = _p.gridIdMap( _pid.first() );
                                 if( _fdata.targetNode ){
                                     if( _item.next && _fdata.rowIndex >= _item.next.rowIndex ){
-                                        _p.fixItemDataAndNext( _item, _fdata.rowIndex - _item.rowIndex );
+                                        _spaceY = _fdata.rowIndex - _item.rowIndex;
+                                        _p.fixItemDataAndNext( _item, _spaceY );
                                     }else{
+                                        _spaceY = _fdata.rowIndex - _item.rowIndex;
                                         _item.rowIndex = _fdata.rowIndex;
+                                        _p.fixItemChildDataAndNext( _item, _spaceY );
                                     }
                                 }
                             }
@@ -706,6 +720,16 @@ $( document ).delegate(
                     });
 
                 }
+            }
+
+        , fixItemChildDataAndNext:
+            function( _item, _spaceY ){
+                var _p = this, _nextSpaceY, _newIx;
+                if( !( _item && _item.nodes && _item.nodes.length ) ) return;
+                $.each( _item.nodes, function( _k, _sitem ){
+                    _sitem.rowIndex += _spaceY;
+                    _p.fixItemChildDataAndNext( _sitem, _spaceY );
+                });
             }
 
         , fixItemParentDataAndNext:
