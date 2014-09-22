@@ -2,12 +2,15 @@
 
     $cb = "callback";
     $query = "";
+    $word = "";
 
     isset( $_REQUEST[ 'callback' ] ) && ( $cb = $_REQUEST[ 'callback' ] );
     isset( $_REQUEST[ 'q' ] ) && ( $query  = $_REQUEST[ 'q' ] );
     isset( $_REQUEST[ 'word' ] ) && ( $query  = $_REQUEST[ 'word' ] );
 
     $cb = preg_replace( '/<[^>]*?>[\s\S]*?<\/[^<]*?>/', '', $cb );
+    $query = preg_replace( '/<[^>]*?>[\s\S]*?<\/[^<]*?>/', '', $query );
+    $word = preg_replace( '/<[^>]*?>[\s\S]*?<\/[^<]*?>/', '', $word );
 
     $data = array( 
         array( "id" => "0", "name" => "a" )
