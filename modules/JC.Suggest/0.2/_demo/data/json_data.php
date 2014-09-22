@@ -7,6 +7,8 @@
     isset( $_REQUEST[ 'q' ] ) && ( $query  = $_REQUEST[ 'q' ] );
     isset( $_REQUEST[ 'word' ] ) && ( $query  = $_REQUEST[ 'word' ] );
 
+    $cb = preg_replace( '/<[^>]*?>[\s\S]*?<\/[^<]*?>/', '', $cb );
+
     $data = array( 
         array( "id" => "0", "name" => "a" )
         , array( "id" => "1", "name" => "a1" )
