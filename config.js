@@ -20,6 +20,7 @@ requirejs.config( {
 
         //, 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.1/AjaxUpload'
         , 'JC.AjaxUpload': 'modules/JC.AjaxUpload/0.2/AjaxUpload'
+        , 'JC.AjaxTree': 'modules/JC.AjaxTree/0.1/AjaxTree'
         , 'JC.AutoChecked': 'modules/JC.AutoChecked/0.1/AutoChecked'
         , 'JC.AutoSelect': 'modules/JC.AutoSelect/0.2/AutoSelect'
         , 'JC.AutoComplete': 'modules/JC.AutoComplete/0.1/AutoComplete'
