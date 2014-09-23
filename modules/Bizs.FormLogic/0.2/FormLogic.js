@@ -459,7 +459,7 @@ window.parent
                         }
                     }
 
-                    if( !JC.Valid.check( _p.selector() ) ){
+                    if( !_ignoreCheck && !JC.Valid.check( _p.selector() ) ){
                         _p._model.prevent( _evt );
 
                         if( !_p._model.checkDataValid() ){
@@ -1058,7 +1058,7 @@ window.parent
 
         , datavalidFormLogicMsg:
             function( _item ){
-                var _msg = "需要AJAX验证后才能提交, 请重试...";
+                var _msg = "需要表单异步验证后才能提交, 请重试...";
                 _msg = $( _item ).attr( 'datavalidFormLogicMsg' ) || _msg;
                 return _msg;
             }
