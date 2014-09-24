@@ -901,7 +901,7 @@
             "namespace": "window.Bizs",
             "file": "../bizs/FormLogic/FormLogic.js",
             "line": 4,
-            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Valid.html'>JC.Valid</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><b>optional</b>: \n     <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../bizs/FormLogic/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax, jsonp \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function, <b>window 变量域</b/></dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function, <b>window 变量域</b></dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function, <b>window 变量域</b></dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formBeforeSubmit = function, <b>window 变量域</b></dt>\n     <dd>\n         表单开始发送数据到服务器之前的回调\n<pre>function formBeforeSubmit( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeSubmit', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n\n     <dt>formJsonpCb = function, default = FormLogic#_model._innerJsonpCb</dt>\n     <dd>自定义 JSOPN 处理回调, <b>window 变量域</b>\n<pre>function customFormJsonpCb( _data, _info ){\n   if( !( _data && _info ) ) return;\n\n   var _frm = $( 'form.' + _info ), _ins;\n   if( !_frm.length ) return;\n   _ins = JC.BaseMVC.getInstance( _frm, Bizs.FormLogic );\n   if( !_ins ) return;\n\n   _ins.trigger( Bizs.FormLogic.Model.AJAX_DONE, [ _data ] );\n}</pre>\n\n<pre>URL: <b>handler_jsonp.php?callbackInfo=FormLogic_1&callback=callback</b>\nOUTPUT:\n<b>&lt;script&gt;\nwindow.parent \n   && window.parent != this\n   && window.parent&#91; 'callback' &#93;\n   && window.parent&#91; 'callback' &#93;( {\"errorno\":0,\"errmsg\":\"\",\"data\":{\"callbackInfo\":\"FormLogic_1\",\"callback\":\"callback\"}}, 'FormLogic_1' )\n   ;\n&lt;/script&gt;</b></pre>\n     </dd>\n</dl>\n\n<h2>Form Control 可用的 html 属性</h2>\n<dl>\n     <dt>ignoreResetClear = bool, default = false</dt>\n     <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dd>\n\n     <dt>formSubmitIgnoreCheck = bool, default = false</dt>\n     <dd>\n         表单提交时, 是否忽略 JC.Valid 的验证\n         <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配\n         <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>\n     </dd>\n\n     <dt>formResetCallback = callback</dt>\n     <dd>表单重置后的回调\n<pre>function formResetCallback( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formResetCallback', JC.f.ts() );\n}</pre>\n\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n     </dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n\n     <dt>buttonClickBindSelector = selector</dt>\n     <dd>\n         点击按钮时, 把按钮的值赋值给 绑定的 控件\n         <br /><b>注意:</b> 这个属性仅支持 [input|button] 标签\n     </dd>\n</dl>",
+            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Valid.html'>JC.Valid</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><b>optional</b>: \n     <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.FormLogic/0.2/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax, jsonp \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function, <b>window 变量域</b/></dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function, <b>window 变量域</b></dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function, <b>window 变量域</b></dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formBeforeSubmit = function, <b>window 变量域</b></dt>\n     <dd>\n         表单开始发送数据到服务器之前的回调\n<pre>function formBeforeSubmit( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeSubmit', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n\n     <dt>formJsonpCb = function, default = FormLogic#_model._innerJsonpCb</dt>\n     <dd>自定义 JSOPN 处理回调, <b>window 变量域</b>\n<pre>function customFormJsonpCb( _data, _info ){\n   if( !( _data && _info ) ) return;\n\n   var _frm = $( 'form.' + _info ), _ins;\n   if( !_frm.length ) return;\n   _ins = JC.BaseMVC.getInstance( _frm, Bizs.FormLogic );\n   if( !_ins ) return;\n\n   _ins.trigger( Bizs.FormLogic.Model.AJAX_DONE, [ _data ] );\n}</pre>\n\n<pre>URL: <b>handler_jsonp.php?callbackInfo=FormLogic_1&callback=callback</b>\nOUTPUT:\n<b>&lt;script&gt;\nwindow.parent \n   && window.parent != this\n   && window.parent&#91; 'callback' &#93;\n   && window.parent&#91; 'callback' &#93;( {\"errorno\":0,\"errmsg\":\"\",\"data\":{\"callbackInfo\":\"FormLogic_1\",\"callback\":\"callback\"}}, 'FormLogic_1' )\n   ;\n&lt;/script&gt;</b></pre>\n     </dd>\n</dl>\n\n<h2>Form Control 可用的 html 属性</h2>\n<dl>\n     <dt>ignoreResetClear = bool, default = false</dt>\n     <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dd>\n\n     <dt>formSubmitIgnoreCheck = bool, default = false</dt>\n     <dd>\n         表单提交时, 是否忽略 JC.Valid 的验证\n         <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配\n         <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>\n     </dd>\n\n     <dt>formResetCallback = callback</dt>\n     <dd>表单重置后的回调\n<pre>function formResetCallback( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formResetCallback', JC.f.ts() );\n}</pre>\n\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n     </dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n\n     <dt>buttonClickBindSelector = selector</dt>\n     <dd>\n         点击按钮时, 把按钮的值赋值给 绑定的 控件\n         <br /><b>注意:</b> 这个属性仅支持 [input|button] 标签\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-08",
@@ -1401,7 +1401,7 @@
             "namespace": "JC",
             "file": "../comps/FlowChart/FlowChart.js",
             "line": 5,
-            "description": "<dl>\n     <dt>JC 流程图</dt>\n     <dd style=\"\">一对多关系</dd>\n     <dd>多对一关系</dd>\n     <dd style=\"color:#ccc;text-decoration: line-through;\">多对多关系</dd>\n</dl>\n <p><b>require</b>:\n     <a href='window.Raphael.html'>RaphaelJS</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.PopTips.html'>JC.PopTips</a>\n </p>\n\n <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc.openjavascript.org/docs_api/classes/JC.FlowChart.html' target='_blank'>API docs</a>\n     | <a href='../../comps/FlowChart/_demo' target='_blank'>demo link</a></p>\n \n <h2>页面只要引用本脚本, 默认会处理 div class=\"js_compFlowChart\"</h2>\n\n <h2>可用的 HTML attribute</h2>\n\n <dl>\n     <dt>data-FlowChart = script json data</dt>\n     <dd>流程图数据\n         <dl>\n             <dt>数据说明</dt>\n             <dd>数据按节点关系分为两大类: 一对多, 多对一</dd>\n             <dd>\n                 <dl>\n                     <dt>一对多数据</dt>\n                     <dd>一对多数据存放于字段: nodes, nodes 数据类型为数组</dd>\n                     <dd>nodes 字段位于数据节点里</dd>\n                 </dl>\n                 <dl>\n                     <dt>多对一数据</dt>\n                     <dd>多对一数据存放于字段: targetNodes, targetNodes 数据类型为对象</dd>\n                     <dd>targetNodes 字段为全局节点</dd>\n                 </dl>\n             </dd>\n         </dl>\n         <dl>\n             <dt>数据字段说明</dt>\n             <dd>\n                 <h2>图表数据 - chart 字段</h2>\n                 <dl>\n                     <dt>name = string</dt>\n                     <dd>节点名</dd>\n\n                     <dt>id = string</dt>\n                     <dd>节点唯一标识符</dd>\n\n                     <dt>nodes = array</dt>\n                     <dd>一对多数据的子节点, 该字段位于父节点里面</dd>\n\n                     <dt>targetNodes = object</dt>\n                     <dd>多对一数据的子节点, 该字段为全局字段, 节点位置 chart.targetNodes</dd>\n\n                     <dt>status = string, default = 0</dt>\n                     <dd>\n                         节点状态\n                         <br/>根据 status 显示为不同的样式\n                         <br/>默认有0 ~ 10, 共11 种状态\n                         <br/>由status 产生的 css class: js_cfcItemStatus_N, js_cfcItemTips_N ( N 代表 status )\n                     </dd>\n\n                     <dt>tipsHtml = string</dt>\n                     <dd>鼠标划过节点时, 显示的tips内容, 支持html内容</dd>\n                 </dl>\n                 <h2>线条与图标颜色 - colors 字段</h2>\n                 <dl>\n                     <dt>line = raphael object, default: { 'stroke': '#E1E1E1', 'stroke-width': 2 } </dt>\n                     <dd>背景线颜色</dd>\n\n                     <dt>icon = raphael object, default: { 'stroke': '#E1E1E1', 'stroke-width': 2, 'fill': '#F2F2F2' } </dt>\n                     <dd>图标颜色</dd>\n\n                     <dt>如果要自定义节点颜色 或者 tips 颜色, 请使用 css 定义: js_cfcItemStatus_N, js_cfcItemTips_N ( N 代表 status ) </dt>\n                 </dl>\n             </dd>\n         </dl>\n     <dd>\n </dl>",
+            "description": "<dl>\n     <dt>JC 流程图</dt>\n     <dd style=\"\">一对多关系</dd>\n     <dd>多对一关系</dd>\n     <dd style=\"color:#ccc;text-decoration: line-through;\">多对多关系</dd>\n</dl>\n <p><b>require</b>:\n     <a href='window.Raphael.html'>RaphaelJS</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.PopTips.html'>JC.PopTips</a>\n </p>\n\n <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.FlowChart.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.FlowChart/0.1/_demo' target='_blank'>demo link</a></p>\n \n <h2>页面只要引用本脚本, 默认会处理 div class=\"js_compFlowChart\"</h2>\n\n <h2>可用的 HTML attribute</h2>\n\n <dl>\n     <dt>data-FlowChart = script json data</dt>\n     <dd>流程图数据\n         <dl>\n             <dt>数据说明</dt>\n             <dd>数据按节点关系分为两大类: 一对多, 多对一</dd>\n             <dd>\n                 <dl>\n                     <dt>一对多数据</dt>\n                     <dd>一对多数据存放于字段: nodes, nodes 数据类型为数组</dd>\n                     <dd>nodes 字段位于数据节点里</dd>\n                 </dl>\n                 <dl>\n                     <dt>多对一数据</dt>\n                     <dd>多对一数据存放于字段: targetNodes, targetNodes 数据类型为对象</dd>\n                     <dd>targetNodes 字段为全局节点</dd>\n                 </dl>\n             </dd>\n         </dl>\n         <dl>\n             <dt>数据字段说明</dt>\n             <dd>\n                 <h2>图表数据 - chart 字段</h2>\n                 <dl>\n                     <dt>name = string</dt>\n                     <dd>节点名</dd>\n\n                     <dt>id = string</dt>\n                     <dd>节点唯一标识符</dd>\n\n                     <dt>nodes = array</dt>\n                     <dd>一对多数据的子节点, 该字段位于父节点里面</dd>\n\n                     <dt>targetNodes = object</dt>\n                     <dd>多对一数据的子节点, 该字段为全局字段, 节点位置 chart.targetNodes</dd>\n\n                     <dt>status = string, default = 0</dt>\n                     <dd>\n                         节点状态\n                         <br/>根据 status 显示为不同的样式\n                         <br/>默认有0 ~ 10, 共11 种状态\n                         <br/>由status 产生的 css class: js_cfcItemStatus_N, js_cfcItemTips_N ( N 代表 status )\n                     </dd>\n\n                     <dt>tipsHtml = string</dt>\n                     <dd>鼠标划过节点时, 显示的tips内容, 支持html内容</dd>\n                 </dl>\n                 <h2>线条与图标颜色 - colors 字段</h2>\n                 <dl>\n                     <dt>line = raphael object, default: { 'stroke': '#E1E1E1', 'stroke-width': 2 } </dt>\n                     <dd>背景线颜色</dd>\n\n                     <dt>icon = raphael object, default: { 'stroke': '#E1E1E1', 'stroke-width': 2, 'fill': '#F2F2F2' } </dt>\n                     <dd>图标颜色</dd>\n\n                     <dt>如果要自定义节点颜色 或者 tips 颜色, 请使用 css 定义: js_cfcItemStatus_N, js_cfcItemTips_N ( N 代表 status ) </dt>\n                 </dl>\n             </dd>\n         </dl>\n     <dd>\n </dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -3381,28 +3381,28 @@
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 529,
+            "line": 536,
             "description": "全局 AJAX 提交完成后的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 535,
+            "line": 545,
             "description": "这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 581,
+            "line": 591,
             "description": "表单内容验证通过后, 开始提交前的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../bizs/FormLogic/FormLogic.js",
-            "line": 823,
+            "line": 876,
             "description": "这个回调的 this 指针是 window",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
@@ -5467,7 +5467,7 @@
                 }
             ],
             "return": {
-                "description": "bool"
+                "description": "string"
             },
             "class": "JC.BaseMVC.Model",
             "namespace": "JC"
@@ -5475,6 +5475,30 @@
         {
             "file": "../comps/BaseMVC/BaseMVC.js",
             "line": 495,
+            "description": "获取 脚本数据 jquery 选择器",
+            "itemtype": "method",
+            "name": "scriptDataProp",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()",
+                    "type": "Selector|string"
+                },
+                {
+                    "name": "_key",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "object"
+            },
+            "class": "JC.BaseMVC.Model",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/BaseMVC/BaseMVC.js",
+            "line": 514,
             "description": "获取 selector 属性的 json 数据",
             "itemtype": "method",
             "name": "jsonProp",
@@ -5499,7 +5523,7 @@
         },
         {
             "file": "../comps/BaseMVC/BaseMVC.js",
-            "line": 519,
+            "line": 538,
             "description": "判断 _selector 是否具体某种特征",
             "itemtype": "method",
             "name": "is",
@@ -5523,14 +5547,14 @@
         },
         {
             "file": "../comps/BaseMVC/BaseMVC.js",
-            "line": 548,
+            "line": 567,
             "description": "使用 jquery on 为 controler 绑定事件",
             "class": "JC.BaseMVC.Model",
             "namespace": "JC"
         },
         {
             "file": "../comps/BaseMVC/BaseMVC.js",
-            "line": 556,
+            "line": 575,
             "description": "使用 jquery trigger 触发 controler 绑定事件",
             "class": "JC.BaseMVC.Model",
             "namespace": "JC"
@@ -15373,7 +15397,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2104,
+            "line": 2107,
             "description": "此类型检查 2|N个对象必须至少有一个是有输入内容的, \n<br> 常用于 手机/电话 二填一",
             "itemtype": "method",
             "name": "alternative",
@@ -15395,7 +15419,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2253,
+            "line": 2257,
             "description": "如果 _item 的值非空, 那么 reqtarget 的值也不能为空",
             "itemtype": "method",
             "name": "reqtarget",
@@ -15414,7 +15438,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2292,
+            "line": 2298,
             "description": "N 个值必须保持唯一性, 不能有重复",
             "itemtype": "method",
             "name": "unique",
@@ -15433,7 +15457,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2468,
+            "line": 2477,
             "description": "获取 _selector 对象\n<br />这个方法的存在是为了向后兼容qwrap, qwrap DOM参数都为ID",
             "itemtype": "method",
             "name": "getElement",
@@ -15452,7 +15476,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2491,
+            "line": 2500,
             "description": "获取对应的错误信息, 默认的错误信息有 reqmsg, errmsg, <br />\n注意: 错误信息第一个字符如果为空格的话, 将完全使用用户定义的错误信息, 将不会动态添加 请上传/选择/填写",
             "itemtype": "method",
             "name": "errorMsg",
@@ -15481,7 +15505,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2526,
+            "line": 2535,
             "description": "检查内容是否为空,\n<br>如果声明了该属性, 那么 value 须不为空",
             "itemtype": "method",
             "name": "reqmsg",
@@ -15503,21 +15527,21 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2613,
+            "line": 2622,
             "description": "这里需要优化检查, 目前会重复检查",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2703,
+            "line": 2712,
             "description": "验证文件扩展名",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2823,
+            "line": 2832,
             "description": "显示正确的视觉效果",
             "itemtype": "method",
             "name": "valid",
@@ -15546,7 +15570,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2881,
+            "line": 2890,
             "description": "显示错误的视觉效果",
             "itemtype": "method",
             "name": "error",
@@ -15575,7 +15599,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2954,
+            "line": 2963,
             "description": "解析错误时触发的时件",
             "itemtype": "event",
             "name": "ValidError",
@@ -15584,7 +15608,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2958,
+            "line": 2967,
             "description": "解析正确时触发的时件",
             "itemtype": "event",
             "name": "ValidCorrect",
@@ -15593,7 +15617,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2962,
+            "line": 2971,
             "description": "响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果",
             "access": "private",
             "tagname": "",
@@ -15602,14 +15626,14 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2972,
+            "line": 2981,
             "description": "响应没有 type 的 文本框",
             "class": "JC.Valid",
             "namespace": "JC"
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2982,
+            "line": 2991,
             "description": "响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果",
             "access": "private",
             "tagname": "",
@@ -15618,7 +15642,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 2992,
+            "line": 3001,
             "description": "响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
             "access": "private",
             "tagname": "",
@@ -15627,7 +15651,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 3003,
+            "line": 3012,
             "description": "响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
             "access": "private",
             "tagname": "",
@@ -15636,7 +15660,7 @@
         },
         {
             "file": "../comps/Valid/Valid.js",
-            "line": 3031,
+            "line": 3040,
             "description": "初始化 subdatatype = datavalid 相关事件",
             "class": "JC.Valid",
             "namespace": "JC"
@@ -19219,19 +19243,19 @@
         },
         {
             "message": "Missing item type\n全局 AJAX 提交完成后的处理事件",
-            "line": " ../bizs/FormLogic/FormLogic.js:529"
+            "line": " ../bizs/FormLogic/FormLogic.js:536"
         },
         {
             "message": "Missing item type\n这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
-            "line": " ../bizs/FormLogic/FormLogic.js:535"
+            "line": " ../bizs/FormLogic/FormLogic.js:545"
         },
         {
             "message": "Missing item type\n表单内容验证通过后, 开始提交前的处理事件",
-            "line": " ../bizs/FormLogic/FormLogic.js:581"
+            "line": " ../bizs/FormLogic/FormLogic.js:591"
         },
         {
             "message": "Missing item type\n这个回调的 this 指针是 window",
-            "line": " ../bizs/FormLogic/FormLogic.js:823"
+            "line": " ../bizs/FormLogic/FormLogic.js:876"
         },
         {
             "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
@@ -19283,11 +19307,11 @@
         },
         {
             "message": "Missing item type\n使用 jquery on 为 controler 绑定事件",
-            "line": " ../comps/BaseMVC/BaseMVC.js:548"
+            "line": " ../comps/BaseMVC/BaseMVC.js:567"
         },
         {
             "message": "Missing item type\n使用 jquery trigger 触发 controler 绑定事件",
-            "line": " ../comps/BaseMVC/BaseMVC.js:556"
+            "line": " ../comps/BaseMVC/BaseMVC.js:575"
         },
         {
             "message": "Missing item type\n保存所有类型的 Calendar 日期实例 \n<br />目前有 date, week, month, season 四种类型的实例\n<br />每种类型都是单例模式",
@@ -19615,35 +19639,35 @@
         },
         {
             "message": "Missing item type\n这里需要优化检查, 目前会重复检查",
-            "line": " ../comps/Valid/Valid.js:2613"
+            "line": " ../comps/Valid/Valid.js:2622"
         },
         {
             "message": "Missing item type\n验证文件扩展名",
-            "line": " ../comps/Valid/Valid.js:2703"
+            "line": " ../comps/Valid/Valid.js:2712"
         },
         {
             "message": "Missing item type\n响应表单子对象的 blur事件, 触发事件时, 检查并显示错误或正确的视觉效果",
-            "line": " ../comps/Valid/Valid.js:2962"
+            "line": " ../comps/Valid/Valid.js:2971"
         },
         {
             "message": "Missing item type\n响应没有 type 的 文本框",
-            "line": " ../comps/Valid/Valid.js:2972"
+            "line": " ../comps/Valid/Valid.js:2981"
         },
         {
             "message": "Missing item type\n响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果",
-            "line": " ../comps/Valid/Valid.js:2982"
+            "line": " ../comps/Valid/Valid.js:2991"
         },
         {
             "message": "Missing item type\n响应表单子对象的 focus 事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
-            "line": " ../comps/Valid/Valid.js:2992"
+            "line": " ../comps/Valid/Valid.js:3001"
         },
         {
             "message": "Missing item type\n响应表单子对象的 blur事件, 触发事件时, 如果有 focusmsg 属性, 则显示对应的提示信息",
-            "line": " ../comps/Valid/Valid.js:3003"
+            "line": " ../comps/Valid/Valid.js:3012"
         },
         {
             "message": "Missing item type\n初始化 subdatatype = datavalid 相关事件",
-            "line": " ../comps/Valid/Valid.js:3031"
+            "line": " ../comps/Valid/Valid.js:3040"
         },
         {
             "message": "Missing item type\nTop level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",

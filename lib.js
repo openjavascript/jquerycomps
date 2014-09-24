@@ -12008,7 +12008,7 @@ window.Bizs = window.Bizs || {};
          * @method  scriptTplProp
          * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
          * @param   {string}           _key
-         * @return  bool
+         * @return  string
          */
         , scriptTplProp:
             function( _selector, _key ){
@@ -12028,6 +12028,25 @@ window.Bizs = window.Bizs || {};
 
                 return _r;
             }
+        /**
+         * 获取 脚本数据 jquery 选择器
+         * @method  scriptDataProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  object
+         */
+        , scriptDataProp:
+            function( _selector, _key ){
+                var _r = null, _tmp;
+                _tmp = this.scriptTplProp( _selector, _key );
+
+                if( _tmp ){
+                    _r = eval( '(' + _tmp + ')' );
+                }
+
+                return _r;
+            }
+
         /**
          * 获取 selector 属性的 json 数据
          * @method  jsonProp

@@ -2321,6 +2321,9 @@ function (){
                         $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
                     });
                 }
+
+                !_r &amp;&amp; _item.attr( &#x27;datatypestatus&#x27;, &#x27;false&#x27; );
+
                 _r 
                     ?  $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _item ] )
                     :  $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, &#x27;reconfirmmsg&#x27;, true ] )
@@ -2485,6 +2488,7 @@ function (){
                         $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _item ] );
                     }
                 }else{
+                    !_r &amp;&amp; _item.attr( &#x27;datatypestatus&#x27;, &#x27;false&#x27; );
                     $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, &#x27;alternativemsg&#x27;, true ] );
                 }
 
@@ -2506,6 +2510,7 @@ function (){
                 if( _v &amp;&amp; _target &amp;&amp; _target.length ){
                     _tv = _target.val().trim();
                     !_tv &amp;&amp; ( _r = false );
+                        !_r &amp;&amp; _item.attr( &#x27;datatypestatus&#x27;, &#x27;false&#x27; );
                     !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _target, &#x27;reqtargetmsg&#x27;, true ] );
                     _r &amp;&amp; _target.trigger(&#x27;blur&#x27;);
                 }else if( _target &amp;&amp; _target.length ){
@@ -2518,6 +2523,7 @@ function (){
             function( _item ){
                 var _r = true, _p = this;
                 this.ucheckCallback( _item ) &amp;&amp; ( _r = this.ucheckCallback( _item )( _item ) );
+                !_r &amp;&amp; _item.attr( &#x27;datatypestatus&#x27;, &#x27;false&#x27; );
                 !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, &#x27;ucheckmsg&#x27;, true ] );
                 return _r;
             }
@@ -2636,6 +2642,8 @@ function (){
                     }
                 });
 
+                !_r &amp;&amp; _item.attr( &#x27;datatypestatus&#x27;, &#x27;false&#x27; );
+
                 !_r &amp;&amp; _errLs.length &amp;&amp; $.each( _errLs, function( _ix, _sitem ){ 
                     _sitem = $( _sitem );
                     var _sv = ( _sitem.val() || &#x27;&#x27; ).trim();
@@ -2660,6 +2668,7 @@ function (){
                 _r = JC.f.parseBool( _item.attr(&#x27;datavalid&#x27;) );
 
                 if( !_r ){
+                    !_r &amp;&amp; _item.attr( &#x27;datatypestatus&#x27;, &#x27;false&#x27; );
                     Valid.statusTimeout.error( _item, 
                         setTimeout( function(){
                             $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, &#x27;datavalidmsg&#x27;, true ] );
