@@ -112,11 +112,12 @@
                     if( !_data ) return;
                     _p._model.data( _data );
                     if( !( _p._model.data() && _p._model.root() ) ) return;
-                    _p._view._process( _p._model.child( _p._model.root()[0] ), _p._view._initRoot() );
+
+                    _p._view._process( _p._model.child( _p._model.root()[ _p._model.idIndex() ] ), _p._view._initRoot() );
 
                     var _arg = JC.f.getUrlParam( _p._model.urlArgName() );
-
                     _arg && _p.open( _arg );
+                    //JC.log( _p._model.idIndex(), _p._model.nameIndex(), _p._model.typeIndex() );
                 });
             }
 
@@ -229,6 +230,27 @@
                 }
                 return _data;
             }
+        , idIndex:
+            function(){
+                if( typeof this._idIndex == 'undefined' ){
+                    this._idIndex = this.attrProp( 'data-idIndex' ) || 0;
+                }
+                return this._idIndex;
+            }
+        , nameIndex:
+            function(){
+                if( typeof this._nameIndex == 'undefined' ){
+                    this._nameIndex = this.attrProp( 'data-nameIndex' ) || 1;
+                }
+                return this._nameIndex;
+            }
+        , typeIndex:
+            function(){
+                if( typeof this._typeIndex == 'undefined' ){
+                    this._typeIndex = this.attrProp( 'data-typeIndex' ) || 2;
+                }
+                return this._typeIndex;
+            }
         /**
          * 获取树所要展示的容器
          * @return  selector
@@ -275,29 +297,6 @@
          */
         , hasChild: function( _id ){ return _id in this._data.data; }
         /**
-         * 获取树的某类绑定事件的所有回调
-         * @param   {string}    _evtName
-         * @return  {array|undefined}
-         */
-        , event:
-            function( _evtName ){
-                _evtName = _evtName.toLowerCase();
-                return this._events[ _evtName ];
-            }
-        /**
-         * 添加树内部事件
-         * @param   {string}    _evtName
-         * @param   {function}  _cb
-         */
-        , addEvent:
-            function( _evtName, _cb ){
-                /*
-                _evtName = _evtName.toLowerCase();
-                if( !( _evtName in this._events ) ) this._events[ _evtName ] = [];
-                this._events[ _evtName ].unshift( _cb );
-                */
-            }
-        /**
          * 获取或设置树的高亮节点
          * <br /><b>注意:</b> 这个只是数据层面的设置, 不会影响视觉效果
          * @param   {selector}  _item
@@ -334,12 +333,13 @@
          */
         , _process:
             function( _data, _parentNode ){
-
+                var _p = this;
+                if( !( _data && _data.length ) ) return;
                 for( var i = 0, j = _data.length, _item, _isLast; i < j; i++ ){
-                    _item = _data[i];
+                    _item = _data[ i ];
                     _isLast = i === j - 1;
 
-                    if( this._model.hasChild( _item[0] ) ){
+                    if( this._model.hasChild( _item[ _p._model.idIndex() ] ) ){
                         this._initFolder( _parentNode, _item, _isLast );
                     }else{
                         this._initFile( _parentNode, _item, _isLast );
@@ -382,12 +382,12 @@
          */
         , _initFolder:
             function( _parentNode, _data, _isLast ){
-                var _last = '', _last1 = '';
+                var _p = this, _last = '', _last1 = '';
                     _isLast && ( _last = 'folder_span_lst ', _last1 = 'folder_last' );
 
                 var _label = this._initLabel( _data );
 
-                var _node = $( JC.f.printf( '<li><span class="folder_img_closed folder {1}">&nbsp;</span></li>', _data[1], _last ) );
+                var _node = $( JC.f.printf( '<li><span class="folder_img_closed folder {1}">&nbsp;</span></li>', _data[ _p._model.nameIndex() ], _last ) );
                     _node.addClass( JC.f.printf( 'folder_closed {0} folder', _last1 ));
                     _label.appendTo( _node );
 
@@ -395,7 +395,7 @@
                     _r.appendTo( _node );
 
                     _node.appendTo( _parentNode );
-                    this._process( this._model.child( _data[0] ), _r );
+                    this._process( this._model.child( _data[ _p._model.idIndex() ] ), _r );
             }
         /**
          * 初始化树的文件节点
@@ -405,12 +405,12 @@
          */
         , _initFile:
             function( _parentNode, _data, _isLast ){
-                var _last = 'folder_img_bottom ', _last1 = '';
+                var _p = this, _last = 'folder_img_bottom ', _last1 = '';
                     _isLast && ( _last = 'folder_img_last ', _last1 = '' );
 
                 var _label = this._initLabel( _data );
 
-                var _node = $( JC.f.printf( '<li><span class="{1}file">&nbsp;</span></li>', _data[1], _last ) );
+                var _node = $( JC.f.printf( '<li><span class="{1}file">&nbsp;</span></li>', _data[ _p._model.nameIndex() ], _last ) );
                     _node.addClass( 'folder_closed file');
                     _label.appendTo( _node );
 
@@ -424,12 +424,12 @@
         , _initLabel:
             function( _data ){
                 var _p = this, _label = $('<div class="node_ctn"></div>');
-                    _label.attr( 'id', this._model.id( _data[0] ) )
-                        .attr( 'data-id', _data[0] )
-                        .attr( 'data-name', _data[1] )
+                    _label.attr( 'id', this._model.id( _data[ _p._model.idIndex() ] ) )
+                        .attr( 'data-id', _data[ _p._model.idIndex() ] )
+                        .attr( 'data-name', _data[ _p._model.nameIndex() ] )
                         .data( 'nodeData', _data );
 
-                _label.html( _data[1] || '没有标签' );
+                _label.html( _data[ _p._model.nameIndex() ] || '没有标签' );
                 _p.notification( 'renderItem', [ _label, _data ] );
                 return _label;
             }
