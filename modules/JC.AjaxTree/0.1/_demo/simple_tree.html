@@ -13,32 +13,8 @@
     JC.debug = 1;
 
     requirejs( [ 'JC.AjaxTree' ], function( Tree ){
+        /*
         var _queryNode = JC.f.getUrlParam( 'node' );
-
-        var treeData = {
-            data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["24","\u9500\u552e\u4e8c\u7ec4"],["28","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
-		    root: ["23",'客户发展部']
-		};
-        var _tree = new JC.AjaxTree( $('#tree_box'), treeData );
-            _tree.init();
-            _queryNode && _tree.open( _queryNode );
-            _tree.on('change', function( _evt ){
-                var _p = $(this);
-                JC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
-            });
-
-
-        var treeData = {
-            data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["28","\u9500\u552e\u4e8c\u7ec4"],["24","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
-		    root: ["23",'客户发展部']
-		};
-        var _tree = new JC.AjaxTree( $('#tree_box1'), treeData );
-            _tree.on('RenderLabel', function( _data ){
-                var _node = $(this);
-                _node.html( JC.f.printf( '<a href="?node={0}" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
-            });
-            _tree.init();
-            _queryNode && _tree.open( _queryNode );
 
 
         var treeData = {
@@ -56,16 +32,17 @@
             });
             _tree.init();
             _queryNode && _tree.open( _queryNode );
+            */
     });
 
     $(document).delegate('button.js_open_all', 'click', function(){
-        $('div.tree_container').each( function(){
+        $('div.js_compAjaxTree').each( function(){
             JC.AjaxTree.getInstance( this ) && JC.Tree.getInstance(this).open();
         });
     });
 
     $(document).delegate('button.js_close_all', 'click', function(){
-        $('div.tree_container').each( function(){
+        $('div.js_compAjaxTree').each( function(){
             JC.AjaxTree.getInstance( this ) && JC.Tree.getInstance(this).close();
         });
     });
@@ -76,7 +53,7 @@
         if( !_tgr ) return;
         _tgr = $.trim( $( _tgr ).val() );
 
-        $('div.tree_container').each( function(){
+        $('div.js_compAjaxTree').each( function(){
             JC.AjaxTree.getInstance( this ) && JC.Tree.getInstance(this).open( _tgr );
         });
     });
@@ -87,9 +64,13 @@
         if( !_tgr ) return;
         _tgr = $.trim( $( _tgr ).val() );
 
-        $('div.tree_container').each( function(){
+        $('div.js_compAjaxTree').each( function(){
             JC.AjaxTree.getInstance( this ) && JC.Tree.getInstance(this).close( _tgr );
         });
+    });
+
+    $( document ).delegate( 'div.js_compAjaxTree', 'change', function( _evt, _item, _data, _box ){
+        JC.dir( _item[0], _data, _box[0] );
     });
 
 </script>
@@ -110,19 +91,49 @@
     <dl>
         <dt>默认树 - Tree 示例</dt>
         <dd>
-            <div id="tree_box" class="tree_container"></div>
+            <div class="js_compAjaxTree" data-cajScriptData="|script" data-urlArgName="node">
+                <script type="text/template">
+                    {
+                        data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["24","\u9500\u552e\u4e8c\u7ec4"],["28","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
+                        root: ["23",'客户发展部']
+                    }
+                </script>
+            </div>
         </dd>
     </dl>
     <dl>
         <dt>添加 a 链接 - Tree 示例</dt>
         <dd>
-            <div id="tree_box1" class="tree_container"></div>
+        <div class="js_compAjaxTree js_tree2" data-cajData="TREE_2" data-urlArgName="node">
+            <script>
+                var TREE_2 = {
+                    data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["28","\u9500\u552e\u4e8c\u7ec4"],["24","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
+                    root: ["23",'客户发展部']
+                };           
+
+
+                /*
+                var treeData = ;
+                var _tree = new JC.AjaxTree( $('#tree_box1'), treeData );
+                    _tree.on('RenderLabel', function( _data ){
+                        var _node = $(this);
+                        _node.html( JC.f.printf( '<a href="?node={0}" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
+                    });
+                    _tree.init();
+                    _queryNode && _tree.open( _queryNode );
+                */
+
+
+            </script>
+
+
+        </div>
         </dd>
     </dl>
     <dl>
         <dt>添加 a 链接, evt.preventDefault - Tree 示例</dt>
         <dd>
-            <div id="tree_box2" class="tree_container"></div>
+            <div class="js_compAjaxTree"></div>
         </dd>
     </dl>
 
