@@ -323,7 +323,7 @@ window.parent
 
         this._init();
 
-        JC.log( FormLogic.Model._instanceName, 'all inited', new Date().getTime() );
+        //JC.log( FormLogic.Model._instanceName, 'all inited', new Date().getTime() );
     }
     /**
      * 获取或设置 FormLogic 的实例
@@ -443,6 +443,7 @@ window.parent
                     //_evt.preventDefault();
                     _p._model.isSubmited( true );
                     FormLogic._currentIns = _p;
+                    //JC.log( 1 );
 
                     var _ignoreCheck, _btn = _p.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON );
                         _btn && ( _btn = $( _btn ) );
@@ -458,19 +459,22 @@ window.parent
                             return _p._model.prevent( _evt );
                         }
                     }
+                    //JC.log( 2 );
 
-                    if( !JC.Valid.check( _p.selector() ) ){
+                    if( !_ignoreCheck && !JC.Valid.check( _p.selector() ) ){
                         _p._model.prevent( _evt );
 
                         if( !_p._model.checkDataValid() ){
                             _p._view.dataValidError();
                             return false;
                         }
+                    //JC.log( 3 );
 
                         if( _p._model.formProcessError() ){
                             _p._model.formProcessError().call( _p.selector(), _evt, _p );
                         }
                         return false;
+                    //JC.log( 4 );
                     }
 
                     if( _p._model.formAfterProcess() ){
@@ -478,11 +482,13 @@ window.parent
                             return _p._model.prevent( _evt );
                         }
                     }
+                    //JC.log( 5 );
 
                     if( _p.selector().data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON ) ){
                         _p.trigger( FormLogic.Model.EVT_CONFIRM );
                         return _p._model.prevent( _evt );
                     }
+                    //JC.log( 6 );
 
 
 
@@ -492,6 +498,7 @@ window.parent
                         }
                     }
 
+                    //JC.log( 7 );
                     _p.trigger( FormLogic.Model.PROCESS_DONE );
                 });
 
@@ -522,7 +529,7 @@ window.parent
                             ;
                         if( !_p._model.isSubmited() ) return;
 
-                        JC.log( 'common ajax done' );
+                        //JC.log( 'common ajax done' );
                         _p.trigger( FormLogic.Model.AJAX_DONE, [ _d ] );
                     });
                 });
@@ -530,6 +537,9 @@ window.parent
                  * 全局 AJAX 提交完成后的处理事件
                  */
                 _p.on( FormLogic.Model.AJAX_DONE, function( _evt, _data ){
+
+                    _p.trigger( 'HIDE_PROMPT' );
+
                     FormLogic.GLOBAL_AJAX_CHECK
                         && FormLogic.GLOBAL_AJAX_CHECK( _data );
                     /**
@@ -582,6 +592,8 @@ window.parent
                  * 表单内容验证通过后, 开始提交前的处理事件
                  */
                 _p.on( FormLogic.Model.PROCESS_DONE, function( _evt ){
+                    _p.trigger( FormLogic.Model.BEFORE_SUBMIT );
+
                     _p._model.formSubmitDisable() 
                         && _p.selector().find('input[type=submit], button[type=submit]').each( function(){
                             !_p._model.formIgnoreStatus() && $( this ).prop('disabled', true);
@@ -656,6 +668,27 @@ window.parent
                     });
                 });
 
+                _p.on( FormLogic.Model.BEFORE_SUBMIT, function( _evt ){
+                    _p.trigger( 'SHOW_PROMPT' );
+                    if( _p._model.formType() != 'ajax' ){
+                        JC.f.safeTimeout( function(){
+                            _p.trigger( 'HIDE_PROMPT' );
+                        }, _p, 'hidePromptasdfasd', 2000 );
+                    }
+                });
+
+                _p.on( 'SHOW_PROMPT', function( _evt ){
+                    var _promptSelctor = _p._model.submitPromptSelector();
+                    if( !( _promptSelctor && _promptSelctor.length ) ) return;
+                    _promptSelctor.html( _p._model.submitPromptMsg() ).show();
+                });
+
+                _p.on( 'HIDE_PROMPT', function( _evt ){
+                    var _promptSelctor = _p._model.submitPromptSelector();
+                    if( !( _promptSelctor && _promptSelctor.length ) ) return;
+                    _promptSelctor.hide();
+                });
+
                 _p.on( 'FORM_RESET', function( _evt, _srcEvt ){
                     JC.f.safeTimeout( function(){
                         _p._model.formResetCallback() && _p._model.formResetCallback().call( _p.selector(), _srcEvt, _p );
@@ -664,7 +697,7 @@ window.parent
             }
         , _inited:
             function(){
-                JC.log( 'FormLogic#_inited', new Date().getTime() );
+                //JC.log( 'FormLogic#_inited', new Date().getTime() );
                 var _p = this
                     , _files = _p.selector().find('input[type=file][name]')
                     ;
@@ -701,6 +734,7 @@ window.parent
     FormLogic.Model.INS_COUNT = 1;
 
     FormLogic.Model.PROCESS_DONE = "ProcessDone";
+    FormLogic.Model.BEFORE_SUBMIT = 'FORMBEFORESUBMIT';
 
     FormLogic.Model.IGNORE_KEY = "formSubmitIgnoreCheck";
     FormLogic.Model.BIND_FORM = "BindFrame";
@@ -736,6 +770,18 @@ window.parent
                         );
                 }
             }
+        , submitPromptSelector:
+            function(){
+                return this.selectorProp( 'formSubmitPromptSelector' );
+            }
+
+        , submitPromptMsg:
+            function( _btn ){
+                var _r = '正在提交数据，请稍候...';
+                _r = this.attrProp( 'formSubmitPromptMsg' ) || _r;
+                _btn && ( _r = this.attrProp( _btn, 'formSubmitPromptMsg' ) || _r );
+                return _r;
+            }
 
         , showDataValidError:
             function( _item ){
@@ -754,20 +800,27 @@ window.parent
 
         , checkDataValid:
             function(){
-                var _r = true;
+                var _p = this,_r = true, _iv = true, i, j;
 
-                $.each( this.dataValidItems(), function( _ix, _item ){
+                for( i = 0, j = _p.selector()[0].length; i < j; i++ ){
+                    var _item = $(_p.selector()[0][i]);
                     var _v = _item.val().trim()
                         , _status = _item.attr('datavalid')
-                        , _datatypestatus = JC.f.parseBool( _item.attr('datatypestatus') )
+                        , _datatypestatus = _item.attr('datatypestatus')
                         ;
-                    if( !( _v && _status ) ) return;
-                    if( !_datatypestatus ) return;
-
-                    if( !JC.f.parseBool( _item.attr( _status ) ) ){
-                        return _r = false;
+                    if( _v ){
+                        if( _status && _datatypestatus ){
+                            _r && ( _r = JC.f.parseBool( _status ) );
+                        }else if( _datatypestatus ){
+                            _iv && ( _iv = JC.f.parseBool( _datatypestatus ) );
+                        }
+                    }else if( _datatypestatus ){
+                        _iv && ( _iv = JC.f.parseBool( _datatypestatus ) );
+                        if( ! _iv ) break;
                     }
-                });
+
+                }
+                !_iv && ( _r = true );
                 return _r;
             }
 
@@ -1058,7 +1111,7 @@ window.parent
 
         , datavalidFormLogicMsg:
             function( _item ){
-                var _msg = "需要AJAX验证后才能提交, 请重试...";
+                var _msg = "需要表单异步验证后才能提交, 请重试...";
                 _msg = $( _item ).attr( 'datavalidFormLogicMsg' ) || _msg;
                 return _msg;
             }

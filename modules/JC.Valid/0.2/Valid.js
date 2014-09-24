@@ -2081,6 +2081,9 @@ function (){
                         $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, $(this) ] );
                     });
                 }
+
+                !_r && _item.attr( 'datatypestatus', 'false' );
+
                 _r 
                     ?  $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _item ] )
                     :  $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'reconfirmmsg', true ] )
@@ -2245,6 +2248,7 @@ function (){
                         $(_p).trigger( Model.TRIGGER, [ Model.CORRECT, _item ] );
                     }
                 }else{
+                    !_r && _item.attr( 'datatypestatus', 'false' );
                     $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'alternativemsg', true ] );
                 }
 
@@ -2266,6 +2270,7 @@ function (){
                 if( _v && _target && _target.length ){
                     _tv = _target.val().trim();
                     !_tv && ( _r = false );
+                        !_r && _item.attr( 'datatypestatus', 'false' );
                     !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _target, 'reqtargetmsg', true ] );
                     _r && _target.trigger('blur');
                 }else if( _target && _target.length ){
@@ -2278,6 +2283,7 @@ function (){
             function( _item ){
                 var _r = true, _p = this;
                 this.ucheckCallback( _item ) && ( _r = this.ucheckCallback( _item )( _item ) );
+                !_r && _item.attr( 'datatypestatus', 'false' );
                 !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'ucheckmsg', true ] );
                 return _r;
             }
@@ -2396,6 +2402,8 @@ function (){
                     }
                 });
 
+                !_r && _item.attr( 'datatypestatus', 'false' );
+
                 !_r && _errLs.length && $.each( _errLs, function( _ix, _sitem ){ 
                     _sitem = $( _sitem );
                     var _sv = ( _sitem.val() || '' ).trim();
@@ -2420,6 +2428,7 @@ function (){
                 _r = JC.f.parseBool( _item.attr('datavalid') );
 
                 if( !_r ){
+                    !_r && _item.attr( 'datatypestatus', 'false' );
                     Valid.statusTimeout.error( _item, 
                         setTimeout( function(){
                             $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item, 'datavalidmsg', true ] );
