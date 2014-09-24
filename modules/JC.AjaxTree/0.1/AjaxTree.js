@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'plugins.json2' ], function(){
     JC.AjaxTree = AjaxTree;
     /**
      * 树菜单类 JC.AjaxTree
@@ -14,34 +14,10 @@
      * @constructor
      * @param   {selector}          _selector   树要显示的选择器
      * @param   {object}            _data       树菜单的数据
-     * @version dev 0.2 2014-09-23
+     * @version dev 0.1 2014-09-23
      * @author  qiushaowei   <suches@btbtd.org> | 75 Team
      * @date    
      * @example
-            <link href='../../../modules/JC.AjaxTree/res/default/style.css' rel='stylesheet' />
-            <script src="../../../lib.js"></script>
-            <script src="../../../config.js"></script>
-            <script>
-                requirejs( [ 'JC.AjaxTree' ], function(){
-                     var treeData = {
-                            data: {"24":[["25","\u4e8c\u7ec4\u4e00\u961f"],["26","\u4e8c\u7ec4\u4e8c\u961f"],["27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["28","\u9500\u552e\u4e8c\u7ec4"],["24","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
-                            root: ["23",'客户发展部']
-                        };
-                        var _tree = new JC.AjaxTree( $('#tree_box2'), treeData );
-                            _tree.on('RenderLabel', function( _data ){
-                                var _node = $(this);
-                                _node.html( JC.f.printf( '<a href="javascript:" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
-                            });
-                            _tree.on('click', function( _evt ){
-                                var _p = $(this);
-                                JC.log( 'tree click:', _p.html(), _p.attr('dataid'), _p.attr('dataname') );
-                            });
-                            _tree.init();
-                            //_queryNode && _tree.open( _queryNode );
-
-                });
-            </script>
-            <div id="tree_box2" class="tree_selector"></div>
      */
 
     function AjaxTree( _selector ){
@@ -118,7 +94,7 @@
     JC.f.extendObject( AjaxTree.prototype, {
         _beforeInit:
             function(){
-                JC.log( 'JC.AjaxTree _beforeInit', new Date().getTime() );
+                //JC.log( 'JC.AjaxTree _beforeInit', new Date().getTime() );
             }
 
         , _initHanlderEvent:
@@ -134,16 +110,19 @@
 
                 _p.on( 'update_init_data', function( _evt, _data ){
                     if( !_data ) return;
-
                     _p._model.data( _data );
                     if( !( _p._model.data() && _p._model.root() ) ) return;
                     _p._view._process( _p._model.child( _p._model.root()[0] ), _p._view._initRoot() );
+
+                    var _arg = JC.f.getUrlParam( _p._model.urlArgName() );
+
+                    _arg && _p.open( _arg );
                 });
             }
 
         , _inited:
             function(){
-                JC.log( 'JC.AjaxTree _inited', new Date().getTime() );
+                //JC.log( 'JC.AjaxTree _inited', new Date().getTime() );
                 this.trigger( 'inited' );
             }
         /**
@@ -210,7 +189,7 @@
             }
     });
 
-    AjaxTree.Model._instanceName = 'AjaxTreeIns';
+    AjaxTree.Model._instanceName = 'JCAjaxTreeIns';
 
     AjaxTree.Model._insCount = 1;
     
@@ -244,7 +223,9 @@
                 var _p = this, _data;
                 if( _p.is( '[data-cajScriptData]' ) ){
                     _data = _p.scriptDataProp( 'data-cajScriptData' );
-                    JC.dir( _data );
+                }else if( _p.is( '[data-cajData]' ) ){
+                    _data = _p.windowProp( 'data-cajData' );
+                    _data && ( _data = $.parseJSON( JSON.stringify( _data ) ) );
                 }
                 return _data;
             }
@@ -326,6 +307,12 @@
             function( _highlight ){
                 _highlight && ( this._highlight = $( _highlight ) );
                 return this._highlight;
+            }
+
+        , urlArgName:
+            function(){
+                var _r = this.attrProp( 'data-urlArgName' ) || 'tree_node';
+                return _r;
             }
     });
 
@@ -436,19 +423,14 @@
          */
         , _initLabel:
             function( _data ){
-                var _label = $('<div class="node_ctn"></div>');
+                var _p = this, _label = $('<div class="node_ctn"></div>');
                     _label.attr( 'id', this._model.id( _data[0] ) )
                         .attr( 'data-id', _data[0] )
                         .attr( 'data-name', _data[1] )
                         .data( 'nodeData', _data );
 
-                if( this._model.event( 'RenderLabel' ) ){
-                    $.each( this._model.event('RenderLabel'), function( _ix, _cb ){
-                        if( _cb.call( _label, _data, _label ) === false ) return false;
-                    });
-                }else{
-                    _label.html( _data[1] || '没有标签' );
-                }
+                _label.html( _data[1] || '没有标签' );
+                _p.notification( 'renderItem', [ _label, _data ] );
                 return _label;
             }
         /**

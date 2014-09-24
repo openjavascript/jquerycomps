@@ -132,6 +132,8 @@
                 && ( _selector = $(_selector) )
                 ;
 
+            typeof _selector == 'object' && ( _selector = $( _selector ) );
+
             if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return null;
 
             _staticClass.Model._instanceName = _staticClass.Model._instanceName || 'CommonIns';
@@ -505,6 +507,9 @@
                 _tmp = this.scriptTplProp( _selector, _key );
 
                 if( _tmp ){
+                    _tmp = _tmp.replace( /^[\s]*?\/\/[\s\S]*?[\r\n]/gm, '' );
+                    _tmp = _tmp.replace( /[\r\n]/g, '' );
+                    _tmp = _tmp.replace( /\}[\s]*?,[\s]*?\}$/g, '}}');
                     _r = eval( '(' + _tmp + ')' );
                 }
 
