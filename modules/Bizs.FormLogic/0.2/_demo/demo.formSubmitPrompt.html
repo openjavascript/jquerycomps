@@ -142,14 +142,22 @@
                         >
                         <dl>
                             <dd>
-                            文件框: <input type="text" name="text" reqmsg="文本框" value="test3"
+                            文件框: 
+                                <input type="text" name="text" reqmsg="文本框" value=""
+                                    reqmsg="内容" 
+                                    subdatatype="datavalid" 
+                                    datavalidurl="./data/datavalid.handler.php?key={0}&errmsg=test error&errorno=1"
+                                />
+                            </dd>
+
+                            <dd>
+                            文件框: <input type="text" name="text" reqmsg="文本框" value=""
                                 reqmsg="内容" 
                                 subdatatype="unique,datavalid" 
                                 uniquedatatarget="(dl input"
                                 uniquemsg="内容不能重复"
 
-                                datavalidmsg="内容不存在" 
-                                datavalidurl="./data/handler.php?key={0}&errorno=1"
+                                datavalidurl="./data/handler.php?key={0}&errorno=1&errmsg=error test"
 
                                 autocomplete="off" 
                                 sugurl="http://sug.so.360.cn/suggest/word?callback={1}&encodein=utf-8&encodeout=utf-8&word={0}"
@@ -160,13 +168,6 @@
                                 sugoffsetwidth="2"
                             />
                             </dd>
-                            <dd>
-                            文件框: 
-                                <input type="text" name="text" reqmsg="文本框" value=""
-                                    reqmsg="内容" 
-                                />
-                            </dd>
-
                             <dd>
                                 日期: <input type="text" name="date" datatype="date" reqmsg="日期" value="2015-05-20" />
                                 <em class="error"></em>

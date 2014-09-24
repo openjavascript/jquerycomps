@@ -323,7 +323,7 @@ window.parent
 
         this._init();
 
-        JC.log( FormLogic.Model._instanceName, 'all inited', new Date().getTime() );
+        //JC.log( FormLogic.Model._instanceName, 'all inited', new Date().getTime() );
     }
     /**
      * 获取或设置 FormLogic 的实例
@@ -443,6 +443,7 @@ window.parent
                     //_evt.preventDefault();
                     _p._model.isSubmited( true );
                     FormLogic._currentIns = _p;
+                    //JC.log( 1 );
 
                     var _ignoreCheck, _btn = _p.selector().data( FormLogic.Model.GENERIC_SUBMIT_BUTTON );
                         _btn && ( _btn = $( _btn ) );
@@ -458,6 +459,7 @@ window.parent
                             return _p._model.prevent( _evt );
                         }
                     }
+                    //JC.log( 2 );
 
                     if( !_ignoreCheck && !JC.Valid.check( _p.selector() ) ){
                         _p._model.prevent( _evt );
@@ -466,11 +468,13 @@ window.parent
                             _p._view.dataValidError();
                             return false;
                         }
+                    //JC.log( 3 );
 
                         if( _p._model.formProcessError() ){
                             _p._model.formProcessError().call( _p.selector(), _evt, _p );
                         }
                         return false;
+                    //JC.log( 4 );
                     }
 
                     if( _p._model.formAfterProcess() ){
@@ -478,11 +482,13 @@ window.parent
                             return _p._model.prevent( _evt );
                         }
                     }
+                    //JC.log( 5 );
 
                     if( _p.selector().data( FormLogic.Model.SUBMIT_CONFIRM_BUTTON ) ){
                         _p.trigger( FormLogic.Model.EVT_CONFIRM );
                         return _p._model.prevent( _evt );
                     }
+                    //JC.log( 6 );
 
 
 
@@ -492,6 +498,7 @@ window.parent
                         }
                     }
 
+                    //JC.log( 7 );
                     _p.trigger( FormLogic.Model.PROCESS_DONE );
                 });
 
@@ -522,7 +529,7 @@ window.parent
                             ;
                         if( !_p._model.isSubmited() ) return;
 
-                        JC.log( 'common ajax done' );
+                        //JC.log( 'common ajax done' );
                         _p.trigger( FormLogic.Model.AJAX_DONE, [ _d ] );
                     });
                 });
@@ -690,7 +697,7 @@ window.parent
             }
         , _inited:
             function(){
-                JC.log( 'FormLogic#_inited', new Date().getTime() );
+                //JC.log( 'FormLogic#_inited', new Date().getTime() );
                 var _p = this
                     , _files = _p.selector().find('input[type=file][name]')
                     ;
@@ -793,20 +800,27 @@ window.parent
 
         , checkDataValid:
             function(){
-                var _r = true;
+                var _p = this,_r = true, _iv = true, i, j;
 
-                $.each( this.dataValidItems(), function( _ix, _item ){
+                for( i = 0, j = _p.selector()[0].length; i < j; i++ ){
+                    var _item = $(_p.selector()[0][i]);
                     var _v = _item.val().trim()
                         , _status = _item.attr('datavalid')
-                        , _datatypestatus = JC.f.parseBool( _item.attr('datatypestatus') )
+                        , _datatypestatus = _item.attr('datatypestatus')
                         ;
-                    if( !( _v && _status ) ) return;
-                    if( !_datatypestatus ) return;
-
-                    if( !JC.f.parseBool( _item.attr( _status ) ) ){
-                        return _r = false;
+                    if( _v ){
+                        if( _status && _datatypestatus ){
+                            _r && ( _r = JC.f.parseBool( _status ) );
+                        }else if( _datatypestatus ){
+                            _iv && ( _iv = JC.f.parseBool( _datatypestatus ) );
+                        }
+                    }else if( _datatypestatus ){
+                        _iv && ( _iv = JC.f.parseBool( _datatypestatus ) );
+                        if( ! _iv ) break;
                     }
-                });
+
+                }
+                !_iv && ( _r = true );
                 return _r;
             }
 
