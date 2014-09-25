@@ -228,6 +228,7 @@
                     _data = _p.windowProp( 'data-cajData' );
                     _data && ( _data = $.parseJSON( JSON.stringify( _data ) ) );
                 }
+                _data && ( _data.data = _data.data || {} );
                 return _data;
             }
         , idIndex:
