@@ -11539,14 +11539,14 @@ window.Bizs = window.Bizs || {};
     /**
      * MVC 抽象类 ( <b>仅供扩展用, 这个类不能实例化</b>)
      * <p><b>require</b>: 
-     *      <a href='.jQuery.html'>jQuery</a>
+     *      <a href='window.jQuery.html'>jQuery</a>
      *      , <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
-     * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>
-     * | <a href='../../comps/BaseMVC/_demo' target='_blank'>demo link</a></p>
-     * @namespace JC
-     * @class BaseMVC
+     * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>
+     * | <a href='../../modules/JC.BaseMVC/0.1/_demo' target='_blank'>demo link</a></p>
+     * @namespace   JC
+     * @class       BaseMVC
      * @constructor
      * @param   {selector|string}   _selector   
      * @version dev 0.1 2013-09-07
