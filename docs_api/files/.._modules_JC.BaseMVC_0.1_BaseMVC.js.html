@@ -378,6 +378,8 @@
                 &amp;&amp; ( _selector = $(_selector) )
                 ;
 
+            typeof _selector == &#x27;object&#x27; &amp;&amp; ( _selector = $( _selector ) );
+
             if( !(_selector &amp;&amp; _selector.length ) || ( typeof _selector == &#x27;string&#x27; ) ) return null;
 
             _staticClass.Model._instanceName = _staticClass.Model._instanceName || &#x27;CommonIns&#x27;;
@@ -751,6 +753,9 @@
                 _tmp = this.scriptTplProp( _selector, _key );
 
                 if( _tmp ){
+                    _tmp = _tmp.replace( /^[\s]*?\/\/[\s\S]*?[\r\n]/gm, &#x27;&#x27; );
+                    _tmp = _tmp.replace( /[\r\n]/g, &#x27;&#x27; );
+                    _tmp = _tmp.replace( /\}[\s]*?,[\s]*?\}$/g, &#x27;}}&#x27;);
                     _r = eval( &#x27;(&#x27; + _tmp + &#x27;)&#x27; );
                 }
 
