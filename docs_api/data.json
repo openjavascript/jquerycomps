@@ -353,6 +353,17 @@
                 "JC": 1
             }
         },
+        "../comps/FChart/FChart.js": {
+            "name": "../comps/FChart/FChart.js",
+            "modules": {},
+            "classes": {
+                "JC.FChart": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../comps/Fixed/Fixed.js": {
             "name": "../comps/Fixed/Fixed.js",
             "modules": {},
@@ -701,11 +712,44 @@
             "fors": {},
             "namespaces": {}
         },
+        "../plugins/jquery.mousewheel.js": {
+            "name": "../plugins/jquery.mousewheel.js",
+            "modules": {},
+            "classes": {
+                "window.jQuery.mousewheel": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.jQuery": 1
+            }
+        },
+        "../plugins/json2.js": {
+            "name": "../plugins/json2.js",
+            "modules": {},
+            "classes": {
+                "window.JSON": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window": 1
+            }
+        },
         "../plugins/raphael.js": {
             "name": "../plugins/raphael.js",
             "modules": {},
             "classes": {
                 "window.Raphael": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window": 1
+            }
+        },
+        "../plugins/swfobject.js": {
+            "name": "../plugins/swfobject.js",
+            "modules": {},
+            "classes": {
+                "window.swfobject": 1
             },
             "fors": {},
             "namespaces": {
@@ -1362,6 +1406,33 @@
             ],
             "version": "dev 0.1 2014-05-29",
             "author": "qiushaowei <suches@btbtd.org> | 75 Team"
+        },
+        "JC.FChart": {
+            "name": "JC.FChart",
+            "shortname": "JC.FChart",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../comps/FChart/FChart.js",
+            "line": 7,
+            "description": "JC.FChart - flash 图表组件\n\n <p><b>require</b>:\n     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='window.swfobject.html'>SWFObject</a>\n     , <a href='window.JSON.html'>JSON2</a>\n     , <a href='window.jQuery.mousewheel.html'>jQuery.mousewheel</a>\n </p>\n\n <p><a href='https://github.com/openjavascript/fchart' target='_blank'>JC Project Site</a>\n     | <a href='http://fchart.openjavascript.org/docs_api/classes/JC.FChart.html' target='_blank'>API docs</a>\n     | <a href='../../comps/FChart/_demo?target=_blank' target='_blank'>demo link</a></p>\n \n <h2>页面只要引用本脚本, 默认会处理 div class=\"js_compFChart\"</h2>\n\n <h2>可用的 HTML attribute</h2>\n\n <dl>\n     <dt>chartScriptData = script tpl selector</dt>\n     <dd>图表的脚本模板数据<dd>\n\n     <dt>chartDataVar = json object name</dt>\n     <dd>图表的json数据名, <b>window变量域</b><dd>\n\n     <dt>chartWidth = number, default = 100%</dt>\n     <dd>图表的宽度</dd>\n\n     <dt>chartHeight = number, default = 400</dt>\n     <dd>图表的高度</dd>\n\n     <dt>chartScroll = bool, default = true</dt>\n     <dd>图表是否响应鼠标滚动</dd>\n </dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2014-09-09",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n<pre>\n   &lt;div class=\"js_compFChart\"\n       chartScriptData=\"|script\"\n       chartWidth=\"600\"\n       chartHeight=\"400\"\n       >\n       &lt;script type=\"text/template\">\n           {\n               chart: {\n                   type: 'bar' \n               }, \n               title: {\n                   text:'Chart Title'\n               },\n               subtitle: {\n                   text: 'sub title'\n               }, \n               xAxis: {\n                   categories: [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12' ]\n               }, \n               yAxis: {\n                   title: {\n                       text: '(Vertical Title - 中文)'\n                   }\n               },\n               series:[{\n                   name: 'Temperature'\n                   , data: [-50, 0, 3, -20, -20, 27, 28, 32, 30, 25, 15, -58]\n                   , style: { 'stroke': '#ff7100' } \n                   , pointStyle: {}\n               }, {\n                   name: 'Rainfall',\n                   data: [20, 21, 20, 100, 200, 210, 220, 100, 20, 10, 20, 10]\n               }],\n               credits: {\n                   enabled: true\n                   , text: 'fchart.openjavascript.org'\n                   , href: 'http://fchart.openjavascript.org/'\n               },\n               displayAllLabel: true,\n               legend: {\n                   enabled: false\n               }\n           }\n       &lt;/script>\n   &lt;/div>\n</pre>"
+            ]
         },
         "JC.Fixed": {
             "name": "JC.Fixed",
@@ -2500,6 +2571,34 @@
             "version": "0.1,  2013-05-22",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team"
         },
+        "window.jQuery.mousewheel": {
+            "name": "window.jQuery.mousewheel",
+            "shortname": "window.jQuery.mousewheel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.jQuery",
+            "file": "../plugins/jquery.mousewheel.js",
+            "line": 9,
+            "description": "jquery.mousewheel 3.1.12\n<pre><a href=\"https://github.com/brandonaaron/jquery-mousewheel\">https://github.com/brandonaaron/jquery-mousewheel</a>",
+            "global": ""
+        },
+        "window.JSON": {
+            "name": "window.JSON",
+            "shortname": "window.JSON",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window",
+            "file": "../plugins/json2.js",
+            "line": 1,
+            "description": "json2.js \n<br />JSON is a light-weight, language independent, data interchange format.\n<p><a href='https://github.com/douglascrockford/JSON-js' target='_blank'>source</a>\n| <a href='http://www.json.org/js.html' target='_blank'>docs</a>\n</p>",
+            "version": "2.0"
+        },
         "window.Raphael": {
             "name": "window.Raphael",
             "shortname": "window.Raphael",
@@ -2513,6 +2612,20 @@
             "line": 1,
             "description": "Raphaël 2.1.2 - JavaScript Vector Library \n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://raphaeljs.com/reference.html' target='_blank'>API docs</a>\n| <a href='http://raphaeljs.com/' target='_blank'>demo</a>",
             "version": "2.1.2"
+        },
+        "window.swfobject": {
+            "name": "window.swfobject",
+            "shortname": "window.swfobject",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window",
+            "file": "../plugins/swfobject.js",
+            "line": 1,
+            "description": "swfobject v2.3\n<br />An open source Javascript framework for detecting the Adobe Flash Player plugin and embedding Flash (swf) files.\n<p><a href='https://github.com/swfobject/swfobject' target='_blank'>source</a>\n| <a href='https://code.google.com/p/swfobject/wiki/documentation' target='_blank'>docs</a>\n| <a href='../../modules/swfobject/2.3/_demo' target='_blank'>demo link</a>\n| <a href='http://www.bobbyvandersluis.com/swfobject/generator/index.html' target='_blank'>html generator</a>\n</p>",
+            "version": "2.3"
         },
         ".Bizs": {
             "name": ".Bizs",
@@ -7010,6 +7123,209 @@
             "line": 592,
             "description": "返回选择器的 矩形 位置",
             "class": "JC.DragSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 117,
+            "description": "初始化可识别的 FChart 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of FChartInstance"
+            },
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 196,
+            "description": "更新数据",
+            "itemtype": "method",
+            "name": "update",
+            "params": [
+                {
+                    "name": "object",
+                    "description": "_data"
+                }
+            ],
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 206,
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 220,
+            "description": "flash swf 路径\n<br />{0} = JC.PATH\n<br />{1} = chart file name",
+            "itemtype": "property",
+            "name": "Model.FLASH_PATH",
+            "type": "{string}",
+            "default": "{0}/flash/pub/charts/{1}.swf",
+            "static": 1,
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 231,
+            "description": "flash swf 缓存版本控制",
+            "itemtype": "property",
+            "name": "Model.VERSION",
+            "type": "{string}",
+            "default": "requirejs.s.contexts._.config.urlArgs || 'v=' + JC.pathPostfix || 'v=fchart'",
+            "static": 1,
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 248,
+            "description": "图表类型映射\n<br />曲线图: line, CurveGram, curvegram\n<br />柱状图: bar, Histogram, histogram\n<br />垂直柱状图: var, VHistogram, Vhistogram\n<br />饼状图: pie, PieGraph, piegraph",
+            "itemtype": "property",
+            "name": "Model.TYPE_MAP",
+            "type": "{object}",
+            "static": 1,
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 293,
+            "description": "解析图表默认数据",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 315,
+            "description": "保存图表数据",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 326,
+            "description": "图表宽度",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 337,
+            "description": "图表高度",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 348,
+            "description": "图表宽度",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 359,
+            "description": "设置或保存图表的宽高",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 367,
+            "description": "图表画布",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 373,
+            "description": "画布圆角弧度",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 377,
+            "description": "清除图表数据",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 394,
+            "description": "清除图表状态",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 430,
+            "description": "图表高度",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 434,
+            "description": "图表高度",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 438,
+            "description": "图表画布",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 442,
+            "description": "初始化的选择器",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 449,
+            "description": "清除图表数据",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 459,
+            "description": "清除图表状态",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 465,
+            "description": "更新图表数据",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/FChart/FChart.js",
+            "line": 476,
+            "description": "渲染图表外观",
+            "class": "JC.FChart",
             "namespace": "JC"
         },
         {
@@ -15669,14 +15985,14 @@
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 3,
             "description": "Top level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 10,
             "access": "private",
             "tagname": "",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15684,25 +16000,25 @@
             "description": "Use <code>jasmine.undefined</code> instead of <code>undefined</code>, since <code>undefined</code> is just\na plain old variable and may be redefined by somebody else.",
             "access": "private",
             "tagname": "",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 25,
             "description": "Show diagnostic messages in the console if set to true",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 31,
             "description": "Default interval in milliseconds for event loop yields (e.g. to allow network activity or to refresh the screen with the HTML-based runner). Small values here may result in slow test running. Zero means no updates until all tests have completed.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 37,
             "description": "Default timeout interval in milliseconds for waitsFor() blocks.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15723,13 +16039,13 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 114,
             "description": "Getter for the Jasmine environment. Ensures one gets created",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15747,7 +16063,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15765,7 +16081,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15783,7 +16099,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15806,7 +16122,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15823,7 +16139,7 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15840,7 +16156,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15859,7 +16175,7 @@
             "return": {
                 "description": "matchable object of the type clazz"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15878,7 +16194,7 @@
             "return": {
                 "description": "matchable object for the sample"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15900,25 +16216,25 @@
                     "type": "String"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 259,
             "description": "The name of the spy, if provided.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 263,
             "description": "Is this Object a spy?",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 267,
             "description": "The actual function this spy stubs.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15927,7 +16243,7 @@
             "example": [
                 "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy.mostRecentCall.args = [1, 2];"
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15936,7 +16252,7 @@
             "example": [
                 "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy(7, 8);\nmySpy.mostRecentCall.args = [7, 8];\nmySpy.argsForCall[0] = [1, 2];\nmySpy.argsForCall[1] = [7, 8];"
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15945,7 +16261,7 @@
             "example": [
                 "\nvar foo = {\n  bar: function() { // do some stuff }\n}\n\n// defining a spy on an existing property: foo.bar\nspyOn(foo, 'bar').andCallThrough();"
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15961,7 +16277,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15977,7 +16293,7 @@
                     "type": "String"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -15993,7 +16309,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16002,7 +16318,7 @@
             "example": [
                 "\nspyOn(foo, 'bar');\n\nfoo.bar();\n\nexpect(foo.bar.callCount).toEqual(1);\n\nfoo.bar.reset();\n\nexpect(foo.bar.callCount).toEqual(0);"
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16019,7 +16335,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16037,13 +16353,13 @@
                     "type": "Array"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 443,
             "description": "All parameters are pretty-printed and concatenated together, then written to the current spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16068,7 +16384,7 @@
             "return": {
                 "description": "a Jasmine spy that can be chained with all spy methods"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16089,7 +16405,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16107,7 +16423,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16120,7 +16436,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16133,7 +16449,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16148,7 +16464,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16171,7 +16487,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16184,7 +16500,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16197,7 +16513,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16218,7 +16534,7 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16236,12 +16552,12 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 633,
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16261,21 +16577,21 @@
                     "type": "Function"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 646,
             "access": "private",
             "tagname": "",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 700,
             "description": "Environment for Jasmine",
             "is_constructor": 1,
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16283,7 +16599,7 @@
             "return": {
                 "description": "an object containing jasmine version build info, if set."
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16291,7 +16607,7 @@
             "return": {
                 "description": "string containing jasmine version build info, if set."
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16299,7 +16615,7 @@
             "return": {
                 "description": "a sequential integer starting at 0"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16307,7 +16623,7 @@
             "return": {
                 "description": "a sequential integer starting at 0"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16320,13 +16636,13 @@
                     "type": "jasmine.Reporter"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 977,
             "is_constructor": 1,
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16350,13 +16666,13 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1030,
             "is_constructor": 1,
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16378,7 +16694,7 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16390,7 +16706,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16404,7 +16720,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toBe() instead.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16416,7 +16732,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16430,7 +16746,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toEqual() instead.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16442,7 +16758,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16456,48 +16772,48 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toMatch() instead.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1263,
             "description": "Matcher that compares the actual to jasmine.undefined.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1270,
             "description": "Matcher that compares the actual to jasmine.undefined.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1277,
             "description": "Matcher that compares the actual to null.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1284,
             "description": "Matcher that boolean not-nots the actual.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1292,
             "description": "Matcher that boolean nots the actual.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1300,
             "description": "Matcher that checks to see if the actual, a Jasmine spy, was called.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1322,
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16505,7 +16821,7 @@
             "description": "Matcher that checks to see if the actual, a Jasmine spy, was not called.",
             "deprecated": true,
             "deprecationMessage": "Use expect(xxx).not.toHaveBeenCalled() instead",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16514,17 +16830,17 @@
             "example": [
                 "\n"
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1378,
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1381,
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16537,7 +16853,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16552,7 +16868,7 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toContain() instead.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16570,7 +16886,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16583,55 +16899,55 @@
                     "type": "String"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1619,
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1715,
             "is_constructor": 1,
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1750,
             "description": "Holds results for a set of Jasmine spec. Allows for the results array to hold another jasmine.NestedResults",
             "is_constructor": 1,
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1756,
             "description": "The total count of results",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1760,
             "description": "Number of passed results",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1764,
             "description": "Number of failed results",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1768,
             "description": "Was this suite/spec skipped?",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1772,
             "ignore": "",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16643,7 +16959,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16655,13 +16971,13 @@
                     "description": "Array of message parts which will be concatenated later."
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1797,
             "description": "Getter for the results: message & results.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16674,7 +16990,7 @@
                     "type": "jasmine.ExpectationResult|jasmine.NestedResults"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16683,13 +16999,13 @@
                 "description": "True if <b>everything</b> below passed",
                 "type": "Boolean"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 1830,
             "description": "Base class for pretty printing for expectation results.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16701,7 +17017,7 @@
                     "description": ""
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16715,7 +17031,7 @@
                     "type": "jasmine.Env"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16739,13 +17055,13 @@
                     "type": "String"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
             "line": 2168,
             "description": "All parameters are pretty-printed and concatenated together, then written to the spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16757,7 +17073,7 @@
                     "type": "jasmine.ExpectationResult"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16772,7 +17088,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16795,7 +17111,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16824,7 +17140,7 @@
                     "type": "jasmine.Suite"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/rate/spec/lib/jasmine.js",
@@ -16859,13 +17175,13 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/SWFUpload.js",
             "line": 1,
             "description": "SWFUpload: http://www.swfupload.org, http://swfupload.googlecode.com\n\nmmSWFUpload 1.0: Flash upload dialog - http://profandesign.se/swfupload/,  http://www.vinterwebb.se/\n\nSWFUpload is (c) 2006-2007 Lars Huring, Olov Nilzén and Mammon Media and is released under the MIT License:\nhttp://www.opensource.org/licenses/mit-license.php\n\nSWFUpload 2 is (c) 2007-2008 Jake Roberts and is released under the MIT License:\nhttp://www.opensource.org/licenses/mit-license.php\n\nSWFObject v2.2 <http://code.google.com/p/swfobject/> \n\tis released under the MIT License <http://www.opensource.org/licenses/mit-license.php>",
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/aes.js",
@@ -16887,7 +17203,7 @@
                 "description": "Encrypted output state array",
                 "type": "Number[]"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/aes.js",
@@ -16904,7 +17220,7 @@
                 "description": "Expanded key schedule as 2D byte-array (Nr+1 x Nb bytes)",
                 "type": "Number[][]"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/aes.js",
@@ -16931,7 +17247,7 @@
                 "description": "Encrypted text",
                 "type": "String"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/aes.js",
@@ -16958,7 +17274,7 @@
                 "description": "Decrypted text",
                 "type": "String"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/aes.js",
@@ -16982,7 +17298,7 @@
                 "description": "Base64-encoded string",
                 "type": "String"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/aes.js",
@@ -17006,7 +17322,7 @@
                 "description": "decoded string",
                 "type": "String"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/aes.js",
@@ -17023,7 +17339,7 @@
                 "description": "encoded string",
                 "type": "String"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../plugins/aes.js",
@@ -17040,7 +17356,7 @@
                 "description": "decoded string",
                 "type": "String"
             },
-            "class": "window.Raphael"
+            "class": "window.jQuery.mousewheel"
         },
         {
             "file": "../JC.js",
@@ -18787,6 +19103,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../comps/FChart/FChart.js:7"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../comps/Fixed/Fixed.js:6"
         },
         {
@@ -19159,7 +19479,15 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../plugins/json2.js:1"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../plugins/raphael.js:1"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../plugins/swfobject.js:1"
         },
         {
             "message": "unknown tag: date",
@@ -19424,6 +19752,82 @@
         {
             "message": "Missing item type\n返回选择器的 矩形 位置",
             "line": " ../comps/DragSelect/DragSelect.js:592"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../comps/FChart/FChart.js:206"
+        },
+        {
+            "message": "Missing item type\n解析图表默认数据",
+            "line": " ../comps/FChart/FChart.js:293"
+        },
+        {
+            "message": "Missing item type\n保存图表数据",
+            "line": " ../comps/FChart/FChart.js:315"
+        },
+        {
+            "message": "Missing item type\n图表宽度",
+            "line": " ../comps/FChart/FChart.js:326"
+        },
+        {
+            "message": "Missing item type\n图表高度",
+            "line": " ../comps/FChart/FChart.js:337"
+        },
+        {
+            "message": "Missing item type\n图表宽度",
+            "line": " ../comps/FChart/FChart.js:348"
+        },
+        {
+            "message": "Missing item type\n设置或保存图表的宽高",
+            "line": " ../comps/FChart/FChart.js:359"
+        },
+        {
+            "message": "Missing item type\n图表画布",
+            "line": " ../comps/FChart/FChart.js:367"
+        },
+        {
+            "message": "Missing item type\n画布圆角弧度",
+            "line": " ../comps/FChart/FChart.js:373"
+        },
+        {
+            "message": "Missing item type\n清除图表数据",
+            "line": " ../comps/FChart/FChart.js:377"
+        },
+        {
+            "message": "Missing item type\n清除图表状态",
+            "line": " ../comps/FChart/FChart.js:394"
+        },
+        {
+            "message": "Missing item type\n图表高度",
+            "line": " ../comps/FChart/FChart.js:430"
+        },
+        {
+            "message": "Missing item type\n图表高度",
+            "line": " ../comps/FChart/FChart.js:434"
+        },
+        {
+            "message": "Missing item type\n图表画布",
+            "line": " ../comps/FChart/FChart.js:438"
+        },
+        {
+            "message": "Missing item type\n初始化的选择器",
+            "line": " ../comps/FChart/FChart.js:442"
+        },
+        {
+            "message": "Missing item type\n清除图表数据",
+            "line": " ../comps/FChart/FChart.js:449"
+        },
+        {
+            "message": "Missing item type\n清除图表状态",
+            "line": " ../comps/FChart/FChart.js:459"
+        },
+        {
+            "message": "Missing item type\n更新图表数据",
+            "line": " ../comps/FChart/FChart.js:465"
+        },
+        {
+            "message": "Missing item type\n渲染图表外观",
+            "line": " ../comps/FChart/FChart.js:476"
         },
         {
             "message": "Missing item type\n支持 多对多 关系( 目前只支持 一对多 和 多对一 )",

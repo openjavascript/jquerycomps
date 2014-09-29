@@ -10,13 +10,13 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
  *  <p><b>require</b>:
  *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *      , <a href='window.swfobject.html'>SWFObject</a>
- *      , <a href='window.json2'>JSON2</a>
- *      , <a href='window.jQuery.mousewheel'>jQuery.mousewheel</a>
+ *      , <a href='window.JSON.html'>JSON2</a>
+ *      , <a href='window.jQuery.mousewheel.html'>jQuery.mousewheel</a>
  *  </p>
  *
  *  <p><a href='https://github.com/openjavascript/fchart' target='_blank'>JC Project Site</a>
  *      | <a href='http://fchart.openjavascript.org/docs_api/classes/JC.FChart.html' target='_blank'>API docs</a>
- *      | <a href='../../comps/FChart/_demo' target='_blank'>demo link</a></p>
+ *      | <a href='../../comps/FChart/_demo?target=_blank' target='_blank'>demo link</a></p>
  *  
  *  <h2>页面只要引用本脚本, 默认会处理 div class="js_compFChart"</h2>
  *
@@ -229,14 +229,14 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
     FChart.Model.FLASH_PATH = '{0}/flash/pub/charts/{1}.swf?{2}';
 
     /**
-     * flash 缓存版本
+     * flash swf 缓存版本控制
      * @property    Model.VERSION
      * @type        {string}
-     * @default     requirejs.s.contexts._.config.urlArgs || JC.pathPostfix || 'fchart'
+     * @default     requirejs.s.contexts._.config.urlArgs || 'v=' + JC.pathPostfix || 'v=fchart'
      * @static
      */
     FChart.Model.VERSION = 'fchart';
-    JC.pathPostfix && ( FChart.Model.VERSION = JC.pathPostfix );
+    JC.pathPostfix && ( FChart.Model.VERSION = 'v=' + JC.pathPostfix );
     window.requirejs 
         && window.requirejs.s
         && window.requirejs.s.contexts
