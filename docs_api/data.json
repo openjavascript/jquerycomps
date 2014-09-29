@@ -382,6 +382,17 @@
                 "JC": 1
             }
         },
+        "../modules/JC.FChart/0.1/FChart.js": {
+            "name": "../modules/JC.FChart/0.1/FChart.js",
+            "modules": {},
+            "classes": {
+                "JC.FChart": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "JC": 1
+            }
+        },
         "../modules/JC.Fixed/0.1/Fixed.js": {
             "name": "../modules/JC.Fixed/0.1/Fixed.js",
             "modules": {},
@@ -700,6 +711,17 @@
             "fors": {},
             "namespaces": {}
         },
+        "../modules/JSON/2/JSON.js": {
+            "name": "../modules/JSON/2/JSON.js",
+            "modules": {},
+            "classes": {
+                "window.JSON": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window": 1
+            }
+        },
         "../modules/Raphael/2.1.2/Raphael.js": {
             "name": "../modules/Raphael/2.1.2/Raphael.js",
             "modules": {},
@@ -717,6 +739,28 @@
             "classes": {},
             "fors": {},
             "namespaces": {}
+        },
+        "../modules/jquery.mousewheel/3.1.12/jquery.mousewheel.js": {
+            "name": "../modules/jquery.mousewheel/3.1.12/jquery.mousewheel.js",
+            "modules": {},
+            "classes": {
+                "window.jQuery.mousewheel": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window.jQuery": 1
+            }
+        },
+        "../modules/swfobject/2.3/swfobject.js": {
+            "name": "../modules/swfobject/2.3/swfobject.js",
+            "modules": {},
+            "classes": {
+                "window.swfobject": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "window": 1
+            }
         },
         "../plugins/Aes/0.1/Aes.js": {
             "name": "../plugins/Aes/0.1/Aes.js",
@@ -942,7 +986,7 @@
             "namespace": "window.Bizs",
             "file": "../modules/Bizs.FormLogic/0.2/FormLogic.js",
             "line": 4,
-            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Valid.html'>JC.Valid</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><b>optional</b>: \n     <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.FormLogic/0.2/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax, jsonp \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function, <b>window 变量域</b/></dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function, <b>window 变量域</b></dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function, <b>window 变量域</b></dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formBeforeSubmit = function, <b>window 变量域</b></dt>\n     <dd>\n         表单开始发送数据到服务器之前的回调\n<pre>function formBeforeSubmit( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeSubmit', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n\n     <dt>formJsonpCb = function, default = FormLogic#_model._innerJsonpCb</dt>\n     <dd>自定义 JSOPN 处理回调, <b>window 变量域</b>\n<pre>function customFormJsonpCb( _data, _info ){\n   if( !( _data && _info ) ) return;\n\n   var _frm = $( 'form.' + _info ), _ins;\n   if( !_frm.length ) return;\n   _ins = JC.BaseMVC.getInstance( _frm, Bizs.FormLogic );\n   if( !_ins ) return;\n\n   _ins.trigger( Bizs.FormLogic.Model.AJAX_DONE, [ _data ] );\n}</pre>\n\n<pre>URL: <b>handler_jsonp.php?callbackInfo=FormLogic_1&callback=callback</b>\nOUTPUT:\n<b>&lt;script&gt;\nwindow.parent \n   && window.parent != this\n   && window.parent&#91; 'callback' &#93;\n   && window.parent&#91; 'callback' &#93;( {\"errorno\":0,\"errmsg\":\"\",\"data\":{\"callbackInfo\":\"FormLogic_1\",\"callback\":\"callback\"}}, 'FormLogic_1' )\n   ;\n&lt;/script&gt;</b></pre>\n     </dd>\n</dl>\n\n<h2>Form Control 可用的 html 属性</h2>\n<dl>\n     <dt>ignoreResetClear = bool, default = false</dt>\n     <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dd>\n\n     <dt>formSubmitIgnoreCheck = bool, default = false</dt>\n     <dd>\n         表单提交时, 是否忽略 JC.Valid 的验证\n         <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配\n         <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>\n     </dd>\n\n     <dt>formResetCallback = callback</dt>\n     <dd>表单重置后的回调\n<pre>function formResetCallback( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formResetCallback', JC.f.ts() );\n}</pre>\n\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n     </dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n\n     <dt>buttonClickBindSelector = selector</dt>\n     <dd>\n         点击按钮时, 把按钮的值赋值给 绑定的 控件\n         <br /><b>注意:</b> 这个属性仅支持 [input|button] 标签\n     </dd>\n</dl>",
+            "description": "<h2>提交表单控制逻辑</h2>\n应用场景\n<br />get 查询表单\n<br />post 提交表单\n<br />ajax 提交表单\n<p><b>require</b>: \n     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Valid.html'>JC.Valid</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p><b>optional</b>: \n     <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>\n| <a href='../../modules/Bizs.FormLogic/0.2/_demo' target='_blank'>demo link</a></p>\n\n<h2>页面只要引用本文件, 默认会自动初始化 from class=\"js_bizsFormLogic\" 的表单</h2>\n<h2>Form 可用的 HTML 属性</h2>\n<dl>\n     <dt>formType = string, default = get</dt>\n     <dd>\n         form 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n         <br/> 类型有: get, post, ajax, jsonp \n     </dd>\n\n     <dt>formSubmitDisable = bool, default = true</dt>\n     <dd>表单提交后, 是否禁用提交按钮</dd>\n\n     <dt>formResetAfterSubmit = bool, default = true</dt>\n     <dd>表单提交后, 是否重置内容</dd>\n\n     <dt>formBeforeProcess = function, <b>window 变量域</b/></dt>\n     <dd>\n         表单开始提交时且没开始验证时, 触发的回调\n<pre>function formBeforeProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formProcessError = function, <b>window 变量域</b></dt>\n     <dd>\n         提交时, 验证未通过时, 触发的回调\n<pre>function formProcessError( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formProcessError', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formAfterProcess = function, <b>window 变量域</b></dt>\n     <dd>\n         表单开始提交时且验证通过后, 触发的回调\n<pre>function formAfterProcess( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formAfterProcess', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formBeforeSubmit = function, <b>window 变量域</b></dt>\n     <dd>\n         表单开始发送数据到服务器之前的回调\n<pre>function formBeforeSubmit( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formBeforeSubmit', new Date().getTime() );\n   //return false;\n}</pre>\n     </dd>\n\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n\n     <dt>formAjaxResultType = string, default = json</dt>\n     <dd>AJAX 返回的数据类型: json, html</dd>\n\n     <dt>formAjaxMethod = string, default = get</dt>\n     <dd>\n         类型有: get, post\n         <br/>ajax 的提交类型, 如果没有显式声明, 将视为 form 的 method 属性\n     </dd>\n\n     <dt>formAjaxAction = url</dt>\n     <dd>ajax 的提交URL, 如果没有显式声明, 将视为 form 的 action 属性</dd>\n\n     <dt>formAjaxDone = function, default = system defined</dt>\n     <dd>\n         AJAX 提交完成后的回调, <b>window 变量域</b>\n         <br />如果没有显式声明, FormLogic将自行处理\n<pre>function formAjaxDone( _json, _submitButton, _ins ){\n   var _form = $(this);\n   JC.log( 'custom formAjaxDone', new Date().getTime() );\n\n   if( _json.errorno ){\n       _panel = JC.Dialog.alert( _json.errmsg || '操作失败, 请重新尝试!', 1 );\n   }else{\n       _panel = JC.msgbox( _json.errmsg || '操作成功', _submitButton, 0, function(){\n           JC.f.reloadPage( \"?donetype=custom\" );\n       });\n   }\n};</pre>\n     </dd>\n\n     <dt>formAjaxDoneAction = url</dt>\n     <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>\n\n     <dt>formJsonpCb = function, default = FormLogic#_model._innerJsonpCb</dt>\n     <dd>自定义 JSOPN 处理回调, <b>window 变量域</b>\n<pre>function customFormJsonpCb( _data, _info ){\n   if( !( _data && _info ) ) return;\n\n   var _frm = $( 'form.' + _info ), _ins;\n   if( !_frm.length ) return;\n   _ins = JC.BaseMVC.getInstance( _frm, Bizs.FormLogic );\n   if( !_ins ) return;\n\n   _ins.trigger( Bizs.FormLogic.Model.AJAX_DONE, [ _data ] );\n}</pre>\n\n<pre>URL: <b>handler_jsonp.php?callbackInfo=FormLogic_1&callback=callback</b>\nOUTPUT:\n<b>&lt;script&gt;\nwindow.parent \n   && window.parent != this\n   && window.parent&#91; 'callback' &#93;\n   && window.parent&#91; 'callback' &#93;( {\"errorno\":0,\"errmsg\":\"\",\"data\":{\"callbackInfo\":\"FormLogic_1\",\"callback\":\"callback\"}}, 'FormLogic_1' )\n   ;\n&lt;/script&gt;</b></pre>\n     </dd>\n</dl>\n\n<h2>Form Control 可用的 html 属性</h2>\n<dl>\n     <dt>ignoreResetClear = bool, default = false</dt>\n     <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>\n</dl>\n\n<h2>submit button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         基本上 form 可用的 html 属性, submit 就可用, 区别在于 submit 优化级更高\n     </dd>\n\n     <dt>formSubmitConfirm = string</dt>\n     <dd>提交表单时进行二次确认的提示信息</dt>\n\n     <dt>formConfirmCheckSelector = selector</dt>\n     <dd>提交表单时, 进行二次确认的条件判断</dt>\n\n     <dt>formConfirmCheckCallback = function</dt>\n     <dd>\n         提交表单时, 进行二次确认的条件判断, <b>window 变量域</b>\n<pre>function formConfirmCheckCallback( _trigger, _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formConfirmCheckCallback', new Date().getTime() );\n   return _form.find('td.js_confirmCheck input[value=0]:checked').length;\n}</pre>\n     </dd>\n\n     <dt>formSubmitIgnoreCheck = bool, default = false</dt>\n     <dd>\n         表单提交时, 是否忽略 JC.Valid 的验证\n         <br /><b>注意:</b> 仅忽略内容为空的项, 如果已经填写内容, 那么内容必须与验证规则匹配\n         <br /><b>注: 有时 提交操作 仅为保存为草稿的时候, 是不需要验证所有内容的, 不过还是会对值非空的项进行验证</b>\n     </dd>\n\n     <dt>formResetCallback = callback</dt>\n     <dd>表单重置后的回调\n<pre>function formResetCallback( _evt, _ins ){\n   var _form = $(this);\n   JC.log( 'formResetCallback', JC.f.ts() );\n}</pre>\n\n</dl>\n\n<h2>reset button 可用的 html 属性</h2>\n<dl>\n     <dd>\n         如果 form 和 reset 定义了相同属性, reset 优先级更高\n     </dd>\n     <dt>formConfirmPopupType = string, default = dialog</dt>\n     <dd>定义提示框的类型: dialog, popup</dd>\n\n     <dt>formResetUrl = url</dt>\n     <dd>表单重置时, 返回的URL</dd>\n\n     <dt>formResetConfirm = string</dt>\n     <dd>重置表单时进行二次确认的提示信息</dt>\n\n     <dt>formPopupCloseMs = int, default = 2000</dt>\n     <dd>msgbox 弹框的显示时间</dd>\n     </dd>\n</dl>\n\n<h2>普通 [a | button] 可用的 html 属性</h2>\n<dl>\n     <dt>buttonReturnUrl</dt>\n     <dd>点击button时, 返回的URL</dd>\n\n     <dt>returnConfirm = string</dt>\n     <dd>二次确认提示信息</dd>\n\n     <dt>popupType = string, default = confirm</dt>\n     <dd>弹框类型: confirm, dialog.confirm</dd>\n\n     <dt>popupstatus = int, default = 2</dt>\n     <dd>提示状态: 0: 成功, 1: 失败, 2: 警告</dd>\n\n     <dt>buttonClickBindSelector = selector</dt>\n     <dd>\n         点击按钮时, 把按钮的值赋值给 绑定的 控件\n         <br /><b>注意:</b> 这个属性仅支持 [input|button] 标签\n     </dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "version": "dev 0.1 2013-09-08",
@@ -1429,6 +1473,33 @@
             ],
             "version": "dev 0.1 2014-05-29",
             "author": "qiushaowei <suches@btbtd.org> | 75 Team"
+        },
+        "JC.FChart": {
+            "name": "JC.FChart",
+            "shortname": "JC.FChart",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "JC",
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 7,
+            "description": "JC.FChart - flash 图表组件\n\n <p><b>require</b>:\n     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='window.swfobject.html'>SWFObject</a>\n     , <a href='window.JSON.html'>JSON2</a>\n     , <a href='window.jQuery.mousewheel.html'>jQuery.mousewheel</a>\n </p>\n\n <p><a href='https://github.com/openjavascript/fchart' target='_blank'>JC Project Site</a>\n     | <a href='http://fchart.openjavascript.org/docs_api/classes/JC.FChart.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.FChart/0.1/_demo?target=_blank' target='_blank'>demo link</a></p>\n \n <h2>页面只要引用本脚本, 默认会处理 div class=\"js_compFChart\"</h2>\n\n <h2>可用的 HTML attribute</h2>\n\n <dl>\n     <dt>chartScriptData = script tpl selector</dt>\n     <dd>图表的脚本模板数据<dd>\n\n     <dt>chartDataVar = json object name</dt>\n     <dd>图表的json数据名, <b>window变量域</b><dd>\n\n     <dt>chartWidth = number, default = 100%</dt>\n     <dd>图表的宽度</dd>\n\n     <dt>chartHeight = number, default = 400</dt>\n     <dd>图表的高度</dd>\n\n     <dt>chartScroll = bool, default = true</dt>\n     <dd>图表是否响应鼠标滚动</dd>\n </dl>",
+            "extends": "JC.BaseMVC",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector|string"
+                }
+            ],
+            "version": "dev 0.1 2014-09-09",
+            "author": "qiushaowei <suches@btbtd.org> | 75 Team",
+            "example": [
+                "\n<pre>\n   &lt;div class=\"js_compFChart\"\n       chartScriptData=\"|script\"\n       chartWidth=\"600\"\n       chartHeight=\"400\"\n       >\n       &lt;script type=\"text/template\">\n           {\n               chart: {\n                   type: 'bar' \n               }, \n               title: {\n                   text:'Chart Title'\n               },\n               subtitle: {\n                   text: 'sub title'\n               }, \n               xAxis: {\n                   categories: [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12' ]\n               }, \n               yAxis: {\n                   title: {\n                       text: '(Vertical Title - 中文)'\n                   }\n               },\n               series:[{\n                   name: 'Temperature'\n                   , data: [-50, 0, 3, -20, -20, 27, 28, 32, 30, 25, 15, -58]\n                   , style: { 'stroke': '#ff7100' } \n                   , pointStyle: {}\n               }, {\n                   name: 'Rainfall',\n                   data: [20, 21, 20, 100, 200, 210, 220, 100, 20, 10, 20, 10]\n               }],\n               credits: {\n                   enabled: true\n                   , text: 'fchart.openjavascript.org'\n                   , href: 'http://fchart.openjavascript.org/'\n               },\n               displayAllLabel: true,\n               legend: {\n                   enabled: false\n               }\n           }\n       &lt;/script>\n   &lt;/div>\n</pre>"
+            ]
         },
         "JC.Fixed": {
             "name": "JC.Fixed",
@@ -2648,6 +2719,20 @@
             "version": "dev 0.1 2013-07-04",
             "author": "qiushaowei   <suches@btbtd.org> | 360 75 Team"
         },
+        "window.JSON": {
+            "name": "window.JSON",
+            "shortname": "window.JSON",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window",
+            "file": "../modules/JSON/2/JSON.js",
+            "line": 1,
+            "description": "json2.js \n<br />JSON is a light-weight, language independent, data interchange format.\n<p><a href='https://github.com/douglascrockford/JSON-js' target='_blank'>source</a>\n| <a href='http://www.json.org/js.html' target='_blank'>docs</a>\n</p>",
+            "version": "2.0"
+        },
         "window.Raphael": {
             "name": "window.Raphael",
             "shortname": "window.Raphael",
@@ -2661,6 +2746,34 @@
             "line": 1,
             "description": "Raphaël 2.1.2 - JavaScript Vector Library \n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://raphaeljs.com/reference.html' target='_blank'>API docs</a>\n| <a href='http://raphaeljs.com/' target='_blank'>demo</a>",
             "version": "2.1.2"
+        },
+        "window.jQuery.mousewheel": {
+            "name": "window.jQuery.mousewheel",
+            "shortname": "window.jQuery.mousewheel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window.jQuery",
+            "file": "../modules/jquery.mousewheel/3.1.12/jquery.mousewheel.js",
+            "line": 9,
+            "description": "jquery.mousewheel 3.1.12\n<pre><a href=\"https://github.com/brandonaaron/jquery-mousewheel\">https://github.com/brandonaaron/jquery-mousewheel</a>",
+            "global": ""
+        },
+        "window.swfobject": {
+            "name": "window.swfobject",
+            "shortname": "window.swfobject",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "namespace": "window",
+            "file": "../modules/swfobject/2.3/swfobject.js",
+            "line": 1,
+            "description": "swfobject v2.3\n<br />An open source Javascript framework for detecting the Adobe Flash Player plugin and embedding Flash (swf) files.\n<p><a href='https://github.com/swfobject/swfobject' target='_blank'>source</a>\n| <a href='https://code.google.com/p/swfobject/wiki/documentation' target='_blank'>docs</a>\n| <a href='../../modules/swfobject/2.3/_demo' target='_blank'>demo link</a>\n| <a href='http://www.bobbyvandersluis.com/swfobject/generator/index.html' target='_blank'>html generator</a>\n</p>",
+            "version": "2.3"
         },
         "window.requirejs": {
             "name": "window.requirejs",
@@ -3440,7 +3553,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.2/FormLogic.js",
-            "line": 328,
+            "line": 327,
             "description": "获取或设置 FormLogic 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -3461,7 +3574,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.2/FormLogic.js",
-            "line": 346,
+            "line": 345,
             "description": "处理 form 或者 _selector 的所有form.js_bizsFormLogic",
             "itemtype": "method",
             "name": "init",
@@ -3482,7 +3595,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.2/FormLogic.js",
-            "line": 367,
+            "line": 366,
             "description": "msgbox 提示框的自动关闭时间",
             "itemtype": "property",
             "name": "popupCloseMs",
@@ -3494,7 +3607,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.2/FormLogic.js",
-            "line": 375,
+            "line": 374,
             "description": "AJAX 表单的提交类型\n<br />plugins, form\n<br />plugins 可以支持文件上传",
             "itemtype": "property",
             "name": "popupCloseMs",
@@ -3506,7 +3619,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.2/FormLogic.js",
-            "line": 385,
+            "line": 384,
             "description": "表单提交后, 是否禁用提交按钮",
             "itemtype": "property",
             "name": "submitDisable",
@@ -3518,7 +3631,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.2/FormLogic.js",
-            "line": 393,
+            "line": 392,
             "description": "表单提交后, 是否重置表单内容",
             "itemtype": "property",
             "name": "resetAfterSubmit",
@@ -3530,7 +3643,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.2/FormLogic.js",
-            "line": 401,
+            "line": 400,
             "description": "表单提交时, 内容填写不完整时触发的全局回调",
             "itemtype": "property",
             "name": "processErrorCb",
@@ -3542,7 +3655,7 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.2/FormLogic.js",
-            "line": 409,
+            "line": 408,
             "description": "全局返回数据处理回调\n<br />所有提交结果都会调用\n<br />arg: _data[string of result]",
             "itemtype": "property",
             "name": "GLOBAL_AJAX_CHECK",
@@ -3554,35 +3667,35 @@
         },
         {
             "file": "../modules/Bizs.FormLogic/0.2/FormLogic.js",
-            "line": 438,
+            "line": 437,
             "description": "默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.FormLogic/0.2/FormLogic.js",
-            "line": 536,
+            "line": 535,
             "description": "全局 AJAX 提交完成后的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.FormLogic/0.2/FormLogic.js",
-            "line": 545,
+            "line": 544,
             "description": "这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.FormLogic/0.2/FormLogic.js",
-            "line": 591,
+            "line": 590,
             "description": "表单内容验证通过后, 开始提交前的处理事件",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
         },
         {
             "file": "../modules/Bizs.FormLogic/0.2/FormLogic.js",
-            "line": 876,
+            "line": 875,
             "description": "这个回调的 this 指针是 window",
             "class": "window.Bizs.FormLogic",
             "namespace": "window.Bizs"
@@ -7278,6 +7391,209 @@
             "line": 595,
             "description": "返回选择器的 矩形 位置",
             "class": "JC.DragSelect",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 117,
+            "description": "初始化可识别的 FChart 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of FChartInstance"
+            },
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 196,
+            "description": "更新数据",
+            "itemtype": "method",
+            "name": "update",
+            "params": [
+                {
+                    "name": "object",
+                    "description": "_data"
+                }
+            ],
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 206,
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 220,
+            "description": "flash swf 路径\n<br />{0} = JC.PATH\n<br />{1} = chart file name",
+            "itemtype": "property",
+            "name": "Model.FLASH_PATH",
+            "type": "{string}",
+            "default": "{0}/flash/pub/charts/{1}.swf",
+            "static": 1,
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 231,
+            "description": "flash swf 缓存版本控制",
+            "itemtype": "property",
+            "name": "Model.VERSION",
+            "type": "{string}",
+            "default": "requirejs.s.contexts._.config.urlArgs || 'v=' + JC.pathPostfix || 'v=fchart'",
+            "static": 1,
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 248,
+            "description": "图表类型映射\n<br />曲线图: line, CurveGram, curvegram\n<br />柱状图: bar, Histogram, histogram\n<br />垂直柱状图: var, VHistogram, Vhistogram\n<br />饼状图: pie, PieGraph, piegraph",
+            "itemtype": "property",
+            "name": "Model.TYPE_MAP",
+            "type": "{object}",
+            "static": 1,
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 293,
+            "description": "解析图表默认数据",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 315,
+            "description": "保存图表数据",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 326,
+            "description": "图表宽度",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 337,
+            "description": "图表高度",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 348,
+            "description": "图表宽度",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 359,
+            "description": "设置或保存图表的宽高",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 367,
+            "description": "图表画布",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 373,
+            "description": "画布圆角弧度",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 377,
+            "description": "清除图表数据",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 394,
+            "description": "清除图表状态",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 430,
+            "description": "图表高度",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 434,
+            "description": "图表高度",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 438,
+            "description": "图表画布",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 442,
+            "description": "初始化的选择器",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 449,
+            "description": "清除图表数据",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 459,
+            "description": "清除图表状态",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 465,
+            "description": "更新图表数据",
+            "class": "JC.FChart",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.FChart/0.1/FChart.js",
+            "line": 476,
+            "description": "渲染图表外观",
+            "class": "JC.FChart",
             "namespace": "JC"
         },
         {
@@ -17566,7 +17882,7 @@
             "file": "../modules/SWFUpload/2.5.0/SWFUpload.js",
             "line": 1,
             "description": "SWFUpload: http://www.swfupload.org, http://swfupload.googlecode.com\n\nmmSWFUpload 1.0: Flash upload dialog - http://profandesign.se/swfupload/,  http://www.vinterwebb.se/\n\nSWFUpload is (c) 2006-2007 Lars Huring, Olov Nilzén and Mammon Media and is released under the MIT License:\nhttp://www.opensource.org/licenses/mit-license.php\n\nSWFUpload 2 is (c) 2007-2008 Jake Roberts and is released under the MIT License:\nhttp://www.opensource.org/licenses/mit-license.php\n\nSWFObject v2.2 <http://code.google.com/p/swfobject/> \n\tis released under the MIT License <http://www.opensource.org/licenses/mit-license.php>",
-            "class": "window.requirejs",
+            "class": "window.jQuery.mousewheel",
             "namespace": "window"
         },
         {
@@ -18997,7 +19313,7 @@
         },
         {
             "file": "../config.js",
-            "line": 124,
+            "line": 139,
             "description": "取当前脚本标签的 src路径",
             "static": 1,
             "return": {
@@ -19506,6 +19822,10 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:7"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../modules/JC.Fixed/0.1/Fixed.js:6"
         },
         {
@@ -19786,7 +20106,15 @@
         },
         {
             "message": "unknown tag: version",
+            "line": " ../modules/JSON/2/JSON.js:1"
+        },
+        {
+            "message": "unknown tag: version",
             "line": " ../modules/Raphael/2.1.2/Raphael.js:1"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " ../modules/swfobject/2.3/swfobject.js:1"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -19978,23 +20306,23 @@
         },
         {
             "message": "Missing item type\n默认 form 提交处理事件\n这个如果是 AJAX 的话, 无法上传 文件",
-            "line": " ../modules/Bizs.FormLogic/0.2/FormLogic.js:438"
+            "line": " ../modules/Bizs.FormLogic/0.2/FormLogic.js:437"
         },
         {
             "message": "Missing item type\n全局 AJAX 提交完成后的处理事件",
-            "line": " ../modules/Bizs.FormLogic/0.2/FormLogic.js:536"
+            "line": " ../modules/Bizs.FormLogic/0.2/FormLogic.js:535"
         },
         {
             "message": "Missing item type\n这是个神奇的BUG\nchrome 如果没有 reset button, 触发 reset 会导致页面刷新",
-            "line": " ../modules/Bizs.FormLogic/0.2/FormLogic.js:545"
+            "line": " ../modules/Bizs.FormLogic/0.2/FormLogic.js:544"
         },
         {
             "message": "Missing item type\n表单内容验证通过后, 开始提交前的处理事件",
-            "line": " ../modules/Bizs.FormLogic/0.2/FormLogic.js:591"
+            "line": " ../modules/Bizs.FormLogic/0.2/FormLogic.js:590"
         },
         {
             "message": "Missing item type\n这个回调的 this 指针是 window",
-            "line": " ../modules/Bizs.FormLogic/0.2/FormLogic.js:876"
+            "line": " ../modules/Bizs.FormLogic/0.2/FormLogic.js:875"
         },
         {
             "message": "Missing item type\n文件扩展名错误",
@@ -20159,6 +20487,82 @@
         {
             "message": "Missing item type\n返回选择器的 矩形 位置",
             "line": " ../modules/JC.DragSelect/0.1/DragSelect.js:595"
+        },
+        {
+            "message": "Missing item type",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:206"
+        },
+        {
+            "message": "Missing item type\n解析图表默认数据",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:293"
+        },
+        {
+            "message": "Missing item type\n保存图表数据",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:315"
+        },
+        {
+            "message": "Missing item type\n图表宽度",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:326"
+        },
+        {
+            "message": "Missing item type\n图表高度",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:337"
+        },
+        {
+            "message": "Missing item type\n图表宽度",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:348"
+        },
+        {
+            "message": "Missing item type\n设置或保存图表的宽高",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:359"
+        },
+        {
+            "message": "Missing item type\n图表画布",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:367"
+        },
+        {
+            "message": "Missing item type\n画布圆角弧度",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:373"
+        },
+        {
+            "message": "Missing item type\n清除图表数据",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:377"
+        },
+        {
+            "message": "Missing item type\n清除图表状态",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:394"
+        },
+        {
+            "message": "Missing item type\n图表高度",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:430"
+        },
+        {
+            "message": "Missing item type\n图表高度",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:434"
+        },
+        {
+            "message": "Missing item type\n图表画布",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:438"
+        },
+        {
+            "message": "Missing item type\n初始化的选择器",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:442"
+        },
+        {
+            "message": "Missing item type\n清除图表数据",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:449"
+        },
+        {
+            "message": "Missing item type\n清除图表状态",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:459"
+        },
+        {
+            "message": "Missing item type\n更新图表数据",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:465"
+        },
+        {
+            "message": "Missing item type\n渲染图表外观",
+            "line": " ../modules/JC.FChart/0.1/FChart.js:476"
         },
         {
             "message": "Missing item type\n支持 多对多 关系( 目前只支持 一对多 和 多对一 )",
@@ -20978,7 +21382,7 @@
         },
         {
             "message": "Missing item type\n取当前脚本标签的 src路径",
-            "line": " ../config.js:124"
+            "line": " ../config.js:139"
         },
         {
             "message": "Missing item type",

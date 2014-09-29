@@ -34,6 +34,7 @@ requirejs.config( {
         , 'JC.Drag': 'modules/JC.Drag/0.1/Drag'
         , 'JC.DragSelect': 'modules/JC.DragSelect/0.1/DragSelect'
 
+        , 'JC.FChart': 'modules/JC.FChart/0.1/FChart'
         , 'JC.Form': 'modules/JC.Form/0.2/Form'
         , 'JC.Fixed': 'modules/JC.Fixed/0.1/Fixed'
         , 'JC.FlowChart': 'modules/JC.FlowChart/0.1/FlowChart'
@@ -107,18 +108,32 @@ requirejs.config( {
 
         , 'plugins.jquery.form': 'plugins/jquery.form/3.36.0/jquery.form'
         , 'plugins.jquery.rate': 'plugins/jquery.rate/2.5.2/jquery.rate'
-        , 'plugins.requirejs.domReady': 'plugins/requirejs.domReady/2.0.1/domReady'
-        , 'plugins.JSON2': 'plugins/JSON/2/JSON'
-        , 'plugins.json2': 'plugins/JSON/2/JSON'
+
+        , 'jquery.mousewheel': 'modules/jquery.mousewheel/3.1.12/jquery.mousewheel'
+        , 'jquery.form': 'plugins/jquery.form/3.36.0/jquery.form'
+        , 'jquery.rate': 'plugins/jquery.rate/2.5.2/jquery.rate'
+
+
+        , 'json2': 'modules/JSON/2/JSON'
+        , 'plugins.JSON2': 'modules/JSON/2/JSON'
+        , 'plugins.json2': 'modules/JSON/2/JSON'
+
         , 'plugins.Aes': 'plugins/Aes/0.1/Aes'
         , 'plugins.Base64': 'plugins/Base64/0.1/Base64'
         , 'plugins.md5': 'plugins/md5/0.1/md5'
+
+        , 'plugins.requirejs.domReady': 'plugins/requirejs.domReady/2.0.1/domReady'
+
         , 'plugins.swfobject': 'plugins/SWFObject/2.2/SWFObject'
-        , 'swfobject': 'plugins/SWFObject/2.2/SWFObject'
+        , 'swfobject': 'modules/swfobject/2.3/swfobject'
+        , 'SWFObject': 'modules/swfobject/2.3/swfobject'
 
         , 'SWFUpload': 'modules/SWFUpload/2.5.0/SWFUpload'
         , 'swfupload': 'modules/SWFUpload/2.5.0/SWFUpload'
         , 'Raphael': 'modules/Raphael/latest/raphael'
+
+
+
     }
 });
 /**

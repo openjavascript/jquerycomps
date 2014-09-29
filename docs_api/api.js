@@ -17,6 +17,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "JC.Dialog.msgbox",
         "JC.Drag",
         "JC.DragSelect",
+        "JC.FChart",
         "JC.Fixed",
         "JC.FlowChart",
         "JC.Form",
@@ -65,9 +66,12 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.MultiUpload",
         "window.Bizs.MultiselectPanel",
         "window.Bizs.TaskViewer",
+        "window.JSON",
         "window.Raphael",
         "window.jQuery",
-        "window.requirejs"
+        "window.jQuery.mousewheel",
+        "window.requirejs",
+        "window.swfobject"
     ],
     "modules": [],
     "allModules": []
