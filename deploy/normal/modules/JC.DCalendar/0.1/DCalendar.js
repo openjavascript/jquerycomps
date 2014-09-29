@@ -1,0 +1,1 @@
+(function(e,t){e(["JC.DCalendar.date"],function(){return JC.use&&JC.PATH&&JC.use([JC.PATH+"comps/DCalendar/DCalendar.date.js"].join()),JC.DCalendar})})(typeof define=="function"&&define.amd?define:function(e,t,n){typeof e=="function"&&(n=e),typeof t=="function"&&(n=t),n&&n()},window);
