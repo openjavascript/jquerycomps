@@ -16,7 +16,7 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
  *
  *  <p><a href='https://github.com/openjavascript/fchart' target='_blank'>JC Project Site</a>
  *      | <a href='http://fchart.openjavascript.org/docs_api/classes/JC.FChart.html' target='_blank'>API docs</a>
- *      | <a href='../../modules/JC.FChart/0.1/_demo' target='_blank'>demo link</a></p>
+ *      | <a href='../../modules/JC.FChart/0.1/_demo?target=_blank' target='_blank'>demo link</a></p>
  *  
  *  <h2>页面只要引用本脚本, 默认会处理 div class="js_compFChart"</h2>
  *
