@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Open JQuery Components Library - suches</title>
+        <style>
+            body{
+                margin: 20px 40px;
+            }
+
+            dt { font-weight: bold; margin: 10px auto; }
+            dd { line-height: 24px; }
+        </style>
+        <link href='../../../../modules/JC.PopTips/0.1/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.FlowChart/0.1/res/default/style.css' rel='stylesheet' />
+        <style>
+            .js_compFlowChart .js_cfcItemStatus_0{
+                color: #41e2e6; 
+                background: white;
+            }
+
+            .js_compFlowChart .js_cfcItemStatus_1{
+                color: #c3e2a4;
+                background: white;
+            }
+
+            .js_compFlowChart .js_cfcItemStatus_2{
+                color: #ff06b3;
+                background: white;
+            }
+        </style>
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config.js"></script>
+        <script>
+            JC.debug = true;
+            requirejs( [ 'JC.FlowChart' ], function( FlowChart ){
+
+                $( document ).delegate( 'div.js_compFlowChart', JC.FlowChart.Model.BEFORE_INIT_ITEM, function( _evt, _itemData, _listData, _chartData ){
+                    if( _itemData.tipsHtml ){
+                        _itemData.tipsHtml += '   <b>test</b>';
+                    }
+
+                    _itemData.name = JC.f.printf( '~{0}~', _itemData.name );
+                });
+
+                $( document ).delegate( 'div.js_compFlowChart', JC.FlowChart.Model.ITEM_INITED, function( _evt, _domNode, _itemData, _listData, _chartData ){
+                    JC.log( _domNode.prop( 'nodeName' ) );
+                });
+
+                $( document ).delegate( 'div.js_compFlowChart', JC.FlowChart.Model.INITED, function( _evt, _ins, _chartData ){
+                    JC.log( 'js_compFlowChart inited' );
+                });
+
+            });
+        </script>
+    </head>    
+    <body>
+        <dl class="defdl">
+            <dt>JC.FlowChart - 示例</dt>
+            <dd>
+                <div style="height:200px;"></div>
+                <h2>before text</h2>
+                <div class="js_compFlowChart" data-FlowChart="|script">
+                    <script type="text/template">
+                        {
+                            colors: {
+                                line: {
+                                     'stroke': '#dbb8fd', 'stroke-width': 2
+                                }
+                                , icon: {
+                                    'stroke': '#dbb8fd', 'stroke-width': 2, 'fill': '#dbb8fd'
+                                }
+                            }
+                            , chart: {
+                                name: '提交'
+                                , id: 1
+                                , nodes: [
+                                        {
+                                            name: '资质审核'
+                                            , id: 2
+                                            , status: 1
+                                            , tipsHtml: 'username 1'
+                                            , nodes: [
+                                                {
+                                                    name: '服务审核'
+                                                    , id: 3
+                                                    , targetNode: 5
+                                                    , status: 2
+                                                    , tipsHtml: 'username 2'
+                                                }
+                                                , {
+                                                    name: '渠道管理层'
+                                                    , id: 4
+                                                    , status: 2
+                                                    , tipsHtml: 'username 3'
+                                                }
+                                            ]
+                                        }
+                                        , {
+                                            name: '资质审核1'
+                                            , id: 6
+                                            , status: 1
+                                            , tipsHtml: 'username 4'
+                                            , nodes: [
+                                                {
+                                                    name: '服务审核1'
+                                                    , id: 7
+                                                    , targetNode: 9
+                                                    , status: 2
+                                                    , tipsHtml: 'username 5~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+                                                }
+                                                , {
+                                                    name: '渠道管理层1'
+                                                    , id: 8
+                                                    , targetNode: 9
+                                                    , status: 0
+                                                }
+                                            ]
+                                        }
+                                        , {
+                                            name: '资质审核2'
+                                            , id: 10
+                                            , status: 1
+                                            , tipsHtml: 'username 7'
+                                            , nodes: [
+                                                {
+                                                    name: '服务审核2'
+                                                    , id: 11
+                                                    , status: 2
+                                                    , tipsHtml: 'username 8'
+                                                    , nodes: [
+                                                        {
+                                                            name: '管理层2'
+                                                            , id: 12
+                                                            , targetNode: 5
+                                                            , status: 0
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                        , {
+                                            name: '资质审核3'
+                                            , id: 15
+                                            , status: 1
+                                            , tipsHtml: 'username 10'
+                                        }
+                                ]
+                                , targetNodes: {
+                                    '5': {
+                                        name: '管理层'
+                                    }
+                                    , '9': {
+                                        name: '管理层1'
+                                        , targetNode: 5
+                                    }
+                                }
+                            }
+                        }
+                    </script>
+                </div>
+                <h2>after text</h2>
+            </dd>
+        </dl>
+        <div style="height:200px;"></div>
+    </body>
+</html>
+

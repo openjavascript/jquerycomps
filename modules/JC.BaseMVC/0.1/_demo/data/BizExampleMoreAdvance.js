@@ -1,5 +1,36 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
-;(function($){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+/**
+ * 组件用途简述
+ *
+ *  <p><b>require</b>:
+ *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *  </p>
+ *
+ *  <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+ *      | <a href='http://jc2.openjavascript.org/docs_api/classes/Bizs.BizExampleMoreAdvance.html' target='_blank'>API docs</a>
+ *      | <a href='../../modules/Bizs.BizExampleMoreAdvance/0.1/_demo' target='_blank'>demo link</a></p>
+ *  
+ *  <h2>页面只要引用本脚本, 默认会自动处理 div class="js_bizBizExampleMoreAdvance" </h2>
+ *
+ *  <h2>可用的 HTML attribute</h2>
+ *
+ *  <dl>
+ *      <dt></dt>
+ *      <dd><dd>
+ *  </dl> 
+ *
+ * @namespace   window.Bizs
+ * @class       BizExampleMoreAdvance
+ * @extends     JC.BaseMVC
+ * @constructor
+ * @param   {selector|string}   _selector   
+ * @version dev 0.1 2013-12-13
+ * @author  qiushaowei <suches@btbtd.org> | 75 Team
+ * @example
+        <h2>Bizs.BizExampleMoreAdvance 示例</h2>
+ */
+    var _jdoc = $( document ), _jwin = $( window );
+
     Bizs.BizExampleMoreAdvance = BizExampleMoreAdvance;
 
     function BizExampleMoreAdvance( _selector ){
@@ -29,7 +60,7 @@
             var _r = [];
             _selector = $( _selector || document );
 
-            if( _selector && _selector.length ){
+            if( _selector.length ){
                 if( _selector.hasClass( 'js_bizBizExampleMoreAdvance' )  ){
                     _r.push( new BizExampleMoreAdvance( _selector ) );
                 }else{
@@ -41,23 +72,30 @@
             return _r;
         };
 
-    BaseMVC.build( BizExampleMoreAdvance );
+    JC.BaseMVC.build( BizExampleMoreAdvance );
 
     JC.f.extendObject( BizExampleMoreAdvance.prototype, {
         _beforeInit:
             function(){
                 JC.log( 'BizExampleMoreAdvance _beforeInit', new Date().getTime() );
             }
+
         , _initHanlderEvent:
             function(){
+                var _p = this;
+
+                _p.on( 'inited', function(){
+                });
             }
+
         , _inited:
             function(){
                 JC.log( 'BizExampleMoreAdvance _inited', new Date().getTime() );
+                this.trigger( 'inited' );
             }
     });
 
-    BizExampleMoreAdvance.Model._instanceName = 'BizExampleMoreAdvance';
+    BizExampleMoreAdvance.Model._instanceName = 'JCBizExampleMoreAdvance';
     JC.f.extendObject( BizExampleMoreAdvance.Model.prototype, {
         init:
             function(){
@@ -72,7 +110,7 @@
             }
     });
 
-    $(document).ready( function(){
+    _jdoc.ready( function(){
         var _insAr = 0;
         BizExampleMoreAdvance.autoInit
             && ( _insAr = BizExampleMoreAdvance.init() )
@@ -81,7 +119,6 @@
             ;
     });
 
-}(jQuery));
     return Bizs.BizExampleMoreAdvance;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 

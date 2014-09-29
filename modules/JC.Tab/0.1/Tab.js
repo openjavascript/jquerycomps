@@ -1,12 +1,9 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
-;(function($){
-    window.JC = window.JC || {log:function(){}};
     window.Tab = JC.Tab = Tab;
     /**
-     * Tab 菜单类
-     * <br />DOM 加载完毕后
-     * , 只要鼠标移动到具有识别符的Tab上面, Tab就会自动初始化, 目前可识别: <b>.js_autoTab</b>( CSS class )
-     * <br />需要手动初始化, 请使用: var ins = new JC.Tab( _tabSelector );
+     * Tab 选项卡
+     * <br />响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = "<b>.js_autoTab</b>" 的 HTML 标签
+     * <br />需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );
      * <p><b>require</b>: 
      *      <a href='window.jQuery.html'>jQuery</a>
      *      , <a href='JC.common.html'>JC.common</a>
@@ -662,7 +659,6 @@
         _tab = new Tab( _p, _src );
     });
 
-}(jQuery));
     return JC.Tab;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

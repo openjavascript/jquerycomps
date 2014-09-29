@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>PopTips Demo</title>
+	<style type="text/css">
+		body{
+			padding: 0;
+			margin: 0;
+		}
+
+	</style>
+	<link href='../../../../modules/JC.PopTips/0.1/res/default/style.css' rel='stylesheet' />
+</head>
+<body>
+
+	<br><br>
+	<span class="js_compPopTips"  
+		content="这个tip本来显示在上方的"  
+		theme="yellow" 
+		arrowposition="bottom"
+		triggerType="click"
+		afterHideCallback="afterHideCallback" 
+		beforeShowCallback="beforeShowCallback">
+		<span>古希腊学者亚里士多德曾编写过全面讲述当时学问<br>的讲义，被西方奉为“百科全书之父”，中国汉朝<br>
+		初年的《尔雅》，是中国百科全书性质著作的渊源。</span>
+	</span>
+
+	<br><br>
+	<span class="js_compPopTips" style="margin-top:50px; display:inline-block;"  
+		htmlContent="|script" 
+		theme="green" 
+		arrowposition="left"
+		triggerType="hover"
+		poptipsheight="80"
+	>
+		<span>古希腊学者亚里士多德曾编
+			写过全面讲述当时学问的讲义，
+			被西方奉为“百科全书之父”，
+			中国汉朝初年的《尔雅》</span>
+		<script type="text/template" id="testHtml">
+	        <a href="javascript:;">test</a>
+	        <a href="javascript:;">test</a>
+	        <a href="javascript:;">test</a>
+	        <a href="javascript:;">test</a>
+	        <a href="javascript:;">test</a>
+	        <a href="javascript:;">test</a>
+	        <a href="javascript:;">test</a>
+	        <a href="javascript:;">test</a>
+	        <a href="javascript:;">test</a>
+	        <a href="javascript:;">test</a>
+	        <a href="javascript:;">test</a>
+	        <a href="javascript:;">test</a>
+	        <a href="javascript:;">test</a>
+	        <a href="javascript:;">test</a>
+        </script>
+	</span>
+		<br><br>
+	<span class="js_compPopTips" style=" display:inline-block;"  
+		ajaxContent="data/content.php" 
+		theme="white" 
+		arrowposition="bottom"
+		triggerType="hover"
+	>
+		<span>古希腊学者亚里士多德曾编
+			写过全面讲述当时学问的讲义，
+			被西方奉为“百科全书之父”，
+			中国汉朝初年的《尔雅》</span>
+	</span>
+    <br><br>
+	<span class="js_compPopTips" style=" display:inline-block;"  
+		ajaxContent="data/json_content.php" 
+		theme="white" 
+		arrowposition="bottom"
+		triggerType="hover"
+        popTipsWidth="600px"
+	>
+		<span>古希腊学者亚里士多德曾编
+			写过全面讲述当时学问的讲义，
+			被西方奉为“百科全书之父”，
+			中国汉朝初年的《尔雅》</span>
+	</span>
+
+ 
+
+	<script src="../../../../lib.js"></script>
+	<script src="../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+
+        requirejs( [ 'JC.PopTips' ], function(){
+        });
+
+        function afterHideCallback( _selector ) {
+            var _ins = this;
+            //JC.log( 'afterHideCallback', new Date().getTime() );
+        }
+
+        function beforeShowCallback( _selector ) {
+            var _ins = this;
+            //JC.log( 'beforeShowCallback', new Date().getTime() );
+        }
+    </script>
+</body>
+</html>

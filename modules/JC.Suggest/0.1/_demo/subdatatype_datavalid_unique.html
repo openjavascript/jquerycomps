@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            body{ margin: 20px 20px; }
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #F0DC82;!important;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+
+            dd.odd {
+                background: #ececec;
+            }
+
+            dt{
+                font-weight: bold;
+                display: block;
+            }
+
+            dl.fm-items > dt {
+                margin: 10px auto;
+            }
+
+            dd{
+                margin: 5px 40px;
+            }
+
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
+
+            input[type=checkbox], input[type=radio], input.UXC{
+                height: auto;
+                line-height: auto;
+            }
+
+            select[multiple]{
+                height: 80px;
+            }
+
+            div, li{
+                margin: 2px auto;
+            }
+
+            button.js_isIgnore{ display: none; }
+
+            .sug_input{
+                border: 1px solid #b9b9b9!important;
+                margin: 0!important;
+            }
+        </style>
+        <link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Suggest/0.1/res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config.js"></script>
+
+        <script src="../../../../modules/JC.AutoSelect/0.2/_demo/data/SHENGSHI.js"></script>
+        <script>
+            JC.debug = true; 
+            
+            requirejs( [ 'JC.Valid', 'Bizs.FormLogic', 'JC.Suggest' ]
+            , function( Valid, FormLogic, Suggest ){
+
+            });
+
+            $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
+                window.console && console.clear && console.clear();
+                JC.Valid.clearError( 'form.js_valid' );
+            });
+
+        </script>
+    </head>    
+    <body>
+
+        <form action='' method='get' class="js_valid js_bizsFormLogic" >
+            <div style="position:fixed; top: 10px; right:10px;">
+                <button type="submit">save</button>
+                <button type="reset">reset</button>
+            </div>
+
+            <dl class="fm-items">
+                <dt>JC.Valid 示例, subdatatype = datavalid, 判断 html 属性 datavalid 是否为真</dt>
+                <dd>
+                    内容: 
+                    <input type="text" class="sug_input" style="width: 300px!important" value="a.com"
+                    reqmsg="内容" 
+                    subdatatype="unique,datavalid" 
+                    uniquedatatarget="(dl input"
+                    uniquemsg="内容不能重复"
+
+                    datavalidmsg="内容不存在" 
+                    datavalidurl="./data/handler.php?key={0}"
+
+                    autocomplete="off" 
+                    sugurl="http://sug.so.360.cn/suggest/word?callback={1}&encodein=utf-8&encodeout=utf-8&word={0}"
+                    sugneedscripttag="true"
+                    sugselectedcallback="sugselectedcallback1"
+                    sugoffsetleft="0"
+                    sugoffsettop="3"
+                    sugoffsetwidth="2"
+                    />
+                </dd>
+                <dd>
+                    内容: 
+                    <input type="text" class="sug_input" style="width: 300px!important" value="b.com"
+                    reqmsg="内容" 
+                    subdatatype="unique,datavalid" 
+                    uniquedatatarget="(dl input"
+                    uniquemsg="内容不能重复"
+                    datavalidmsg="内容不存在" 
+                    datavalidurl="./data/handler.php?key={0}&errorno=1&errmsg=testmsg"
+
+                    autocomplete="off" 
+                    sugurl="http://sug.so.360.cn/suggest/word?callback={1}&encodein=utf-8&encodeout=utf-8&word={0}"
+                    sugneedscripttag="true"
+                    sugselectedcallback="sugselectedcallback1"
+                    sugoffsetleft="0"
+                    sugoffsettop="3"
+                    sugoffsetwidth="2"
+                    />
+                </dd>
+
+                <dd>
+                    URL: 
+                    <input type="text" class="sug_input" style="width: 300px!important" value="c.com"
+                    reqmsg="URL" 
+                    errmsg="请输入正确的URL"
+                    datatype="url"
+                    subdatatype="unique,datavalid" 
+                    uniquedatatarget="(dl input"
+                    uniquemsg="内容不能重复"
+                    datavalidmsg="内容不存在" 
+                    datavalidurl="./data/handler.php?key={0}&errorno=1&errmsg=testmsg"
+
+                    autocomplete="off" 
+                    sugurl="http://sug.so.360.cn/suggest/word?callback={1}&encodein=utf-8&encodeout=utf-8&word={0}"
+                    sugneedscripttag="true"
+                    sugselectedcallback="sugselectedcallback1"
+                    sugoffsetleft="0"
+                    sugoffsettop="3"
+                    sugoffsetwidth="2"
+                    />
+                </dd>
+
+                <dd>
+                    内容: 
+                    <input type="text" class="sug_input" style="width: 300px!important" value="a.com"
+                    reqmsg="内容" 
+                    subdatatype="unique,datavalid" 
+                    uniquedatatarget="(dl input"
+                    uniquemsg="内容不能重复"
+
+                    datavalidmsg="内容不存在" 
+                    datavalidurl="./data/handler.php?key={0}"
+
+                    autocomplete="off" 
+                    sugurl="http://sug.so.360.cn/suggest/word?callback={1}&encodein=utf-8&encodeout=utf-8&word={0}"
+                    sugneedscripttag="true"
+                    sugselectedcallback="sugselectedcallback1"
+                    sugoffsetleft="0"
+                    sugoffsettop="3"
+                    sugoffsetwidth="2"
+                    />
+                </dd>
+
+
+                <dd style="margin-top:20px; padding-left: 400px;">
+                    <button type="submit">save</button>
+                    <button type="reset">reset</button>
+                    <button type="button" class="js_clear_error">clear error</button>
+                    <a href="?">back</a>
+                </dd>
+             </dl>
+        </form>
+    </body>
+</html>
+

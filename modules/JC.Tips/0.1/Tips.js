@@ -1,6 +1,4 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
-;(function($){
-    window.JC = window.JC || {log:function(){}};
     window.Tips = JC.Tips = Tips;
     /**
      * Tips 提示信息类
@@ -601,7 +599,7 @@
      * 页面加载完毕后, 是否自动初始化 Tips
      */
     $(document).ready( function( _devt ){
-        setTimeout( function(){
+        JC.f.safeTimeout( function(){
             if( !JC.Tips.autoInit ) return;
 
             Tips.titleToTipsdata( $('[title]') );
@@ -613,10 +611,9 @@
                 JC.Tips.init( _p );
                 tipMouseenter.call( this, _evt );
             });
-        }, 10);
+        }, null, 'COMP_INIT_TIPS', 500 );
     });
 
-}(jQuery));
     return JC.Tips;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

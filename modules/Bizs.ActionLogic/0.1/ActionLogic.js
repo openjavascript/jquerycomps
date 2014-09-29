@@ -1,4 +1,3 @@
-//TODO: balType = ajaxaction 添加成功后删除逻辑
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
 /**
  * <h2>node 点击操作逻辑</h2>
@@ -27,8 +26,13 @@
  *              <dd>panel: 弹框</dd>
  *              <dd>link: 链接跳转</dd>
  *              <dd>ajaxaction: ajax操作, 删除, 启用, 禁用</dd>
+ *              <dd>ec: 展开或收起(expand and contract)</dd>
+ *              <dd>hit_value: 点击赋值</dd>
  *          </dl>
  *      </dd>
+ *
+ *      <dt>balUnHtmlEntity = bool, default = false</dt>
+ *      <dd>是否将 Panel 转义的 html 反转回来</dd>
  * </dl>
  * <h2>balType = panel 可用的 HTML 属性</h2>
  * <dl>
@@ -78,7 +82,7 @@
  *      <dt>balSuccessPopupType = string, default = msgbox</dt>
  *      <dd>错误提示的弹框类型: alert, msgbox, dialog.alert, dialog.msgbox</dd>
  *
- *      <dt>balCallback = function</dt>
+ *      <dt>balCallback = function, <b>window 变量域</b></dt>
  *      <dd>
  *          操作完成后的回调
 <pre>function ajaxDelCallback( _d, _ins ){
@@ -93,6 +97,43 @@
 }
 </pre>
  *      </dd>
+ *
+ *      <dt>balRequestData = json</dt>
+ *      <dd>ajax 请求发送的数据</dd>
+ *
+ *      <dt>balAjaxType = string, default = get</dt>
+ *      <dd>ajax 请求的类型</dd>
+ *
+ *      <dt>balDoneRemoveSelector = selector</dt>
+ *      <dd>ajax 操作完成后要删除的 node</dd>
+
+ * </dl>
+ * <h2>balType = ec( expand and contract) 可用的 HTML 属性</h2>
+ * <dl>
+ *      <dt>balTarget = selector</dt>
+ *      <dd>显示/隐藏的选择器</dd>
+ *
+ *      <dt>balExpandWord = string, default = "展开"</dt>
+ *      <dt>balExpandClass= string, default = "js_ecExpand"</dt>
+ *
+ *      <dt>balContractWord = string, default = "收起"</dt>
+ *      <dt>balContractClass = string, default = "js_ecContract"</dt>
+ * </dl>
+ * <h2>balType = hit_value 可用的 HTML 属性</h2>
+ * <dl>
+ *      <dt>balTarget = selector</dt>
+ *      <dd>显示/隐藏的选择器</dd>
+ *
+ *      <dt>balValue = string, default = ""</dt>
+ *      <dd>赋给 balTarget 的值</dd>
+ * </dl>
+ * <h2>balType = remove_element 可用的 HTML 属性</h2>
+ * <dl>
+ *      <dt>balDoneRemoveSelector = selector</dt>
+ *      <dd>点击操作完成后要删除的 node</dd>
+ *
+ *      <dt>balDoneBeforeRemoveCallback= function, <b>window 变量域</b></dt>
+ *      <dd>删除前的回调</dd>
  * </dl>
  *
  * @namespace   window.Bizs
@@ -102,8 +143,6 @@
  * @version dev 0.1 2013-09-17
  * @author  qiushaowei   <suches@btbtd.org> | 75 Team
  */
-;(function($){
-    window.Bizs = window.Bizs || {};
     window.Bizs.ActionLogic = ActionLogic;
 
     function ActionLogic( _selector ){
@@ -151,6 +190,23 @@
             return _r;
         };
     /**
+     * 禁用按钮一定时间, 默认为1秒
+     * @method  disableButton
+     * @static
+     * @param   {selector}  _selector   要禁用button的选择器
+     * @param   {int}       _durationMs 禁用多少时间, 单位毫秒, 默认1秒
+     */
+    ActionLogic.disableButton = 
+        function( _selector, _durationMs ){
+            _selector && ( _selector = $( _selector ) );
+            if( !( _selector && _selector.length ) ) return;
+            _durationMs = _durationMs || 1000;
+            _selector.attr('disabled', true);
+            JC.f.safeTimeout( function(){
+                _selector.attr('disabled', false);
+            }, _selector, 'DISABLE_BUTTON', _durationMs );
+        };
+    /**
      * 批量初始化 ActionLogic
      * <br />页面加载完毕时, 已使用 事件代理 初始化
      * <br />如果是弹框中的 ActionLogic, 由于事件冒泡被阻止了, 需要显示调用  init 方法
@@ -162,6 +218,7 @@
             _selector &&
                 $( _selector ).find( [  
                                         'a.js_bizsActionLogic'
+                                        , 'span.js_bizsActionLogic'
                                         , 'input.js_bizsActionLogic'
                                         , 'button.js_bizsActionLogic'
                                     ].join() ).on( 'click', function( _evt ){
@@ -207,7 +264,10 @@
                  * 显示 Panel
                  */
                 _p.on(ActionLogic.Model.SHOW_PANEL, function( _evt, _html){
+
+                    _html = _p._model.unHtmlEntity( _html );
                     var _pins = JC.Dialog( _html );
+
                     _pins.on('confirm', function(){
                         if( _p._model.balCallback() 
                             && _p._model.balCallback().call( _p._model.selector(), _pins, _p ) 
@@ -257,24 +317,52 @@
                 /**
                  * ajax 执行操作
                  */
-                _p.on( 'AjaxAction', function( _evt, _url ){
+                _p.on( 'AjaxAction', function( _evt, _url, _rdata, _rmethod ){
                     if( !_url ) return;
                     _p._model.balRandom() 
                         && ( _url = JC.f.addUrlParams( _url, { 'rnd': new Date().getTime() } ) );
-                    $.get( _url ).done( function( _d ){
-                        try{ _d = $.parseJSON( _d ); }catch(ex){}
 
-                        if( _p._model.balCallback() ){
-                            _p._model.balCallback().call( _p.selector(), _d, _p );
-                        }else{
-                            if( _d && 'errorno' in _d ){
-                                if( _d.errorno ){
-                                    _p.trigger( 'ShowError', [ _d.errmsg || '操作失败, 请重试!', 1 ] );
+                    _rmethod = _p._model.balAjaxType() || _rmethod;
+                    _rdata = _rdata || _p._model.balRequestData();
+                    
+                    if( _p._model.balRequestData() ){
+                        $[ _rmethod ]( _url, _rdata ).done( innerDone );
+                    }else{
+                        $[ _rmethod ]( _url ).done( innerDone );
+                    }
+
+                    function innerDone( _d ){
+                        _p.trigger( 'AjaxActionDone', [ _d, _url ] );
+                    }
+                });
+
+                _p.on( 'AjaxActionDone', function( _evt, _d, _url ){
+                    try{ _d = $.parseJSON( _d ); }catch(ex){}
+
+                    if( _p._model.balCallback() ){
+                        _p._model.balCallback().call( _p.selector(), _d, _p );
+                    }else{
+                        if( _d && typeof _d != 'string' && 'errorno' in _d ){
+                            if( _d.errorno ){
+                                _p.trigger( 'ShowError', [ _d.errmsg || '操作失败, 请重试!', 1 ] );
+                            }else{
+
+                                if( _d.data 
+                                    && _d.data.balAction
+                                    && _d.data.balAction.url
+                                    && _d.data.balAction.msg
+                                    && _d.data.balAction.type
+                                    && _d.data.balAction.type.toLowerCase() == 'ajaxaction'
+                                ){
+                                    _p.trigger( 'AjaxAction_Custom_Confirm', [ _d ] );
                                 }else{
                                     _p.trigger( 'ShowSuccess', 
                                                 [ 
                                                     _d.errmsg || '操作完成'
                                                     , function(){
+                                                            _p._model.balDoneRemoveSelector()
+                                                                && _p._model.balDoneRemoveSelector().remove();
+
                                                             _p._model.balDoneUrl() 
                                                             && JC.f.reloadPage( _p._model.balDoneUrl() || location.href )
                                                             ;
@@ -282,11 +370,56 @@
                                                 ]
                                     );
                                 }
-                            }else{
-                                JC.Dialog.alert( _d, 1 );
                             }
+                        }else{
+                            var _msg = JC.f.printf( 
+                                    '服务端错误, 无法解析返回数据: <p class="auExtErr" style="color:red">{0}</p>'
+                                        , _d.replace( /</g, '&lt;' ).replace( />/g, '&gt;' )
+                                        );
+                            JC.Dialog.alert( _msg, 1 );
                         }
-                    });
+                    }
+                });
+
+                _p.on( 'AjaxAction_Custom_Confirm', function( _evt, _d ){
+                    if( !_d ) return;
+                    _p.trigger( 'ShowConfirm', 
+                        [
+                            _d.data.balAction.msg
+                            , 2
+                            , function(){
+                                _p.trigger( 'AjaxAction', [ 
+                                        _d.data.balAction.url
+                                        , _d.data.balAction.ajaxData
+                                        , _d.data.balAction.ajaxMethod
+                                    ] );
+                            }
+                            , function(){
+                                var _rurl = _p._model.balDoneUrl();
+                                    _rurl = _d.data.balAction.returnurl || _rurl;
+                                _rurl && ( location.href = _rurl );
+                            }
+                            , function( _panel ){
+                                if( _d.data.balAction.btnText ){
+                                    $.each( _d.data.balAction.btnText, function( _ix, _item ){
+                                        _panel.find( JC.f.printf( 'button[eventtype={0}]', _ix ) ).html( _item );
+                                    });
+                                }
+                            }
+                        ]
+                    );
+                });
+
+                _p.on( 'RemoveElementAction', function( _evt ){
+                    var _list = _p._model.balDoneRemoveSelector(); 
+                    if( _p.selector().is( '[balDoneRemoveSelector]' ) ){
+                        _p._model.balDoneBeforeRemoveCallback() 
+                            && _list && _list.length
+                            && _p._model.balDoneBeforeRemoveCallback().call( _p.selector(), _list, _p );
+                        try{ _list.remove(); }catch( ex ){}
+                    }else{
+                        _p.selector().remove();
+                    }
                 });
                 /**
                  * 处理错误提示
@@ -323,19 +456,23 @@
                 /**
                  * 处理二次确认
                  */
-                _p.on('ShowConfirm', function( _evt, _msg, _status, _cb ){
+                _p.on('ShowConfirm', function( _evt, _msg, _status, _cb, _cancelCb, _eventCb ){
                     var _panel;
                     switch( _p._model.balConfirmPopupType() ){
                         case 'dialog.confirm':
                             {
                                 _panel = JC.Dialog.confirm( _msg, _status || 1 );
                                 _cb && _panel.on('confirm', function(){ _cb() } );
+                                _cancelCb && _panel.on('cancel', function(){ _cancelCb() } );
+                                _eventCb && _eventCb( _panel );
                                 break;
                             }
                         default:
                             {
                                 _panel = JC.confirm( _msg, _p._model.selector(), _status || 1 );
                                 _cb && _panel.on('confirm', function(){ _cb() } );
+                                _cancelCb && _panel.on('cancel', function(){ _cancelCb() } );
+                                _eventCb && _eventCb( _panel );
                                 break;
                             }
                     }
@@ -345,6 +482,10 @@
                  */
                 _p.on('ShowSuccess', function( _evt, _msg, _cb ){
                     var _panel;
+                    if( _p._model.balIgnoreSuccess() ){
+                        _cb && _cb();
+                        return;
+                    }
                     switch( _p._model.balSuccessPopupType() ){
                         case 'alert':
                             {
@@ -424,6 +565,48 @@
                             }
                             break;
                         }
+
+                    case 'remove_element':
+                        {
+                            if( _p._model.is( '[balConfirmMsg]' ) ){
+                                var _panel = JC.confirm( _p._model.balConfirmMsg(), _p.selector(), 2 );
+                                    _panel.on('confirm', function(){
+                                        _p.trigger( 'RemoveElementAction' );
+                                    });
+                            }else{
+                                _p.trigger( 'RemoveElementAction' );
+                            }
+                            break;
+                        }
+
+                    case 'ec'://expand and contract
+                        {
+                            var _target = _p._model.balTarget();
+                            if( !_target ) return;
+                            
+                            if( _target.is( ':visible' ) ){
+                                _target.hide();
+                                _p.selector()
+                                    .html(  _p._model.balExpandWord() )
+                                    .addClass( _p._model.balExpandClass() )
+                                    .removeClass( _p._model.balContractClass() )
+                                    ;
+                            }else{
+                                _target.show();
+                                _p.selector()
+                                    .html(  _p._model.balContractWord() )
+                                    .addClass( _p._model.balContractClass() )
+                                    .removeClass( _p._model.balExpandClass() )
+                                    ;
+                            }
+                        }
+
+                    case 'hit_value':
+                        {
+                            var _target = _p._model.balTarget();
+                            if( !_target ) return;
+                            _target.val( _p._model.balValue() );
+                        }
                 }
                 return this;
             }
@@ -435,6 +618,38 @@
     ActionLogic.Model.prototype = {
         init:
             function(){
+            }
+
+        , balTarget:
+            function(  ){
+                var _r;
+                this.is( '[balTarget]' ) && ( _r = this.selectorProp( 'balTarget' ) );
+                return _r;
+            }
+
+        , balValue: function(){ return this.attrProp( 'balValue' ) || ''; }
+
+        , balExpandWord: function(){ return this.attrProp( 'balExpandWord' ) || '展开'; }
+        , balExpandClass: function(){ return this.attrProp( 'balExpandClass' ) || 'js_ecExpand'; }
+
+        , balContractWord: function(){ return this.attrProp( 'balContractWord' ) || '收起'; }
+        , balContractClass: function(){ return this.attrProp( 'balContractClass' ) || 'js_ecContract'; }
+
+        , unHtmlEntity:
+            function( _html ){
+                var _r = this.boolProp( 'balUnHtmlEntity' );
+                _r && 
+                _html 
+                && ( $.isArray(_html) && ( _html = _html.join('') ) )
+                && ( 
+                    _html = _html.replace( /\&gt;/g, '>' )
+                    .replace(/\&amp;/g, '&')
+                    .replace( /\&lt;/g, '<')
+                    .replace(/\&quot;/g, '"')
+                    .replace(/\&nbsp;/g, ' ')
+                );
+
+                return _html;
             }
         
         , baltype: function(){ return this.stringProp( 'baltype' ); }
@@ -458,6 +673,23 @@
                 _p.is('[balRandom]') && ( _r = JC.f.parseBool( _p.stringProp( 'balRandom' ) ) );
                 return _r;
             }
+        , balRequestData:
+            function(){
+                var _r;
+                if( this.attrProp( 'balRequestData' ) ){
+                    _r = eval( '(' + this.attrProp( 'balRequestData' ) + ')' );
+                    try{ 
+                    }catch( ex ){}
+                }
+                return _r;
+            }
+        , balAjaxType:
+            function(){
+                var _r = 'get';
+                this.balRequestData() && ( _r = 'post' );
+                _r = this.attrProp( 'balAjaxType' ) || _r;
+                return _r;
+            }
         , balUrl:
             function(){
                 var _r = '?', _p = this;
@@ -470,6 +702,14 @@
             function(){
                 var _r = this.attrProp( 'balDoneUrl' );
                 return JC.f.urlDetect( _r );
+            }
+        , balDoneRemoveSelector:
+            function(){
+                return this.selectorProp( 'balDoneRemoveSelector' );
+            }
+        , balDoneBeforeRemoveCallback:
+            function(){
+                return this.callbackProp( 'balDoneBeforeRemoveCallback' );
             }
         , balConfirmMsg:
             function(){
@@ -492,6 +732,10 @@
                 var _r = this.stringProp('balConfirmPopupType') || 'confirm';
                 return _r;
             }
+        , balIgnoreSuccess:
+            function(){
+                return this.boolProp( 'balIgnoreSuccess' );
+            }
     }
 
     JC.BaseMVC.buildView( ActionLogic );
@@ -505,6 +749,7 @@
     $(document).ready( function(){
         $( document ).delegate( [
                                     'a.js_bizsActionLogic'
+                                    , 'span.js_bizsActionLogic'
                                     , 'input.js_bizsActionLogic'
                                     , 'button.js_bizsActionLogic'
                                 ].join(), 'click', function( _evt ){
@@ -513,7 +758,6 @@
         });
     });
 
-}(jQuery));
     return Bizs.ActionLogic;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

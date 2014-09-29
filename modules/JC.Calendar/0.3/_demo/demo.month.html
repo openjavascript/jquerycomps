@@ -4,9 +4,10 @@
 <meta charset=utf-8 />
 <title>360 75 team</title>
 <style type='text/css'>
-    body{ width: 600px; margin: 20px auto 20px; background:#ececec; }
+    body{ margin: 20px 40px; background:#ececec; }
     dl dd{ margin: 10px 0; }
 </style>
+<link href='../../../../modules/JC.Valid/0.2/res/default/style.css' rel='stylesheet' />
 <link href='../../../../modules/JC.Tips/0.1/res/default/style.css' rel='stylesheet' />
 <link href='../../../../modules/JC.Calendar/0.3/res/default/style.css' rel='stylesheet' />
 <script src="../../../../lib.js"></script>
@@ -14,7 +15,7 @@
 <script>
     JC.debug = true; 
     
-    requirejs( [ 'JC.Tips', 'JC.Calendar', 'plugins.json2' ], function( Tips, Calendar ){
+    requirejs( [ 'JC.Tips', 'JC.Calendar', 'plugins.json2', "JC.Valid" ], function( Tips, Calendar ){
         JC.Tips.autoInit = false;
 
         JC.Calendar.layoutInitedCallback = 
@@ -27,6 +28,23 @@
                 JC.Tips.hide();
             };
     });
+
+    //
+    /// 针对月份日期格式化 YY-MM
+    //
+    function parseYearMonthDate( _dateStr ){
+        _dateStr = $.trim( _dateStr || '' );
+
+        var _r = { start: null, end: null };
+        if( !_dateStr ) return _r;
+
+        _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+        var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4, 6 ), 10 ) - 1;
+
+        _r.start = new Date( _year, _month, 1 );
+        return _r;
+    }
+
 </script>
 </head>    
 <body>
@@ -59,9 +77,29 @@
             </dd>
             <dd>
                 date range:
-                <input type="text" name="date2" multidate="daterange" value="2013-06-03" maxvalue="2013-06-30" />
-                <input type="text" name="date2" multidate="daterange" value="2013-06-03" maxvalue="2013-06-30" />
+                <input type="text" name="date2" datatype="daterange" value="2013-06-03" maxvalue="2013-06-30" />
+                <input type="text" name="date2" datatype="daterange" value="2013-06-03" maxvalue="2013-06-30" />
+                <em class="error"></em>
             </dd>
+            <dd>
+                date range( for month ):
+                <input type="text" name="date2" value="now,2m" 
+                    datatype="daterange" 
+                    multidate="month"
+                    dateFormat="YY-MM"
+                    fullDateFormat="{0}"
+                    dateParse="parseYearMonthDate"
+                    />
+                <input type="text" name="date2" value="now,4m" 
+                    datatype="daterange" 
+                    multidate="month"
+                    dateFormat="YY-MM"
+                    fullDateFormat="{0}"
+                    dateParse="parseYearMonthDate"
+                    />
+                <em class="error"></em>
+            </dd>
+
             <dd>
                 <button type="button" datatype="date" value="">pick date button</button>
                 <button type="button" datatype="week" value="2013-01-11">pick week button</button>

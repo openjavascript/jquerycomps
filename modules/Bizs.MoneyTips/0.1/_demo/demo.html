@@ -34,7 +34,7 @@
                     ;
                 if( !_ins ) return;
 
-                _ins.update( _p.attr( 'data-value' ) );
+                _ins.update( _bmtSelector.val() || _p.attr( 'data-value' ) );
             });
         });
     </script>
@@ -44,6 +44,7 @@
     <!--<form action="./data/handler.php" method="get" class="js_bizsFormLogic" formType="ajax">-->
     <form action="?" method="get" class="js_bizsFormLogic">
         <dl>
+            <dt>2位小数点</dt>
             <dd>
                 金额: <input type="text" name="m1" value="6543.21" 
                 datatype="n-12.2" class="js_bizMoneyTips" bmtDisplayLabel="/span.js_bmtSpan" />
@@ -96,6 +97,64 @@
                 <button type="reset">重置</button>
                 <a href="?">返回</a>
             </dd>
+        </dl>
+
+        <dl>
+            <dt>0位小数点</dt>
+            <dd>
+                金额: <input type="text" name="m1" value="6543" floatLen="0"
+                datatype="n-12" class="js_bizMoneyTips" bmtDisplayLabel="/span.js_bmtSpan" />
+                <em class="error"></em>
+                <span class="js_bmtSpan"></span>
+                <button type="button" class="js_updateBmt" data-value="">MoneyTips#update()</button>
+            </dd>
+
+            <dd>
+                金额: <input type="text" name="m1" value="0" floatLen="0"
+                datatype="n-12" class="js_bizMoneyTips" bmtDisplayLabel="/span.js_bmtSpan" />
+                <em class="error"></em>
+                <span class="js_bmtSpan"></span>
+                <button type="button" class="js_updateBmt" data-value="">MoneyTips#update()</button>
+            </dd>
+
+            <dd>
+                金额: <input type="text" name="m2" datatype="n-12.4" class="js_bizMoneyTips" />
+                <button type="button" class="js_updateBmt" data-value="12345678910.12">MoneyTips#update( 12345678910.12 )</button>
+            </dd>
+        </dl>
+
+
+        <dl>
+            <dt>4位小数点</dt>
+            <dd>
+                金额: <input type="text" name="m1" value="6543.21" 
+                datatype="n-12.4" class="js_bizMoneyTips" bmtDisplayLabel="/span.js_bmtSpan" />
+                <em class="error"></em>
+                <span class="js_bmtSpan"></span>
+                <button type="button" class="js_updateBmt" data-value="">MoneyTips#update()</button>
+            </dd>
+
+            <dd>
+                金额: <input type="text" name="m2" datatype="n-12.4" class="js_bizMoneyTips" />
+                <button type="button" class="js_updateBmt" data-value="12345678910.12">MoneyTips#update( 12345678910.12 )</button>
+            </dd>
+        </dl>
+
+        <dl>
+            <dt>8位小数点</dt>
+            <dd>
+                金额: <input type="text" name="m1" value="6543.21" 
+                datatype="n-12.8" class="js_bizMoneyTips" bmtDisplayLabel="/span.js_bmtSpan" />
+                <em class="error"></em>
+                <span class="js_bmtSpan"></span>
+                <button type="button" class="js_updateBmt" data-value="">MoneyTips#update()</button>
+            </dd>
+
+            <dd>
+                金额: <input type="text" name="m2" datatype="n-12.8" class="js_bizMoneyTips" />
+                <button type="button" class="js_updateBmt" data-value="12345678910.12">MoneyTips#update( 12345678910.12 )</button>
+            </dd>
+
         </dl>
     </form>
 </body>

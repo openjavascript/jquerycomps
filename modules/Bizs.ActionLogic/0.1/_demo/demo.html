@@ -170,6 +170,14 @@
             balUrl="./data/handler.php"
             balCallback="ajaxDelCallback"
         >delete with callback</a>
+
+        <button type="button" 
+            class="js_bizsActionLogic"
+            balType="ajaxaction" 
+            balUrl="./data/handler.php"
+            balIgnoreSuccess="true"
+            balDoneUrl="?baldone=balIgnoreSuccess"
+        >delete</button>
     </dd>
     <dd>
         二次确认
@@ -197,6 +205,9 @@
             balErrorPopupType="msgbox"
             balSuccessPopupType="dialog.alert"
         >balDoneUrl, balErrorPopupType, balSuccessPopupType</button>
+
+        <br />
+
         <a href="#"
             class="js_bizsActionLogic"
             balType="ajaxaction" 
@@ -204,9 +215,55 @@
             balCallback="ajaxDelCallback"
             balConfirmMsg="确认要删除吗?"
         >balCallback</a>
+
+        <a href="#"
+            class="js_bizsActionLogic js_removeItem1"
+            balType="ajaxaction" 
+            balUrl="./data/handler.php"
+            balRequestData="{ 'id': 2 }"
+            balConfirmMsg="确认要删除吗?"
+            balDoneRemoveSelector="a.js_removeItem1"
+        >with data</a>
+
+        <a href="#"
+            class="js_bizsActionLogic"
+            balType="ajaxaction" 
+            balUrl="?"
+            balConfirmMsg="确认要删除吗?"
+            balDoneRemoveSelector="a.js_removeItem1"
+        >data error</a>
+
     </dd>
 
 </dl>
+
+
+<dl class="defdl">
+    <dt>balType = remove_element</dt>
+    <dd>
+        <button type="button" 
+            class="js_bizsActionLogic"
+            balType="remove_element"
+            balConfirmMsg="确认要删除吗?"
+            >
+            remove self
+        </button>
+
+        <div>
+            parent text
+            <a href="javascript:" 
+                class="js_bizsActionLogic"
+                balType="remove_element"
+                balConfirmMsg="确认要删除吗?"
+                balDoneRemoveSelector="/"
+                >
+                remove parent
+            </a>
+        </div>
+
+    </dd>
+</dl>
+
 
 
 <script type="text/template" id="scriptPanel">

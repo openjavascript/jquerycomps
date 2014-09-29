@@ -152,8 +152,6 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
         </tr>
         </script>
  */
-;(function($){
-    window.Bizs = window.Bizs || {};
     window.Bizs.CommonModify = CommonModify;
 
     function CommonModify( _selector ){
@@ -510,10 +508,11 @@ function cmtplfiltercallback( _tpl, _cmitem, _boxParent ){
 
     $(document).delegate( 'a.js_autoCommonModify, button.js_autoCommonModify'
                           + ', a.js_bizsCommonModify, button.js_bizsCommonModify', 'click', function( _evt ){
-        CommonModify.getInstance().process(  $(this) );
+        var _p = $( this );
+        _p.prop( 'nodeName' ).toLowerCase() == 'a' && _evt.preventDefault();
+        CommonModify.getInstance().process( _p );
     });
 
-}(jQuery));
     return Bizs.CommonModify;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

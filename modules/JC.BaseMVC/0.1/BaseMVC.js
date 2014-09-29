@@ -1,5 +1,4 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
-;(function($){
     window.BaseMVC = JC.BaseMVC = BaseMVC;
     /**
      * MVC 抽象类 ( <b>仅供扩展用, 这个类不能实例化</b>)
@@ -10,8 +9,8 @@
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.BaseMVC.html' target='_blank'>API docs</a>
      * | <a href='../../modules/JC.BaseMVC/0.1/_demo' target='_blank'>demo link</a></p>
-     * @namespace JC
-     * @class BaseMVC
+     * @namespace   JC
+     * @class       BaseMVC
      * @constructor
      * @param   {selector|string}   _selector   
      * @version dev 0.1 2013-09-07
@@ -40,9 +39,6 @@
             function(){
                 var _p = this;
 
-                _p._beforeInit();
-                _p._initHanlderEvent();
-
                 $( [ _p._view, _p._model ] ).on('BindEvent', function( _evt, _evtName, _cb ){
                     _p.on( _evtName, _cb );
                 });
@@ -51,6 +47,9 @@
                     var _data = JC.f.sliceArgs( arguments ).slice( 2 );
                     _p.trigger( _evtName, _data );
                 });
+
+                _p._beforeInit();
+                _p._initHanlderEvent();
 
                 _p._model.init();
                 _p._view && _p._view.init();
@@ -98,12 +97,24 @@
          */
         , on: function( _evtName, _cb ){ $(this).on(_evtName, _cb ); return this;}
         /**
-         * 使用 jquery trigger 绑定事件
+         * 使用 jquery trigger 触发绑定事件
          * @method  {string}    trigger
          * @param   {string}    _evtName
+         * @param   {*|Array}   _args      
          * @return  BaseMVCInstance
          */
         , trigger: function( _evtName, _data ){ $(this).trigger( _evtName, _data ); return this;}
+        /**
+         * 通知选择器有新事件
+         * <br />JC 组件以后不会在 HTML 属性里放回调, 改为触发 selector 的事件
+         * @method  notification
+         * @param   {string}    _evtName
+         * @param   {*|Array}   _args      
+         */
+        , notification:
+            function( _evtName, _args ){
+                this._model.notification( _evtName, _args );
+            }
     }
     /**
      * 获取或设置组件实例
@@ -120,6 +131,8 @@
                 && !/</.test( _selector ) 
                 && ( _selector = $(_selector) )
                 ;
+
+            typeof _selector == 'object' && ( _selector = $( _selector ) );
 
             if( !(_selector && _selector.length ) || ( typeof _selector == 'string' ) ) return null;
 
@@ -145,13 +158,16 @@
      * @static
      */
     BaseMVC.build =
-        function( _outClass ){
+        function( _outClass, _srcClass ){
+            _srcClass = _srcClass || BaseMVC;
+            typeof _srcClass == 'string' && ( _srcClass = BaseMVC );
+
             BaseMVC.buildModel( _outClass );
             BaseMVC.buildView( _outClass );
 
-            BaseMVC.buildClass( BaseMVC, _outClass );
-            BaseMVC.buildClass( BaseMVC.Model, _outClass.Model );
-            BaseMVC.buildClass( BaseMVC.View, _outClass.View );
+            BaseMVC.buildClass( _srcClass, _outClass );
+            _srcClass.Model && BaseMVC.buildClass( _srcClass.Model, _outClass.Model );
+            _srcClass.View && BaseMVC.buildClass( _srcClass.View, _outClass.View );
         };
     /**
      * 复制 _inClass 的所有方法到 _outClass
@@ -238,6 +254,43 @@
         init:
             function(){
                 return this;
+            }
+        /**
+         * 使用 jquery on 为 controler 绑定事件
+         * @method  {string}    on
+         * @param   {string}    _evtName
+         * @param   {function}  _cb
+         */
+        , on:
+            function(){
+                $( this ).trigger( 'BindEvent', JC.f.sliceArgs( arguments ) );
+                return this;
+            }
+        /**
+         * 使用 jquery trigger 触发 controler 绑定事件
+         * @method  {string}    trigger
+         * @param   {string}    _evtName
+         * @param   {*|Array}   _args      
+         */
+        , trigger:
+            function( _evtName, _args ){
+                _args = _args || [];
+                !jQuery.isArray( _args ) && ( _args = [ _args ] );
+                _args.unshift( _evtName );
+                $( this ).trigger( 'TriggerEvent', _args );
+                return this;
+            }
+        /**
+         * 通知选择器有新事件
+         * @method  notification
+         * @param   {string}    _evtName
+         * @param   {*|Array}   _args      
+         */
+        , notification:
+            function( _evtName, _args ){
+                this.selector() 
+                    && this.selector().length 
+                    && this.selector().trigger( _evtName, _args );
             }
         /**
          * 初始化的 jq 选择器
@@ -383,6 +436,17 @@
                 return _r;
             }
         /**
+         * 获取与属性名匹配的 window 变量 
+         * @method  windowProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  {window variable}
+         */
+        , windowProp:
+            function(){
+                return this.callbackProp.apply( this, JC.f.sliceArgs( arguments ) );
+            }
+        /**
          * 获取 selector 属性的 jquery 选择器
          * @method  selectorProp
          * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
@@ -405,6 +469,77 @@
 
                 return _r;
             }
+        /**
+         * 获取 脚本模板 jquery 选择器
+         * @method  scriptTplProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  string
+         */
+        , scriptTplProp:
+            function( _selector, _key ){
+                var _r = '', _tmp;
+                if( typeof _key == 'undefined' ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector && ( _selector = $( _selector ) );
+                }
+
+                _selector
+                    && _selector.is( '[' + _key + ']' ) 
+                    && ( _tmp = JC.f.parentSelector( _selector, _selector.attr( _key ) ) )
+                    && _tmp.length 
+                    && ( _r = JC.f.scriptContent( _tmp ) );
+
+                return _r;
+            }
+        /**
+         * 获取 脚本数据 jquery 选择器
+         * @method  scriptDataProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  object
+         */
+        , scriptDataProp:
+            function( _selector, _key ){
+                var _r = null, _tmp;
+                _tmp = this.scriptTplProp( _selector, _key );
+
+                if( _tmp ){
+                    _tmp = _tmp.replace( /^[\s]*?\/\/[\s\S]*?[\r\n]/gm, '' );
+                    _tmp = _tmp.replace( /[\r\n]/g, '' );
+                    _tmp = _tmp.replace( /\}[\s]*?,[\s]*?\}$/g, '}}');
+                    _r = eval( '(' + _tmp + ')' );
+                }
+
+                return _r;
+            }
+
+        /**
+         * 获取 selector 属性的 json 数据
+         * @method  jsonProp
+         * @param   {selector|string}  _selector    如果 _key 为空将视 _selector 为 _key, _selector 为 this.selector()
+         * @param   {string}           _key
+         * @return  {json | null}
+         */
+        , jsonProp:
+            function( _selector, _key ){
+                var _r;
+                if( typeof _key == 'undefined' ){
+                    _key = _selector;
+                    _selector = this.selector();
+                }else{
+                    _selector && ( _selector = $( _selector ) );
+                }
+
+                _selector
+                    && _selector.is( '[' + _key + ']' ) 
+                    && ( _r = eval( '(' + _selector.attr( _key ) + ')' ) );
+
+                return _r;
+            }
+
         /**
          * 判断 _selector 是否具体某种特征
          * @method  is
@@ -430,8 +565,35 @@
             function() {
                 return this;
             }
+        , selector:
+            function(){
+                return this._model.selector();
+            }
+        /**
+         * 使用 jquery on 为 controler 绑定事件
+         */
+        , on:
+            function(){
+                $( this ).trigger( 'BindEvent', JC.f.sliceArgs( arguments ) );
+                return this;
+            }
+        /**
+         * 使用 jquery trigger 触发 controler 绑定事件
+         */
+        , trigger:
+            function( _evtName, _args ){
+                _args = _args || [];
+                !jQuery.isArray( _args ) && ( _args = [ _args ] );
+                _args.unshift( _evtName );
+                $( this ).trigger( 'TriggerEvent', _args );
+                return this;
+            }
+        , notification:
+            function( _evtName, _args ){
+                this._model.notification( _evtName, _args );
+            }
     });
-}(jQuery));
+
     return JC.BaseMVC;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 

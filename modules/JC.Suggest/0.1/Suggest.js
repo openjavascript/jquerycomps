@@ -1,6 +1,4 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
-;(function($){
-    window.JC = window.JC || {log:function(){}};
     window.Suggest = JC.Suggest = Suggest;
     /**
      * Suggest 关键词补全提示类
@@ -315,6 +313,12 @@
                             }
                         case 13://回车
                             {
+                                var _tmpSelectedItem;
+                                if( _p._model.layout().is( ':visible' ) 
+                                        && ( _tmpSelectedItem = _p._model.layout().find( 'dd.active') ) && _tmpSelectedItem.length ){
+                                    _p.trigger('SuggestSelected', [ _tmpSelectedItem, _p._model.getKeyword( _tmpSelectedItem ) ]);
+                                }
+
                                 _p.hide();
                                 _sp.data( 'IgnoreTime', new Date().getTime() );
 
@@ -338,16 +342,19 @@
                     Suggest._hideOther( _p );
                 });
 
+                _p.on( 'SuggestSelected', function( _evt, _sp, _keyword ){
+                    _p._model.sugselectedcallback() && _p._model.sugselectedcallback().call( _p, _keyword );
+                });
+
                 $( _p._model.layout() ).delegate( '.js_sugItem', 'click', function(_evt){
                     var _sp = $(this), _keyword = _p._model.getKeyword( _sp );
                     _p.selector().val( _keyword );
                     _p.hide();
                     
-                    _p.trigger('SuggestSelected', [_sp]);
-                    _p._model.sugselectedcallback() && _p._model.sugselectedcallback().call( _p, _keyword );
-                    setTimeout( function(){
+                    _p.trigger('SuggestSelected', [_sp, _keyword ]);
+                    JC.f.safeTimeout( function(){
                         _p.selector().trigger( 'blur' );
-                    }, 50);
+                    }, null, 'SuggestItemClick', 300);
                 });
 
                 if( _p._model.sugautoposition() ){
@@ -544,6 +551,7 @@
             }
         , sugurl:
             function( _word ){
+                _word = encodeURIComponent( _word );
                 this.selector().is('[sugurl]') 
                     && ( this._sugurl = this.selector().attr('sugurl') );
                 !this.selector().is('[sugurl]') && ( this._sugurl = '?word={0}&callback={1}' );
@@ -782,6 +790,7 @@
 
     $(document).delegate( 'input[type=text]', 'focus', function( _evt ){
         var _p = $(this), _ins = Suggest.getInstance( _p );
+        if( _p.is( '[readonly]' ) || _p.is( '[disabled]' ) ) return;
         if( _ins || !Suggest.isSuggest( _p ) || !Suggest.autoInit ) return;
         JC.log( 'Suggest input fined:', _p.attr('name'), new Date().getTime() );
         _ins = new Suggest( _p );
@@ -791,7 +800,6 @@
         $('dl.js_sugLayout, div.js_sugLayout').hide();
     });
 
-}(jQuery));
     return JC.Suggest;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

@@ -1,5 +1,36 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
-;(function($){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+/**
+ * 组件用途简述
+ *
+ *  <p><b>require</b>:
+ *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *  </p>
+ *
+ *  <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
+ *      | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.CompExampleMoreAdvance.html' target='_blank'>API docs</a>
+ *      | <a href='../../modules/JC.CompExampleMoreAdvance/0.1/_demo' target='_blank'>demo link</a></p>
+ *  
+ *  <h2>页面只要引用本脚本, 默认会处理 div class="js_compCompExampleMoreAdvance"</h2>
+ *
+ *  <h2>可用的 HTML attribute</h2>
+ *
+ *  <dl>
+ *      <dt></dt>
+ *      <dd><dd>
+ *  </dl> 
+ *
+ * @namespace   JC
+ * @class       CompExampleMoreAdvance
+ * @extends     JC.BaseMVC
+ * @constructor
+ * @param   {selector|string}   _selector   
+ * @version dev 0.1 2013-12-13
+ * @author  qiushaowei <suches@btbtd.org> | 75 Team
+ * @example
+        <h2>JC.CompExampleMoreAdvance 示例</h2>
+ */
+    var _jdoc = $( document ), _jwin = $( window );
+
     JC.CompExampleMoreAdvance = CompExampleMoreAdvance;
 
     function CompExampleMoreAdvance( _selector ){
@@ -29,7 +60,7 @@
             var _r = [];
             _selector = $( _selector || document );
 
-            if( _selector && _selector.length ){
+            if( _selector.length ){
                 if( _selector.hasClass( 'js_compCompExampleMoreAdvance' )  ){
                     _r.push( new CompExampleMoreAdvance( _selector ) );
                 }else{
@@ -41,23 +72,30 @@
             return _r;
         };
 
-    BaseMVC.build( CompExampleMoreAdvance );
+    JC.BaseMVC.build( CompExampleMoreAdvance );
 
     JC.f.extendObject( CompExampleMoreAdvance.prototype, {
         _beforeInit:
             function(){
                 JC.log( 'CompExampleMoreAdvance _beforeInit', new Date().getTime() );
             }
+
         , _initHanlderEvent:
             function(){
+                var _p = this;
+
+                _p.on( 'inited', function(){
+                });
             }
+
         , _inited:
             function(){
                 JC.log( 'CompExampleMoreAdvance _inited', new Date().getTime() );
+                this.trigger( 'inited' );
             }
     });
 
-    CompExampleMoreAdvance.Model._instanceName = 'CompExampleMoreAdvance';
+    CompExampleMoreAdvance.Model._instanceName = 'JCCompExampleMoreAdvance';
     JC.f.extendObject( CompExampleMoreAdvance.Model.prototype, {
         init:
             function(){
@@ -72,7 +110,7 @@
             }
     });
 
-    $(document).ready( function(){
+    _jdoc.ready( function(){
         var _insAr = 0;
         CompExampleMoreAdvance.autoInit
             && ( _insAr = CompExampleMoreAdvance.init() )
@@ -81,7 +119,6 @@
             ;
     });
 
-}(jQuery));
     return JC.CompExampleMoreAdvance;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 

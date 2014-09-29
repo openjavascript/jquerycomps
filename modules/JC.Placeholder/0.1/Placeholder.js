@@ -18,8 +18,6 @@
  * @author  qiushaowei   <suches@btbtd.org> | 75 Team
  * @date    2013-10-19
  */
-;(function($){
-    window.JC = window.JC || {log:function(){}};
     JC.Placeholder = Placeholder;
 
     function Placeholder( _selector ){
@@ -215,7 +213,7 @@
         , placeholder:
             function(){
                 if( !this._placeholder ){
-                    this._placeholder = $( JC.f.printf( '<div class="{0}"></div>'
+                    this._placeholder = $( JC.f.printf( '<div class="{0}" style="display:none;"></div>'
                                 , this.className() 
                             ) )
                             .appendTo( this.placeholderBox() );
@@ -249,7 +247,7 @@
                     , _v = _p._model.selector().val().trim()
                     , _holder = _p._model.placeholder()
                     ;
-                if( _v ){
+                if( _v || !_p.selector().is( ':visible' ) ){
                     _holder.hide();
                     return;
                 }
@@ -263,7 +261,6 @@
 
                 _holder.css( { 'left': _offset.left + 'px'
                                 , 'top': _offset.top + 1 + 'px' 
-                                , 'line-height': _h + 'px' 
                             } );
 
                 _holder.show();
@@ -374,7 +371,6 @@
             ;
     });
 
-}(jQuery));
     return JC.Placeholder;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

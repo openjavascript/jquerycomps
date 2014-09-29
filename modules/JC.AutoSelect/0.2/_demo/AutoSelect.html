@@ -19,7 +19,7 @@
 
             JC.debug = true; 
 
-            requirejs( [ 'JC.AutoSelect' ], function( AutoSelect ){
+            requirejs( [ 'JC.AutoSelect', 'plugins.json2' ], function( AutoSelect ){
                 JC.f.httpRequire();
 
                 //JC.AutoSelect.hideEmpty = true;
@@ -102,18 +102,44 @@
 
             <dd>
                 <select name='select20_1' 
-                    defaultselect 
+                    defaultselect="defaultselect"
                     selectvalue="14" 
                     selecturl="data/shengshi.php?id=0" 
                     selecttarget="/select:last"
+                    selectItemDataFilter="selectItemDataFilter2"
                     >
                     <option value="-1" defaultoption>请选择</option>
                 </select>
                 <select name='select20_2' 
                     selecturl="data/shengshi.php?id={0}"
+                    selectItemDataFilter="selectItemDataFilter2"
                     >
                     <option value="-1" defaultoption>请选择</option>
                 </select>
+                <script>
+                    function selectItemDataFilter2( _selector, _data, _pid){
+                        //alert( '_pid:' + _pid + '\n' + JSON.stringify( _data ) );
+                        var _r, i, j;
+                        if( _pid === '' ){//过滤北京id = 28
+                            _r = [];
+                            for( i = 0, j = _data.length; i < j; i++ ){
+                                if( _data[i][0] == 28 ) continue;
+                                _r.push( _data[i] );
+                            }
+                            _data = _r;
+                        }
+                        else if( _pid == 14 ){//过滤江门id=2254
+                            _r = [];
+                            for( i = 0, j = _data.length; i < j; i++ ){
+                                if( _data[i][0] == 2254 ) continue;
+                                _r.push( _data[i] );
+                            }
+                            _data = _r;
+                        }
+                        return _data;
+                    }
+                </script>
+                自定义数据过滤处理
             </dd>
 
             <dd>

@@ -53,6 +53,12 @@
     JC.log( 'bclDisableCallback', new Date().getTime() );
 }</pre>
  *      </dd>
+ *
+ *      <dt>bclChangeCleanTarget = selector</dt>
+ *      <dd>radio change 的时候, 清除目标选择器的 html 内容</dd>
+ *
+ *      <dt>bclTriggerChangeOnInit = bool, default = true</dt>
+ *      <dd>初始化实例时, 是否触发 change 事件</dd>
  * </dl>
  *
  * <h2>trigger 的 HTML 属性</h2>
@@ -65,6 +71,9 @@
  *
  *      <dt>bclDisplay = bool</dt>
  *      <dd>指定 bclHideTarget 是否显示</dd>
+ *
+ *      <dt>bclDelimiter = string, default = "||"</dt>
+ *      <dd>bclDisplay 和 bclDisable 多值分隔符</dd>
  *
  *      <dt>bclHideTargetSub = selector</dt>
  *      <dd>根据 trigger 的 checked 状态 显示或者隐藏 bclHideTargetSub node</dd>
@@ -101,16 +110,13 @@
             /><input type="button" class="UXCCalendar_btn">
         </div>
  */
-;(function($){
-
-    window.Bizs = window.Bizs || {};
     window.Bizs.ChangeLogic = ChangeLogic;
 
     function ChangeLogic( _selector ){
         if( ChangeLogic.getInstance( _selector ) ) return ChangeLogic.getInstance( _selector );
         ChangeLogic.getInstance( _selector, this );
 
-        JC.log( 'Bizs.ChangeLogic:', new Date().getTime() );
+        //JC.log( 'Bizs.ChangeLogic:', new Date().getTime() );
 
         this._model = new Model( _selector );
         this._view = new View( this._model );
@@ -138,11 +144,29 @@
                 _p._view.init();
 
                 _p._model.bclTrigger().on('change', function(_evt){
-                    JC.log( 'bclTrigger change', new Date().getTime() );
-                    _p._view.change( this );
+                    //JC.log( 'bclTrigger change', new Date().getTime() );
+                    _p.trigger( 'item_change', [ $(this), _evt ] );
                 });
 
-                ( _tmp = _p._model.bclTrigger( true ) ) && _tmp.trigger( 'change');
+                _p.on( 'item_change', function( _evt, _item, _srcEvt ){
+                    _item = $( _item );
+                    _p._view.change( _item );
+
+                    if( _p._model.ready() ){
+                        _p._model.bclChangeCleanTarget() 
+                            && _p._model.bclChangeCleanTarget().each( function(){
+                                $( this ).html( '' );
+                            });
+                    }
+                });
+
+                if( _p._model.bclTriggerChangeOnInit() ){
+                    ( _tmp = _p._model.bclTrigger( true ) ) 
+                        && !_tmp.prop( 'disabled' )
+                        && _tmp.trigger( 'change');
+                }
+
+                _p._model.ready( true );
 
                 return _p;
             }    
@@ -243,6 +267,12 @@
                 return this;
             }
 
+        , ready:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._ready = _setter );
+                return this._ready;
+            }
+
         , selector: function(){ return this._selector; }
 
         , bclTrigger:
@@ -257,6 +287,26 @@
                         }
                     });
                 }
+                return _r;
+            }
+
+        , bclTriggerChangeOnInit:
+            function(){
+                var _r = true, _p = this;
+
+                _p.selector().is( '[bclTriggerChangeOnInit] ' ) 
+                    && ( _r = JC.f.parseBool( _p.selector().attr( 'bclTriggerChangeOnInit' ) ) );
+
+                return _r;
+            }
+
+        , bclChangeCleanTarget: 
+            function(){ 
+                var _p = this, _r, _tmp;
+
+                _p.selector().attr('bclChangeCleanTarget') 
+                    && ( _r = JC.f.parentSelector( _p.selector(), _p.selector().attr('bclChangeCleanTarget') ) )
+                    ;
                 return _r;
             }
 
@@ -307,9 +357,22 @@
                 return _r;
             }
 
+        , bclDelimiter: 
+            function( _trigger ){ 
+                var _r = '||';
+                this.selector().is( '[bclDelimiter]' ) && ( _r = this.selector().attr( 'bclDelimiter' ) );
+                _trigger && _trigger.is( '[bclDelimiter]' ) && ( _r = _trigger.attr( 'bclDelimiter' ) );
+                return _r;
+            }
+
+        , delimiterItems: 
+            function( _item, _trigger ){ 
+                return _item.split( this.bclDelimiter( _trigger ) );  
+            }
+
         , bclDisplay:
             function( _triggerItem ){
-                var _r = false, _selectedItem;
+                var _r = false, _selectedItem, _p = this;
                 _triggerItem && ( _triggerItem = $( _triggerItem ) );
                 if( !( _triggerItem && _triggerItem.length ) ) return _r;
 
@@ -318,7 +381,7 @@
                     if( !_selectedItem.length ) return _r;
                     if( !( _triggerItem.is('[bclDisplay]') || _selectedItem.is( '[bclDisplay]' ) ) ){
                         if( _triggerItem.is( '[bclDisable]' ) ){
-                            _r = _triggerItem.attr('bclDisable') == _triggerItem.val();
+                            _r = _p.delimiterItems( _triggerItem.attr('bclDisable'), _triggerItem ).indexOf( _triggerItem.val() ) > -1;
                         }
                         if( _selectedItem.is( '[bclDisable]' ) ){
                             _r = JC.f.parseBool( _selectedItem.attr( 'bclDisable' ) );
@@ -326,7 +389,7 @@
 
                     }else{
                         if( _triggerItem.is( '[bclDisplay]' ) ){
-                            _r = _triggerItem.attr('bclDisplay') == _triggerItem.val();
+                            _r = _p.delimiterItems( _triggerItem.attr('bclDisplay'), _triggerItem ).indexOf( _triggerItem.val() ) > -1;
                         }
                         if( _selectedItem.is( '[bclDisplay]' ) ){
                             _r = JC.f.parseBool( _selectedItem.attr( 'bclDisplay' ) );
@@ -486,7 +549,7 @@
 
                 $( _p ).trigger( 'TriggerEvent', [ 'ChangeDone', _triggerItem ] );
 
-                JC.log( 'ChangeLogic view change', new Date().getTime(), _isDisable );
+                //JC.log( 'ChangeLogic view change', new Date().getTime(), _isDisable );
             }
     };
 
@@ -496,7 +559,6 @@
         }, 10);
     });
     
-}(jQuery));
     return Bizs.ChangeLogic;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

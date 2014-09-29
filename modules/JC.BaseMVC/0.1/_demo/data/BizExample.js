@@ -1,5 +1,6 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.common', 'JC.BaseMVC' ], function(){
-;(function($){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
+    var _jdoc = $( document ), _jwin = $( window );
+
     Bizs.BizExample = BizExample;
 
     function BizExample( _selector ){
@@ -29,7 +30,7 @@
             var _r = [];
             _selector = $( _selector || document );
 
-            if( _selector && _selector.length ){
+            if( _selector.length ){
                 if( _selector.hasClass( 'js_bizBizExample' )  ){
                     _r.push( new BizExample( _selector ) );
                 }else{
@@ -41,11 +42,11 @@
             return _r;
         };
 
-    BaseMVC.build( BizExample );
+    JC.BaseMVC.build( BizExample );
 
-    BizExample.Model._instanceName = 'BizExample';
+    BizExample.Model._instanceName = 'JCBizExample';
 
-    $(document).ready( function(){
+    _jdoc.ready( function(){
         var _insAr = 0;
         BizExample.autoInit
             && ( _insAr = BizExample.init() )
@@ -54,7 +55,6 @@
             ;
     });
 
-}(jQuery));
     return Bizs.BizExample;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb ) { 

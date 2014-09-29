@@ -1,6 +1,5 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.common' ], function(){
 //TODO: 添加数据缓存逻辑
-;(function($){
     /**
      * <h2>select 级联下拉框无限联动</h2>
      * <br />只要引用本脚本, 页面加载完毕时就会自动初始化级联下拉框功能
@@ -61,6 +60,34 @@
     var _ins = this;
 }</pre>
      *      </dd>
+     *
+     *      <dt>selectCacheData = bool, default = true</dt>
+     *      <dd>是否缓存ajax数据</dd>
+     *
+     *      <dt>selectItemDataFilter = function</dt>
+     *      <dd>每个select 显示option前,可自定义数据过滤函数
+<pre>function selectItemDataFilter2( _selector, _data, _pid){
+    //alert( '_pid:' + _pid + '\n' + JSON.stringify( _data ) );
+    var _r, i, j;
+    if( _pid === '' ){//过滤北京id = 28
+        _r = [];
+        for( i = 0, j = _data.length; i < j; i++ ){
+            if( _data[i][0] == 28 ) continue;
+            _r.push( _data[i] );
+        }
+        _data = _r;
+    }
+    else if( _pid == 14 ){//过滤江门id=2254
+        _r = [];
+        for( i = 0, j = _data.length; i < j; i++ ){
+            if( _data[i][0] == 2254 ) continue;
+            _r.push( _data[i] );
+        }
+        _data = _r;
+    }
+    return _data;
+}</pre>
+     *      </dd>
      * </dl>
      * <h2>option 标签可用的 HTML 属性</h2>
      * <dl>
@@ -112,7 +139,6 @@
                 };
         </script>
      */
-    window.JC = window.JC || {log:function(){}};
     JC.AutoSelect = AutoSelect;
     JC.Form && ( JC.Form.initAutoSelect = AutoSelect );
 
@@ -449,7 +475,7 @@
 
                 if( _ignoreAction ) return;
 
-                JC.log( '_responeChange:', _sp.attr('name'), _v );
+                //JC.log( '_responeChange:', _sp.attr('name'), _v );
 
                 if( !( _next && _next.length ) ){
                     _p.trigger( 'SelectChange' );
@@ -484,18 +510,18 @@
                         _url = _p._model.selecturl( _selector, _pid );
                         _token = _p._model.token( true );
 
-                        if( Model.ajaxCache( _url ) ){
+                        if( _p._model.selectCacheData() && Model.ajaxCache( _url ) ){
                             setTimeout( function(){
                                 _data = Model.ajaxCache( _url );
-                                _p._view.update( _selector, _data );
+                                _p._view.update( _selector, _data, _pid );
                                 _cb && _cb.call( _p, _selector, _data, _token );
                             }, 10 );
                         }else{
                             setTimeout( function(){
                                 $.get( _url, function( _data ){
-                                    _data = $.parseJSON( _data );
-                                    Model.ajaxCache( _url, _data );
-                                    _p._view.update( _selector, _data );
+                                    _data = Model.ajaxCache( _url, $.parseJSON( _data ) );
+
+                                    _p._view.update( _selector, _data, _pid );
                                     _cb && _cb.call( _p, _selector, _data, _token );
                                 });
                             }, 10 );
@@ -507,12 +533,13 @@
                     }
                     _url = _p._model.selecturl( _selector, _pid );
 
-                    if( Model.ajaxCache( _url ) ){
-                            _p._processData( _oldToken, _selector, _cb, Model.ajaxCache( _url ) );
+                    if( _p._model.selectCacheData() && Model.ajaxCache( _url ) ){
+                        _data = Model.ajaxCache( _url );
+                        _p._processData( _oldToken, _selector, _cb, _data, _pid );
                     }else{
                         $.get( _url, function( _data ){
                             _data = $.parseJSON( _data );
-                            _p._processData( _oldToken, _selector, _cb, Model.ajaxCache( _url, _data ) );
+                            _p._processData( _oldToken, _selector, _cb, Model.ajaxCache( _url, _data, _pid ) );
                         });
                     }
                 }
@@ -520,13 +547,13 @@
             }
 
         , _processData:
-            function( _oldToken, _selector, _cb, _data ){
+            function( _oldToken, _selector, _cb, _data, _pid ){
                 var _p = this;
                 setTimeout( function(){
                     if( typeof _oldToken != 'undefined' && _oldToken != _p._model.token() ){
                         return;
                     }
-                    _p._view.update( _selector, _data );
+                    _p._view.update( _selector, _data, _pid );
                     _cb && _cb.call( _p, _selector, _data, _oldToken );
                 }, 10 );
             }
@@ -569,7 +596,7 @@
                 _p.trigger( 'SelectChange', [ _selector ] );
                 
                 if( _next && _next.length ){
-                    JC.log( '_firstInitCb:', _selector.val(), _next.attr('name'), _selector.attr('name') );
+                    //JC.log( '_firstInitCb:', _selector.val(), _next.attr('name'), _selector.attr('name') );
                     _p._update( _next, _p._firstInitCb, _selector.val() );
                 }
 
@@ -584,7 +611,7 @@
         , _updateStatic:
             function( _selector, _cb, _pid ){
                 var _p = this, _data, _ignoreUpdate = false;
-                JC.log( 'static select' );
+                //JC.log( 'static select' );
                 if( _p._model.isFirst( _selector ) ){
                     typeof _pid == 'undefined' 
                         && ( _pid = _p._model.selectparentid( _selector ) 
@@ -600,7 +627,7 @@
                 }else{
                     _data = _p._model.datacb( _selector )( _pid );
                 }
-                !_ignoreUpdate && _p._view.update( _selector, _data );
+                !_ignoreUpdate && _p._view.update( _selector, _data, _pid );
                 _cb && _cb.call( _p, _selector, _data );
                 return this;
             }
@@ -608,7 +635,7 @@
         , _updateNormal:
             function( _selector, _cb, _pid ){
                var _p = this, _data;
-                JC.log( 'normal select' );
+                //JC.log( 'normal select' );
                 if( _p._model.isFirst( _selector ) ){
                     var _next = _p._model.next( _selector );
                     typeof _pid == 'undefined' && ( _pid = _p._model.selectvalue( _selector ) || _selector.val() || '' );
@@ -622,7 +649,7 @@
                 }else{
                     _data = _p._model.datacb( _selector )( _pid );
                 }
-                _p._view.update( _selector, _data );
+                _p._view.update( _selector, _data, _pid );
                 _cb && _cb.call( _p, _selector, _data );
                 return this;
             }
@@ -647,7 +674,7 @@
         _init:
             function(){
                 this._findAllItems( this._selector );
-                JC.log( 'select items.length:', this._items.length );
+                //JC.log( 'select items.length:', this._items.length );
                 this._initRelationship();
                 return this;
             }
@@ -657,6 +684,13 @@
                 typeof this._token == 'undefined' && ( this._token = 0 );
                 _next && ( this._token++ );
                 return this._token;
+            }
+
+        , selectCacheData:
+            function(){
+                var _r = true;
+                this.first().is( '[selectCacheData]' ) && ( _r = JC.f.parseBool( this.first().attr('selectCacheData') ) );
+                return _r;
             }
 
         , _findAllItems:
@@ -871,6 +905,15 @@
                 });
                 return _r;
             }
+
+        , selectItemDataFilter:
+            function( _selector ){
+                var _r;
+                _selector 
+                    && _selector.is( '[selectItemDataFilter]' )
+                    && ( _r = window[ _selector.attr( 'selectItemDataFilter' ) ] );
+                return _r;
+            }
     };
     
     function View( _model, _control ){
@@ -887,9 +930,13 @@
             }
 
         , update:
-            function( _selector, _data ){
-                var _default = this._model.selectvalue( _selector );
+            function( _selector, _data, _pid ){
+                var _p = this, _default = this._model.selectvalue( _selector );
                 _data = this._model.dataFilter( _selector, _data );
+
+                _p._model.selectItemDataFilter( _selector ) 
+                    && ( _data = _p._model.selectItemDataFilter( _selector )( _selector, _data, _pid ) );
+
                 this._model.data( _selector, _data );
 
                 this._control.trigger( 'SelectItemBeforeUpdate', [ _selector, _data ] );
@@ -958,7 +1005,6 @@
         setTimeout( function(){ AutoSelect( document.body ); }, 200 );
     });
 
-}(jQuery));
     return JC.AutoSelect;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

@@ -17,12 +17,12 @@
         <script src="../../../../config.js"></script>
         <script>
             JC.debug = true; 
-            requirejs( [ 'JC.AutoChecked' ], function( AutoChecked ){
+            requirejs( [ 'JC.AutoChecked', 'Bizs.ActionLogic' ], function( AutoChecked ){
 			});
 
             $(document).delegate( 'button.js_ajaxTest', 'click', function(){
                 var _p = $(this);
-                JC.Form && JC.Form.disableButton( _p );
+                Bizs.ActionLogic && Bizs.ActionLogic.disableButton( _p );
 
                 $.get( './data/initCheckAll.php?rnd='+new Date().getTime(), function( _r ){
                     var _selector = $(_r);

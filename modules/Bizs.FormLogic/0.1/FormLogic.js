@@ -1,7 +1,6 @@
 //TODO: 添加 disabled bind hidden 操作
 //TODO: formSubmitIgnoreCheck 时, 如果在控件里回车提交的话, 控制逻辑可能会有问题, 需要仔细检查
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Valid', 'JC.Form', 'JC.Panel' ], function(){
-;(function($){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Valid', 'JC.Panel', 'JC.FormFillUrl' ], function(){
     /**
      * <h2>提交表单控制逻辑</h2>
      * 应用场景
@@ -12,8 +11,10 @@
      *      <a href='window.jQuery.html'>jQuery</a>
      *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *      , <a href='JC.Valid.html'>JC.Valid</a>
-     *      , <a href='JC.Form.html'>JC.Form</a>
      *      , <a href='JC.Panel.html'>JC.Panel</a>
+     * </p>
+     * <p><b>optional</b>: 
+     *      <a href='JC.FormFillUrl.html'>JC.FormFillUrl</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/window.Bizs.FormLogic.html' target='_blank'>API docs</a>
@@ -105,6 +106,12 @@
      *
      *      <dt>formAjaxDoneAction = url</dt>
      *      <dd>声明 ajax 提交完成后的返回路径, 如果没有, 提交完成后将不继续跳转操作</dd>
+     * </dl>
+     *
+     * <h2>Form Control 可用的 html 属性</h2>
+     * <dl>
+     *      <dt>ignoreResetClear = bool, default = false</dt>
+     *      <dd>重置时, 是否忽略清空控件的值, 默认清空</dd>
      * </dl>
      *
      * <h2>submit button 可用的 html 属性</h2>
@@ -257,8 +264,8 @@
                 </dd>
             </dl>     
     */
-    window.Bizs = window.Bizs || {};
     Bizs.FormLogic = FormLogic;
+
     function FormLogic( _selector ){
         _selector && ( _selector = $( _selector ) );
         if( FormLogic.getInstance( _selector ) ) return FormLogic.getInstance( _selector );
@@ -287,9 +294,9 @@
         };
 
     if( !define.amd && JC.use ){
-        !JC.Valid && JC.use( 'Valid' );
-        !JC.Form && JC.use( 'Form' );
-        !JC.Panel && JC.use( 'Panel' );
+        !JC.Valid && JC.use( 'JC.Valid' );
+        !JC.Panel && JC.use( 'JC.Panel' );
+        !JC.FormFillUrl && JC.use( 'JC.FormFillUrl' );
     }
 
     /**
@@ -355,6 +362,16 @@
      * @static
      */
     FormLogic.processErrorCb;
+    /**
+     * 全局返回数据处理回调
+     * <br />所有提交结果都会调用
+     * <br />arg: _data[string of result]
+     * @property    GLOBAL_AJAX_CHECK
+     * @type        function  
+     * @default     null
+     * @static
+     */
+    FormLogic.GLOBAL_AJAX_CHECK;
 
     FormLogic.prototype = {
         _beforeInit:
@@ -443,6 +460,8 @@
                  * 全局 AJAX 提交完成后的处理事件
                  */
                 _p.on('AjaxDone', function( _evt, _data ){
+                    FormLogic.GLOBAL_AJAX_CHECK
+                        && FormLogic.GLOBAL_AJAX_CHECK( _data );
                     /**
                      * 这是个神奇的BUG
                      * chrome 如果没有 reset button, 触发 reset 会导致页面刷新
@@ -840,7 +859,7 @@
                 var _p = this;
                 if( _p._model.formType() != FormLogic.Model.GET ) return;
 
-                JC.Form && JC.Form.initAutoFill( _p._model.selector() );
+                JC.FormFillUrl && JC.FormFillUrl.init( _p._model.selector() );
             }
         , reset:
             function( _btn ){
@@ -853,8 +872,12 @@
                     setTimeout(function(){
                         var _form = _p._model.selector();
 
-                        _form.find('input[type=text], input[type=password], input[type=file], textarea').val('');
+                        _form.find('input[type=text], input[type=password], input[type=file], textarea').each( function(){
+                            if( $( this ).attr( 'ignoreResetClear' ) ) return;
+                            $( this ).val( '' );
+                        });
                         _form.find('select').each( function() {
+                            if( $( this ).attr( 'ignoreResetClear' ) ) return;
                             var sp = $(this);
                             var cs = sp.find('option');
                             if( cs.length > 1 ){
@@ -972,7 +995,6 @@
         }, 1 );
     });
 
-}(jQuery));
     return Bizs.FormLogic;
 });}( typeof define === 'function' && define.amd ? define : 
         function ( _name, _require, _cb) { 

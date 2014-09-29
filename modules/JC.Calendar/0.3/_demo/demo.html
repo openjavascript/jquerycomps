@@ -24,6 +24,17 @@
     $(document).delegate('input.manualPickDate', 'focus', function($evt){
         JC.Calendar.pickDate( this );
     });
+
+    function calendarupdate( _start, _end ){
+        var _p = $(this);
+        JC.log( 'calendarupdate', _p.val(), _start, _end );
+        _p.val( _p.val() + ' 00:00:00' );
+    }
+
+    function jcDateParse( _dateStr ){
+        return _dateStr.replace( /[\s]+$/, '' );
+    }
+
 </script>
 </head>    
 <body>
@@ -32,8 +43,8 @@
     <form action='' method='get'>
         <dl>
             <dt>JC.Calendar 示例</dt>
-            <dd><input type="text" name="date1" datatype="date" /></dd>
-            <dd><input type="text" name="date1" datatype="date" value="2013-06-02" /></dd>
+            <dd><input type="text" name="date1" multidate="date" reqmsg="日期" calendarupdate="calendarupdate" /><em class="error"></em></dd>
+            <dd><input type="text" name="date1" multidate="date" value="2013-06-02" calendarupdate="calendarupdate" /></dd>
             <dd>
                 <input type="text" name="date2" datatype="date" value="2013-06-03" />
                 <input type="button" class="UXCCalendar_btn" />

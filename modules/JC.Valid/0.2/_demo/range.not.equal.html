@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            *{ margin: 0; padding: 0; }
+            body{ margin: 20px 20px; }
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #F0DC82;!important;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+            dl.fm-items{ margin: 20px 0 20px; }
+            dl.fm-items dd { zoom: 1; padding: 5px 0 5px; clear:both; display:block; }
+            dl.fm-items dd:after {content:".";display:block;visibility:hidden;height:0;clear:both;}
+            dl.fm-items > dt{ margin-top: 20px; font-weight: bold; }
+
+            div.f-l{ float: left; }
+            div.label{ width: 320px; text-align: right; padding-right: 20px }
+
+            dd.odd {
+                background: #ececec;
+            }
+
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
+            input[type=checkbox] {
+                height: auto;
+                line-height: auto;
+            }
+
+        </style>
+        <link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config.js"></script>
+        <script>
+            JC.debug = true;
+
+            requirejs( ['JC.Valid', 'JC.Calendar', 'Bizs.FormLogic', 'JC.AutoChecked' ]
+            , function( Valid, Calendar, FormLogic ){
+				$(document).delegate( 'button.js-clear-error', 'click', function( $evt ){
+                    window.console && console.clear && console.clear();
+                    JC.Valid.clearError( 'form.js_valid' );
+                });
+                /*
+                $('form.js_valid')
+                .on('submit', function( _evt ){
+                    window.console && console.clear && console.clear();
+                    _evt.preventDefault();
+
+                    if( !JC.Valid.check( 'form.js_valid' ) ){
+                        _evt.preventDefault();
+                        return false;
+                    }
+
+                    JC.log( 'form process valid', new Date().getTime() );
+                });
+                */
+
+                $( 'dl.fm-items > dd:odd').addClass( 'odd' );
+
+                /*
+                JC.Valid.itemCallback =
+                    function( _item, _isValid ){
+                        JC.log( 'JC.Valid.itemCallback _isValid:', _isValid );
+                    };
+                */
+            });
+
+        </script>
+    </head>    
+    <body>
+
+        <form action='?' method='get' class="js_valid js_bizsFormLogic" >
+            <div style="position:fixed; top: 10px; right:10px;">
+                <button type="submit">Save</button>
+                <button type="button" class="js-clear-error">清空错误信息</button>
+            </div>
+            <dl class="fm-items">
+                <dt>值可以相等</dt>
+                <dd>
+                    开始数值：
+                    <input type="text" datatype="nrange" value="5" emel="/em" />
+                    <input type="text" datatype="nrange" value="6" emel="/em" />
+
+                    <em class="errmsg"></em>
+                </dd>
+
+                <dd>
+                    开始数值：
+                    <input type="text" datatype="nrange" value="7" emel="/em"  />
+                    <input type="text" datatype="nrange" value="6" emel="/em" />
+
+                    <em class="errmsg"></em>
+                </dd>
+                <dd>
+                    开始数值：
+                    <input type="text" datatype="nrange" value="6" emel="/em" />
+                    <input type="text" datatype="nrange" value="6" emel="/em" />
+
+                    <em class="errmsg"></em>
+                </dd>
+
+                <dd>
+                    开始日期：
+                    <input type="text" datatype="daterange" value="now,-1d" emel="/em" />
+                    <input type="text" datatype="daterange" value="now" emel="/em" />
+
+                    <em class="errmsg"></em>
+                </dd>
+
+                <dd>
+                    开始日期：
+                    <input type="text" datatype="daterange" value="now,1d" emel="/em"  />
+                    <input type="text" datatype="daterange" value="now" emel="/em" />
+
+                    <em class="errmsg"></em>
+                </dd>
+                <dd>
+                    开始日期：
+                    <input type="text" datatype="daterange" value="now" emel="/em" />
+                    <input type="text" datatype="daterange" value="now" emel="/em" />
+
+                    <em class="errmsg"></em>
+                </dd>
+
+                <dt>值不能相等</dt>
+                <dd>
+                    开始数值：
+                    <input type="text" datatype="nrange" value="6" emel="/em" rangeCanEqual="false" />
+                    <input type="text" datatype="nrange" value="6" emel="/em" />
+
+                    <em class="errmsg"></em>
+                </dd>
+                <dd>
+                    开始日期：
+                    <input type="text" datatype="daterange" value="now" emel="/em" rangeCanEqual="false" />
+                    <input type="text" datatype="daterange" value="now" emel="/em" />
+
+                    <em class="errmsg"></em>
+                </dd>
+
+
+
+
+                <dd style="padding-top: 20px; padding-left: 280px;">
+                    <button type="submit">submit</button>
+                    <button type="reset">reset</button>
+                    <button type="button" class="js-clear-error">清空错误信息</button>
+                </dd>
+
+            </dl>
+
+            <div style="position:fixed; bottom: 10px; right:10px;">
+                <button type="submit">Save</button>
+                <button type="button" class="js-clear-error">清空错误信息</button>
+            </div>
+        </form>
+
+
+    </body>
+</html>
+
