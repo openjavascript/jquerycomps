@@ -405,7 +405,6 @@ JC.use &amp;&amp; !jQuery.event.special.mousewheel &amp;&amp; JC.use( &#x27;plug
                         _p.trigger( FChart.Model.UPDATE_CHART_DATA, [ _data ] );
                     }
                     _p._model.height() &amp;&amp; _p.selector().css( { &#x27;height&#x27;: _p._model.height() } );
-                    JC.log( _p._model.type() );
 
                     if( !_p._model.chartScroll() || _p._model.type().toLowerCase() == &#x27;map&#x27; ){
                         _p.selector().on( &#x27;mousewheel&#x27;, function( _evt ){
@@ -495,33 +494,34 @@ JC.use &amp;&amp; !jQuery.event.special.mousewheel &amp;&amp; JC.use( &#x27;plug
 
     /**
      * 图表类型映射
-     * &lt;br /&gt;曲线图: line, CurveGram, curvegram
-     * &lt;br /&gt;柱状图: bar, Histogram, histogram
-     * &lt;br /&gt;垂直柱状图: var, VHistogram, Vhistogram
-     * &lt;br /&gt;饼状图: pie, PieGraph, piegraph
+     * &lt;br /&gt;曲线图: line, curvegram
+     * &lt;br /&gt;柱状图: bar, histogram
+     * &lt;br /&gt;垂直柱状图: var, vhistogram
+     * &lt;br /&gt;饼状图: pie, piegraph
+     * &lt;br /&gt;圆环图: dount
+     * &lt;br /&gt;评分球: rate
      * @property    Model.TYPE_MAP
      * @type        {object}
      * @static
      */
     FChart.Model.TYPE_MAP = {
         &#x27;line&#x27;: &#x27;CurveGram&#x27;
-        , &#x27;CurveGram&#x27;: &#x27;CurveGram&#x27;
         , &#x27;curvegram&#x27;: &#x27;CurveGram&#x27;
 
         , &#x27;bar&#x27;: &#x27;Histogram&#x27;
-        , &#x27;Histogram&#x27;: &#x27;Histogram&#x27;
         , &#x27;histogram&#x27;: &#x27;Histogram&#x27;
 
         , &#x27;vbar&#x27;: &#x27;VHistogram&#x27;
-        , &#x27;VHistogram&#x27;: &#x27;VHistogram&#x27;
-        , &#x27;Vhistogram&#x27;: &#x27;VHistogram&#x27;
+        , &#x27;vhistogram&#x27;: &#x27;VHistogram&#x27;
 
         , &#x27;map&#x27;: &#x27;Map&#x27;
-        , &#x27;Map&#x27;: &#x27;Map&#x27;
 
         , &#x27;pie&#x27;: &#x27;PieGraph&#x27;
-        , &#x27;PieGraph&#x27;: &#x27;PieGraph&#x27;
         , &#x27;piegraph&#x27;: &#x27;PieGraph&#x27;
+
+        , &#x27;dount&#x27;: &#x27;Dount&#x27;
+
+        , &#x27;rate&#x27;: &#x27;Rate&#x27;
     };
 
 
@@ -656,7 +656,7 @@ JC.use &amp;&amp; !jQuery.event.special.mousewheel &amp;&amp; JC.use( &#x27;plug
                 return (_r||&#x27;&#x27;).toString().toLowerCase();
             }
         , typeMap: function( _type ){ return FChart.Model.TYPE_MAP[ _type ]; }
-        , type: function(){ return this.typeMap( this.chartType() ); }
+        , type: function(){ return this.typeMap( this.chartType() ) || &#x27;&#x27;; }
         , path:
             function(){
                 var _p = this

@@ -157,7 +157,6 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
                         _p.trigger( FChart.Model.UPDATE_CHART_DATA, [ _data ] );
                     }
                     _p._model.height() && _p.selector().css( { 'height': _p._model.height() } );
-                    JC.log( _p._model.type() );
 
                     if( !_p._model.chartScroll() || _p._model.type().toLowerCase() == 'map' ){
                         _p.selector().on( 'mousewheel', function( _evt ){
@@ -247,33 +246,34 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
 
     /**
      * 图表类型映射
-     * <br />曲线图: line, CurveGram, curvegram
-     * <br />柱状图: bar, Histogram, histogram
-     * <br />垂直柱状图: var, VHistogram, Vhistogram
-     * <br />饼状图: pie, PieGraph, piegraph
+     * <br />曲线图: line, curvegram
+     * <br />柱状图: bar, histogram
+     * <br />垂直柱状图: var, vhistogram
+     * <br />饼状图: pie, piegraph
+     * <br />圆环图: dount
+     * <br />评分球: rate
      * @property    Model.TYPE_MAP
      * @type        {object}
      * @static
      */
     FChart.Model.TYPE_MAP = {
         'line': 'CurveGram'
-        , 'CurveGram': 'CurveGram'
         , 'curvegram': 'CurveGram'
 
         , 'bar': 'Histogram'
-        , 'Histogram': 'Histogram'
         , 'histogram': 'Histogram'
 
         , 'vbar': 'VHistogram'
-        , 'VHistogram': 'VHistogram'
-        , 'Vhistogram': 'VHistogram'
+        , 'vhistogram': 'VHistogram'
 
         , 'map': 'Map'
-        , 'Map': 'Map'
 
         , 'pie': 'PieGraph'
-        , 'PieGraph': 'PieGraph'
         , 'piegraph': 'PieGraph'
+
+        , 'dount': 'Dount'
+
+        , 'rate': 'Rate'
     };
 
 
@@ -408,7 +408,7 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
                 return (_r||'').toString().toLowerCase();
             }
         , typeMap: function( _type ){ return FChart.Model.TYPE_MAP[ _type ]; }
-        , type: function(){ return this.typeMap( this.chartType() ); }
+        , type: function(){ return this.typeMap( this.chartType() ) || ''; }
         , path:
             function(){
                 var _p = this
