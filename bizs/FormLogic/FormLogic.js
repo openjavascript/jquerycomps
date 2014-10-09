@@ -559,7 +559,7 @@ window.parent
                     if( _fatalError ){
                         var _msg = JC.f.printf( '服务端错误, 无法解析返回数据: <p class="auExtErr" style="color:red">{0}</p>'
                                             , _data );
-                        JC.Dialog.alert( _msg, 1 )
+                        JC.Dialog && JC.Dialog.alert ? JC.Dialog.alert( _msg, 1 ) : alert( _msg );
                         return;
                     }
 
