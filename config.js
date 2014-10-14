@@ -60,7 +60,10 @@ requirejs.config( {
         , 'JC.StepControl': 'modules/JC.StepControl/0.1/StepControl'
         //, 'JC.Suggest': 'modules/JC.Suggest/0.1/Suggest'
         , 'JC.Suggest': 'modules/JC.Suggest/0.2/Suggest'
-        , 'JC.Tab': 'modules/JC.Tab/0.1/Tab'
+
+        //, 'JC.Tab': 'modules/JC.Tab/0.1/Tab'
+        , 'JC.Tab': 'modules/JC.Tab/0.2/Tab'
+
         , 'JC.TableFreeze': 'modules/JC.TableFreeze/0.2/TableFreeze'
         , 'JC.TableSort': 'modules/JC.TableSort/0.1/TableSort'
         , 'JC.Selectable': 'modules/JC.SelectAble/dev/Selectable'

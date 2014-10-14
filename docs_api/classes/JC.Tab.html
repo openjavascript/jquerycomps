@@ -145,7 +145,7 @@
                         <h1>JC.Tab Class</h1>
 <div class="box meta">
         <div class="foundat">
-            Defined in: <a href="../files/.._modules_JC.Tab_0.1_Tab.js.html#l3"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.1&#x2F;Tab.js:3</code></a>
+            Defined in: <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l3"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:3</code></a>
         </div>
 </div>
 <div class="box intro">
@@ -158,7 +158,7 @@
 </p></p>
 <p><p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
 | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Tab.html' target='_blank'>API docs</a>
-| <a href='../../modules/JC.Tab/0.1/_demo/' target='_blank'>demo link</a></p></p>
+| <a href='../../modules/JC.Tab/0.2/_demo/' target='_blank'>demo link</a></p></p>
 <p><h2>Tab 容器的HTML属性</h2></p>
 <dl>
      <dt>tablabels</dt>
@@ -173,10 +173,12 @@
      <dd>当 tab label 被触发时的回调</dd>
      <dt>tabchangecallback</dt>
      <dd>当 tab label 变更时的回调</dd>
+     <dt>tabTriggerDefault</dt>
+     <dd>页面初始化完毕时，是否实例化，并初始化当前选中标签</dd>
 </dl>
 <h2>Label(标签) 容器的HTML属性(AJAX)</h2>
 <dl>
-     <dt>tabajaxurl</dt>
+     <dt>tabAjaxUrl</dt>
      <dd>ajax 请求的 URL 地址</dd>
      <dt>tabajaxmethod</dt>
      <dd>ajax 请求的方法( get|post ), 默认 get</dd>
@@ -184,6 +186,8 @@
      <dd>ajax 请求的 数据, json</dd>
      <dt>tabajaxcallback</dt>
      <dd>ajax 请求的回调</dd>
+     <dt>tabIframeUrl</dt>
+     <dd>iframe 显示的URL</dd>
 </dl>
 </div>
     <div class="constructor">
@@ -203,7 +207,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Tab_0.1_Tab.js.html#l3"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.1&#x2F;Tab.js:3</code></a>
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l3"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:3</code></a>
         </p>
     </div>
     <div class="description">
@@ -333,11 +337,32 @@
                             <li class="index-item method private">
                                 <a href="#method__init">_init</a>
                             </li>
+                            <li class="index-item method private">
+                                <a href="#method__init">_init</a>
+                            </li>
                             <li class="index-item method">
                                 <a href="#method_active">active</a>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_active">active</a>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_activeEvent">activeEvent</a>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_getInstance">getInstance</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getInstance">getInstance</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_init">init</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isAjax">isAjax</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
@@ -348,6 +373,18 @@
                                 <a href="#method_isAjaxInited">isAjaxInited</a>
                                     <span class="flag static">static</span>
                             </li>
+                            <li class="index-item method">
+                                <a href="#method_isAjaxInited">isAjaxInited</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isIframe">isIframe</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isIframeInited">isIframeInited</a>
+                                    <span class="flag static">static</span>
+                            </li>
                     </ul>
                 </div>
                 <div class="index-section properties">
@@ -356,8 +393,19 @@
                             <li class="index-item property private">
                                 <a href="#property__model">_model</a>
                             </li>
+                            <li class="index-item property private">
+                                <a href="#property__model">_model</a>
+                            </li>
                             <li class="index-item property">
                                 <a href="#property_activeClass">activeClass</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_activeClass">activeClass</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_activeEvent">activeEvent</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item property">
@@ -369,7 +417,19 @@
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item property">
+                                <a href="#property_ajaxCallback">ajaxCallback</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_ajaxRandom">ajaxRandom</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_ajaxRandom">ajaxRandom</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_autoInit">autoInit</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item property">
@@ -394,6 +454,50 @@
     <div class="description">
         <p>Tab 内部初始化方法</p>
     </div>
+</div>
+                    <div id="method__init" class="method item private">
+    <h3 class="name"><code>_init</code></h3>
+        <span class="paren">()</span>
+        <span class="flag private">private</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l395"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:395</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>Tab 内部初始化方法</p>
+    </div>
+</div>
+                    <div id="method_active" class="method item">
+    <h3 class="name"><code>active</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_label</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l411"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:411</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>把 _label 设置为活动状态</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_label</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
 </div>
                     <div id="method_active" class="method item">
     <h3 class="name"><code>active</code></h3>
@@ -420,6 +524,69 @@
                         <code class="param-name">_label</code>
                         <span class="type">Selector</span>
                     <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+                    <div id="method_activeEvent" class="method item">
+    <h3 class="name"><code>activeEvent</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l496"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:496</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取 Tab label 的触发事件名称</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    <p>string</p>
+            </div>
+        </div>
+</div>
+                    <div id="method_getInstance" class="method item">
+    <h3 class="name"><code>getInstance</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_selector</code>
+                </li>
+                <li class="arg">
+                        <code>_setter</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l198"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:198</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取或设置 Tab 容器的 Tab 实例属性</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_selector</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_setter</code>
+                        <span class="type"><a href="../classes/JC.Tab.html" class="crosslink">JC.Tab</a></span>
+                    <div class="param-description">
+                        <p>_setter 不为空是设置</p>
                     </div>
                 </li>
             </ul>
@@ -466,6 +633,46 @@
             </ul>
         </div>
 </div>
+                    <div id="method_init" class="method item">
+    <h3 class="name"><code>init</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_selector</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">Array of TabInstance</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l223"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:223</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>初始化可识别的 Tab 实例</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_selector</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Array of TabInstance</span>:
+            </div>
+        </div>
+</div>
                     <div id="method_isAjax" class="method item">
     <h3 class="name"><code>isAjax</code></h3>
         <div class="args">
@@ -503,6 +710,100 @@
             <h4>Returns:</h4>
             <div class="returns-description">
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | Undefined</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_isAjax" class="method item">
+    <h3 class="name"><code>isAjax</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_label</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | Undefined</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l290"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:290</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>判断一个 label 是否为 ajax</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_label</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | Undefined</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_isAjaxInited" class="method item">
+    <h3 class="name"><code>isAjaxInited</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_label</code>
+                </li>
+                <li class="arg">
+                        <code>_setter</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l301"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:301</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>判断一个 ajax label 是否已经初始化过
+<br /> 这个方法需要跟 Tab.isAjax 结合判断才更为准确</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_label</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_setter</code>
+                        <span class="type">Bool</span>
+                    <div class="param-description">
+                        <p>如果 _setter 不为空, 则进行赋值</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>   function tabactive( _evt, _container, _tabIns ){
+       var _label = $(this);
+       JC.log( &#39;tab &#39;, _evt.type, _label.html(), new Date().getTime() );
+       if( JC.Tab.isAjax( _label ) &amp;&amp; ! JC.Tab.isAjaxInited( _label ) ){
+           _container.html( &#39;&lt;h2&gt;内容加载中...&lt;/h2&gt;&#39; );
+       }
+   }</code></pre>
             </div>
         </div>
 </div>
@@ -560,9 +861,115 @@
             </div>
         </div>
 </div>
+                    <div id="method_isIframe" class="method item">
+    <h3 class="name"><code>isIframe</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_label</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | Undefined</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l322"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:322</code></a>
+        </p>
+    </div>
+    <div class="description">
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_label</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | Undefined</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_isIframeInited" class="method item">
+    <h3 class="name"><code>isIframeInited</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_label</code>
+                </li>
+                <li class="arg">
+                        <code>_setter</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l332"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:332</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>判断一个 iframe label 是否已经初始化过
+<br /> 这个方法需要跟 Tab.isIframe 结合判断才更为准确</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_label</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_setter</code>
+                        <span class="type">Bool</span>
+                    <div class="param-description">
+                        <p>如果 _setter 不为空, 则进行赋值</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>   function tabactive( _evt, _container, _tabIns ){
+       var _label = $(this);
+       JC.log( &#39;tab &#39;, _evt.type, _label.html(), new Date().getTime() );
+       if( JC.Tab.isIframe( _label ) &amp;&amp; ! JC.Tab.isIframeInited( _label ) ){
+           _container.html( &#39;&lt;h2&gt;内容加载中...&lt;/h2&gt;&#39; );
+       }
+   }</code></pre>
+            </div>
+        </div>
+</div>
             </div>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
+                    <div id="property__model" class="property item private">
+    <h3 class="name"><code>_model</code></h3>
+        <span class="flag private">private</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l159"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:159</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>Tab 模型类的实例</p>
+    </div>
+</div>
                     <div id="property__model" class="property item private">
     <h3 class="name"><code>_model</code></h3>
         <span class="flag private">private</span>
@@ -591,6 +998,21 @@
     </div>
         <p><strong>Default:</strong> cur</p>
 </div>
+                    <div id="property_activeClass" class="property item">
+    <h3 class="name"><code>activeClass</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l182"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:182</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>label 当前状态的样式</p>
+    </div>
+        <p><strong>Default:</strong> cur</p>
+</div>
                     <div id="property_activeEvent" class="property item">
     <h3 class="name"><code>activeEvent</code></h3>
     <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
@@ -599,6 +1021,21 @@
                 <p>
                 Defined in
         <a href="../files/.._modules_JC.Tab_0.1_Tab.js.html#l185"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.1&#x2F;Tab.js:185</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>label 的触发事件</p>
+    </div>
+        <p><strong>Default:</strong> click</p>
+</div>
+                    <div id="property_activeEvent" class="property item">
+    <h3 class="name"><code>activeEvent</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l190"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:190</code></a>
         </p>
     </div>
     <div class="description">
@@ -638,6 +1075,38 @@
             </div>
         </div>
 </div>
+                    <div id="property_ajaxCallback" class="property item">
+    <h3 class="name"><code>ajaxCallback</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l261"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:261</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>全局的 ajax 处理回调</p>
+    </div>
+        <p><strong>Default:</strong> null</p>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>       $(document).ready( function(){
+           JC.Tab.ajaxCallback =
+               function( _data, _label, _container, _textStatus, _jqXHR ){
+                   _data &amp;&amp; ( _data = $.parseJSON( _data ) );
+                   if( _data &amp;&amp; _data.errorno === 0 ){
+                       _container.html( JC.f.printf( &#39;&lt;h2&gt;JC.Tab.ajaxCallback&lt;/h2&gt;{0}&#39;, _data.data ) );
+                   }else{
+                       Tab.isAjaxInited( _label, 0 );
+                       _container.html( &#39;&lt;h2&gt;内容加载失败!&lt;/h2&gt;&#39; );
+                   }
+               };
+       });</code></pre>
+            </div>
+        </div>
+</div>
                     <div id="property_ajaxRandom" class="property item">
     <h3 class="name"><code>ajaxRandom</code></h3>
     <span class="type">Bool</span>
@@ -653,6 +1122,21 @@
     </div>
         <p><strong>Default:</strong> true</p>
 </div>
+                    <div id="property_ajaxRandom" class="property item">
+    <h3 class="name"><code>ajaxRandom</code></h3>
+    <span class="type">Bool</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l282"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:282</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>ajax 请求是否添加随机参数 rnd, 以防止页面缓存的结果差异</p>
+    </div>
+        <p><strong>Default:</strong> true</p>
+</div>
                     <div id="property_autoInit" class="property item">
     <h3 class="name"><code>autoInit</code></h3>
     <span class="type">Bool</span>
@@ -661,6 +1145,22 @@
                 <p>
                 Defined in
         <a href="../files/.._modules_JC.Tab_0.1_Tab.js.html#l168"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.1&#x2F;Tab.js:168</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>页面加载完毕后, 是否要添加自动初始化事件
+<br /> 自动初始化是 鼠标移动到 Tab 容器时去执行的, 不是页面加载完毕后就开始自动初始化</p>
+    </div>
+        <p><strong>Default:</strong> true</p>
+</div>
+                    <div id="property_autoInit" class="property item">
+    <h3 class="name"><code>autoInit</code></h3>
+    <span class="type">Bool</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.Tab_0.2_Tab.js.html#l173"><code>..&#x2F;modules&#x2F;JC.Tab&#x2F;0.2&#x2F;Tab.js:173</code></a>
         </p>
     </div>
     <div class="description">
