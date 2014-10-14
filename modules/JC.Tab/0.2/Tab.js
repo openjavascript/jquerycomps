@@ -10,7 +10,7 @@
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Tab.html' target='_blank'>API docs</a>
-     * | <a href='../../modules/JC.Tab/0.1/_demo/' target='_blank'>demo link</a></p>
+     * | <a href='../../modules/JC.Tab/0.2/_demo/' target='_blank'>demo link</a></p>
      * <h2>Tab 容器的HTML属性</h2>
      * <dl>
      *      <dt>tablabels</dt>
@@ -47,6 +47,9 @@
      *
      *      <dt>tabajaxcallback</dt>
      *      <dd>ajax 请求的回调</dd>
+     *
+     *      <dt>tabIframeUrl</dt>
+     *      <dd>iframe 显示的URL</dd>
      * </dl>
      * @namespace JC
      * @class Tab
@@ -149,7 +152,6 @@
             </dl>
      */
     function Tab( _selector, _triggerTarget ){
-        if( !Tab.selectorIsTab( _selector ) ) return;
         _selector && ( _selector = $( _selector ) );
         _triggerTarget && ( _triggerTarget = $( _triggerTarget) );
         if( Tab.getInstance( _selector ) ) return Tab.getInstance( _selector );
@@ -204,6 +206,43 @@
         function( _selector, _setter ){
             return JC.BaseMVC.getInstance( _selector, Tab, _setter );
         };
+    Tab.triggerDefault =
+        function( _ins ){
+            if( !( _ins && _ins._model && _ins._model.tablabels ) ){
+                return _ins;
+            }
+            _ins._model.tablabels().each( function(){
+                var _sp = $( this );
+                if( _sp.parent().hasClass( _ins._model.activeClass( _ins._model.tablabelparent( _sp ) ) ) ){
+                    _sp.trigger( _ins._model.activeEvent() );
+                    return false;
+                }
+            });
+            return _ins
+        };
+   /**
+     * 初始化可识别的 Tab 实例
+     * @method  init
+     * @param   {selector}      _selector
+     * @static
+     * @return  {Array of TabInstance}
+     */
+    Tab.init =
+        function( _selector ){
+            var _r = [], _tmp;
+            _selector = $( _selector || document );
+ 
+            if( _selector && _selector.length ){
+                if( _selector.hasClass( 'js_autoTab' ) || _selector.hasClass( 'js_compTab' )   ){
+                    _r.push( Tab.triggerDefault( new Tab( _selector ) ) );
+                }else{
+                    _selector.find( 'div.js_autoTab, div.js_compTab' ).each( function(){
+                        _r.push( Tab.triggerDefault( new Tab( this ) ) );
+                    });
+                }
+            }
+            return _r;
+        };    
     /**
      * 判断一个容器是否 符合 Tab 数据要求
      * @return  bool
@@ -673,24 +712,12 @@
     });
 
     $( document ).ready( function(){
-
         $( 'div.js_autoTab[tabTriggerDefault], div.js_compTab[tabTriggerDefault]' ).each( function(){
             var _p = $( this )
-                , _isTrigger = JC.f.parseBool( _p.attr( 'tabTriggerDefault' ) )
                 , _ins = JC.BaseMVC.getInstance( _p, JC.Tab )
                 ;
-            if( !_ins && _isTrigger ){
-                if( !_p.attr( 'tablabels' ) ) return;
-                var _labels = JC.f.parentSelector( _p, _p.attr( 'tablabels' ) )
-                    , _activeClass = _p.attr( 'tabactiveclass' ) || 'active' 
-                    ;
-                _labels.each( function(){
-                    var _sp = $( this );
-                    if( _sp.parent().hasClass( _activeClass ) ){
-                        new Tab( _p, _sp );
-                        return false;
-                    }
-                });
+            if( !_ins ){
+                Tab.triggerDefault( new Tab( _p ) );
             }
         });
     });
