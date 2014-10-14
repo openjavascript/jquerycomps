@@ -632,14 +632,11 @@
             "name": "../comps/Tab/Tab.js",
             "modules": {},
             "classes": {
-                "JC.Tab": 1,
-                "JC.Tab.Model": 1,
-                "JC.Tab.View": 1
+                "JC.Tab": 1
             },
             "fors": {},
             "namespaces": {
-                "JC": 1,
-                "JC.Tab": 1
+                "JC": 1
             }
         },
         "../comps/TableFreeze/TableFreeze.js": {
@@ -2342,10 +2339,10 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "namespace": "JC.Tab",
+            "namespace": "JC",
             "file": "../comps/Tab/Tab.js",
-            "line": 5,
-            "description": "Tab 菜单类\n<br />DOM 加载完毕后\n, 只要鼠标移动到具有识别符的Tab上面, Tab就会自动初始化, 目前可识别: <b>.js_autoTab</b>( CSS class )\n<br />需要手动初始化, 请使用: var ins = new JC.Tab( _tabSelector );\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tab.html' target='_blank'>API docs</a>\n| <a href='../../comps/Tab/_demo/' target='_blank'>demo link</a></p>\n<h2>Tab 容器的HTML属性</h2>\n<dl>\n     <dt>tablabels</dt>\n     <dd>声明 tab 标签的选择器语法</dd>\n\n     <dt>tabcontainers</dt>\n     <dd>声明 tab 容器的选择器语法</dd>\n\n     <dt>tabactiveclass</dt>\n     <dd>声明 tab当前标签的显示样式名, 默认为 cur</dd>\n\n     <dt>tablabelparent</dt>\n     <dd>声明 tab的当前显示样式是在父节点, 默认为 tab label 节点</dd>\n\n     <dt>tabactivecallback</dt>\n     <dd>当 tab label 被触发时的回调</dd>\n\n     <dt>tabchangecallback</dt>\n     <dd>当 tab label 变更时的回调</dd>\n</dl>\n<h2>Label(标签) 容器的HTML属性(AJAX)</h2>\n<dl>\n     <dt>tabajaxurl</dt>\n     <dd>ajax 请求的 URL 地址</dd>\n\n     <dt>tabajaxmethod</dt>\n     <dd>ajax 请求的方法( get|post ), 默认 get</dd>\n\n     <dt>tabajaxdata</dt>\n     <dd>ajax 请求的 数据, json</dd>\n\n     <dt>tabajaxcallback</dt>\n     <dd>ajax 请求的回调</dd>\n</dl>",
+            "line": 3,
+            "description": "Tab 选项卡\n<br />响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = \"<b>.js_autoTab</b>\" 的 HTML 标签\n<br />需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tab.html' target='_blank'>API docs</a>\n| <a href='../../comps/Tab/_demo/' target='_blank'>demo link</a></p>\n<h2>Tab 容器的HTML属性</h2>\n<dl>\n     <dt>tablabels</dt>\n     <dd>声明 tab 标签的选择器语法</dd>\n\n     <dt>tabcontainers</dt>\n     <dd>声明 tab 容器的选择器语法</dd>\n\n     <dt>tabactiveclass</dt>\n     <dd>声明 tab当前标签的显示样式名, 默认为 cur</dd>\n\n     <dt>tablabelparent</dt>\n     <dd>声明 tab的当前显示样式是在父节点, 默认为 tab label 节点</dd>\n\n     <dt>tabactivecallback</dt>\n     <dd>当 tab label 被触发时的回调</dd>\n\n     <dt>tabchangecallback</dt>\n     <dd>当 tab label 变更时的回调</dd>\n\n     <dt>tabTriggerDefault</dt>\n     <dd>页面初始化完毕时，是否实例化，并初始化当前选中标签</dd>\n</dl>\n<h2>Label(标签) 容器的HTML属性(AJAX)</h2>\n<dl>\n     <dt>tabAjaxUrl</dt>\n     <dd>ajax 请求的 URL 地址</dd>\n\n     <dt>tabajaxmethod</dt>\n     <dd>ajax 请求的方法( get|post ), 默认 get</dd>\n\n     <dt>tabajaxdata</dt>\n     <dd>ajax 请求的 数据, json</dd>\n\n     <dt>tabajaxcallback</dt>\n     <dd>ajax 请求的回调</dd>\n\n     <dt>tabIframeUrl</dt>\n     <dd>iframe 显示的URL</dd>\n</dl>",
             "is_constructor": 1,
             "params": [
                 {
@@ -2359,58 +2356,9 @@
                     "type": "Selector|string"
                 }
             ],
-            "version": "dev 0.1",
-            "author": "qiushaowei   <suches@btbtd.org> | 360 75 Team",
-            "date": "2013-07-04",
+            "version": "dev 0.1, 2013-07-04, qiushaowei   <suches@btbtd.org> | 360 75 Team",
             "example": [
-                "\n           <link href='../../../modules/JC.Tab/res/default/style.css' rel='stylesheet' />\n           <script src=\"../../../lib.js\"></script>\n           <script src=\"../../../config.js\"></script>\n           <script>\n               JC.debug = 1;\n\n               requirejs( [ 'JC.Tab' ], function(){\n                   JC.f.httpRequire();\n\n                   JC.Tab.ajaxCallback =\n                       function( _data, _label, _container ){\n                           _data && ( _data = $.parseJSON( _data ) );\n                           if( _data && _data.errorno === 0 ){\n                               _container.html( JC.f.printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );\n                           }else{\n                               Tab.isAjaxInited( _label, 0 );\n                               _container.html( '<h2>内容加载失败!</h2>' );\n                           }\n                       };\n               });\n\n               function tabactive( _evt, _container, _tabIns ){\n                   var _label = $(this);\n                   JC.log( 'tab ', _evt.type, _label.html(), new Date().getTime() );\n                   if( JC.Tab.isAjax( _label ) && ! JC.Tab.isAjaxInited( _label ) ){\n                       _container.html( '<h2>内容加载中...</h2>' );\n                   }\n               }\n\n               function tabchange( _container, _tabIns ){\n                   var _label = $(this);\n                   JC.log( 'tab change: ', _label.html(), new Date().getTime() );\n               }\n\n               function ajaxcallback( _data, _label, _container ){\n                   _data && ( _data = $.parseJSON( _data ) );\n                   if( _data && _data.errorno === 0 ){\n                       _container.html( JC.f.printf( '<h2>label attr ajaxcallback</h2>{0}', _data.data ) );\n                   }else{\n                       Tab.isAjaxInited( _label, 0 );\n                       _container.html( '<h2>内容加载失败!</h2>' );\n                   }\n               };\n           </script>\n\n           <dl class=\"def\">\n               <dt>JC.Tab 示例 - 静态内容</dt>\n               <dd>\n               <div class=\"le-tabview js_autoTab\" tablabels=\"ul.js_tabLabel > li > a\" tabcontainers=\"div.js_tabContent > div\" \n                                                   tabactiveclass=\"active\" tablabelparent=\"li\" \n                                                   tabactivecallback=\"tabactive\" tabchangecallback=\"tabchange\"\n                                                   >\n                       <ul class=\"le-tabs js_tabLabel\">\n                           <li class=\"active\"><a href=\"javascript:\">电视剧</a></li>\n                           <li><a href=\"javascript:\">电影</a></li>\n                           <li><a href=\"javascript:\">综艺</a></li>\n                           <li><a href=\"javascript:\">热点</a></li>\n                       </ul>\n                       <div class=\"views js_tabContent\">\n                           <div class=\"view-item active\">1. 集地议送能拿距还杨雷火，永鲜提只风超洋轻绿动视落清各只江执口。</div>\n                           <div class=\"view-item\">2. 相送黄血富打万念却烟会华它表本雷烟形烟消卷效难标否标滑固小实。</div>\n                           <div class=\"view-item\">3. 理往局背剧养认被站推简沉形括於穿短，精白自没路绿往优八益是入。</div>\n                           <div class=\"view-item\">4. 鲁杆格滑那双来班五材实死听顶脱本续克修先课丝另乡型茶父报孔图。</div>\n                       </div>\n                   </div>\n               </dd>\n           </dl>\n\n           <dl class=\"def\">\n               <dt>JC.Tab 示例 - 动态内容 - AJAX</dt>\n               <dd>\n               <div class=\"le-tabview js_autoTab\" tablabels=\"ul.js_tabLabel2 > li > a\" tabcontainers=\"div.js_tabContent2 > div\" \n                                                   tabactiveclass=\"active\" tablabelparent=\"li\" \n                                                   tabactivecallback=\"tabactive\" tabchangecallback=\"tabchange\"\n                                                   >\n                       <ul class=\"le-tabs js_tabLabel2\">\n                           <li class=\"active\"><a href=\"javascript:\">电视剧</a></li>\n                           <li><a href=\"javascript:\" tabajaxurl=\"data/test.php\" tabajaxmethod=\"post\" \n                                                     tabajaxdata=\"{a:1,b:2}\" tabajaxcallback=\"ajaxcallback\" >电影</a></li>\n                           <li><a href=\"javascript:\" tabajaxurl=\"data/test.php\" tabajaxcallback=\"ajaxcallback\" >综艺</a></li>\n                           <li><a href=\"javascript:\" tabajaxurl=\"data/test.php\" >热点</a></li>\n                       </ul>\n                       <div class=\"views js_tabContent2\">\n                           <div class=\"view-item active\">1. 集地议送能拿距还杨雷火，永鲜提只风超洋轻绿动视落清各只江执口。</div>\n                           <div class=\"view-item\"></div>\n                           <div class=\"view-item\"></div>\n                           <div class=\"view-item\"></div>\n                       </div>\n                   </div>\n               </dd>\n           </dl>"
-            ]
-        },
-        "JC.Tab.Model": {
-            "name": "JC.Tab.Model",
-            "shortname": "JC.Tab.Model",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "namespace": "JC.Tab",
-            "file": "../comps/Tab/Tab.js",
-            "line": 309,
-            "description": "Tab 数据模型类",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "_selector",
-                    "description": "要初始化的 Tab 选择器",
-                    "type": "Selector|string"
-                },
-                {
-                    "name": "_triggerTarget",
-                    "description": "初始完毕后要触发的 label",
-                    "type": "Selector|string"
-                }
-            ]
-        },
-        "JC.Tab.View": {
-            "name": "JC.Tab.View",
-            "shortname": "JC.Tab.View",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "namespace": "JC.Tab",
-            "file": "../comps/Tab/Tab.js",
-            "line": 560,
-            "description": "Tab 视图模型类",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "_model",
-                    "description": "",
-                    "type": "JC.Tab.Model"
-                }
+                "\n           <link href='../../../modules/JC.Tab/res/default/style.css' rel='stylesheet' />\n           <script src=\"../../../lib.js\"></script>\n           <script src=\"../../../config.js\"></script>\n           <script>\n               JC.debug = 1;\n\n               requirejs( [ 'JC.Tab' ], function(){\n                   JC.f.httpRequire();\n\n                   JC.Tab.ajaxCallback =\n                       function( _data, _label, _container ){\n                           _data && ( _data = $.parseJSON( _data ) );\n                           if( _data && _data.errorno === 0 ){\n                               _container.html( JC.f.printf( '<h2>JC.Tab.ajaxCallback</h2>{0}', _data.data ) );\n                           }else{\n                               Tab.isAjaxInited( _label, 0 );\n                               _container.html( '<h2>内容加载失败!</h2>' );\n                           }\n                       };\n               });\n\n               function tabactive( _evt, _container, _tabIns ){\n                   var _label = $(this);\n                   JC.log( 'tab ', _evt.type, _label.html(), new Date().getTime() );\n                   if( JC.Tab.isAjax( _label ) && ! JC.Tab.isAjaxInited( _label ) ){\n                       _container.html( '<h2>内容加载中...</h2>' );\n                   }\n               }\n\n               function tabchange( _container, _tabIns ){\n                   var _label = $(this);\n                   JC.log( 'tab change: ', _label.html(), new Date().getTime() );\n               }\n\n               function ajaxcallback( _data, _label, _container ){\n                   _data && ( _data = $.parseJSON( _data ) );\n                   if( _data && _data.errorno === 0 ){\n                       _container.html( JC.f.printf( '<h2>label attr ajaxcallback</h2>{0}', _data.data ) );\n                   }else{\n                       Tab.isAjaxInited( _label, 0 );\n                       _container.html( '<h2>内容加载失败!</h2>' );\n                   }\n               };\n           </script>\n\n           <dl class=\"def\">\n               <dt>JC.Tab 示例 - 静态内容</dt>\n               <dd>\n               <div class=\"le-tabview js_autoTab\" tablabels=\"ul.js_tabLabel > li > a\" tabcontainers=\"div.js_tabContent > div\" \n                                                   tabactiveclass=\"active\" tablabelparent=\"li\" \n                                                   tabactivecallback=\"tabactive\" tabchangecallback=\"tabchange\"\n                                                   >\n                       <ul class=\"le-tabs js_tabLabel\">\n                           <li class=\"active\"><a href=\"javascript:\">电视剧</a></li>\n                           <li><a href=\"javascript:\">电影</a></li>\n                           <li><a href=\"javascript:\">综艺</a></li>\n                           <li><a href=\"javascript:\">热点</a></li>\n                       </ul>\n                       <div class=\"views js_tabContent\">\n                           <div class=\"view-item active\">1. 集地议送能拿距还杨雷火，永鲜提只风超洋轻绿动视落清各只江执口。</div>\n                           <div class=\"view-item\">2. 相送黄血富打万念却烟会华它表本雷烟形烟消卷效难标否标滑固小实。</div>\n                           <div class=\"view-item\">3. 理往局背剧养认被站推简沉形括於穿短，精白自没路绿往优八益是入。</div>\n                           <div class=\"view-item\">4. 鲁杆格滑那双来班五材实死听顶脱本续克修先课丝另乡型茶父报孔图。</div>\n                       </div>\n                   </div>\n               </dd>\n           </dl>\n\n           <dl class=\"def\">\n               <dt>JC.Tab 示例 - 动态内容 - AJAX</dt>\n               <dd>\n               <div class=\"le-tabview js_autoTab\" tablabels=\"ul.js_tabLabel2 > li > a\" tabcontainers=\"div.js_tabContent2 > div\" \n                                                   tabactiveclass=\"active\" tablabelparent=\"li\" \n                                                   tabactivecallback=\"tabactive\" tabchangecallback=\"tabchange\"\n                                                   >\n                       <ul class=\"le-tabs js_tabLabel2\">\n                           <li class=\"active\"><a href=\"javascript:\">电视剧</a></li>\n                           <li><a href=\"javascript:\" tabAjaxUrl=\"data/test.php\" tabajaxmethod=\"post\" \n                                                     tabajaxdata=\"{a:1,b:2}\" tabajaxcallback=\"ajaxcallback\" >电影</a></li>\n                           <li><a href=\"javascript:\" tabAjaxUrl=\"data/test.php\" tabajaxcallback=\"ajaxcallback\" >综艺</a></li>\n                           <li><a href=\"javascript:\" tabAjaxUrl=\"data/test.php\" >热点</a></li>\n                       </ul>\n                       <div class=\"views js_tabContent2\">\n                           <div class=\"view-item active\">1. 集地议送能拿距还杨雷火，永鲜提只风超洋轻绿动视落清各只江执口。</div>\n                           <div class=\"view-item\"></div>\n                           <div class=\"view-item\"></div>\n                           <div class=\"view-item\"></div>\n                       </div>\n                   </div>\n               </dd>\n           </dl>"
             ]
         },
         "JC.TableFreeze": {
@@ -12394,7 +12342,7 @@
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 156,
+            "line": 159,
             "description": "Tab 模型类的实例",
             "itemtype": "property",
             "name": "_model",
@@ -12406,14 +12354,14 @@
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 163,
+            "line": 166,
             "description": "Tab 视图类的实例",
             "class": "JC.Tab",
             "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 171,
+            "line": 173,
             "description": "页面加载完毕后, 是否要添加自动初始化事件\n<br /> 自动初始化是 鼠标移动到 Tab 容器时去执行的, 不是页面加载完毕后就开始自动初始化",
             "itemtype": "property",
             "name": "autoInit",
@@ -12425,7 +12373,7 @@
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 180,
+            "line": 182,
             "description": "label 当前状态的样式",
             "itemtype": "property",
             "name": "activeClass",
@@ -12437,7 +12385,7 @@
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 188,
+            "line": 190,
             "description": "label 的触发事件",
             "itemtype": "property",
             "name": "activeEvent",
@@ -12449,7 +12397,7 @@
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 196,
+            "line": 198,
             "description": "获取或设置 Tab 容器的 Tab 实例属性",
             "itemtype": "method",
             "name": "getInstance",
@@ -12471,7 +12419,38 @@
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 212,
+            "line": 223,
+            "description": "初始化可识别的 Tab 实例",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Array of TabInstance"
+            },
+            "class": "JC.Tab",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Tab/Tab.js",
+            "line": 246,
+            "description": "判断一个容器是否 符合 Tab 数据要求",
+            "return": {
+                "description": "bool"
+            },
+            "class": "JC.Tab",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Tab/Tab.js",
+            "line": 261,
             "description": "全局的 ajax 处理回调",
             "itemtype": "property",
             "name": "ajaxCallback",
@@ -12486,7 +12465,7 @@
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 233,
+            "line": 282,
             "description": "ajax 请求是否添加随机参数 rnd, 以防止页面缓存的结果差异",
             "itemtype": "property",
             "name": "ajaxRandom",
@@ -12498,7 +12477,7 @@
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 241,
+            "line": 290,
             "description": "判断一个 label 是否为 ajax",
             "itemtype": "method",
             "name": "isAjax",
@@ -12519,7 +12498,7 @@
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 252,
+            "line": 301,
             "description": "判断一个 ajax label 是否已经初始化过\n<br /> 这个方法需要跟 Tab.isAjax 结合判断才更为准确",
             "itemtype": "method",
             "name": "isAjaxInited",
@@ -12544,7 +12523,119 @@
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 275,
+            "line": 322,
+            "itemtype": "method",
+            "name": "isIframe",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_label",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String|undefined"
+            },
+            "class": "JC.Tab",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Tab/Tab.js",
+            "line": 332,
+            "description": "判断一个 iframe label 是否已经初始化过\n<br /> 这个方法需要跟 Tab.isIframe 结合判断才更为准确",
+            "itemtype": "method",
+            "name": "isIframeInited",
+            "static": 1,
+            "params": [
+                {
+                    "name": "_label",
+                    "description": "",
+                    "type": "Selector"
+                },
+                {
+                    "name": "_setter",
+                    "description": "如果 _setter 不为空, 则进行赋值",
+                    "type": "Bool"
+                }
+            ],
+            "example": [
+                "\n       function tabactive( _evt, _container, _tabIns ){\n           var _label = $(this);\n           JC.log( 'tab ', _evt.type, _label.html(), new Date().getTime() );\n           if( JC.Tab.isIframe( _label ) && ! JC.Tab.isIframeInited( _label ) ){\n               _container.html( '<h2>内容加载中...</h2>' );\n           }\n       }"
+            ],
+            "class": "JC.Tab",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Tab/Tab.js",
+            "line": 353,
+            "description": "Tab 数据模型类",
+            "params": [
+                {
+                    "name": "_selector",
+                    "description": "要初始化的 Tab 选择器",
+                    "type": "Selector|string"
+                },
+                {
+                    "name": "_triggerTarget",
+                    "description": "初始完毕后要触发的 label",
+                    "type": "Selector|string"
+                }
+            ],
+            "class": "JC.Tab",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Tab/Tab.js",
+            "line": 360,
+            "description": "Tab 的主容器",
+            "type": "selector",
+            "access": "private",
+            "tagname": "",
+            "class": "JC.Tab",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Tab/Tab.js",
+            "line": 366,
+            "description": "Tab 初始完毕后要触发的label, 可选",
+            "type": "selector",
+            "access": "private",
+            "tagname": "",
+            "class": "JC.Tab",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Tab/Tab.js",
+            "line": 372,
+            "description": "Tab 的标签列表选择器",
+            "type": "selector",
+            "access": "private",
+            "tagname": "",
+            "class": "JC.Tab",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Tab/Tab.js",
+            "line": 378,
+            "description": "Tab 的内容列表选择器",
+            "type": "selector",
+            "access": "private",
+            "tagname": "",
+            "class": "JC.Tab",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Tab/Tab.js",
+            "line": 384,
+            "description": "当前标签的所在索引位置",
+            "type": "int",
+            "class": "JC.Tab",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Tab/Tab.js",
+            "line": 395,
             "description": "Tab 内部初始化方法",
             "itemtype": "method",
             "name": "_init",
@@ -12555,7 +12646,7 @@
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 292,
+            "line": 411,
             "description": "把 _label 设置为活动状态",
             "itemtype": "method",
             "name": "active",
@@ -12571,98 +12662,22 @@
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 318,
-            "description": "Tab 的主容器",
-            "itemtype": "property",
-            "name": "_layout",
-            "type": "selector",
-            "access": "private",
-            "tagname": "",
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
-        },
-        {
-            "file": "../comps/Tab/Tab.js",
-            "line": 325,
-            "description": "Tab 初始完毕后要触发的label, 可选",
-            "itemtype": "property",
-            "name": "_triggerTarget",
-            "type": "selector",
-            "access": "private",
-            "tagname": "",
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
-        },
-        {
-            "file": "../comps/Tab/Tab.js",
-            "line": 332,
-            "description": "Tab 的标签列表选择器",
-            "itemtype": "property",
-            "name": "_tablabels",
-            "type": "selector",
-            "access": "private",
-            "tagname": "",
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
-        },
-        {
-            "file": "../comps/Tab/Tab.js",
-            "line": 339,
-            "description": "Tab 的内容列表选择器",
-            "itemtype": "property",
-            "name": "_tabcontainers",
-            "type": "selector",
-            "access": "private",
-            "tagname": "",
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
-        },
-        {
-            "file": "../comps/Tab/Tab.js",
-            "line": 346,
-            "description": "当前标签的所在索引位置",
-            "itemtype": "property",
-            "name": "currentIndex",
-            "type": "int",
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
-        },
-        {
-            "file": "../comps/Tab/Tab.js",
-            "line": 357,
+            "line": 436,
             "description": "Tab Model 内部初始化方法",
-            "itemtype": "method",
-            "name": "_init",
-            "access": "private",
-            "tagname": "",
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 385,
-            "description": "判断是否从 layout 下查找内容",
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "line": 461,
+            "description": "判断是否从 selector 下查找内容",
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 392,
-            "description": "获取 Tab 的主容器",
-            "itemtype": "method",
-            "name": "layout",
-            "return": {
-                "description": "selector"
-            },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
-        },
-        {
-            "file": "../comps/Tab/Tab.js",
-            "line": 398,
+            "line": 468,
             "description": "获取 Tab 所有 label 或 特定索引的 label",
-            "itemtype": "method",
-            "name": "tablabels",
             "params": [
                 {
                     "name": "_ix",
@@ -12673,15 +12688,13 @@
             "return": {
                 "description": "selector"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 408,
+            "line": 477,
             "description": "获取 Tab 所有内容container 或 特定索引的 container",
-            "itemtype": "method",
-            "name": "tabcontainers",
             "params": [
                 {
                     "name": "_ix",
@@ -12692,63 +12705,45 @@
             "return": {
                 "description": "selector"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 418,
+            "line": 486,
             "description": "获取初始化要触发的 label",
-            "itemtype": "method",
-            "name": "triggerTarget",
             "return": {
                 "description": "selector"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 424,
-            "description": "判断一个容器是否 符合 Tab 数据要求",
-            "itemtype": "method",
-            "name": "layoutIsTab",
-            "return": {
-                "description": "bool"
-            },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
-        },
-        {
-            "file": "../comps/Tab/Tab.js",
-            "line": 430,
+            "line": 491,
             "description": "获取 Tab 活动状态的 class",
-            "itemtype": "method",
-            "name": "activeClass",
             "return": {
                 "description": "string"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 436,
+            "line": 496,
             "description": "获取 Tab label 的触发事件名称",
             "itemtype": "method",
             "name": "activeEvent",
             "return": {
                 "description": "string"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 442,
+            "line": 502,
             "description": "判断 label 是否符合要求, 或者设置一个 label为符合要求",
-            "itemtype": "method",
-            "name": "tablabel",
             "params": [
                 {
                     "name": "_setter",
@@ -12759,15 +12754,13 @@
             "return": {
                 "description": "bool"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 455,
+            "line": 514,
             "description": "判断 container 是否符合要求, 或者设置一个 container为符合要求",
-            "itemtype": "method",
-            "name": "tabcontent",
             "params": [
                 {
                     "name": "_content",
@@ -12783,15 +12776,13 @@
             "return": {
                 "description": "bool"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 469,
+            "line": 527,
             "description": "获取或设置 label 的索引位置",
-            "itemtype": "method",
-            "name": "tabindex",
             "params": [
                 {
                     "name": "_label",
@@ -12807,39 +12798,33 @@
             "return": {
                 "description": "int"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 483,
+            "line": 540,
             "description": "获取Tab label 触发事件后的回调",
-            "itemtype": "method",
-            "name": "tabactivecallback",
             "return": {
                 "description": "function"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 494,
+            "line": 550,
             "description": "获取 Tab label 变更后的回调",
-            "itemtype": "method",
-            "name": "tabchangecallback",
             "return": {
                 "description": "function"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 505,
+            "line": 560,
             "description": "获取 Tab label 活动状态显示样式的标签",
-            "itemtype": "method",
-            "name": "tablabelparent",
             "params": [
                 {
                     "name": "_label",
@@ -12850,15 +12835,13 @@
             "return": {
                 "description": "selector"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 519,
+            "line": 573,
             "description": "获取 ajax label 的 URL",
-            "itemtype": "method",
-            "name": "tabajaxurl",
             "params": [
                 {
                     "name": "_label",
@@ -12869,15 +12852,30 @@
             "return": {
                 "description": "string"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 526,
+            "line": 579,
+            "description": "获取 iframe label 的 URL",
+            "params": [
+                {
+                    "name": "_label",
+                    "description": "",
+                    "type": "Selector"
+                }
+            ],
+            "return": {
+                "description": "string"
+            },
+            "class": "JC.Tab",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Tab/Tab.js",
+            "line": 585,
             "description": "获取 ajax label 的请求方法 get/post",
-            "itemtype": "method",
-            "name": "tabajaxmethod",
             "params": [
                 {
                     "name": "_label",
@@ -12888,15 +12886,13 @@
             "return": {
                 "description": "string"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 533,
+            "line": 591,
             "description": "获取 ajax label 的请求数据",
-            "itemtype": "method",
-            "name": "tabajaxdata",
             "params": [
                 {
                     "name": "_label",
@@ -12907,15 +12903,13 @@
             "return": {
                 "description": "object"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 547,
+            "line": 604,
             "description": "获取 ajax label 请求URL后的回调",
-            "itemtype": "method",
-            "name": "tabajaxcallback",
             "params": [
                 {
                     "name": "_label",
@@ -12926,36 +12920,20 @@
             "return": {
                 "description": "function"
             },
-            "class": "JC.Tab.Model",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 568,
-            "description": "Tab 数据模型类实例引用",
-            "itemtype": "property",
-            "name": "_model",
-            "type": "{JC.Tab.Model}",
-            "access": "private",
-            "tagname": "",
-            "class": "JC.Tab.View",
-            "namespace": "JC.Tab"
-        },
-        {
-            "file": "../comps/Tab/Tab.js",
-            "line": 578,
+            "line": 618,
             "description": "Tab 视图类初始化方法",
-            "itemtype": "method",
-            "name": "init",
-            "class": "JC.Tab.View",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 600,
+            "line": 639,
             "description": "设置特定索引位置的 label 为活动状态",
-            "itemtype": "method",
-            "name": "active",
             "params": [
                 {
                     "name": "_ix",
@@ -12963,15 +12941,13 @@
                     "type": "Int"
                 }
             ],
-            "class": "JC.Tab.View",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 624,
+            "line": 663,
             "description": "请求特定索引位置的 ajax tab 数据",
-            "itemtype": "method",
-            "name": "activeAjax",
             "params": [
                 {
                     "name": "_ix",
@@ -12979,15 +12955,29 @@
                     "type": "Int"
                 }
             ],
-            "class": "JC.Tab.View",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/Tab/Tab.js",
-            "line": 652,
+            "line": 684,
+            "description": "请求特定索引位置的 ajax tab 数据",
+            "params": [
+                {
+                    "name": "_ix",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "class": "JC.Tab",
+            "namespace": "JC"
+        },
+        {
+            "file": "../comps/Tab/Tab.js",
+            "line": 702,
             "description": "自动化初始 Tab 实例\n如果 Tab.autoInit = true, 鼠标移至 Tab 后会自动初始化 Tab",
-            "class": "JC.Tab.View",
-            "namespace": "JC.Tab"
+            "class": "JC.Tab",
+            "namespace": "JC"
         },
         {
             "file": "../comps/TableFreeze/TableFreeze.js",
@@ -18528,7 +18518,7 @@
         {
             "file": "../common.js",
             "line": 1044,
-            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar\n         , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
+            "description": "动态添加内容时, 初始化可识别的组件\n<dl>\n     <dt>目前会自动识别的组件</dt>\n     <dd>\n         Bizs.CommonModify, JC.Panel, JC.Dialog\n         <br /><b>自动识别的组件不用显式调用  jcAutoInitComps 去识别可识别的组件</b>\n     </dd>\n</d>\n<dl>\n     <dt>可识别的组件</dt>\n     <dd>\n         JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar\n         , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter, JC.Tab\n         <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete\n     </dd>\n</d>",
             "itemtype": "method",
             "name": "jcAutoInitComps",
             "params": [
@@ -18597,37 +18587,37 @@
         },
         {
             "file": "../common.js",
-            "line": 1107,
+            "line": 1109,
             "description": "disable / enable",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1111,
+            "line": 1113,
             "description": "表单提交逻辑",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1115,
+            "line": 1117,
             "description": "格式化金额",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1119,
+            "line": 1121,
             "description": "自动完成",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1124,
+            "line": 1126,
             "description": "排期日期展示",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1129,
+            "line": 1131,
             "description": "URL 占位符识别功能\n<br /><b>require:</b> addUrlParams, filterXSS",
             "itemtype": "method",
             "name": "urlDetect",
@@ -18649,7 +18639,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1170,
+            "line": 1172,
             "description": "日期占位符识别功能",
             "itemtype": "method",
             "name": "dateDetect",
@@ -18672,13 +18662,13 @@
         },
         {
             "file": "../common.js",
-            "line": 1234,
+            "line": 1236,
             "description": "inject jquery val func, for hidden change event",
             "class": "JC.common"
         },
         {
             "file": "../common.js",
-            "line": 1252,
+            "line": 1254,
             "description": "逗号格式化金额",
             "itemtype": "method",
             "name": "moneyFormat",
@@ -18712,7 +18702,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1307,
+            "line": 1309,
             "description": "日期格式化 (具体格式请查看 PHP Date Formats)",
             "itemtype": "method",
             "name": "dateFormat",
@@ -18736,7 +18726,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1388,
+            "line": 1390,
             "description": "扩展对象属性",
             "itemtype": "method",
             "name": "extendObject",
@@ -18765,7 +18755,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1410,
+            "line": 1412,
             "description": "timeout 控制逻辑, 避免相同功能的 setTimeout 重复执行",
             "itemtype": "method",
             "name": "safeTimeout",
@@ -18799,7 +18789,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1431,
+            "line": 1433,
             "description": "URL 请求时, 获取对URL参数进行编码的函数",
             "itemtype": "method",
             "name": "encoder",
@@ -18819,7 +18809,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1449,
+            "line": 1451,
             "description": "深度克隆对象",
             "itemtype": "method",
             "name": "cloneObject",
@@ -18838,7 +18828,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1492,
+            "line": 1494,
             "description": "获取 document 的 相关大小",
             "itemtype": "method",
             "name": "docSize",
@@ -18857,7 +18847,7 @@
         },
         {
             "file": "../common.js",
-            "line": 1521,
+            "line": 1523,
             "description": "获取 window 的 相关大小",
             "itemtype": "method",
             "name": "winSize",
@@ -19231,11 +19221,11 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../comps/Tab/Tab.js:5"
+            "line": " ../comps/Tab/Tab.js:3"
         },
         {
-            "message": "unknown tag: date",
-            "line": " ../comps/Tab/Tab.js:5"
+            "message": "unknown tag: version",
+            "line": " ../comps/Tab/Tab.js:3"
         },
         {
             "message": "unknown tag: version",
@@ -19971,15 +19961,123 @@
         },
         {
             "message": "Missing item type\nTab 视图类的实例",
-            "line": " ../comps/Tab/Tab.js:163"
+            "line": " ../comps/Tab/Tab.js:166"
         },
         {
-            "message": "Missing item type\n判断是否从 layout 下查找内容",
-            "line": " ../comps/Tab/Tab.js:385"
+            "message": "Missing item type\n判断一个容器是否 符合 Tab 数据要求",
+            "line": " ../comps/Tab/Tab.js:246"
+        },
+        {
+            "message": "Missing item type\nTab 数据模型类",
+            "line": " ../comps/Tab/Tab.js:353"
+        },
+        {
+            "message": "Missing item type\nTab 的主容器",
+            "line": " ../comps/Tab/Tab.js:360"
+        },
+        {
+            "message": "Missing item type\nTab 初始完毕后要触发的label, 可选",
+            "line": " ../comps/Tab/Tab.js:366"
+        },
+        {
+            "message": "Missing item type\nTab 的标签列表选择器",
+            "line": " ../comps/Tab/Tab.js:372"
+        },
+        {
+            "message": "Missing item type\nTab 的内容列表选择器",
+            "line": " ../comps/Tab/Tab.js:378"
+        },
+        {
+            "message": "Missing item type\n当前标签的所在索引位置",
+            "line": " ../comps/Tab/Tab.js:384"
+        },
+        {
+            "message": "Missing item type\nTab Model 内部初始化方法",
+            "line": " ../comps/Tab/Tab.js:436"
+        },
+        {
+            "message": "Missing item type\n判断是否从 selector 下查找内容",
+            "line": " ../comps/Tab/Tab.js:461"
+        },
+        {
+            "message": "Missing item type\n获取 Tab 所有 label 或 特定索引的 label",
+            "line": " ../comps/Tab/Tab.js:468"
+        },
+        {
+            "message": "Missing item type\n获取 Tab 所有内容container 或 特定索引的 container",
+            "line": " ../comps/Tab/Tab.js:477"
+        },
+        {
+            "message": "Missing item type\n获取初始化要触发的 label",
+            "line": " ../comps/Tab/Tab.js:486"
+        },
+        {
+            "message": "Missing item type\n获取 Tab 活动状态的 class",
+            "line": " ../comps/Tab/Tab.js:491"
+        },
+        {
+            "message": "Missing item type\n判断 label 是否符合要求, 或者设置一个 label为符合要求",
+            "line": " ../comps/Tab/Tab.js:502"
+        },
+        {
+            "message": "Missing item type\n判断 container 是否符合要求, 或者设置一个 container为符合要求",
+            "line": " ../comps/Tab/Tab.js:514"
+        },
+        {
+            "message": "Missing item type\n获取或设置 label 的索引位置",
+            "line": " ../comps/Tab/Tab.js:527"
+        },
+        {
+            "message": "Missing item type\n获取Tab label 触发事件后的回调",
+            "line": " ../comps/Tab/Tab.js:540"
+        },
+        {
+            "message": "Missing item type\n获取 Tab label 变更后的回调",
+            "line": " ../comps/Tab/Tab.js:550"
+        },
+        {
+            "message": "Missing item type\n获取 Tab label 活动状态显示样式的标签",
+            "line": " ../comps/Tab/Tab.js:560"
+        },
+        {
+            "message": "Missing item type\n获取 ajax label 的 URL",
+            "line": " ../comps/Tab/Tab.js:573"
+        },
+        {
+            "message": "Missing item type\n获取 iframe label 的 URL",
+            "line": " ../comps/Tab/Tab.js:579"
+        },
+        {
+            "message": "Missing item type\n获取 ajax label 的请求方法 get/post",
+            "line": " ../comps/Tab/Tab.js:585"
+        },
+        {
+            "message": "Missing item type\n获取 ajax label 的请求数据",
+            "line": " ../comps/Tab/Tab.js:591"
+        },
+        {
+            "message": "Missing item type\n获取 ajax label 请求URL后的回调",
+            "line": " ../comps/Tab/Tab.js:604"
+        },
+        {
+            "message": "Missing item type\nTab 视图类初始化方法",
+            "line": " ../comps/Tab/Tab.js:618"
+        },
+        {
+            "message": "Missing item type\n设置特定索引位置的 label 为活动状态",
+            "line": " ../comps/Tab/Tab.js:639"
+        },
+        {
+            "message": "Missing item type\n请求特定索引位置的 ajax tab 数据",
+            "line": " ../comps/Tab/Tab.js:663"
+        },
+        {
+            "message": "Missing item type\n请求特定索引位置的 ajax tab 数据",
+            "line": " ../comps/Tab/Tab.js:684"
         },
         {
             "message": "Missing item type\n自动化初始 Tab 实例\n如果 Tab.autoInit = true, 鼠标移至 Tab 后会自动初始化 Tab",
-            "line": " ../comps/Tab/Tab.js:652"
+            "line": " ../comps/Tab/Tab.js:702"
         },
         {
             "message": "Missing item type\n为了解决ie6下表格的宽度超出父容器的宽度，父容器的宽度会跟随表格的宽度",
@@ -20571,27 +20669,27 @@
         },
         {
             "message": "Missing item type\ndisable / enable",
-            "line": " ../common.js:1107"
+            "line": " ../common.js:1109"
         },
         {
             "message": "Missing item type\n表单提交逻辑",
-            "line": " ../common.js:1111"
+            "line": " ../common.js:1113"
         },
         {
             "message": "Missing item type\n格式化金额",
-            "line": " ../common.js:1115"
+            "line": " ../common.js:1117"
         },
         {
             "message": "Missing item type\n自动完成",
-            "line": " ../common.js:1119"
+            "line": " ../common.js:1121"
         },
         {
             "message": "Missing item type\n排期日期展示",
-            "line": " ../common.js:1124"
+            "line": " ../common.js:1126"
         },
         {
             "message": "Missing item type\ninject jquery val func, for hidden change event",
-            "line": " ../common.js:1234"
+            "line": " ../common.js:1236"
         },
         {
             "message": "Missing item type\nFor feature detection",

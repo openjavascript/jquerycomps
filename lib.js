@@ -10653,7 +10653,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
      *      <dt>可识别的组件</dt>
      *      <dd>
      *          JC.AutoSelect, JC.AutoChecked, JC.AjaxUpload, JC.Calendar
-     *          , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter
+     *          , JC.Drag, JC.DCalendar, JC.Placeholder, JC.TableFreeze, JC.ImageCutter, JC.Tab
      *          <br />Bizs.DisableLogic, Bizs.FormLogic, Bizs.MoneyTips, Bizs.AutoSelectComplete
      *      </dd>
      * </d>
@@ -10701,6 +10701,8 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
          * 图片裁切
          */
         JC.ImageCutter && JC.ImageCutter.init( _selector );
+
+        JC.Tab && JC.Tab.init && JC.Tab.init( _selector );
 
         if( !window.Bizs ) return;
         /**

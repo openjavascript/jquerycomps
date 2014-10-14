@@ -142,14 +142,13 @@
                         <h1>JC.Tab Class</h1>
 <div class="box meta">
         <div class="foundat">
-            Defined in: <a href="../files/.._comps_Tab_Tab.js.html#l5"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:5</code></a>
+            Defined in: <a href="../files/.._comps_Tab_Tab.js.html#l3"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:3</code></a>
         </div>
 </div>
 <div class="box intro">
-    <p>Tab 菜单类
-<br />DOM 加载完毕后
-, 只要鼠标移动到具有识别符的Tab上面, Tab就会自动初始化, 目前可识别: <b>.js_autoTab</b>( CSS class )
-<br />需要手动初始化, 请使用: var ins = new JC.Tab( _tabSelector );</p>
+    <p>Tab 选项卡
+<br />响应式初始化, 当鼠标移动到 Tab 时, Tab 会尝试自动初始化 class = &quot;<b>.js_autoTab</b>&quot; 的 HTML 标签
+<br />需要手动初始化, 请使用: var _ins = new JC.Tab( _tabSelector );</p>
 <p><p><b>require</b>: 
      <a href='.jQuery.html'>jQuery</a>
      , <a href='JC.common.html'>JC.common</a>
@@ -171,10 +170,12 @@
      <dd>当 tab label 被触发时的回调</dd>
      <dt>tabchangecallback</dt>
      <dd>当 tab label 变更时的回调</dd>
+     <dt>tabTriggerDefault</dt>
+     <dd>页面初始化完毕时，是否实例化，并初始化当前选中标签</dd>
 </dl>
 <h2>Label(标签) 容器的HTML属性(AJAX)</h2>
 <dl>
-     <dt>tabajaxurl</dt>
+     <dt>tabAjaxUrl</dt>
      <dd>ajax 请求的 URL 地址</dd>
      <dt>tabajaxmethod</dt>
      <dd>ajax 请求的方法( get|post ), 默认 get</dd>
@@ -182,6 +183,8 @@
      <dd>ajax 请求的 数据, json</dd>
      <dt>tabajaxcallback</dt>
      <dd>ajax 请求的回调</dd>
+     <dt>tabIframeUrl</dt>
+     <dd>iframe 显示的URL</dd>
 </dl>
 </div>
     <div class="constructor">
@@ -201,7 +204,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l5"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:5</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l3"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:3</code></a>
         </p>
     </div>
     <div class="description">
@@ -298,10 +301,10 @@
                                                &gt;
                    &lt;ul class=&quot;le-tabs js_tabLabel2&quot;&gt;
                        &lt;li class=&quot;active&quot;&gt;&lt;a href=&quot;javascript:&quot;&gt;电视剧&lt;/a&gt;&lt;/li&gt;
-                       &lt;li&gt;&lt;a href=&quot;javascript:&quot; tabajaxurl=&quot;data/test.php&quot; tabajaxmethod=&quot;post&quot; 
+                       &lt;li&gt;&lt;a href=&quot;javascript:&quot; tabAjaxUrl=&quot;data/test.php&quot; tabajaxmethod=&quot;post&quot; 
                                                  tabajaxdata=&quot;{a:1,b:2}&quot; tabajaxcallback=&quot;ajaxcallback&quot; &gt;电影&lt;/a&gt;&lt;/li&gt;
-                       &lt;li&gt;&lt;a href=&quot;javascript:&quot; tabajaxurl=&quot;data/test.php&quot; tabajaxcallback=&quot;ajaxcallback&quot; &gt;综艺&lt;/a&gt;&lt;/li&gt;
-                       &lt;li&gt;&lt;a href=&quot;javascript:&quot; tabajaxurl=&quot;data/test.php&quot; &gt;热点&lt;/a&gt;&lt;/li&gt;
+                       &lt;li&gt;&lt;a href=&quot;javascript:&quot; tabAjaxUrl=&quot;data/test.php&quot; tabajaxcallback=&quot;ajaxcallback&quot; &gt;综艺&lt;/a&gt;&lt;/li&gt;
+                       &lt;li&gt;&lt;a href=&quot;javascript:&quot; tabAjaxUrl=&quot;data/test.php&quot; &gt;热点&lt;/a&gt;&lt;/li&gt;
                    &lt;/ul&gt;
                    &lt;div class=&quot;views js_tabContent2&quot;&gt;
                        &lt;div class=&quot;view-item active&quot;&gt;1. 集地议送能拿距还杨雷火，永鲜提只风超洋轻绿动视落清各只江执口。&lt;/div&gt;
@@ -335,7 +338,14 @@
                                 <a href="#method_active">active</a>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_activeEvent">activeEvent</a>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_getInstance">getInstance</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_init">init</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
@@ -344,6 +354,14 @@
                             </li>
                             <li class="index-item method">
                                 <a href="#method_isAjaxInited">isAjaxInited</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isIframe">isIframe</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isIframeInited">isIframeInited</a>
                                     <span class="flag static">static</span>
                             </li>
                     </ul>
@@ -386,7 +404,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l275"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:275</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l395"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:395</code></a>
         </p>
     </div>
     <div class="description">
@@ -405,7 +423,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l292"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:292</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l411"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:411</code></a>
         </p>
     </div>
     <div class="description">
@@ -421,6 +439,28 @@
                     </div>
                 </li>
             </ul>
+        </div>
+</div>
+                    <div id="method_activeEvent" class="method item">
+    <h3 class="name"><code>activeEvent</code></h3>
+        <span class="paren">()</span>
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Tab_Tab.js.html#l496"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:496</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>获取 Tab label 的触发事件名称</p>
+    </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                    <p>string</p>
+            </div>
         </div>
 </div>
                     <div id="method_getInstance" class="method item">
@@ -439,7 +479,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l196"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:196</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l198"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:198</code></a>
         </p>
     </div>
     <div class="description">
@@ -464,6 +504,46 @@
             </ul>
         </div>
 </div>
+                    <div id="method_init" class="method item">
+    <h3 class="name"><code>init</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_selector</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type">Array of TabInstance</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Tab_Tab.js.html#l223"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:223</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>初始化可识别的 Tab 实例</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_selector</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type">Array of TabInstance</span>:
+            </div>
+        </div>
+</div>
                     <div id="method_isAjax" class="method item">
     <h3 class="name"><code>isAjax</code></h3>
         <div class="args">
@@ -480,7 +560,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l241"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:241</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l290"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:290</code></a>
         </p>
     </div>
     <div class="description">
@@ -520,7 +600,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l252"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:252</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l301"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:301</code></a>
         </p>
     </div>
     <div class="description">
@@ -558,6 +638,99 @@
             </div>
         </div>
 </div>
+                    <div id="method_isIframe" class="method item">
+    <h3 class="name"><code>isIframe</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_label</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | Undefined</span>
+        </span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Tab_Tab.js.html#l322"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:322</code></a>
+        </p>
+    </div>
+    <div class="description">
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_label</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="returns">
+            <h4>Returns:</h4>
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | Undefined</span>:
+            </div>
+        </div>
+</div>
+                    <div id="method_isIframeInited" class="method item">
+    <h3 class="name"><code>isIframeInited</code></h3>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>_label</code>
+                </li>
+                <li class="arg">
+                        <code>_setter</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._comps_Tab_Tab.js.html#l332"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:332</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>判断一个 iframe label 是否已经初始化过
+<br /> 这个方法需要跟 Tab.isIframe 结合判断才更为准确</p>
+    </div>
+        <div class="params">
+            <h4>Parameters:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">_label</code>
+                        <span class="type">Selector</span>
+                    <div class="param-description">
+                    </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">_setter</code>
+                        <span class="type">Bool</span>
+                    <div class="param-description">
+                        <p>如果 _setter 不为空, 则进行赋值</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="example">
+            <h4>Example:</h4>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>   function tabactive( _evt, _container, _tabIns ){
+       var _label = $(this);
+       JC.log( &#39;tab &#39;, _evt.type, _label.html(), new Date().getTime() );
+       if( JC.Tab.isIframe( _label ) &amp;&amp; ! JC.Tab.isIframeInited( _label ) ){
+           _container.html( &#39;&lt;h2&gt;内容加载中...&lt;/h2&gt;&#39; );
+       }
+   }</code></pre>
+            </div>
+        </div>
+</div>
             </div>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
@@ -567,7 +740,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l156"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:156</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l159"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:159</code></a>
         </p>
     </div>
     <div class="description">
@@ -581,7 +754,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l180"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:180</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l182"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:182</code></a>
         </p>
     </div>
     <div class="description">
@@ -596,7 +769,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l188"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:188</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l190"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:190</code></a>
         </p>
     </div>
     <div class="description">
@@ -611,7 +784,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l212"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:212</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l261"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:261</code></a>
         </p>
     </div>
     <div class="description">
@@ -643,7 +816,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l233"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:233</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l282"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:282</code></a>
         </p>
     </div>
     <div class="description">
@@ -658,7 +831,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._comps_Tab_Tab.js.html#l171"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:171</code></a>
+        <a href="../files/.._comps_Tab_Tab.js.html#l173"><code>..&#x2F;comps&#x2F;Tab&#x2F;Tab.js:173</code></a>
         </p>
     </div>
     <div class="description">
