@@ -197,7 +197,7 @@
              */
             msgbox:
                 [
-                '<div class="UPanel UPanelPopup {status}" >'
+                '<div class="UPanel UPanelPopup {status}" panelclickclose="true" >'
                 ,'    <div class="UPContent">'
                 ,'        <div class="bd">'
                 ,'            <dl>'
@@ -217,7 +217,7 @@
              */
             , alert:
                 [
-                '<div class="UPanel UPanelPopup {status}" >'
+                '<div class="UPanel UPanelPopup {status}" panelclickclose="true" >'
                 ,'    <div class="UPContent">'
                 ,'        <div class="bd">'
                 ,'            <dl>'
@@ -240,7 +240,7 @@
              */
             , confirm:
                 [
-                '<div class="UPanel UPanelPopup {status}" >'
+                '<div class="UPanel UPanelPopup {status}" panelclickclose="true" >'
                 ,'    <div class="UPContent">'
                 ,'        <div class="bd">'
                 ,'            <dl>'

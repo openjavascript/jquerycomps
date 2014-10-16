@@ -37,6 +37,7 @@
 
             _logic.showMask();
             _ins.selector().css( 'z-index', window.ZINDEX_COUNT++ );
+            !_ins.selector().is( '[panelclickclose]' ) && _ins.selector().attr( 'panelclickclose', false );
 
             _ins.on('close_default', function( _evt, _panel){
                 _logic.hideMask();

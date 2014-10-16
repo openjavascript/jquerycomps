@@ -889,7 +889,7 @@ $( document ).delegate(
                         _item.pid = _item.pid || [];
                         _item.pid.push( _id );
 
-                        if( ( 'targetNode' in _item ) && _item.targetNode in _p.chartData().targetNodes  ){
+                        if( ( 'targetNode' in _item ) && _p.chartData().targetNodes && ( _item.targetNode in _p.chartData().targetNodes )  ){
                             _targetNodes[ _item.targetNode ] = _item.targetNode;
 
                             _p.chartData().targetNodes[ _item.targetNode ].pid = _p.chartData().targetNodes[ _item.targetNode ].pid || [];
@@ -903,7 +903,7 @@ $( document ).delegate(
                     });
                 }              
 
-                if( _processSelf && ( 'targetNode' in _data ) && ( _data.targetNode in _p.chartData().targetNodes ) ){
+                if( _processSelf && ( 'targetNode' in _data ) && _p.chartData().targetNodes && ( _data.targetNode in _p.chartData().targetNodes ) ){
                     _p.chartData().targetNodes[ _data.targetNode ].pid = _p.chartData().targetNodes[ _data.targetNode ].pid || [];
                     _p.chartData().targetNodes[ _data.targetNode ].pid.push( _id );
                     _p.initIdColumnIndex( _p.chartData().targetNodes[ _data.targetNode ], _data.targetNode, _childIx, true, _count  );

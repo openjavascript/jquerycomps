@@ -520,7 +520,13 @@ JC.use &amp;&amp; !jQuery.event.special.mousewheel &amp;&amp; JC.use( &#x27;plug
         , &#x27;vbar&#x27;: &#x27;VHistogram&#x27;
         , &#x27;vhistogram&#x27;: &#x27;VHistogram&#x27;
 
+        , &#x27;zbar&#x27;: &#x27;ZHistogram&#x27;
+        , &#x27;zhistogram&#x27;: &#x27;ZHistogram&#x27;
+
         , &#x27;map&#x27;: &#x27;Map&#x27;
+
+        , &#x27;trend&#x27;: &#x27;Trend&#x27;
+        , &#x27;Trend&#x27;: &#x27;Trend&#x27;
 
         , &#x27;pie&#x27;: &#x27;PieGraph&#x27;
         , &#x27;piegraph&#x27;: &#x27;PieGraph&#x27;
@@ -682,6 +688,43 @@ JC.use &amp;&amp; !jQuery.event.special.mousewheel &amp;&amp; JC.use( &#x27;plug
                 var _p = this;
             }
         /**
+         * 渲染图表外观
+         */
+        , draw: 
+            function( _data ){
+                if( !this._model.type() ) return;
+                var _p = this
+                    , _path =  _p._model.path()
+                    , _fpath =  _path.replace( /[\/]+/g, &#x27;/&#x27; )
+                    , _element = $( &#x27;#&#x27; + _p._model.gid() )
+                    , _dataStr = JSON.stringify( _data ) 
+                    ; 
+
+                if( !$( &#x27;#&#x27; +  _p._model.gid() ).length ){
+                    _element = $( JC.f.printf( &#x27;&lt;span id=&quot;{0}&quot;&gt;&lt;/span&gt;&#x27;, _p._model.gid() ) );
+                    _element.appendTo( _p.selector() );
+                }
+
+                var _flashVar = { &#x27;chart&#x27;: encodeURIComponent( _dataStr ) }
+                    , _flashParams = { &#x27;wmode&#x27;: &#x27;transparent&#x27; }
+                    , _flashAttrs = { &#x27;id&#x27;: _p._model.gid(), &#x27;name&#x27;: _p._model.gid() }
+                    ;
+
+                swfobject.embedSWF( 
+                    _fpath
+                    , _p._model.gid()
+                    , _p._model.sourceWidth()
+                    , _p._model.height()
+                    , &#x27;10&#x27; 
+                    , &#x27;&#x27;
+                    , _flashVar
+                    , _flashParams
+                    , _flashAttrs
+                );
+
+            }
+
+        /**
          * 图表高度
          */
         , width: function(){ return this._model.width(); }
@@ -726,37 +769,6 @@ JC.use &amp;&amp; !jQuery.event.special.mousewheel &amp;&amp; JC.use( &#x27;plug
                 _p._model.clear();
                 _p._model.data( _data );
                 _p.draw( _data );
-            }
-        /**
-         * 渲染图表外观
-         */
-        , draw: 
-            function( _data ){
-                if( !this._model.type() ) return;
-                var _p = this
-                    , _path =  _p._model.path()
-                    , _fpath =  _path.replace( /[\/]+/g, &#x27;/&#x27; )
-                    , _element = $( &#x27;#&#x27; + _p._model.gid() )
-                    , _dataStr = JSON.stringify( _data ) 
-                    ; 
-
-                if( !$( &#x27;#&#x27; +  _p._model.gid() ).length ){
-                    _element = $( JC.f.printf( &#x27;&lt;span id=&quot;{0}&quot;&gt;&lt;/span&gt;&#x27;, _p._model.gid() ) );
-                    _element.appendTo( _p.selector() );
-                }
-
-                swfobject.embedSWF( 
-                    _fpath
-                    , _p._model.gid()
-                    , _p._model.sourceWidth()
-                    , _p._model.height()
-                    , &#x27;10&#x27; 
-                    , &#x27;&#x27;
-                    , { &#x27;testparams&#x27;: 2, &#x27;chart&#x27;: encodeURIComponent( _dataStr ) }
-                    , { &#x27;wmode&#x27;: &#x27;transparent&#x27; }
-                    , { &#x27;id&#x27;: _p._model.gid(), &#x27;name&#x27;: _p._model.gid() }
-                );
-
             }
     });
 

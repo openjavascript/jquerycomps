@@ -1143,7 +1143,7 @@ $( document ).delegate(
                         _item.pid = _item.pid || [];
                         _item.pid.push( _id );
 
-                        if( ( &#x27;targetNode&#x27; in _item ) &amp;&amp; _item.targetNode in _p.chartData().targetNodes  ){
+                        if( ( &#x27;targetNode&#x27; in _item ) &amp;&amp; _p.chartData().targetNodes &amp;&amp; ( _item.targetNode in _p.chartData().targetNodes )  ){
                             _targetNodes[ _item.targetNode ] = _item.targetNode;
 
                             _p.chartData().targetNodes[ _item.targetNode ].pid = _p.chartData().targetNodes[ _item.targetNode ].pid || [];
@@ -1157,7 +1157,7 @@ $( document ).delegate(
                     });
                 }              
 
-                if( _processSelf &amp;&amp; ( &#x27;targetNode&#x27; in _data ) &amp;&amp; ( _data.targetNode in _p.chartData().targetNodes ) ){
+                if( _processSelf &amp;&amp; ( &#x27;targetNode&#x27; in _data ) &amp;&amp; _p.chartData().targetNodes &amp;&amp; ( _data.targetNode in _p.chartData().targetNodes ) ){
                     _p.chartData().targetNodes[ _data.targetNode ].pid = _p.chartData().targetNodes[ _data.targetNode ].pid || [];
                     _p.chartData().targetNodes[ _data.targetNode ].pid.push( _id );
                     _p.initIdColumnIndex( _p.chartData().targetNodes[ _data.targetNode ], _data.targetNode, _childIx, true, _count  );
