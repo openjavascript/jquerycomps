@@ -266,7 +266,13 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
         , 'vbar': 'VHistogram'
         , 'vhistogram': 'VHistogram'
 
+        , 'zbar': 'ZHistogram'
+        , 'zhistogram': 'ZHistogram'
+
         , 'map': 'Map'
+
+        , 'trend': 'Trend'
+        , 'Trend': 'Trend'
 
         , 'pie': 'PieGraph'
         , 'piegraph': 'PieGraph'
@@ -428,6 +434,43 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
                 var _p = this;
             }
         /**
+         * 渲染图表外观
+         */
+        , draw: 
+            function( _data ){
+                if( !this._model.type() ) return;
+                var _p = this
+                    , _path =  _p._model.path()
+                    , _fpath =  _path.replace( /[\/]+/g, '/' )
+                    , _element = $( '#' + _p._model.gid() )
+                    , _dataStr = JSON.stringify( _data ) 
+                    ; 
+
+                if( !$( '#' +  _p._model.gid() ).length ){
+                    _element = $( JC.f.printf( '<span id="{0}"></span>', _p._model.gid() ) );
+                    _element.appendTo( _p.selector() );
+                }
+
+                var _flashVar = { 'chart': encodeURIComponent( _dataStr ) }
+                    , _flashParams = { 'wmode': 'transparent' }
+                    , _flashAttrs = { 'id': _p._model.gid(), 'name': _p._model.gid() }
+                    ;
+
+                swfobject.embedSWF( 
+                    _fpath
+                    , _p._model.gid()
+                    , _p._model.sourceWidth()
+                    , _p._model.height()
+                    , '10' 
+                    , ''
+                    , _flashVar
+                    , _flashParams
+                    , _flashAttrs
+                );
+
+            }
+
+        /**
          * 图表高度
          */
         , width: function(){ return this._model.width(); }
@@ -472,37 +515,6 @@ JC.use && !jQuery.event.special.mousewheel && JC.use( 'plugins.jquery.mousewheel
                 _p._model.clear();
                 _p._model.data( _data );
                 _p.draw( _data );
-            }
-        /**
-         * 渲染图表外观
-         */
-        , draw: 
-            function( _data ){
-                if( !this._model.type() ) return;
-                var _p = this
-                    , _path =  _p._model.path()
-                    , _fpath =  _path.replace( /[\/]+/g, '/' )
-                    , _element = $( '#' + _p._model.gid() )
-                    , _dataStr = JSON.stringify( _data ) 
-                    ; 
-
-                if( !$( '#' +  _p._model.gid() ).length ){
-                    _element = $( JC.f.printf( '<span id="{0}"></span>', _p._model.gid() ) );
-                    _element.appendTo( _p.selector() );
-                }
-
-                swfobject.embedSWF( 
-                    _fpath
-                    , _p._model.gid()
-                    , _p._model.sourceWidth()
-                    , _p._model.height()
-                    , '10' 
-                    , ''
-                    , { 'testparams': 2, 'chart': encodeURIComponent( _dataStr ) }
-                    , { 'wmode': 'transparent' }
-                    , { 'id': _p._model.gid(), 'name': _p._model.gid() }
-                );
-
             }
     });
 
