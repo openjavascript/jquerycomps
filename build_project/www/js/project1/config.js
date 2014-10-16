@@ -6,11 +6,12 @@
 //except for 'app' ones, which are in a sibling
 //directory.
 requirejs.config({
-    baseUrl: 'js/lib',
+    baseUrl: '../js/',
     paths: {
-        'jquery': 'jquery'
-        , 'common': '../common'
-        , 'JC.common': 'modules/JC.common/0.2/common'
-        , 'JC.BaseMVC': 'modules/JC.BaseMVC/0.1/BaseMVC'
+        'jquery': 'jc2/jquery'
+        , 'config': 'project1/config'
+        , 'common': 'project1/common'
+        , 'JC.common': 'jc2/modules/JC.common/0.2/common'
+        , 'JC.BaseMVC': 'jc2/modules/JC.BaseMVC/0.1/BaseMVC'
     }
 });
