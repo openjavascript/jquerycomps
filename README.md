@@ -10,4 +10,4 @@ Open JQuery Components Library
 ##沟通讨论
     飞信群: 81514206
     QQ群: 67024282
-    问题反馈邮箱: jc#openjavascript.org 
+    问题反馈邮箱: jc#openjavascript.org    
