@@ -31,6 +31,9 @@
      *      <dt>tabchangecallback</dt>
      *      <dd>当 tab label 变更时的回调</dd>
      *
+     *      <dt>tabQueryKey = url arg name</dt>
+     *      <dd>从URL默认选中tab, value = tab index, index 从0开始</dd>
+     *
      *      <dt>tabTriggerDefault</dt>
      *      <dd>页面初始化完毕时，是否实例化，并初始化当前选中标签</dd>
      * </dl>
@@ -211,6 +214,19 @@
             if( !( _ins && _ins._model && _ins._model.tablabels ) ){
                 return _ins;
             }
+
+            var _queryKey = _ins._model.tabQueryKey(), _queryIx, _tmp;
+            if( _queryKey ){
+                _queryIx = JC.f.getUrlParam( _queryKey );
+                if( _queryIx ){
+                  _tmp = $( _ins._model.tablabels()[ _queryIx ] );
+                  if( _tmp && _tmp.length ){
+                    _tmp.trigger( _ins._model.activeEvent() );
+                    return _ins;
+                  }
+                }
+            }
+
             _ins._model.tablabels().each( function(){
                 var _sp = $( this );
                 if( _sp.parent().hasClass( _ins._model.activeClass( _ins._model.tablabelparent( _sp ) ) ) ){
@@ -458,6 +474,11 @@
 
                 return this;
             }
+        , tabQueryKey:
+            function(){
+                var _r = this.attrProp( 'tabQueryKey' ) || '';
+                return _r;
+            }
         /**
          * 判断是否从 selector 下查找内容
          */
@@ -621,7 +642,7 @@
         init:
             function() {
                 var _p = this;
-                JC.log( _p._model.activeEvent(), JC.f.ts() );
+                //JC.log( _p._model.activeEvent(), JC.f.ts() );
                 this._model.tablabels().on( _p._model.activeEvent(), function( _evt ){
                     var _sp = $(this), _r;
                     if( typeof _p._model.currentIndex !== 'undefined' 
