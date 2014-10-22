@@ -88,6 +88,9 @@ requirejs.config( {
         , 'Bizs.AutoSelectComplete': 'modules/Bizs.AutoSelectComplete//0.1/AutoSelectComplete'
 
         , 'Bizs.ChangeLogic': 'modules/Bizs.ChangeLogic/0.1/ChangeLogic'
+
+        , 'Bizs.CustomColumn' : 'modules/Bizs.CustomColumn/0.1/CustomColumn'
+
         , 'Bizs.DisableLogic': 'modules/Bizs.DisableLogic/0.1/DisableLogic'
         , 'Bizs.DropdownTree': 'modules/Bizs.DropdownTree/0.1/DropdownTree'
 

@@ -47,6 +47,8 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/.window.html">.window</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -170,6 +172,8 @@
                 <li><a href="../classes/window.Bizs.CommonModify.html">window.Bizs.CommonModify</a></li>
             
                 <li><a href="../classes/window.Bizs.CRMSchedule.html">window.Bizs.CRMSchedule</a></li>
+            
+                <li><a href="../classes/window.Bizs.CustomColumn.html">window.Bizs.CustomColumn</a></li>
             
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
             
@@ -398,7 +402,7 @@
      *          &lt;br&gt;规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30
      *      &lt;/dd&gt;
      *      &lt;dd&gt;&lt;b&gt;idnumber:&lt;/b&gt; 身份证号码, 15~18 位&lt;/dd&gt;
-     *      &lt;dd&gt;&lt;b&gt;mobilecode:&lt;/b&gt; 手机号码, 11位, (13|14|15|16|18|19)[\d]{9}&lt;/dd&gt;
+     *      &lt;dd&gt;&lt;b&gt;mobilecode:&lt;/b&gt; 手机号码, 11位, (13|14|15|16|17|18|19)[\d]{9}&lt;/dd&gt;
      *      &lt;dd&gt;&lt;b&gt;mobile:&lt;/b&gt; mobilecode 的别名&lt;/dd&gt;
      *      &lt;dd&gt;&lt;b&gt;mobilezonecode:&lt;/b&gt; 带 国家代码的手机号码, [+国家代码] [零]11位数字&lt;/dd&gt;
      *      &lt;dd&gt;&lt;b&gt;phonecode:&lt;/b&gt; 电话号码, 7~8 位数字, [1-9][0-9]{6,7}&lt;/dd&gt;
@@ -1860,7 +1864,7 @@ function (){
          */
         , mobilecode: 
             function( _item, _noError ){
-                var _p = this, _r =  /^(?:13|14|15|16|18|19)[\d]{9}$/.test( _item.val() );
+                var _p = this, _r =  /^(?:13|14|15|16|17|18|19)[\d]{9}$/.test( _item.val() );
                 !_noError &amp;&amp; !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
             }
@@ -1894,7 +1898,7 @@ function (){
          */
         , mobilezonecode: 
             function( _item, _noError ){
-                var _p = this, _r = /^(?:\+[0-9]{1,6} |)(?:0|)(?:13|14|15|16|18|19)\d{9}$/.test( _item.val() );
+                var _p = this, _r = /^(?:\+[0-9]{1,6} |)(?:0|)(?:13|14|15|16|17|18|19)\d{9}$/.test( _item.val() );
                 !_noError &amp;&amp; !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
             }

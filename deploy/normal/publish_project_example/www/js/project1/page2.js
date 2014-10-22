@@ -1,0 +1,1 @@
+require(["common"],function(e){JC.log("page2",JC.f.ts())});

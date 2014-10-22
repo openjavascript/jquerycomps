@@ -47,6 +47,8 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/.window.html">.window</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -171,6 +173,8 @@
             
                 <li><a href="../classes/window.Bizs.CRMSchedule.html">window.Bizs.CRMSchedule</a></li>
             
+                <li><a href="../classes/window.Bizs.CustomColumn.html">window.Bizs.CustomColumn</a></li>
+            
                 <li><a href="../classes/window.Bizs.DisableLogic.html">window.Bizs.DisableLogic</a></li>
             
                 <li><a href="../classes/window.Bizs.DMultiDate.html">window.Bizs.DMultiDate</a></li>
@@ -284,6 +288,9 @@
      *
      *      &lt;dt&gt;tabchangecallback&lt;/dt&gt;
      *      &lt;dd&gt;当 tab label 变更时的回调&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;tabQueryKey = url arg name&lt;/dt&gt;
+     *      &lt;dd&gt;从URL默认选中tab, value = tab index, index 从0开始&lt;/dd&gt;
      *
      *      &lt;dt&gt;tabTriggerDefault&lt;/dt&gt;
      *      &lt;dd&gt;页面初始化完毕时，是否实例化，并初始化当前选中标签&lt;/dd&gt;
@@ -465,6 +472,19 @@
             if( !( _ins &amp;&amp; _ins._model &amp;&amp; _ins._model.tablabels ) ){
                 return _ins;
             }
+
+            var _queryKey = _ins._model.tabQueryKey(), _queryIx, _tmp;
+            if( _queryKey ){
+                _queryIx = JC.f.getUrlParam( _queryKey );
+                if( _queryIx ){
+                  _tmp = $( _ins._model.tablabels()[ _queryIx ] );
+                  if( _tmp &amp;&amp; _tmp.length ){
+                    _tmp.trigger( _ins._model.activeEvent() );
+                    return _ins;
+                  }
+                }
+            }
+
             _ins._model.tablabels().each( function(){
                 var _sp = $( this );
                 if( _sp.parent().hasClass( _ins._model.activeClass( _ins._model.tablabelparent( _sp ) ) ) ){
@@ -712,6 +732,11 @@
 
                 return this;
             }
+        , tabQueryKey:
+            function(){
+                var _r = this.attrProp( &#x27;tabQueryKey&#x27; ) || &#x27;&#x27;;
+                return _r;
+            }
         /**
          * 判断是否从 selector 下查找内容
          */
@@ -875,7 +900,7 @@
         init:
             function() {
                 var _p = this;
-                JC.log( _p._model.activeEvent(), JC.f.ts() );
+                //JC.log( _p._model.activeEvent(), JC.f.ts() );
                 this._model.tablabels().on( _p._model.activeEvent(), function( _evt ){
                     var _sp = $(this), _r;
                     if( typeof _p._model.currentIndex !== &#x27;undefined&#x27; 
