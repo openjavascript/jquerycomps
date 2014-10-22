@@ -144,7 +144,7 @@
      *          <br>规则: 首字母必须为 [a-zA-Z0-9], 长度 2 - 30
      *      </dd>
      *      <dd><b>idnumber:</b> 身份证号码, 15~18 位</dd>
-     *      <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|18|19)[\d]{9}</dd>
+     *      <dd><b>mobilecode:</b> 手机号码, 11位, (13|14|15|16|17|18|19)[\d]{9}</dd>
      *      <dd><b>mobile:</b> mobilecode 的别名</dd>
      *      <dd><b>mobilezonecode:</b> 带 国家代码的手机号码, [+国家代码] [零]11位数字</dd>
      *      <dd><b>phonecode:</b> 电话号码, 7~8 位数字, [1-9][0-9]{6,7}</dd>
@@ -1606,7 +1606,7 @@ function (){
          */
         , mobilecode: 
             function( _item, _noError ){
-                var _p = this, _r =  /^(?:13|14|15|16|18|19)[\d]{9}$/.test( _item.val() );
+                var _p = this, _r =  /^(?:13|14|15|16|17|18|19)[\d]{9}$/.test( _item.val() );
                 !_noError && !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
             }
@@ -1640,7 +1640,7 @@ function (){
          */
         , mobilezonecode: 
             function( _item, _noError ){
-                var _p = this, _r = /^(?:\+[0-9]{1,6} |)(?:0|)(?:13|14|15|16|18|19)\d{9}$/.test( _item.val() );
+                var _p = this, _r = /^(?:\+[0-9]{1,6} |)(?:0|)(?:13|14|15|16|17|18|19)\d{9}$/.test( _item.val() );
                 !_noError && !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
             }
