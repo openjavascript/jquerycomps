@@ -52,6 +52,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.AutoSelectComplete",
         "window.Bizs.ChangeLogic",
         "window.Bizs.CommonModify",
+        "window.Bizs.CustomColumn",
         "window.Bizs.DMultiDate",
         "window.Bizs.DisableLogic",
         "window.Bizs.DropdownTree",
