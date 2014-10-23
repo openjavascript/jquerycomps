@@ -279,10 +279,11 @@
     JC.use &amp;&amp; !JC.Tree &amp;&amp; JC.use( &#x27;JC.Tree&#x27; );
     Bizs.MultiSelectTree = MultiSelectTree
 
-	function MultiSelectTree( _treeEle, _treeData, _cb ){
+	function MultiSelectTree( _treeEle, _treeData, _cb, _renderTpl ){
 		// init tree and callback
 		this._tree = new JC.Tree( _treeEle, _treeData );
 		this._getSelected = _cb;
+        this._renderTpl = _renderTpl;
 	}
 	MultiSelectTree.prototype = {
         /**
@@ -328,13 +329,13 @@
 				return;
 			}  
 			if(target[0].checked){
-				var child = target.parent().next().find(&#x27;input.js_checkbox&#x27;);
+				var child = JC.f.getJqParent( target, &#x27;div.node_ctn&#x27; ).next().find(&#x27;input.js_checkbox&#x27;);
 				for(var i=0;i&lt;child.length;i++){
 					child[i].checked = true;
 				}
 			}
 			else{
-				var child = target.parent().next().find(&#x27;input.js_checkbox&#x27;);
+				var child = JC.f.getJqParent( target, &#x27;div.node_ctn&#x27; ).next().find(&#x27;input.js_checkbox&#x27;);
 				for(var i=0;i&lt;child.length;i++){
 					child[i].checked = false;
 				}
@@ -349,6 +350,7 @@
 			this._getSelected(selectedArray, this._tree);
 		},
 		&quot;init&quot; : function(){
+            var _p = this;
 			// add delegate
 			this._tree._model._container.delegate(&#x27;input.js_checkbox:checked&#x27;, &#x27;click&#x27;, this.expandChild.bind(this));
 			this._tree._model._container.delegate(&#x27;input.js_checkbox:not(:checked)&#x27;, &#x27;click&#x27;, this.foldChild.bind(this));
@@ -356,13 +358,17 @@
 			// rewrite callback
 			this._tree.on(&#x27;RenderLabel&#x27;, function( _data ){
 				var _node = $(this);
-				_node.html( JC.f.printf( &#x27;&lt;input type=&quot;checkbox&quot; class=&quot;js_checkbox&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#x27;, _data[0], _data[1] ) );
+				_node.html( JC.f.printf( _p._renderTpl 
+                        || &#x27;&lt;label dataid=&quot;{0}&quot; dataname=&quot;{1}&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;js_checkbox&quot; dataid=&quot;{0}&quot;&gt;{1}&lt;/label&gt;&#x27;
+                        , _data[0], _data[1] ) );
 			});
 			this._tree.on(&#x27;change&#x27;, this.update.bind(this));
 			
 			// triger tree init
 			this._tree.init();
+            return this._tree;
 		}
+        , tree: function(){ return this._tree; }
 	};	
 
     return JC.MultiSelectTree;

@@ -23,10 +23,11 @@
     JC.use && !JC.Tree && JC.use( 'JC.Tree' );
     Bizs.MultiSelectTree = MultiSelectTree
 
-	function MultiSelectTree( _treeEle, _treeData, _cb ){
+	function MultiSelectTree( _treeEle, _treeData, _cb, _renderTpl ){
 		// init tree and callback
 		this._tree = new JC.Tree( _treeEle, _treeData );
 		this._getSelected = _cb;
+        this._renderTpl = _renderTpl;
 	}
 	MultiSelectTree.prototype = {
         /**
@@ -72,13 +73,13 @@
 				return;
 			}  
 			if(target[0].checked){
-				var child = target.parent().next().find('input.js_checkbox');
+				var child = JC.f.getJqParent( target, 'div.node_ctn' ).next().find('input.js_checkbox');
 				for(var i=0;i<child.length;i++){
 					child[i].checked = true;
 				}
 			}
 			else{
-				var child = target.parent().next().find('input.js_checkbox');
+				var child = JC.f.getJqParent( target, 'div.node_ctn' ).next().find('input.js_checkbox');
 				for(var i=0;i<child.length;i++){
 					child[i].checked = false;
 				}
@@ -93,6 +94,7 @@
 			this._getSelected(selectedArray, this._tree);
 		},
 		"init" : function(){
+            var _p = this;
 			// add delegate
 			this._tree._model._container.delegate('input.js_checkbox:checked', 'click', this.expandChild.bind(this));
 			this._tree._model._container.delegate('input.js_checkbox:not(:checked)', 'click', this.foldChild.bind(this));
@@ -100,13 +102,17 @@
 			// rewrite callback
 			this._tree.on('RenderLabel', function( _data ){
 				var _node = $(this);
-				_node.html( JC.f.printf( '<input type="checkbox" class="js_checkbox" dataid="{0}">{1}</a>', _data[0], _data[1] ) );
+				_node.html( JC.f.printf( _p._renderTpl 
+                        || '<label dataid="{0}" dataname="{1}"><input type="checkbox" class="js_checkbox" dataid="{0}">{1}</label>'
+                        , _data[0], _data[1] ) );
 			});
 			this._tree.on('change', this.update.bind(this));
 			
 			// triger tree init
 			this._tree.init();
+            return this._tree;
 		}
+        , tree: function(){ return this._tree; }
 	};	
 
     return JC.MultiSelectTree;
