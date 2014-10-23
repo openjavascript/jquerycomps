@@ -285,6 +285,9 @@
      *    &lt;dt&gt;mdyearrange = num&lt;/dt&gt;
      *    &lt;dd&gt;声明时间粒度为年时，最长可选取多少年，如果不需要则不声明此属性&lt;/dd&gt;
      *
+     *    &lt;dt&gt;mdIgnoreUrlFill = bool, default = false&lt;/dt&gt;
+     *    &lt;dd&gt;是否忽略 URL 自动填充&lt;/dd&gt;
+     *
      * &lt;/dl&gt;
      *
      * @class   DMultiDate
@@ -695,6 +698,10 @@
         },
 
         _initDefaultData: function () {
+            if( this._model.mcIgnoreUrlFill() ){
+                return;
+            }
+
             var _p = this,
                 _startdate = _p._model.urlStartdate() || _p._model.mddateEl().eq(0).val(),
                 _enddate = _p._model.urlEnddate() || _p._model.mddateEl().eq(1).val(),
@@ -760,6 +767,11 @@
         calendarTypeEl: function () {
             return this.selector().find(&#x27;&gt;select&#x27;);
         },
+
+        mcIgnoreUrlFill: 
+            function(){
+                return this.boolProp( &#x27;mdIgnoreUrlFill&#x27; );
+            },
 
         calendarType: function () {
             return this.calendarTypeEl().val();
@@ -951,9 +963,12 @@
     BaseMVC.build( DMultiDate, &#x27;Bizs&#x27; );
 
     $(document).ready( function(){
-        $(&#x27;.js_autoDMultiDate&#x27;).each( function(){
-            new DMultiDate( $(this) );
-        });
+
+        JC.f.safeTimeout( function(){
+            $(&#x27;.js_autoDMultiDate&#x27;).each( function(){
+                new DMultiDate( $(this) );
+            });
+        }, null, &#x27;DMultiDatesdfasd&#x27;, 50 );
 
     });
 

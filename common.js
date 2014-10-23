@@ -95,6 +95,7 @@
         , "arrayId": arrayId
         , "docSize": docSize
         , "winSize": winSize
+        , "gid": gid
 
         /**
          * 判断 JC.common 是否需要向后兼容, 如果需要的话, 向 window 添加全局静态函数
@@ -192,6 +193,17 @@
         
         return _r;
     }
+    /**
+     * 生成全局唯一ID
+     * @method  gid
+     * @return string
+     * @static
+     */
+    function gid(){
+        return 'jc_gid_' + JC.f.ts() + '_' + (JC.GID_COUNT++);
+    }
+    JC.GID_COUNT = 1;
+
     /**
      * 把函数的参数转为数组
      * @method  sliceArgs

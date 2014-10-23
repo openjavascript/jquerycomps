@@ -39,6 +39,9 @@
      *    <dt>mdyearrange = num</dt>
      *    <dd>声明时间粒度为年时，最长可选取多少年，如果不需要则不声明此属性</dd>
      *
+     *    <dt>mdIgnoreUrlFill = bool, default = false</dt>
+     *    <dd>是否忽略 URL 自动填充</dd>
+     *
      * </dl>
      *
      * @class   DMultiDate
@@ -449,6 +452,10 @@
         },
 
         _initDefaultData: function () {
+            if( this._model.mcIgnoreUrlFill() ){
+                return;
+            }
+
             var _p = this,
                 _startdate = _p._model.urlStartdate() || _p._model.mddateEl().eq(0).val(),
                 _enddate = _p._model.urlEnddate() || _p._model.mddateEl().eq(1).val(),
@@ -514,6 +521,11 @@
         calendarTypeEl: function () {
             return this.selector().find('>select');
         },
+
+        mcIgnoreUrlFill: 
+            function(){
+                return this.boolProp( 'mdIgnoreUrlFill' );
+            },
 
         calendarType: function () {
             return this.calendarTypeEl().val();
@@ -705,9 +717,12 @@
     BaseMVC.build( DMultiDate, 'Bizs' );
 
     $(document).ready( function(){
-        $('.js_autoDMultiDate').each( function(){
-            new DMultiDate( $(this) );
-        });
+
+        JC.f.safeTimeout( function(){
+            $('.js_autoDMultiDate').each( function(){
+                new DMultiDate( $(this) );
+            });
+        }, null, 'DMultiDatesdfasd', 50 );
 
     });
 

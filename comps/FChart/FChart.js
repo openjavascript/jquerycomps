@@ -1,4 +1,4 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'swfobject', 'json2', 'jquery.mousewheel'  ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'swfobject', 'plugins.json2', 'jquery.mousewheel'  ], function(){
 
 JC.use && !window.swfobject && JC.use( 'plugins.swfobject' );
 JC.use && !window.JSON && JC.use( 'plugins.jsons' );
