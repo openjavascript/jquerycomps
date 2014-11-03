@@ -18,6 +18,7 @@
  * <dl>
  * <dt>paginatorUiTpl</dt>
  * <dd>定义分页的模板</dd>
+ * <dd>始终显示当前页的前后两页，达到max页的时候，隐藏其他页以...显示。</dd>
  * <dt>paginatorui</dt>
  * <dd>css selector, 指定分页的模板内容将放到哪个容器里面</dd>
  * <dt>paginatorcontent</dt>
@@ -132,6 +133,10 @@
                 .delegate('.js_perpage', 'change', function (e) {
                     p._model.currentPage = 1;
                     p.trigger('UPDATEVIEW', [$(this).val()]);
+                })
+                .delegate('.js_goto', 'change', function (e) {
+                    var $el = $(this);
+                    p.trigger('GOTOPAGE', [$el.val(), $el]);
                 });
 
             p.on('RENDER', function (e, data) {
