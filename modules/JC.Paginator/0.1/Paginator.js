@@ -18,7 +18,7 @@
  * <dl>
  * <dt>paginatorUiTpl</dt>
  * <dd>定义分页的模板</dd>
- * <dd>始终显示当前页的前后两页，达到max页的时候，隐藏其他页以...显示。</dd>
+ * <dd>始终显示当前页的前后两页，达到max页的时候，隐藏其他页以...显示。第一页和最后一页始终显示</dd>
  * <dt>paginatorui</dt>
  * <dd>css selector, 指定分页的模板内容将放到哪个容器里面</dd>
  * <dt>paginatorcontent</dt>
@@ -120,7 +120,9 @@
                 .delegate('.js_page', 'click', function (e) {
                     e.preventDefault();
                     var $el = $(this);
+
                     p.trigger('GOTOPAGE', [$el.text(), $el]);
+                    
                 })
                 .delegate('.js_prevpage', 'click', function (e) {
                     e.preventDefault();
@@ -135,8 +137,20 @@
                     p.trigger('UPDATEVIEW', [$(this).val()]);
                 })
                 .delegate('.js_goto', 'change', function (e) {
-                    var $el = $(this);
-                    p.trigger('GOTOPAGE', [$el.val(), $el]);
+                    var $el = $(this),
+                        val = $el.val();
+
+                    if (isNaN(val)) {
+                        return false;
+                    }
+
+                    if (val > Math.ceil(p._model.totalRecords / p._model.perPage())) {
+                        val = 1;
+                    }
+                   //if (!$el.hasClass('added')) {
+                       p.trigger('GOTOPAGE', [val, $el]);
+                    //}
+                    
                 });
 
             p.on('RENDER', function (e, data) {
@@ -156,12 +170,16 @@
             });
 
             p.on('GOTOPAGE', function (e, page, $el) {
+                page = parseInt(page, 10);
                 p._model.gotoPage(page);
-                //p._view.updatePaginatorView($el, page);
+               
+                p._view.updatePaginatorView($el, page);
+                
             });
 
             p.on('UPDATEVIEW', function (e, perPage) {
                 p._view.paginatedView(perPage);
+               
                 p._model.selector().attr('perPage', perPage);
                 p._model.fetch(perPage);
             });
@@ -241,6 +259,10 @@
 
         maxPage: function () {
             return (this.intProp('maxPage') || 10);
+        },
+
+        midRange: function () {
+            return (this.intProp('midRange') || 5);
         },
 
         totalRecords: function () {
@@ -328,19 +350,20 @@
                 total = Math.ceil(p._model.totalRecords() / perPage) ,
                 max = p._model.maxPage(),
                 str = '',
-                i;
+                i,
+                currentPage = p._model.currentPage;
 
-            // if (total > max) {
-            //     for (i = 1; i <= max; i++) {
-            //         str += '<a href="#" class="js_page">' + i + '</a>';
-            //     }
-            //     str += '<span>...</span>' + '<a href="#" class="js_page">' + total + '</a>';
-            // } else {
-                for (i = 1; i <= total; i++) {
-                    str += '<a href="#" class="js_page">' + i + '</a>';
-                } 
-            //}
             
+                for (i = 1; i < total; i++) {
+                    str += (i > p._model.midRange()) ? ('<a href="javascript:;" class="js_page dn" >' + i + '</a>'): ('<a href="javascript:;" class="js_page" >' + i + '</a>');
+                    if (total > p._model.midRange()) {
+                        (i === 1) && (str += '<span class="dn js_firstBreak">...</span>' );
+                        (i === total - 1) && (str += '<span class="js_lastBreak">...</span>') && (console.log(i));
+                    }
+                }
+
+                str += '<a href="javascript:;" class="js_page">' + total + '</a>'
+           
             tpl = JC.f.printf(tpl, total, p._model.totalRecords(), str);
 
             $box.html(tpl).find('.js_perpage').val(perPage);
@@ -360,7 +383,7 @@
             var p = this,
                 page = p._model.currentPage,
                 perPage = p._model.perPage(),
-                totalPage = Math.ceil(p._model.totalRecords / perPage),
+                totalPage = Math.ceil(p._model.totalRecords() / perPage),
                 i = 1;
 
             p._model.paginatorContent().find('tr').each( function (ix) {
@@ -376,21 +399,36 @@
             p.trigger('FLIPPED');
         },
 
-        updatePaginatorView: function ($el, page) {
+        updatePaginatorView: function ($el, curPage) {
             var p = this,
-                max = p._model.maxPage(),
-                total = Math.ceil(p._model.totalRecords() / p._model.perPage()),
-                str = '';
+                $box = p._model.paginatorUi(),
+                totalPage = Math.ceil(p._model.totalRecords() / p._model.perPage()),
+                midRange = p._model.midRange(),
+                halfMidRange = Math.ceil(midRange / 2),
+                limit = totalPage - midRange,
+                start,
+                end;
 
-            page = parseInt(page, 10);
-
-            if ( (p._model.currentPage + (max - 1)) >= total ) return;
-            
-            if (page > 1 ) {
-               str = '<a href="#" class="js_page">' + (p._model.currentPage + (max - 1)) + '</a>' 
+            start = (curPage - halfMidRange) > 0 ? Math.min((curPage - halfMidRange), limit): 0;
+            end = (curPage - halfMidRange) > 0 ? Math.min(curPage + halfMidRange - 1, totalPage - 1): midRange;
+            console.log("start", start, "end", end);
+            $box.find('.js_page').not(':first').not(':last').addClass('dn');
+            for (var i = start; i < end; i++) {
+                $box.find('.js_page').eq(i).removeClass('dn');
             }
-            $el.next().after(str);
-           
+            p.updateBreak(curPage);
+        },
+
+        updateBreak: function (curPage) {
+            var p = this,
+                $box = p._model.paginatorUi(),
+                $fstBrk = $box.find('.js_firstBreak'),
+                $lstBrk = $box.find('.js_lastBreak'),
+                halfMidRange = Math.ceil(p._model.midRange() / 2),
+                totalPage = Math.ceil(p._model.totalRecords() / p._model.perPage() );
+
+            $fstBrk[curPage - halfMidRange > 1? 'show': 'hide']();
+            $lstBrk[curPage + halfMidRange >= totalPage ? 'hide': 'show']();
         },
 
         updateView: function () {
