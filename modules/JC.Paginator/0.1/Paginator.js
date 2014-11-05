@@ -8,7 +8,7 @@
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Paginator.html' target='_blank'>API docs</a>
- * | <a href='../../modules/JC.Paginator/0.1/_demo' target='_blank'>demo link</a></p>
+ * | <a href='../../modules/JC.Paginator/0.1/_demo/demo.html' target='_blank'>demo link</a></p>
  *
  * <h2></h2>
  * <p></p>
