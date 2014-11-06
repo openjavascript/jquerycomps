@@ -402,6 +402,8 @@
         updatePaginatorView: function ($el, curPage) {
             var p = this,
                 $box = p._model.paginatorUi(),
+                $fstBrk = $box.find('.js_firstBreak'),
+                $lstBrk = $box.find('.js_lastBreak'),
                 totalPage = Math.ceil(p._model.totalRecords() / p._model.perPage()),
                 midRange = p._model.midRange(),
                 halfMidRange = Math.ceil(midRange / 2),
@@ -416,17 +418,7 @@
             for (var i = start; i < end; i++) {
                 $box.find('.js_page').eq(i).removeClass('dn');
             }
-            p.updateBreak(curPage);
-        },
-
-        updateBreak: function (curPage) {
-            var p = this,
-                $box = p._model.paginatorUi(),
-                $fstBrk = $box.find('.js_firstBreak'),
-                $lstBrk = $box.find('.js_lastBreak'),
-                halfMidRange = Math.ceil(p._model.midRange() / 2),
-                totalPage = Math.ceil(p._model.totalRecords() / p._model.perPage() );
-
+            
             $fstBrk[curPage - halfMidRange > 1? 'show': 'hide']();
             $lstBrk[curPage + halfMidRange >= totalPage ? 'hide': 'show']();
         },
