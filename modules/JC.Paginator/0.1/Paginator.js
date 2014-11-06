@@ -44,8 +44,39 @@
  * @version dev 0.1 2014-05-05
  * @author  zuojing   <zuojing1013@gmail.com> | 75 Team
  * @example
-	
-  */
+        <div class="cafe-table js_compPaginator" paginatortype="static"  paginatorUiTpl="#paginatorui" paginatorcontent=".contents" paginatorui=".pages" paginatorcontenttpl="#paginatorcontent" totalrecords="14" perpage="3" needInit="true" midrange="5">
+        <table>
+           在这里添加你要的数据
+        </table>
+        <div class="page pages">
+            
+        </div>
+    </div>
+    
+    <script type="text/template" id="paginatorcontent">
+        <tr>
+            <td>{0}</td>
+            <td>{1}</td>
+            <td>{2}</td>
+        </tr>
+   </script>
+   <script type="text/template" id="paginatorui">
+        共{0}页，{1}条记录 
+        <a href="#" class="js_prevpage">上一页</a>
+        {2}
+        <a href="#" class="js_nextpage">
+            下一页
+        </a>
+        每页显示
+        <select name="pz" class="sel sel-s js_perpage">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="10">10</option>
+        </select>
+        到第<input type="text" class="js_goto" style="width:80px;" />页
+    </script>
+*/
     JC.Paginator = Paginator;
  
     function Paginator( _selector ){
@@ -224,6 +255,20 @@
         paginatorContentTpl: function () {
             return JC.f.scriptContent( this.attrProp('paginatorContentTpl') );
         },
+        // paginatorContentTpl: '共{0}页，{1}条记录' 
+        //         + '<a href="#" class="js_prevpage">上一页</a>'
+        //         + '{2}'
+        //         + '<a href="#" class="js_nextpage">'
+        //             + '下一页'
+        //         + '</a>'
+        //         + '每页显示'
+        //         + '<select name="pz" class="sel sel-s js_perpage">'
+        //             + '<option value="1">1</option>'
+        //             + '<option value="2">2</option>'
+        //             + '<option value="3">3</option>'
+        //             + '<option value="10">10</option>'
+        //         + '</select>'
+        //         + '到第<input type="text" class="js_goto" style="width:80px;" />页',
 
         paginatorUiTpl: function () {
             return JC.f.scriptContent( this.attrProp('paginatorUiTpl') );
