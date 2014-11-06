@@ -11,14 +11,13 @@
  * | <a href='../../modules/JC.Paginator/0.1/_demo/demo.html' target='_blank'>demo link</a></p>
  *
  * <h2></h2>
- * <p></p>
+ * <p>自动初始化<b>.js_compPaginator</b>下的table</p>
  *
  *
  * <h2>可用的 HTML attribute</h2>
  * <dl>
  * <dt>paginatorUiTpl</dt>
  * <dd>定义分页的模板</dd>
- * <dd>始终显示当前页的前后两页，达到max页的时候，隐藏其他页以...显示。第一页和最后一页始终显示</dd>
  * <dt>paginatorui</dt>
  * <dd>css selector, 指定分页的模板内容将放到哪个容器里面</dd>
  * <dt>paginatorcontent</dt>
@@ -27,6 +26,8 @@
  * <dd>num, 共多少条记录，必填项</dd>
  * <dt>perpage</dt>
  * <dd>num, 每页显示多少条记录，默认10条</dd>
+ * <dt>midrange</dt>
+ * <dd>num, default = 5。显示多少个数字页，超出的页将以...显示，比如一共有10页，那么显示前5页和最后一页，中间的以...显示</dd>
  * <dt>paginatortype</dt>
  * <dd>'static|ajax'，分页类型，ajax分页还是静态分页(静态分页，后端一次性将数据铺好)。默认为ajax</dd>
  * <dt>paginatorurl</dt>
@@ -119,9 +120,10 @@
             $selector
                 .delegate('.js_page', 'click', function (e) {
                     e.preventDefault();
-                    var $el = $(this);
+                    var $el = $(this),
+                        val = parseInt($el.text(), 10);
 
-                    p.trigger('GOTOPAGE', [$el.text(), $el]);
+                    p.trigger('GOTOPAGE', [val, $el]);
                     
                 })
                 .delegate('.js_prevpage', 'click', function (e) {
@@ -147,9 +149,8 @@
                     if (val > Math.ceil(p._model.totalRecords / p._model.perPage())) {
                         val = 1;
                     }
-                   //if (!$el.hasClass('added')) {
-                       p.trigger('GOTOPAGE', [val, $el]);
-                    //}
+                    
+                    p.trigger('GOTOPAGE', [val, $el]);
                     
                 });
 
@@ -172,16 +173,14 @@
             p.on('GOTOPAGE', function (e, page, $el) {
                 page = parseInt(page, 10);
                 p._model.gotoPage(page);
-               
                 p._view.updatePaginatorView($el, page);
                 
             });
 
             p.on('UPDATEVIEW', function (e, perPage) {
                 p._view.paginatedView(perPage);
-               
                 p._model.selector().attr('perPage', perPage);
-                p._model.fetch(perPage);
+                p._model.fetch();
             });
 
             p.on('FLIPPED', function (e, data) {
@@ -224,26 +223,11 @@
 
         paginatorContentTpl: function () {
             return JC.f.scriptContent( this.attrProp('paginatorContentTpl') );
-            // var tpl = '<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>';
-
-            // return tpl;
         },
 
         paginatorUiTpl: function () {
             return JC.f.scriptContent( this.attrProp('paginatorUiTpl') );
         },
-
-        // paginatorUiTpl: function () {
-        //     var p = this,
-        //         tpl = '共{0}页，' + p.totalRecords() + '条记录'   
-        //             + '<a href="#" class="js_prevpage">上一页</a>'
-        //             + '{1}'
-        //             + '<a href="#" class="js_nextpage">下一页</a>'
-        //             + '每页显示'
-        //             + ' <select name="pz" class="sel sel-s js_perpage"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="10">10</option></select>';
-
-        //     return tpl;
-        // },
 
         url: function () {
             return this.attrProp('paginatorurl');
@@ -257,10 +241,6 @@
             return (this.intProp('perPage') || 10);
         },
 
-        maxPage: function () {
-            return (this.intProp('maxPage') || 10);
-        },
-
         midRange: function () {
             return (this.intProp('midRange') || 5);
         },
@@ -270,19 +250,17 @@
         },
 
         gotoPage: function (page) {
-            this.currentPage = parseInt(page, 10);
+            this.currentPage = page;
             this.fetch();
         },
 
         prevPage: function () {
             var p = this;
 
-            if (p.currentPage === 1) {
+            if (p.currentPage === 1)
                 return;
-            } else {
-                p.currentPage--;
-            }
-
+            
+            p.currentPage--;
             p.fetch();
 
         },
@@ -291,12 +269,10 @@
             var p = this,
                 total = Math.ceil(p.totalRecords() / p.perPage());
 
-            if (p.currentPage === total) {
+            if (p.currentPage === total)
                 return;
-            } else {
-                p.currentPage++;
-            }
 
+            p.currentPage++;
             p.fetch();
         },
 
@@ -348,17 +324,15 @@
                 tpl = p._model.paginatorUiTpl(),
                 perPage = perPage || p._model.perPage(),
                 total = Math.ceil(p._model.totalRecords() / perPage) ,
-                max = p._model.maxPage(),
                 str = '',
                 i,
                 currentPage = p._model.currentPage;
 
-            
                 for (i = 1; i < total; i++) {
                     str += (i > p._model.midRange()) ? ('<a href="javascript:;" class="js_page dn" >' + i + '</a>'): ('<a href="javascript:;" class="js_page" >' + i + '</a>');
                     if (total > p._model.midRange()) {
                         (i === 1) && (str += '<span class="dn js_firstBreak">...</span>' );
-                        (i === total - 1) && (str += '<span class="js_lastBreak">...</span>') && (console.log(i));
+                        (i === total - 1) && (str += '<span class="js_lastBreak">...</span>');
                     }
                 }
 
@@ -381,20 +355,12 @@
 
         staticContentView: function () {
             var p = this,
-                page = p._model.currentPage,
+                //每页显示的记录条数
                 perPage = p._model.perPage(),
-                totalPage = Math.ceil(p._model.totalRecords() / perPage),
-                i = 1;
+                start = (p._model.currentPage - 1) * perPage,
+                end = start + perPage;
 
-            p._model.paginatorContent().find('tr').each( function (ix) {
-                if (ix > 0 && ix % perPage === 0 ) {
-                    i++;
-                }
-                
-                $(this)[i === page? 'show': 'hide']();
-                
-            });
-
+            p._model.paginatorContent().find('tr').hide().slice(start, end).show();
             p.updateView();
             p.trigger('FLIPPED');
         },
@@ -412,13 +378,8 @@
                 end;
 
             start = (curPage - halfMidRange) > 0 ? Math.min((curPage - halfMidRange), limit): 0;
-            end = (curPage - halfMidRange) > 0 ? Math.min(curPage + halfMidRange - 1, totalPage - 1): midRange;
-            console.log("start", start, "end", end);
-            $box.find('.js_page').not(':first').not(':last').addClass('dn');
-            for (var i = start; i < end; i++) {
-                $box.find('.js_page').eq(i).removeClass('dn');
-            }
-            
+            end = start + midRange - 1;
+            $box.find('.js_page').not(':first').not(':last').addClass('dn').slice(start, end).removeClass("dn");
             $fstBrk[curPage - halfMidRange > 1? 'show': 'hide']();
             $lstBrk[curPage + halfMidRange >= totalPage ? 'hide': 'show']();
         },
