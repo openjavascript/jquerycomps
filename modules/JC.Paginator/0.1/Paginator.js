@@ -16,8 +16,6 @@
  *
  * <h2>可用的 HTML attribute</h2>
  * <dl>
- * <dt>paginatorUiTpl</dt>
- * <dd>定义分页的模板</dd>
  * <dt>paginatorui</dt>
  * <dd>css selector, 指定分页的模板内容将放到哪个容器里面</dd>
  * <dt>paginatorcontent</dt>
@@ -26,6 +24,8 @@
  * <dd>num, 共多少条记录，必填项</dd>
  * <dt>perpage</dt>
  * <dd>num, 每页显示多少条记录，默认10条</dd>
+ * <dt>perpageitems</dt>
+ * <dd>定义下拉框的option值，默认为[10,20,50]</dd>
  * <dt>midrange</dt>
  * <dd>num, default = 5。显示多少个数字页，超出的页将以...显示，比如一共有10页，那么显示前5页和最后一页，中间的以...显示</dd>
  * <dt>paginatortype</dt>
@@ -44,7 +44,7 @@
  * @version dev 0.1 2014-05-05
  * @author  zuojing   <zuojing1013@gmail.com> | 75 Team
  * @example
-        <div class="cafe-table js_compPaginator" paginatortype="static"  paginatorUiTpl="#paginatorui" paginatorcontent=".contents" paginatorui=".pages" paginatorcontenttpl="#paginatorcontent" totalrecords="14" perpage="3" needInit="true" midrange="5">
+        <div class="cafe-table js_compPaginator" paginatortype="static" paginatorcontent=".contents" paginatorui=".pages"  totalrecords="14" perpage="3" needInit="true" midrange="5">
         <table>
            在这里添加你要的数据
         </table>
@@ -52,30 +52,6 @@
             
         </div>
     </div>
-    
-    <script type="text/template" id="paginatorcontent">
-        <tr>
-            <td>{0}</td>
-            <td>{1}</td>
-            <td>{2}</td>
-        </tr>
-   </script>
-   <script type="text/template" id="paginatorui">
-        共{0}页，{1}条记录 
-        <a href="#" class="js_prevpage">上一页</a>
-        {2}
-        <a href="#" class="js_nextpage">
-            下一页
-        </a>
-        每页显示
-        <select name="pz" class="sel sel-s js_perpage">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="10">10</option>
-        </select>
-        到第<input type="text" class="js_goto" style="width:80px;" />页
-    </script>
 */
     JC.Paginator = Paginator;
  
@@ -252,26 +228,18 @@
             return p.selector().find(selector);
         },
 
-        paginatorContentTpl: function () {
-            return JC.f.scriptContent( this.attrProp('paginatorContentTpl') );
-        },
-        // paginatorContentTpl: '共{0}页，{1}条记录' 
-        //         + '<a href="#" class="js_prevpage">上一页</a>'
-        //         + '{2}'
-        //         + '<a href="#" class="js_nextpage">'
-        //             + '下一页'
-        //         + '</a>'
-        //         + '每页显示'
-        //         + '<select name="pz" class="sel sel-s js_perpage">'
-        //             + '<option value="1">1</option>'
-        //             + '<option value="2">2</option>'
-        //             + '<option value="3">3</option>'
-        //             + '<option value="10">10</option>'
-        //         + '</select>'
-        //         + '到第<input type="text" class="js_goto" style="width:80px;" />页',
-
         paginatorUiTpl: function () {
-            return JC.f.scriptContent( this.attrProp('paginatorUiTpl') );
+            return '共{0}页，{1}条记录' 
+                + '<a href="#" class="js_prevpage">上一页</a>'
+                + '{2}'
+                + '<a href="#" class="js_nextpage">'
+                    + '下一页'
+                + '</a>'
+                + '每页显示'
+                + '<select name="pz" class="sel sel-s js_perpage">'
+                + this.perPageOption()    
+                + '</select>'
+                + '到第<input type="text" class="js_goto" style="width:60px;" />页';
         },
 
         url: function () {
@@ -284,6 +252,23 @@
 
         perPage: function () {
             return (this.intProp('perPage') || 10);
+        },
+
+        perPageOption: function () {
+            var items = this.attrProp('perpageitems') || '10|20|50',
+                i,
+                l,
+                str = '',
+                selected = '';
+
+            items = items.split('|');
+            l = items.length;
+            for (i = 0; i < l; i++) {
+                selected = i === this.perPage() ? 'selected': '';
+                str += '<option value="' + items[i] + '"' + selected + '>' + items[i] + '</option>';
+            }
+            
+            return str;
         },
 
         midRange: function () {
