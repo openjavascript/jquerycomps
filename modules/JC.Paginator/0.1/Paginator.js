@@ -117,12 +117,14 @@
                 $selector = p._model.selector();
 
             if (!p._model.totalRecords()) return;
-
-            p._model.requestUrl = p._model.url();
+           
+            //p._model.requestUrl = p._model.url();
+            //渲染分页
             p._view.paginatedView();
-            if (p._model.needInit()) {
-                p._model.fetch();
-            }
+            p._view.updateContentView();
+            //if (p._model.needInit()) {
+               // p._model.fetch();
+            //}
             
             $selector
                 .delegate('.js_page', 'click', function (e) {
@@ -161,13 +163,10 @@
                     
                 });
 
-            p.on('RENDER', function (e, data) {
-                p._view.contentView(data);
-            });
-
-            p.on('RENDERSTATIC', function (e) {
-                p._view.staticContentView();
-            });
+            // p.on('RENDER', function (e) {
+            //     //p._view.contentView(data);
+            //     p._view.updateContentView();
+            // });
 
             p.on('PREVPAGE', function () {
                 p._model.prevPage();
@@ -179,15 +178,20 @@
 
             p.on('GOTOPAGE', function (e, page, $el) {
                 page = parseInt(page, 10);
-                p._model.gotoPage(page);
+                //更新分页按钮的状态
+                p._model.currentPage = page;
+                alert(page);
+                p._view.updateContentView(page);
                 p._view.updatePaginatorView($el, page);
                 
             });
 
             p.on('UPDATEVIEW', function (e, perPage) {
-                p._view.paginatedView(perPage);
-                p._model.selector().attr('perPage', perPage);
-                p._model.fetch();
+                setTimeout(function () {
+                    p._view.paginatedView(perPage);
+                    p._model.selector().attr('perPage', perPage);
+                    p._view.updateContentView();
+                }, 20);
             });
 
             p.on('FLIPPED', function (e, data) {
@@ -279,10 +283,11 @@
             return this.intProp('totalrecords');
         },
 
-        gotoPage: function (page) {
-            this.currentPage = page;
-            this.fetch();
-        },
+        // gotoPage: function (page) {
+        //     var p = this;
+        //     p.currentPage = page;
+        //     p.trigger('RENDER');
+        // },
 
         prevPage: function () {
             var p = this;
@@ -291,7 +296,7 @@
                 return;
             
             p.currentPage--;
-            p.fetch();
+            //p.fetch();
 
         },
 
@@ -303,35 +308,38 @@
                 return;
 
             p.currentPage++;
-            p.fetch();
+            
         },
 
         fetch: function () {
 
-            var p = this,
-                page = p.currentPage,
-                perPage = p.perPage(),
-                url = JC.f.printf(p.requestUrl, perPage, page);
+            // var p = this,
+            //     page = p.currentPage,
+            //     perPage = p.perPage(),
+            //     url = JC.f.printf(p.requestUrl, perPage, page);
+            var p = this;
+            
+            setTimeout( function () {
+                    p.trigger('RENDER');
 
-            if (p.paginatortype() === 'static') {
-                setTimeout( function () {
-                    p.trigger('RENDERSTATIC');
                 }, 10);
+            // if (p.paginatortype() === 'static') {
                 
-            } else {
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    success: function (res) {
-                        res = $.parseJSON(res);
+                
+            // } else {
+                // $.ajax({
+                //     type: "POST",
+                //     url: url,
+                //     success: function (res) {
+                //         res = $.parseJSON(res);
 
-                        if (!res.errorno) {
-                            res.data.html && p.trigger('RENDER', [res.data.html]);
-                        } 
+                //         if (!res.errorno) {
+                //             res.data.html && p.trigger('RENDER', [res.data.html]);
+                //         } 
                        
-                    }
-                });
-            }
+                //     }
+                // });
+            //}
         },
 
         flipped: function () {
@@ -349,6 +357,7 @@
         },
 
         paginatedView: function (perPage) {
+           
             var p = this,
                 $box = p._model.paginatorUi(),
                 tpl = p._model.paginatorUiTpl(),
@@ -357,7 +366,6 @@
                 str = '',
                 i,
                 currentPage = p._model.currentPage;
-
                 for (i = 1; i < total; i++) {
                     str += (i > p._model.midRange()) ? ('<a href="javascript:;" class="js_page dn" >' + i + '</a>'): ('<a href="javascript:;" class="js_page" >' + i + '</a>');
                     if (total > p._model.midRange()) {
@@ -371,23 +379,27 @@
             tpl = JC.f.printf(tpl, total, p._model.totalRecords(), str);
 
             $box.html(tpl).find('.js_perpage').val(perPage);
-            !p._model.needInit() && p.updateView();
+            //!p._model.needInit() && p.updateView();
         },
 
-        contentView: function (data) {
-            var p = this,
-                $box = p._model.paginatorContent();
+        // contentView: function (data) {
+        //     var p = this,
+        //         $box = p._model.paginatorContent();
             
-            $box.html(data);
-            p.updateView();
-            p.trigger('FLIPPED', [data]);
-        },
+        //     $box.html(data);
+        //     p.updateView();
+        //     p.trigger('FLIPPED', [data]);
+        // },
 
-        staticContentView: function () {
+        /**
+        显示表格内容
+        */
+        updateContentView: function (page) {
             var p = this,
                 //每页显示的记录条数
+                currentPage = page || p._model.currentPage,
                 perPage = p._model.perPage(),
-                start = (p._model.currentPage - 1) * perPage,
+                start = (currentPage - 1) * perPage,
                 end = start + perPage;
 
             p._model.paginatorContent().find('tr').hide().slice(start, end).show();
@@ -417,7 +429,7 @@
         updateView: function () {
             var p = this,
                 $paginatorui = p._model.paginatorUi(),
-                $contentui = p._model.paginatorContent(),
+                //$contentui = p._model.paginatorContent(),
                 currentPage = p._model.currentPage,
                 total = Math.ceil(p._model.totalRecords() / p._model.perPage());
 
