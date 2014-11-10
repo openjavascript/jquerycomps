@@ -28,12 +28,6 @@
  * <dd>定义下拉框的option值，默认为[10,20,50]</dd>
  * <dt>midrange</dt>
  * <dd>num, default = 5。显示多少个数字页，超出的页将以...显示，比如一共有10页，那么显示前5页和最后一页，中间的以...显示</dd>
- * <dt>paginatortype</dt>
- * <dd>'static|ajax'，分页类型，ajax分页还是静态分页(静态分页，后端一次性将数据铺好)。默认为ajax</dd>
- * <dt>paginatorurl</dt>
- * <dd>ajax请求数据的接口</dd>
- * <dt>needInit</dt>
- * <dd>true|false, 是否需要初始化，即第一页的数据是否由ajax请求，默认为false(后端直接铺好数据)</dd>
  * </dl>
  *
  * @namespace JC
@@ -118,13 +112,9 @@
 
             if (!p._model.totalRecords()) return;
            
-            //p._model.requestUrl = p._model.url();
             //渲染分页
             p._view.paginatedView();
             p._view.updateContentView();
-            //if (p._model.needInit()) {
-               // p._model.fetch();
-            //}
             
             $selector
                 .delegate('.js_page', 'click', function (e) {
@@ -163,10 +153,10 @@
                     
                 });
 
-            // p.on('RENDER', function (e) {
-            //     //p._view.contentView(data);
-            //     p._view.updateContentView();
-            // });
+            p.on('RENDER', function (e) {
+                p._view.updatePaginatorView();
+                p._view.updateContentView();
+            });
 
             p.on('PREVPAGE', function () {
                 p._model.prevPage();
@@ -176,14 +166,11 @@
                 p._model.nextPage();
             });
 
-            p.on('GOTOPAGE', function (e, page, $el) {
-                page = parseInt(page, 10);
+            p.on('GOTOPAGE', function (e, page) {
                 //更新分页按钮的状态
                 p._model.currentPage = page;
-                alert(page);
-                p._view.updateContentView(page);
-                p._view.updatePaginatorView($el, page);
-                
+                p._view.updateContentView();
+                p._view.updatePaginatorView();
             });
 
             p.on('UPDATEVIEW', function (e, perPage) {
@@ -283,20 +270,14 @@
             return this.intProp('totalrecords');
         },
 
-        // gotoPage: function (page) {
-        //     var p = this;
-        //     p.currentPage = page;
-        //     p.trigger('RENDER');
-        // },
-
         prevPage: function () {
             var p = this;
 
             if (p.currentPage === 1)
                 return;
-            
+
             p.currentPage--;
-            //p.fetch();
+            p.trigger('RENDER');
 
         },
 
@@ -308,38 +289,8 @@
                 return;
 
             p.currentPage++;
+            p.trigger('RENDER');
             
-        },
-
-        fetch: function () {
-
-            // var p = this,
-            //     page = p.currentPage,
-            //     perPage = p.perPage(),
-            //     url = JC.f.printf(p.requestUrl, perPage, page);
-            var p = this;
-            
-            setTimeout( function () {
-                    p.trigger('RENDER');
-
-                }, 10);
-            // if (p.paginatortype() === 'static') {
-                
-                
-            // } else {
-                // $.ajax({
-                //     type: "POST",
-                //     url: url,
-                //     success: function (res) {
-                //         res = $.parseJSON(res);
-
-                //         if (!res.errorno) {
-                //             res.data.html && p.trigger('RENDER', [res.data.html]);
-                //         } 
-                       
-                //     }
-                // });
-            //}
         },
 
         flipped: function () {
@@ -366,49 +317,40 @@
                 str = '',
                 i,
                 currentPage = p._model.currentPage;
-                for (i = 1; i < total; i++) {
-                    str += (i > p._model.midRange()) ? ('<a href="javascript:;" class="js_page dn" >' + i + '</a>'): ('<a href="javascript:;" class="js_page" >' + i + '</a>');
-                    if (total > p._model.midRange()) {
-                        (i === 1) && (str += '<span class="dn js_firstBreak">...</span>' );
-                        (i === total - 1) && (str += '<span class="js_lastBreak">...</span>');
-                    }
+
+            for (i = 1; i < total; i++) {
+                str += (i > p._model.midRange()) ? ('<a href="javascript:;" class="js_page dn" >' + i + '</a>'): ('<a href="javascript:;" class="js_page" >' + i + '</a>');
+                if (total > p._model.midRange()) {
+                    (i === 1) && (str += '<span class="dn js_firstBreak">...</span>' );
+                    (i === total - 1) && (str += '<span class="js_lastBreak">...</span>');
                 }
+            }
 
-                str += '<a href="javascript:;" class="js_page">' + total + '</a>'
-           
+            str += '<a href="javascript:;" class="js_page">' + total + '</a>';
             tpl = JC.f.printf(tpl, total, p._model.totalRecords(), str);
-
             $box.html(tpl).find('.js_perpage').val(perPage);
-            //!p._model.needInit() && p.updateView();
-        },
+            $box.find('.js_page').eq(currentPage - 1).addClass('cur');
 
-        // contentView: function (data) {
-        //     var p = this,
-        //         $box = p._model.paginatorContent();
-            
-        //     $box.html(data);
-        //     p.updateView();
-        //     p.trigger('FLIPPED', [data]);
-        // },
+        },
 
         /**
         显示表格内容
         */
-        updateContentView: function (page) {
+        updateContentView: function () {
             var p = this,
                 //每页显示的记录条数
-                currentPage = page || p._model.currentPage,
+                currentPage = p._model.currentPage,
                 perPage = p._model.perPage(),
                 start = (currentPage - 1) * perPage,
                 end = start + perPage;
 
             p._model.paginatorContent().find('tr').hide().slice(start, end).show();
-            p.updateView();
             p.trigger('FLIPPED');
         },
 
-        updatePaginatorView: function ($el, curPage) {
+        updatePaginatorView: function () {
             var p = this,
+                curPage = p._model.currentPage,
                 $box = p._model.paginatorUi(),
                 $fstBrk = $box.find('.js_firstBreak'),
                 $lstBrk = $box.find('.js_lastBreak'),
@@ -422,37 +364,24 @@
             start = (curPage - halfMidRange) > 0 ? Math.min((curPage - halfMidRange), limit): 0;
             end = start + midRange - 1;
             $box.find('.js_page').not(':first').not(':last').addClass('dn').slice(start, end).removeClass("dn");
+            $box.find('.js_page').eq(curPage - 1).addClass('cur').siblings().removeClass('cur');
             $fstBrk[curPage - halfMidRange > 1? 'show': 'hide']();
             $lstBrk[curPage + halfMidRange >= totalPage ? 'hide': 'show']();
-        },
 
-        updateView: function () {
-            var p = this,
-                $paginatorui = p._model.paginatorUi(),
-                //$contentui = p._model.paginatorContent(),
-                currentPage = p._model.currentPage,
-                total = Math.ceil(p._model.totalRecords() / p._model.perPage());
-
-            if (currentPage === 1) {
-                $paginatorui.find('.js_prevpage').prop('disabled', true).addClass('disabled');
+            //设置上一页的状态
+            if (curPage === 1) {
+                $box.find('.js_prevpage').prop('disabled', true).addClass('disabled');
             } else {
-                $paginatorui.find('.js_prevpage').prop('disabled', false).removeClass('disabled');
+                $box.find('.js_prevpage').prop('disabled', false).removeClass('disabled');
             }
 
-            if (currentPage === total) {
-                $paginatorui.find('.js_nextpage').prop('disabled', true).addClass('disabled');
+            //设置下一页的状态
+            if (curPage === totalPage) {
+                $box.find('.js_nextpage').prop('disabled', true).addClass('disabled');
             } else {
-                $paginatorui.find('.js_nextpage').prop('disabled', false).removeClass('disabled');
+                $box.find('.js_nextpage').prop('disabled', false).removeClass('disabled');
             }
-
-            $paginatorui.find('.js_page').each( function () {
-                var $this = $(this);
-
-                if (parseInt($this.text(), 10) === currentPage) {
-                    $this.addClass('cur').siblings('.js_page').removeClass('cur');
-                }
-            });
-
+          
         }
 
     });
