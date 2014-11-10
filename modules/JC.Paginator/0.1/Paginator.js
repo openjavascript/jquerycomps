@@ -111,7 +111,8 @@
                 $selector = p._model.selector();
 
             if (!p._model.totalRecords()) return;
-           
+            
+            p._model.paginatorContent().find('tr').hide();
             //渲染分页
             p._view.paginatedView();
             p._view.updateContentView();
