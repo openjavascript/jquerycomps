@@ -680,7 +680,7 @@
         var _events = _treeIns.event( 'FolderClick' );
         if( _events && _events.length ){
             $.each( _events, function( _ix, _cb ){
-                if( _cb.call( _p, _evt ) === false ) return false; 
+                if( _cb.call( _p, _evt ) === false ) return false;
             });
         }
 
