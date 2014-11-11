@@ -38,14 +38,14 @@
  * @version dev 0.1 2014-05-05
  * @author  zuojing   <zuojing1013@gmail.com> | 75 Team
  * @example
-        <div class="cafe-table js_compPaginator" paginatortype="static" paginatorcontent=".contents" paginatorui=".pages"  totalrecords="14" perpage="3" needInit="true" midrange="5">
-        <table>
-           在这里添加你要的数据
-        </table>
-        <div class="page pages">
-            
+        <div class="cafe-table js_compPaginator" paginatorcontent=".contents" paginatorui=".pages"  totalrecords="14" perpage="3" midrange="5">
+            <table>
+               在这里添加你要的数据
+            </table>
+            <div class="page pages">
+                
+            </div>
         </div>
-    </div>
 */
     JC.Paginator = Paginator;
  
@@ -112,7 +112,6 @@
 
             if (!p._model.totalRecords()) return;
             
-            p._model.paginatorContent().find('tr').hide();
             //渲染分页
             p._view.paginatedView();
             p._view.updateContentView();
