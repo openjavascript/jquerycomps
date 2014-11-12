@@ -1,4 +1,8 @@
 ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'plugins.json2' ], function(){
+    JC.use 
+        && !window.JSON 
+        && JC.use( 'plugins.json2' )
+        ;
     JC.AjaxTree = AjaxTree;
     /**
      * 树菜单类 JC.AjaxTree
@@ -115,8 +119,41 @@
 
                     _p._view._process( _p._model.child( _p._model.root()[ _p._model.idIndex() ] ), _p._view._initRoot() );
 
-                    var _arg = JC.f.getUrlParam( _p._model.urlArgName() );
-                    _arg && _p.open( _arg );
+                    _p.trigger( 'AT_OPEN_FOLDER' );
+                });
+
+                _p.on( 'AT_OPEN_FOLDER', function(){
+                    var _arg = ( JC.f.getUrlParam( _p._model.urlArgName() ) || '' ).trim()
+                        , _list
+                        ;
+                    if( !_arg ) return;
+                    _list = _p.triggerHandler( 'AT_PROCESS_ID', [ _arg ] );
+                    if( !_list.length ) return;
+
+                    _p.trigger( 'AT_OPEN_ALL_FOLDER', [ _list, 0 ] );
+                });
+
+                _p.on( 'AT_OPEN_ALL_FOLDER', function( _evt, _list, _ix ){
+                    if( _ix >= _list.length ) {
+                        _p.openUI( _list.last() );
+                        return;
+                    }
+                    var _id = _list[ _ix ]
+                        , _node = _p.selector().find( JC.f.printf( 'div.node_ctn[data-id={0}]', _id ) )
+                        , _nodeUl
+                        ;
+                    if( !( _node && _node.length ) ) return;
+                    _p._view.openFolder( _id, function(){
+                        _p.trigger( 'AT_OPEN_ALL_FOLDER', [ _list, ++_ix ] );
+                    });
+                });
+
+                _p.on( 'AT_PROCESS_ID', function( _evt, _ids ){
+                    var _r = [];
+                    typeof _ids != 'string' && ( _ids = _ids.toString() );
+                    _ids = (_ids || '' ).replace( /[\s]+/g, '' );
+                    _ids && ( _r = _ids.split( ',' ) );
+                    return _r;
                 });
 
             }
@@ -134,13 +171,33 @@
          */
         , open:
             function( _nodeId ){
+                var _p = this;
+                if( typeof _nodeId == 'undefined' ){
+                    _p._view.openAll();
+                    return _p;
+                }
+                var _list = _p.triggerHandler( 'AT_PROCESS_ID', [ _nodeId ] );
+                if( _list.length ){
+                    _p.trigger( 'AT_OPEN_ALL_FOLDER', [ _list, 0 ] );
+                }
+                return _p;
+            }
+        /**
+         * 展开树到某个具体节点, 或者展开树的所有节点
+         * @method  openUI
+         * @param   {string|int}    _nodeId     如果_nodeId='undefined', 将会展开树的所有节点
+         *                                      <br />_nodeId 不为空, 将展开树到 _nodeId 所在的节点
+         */
+        , openUI:
+            function( _nodeId ){
                 if( typeof _nodeId == 'undefined' ){
                     this._view.openAll();
                     return this;
                 }
-                this._view.open( _nodeId );
+                this._view.openUI( _nodeId );
                 return this;
             }
+
         /**
          * 关闭某个节点, 或者关闭整个树
          * @method  close
@@ -348,8 +405,6 @@
         init:
             function() {
 
-                /*
-                */
                 return this;
             }
         /**
@@ -384,29 +439,38 @@
                 var _p = this;
 
                 if( !_p._model.data().root ) return;
+
+                var _data, _parentNode, _label, _node, _span, _r;
                 
-                var _data = _p._model.data().root;
-                var _parentNode = $( '<ul class="tree_wrap"></ul>' );
+                _data = _p._model.data().root;
+                _parentNode = $( '<ul class="tree_wrap"></ul>' );
 
-                var _label = this._initLabel( _data );
+                _label = this._initLabel( _data );
 
-                var _node = $( '<li class="folder_open"></li>' );
-                var _span = $( '<span class="folder_img_root folderRoot folder_img_open">&nbsp;</span>' );
-                    //_node.html( '<span class="folder_img_root folderRoot folder_img_open">&nbsp;</span>' );
-                    _span.appendTo( _node );
-                    _label.appendTo( _node );
 
-                    _span.on( 'click', function( e ){
-                        _p.folderClick( _data[ _p._model.idIndex() ] );
-                    });
+                if( !( _data[ _p._model.idIndex() ] in ( _p._model.data().data || {} ) ) ){
+                    _node = $( '<li class="folder_closed"></li>' );
+                    _span = $( '<span class="folder_img_root folderRoot folder_img_closed">&nbsp;</span>' );
+                }else{
+                    _node = $( '<li class="folder_open"></li>' );
+                    _span = $( '<span class="folder_img_root folderRoot folder_img_open">&nbsp;</span>' );
+                }
 
-                    _node.appendTo( _parentNode );
-                    _parentNode.appendTo( _p._model.selector() );
+                //_node.html( '<span class="folder_img_root folderRoot folder_img_open">&nbsp;</span>' );
+                _span.appendTo( _node );
+                _label.appendTo( _node );
 
-                    this.selector( _parentNode );
+                _span.on( 'click', function( e ){
+                    _p.folderClick( _data[ _p._model.idIndex() ] );
+                });
 
-                var _r =  $( '<ul style="" class="tree_wrap_inner"></ul>' )
-                    _r.appendTo( _node );
+                _node.appendTo( _parentNode );
+                _parentNode.appendTo( _p._model.selector() );
+
+                this.selector( _parentNode );
+
+                _r =  $( '<ul style="" class="tree_wrap_inner"></ul>' )
+                _r.appendTo( _node );
 
                 return _r;
             }
@@ -470,6 +534,7 @@
                     _label.attr( 'id', this._model.id( _data[ _p._model.idIndex() ] ) )
                         .attr( 'data-id', _data[ _p._model.idIndex() ] )
                         .attr( 'data-name', _data[ _p._model.nameIndex() ] )
+                        .attr( 'data-type', _data[ _p._model.typeIndex() ] || '' )
                         .data( 'nodeData', _data );
 
                 _label.html( _data[ _p._model.nameIndex() ] || '没有标签' );
@@ -501,7 +566,7 @@
          * 展开树到具体节点
          * @param   {string}    _nodeId
          */
-        , open: 
+        , openUI: 
             function( _nodeId ){
                 var _p = this;
                 var _tgr = _p._model.getNodeById( _nodeId );
@@ -590,18 +655,27 @@
                 }
             }
         , openFolder:
-            function( _nodeId ){
+            function( _nodeId, _callback ){
                 var _p = this,
                     _model = _p._model,
                     _node = _model.getNodeById( _nodeId ),
                     _pntLi = _node.parent('li'),
                     _nodeImg = _node.siblings('span'),
-                    _nodeUl = _node.siblings('ul');
+                    _nodeUl = _node.siblings('ul'),
+                    _type = ( _node.attr( 'data-type' ) || 'file' )
+                    ;
+
+                if( _type == 'file' ){
+                    _callback && _callback();
+                    return;
+                }
                 
-                if( _nodeUl.children('li').length > 0 ){/* 已经初始化子节点 展开 */
+                if( _nodeUl.data( 'inited' ) || _nodeUl.children('li').length > 0 ){/* 已经初始化子节点 展开 */
                     _p.nodeImgClick( _nodeId );
+                    _callback && _callback();
                 } else {/* 通过ajxa获取数据 */
                     _nodeImg.removeClass('folder_img_closed').addClass('folder_img_loading');
+                    _nodeUl.data( 'inited', true );
 
                     var ajaxUrl = _model.data().url
                     if( !ajaxUrl ){
@@ -617,6 +691,7 @@
                             _pntLi.addClass('folder_open').removeClass('folder_closed');
                             _nodeImg.removeClass('folder_img_loading').addClass('folder_img_open');
                             _p._process( _data.data, _nodeUl.show() );
+                            _callback && _callback();
                         }
                     });
                     
@@ -626,23 +701,6 @@
             function( _node ){
                 _node.siblings('span').removeClass('folder_img_closed').addClass('folder_img_loading');
             }
-    });
-    /**
-     * 树的最后的 hover 节点
-     * <br />树的 hover 是全局属性, 页面上的所有树只会有一个当前 hover
-     * @property    lastHover
-     * @type    selector
-     * @default null
-     */
-    AjaxTree.lastHover = null;
-
-    $(document).delegate( 'ul.tree_wrap div.node_ctn', 'mouseenter', function(){
-        if( AjaxTree.lastHover ) AjaxTree.lastHover.removeClass('ms_over');
-        $(this).addClass('ms_over');
-        AjaxTree.lastHover = $(this);
-    });
-    $(document).delegate( 'ul.tree_wrap div.node_ctn', 'mouseleave', function(){
-        if( AjaxTree.lastHover ) AjaxTree.lastHover.removeClass('ms_over');
     });
     /**
      * 树节点的点击事件
@@ -662,30 +720,6 @@
                 JC.dir( _item[0], _data, _box[0] );
             });
      */
-
-    $(document).delegate( 'ul.tree_wrap div.node_ctn', 'click', function( _evt ){
-        var _p = $(this)
-            , _treeselector = JC.f.getJqParent( _p, 'div.js_compAjaxTree' )
-            , _treeIns = _treeselector.data( AjaxTree.Model._instanceName )
-            , _nodeData, _tmpData
-            , _isChange = true
-            ;
-
-        if( !_treeIns ) return;
-
-        _nodeData = _p.data( 'nodeData' );
-
-        _treeselector.trigger( 'click', [ _p, _p.data( 'nodeData' ), _treeselector ] );
-
-        _treeIns.selectedItem( _p );
-
-        if( ( _tmpData = _treeselector.data( 'preSelectedData' ) ) && _tmpData[0] === _nodeData[0] ){
-            _isChange = false;
-        }
-        _treeselector.data( 'preSelectedData', _nodeData );
-
-        _isChange && _treeselector.trigger( 'change', [ _p, _p.data( 'nodeData' ), _treeselector ] );
-    });
 
     /**
      * 树节点的展现事件
@@ -709,42 +743,90 @@
                 alert( 'folder click' );
             });
      */
-
     /**
-     * 捕获树文件夹图标的点击事件
+     * 树的最后的 hover 节点
+     * <br />树的 hover 是全局属性, 页面上的所有树只会有一个当前 hover
+     * @property    lastHover
+     * @type    selector
+     * @default null
      */
-    // $(document).delegate( 'ul.tree_wrap span.folder, ul.tree_wrap span.folderRoot', 'click', function( _evt ){
-    //     var _p = $(this), _pntLi = _p.parent('li'), _childUl = _pntLi.find( '> ul');
-    //     var _treeselector = JC.f.getJqParent( _p, 'div.js_compAjaxTree' )
-    //         , _treeIns = _treeselector.data( AjaxTree.Model._instanceName )
-    //         ;
-    //     if( !_treeIns ) return;
+    AjaxTree.lastHover = null;
 
-        
-    //     var _events = _treeIns.event( 'FolderClick' );
-    //     if( _events && _events.length ){
-    //         $.each( _events, function( _ix, _cb ){
-    //             if( _cb.call( _p, _evt ) === false ) return false; 
-    //         });
-    //     }
-        
+    JDOC.delegate( '.js_compAjaxTree ul.tree_wrap div.node_ctn', 'mouseenter', function(){
+        if( AjaxTree.lastHover ) AjaxTree.lastHover.removeClass('ms_over');
+        $(this).addClass('ms_over');
+        AjaxTree.lastHover = $(this);
+    });
+    JDOC.delegate( '.js_compAjaxTree ul.tree_wrap div.node_ctn', 'mouseleave', function(){
+        if( AjaxTree.lastHover ) AjaxTree.lastHover.removeClass('ms_over');
+    });
 
-    //     if( _p.hasClass( 'folder_img_open' ) ){
-    //         _p.removeClass( 'folder_img_open' ).addClass( 'folder_img_closed' );
-    //         _childUl.hide();
-    //     }else if( _p.hasClass( 'folder_img_closed' ) ){
-    //         _p.addClass( 'folder_img_open' ).removeClass( 'folder_img_closed' );
-    //         _childUl.show();
-    //     }
+    JDOC.delegate( '.js_compAjaxTree ul.tree_wrap div.node_ctn a[href]', 'click', function( _evt ){
+        var _p = $( this )
+            , _href = ( _p.attr( 'href' ) || '' ).trim().replace( /[\s]+/g, '' )
+            , _idList
+            , _node 
+            , _treeBox, _treeIns
+            , _args
+            ;
+        if( /^(javascript\:|#)/.test( _href ) ) return;
 
-    //     if( _pntLi.hasClass('folder_closed') ){
-    //         _pntLi.addClass('folder_open').removeClass('folder_closed');
-    //     }else if( _pntLi.hasClass('folder_open') ){
-    //         _pntLi.removeClass('folder_open').addClass('folder_closed');
-    //     }
-    // });
+        _node = JC.f.getJqParent( _p, 'div.node_ctn' );
+        if( !( _node && _node.length ) ) return;
 
-    $( document ).ready( function(){
+        _treeBox = JC.f.getJqParent( _p, '.js_compAjaxTree' );
+        if( !( _treeBox && _treeBox.length ) ) return;
+
+        _treeIns = JC.BaseMVC.getInstance( _treeBox, JC.AjaxTree );
+        if( !_treeIns ) return;
+
+        _idList = JWIN.triggerHandler( 'AJAXTREE_GET_PARENT_LIST', [ _node ] );
+        _args = {};
+        _args[ _treeIns._model.urlArgName() ] = _idList.join(',');
+        _p.attr( 'href', JC.f.addUrlParams( _href, _args ) ); 
+    });
+
+    JWIN.on( 'AJAXTREE_GET_PARENT_LIST', function( _evt, _node, _list ){
+        _list = _list || [];
+        _node = $( _node );
+        var _pntUl, _pntNode;
+
+        _list.unshift( _node.attr( 'data-id' ) );
+
+        _pntUl = JC.f.getJqParent( _node, 'ul' );
+        if( _pntUl 
+            && _pntUl.length 
+            && ( _pntUl.is( '.folder_ul_lst' ) || _pntUl.is( '.tree_wrap_inner' ) ) 
+        ){
+            _pntNode = _pntUl.prev( 'div.node_ctn' );
+            if( _pntNode && _pntNode.length ){
+                JWIN.trigger( 'AJAXTREE_GET_PARENT_LIST', [ _pntNode, _list ] );
+            }
+        }
+
+        return _list;
+    });
+
+    JDOC.delegate( '.js_compAjaxTree ul.tree_wrap div.node_ctn', 'click', function( _evt ){
+        var _p = $(this)
+            , _treeselector = JC.f.getJqParent( _p, '.js_compAjaxTree' )
+            , _treeIns = _treeselector.data( AjaxTree.Model._instanceName )
+            , _nodeData, _tmpData
+            , _isChange = true
+            ;
+
+        if( !_treeIns ) return;
+
+        _treeIns.open( _p.attr( 'data-id' ) );
+
+        if( _treeselector.data( 'AT_PRESELECTED_ID' ) == _p.attr( 'data-id' ) ){
+        }else{
+            _treeselector.data( 'AT_PRESELECTED_ID', _p.attr( 'data-id' ) );
+            _treeselector.trigger( 'change', [ _p, _p.data( 'nodeData' ), _treeselector ] );
+        }
+    });
+
+    JDOC.ready( function(){
         JC.f.safeTimeout( function(){
             AjaxTree.autoInit && AjaxTree.init();
         }, null, 'JCAjaxTreeInit', 1 );

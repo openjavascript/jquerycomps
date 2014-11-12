@@ -10,6 +10,9 @@
     !console.dir && (
         console.dir = function(){}
     );
+    !console.error && (
+        console.error = function(){}
+    );
     /**
      * 声明主要命名空间, 方便迁移
      */
@@ -17,6 +20,12 @@
     JC.log = function(){ JC.debug && console.log( sliceArgs( arguments ).join(' ') ); };
     JC.dir = function(){ 
         JC.debug && $.each( sliceArgs( arguments ), function( _ix, _item ){ console.dir( _item )} );
+    };
+    JC.error = function(){ 
+        JC.debug && $.each( sliceArgs( arguments ), function( _ix, _item ){ console.error( _item )} );
+    };
+    JC.clear = function(){ 
+        console.clear && console.clear();
     };
 
     JC.PATH = JC.PATH || scriptPath();

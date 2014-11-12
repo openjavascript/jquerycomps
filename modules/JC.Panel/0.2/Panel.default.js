@@ -1181,7 +1181,7 @@
      * @event   Panel click
      * @private
      */
-    $(document).delegate( 'div.UPanel', 'click', function( _evt ){
+    $(document).delegate( 'div.UPanel, div.JCPanel', 'click', function( _evt ){
         var _panel = $(this), _src = $(_evt.target || _evt.srcElement), _evtName;
         if( _src && _src.length && _src.is("[eventtype]") ){
             _evtName = _src.attr('eventtype');
@@ -1190,7 +1190,7 @@
         }
     });
 
-    $(document).delegate('div.UPanel', 'click', function( _evt ){
+    $(document).delegate('div.UPanel, div.JCPanel', 'click', function( _evt ){
         var _p = $(this), _ins = Panel.getInstance( _p );
         if( _ins && _ins.isClickClose() ){
             _evt.stopPropagation();
@@ -1199,7 +1199,7 @@
 
     $(document).on('click', function( _evt ){
         if( Panel.ignoreClick ) return;
-        $('div.UPanel').each( function(){
+        $('div.UPanel, div.JCPanel').each( function(){
             var _p = $(this), _ins = Panel.getInstance( _p );
             if( _ins && _ins.isClickClose() && _ins.layout() && _ins.layout().is(':visible') ){
                 _ins.hide();
