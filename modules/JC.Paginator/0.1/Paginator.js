@@ -1,6 +1,7 @@
  ;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
 /**
  * Paginator 分页
+ * <p>实现的功能上一页，下一页，数字页，...显示页码，跳转到n页，每页显示n条记录，</p>
  * <p>
  *      <b>require</b>: 
  *          <a href='window.jQuery.html'>jQuery</a>
@@ -12,7 +13,6 @@
  *
  * <h2></h2>
  * <p>自动初始化<b>.js_compPaginator</b>下的table</p>
- *
  *
  * <h2>可用的 HTML attribute</h2>
  * <dl>
@@ -197,9 +197,6 @@
     Paginator.Model._instanceName = "Paginator";
 
     JC.f.extendObject( Paginator.Model.prototype, {
-        needInit: function () {
-            return this.boolProp('needInit');
-        },
 
         paginatortype: function () {
             return this.attrProp('paginatortype') || 'ajax';
@@ -214,7 +211,7 @@
 
         paginatorContent: function () {
             var p = this,
-                selector = p.attrProp('paginatorcontent') || '.content';
+                selector = p.attrProp('paginatorcontent') || 'tbody';
 
             return p.selector().find(selector);
         },
@@ -232,12 +229,6 @@
                 + '</select>'
                 + '到第<input type="text" class="js_goto" style="width:60px;" />页';
         },
-
-        url: function () {
-            return this.attrProp('paginatorurl');
-        },
-
-        requestUrl: '',
 
         currentPage: 1,
 
@@ -362,7 +353,8 @@
                 end;
 
             start = (curPage - halfMidRange) > 0 ? Math.min((curPage - halfMidRange), limit): 0;
-            end = start + midRange - 1;
+            start = Math.max(start - 1, 0); 
+            end = start + midRange;
             $box.find('.js_page').not(':first').not(':last').addClass('dn').slice(start, end).removeClass("dn");
             $box.find('.js_page').eq(curPage - 1).addClass('cur').siblings().removeClass('cur');
             $fstBrk[curPage - halfMidRange > 1? 'show': 'hide']();
