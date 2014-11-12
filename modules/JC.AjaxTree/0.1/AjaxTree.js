@@ -117,8 +117,8 @@
 
                     var _arg = JC.f.getUrlParam( _p._model.urlArgName() );
                     _arg && _p.open( _arg );
-                    //JC.log( _p._model.idIndex(), _p._model.nameIndex(), _p._model.typeIndex() );
                 });
+
             }
 
         , _inited:
@@ -188,6 +188,7 @@
             function(){
                 return this.selectedItem.apply( this, JC.f.sliceArgs( arguments ) );
             }
+        
     });
 
     AjaxTree.Model._instanceName = 'JCAjaxTreeIns';
@@ -234,21 +235,21 @@
         , idIndex:
             function(){
                 if( typeof this._idIndex == 'undefined' ){
-                    this._idIndex = this.attrProp( 'data-idIndex' ) || 0;
+                    this._idIndex = this.attrProp( 'data-idIndex' ) || 1;
                 }
                 return this._idIndex;
             }
         , nameIndex:
             function(){
                 if( typeof this._nameIndex == 'undefined' ){
-                    this._nameIndex = this.attrProp( 'data-nameIndex' ) || 1;
+                    this._nameIndex = this.attrProp( 'data-nameIndex' ) || 2;
                 }
                 return this._nameIndex;
             }
         , typeIndex:
             function(){
                 if( typeof this._typeIndex == 'undefined' ){
-                    this._typeIndex = this.attrProp( 'data-typeIndex' ) || 2;
+                    this._typeIndex = this.attrProp( 'data-typeIndex' ) || 0;
                 }
                 return this._typeIndex;
             }
@@ -314,6 +315,30 @@
                 var _r = this.attrProp( 'data-urlArgName' ) || 'tree_node';
                 return _r;
             }
+
+        , getNodeById:
+        function( _nodeId ){
+            var target = null;
+            if( _nodeId ){
+                target = $( '#' + this.id( _nodeId ) );
+            }
+            return target;
+        }
+        , getDataByAjax:
+            function( _nodeId ){
+                var _data = {};
+                var ajaxUrl = this.data().url + '?id=' + _nodeId;
+                $.ajax({
+                    type: "GET",
+                    url: ajaxUrl,
+                    dataType: "json",
+                    success: function( data ){
+                        console.log( data );
+                        _data = data;
+                    }
+                });
+                return _data;
+            }
     });
 
     JC.f.extendObject( AjaxTree.View.prototype, {
@@ -334,13 +359,17 @@
          */
         , _process:
             function( _data, _parentNode ){
+                // console.log(_data);
+                // console.log(_parentNode);
+                // console.log('-------------------')
+
                 var _p = this;
                 if( !( _data && _data.length ) ) return;
                 for( var i = 0, j = _data.length, _item, _isLast; i < j; i++ ){
                     _item = _data[ i ];
                     _isLast = i === j - 1;
-
-                    if( this._model.hasChild( _item[ _p._model.idIndex() ] ) ){
+                    
+                    if( 'folder' == _item[ _p._model.typeIndex() ] ){
                         this._initFolder( _parentNode, _item, _isLast );
                     }else{
                         this._initFile( _parentNode, _item, _isLast );
@@ -362,8 +391,14 @@
                 var _label = this._initLabel( _data );
 
                 var _node = $( '<li class="folder_open"></li>' );
-                    _node.html( '<span class="folder_img_root folderRoot folder_img_open">&nbsp;</span>' );
+                var _span = $( '<span class="folder_img_root folderRoot folder_img_open">&nbsp;</span>' );
+                    //_node.html( '<span class="folder_img_root folderRoot folder_img_open">&nbsp;</span>' );
+                    _span.appendTo( _node );
                     _label.appendTo( _node );
+
+                    _span.on( 'click', function( e ){
+                        _p.folderClick( _data[ _p._model.idIndex() ] );
+                    });
 
                     _node.appendTo( _parentNode );
                     _parentNode.appendTo( _p._model.selector() );
@@ -383,20 +418,27 @@
          */
         , _initFolder:
             function( _parentNode, _data, _isLast ){
+
                 var _p = this, _last = '', _last1 = '';
                     _isLast && ( _last = 'folder_span_lst ', _last1 = 'folder_last' );
 
                 var _label = this._initLabel( _data );
 
-                var _node = $( JC.f.printf( '<li><span class="folder_img_closed folder {1}">&nbsp;</span></li>', _data[ _p._model.nameIndex() ], _last ) );
-                    _node.addClass( JC.f.printf( 'folder_closed {0} folder', _last1 ));
-                    _label.appendTo( _node );
+                var _node = $( JC.f.printf( '<span class="folder_img_closed folder {1}">&nbsp;</span>', _data[ _p._model.nameIndex() ], _last ) );
+                var _li = $('<li></li>');
+                    _li.addClass( JC.f.printf( 'folder_closed {0} folder', _last1 ));
+                    _node.appendTo( _li );
+                    _label.appendTo( _li );
 
-                var _r =  $( '<ul style="display:none;" class="folder_ul_lst" ></ul>' )
-                    _r.appendTo( _node );
+                var _r =  $( '<ul style="display:none;" class="folder_ul_lst" ></ul>' );
 
-                    _node.appendTo( _parentNode );
-                    this._process( this._model.child( _data[ _p._model.idIndex() ] ), _r );
+                $( _node ).on( 'click', function( e ){
+                    _p.folderClick( _data[ _p._model.idIndex() ] );
+                });
+                _r.appendTo( _li );
+
+                _li.appendTo( _parentNode );
+                this._process( this._model.child( _data[ _p._model.idIndex() ] ), _r );
             }
         /**
          * 初始化树的文件节点
@@ -461,12 +503,12 @@
          */
         , open: 
             function( _nodeId ){
-                if( !_nodeId ) return;
-                var _tgr = $( '#' + this._model.id( _nodeId ) );
+                var _p = this;
+                var _tgr = _p._model.getNodeById( _nodeId );
+
                 if( !_tgr.length ) return;
 
                 var lis = _tgr.parents('li');
-
                 this.selectedItem( _tgr );
 
                 lis.each( function(){
@@ -496,9 +538,11 @@
          */
         , close:
             function( _nodeId ){
-                if( !_nodeId ) return;
-                var _tgr = $( '#' + this._model.id( _nodeId ) );
+                var _p = this;
+                var _tgr = _p._model.getNodeById( _nodeId );
+                
                 if( !_tgr.length ) return;
+
                 var _child = _tgr.parent('li').find( '> span.folderRoot, > span.folder' );
                 if( _child.length ){
                     if( _child.hasClass( 'folder_img_closed' ) ) return;
@@ -506,7 +550,82 @@
                 }
                 
             }
+        , nodeImgClick:
+            function( _nodeId ){
+                var _p = this, 
+                    _node = _p._model.getNodeById( _nodeId ),
+                    _nodeImg = _node.siblings('span'),
+                    _pntLi = _node.parent('li'), 
+                    _childUl = _pntLi.find( '> ul');
+                var _treeselector = JC.f.getJqParent( _node, 'div.js_compAjaxTree' )
+                    , _treeIns = _treeselector.data( AjaxTree.Model._instanceName )
+                    ;
+                if( !_treeIns ) return;
 
+                if( _nodeImg.hasClass( 'folder_img_open' ) ){
+                    _nodeImg.removeClass( 'folder_img_open' ).addClass( 'folder_img_closed' );
+                    _childUl.hide();
+                }else if( _nodeImg.hasClass( 'folder_img_closed' ) ){
+                    _nodeImg.addClass( 'folder_img_open' ).removeClass( 'folder_img_closed' );
+                    _childUl.show();
+                }
+
+                if( _pntLi.hasClass('folder_closed') ){
+                    _pntLi.addClass('folder_open').removeClass('folder_closed');
+                }else if( _pntLi.hasClass('folder_open') ){
+                    _pntLi.removeClass('folder_open').addClass('folder_closed');
+                }
+            }
+        , folderClick:
+            function( _nodeId ){
+
+                var _p = this,
+                    _model = _p._model,
+                    _node = _model.getNodeById( _nodeId ),
+                    _pntLi = _node.parent('li');
+                if( _pntLi.hasClass( 'folder_open' ) ){
+                    _p.nodeImgClick( _nodeId );
+                } else {
+                    _p.openFolder( _nodeId );
+                }
+            }
+        , openFolder:
+            function( _nodeId ){
+                var _p = this,
+                    _model = _p._model,
+                    _node = _model.getNodeById( _nodeId ),
+                    _pntLi = _node.parent('li'),
+                    _nodeImg = _node.siblings('span'),
+                    _nodeUl = _node.siblings('ul');
+                
+                if( _nodeUl.children('li').length > 0 ){/* 已经初始化子节点 展开 */
+                    _p.nodeImgClick( _nodeId );
+                } else {/* 通过ajxa获取数据 */
+                    _nodeImg.removeClass('folder_img_closed').addClass('folder_img_loading');
+
+                    var ajaxUrl = _model.data().url
+                    if( !ajaxUrl ){
+                        return;
+                    }
+                    ajaxUrl += '?id=' + _nodeId;
+                    
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrl,
+                        dataType: "json",
+                        success: function( _data ){
+                            _pntLi.addClass('folder_open').removeClass('folder_closed');
+                            _nodeImg.removeClass('folder_img_loading').addClass('folder_img_open');
+                            _p._process( _data.data, _nodeUl.show() );
+                        }
+                    });
+                    
+                }
+            }
+        , showDataLoading:
+            function( _node ){
+                _node.siblings('span').removeClass('folder_img_closed').addClass('folder_img_loading');
+            }
     });
     /**
      * 树的最后的 hover 节点
@@ -594,36 +713,36 @@
     /**
      * 捕获树文件夹图标的点击事件
      */
-    $(document).delegate( 'ul.tree_wrap span.folder, ul.tree_wrap span.folderRoot', 'click', function( _evt ){
-        var _p = $(this), _pntLi = _p.parent('li'), _childUl = _pntLi.find( '> ul');
-        var _treeselector = JC.f.getJqParent( _p, 'div.js_compAjaxTree' )
-            , _treeIns = _treeselector.data( AjaxTree.Model._instanceName )
-            ;
-        if( !_treeIns ) return;
+    // $(document).delegate( 'ul.tree_wrap span.folder, ul.tree_wrap span.folderRoot', 'click', function( _evt ){
+    //     var _p = $(this), _pntLi = _p.parent('li'), _childUl = _pntLi.find( '> ul');
+    //     var _treeselector = JC.f.getJqParent( _p, 'div.js_compAjaxTree' )
+    //         , _treeIns = _treeselector.data( AjaxTree.Model._instanceName )
+    //         ;
+    //     if( !_treeIns ) return;
 
-        /*
-        var _events = _treeIns.event( 'FolderClick' );
-        if( _events && _events.length ){
-            $.each( _events, function( _ix, _cb ){
-                if( _cb.call( _p, _evt ) === false ) return false; 
-            });
-        }
-        */
+        
+    //     var _events = _treeIns.event( 'FolderClick' );
+    //     if( _events && _events.length ){
+    //         $.each( _events, function( _ix, _cb ){
+    //             if( _cb.call( _p, _evt ) === false ) return false; 
+    //         });
+    //     }
+        
 
-        if( _p.hasClass( 'folder_img_open' ) ){
-            _p.removeClass( 'folder_img_open' ).addClass( 'folder_img_closed' );
-            _childUl.hide();
-        }else if( _p.hasClass( 'folder_img_closed' ) ){
-            _p.addClass( 'folder_img_open' ).removeClass( 'folder_img_closed' );
-            _childUl.show();
-        }
+    //     if( _p.hasClass( 'folder_img_open' ) ){
+    //         _p.removeClass( 'folder_img_open' ).addClass( 'folder_img_closed' );
+    //         _childUl.hide();
+    //     }else if( _p.hasClass( 'folder_img_closed' ) ){
+    //         _p.addClass( 'folder_img_open' ).removeClass( 'folder_img_closed' );
+    //         _childUl.show();
+    //     }
 
-        if( _pntLi.hasClass('folder_closed') ){
-            _pntLi.addClass('folder_open').removeClass('folder_closed');
-        }else if( _pntLi.hasClass('folder_open') ){
-            _pntLi.removeClass('folder_open').addClass('folder_closed');
-        }
-    });
+    //     if( _pntLi.hasClass('folder_closed') ){
+    //         _pntLi.addClass('folder_open').removeClass('folder_closed');
+    //     }else if( _pntLi.hasClass('folder_open') ){
+    //         _pntLi.removeClass('folder_open').addClass('folder_closed');
+    //     }
+    // });
 
     $( document ).ready( function(){
         JC.f.safeTimeout( function(){
