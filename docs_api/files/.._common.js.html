@@ -53,6 +53,8 @@
             
                 <li><a href="../classes/.jQuery.html">.jQuery</a></li>
             
+                <li><a href="../classes/JC.AjaxTree.html">JC.AjaxTree</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -256,6 +258,9 @@
     !console.dir &amp;&amp; (
         console.dir = function(){}
     );
+    !console.error &amp;&amp; (
+        console.error = function(){}
+    );
     /**
      * 声明主要命名空间, 方便迁移
      */
@@ -263,6 +268,12 @@
     JC.log = function(){ JC.debug &amp;&amp; console.log( sliceArgs( arguments ).join(&#x27; &#x27;) ); };
     JC.dir = function(){ 
         JC.debug &amp;&amp; $.each( sliceArgs( arguments ), function( _ix, _item ){ console.dir( _item )} );
+    };
+    JC.error = function(){ 
+        JC.debug &amp;&amp; $.each( sliceArgs( arguments ), function( _ix, _item ){ console.error( _item )} );
+    };
+    JC.clear = function(){ 
+        console.clear &amp;&amp; console.clear();
     };
 
     JC.PATH = JC.PATH || scriptPath();

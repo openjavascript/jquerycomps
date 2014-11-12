@@ -53,6 +53,8 @@
             
                 <li><a href="../classes/.jQuery.html">.jQuery</a></li>
             
+                <li><a href="../classes/JC.AjaxTree.html">JC.AjaxTree</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -1427,7 +1429,7 @@
      * @event   Panel click
      * @private
      */
-    $(document).delegate( &#x27;div.UPanel&#x27;, &#x27;click&#x27;, function( _evt ){
+    $(document).delegate( &#x27;div.UPanel, div.JCPanel&#x27;, &#x27;click&#x27;, function( _evt ){
         var _panel = $(this), _src = $(_evt.target || _evt.srcElement), _evtName;
         if( _src &amp;&amp; _src.length &amp;&amp; _src.is(&quot;[eventtype]&quot;) ){
             _evtName = _src.attr(&#x27;eventtype&#x27;);
@@ -1436,7 +1438,7 @@
         }
     });
 
-    $(document).delegate(&#x27;div.UPanel&#x27;, &#x27;click&#x27;, function( _evt ){
+    $(document).delegate(&#x27;div.UPanel, div.JCPanel&#x27;, &#x27;click&#x27;, function( _evt ){
         var _p = $(this), _ins = Panel.getInstance( _p );
         if( _ins &amp;&amp; _ins.isClickClose() ){
             _evt.stopPropagation();
@@ -1445,7 +1447,7 @@
 
     $(document).on(&#x27;click&#x27;, function( _evt ){
         if( Panel.ignoreClick ) return;
-        $(&#x27;div.UPanel&#x27;).each( function(){
+        $(&#x27;div.UPanel, div.JCPanel&#x27;).each( function(){
             var _p = $(this), _ins = Panel.getInstance( _p );
             if( _ins &amp;&amp; _ins.isClickClose() &amp;&amp; _ins.layout() &amp;&amp; _ins.layout().is(&#x27;:visible&#x27;) ){
                 _ins.hide();

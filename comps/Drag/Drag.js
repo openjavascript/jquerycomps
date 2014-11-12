@@ -165,7 +165,7 @@
 
         this._init();
 
-        JC.log( Drag.Model._instanceName, 'inited', new Date().getTime() );
+        //JC.log( Drag.Model._instanceName, 'inited', new Date().getTime() );
     }
 
     JC.BaseMVC.build( Drag );
@@ -190,6 +190,10 @@
                     
                     _p._model.dragInitedCb() 
                         && _p._model.dragInitedCb().call( _p, _p.selector(), _p.dragTarget() );
+
+                    _p.notification( 'DRAG_INITED', [
+                        _p, _p.selector(), _p.dragTarget()
+                    ]);
                     /*
                     JC.log( 'Drag _inited', new Date().getTime()
                             , _p._model.defaultCSSPosition() 
@@ -198,11 +202,25 @@
                     */
                 });
 
+                _p.on( 'INIT_INDEX', function(){
+                    if( !_p._model.dropPush() ) return;
+                    var _items = _p._model.dropFor( true );
+                    if( !( _items && _items.length ) ) return;
+                    JC.log( _items.length );
+                    _items.each( function( _ix, _item ){
+                        $( _item ).data( 'dragIndex', _ix );
+                    });
+                });
+
                 _p.selector().on( 'mousedown', function( _evt, _srcEvt ){
                     _evt = _srcEvt || _evt;
+                    _p._model._selectedDropBox = null;
 
                     if( _p._model.boolProp( Drag.Model.DISABLE_DRAG ) ) return;
                     if( _p._model.boolProp( Drag.Model.IGNORE_DRAG ) ) return;
+
+                    if( _p._model.dropPush() ){
+                    }
 
                     Drag.cleanDragData();
 
@@ -211,6 +229,17 @@
                     ){
                         return;
                     }
+
+                    if( _p.notificationHandler( 'DRAG_BEFORE', [
+                        _p
+                        , _p.selector()
+                        , _p._model.dragTarget()
+                        , _p._model.dragMovingTarget() 
+                    ]) === false ){
+                        return;
+                    }
+
+                    _p.notification( 'DRAG_DOWN' );
 
                     _p.trigger( Drag.Model.DRAG_BEFORE );
 
@@ -225,6 +254,10 @@
                     Drag.dragInfo( _p, _evt );
                     _p.trigger( Drag.Model.DRAG_BEGIN, [ _evt, Drag.dragInfo() ] );
 
+                    _jdoc.off( 'mouseup', Drag.defaultMouseUp );
+                    _jdoc.off( 'mousemove', Drag.defaultMouseMove );
+                    _jwin.off( 'scroll', Drag.defaultScroll );
+
                     _jdoc.on( 'mouseup', Drag.defaultMouseUp );
                     _jdoc.on( 'mousemove', Drag.defaultMouseMove );
                     _jwin.on( 'scroll', Drag.defaultScroll );
@@ -236,11 +269,11 @@
                 _p.selector()[0].onselectstart = function(){ return false; };
 
                 _p.on( Drag.Model.DRAG_BEFORE, function( _evt ){
-                    JC.log( 'drag before', new Date().getTime() );
+                    //JC.log( 'drag before', new Date().getTime() );
                 });
 
                 _p.on( Drag.Model.DRAG_BEGIN, function( _evt, _dragInfo ){
-                    JC.log( 'drag begin', new Date().getTime() );
+                    //JC.log( 'drag begin', new Date().getTime() );
 
                     _p._model.dragTarget().css( 'z-index', window.ZINDEX_COUNT++ );
 
@@ -253,10 +286,18 @@
                             , _p._model.dragTarget()
                             , _p._model.dragMovingTarget() 
                         );
+
+                    _p.notification( 'DRAG_BEGIN', [
+                        _p
+                        , _p.selector()
+                        , _p._model.dragTarget()
+                        , _p._model.dragMovingTarget() 
+                    ]);
+
                 });
 
                 _p.on( Drag.Model.DRAG_DONE, function( _evt, _dragInfo ){
-                    JC.log( 'drag done', new Date().getTime() );
+                    //JC.log( 'drag done', new Date().getTime() );
 
                     _p._view.dropDone( _dragInfo );
                     _p._view.clean( _dragInfo );
@@ -270,6 +311,14 @@
                             , _p.selector()
                             , _p._model.dragTarget() 
                         );
+
+                    _p.notification( 'DRAG_DONE', [
+                       _p
+                        , _p.selector()
+                        , _p._model.dragTarget() 
+                    ]);
+
+                    _p._model.dragTarget().removeClass( Drag.Model.CLASS_CURRENT_DRAG_ITEM );
 
                     _p.trigger( Drag.Model.DRAG_AFTER );
 
@@ -288,10 +337,20 @@
                             , _y
                             , _srcEvt
                         );
+
+                    _p.notification( 'DRAG_MOVING', [
+                        _p
+                        , _p.selector()
+                        , _p.dragTarget()
+                        , _p.dragMovingTarget()
+                        , _x
+                        , _y
+                        , _srcEvt
+                    ]);
                 });
 
                 _p.on( Drag.Model.DRAG_AFTER, function( _evt ){
-                    JC.log( 'drag after', new Date().getTime() );
+                    //JC.log( 'drag after', new Date().getTime() );
 
                     _p._model.dragAfterCb() 
                         && _p._model.dragAfterCb().call( 
@@ -299,6 +358,12 @@
                             , _p._model.dragTarget()
                             , _p.selector() 
                         );
+                    
+                    _p.notification( 'DRAG_AFTER', [
+                        _p
+                        , _p._model.dragTarget()
+                        , _p.selector() 
+                    ]);
                 });
 
                 _p.on( Drag.Model.TRIGGER_DRAG, function( _evt, _srcEvt ){
@@ -376,7 +441,7 @@
                 Drag._dragInfo = {
                     'ins': _ins
                     , 'evt': _evt
-                    , 'offset': _ins._model.offset( _evt )
+                    , 'offset': _ins._model.position( _evt )
                 };
             }
             return Drag._dragInfo;
@@ -455,6 +520,7 @@
             var _di = Drag.dragInfo();
 
             if( _di && _di.ins ){
+                _di.ins.notification( 'DRAG_UP' );
                 _di.ins.trigger( Drag.Model.DRAG_DONE, _di );
             }
 
@@ -475,7 +541,7 @@
             if( !( _di && _di.ins ) ) return;
             var _scrollX = _di.ins.dragIn().scrollLeft()
                 , _scrollY = _di.ins.dragIn().scrollTop()
-                , _offset = _di.ins.dragMovingTarget().offset()
+                , _offset = _di.ins.dragMovingTarget().position()
                 , _newX, _newY
                 , _fixScrollX = _scrollX - _di.offset.scrollX
                 , _fixScrollY = _scrollY - _di.offset.scrollY
@@ -522,6 +588,7 @@
 
     Drag.Model.CLASS_CURRENT = 'JCCurrentDropBox';
     Drag.Model.CLASS_MOVING = 'JCMovingDropBox';
+    Drag.Model.CLASS_CURRENT_DRAG_ITEM = 'JCCurrentDragItem';
 
     JC.f.extendObject( Drag.Model.prototype, {
         init:
@@ -573,7 +640,7 @@
                     _p._dragMovingTarget = _p.dragTarget();
 
                     if( _isDropFor ){
-                        var _offset = _p.dragTarget().offset();
+                        var _offset = _p.dragTarget().position(), _gid = JC.f.gid();
 
                         _p._dragMovingTarget = _p.dragTarget().clone();
                         _p._dragMovingTarget.css( { 
@@ -582,6 +649,18 @@
                             , 'top': _offset.top + 'px'
                             , 'z-index': window.ZINDEX_COUNT++ 
                         } );
+
+                        _p.dragTarget().data( 'gid', _gid );
+                        _p._dragMovingTarget.data( 'gid', _gid );
+
+                        _p.dragTarget().addClass( Drag.Model.CLASS_CURRENT_DRAG_ITEM );
+
+                        /*
+                        JC.f.safeTimeout( function(){
+                            _p._dragMovingTarget.css( { 'z-index': window.ZINDEX_COUNT++ } );
+                        }, _p._dragMovingTarget, 'sdfaswesfasd', 1 );
+                        */
+
                         _p._dragMovingTarget.attr( Drag.Model.DISABLE_DROP, true )
                             .attr( Drag.Model.IGNORE_DRAG, true )
                             .addClass( Drag.Model.CLASS_MOVING )
@@ -632,6 +711,11 @@
                 return this.boolProp( 'dropSwap' );
             }
 
+        , dropPush:
+            function(){
+                return this.boolProp( 'dropPush' );
+            }
+
         , selectedDropBox:
             function( _x, _y ){
                 var _p = this, _dropFor = _p.dropFor(), _di = Drag.dragInfo();
@@ -651,7 +735,7 @@
 
                             if( _sp.is( '[' + Drag.Model.DISABLE_DROP + ']' ) ) { return; }
 
-                            var _offset = _sp.offset()
+                            var _offset = _sp.position()
                                 , _rect = locationToRect( _offset.left
                                                             , _offset.top
                                                             , _sp.prop( 'offsetWidth' )
@@ -691,18 +775,18 @@
                 if( ! ( this._dragIn && this._dragIn.length ) ){
                     this._dragIn = this.selectorProp( 'dragIn' );
                     !( this._dragIn && this._dragIn.length )
-                        && ( this._dragIn = $( window ) )
+                        && ( this._dragIn = $( document.documentElement ) )
                         ;
                 }
                 return this._dragIn;
             }
 
-        , offset:
+        , position:
             function( _evt ){
                 var _p = this
-                    , _toffset = _p.dragTarget().offset()
-                    , _inoffset = _p.dragIn().offset()
-                    , _roffset = _p.relativeParent() ? _p.relativeParent().offset() : { 'left': 0, 'top': 0 }
+                    , _toffset = _p.dragTarget().position()
+                    , _inoffset = _p.dragIn().position()
+                    , _roffset = _p.relativeParent() ? _p.relativeParent().position() : { 'left': 0, 'top': 0 }
                     , _r = {
                         'mouseX': _evt.pageX
                         , 'mouseY': _evt.pageY
@@ -780,8 +864,22 @@
                 if( _p._model.isDropFor() ){
                     _selectedDropBox = _p._model.selectedDropBox();
                     _selectedDropBox && _selectedDropBox.removeClass( Drag.Model.CLASS_CURRENT );
+
+                    /*
                     _selectedDropBox = _p._model.selectedDropBox( _x, _y );
-                    _selectedDropBox && _selectedDropBox.addClass( Drag.Model.CLASS_CURRENT );
+                    if( _selectedDropBox ){
+                        _selectedDropBox.addClass( Drag.Model.CLASS_CURRENT );
+                    }
+                    */
+                    _selectedDropBox = _p._model.selectedDropBox( _x, _y );
+                    if( _selectedDropBox ){
+                        if( _dt.data( 'gid' ) == _selectedDropBox.data( 'gid' ) && _p._model.dropSwap() ){
+                        } else if( _dt.data( 'gid' ) == _selectedDropBox.data( 'gid' ) && _p._model.dropSwap() ){
+                        }else{
+                            _selectedDropBox.addClass( Drag.Model.CLASS_CURRENT );
+                        }
+                    }
+
                 }
             }
 
@@ -795,13 +893,21 @@
 
                     if( _selectedDropBox.data( Drag.Model.DRAGGING_ITEM ) ) return;
 
-
                     if( _p._model.dropDoneCb() 
                             && _p._model.dropDoneCb().call( 
                                 _p._model.selector()
                                 , _p._model.dragTarget() 
                                 , _selectedDropBox
                            ) === false
+                    ){
+                        return;
+                    }
+
+                    if( _p.notificationHandler( 'DROP_DONE', [ 
+                                _p._model.selector()
+                                , _p._model.dragTarget() 
+                                , _selectedDropBox
+                           ] ) === false
                     ){
                         return;
                     }
@@ -820,6 +926,30 @@
 
                         _srcIpt.remove();
                         _targetIpt.remove();
+                    } else if( _p._model.dropPush ){
+                        _p.trigger( 'INIT_INDEX' );
+                        var _srcIpt = $( '<input type="hidden" />' )
+                            , _targetIpt = _srcIpt.clone()
+                            ;
+                        /*
+                        _p._model.dragTarget().after( _srcIpt );
+                        _selectedDropBox.after( _targetIpt );
+
+                        _targetIpt.after( _p._model.dragTarget() );
+                        _srcIpt.after( _selectedDropBox );
+
+                        _srcIpt.remove();
+                        _targetIpt.remove();
+
+                        JC.log( _selectedDropBox.data( 'dragIndex' ), _p._model.dragTarget().data( 'dragIndex' ) );
+                        */
+
+                        if( _p._model.dragTarget().data( 'dragIndex' ) > _selectedDropBox.data( 'dragIndex' ) ){
+                            _selectedDropBox.before( _p._model.dragTarget() );
+                        }else{
+                            _selectedDropBox.after( _p._model.dragTarget() );
+                        }
+
                     }else{
                         _p._model.dragTarget().appendTo( _selectedDropBox );
                     }
@@ -830,6 +960,12 @@
                             , _p._model.dragTarget() 
                             , _selectedDropBox
                         );
+
+                    _p.notification( 'DROP_DONE_AFTER', [ 
+                        _p._model.selector()
+                        , _p._model.dragTarget() 
+                        , _selectedDropBox
+                    ]);
 
                     _p.trigger( Drag.Model.DROP_DONE_AFTER );
                 }

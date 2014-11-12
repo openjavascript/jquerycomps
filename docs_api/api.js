@@ -4,6 +4,7 @@ YUI.add("yuidoc-meta", function(Y) {
         ".Bizs",
         ".JC",
         ".jQuery",
+        "JC.AjaxTree",
         "JC.AjaxUpload",
         "JC.AutoChecked",
         "JC.AutoComplete",
