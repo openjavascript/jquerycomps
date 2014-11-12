@@ -218,7 +218,7 @@
 
         paginatorUiTpl: function () {
             return '共{0}页，{1}条记录' 
-                + '<a href="#" class="js_prevpage">上一页</a>'
+                + '<a href="#" class="js_prevpage disabled">上一页</a>'
                 + '{2}'
                 + '<a href="#" class="js_nextpage">'
                     + '下一页'
