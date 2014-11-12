@@ -89,6 +89,30 @@
                         return _data;
                     };
 
+                Bizs.CRMSchedule.outdateCheck =
+                    function( _selector ){
+                        var _r = false;
+                        if( _selector.attr( 'data-date' ) ){
+                            var _dt = JC.f.pureDate( JC.f.parseISODate( _selector.attr( 'data-date' ) ) )
+                                , _md = JC.f.pureDate( JC.f.dateDetect( 'now' ) )
+                                ;
+                            //JC.log( _selector.attr( 'data-date' ), _dt.getTime(), _md.getTime() );
+                            if( _dt.getTime() < JC.f.pureDate( _md ).getTime() ) _r = true;
+                        }
+                        return _r;
+                    };
+
+                Bizs.CRMSchedule.DRAG_EDIT_ITEM_FILTER =
+                    function( _item, _type, _itemData, _configData ){
+                        var _selector = this
+                            , _r = true
+                            , _minDate = JC.f.pureDate( JC.f.dateDetect( 'now' ) )
+                            , _itemDate = JC.f.parseISODate( _item.data( 'date' ) )
+                            ;
+                        _itemDate.getTime() < _minDate.getTime() && ( _r = false );
+                        return _r;
+                    };
+
                 JC.Tips.autoInit = false;
             });
 
@@ -131,7 +155,7 @@
                                 bccSaveSelectItemTpl="script.js_bccSaveSelectItemTpl"
                                 bccSaveSelectItemClass=".js_bccSaveSelectItem"
                                 bccDataLabelItemTpl="script.js_bccDataLabelItemTpl"
-                                bccAvailableDate="now, 1d"
+                                bccAvailableDate="now"
 
                                 cdsConfig="/script.js_cdsConfig" 
                                 cdsRealtimeEffect="true" 

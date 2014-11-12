@@ -49,6 +49,8 @@
             
                 <li><a href="../classes/.window.html">.window</a></li>
             
+                <li><a href="../classes/JC.AjaxTree.html">JC.AjaxTree</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -372,7 +374,7 @@
      * @default     300
      * @static
      */
-    Fixed.durationms = 300;
+    Fixed.durationms = 200;
     /**
      * 每次滚动的时间间隔( 时间运动 )
      * @property    stepms
@@ -415,6 +417,11 @@
         , fixedright: function(){ return parseInt( this._layout.attr(&#x27;fixedright&#x27;), 10 ); }
         , fixedbottom: function(){ return parseInt( this._layout.attr(&#x27;fixedbottom&#x27;), 10 ); }
         , fixedleft: function(){ return parseInt( this._layout.attr(&#x27;fixedleft&#x27;), 10 ); }
+
+        , fixedAutoHide:
+            function(){
+                return JC.f.parseBool( this._layout.attr( &#x27;fixedAutoHide&#x27; ) );
+            }
 
         , fixedcenter: 
             function(){ 
@@ -499,7 +506,31 @@
                     : this._initFixedUnsupport();
 
                 this._initMoveTo();
-                this._model.layout().show();
+
+                $( _p ).on( &#x27;hide_layout&#x27;, function(){
+                    _p._model.layout().hide();
+                });
+
+                $( _p ).on( &#x27;show_layout&#x27;, function(){
+                    _p._model.layout().show();
+                });
+
+
+                if( _p._model.fixedAutoHide() ){
+                    if( JDOC.scrollTop() &lt;= 20 ){
+                        $( _p ).trigger( &#x27;hide_layout&#x27; );
+                    }
+
+                    JDOC.on( &#x27;scroll&#x27;, function(){
+                        if( JDOC.scrollTop() &lt;= 20 ){
+                            $( _p ).trigger( &#x27;hide_layout&#x27; );
+                        }else{
+                            $( _p ).trigger( &#x27;show_layout&#x27; );
+                        }
+                    });
+                }else{
+                    $( _p ).trigger( &#x27;show_layout&#x27; );
+                }
 
                 return this;
             }
@@ -732,6 +763,7 @@
             , &#x27;ul.js_autoFixed&#x27;
             , &#x27;ol.js_autoFixed&#x27;
             , &#x27;button.js_autoFixed&#x27;
+            , &#x27;a.js_autoFixed&#x27;
            ].join() ).each( function(){ new Fixed( $(this) ); });
     });
 

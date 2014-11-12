@@ -41,6 +41,7 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
                 <li><a href="../classes/.window.html">.window</a></li>
+                <li><a href="../classes/JC.AjaxTree.html">JC.AjaxTree</a></li>
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
                 <li><a href="../classes/JC.AutoChecked.html">JC.AutoChecked</a></li>
@@ -154,6 +155,7 @@
 </div>
 <div class="box intro">
     <p>Paginator 分页</p>
+<p>实现的功能上一页，下一页，数字页，...显示页码，跳转到n页，每页显示n条记录，</p>
 <p>
      <b>require</b>: 
          <a href='window.jQuery.html'>jQuery</a>
@@ -161,13 +163,11 @@
 </p>
 <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
 | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Paginator.html' target='_blank'>API docs</a>
-| <a href='../../modules/JC.Paginator/0.1/_demo' target='_blank'>demo link</a></p>
+| <a href='../../modules/JC.Paginator/0.1/_demo/demo.html' target='_blank'>demo link</a></p>
 <p><h2></h2></p>
-<p></p>
+<p>自动初始化<b>.js_compPaginator</b>下的table</p>
 <p><h2>可用的 HTML attribute</h2></p>
 <dl>
-<dt>paginatorUiTpl</dt>
-<dd>定义分页的模板</dd>
 <dt>paginatorui</dt>
 <dd>css selector, 指定分页的模板内容将放到哪个容器里面</dd>
 <dt>paginatorcontent</dt>
@@ -176,12 +176,10 @@
 <dd>num, 共多少条记录，必填项</dd>
 <dt>perpage</dt>
 <dd>num, 每页显示多少条记录，默认10条</dd>
-<dt>paginatortype</dt>
-<dd>&#39;static|ajax&#39;，分页类型，ajax分页还是静态分页(静态分页，后端一次性将数据铺好)。默认为ajax</dd>
-<dt>paginatorurl</dt>
-<dd>ajax请求数据的接口</dd>
-<dt>needInit</dt>
-<dd>true|false, 是否需要初始化，即第一页的数据是否由ajax请求，默认为false(后端直接铺好数据)</dd>
+<dt>perpageitems</dt>
+<dd>定义下拉框的option值，默认为[10,20,50]</dd>
+<dt>midrange</dt>
+<dd>num, default = 5。显示多少个数字页，超出的页将以...显示，比如一共有10页，那么显示前5页和最后一页，中间的以...显示</dd>
 </dl>
 </div>
     <div class="constructor">
@@ -217,6 +215,13 @@
         <div class="example">
             <h4>Example:</h4>
             <div class="example-content">
+                <pre class="code prettyprint"><code>   &lt;div class=&quot;cafe-table js_compPaginator&quot; paginatorcontent=&quot;.contents&quot; paginatorui=&quot;.pages&quot;  totalrecords=&quot;14&quot; perpage=&quot;3&quot; midrange=&quot;5&quot;&gt;
+       &lt;table&gt;
+          在这里添加你要的数据
+       &lt;/table&gt;
+       &lt;div class=&quot;page pages&quot;&gt;
+       &lt;/div&gt;
+   &lt;/div&gt;</code></pre>
             </div>
         </div>
 </div>
@@ -358,7 +363,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Paginator_0.1_Paginator.js.html#l59"><code>..&#x2F;modules&#x2F;JC.Paginator&#x2F;0.1&#x2F;Paginator.js:59</code></a>
+        <a href="../files/.._modules_JC.Paginator_0.1_Paginator.js.html#l62"><code>..&#x2F;modules&#x2F;JC.Paginator&#x2F;0.1&#x2F;Paginator.js:62</code></a>
         </p>
     </div>
     <div class="description">
@@ -398,7 +403,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.Paginator_0.1_Paginator.js.html#l74"><code>..&#x2F;modules&#x2F;JC.Paginator&#x2F;0.1&#x2F;Paginator.js:74</code></a>
+        <a href="../files/.._modules_JC.Paginator_0.1_Paginator.js.html#l77"><code>..&#x2F;modules&#x2F;JC.Paginator&#x2F;0.1&#x2F;Paginator.js:77</code></a>
         </p>
     </div>
     <div class="description">

@@ -49,6 +49,8 @@
             
                 <li><a href="../classes/.window.html">.window</a></li>
             
+                <li><a href="../classes/JC.AjaxTree.html">JC.AjaxTree</a></li>
+            
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
             
                 <li><a href="../classes/JC.alert.html">JC.alert</a></li>
@@ -670,6 +672,7 @@
         init:
             function() {
                 if( !( this._model.data() &amp;&amp; this._model.root() ) ) return;
+                this._model.container().addClass( &#x27;js_compTree&#x27; );
                 this._process( this._model.child( this._model.root()[0] ), this._initRoot() );
                 return this;
             }
@@ -891,18 +894,18 @@
      * @default null
      */
     Tree.lastHover = null;
-    $(document).delegate( &#x27;ul.tree_wrap div.node_ctn&#x27;, &#x27;mouseenter&#x27;, function(){
+    $(document).delegate( &#x27;.js_compTree ul.tree_wrap div.node_ctn&#x27;, &#x27;mouseenter&#x27;, function(){
         if( Tree.lastHover ) Tree.lastHover.removeClass(&#x27;ms_over&#x27;);
         $(this).addClass(&#x27;ms_over&#x27;);
         Tree.lastHover = $(this);
     });
-    $(document).delegate( &#x27;ul.tree_wrap div.node_ctn&#x27;, &#x27;mouseleave&#x27;, function(){
+    $(document).delegate( &#x27;.js_compTree ul.tree_wrap div.node_ctn&#x27;, &#x27;mouseleave&#x27;, function(){
         if( Tree.lastHover ) Tree.lastHover.removeClass(&#x27;ms_over&#x27;);
     });
     /**
      * 捕获树文件标签的点击事件
      */
-    $(document).delegate( &#x27;ul.tree_wrap div.node_ctn&#x27;, &#x27;click&#x27;, function( _evt ){
+    $(document).delegate( &#x27;.js_compTree ul.tree_wrap div.node_ctn&#x27;, &#x27;click&#x27;, function( _evt ){
         var _p = $(this)
             , _treeContainer = _p.parents( &#x27;ul.tree_wrap&#x27; )
             , _treeIns = _treeContainer.data( Tree.Model._instanceName );
@@ -928,7 +931,7 @@
     /**
      * 捕获树文件夹图标的点击事件
      */
-    $(document).delegate( &#x27;ul.tree_wrap span.folder, ul.tree_wrap span.folderRoot&#x27;, &#x27;click&#x27;, function( _evt ){
+    $(document).delegate( &#x27;.js_compTree ul.tree_wrap span.folder, ul.tree_wrap span.folderRoot&#x27;, &#x27;click&#x27;, function( _evt ){
         var _p = $(this), _pntLi = _p.parent(&#x27;li&#x27;), _childUl = _pntLi.find( &#x27;&gt; ul&#x27;);
         var _treeContainer = _p.parents( &#x27;ul.tree_wrap&#x27; )
         , _treeIns = _treeContainer.data( Tree.Model._instanceName );
@@ -936,7 +939,7 @@
         var _events = _treeIns.event( &#x27;FolderClick&#x27; );
         if( _events &amp;&amp; _events.length ){
             $.each( _events, function( _ix, _cb ){
-                if( _cb.call( _p, _evt ) === false ) return false; 
+                if( _cb.call( _p, _evt ) === false ) return false;
             });
         }
 

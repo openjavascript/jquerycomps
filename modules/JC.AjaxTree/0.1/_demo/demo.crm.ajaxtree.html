@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>360 75 team</title>
+<style>
+    body{ width: 680px; margin: 20px auto; }
+</style>
+<link href='../../../../modules/JC.AjaxTree/0.1/res/default/style.css' rel='stylesheet' />
+<script src="../../../../lib.js"></script>
+<script src="../../../../config.js"></script>
+<script>
+    JC.debug = 1;
+
+    requirejs( [ 'JC.AjaxTree' ], function( Tree ){
+     });
+
+    $(document).delegate('button.js_open_all', 'click', function(){
+        $('div.js_compAjaxTree').each( function( _k ){
+            JC.BaseMVC.getInstance( this, JC.AjaxTree ) && JC.BaseMVC.getInstance(this, JC.AjaxTree ).open();
+        });
+    });
+
+    $(document).delegate('button.js_close_all', 'click', function(){
+        $('div.js_compAjaxTree').each( function(){
+            JC.BaseMVC.getInstance( this, JC.AjaxTree ) && JC.BaseMVC.getInstance(this, JC.AjaxTree ).close();
+        });
+    });
+
+    $(document).delegate('button.js_open_for', 'click', function(){
+    
+        var _tgr = $(this).attr('data_target');
+        if( !_tgr ) return;
+        _tgr = $.trim( $( _tgr ).val() );
+
+        $('div.js_compAjaxTree').each( function(){
+            JC.BaseMVC.getInstance( this, JC.AjaxTree ) && JC.BaseMVC.getInstance( this, JC.AjaxTree ).open( _tgr );
+        });
+    });
+
+    $(document).delegate('button.js_close_for', 'click', function(){
+    
+        var _tgr = $(this).attr('data_target');
+        if( !_tgr ) return;
+        _tgr = $.trim( $( _tgr ).val() );
+
+        $('div.js_compAjaxTree').each( function(){
+            JC.BaseMVC.getInstance( this, JC.AjaxTree ) && JC.BaseMVC.getInstance( this, JC.AjaxTree ).close( _tgr );
+        });
+    });
+
+</script>
+</head>    
+<body>
+    <div style="position:fixed; right: 10px; top: 0px;">
+        <dl>
+            <dd>
+                <a href="?">back</a>
+                <button type="button" class="js_open_all">open all</button>
+                <button type="button" class="js_close_all">close all</button>
+                <button type="button" class="js_open_for" data_target="#open_to_val">open for</button>
+                <input type="text" value="1,883,1521,1266,1271" id="open_to_val" />
+                <button type="button" class="js_close_for" data_target="#open_to_val">close for</button>
+            </dd>
+        </dl>
+    </div>
+    <dl>
+        <dt>默认树 - Tree 示例</dt>
+        <dd>
+            <div class="js_compAjaxTree js_tree2" 
+                data-cajData="CRM_TREE_DATA" 
+                data-urlArgName="node" 
+                data-idIndex="1" 
+                data-nameIndex="2" 
+                data-typeIndex="0" 
+                data-isAjax="true"
+                >
+                <script>
+                    window.CRM_TREE_DATA = { 
+                        root: ["folderRoot","1",'总部'] 
+                        , url: "data/treedata.php"
+                    };
+
+                    $( document ).delegate( 'div.js_tree2', 'renderItem', function( _evt, _item, _data ){
+                        _item.html( JC.f.printf( '<a href="?node={0}" data-id="{0}">{1}</a>', _data[1], _data[2] ) );
+                    });
+
+                    $( document ).delegate( 'div.js_compAjaxTree', 'change', function( _evt, _item, _data, _box ){
+                        //JC.dir( _item[0], _data, _box[0] );
+                        JC.log( _data );
+                    });
+
+                </script>
+            </div>
+        </dd>
+    </dl>
+
+</body>
+</html>
+
