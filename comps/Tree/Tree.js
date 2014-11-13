@@ -3,8 +3,7 @@
     /**
      * 树菜单类 JC.Tree
      * <p><b>require</b>: 
-     *      <a href='.jQuery.html'>jQuery</a>
-     *      , <a href='JC.common.html'>JC.common</a>
+     *      <a href='JC.common.html'>JC.common</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tree.html' target='_blank'>API docs</a>
@@ -414,6 +413,7 @@
         init:
             function() {
                 if( !( this._model.data() && this._model.root() ) ) return;
+                this._model.container().addClass( 'js_compTree' );
                 this._process( this._model.child( this._model.root()[0] ), this._initRoot() );
                 return this;
             }
@@ -635,18 +635,18 @@
      * @default null
      */
     Tree.lastHover = null;
-    $(document).delegate( 'ul.tree_wrap div.node_ctn', 'mouseenter', function(){
+    $(document).delegate( '.js_compTree ul.tree_wrap div.node_ctn', 'mouseenter', function(){
         if( Tree.lastHover ) Tree.lastHover.removeClass('ms_over');
         $(this).addClass('ms_over');
         Tree.lastHover = $(this);
     });
-    $(document).delegate( 'ul.tree_wrap div.node_ctn', 'mouseleave', function(){
+    $(document).delegate( '.js_compTree ul.tree_wrap div.node_ctn', 'mouseleave', function(){
         if( Tree.lastHover ) Tree.lastHover.removeClass('ms_over');
     });
     /**
      * 捕获树文件标签的点击事件
      */
-    $(document).delegate( 'ul.tree_wrap div.node_ctn', 'click', function( _evt ){
+    $(document).delegate( '.js_compTree ul.tree_wrap div.node_ctn', 'click', function( _evt ){
         var _p = $(this)
             , _treeContainer = _p.parents( 'ul.tree_wrap' )
             , _treeIns = _treeContainer.data( Tree.Model._instanceName );
@@ -672,7 +672,7 @@
     /**
      * 捕获树文件夹图标的点击事件
      */
-    $(document).delegate( 'ul.tree_wrap span.folder, ul.tree_wrap span.folderRoot', 'click', function( _evt ){
+    $(document).delegate( '.js_compTree ul.tree_wrap span.folder, ul.tree_wrap span.folderRoot', 'click', function( _evt ){
         var _p = $(this), _pntLi = _p.parent('li'), _childUl = _pntLi.find( '> ul');
         var _treeContainer = _p.parents( 'ul.tree_wrap' )
         , _treeIns = _treeContainer.data( Tree.Model._instanceName );

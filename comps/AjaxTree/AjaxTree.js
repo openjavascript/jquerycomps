@@ -5,25 +5,101 @@
         ;
     JC.AjaxTree = AjaxTree;
     /**
-     * 树菜单类 JC.AjaxTree
+     * AJAX 树菜单类 JC.AjaxTree
      * <p><b>require</b>: 
      *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      , <b>JSON2</b>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxTree.html' target='_blank'>API docs</a>
      * | <a href='../../comps/AjaxTree/_demo' target='_blank'>demo link</a></p>
+     *
+     * <h2>可用的 html attribute</h2>
+     * <dl>
+     *      <dt>data-defaultOpenRoot = bool, default = true</dt>
+     *      <dd>如果没有默认选中节点， 是否展开根节点</dd>
+     *
+     *      <dt>data-cajScriptData = script selector</dt>
+     *      <dd>从脚本模板解释数据</dd>
+     *
+     *      <dt>data-cajData = object name of window</dt>
+     *      <dd>从window变量获取数据</dd>
+     *
+     *      <dt>data-cajUrl = url</dt>
+     *      <dd>从 url 加载数据</dd>
+     *
+     *      <dt>data-rootId = node id, default = ''</dt>
+     *      <dd>指定根节点ID</dd>
+     *
+     *      <dt>data-urlArgName = string, default = 'tree_node'</dt>
+     *      <dd>书节点的URL参数名</dd>
+     *
+     *      <dt>data-typeIndex = int, default = 0</dt>
+     *      <dd>数据节点中 节点类型 所在的索引位置</dd>
+     *
+     *      <dt>data-idIndex = int, default = 1</dt>
+     *      <dd>数据节点中 节点id 所在的索引位置</dd>
+     *
+     *      <dt>data-nameIndex = int, default = 2</dt>
+     *      <dd>数据节点中 节点name 所在的索引位置</dd>
+     * </dl>
+     *
      * @namespace       JC
      * @class           AjaxTree
      * @extends         JC.BaseMVC
      * @constructor
      * @param   {selector}          _selector   树要显示的选择器
-     * @param   {object}            _data       树菜单的数据
-     * @version dev 0.1 2014-09-23
-     * @author  qiushaowei   <suches@btbtd.org> | 75 Team
-     * @date    
+     * @version dev 0.1 2014-11-13, qiushaowei <suches@btbtd.org>, pjk <pengjunkai@360.cn> | 75 Team
+     *
      * @example
-     */
+     *
+           <div class="js_compAjaxTree js_tree2" data-cajData="TREE_2" data-urlArgName="node">
+            <script>
+                window.TREE_2 = {
+                    root: [ 'folder', "23",'客户发展部']
+                    , data: 
+                        {
+                            "24":
+                            [
+                                [
+                                    'file',
+                                    "25", 
+                                    "二组一队"
+                                ], 
+                                [
+                                    'file',
+                                    "26", 
+                                    "二组二队"
+                                ], 
+                                [
+                                    'file',
+                                    "27", 
+                                    "二组三队"
+                                ]
+                            ], 
+                            "23":
+                            [
+                                [
+                                    'file',
+                                    "28", 
+                                    "销售二组"
+                                ], 
+                                [
+                                    'folder', 
+                                    "24", 
+                                    "售前审核组"
+                                ]
+                            ]
+                        }
+                };           
 
+                $( document ).delegate( 'div.js_tree2', 'renderItem', function( _evt, _item, _data ){
+                    _item.html( JC.f.printf( '<a href="?node={0}" data-id="{0}">{1}</a>', _data[1], _data[2] ) );
+                });
+
+            </script>
+        </div>
+     */
     function AjaxTree( _selector ){
 
         _selector && ( _selector = $( _selector ) );
@@ -98,7 +174,6 @@
     JC.f.extendObject( AjaxTree.prototype, {
         _beforeInit:
             function(){
-                //JC.log( 'JC.AjaxTree _beforeInit', new Date().getTime() );
             }
 
         , _initHanlderEvent:
@@ -108,9 +183,26 @@
                 _p.on( 'inited', function(){
                     _data = _p._model.parseInitData();
 
-                    _data && _p.trigger( 'update_init_data', [ _data ] );
-                });
+                    if( !_data && _p._model.url() ){
+                        _data = { url: _p._model.url() };
+                    }
 
+                    if( _data ){
+                        _data.data = _data.data || {};
+
+                        _p._model.data( _data );
+                        if( _data.root ){
+                            _p.trigger( 'update_init_data', [ _data ] );
+                        }else if( _data.url ){
+                            _p._model.ajaxData( _p._model.rootId(), function( _sdata ){
+                                if( _sdata && _sdata.data && _sdata.data[0] && _sdata.data[0].length ){
+                                    _data.root = _sdata.data[0];
+                                    _p.trigger( 'update_init_data', [ _data ] );
+                                }
+                            });
+                        }
+                    }
+                });
 
                 _p.on( 'update_init_data', function( _evt, _data ){
                     if( !_data ) return;
@@ -126,7 +218,12 @@
                     var _arg = ( JC.f.getUrlParam( _p._model.urlArgName() ) || '' ).trim()
                         , _list
                         ;
-                    if( !_arg ) return;
+                    if( !_arg ) {
+                        if( _p._model.defaultOpenRoot() && _p._model.root() ){
+                            _p.open( _p._model.root()[ _p._model.idIndex ] );
+                        };
+                        return;
+                    }
                     _list = _p.triggerHandler( 'AT_PROCESS_ID', [ _arg ] );
                     if( !_list.length ) return;
 
@@ -160,7 +257,6 @@
 
         , _inited:
             function(){
-                //JC.log( 'JC.AjaxTree _inited', new Date().getTime() );
                 this.trigger( 'inited' );
             }
         /**
@@ -374,27 +470,43 @@
             }
 
         , getNodeById:
-        function( _nodeId ){
-            var target = null;
-            if( _nodeId ){
-                target = $( '#' + this.id( _nodeId ) );
-            }
-            return target;
-        }
-        , getDataByAjax:
             function( _nodeId ){
-                var _data = {};
-                var ajaxUrl = this.data().url + '?id=' + _nodeId;
+                var target = null;
+                if( _nodeId ){
+                    target = $( '#' + this.id( _nodeId ) );
+                }
+                return target;
+            }
+        , defaultOpenRoot:
+            function(){
+                var _r = true;
+                this.is( '[data-defaultOpenRoot]' ) && ( _r = this.boolProp( 'data-defaultOpenRoot' ) );
+                return _r;
+            }
+
+        , ajaxData:
+            function( _id, _cb ){
+                _id = _id || '';
+                var _url = JC.f.printf( this.data().url, _id );
                 $.ajax({
                     type: "GET",
-                    url: ajaxUrl,
+                    url: _url,
                     dataType: "json",
-                    success: function( data ){
-                        console.log( data );
-                        _data = data;
+                    success: function( _data ){
+                        _cb && _cb( _data );
                     }
                 });
-                return _data;
+                return this;
+            }
+
+        , url:
+            function(){
+                return this.attrProp( 'data-cajUrl' ) || '';
+            }
+
+        , rootId:
+            function(){
+                return this.attrProp( 'data-rootId' ) || '';
             }
     });
 
@@ -414,10 +526,6 @@
          */
         , _process:
             function( _data, _parentNode ){
-                // console.log(_data);
-                // console.log(_parentNode);
-                // console.log('-------------------')
-
                 var _p = this;
                 if( !( _data && _data.length ) ) return;
                 for( var i = 0, j = _data.length, _item, _isLast; i < j; i++ ){
@@ -677,24 +785,15 @@
                     _nodeImg.removeClass('folder_img_closed').addClass('folder_img_loading');
                     _nodeUl.data( 'inited', true );
 
-                    var ajaxUrl = _model.data().url
-                    if( !ajaxUrl ){
+                    if( !_model.data().url ){
                         return;
                     }
-                    ajaxUrl += '?id=' + _nodeId;
-                    
-                    $.ajax({
-                        type: "GET",
-                        url: ajaxUrl,
-                        dataType: "json",
-                        success: function( _data ){
-                            _pntLi.addClass('folder_open').removeClass('folder_closed');
-                            _nodeImg.removeClass('folder_img_loading').addClass('folder_img_open');
-                            _p._process( _data.data, _nodeUl.show() );
-                            _callback && _callback();
-                        }
+                    _p._model.ajaxData( _nodeId, function( _data ){
+                        _pntLi.addClass('folder_open').removeClass('folder_closed');
+                        _nodeImg.removeClass('folder_img_loading').addClass('folder_img_open');
+                        _p._process( _data.data, _nodeUl.show() );
+                        _callback && _callback();
                     });
-                    
                 }
             }
         , showDataLoading:
