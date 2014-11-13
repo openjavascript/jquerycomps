@@ -2,7 +2,7 @@
 
 	window.requirejs && 
 	requirejs.config( {
-	    baseUrl: '../../static/js'
+	    baseUrl: 'static/js'
 	    , urlArgs: 'v=' + new Date().getTime()
 	    , paths: {
 	    	'template' : 'artTemplate/dist/template',
