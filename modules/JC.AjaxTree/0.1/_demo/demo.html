@@ -70,12 +70,14 @@
         </dl>
     </div>
     <dl>
-        <dt>默认树 - Tree 示例</dt>
+        <dt>默认树 - Tree 示例 - [同步&&异步]加载</dt>
         <dd>
             <div class="js_compAjaxTree" data-cajScriptData="|script">
                 <script type="text/template">
                     {
-                        data: 
+                        root: ["folder","0",'root']
+                        , url: "data/treedata.php?id={0}"
+                        , data: 
                             {
                                 "0": [
                                         ["folder","01","非异步节点01"],
@@ -98,20 +100,19 @@
                                     ]
 
                             }
-                        , root: ["folder","0",'root']
-                        , url: "data/treedata.php"
                     }
                 </script>
             </div>
         </dd>
     </dl>
     <dl>
-        <dt>添加 a 链接 - Tree 示例</dt>
+        <dt>添加 a 链接 - Tree 示例 - 同步加载</dt>
         <dd>
         <div class="js_compAjaxTree js_tree2" data-cajData="TREE_2" data-urlArgName="node">
             <script>
                 window.TREE_2 = {
-                    data: 
+                    root: [ 'folder', "23",'客户发展部']
+                    , data: 
                         {
                             "24":
                             [
@@ -145,7 +146,6 @@
                                 ]
                             ]
                         }
-                    , root: [ 'folder', "23",'客户发展部']
                 };           
 
                 $( document ).delegate( 'div.js_tree2', 'renderItem', function( _evt, _item, _data ){
@@ -157,12 +157,13 @@
         </dd>
     </dl>
     <dl>
-        <dt>添加 a 链接, evt.preventDefault - Tree 示例</dt>
+        <dt>添加 a 链接, evt.preventDefault - Tree 示例 - 同步加载</dt>
         <dd>
         <div class="js_compAjaxTree js_tree3" data-cajData="TREE_3" data-urlArgName="node">
             <script>
                 window.TREE_3 = {
-                    data: 
+                    root: [ 'folder', "23",'客户发展部']
+                    , data: 
                         {
                             "24":
                             [
@@ -196,7 +197,6 @@
                                 ]
                             ]
                         }
-                    , root: [ 'folder', "23",'客户发展部']
                 };           
 
                 $( document ).delegate( 'div.js_tree3', 'renderItem', function( _evt, _item, _data ){
