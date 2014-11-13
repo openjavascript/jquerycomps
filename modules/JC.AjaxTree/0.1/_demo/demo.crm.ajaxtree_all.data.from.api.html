@@ -76,8 +76,7 @@
                 >
                 <script>
                     window.CRM_TREE_DATA = { 
-                        root: ["folderRoot","1",'总部'] 
-                        , url: "data/treedata.php?id={0}"
+                        url: "data/treedata.php?id={0}"
                     };
 
                     $( document ).delegate( 'div.js_tree2', 'renderItem', function( _evt, _item, _data ){
@@ -93,6 +92,57 @@
             </div>
         </dd>
     </dl>
+    <dl>
+        <dt>默认树 - Tree 示例 - 异步加载</dt>
+        <dd>
+            <div class="js_compAjaxTree js_tree2" 
+                data-cajUrl="data/treedata.php?id={0}"
+                data-urlArgName="node" 
+                data-typeIndex="0" 
+                data-idIndex="1" 
+                data-nameIndex="2" 
+                >
+                <script>
+                    $( document ).delegate( 'div.js_tree2', 'renderItem', function( _evt, _item, _data ){
+                        _item.html( JC.f.printf( '<a href="?node={0}" data-id="{0}">{1}</a>', _data[1], _data[2] ) );
+                    });
+
+                    $( document ).delegate( 'div.js_compAjaxTree', 'change', function( _evt, _item, _data, _box ){
+                        //JC.dir( _item[0], _data, _box[0] );
+                        JC.log( _data );
+                    });
+
+                </script>
+            </div>
+        </dd>
+    </dl>
+    <dl>
+        <dt>默认树 - Tree 示例 - 异步加载</dt>
+        <dd>
+            <div class="js_compAjaxTree js_tree2" 
+                data-cajUrl="data/treedata.php?id={0}"
+                data-rootId="1436"
+                data-urlArgName="node" 
+                data-typeIndex="0" 
+                data-idIndex="1" 
+                data-nameIndex="2" 
+                >
+                <script>
+                    $( document ).delegate( 'div.js_tree2', 'renderItem', function( _evt, _item, _data ){
+                        _item.html( JC.f.printf( '<a href="?node={0}" data-id="{0}">{1}</a>', _data[1], _data[2] ) );
+                    });
+
+                    $( document ).delegate( 'div.js_compAjaxTree', 'change', function( _evt, _item, _data, _box ){
+                        //JC.dir( _item[0], _data, _box[0] );
+                        JC.log( _data );
+                    });
+
+                </script>
+            </div>
+        </dd>
+    </dl>
+
+
 
 </body>
 </html>
