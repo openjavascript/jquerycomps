@@ -251,8 +251,7 @@
     /**
      * 树菜单类 JC.Tree
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
-     *      &lt;a href=&#x27;.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
-     *      , &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
+     *      &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
      * &lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.Tree.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
@@ -662,6 +661,7 @@
         init:
             function() {
                 if( !( this._model.data() &amp;&amp; this._model.root() ) ) return;
+                this._model.container().addClass( &#x27;js_compTree&#x27; );
                 this._process( this._model.child( this._model.root()[0] ), this._initRoot() );
                 return this;
             }
@@ -883,18 +883,18 @@
      * @default null
      */
     Tree.lastHover = null;
-    $(document).delegate( &#x27;ul.tree_wrap div.node_ctn&#x27;, &#x27;mouseenter&#x27;, function(){
+    $(document).delegate( &#x27;.js_compTree ul.tree_wrap div.node_ctn&#x27;, &#x27;mouseenter&#x27;, function(){
         if( Tree.lastHover ) Tree.lastHover.removeClass(&#x27;ms_over&#x27;);
         $(this).addClass(&#x27;ms_over&#x27;);
         Tree.lastHover = $(this);
     });
-    $(document).delegate( &#x27;ul.tree_wrap div.node_ctn&#x27;, &#x27;mouseleave&#x27;, function(){
+    $(document).delegate( &#x27;.js_compTree ul.tree_wrap div.node_ctn&#x27;, &#x27;mouseleave&#x27;, function(){
         if( Tree.lastHover ) Tree.lastHover.removeClass(&#x27;ms_over&#x27;);
     });
     /**
      * 捕获树文件标签的点击事件
      */
-    $(document).delegate( &#x27;ul.tree_wrap div.node_ctn&#x27;, &#x27;click&#x27;, function( _evt ){
+    $(document).delegate( &#x27;.js_compTree ul.tree_wrap div.node_ctn&#x27;, &#x27;click&#x27;, function( _evt ){
         var _p = $(this)
             , _treeContainer = _p.parents( &#x27;ul.tree_wrap&#x27; )
             , _treeIns = _treeContainer.data( Tree.Model._instanceName );
@@ -920,7 +920,7 @@
     /**
      * 捕获树文件夹图标的点击事件
      */
-    $(document).delegate( &#x27;ul.tree_wrap span.folder, ul.tree_wrap span.folderRoot&#x27;, &#x27;click&#x27;, function( _evt ){
+    $(document).delegate( &#x27;.js_compTree ul.tree_wrap span.folder, ul.tree_wrap span.folderRoot&#x27;, &#x27;click&#x27;, function( _evt ){
         var _p = $(this), _pntLi = _p.parent(&#x27;li&#x27;), _childUl = _pntLi.find( &#x27;&gt; ul&#x27;);
         var _treeContainer = _p.parents( &#x27;ul.tree_wrap&#x27; )
         , _treeIns = _treeContainer.data( Tree.Model._instanceName );

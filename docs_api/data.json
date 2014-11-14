@@ -1221,7 +1221,7 @@
             "namespace": "JC",
             "file": "../comps/AjaxTree/AjaxTree.js",
             "line": 7,
-            "description": "树菜单类 JC.AjaxTree\n<p><b>require</b>: \n     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxTree.html' target='_blank'>API docs</a>\n| <a href='../../comps/AjaxTree/_demo' target='_blank'>demo link</a></p>",
+            "description": "AJAX 树菜单类 JC.AjaxTree\n<p><b>require</b>: \n     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <b>JSON2</b>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxTree.html' target='_blank'>API docs</a>\n| <a href='../../comps/AjaxTree/_demo' target='_blank'>demo link</a></p>\n\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>data-defaultOpenRoot = bool, default = true</dt>\n     <dd>如果没有默认选中节点， 是否展开根节点</dd>\n\n     <dt>data-cajScriptData = script selector</dt>\n     <dd>从脚本模板解释数据</dd>\n\n     <dt>data-cajData = object name of window</dt>\n     <dd>从window变量获取数据</dd>\n\n     <dt>data-cajUrl = url</dt>\n     <dd>从 url 加载数据</dd>\n\n     <dt>data-rootId = node id, default = ''</dt>\n     <dd>指定根节点ID</dd>\n\n     <dt>data-urlArgName = string, default = 'tree_node'</dt>\n     <dd>书节点的URL参数名</dd>\n\n     <dt>data-typeIndex = int, default = 0</dt>\n     <dd>数据节点中 节点类型 所在的索引位置</dd>\n\n     <dt>data-idIndex = int, default = 1</dt>\n     <dd>数据节点中 节点id 所在的索引位置</dd>\n\n     <dt>data-nameIndex = int, default = 2</dt>\n     <dd>数据节点中 节点name 所在的索引位置</dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -1229,18 +1229,11 @@
                     "name": "_selector",
                     "description": "树要显示的选择器",
                     "type": "Selector"
-                },
-                {
-                    "name": "_data",
-                    "description": "树菜单的数据",
-                    "type": "Object"
                 }
             ],
-            "version": "dev 0.1 2014-09-23",
-            "author": "qiushaowei   <suches@btbtd.org> | 75 Team",
-            "date": "",
+            "version": "dev 0.1 2014-11-13, qiushaowei <suches@btbtd.org>, pjk <pengjunkai@360.cn> | 75 Team",
             "example": [
-                ""
+                "\n\n          <div class=\"js_compAjaxTree js_tree2\" data-cajData=\"TREE_2\" data-urlArgName=\"node\">\n           <script>\n               window.TREE_2 = {\n                   root: [ 'folder', \"23\",'客户发展部']\n                   , data: \n                       {\n                           \"24\":\n                           [\n                               [\n                                   'file',\n                                   \"25\", \n                                   \"二组一队\"\n                               ], \n                               [\n                                   'file',\n                                   \"26\", \n                                   \"二组二队\"\n                               ], \n                               [\n                                   'file',\n                                   \"27\", \n                                   \"二组三队\"\n                               ]\n                           ], \n                           \"23\":\n                           [\n                               [\n                                   'file',\n                                   \"28\", \n                                   \"销售二组\"\n                               ], \n                               [\n                                   'folder', \n                                   \"24\", \n                                   \"售前审核组\"\n                               ]\n                           ]\n                       }\n               };           \n\n               $( document ).delegate( 'div.js_tree2', 'renderItem', function( _evt, _item, _data ){\n                   _item.html( JC.f.printf( '<a href=\"?node={0}\" data-id=\"{0}\">{1}</a>', _data[1], _data[2] ) );\n               });\n\n           </script>\n       </div>"
             ]
         },
         "JC.AjaxUpload": {
@@ -2550,7 +2543,7 @@
             "namespace": "JC.Tree",
             "file": "../comps/Tree/Tree.js",
             "line": 3,
-            "description": "树菜单类 JC.Tree\n<p><b>require</b>: \n     <a href='.jQuery.html'>jQuery</a>\n     , <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tree.html' target='_blank'>API docs</a>\n| <a href='../../comps/Tree/_demo' target='_blank'>demo link</a></p>",
+            "description": "树菜单类 JC.Tree\n<p><b>require</b>: \n     <a href='JC.common.html'>JC.common</a>\n</p>\n<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n| <a href='http://jc.openjavascript.org/docs_api/classes/JC.Tree.html' target='_blank'>API docs</a>\n| <a href='../../comps/Tree/_demo' target='_blank'>demo link</a></p>",
             "is_constructor": 1,
             "params": [
                 {
@@ -2581,7 +2574,7 @@
             "extension_for": [],
             "namespace": "JC.Tree",
             "file": "../comps/Tree/Tree.js",
-            "line": 249,
+            "line": 248,
             "description": "树的数据模型类",
             "is_constructor": 1
         },
@@ -4018,7 +4011,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 41,
+            "line": 117,
             "description": "初始化可识别的 AjaxTree 实例",
             "itemtype": "method",
             "name": "init",
@@ -4039,7 +4032,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 66,
+            "line": 142,
             "description": "树的数据过滤函数\n<br /> 如果树的初始数据格式不符合要求, 可通过该属性定义函数进行数据修正",
             "itemtype": "property",
             "name": "dataFilter",
@@ -4054,7 +4047,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 166,
+            "line": 262,
             "description": "展开树到某个具体节点, 或者展开树的所有节点",
             "itemtype": "method",
             "name": "open",
@@ -4070,7 +4063,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 185,
+            "line": 281,
             "description": "展开树到某个具体节点, 或者展开树的所有节点",
             "itemtype": "method",
             "name": "openUI",
@@ -4086,7 +4079,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 201,
+            "line": 297,
             "description": "关闭某个节点, 或者关闭整个树",
             "itemtype": "method",
             "name": "close",
@@ -4102,7 +4095,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 216,
+            "line": 312,
             "description": "获取树的 ID 前缀\n<br />每个树都会有自己的随机ID前缀",
             "itemtype": "method",
             "name": "idPrefix",
@@ -4115,7 +4108,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 223,
+            "line": 319,
             "description": "获取树的节点 label",
             "itemtype": "method",
             "name": "getItem",
@@ -4131,7 +4124,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 234,
+            "line": 330,
             "description": "获取或设置树的高亮节点",
             "itemtype": "method",
             "name": "selectedItem",
@@ -4150,7 +4143,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 258,
+            "line": 354,
             "description": "展现树需要的数据",
             "type": "object",
             "class": "JC.AjaxTree",
@@ -4158,7 +4151,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 263,
+            "line": 359,
             "description": "树的随机ID前缀",
             "type": "string",
             "class": "JC.AjaxTree",
@@ -4166,7 +4159,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 268,
+            "line": 364,
             "description": "树当前的高亮节点",
             "type": "selector",
             "class": "JC.AjaxTree",
@@ -4174,7 +4167,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 273,
+            "line": 369,
             "description": "保存树的所有绑定事件",
             "type": "object",
             "class": "JC.AjaxTree",
@@ -4182,7 +4175,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 313,
+            "line": 409,
             "description": "获取树所要展示的容器",
             "return": {
                 "description": "selector"
@@ -4192,7 +4185,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 318,
+            "line": 414,
             "description": "获取节点将要显示的ID",
             "params": [
                 {
@@ -4209,7 +4202,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 324,
+            "line": 420,
             "description": "获取树的随机ID前缀",
             "return": {
                 "description": "string"
@@ -4219,7 +4212,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 329,
+            "line": 425,
             "description": "获取树的原始数据",
             "return": {
                 "description": "object"
@@ -4229,7 +4222,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 341,
+            "line": 437,
             "description": "获取树生成后的根节点",
             "return": {
                 "description": "selector"
@@ -4239,7 +4232,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 346,
+            "line": 442,
             "description": "获取ID的具体节点",
             "params": [
                 {
@@ -4256,7 +4249,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 352,
+            "line": 448,
             "description": "判断原始数据的某个ID是否有子级节点",
             "params": [
                 {
@@ -4273,7 +4266,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 358,
+            "line": 454,
             "description": "获取或设置树的高亮节点\n<br /><b>注意:</b> 这个只是数据层面的设置, 不会影响视觉效果",
             "params": [
                 {
@@ -4290,14 +4283,14 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 402,
+            "line": 514,
             "description": "初始化树的可视状态",
             "class": "JC.AjaxTree",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 410,
+            "line": 522,
             "description": "处理树的展现效果",
             "params": [
                 {
@@ -4316,14 +4309,14 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 434,
+            "line": 542,
             "description": "初始化树根节点",
             "class": "JC.AjaxTree",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 477,
+            "line": 585,
             "description": "初始化树的文件夹节点",
             "params": [
                 {
@@ -4347,7 +4340,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 507,
+            "line": 615,
             "description": "初始化树的文件节点",
             "params": [
                 {
@@ -4371,7 +4364,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 526,
+            "line": 634,
             "description": "初始化树的节点标签",
             "params": [
                 {
@@ -4388,21 +4381,21 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 544,
+            "line": 652,
             "description": "展开树的所有节点",
             "class": "JC.AjaxTree",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 554,
+            "line": 662,
             "description": "关闭树的所有节点",
             "class": "JC.AjaxTree",
             "namespace": "JC"
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 565,
+            "line": 673,
             "description": "展开树到具体节点",
             "params": [
                 {
@@ -4416,7 +4409,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 600,
+            "line": 708,
             "description": "关闭树的具体节点",
             "params": [
                 {
@@ -4430,7 +4423,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 705,
+            "line": 804,
             "description": "树节点的点击事件",
             "itemtype": "event",
             "name": "click",
@@ -4449,7 +4442,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 714,
+            "line": 813,
             "description": "树节点的change事件",
             "itemtype": "event",
             "name": "change",
@@ -4468,7 +4461,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 724,
+            "line": 823,
             "description": "树节点的展现事件",
             "itemtype": "event",
             "name": "RenderLabel",
@@ -4492,7 +4485,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 736,
+            "line": 835,
             "description": "树文件夹的点击事件",
             "itemtype": "event",
             "name": "FolderClick",
@@ -4511,7 +4504,7 @@
         },
         {
             "file": "../comps/AjaxTree/AjaxTree.js",
-            "line": 746,
+            "line": 845,
             "description": "树的最后的 hover 节点\n<br />树的 hover 是全局属性, 页面上的所有树只会有一个当前 hover",
             "itemtype": "property",
             "name": "lastHover",
@@ -14313,7 +14306,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 53,
+            "line": 52,
             "description": "树的数据模型引用",
             "itemtype": "property",
             "name": "_model",
@@ -14325,7 +14318,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 60,
+            "line": 59,
             "description": "树的视图模型引用",
             "itemtype": "property",
             "name": "_view",
@@ -14337,7 +14330,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 68,
+            "line": 67,
             "description": "从选择器获取 树的 实例, 如果实例有限, 加以判断可避免重复初始化",
             "itemtype": "method",
             "name": "getInstance",
@@ -14358,7 +14351,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 80,
+            "line": 79,
             "description": "树的数据过滤函数\n<br /> 如果树的初始数据格式不符合要求, 可通过该属性定义函数进行数据修正",
             "itemtype": "property",
             "name": "dataFilter",
@@ -14373,7 +14366,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 113,
+            "line": 112,
             "description": "初始化树\n<br /> 实例化树后, 需要显式调用该方法初始化树的可视状态",
             "itemtype": "method",
             "name": "init",
@@ -14385,7 +14378,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 127,
+            "line": 126,
             "description": "展开树到某个具体节点, 或者展开树的所有节点",
             "itemtype": "method",
             "name": "open",
@@ -14401,7 +14394,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 142,
+            "line": 141,
             "description": "关闭某个节点, 或者关闭整个树",
             "itemtype": "method",
             "name": "close",
@@ -14417,7 +14410,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 157,
+            "line": 156,
             "description": "获取树的 ID 前缀\n<br />每个树都会有自己的随机ID前缀",
             "itemtype": "method",
             "name": "idPrefix",
@@ -14430,7 +14423,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 164,
+            "line": 163,
             "description": "获取树的节点 label",
             "itemtype": "method",
             "name": "getItem",
@@ -14446,7 +14439,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 175,
+            "line": 174,
             "description": "绑定树内部事件\n<br /><b>注意:</b> 所有事件名最终会被转换成小写",
             "itemtype": "method",
             "name": "on",
@@ -14467,7 +14460,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 188,
+            "line": 187,
             "description": "获取树的某类事件类型的所有回调",
             "itemtype": "method",
             "name": "event",
@@ -14487,7 +14480,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 195,
+            "line": 194,
             "description": "获取或设置树的高亮节点",
             "itemtype": "method",
             "name": "selectedItem",
@@ -14506,7 +14499,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 215,
+            "line": 214,
             "description": "树节点的点击事件",
             "itemtype": "event",
             "name": "click",
@@ -14525,7 +14518,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 226,
+            "line": 225,
             "description": "树节点的展现事件",
             "itemtype": "event",
             "name": "RenderLabel",
@@ -14549,7 +14542,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 238,
+            "line": 237,
             "description": "树文件夹的点击事件",
             "itemtype": "event",
             "name": "FolderClick",
@@ -14568,7 +14561,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 256,
+            "line": 255,
             "description": "树要展示的容器",
             "itemtype": "property",
             "name": "_container",
@@ -14580,7 +14573,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 263,
+            "line": 262,
             "description": "展现树需要的数据",
             "itemtype": "property",
             "name": "_data",
@@ -14592,7 +14585,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 270,
+            "line": 269,
             "description": "树的随机ID前缀",
             "itemtype": "property",
             "name": "_id",
@@ -14604,7 +14597,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 277,
+            "line": 276,
             "description": "树当前的高亮节点",
             "itemtype": "property",
             "name": "_highlight",
@@ -14616,7 +14609,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 284,
+            "line": 283,
             "description": "保存树的所有绑定事件",
             "itemtype": "property",
             "name": "_events",
@@ -14628,7 +14621,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 298,
+            "line": 297,
             "description": "树模型类内部初始化方法",
             "itemtype": "method",
             "name": "_init",
@@ -14639,7 +14632,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 308,
+            "line": 307,
             "description": "获取树所要展示的容器",
             "itemtype": "method",
             "name": "container",
@@ -14651,7 +14644,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 314,
+            "line": 313,
             "description": "获取节点将要显示的ID",
             "itemtype": "method",
             "name": "id",
@@ -14670,7 +14663,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 321,
+            "line": 320,
             "description": "获取树的随机ID前缀",
             "itemtype": "method",
             "name": "idPrefix",
@@ -14682,7 +14675,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 327,
+            "line": 326,
             "description": "获取树的原始数据",
             "itemtype": "method",
             "name": "data",
@@ -14694,7 +14687,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 333,
+            "line": 332,
             "description": "获取树生成后的根节点",
             "itemtype": "method",
             "name": "root",
@@ -14706,7 +14699,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 339,
+            "line": 338,
             "description": "获取ID的具体节点",
             "itemtype": "method",
             "name": "child",
@@ -14725,7 +14718,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 346,
+            "line": 345,
             "description": "判断原始数据的某个ID是否有子级节点",
             "itemtype": "method",
             "name": "hasChild",
@@ -14744,7 +14737,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 353,
+            "line": 352,
             "description": "获取树的某类绑定事件的所有回调",
             "itemtype": "method",
             "name": "event",
@@ -14764,7 +14757,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 364,
+            "line": 363,
             "description": "添加树内部事件",
             "itemtype": "method",
             "name": "addEvent",
@@ -14785,7 +14778,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 376,
+            "line": 375,
             "description": "获取或设置树的高亮节点\n<br /><b>注意:</b> 这个只是数据层面的设置, 不会影响视觉效果",
             "itemtype": "method",
             "name": "highlight",
@@ -14804,14 +14797,14 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 389,
+            "line": 388,
             "description": "树的视图模型类",
             "class": "JC.Tree.Model",
             "namespace": "JC.Tree"
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 393,
+            "line": 392,
             "description": "树的数据模型引用",
             "itemtype": "property",
             "name": "_model",
@@ -14823,7 +14816,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 400,
+            "line": 399,
             "description": "树生成后的根节点",
             "itemtype": "property",
             "name": "_treeRoot",
@@ -14835,7 +14828,7 @@
         },
         {
             "file": "../comps/Tree/Tree.js",
-            "line": 410,
+            "line": 409,
             "description": "初始化树的可视状态",
             "itemtype": "method",
             "name": "init",
@@ -19742,10 +19735,6 @@
             "line": " ../comps/AjaxTree/AjaxTree.js:7"
         },
         {
-            "message": "unknown tag: date",
-            "line": " ../comps/AjaxTree/AjaxTree.js:7"
-        },
-        {
             "message": "unknown tag: version",
             "line": " ../comps/AjaxUpload/AjaxUpload.js:2"
         },
@@ -20291,91 +20280,91 @@
         },
         {
             "message": "Missing item type\n展现树需要的数据",
-            "line": " ../comps/AjaxTree/AjaxTree.js:258"
+            "line": " ../comps/AjaxTree/AjaxTree.js:354"
         },
         {
             "message": "Missing item type\n树的随机ID前缀",
-            "line": " ../comps/AjaxTree/AjaxTree.js:263"
+            "line": " ../comps/AjaxTree/AjaxTree.js:359"
         },
         {
             "message": "Missing item type\n树当前的高亮节点",
-            "line": " ../comps/AjaxTree/AjaxTree.js:268"
+            "line": " ../comps/AjaxTree/AjaxTree.js:364"
         },
         {
             "message": "Missing item type\n保存树的所有绑定事件",
-            "line": " ../comps/AjaxTree/AjaxTree.js:273"
+            "line": " ../comps/AjaxTree/AjaxTree.js:369"
         },
         {
             "message": "Missing item type\n获取树所要展示的容器",
-            "line": " ../comps/AjaxTree/AjaxTree.js:313"
+            "line": " ../comps/AjaxTree/AjaxTree.js:409"
         },
         {
             "message": "Missing item type\n获取节点将要显示的ID",
-            "line": " ../comps/AjaxTree/AjaxTree.js:318"
+            "line": " ../comps/AjaxTree/AjaxTree.js:414"
         },
         {
             "message": "Missing item type\n获取树的随机ID前缀",
-            "line": " ../comps/AjaxTree/AjaxTree.js:324"
+            "line": " ../comps/AjaxTree/AjaxTree.js:420"
         },
         {
             "message": "Missing item type\n获取树的原始数据",
-            "line": " ../comps/AjaxTree/AjaxTree.js:329"
+            "line": " ../comps/AjaxTree/AjaxTree.js:425"
         },
         {
             "message": "Missing item type\n获取树生成后的根节点",
-            "line": " ../comps/AjaxTree/AjaxTree.js:341"
+            "line": " ../comps/AjaxTree/AjaxTree.js:437"
         },
         {
             "message": "Missing item type\n获取ID的具体节点",
-            "line": " ../comps/AjaxTree/AjaxTree.js:346"
+            "line": " ../comps/AjaxTree/AjaxTree.js:442"
         },
         {
             "message": "Missing item type\n判断原始数据的某个ID是否有子级节点",
-            "line": " ../comps/AjaxTree/AjaxTree.js:352"
+            "line": " ../comps/AjaxTree/AjaxTree.js:448"
         },
         {
             "message": "Missing item type\n获取或设置树的高亮节点\n<br /><b>注意:</b> 这个只是数据层面的设置, 不会影响视觉效果",
-            "line": " ../comps/AjaxTree/AjaxTree.js:358"
+            "line": " ../comps/AjaxTree/AjaxTree.js:454"
         },
         {
             "message": "Missing item type\n初始化树的可视状态",
-            "line": " ../comps/AjaxTree/AjaxTree.js:402"
+            "line": " ../comps/AjaxTree/AjaxTree.js:514"
         },
         {
             "message": "Missing item type\n处理树的展现效果",
-            "line": " ../comps/AjaxTree/AjaxTree.js:410"
+            "line": " ../comps/AjaxTree/AjaxTree.js:522"
         },
         {
             "message": "Missing item type\n初始化树根节点",
-            "line": " ../comps/AjaxTree/AjaxTree.js:434"
+            "line": " ../comps/AjaxTree/AjaxTree.js:542"
         },
         {
             "message": "Missing item type\n初始化树的文件夹节点",
-            "line": " ../comps/AjaxTree/AjaxTree.js:477"
+            "line": " ../comps/AjaxTree/AjaxTree.js:585"
         },
         {
             "message": "Missing item type\n初始化树的文件节点",
-            "line": " ../comps/AjaxTree/AjaxTree.js:507"
+            "line": " ../comps/AjaxTree/AjaxTree.js:615"
         },
         {
             "message": "Missing item type\n初始化树的节点标签",
-            "line": " ../comps/AjaxTree/AjaxTree.js:526"
+            "line": " ../comps/AjaxTree/AjaxTree.js:634"
         },
         {
             "message": "Missing item type\n展开树的所有节点",
-            "line": " ../comps/AjaxTree/AjaxTree.js:544"
+            "line": " ../comps/AjaxTree/AjaxTree.js:652"
         },
         {
             "message": "Missing item type\n关闭树的所有节点",
-            "line": " ../comps/AjaxTree/AjaxTree.js:554"
+            "line": " ../comps/AjaxTree/AjaxTree.js:662"
         },
         {
             "message": "Missing item type\n展开树到具体节点",
-            "line": " ../comps/AjaxTree/AjaxTree.js:565"
+            "line": " ../comps/AjaxTree/AjaxTree.js:673"
         },
         {
             "message": "Missing item type\n关闭树的具体节点",
-            "line": " ../comps/AjaxTree/AjaxTree.js:600"
+            "line": " ../comps/AjaxTree/AjaxTree.js:708"
         },
         {
             "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
@@ -20923,7 +20912,7 @@
         },
         {
             "message": "Missing item type\n树的视图模型类",
-            "line": " ../comps/Tree/Tree.js:389"
+            "line": " ../comps/Tree/Tree.js:388"
         },
         {
             "message": "Missing item type\n捕获树文件标签的点击事件",

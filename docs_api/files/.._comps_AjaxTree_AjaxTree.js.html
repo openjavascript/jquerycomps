@@ -253,25 +253,101 @@
         ;
     JC.AjaxTree = AjaxTree;
     /**
-     * 树菜单类 JC.AjaxTree
+     * AJAX 树菜单类 JC.AjaxTree
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
      *      &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+     *      , &lt;b&gt;JSON2&lt;/b&gt;
      * &lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.AjaxTree.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/AjaxTree/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
+     *
+     * &lt;h2&gt;可用的 html attribute&lt;/h2&gt;
+     * &lt;dl&gt;
+     *      &lt;dt&gt;data-defaultOpenRoot = bool, default = true&lt;/dt&gt;
+     *      &lt;dd&gt;如果没有默认选中节点， 是否展开根节点&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;data-cajScriptData = script selector&lt;/dt&gt;
+     *      &lt;dd&gt;从脚本模板解释数据&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;data-cajData = object name of window&lt;/dt&gt;
+     *      &lt;dd&gt;从window变量获取数据&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;data-cajUrl = url&lt;/dt&gt;
+     *      &lt;dd&gt;从 url 加载数据&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;data-rootId = node id, default = &#x27;&#x27;&lt;/dt&gt;
+     *      &lt;dd&gt;指定根节点ID&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;data-urlArgName = string, default = &#x27;tree_node&#x27;&lt;/dt&gt;
+     *      &lt;dd&gt;书节点的URL参数名&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;data-typeIndex = int, default = 0&lt;/dt&gt;
+     *      &lt;dd&gt;数据节点中 节点类型 所在的索引位置&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;data-idIndex = int, default = 1&lt;/dt&gt;
+     *      &lt;dd&gt;数据节点中 节点id 所在的索引位置&lt;/dd&gt;
+     *
+     *      &lt;dt&gt;data-nameIndex = int, default = 2&lt;/dt&gt;
+     *      &lt;dd&gt;数据节点中 节点name 所在的索引位置&lt;/dd&gt;
+     * &lt;/dl&gt;
+     *
      * @namespace       JC
      * @class           AjaxTree
      * @extends         JC.BaseMVC
      * @constructor
      * @param   {selector}          _selector   树要显示的选择器
-     * @param   {object}            _data       树菜单的数据
-     * @version dev 0.1 2014-09-23
-     * @author  qiushaowei   &lt;suches@btbtd.org&gt; | 75 Team
-     * @date    
+     * @version dev 0.1 2014-11-13, qiushaowei &lt;suches@btbtd.org&gt;, pjk &lt;pengjunkai@360.cn&gt; | 75 Team
+     *
      * @example
-     */
+     *
+           &lt;div class=&quot;js_compAjaxTree js_tree2&quot; data-cajData=&quot;TREE_2&quot; data-urlArgName=&quot;node&quot;&gt;
+            &lt;script&gt;
+                window.TREE_2 = {
+                    root: [ &#x27;folder&#x27;, &quot;23&quot;,&#x27;客户发展部&#x27;]
+                    , data: 
+                        {
+                            &quot;24&quot;:
+                            [
+                                [
+                                    &#x27;file&#x27;,
+                                    &quot;25&quot;, 
+                                    &quot;二组一队&quot;
+                                ], 
+                                [
+                                    &#x27;file&#x27;,
+                                    &quot;26&quot;, 
+                                    &quot;二组二队&quot;
+                                ], 
+                                [
+                                    &#x27;file&#x27;,
+                                    &quot;27&quot;, 
+                                    &quot;二组三队&quot;
+                                ]
+                            ], 
+                            &quot;23&quot;:
+                            [
+                                [
+                                    &#x27;file&#x27;,
+                                    &quot;28&quot;, 
+                                    &quot;销售二组&quot;
+                                ], 
+                                [
+                                    &#x27;folder&#x27;, 
+                                    &quot;24&quot;, 
+                                    &quot;售前审核组&quot;
+                                ]
+                            ]
+                        }
+                };           
 
+                $( document ).delegate( &#x27;div.js_tree2&#x27;, &#x27;renderItem&#x27;, function( _evt, _item, _data ){
+                    _item.html( JC.f.printf( &#x27;&lt;a href=&quot;?node={0}&quot; data-id=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&#x27;, _data[1], _data[2] ) );
+                });
+
+            &lt;/script&gt;
+        &lt;/div&gt;
+     */
     function AjaxTree( _selector ){
 
         _selector &amp;&amp; ( _selector = $( _selector ) );
@@ -346,7 +422,6 @@
     JC.f.extendObject( AjaxTree.prototype, {
         _beforeInit:
             function(){
-                //JC.log( &#x27;JC.AjaxTree _beforeInit&#x27;, new Date().getTime() );
             }
 
         , _initHanlderEvent:
@@ -356,9 +431,26 @@
                 _p.on( &#x27;inited&#x27;, function(){
                     _data = _p._model.parseInitData();
 
-                    _data &amp;&amp; _p.trigger( &#x27;update_init_data&#x27;, [ _data ] );
-                });
+                    if( !_data &amp;&amp; _p._model.url() ){
+                        _data = { url: _p._model.url() };
+                    }
 
+                    if( _data ){
+                        _data.data = _data.data || {};
+
+                        _p._model.data( _data );
+                        if( _data.root ){
+                            _p.trigger( &#x27;update_init_data&#x27;, [ _data ] );
+                        }else if( _data.url ){
+                            _p._model.ajaxData( _p._model.rootId(), function( _sdata ){
+                                if( _sdata &amp;&amp; _sdata.data &amp;&amp; _sdata.data[0] &amp;&amp; _sdata.data[0].length ){
+                                    _data.root = _sdata.data[0];
+                                    _p.trigger( &#x27;update_init_data&#x27;, [ _data ] );
+                                }
+                            });
+                        }
+                    }
+                });
 
                 _p.on( &#x27;update_init_data&#x27;, function( _evt, _data ){
                     if( !_data ) return;
@@ -374,7 +466,12 @@
                     var _arg = ( JC.f.getUrlParam( _p._model.urlArgName() ) || &#x27;&#x27; ).trim()
                         , _list
                         ;
-                    if( !_arg ) return;
+                    if( !_arg ) {
+                        if( _p._model.defaultOpenRoot() &amp;&amp; _p._model.root() ){
+                            _p.open( _p._model.root()[ _p._model.idIndex ] );
+                        };
+                        return;
+                    }
                     _list = _p.triggerHandler( &#x27;AT_PROCESS_ID&#x27;, [ _arg ] );
                     if( !_list.length ) return;
 
@@ -408,7 +505,6 @@
 
         , _inited:
             function(){
-                //JC.log( &#x27;JC.AjaxTree _inited&#x27;, new Date().getTime() );
                 this.trigger( &#x27;inited&#x27; );
             }
         /**
@@ -622,27 +718,43 @@
             }
 
         , getNodeById:
-        function( _nodeId ){
-            var target = null;
-            if( _nodeId ){
-                target = $( &#x27;#&#x27; + this.id( _nodeId ) );
-            }
-            return target;
-        }
-        , getDataByAjax:
             function( _nodeId ){
-                var _data = {};
-                var ajaxUrl = this.data().url + &#x27;?id=&#x27; + _nodeId;
+                var target = null;
+                if( _nodeId ){
+                    target = $( &#x27;#&#x27; + this.id( _nodeId ) );
+                }
+                return target;
+            }
+        , defaultOpenRoot:
+            function(){
+                var _r = true;
+                this.is( &#x27;[data-defaultOpenRoot]&#x27; ) &amp;&amp; ( _r = this.boolProp( &#x27;data-defaultOpenRoot&#x27; ) );
+                return _r;
+            }
+
+        , ajaxData:
+            function( _id, _cb ){
+                _id = _id || &#x27;&#x27;;
+                var _url = JC.f.printf( this.data().url, _id );
                 $.ajax({
                     type: &quot;GET&quot;,
-                    url: ajaxUrl,
+                    url: _url,
                     dataType: &quot;json&quot;,
-                    success: function( data ){
-                        console.log( data );
-                        _data = data;
+                    success: function( _data ){
+                        _cb &amp;&amp; _cb( _data );
                     }
                 });
-                return _data;
+                return this;
+            }
+
+        , url:
+            function(){
+                return this.attrProp( &#x27;data-cajUrl&#x27; ) || &#x27;&#x27;;
+            }
+
+        , rootId:
+            function(){
+                return this.attrProp( &#x27;data-rootId&#x27; ) || &#x27;&#x27;;
             }
     });
 
@@ -662,10 +774,6 @@
          */
         , _process:
             function( _data, _parentNode ){
-                // console.log(_data);
-                // console.log(_parentNode);
-                // console.log(&#x27;-------------------&#x27;)
-
                 var _p = this;
                 if( !( _data &amp;&amp; _data.length ) ) return;
                 for( var i = 0, j = _data.length, _item, _isLast; i &lt; j; i++ ){
@@ -925,24 +1033,15 @@
                     _nodeImg.removeClass(&#x27;folder_img_closed&#x27;).addClass(&#x27;folder_img_loading&#x27;);
                     _nodeUl.data( &#x27;inited&#x27;, true );
 
-                    var ajaxUrl = _model.data().url
-                    if( !ajaxUrl ){
+                    if( !_model.data().url ){
                         return;
                     }
-                    ajaxUrl += &#x27;?id=&#x27; + _nodeId;
-                    
-                    $.ajax({
-                        type: &quot;GET&quot;,
-                        url: ajaxUrl,
-                        dataType: &quot;json&quot;,
-                        success: function( _data ){
-                            _pntLi.addClass(&#x27;folder_open&#x27;).removeClass(&#x27;folder_closed&#x27;);
-                            _nodeImg.removeClass(&#x27;folder_img_loading&#x27;).addClass(&#x27;folder_img_open&#x27;);
-                            _p._process( _data.data, _nodeUl.show() );
-                            _callback &amp;&amp; _callback();
-                        }
+                    _p._model.ajaxData( _nodeId, function( _data ){
+                        _pntLi.addClass(&#x27;folder_open&#x27;).removeClass(&#x27;folder_closed&#x27;);
+                        _nodeImg.removeClass(&#x27;folder_img_loading&#x27;).addClass(&#x27;folder_img_open&#x27;);
+                        _p._process( _data.data, _nodeUl.show() );
+                        _callback &amp;&amp; _callback();
                     });
-                    
                 }
             }
         , showDataLoading:
