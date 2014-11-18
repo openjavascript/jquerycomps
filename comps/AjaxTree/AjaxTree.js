@@ -14,6 +14,8 @@
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.AjaxTree.html' target='_blank'>API docs</a>
      * | <a href='../../comps/AjaxTree/_demo' target='_blank'>demo link</a></p>
      *
+     * <h2>页面只要引用本文件, 默认会自动初始化 div class="js_compAjaxTree" 的树组件</h2>
+     *
      * <h2>可用的 html attribute</h2>
      * <dl>
      *      <dt>data-defaultOpenRoot = bool, default = true</dt>
@@ -444,7 +446,11 @@
          * @param   {string}    _id
          * @return  selector
          */
-        , child: function( _id ){ return this._data.data[ _id ]; }
+        , child: function( _id ){ 
+            var _r = this._data.data[ _id ]; 
+            !( _r && _r.length ) && ( _r = [] );
+            return _r;
+        }
         /**
          * 判断原始数据的某个ID是否有子级节点
          * @param   {string}    _id

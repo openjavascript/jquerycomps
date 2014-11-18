@@ -589,7 +589,11 @@
          * @param   {string}    _id
          * @return  selector
          */
-        , child: function( _id ){ return this._data.data[ _id ]; }
+        , child: function( _id ){ 
+            var _r = this._data.data[ _id ]; 
+            !( _r &amp;&amp; _r.length ) &amp;&amp; ( _r = [] );
+            return _r;
+        }
         /**
          * 判断原始数据的某个ID是否有子级节点
          * @method  hasChild
@@ -685,7 +689,6 @@
          */
         , _process:
             function( _data, _parentNode ){
-
                 for( var i = 0, j = _data.length, _item, _isLast; i &lt; j; i++ ){
                     _item = _data[i];
                     _isLast = i === j - 1;

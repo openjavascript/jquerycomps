@@ -1,11 +1,10 @@
-;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'plugins.json2' ], function(){
+;(function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC' ], function(){
     window.Suggest = JC.Suggest = Suggest;
     JC.use && !window.JSON && JC.use( 'plugins.json2' );
     /**
      * Suggest 关键词补全提示类
      * <p><b>require</b>: 
      *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
-     *      , <a href='javascript:;'>JSON 2</a>
      * </p>
      * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      * | <a href='http://jc.openjavascript.org/docs_api/classes/JC.Suggest.html' target='_blank'>API docs</a>

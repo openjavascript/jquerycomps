@@ -262,6 +262,8 @@
      * | &lt;a href=&#x27;http://jc.openjavascript.org/docs_api/classes/JC.AjaxTree.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
      * | &lt;a href=&#x27;../../comps/AjaxTree/_demo&#x27; target=&#x27;_blank&#x27;&gt;demo link&lt;/a&gt;&lt;/p&gt;
      *
+     * &lt;h2&gt;页面只要引用本文件, 默认会自动初始化 div class=&quot;js_compAjaxTree&quot; 的树组件&lt;/h2&gt;
+     *
      * &lt;h2&gt;可用的 html attribute&lt;/h2&gt;
      * &lt;dl&gt;
      *      &lt;dt&gt;data-defaultOpenRoot = bool, default = true&lt;/dt&gt;
@@ -692,7 +694,11 @@
          * @param   {string}    _id
          * @return  selector
          */
-        , child: function( _id ){ return this._data.data[ _id ]; }
+        , child: function( _id ){ 
+            var _r = this._data.data[ _id ]; 
+            !( _r &amp;&amp; _r.length ) &amp;&amp; ( _r = [] );
+            return _r;
+        }
         /**
          * 判断原始数据的某个ID是否有子级节点
          * @param   {string}    _id
