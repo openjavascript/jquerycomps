@@ -3,8 +3,7 @@
  * Placeholder 占位符提示功能
  * <p>
  *      <b>require</b>: 
- *          <a href='window.jQuery.html'>jQuery</a>
- *          , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *          <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  * </p>
  * <p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
  * | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.Placeholder.html' target='_blank'>API docs</a>
@@ -101,7 +100,7 @@
             return _r;
         };
     /**
-     * 更新所有 placeholder 实现的状态
+     * 更新所有 placeholder 的状态
      * @method  update
      * @static
      */
