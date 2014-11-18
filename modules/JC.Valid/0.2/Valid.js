@@ -206,6 +206,9 @@
      *          </dl>
      *      </dd>
      *
+     *      <dd><b>qq:</b> 检查QQ号码, 5 ~ 11位数字</dd>
+     *      <dd><b>qqall:</b> 检查QQ号码, [ qq | email ]</dd>
+     *
      *      <dt>subdatatype: 特殊数据类型, 以逗号分隔多个属性</dt>
      *      <dd>
      *          <dl>
@@ -282,6 +285,7 @@ function (){
     var _selector = $(this);
 });</pre>
      *              </dd>
+     *              <dd>
      *                  <b>datavalidKeyupCallback:</b> 每次 keyup 的回调
 <pre>function datavalidKeyupCallback( _evt ){
     var _selector = $(this);
@@ -1591,10 +1595,42 @@ function (){
                 return _r;
             }
         /**
+         * 检查QQ号码( 5 ~ 11位数字 )
+         * @param   {selector}  _item
+         * @param   {bool}      _noError
+         * @example
+            <div class="f-l">
+                <input type="TEXT" name="qq" 
+                    datatype="qq" 
+                    errmsg="请填写正确的qq号码">
+            </div>
+         */
+        , qq: 
+            function( _item, _noError ){
+                var _p = this, _r =  /^[1-9][\d]{4,10}$/.test( _item.val() );
+                !_noError && !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查QQ号码( 数字号码|电子邮件 )
+         * <br />5 ~ 11位数字
+         * @param   {selector}  _item
+         * @param   {bool}      _noError
+         * @example
+            <div class="f-l">
+                <input type="TEXT" name="qqall" 
+                    datatype="qqall" 
+                    errmsg="请填写正确的qq号码">
+            </div>
+         */
+        , qqall: 
+            function( _item, _noError ){
+                var _p = this, _r =  _p.qq( _item, true ) || _p.email( _item, true );
+                !_noError && !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
          * 检查手机号码<br />
-         * @method  mobilecode
-         * @private
-         * @static
          * @param   {selector}  _item
          * @param   {bool}      _noError
          * @example
@@ -1953,9 +1989,9 @@ function (){
                 </div>
          */
         , email: 
-            function( _item ){
+            function( _item, _noError ){
                 var _p = this, _r = /^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i.test( _item.val() );
-                !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                !_noError && !_r && $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
             }
         /**
@@ -2988,6 +3024,14 @@ function (){
         _ins.trigger( Model.FOCUS_MSG,  [ _p, true ] );
         Valid.checkTimeout( _p );
     });
+    $(document).delegate( 'input', 'focus', function($evt){
+        var _p = $(this), _ins = Valid.getInstance(), _v = _p.val().trim();
+        if( _p.attr( 'type' ) ) return;
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        _ins.trigger( Model.FOCUS_MSG,  [ _p ] );
+        !_v && Valid.setValid( _p );
+    });
+
     /**
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
      * @private

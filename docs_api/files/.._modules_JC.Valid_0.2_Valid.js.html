@@ -464,6 +464,9 @@
      *          &lt;/dl&gt;
      *      &lt;/dd&gt;
      *
+     *      &lt;dd&gt;&lt;b&gt;qq:&lt;/b&gt; 检查QQ号码, 5 ~ 11位数字&lt;/dd&gt;
+     *      &lt;dd&gt;&lt;b&gt;qqall:&lt;/b&gt; 检查QQ号码, [ qq | email ]&lt;/dd&gt;
+     *
      *      &lt;dt&gt;subdatatype: 特殊数据类型, 以逗号分隔多个属性&lt;/dt&gt;
      *      &lt;dd&gt;
      *          &lt;dl&gt;
@@ -540,6 +543,7 @@ function (){
     var _selector = $(this);
 });&lt;/pre&gt;
      *              &lt;/dd&gt;
+     *              &lt;dd&gt;
      *                  &lt;b&gt;datavalidKeyupCallback:&lt;/b&gt; 每次 keyup 的回调
 &lt;pre&gt;function datavalidKeyupCallback( _evt ){
     var _selector = $(this);
@@ -1849,10 +1853,42 @@ function (){
                 return _r;
             }
         /**
+         * 检查QQ号码( 5 ~ 11位数字 )
+         * @param   {selector}  _item
+         * @param   {bool}      _noError
+         * @example
+            &lt;div class=&quot;f-l&quot;&gt;
+                &lt;input type=&quot;TEXT&quot; name=&quot;qq&quot; 
+                    datatype=&quot;qq&quot; 
+                    errmsg=&quot;请填写正确的qq号码&quot;&gt;
+            &lt;/div&gt;
+         */
+        , qq: 
+            function( _item, _noError ){
+                var _p = this, _r =  /^[1-9][\d]{4,10}$/.test( _item.val() );
+                !_noError &amp;&amp; !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
+         * 检查QQ号码( 数字号码|电子邮件 )
+         * &lt;br /&gt;5 ~ 11位数字
+         * @param   {selector}  _item
+         * @param   {bool}      _noError
+         * @example
+            &lt;div class=&quot;f-l&quot;&gt;
+                &lt;input type=&quot;TEXT&quot; name=&quot;qqall&quot; 
+                    datatype=&quot;qqall&quot; 
+                    errmsg=&quot;请填写正确的qq号码&quot;&gt;
+            &lt;/div&gt;
+         */
+        , qqall: 
+            function( _item, _noError ){
+                var _p = this, _r =  _p.qq( _item, true ) || _p.email( _item, true );
+                !_noError &amp;&amp; !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                return _r;
+            }
+        /**
          * 检查手机号码&lt;br /&gt;
-         * @method  mobilecode
-         * @private
-         * @static
          * @param   {selector}  _item
          * @param   {bool}      _noError
          * @example
@@ -2211,9 +2247,9 @@ function (){
                 &lt;/div&gt;
          */
         , email: 
-            function( _item ){
+            function( _item, _noError ){
                 var _p = this, _r = /^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i.test( _item.val() );
-                !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
+                !_noError &amp;&amp; !_r &amp;&amp; $(_p).trigger( Model.TRIGGER, [ Model.ERROR, _item ] );
                 return _r;
             }
         /**
@@ -3246,6 +3282,14 @@ function (){
         _ins.trigger( Model.FOCUS_MSG,  [ _p, true ] );
         Valid.checkTimeout( _p );
     });
+    $(document).delegate( &#x27;input&#x27;, &#x27;focus&#x27;, function($evt){
+        var _p = $(this), _ins = Valid.getInstance(), _v = _p.val().trim();
+        if( _p.attr( &#x27;type&#x27; ) ) return;
+        if( _ins._model.ignoreAutoCheckEvent( _p ) ) return;
+        _ins.trigger( Model.FOCUS_MSG,  [ _p ] );
+        !_v &amp;&amp; Valid.setValid( _p );
+    });
+
     /**
      * 响应表单子对象的 change 事件, 触发事件时, 检查并显示错误或正确的视觉效果
      * @private
