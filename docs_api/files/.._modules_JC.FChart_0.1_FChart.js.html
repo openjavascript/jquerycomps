@@ -483,7 +483,7 @@ JC.use &amp;&amp; !jQuery.event.special.mousewheel &amp;&amp; JC.use( &#x27;plug
      * @default     {0}/flash/pub/charts/{1}.swf
      * @static
      */
-    FChart.Model.FLASH_PATH = &#x27;{0}/flash/pub/charts/{1}.swf?{2}&#x27;;
+    FChart.Model.FLASH_PATH = &#x27;{0}/swf/{1}.swf?{2}&#x27;;
 
     /**
      * flash swf 缓存版本控制
@@ -675,9 +675,17 @@ JC.use &amp;&amp; !jQuery.event.special.mousewheel &amp;&amp; JC.use( &#x27;plug
         , type: function(){ return this.typeMap( this.chartType() ) || &#x27;&#x27;; }
         , path:
             function(){
+                var _path = JC.FCHART_PATH;
+                if( !_path ){
+                    if( JC.use ){
+                         _path = JC.PATH + &#x27;/comps/FChart/&#x27;;
+                    }else{
+                         _path = JC.PATH + &#x27;/modules/JC.FChart/0.1/&#x27;;
+                    }
+                }
                 var _p = this
                     , _r = JC.f.printf( _p.attrProp( &#x27;chartPath&#x27; ) || FChart.Model.FLASH_PATH
-                        , JC.PATH
+                        , _path
                         , _p.type() 
                         , FChart.Model.VERSION 
                     );
