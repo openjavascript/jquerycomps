@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>360 75 team</title>
+        <style type='text/css'>
+            body{ margin: 20px 20px; }
+            .cclear{zoom:1;}
+            .cclear:after{content:".";display:block;visibility:hidden;height:0;clear:both;}
+
+            .error{ color: red; }
+            input.error, select.error, textarea.error{ 
+                background-color: #F0DC82;!important;
+                box-shadow: 0 none;
+            }
+            input[type=text], input[type=password]{ width: 200px; }
+
+
+            dd.odd {
+                background: #ececec;
+            }
+
+            dt{
+                font-weight: bold;
+                display: block;
+            }
+
+            dl.fm-items > dt {
+                margin: 10px auto;
+            }
+
+            dd{
+                margin: 5px 40px;
+            }
+
+            input, select, textarea {
+                border: 1px solid #b9b9b9
+            }
+
+            input, select {
+                height: 23px;
+                line-height: 23px;
+            }
+
+            input[type=checkbox], input[type=radio], input.UXC{
+                height: auto;
+                line-height: auto;
+            }
+
+            select[multiple]{
+                height: 80px;
+            }
+
+            div, li{
+                margin: 2px auto;
+            }
+
+            button.js_isIgnore{ display: none; }
+        </style>
+        <link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
+        <link href='../../../../modules/JC.Panel/0.1/res/default/style.css' rel='stylesheet' />
+
+        <script src="../../../../lib.js"></script>
+        <script src="../../../../config.js"></script>
+        <script>
+            JC.debug = true; 
+
+            requirejs( [ 'JC.Valid', 'JC.Calendar' ], function( Valid, Panel ){
+
+            });
+
+            $(document).delegate( 'button.js_clear_error', 'click', function( $evt ){
+                window.console && console.clear && console.clear();
+                JC.Valid.clearError( 'form.js_valid' );
+            });
+
+            $(document).delegate( 'form.js_valid', 'submit', function( _evt ){
+                if( ! JC.Valid( this ) ){
+                    _evt.preventDefault();
+                    return false;
+                }
+            });
+
+            function parseYearMonthDate( _dateStr ){
+                _dateStr = $.trim( _dateStr || '' );
+                var _r = { start: null, end: null };
+                if( !_dateStr ) return _r;
+
+                _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+                var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4, 6 ), 10 ) - 1;
+
+                _r.start = new Date( _year, _month, 1 );
+                return _r;
+            } 
+
+        </script>
+    </head>    
+    <body>
+
+        <h2>JC.Valid daterange with datespan</h2>
+
+        <form action='' method='get' class="js_valid " >
+            <div style="position:fixed; top: 10px; right:10px;">
+                <button type="submit">save</button>
+                <button type="reset">reset</button>
+            </div>
+
+
+            <div>
+                <input type="text" name="start_date" class="ipt" 
+                errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期, 时间跨度不能超过6个月" 
+                emel="search-err" 
+                datatype="daterange" 
+                multidate="month" 
+                dateformat="YY-MM" 
+                fulldateformat="{0}" 
+                dateparse="parseYearMonthDate" 
+                datespan="6m"
+                value=""
+                >
+				至	
+                <input type="text" name="end_date" class="ipt" 
+                errmsg="请填写正确的日期范围,并且起始日期不能大于结束日期, 时间跨度不能超过6个月" 
+                emel="search-err" 
+                datatype="daterange" 
+                multidate="month" 
+                dateformat="YY-MM" 
+                fulldateformat="{0}" 
+                dateparse="parseYearMonthDate" value=""
+                datespan="6m"
+                >
+                <em id="search-err"></em>
+            </div>
+
+        </form>
+
+    </body>
+</html>
+

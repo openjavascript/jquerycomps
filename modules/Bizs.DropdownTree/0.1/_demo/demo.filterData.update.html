@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bizs.DropdownTree 0.1</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+
+        dd{
+            margin: 10px 20px;
+        }
+    </style>
+    <link href='../../../../modules/JC.Tree/0.1/res/default/style.css' rel='stylesheet' />
+    <link href='../../../../modules/Bizs.DropdownTree/0.1/res/default/style.css' rel='stylesheet' />
+
+    <script src="../../../../lib.js"></script>
+    <script src="../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+
+        requirejs( [ 'Bizs.DropdownTree' ]
+        , function(){
+            JDOC.delegate( 'button.js_update', 'click', function( _evt ){
+                var _p = $( this )
+                    , _cmd = _p.html().trim().replace( /[\r\n]+/g, '' )
+                    , _fn 
+                    ;
+                    _cmd = 'function(){ ' + _cmd + '}';
+                    _fn = eval( '(' + _cmd + ')' );
+
+                    _fn.call( _p );
+            });
+        });
+
+        var treeData1 = {
+            data:{"24":[["file","25","\u4e8c\u7ec4\u4e00\u961f"],["file","26","\u4e8c\u7ec4\u4e8c\u961f"],["file","27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["file","28","\u9500\u552e\u4e8c\u7ec4"],["folder","24","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
+            root: ["folderRoot","23",'客户发展部']
+            };
+            
+        var treeData2 = {
+            data:{"24":[["file","25","第二份数据"],["file","26","第二份数据2第二份数据2第二份数据2第二份数据2第二份数据2"],["file","27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["folder","24","二组二队二组二队二组二队二组二队二组二队二组二队二组二队二组二队据"],["file","28","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
+            root: ["folderRoot","23",'客服一部']
+            };	
+
+    </script>
+</head>
+<body>
+<h2>Bizs.DropdownTree 示例</h2>
+<dl>
+    <dt></dt>
+    <dd>
+        <table>
+            <tr>
+                <td>
+                    <div class="bdtBox js_bizDropdownTree" bdtData="treeData1">
+                        <i class="bdtIcon"></i>
+                        <span class="bdtLabel">销售二组</span>
+                        <input type="hidden" name="" value="28" class="bdtInput" />                                            	
+                        <div class="bdtTreeBox"></div>
+                    </div>
+                </td>
+                <td>
+                    <button type="button" class="js_update">
+                        JC.BaseMVC.getInstance( JC.f.parentSelector( this, '(tr div.js_bizDropdownTree' ), Bizs.DropdownTree ).update( treeData2, 24 );
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </dd>
+
+    <dt></dt>
+    <dd>
+        <table>
+            <tr>
+                <td>
+                    <div class="bdtBox js_bizDropdownTree" bdtData="treeData2" bdtDefaultLabel="请选择">
+                        <i class="bdtIcon"></i>
+                        <span class="bdtLabel"></span>
+                        <input type="hidden" name="" value="28" class="bdtInput" />                                            	
+                        <div class="bdtTreeBox"></div>
+                    </div>
+                </td>
+                <td>
+                    <button type="button" class="js_update">
+                        JC.BaseMVC.getInstance( JC.f.parentSelector( this, '(tr div.js_bizDropdownTree' ), Bizs.DropdownTree ).update( treeData1 );
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </dd>
+
+    <dt></dt>
+    <dd>
+        <table>
+            <tr>
+                <td>
+                    <div class="bdtBox js_bizDropdownTree" bdtData="treeData2">
+                        <i class="bdtIcon"></i>
+                        <span class="bdtLabel"></span>
+                        <input type="hidden" name="" value="28" class="bdtInput" />                                            	
+                        <div class="bdtTreeBox"></div>
+                    </div>
+                </td>
+                <td>
+                    <button type="button" class="js_update">
+                        JC.BaseMVC.getInstance( JC.f.parentSelector( this, '(tr div.js_bizDropdownTree' ), Bizs.DropdownTree ).update( treeData1 );
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </dd>
+
+
+</dl>
+</body>
+</html>
