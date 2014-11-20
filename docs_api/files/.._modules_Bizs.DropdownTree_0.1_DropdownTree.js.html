@@ -261,9 +261,8 @@
  * 树菜单 形式模拟下拉框
  *
  *&lt;p&gt;&lt;b&gt;require&lt;/b&gt;:
- *   &lt;a href=&quot;widnow.jQuery.html&quot;&gt;jQuery&lt;/a&gt;
- *   , &lt;a href=&quot;JC.common.html&quot;&gt;JC.common&lt;/a&gt;
- *   , &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+ *   &lt;a href=&#x27;JC.BaseMVC.html&#x27;&gt;JC.BaseMVC&lt;/a&gt;
+ *   , &lt;a href=&#x27;JC.Tree.html&#x27;&gt;JC.Tree&lt;/a&gt;
  *&lt;/p&gt;
  *
  *&lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
@@ -377,41 +376,54 @@
                 _p.on( &#x27;DropdownTreeSelected&#x27;, function( _evt, _id, _name, _triggerSelector ){
                     _p.hide();
                 });
+
+                _p.on( &#x27;INITED&#x27;, function(){
+                    _p.update();
+                });
+
+                _p.on( &#x27;INITED_STATUS&#x27;, function( _evt, _userId ){
+                    var _selectedId = _p._model.bdtInput().val().trim()
+                        , _treeItem
+                        ;
+
+                    typeof _userId != &#x27;undefined&#x27; &amp;&amp; ( _selectedId = _userId );
+
+                    _p._model.bdtInput().is( &#x27;[name]&#x27; ) 
+                        &amp;&amp; ( _selectedId = JC.f.getUrlParam( _p._model.bdtInput().attr(&#x27;name&#x27;) ) || _selectedId );
+
+                    _selectedId &amp;&amp; ( _treeItem = _p._model.treeIns().getItem( _selectedId ) );
+
+                    if( !(_selectedId &amp;&amp; _treeItem &amp;&amp; _treeItem.length ) ){
+                        if( _p._model.is( &#x27;[bdtDefaultLabel]&#x27; ) ){
+                            _p._model.bdtLabel().html( _p._model.bdtDefaultLabel() );
+                        }
+
+                        if( _p._model.is( &#x27;[bdtDefaultValue]&#x27; ) ){
+                            _p._model.bdtInput().val( _p._model.bdtDefaultValue() );
+                            _selectedId = _p._model.bdtDefaultValue();
+                        }
+                    }
+
+                    //JC.log( _selectedId );
+                    _selectedId 
+                        &amp;&amp; _p._model.bdtLabel().html( _p._model.treeIns().getItem( _selectedId ).attr( &#x27;dataname&#x27; ) )
+                        &amp;&amp; ( _p._model.bdtInput().val( _selectedId )
+                            , _p._model.treeIns().selectedItem( _p._model.treeIns().getItem( _selectedId ) )
+                           )
+                        ;
+                });
+
+                _p.on( &#x27;CLEAR_STATUS&#x27;, function(){
+                     _p._model.bdtInput().val( &#x27;&#x27; );
+                     _p._model.bdtLabel().html( &#x27;&#x27; );
+                });
+
             }
 
         , _inited:
             function(){
                 //JC.log( &#x27;DropdownTree _inited&#x27;, new Date().getTime() );
-                this.update();
-
-                var _p = this
-                    , _selectedId = _p._model.bdtInput().val().trim()
-                    , _treeItem
-                    ;
-
-                _p._model.bdtInput().is( &#x27;[name]&#x27; ) 
-                    &amp;&amp; ( _selectedId = JC.f.getUrlParam( _p._model.bdtInput().attr(&#x27;name&#x27;) ) || _selectedId );
-
-                _selectedId &amp;&amp; ( _treeItem = _p._model.treeIns().getItem( _selectedId ) );
-
-                if( !(_selectedId &amp;&amp; _treeItem &amp;&amp; _treeItem.length ) ){
-                    if( _p._model.is( &#x27;[bdtDefaultLabel]&#x27; ) ){
-                        _p._model.bdtLabel().html( _p._model.bdtDefaultLabel() );
-                    }
-
-                    if( _p._model.is( &#x27;[bdtDefaultValue]&#x27; ) ){
-                        _p._model.bdtInput().val( _p._model.bdtDefaultValue() );
-                        _selectedId = _p._model.bdtDefaultValue();
-                    }
-                }
-
-                //JC.log( _selectedId );
-                _selectedId 
-                    &amp;&amp; _p._model.bdtLabel().html( _p._model.treeIns().getItem( _selectedId ).attr( &#x27;dataname&#x27; ) )
-                    &amp;&amp; ( _p._model.bdtInput().val( _selectedId )
-                        , _p._model.treeIns().selectedItem( _p._model.treeIns().getItem( _selectedId ) )
-                       )
-                    ;
+                this.trigger( &#x27;INITED&#x27; );
             }
         /**
          * 显示 树弹框
@@ -431,12 +443,17 @@
         /**
          * 更新树菜单数据
          * @method  update
-         * @param   {json}  _data
+         * @param   {json}      _data
+         * @param   {string}    _selectedId
          */
         , update:
-            function( _data ){
+            function( _data, _selectedId ){
                 //this.clear();
-                this._view.update( _data );
+                var _isReload;
+                _data &amp;&amp; ( _isReload = true );
+                _isReload &amp;&amp; this.trigger( &#x27;CLEAR_STATUS&#x27; );
+                this._view.update( _data, _isReload );
+                this.trigger( &#x27;INITED_STATUS&#x27;, [ _selectedId ] );
                 return this;
             }
         /**
@@ -522,11 +539,16 @@
             }
 
         , update:
-            function( _data ){
+            function( _data, _isReload ){
                 var _p = this;
                 _data = _data || _p._model.bdtData();
 
-                if( !_p._model.treeIns() ){
+                if( _isReload ){
+                }
+
+                if( ( !_p._model.treeIns() ) || _isReload ){
+                    _p._model.bdtTreeBox().html(&#x27;&#x27;);
+                    _p._model.bdtTreeBox().data( JC.Tree.Model._instanceName , null );
                     _p._model.treeIns( new JC.Tree( _p._model.bdtTreeBox(), _data ) );
 
                     _p._model.treeIns().on( &#x27;click&#x27;, function(){

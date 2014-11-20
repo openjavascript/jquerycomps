@@ -265,8 +265,7 @@
      * &lt;b&gt;表单验证&lt;/b&gt; (单例模式)
      * &lt;br /&gt;全局访问请使用 JC.Valid 或 Valid
      * &lt;p&gt;&lt;b&gt;require&lt;/b&gt;: 
-     *      &lt;a href=&#x27;window.jQuery.html&#x27;&gt;jQuery&lt;/a&gt;
-     *      , &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
+     *      &lt;a href=&#x27;JC.common.html&#x27;&gt;JC.common&lt;/a&gt;
      * &lt;/p&gt;
      * &lt;p&gt;&lt;a href=&#x27;https://github.com/openjavascript/jquerycomps&#x27; target=&#x27;_blank&#x27;&gt;JC Project Site&lt;/a&gt;
      * | &lt;a href=&#x27;http://jc2.openjavascript.org/docs_api/classes/JC.Valid.html&#x27; target=&#x27;_blank&#x27;&gt;API docs&lt;/a&gt;
@@ -374,6 +373,7 @@
      *              &lt;dd&gt;html attr &lt;b&gt;fromDateEl:&lt;/b&gt; 指定开始的 control&lt;/dd&gt;
      *              &lt;dd&gt;html attr &lt;b&gt;toDateEl:&lt;/b&gt; 指定结束的 control&lt;/dd&gt;
      *              &lt;dd&gt;如果不指定 fromDateEl, toDateEl, 默认是从父节点下面找到 daterange, 按顺序定为 fromDateEl, toDateEl&lt;/dd&gt;
+     *              &lt;dd&gt;html attr &lt;b&gt;datespan:&lt;/b&gt;, 指定开始与结束日期的时间跨度(JC.f.dateDetect)&lt;/dd&gt;
      *          &lt;/dl&gt;
      *      &lt;/dd&gt;
      *      &lt;dd&gt;&lt;b&gt;time:&lt;/b&gt; 是否为正确的时间, hh:mm:ss&lt;/dd&gt;
@@ -1634,7 +1634,7 @@ function (){
          */
         , daterange:
             function( _item ){
-                var _p = this, _r = _p.d( _item ), _min, _max, _fromDateEl, _toDateEl, _items, _tmp;
+                var _p = this, _r = _p.d( _item ), _min, _max, _fromDateEl, _toDateEl, _items, _tmp, _datespan;
 
                 if( _r ){
                     if( _item.is( &#x27;[fromDateEl]&#x27; ) ) {
@@ -1668,6 +1668,15 @@ function (){
                             _r &amp;&amp; _min &amp;&amp; _max 
                                &amp;&amp; _min.getTime() &gt; _max.getTime() 
                                &amp;&amp; ( _r = false );
+
+                            if( _r &amp;&amp; _min &amp;&amp; _max ){
+                                _datespan = ( _fromDateEl.attr( &#x27;datespan&#x27; ) || _toDateEl.attr( &#x27;datespan&#x27; ) );
+                                if( _datespan &amp;&amp; ( _datespan = JC.f.dateDetect( JC.f.formatISODate( _min ) + _datespan ) ) ){
+                                    if( _max.getTime() &gt; _datespan.getTime() ){
+                                        _r = false;
+                                    }
+                                }
+                            }
 
                             _r &amp;&amp; ( _tmp = _fromDateEl.attr( &#x27;rangeCanEqual&#x27; ) || _toDateEl.attr( &#x27;rangeCanEqual&#x27; ) )
                                 &amp;&amp; !JC.f.parseBool( _tmp )
