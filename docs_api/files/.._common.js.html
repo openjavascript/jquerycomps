@@ -1459,13 +1459,18 @@
         var _r = null   
             , _re = /^now/i
             , _nowFirstRe = /^nowfirst/
+            , _dateRe = /^([\d]{8}|[\d]{4}.[\d]{2}.[\d]{2})/
             , _d, _ar, _item
             ;
         if( _dateStr &amp;&amp; typeof _dateStr == &#x27;string&#x27; ){
-            if( _re.test( _dateStr ) || _nowFirstRe.test( _dateStr ) ){
+            if( _re.test( _dateStr ) || _nowFirstRe.test( _dateStr ) || _dateRe.test( _dateStr ) ){
                 _d = new Date();
                 if( _nowFirstRe.test(_dateStr ) ){
                     _d.setDate( 1 );
+                }
+                if( _dateRe.test( _dateStr ) ){
+                    _d = JC.f.parseISODate( _dateStr.replace( /[^\d]/g, &#x27;&#x27; ).slice( 0, 8 ) );
+                    _dateStr = _dateStr.replace( _dateRe, &#x27;&#x27; );
                 }
                 _dateStr = _dateStr.replace( _re, &#x27;&#x27; ).replace(/[\s]+/g, &#x27;&#x27;);
                 _ar = _dateStr.split(&#x27;,&#x27;);

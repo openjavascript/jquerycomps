@@ -3,8 +3,7 @@
  * 树菜单 形式模拟下拉框
  *
  *<p><b>require</b>:
- *   <a href="widnow..jQuery.html">jQuery</a>
- *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *   <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *   , <a href='JC.Tree.html'>JC.Tree</a>
  *</p>
  *
@@ -116,46 +115,57 @@
         , _initHanlderEvent:
             function(){
                 var _p = this;
-
                 _p.on( 'DropdownTreeSelected', function( _evt, _id, _name, _triggerSelector ){
-                    //alert( [ _id, _name ] );
                     _p.hide();
                 });
+
+                _p.on( 'INITED', function(){
+                    _p.update();
+                });
+
+                _p.on( 'INITED_STATUS', function( _evt, _userId ){
+                    var _selectedId = _p._model.bdtInput().val().trim()
+                        , _treeItem
+                        ;
+
+                    typeof _userId != 'undefined' && ( _selectedId = _userId );
+
+                    _p._model.bdtInput().is( '[name]' ) 
+                        && ( _selectedId = JC.f.getUrlParam( _p._model.bdtInput().attr('name') ) || _selectedId );
+
+                    _selectedId && ( _treeItem = _p._model.treeIns().getItem( _selectedId ) );
+
+                    if( !(_selectedId && _treeItem && _treeItem.length ) ){
+                        if( _p._model.is( '[bdtDefaultLabel]' ) ){
+                            _p._model.bdtLabel().html( _p._model.bdtDefaultLabel() );
+                        }
+
+                        if( _p._model.is( '[bdtDefaultValue]' ) ){
+                            _p._model.bdtInput().val( _p._model.bdtDefaultValue() );
+                            _selectedId = _p._model.bdtDefaultValue();
+                        }
+                    }
+
+                    //JC.log( _selectedId );
+                    _selectedId 
+                        && _p._model.bdtLabel().html( _p._model.treeIns().getItem( _selectedId ).attr( 'dataname' ) )
+                        && ( _p._model.bdtInput().val( _selectedId )
+                            , _p._model.treeIns().selectedItem( _p._model.treeIns().getItem( _selectedId ) )
+                           )
+                        ;
+                });
+
+                _p.on( 'CLEAR_STATUS', function(){
+                     _p._model.bdtInput().val( '' );
+                     _p._model.bdtLabel().html( '' );
+                });
+
             }
 
         , _inited:
             function(){
                 //JC.log( 'DropdownTree _inited', new Date().getTime() );
-                this.update();
-
-                var _p = this
-                    , _selectedId = _p._model.bdtInput().val().trim()
-                    , _treeItem
-                    ;
-
-                _p._model.bdtInput().is( '[name]' ) 
-                    && ( _selectedId = JC.f.getUrlParam( _p._model.bdtInput().attr('name') ) || _selectedId );
-
-                _selectedId && ( _treeItem = _p._model.treeIns().getItem( _selectedId ) );
-
-                if( !(_selectedId && _treeItem && _treeItem.length ) ){
-                    if( _p._model.is( '[bdtDefaultLabel]' ) ){
-                        _p._model.bdtLabel().html( _p._model.bdtDefaultLabel() );
-                    }
-
-                    if( _p._model.is( '[bdtDefaultValue]' ) ){
-                        _p._model.bdtInput().val( _p._model.bdtDefaultValue() );
-                        _selectedId = _p._model.bdtDefaultValue();
-                    }
-                }
-
-                //JC.log( _selectedId );
-                _selectedId 
-                    && _p._model.bdtLabel().html( _p._model.treeIns().getItem( _selectedId ).attr( 'dataname' ) )
-                    && ( _p._model.bdtInput().val( _selectedId )
-                        , _p._model.treeIns().selectedItem( _p._model.treeIns().getItem( _selectedId ) )
-                       )
-                    ;
+                this.trigger( 'INITED' );
             }
         /**
          * 显示 树弹框
@@ -175,12 +185,17 @@
         /**
          * 更新树菜单数据
          * @method  update
-         * @param   {json}  _data
+         * @param   {json}      _data
+         * @param   {string}    _selectedId
          */
         , update:
-            function( _data ){
+            function( _data, _selectedId ){
                 //this.clear();
-                this._view.update( _data );
+                var _isReload;
+                _data && ( _isReload = true );
+                _isReload && this.trigger( 'CLEAR_STATUS' );
+                this._view.update( _data, _isReload );
+                this.trigger( 'INITED_STATUS', [ _selectedId ] );
                 return this;
             }
         /**
@@ -266,11 +281,16 @@
             }
 
         , update:
-            function( _data ){
+            function( _data, _isReload ){
                 var _p = this;
                 _data = _data || _p._model.bdtData();
 
-                if( !_p._model.treeIns() ){
+                if( _isReload ){
+                }
+
+                if( ( !_p._model.treeIns() ) || _isReload ){
+                    _p._model.bdtTreeBox().html('');
+                    _p._model.bdtTreeBox().data( JC.Tree.Model._instanceName , null );
                     _p._model.treeIns( new JC.Tree( _p._model.bdtTreeBox(), _data ) );
 
                     _p._model.treeIns().on( 'click', function(){
@@ -329,6 +349,22 @@
                 this._model.bdtTreeBox().css( { 'z-index': ZINDEX_COUNT++ } );
             }
     });
+    /**
+     * 选择树节点时触发的事件
+     * @event   DropdownTreeSelected
+     * @param   {object}    _evt
+     * @param   {string}    _id
+     * @param   {string}    _name
+     * @param   {selector}  _triggerSelector
+     * @example
+            $( 'div.js_bizDropdownTree' ).each( function(){
+                var _ins = JC.BaseMVC.getInstance( $(this), Bizs.DropdownTree );
+                    _ins 
+                        && _ins.on( 'DropdownTreeSelected', function( _evt, _id, _name, _triggerSelector ){
+                            JC.log( [ _evt, _id, _name ] );
+                        });
+            });
+     */
 
     JC.Tree.dataFilter = JC.Tree.dataFilter ||
         function( _data ){

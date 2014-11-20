@@ -4,8 +4,7 @@
  * FormFillUrl 表单自动填充 URL 参数
  *
  *<p><b>require</b>:
- *   <a href=".jQuery.html">jQuery</a>
- *   , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+ *   <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
  *</p>
  *
  *<p><a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
@@ -22,6 +21,9 @@
  *
  *    <dt>encoder = function, default = encodeURIComponent</dt>
  *    <dd>URL 的编码码函数<dd>
+ *
+ *    <dt>ignoreUrlFill = bool, default = false</dt>
+ *    <dd>是否忽略 URL填充<dd>
  *</dl> 
  *
  * @namespace   JC
@@ -230,6 +232,7 @@
                         case 'input':
                         case 'select':
                         case 'textarea':
+                            if( JC.f.parseBool( _item.attr( 'ignoreUrlFill' ) || '' ) ) return;
                             _controls.push( _item );
                             break;
                     }

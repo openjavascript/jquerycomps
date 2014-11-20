@@ -10810,13 +10810,18 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         var _r = null   
             , _re = /^now/i
             , _nowFirstRe = /^nowfirst/
+            , _dateRe = /^([\d]{8}|[\d]{4}.[\d]{2}.[\d]{2})/
             , _d, _ar, _item
             ;
         if( _dateStr && typeof _dateStr == 'string' ){
-            if( _re.test( _dateStr ) || _nowFirstRe.test( _dateStr ) ){
+            if( _re.test( _dateStr ) || _nowFirstRe.test( _dateStr ) || _dateRe.test( _dateStr ) ){
                 _d = new Date();
                 if( _nowFirstRe.test(_dateStr ) ){
                     _d.setDate( 1 );
+                }
+                if( _dateRe.test( _dateStr ) ){
+                    _d = JC.f.parseISODate( _dateStr.replace( /[^\d]/g, '' ).slice( 0, 8 ) );
+                    _dateStr = _dateStr.replace( _dateRe, '' );
                 }
                 _dateStr = _dateStr.replace( _re, '' ).replace(/[\s]+/g, '');
                 _ar = _dateStr.split(',');
