@@ -27,9 +27,23 @@
 				, url : 'http://github.com/openjavascript/jquerycomps/archive/requirejs_master.zip'
 			}
 		]
+		, websiteLink: [
+			{
+				name : '奇舞团'
+				, url : 'http://qiwoo.org/'
+			}
+			, {
+				name : '邱少伟'
+				, url : 'http://btbtd.org/'
+			}
+		]
 		, compsList: [ 
 			{
 				name : 'Base'
+				, desc : [
+					'JqueryComps（JC）组件是一个扩展性强灰常NB的组件'
+					, 'Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持,Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持'
+				]
 				, list : [ 
 					{ 
 						name : 'JC.BaseMVC'
@@ -60,6 +74,10 @@
 			}
 			, {
 				name : 'JC'
+				, desc : [
+					'JqueryComps（JC）组件是一个扩展性强灰常NB的组件'
+					, 'Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持,Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持'
+				]
 				, list : [
 					{ 
 					  	name : 'JC.AjaxTree'
@@ -158,6 +176,10 @@
 			}
 			, {
 				name : 'BIZS'
+				, desc : [
+					'JqueryComps（JC）组件是一个扩展性强灰常NB的组件'
+					, 'Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持,Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持'
+				]
 				, list : [
 					{ 
 					  	name : 'Bizs.ActionLogic'
@@ -223,6 +245,10 @@
 			}
 			, {
 				name : 'Plugin'
+				, desc : [
+					'JqueryComps（JC）组件是一个扩展性强灰常NB的组件'
+					, 'Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持,Base是JqueryComps（JC）组件的核心部分，也是组件的基础底层支持'
+				]
 				, list : [ 
 					{ 
 						name : 'Aes'

@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset=utf-8 />
+    <title>Open JQuery Components Library - suches</title>
+    <style>
+        body{
+            margin: 20px 40px;
+        }
+
+        dt { font-weight: bold; margin: 10px auto; }
+        dd { line-height: 24px; }
+        div {
+            margin: 5px;
+            padding: 5px;
+        }
+    </style>
+    <link href='../../../../modules/JC.Calendar/0.2/res/default/style.css' rel='stylesheet' />
+    <link href='../../../../modules/JC.Panel/0.1/res/default/style.css' rel='stylesheet' />
+    <link href='../../../../modules/JC.Valid/0.2//res/default/style.css' rel='stylesheet' />
+    <script src="../../../../lib.js"></script>
+    <script src="../../../../config.js"></script>
+    <script>
+        JC.debug = true;
+
+        requirejs( [ 'JC.Calendar', 'JC.Valid', 'Bizs.ActionLogic', 'Bizs.FormLogic' ]
+        , function( Calendar, Valid, ActionLogic, FormLogic ){
+        });
+
+    </script>
+</head>    
+<body>
+
+
+<dl class="defdl">
+    <dt>balType = hit_value for button</dt>
+    <dd>
+        <div>
+            <button 
+                type="button"
+                class="js_bizsActionLogic"
+                balType="hit_value"
+                balTarget="/input[type=text]"
+                balValue="1"
+                >
+                value 1
+            </button>
+
+            <button 
+                type="button"
+                class="js_bizsActionLogic"
+                balType="hit_value"
+                balTarget="/input[type=text]"
+                balValue="2"
+                >
+                value 2
+            </button>
+
+            <input type="text" value="" />
+        </div>
+    </dd>
+
+    <dt>balType = hit_value for link</dt>
+    <dd>
+        <div>
+            <a  href="javascript:;"
+                class="js_bizsActionLogic"
+                balType="hit_value"
+                balTarget="/input[type=text]"
+                balValue="1"
+                >
+                value 1
+            </a>
+            &nbsp;&nbsp;&nbsp;
+            <a  href="javascript:;"
+                class="js_bizsActionLogic"
+                balType="hit_value"
+                balTarget="/input[type=text]"
+                balValue="2"
+                >
+                value 2
+            </a>
+            &nbsp;&nbsp;&nbsp;
+            <input type="text" value="" />
+        </div>
+    </dd>
+
+    <dt>balType = hit_value for form</dt>
+    <dd>
+        <div>
+            <form method="GET" action="?">
+            <button 
+                type="submit"
+                class="js_bizsActionLogic"
+                balType="hit_value"
+                balTarget="/input[type=hidden]"
+                balValue="1"
+                >
+                submit value 1
+            </button>
+
+            <button 
+                type="submit"
+                class="js_bizsActionLogic"
+                balType="hit_value"
+                balTarget="/input[type=hidden]"
+                balValue="2"
+                >
+                submit value 2
+            </button>
+
+            <div>
+                <input type="hidden" name="type" value="" />
+            </div>
+        </div>
+    </dd>
+
+
+</dl>
+
+
+</body>
+</html>
+

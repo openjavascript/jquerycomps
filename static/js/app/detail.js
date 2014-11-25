@@ -44,18 +44,21 @@
 
             var _data = _requireComps[ $( e.target ).attr( 'data-index' ) ];
             window.parent.showNextComp( 
-                dataTool.getDetailPathByName( _data.name, _data.version ) 
+                dataTool.getDetailPathByNameAndVersion( _data.name, _data.version ) 
             );
         } );
 
-        $( '.detail-versionlink:not(.detail-nowVersion)' )
-            .on( 'click', function( e ){
-            
+        $( '.detail-versionlink' ).on( 'click', function( e ){
             e.preventDefault();
 
-            var _data = _allVersion[ $( e.target ).attr( 'data-index' ) ];
+            var _tar = $( e.target );
+            if( _tar.hasClass( 'detail-nowVersion' ) ){
+                return;
+            }
+
+            var _data = _allVersion[ _tar.attr( 'data-index' ) ];
             window.parent.showNextComp( 
-                dataTool.getDetailPathByName( _data.name, _data.version ) 
+                dataTool.getDetailPathByNameAndVersion( _data.name, _data.version ) 
             );
         });
 

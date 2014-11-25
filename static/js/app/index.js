@@ -22,6 +22,8 @@
 		$( '#bodynav' ).html( template( 'tpl-navlist', _data ) );
 
 		$( '#itemlist' ).html( template( 'tpl-itemlist', _data ) );
+
+		$( '#outlink' ).html( template( 'tpl-outlink', _data ) );
 	}
 
 	function detailHandler() {
@@ -151,6 +153,18 @@
 			}
 			_ele.removeClass( _ele.attr('hover') );
 		});
+
+		$( '#outlink a' ).hover( function( e ){
+			$( e.target ).stop().velocity( {
+				color : '#ccc'
+				, backgroundColor : '#4d5152'
+			} );
+		}, function( e ){
+			$( e.target ).stop().velocity( {
+				color : '#666'
+				, backgroundColor : '#e6decb'
+			} );
+		} );
 
 		navHandler();
 

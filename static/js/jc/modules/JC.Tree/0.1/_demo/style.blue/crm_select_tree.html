@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>360 75 team</title>
+<style>
+    body{ width: 680px; margin: 20px auto; }
+    dl{ margin-top: 10px; margin-bottom: 80px; }
+</style>
+<link href='../../../../../modules/JC.Tree/0.1/res/blue/style.css' rel='stylesheet' />
+<link href='../data/crm.css' rel='stylesheet' />
+<script src="../../../../../lib.js"></script>
+<script src="../../../../../config.js"></script>
+<script>
+    JC.debug = 1;
+
+    requirejs( [ '../data/crm.js' ], function(){
+        var _queryNode = JC.f.getUrlParam( 'node' );
+    });
+
+    var dptTreeData = {
+        data:{"24":[["file","25","\u4e8c\u7ec4\u4e00\u961f"],["file","26","\u4e8c\u7ec4\u4e8c\u961f"],["file","27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["file","28","\u9500\u552e\u4e8c\u7ec4"],["folder","24","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
+        root: ["folderRoot","23",'客户发展部']
+        };
+        
+    var dptTreeData2 = {
+        data:{"24":[["file","25","第二份数据"],["file","26","第二份数据2第二份数据2第二份数据2第二份数据2第二份数据2"],["file","27","\u4e8c\u7ec4\u4e09\u961f"]],"23":[["folder","24","二组二队二组二队二组二队二组二队二组二队二组二队二组二队二组二队据"],["file","28","\u552e\u524d\u5ba1\u6838\u7ec4"]]},
+        root: ["folderRoot","23",'客服一部']
+        };	
+
+    $(document).delegate('#open_to_val', 'click', function( _evt ){
+        _evt.stopPropagation();
+    });
+
+    $(document).delegate('button.js_open_all', 'click', function( _evt ){
+        _evt.stopPropagation();
+        $('div.tree_container').each( function(){
+            JC.Tree.getInstance( this ) && JC.Tree.getInstance(this).open();
+        });
+    });
+
+    $(document).delegate('button.js_close_all', 'click', function( _evt ){
+        _evt.stopPropagation();
+        $('div.tree_container').each( function(){
+            if( !$(this).hasClass( 'dpt-select-active' ) ) $(this).trigger( 'click' );
+            JC.Tree.getInstance( this ) && JC.Tree.getInstance(this).close();
+        });
+    });
+
+    $(document).delegate('button.js_open_to', 'click', function( _evt ){
+        _evt.stopPropagation();
+        var _tgr = $(this).attr('data_target');
+        if( !_tgr ) return;
+        _tgr = $.trim( $( _tgr ).val() );
+
+        $('div.tree_container').each( function(){
+            if( !$(this).hasClass( 'dpt-select-active' ) ) $(this).trigger( 'click' );
+            JC.Tree.getInstance( this ) && JC.Tree.getInstance(this).open( _tgr );
+        });
+    });
+
+</script>
+</head>    
+<body>
+    <div style="position:fixed; right: 10px; top: 0px;">
+        <dl>
+            <dd>
+            <a href="?">back</a>
+            <button type="button" class="js_open_all">open all</button>
+            <button type="button" class="js_close_all">close all</button>
+            <button type="button" class="js_open_to" data_target="#open_to_val">open to</button>
+            <input type="text" value="25" id="open_to_val" />
+            </dd>
+        </dl>
+    </div>
+    <dl>
+        <dt>Tree 示例</dt>
+        <dd class="clearfix">
+            <div class="dpt-select" treedata="dptTreeData" treenode="#tree_box" style="width:360px;">
+                <span class="label">销售二组</span>
+                <i></i>
+                <input type="hidden" value="28" name="">                                            	
+                <div id="tree_box" class="tree_container"></div>
+            </div>
+        </dd>
+    </dl>
+    <dl>
+        <dt>Tree 示例</dt>
+        <dd class="clearfix">
+            <div class="dpt-select" treedata="dptTreeData2" treenode="#tree_box1" >
+                <span class="label">二组三队</span>
+                <i></i>
+                <input type="hidden" value="27" name="">                                            	
+                <div id="tree_box1" class="tree_container"></div>
+            </div>
+        </dd>
+    </dl>
+</body>
+</html>
+

@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>360 75 team</title>
+<style type='text/css'>
+    body{ margin: 20px 40px; background:#ececec; }
+    dl dd{ margin: 10px 0; }
+</style>
+<link href='../../../../modules/JC.Valid/0.2/res/default/style.css' rel='stylesheet' />
+<link href='../../../../modules/JC.Tips/0.1/res/default/style.css' rel='stylesheet' />
+<link href='../../../../modules/JC.Calendar/0.3/res/default/style.css' rel='stylesheet' />
+<script src="../../../../lib.js"></script>
+<script src="../../../../config.js"></script>
+<script>
+    JC.debug = true; 
+    
+    requirejs( [ 'JC.Tips', 'JC.Calendar', 'plugins.json2', "JC.Valid" ], function( Tips, Calendar ){
+        JC.Tips.autoInit = false;
+
+        JC.Calendar.layoutInitedCallback = 
+            function( _layout ){
+                JC.Tips.init( _layout.find('[title]') );
+            };
+
+        JC.Calendar.layoutHideCallback = 
+            function( _lastIpt ){
+                JC.Tips.hide();
+            };
+    });
+
+    //
+    /// 针对月份日期格式化 YY-MM
+    //
+    function parseYearMonthDate( _dateStr ){
+        _dateStr = $.trim( _dateStr || '' );
+
+        var _r = { start: null, end: null };
+        if( !_dateStr ) return _r;
+
+        _dateStr = _dateStr.replace( /[^\d]+/g, '' );
+        var _year = _dateStr.slice( 0, 4 ), _month = parseInt( _dateStr.slice( 4, 6 ), 10 ) - 1;
+
+        _r.start = new Date( _year, _month, 1 );
+        return _r;
+    }
+
+</script>
+</head>    
+<body>
+    <br /><br /><br /><br /><br /><br />
+    <form action='' method='get'>
+        <dl>
+            <dt>JC.Calendar 示例, 如果没有特别声明, 默认type 都为 date</dt>
+            <dd><input type="text" name="date1" multidate="date" /> date</dd>
+            <dd><input type="text" name="date1" multidate="week" value="2013-06-02" /> week</dd>
+            <dd>
+                <input type="text" name="date2" multidate="month" value="2013-06-03" />
+                <input type="button" class="UXCCalendar_btn" />month
+            </dd>
+            <dd><input type="text" name="date3" multidate="month" value="" />month</dd>
+            <dd><input type="text" name="notdate" />not date</dd>
+            <dd>
+                <input type="text" name="date4" multidate="date" value="2012.04.02" /><input type="button" class="UXCCalendar_btn" />
+            </dd>
+            <dd>
+                <input type="text" name="date5" multidate="week" value="20110201" /><input type="button" class="UXCCalendar_btn" />week
+            </dd>
+            <dd>
+                <input type="text" name="date2" multidate="week" value="2013-06-03" minvalue="2013-06-03" />week minvalue="2013-06-03"
+            </dd>
+            <dd>
+                <input type="text" name="date2" multidate="month" value="2013-06-03" maxvalue="2013-06-30" />month maxvalue="2013-06-30"
+            </dd>
+            <dd>
+            <input type="text" name="date2" multidate="month" value="2013-06-03" minvalue="2013-06-01" maxvalue="2013-06-30" />month minvalue="2013-06-01" maxvalue="2013-06-30"
+            </dd>
+            <dd>
+                date range:
+                <input type="text" name="date2" datatype="daterange" value="2013-06-03" maxvalue="2013-06-30" />
+                <input type="text" name="date2" datatype="daterange" value="2013-06-03" maxvalue="2013-06-30" />
+                <em class="error"></em>
+            </dd>
+            <dd>
+                date range( for month ):
+                <input type="text" name="date2" value="now,2m" 
+                    datatype="daterange" 
+                    multidate="month"
+                    dateFormat="YY-MM"
+                    fullDateFormat="{0}"
+                    dateParse="parseYearMonthDate"
+                    />
+                <input type="text" name="date2" value="now,4m" 
+                    datatype="daterange" 
+                    multidate="month"
+                    dateFormat="YY-MM"
+                    fullDateFormat="{0}"
+                    dateParse="parseYearMonthDate"
+                    />
+                <em class="error"></em>
+            </dd>
+
+            <dd>
+                <button type="button" datatype="date" value="">pick date button</button>
+                <button type="button" datatype="week" value="2013-01-11">pick week button</button>
+                <button type="button" datatype="month" value="2013-02-02">pick month button</button>
+                <button type="button" datatype="season" value="2013-03-03">pick season button</button>
+            </dd>
+        </dl>
+    </form>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+</body>
+</html>
+
