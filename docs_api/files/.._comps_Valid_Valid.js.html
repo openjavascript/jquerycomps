@@ -51,8 +51,6 @@
             
                 <li><a href="../classes/.JC.html">.JC</a></li>
             
-                <li><a href="../classes/.jQuery.html">.jQuery</a></li>
-            
                 <li><a href="../classes/JC.AjaxTree.html">JC.AjaxTree</a></li>
             
                 <li><a href="../classes/JC.AjaxUpload.html">JC.AjaxUpload</a></li>
@@ -194,6 +192,8 @@
                 <li><a href="../classes/window.Bizs.MultiUpload.html">window.Bizs.MultiUpload</a></li>
             
                 <li><a href="../classes/window.Bizs.TaskViewer.html">window.Bizs.TaskViewer</a></li>
+            
+                <li><a href="../classes/window.jQuery.html">window.jQuery</a></li>
             
                 <li><a href="../classes/window.jQuery.mousewheel.html">window.jQuery.mousewheel</a></li>
             
@@ -662,6 +662,8 @@ function (){
         , parse: 
             function( _item ){
                 var _p = this, _r = true, _item = $( _item );
+
+                if( _item.prop( &#x27;nodeName&#x27; ).toLowerCase() == &#x27;object&#x27; ) return _r;
 
                 if( !_p._model.isAvalible( _item ) ) return _r;
                 if( !_p._model.isValid( _item ) ) return _r;

@@ -3,7 +3,6 @@ YUI.add("yuidoc-meta", function(Y) {
     "classes": [
         ".Bizs",
         ".JC",
-        ".jQuery",
         "JC.AjaxTree",
         "JC.AjaxUpload",
         "JC.AutoChecked",
@@ -69,6 +68,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "window.Bizs.TaskViewer",
         "window.JSON",
         "window.Raphael",
+        "window.jQuery",
         "window.jQuery.mousewheel",
         "window.swfobject"
     ],

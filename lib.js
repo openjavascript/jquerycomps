@@ -9,8 +9,9 @@
  * Released under the MIT license
  * http://jquery.org/license
  * Date: 2013-2-4</pre>
- * @namespace 
  * @class jQuery
+ * @namespace   window
+ * @global
  */
 (function( window, undefined ) {
 
@@ -2368,7 +2369,7 @@ jQuery.extend({
 			// In IE9+, Flash objects don't have .getAttribute (#12945)
 			// Support: IE9+
 			if ( typeof elem.getAttribute !== core_strundefined ) {
-				ret =  elem.getAttribute( name );
+				try{ ret =  elem.getAttribute( name ); }catch( ex ){}
 			}
 
 			// Non-existent attributes return null, we normalize to undefined
