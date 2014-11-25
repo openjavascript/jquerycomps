@@ -2,8 +2,7 @@
     /**
      * Ajax 文件上传
      * <p><b>require</b>: 
-     *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *      , <a href='JC.Panel.html'>JC.Panel</a>
      *      , <a href='javascript:;'>SWFUpload</a>
      * </p>
@@ -585,7 +584,7 @@
                 if( !this._buttonLayout ){
                     _p._buttonLayout = 
                             $( JC.f.printf( 
-                                '<button type="text" class="AUBtn AUBtn-{1} js_btn"><span id="{0}"></span></button>'
+                                '<button type="submit" class="AUBtn AUBtn-{1} js_btn"><span id="{0}"></span></button>'
                                 , _holderId 
                                 , _p.cauStyle()
                             ));
@@ -594,6 +593,10 @@
                         ? _p.selector().after( this._buttonLayout )
                         : _p.selector().before( this._buttonLayout )
                         ;
+                    _p._buttonLayout.on( 'click', function( _evt ){
+                        _evt.preventDefault();
+                        _evt.stopPropagation();
+                    });
                 }
                 return this._buttonLayout;
             }

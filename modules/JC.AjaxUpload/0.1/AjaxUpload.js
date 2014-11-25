@@ -1,11 +1,9 @@
 //TODO: 添加文件大小判断
-//TODO: 0.2 添加 flash 上传支持
 (function(define, _win) { 'use strict'; define( [ 'JC.BaseMVC', 'JC.Panel' ], function(){
     /**
      * Ajax 文件上传
      * <p><b>require</b>: 
-     *      <a href='window.jQuery.html'>jQuery</a>
-     *      , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     *      <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      *      , <a href='JC.Panel.html'>JC.Panel</a>
      * </p>
      * <p>
@@ -34,6 +32,9 @@
      *      <dd>
      *          上传完成后是否隐藏上传按钮
      *      </dd>
+     *
+     *      <dt>cauButtonAfter= bool</dt>
+     *      <dd>是否把上传按钮放在后面</dd>
      *
      *      <dt>cauUrl = url, require</dt>
      *      <dd>上传文件的接口地址
@@ -102,6 +103,12 @@ url: ?callback=callback
     return _label;
 }</pre>
      *      </dd>
+     *
+     *      <dt>cauViewFileBox = selector</dt>
+     *      <dd>用于显示文件链接的容器</dd>
+     *
+     *      <dt>cauViewFileBoxItemTpl = selector</dt>
+     *      <dd>cauViewFileBox 的脚本模板</dd>
      * </dl>
      * @namespace JC
      * @class AjaxUpload
@@ -237,12 +244,17 @@ url: ?callback=callback
         _beforeInit:
             function(){
                 var _p = this;
-                JC.log( 'AjaxUpload _beforeInit', new Date().getTime() );
+                //JC.log( 'AjaxUpload _beforeInit', new Date().getTime() );
                 
             }
         , _initHanlderEvent:
             function(){
-                var _p = this;
+                var _p = this, _fileBox = _p._model.cauViewFileBox();
+                if( _fileBox && _fileBox.length ){
+                    _fileBox.delegate( '.js_clearAjaxUpload', 'click', function(){
+                        _p.clear();
+                    });
+                }
                 /**
                  * iframe 加载完毕后触发的事件, 执行初始化操作
                  */
@@ -260,21 +272,9 @@ url: ?callback=callback
                         }, 1);
                     }
 
-                    _p._model.selector().on( 'show', function( _evt ){
-                        JC.log( 'show');
-                    });
-
-                     _p._model.selector().on( 'hide', function( _evt ){
-                         JC.log('hide');
-                    });
-
-                    _p._model.frame().on( 'show', function( _evt ){
-                        JC.log( 'show');
-                    });
-
-                     _p._model.frame().on( 'hide', function( _evt ){
-                         JC.log('hide');
-                    });
+                     _p._model.swfu( _w );
+                    _p._model.uploadReady( true );
+                    _p.trigger( 'UploadReady' );
 
                 });
                 /**
@@ -295,7 +295,7 @@ url: ?callback=callback
                  */
                 _p.on( 'UploadDone', function( _evt, _d, _ignore ){
                     if( _ignore ) return;
-                    JC.log( _d );
+                    //JC.log( _d );
                     var _err = false, _od = _d;
                     try{ 
                         typeof _d == 'string' && ( _d = $.parseJSON( _d ) );
@@ -337,15 +337,43 @@ url: ?callback=callback
                 _p.on( 'AUUpdateLayout', function( _evt, _width, _height, _btn ){
                     _p._view.updateLayout( _width, _height, _btn );
                 });
+
+                _p.on( 'init', function(){
+                    _p._model.loadSWF( _p._model.getParams() );
+                });
+
+                _p.on( 'disable', function(){
+                    if( !_p._model.uploadReady() ){
+                        _p._model.beforeReadyQueue( function(){ _p._view.disable(); } );
+                    }
+                    _p._view.disable();
+                });
+
+                _p.on( 'enable', function(){
+                    if( !_p._model.uploadReady() ){
+                        _p._model.beforeReadyQueue( function(){ _p._view.enable(); } );
+                    }
+                    _p._view.enable();
+                });
+
+                _p.on( 'UploadReady', function(){
+                    var _queue = _p._model.beforeReadyQueue();
+                    setTimeout( function(){
+                        $.each( _queue, function( _ix, _item ){
+                            _item();
+                        });
+                    }, 10 );
+                });
+
             }
         , _inited:
             function(){
                 var _p = this;
-                JC.log( 'AjaxUpload _inited', new Date().getTime() );
+                //JC.log( 'AjaxUpload _inited', new Date().getTime() );
                 _p._view.loadFrame();
                 AjaxUpload.getInstance( _p._model.frame(), _p );
 
-                _p.trigger( 'AUInited' );
+                _p.trigger( 'inited' );
             }
         /**
          * 手动更新数据
@@ -363,11 +391,28 @@ url: ?callback=callback
                     "errmsg": ""
                 });
          */
+        /**
+         * 禁用上传按钮
+         * @method disable
+         */
+        , disable: function(){ this.trigger( 'disable' ); return this; }
+        /**
+         * 启用上传按钮
+         * @method enable
+         */
+        , enable: function(){ this.trigger( 'enable' ); return this; }
         , update:
             function( _d ){
                 var _p = this;
                 $( _p._view ).trigger('UpdateDefaultStatus')
                 _d && _p.trigger('UploadDone', [ _d ] );
+                return this;
+            }
+
+        , clear: 
+            function(){
+                var _p = this;
+                $( _p._view ).trigger('UpdateDefaultStatus')
                 return this;
             }
     });
@@ -376,7 +421,7 @@ url: ?callback=callback
     JC.f.extendObject( AjaxUpload.Model.prototype, {
         init:
             function(){
-                JC.log( 'AjaxUpload.Model.init:', new Date().getTime() );
+                //JC.log( 'AjaxUpload.Model.init:', new Date().getTime() );
             }
 
         , cauStyle: function(){ return this.attrProp('cauStyle'); }
@@ -446,6 +491,7 @@ url: ?callback=callback
                     ;
                 return _r;
             }
+        , cauButtonAfter: function(){ return this.boolProp( 'cauButtonAfter' ); }
         , randomFrame:
             function(){
                 var _r = AjaxUpload.randomFrame;
@@ -470,13 +516,74 @@ url: ?callback=callback
                 }
                 return this._iframe;
             }
+
+        , cauCancelCallback: function(){ return this.callbackProp( 'cauCancelCallback' ); }
+
+        , uploadReady:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._uploadReady = _setter );
+                return this._uploadReady;
+            }
+
+        , beforeReadyQueue:
+            function( _item ){
+                !this._beforeReadyQueue && ( this._beforeReadyQueue = [] );
+                _item && this._beforeReadyQueue.push( _item );
+                return this._beforeReadyQueue;
+            }
+
+        , cauButtonAutoStatus:
+            function(){
+                var _r = true;
+                this.is( '[cauButtonAutoStatus]' ) && ( _r = this.boolProp( 'cauButtonAutoStatus' ) );
+                return _r;
+            }
+
+        , swfu:
+            function( _setter ){
+                typeof _setter != 'undefined' && ( this._swfu = _setter );
+                return this._swfu;
+            }
+
+            , cauViewFileBox: function(){ return this.selectorProp( 'cauViewFileBox' ); }
+
+            , cauViewFileBoxItemTpl: 
+                function(){
+                    var _r = [ '<a href="javascript:;" data-name="{0}" data-url="{1}" class="js_clearAjaxUpload">清除</a>'
+                         , '&nbsp;<a href="{1}" target="_blank" data-name="{0}" data-url="{1}" class="js_viewAjaxUpload">查看</a>' ].join('')
+                         , _tmp
+                         ;
+
+                    this.is( '[cauViewFileBoxItemTpl]' )
+                        && ( _tmp = this.selectorProp( 'cauViewFileBoxItemTpl' ) ) 
+                        && _tmp.length 
+                        && ( _r = JC.f.scriptContent( _tmp ) )
+                        ;
+
+                    return _r;
+                }
     });
 
     JC.f.extendObject( AjaxUpload.View.prototype, {
         init:
             function(){
-                JC.log( 'AjaxUpload.View.init:', new Date().getTime() );
+                //JC.log( 'AjaxUpload.View.init:', new Date().getTime() );
                 var _p = this;
+
+                $( _p ).on( 'update_viewFileBox', function( _evt, _name, _url ){
+                    var _box = _p._model.cauViewFileBox(), _itemTpl;
+                    if( !( _box && _box.length ) ) return;
+                    _itemTpl = _p._model.cauViewFileBoxItemTpl();
+                    _itemTpl = JC.f.printf( _itemTpl, _name, _url );
+                    _box.html( _itemTpl );
+                });
+
+                $( _p ).on( 'clear_viewFileBox', function(){
+                    var _box = _p._model.cauViewFileBox();
+                    if( !( _box && _box.length ) ) return;
+                    _box.html( '' );
+                });
+
                 /**
                  * 恢复默认状态
                  */
@@ -494,6 +601,8 @@ url: ?callback=callback
                     ( _p._model.selector().attr('type') || '' ).toLowerCase() != 'hidden'
                         && _p._model.selector().show()
                         ;
+                    $( _p ).trigger( 'clear_viewFileBox' );
+                    _p.trigger( 'UploadComplete' );
                 });
 
                 $( _p ).on( 'CAUUpdate', function( _evt, _d ){
@@ -528,7 +637,7 @@ url: ?callback=callback
                     , _frame = _p._model.frame()
                     ;
 
-                JC.log( _path );
+                //JC.log( _path );
 
                 _frame.attr( 'src', _path );
                 _frame.on( 'load', function(){
@@ -536,14 +645,18 @@ url: ?callback=callback
                 });
 
                 //_p._model.selector().hide();
+                //return;
 
-                _p._model.selector().before( _frame );
+                _p._model.cauButtonAfter() 
+                    ? _p.selector().after( _frame )
+                    : _p.selector().before( _frame )
+                    ;
             }
 
         , beforeUpload:
             function(){
                 var _p = this, _statusLabel = _p._model.cauStatusLabel();
-                JC.log( 'AjaxUpload view#beforeUpload', new Date().getTime() );
+                //JC.log( 'AjaxUpload view#beforeUpload', new Date().getTime() );
 
                 this.updateChange( null, true );
 
@@ -559,6 +672,7 @@ url: ?callback=callback
                 var _p = this
                     , _statusLabel = _p._model.cauStatusLabel()
                     , _displayLabel = _p._model.cauDisplayLabel()
+                    , _name, _url
                     ;
                 //JC.log( 'AjaxUpload view#updateChange', new Date().getTime() );
 
@@ -579,11 +693,16 @@ url: ?callback=callback
                 if( _d && ( 'errorno' in _d ) && !_d.errorno ){
                     $(_p).trigger( 'CAUUpdate', [ _d ] );
 
+                    _name = _d.data[ _p._model.cauLabelKey() ];
+                    _url = _d.data[ _p._model.cauValueKey() ];
+
                     _p._model.selector().val() 
                         && _p._model.selector().is(':visible')
                         && _p._model.selector().prop('type').toLowerCase() == 'text'
                         && _p._model.selector().trigger('blur')
                         ;
+                    
+                    $( _p ).trigger( 'update_viewFileBox', [ _name, _url ] );
 
                     if( _displayLabel && _displayLabel.length ){
                         _p._model.selector().hide();
@@ -602,7 +721,7 @@ url: ?callback=callback
             function( _width, _height, _btn ){
                 if( !( _width && _height ) ) return;
                 var _p = this;
-                JC.log( 'AjaxUpload @event UpdateLayout', new Date().getTime(), _width, _height );
+                //JC.log( 'AjaxUpload @event UpdateLayout', new Date().getTime(), _width, _height );
                 _p._model.frame().css({
                     'width': _width + 'px'
                     , 'height': _height + 'px'
@@ -611,7 +730,12 @@ url: ?callback=callback
 
         , errUpload:
             function( _d ){
-                var _p = this, _cb = _p._model.callbackProp( 'cauUploadErrCallback' );
+                var _p = this
+                    , _beforeErrorCb = _p._model.callbackProp( 'cauBeforeUploadErrCallback' )
+                    , _cb = _p._model.callbackProp( 'cauUploadErrCallback' )
+                    ;
+
+                _beforeErrorCb && _beforeErrorCb.call( _p._model.selector(), _d );
                 if( _cb ){
                     _cb.call( _p._model.selector(), _d, _p._model.frame() );
                 }else{
@@ -651,6 +775,18 @@ url: ?callback=callback
                         : alert( _msg )
                         ;
                 }
+            }
+ 
+        , disable:
+            function(){
+                var _p = this, _swfu = _p._model.swfu();
+                _swfu && ( _swfu.setButtonDisabled( true ) );
+            }
+ 
+        , enable:
+            function(){
+                var _p = this, _swfu = _p._model.swfu();
+                _swfu && ( _swfu.setButtonDisabled( false ) );
             }
 
     });
