@@ -25,6 +25,56 @@
         
         <script src="../../../../static/js/jc/lib.js"></script>
         <script src="../../../../static/js/config.js"></script>
+        <script type="text/javascript">
+            JC.debug = 1;
+
+            requirejs( [ 
+                'JC.AjaxTree'
+                , 'detail'
+            ], function(){
+                 $(document).delegate('button.js_open_all', 'click', function( e ){
+                    var btn = $( e.target );
+
+                    btn.closest( '.detail-demoview' ).find( 'div.js_compAjaxTree' ).each( function( _k ){
+                        JC.BaseMVC.getInstance( this, JC.AjaxTree ) && JC.BaseMVC.getInstance(this, JC.AjaxTree ).open();
+                    });
+                });
+
+                $(document).delegate('button.js_close_all', 'click', function( e ){
+                    var btn = $( e.target );
+                    
+                    btn.closest( '.detail-demoview' ).find( 'div.js_compAjaxTree' ).each( function(){
+                        JC.BaseMVC.getInstance( this, JC.AjaxTree ) && JC.BaseMVC.getInstance(this, JC.AjaxTree ).close();
+                    });
+                });
+
+                $(document).delegate('button.js_open_for', 'click', function( e ){
+                
+                    var _tgr = $(this).attr('data_target');
+                    if( !_tgr ) return;
+                    _tgr = $.trim( $( _tgr ).val() );
+
+                    var btn = $( e.target );
+                    
+                    btn.closest( '.detail-demoview' ).find( 'div.js_compAjaxTree' ).each( function(){
+                        JC.BaseMVC.getInstance( this, JC.AjaxTree ) && JC.BaseMVC.getInstance( this, JC.AjaxTree ).open( _tgr );
+                    });
+                });
+
+                $(document).delegate('button.js_close_for', 'click', function( e ){
+                
+                    var _tgr = $(this).attr('data_target');
+                    if( !_tgr ) return;
+                    _tgr = $.trim( $( _tgr ).val() );
+
+                    var btn = $( e.target );
+                    
+                    btn.closest( '.detail-demoview' ).find( 'div.js_compAjaxTree' ).each( function(){
+                        JC.BaseMVC.getInstance( this, JC.AjaxTree ) && JC.BaseMVC.getInstance( this, JC.AjaxTree ).close( _tgr );
+                    });
+                });
+            });
+        </script>
 
     </head>
     <body>
@@ -288,56 +338,7 @@
         </textArea>
         <!-- 数据结构 end -->
 
-        <script type="text/javascript">
-            JC.debug = 1;
-
-            requirejs( [ 
-                'JC.AjaxTree'
-                , 'detail'
-            ], function(){
-                 $(document).delegate('button.js_open_all', 'click', function( e ){
-                    var btn = $( e.target );
-
-                    btn.closest( '.detail-demoview' ).find( 'div.js_compAjaxTree' ).each( function( _k ){
-                        JC.BaseMVC.getInstance( this, JC.AjaxTree ) && JC.BaseMVC.getInstance(this, JC.AjaxTree ).open();
-                    });
-                });
-
-                $(document).delegate('button.js_close_all', 'click', function( e ){
-                    var btn = $( e.target );
-                    
-                    btn.closest( '.detail-demoview' ).find( 'div.js_compAjaxTree' ).each( function(){
-                        JC.BaseMVC.getInstance( this, JC.AjaxTree ) && JC.BaseMVC.getInstance(this, JC.AjaxTree ).close();
-                    });
-                });
-
-                $(document).delegate('button.js_open_for', 'click', function( e ){
-                
-                    var _tgr = $(this).attr('data_target');
-                    if( !_tgr ) return;
-                    _tgr = $.trim( $( _tgr ).val() );
-
-                    var btn = $( e.target );
-                    
-                    btn.closest( '.detail-demoview' ).find( 'div.js_compAjaxTree' ).each( function(){
-                        JC.BaseMVC.getInstance( this, JC.AjaxTree ) && JC.BaseMVC.getInstance( this, JC.AjaxTree ).open( _tgr );
-                    });
-                });
-
-                $(document).delegate('button.js_close_for', 'click', function( e ){
-                
-                    var _tgr = $(this).attr('data_target');
-                    if( !_tgr ) return;
-                    _tgr = $.trim( $( _tgr ).val() );
-
-                    var btn = $( e.target );
-                    
-                    btn.closest( '.detail-demoview' ).find( 'div.js_compAjaxTree' ).each( function(){
-                        JC.BaseMVC.getInstance( this, JC.AjaxTree ) && JC.BaseMVC.getInstance( this, JC.AjaxTree ).close( _tgr );
-                    });
-                });
-            });
-        </script>
+        
     </body>
 </html>
 
