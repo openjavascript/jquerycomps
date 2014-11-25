@@ -150,27 +150,25 @@
             Extends <a href="../classes/JC.BaseMVC.html" class="crosslink">JC.BaseMVC</a>
         </div>
         <div class="foundat">
-            Defined in: <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l2"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:2</code></a>
+            Defined in: <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l3"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:3</code></a>
         </div>
 </div>
 <div class="box intro">
     <p>Ajax 文件上传</p>
 <p><p><b>require</b>: 
-     <a href='window.jQuery.html'>jQuery</a>
-     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
+     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>
      , <a href='JC.Panel.html'>JC.Panel</a>
-     , <a href='javascript:;'>SWFUpload</a>
 </p></p>
 <p><p>
      <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>
      | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>
-     | <a href='../../modules/JC.AjaxUpload/0.2/_demo' target='_blank'>demo link</a>
+     | <a href='../../modules/JC.AjaxUpload/0.1/_demo' target='_blank'>demo link</a>
 </p></p>
 <p><h2>可用的 html attribute</h2></p>
 <dl>
      <dt>cauStyle = string, default = g1</dt>
      <dd>
-         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/dev/res/default/style.html' target='_blank'>可选样式</a>:
+         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/0.1/res/default/style.html' target='_blank'>可选样式</a>:
          <dl>
              <dt>绿色按钮</dt>
              <dd>g1, g2, g3</dd>
@@ -180,11 +178,24 @@
      </dd>
      <dt>cauButtonText = string, default = 上传文件</dt>
      <dd>定义上传按钮的显示文本</dd>
+     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>
+     <dd>
+         上传完成后是否隐藏上传按钮
+     </dd>
      <dt>cauButtonAfter= bool</dt>
      <dd>是否把上传按钮放在后面</dd>
      <dt>cauUrl = url, require</dt>
      <dd>上传文件的接口地址
          <br />如果 url 带有参数 callback, 返回数据将以 jsonp 方式处理
+     </dd>
+     <dt>cauJSONPName = function name</dt>
+     <dd>显式声明上传后返回数据的 jsonp 回调名
+         <h3>jsonp 返回数据示例:</h3>
+url: ?callback=callback
+<br /> data: 
+&lt;script&gt;
+   window.parent &amp;&amp; window.parent.callback &amp;&amp; window.parent.callback( {&quot;errorno&quot;:0,&quot;errmsg&quot;:&quot;&quot;,&quot;data&quot;:{&quot;name&quot;:&quot;test.jpg&quot;,&quot;url&quot;:&quot;.\/data\/images\/test.jpg&quot;}} );
+&lt;/script&gt;
      </dd>
      <dt>cauFileExt = file ext, optional</dt>
      <dd>允许上传的文件扩展名, 例: &quot;.jpg, .jpeg, .png, .gif&quot;</dd>
@@ -203,7 +214,7 @@
      <dt>cauUploadDoneCallback = function, optional</dt>
      <dd>
          文件上传完毕时, 触发的回调
-<pre>function cauUploadDoneCallback( _json, _selector ){
+<pre>function cauUploadDoneCallback( _json, _selector, _frame ){
    var _ins = this;
    //alert( _json ); //object object
 }</pre>
@@ -211,7 +222,7 @@
      <dt>cauUploadErrorCallback = function, optional</dt>
      <dd>
          文件上传完毕时, 发生错误触发的回调
-<pre>function cauUploadErrorCallback( _json, _selector ){
+<pre>function cauUploadErrorCallback( _json, _selector, _frame ){
    var _ins = this;
    //alert( _json ); //object object
 }</pre>
@@ -229,47 +240,6 @@
    return _label;
 }</pre>
      </dd>
-     <dt>cauDebug = bool, default = false</dt>
-     <dd>是否显示 flash 调试信息</dd>
-     <dt>cauFlashUrl = string</dt>
-     <dd>显式声明 flash 路径</dd>
-     <dt>cauButtonWidth = int, default = 自动计算</dt>
-     <dd>显式声明按钮的宽度</dd>
-     <dt>cauButtonHeight= int, default = 自动计算</dt>
-     <dd>显式声明按钮的高度</dd>
-     <dt>cauRoot = string</dt>
-     <dd>显式声明组件根路径</dd>
-     <dt>cauUploadLimit = int, default = 0(不限制)</dt>
-     <dd>上传文件的总数量</dd>
-     <dt>cauQueueLimit = int, default = 0(不限制)</dt>
-     <dd>队列中文件的总数量(<b>未实现</b>)</dd>
-     <dt>cauFileSize = [ KB | MB | GB ], default = 1024 MB</dt>
-     <dd>上传文件大小限制</dd>
-     <dt>cauCacheSwf = bool, default = true</dt>
-     <dd>是否缓存 flash swf</dd>
-     <dt>cauHttpSuccess = string, default = 200, 201, 204</dt>
-     <dd>http 通信成功的状态码</dd>
-     <dt>cauButtonStyle = string, default = .uFont{ color:#000000; text-align: center; }</dt>
-     <dd>定义 flash 按钮的样式</dd>
-     <dt>cauParamsCallback = function</dt>
-     <dd>设置 flash 参数的回调
-<pre>function cauParamsCallback( _params ){
-   var _model = this;
-   return _params;
-}</pre>
-     </dd>
-     <dt>cauPostParams = json var name, (<b>window 变量域</b>)</dt>
-     <dd>显式声明 post params, 全局指定请用 JC.AjaxUpload.POST_PARAMS </dd>
-     <dt>cauAllCookies = bool, default = true</dt>
-     <dd>是否把所有 cookie 添加到 post_params, 发送到服务器</dd>
-     <dt>cauBatchUpload = bool, default = false</dt>
-     <dd>是否为批量上传(<b>未实现</b>)</dd>
-     <dt>cauShowProgress = bool, default = false</dt>
-     <dd>是否显示进度条
-         <br >如果为真, 且没有声明 cauProgressBox, 那么会自动生成 cauProgressBox
-     </dd>
-     <dt>cauProgressBox = selector</dt>
-     <dd>显式声明 进度条标签</dd>
      <dt>cauViewFileBox = selector</dt>
      <dd>用于显示文件链接的容器</dd>
      <dt>cauViewFileBoxItemTpl = selector</dt>
@@ -290,7 +260,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l2"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:2</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l3"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:3</code></a>
         </p>
     </div>
     <div class="description">
@@ -400,12 +370,20 @@
                 <div class="index-section properties">
                     <h3>Properties</h3>
                     <ul class="index-list properties extends">
-                            <li class="index-item property">
-                                <a href="#property_PARAMS_CALLBACK">PARAMS_CALLBACK</a>
+                            <li class="index-item property private">
+                                <a href="#property__FRAME_DIR">_FRAME_DIR</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property protected">
+                                <a href="#property__INS_COUNT">_INS_COUNT</a>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item property">
-                                <a href="#property_POST_PARAMS">POST_PARAMS</a>
+                                <a href="#property_frameFileName">frameFileName</a>
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_randomFrame">randomFrame</a>
                                     <span class="flag static">static</span>
                             </li>
                     </ul>
@@ -492,7 +470,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l414"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:414</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l394"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:394</code></a>
         </p>
     </div>
     <div class="description">
@@ -505,7 +483,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l419"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:419</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l399"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:399</code></a>
         </p>
     </div>
     <div class="description">
@@ -528,7 +506,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l213"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:213</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l169"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:169</code></a>
         </p>
     </div>
     <div class="description">
@@ -568,7 +546,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l229"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:229</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l185"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:185</code></a>
         </p>
     </div>
     <div class="description">
@@ -766,7 +744,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l424"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:424</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l378"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:378</code></a>
         </p>
     </div>
     <div class="description">
@@ -807,42 +785,67 @@
             </div>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
-                    <div id="property_PARAMS_CALLBACK" class="property item">
-    <h3 class="name"><code>PARAMS_CALLBACK</code></h3>
-    <span class="type">Unknown</span>
+                    <div id="property__FRAME_DIR" class="property item private">
+    <h3 class="name"><code>_FRAME_DIR</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        <span class="flag private">private</span>
         <span class="flag static">static</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l250"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:250</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l221"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:221</code></a>
         </p>
     </div>
     <div class="description">
-        <p>全局的 post params 回调</p>
+        <p>frame 文件夹位于库的位置</p>
     </div>
-        <div class="example">
-            <h4>Example:</h4>
-            <div class="example-content">
-                <pre>function PARAMS_CALLBACK( _params ){
-   var _model = this;
-   return _params;
-}</pre>
-            </div>
-        </div>
+        <p><strong>Default:</strong> &quot;comps/AjaxUpload/frame/&quot;</p>
 </div>
-                    <div id="property_POST_PARAMS" class="property item">
-    <h3 class="name"><code>POST_PARAMS</code></h3>
-    <span class="type">Unknown</span>
+                    <div id="property__INS_COUNT" class="property item protected">
+    <h3 class="name"><code>_INS_COUNT</code></h3>
+    <span class="type">Int</span>
+        <span class="flag protected">protected</span>
         <span class="flag static">static</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/.._modules_JC.AjaxUpload_0.2_AjaxUpload.js.html#l262"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.2&#x2F;AjaxUpload.js:262</code></a>
+        <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l231"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:231</code></a>
         </p>
     </div>
     <div class="description">
-        <p>全局的 post params 属性</p>
+        <p>初始化 frame 时递增的统计变量</p>
     </div>
+        <p><strong>Default:</strong> 1</p>
+</div>
+                    <div id="property_frameFileName" class="property item">
+    <h3 class="name"><code>frameFileName</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l205"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:205</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>frame 文件名</p>
+    </div>
+        <p><strong>Default:</strong> &quot;default.html&quot;</p>
+</div>
+                    <div id="property_randomFrame" class="property item">
+    <h3 class="name"><code>randomFrame</code></h3>
+    <span class="type">Bool</span>
+        <span class="flag static">static</span>
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._modules_JC.AjaxUpload_0.1_AjaxUpload.js.html#l213"><code>..&#x2F;modules&#x2F;JC.AjaxUpload&#x2F;0.1&#x2F;AjaxUpload.js:213</code></a>
+        </p>
+    </div>
+    <div class="description">
+        <p>载入 frame 文件时, 是否添加随机数防止缓存</p>
+    </div>
+        <p><strong>Default:</strong> false</p>
 </div>
             </div>
     </div>

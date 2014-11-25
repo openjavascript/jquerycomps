@@ -234,8 +234,8 @@
                 "JC": 1
             }
         },
-        "../modules/JC.AjaxUpload/0.2/AjaxUpload.js": {
-            "name": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
+        "../modules/JC.AjaxUpload/0.1/AjaxUpload.js": {
+            "name": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
             "modules": {},
             "classes": {
                 "JC.AjaxUpload": 1
@@ -1368,9 +1368,9 @@
             "plugin_for": [],
             "extension_for": [],
             "namespace": "JC",
-            "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 2,
-            "description": "Ajax 文件上传\n<p><b>require</b>: \n     <a href='window.jQuery.html'>jQuery</a>\n     , <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n     , <a href='javascript:;'>SWFUpload</a>\n</p>\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.AjaxUpload/0.2/_demo' target='_blank'>demo link</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/dev/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauButtonAfter= bool</dt>\n     <dd>是否把上传按钮放在后面</dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址\n         <br />如果 url 带有参数 callback, 返回数据将以 jsonp 方式处理\n     </dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<pre>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '&lt;a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}&lt;/a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;&lt;a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\">&lt;/a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</pre>\n     </dd>\n\n     <dt>cauDebug = bool, default = false</dt>\n     <dd>是否显示 flash 调试信息</dd>\n\n     <dt>cauFlashUrl = string</dt>\n     <dd>显式声明 flash 路径</dd>\n\n     <dt>cauButtonWidth = int, default = 自动计算</dt>\n     <dd>显式声明按钮的宽度</dd>\n\n     <dt>cauButtonHeight= int, default = 自动计算</dt>\n     <dd>显式声明按钮的高度</dd>\n\n     <dt>cauRoot = string</dt>\n     <dd>显式声明组件根路径</dd>\n\n     <dt>cauUploadLimit = int, default = 0(不限制)</dt>\n     <dd>上传文件的总数量</dd>\n\n     <dt>cauQueueLimit = int, default = 0(不限制)</dt>\n     <dd>队列中文件的总数量(<b>未实现</b>)</dd>\n\n     <dt>cauFileSize = [ KB | MB | GB ], default = 1024 MB</dt>\n     <dd>上传文件大小限制</dd>\n\n     <dt>cauCacheSwf = bool, default = true</dt>\n     <dd>是否缓存 flash swf</dd>\n\n     <dt>cauHttpSuccess = string, default = 200, 201, 204</dt>\n     <dd>http 通信成功的状态码</dd>\n\n     <dt>cauButtonStyle = string, default = .uFont{ color:#000000; text-align: center; }</dt>\n     <dd>定义 flash 按钮的样式</dd>\n\n     <dt>cauParamsCallback = function</dt>\n     <dd>设置 flash 参数的回调\n<pre>function cauParamsCallback( _params ){\n   var _model = this;\n   return _params;\n}</pre>\n     </dd>\n\n     <dt>cauPostParams = json var name, (<b>window 变量域</b>)</dt>\n     <dd>显式声明 post params, 全局指定请用 JC.AjaxUpload.POST_PARAMS </dd>\n\n     <dt>cauAllCookies = bool, default = true</dt>\n     <dd>是否把所有 cookie 添加到 post_params, 发送到服务器</dd>\n     \n     <dt>cauBatchUpload = bool, default = false</dt>\n     <dd>是否为批量上传(<b>未实现</b>)</dd>\n\n     <dt>cauShowProgress = bool, default = false</dt>\n     <dd>是否显示进度条\n         <br >如果为真, 且没有声明 cauProgressBox, 那么会自动生成 cauProgressBox\n     </dd>\n\n     <dt>cauProgressBox = selector</dt>\n     <dd>显式声明 进度条标签</dd>\n\n     <dt>cauViewFileBox = selector</dt>\n     <dd>用于显示文件链接的容器</dd>\n\n     <dt>cauViewFileBoxItemTpl = selector</dt>\n     <dd>cauViewFileBox 的脚本模板</dd>\n</dl>",
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 3,
+            "description": "Ajax 文件上传\n<p><b>require</b>: \n     <a href='JC.BaseMVC.html'>JC.BaseMVC</a>\n     , <a href='JC.Panel.html'>JC.Panel</a>\n</p>\n<p>\n     <a href='https://github.com/openjavascript/jquerycomps' target='_blank'>JC Project Site</a>\n     | <a href='http://jc2.openjavascript.org/docs_api/classes/JC.AjaxUpload.html' target='_blank'>API docs</a>\n     | <a href='../../modules/JC.AjaxUpload/0.1/_demo' target='_blank'>demo link</a>\n</p>\n<h2>可用的 html attribute</h2>\n<dl>\n     <dt>cauStyle = string, default = g1</dt>\n     <dd>\n         按钮显示的样式, <a href='../../modules/JC.AjaxUpload/0.1/res/default/style.html' target='_blank'>可选样式</a>:\n         <dl>\n             <dt>绿色按钮</dt>\n             <dd>g1, g2, g3</dd>\n\n             <dt>白色/银色按钮</dt>\n             <dd>w1, w2, w3</dd>\n         </dl>\n     </dd>\n\n     <dt>cauButtonText = string, default = 上传文件</dt>\n     <dd>定义上传按钮的显示文本</dd>\n\n     <dt>cauHideButton = bool, default = false( no label ), true( has label )</dt>\n     <dd>\n         上传完成后是否隐藏上传按钮\n     </dd>\n\n     <dt>cauButtonAfter= bool</dt>\n     <dd>是否把上传按钮放在后面</dd>\n\n     <dt>cauUrl = url, require</dt>\n     <dd>上传文件的接口地址\n         <br />如果 url 带有参数 callback, 返回数据将以 jsonp 方式处理\n     </dd>\n\n     <dt>cauJSONPName = function name</dt>\n     <dd>显式声明上传后返回数据的 jsonp 回调名\n         <h3>jsonp 返回数据示例:</h3>\nurl: ?callback=callback\n<br /> data: \n&lt;script>\n   window.parent && window.parent.callback && window.parent.callback( {\"errorno\":0,\"errmsg\":\"\",\"data\":{\"name\":\"test.jpg\",\"url\":\".\\/data\\/images\\/test.jpg\"}} );\n&lt;/script>\n     </dd>\n\n     <dt>cauFileExt = file ext, optional</dt>\n     <dd>允许上传的文件扩展名, 例: \".jpg, .jpeg, .png, .gif\"</dd>\n\n     <dt>cauFileName = string, default = file</dt>\n     <dd>上传文件的 name 属性</dd>\n\n     <dt>cauValueKey = string, default = url</dt>\n     <dd>返回数据用于赋值给 hidden/textbox 的字段</dd>\n\n     <dt>cauLabelKey = string, default = name</dt>\n     <dd>返回数据用于显示的字段</dd>\n\n     <dt>cauSaveLabelSelector = selector</dt>\n     <dd>指定保存 cauLabelKey 值的 selector</dd>\n\n     <dt>cauStatusLabel = selector, optional</dt>\n     <dd>开始上传时, 用于显示状态的 selector</dd>\n\n     <dt>cauDisplayLabel = selector, optional</dt>\n     <dd>上传完毕后, 用于显示文件名的 selector</dd>\n\n     <dt>cauUploadDoneCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 触发的回调\n<pre>function cauUploadDoneCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauUploadErrorCallback = function, optional</dt>\n     <dd>\n         文件上传完毕时, 发生错误触发的回调\n<pre>function cauUploadErrorCallback( _json, _selector, _frame ){\n   var _ins = this;\n   //alert( _json ); //object object\n}</pre>\n     </dd>\n\n     <dt>cauDisplayLabelCallback = function, optional, return = string</dt>\n     <dd>\n         自定义上传完毕后显示的内容 模板\n<pre>function cauDisplayLabelCallback( _json, _label, _value ){\n   var _selector = this\n       , _label = JC.f.printf( '&lt;a href=\"{0}\" class=\"green js_auLink\" target=\"_blank\">{1}&lt;/a>{2}'\n                       , _value, _label\n                       ,  '&nbsp;&lt;a href=\"javascript:\" class=\"btn btn-cls2 js_cleanCauData\">&lt;/a>&nbsp;&nbsp;'\n                   )\n       ;\n   return _label;\n}</pre>\n     </dd>\n\n     <dt>cauViewFileBox = selector</dt>\n     <dd>用于显示文件链接的容器</dd>\n\n     <dt>cauViewFileBoxItemTpl = selector</dt>\n     <dd>cauViewFileBox 的脚本模板</dd>\n</dl>",
             "extends": "JC.BaseMVC",
             "is_constructor": 1,
             "params": [
@@ -1380,8 +1380,9 @@
                     "type": "Selector"
                 }
             ],
-            "version": "dev 0.1, 2013-09-26",
+            "version": "dev 0.1",
             "author": "qiushaowei   <suches@btbtd.org> | 75 team",
+            "date": "2013-09-26",
             "example": [
                 "\n           <div>\n               <input type=\"hidden\" class=\"js_compAjaxUpload\" value=\"\"\n                   cauStyle=\"w1\"\n                   cauButtonText=\"上传资质文件\"\n                   cauUrl=\"/ignore/JQueryComps_dev/comps/AjaxUpload/_demo/data/handler.php\"\n                   cauFileExt=\".jpg, .jpeg, .png, .gif\"\n                   cauFileName=\"file\"\n                   cauLabelKey=\"name\"\n                   cauValueKey=\"url\"\n                   cauStatusLabel=\"/label.js_statusLabel\"\n                   cauDisplayLabel=\"/label.js_fileLabel\"\n                   />\n               <label class=\"js_fileLabel\" style=\"display:none\"></label>\n               <label class=\"js_statusLabel\" style=\"display:none\">文件上传中, 请稍候...</label>\n           </div>\n\n           POST 数据:\n               ------WebKitFormBoundaryb1Xd1FMBhVgBoEKD\n               Content-Disposition: form-data; name=\"file\"; filename=\"disk.jpg\"\n               Content-Type: image/jpeg\n\n           返回数据:\n               {\n                   \"errorno\": 0, \n                   \"data\":\n                   {\n                       \"url\": \"/ignore/JQueryComps_dev/comps/AjaxUpload/_demo/data/images/test.jpg\", \n                       \"name\": \"test.jpg\"\n                   }, \n                   \"errmsg\": \"\"\n               }"
             ]
@@ -4828,8 +4829,8 @@
             "namespace": "JC"
         },
         {
-            "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 213,
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 169,
             "description": "获取或设置 AjaxUpload 的实例",
             "itemtype": "method",
             "name": "getInstance",
@@ -4849,8 +4850,8 @@
             "namespace": "JC"
         },
         {
-            "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 229,
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 185,
             "description": "初始化可识别的组件",
             "itemtype": "method",
             "name": "init",
@@ -4870,76 +4871,95 @@
             "namespace": "JC"
         },
         {
-            "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 250,
-            "description": "全局的 post params 回调",
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 205,
+            "description": "frame 文件名",
             "itemtype": "property",
-            "name": "PARAMS_CALLBACK",
-            "return": {
-                "description": "json"
-            },
-            "static": 1,
-            "example": [
-                "\n<pre>function PARAMS_CALLBACK( _params ){\n   var _model = this;\n   return _params;\n}</pre>"
-            ],
-            "class": "JC.AjaxUpload",
-            "namespace": "JC"
-        },
-        {
-            "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 262,
-            "description": "全局的 post params 属性",
-            "itemtype": "property",
-            "name": "POST_PARAMS",
-            "return": {
-                "description": "json"
-            },
+            "name": "frameFileName",
+            "type": "string",
+            "default": "\"default.html\"",
             "static": 1,
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
-            "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 287,
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 213,
+            "description": "载入 frame 文件时, 是否添加随机数防止缓存",
+            "itemtype": "property",
+            "name": "randomFrame",
+            "type": "bool",
+            "default": "false",
+            "static": 1,
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 221,
+            "description": "frame 文件夹位于库的位置",
+            "itemtype": "property",
+            "name": "_FRAME_DIR",
+            "type": "string",
+            "default": "\"comps/AjaxUpload/frame/\"",
+            "static": 1,
+            "access": "private",
+            "tagname": "",
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 231,
+            "description": "初始化 frame 时递增的统计变量",
+            "itemtype": "property",
+            "name": "_INS_COUNT",
+            "type": "int",
+            "default": "1",
+            "access": "protected",
+            "tagname": "",
+            "static": 1,
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 258,
+            "description": "iframe 加载完毕后触发的事件, 执行初始化操作",
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 280,
             "description": "文件扩展名错误",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
-            "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 294,
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 287,
             "description": "上传前触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
-            "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 300,
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 293,
             "description": "上传完毕触发的事件",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
-            "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 414,
-            "description": "禁用上传按钮",
-            "itemtype": "method",
-            "name": "disable",
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 333,
+            "description": "frame 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
         },
         {
-            "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 419,
-            "description": "启用上传按钮",
-            "itemtype": "method",
-            "name": "enable",
-            "class": "JC.AjaxUpload",
-            "namespace": "JC"
-        },
-        {
-            "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 424,
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 378,
             "description": "手动更新数据",
             "itemtype": "method",
             "name": "update",
@@ -4960,8 +4980,26 @@
             "namespace": "JC"
         },
         {
-            "file": "../modules/JC.AjaxUpload/0.2/AjaxUpload.js",
-            "line": 970,
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 394,
+            "description": "禁用上传按钮",
+            "itemtype": "method",
+            "name": "disable",
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 399,
+            "description": "启用上传按钮",
+            "itemtype": "method",
+            "name": "enable",
+            "class": "JC.AjaxUpload",
+            "namespace": "JC"
+        },
+        {
+            "file": "../modules/JC.AjaxUpload/0.1/AjaxUpload.js",
+            "line": 587,
             "description": "恢复默认状态",
             "class": "JC.AjaxUpload",
             "namespace": "JC"
@@ -22425,11 +22463,11 @@
         },
         {
             "message": "unknown tag: version",
-            "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:2"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:3"
         },
         {
-            "message": "unknown tag: version",
-            "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:2"
+            "message": "unknown tag: date",
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:3"
         },
         {
             "message": "unknown tag: version",
@@ -23144,20 +23182,28 @@
             "line": " ../modules/JC.AjaxTree/0.1/AjaxTree.js:714"
         },
         {
+            "message": "Missing item type\niframe 加载完毕后触发的事件, 执行初始化操作",
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:258"
+        },
+        {
             "message": "Missing item type\n文件扩展名错误",
-            "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:287"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:280"
         },
         {
             "message": "Missing item type\n上传前触发的事件",
-            "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:294"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:287"
         },
         {
             "message": "Missing item type\n上传完毕触发的事件",
-            "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:300"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:293"
+        },
+        {
+            "message": "Missing item type\nframe 的按钮样式改变后触发的事件\n需要更新 frame 的宽高",
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:333"
         },
         {
             "message": "Missing item type\n恢复默认状态",
-            "line": " ../modules/JC.AjaxUpload/0.2/AjaxUpload.js:970"
+            "line": " ../modules/JC.AjaxUpload/0.1/AjaxUpload.js:587"
         },
         {
             "message": "Missing item type\n点击列表时, 阻止冒泡",
