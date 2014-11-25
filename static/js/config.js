@@ -2,9 +2,25 @@
 	window.JC = window.JC || {log:function(){}};
 	JC.PATH = JC.PATH || scriptPath();
 
+	var __FILE__; 
+	try { 
+	    throw Error("获取JS路径方法捕获 config"); 
+	}catch(ex){ 
+	    if(ex.fileName) //Firefox 
+	        __FILE__ = ex.fileName; 
+	    else if(ex.stack){//Chrome 或 IE10 
+	        ex.stack.replace( /([\w]+tp\:\/\/.*?)\:[\d]+?\:[\d]+/i, function($0, $1){
+	        	__FILE__ = $1;
+	        });
+	    }else if(ex.sourceURL)//Safari 
+	        __FILE__ = ex.sourceURL; 
+	}
+	var ar = __FILE__.split('/');
+	ar.pop();
+
 	window.requirejs && 
 	requirejs.config( {
-	    baseUrl: '/jc_doc/static/js/'
+	    baseUrl: ar.join('/') + '/'
 	    , urlArgs: 'v=' + new Date().getTime()
 	    , paths: {
 	    	'template' : 'artTemplate/dist/template'

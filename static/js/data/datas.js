@@ -11,7 +11,7 @@
 
 	var datas = {
 
-		basePath : '/jc_doc/tpl/demo/'
+		basePath : '../../tpl/demo/'
 		
 		, demoPage : '_demo.html'
 		
