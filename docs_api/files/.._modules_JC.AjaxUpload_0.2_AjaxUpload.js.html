@@ -647,6 +647,14 @@
                         });
                     }, 300 );
                 });
+
+                _p.on( &#x27;SHOW_LAYOUT_BUTTON&#x27;, function(){
+                    _p._model.layoutButton().css( { &#x27;position&#x27;: &#x27;static&#x27; } );
+                });
+
+                _p.on( &#x27;HIDE_LAYOUT_BUTTON&#x27;, function(){
+                    _p._model.layoutButton().css( { &#x27;position&#x27;: &#x27;absolute&#x27;, &#x27;left&#x27;: &#x27;-10000px&#x27; } );
+                });
             }
         , _inited:
             function(){
@@ -1226,7 +1234,8 @@
                     ;
                     
                     _p.updateChange();
-                    _p._model.layoutButton().show();
+                    //_p._model.layoutButton().show();
+                    _p.trigger( &#x27;SHOW_LAYOUT_BUTTON&#x27; );
 
                     _statusLabel &amp;&amp; _statusLabel.length &amp;&amp; _statusLabel.hide();
                     _displayLabel &amp;&amp; _displayLabel.length &amp;&amp; _displayLabel.hide();
@@ -1255,19 +1264,6 @@
                                 break;
                             }
 
-                        case -200:
-                            {
-                                _tmp = JC.f.printf( &#x27;&lt;h2&gt;文件大小超出服务器限制&lt;/h2&gt;&#x27;
-                                    +&#x27;{1}: &lt;b style=&quot;color:red&quot;&gt;{2}&lt;/b&gt;&#x27; 
-                                    , _p._model.cauFileSize()
-                                    , _file.name
-                                    , humanFileSize( _file.size ).replace( &#x27;i&#x27;, &#x27;&#x27; )
-                                );
-
-                                JC.msgbox( _tmp, _p._model.layoutButton(), 2, null, 1000 * 8 );
-                                break;
-                            }
-
                         case -130:
                             {
                                 _p._model.beforeUploadError( true );
@@ -1283,10 +1279,17 @@
                                 break;
                             }
 
+
                         default:
                             {
-                                alert( [&#x27;上传出错!&#x27;, &#x27;错误代码:&#x27;, _errCode, &#x27;出错原因:&#x27;, _msg ].join( &#x27; &#x27; ) );
-                                //JC.log( [&#x27;上传出错!&#x27;, &#x27;错误代码:&#x27;, _errCode, &#x27;出错原因:&#x27;, _msg ].join( &#x27; &#x27; ) );
+                                _tmp = JC.f.printf( &#x27;&lt;h2&gt;上传失败&lt;/h2&gt;&#x27;
+                                    +&#x27;错误代码：{0}&#x27; 
+                                    +&#x27;&lt;br /&gt;错误信息：{1}&#x27; 
+                                    , _errCode
+                                    , _msg
+                                );
+
+                                JC.msgbox( _tmp, _p._model.layoutButton(), 2, null, 1000 * 8 );
                                 break;
                             }
                     }
@@ -1318,6 +1321,8 @@
                         &amp;&amp; _displayLabel.html( _label ) 
                         ;
                 });
+
+
             }
 
         , beforeUpload:
@@ -1375,7 +1380,8 @@
 
                 if( _statusLabel &amp;&amp; _statusLabel.length &amp;&amp; !_noLabelAction ){
                     _p._model.selector().show();
-                    _p._model.layoutButton().show();
+                    //_p._model.layoutButton().show();
+                    _p.trigger( &#x27;SHOW_LAYOUT_BUTTON&#x27; );
                     _statusLabel.hide();
                 }
                 if( _displayLabel &amp;&amp; _displayLabel.length ){
@@ -1383,7 +1389,8 @@
                 }
 
                 if( _d &amp;&amp; _displayLabel &amp;&amp; _displayLabel.length ){
-                    _p._model.layoutButton().hide();
+                    //_p._model.layoutButton().hide();
+                    _p.trigger( &#x27;HIDE_LAYOUT_BUTTON&#x27; );
                 }
 
                 _p._model.selector().val( &#x27;&#x27; );

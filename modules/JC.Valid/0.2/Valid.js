@@ -415,6 +415,8 @@ function (){
             function( _item ){
                 var _p = this, _r = true, _item = $( _item );
 
+                if( _item.prop( 'nodeName' ).toLowerCase() == 'object' ) return _r;
+
                 if( !_p._model.isAvalible( _item ) ) return _r;
                 if( !_p._model.isValid( _item ) ) return _r;
                 if( Valid.ignore( _item ) ) return _r;
